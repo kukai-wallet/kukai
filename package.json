@@ -8,7 +8,8 @@
     "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "deploy": "ng build --prod --base-href \"https://tezwallet.github.io/beta\" && angular-cli-ghpages --repo=https://github.com/tezwallet/beta.git --branch master"
   },
   "private": true,
   "dependencies": {
@@ -21,9 +22,12 @@
     "@angular/platform-browser": "^5.2.0",
     "@angular/platform-browser-dynamic": "^5.2.0",
     "@angular/router": "^5.2.0",
+    "bootstrap-sass": "^3.3.7",
     "core-js": "^2.4.1",
+    "font-awesome": "^4.7.0",
     "rxjs": "^5.5.6",
-    "zone.js": "^0.8.19"
+    "zone.js": "^0.8.19",
+    "angular-cli-ghpages": "^0.5.2"
   },
   "devDependencies": {
     "@angular/cli": "1.6.8",
