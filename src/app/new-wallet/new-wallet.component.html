@@ -1,0 +1,19 @@
+<div *ngIf="step==0">
+  <p>
+    <button (click)="generateSeed()">Generate Keys</button>
+  </p>
+</div>
+<div *ngIf="step==1">
+  <p>
+      sk: {{ wallet.getSk() }}
+  </p>
+  <p>
+      pk: {{ wallet.getPk() }}
+  </p>
+   <p>
+      pkh: {{ wallet.getPkh() }}
+  </p>
+  <p>
+    <button (click)="reset()">Back</button>
+  </p>
+</div>
