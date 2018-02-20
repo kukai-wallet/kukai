@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Wallet } from '../wallet';
 
 @Component({
@@ -7,6 +7,7 @@ import { Wallet } from '../wallet';
   styleUrls: ['./new-wallet.component.css']
 })
 export class NewWalletComponent implements OnInit {
+  @Input() pwd = '';
   wallet: Wallet;
   step = 0;
   constructor() { }
@@ -14,8 +15,19 @@ export class NewWalletComponent implements OnInit {
   ngOnInit() {
   }
   generateSeed() {
-    this.step = 1;
+    this.step++;
     this.wallet = new Wallet();
+  }
+  pwdView() {
+    this.step++;
+  }
+  setPwd() {
+  }
+  encryptWallet() {
+    this.wallet.setPassphrase(this.pwd);
+    this.pwd = '';
+    this.wallet.setKeyPair();
+    this.step++;
   }
   reset() {
     this.step = 0;

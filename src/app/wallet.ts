@@ -1,21 +1,25 @@
-import * as tzlib from '../assets/js/main.js';
+import { WalletAdapter } from './wallet-adapter';
 export class Wallet {
-    mnemonic: string;
-    passphrase: string;
-    sk: string;
-    pk: string;
-    pkh: string;
+    private walletAdapter = new WalletAdapter();
+    private mnemonic: string;
+    private passphrase: string;
+    private sk: string;
+    private pk: string;
+    private pkh: string;
     constructor() {
-        const walletObject = tzlib.eztz.crypto.generateKeysNoSeed();
-        this.setSk(walletObject.sk);
-        this.setPk(walletObject.pk);
-        this.setPkh(walletObject.pkh);
+        this.setMnemonic(this.walletAdapter.generateMnemonic());
     }
     setMnemonic(mnemonic: string) {
         this.mnemonic = mnemonic;
     }
     getMnemonic(): string {
         return this.mnemonic;
+    }
+    setKeyPair() {
+        const keyPair = this.walletAdapter.keyPairFromMnemonic(this.mnemonic);
+        this.setSk(keyPair.sk);
+        this.setPk(keyPair.pk);
+        this.setPkh(keyPair.pkh);
     }
     setSk(sk: string) {
         this.sk = sk;
@@ -34,5 +38,11 @@ export class Wallet {
     }
     getPkh(): string {
         return this.pkh;
+    }
+    setPassphrase(pwd: string) {
+        this.passphrase = pwd;
+    }
+    getPassphrase(): string {
+        return this.passphrase;
     }
 }

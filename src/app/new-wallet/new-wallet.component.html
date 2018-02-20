@@ -1,19 +1,21 @@
 <div *ngIf="step==0">
   <p>
-    <button (click)="generateSeed()">Generate Keys</button>
+    <button (click)="generateSeed()">Generate wallet</button>
   </p>
 </div>
 <div *ngIf="step==1">
-  <p>
-      sk: {{ wallet.getSk() }}
-  </p>
-  <p>
-      pk: {{ wallet.getPk() }}
-  </p>
-   <p>
-      pkh: {{ wallet.getPkh() }}
-  </p>
-  <p>
-    <button (click)="reset()">Back</button>
-  </p>
+   <p>This is your private seed. Please write it down and store somewhere safe.</p>
+   <p><b>{{ wallet.getMnemonic() }}</b></p>
+   <button (click)="pwdView()">Next</button>
+</div>
+<div *ngIf="step==2">
+  <p>Encrypt your wallet<BR>
+    <input type="password" [(ngModel)]="pwd" placeholder="Password"></p>
+  <button (click)="encryptWallet()">Encrypt</button>
+  <p *ngIf="step==3">Please wait...</p>
+</div>
+<div *ngIf="step==3">
+  <p>Encrypted (to do) wallet data:<BR>
+    {{ wallet.getSk() }}<BR>{{ wallet.getPk() }}<BR>{{ wallet.getPkh() }}</p>
+  <button (click)="reset()">Next</button>
 </div>
