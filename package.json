@@ -1,5 +1,5 @@
 {
-  "name": "wallet",
+  "name": "kukai",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
@@ -9,9 +9,9 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "deploy": "ng build --prod --base-href=\"beta\" && angular-cli-ghpages --repo=\"https://github.com/tezwallet/beta.git\" --branch master"
+    "deploy": "ng build --prod --base-href beta && angular-cli-ghpages --repo \"git@github.com:tezwallet/beta.git\" --branch master"
   },
-  "private": true,
+  "private": false,
   "dependencies": {
     "@angular/animations": "^5.2.0",
     "@angular/common": "^5.2.0",
@@ -34,7 +34,6 @@
     "libsodium-wrappers": "^0.5.4",
     "pbkdf2": "^3.0.14",
     "randombytes": "^2.0.6",
-    "rijndael-js": "^1.0.0",
     "rxjs": "^5.5.6",
     "xmlhttprequest": "^1.8.0",
     "zone.js": "^0.8.19"
