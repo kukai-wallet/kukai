@@ -4,19 +4,23 @@ import { FormsModule } from '@angular/forms';
 
 
 import { AppComponent } from './app.component';
-import { NewWalletComponent } from './new-wallet/new-wallet.component';
+import { NewWalletComponent } from './components/new-wallet/new-wallet.component';
+import { MessagesComponent } from './components/messages/messages.component';
+import { MessageService } from './services/message.service';
+import { WalletService } from './services/wallet.service';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    NewWalletComponent
+    NewWalletComponent,
+    MessagesComponent
   ],
   imports: [
     BrowserModule,
     FormsModule
   ],
-  providers: [],
+  providers: [MessageService, WalletService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
