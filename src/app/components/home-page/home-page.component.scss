@@ -82,8 +82,12 @@ a, a:hover, a:focus {
 }
 
 #sidebar ul.components {
-    padding: 20px 0;
+    /*padding: 20px 0;*/
     border-bottom: 1px solid #47748b;
+}
+
+.top {
+    /*padding: 20px 0;*/
 }
 
 #sidebar ul p {
@@ -152,7 +156,7 @@ ul.CTAs a {
 }
 
 .bottom-CTAs {
-    padding-top: 50vh !important
+    padding-top: 48vh !important;
     /* 
     position: absolute;
     bottom: 0;
@@ -182,9 +186,21 @@ a.article, a.article:hover {
     CONTENT STYLE
 ----------------------------------------------------- */
 #content {
-    padding: 20px;
+    /*padding: 20px;*/
     min-height: 100vh;
+    margin: 0px auto 0px auto;
     transition: all 0.3s;
+}
+
+.center-content {
+    
+    padding-top: 40vh !important;
+    /*
+    padding-left: 30vw !important;
+    //
+    margin: 0px auto 0px auto;
+    width: 600px;
+    */
 }
 
 /* ---------------------------------------------------

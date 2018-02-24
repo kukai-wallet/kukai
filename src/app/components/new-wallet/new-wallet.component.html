@@ -3,6 +3,7 @@
     <button class="btn btn-primary" (click)="generateSeed()">Generate wallet</button>
   </p>
 </div>
+
 <div *ngIf="activePanel==1">
    <p>This is your private seed. Please write it down and store somewhere safe.</p>
    <p><b>{{ data.seed }}</b></p>
