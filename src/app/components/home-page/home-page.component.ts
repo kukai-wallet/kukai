@@ -3,17 +3,14 @@ import { WalletService } from '../../services/wallet.service';
 import { MessageService } from '../../services/message.service';
 
 @Component({
-  selector: 'app-new-wallet',
-  templateUrl: './new-wallet.component.html',
-  styleUrls: ['./new-wallet.component.scss']
+  selector: 'app-home-page',
+  templateUrl: './home-page.component.html',
+  styleUrls: ['./home-page.component.scss']
 })
-export class NewWalletComponent implements OnInit {
+export class HomePageComponent implements OnInit {
   @Input() pwd = '';
   activePanel = 0;
-  data = {
-    seed: '',
-    salt: ''
-  };
+  seed = '';
   constructor(private walletService: WalletService,
     private messageService: MessageService) { }
 
@@ -21,13 +18,15 @@ export class NewWalletComponent implements OnInit {
   }
   generateSeed() {
     this.activePanel++;
-    this.data.seed = this.walletService.createNewWallet();
+    this.seed = this.walletService.createNewWallet();
   }
   pwdView() {
     this.activePanel++;
   }
+  setPwd() {
+  }
   async encryptWallet() {
-    this.data = this.walletService.encryptWallet(this.pwd);
+    this.seed = this.walletService.encryptWallet(this.pwd);
     // this.messageService.add('Pwd: ' + this.pwd);
     this.pwd = '';
     this.activePanel++;
