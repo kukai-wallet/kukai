@@ -41,9 +41,7 @@ export class WalletService {
   constructor(private messageService: MessageService) { }
   createNewWallet(): string {
     this.wallet.mnemonic = bip39.generateMnemonic();
-    this.messageService.add('seed: ' + this.wallet.mnemonic);
-    this.wallet.salt =  rnd2('aA0', 16);  // utf8Encode(rnd(32));
-    this.messageService.add('salt: ' + this.wallet.salt);
+    this.wallet.salt =  rnd2('aA0', 16);
     this.createNewAccount();
     return this.wallet.mnemonic;
   }
@@ -70,14 +68,12 @@ export class WalletService {
   }
   encrypt(plaintext: string, password: string): any {
     const chiphertext = CryptoJS.AES.encrypt(plaintext, password + this.wallet.salt).toString();
-    this.messageService.add('Encrypted: ' + chiphertext);
     return {seed: chiphertext, salt: this.wallet.salt};
   }
   decrypt(chiphertext: string, password: string): string {
     try {
       const plainbytes = CryptoJS.AES.decrypt(chiphertext, password + this.wallet.salt);
       const plaintext = plainbytes.toString(CryptoJS.enc.Utf8);
-      this.messageService.add('Decrypted: ' + plaintext);
       return plaintext;
     } catch (err) {
       return '';
