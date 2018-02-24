@@ -67,8 +67,18 @@ a, a:hover, a:focus {
 }
 
 #sidebar .sidebar-header {
+    
     padding: 20px;
     background: #6d7fcc;
+}
+
+#sidebar .title {
+    font-size: 4em;
+}
+
+#sidebar .sub-heading {
+    font-size: 0.9em;
+    color: #fff !important;
 }
 
 #sidebar ul.components {
@@ -120,6 +130,11 @@ ul ul a {
     background: #6d7fcc;
 }
 
+
+/*---------------------------------------------------
+    SIDEBAR FOOTER STYLE
+----------------------------------------------------- */
+
 ul.CTAs {
     padding: 20px;
 }
@@ -132,6 +147,25 @@ ul.CTAs a {
     margin-bottom: 5px;
 }
 
+.bottom-category {
+    font-size: 1.1em;
+}
+
+.bottom-CTAs {
+    padding-top: 50vh !important
+    /* 
+    position: absolute;
+    bottom: 0;
+    */
+}
+
+.bottom-CTAs .fa {
+    font-size: 2em;
+    left: 40px;
+    padding: 15px;
+}
+
+/* 
 a.download {
     background: #fff;
     color: #7386D5;
@@ -141,7 +175,7 @@ a.article, a.article:hover {
     background: #6d7fcc !important;
     color: #fff !important;
 }
-
+*/
 
 
 /* ---------------------------------------------------
