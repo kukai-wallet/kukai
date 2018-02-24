@@ -33,7 +33,7 @@
     "font-awesome": "^4.7.0",
     "libsodium-wrappers": "^0.5.4",
     "pbkdf2": "^3.0.14",
-    "randombytes": "^2.0.6",
+    "randomatic": "^3.0.0",
     "rxjs": "^5.5.6",
     "xmlhttprequest": "^1.8.0",
     "zone.js": "^0.8.19"

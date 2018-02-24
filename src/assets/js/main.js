@@ -224,7 +224,6 @@ crypto = {
           pkh : utility.b58cencode(library.sodium.crypto_generichash(20, kp.publicKey), prefix.tz1),
       };
   },
-  /* Custom functions End */
   generateKeysFromSeedMulti : function(m,p,n){
       n /= (256^2);
       var s = library.bip39.mnemonicToSeed(m, library.pbkdf2.pbkdf2Sync(p, n.toString(36).slice(2), 0, 32, 'sha512').toString()).slice(0, 32);
