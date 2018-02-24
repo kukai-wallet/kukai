@@ -10,7 +10,10 @@ import { MessageService } from '../../services/message.service';
 export class NewWalletComponent implements OnInit {
   @Input() pwd = '';
   activePanel = 0;
-  seed = '';
+  data = {
+    seed: '',
+    salt: ''
+  };
   constructor(private walletService: WalletService,
     private messageService: MessageService) { }
 
@@ -18,15 +21,13 @@ export class NewWalletComponent implements OnInit {
   }
   generateSeed() {
     this.activePanel++;
-    this.seed = this.walletService.createNewWallet();
+    this.data.seed = this.walletService.createNewWallet();
   }
   pwdView() {
     this.activePanel++;
   }
-  setPwd() {
-  }
   async encryptWallet() {
-    this.seed = this.walletService.encryptWallet(this.pwd);
+    this.data = this.walletService.encryptWallet(this.pwd);
     // this.messageService.add('Pwd: ' + this.pwd);
     this.pwd = '';
     this.activePanel++;

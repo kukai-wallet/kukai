@@ -4,50 +4,78 @@ import { MessageService } from './message.service';
 import * as lib from '../../assets/js/main.js';
 import * as bip39 from 'bip39';
 import * as CryptoJS from 'crypto-js';
-import * as rnd from 'randombytes';
-// import * as sodium from 'libsodium-wrappers';
-// import * as Rijndael from 'rijndael-js';
-// import * as bs58check from 'bs58check';
-// import * as pbkdf2 from 'pbkdf2';
-// import * as crs from 'crypto-random-string';
+import * as rnd2 from 'randomatic';
 
+export interface KeyPair {
+  sk: string|null;
+  pk: string|null;
+  pkh: string;
+}
+export interface Account {
+  keyPair: KeyPair|null;
+  balance: number;
+  pending: number;
+  balanceFiat: number;
+  pendingFiat: number;
+}
+export interface Wallet {
+  mnemonic: string|null;
+  salt: string|null;
+  balance: number;
+  pending: number;
+  balanceFiat: number;
+  pendingFiat: number;
+  account: Account|null;
+}
 @Injectable()
 export class WalletService {
-  private mnemonic: string;
-  private password: string; // Shouldn't be used
-  private salt: string;
-  private sk: string;
-  private pk: string;
-  private pkh: string;
+  wallet: Wallet = {
+    mnemonic: null,
+    salt: null,
+    balance: 0,
+    pending: 0,
+    balanceFiat: 0,
+    pendingFiat: 0,
+    account: null
+  };
   constructor(private messageService: MessageService) { }
   createNewWallet(): string {
-    this.mnemonic = bip39.generateMnemonic();
-    this.messageService.add('seed: ' + this.mnemonic);
-    this.setKeyPair();
-    this.salt = rnd(32);
-    this.messageService.add('salt: ' + this.salt);
-    return this.mnemonic;
+    this.wallet.mnemonic = bip39.generateMnemonic();
+    this.messageService.add('seed: ' + this.wallet.mnemonic);
+    this.wallet.salt =  rnd2('aA0', 16);  // utf8Encode(rnd(32));
+    this.messageService.add('salt: ' + this.wallet.salt);
+    this.createNewAccount();
+    return this.wallet.mnemonic;
   }
-  setKeyPair() {
-      const keyPair = this.keyPairFromMnemonic(this.mnemonic);
-      this.sk = keyPair.sk;
-      this.pk = keyPair.pk;
-      this.pkh = keyPair.pkh;
-      this.messageService.add('sk: ' + this.sk);
-      this.messageService.add('pk: ' + this.pk);
-      this.messageService.add('pkh: ' + this.pkh);
+  createNewAccount() {
+    this.wallet.account = {
+      keyPair: null,
+      balance: 0,
+      pending: 0,
+      balanceFiat: 0,
+      pendingFiat: 0
+    };
+    this.createNewKeyPair();
   }
-  keyPairFromMnemonic(mnemonic: string) {
-      return lib.eztz.crypto.generateKeysFromSeedMulti(mnemonic, '', 1);
+  createNewKeyPair() {
+      const keyPair = this.keyPairFromMnemonic(this.wallet.mnemonic, 1);
+      this.wallet.account.keyPair = {
+        sk: null,
+        pk: null,
+        pkh: keyPair.pkh
+      };
   }
-  encrypt(plaintext: string, password: string): string {
-    const chiphertext = CryptoJS.AES.encrypt(plaintext, password + this.salt).toString();
+  keyPairFromMnemonic(mnemonic: string, n: number) {
+      return lib.eztz.crypto.generateKeysFromSeedMulti(mnemonic, '', n);
+  }
+  encrypt(plaintext: string, password: string): any {
+    const chiphertext = CryptoJS.AES.encrypt(plaintext, password + this.wallet.salt).toString();
     this.messageService.add('Encrypted: ' + chiphertext);
-    return chiphertext;
+    return {seed: chiphertext, salt: this.wallet.salt};
   }
   decrypt(chiphertext: string, password: string): string {
     try {
-      const plainbytes = CryptoJS.AES.decrypt(chiphertext, password + this.salt);
+      const plainbytes = CryptoJS.AES.decrypt(chiphertext, password + this.wallet.salt);
       const plaintext = plainbytes.toString(CryptoJS.enc.Utf8);
       this.messageService.add('Decrypted: ' + plaintext);
       return plaintext;
@@ -55,16 +83,16 @@ export class WalletService {
       return '';
     }
   }
-  encryptWallet(password: string): string {
-    this.mnemonic = this.encrypt(this.mnemonic, password);
-    return this.mnemonic;
+  encryptWallet(password: string): any {
+    this.wallet.mnemonic = this.encrypt(this.wallet.mnemonic, password);
+    return this.wallet.mnemonic;
   }
   decryptWallet(password: string) {
-    const mnemonic = this.mnemonic = this.decrypt(this.mnemonic, password);
+    const mnemonic = this.wallet.mnemonic = this.decrypt(this.wallet.mnemonic, password);
     if (mnemonic === '') {
       this.messageService.add('Decryption failed');
     } else {
-      this.mnemonic = mnemonic;
+      this.wallet.mnemonic = mnemonic;
     }
   }
 }
