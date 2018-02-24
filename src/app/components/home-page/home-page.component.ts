@@ -3,11 +3,11 @@ import { WalletService } from '../../services/wallet.service';
 import { MessageService } from '../../services/message.service';
 
 @Component({
-  selector: 'app-new-wallet',
-  templateUrl: './new-wallet.component.html',
-  styleUrls: ['./new-wallet.component.scss']
+  selector: 'app-home-page',
+  templateUrl: './home-page.component.html',
+  styleUrls: ['./home-page.component.scss']
 })
-export class NewWalletComponent implements OnInit {
+export class HomePageComponent implements OnInit {
   @Input() pwd = '';
   activePanel = 0;
   seed = '';
