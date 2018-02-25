@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, Query } from '@angular/core';
 import { WalletService } from '../../services/wallet.service';
 import { MessageService } from '../../services/message.service';
+import { ChangeDetectorRef } from '@angular/core';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-new-wallet',
@@ -16,13 +18,15 @@ export class NewWalletComponent implements OnInit {
     salt: ''
   };
   constructor(private walletService: WalletService,
-    private messageService: MessageService) { }
+    private messageService: MessageService,
+    private cdRef: ChangeDetectorRef) { }
 
   ngOnInit() {
-    this.generateSeed();
+    setTimeout(() => {
+      this.generateSeed();
+    }, 1);
   }
   generateSeed() {
-    // this.data.seed = this.walletService.createNewWallet()
     this.data.seed = this.walletService.createNewWallet();
     this.activePanel++;
   }

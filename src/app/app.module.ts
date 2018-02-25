@@ -13,6 +13,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { BroadcastComponent } from './components/broadcast/broadcast.component';
 import { ImportComponent } from './components/import/import.component';
 import { StartComponent } from './components/start/start.component';
+import { ActivityComponent } from './components/activity/activity.component';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { StartComponent } from './components/start/start.component';
     AppComponent,
     BroadcastComponent,
     ImportComponent,
-    StartComponent
+    StartComponent,
+    ActivityComponent
   ],
   imports: [
     BrowserModule,
