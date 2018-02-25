@@ -31,16 +31,9 @@ export interface Wallet {
 }
 @Injectable()
 export class WalletService {
-  wallet: Wallet = {
-    mnemonic: null,
-    salt: null,
-    balance: 0,
-    pending: 0,
-    balanceFiat: 0,
-    pendingFiat: 0,
-    account: null
-  };
+  wallet: Wallet = this.emptyWallet();
   constructor(private messageService: MessageService) { }
+
   createNewWallet(): string {
     this.wallet.mnemonic = bip39.generateMnemonic();
     this.wallet.salt =  rnd2('aA0', 32);
@@ -95,5 +88,19 @@ export class WalletService {
     } else {
       this.wallet.mnemonic = mnemonic;
     }
+  }
+  emptyWallet(): Wallet {
+    return {
+      mnemonic: null,
+      salt: null,
+      balance: 0,
+      pending: 0,
+      balanceFiat: 0,
+      pendingFiat: 0,
+      account: null
+    };
+  }
+  clearWallet() {
+    this.wallet = this.emptyWallet();
   }
 }

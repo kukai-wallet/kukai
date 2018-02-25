@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { WalletService } from '../../services/wallet.service';
 import { MessageService } from '../../services/message.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home-page',
@@ -12,9 +13,14 @@ export class HomePageComponent implements OnInit {
   activePanel = 0;
   seed = '';
   constructor(private walletService: WalletService,
-    private messageService: MessageService) { }
+    private messageService: MessageService,
+    private router: Router) { }
 
   ngOnInit() {
+  }
+  logout() {
+    this.walletService.clearWallet();
+    this.messageService.add('Wallet cleared');
   }
   generateSeed() {
     this.activePanel++;

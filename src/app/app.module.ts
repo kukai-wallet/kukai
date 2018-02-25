@@ -14,6 +14,9 @@ import { BroadcastComponent } from './components/broadcast/broadcast.component';
 import { ImportComponent } from './components/import/import.component';
 import { StartComponent } from './components/start/start.component';
 import { ActivityComponent } from './components/activity/activity.component';
+import { AccountsComponent } from './/components/accounts/accounts.component';
+import { BackupComponent } from './components/backup/backup.component';
+import { SettingsComponent } from './components/settings/settings.component';
 
 
 @NgModule({
@@ -25,7 +28,10 @@ import { ActivityComponent } from './components/activity/activity.component';
     BroadcastComponent,
     ImportComponent,
     StartComponent,
-    ActivityComponent
+    ActivityComponent,
+    AccountsComponent,
+    BackupComponent,
+    SettingsComponent
   ],
   imports: [
     BrowserModule,
