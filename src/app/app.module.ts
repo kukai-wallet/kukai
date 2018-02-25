@@ -9,6 +9,10 @@ import { MessageService } from './services/message.service';
 import { WalletService } from './services/wallet.service';
 
 import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app-routing.module';
+import { BroadcastComponent } from './components/broadcast/broadcast.component';
+import { ImportComponent } from './components/import/import.component';
+import { StartComponent } from './components/start/start.component';
 
 
 @NgModule({
@@ -17,10 +21,14 @@ import { AppComponent } from './app.component';
     NewWalletComponent,
     MessagesComponent,
     AppComponent,
+    BroadcastComponent,
+    ImportComponent,
+    StartComponent
   ],
   imports: [
     BrowserModule,
-    FormsModule
+    FormsModule,
+    AppRoutingModule
   ],
   providers: [MessageService, WalletService],
   bootstrap: [AppComponent]

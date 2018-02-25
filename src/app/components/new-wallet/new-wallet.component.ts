@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Query } from '@angular/core';
 import { WalletService } from '../../services/wallet.service';
 import { MessageService } from '../../services/message.service';
 
@@ -19,15 +19,17 @@ export class NewWalletComponent implements OnInit {
     private messageService: MessageService) { }
 
   ngOnInit() {
+    this.generateSeed();
   }
   generateSeed() {
-    this.activePanel++;
+    // this.data.seed = this.walletService.createNewWallet()
     this.data.seed = this.walletService.createNewWallet();
+    this.activePanel++;
   }
   pwdView() {
     this.activePanel++;
   }
-  async encryptWallet() {
+  encryptWallet() {
     if (this.validatePwd()) {
       this.data = this.walletService.encryptWallet(this.pwd1);
       this.pwd1 = '';

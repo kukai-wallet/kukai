@@ -1,14 +1,6 @@
 <div *ngIf="activePanel==0">
-  <div class="row">
-    <button class="btn btn-primary btn-lg btn-block btn-generate" (click)="generateSeed()">Generate wallet</button>
-  </div>
-  <div class="row">
-    <button class="btn btn-clear btn-second">Broadcast</button>
-    <button class="btn btn-clear btn-second pull-right">Import</button>
-  </div>
+    <p>Generating new wallet. Please wait...</p>
 </div>
-
-
 <div *ngIf="activePanel==1">
    <p>This is your private seed. Please write it down and store somewhere safe.</p>
    <p><b>{{ data.seed }}</b></p>
@@ -19,10 +11,9 @@
     <input type="password" [(ngModel)]="pwd1" placeholder="Password"><BR>
     <input type="password" [(ngModel)]="pwd2" placeholder="Confirm password"></p>
   <button class="btn btn-primary" (click)="encryptWallet()">Encrypt</button>
-  <p *ngIf="activePanel==3">Please wait...</p>
 </div>
 <div *ngIf="activePanel==3">
   <p>Encrypted wallet data:<BR>
   &#123;"encryptedMnemonic": "{{ data.seed }}", "salt": "{{ data.salt }}"&#125;</p>
-  <button class="btn btn-primary" (click)="reset()">Next</button>
+  <a routerLink="/"><button class="btn btn-primary">Finish</button></a>
 </div>
