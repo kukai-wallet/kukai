@@ -9,7 +9,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "deploy": "ng build --prod --base-href beta && angular-cli-ghpages --repo \"git@github.com:tezwallet/beta.git\" --branch master"
+    "deploy": "ng build --prod && angular-cli-ghpages --repo \"git@github.com:tezwallet/tezwallet.github.io.git\" --branch master"
   },
   "private": true,
   "dependencies": {

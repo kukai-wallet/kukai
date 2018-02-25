@@ -6,10 +6,7 @@ import * as bip39 from 'bip39';
 // import * as CryptoJS from 'crypto-js';
 import * as rnd2 from 'randomatic';
 import * as pbkdf2 from 'pbkdf2';
-import * as utf8enc from 'crypto-js/enc-utf8';
 import * as CryptoJS from 'crypto-js';
-// import { AES } from 'crypto-js/aes';
-// import { pbkdf2 } from 'crypto-js/pbkdf2';
 
 export interface KeyPair {
   sk: string|null;
@@ -72,13 +69,13 @@ export class WalletService {
       return lib.eztz.crypto.generateKeysFromSeedMulti(mnemonic, '', n);
   }
   encrypt(plaintext: string, password: string): string {
-    const key = pbkdf2.pbkdf2Sync(password, this.wallet.salt, 1, 32).toString();
-    const chiphertext = CryptoJS.AES.encrypt(plaintext, key).toString(); // ToDo: pwd -> Key
+    const key = pbkdf2.pbkdf2Sync(password, this.wallet.salt, 10000, 32).toString(); // 100 000 = ~1.75s => 1 000 = 0.018s
+    const chiphertext = CryptoJS.AES.encrypt(plaintext, key).toString();
     return chiphertext;
   }
   decrypt(chiphertext: string, password: string): string {
     try {
-      const key = pbkdf2.pbkdf2Sync(password, this.wallet.salt, 1, 32).toString();
+      const key = pbkdf2.pbkdf2Sync(password, this.wallet.salt, 10000, 32).toString();
       const plainbytes = CryptoJS.AES.decrypt(chiphertext, key);
       const plaintext = plainbytes.toString(CryptoJS.enc.Utf8);
       return plaintext;
