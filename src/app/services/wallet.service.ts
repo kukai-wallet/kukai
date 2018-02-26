@@ -14,6 +14,8 @@ export interface KeyPair {
   pkh: string;
 }
 export interface Account {
+  id: number;
+  visible: boolean;
   keyPair: KeyPair|null;
   balance: number;
   pending: number;
@@ -21,13 +23,14 @@ export interface Account {
   pendingFiat: number;
 }
 export interface Wallet {
+  index: number;
   mnemonic: string|null;
   salt: string|null;
   balance: number;
   pending: number;
   balanceFiat: number;
   pendingFiat: number;
-  account: Account|null;
+  accounts: Account[]|null;
 }
 @Injectable()
 export class WalletService {
@@ -38,45 +41,82 @@ export class WalletService {
   createNewWallet(): string {
     this.wallet.mnemonic = bip39.generateMnemonic();
     this.wallet.salt =  rnd2('aA0', 32);
-    this.createNewAccount();
+    this.wallet.accounts = [];
+    for (let i = 0; i < 10; i++) {
+      this.createNewAccount(i, '', true);
+    }
+    this.wallet.accounts[0].visible = true;
     return this.wallet.mnemonic;
   }
-  createNewAccount() {
-    this.wallet.account = {
-      keyPair: null,
+  createNewAccount(id: number, pkh: string, init: boolean) {
+    this.wallet.accounts.push({
+      id: id,
+      visible: false,
+      keyPair: this.createNewKeyPair(id, pkh, init),
       balance: 0,
       pending: 0,
       balanceFiat: 0,
       pendingFiat: 0
-    };
-    this.createNewKeyPair();
+    });
   }
-  createNewKeyPair() {
-      const keyPair = this.keyPairFromMnemonic(this.wallet.mnemonic, 0);
-      this.wallet.account.keyPair = {
+  addAccount() {
+    while (this.wallet.index < 10 && this.wallet.accounts[this.wallet.index].visible === true) { this.wallet.index++; }
+    if (this.wallet.index < 10) {
+      this.wallet.accounts[this.wallet.index].visible = true;
+      this.saveWallet();
+    } else {
+      this.messageService.add('Maximum of 10 accounts allowed');
+    }
+  }
+  hideAccount(id: number) {
+    this.wallet.accounts[id].visible = false;
+    this.wallet.index = 0;
+    this.saveWallet();
+  }
+  createNewKeyPair(id: number, pkh: string, init: boolean) {
+    if (init) {
+      return this.createNewKeyPairfromMnemonic(id);
+    } else {
+      return this.createNewKeyPairFromPkh(pkh);
+    }
+  }
+  createNewKeyPairFromPkh(pkh: string): any {
+    return {
+      sk: null,
+      pk: null,
+      pkh: pkh
+    };
+  }
+  createNewKeyPairfromMnemonic(id: number): any {
+      const keyPair = this.keyPairFromMnemonic(this.wallet.mnemonic, id);
+      return {
         sk: null,
         pk: null,
         pkh: keyPair.pkh
       };
   }
-  keyPairFromMnemonic(mnemonic: string, n: number) {
-      return lib.eztz.crypto.generateKeysFromSeedMulti(mnemonic, '', n);
+  keyPairFromMnemonic(mnemonic: string, id: number) {
+      return lib.eztz.crypto.generateKeysFromSeedMulti(mnemonic, '', id);
   }
-  getPkh(): string {
-    if (this.wallet.account == null) {
+  getPkh(id: number): string {
+    if (this.wallet.accounts == null) {
       return '';
     } else {
-      return this.wallet.account.keyPair.pkh;
+      return this.wallet.accounts[0].keyPair.pkh;
     }
   }
   getBalance() {
-    if (this.wallet.account != null) {
-      const promise = lib.eztz.rpc.getBalance(this.wallet.account.keyPair.pkh);
-      if (promise != null) {
-        promise.then(
-          (val) => this.wallet.account.balance = val,
-          (err) => this.messageService.add(err)
-        );
+    if (this.wallet.accounts != null) {
+      for (let i = 0; i < 10; i++) {
+        if (this.wallet.accounts[i].visible === true) {
+          const promise = lib.eztz.rpc.getBalance(this.wallet.accounts[i].keyPair.pkh);
+          if (promise != null) {
+            promise.then(
+              (val) => this.wallet.accounts[i].balance = val,
+              (err) => this.messageService.add(err)
+            );
+          }
+        }
       }
     }
   }
@@ -84,6 +124,29 @@ export class WalletService {
     const key = pbkdf2.pbkdf2Sync(password, this.wallet.salt, 10000, 32).toString(); // 100 000 = ~1.75s => 1 000 = 0.018s
     const chiphertext = CryptoJS.AES.encrypt(plaintext, key).toString();
     return chiphertext;
+  }
+  exportAccountsPkh(): any {
+    const pkhs = [];
+    for (let i = 0; i < 10; i++) { pkhs.push(this.wallet.accounts[i].keyPair.pkh); }
+    return pkhs;
+  }
+  importWalletData(json: string): boolean {
+    try {
+      this.wallet = this.emptyWallet();
+      const walletData = JSON.parse(json);
+      this.wallet.mnemonic = walletData.seed;
+      this.wallet.salt = walletData.salt;
+      this.wallet.accounts = [];
+      for (let i = 0; i < 10; i++) {
+        this.createNewAccount(i, walletData.pkhs[i], false);
+      }
+      this.wallet.accounts[0].visible = true;
+      this.saveWallet();
+      return true;
+    } catch (err) {
+      this.messageService.add(err);
+      return false;
+    }
   }
   decrypt(chiphertext: string, password: string): string {
     try {
@@ -98,7 +161,7 @@ export class WalletService {
   }
   encryptWallet(password: string): any {
     this.wallet.mnemonic = this.encrypt(this.wallet.mnemonic, password);
-    return {seed: this.wallet.mnemonic, salt: this.wallet.salt};
+    return {type: 'encryptedWallet', seed: this.wallet.mnemonic, salt: this.wallet.salt, pkhs: this.exportAccountsPkh()};
   }
   decryptWallet(password: string) {
     const mnemonic = this.decrypt(this.wallet.mnemonic, password);
@@ -110,13 +173,14 @@ export class WalletService {
   }
   emptyWallet(): Wallet {
     return {
+      index: 0,
       mnemonic: null,
       salt: null,
       balance: 0,
       pending: 0,
       balanceFiat: 0,
       pendingFiat: 0,
-      account: null
+      accounts: null
     };
   }
   clearWallet() {
@@ -126,69 +190,12 @@ export class WalletService {
   saveWallet() {
     localStorage.setItem(this.storeKey, JSON.stringify(this.wallet));
   }
-  async loadStoredWallet() {
+  loadStoredWallet(): boolean {
     const walletData = localStorage.getItem(this.storeKey);
     if (walletData) {
       this.wallet = JSON.parse(walletData);
+      return true;
     }
+    return false;
   }
 }
-
-/*
- async loadStoredWallet() {
-    this.resetWallet();
-
-    const walletData = localStorage.getItem(this.storeKey);
-    if (!walletData) return this.wallet;
-
-    const walletJson = JSON.parse(walletData);
-    this.wallet.seed = walletJson.seed;
-    this.wallet.seedBytes = this.util.hex.toUint8(walletJson.seed);
-    this.wallet.locked = walletJson.locked;
-
-    if (this.wallet.locked) {
-      return this.wallet; // If the wallet is locked on load, it has to be unlocked before we can load anything?
-    }
-
-    this.wallet.password = walletJson.password;
-    this.wallet.accountsIndex = walletJson.accountsIndex;
-    await Promise.all(walletJson.accounts.map(async (account) => this.addWalletAccount(account.index, false)));
-
-    await this.reloadBalances();
-
-    if (this.wallet.accounts.length) {
-      this.websocket.subscribeAccounts(this.wallet.accounts.map(a => a.id));
-    }
-
-    return this.wallet;
-  }
-
-saveWalletExport() {
-    const exportData = this.generateWalletExport();
-
-    switch (this.appSettings.settings.walletStore) {
-      case 'none':
-        localStorage.removeItem(this.storeKey);
-        break;
-      default:
-      case 'localStorage':
-        localStorage.setItem(this.storeKey, JSON.stringify(exportData));
-        break;
-    }
-  }
-
-  generateWalletExport() {
-    const data = {
-      seed: this.wallet.seed,
-      locked: this.wallet.locked,
-      password: this.wallet.locked ? '' : this.wallet.password,
-      accounts: this.wallet.accounts.map(a => ({ id: a.id, index: a.index })),
-      accountsIndex: this.wallet.accountsIndex,
-    };
-
-    return data;
-  }
-
-
-
-  */

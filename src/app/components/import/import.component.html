@@ -19,7 +19,8 @@
 </div>-->
 <div>
   <p>Uppload your encrypted wallet and enter your password:</p>
-  <input type="text" [(ngModel)]="encryptedWallet" placeholder=""><BR>
+  <textarea rows="8" cols=100 [(ngModel)]="encryptedWallet" placeholder=""></textarea>
+  <BR>
 </div>
 <a routerLink="/"><button class="btn btn-clear btn-second pull-right">Back</button></a>
-<a routerLink="/"><button class="btn btn-clear btn-second pull-right">Load</button></a>
+<a (click)='import()' routerLink="/"><button class="btn btn-clear btn-second pull-right">Load</button></a>

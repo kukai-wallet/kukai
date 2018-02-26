@@ -14,8 +14,10 @@ export class NewWalletComponent implements OnInit {
   @Input() pwd2 = '';
   activePanel = 0;
   data = {
+    type: '',
     seed: '',
-    salt: ''
+    salt: '',
+    pkhs: []
   };
   constructor(private walletService: WalletService,
     private messageService: MessageService,

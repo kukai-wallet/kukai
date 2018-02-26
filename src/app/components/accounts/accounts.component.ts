@@ -8,7 +8,7 @@ import { MessageService } from '../../services/message.service';
   styleUrls: ['./accounts.component.scss']
 })
 export class AccountsComponent implements OnInit {
-  account = this.walletService.wallet.account;
+  accounts = this.walletService.wallet.accounts;
   constructor(
     private walletService: WalletService,
     private messageService: MessageService) { }
@@ -19,5 +19,11 @@ export class AccountsComponent implements OnInit {
     } else {
       this.walletService.getBalance();
     }
+  }
+  addAccount() {
+    this.walletService.addAccount();
+  }
+  hideAccount(id: number) {
+    this.walletService.hideAccount(id);
   }
 }

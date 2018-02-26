@@ -1,6 +1,9 @@
-<p *ngIf='account'>
-  {{ account.keyPair.pkh }} : {{ account.balance / 100 }}ꜩ
-</p>
-<p *ngIf='!account'>
+<div *ngIf='accounts'>
+  <span *ngFor="let account of accounts">
+    <p *ngIf='account.visible'>{{ account.keyPair.pkh }} : {{ account.balance / 100 }}ꜩ <a (click)='hideAccount(account.id)'>hide</a></p>
+  </span>
+  <button (click)='addAccount()'>Add account</button>
+</div>
+<p *ngIf='!accounts'>
   Wallet not configured
 </p>
