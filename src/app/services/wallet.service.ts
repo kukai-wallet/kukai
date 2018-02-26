@@ -35,6 +35,7 @@ export interface Wallet {
 @Injectable()
 export class WalletService {
   storeKey = `kukai-wallet`;
+  MAX_ACCOUNTS = 10;
   wallet: Wallet = this.emptyWallet();
   constructor(private messageService: MessageService) { }
 
@@ -42,7 +43,7 @@ export class WalletService {
     this.wallet.mnemonic = bip39.generateMnemonic();
     this.wallet.salt =  rnd2('aA0', 32);
     this.wallet.accounts = [];
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < this.MAX_ACCOUNTS; i++) {
       this.createNewAccount(i, '', true);
     }
     this.wallet.accounts[0].visible = true;
@@ -60,16 +61,24 @@ export class WalletService {
     });
   }
   addAccount() {
-    while (this.wallet.index < 10 && this.wallet.accounts[this.wallet.index].visible === true) { this.wallet.index++; }
-    if (this.wallet.index < 10) {
+    while (this.wallet.index < this.MAX_ACCOUNTS && this.wallet.accounts[this.wallet.index].visible === true) { this.wallet.index++; }
+    if (this.wallet.index < this.MAX_ACCOUNTS) {
       this.wallet.accounts[this.wallet.index].visible = true;
+      this.getBalanceFromIndex(this.wallet.index);
       this.saveWallet();
     } else {
-      this.messageService.add('Maximum of 10 accounts allowed');
+      this.messageService.add('Maximum of ' + this.MAX_ACCOUNTS + ' accounts allowed');
     }
   }
-  hideAccount(id: number) {
-    this.wallet.accounts[id].visible = false;
+  hideAccount(accountID: number) {
+    // Find account and remove from ArrayList
+    const walletAccountIndex = this.wallet.accounts.findIndex(a => a.id === accountID);
+    if (walletAccountIndex === -1) { throw new Error(`Account is not in wallet`); }
+    const walletAccount = this.wallet.accounts[walletAccountIndex];
+    this.wallet.accounts.splice(walletAccountIndex, 1);
+    // Add account to last position in list and hide
+    this.wallet.accounts.push(walletAccount);
+    this.wallet.accounts[this.MAX_ACCOUNTS - 1].visible = false;
     this.wallet.index = 0;
     this.saveWallet();
   }
@@ -98,26 +107,33 @@ export class WalletService {
   keyPairFromMnemonic(mnemonic: string, id: number) {
       return lib.eztz.crypto.generateKeysFromSeedMulti(mnemonic, '', id);
   }
-  getPkh(id: number): string {
-    if (this.wallet.accounts == null) {
-      return '';
-    } else {
-      return this.wallet.accounts[0].keyPair.pkh;
-    }
-  }
-  getBalance() {
+  getBalanceAll() {
     if (this.wallet.accounts != null) {
-      for (let i = 0; i < 10; i++) {
+      for (let i = 0; i < this.MAX_ACCOUNTS; i++) {
         if (this.wallet.accounts[i].visible === true) {
-          const promise = lib.eztz.rpc.getBalance(this.wallet.accounts[i].keyPair.pkh);
-          if (promise != null) {
-            promise.then(
-              (val) => this.wallet.accounts[i].balance = val,
-              (err) => this.messageService.add(err)
-            );
-          }
+          this.getBalanceFromID(this.wallet.accounts[i].id);
         }
       }
+    }
+  }
+  getBalanceFromIndex(index: number) {
+    this.getBalanceFromID(this.wallet.accounts[index].id);
+  }
+  getBalanceFromID(ID: number) {
+    const accountIndex = this.wallet.accounts.findIndex(a => a.id === ID);
+    const promise = lib.eztz.rpc.getBalance(this.wallet.accounts[accountIndex].keyPair.pkh);
+    if (promise != null) {
+      promise.then(
+        (val) => this.getBalanceFromIdHelpFunction(ID, val),
+        (err) => this.messageService.add(err)
+      );
+    }
+  }
+  getBalanceFromIdHelpFunction(ID: number, balance: number) {
+    const accountIndex = this.wallet.accounts.findIndex(a => a.id === ID);
+    if (this.wallet.accounts[accountIndex].balance !== balance) {
+      this.wallet.accounts[accountIndex].balance = balance;
+      this.saveWallet();
     }
   }
   encrypt(plaintext: string, password: string): string {
@@ -127,7 +143,7 @@ export class WalletService {
   }
   exportAccountsPkh(): any {
     const pkhs = [];
-    for (let i = 0; i < 10; i++) { pkhs.push(this.wallet.accounts[i].keyPair.pkh); }
+    for (let i = 0; i < this.MAX_ACCOUNTS; i++) { pkhs.push(this.wallet.accounts[i].keyPair.pkh); }
     return pkhs;
   }
   importWalletData(json: string): boolean {
@@ -137,7 +153,7 @@ export class WalletService {
       this.wallet.mnemonic = walletData.seed;
       this.wallet.salt = walletData.salt;
       this.wallet.accounts = [];
-      for (let i = 0; i < 10; i++) {
+      for (let i = 0; i < this.MAX_ACCOUNTS; i++) {
         this.createNewAccount(i, walletData.pkhs[i], false);
       }
       this.wallet.accounts[0].visible = true;

@@ -17,7 +17,7 @@ export class AccountsComponent implements OnInit {
     if (!this.walletService.wallet.mnemonic) {
 
     } else {
-      this.walletService.getBalance();
+      this.walletService.getBalanceAll();
     }
   }
   addAccount() {
