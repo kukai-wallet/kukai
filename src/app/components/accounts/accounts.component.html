@@ -1,8 +1,11 @@
 <div *ngIf='accounts'>
-  <span *ngFor="let account of accounts">
-    <p *ngIf='account.visible'>{{ account.keyPair.pkh }} : {{ account.balance / 100 }}ꜩ <a (click)='hideAccount(account.id)'>hide</a></p>
-  </span>
-  <button (click)='addAccount()'>Add account</button>
+  <table>
+  <ng-container *ngFor="let account of accounts">
+    <tr *ngIf='account.visible'>
+      <td>{{ account.keyPair.pkh }}</td><td>{{ account.balance / 100 }}ꜩ</td><td><a>Send</a></td><td><a>View</a></td><td><a (click)='hideAccount(account.id)'>Hide</a></td>
+    </tr>
+  </ng-container>
+  <tr><td></td><td></td><td colspan="3"><a (click)='addAccount()'>Add account</a></td></tr></table>
 </div>
 <p *ngIf='!accounts'>
   Wallet not configured
