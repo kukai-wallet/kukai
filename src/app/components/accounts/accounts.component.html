@@ -1,3 +1,6 @@
-<p>
-  accounts works!
+<p *ngIf='account'>
+  {{ account.keyPair.pkh }} : {{ account.balance / 100 }}ꜩ
+</p>
+<p *ngIf='!account'>
+  Wallet not configured
 </p>

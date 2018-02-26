@@ -31,6 +31,7 @@ export interface Wallet {
 }
 @Injectable()
 export class WalletService {
+  storeKey = `kukai-wallet`;
   wallet: Wallet = this.emptyWallet();
   constructor(private messageService: MessageService) { }
 
@@ -51,7 +52,7 @@ export class WalletService {
     this.createNewKeyPair();
   }
   createNewKeyPair() {
-      const keyPair = this.keyPairFromMnemonic(this.wallet.mnemonic, 1);
+      const keyPair = this.keyPairFromMnemonic(this.wallet.mnemonic, 0);
       this.wallet.account.keyPair = {
         sk: null,
         pk: null,
@@ -60,6 +61,24 @@ export class WalletService {
   }
   keyPairFromMnemonic(mnemonic: string, n: number) {
       return lib.eztz.crypto.generateKeysFromSeedMulti(mnemonic, '', n);
+  }
+  getPkh(): string {
+    if (this.wallet.account == null) {
+      return '';
+    } else {
+      return this.wallet.account.keyPair.pkh;
+    }
+  }
+  getBalance() {
+    if (this.wallet.account != null) {
+      const promise = lib.eztz.rpc.getBalance(this.wallet.account.keyPair.pkh);
+      if (promise != null) {
+        promise.then(
+          (val) => this.wallet.account.balance = val,
+          (err) => this.messageService.add(err)
+        );
+      }
+    }
   }
   encrypt(plaintext: string, password: string): string {
     const key = pbkdf2.pbkdf2Sync(password, this.wallet.salt, 10000, 32).toString(); // 100 000 = ~1.75s => 1 000 = 0.018s
@@ -102,5 +121,74 @@ export class WalletService {
   }
   clearWallet() {
     this.wallet = this.emptyWallet();
+    localStorage.removeItem(this.storeKey);
+  }
+  saveWallet() {
+    localStorage.setItem(this.storeKey, JSON.stringify(this.wallet));
+  }
+  async loadStoredWallet() {
+    const walletData = localStorage.getItem(this.storeKey);
+    if (walletData) {
+      this.wallet = JSON.parse(walletData);
+    }
   }
 }
+
+/*
+ async loadStoredWallet() {
+    this.resetWallet();
+
+    const walletData = localStorage.getItem(this.storeKey);
+    if (!walletData) return this.wallet;
+
+    const walletJson = JSON.parse(walletData);
+    this.wallet.seed = walletJson.seed;
+    this.wallet.seedBytes = this.util.hex.toUint8(walletJson.seed);
+    this.wallet.locked = walletJson.locked;
+
+    if (this.wallet.locked) {
+      return this.wallet; // If the wallet is locked on load, it has to be unlocked before we can load anything?
+    }
+
+    this.wallet.password = walletJson.password;
+    this.wallet.accountsIndex = walletJson.accountsIndex;
+    await Promise.all(walletJson.accounts.map(async (account) => this.addWalletAccount(account.index, false)));
+
+    await this.reloadBalances();
+
+    if (this.wallet.accounts.length) {
+      this.websocket.subscribeAccounts(this.wallet.accounts.map(a => a.id));
+    }
+
+    return this.wallet;
+  }
+
+saveWalletExport() {
+    const exportData = this.generateWalletExport();
+
+    switch (this.appSettings.settings.walletStore) {
+      case 'none':
+        localStorage.removeItem(this.storeKey);
+        break;
+      default:
+      case 'localStorage':
+        localStorage.setItem(this.storeKey, JSON.stringify(exportData));
+        break;
+    }
+  }
+
+  generateWalletExport() {
+    const data = {
+      seed: this.wallet.seed,
+      locked: this.wallet.locked,
+      password: this.wallet.locked ? '' : this.wallet.password,
+      accounts: this.wallet.accounts.map(a => ({ id: a.id, index: a.index })),
+      accountsIndex: this.wallet.accountsIndex,
+    };
+
+    return data;
+  }
+
+
+
+  */

@@ -39,6 +39,7 @@ export class NewWalletComponent implements OnInit {
       this.pwd1 = '';
       this.pwd2 = '';
       this.activePanel++;
+      this.walletService.saveWallet();
     }
   }
   validatePwd(): boolean {
@@ -53,5 +54,8 @@ export class NewWalletComponent implements OnInit {
   }
   reset() {
     this.activePanel = 0;
+  }
+  export(): string {
+    return JSON.stringify(this.data);
   }
 }

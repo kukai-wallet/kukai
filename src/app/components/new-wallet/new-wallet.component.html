@@ -14,6 +14,6 @@
 </div>
 <div *ngIf="activePanel==3">
   <p>Encrypted wallet data:<BR>
-  &#123;"encryptedMnemonic": "{{ data.seed }}", "salt": "{{ data.salt }}"&#125;</p>
-  <a routerLink="/"><button class="btn btn-primary">Finish</button></a>
+    {{ export() }}</p>
+  <a routerLink="/accounts"><button class="btn btn-primary">Finish</button></a>
 </div>

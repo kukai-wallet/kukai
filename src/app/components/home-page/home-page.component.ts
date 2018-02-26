@@ -9,9 +9,6 @@ import { Router } from '@angular/router';
   styleUrls: ['./home-page.component.scss']
 })
 export class HomePageComponent implements OnInit {
-  @Input() pwd = '';
-  activePanel = 0;
-  seed = '';
   constructor(private walletService: WalletService,
     private messageService: MessageService,
     private router: Router) { }
@@ -20,29 +17,5 @@ export class HomePageComponent implements OnInit {
   }
   logout() {
     this.walletService.clearWallet();
-    this.messageService.add('Wallet cleared');
-  }
-  generateSeed() {
-    this.activePanel++;
-    this.seed = this.walletService.createNewWallet();
-  }
-  pwdView() {
-    this.activePanel++;
-  }
-  setPwd() {
-  }
-  async encryptWallet() {
-    this.seed = this.walletService.encryptWallet(this.pwd);
-    // this.messageService.add('Pwd: ' + this.pwd);
-    this.pwd = '';
-    this.activePanel++;
-  }
-  async decryptWallet() {
-    this.walletService.decryptWallet(this.pwd);
-    this.pwd = '';
-    this.activePanel++;
-  }
-  reset() {
-    this.activePanel = 0;
   }
 }
