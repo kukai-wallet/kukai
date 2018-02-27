@@ -19,8 +19,8 @@
 </div>-->
 <div>
   <p>Import your encrypted wallet here:</p>
-  <textarea rows="8" cols=100 [(ngModel)]="encryptedWallet" placeholder=""></textarea>
+  <textarea rows="8" cols=60 [(ngModel)]="encryptedWallet" placeholder=""></textarea>
   <BR>
 </div>
-<a routerLink="/"><button class="btn btn-clear btn-second pull-right">Back</button></a>
+<a routerLink="/"><button class="btn btn-clear btn-second pull-left">Back</button></a>
 <a (click)='import()' routerLink="/"><button class="btn btn-clear btn-second pull-right">Load</button></a>

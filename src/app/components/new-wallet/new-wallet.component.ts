@@ -15,10 +15,11 @@ export class NewWalletComponent implements OnInit {
   activePanel = 0;
   data = {
     type: '',
-    seed: '',
-    salt: '',
-    pkhs: []
+    sk: '',
+    pkh: '',
+    salt: ''
   };
+  mnemonic: string;
   constructor(private walletService: WalletService,
     private messageService: MessageService,
     private cdRef: ChangeDetectorRef) { }
@@ -29,7 +30,7 @@ export class NewWalletComponent implements OnInit {
     }, 1);
   }
   generateSeed() {
-    this.data.seed = this.walletService.createNewWallet();
+    this.mnemonic = this.walletService.createNewWallet();
     this.activePanel++;
   }
   pwdView() {
@@ -37,11 +38,12 @@ export class NewWalletComponent implements OnInit {
   }
   encryptWallet() {
     if (this.validatePwd()) {
-      this.data = this.walletService.encryptWallet(this.pwd1);
+      this.data = this.walletService.createEncryptedWallet(this.mnemonic, this.pwd1);
+      this.mnemonic = '';
       this.pwd1 = '';
       this.pwd2 = '';
       this.activePanel++;
-      this.walletService.saveWallet();
+      this.walletService.storeWallet();
     }
   }
   validatePwd(): boolean {

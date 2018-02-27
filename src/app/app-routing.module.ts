@@ -11,8 +11,7 @@ import { BackupComponent } from './components/backup/backup.component';
 import { SettingsComponent } from './components/settings/settings.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/start', pathMatch: 'full' },
-  { path: 'start', component: StartComponent },
+  { path: '', component: StartComponent },
   { path: 'new-wallet', component: NewWalletComponent },
   { path: 'import', component: ImportComponent },
   { path: 'broadcast', component: BroadcastComponent },

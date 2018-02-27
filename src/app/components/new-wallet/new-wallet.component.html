@@ -3,7 +3,7 @@
 </div>
 <div *ngIf="activePanel==1">
    <p>This is your private seed. Please write it down and store somewhere safe.</p>
-   <p><b>{{ data.seed }}</b></p>
+   <p><b>{{ mnemonic }}</b></p>
    <button class="btn btn-primary" (click)="pwdView()">Next</button>
 </div>
 <div *ngIf="activePanel==2">

@@ -8,22 +8,28 @@ import { MessageService } from '../../services/message.service';
   styleUrls: ['./accounts.component.scss']
 })
 export class AccountsComponent implements OnInit {
+  identity = this.walletService.wallet.identity;
   accounts = this.walletService.wallet.accounts;
+  showAdd = true;
   constructor(
     private walletService: WalletService,
     private messageService: MessageService) { }
 
   ngOnInit() {
-    if (!this.walletService.wallet.mnemonic) {
+    if (!this.walletService.wallet.identity) {
 
     } else {
       this.walletService.getBalanceAll();
     }
   }
   addAccount() {
-    this.walletService.addAccount();
+    this.hideAdd();
+    this.walletService.createAccount();
   }
-  hideAccount(id: number) {
-    this.walletService.hideAccount(id);
+  hideAdd() {
+    this.showAdd = false;
+    setTimeout(() => {
+      this.showAdd = true;
+    }, 5000);
   }
 }

@@ -7,7 +7,6 @@ import { WalletService } from './services/wallet.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  title = 'Kukai';
 
   constructor(private walletService: WalletService) { }
   ngOnInit() {
