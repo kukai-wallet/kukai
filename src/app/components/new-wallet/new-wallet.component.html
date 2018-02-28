@@ -1,18 +1,18 @@
 <div *ngIf="activePanel==0">
     <p>Generating new wallet. Please wait...</p>
 </div>
-<div *ngIf="activePanel==1">
+<div *ngIf="activePanel==1" class="tmp">
    <p>This is your private seed. Please write it down and store somewhere safe.</p>
    <p><b>{{ mnemonic }}</b></p>
    <button class="btn btn-primary" (click)="pwdView()">Next</button>
 </div>
-<div *ngIf="activePanel==2">
+<div *ngIf="activePanel==2" class="tmp">
   <p>Encrypt your wallet<BR>
     <input type="password" [(ngModel)]="pwd1" placeholder="Password"><BR>
     <input type="password" [(ngModel)]="pwd2" placeholder="Confirm password"></p>
   <button class="btn btn-primary" (click)="encryptWallet()">Encrypt</button>
 </div>
-<div *ngIf="activePanel==3">
+<div *ngIf="activePanel==3" class="tmp">
   <p>Encrypted wallet data:<BR>
     <textarea rows="8" cols=100>{{ export() }}</textarea></p>
   <a routerLink="/accounts"><button class="btn btn-primary">Finish</button></a>
