@@ -14,6 +14,11 @@
     background-color: #cccccc;
 }
 
+/* Taking out underline link in router link */
+a.active-link {
+    text-decoration: none;
+ }
+
 /*
 This needs to change the sass variable of Bootstrap
 Info for shades: https://www.w3schools.com/colors/colors_picker.asp
@@ -29,3 +34,9 @@ Main colour: #FAB915
     color: #fff;
     background-color: #af7e04;
 }
+
+/* Taking out the blue outline */
+.btn:focus,.btn:active {
+    outline: none !important;
+    box-shadow: none;
+ }
