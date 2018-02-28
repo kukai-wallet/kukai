@@ -191,12 +191,12 @@ export class WalletService {
       return '';
     }
   }
-  decryptWallet(password: string) {
+  decryptWallet(password: string): string {
     const sk = this.decrypt(this.wallet.identity.keyPair.sk, password);
     if (sk === '') {
       this.messageService.add('Decryption failed');
     } else {
-      this.wallet.identity.keyPair.sk = sk;
+      return sk;
     }
   }
   /*

@@ -17,6 +17,7 @@ import { ActivityComponent } from './components/activity/activity.component';
 import { AccountsComponent } from './/components/accounts/accounts.component';
 import { BackupComponent } from './components/backup/backup.component';
 import { SettingsComponent } from './components/settings/settings.component';
+import { SendComponent } from './components/send/send.component';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { SettingsComponent } from './components/settings/settings.component';
     ActivityComponent,
     AccountsComponent,
     BackupComponent,
-    SettingsComponent
+    SettingsComponent,
+    SendComponent
   ],
   imports: [
     BrowserModule,

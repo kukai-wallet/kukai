@@ -16,9 +16,7 @@ export class AccountsComponent implements OnInit {
     private messageService: MessageService) { }
 
   ngOnInit() {
-    if (!this.walletService.wallet.identity) {
-
-    } else {
+    if (this.walletService.wallet.identity) {
       this.walletService.getBalanceAll();
     }
   }

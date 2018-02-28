@@ -10,21 +10,24 @@
         <br>
 
         <ul class="list-unstyled components top">
-            <li class="active">
+            <li routerLinkActive="active">
                 <a routerLink="/accounts" align="center">Accounts</a>
             </li>
-            <li>
+            <li routerLinkActive="active">
                 <a routerLink="/activity" align="center">Activity</a>
             </li>
-            <li>
-                <a routerLink="/backup" align="center">Backup</a>
+            <li routerLinkActive="active">
+                <a routerLink="/send" align="center">Send</a>
             </li>
         </ul>
 
 
         <ul class="list-unstyled components bottom-CTAs" align="center">
-            <li class="bottom-category">
+            <li routerLinkActive="active" class="bottom-category">
                 <a routerLink="/settings" align="center">Settings</a>
+            </li>
+            <li routerLinkActive="active">
+                    <a routerLink="/backup" align="center">Backup</a>
             </li>
             <li class="bottom-category">
                 <a (click)="logout();" align="center">Clear wallet data</a>

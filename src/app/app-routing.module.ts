@@ -9,6 +9,7 @@ import { ActivityComponent } from './components/activity/activity.component';
 import { AccountsComponent } from './components/accounts/accounts.component';
 import { BackupComponent } from './components/backup/backup.component';
 import { SettingsComponent } from './components/settings/settings.component';
+import { SendComponent } from './components/send/send.component';
 
 const routes: Routes = [
   { path: '', component: StartComponent },
@@ -18,7 +19,8 @@ const routes: Routes = [
   { path: 'activity', component: ActivityComponent },
   { path: 'accounts', component: AccountsComponent },
   { path: 'backup', component: BackupComponent },
-  { path: 'settings', component: SettingsComponent }
+  { path: 'settings', component: SettingsComponent },
+  { path: 'send', component: SendComponent }
 ];
 
 @NgModule({
