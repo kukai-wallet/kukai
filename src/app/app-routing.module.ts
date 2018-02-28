@@ -9,17 +9,18 @@ import { ActivityComponent } from './components/activity/activity.component';
 import { AccountsComponent } from './components/accounts/accounts.component';
 import { BackupComponent } from './components/backup/backup.component';
 import { SettingsComponent } from './components/settings/settings.component';
+import { SendComponent } from './components/send/send.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/start', pathMatch: 'full' },
-  { path: 'start', component: StartComponent },
+  { path: '', component: StartComponent },
   { path: 'new-wallet', component: NewWalletComponent },
   { path: 'import', component: ImportComponent },
   { path: 'broadcast', component: BroadcastComponent },
   { path: 'activity', component: ActivityComponent },
   { path: 'accounts', component: AccountsComponent },
   { path: 'backup', component: BackupComponent },
-  { path: 'settings', component: SettingsComponent }
+  { path: 'settings', component: SettingsComponent },
+  { path: 'send', component: SendComponent }
 ];
 
 @NgModule({

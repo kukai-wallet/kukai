@@ -1,9 +1,9 @@
 <div *ngIf="activePanel==0">
-    <p></p>
+    <p>Generating new wallet. Please wait...</p>
 </div>
 <div *ngIf="activePanel==1">
    <p>This is your private seed. Please write it down and store somewhere safe.</p>
-   <p><b>{{ data.seed }}</b></p>
+   <p><b>{{ mnemonic }}</b></p>
    <button class="btn btn-primary" (click)="pwdView()">Next</button>
 </div>
 <div *ngIf="activePanel==2">
@@ -14,6 +14,6 @@
 </div>
 <div *ngIf="activePanel==3">
   <p>Encrypted wallet data:<BR>
-  &#123;"encryptedMnemonic": "{{ data.seed }}", "salt": "{{ data.salt }}"&#125;</p>
-  <a routerLink="/"><button class="btn btn-primary">Finish</button></a>
+    <textarea rows="8" cols=100>{{ export() }}</textarea></p>
+  <a routerLink="/accounts"><button class="btn btn-primary">Finish</button></a>
 </div>

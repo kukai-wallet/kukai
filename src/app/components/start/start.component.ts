@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { WalletService } from '../../services/wallet.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-start',
@@ -7,9 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class StartComponent implements OnInit {
 
-  constructor() { }
+  constructor(private walletService: WalletService,
+              private router: Router) { }
 
   ngOnInit() {
+    if (this.walletService.wallet.identity) {
+      this.router.navigate(['/accounts']);
+    }
   }
 
 }

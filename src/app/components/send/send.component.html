@@ -1,0 +1,34 @@
+<div *ngIf='identity'>
+  <div class="form-group">
+    <label for="fromAdress">From:</label>
+    <select [(ngModel)]="fromPkh" id="fromAdress" class="form-control">
+      <option [value]="identity.keyPair.pkh">{{ identity.keyPair.pkh }} ({{ identity.balance }}ꜩ)</option>
+      <option *ngFor="let account of accounts" [value]="account.pkh">{{ account.pkh }} ({{account.balance / 100}}ꜩ)</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="toAddress">To:</label>
+    <input [(ngModel)]="toPkh" type="text" id="toAddress" class="form-control">
+  </div>
+  <div class="row">
+    <div class="form-group col-md-6">
+      <label for="ammount">Amount:</label>
+      <input [(ngModel)]="amount" type="text" id="ammount" class="form-control" placeholder="0.00">
+    </div>
+    <div class="form-group col-md-6">
+      <label for="fee">Fee:</label>
+      <input [(ngModel)]="fee" type="text" id="fee" class="form-control" placeholder="0.00">
+    </div>
+  </div>
+  <div class="row">
+    <div class="form-group col-md-6">
+      <label for="pwd">Password:</label>
+      <input [(ngModel)]="password" type="password" id="pwd" class="form-control">
+    </div>
+  </div>
+  <button id="sub" type="submit" (click)="sendTransaction" class="btn btn-primary">Send</button>
+</div>
+<p *ngIf='!identity'>
+    Wallet not configured
+</p>
+  
