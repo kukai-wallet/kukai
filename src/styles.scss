@@ -6,34 +6,46 @@
 //For font-awesome
 @import '../node_modules/font-awesome/scss/font-awesome';
 
-//Boostrap personalization
-.btn-primary {
-    color: #fff;
-    background-color: #f046cb;
-    border-color: #f8163c;
-  }
-  
-  .btn-primary:hover {
-    color: #fff;
-    background-color: #0c8139;
-    border-color: #4af09d;
-  }
-  
-  .btn-primary:focus, .btn-primary.focus {
-    box-shadow: 0 0 0 3px rgba(255, 49, 238, 0.5);
-  }
-  
-  .btn-primary.disabled, .btn-primary:disabled {
-    background-color: #845d88;
-    border-color: #c242ce;
-  }
-  
-  .btn-primary:active, .btn-primary.active,
-  .show > .btn-primary.dropdown-toggle {
-    background-color: #b3b61a !important;
-    background-image: none;
-    border-color: #fff453 !important;
+/*
+Boostrap personalization
+Info for shades: https://www.w3schools.com/colors/colors_picker.asp
+Main colour: #FAB915
+*/
 
-    outline: 0;
-    box-shadow: none!important;
-  }
+.btn-primary {
+  color: #fff;
+  background-color: #e1a205;
+  border-color: #af7e04;
+}
+  
+.btn-primary:hover {
+  color: #fff;
+  background-color: #af7e04;
+  border-color: #af7e04;
+}
+  
+.btn-primary:focus, .btn-primary.focus {
+  box-shadow: 0 0 0 3px rgb(175, 126, 4); 
+}
+  
+.btn-primary.disabled, .btn-primary:disabled {
+  background-color: #845d88;
+  border-color: #c242ce;
+}
+  
+.btn-primary:active, .btn-primary.active,
+.show > .btn-primary.dropdown-toggle {
+  background-color: #af7e04 !important;
+  background-image: none;
+  border-color: #af7e04 !important;
+
+  outline: 0;
+  box-shadow: none!important;
+}
+
+/* Taking out the blue outline */
+.btn:focus,.btn:active {
+  outline: none !important;
+  box-shadow: none;
+}
+

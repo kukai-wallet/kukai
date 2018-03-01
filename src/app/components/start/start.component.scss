@@ -1,5 +1,6 @@
 .row {
     padding-bottom: 0.7vh;
+    min-width: 20vw;
 }
 
 .btn-generate {
@@ -18,27 +19,5 @@
 /* Taking out underline link in router link */
 a.active-link {
     text-decoration: none;
+    min-width: 20vw;
  }
-
-/*
-This needs to change the sass variable of Bootstrap
-Info for shades: https://www.w3schools.com/colors/colors_picker.asp
-Main colour: #FAB915
-*
-.btn-primary {
-    color: #fff;
-    background-color: #e1a205;
-    border-color: #af7e04;
-}
-
-.btn-primary:hover {
-    color: #fff;
-    background-color: #af7e04;
-}
-
-/* Taking out the blue outline *
-.btn:focus,.btn:active {
-    outline: none !important;
-    box-shadow: none;
- }
- */
