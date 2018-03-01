@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { WalletService } from '../../services/wallet.service';
+import { MessageService } from '../../services/message.service';
 
 @Component({
   selector: 'app-send',
@@ -11,25 +12,45 @@ export class SendComponent implements OnInit {
   accounts = this.walletService.wallet.accounts;
   fromPkh: string;
   toPkh: string;
-  amount: number;
-  fee: number;
+  amount: string;
+  fee: string;
   password: string;
   constructor(
-    private walletService: WalletService
+    private walletService: WalletService,
+    private messageService: MessageService
   ) { }
 
   ngOnInit() {
     if (this.identity) {
-      this.fromPkh = this.identity.keyPair.pkh;
+      this.init();
+
     }
   }
+  init() {
+    this.fromPkh = this.identity.keyPair.pkh;
+  }
   sendTransaction() {
-    if (this.validInput) {
-      this.password = '';
+    const pwd = this.password;
+    this.password = '';
+    if (this.validInput()) {
+      if (!this.amount) { this.amount = '0'; }
+      if (!this.fee) { this.fee = '0'; }
+      setTimeout(() => {
+        this.walletService.sendTransaction(pwd, this.fromPkh, this.toPkh, Number(this.amount), Number(this.fee) * 100);
+      }, 10);
       // Send
     }
   }
   validInput() {
-    return true;
+    if (!this.toPkh || this.toPkh.length !== 36) {
+      this.messageService.add('invalid reciever address');
+    } else if (!Number(this.amount) && this.amount && this.amount !== '0') {
+      this.messageService.add('invalid amount');
+    } else if (!Number(this.fee) && this.fee && this.fee !== '0') {
+      this.messageService.add('invalid fee');
+    } else {
+      return true;
+    }
+    return false;
   }
 }

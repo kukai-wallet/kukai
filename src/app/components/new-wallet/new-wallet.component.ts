@@ -15,7 +15,7 @@ export class NewWalletComponent implements OnInit {
   activePanel = 0;
   data = {
     type: '',
-    sk: '',
+    seed: '',
     pkh: '',
     salt: ''
   };

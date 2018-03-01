@@ -28,6 +28,7 @@ export interface Identity {
   pendingFiat: number;
 }
 export interface Wallet {
+  encryptedMnemonic: null|string;
   salt: string|null;
   balance: number;
   pending: number;
@@ -52,8 +53,8 @@ export class WalletService {
     this.wallet.salt =  rnd2('aA0', 32);
     this.wallet.accounts = [];
     this.wallet.identity = this.createIdentity(mnemonic);
-    this.wallet.identity.keyPair.sk = this.encrypt(this.wallet.identity.keyPair.sk, password);
-    return {type: 'KukaiEncryptedWallet', sk: this.wallet.identity.keyPair.sk,
+    this.wallet.encryptedMnemonic = this.encrypt(mnemonic, password);
+    return {type: 'KukaiEncryptedWallet', seed: this.wallet.encryptedMnemonic,
             pkh: this.wallet.identity.keyPair.pkh, salt: this.wallet.salt};
   }
   createIdentity(mnemonic: string): Identity {
@@ -68,7 +69,7 @@ export class WalletService {
   createKeyPair(mnemonic: string): KeyPair {
     const keyPair = lib.eztz.crypto.generateKeys(mnemonic, '');
     return {
-      sk: keyPair.sk,
+      sk: null,
       pk: null,
       pkh: keyPair.pkh
     };
@@ -138,6 +139,27 @@ export class WalletService {
     }
   }
   /*
+    Send transactions (transfer : function(keys, from, to, amount, fee))
+  */
+  sendTransaction(password: string, from: string, to: string, amount: number, fee: number) {
+    const keys = this.getKeys(password);
+    const promise = lib.eztz.rpc.transfer(keys, from, to, amount, fee);
+    if (promise != null) {
+      promise.then(
+        (val) => this.messageService.add('Transation sent, with operation hash: ' + val.injectedOperation),
+        (err) => this.messageService.add('err: ' + JSON.stringify(err))
+      );
+    }
+  }
+  getKeys(password: string): KeyPair {
+    const mnemonic = this.decrypt(this.wallet.encryptedMnemonic, password);
+    if (!mnemonic) {
+      this.messageService.add('Decryption failed');
+    } else {
+      return lib.eztz.crypto.generateKeys(mnemonic, '');
+    }
+  }
+  /*
     Import wallet from Json
   */
   importWalletData(json: string): boolean {
@@ -147,7 +169,8 @@ export class WalletService {
         throw new Error(`Unsupported wallet data`);
       }
       this.wallet = this.emptyWallet();
-      this.wallet.identity = this.importIdentity(walletData.sk, walletData.pkh);
+      this.wallet.identity = this.importIdentity(walletData.pkh);
+      this.wallet.encryptedMnemonic = walletData.seed;
       this.wallet.salt = walletData.salt;
       this.storeWallet();
       return true;
@@ -156,18 +179,18 @@ export class WalletService {
       return false;
     }
   }
-  importIdentity(sk: string, pkh: string): Identity {
+  importIdentity(pkh: string): Identity {
     return {
-      keyPair: this.importKeyPair(sk, pkh),
+      keyPair: this.importKeyPair(pkh),
       balance: 0,
       pending: 0,
       balanceFiat: 0,
       pendingFiat: 0
     };
   }
-  importKeyPair(sk: string, pkh: string): KeyPair {
+  importKeyPair(pkh: string): KeyPair {
     return {
-      sk: sk,
+      sk: null,
       pk: null,
       pkh: pkh
     };
@@ -187,16 +210,7 @@ export class WalletService {
       const plaintext = plainbytes.toString(CryptoJS.enc.Utf8);
       return plaintext;
     } catch (err) {
-      this.messageService.add(err);
       return '';
-    }
-  }
-  decryptWallet(password: string): string {
-    const sk = this.decrypt(this.wallet.identity.keyPair.sk, password);
-    if (sk === '') {
-      this.messageService.add('Decryption failed');
-    } else {
-      return sk;
     }
   }
   /*
@@ -208,6 +222,7 @@ export class WalletService {
   }
   emptyWallet(): Wallet {
     return {
+      encryptedMnemonic: null,
       identity: null,
       salt: null,
       balance: 0,
