@@ -1,7 +1,39 @@
 /* You can add global styles to this file, and also import other style files */
-//For bootstrap-sass 3
+//For bootstrap 4
 @import 'variables';
-@import '../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap';
+@import '../node_modules/bootstrap/scss/bootstrap';
 
 //For font-awesome
 @import '../node_modules/font-awesome/scss/font-awesome';
+
+//Boostrap personalization
+.btn-primary {
+    color: #fff;
+    background-color: #f046cb;
+    border-color: #f8163c;
+  }
+  
+  .btn-primary:hover {
+    color: #fff;
+    background-color: #0c8139;
+    border-color: #4af09d;
+  }
+  
+  .btn-primary:focus, .btn-primary.focus {
+    box-shadow: 0 0 0 3px rgba(255, 49, 238, 0.5);
+  }
+  
+  .btn-primary.disabled, .btn-primary:disabled {
+    background-color: #845d88;
+    border-color: #c242ce;
+  }
+  
+  .btn-primary:active, .btn-primary.active,
+  .show > .btn-primary.dropdown-toggle {
+    background-color: #b3b61a !important;
+    background-image: none;
+    border-color: #fff453 !important;
+
+    outline: 0;
+    box-shadow: none!important;
+  }

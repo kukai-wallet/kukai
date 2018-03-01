@@ -24,7 +24,7 @@
     "@angular/router": "^5.2.0",
     "angular-cli-ghpages": "^0.5.2",
     "bip39": "^2.4.0",
-    "bootstrap-sass": "^3.3.7",
+    "bootstrap": "^4.0.0",
     "bs58check": "^2.0.2",
     "buffer": "^5.0.7",
     "codecov": "^2.3.1",
