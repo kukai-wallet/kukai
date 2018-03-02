@@ -54,8 +54,8 @@ export class WalletService {
     this.wallet.accounts = [];
     this.wallet.identity = this.createIdentity(mnemonic);
     this.wallet.encryptedMnemonic = this.encrypt(mnemonic, password);
-    return {type: 'KukaiEncryptedWallet', seed: this.wallet.encryptedMnemonic,
-            pkh: this.wallet.identity.keyPair.pkh, salt: this.wallet.salt};
+    return {wallet: 'Kukai', type: 'FullWallet', version: '1.0', seed: this.wallet.encryptedMnemonic,
+            salt: this.wallet.salt, pkh: this.wallet.identity.keyPair.pkh};
   }
   createIdentity(mnemonic: string): Identity {
     return {
@@ -99,6 +99,9 @@ export class WalletService {
       this.getAccountBalance(this.wallet.accounts.length - 1);
     }, 1000);
   }
+  getIndexFromPkh(pkh: string): number {
+    return this.wallet.accounts.findIndex(a => a.pkh === pkh);
+  }
   /*
     Balance checks
   */
@@ -113,8 +116,17 @@ export class WalletService {
     if (promise != null) {
       promise.then(
         (val) => this.updateIdentityBalance(val),
-        (err) => this.messageService.add(err)
+        (err) => this.handleBalanceErrors(err, this.wallet.identity.keyPair.pkh)
       );
+    }
+  }
+  handleBalanceErrors(err: any, pkh: string) {
+    if (err === 'Empty response returned') { // Account probably empty and should be removed
+      this.wallet.accounts[this.getIndexFromPkh(pkh)].balance = 0;
+      this.storeWallet();
+    } else {
+      this.messageService.add('JSON: ' + JSON.stringify(err));
+      this.messageService.add(err);
     }
   }
   updateIdentityBalance(newBalance: number) {
@@ -128,7 +140,7 @@ export class WalletService {
     if (promise != null) {
       promise.then(
         (val) => this.updateAccountBalance(index, val),
-        (err) => this.messageService.add(err)
+        (err) => this.handleBalanceErrors(err, this.wallet.accounts[index].pkh)
       );
     }
   }
@@ -151,11 +163,15 @@ export class WalletService {
       const promise = lib.eztz.rpc.transfer(keys, from, to, amount, fee);
       if (promise != null) {
         promise.then(
-          (val) => this.messageService.add('Transation sent, with operation hash: ' + val.injectedOperation),
+          (val) => this.successfulTransaction(val),
           (err) => this.messageService.add('err: ' + JSON.stringify(err))
         );
       }
     }
+  }
+  successfulTransaction(val: any, ) {
+    this.messageService.add('Transation sent, with operation hash: ' + val.injectedOperation);
+    this.getBalanceAll();
   }
   getKeys(password: string): KeyPair {
     const mnemonic = this.decrypt(this.wallet.encryptedMnemonic, password);
@@ -172,8 +188,8 @@ export class WalletService {
   importWalletData(json: string): boolean {
     try {
       const walletData = JSON.parse(json);
-      if (walletData.type !== 'KukaiEncryptedWallet') {
-        throw new Error(`Unsupported wallet data`);
+      if (walletData.wallet !== 'Kukai' || walletData.type !== 'FullWallet') {
+        throw new Error(`Unsupported wallet format`);
       }
       this.wallet = this.emptyWallet();
       this.wallet.identity = this.importIdentity(walletData.pkh);

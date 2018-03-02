@@ -14,10 +14,12 @@ export class NewWalletComponent implements OnInit {
   @Input() pwd2 = '';
   activePanel = 0;
   data = {
+    wallet: '',
     type: '',
+    version: '',
     seed: '',
-    pkh: '',
-    salt: ''
+    salt: '',
+    pkh: ''
   };
   mnemonic: string;
 

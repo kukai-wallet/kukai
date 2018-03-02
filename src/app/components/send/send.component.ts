@@ -32,10 +32,17 @@ export class SendComponent implements OnInit {
     const pwd = this.password;
     this.password = '';
     if (this.validInput()) {
-      if (!this.amount) { this.amount = '0'; }
-      if (!this.fee) { this.fee = '0'; }
+      // Clear form
+      const toPkh = this.toPkh;
+      let amount = this.amount;
+      let fee = this.fee;
+      this.toPkh = '';
+      this.amount = '';
+      this.fee = '';
+      if (!amount) { amount = '0'; }
+      if (!fee) { fee = '0'; }
       setTimeout(() => {
-        this.walletService.sendTransaction(pwd, this.fromPkh, this.toPkh, Number(this.amount), Number(this.fee) * 100);
+        this.walletService.sendTransaction(pwd, this.fromPkh, toPkh, Number(amount), Number(fee) * 100);
       }, 100);
       // Send
     }
