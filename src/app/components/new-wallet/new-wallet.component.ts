@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Query } from '@angular/core';
 import { WalletService } from '../../services/wallet.service';
 import { MessageService } from '../../services/message.service';
 import { ChangeDetectorRef } from '@angular/core';
-import { Router } from '@angular/router';
+// import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-new-wallet',
@@ -31,8 +31,7 @@ export class NewWalletComponent implements OnInit {
 
   constructor(private walletService: WalletService,
     private messageService: MessageService,
-    private cdRef: ChangeDetectorRef,
-    private router: Router) { }
+    private cdRef: ChangeDetectorRef) { }
 
   ngOnInit() {
     setTimeout(() => {
@@ -55,7 +54,6 @@ export class NewWalletComponent implements OnInit {
         this.pwd2 = '';
         this.activePanel++;
         this.walletService.storeWallet();
-        this.router.navigate(['/accounts']);
       }, 1);
     }
   }
