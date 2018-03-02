@@ -23,7 +23,6 @@ export class SendComponent implements OnInit {
   ngOnInit() {
     if (this.identity) {
       this.init();
-
     }
   }
   init() {
@@ -37,7 +36,7 @@ export class SendComponent implements OnInit {
       if (!this.fee) { this.fee = '0'; }
       setTimeout(() => {
         this.walletService.sendTransaction(pwd, this.fromPkh, this.toPkh, Number(this.amount), Number(this.fee) * 100);
-      }, 10);
+      }, 100);
       // Send
     }
   }
