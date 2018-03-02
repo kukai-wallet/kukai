@@ -12,10 +12,10 @@ import { SettingsComponent } from './components/settings/settings.component';
 import { SendComponent } from './components/send/send.component';
 
 const routes: Routes = [
-  { path: '', component: StartComponent },
-  { path: 'new-wallet', component: NewWalletComponent },
-  { path: 'import', component: ImportComponent },
-  { path: 'broadcast', component: BroadcastComponent },
+  { path: '', component: StartComponent },  //Content Centre position
+  { path: 'new-wallet', component: NewWalletComponent },  //Content Centre position
+  { path: 'import', component: ImportComponent },  //Content Centre position
+  { path: 'broadcast', component: BroadcastComponent },  //Content Centre position
   { path: 'activity', component: ActivityComponent },
   { path: 'accounts', component: AccountsComponent },
   { path: 'backup', component: BackupComponent },

@@ -1,14 +1,14 @@
 .row {
     padding-bottom: 0.7vh;
-    min-width: 20vw;
+    min-width: 210px; //20vw;
 }
 
 .btn-generate {
-    font-size: 24px;
+    //font-size: 24px;
 }
 
 .btn-second {
-    min-width: 90px;
+    min-width: 96px;
     color: #333333;
 }
 
@@ -19,5 +19,18 @@
 /* Taking out underline link in router link */
 a.active-link {
     text-decoration: none;
-    min-width: 20vw;
+    min-width: 210px; //20vw;
  }
+
+/* ---------------------------------------------------
+    CONTENT STYLE
+----------------------------------------------------- */
+//Horizontal and Vertical Aligment of child div
+#content {
+    display: flex; 
+    min-height: 100vh;
+    min-width: 75vw;
+}
+.center-content {
+    margin: auto; 
+}

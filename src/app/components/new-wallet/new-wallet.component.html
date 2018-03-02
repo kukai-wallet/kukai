@@ -1,19 +1,76 @@
-<div *ngIf="activePanel==0">
-    <p>Generating new wallet. Please wait...</p>
-</div>
-<div *ngIf="activePanel==1" class="tmp">
-   <p>This is your private seed. Please write it down and store somewhere safe.</p>
-   <p><b>{{ mnemonic }}</b></p>
-   <button class="btn btn-primary" (click)="pwdView()">Next</button>
-</div>
-<div *ngIf="activePanel==2" class="tmp">
-  <p>Encrypt your wallet<BR>
-    <input type="password" [(ngModel)]="pwd1" placeholder="Password"><BR>
-    <input type="password" [(ngModel)]="pwd2" placeholder="Confirm password"></p>
-  <button class="btn btn-primary" (click)="encryptWallet()">Encrypt</button>
-</div>
-<div *ngIf="activePanel==3" class="tmp">
-  <p>Encrypted wallet data:<BR>
-    <textarea rows="8" cols=100>{{ export() }}</textarea></p>
-  <a routerLink="/accounts"><button class="btn btn-primary">Finish</button></a>
+<div id="content">
+  <div class="center-content">
+    <div *ngIf="activePanel==0">
+      <p>Generating new wallet. Please wait...</p>
+    </div>
+
+    <!-- Seed card -->
+    <div class="card text-center fix-size" *ngIf="activePanel==1">
+      <div class="card-body">
+        <h1 class="card-title">Save your Seed</h1>
+        <div class="card-text">
+          <p class="seed"><b>{{ mnemonic }}</b></p>
+          <p>When you create a new account, a new Tezos seed is generated. Your Tezos seed is the master key of all your wallets and any money inside it.</p>
+          <p>Make sure to back it up, write it down, and keep it incredibly safe!</p>
+          <p>**Do not lose it!** It cannot be recovered if you lose it.</p>
+          <p>**Do not share it!** Your funds will be stolen if you use seed on a malicious/phishing site.</p>
+          <p>**Make a backup!** Secure it like the millions it may be worth one day.</p>
+      </div>
+      </div>
+      <div class="card-footer text-right">
+        <button type="button" class="btn btn-primary btn-lg" (click)="pwdView()">Next</button>
+      </div>
+    </div>
+
+    <!-- Password card -->
+    <div class="card text-center fix-size" *ngIf="activePanel==2">
+        <div class="card-body">
+          <h1 class="card-title">Choose your Password</h1>
+          <div class="card-text">            
+            <form>
+              <div class="form-group row">
+                <div class="col-sm-12">
+                  <input type="password" [(ngModel)]="pwd1" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Password">
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-sm-12">
+                  <input type="password" [(ngModel)]="pwd2" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Confirm Password">
+                  <small id="emailHelp" class="form-text text-muted text-left">Minimum 6 characters</small>
+                  <small id="emailHelp" class="form-text alert-danger text-left" *ngIf="!isValidPass.minLength">There must be a minimum of 6 characters</small>
+                  <small id="emailHelp" class="form-text alert-danger text-left" *ngIf="!isValidPass.match">Passswords doesn't match!</small>
+                  <small id="emailHelp" class="form-text alert-success text-left" *ngIf="isValidPass.confirmed">Password confirmed</small>
+                </div>
+              </div>
+            </form>
+            <p>This password encrypts your private key.</p>
+            <p>It is also used to lock and unlock the sensitive parts of your wallet (private keys, sending).</p>
+        </div>
+        </div>
+        <div class="card-footer text-right">
+          <button type="button" class="btn btn-primary btn-lg" (click)="encryptWallet()">Encrypt</button>
+        </div>
+      </div>
+
+
+
+    <!--
+    <div *ngIf="activePanel==1" class="tmp fix-size">
+      <p>This is your private seed. Please write it down and store somewhere safe.</p>
+      <p><b>{{ mnemonic }}</b></p>
+      <button class="btn btn-primary" (click)="pwdView()">Next</button>
+    </div>
+    <div *ngIf="activePanel==2" class="tmp fix-size">
+      <p>Encrypt your wallet<BR>
+        <input type="password" [(ngModel)]="pwd1" placeholder="Password"><BR>
+        <input type="password" [(ngModel)]="pwd2" placeholder="Confirm password"></p>
+      <button class="btn btn-primary" (click)="encryptWallet()">Encrypt</button>
+    </div>
+    <div *ngIf="activePanel==3" class="tmp fix-size">
+      <p>Encrypted wallet data:<BR>
+        <textarea rows="8" cols=100>{{ export() }}</textarea></p>
+      <a routerLink="/accounts"><button class="btn btn-primary">Finish</button></a>
+    </div>
+    -->
+  </div>
 </div>

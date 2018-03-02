@@ -12,6 +12,8 @@ Info for shades: https://www.w3schools.com/colors/colors_picker.asp
 Main colour: #FAB915
 */
 
+$blue:    #FAB915 !default;  //default value: #007bff, modified directly in node_modules/bootstrap/scss/_variables.scss
+
 .btn-primary {
   color: #fff;
   background-color: #e1a205;

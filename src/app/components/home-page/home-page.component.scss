@@ -185,16 +185,18 @@ ul.CTAs a {
 /* ---------------------------------------------------
     CONTENT STYLE
 ----------------------------------------------------- */
+//Horizontal Aligment
 #content {
     /*padding: 20px;*/
-    min-height: 100vh;
-    margin: 0px auto 0px auto;
-    transition: all 0.3s;
+    //min-height: 100vh;  //working
+    //margin: 0px auto 0px auto;  //working
+    //transition: all 0.3s;  //working
 }
 
+//Vertical Alignment
 .center-content {
     
-    padding-top: 42vh !important;
+    //padding-top: 42vh !important;  //working
     /*
     padding-left: 30vw !important;
     //

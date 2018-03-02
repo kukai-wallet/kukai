@@ -25,3 +25,58 @@
 .tmp {
     background-color: lightblue;
 }
+
+.fix-size {
+    width: 40rem;
+    height: 40rem;
+}
+
+/* ---------------------------------------------------
+    CONTENT STYLE
+----------------------------------------------------- */
+//Horizontal and Vertical Aligment of child div
+#content {
+    display: flex; 
+    min-height: 100vh;
+    min-width: 75vw;
+}
+.center-content {
+    margin: auto; 
+}
+
+.card-title {
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.125);
+}
+
+.card-text{
+    padding-top: 2rem;
+}
+
+.seed {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    padding-right: 0.75rem;
+    padding-left: 0.75rem;
+    background-color: rgba(0, 0, 0, 0.125);
+}
+
+.card-footer {
+    background-color: rgba(0, 0, 0, 0);
+}
+
+//For password inputs
+.form-control {
+    line-height: 2;  //Default at 1.5
+}
+
+/*
+input[type=password]:focus:not([readonly]) + label {
+    color: green; 
+}
+
+input[type=password]:focus:not([readonly]) {
+    border-bottom: 1px solid green;
+    box-shadow: 0 1px 0 0 green; 
+}
+*/

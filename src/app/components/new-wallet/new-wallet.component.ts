@@ -20,6 +20,15 @@ export class NewWalletComponent implements OnInit {
     salt: ''
   };
   mnemonic: string;
+
+  //Verify password boolean
+  isValidPass = {
+    empty: true,
+    minLength: true,
+    match: true,
+    confirmed: false
+  }
+
   constructor(private walletService: WalletService,
     private messageService: MessageService,
     private cdRef: ChangeDetectorRef) { }
@@ -47,13 +56,22 @@ export class NewWalletComponent implements OnInit {
     }
   }
   validatePwd(): boolean {
-    if (this.pwd1 === '') {
-      this.messageService.add('Passsword must be set!');
+    if (this.pwd1.length < 6 || this.pwd2.length < 6) {
+        //this.messageService.add('Passsword must be set!');
+        this.isValidPass.minLength = false;
+        this.isValidPass.match = true;
     } else if (this.pwd1 !== this.pwd2) {
-      this.messageService.add('Passswords doesn\'t match!');
+        //this.messageService.add('Passswords doesn\'t match!');
+        this.isValidPass.minLength = true;
+        this.isValidPass.match = false;
+        console.log("isValidPass.match", this.isValidPass.match);
     } else {
-      return true;
-    }
+        this.isValidPass.minLength = false;
+        this.isValidPass.match = false;
+        this.isValidPass.confirmed = true;  //isValidPass.confirmed - not shozing up??
+        console.log("Success", this.isValidPass.confirmed);
+        return true;
+      }
     return false;
   }
   reset() {
