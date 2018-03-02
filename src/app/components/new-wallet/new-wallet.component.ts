@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Query } from '@angular/core';
 import { WalletService } from '../../services/wallet.service';
 import { MessageService } from '../../services/message.service';
 import { ChangeDetectorRef } from '@angular/core';
-import * as $ from 'jquery';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-new-wallet',
@@ -21,17 +21,18 @@ export class NewWalletComponent implements OnInit {
   };
   mnemonic: string;
 
-  //Verify password boolean
+  // Verify password boolean
   isValidPass = {
     empty: true,
     minLength: true,
     match: true,
     confirmed: false
-  }
+  };
 
   constructor(private walletService: WalletService,
     private messageService: MessageService,
-    private cdRef: ChangeDetectorRef) { }
+    private cdRef: ChangeDetectorRef,
+    private router: Router) { }
 
   ngOnInit() {
     setTimeout(() => {
@@ -53,23 +54,24 @@ export class NewWalletComponent implements OnInit {
       this.pwd2 = '';
       this.activePanel++;
       this.walletService.storeWallet();
+      this.router.navigate(['/accounts']);
     }
   }
   validatePwd(): boolean {
     if (this.pwd1.length < 6 || this.pwd2.length < 6) {
-        //this.messageService.add('Passsword must be set!');
+        // this.messageService.add('Passsword must be set!');
         this.isValidPass.minLength = false;
         this.isValidPass.match = true;
     } else if (this.pwd1 !== this.pwd2) {
-        //this.messageService.add('Passswords doesn\'t match!');
+        // this.messageService.add('Passswords doesn\'t match!');
         this.isValidPass.minLength = true;
         this.isValidPass.match = false;
-        console.log("isValidPass.match", this.isValidPass.match);
+        console.log('isValidPass.match', this.isValidPass.match);
     } else {
         this.isValidPass.minLength = false;
         this.isValidPass.match = false;
-        this.isValidPass.confirmed = true;  //isValidPass.confirmed - not shozing up??
-        console.log("Success", this.isValidPass.confirmed);
+        this.isValidPass.confirmed = true;  // isValidPass.confirmed - not shozing up??
+        console.log('Success', this.isValidPass.confirmed);
         return true;
       }
     return false;
