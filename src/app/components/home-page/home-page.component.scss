@@ -4,7 +4,6 @@
 @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
 Source from: https://bootstrapious.com/p/bootstrap-sidebar
 */
-
 body {
     font-family: 'Poppins', sans-serif;
     background: #fafafa;
@@ -53,6 +52,7 @@ a, a:hover, a:focus {
 .wrapper {
     display: flex;
     align-items: stretch;
+    min-height: 100vh;
 }
 
 #sidebar {
@@ -156,11 +156,17 @@ ul.CTAs a {
 }
 
 .bottom-CTAs {
-    padding-top: 41vh !important;
-    /* 
-    position: absolute;
-    bottom: 0;
-    */
+    //padding-top: auto !important;
+    padding-top: 34vh;
+    //position: absolute;
+    //bottom: 0px;
+    //margin-top: auto;
+    //margin-bottom: 0px;
+    //display: block;
+    //padding-top: auto auto 0px auto;
+    //padding-top: 100% !important;
+    //position: absolute;
+    //bottom: 0;
 }
 
 .bottom-CTAs .fa {
