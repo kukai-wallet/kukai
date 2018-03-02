@@ -48,32 +48,36 @@ export class NewWalletComponent implements OnInit {
   }
   encryptWallet() {
     if (this.validatePwd()) {
-      this.data = this.walletService.createEncryptedWallet(this.mnemonic, this.pwd1);
-      this.mnemonic = '';
-      this.pwd1 = '';
-      this.pwd2 = '';
-      this.activePanel++;
-      this.walletService.storeWallet();
-      this.router.navigate(['/accounts']);
+      setTimeout(() => {
+        this.data = this.walletService.createEncryptedWallet(this.mnemonic, this.pwd1);
+        this.mnemonic = '';
+        this.pwd1 = '';
+        this.pwd2 = '';
+        this.activePanel++;
+        this.walletService.storeWallet();
+        this.router.navigate(['/accounts']);
+      }, 1);
     }
   }
   validatePwd(): boolean {
     if (this.pwd1.length < 6 || this.pwd2.length < 6) {
-        // this.messageService.add('Passsword must be set!');
         this.isValidPass.minLength = false;
-        this.isValidPass.match = true;
-    } else if (this.pwd1 !== this.pwd2) {
-        // this.messageService.add('Passswords doesn\'t match!');
-        this.isValidPass.minLength = true;
+        console.log('isValidPass.length', this.isValidPass.minLength);
+    } else {
+      this.isValidPass.minLength = true;
+    }
+    if (this.pwd1 !== this.pwd2) {
         this.isValidPass.match = false;
         console.log('isValidPass.match', this.isValidPass.match);
     } else {
-        this.isValidPass.minLength = false;
-        this.isValidPass.match = false;
-        this.isValidPass.confirmed = true;  // isValidPass.confirmed - not shozing up??
+      this.isValidPass.match = true;
+    } if (this.isValidPass.minLength && this.isValidPass.match) {
+        this.isValidPass.confirmed = true;
         console.log('Success', this.isValidPass.confirmed);
         return true;
-      }
+    } else {
+      this.isValidPass.confirmed = false;
+    }
     return false;
   }
   reset() {

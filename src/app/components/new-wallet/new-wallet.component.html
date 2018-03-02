@@ -36,10 +36,10 @@
               <div class="form-group row">
                 <div class="col-sm-12">
                   <input type="password" [(ngModel)]="pwd2" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Confirm Password">
-                  <small id="emailHelp" class="form-text text-muted text-left">Minimum 6 characters</small>
-                  <small id="emailHelp" class="form-text alert-danger text-left" *ngIf="!isValidPass.minLength">There must be a minimum of 6 characters</small>
-                  <small id="emailHelp" class="form-text alert-danger text-left" *ngIf="!isValidPass.match">Passswords doesn't match!</small>
-                  <small id="emailHelp" class="form-text alert-success text-left" *ngIf="isValidPass.confirmed">Password confirmed</small>
+                  <small id="emailHelp1" class="form-text text-muted text-left">Minimum 6 characters</small>
+                  <small id="emailHelp2" class="form-text alert-danger text-left" *ngIf="!isValidPass.minLength">There must be a minimum of 6 characters</small>
+                  <small id="emailHelp3" class="form-text alert-danger text-left" *ngIf="!isValidPass.match">Passswords doesn't match!</small>
+                  <small id="emailHelp4" class="form-text alert-success text-left" *ngIf="isValidPass.confirmed">Password confirmed</small>
                 </div>
               </div>
             </form>
