@@ -139,16 +139,22 @@ export class WalletService {
     }
   }
   /*
+    Handle activity history
+  */
+  getTransactions(pkh: string) {  }
+  /*
     Send transactions (transfer : function(keys, from, to, amount, fee))
   */
   sendTransaction(password: string, from: string, to: string, amount: number, fee: number) {
     const keys = this.getKeys(password);
-    const promise = lib.eztz.rpc.transfer(keys, from, to, amount, fee);
-    if (promise != null) {
-      promise.then(
-        (val) => this.messageService.add('Transation sent, with operation hash: ' + val.injectedOperation),
-        (err) => this.messageService.add('err: ' + JSON.stringify(err))
-      );
+    if (keys) {
+      const promise = lib.eztz.rpc.transfer(keys, from, to, amount, fee);
+      if (promise != null) {
+        promise.then(
+          (val) => this.messageService.add('Transation sent, with operation hash: ' + val.injectedOperation),
+          (err) => this.messageService.add('err: ' + JSON.stringify(err))
+        );
+      }
     }
   }
   getKeys(password: string): KeyPair {
@@ -158,6 +164,7 @@ export class WalletService {
     } else {
       return lib.eztz.crypto.generateKeys(mnemonic, '');
     }
+    return null;
   }
   /*
     Import wallet from Json
