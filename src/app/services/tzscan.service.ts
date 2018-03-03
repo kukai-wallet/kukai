@@ -39,7 +39,7 @@ export class TzscanService {
     this.getTransactonsCounter(pkh);
   }
   getTransactonsCounter(pkh) {
-    this.http.get('http://api.tzscan.io/v1/number_operations/' + pkh + '?type=Transaction').subscribe(
+    this.http.get('https://api.tzscan.io/v1/number_operations/' + pkh + '?type=Transaction').subscribe(
       data => this.handleTransactionsCounterResponse(pkh, data[0]),
       err => this.messageService.add(JSON.stringify(err))
     );
@@ -55,7 +55,7 @@ export class TzscanService {
     }
   }
   getTransactions(pkh: string, counter: number) {
-    this.http.get('http://api.tzscan.io/v1/operations/' + pkh + '?type=Transaction&number=10&p=0').subscribe(
+    this.http.get('https://api.tzscan.io/v1/operations/' + pkh + '?type=Transaction&number=10&p=0').subscribe(
       data => this.handleTransactionsResponse(pkh, data, counter),
       err => this.messageService.add(JSON.stringify(err)),
       () => console.log('done loading transactions')
@@ -110,7 +110,7 @@ export class TzscanService {
     }
   }
   getTimestamp(pkh: string, block: string, hash, last: boolean) {
-    this.http.get('http://api.tzscan.io/v1/timestamp/' + block).subscribe(
+    this.http.get('https://api.tzscan.io/v1/timestamp/' + block).subscribe(
       data => this.handleTimestampResponse(pkh, block, data, hash, last),
       err => this.messageService.add(JSON.stringify(err))
     );
