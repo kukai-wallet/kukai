@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { NewWalletComponent } from './components/new-wallet/new-wallet.component';
@@ -18,6 +19,7 @@ import { AccountsComponent } from './/components/accounts/accounts.component';
 import { BackupComponent } from './components/backup/backup.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { SendComponent } from './components/send/send.component';
+import { TzscanService } from './services/tzscan.service';
 
 
 @NgModule({
@@ -38,9 +40,10 @@ import { SendComponent } from './components/send/send.component';
   imports: [
     BrowserModule,
     FormsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule
   ],
-  providers: [MessageService, WalletService],
+  providers: [MessageService, WalletService, TzscanService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

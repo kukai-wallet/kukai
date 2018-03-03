@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MessageService } from './message.service';
+import { TzscanService } from './tzscan.service';
 
 import * as lib from '../../assets/js/main.js';
 import * as bip39 from 'bip39';
@@ -42,7 +43,8 @@ export class WalletService {
   storeKey = `kukai-wallet`;
   hashRounds = 10000;
   wallet: Wallet = this.emptyWallet();
-  constructor(private messageService: MessageService) { }
+  constructor(
+    private messageService: MessageService) { }
   /*
     Wallet creation
   */
@@ -153,7 +155,6 @@ export class WalletService {
   /*
     Handle activity history
   */
-  getTransactions(pkh: string) {  }
   /*
     Send transactions (transfer : function(keys, from, to, amount, fee))
   */

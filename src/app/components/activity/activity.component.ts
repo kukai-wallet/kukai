@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit, AfterViewInit } from '@angular/core';
 import { WalletService } from '../../services/wallet.service';
 import { MessageService } from '../../services/message.service';
+import { TzscanService } from '../../services/tzscan.service';
 
 @Component({
   selector: 'app-activity',
@@ -13,7 +14,8 @@ export class ActivityComponent implements OnInit {
   activePkh: string;
   constructor(
     private walletService: WalletService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private tzscanService: TzscanService
   ) { }
 
   ngOnInit() { if (this.identity) { this.init(); } }
@@ -22,6 +24,6 @@ export class ActivityComponent implements OnInit {
     this.getTransactions();
   }
   getTransactions() {
-    this.messageService.add('ToDo: Getting transactions for: ' + this.activePkh);
+    this.tzscanService.getTransactions(this.activePkh);
   }
 }
