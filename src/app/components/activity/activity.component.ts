@@ -24,6 +24,6 @@ export class ActivityComponent implements OnInit {
     this.getTransactions();
   }
   getTransactions() {
-    this.tzscanService.getTransactions(this.activePkh);
+    this.tzscanService.updateTransactions(this.activePkh);
   }
 }
