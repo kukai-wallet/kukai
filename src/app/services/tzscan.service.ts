@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import {Observable} from 'rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
 import { MessageService } from './message.service';
+import { Time } from '@angular/common';
 
 const httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -13,7 +14,7 @@ export interface Transaction {
   destination: string;
   amount: number;
   fee: number;
-  timestamp: string;
+  timestamp: Time|string|null;
   type: string;
 }
 export interface TransactionsData {
@@ -21,10 +22,10 @@ export interface TransactionsData {
   counter: number;
   transactions: Transaction[];
 }
-
 @Injectable()
 export class TzscanService {
   storeKey = `kukai-transactions`;
+  timestampCounter = 0; // Make sure last timestamp trigger backup
   visibleTransactions: Transaction[] = [];
   transactionsData: TransactionsData[] = [];
   constructor(private http: HttpClient,
@@ -52,6 +53,9 @@ export class TzscanService {
       this.getTransactions(pkh, data);
     } else {
       console.log('Transactions up to date');
+      if (this.visibleTransactions.findIndex(a => a.timestamp === '') !== -1) {
+        this.getTransactions(pkh, data);
+      }
     }
   }
   getTransactions(pkh: string, counter: number) {
@@ -62,7 +66,8 @@ export class TzscanService {
     );
   }
   handleTransactionsResponse(pkh: string, data: any, counter: number) {
-    this.visibleTransactions = [];
+    // this.visibleTransactions = [];
+    const newVisibleTransactions: Transaction[] = [];
     for (let i = 0; i < data.length; i++) {
       let type;
       if (pkh === data[i].type.source) {
@@ -76,7 +81,7 @@ export class TzscanService {
       } else {
         type = 'Unknown';
       }
-      this.visibleTransactions.push( {
+      newVisibleTransactions.push( {
         hash: data[i].hash,
         block: data[i].block_hash,
         source: data[i].type.source,
@@ -87,6 +92,7 @@ export class TzscanService {
         type: type
       });
     }
+    this.visibleTransactions = newVisibleTransactions;
     // Add new entry if needed or update current entry
     const index = this.transactionsData.findIndex(a => a.pkh === pkh);
     if (index === -1) {
@@ -104,23 +110,27 @@ export class TzscanService {
       console.log('Should be unreachable in: handleTransactionsResponse())');
     }
     for (let i = 0; i < this.visibleTransactions.length; i++) {
-      let last = false;
-      if (i === this.visibleTransactions.length - 1) { last = true; }
-      this.getTimestamp(pkh, this.visibleTransactions[i].block, this.visibleTransactions[i].hash, last);
+      this.getTimestamp(pkh, this.visibleTransactions[i].block, this.visibleTransactions[i].hash);
     }
   }
-  getTimestamp(pkh: string, block: string, hash, last: boolean) {
+  getTimestamp(pkh: string, block: string, hash) {
+    console.log('Sending timestamp request');
     this.http.get('https://api.tzscan.io/v1/timestamp/' + block).subscribe(
-      data => this.handleTimestampResponse(pkh, block, data, hash, last),
+      data => this.handleTimestampResponse(pkh, block, data, hash),
       err => this.messageService.add(JSON.stringify(err))
     );
   }
-  handleTimestampResponse(pkh: string, block: string, time: any, hash, last: boolean) {
+  handleTimestampResponse(pkh: string, block: string, time: any, hash: any) {
+    console.log('Getting timestamp response, time: ' + time);
     const pkhIndex = this.transactionsData.findIndex(a => a.pkh === pkh);
     const transactionIndex = this.transactionsData[pkhIndex].transactions.findIndex(a => a.hash === hash);
+    if (!time) { time = ''; }
     this.visibleTransactions[transactionIndex].timestamp = time;
     this.transactionsData[pkhIndex].transactions[transactionIndex].timestamp = time;
-    if (last) {
+    this.timestampCounter++;
+    if (this.timestampCounter >= 10) {
+      this.timestampCounter = 0;
+      console.log('Store transactions data');
       this.storeTransactions();
     }
   }

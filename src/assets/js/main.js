@@ -349,7 +349,7 @@ rpc = {
     var head, counter, pred_block, sopbytes, returnedContracts;
     var promises = []
     promises.push(node.query('/blocks/head'));
-    if (typeof fee != 'unfedined') {
+    if (typeof fee != 'undefined') {
       promises.push(node.query('/blocks/prevalidation/proto/context/contracts/'+keys.pkh+'/counter'));
     }
     return Promise.all(promises).then(function(f){
@@ -502,6 +502,9 @@ eztz = {
 
 //Alpha only functions
 eztz.alphanet = {};
+eztz.alphanet.sleep = function(ms){
+    return new Promise(resolve => setTimeout(resolve, ms));
+  };
 eztz.alphanet.faucet = function(toAddress){
   var keys = crypto.generateKeysNoSeed();
   var head, pred_block, opbytes, npkh;
@@ -533,7 +536,8 @@ eztz.alphanet.faucet = function(toAddress){
        "signedOperationContents" : opbytes,
     });
   })
-  .then(function(f){
+  .then(async function(f){
+    await eztz.alphanet.sleep(500);
     return node.query('/blocks/prevalidation/proto/context/contracts/'+npkh+'/manager');
   })
   .then(function(f){

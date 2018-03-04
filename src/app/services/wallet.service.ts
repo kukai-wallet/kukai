@@ -42,9 +42,11 @@ export interface Wallet {
 export class WalletService {
   storeKey = `kukai-wallet`;
   hashRounds = 10000;
+  freeTez = true;
   wallet: Wallet = this.emptyWallet();
   constructor(
-    private messageService: MessageService) { }
+    private messageService: MessageService,
+    private tzscanService: TzscanService) { }
   /*
     Wallet creation
   */
@@ -75,6 +77,23 @@ export class WalletService {
       pk: null,
       pkh: keyPair.pkh
     };
+  }
+  /*
+    Free tezzies (alphanet feature only)
+  */
+  freeTezzies(pkh: string) {
+    const promise = lib.eztz.alphanet.faucet(pkh);
+    if (promise) {
+      promise.then(
+        (val) => {this.messageService.add('Here you go!');
+          this.getIdentityBalance(); },
+        (err) => {if (err && err[0] && err[0].ecoproto[0].id === 'operation.too_many_faucet') {
+          this.messageService.add('Too many calls to faucet right now.');
+        } else {
+          this.messageService.add('err: ' + JSON.stringify(err));
+        }},
+      );
+    }
   }
   /*
     Handle accounts

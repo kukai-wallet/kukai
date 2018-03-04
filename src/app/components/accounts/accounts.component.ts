@@ -10,7 +10,7 @@ import { MessageService } from '../../services/message.service';
 export class AccountsComponent implements OnInit {
   identity = this.walletService.wallet.identity;
   accounts = this.walletService.wallet.accounts;
-  showAdd = true;
+  canGetFree = true;
   constructor(
     private walletService: WalletService,
     private messageService: MessageService) { }
@@ -21,13 +21,21 @@ export class AccountsComponent implements OnInit {
     }
   }
   addAccount() {
-    this.hideAdd();
-    this.walletService.createAccount();
+    // this.walletService.createAccount();
   }
-  hideAdd() {
-    this.showAdd = false;
+  freeTezzies(pkh: string) {
+    if (this.canGetFree) {
+      this.messageService.add('Requesting free tezzies...');
+      this.setTimer(1);
+      this.walletService.freeTezzies(pkh);
+    } else {
+      this.messageService.add('Slow down a bit...');
+    }
+  }
+  setTimer(s: number) {
+    this.canGetFree = false;
     setTimeout(() => {
-      this.showAdd = true;
-    }, 5000);
+      this.canGetFree = true;
+    }, s * 1000);
   }
 }
