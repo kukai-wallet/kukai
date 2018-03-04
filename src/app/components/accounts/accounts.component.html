@@ -1,7 +1,7 @@
 <div *ngIf='identity'>
   <table>
-    <tr *ngIf='identity'><td>{{ identity.keyPair.pkh }}</td><td>{{ identity.balance / 100 }}ꜩ</td><td><a (click)='freeTezzies(identity.keyPair.pkh)'>Free tezzies</a></td></tr>
-    <tr  *ngFor="let account of accounts">
+    <tr *ngIf='identity'><td>{{ walletService.wallet.identity.pkh }}</td><td>{{ walletService.wallet.identity.balance / 100 }}ꜩ</td><td><a (click)='freeTezzies(identity.pkh)'>Free tezzies</a></td></tr>
+    <tr  *ngFor="let account of walletService.wallet.accounts">
       <td>{{ account.pkh }}</td><td>{{ account.balance / 100 }}ꜩ</td><td></td>
     </tr>
   <tr><td colspan="2"></td><td colspan="1"><a routerLink="/new-account">New account</a></td></tr></table>

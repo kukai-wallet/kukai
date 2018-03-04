@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { WalletService } from '../../services/wallet.service';
 import { MessageService } from '../../services/message.service';
+import { TransactionService } from '../../services/transaction.service';
 
 @Component({
   selector: 'app-send',
@@ -17,7 +18,8 @@ export class SendComponent implements OnInit {
   password: string;
   constructor(
     private walletService: WalletService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private transactionService: TransactionService
   ) { }
 
   ngOnInit() {
@@ -26,7 +28,7 @@ export class SendComponent implements OnInit {
     }
   }
   init() {
-    this.fromPkh = this.identity.keyPair.pkh;
+    this.fromPkh = this.identity.pkh;
   }
   sendTransaction() {
     const pwd = this.password;
@@ -42,7 +44,8 @@ export class SendComponent implements OnInit {
       if (!amount) { amount = '0'; }
       if (!fee) { fee = '0'; }
       setTimeout(() => {
-        this.walletService.sendTransaction(pwd, this.fromPkh, toPkh, Number(amount), Number(fee) * 100);
+        const keys = this.walletService.getKeys(pwd);
+        this.transactionService.sendTransaction(keys, this.fromPkh, toPkh, Number(amount), Number(fee) * 100);
       }, 100);
       // Send
     }

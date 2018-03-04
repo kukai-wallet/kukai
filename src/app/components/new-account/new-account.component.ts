@@ -25,7 +25,7 @@ export class NewAccountComponent implements OnInit {
     }
   }
   init() {
-    this.fromPkh = this.identity.keyPair.pkh;
+    this.fromPkh = this.identity.pkh;
   }
   sendTransaction() {
     const pwd = this.password;

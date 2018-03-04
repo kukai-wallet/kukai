@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { WalletService } from './services/wallet.service';
-import { TzscanService } from './services/tzscan.service';
+import { ActivityService } from './services/activity.service';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +11,7 @@ export class AppComponent implements OnInit {
 
   constructor(
     private walletService: WalletService,
-    private tzscanService: TzscanService) { }
+    private tzscanService: ActivityService) { }
   ngOnInit() {
     this.walletService.loadStoredWallet();
     this.tzscanService.loadStoredTransactions();

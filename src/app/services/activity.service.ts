@@ -2,28 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { MessageService } from './message.service';
-import { Time } from '@angular/common';
+import { Transaction, TransactionsData } from './../interfaces';
 
 const httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
-export interface Transaction {
-  hash: string;
-  block: string;
-  source: string;
-  destination: string;
-  amount: number;
-  fee: number;
-  timestamp: Time|string|null;
-  type: string;
-}
-export interface TransactionsData {
-  pkh: string;
-  counter: number;
-  transactions: Transaction[];
-}
+
 @Injectable()
-export class TzscanService {
+export class ActivityService {
   storeKey = `kukai-transactions`;
   timestampCounter = 0; // Make sure last timestamp trigger backup
   visibleTransactions: Transaction[] = [];
@@ -143,5 +129,10 @@ export class TzscanService {
       this.transactionsData = JSON.parse(transactionsData);
       console.log('Transactions loaded from local storage');
     }
+  }
+  clearTransactions() {
+    this.visibleTransactions = [];
+    this.transactionsData = [];
+    localStorage.removeItem(this.storeKey);
   }
 }

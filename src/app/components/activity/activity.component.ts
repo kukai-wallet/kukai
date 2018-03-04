@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, AfterViewInit } from '@angular/core';
 import { WalletService } from '../../services/wallet.service';
 import { MessageService } from '../../services/message.service';
-import { TzscanService } from '../../services/tzscan.service';
+import { ActivityService } from '../../services/activity.service';
 
 @Component({
   selector: 'app-activity',
@@ -15,15 +15,15 @@ export class ActivityComponent implements OnInit {
   constructor(
     private walletService: WalletService,
     private messageService: MessageService,
-    private tzscanService: TzscanService
+    private activityService: ActivityService
   ) { }
 
   ngOnInit() { if (this.identity) { this.init(); } }
   init() {
-    this.activePkh = this.identity.keyPair.pkh;
+    this.activePkh = this.identity.pkh;
     this.getTransactions();
   }
   getTransactions() {
-    this.tzscanService.updateTransactions(this.activePkh);
+    this.activityService.updateTransactions(this.activePkh);
   }
 }

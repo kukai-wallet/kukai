@@ -1,52 +1,19 @@
 import { Injectable } from '@angular/core';
 import { MessageService } from './message.service';
-import { TzscanService } from './tzscan.service';
+import { Wallet, Identity, Account, KeyPair } from './../interfaces';
+import { EncryptionService } from './encryption.service';
 
 import * as lib from '../../assets/js/main.js';
 import * as bip39 from 'bip39';
-// import * as CryptoJS from 'crypto-js';
 import * as rnd2 from 'randomatic';
-import * as pbkdf2 from 'pbkdf2';
-import * as CryptoJS from 'crypto-js';
 
-export interface KeyPair {
-  sk: string|null;
-  pk: string|null;
-  pkh: string;
-}
-export interface Account {
-  pkh: string|null;
-  balance: number;
-  pending: number;
-  balanceFiat: number;
-  pendingFiat: number;
-}
-export interface Identity {
-  keyPair: KeyPair|null;
-  balance: number;
-  pending: number;
-  balanceFiat: number;
-  pendingFiat: number;
-}
-export interface Wallet {
-  encryptedMnemonic: null|string;
-  salt: string|null;
-  balance: number;
-  pending: number;
-  balanceFiat: number;
-  pendingFiat: number;
-  accounts: Account[];
-  identity: Identity|null;
-}
 @Injectable()
 export class WalletService {
   storeKey = `kukai-wallet`;
-  hashRounds = 10000;
-  freeTez = true;
   wallet: Wallet = this.emptyWallet();
   constructor(
     private messageService: MessageService,
-    private tzscanService: TzscanService) { }
+    private encryptionService: EncryptionService) { }
   /*
     Wallet creation
   */
@@ -57,39 +24,18 @@ export class WalletService {
     this.wallet.salt =  rnd2('aA0', 32);
     this.wallet.accounts = [];
     this.wallet.identity = this.createIdentity(mnemonic);
-    this.wallet.encryptedMnemonic = this.encrypt(mnemonic, password);
+    this.wallet.encryptedMnemonic = this.encryptionService.encrypt(mnemonic, password, this.wallet.salt);
     return {wallet: 'Kukai', type: 'FullWallet', version: '1.0', seed: this.wallet.encryptedMnemonic,
-            salt: this.wallet.salt, pkh: this.wallet.identity.keyPair.pkh};
+            salt: this.wallet.salt, pkh: this.wallet.identity.pkh};
   }
   createIdentity(mnemonic: string): Identity {
     return {
-      keyPair: this.createKeyPair(mnemonic),
+      pkh: lib.eztz.crypto.generateKeys(mnemonic, '').pkh,
       balance: 0,
       pending: 0,
       balanceFiat: 0,
       pendingFiat: 0
     };
-  }
-  createKeyPair(mnemonic: string): KeyPair {
-    const keyPair = lib.eztz.crypto.generateKeys(mnemonic, '');
-    return {
-      sk: null,
-      pk: null,
-      pkh: keyPair.pkh
-    };
-  }
-  /*
-    Free tezzies (alphanet feature only)
-  */
-  freeTezzies(pkh: string) {
-    const promise = lib.eztz.alphanet.faucet(pkh);
-    if (promise) {
-      promise.then(
-        (val) => {this.messageService.add('Here you got 100 000ꜩ!');
-          this.getIdentityBalance(); },
-        (err) => this.messageService.add(JSON.stringify('Error from faucet: ' + err))
-      );
-    }
   }
   /*
     Handle accounts
@@ -114,82 +60,16 @@ export class WalletService {
       pendingFiat: 0
     });
     this.storeWallet();
-    setTimeout(() => {
-      this.getAccountBalance(this.wallet.accounts.length - 1);
-    }, 1000);
   }
   getIndexFromPkh(pkh: string): number {
     return this.wallet.accounts.findIndex(a => a.pkh === pkh);
   }
-  /*
-    Balance checks
-  */
-  getBalanceAll() {
-    this.getIdentityBalance();
-    for (let i = 0; i < this.wallet.accounts.length; i++) {
-      this.getAccountBalance(i);
-    }
-  }
-  getIdentityBalance() {
-    const promise = lib.eztz.rpc.getBalance(this.wallet.identity.keyPair.pkh);
-    if (promise != null) {
-      promise.then(
-        (val) => this.updateIdentityBalance(val),
-        (err) => this.handleBalanceErrors(err, this.wallet.identity.keyPair.pkh)
-      );
-    }
-  }
-  handleBalanceErrors(err: any, pkh: string) {
-    if (err === 'Empty response returned') { // Account probably empty and should be removed
-      this.wallet.accounts[this.getIndexFromPkh(pkh)].balance = 0;
-      this.storeWallet();
-    } else {
-      this.messageService.add('JSON: ' + JSON.stringify(err));
-      this.messageService.add(err);
-    }
-  }
-  updateIdentityBalance(newBalance: number) {
-    if (newBalance !== this.wallet.identity.balance) {
-      this.wallet.identity.balance = newBalance;
-      this.storeWallet();
-    }
-  }
-  getAccountBalance(index: number) {
-    const promise = lib.eztz.rpc.getBalance(this.wallet.accounts[index].pkh);
-    if (promise != null) {
-      promise.then(
-        (val) => this.updateAccountBalance(index, val),
-        (err) => this.handleBalanceErrors(err, this.wallet.accounts[index].pkh)
-      );
-    }
-  }
-  updateAccountBalance(index: number, newBalance: number) {
-    if (newBalance !== this.wallet.accounts[index].balance) {
-      this.wallet.accounts[index].balance = newBalance;
-      this.storeWallet();
-    }
-  }
+
   /*
     Send transactions (transfer : function(keys, from, to, amount, fee))
   */
-  sendTransaction(password: string, from: string, to: string, amount: number, fee: number) {
-    const keys = this.getKeys(password);
-    if (keys) {
-      const promise = lib.eztz.rpc.transfer(keys, from, to, amount, fee);
-      if (promise != null) {
-        promise.then(
-          (val) => this.successfulTransaction(val),
-          (err) => this.messageService.add('err: ' + JSON.stringify(err))
-        );
-      }
-    }
-  }
-  successfulTransaction(val: any, ) {
-    this.messageService.add('Transation sent!');
-    this.getBalanceAll();
-  }
   getKeys(password: string): KeyPair {
-    const mnemonic = this.decrypt(this.wallet.encryptedMnemonic, password);
+    const mnemonic = this.encryptionService.decrypt(this.wallet.encryptedMnemonic, password, this.wallet.salt);
     if (!mnemonic) {
       this.messageService.add('Decryption failed');
     } else {
@@ -219,37 +99,12 @@ export class WalletService {
   }
   importIdentity(pkh: string): Identity {
     return {
-      keyPair: this.importKeyPair(pkh),
+      pkh: pkh,
       balance: 0,
       pending: 0,
       balanceFiat: 0,
       pendingFiat: 0
     };
-  }
-  importKeyPair(pkh: string): KeyPair {
-    return {
-      sk: null,
-      pk: null,
-      pkh: pkh
-    };
-  }
-  /*
-    Encryption
-  */
-  encrypt(plaintext: string, password: string): string {
-    const key = pbkdf2.pbkdf2Sync(password, this.wallet.salt, this.hashRounds, 32).toString();
-    const chiphertext = CryptoJS.AES.encrypt(plaintext, key).toString();
-    return chiphertext;
-  }
-  decrypt(chiphertext: string, password: string): string {
-    try {
-      const key = pbkdf2.pbkdf2Sync(password, this.wallet.salt, this.hashRounds, 32).toString();
-      const plainbytes = CryptoJS.AES.decrypt(chiphertext, key);
-      const plaintext = plainbytes.toString(CryptoJS.enc.Utf8);
-      return plaintext;
-    } catch (err) {
-      return '';
-    }
   }
   /*
     Clear wallet data from browser
