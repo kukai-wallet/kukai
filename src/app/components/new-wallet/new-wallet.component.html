@@ -54,34 +54,16 @@
       <div class="card-body">
         <h1 class="card-title">Wallet created</h1>
         <div class="card-text">
+          <p class="seed"><b>{{ export() }}</b></p>
+          <br>
           <p>Your wallet is now set up and ready to use.</p>
-          <p>Please save your encrypted wallet data.</p>
-          <textarea rows="8" cols=80>{{ export() }}</textarea>
+          <p>Please save your encrypted wallet data in a safe, secure place.</p>
+        </div>
       </div>
       <div class="card-footer text-right">
         <button type="button" class="btn btn-primary btn-lg" routerLink="/accounts">Finish</button>
       </div>
     </div>
-
-
-
-    <!--
-    <div *ngIf="activePanel==1" class="tmp fix-size">
-      <p>This is your private seed. Please write it down and store somewhere safe.</p>
-      <p><b>{{ mnemonic }}</b></p>
-      <button class="btn btn-primary" (click)="pwdView()">Next</button>
-    </div>
-    <div *ngIf="activePanel==2" class="tmp fix-size">
-      <p>Encrypt your wallet<BR>
-        <input type="password" [(ngModel)]="pwd1" placeholder="Password"><BR>
-        <input type="password" [(ngModel)]="pwd2" placeholder="Confirm password"></p>
-      <button class="btn btn-primary" (click)="encryptWallet()">Encrypt</button>
-    </div>
-    <div *ngIf="activePanel==3" class="tmp fix-size">
-      <p>Encrypted wallet data:<BR>
-        <textarea rows="8" cols=100>{{ export() }}</textarea></p>
-      <a routerLink="/accounts"><button class="btn btn-primary">Finish</button></a>
-    </div>
-    -->
+    
   </div>
 </div>
