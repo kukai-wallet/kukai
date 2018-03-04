@@ -3,15 +3,14 @@ import { WalletService } from '../../services/wallet.service';
 import { MessageService } from '../../services/message.service';
 
 @Component({
-  selector: 'app-send',
-  templateUrl: './send.component.html',
-  styleUrls: ['./send.component.scss']
+  selector: 'app-new-account',
+  templateUrl: './new-account.component.html',
+  styleUrls: ['./new-account.component.scss']
 })
-export class SendComponent implements OnInit {
+export class NewAccountComponent implements OnInit {
   identity = this.walletService.wallet.identity;
-  accounts = this.walletService.wallet.accounts;
+  // accounts = this.walletService.wallet.accounts;
   fromPkh: string;
-  toPkh: string;
   amount: string;
   fee: string;
   password: string;
@@ -33,24 +32,20 @@ export class SendComponent implements OnInit {
     this.password = '';
     if (this.validInput(pwd)) {
       // Clear form
-      const toPkh = this.toPkh;
       let amount = this.amount;
       let fee = this.fee;
-      this.toPkh = '';
       this.amount = '';
       this.fee = '';
       if (!amount) { amount = '0'; }
       if (!fee) { fee = '0'; }
       setTimeout(() => {
-        this.walletService.sendTransaction(pwd, this.fromPkh, toPkh, Number(amount), Number(fee) * 100);
+        this.walletService.createAccount(pwd, this.fromPkh, Number(amount), Number(fee) * 100);
       }, 100);
       // Send
     }
   }
   validInput(pwd: string) {
-    if (!this.toPkh || this.toPkh.length !== 36) {
-      this.messageService.add('invalid reciever address');
-    } else if (!Number(this.amount) && this.amount && this.amount !== '0') {
+    if (!Number(this.amount) && this.amount && this.amount !== '0') {
       this.messageService.add('invalid amount');
     } else if (!Number(this.fee) && this.fee && this.fee !== '0') {
       this.messageService.add('invalid fee');

@@ -85,25 +85,23 @@ export class WalletService {
     const promise = lib.eztz.alphanet.faucet(pkh);
     if (promise) {
       promise.then(
-        (val) => {this.messageService.add('Here you go!');
+        (val) => {this.messageService.add('Here you got 100 000ꜩ!');
           this.getIdentityBalance(); },
-        (err) => {if (err && err[0] && err[0].ecoproto[0].id === 'operation.too_many_faucet') {
-          this.messageService.add('Too many calls to faucet right now.');
-        } else {
-          this.messageService.add('err: ' + JSON.stringify(err));
-        }},
+        (err) => this.messageService.add(JSON.stringify('Error from faucet: ' + err))
       );
     }
   }
   /*
     Handle accounts
   */
-  createAccount() {
-    const promise = lib.eztz.rpc.freeAccount(this.wallet.identity.keyPair);
+  createAccount(pwd: string, pkh: string, amount: number, fee: number) {
+    const keys = this.getKeys(pwd);
+    const promise = lib.eztz.rpc.account(keys, amount, true, true, keys.pkh, fee);
     if (promise != null) {
       promise.then(
-        (val) => this.addAccount(val),
-        (err) => this.messageService.add(err)
+        (val) => {this.addAccount(val.contracts[0]);
+          this.messageService.add('New account created!'); },
+        (err) => this.messageService.add('Create new account failed: ' + err)
       );
     }
   }
@@ -172,9 +170,6 @@ export class WalletService {
     }
   }
   /*
-    Handle activity history
-  */
-  /*
     Send transactions (transfer : function(keys, from, to, amount, fee))
   */
   sendTransaction(password: string, from: string, to: string, amount: number, fee: number) {
@@ -190,7 +185,7 @@ export class WalletService {
     }
   }
   successfulTransaction(val: any, ) {
-    this.messageService.add('Transation sent, with operation hash: ' + val.injectedOperation);
+    this.messageService.add('Transation sent!');
     this.getBalanceAll();
   }
   getKeys(password: string): KeyPair {

@@ -20,6 +20,7 @@ import { BackupComponent } from './components/backup/backup.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { SendComponent } from './components/send/send.component';
 import { TzscanService } from './services/tzscan.service';
+import { NewAccountComponent } from './components/new-account/new-account.component';
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import { TzscanService } from './services/tzscan.service';
     AccountsComponent,
     BackupComponent,
     SettingsComponent,
-    SendComponent
+    SendComponent,
+    NewAccountComponent
   ],
   imports: [
     BrowserModule,

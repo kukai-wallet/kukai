@@ -1,3 +1,56 @@
+<div *ngIf='identity'>
+    <h1>Recent Movements</h1>
+    <div class="form-group">
+            <select [(ngModel)]="activePkh" (ngModelChange)="getTransactions()" id="fromAdress" class="form-control">
+                <option [value]="identity.keyPair.pkh">{{ identity.keyPair.pkh }} ({{ identity.balance / 100}}ꜩ)</option>
+                <option *ngFor="let account of accounts" [value]="account.pkh">{{ account.pkh }} ({{account.balance / 100}}ꜩ)</option>
+            </select>
+        </div>
+    <table class="table table-striped">
+      <thead>
+          <tr>
+              <th>Source</th>
+              <th>Destination</th>
+              <th>Date</th>
+              <th>Type</th>
+              <th>Amount (Tz)</th>
+              <th>Fee (Tz)</th>
+              <th>Hash</th>
+              <th>Status</th>
+          </tr>
+      </thead>
+    
+      <tbody *ngFor="let transaction of tzscanService.visibleTransactions">
+          <tr>
+              <td>{{ transaction.source }}</td>
+              <td>{{ transaction.destination }}</td>
+              <td>{{ transaction.timestamp }}</td>
+              <td>{{ transaction.type }}</td>
+              <td>{{ transaction.amount }}</td>
+              <td>{{ transaction.fee }}</td>
+              <td>{{ transaction.hash }}</td>
+              <td>Success!</td>           
+          </tr>
+      </tbody>
+    </table>
+    </div>
+    <p *ngIf='!identity'>
+        Wallet not configured
+    </p>
+    <!-->
+    <div *ngIf='identity'>
+      <div class="form-group">
+        <select [(ngModel)]="activePkh" (ngModelChange)="getTransactions()" id="fromAdress" class="form-control">
+          <option [value]="identity.keyPair.pkh">{{ identity.keyPair.pkh }} ({{ identity.balance / 100}}ꜩ)</option>
+          <option *ngFor="let account of accounts" [value]="account.pkh">{{ account.pkh }} ({{account.balance / 100}}ꜩ)</option>
+        </select>
+      </div>
+      <table>
+        <tr><th>Date</th><th>Amount</th><th>Balance</th></tr>
+      </table>
+    </div>
+    -->
+
 <!--<div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
@@ -449,55 +502,3 @@
     <!--
 </div>
 <!-- /#page-wrapper -->
-<div *ngIf='identity'>
-<h1>Recent Movements</h1>
-<div class="form-group">
-        <select [(ngModel)]="activePkh" (ngModelChange)="getTransactions()" id="fromAdress" class="form-control">
-            <option [value]="identity.keyPair.pkh">{{ identity.keyPair.pkh }} ({{ identity.balance / 100}}ꜩ)</option>
-            <option *ngFor="let account of accounts" [value]="account.pkh">{{ account.pkh }} ({{account.balance / 100}}ꜩ)</option>
-        </select>
-    </div>
-<table class="table table-striped">
-  <thead>
-      <tr>
-          <th>Source</th>
-          <th>Destination</th>
-          <th>Date</th>
-          <th>Type</th>
-          <th>Amount (Tz)</th>
-          <th>Fee (Tz)</th>
-          <th>Hash</th>
-          <th>Status</th>
-      </tr>
-  </thead>
-
-  <tbody *ngFor="let transaction of tzscanService.visibleTransactions">
-      <tr>
-          <td>{{ transaction.source }}</td>
-          <td>{{ transaction.destination }}</td>
-          <td>{{ transaction.timestamp }}</td>
-          <td>{{ transaction.type }}</td>
-          <td>{{ transaction.amount }}</td>
-          <td>{{ transaction.fee }}</td>
-          <td>{{ transaction.hash }}</td>
-          <td>Success!</td>           
-      </tr>
-  </tbody>
-</table>
-</div>
-<!-->
-<div *ngIf='identity'>
-  <div class="form-group">
-    <select [(ngModel)]="activePkh" (ngModelChange)="getTransactions()" id="fromAdress" class="form-control">
-      <option [value]="identity.keyPair.pkh">{{ identity.keyPair.pkh }} ({{ identity.balance / 100}}ꜩ)</option>
-      <option *ngFor="let account of accounts" [value]="account.pkh">{{ account.pkh }} ({{account.balance / 100}}ꜩ)</option>
-    </select>
-  </div>
-  <table>
-    <tr><th>Date</th><th>Amount</th><th>Balance</th></tr>
-  </table>
-</div>
--->
-<p *ngIf='!identity'>
-    Wallet not configured
-</p>

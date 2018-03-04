@@ -10,6 +10,7 @@ import { AccountsComponent } from './components/accounts/accounts.component';
 import { BackupComponent } from './components/backup/backup.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { SendComponent } from './components/send/send.component';
+import { NewAccountComponent } from './components/new-account/new-account.component';
 
 const routes: Routes = [
   { path: '', component: StartComponent },  // Content Centre position
@@ -20,7 +21,8 @@ const routes: Routes = [
   { path: 'accounts', component: AccountsComponent },
   { path: 'backup', component: BackupComponent },
   { path: 'settings', component: SettingsComponent },
-  { path: 'send', component: SendComponent }
+  { path: 'send', component: SendComponent },
+  { path: 'new-account', component: NewAccountComponent }
 ];
 
 @NgModule({

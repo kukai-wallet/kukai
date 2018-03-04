@@ -4,7 +4,7 @@
     <tr  *ngFor="let account of accounts">
       <td>{{ account.pkh }}</td><td>{{ account.balance / 100 }}ꜩ</td><td></td>
     </tr>
-  <tr><td colspan="2"></td><td colspan="1"><a (click)='addAccount()'>New account</a></td></tr></table>
+  <tr><td colspan="2"></td><td colspan="1"><a routerLink="/new-account">New account</a></td></tr></table>
 </div>
 <p *ngIf='!identity'>
   Wallet not configured
