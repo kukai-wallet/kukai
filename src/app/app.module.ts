@@ -12,6 +12,7 @@ import { BalanceService } from './services/balance.service';
 import { EncryptionService } from './services/encryption.service';
 import { FaucetService } from './services/faucet.service';
 import { TransactionService } from './services/transaction.service';
+import { ImportService } from './services/import.service';
 
 import { AppComponent } from './app.component';
 import { BroadcastComponent } from './components/broadcast/broadcast.component';
@@ -49,7 +50,16 @@ import { NewWalletComponent } from './components/new-wallet/new-wallet.component
     AppRoutingModule,
     HttpClientModule
   ],
-  providers: [MessageService, WalletService, ActivityService, EncryptionService, FaucetService, BalanceService, TransactionService],
+  providers: [
+    MessageService,
+    WalletService,
+    ActivityService,
+    EncryptionService,
+    FaucetService,
+    BalanceService,
+    TransactionService,
+    ImportService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
