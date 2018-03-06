@@ -26,6 +26,7 @@ import { SendComponent } from './components/send/send.component';
 import { NewAccountComponent } from './components/new-account/new-account.component';
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { NewWalletComponent } from './components/new-wallet/new-wallet.component';
+import { ReceiveComponent } from './components/receive/receive.component';
 
 
 @NgModule({
@@ -42,7 +43,8 @@ import { NewWalletComponent } from './components/new-wallet/new-wallet.component
     BackupComponent,
     SettingsComponent,
     SendComponent,
-    NewAccountComponent
+    NewAccountComponent,
+    ReceiveComponent
   ],
   imports: [
     BrowserModule,
