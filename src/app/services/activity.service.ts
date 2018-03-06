@@ -91,7 +91,7 @@ export class ActivityService {
           type = 'Send';
         }
       } else if (pkh === data[i].type.destination) {
-        type = 'Recieve';
+        type = 'Receive';
       } else {
         type = 'Unknown';
       }
@@ -102,7 +102,7 @@ export class ActivityService {
         destination: data[i].type.destination,
         amount: data[i].type.amount,
         fee: data[i].type.fee,
-        timestamp: '',
+        timestamp: null,
         type: type
       });
     }
@@ -135,11 +135,11 @@ export class ActivityService {
     console.log('Getting timestamp response, time: ' + time);
     const pkhIndex = this.transactionsData.findIndex(a => a.pkh === pkh);
     const transactionIndex = this.transactionsData[pkhIndex].transactions.findIndex(a => a.hash === hash);
-    if (!time) { time = ''; }
+    if (time) { time = new Date(time); }
     this.visibleTransactions[transactionIndex].timestamp = time;
     this.transactionsData[pkhIndex].transactions[transactionIndex].timestamp = time;
     this.timestampCounter--;
-    if (this.timestampCounter <= 10) {
+    if (this.timestampCounter <= 0) {
       this.timestampCounter = 10;
       console.log('Store transactions data');
       this.storeTransactions();
