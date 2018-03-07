@@ -26,4 +26,18 @@ export class TransactionService {
     this.messageService.add('Transation sent!');
     this.balanceService.getBalanceAll();
   }
+  setDelegate(keys: KeyPair, from: string, to: string, fee: number) {
+    if (keys) {
+      const promise = lib.eztz.rpc.setDelegate(keys, from, to, fee);
+      if (promise != null) {
+        promise.then(
+          (val) => this.successfulDelegation(val),
+          (err) => this.messageService.add('err: ' + JSON.stringify(err))
+        );
+      }
+    }
+  }
+  successfulDelegation(val: any, ) {
+    this.messageService.add('Delegate set!');
+  }
 }

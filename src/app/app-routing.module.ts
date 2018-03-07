@@ -12,6 +12,7 @@ import { SettingsComponent } from './components/settings/settings.component';
 import { SendComponent } from './components/send/send.component';
 import { NewAccountComponent } from './components/new-account/new-account.component';
 import { ReceiveComponent } from './components/receive/receive.component';
+import { DelegateComponent } from './components/delegate/delegate.component';
 
 const routes: Routes = [
   { path: '', component: StartComponent },  // Content Centre position
@@ -24,7 +25,8 @@ const routes: Routes = [
   { path: 'settings', component: SettingsComponent },
   { path: 'send', component: SendComponent },
   { path: 'new-account', component: NewAccountComponent },
-  { path: 'receive', component: ReceiveComponent }
+  { path: 'receive', component: ReceiveComponent },
+  { path: 'delegate', component: DelegateComponent }
 ];
 
 @NgModule({

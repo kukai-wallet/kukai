@@ -27,6 +27,7 @@ import { NewAccountComponent } from './components/new-account/new-account.compon
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { NewWalletComponent } from './components/new-wallet/new-wallet.component';
 import { ReceiveComponent } from './components/receive/receive.component';
+import { DelegateComponent } from './components/delegate/delegate.component';
 
 
 @NgModule({
@@ -44,7 +45,8 @@ import { ReceiveComponent } from './components/receive/receive.component';
     SettingsComponent,
     SendComponent,
     NewAccountComponent,
-    ReceiveComponent
+    ReceiveComponent,
+    DelegateComponent
   ],
   imports: [
     BrowserModule,
