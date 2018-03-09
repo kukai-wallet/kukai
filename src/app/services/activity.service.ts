@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { MessageService } from './message.service';
-import { Transaction, TransactionsData } from './../interfaces';
+import { Transaction, AccountData } from './../interfaces';
 
 const httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -13,7 +13,7 @@ export class ActivityService {
   storeKey = `kukai-transactions`;
   timestampCounter = 0; // Make sure last timestamp trigger backup
   visibleTransactions: Transaction[] = [];
-  transactionsData: TransactionsData[] = [];
+  transactionsData: AccountData[] = [];
   constructor(private http: HttpClient,
     private messageService: MessageService) { }
 
@@ -34,7 +34,7 @@ export class ActivityService {
   // if not up to data, request transactions data
   handleTransactionsCounterResponse(pkh: string, data: number) {
     const index = this.transactionsData.findIndex(a => a.pkh === pkh);
-    if (index === -1 || this.transactionsData[index].counter !== data) {
+    if (index === -1 || this.transactionsData[index].numberOfTransactions !== data) {
       console.log('Requesting transactions');
       this.getTransactions(pkh, data);
     } else {
@@ -111,12 +111,13 @@ export class ActivityService {
     if (index === -1) {
       this.transactionsData.push({
         pkh: pkh,
-        counter: counter,
+        delegate: '',
+        numberOfTransactions: counter,
         transactions: this.visibleTransactions
       });
       console.log('Creating new transactions entry');
     } else  {
-      this.transactionsData[index].counter = counter;
+      this.transactionsData[index].numberOfTransactions = counter;
       this.transactionsData[index].transactions = this.visibleTransactions;
       console.log('Update transactions entry');
     }
@@ -159,5 +160,33 @@ export class ActivityService {
     this.visibleTransactions = [];
     this.transactionsData = [];
     localStorage.removeItem(this.storeKey);
+  }
+  getDelegate(pkh: string) {
+    this.http.post('http://liquidity.tzscan.io/blocks/head/proto/context/contracts/' + pkh, '{}').subscribe(
+      data => this.handleDelegateResponse(pkh, data),
+      err => this.messageService.add(JSON.stringify(err)),
+      () => console.log('done loading delegate')
+    );
+  }
+  handleDelegateResponse(pkh: string, data: any) {
+    const index = this.transactionsData.findIndex(a => a.pkh === pkh);
+    if (index === -1) {
+      this.transactionsData.push({
+        pkh: pkh,
+        delegate: data.ok.delegate.value,
+        numberOfTransactions: 0,
+        transactions: this.visibleTransactions
+      });
+      console.log('Creating new transactions entry');
+      this.storeTransactions();
+    } else  if (this.transactionsData[index].delegate !== data.ok.delegate.value) {
+      this.transactionsData[index].numberOfTransactions = 0;
+      this.transactionsData[index].delegate = data.ok.delegate.value;
+      console.log('Update transactions entry');
+      this.storeTransactions();
+    }
+  }
+  getIndex(pkh: string): number {
+    return this.transactionsData.findIndex(a => a.pkh === pkh);
   }
 }

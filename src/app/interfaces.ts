@@ -37,8 +37,9 @@ export interface Transaction {
   timestamp: null|Date;
   type: string;
 }
-export interface TransactionsData {
+export interface AccountData {
   pkh: string;
-  counter: number;
+  delegate: string;
+  numberOfTransactions: number;
   transactions: Transaction[];
 }
