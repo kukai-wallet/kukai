@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { WalletService } from '../../services/wallet.service';
 import { Router } from '@angular/router';
 import { MessageService } from '../../services/message.service';
+import { ImportService } from '../../services/import.service';
 
 @Component({
   selector: 'app-import',
@@ -17,12 +18,13 @@ export class ImportComponent implements OnInit {
   };
   constructor(private walletService: WalletService,
     private router: Router,
-  private messageService: MessageService) { }
+    private messageService: MessageService,
+    private importService: ImportService) { }
 
   ngOnInit() {
   }
   import() {
-    if (this.walletService.importWalletData(this.encryptedWallet)) {
+    if (this.importService.importWalletData(this.encryptedWallet)) {
       this.router.navigate(['/accounts']);
     } else {
       this.messageService.add('Failed to import wallet!');

@@ -12,6 +12,7 @@ import { BalanceService } from './services/balance.service';
 import { EncryptionService } from './services/encryption.service';
 import { FaucetService } from './services/faucet.service';
 import { TransactionService } from './services/transaction.service';
+import { ImportService } from './services/import.service';
 
 import { AppComponent } from './app.component';
 import { BroadcastComponent } from './components/broadcast/broadcast.component';
@@ -25,6 +26,8 @@ import { SendComponent } from './components/send/send.component';
 import { NewAccountComponent } from './components/new-account/new-account.component';
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { NewWalletComponent } from './components/new-wallet/new-wallet.component';
+import { ReceiveComponent } from './components/receive/receive.component';
+import { DelegateComponent } from './components/delegate/delegate.component';
 
 
 @NgModule({
@@ -41,7 +44,9 @@ import { NewWalletComponent } from './components/new-wallet/new-wallet.component
     BackupComponent,
     SettingsComponent,
     SendComponent,
-    NewAccountComponent
+    NewAccountComponent,
+    ReceiveComponent,
+    DelegateComponent
   ],
   imports: [
     BrowserModule,
@@ -49,7 +54,16 @@ import { NewWalletComponent } from './components/new-wallet/new-wallet.component
     AppRoutingModule,
     HttpClientModule
   ],
-  providers: [MessageService, WalletService, ActivityService, EncryptionService, FaucetService, BalanceService, TransactionService],
+  providers: [
+    MessageService,
+    WalletService,
+    ActivityService,
+    EncryptionService,
+    FaucetService,
+    BalanceService,
+    TransactionService,
+    ImportService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

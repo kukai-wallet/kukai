@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { DatePipe } from '@angular/common';
-import { ActivityComponent } from './activity.component';
 
-describe('ActivityComponent', () => {
-  let component: ActivityComponent;
-  let fixture: ComponentFixture<ActivityComponent>;
+import { DelegateComponent } from './delegate.component';
+
+describe('DelegateComponent', () => {
+  let component: DelegateComponent;
+  let fixture: ComponentFixture<DelegateComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ActivityComponent ]
+      declarations: [ DelegateComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ActivityComponent);
+    fixture = TestBed.createComponent(DelegateComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

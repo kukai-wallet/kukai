@@ -1,0 +1,14 @@
+<div *ngIf='identity'>
+  <div class="form-group">
+    <select [(ngModel)]="activePkh" (ngModelChange)="getQR()" id="fromAdress" class="form-control">
+      <option [value]="identity.pkh">{{ identity.pkh }} ({{ identity.balance / 100}}ꜩ)</option>
+      <option *ngFor="let account of accounts" [value]="account.pkh">{{ account.pkh }} ({{account.balance / 100}}ꜩ)</option>
+    </select>
+  </div>
+  <div *ngIf='activePkh'>
+    <canvas id='canvas'></canvas>
+  </div>
+</div>
+<div *ngIf='!identity'>
+  Wallet not configured
+</div>

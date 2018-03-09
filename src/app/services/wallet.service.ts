@@ -47,7 +47,7 @@ export class WalletService {
       promise.then(
         (val) => {this.addAccount(val.contracts[0]);
           this.messageService.add('New account created!'); },
-        (err) => this.messageService.add('Create new account failed: ' + err)
+        (err) => this.messageService.add('Create new account failed: ' + JSON.stringify(err))
       );
     }
   }
@@ -61,13 +61,12 @@ export class WalletService {
     });
     this.storeWallet();
   }
+  /*
+    Help functions
+  */
   getIndexFromPkh(pkh: string): number {
     return this.wallet.accounts.findIndex(a => a.pkh === pkh);
   }
-
-  /*
-    Send transactions (transfer : function(keys, from, to, amount, fee))
-  */
   getKeys(password: string): KeyPair {
     const mnemonic = this.encryptionService.decrypt(this.wallet.encryptedMnemonic, password, this.wallet.salt);
     if (!mnemonic) {
@@ -76,35 +75,6 @@ export class WalletService {
       return lib.eztz.crypto.generateKeys(mnemonic, '');
     }
     return null;
-  }
-  /*
-    Import wallet from Json
-  */
-  importWalletData(json: string): boolean {
-    try {
-      const walletData = JSON.parse(json);
-      if (walletData.wallet !== 'Kukai' || walletData.type !== 'FullWallet') {
-        throw new Error(`Unsupported wallet format`);
-      }
-      this.wallet = this.emptyWallet();
-      this.wallet.identity = this.importIdentity(walletData.pkh);
-      this.wallet.encryptedMnemonic = walletData.seed;
-      this.wallet.salt = walletData.salt;
-      this.storeWallet();
-      return true;
-    } catch (err) {
-      this.messageService.add(err);
-      return false;
-    }
-  }
-  importIdentity(pkh: string): Identity {
-    return {
-      pkh: pkh,
-      balance: 0,
-      pending: 0,
-      balanceFiat: 0,
-      pendingFiat: 0
-    };
   }
   /*
     Clear wallet data from browser

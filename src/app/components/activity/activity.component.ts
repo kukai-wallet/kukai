@@ -26,4 +26,11 @@ export class ActivityComponent implements OnInit {
   getTransactions() {
     this.activityService.updateTransactions(this.activePkh);
   }
+  getStatus(hash: string): string {
+    if (hash === 'prevalidation') {
+      return 'Unconfirmed';
+    } else {
+      return 'Confirmed';
+    }
+  }
 }

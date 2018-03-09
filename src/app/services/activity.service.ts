@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { MessageService } from './message.service';
-import { Transaction, TransactionsData } from './../interfaces';
+import { Transaction, AccountData } from './../interfaces';
 
 const httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -13,7 +13,7 @@ export class ActivityService {
   storeKey = `kukai-transactions`;
   timestampCounter = 0; // Make sure last timestamp trigger backup
   visibleTransactions: Transaction[] = [];
-  transactionsData: TransactionsData[] = [];
+  transactionsData: AccountData[] = [];
   constructor(private http: HttpClient,
     private messageService: MessageService) { }
 
@@ -34,16 +34,44 @@ export class ActivityService {
   // if not up to data, request transactions data
   handleTransactionsCounterResponse(pkh: string, data: number) {
     const index = this.transactionsData.findIndex(a => a.pkh === pkh);
-    if (index === -1 || this.transactionsData[index].counter !== data) {
+    if (index === -1 || this.transactionsData[index].numberOfTransactions !== data) {
       console.log('Requesting transactions');
       this.getTransactions(pkh, data);
     } else {
       console.log('Transactions up to date');
-      if (this.visibleTransactions.findIndex(a => a.timestamp === '') !== -1) {
-        this.getTransactions(pkh, data);
+      if (this.visibleTransactions.findIndex(a => a.block === 'prevalidation') !== -1) {
+        this.getUnconfirmedTransactions(pkh);
       }
     }
   }
+  // Try to validate unconfirmed transaction
+  getUnconfirmedTransactions(pkh: string) {
+    let n = 0;
+    for (let i = 0; i < this.visibleTransactions.length; i++) {
+      if (this.visibleTransactions[i].block === 'prevalidation') {
+        n = i + 1;
+      } else {
+        break;
+      }
+    }
+    this.http.get('https://api.tzscan.io/v1/operations/' + pkh + '?type=Transaction&number=' + n + '&p=0').subscribe(
+      data => this.handleUnconfirmedTransactionsResponse(pkh, data),
+      err => this.messageService.add(JSON.stringify(err)),
+      () => console.log('done loading transactions')
+    );
+  }
+  handleUnconfirmedTransactionsResponse(pkh: string, data: any) {
+    this.timestampCounter = data.length;
+    for (let i = 0; i < data.length; i++) {
+      if (this.visibleTransactions[i].hash === data[i].hash) {
+        this.visibleTransactions[i].block = data[i].block_hash;
+        const index = this.transactionsData.findIndex(a => a.pkh === pkh);
+        this.transactionsData[index].transactions[i].block = data[i].block_hash;
+        this.getTimestamp(pkh, data[i].block_hash, data[i].hash);
+      }
+    }
+  }
+  // Get latest transaction
   getTransactions(pkh: string, counter: number) {
     this.http.get('https://api.tzscan.io/v1/operations/' + pkh + '?type=Transaction&number=10&p=0').subscribe(
       data => this.handleTransactionsResponse(pkh, data, counter),
@@ -52,7 +80,7 @@ export class ActivityService {
     );
   }
   handleTransactionsResponse(pkh: string, data: any, counter: number) {
-    // this.visibleTransactions = [];
+    this.timestampCounter = data.length;
     const newVisibleTransactions: Transaction[] = [];
     for (let i = 0; i < data.length; i++) {
       let type;
@@ -63,7 +91,7 @@ export class ActivityService {
           type = 'Send';
         }
       } else if (pkh === data[i].type.destination) {
-        type = 'Recieve';
+        type = 'Receive';
       } else {
         type = 'Unknown';
       }
@@ -74,26 +102,24 @@ export class ActivityService {
         destination: data[i].type.destination,
         amount: data[i].type.amount,
         fee: data[i].type.fee,
-        timestamp: '',
+        timestamp: null,
         type: type
       });
     }
     this.visibleTransactions = newVisibleTransactions;
-    // Add new entry if needed or update current entry
     const index = this.transactionsData.findIndex(a => a.pkh === pkh);
     if (index === -1) {
       this.transactionsData.push({
         pkh: pkh,
-        counter: counter,
+        delegate: '',
+        numberOfTransactions: counter,
         transactions: this.visibleTransactions
       });
       console.log('Creating new transactions entry');
-    } else if (counter !== this.transactionsData[index].counter) {
-      this.transactionsData[index].counter = counter;
+    } else  {
+      this.transactionsData[index].numberOfTransactions = counter;
       this.transactionsData[index].transactions = this.visibleTransactions;
       console.log('Update transactions entry');
-    } else {
-      console.log('Should be unreachable in: handleTransactionsResponse())');
     }
     for (let i = 0; i < this.visibleTransactions.length; i++) {
       this.getTimestamp(pkh, this.visibleTransactions[i].block, this.visibleTransactions[i].hash);
@@ -110,12 +136,12 @@ export class ActivityService {
     console.log('Getting timestamp response, time: ' + time);
     const pkhIndex = this.transactionsData.findIndex(a => a.pkh === pkh);
     const transactionIndex = this.transactionsData[pkhIndex].transactions.findIndex(a => a.hash === hash);
-    if (!time) { time = ''; }
+    if (time) { time = new Date(time); }
     this.visibleTransactions[transactionIndex].timestamp = time;
     this.transactionsData[pkhIndex].transactions[transactionIndex].timestamp = time;
-    this.timestampCounter++;
-    if (this.timestampCounter >= 10) {
-      this.timestampCounter = 0;
+    this.timestampCounter--;
+    if (this.timestampCounter <= 0) {
+      this.timestampCounter = 10;
       console.log('Store transactions data');
       this.storeTransactions();
     }
@@ -134,5 +160,33 @@ export class ActivityService {
     this.visibleTransactions = [];
     this.transactionsData = [];
     localStorage.removeItem(this.storeKey);
+  }
+  getDelegate(pkh: string) {
+    this.http.post('http://liquidity.tzscan.io/blocks/head/proto/context/contracts/' + pkh, '{}').subscribe(
+      data => this.handleDelegateResponse(pkh, data),
+      err => this.messageService.add(JSON.stringify(err)),
+      () => console.log('done loading delegate')
+    );
+  }
+  handleDelegateResponse(pkh: string, data: any) {
+    const index = this.transactionsData.findIndex(a => a.pkh === pkh);
+    if (index === -1) {
+      this.transactionsData.push({
+        pkh: pkh,
+        delegate: data.ok.delegate.value,
+        numberOfTransactions: 0,
+        transactions: this.visibleTransactions
+      });
+      console.log('Creating new transactions entry');
+      this.storeTransactions();
+    } else  if (this.transactionsData[index].delegate !== data.ok.delegate.value) {
+      this.transactionsData[index].numberOfTransactions = 0;
+      this.transactionsData[index].delegate = data.ok.delegate.value;
+      console.log('Update transactions entry');
+      this.storeTransactions();
+    }
+  }
+  getIndex(pkh: string): number {
+    return this.transactionsData.findIndex(a => a.pkh === pkh);
   }
 }

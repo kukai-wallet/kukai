@@ -1,6 +1,7 @@
 <div *ngIf='identity'>
   <table>
-    <tr *ngIf='identity'><td>{{ walletService.wallet.identity.pkh }}</td><td>{{ walletService.wallet.identity.balance / 100 }}ꜩ</td><td><a (click)='freeTezzies(identity.pkh)'>Free tezzies</a></td></tr>
+    <tr *ngIf='identity'><td>{{ walletService.wallet.identity.pkh }}</td>
+      <td>{{ walletService.wallet.identity.balance / 100 }}ꜩ</td><td><a onclick="return false;" href (click)='freeTezzies(identity.pkh)'>Free tezzies</a></td></tr>
     <tr  *ngFor="let account of walletService.wallet.accounts">
       <td>{{ account.pkh }}</td><td>{{ account.balance / 100 }}ꜩ</td><td></td>
     </tr>

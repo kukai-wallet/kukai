@@ -34,11 +34,12 @@ export interface Transaction {
   destination: string;
   amount: number;
   fee: number;
-  timestamp: string|null;
+  timestamp: null|Date;
   type: string;
 }
-export interface TransactionsData {
+export interface AccountData {
   pkh: string;
-  counter: number;
+  delegate: string;
+  numberOfTransactions: number;
   transactions: Transaction[];
 }
