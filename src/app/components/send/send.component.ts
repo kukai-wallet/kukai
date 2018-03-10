@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+
 import { WalletService } from '../../services/wallet.service';
 import { MessageService } from '../../services/message.service';
 import { TransactionService } from '../../services/transaction.service';
@@ -6,6 +8,7 @@ import { TransactionService } from '../../services/transaction.service';
 @Component({
   selector: 'app-send',
   templateUrl: './send.component.html',
+  encapsulation: ViewEncapsulation.None,
   styleUrls: ['./send.component.scss']
 })
 export class SendComponent implements OnInit {
@@ -16,11 +19,19 @@ export class SendComponent implements OnInit {
   amount: string;
   fee: string;
   password: string;
+
+  closeResult: string;
+
   constructor(
+    private modalService: NgbModal,
     private walletService: WalletService,
     private messageService: MessageService,
     private transactionService: TransactionService
   ) { }
+
+  open(content) {
+    this.modalService.open(content, { windowClass: 'dark-modal' });
+  }
 
   ngOnInit() {
     if (this.identity) {

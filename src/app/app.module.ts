@@ -4,6 +4,10 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 
+//External libraries
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
+//Services
 import { MessagesComponent } from './components/messages/messages.component';
 import { MessageService } from './services/message.service';
 import { WalletService } from './services/wallet.service';
@@ -15,6 +19,8 @@ import { TransactionService } from './services/transaction.service';
 import { ImportService } from './services/import.service';
 
 import { AppComponent } from './app.component';
+
+//View components
 import { BroadcastComponent } from './components/broadcast/broadcast.component';
 import { ImportComponent } from './components/import/import.component';
 import { StartComponent } from './components/start/start.component';
@@ -52,7 +58,8 @@ import { DelegateComponent } from './components/delegate/delegate.component';
     BrowserModule,
     FormsModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    NgbModule.forRoot()
   ],
   providers: [
     MessageService,

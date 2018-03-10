@@ -1,3 +1,106 @@
+
+<!-- Modal -->
+
+    <ng-template #sendModal1 let-c="close" let-d="dismiss">
+
+        <div class="modal-header">
+            <h4 class="modal-title">Send Tezos</h4>
+
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <div class="modal-body">
+
+                <div class="form-group">
+                    <label for="fromAdress">From:</label>
+                    <select [(ngModel)]="fromPkh" id="fromAdress" class="form-control">
+                        <option [value]="identity.pkh">{{ identity.pkh }} ({{ identity.balance / 100}}ꜩ)</option>
+                        <option *ngFor="let account of accounts" [value]="account.pkh">{{ account.pkh }} ({{account.balance / 100}}ꜩ)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="toAddress">To:</label>
+                    <input [(ngModel)]="toPkh" type="text" id="toAddress" class="form-control">
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label for="ammount">Amount:</label>
+                        <input [(ngModel)]="amount" type="text" id="ammount" class="form-control" placeholder="0.00">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="fee">Fee:</label>
+                        <input [(ngModel)]="fee" type="text" id="fee" class="form-control" placeholder="0.00">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label for="pwd">Password:</label>
+                        <input [(ngModel)]="password" type="password" id="pwd" class="form-control">
+                    </div>
+                </div>
+
+                
+        </div>
+
+        <div class="modal-footer">
+            <!-- <button type="button" class="btn btn-primary" (click)="c('Close click')">Close</button> -->
+
+            <button type="button" class="btn btn-primary" id="sub" (click)="sendTransaction()">Send</button>
+        </div>
+    </ng-template>
+
+    <ng-template #sendModal2 let-c="close" let-d="dismiss">
+
+        <div class="modal-header">
+            <h4 class="modal-title">Send Tezos</h4>
+
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <div class="modal-body">
+            <p>One fine body&hellip;</p>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" (click)="c('Close click')">Close</button>
+        </div>
+    </ng-template>
+
+    <ng-template #sendModal3 let-c="close" let-d="dismiss">
+
+        <div class="modal-header">
+            <h4 class="modal-title">Success</h4>
+
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <div class="modal-body modal-body-success">
+
+            <i class="fa fa-check-circle"></i>
+
+            <br><br>
+
+            <p>Your transaction has been successfully transmitted to the network</p>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" (click)="c('Close click')">Close</button>
+        </div>
+    </ng-template>
+
+<!-- Button trigger modal -->
+<button class="btn btn-lg btn-primary" (click)="open(sendModal1)">Launch Windows 1</button>
+<button class="btn btn-lg btn-primary" (click)="open(sendModal2)">Launch Windows 2</button>
+<button class="btn btn-lg btn-primary" (click)="open(sendModal3)">Launch Windows 3</button>
+
+
+<!--
 <div *ngIf='identity'>
   <div class="form-group">
     <label for="fromAdress">From:</label>
@@ -28,6 +131,7 @@
   </div>
   <button id="sub" (click)="sendTransaction()" class="btn btn-primary">Send</button>
 </div>
+-->
 <p *ngIf='!identity'>
     Wallet not configured
 </p>
