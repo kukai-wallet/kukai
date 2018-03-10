@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { WalletService } from '../../services/wallet.service';
 import { MessageService } from '../../services/message.service';
 import { TransactionService } from '../../services/transaction.service';
+import { ActivityService } from '../../services/activity.service';
 
 @Component({
   selector: 'app-delegate',
@@ -11,14 +12,17 @@ import { TransactionService } from '../../services/transaction.service';
 export class DelegateComponent implements OnInit {
   identity = this.walletService.wallet.identity;
   accounts = this.walletService.wallet.accounts;
+  transactionData = this.activityService.transactionsData;
   fromPkh: string;
   toPkh: string;
+  delegate = '';
   fee: string;
   password: string;
   constructor(
     private walletService: WalletService,
     private messageService: MessageService,
-    private transactionService: TransactionService
+    private transactionService: TransactionService,
+    private activityService: ActivityService
   ) { }
 
   ngOnInit() {
@@ -29,7 +33,11 @@ export class DelegateComponent implements OnInit {
   init() {
     if (this.accounts[0]) {
       this.fromPkh = this.accounts[0].pkh;
+      this.getDelegate();
     }
+  }
+  getDelegate() {
+    this.activityService.getDelegate(this.fromPkh);
   }
   setDelegate() {
     const pwd = this.password;
