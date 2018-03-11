@@ -11,20 +11,24 @@ export class TransactionService {
     private messageService: MessageService,
     private balanceService: BalanceService
   ) { }
-  sendTransaction(keys: KeyPair, from: string, to: string, amount: number, fee: number) {
+  async sendTransaction(keys: KeyPair, from: string, to: string, amount: number, fee: number): Promise<boolean> {
     if (keys) {
       const promise = lib.eztz.rpc.transfer(keys, from, to, amount, fee);
       if (promise != null) {
-        promise.then(
+        return promise.then(
           (val) => this.successfulTransaction(val),
-          (err) => this.messageService.add('err: ' + JSON.stringify(err))
+          (err) => this.unSsuccessfulTransaction(err)
         );
       }
     }
   }
-  successfulTransaction(val: any, ) {
-    this.messageService.add('Transation sent!');
+  successfulTransaction(val: any, ): boolean {
     this.balanceService.getBalanceAll();
+    return true;
+  }
+  unSsuccessfulTransaction(err: any, ) {
+    this.messageService.add('err: ' + JSON.stringify(err));
+    return false;
   }
   setDelegate(keys: KeyPair, from: string, to: string, fee: number) {
     if (keys) {

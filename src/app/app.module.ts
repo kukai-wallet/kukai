@@ -3,11 +3,14 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
+import { BsModalService } from 'ngx-bootstrap/modal';
 
-//External libraries
+// External libraries
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ComponentLoaderFactory } from 'ngx-bootstrap/component-loader/component-loader.factory';
+import { ModalModule } from 'ngx-bootstrap';
 
-//Services
+// Services
 import { MessagesComponent } from './components/messages/messages.component';
 import { MessageService } from './services/message.service';
 import { WalletService } from './services/wallet.service';
@@ -20,7 +23,7 @@ import { ImportService } from './services/import.service';
 
 import { AppComponent } from './app.component';
 
-//View components
+// View components
 import { BroadcastComponent } from './components/broadcast/broadcast.component';
 import { ImportComponent } from './components/import/import.component';
 import { StartComponent } from './components/start/start.component';
@@ -34,6 +37,7 @@ import { HomePageComponent } from './components/home-page/home-page.component';
 import { NewWalletComponent } from './components/new-wallet/new-wallet.component';
 import { ReceiveComponent } from './components/receive/receive.component';
 import { DelegateComponent } from './components/delegate/delegate.component';
+import { PositioningService } from 'ngx-bootstrap/positioning';
 
 
 @NgModule({
@@ -59,7 +63,8 @@ import { DelegateComponent } from './components/delegate/delegate.component';
     FormsModule,
     AppRoutingModule,
     HttpClientModule,
-    NgbModule.forRoot()
+    NgbModule.forRoot(),
+    ModalModule.forRoot()
   ],
   providers: [
     MessageService,
@@ -69,7 +74,10 @@ import { DelegateComponent } from './components/delegate/delegate.component';
     FaucetService,
     BalanceService,
     TransactionService,
-    ImportService
+    ImportService,
+    BsModalService,
+    ComponentLoaderFactory,
+    PositioningService
   ],
   bootstrap: [AppComponent]
 })
