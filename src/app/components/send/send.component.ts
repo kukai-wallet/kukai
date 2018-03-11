@@ -23,7 +23,8 @@ export class SendComponent implements OnInit {
   amount: string;
   fee: string;
   password: string;
-  pwdValid = '';
+  pwdValid: string;
+  formInvalid = '';
   sendResponse: string;
   // closeResult: string;
   modalRef1: BsModalRef;
@@ -40,7 +41,8 @@ export class SendComponent implements OnInit {
     this.modalRef1 = this.modalService.show(template1, { class: 'modal-sm' });
   }
   open2(template: TemplateRef<any>) {
-    if (this.validInput()) {
+    this.formInvalid = this.invalidInput();
+    if (!this.formInvalid) {
       this.close1();
       this.modalRef2 = this.modalService.show(template, { class: 'second' });
     }
@@ -95,16 +97,15 @@ export class SendComponent implements OnInit {
         }
       }, 100);
   }
-  validInput() {
+  invalidInput(): string {
     if (!this.toPkh || this.toPkh.length !== 36) {
-      this.messageService.add('invalid reciever address');
+      return 'invalid reciever address';
     } else if (!Number(this.amount) && this.amount && this.amount !== '0') {
-      this.messageService.add('invalid amount');
+      return 'invalid amount';
     } else if (!Number(this.fee) && this.fee && this.fee !== '0') {
-      this.messageService.add('invalid fee');
+      return 'invalid fee';
     } else {
-      return true;
+      return '';
     }
-    return false;
   }
 }
