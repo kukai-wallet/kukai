@@ -9,6 +9,8 @@
   <div class="form-group">
     <label for="toAddress">To:</label>
     <input [(ngModel)]="toPkh" type="text" id="toAddress" class="form-control">
+    <ng-container *ngFor="let data of transactionData"><small *ngIf="data.pkh === fromPkh" id="currentDelegate" class="form-text text-muted">
+      Current delegate: {{ data.delegate }}</small></ng-container>
   </div>
   <div class="row">
     <div class="form-group col-md-6">
