@@ -1,8 +1,10 @@
 <div id="content">
   <div class="center-content">
-
+    <div class="card text-center fix-size entropy" *ngIf="activePanel==0">
+      Please move the mous over the screen to create extra randomness for the wallet creation... {{ counter2 }}%
+    </div>
     <!-- Seed card -->
-    <div class="card text-center fix-size" *ngIf="activePanel==1">
+    <div class="card text-center fix-size" *ngIf="activePanel==2">
       <div class="card-body">
         <h1 class="card-title">Save your Seed</h1>
         <div class="card-text">
@@ -20,7 +22,7 @@
     </div>
 
     <!-- Password card -->
-    <div class="card text-center fix-size" *ngIf="activePanel==2">
+    <div class="card text-center fix-size" *ngIf="activePanel==3">
         <div class="card-body">
           <h1 class="card-title">Choose your Password</h1>
           <div class="card-text">            
@@ -50,7 +52,7 @@
     </div>
 
     <!-- Seed card -->
-    <div class="card text-center fix-size" *ngIf="activePanel==3">
+    <div class="card text-center fix-size" *ngIf="activePanel==4">
       <div class="card-body">
         <h1 class="card-title">Wallet created</h1>
         <div class="card-text">

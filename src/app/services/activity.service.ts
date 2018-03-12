@@ -28,7 +28,7 @@ export class ActivityService {
   getTransactonsCounter(pkh) {
     this.http.get('https://api.tzscan.io/v1/number_operations/' + pkh + '?type=Transaction').subscribe(
       data => this.handleTransactionsCounterResponse(pkh, data[0]),
-      err => this.messageService.add(JSON.stringify(err))
+      err => this.messageService.addError(JSON.stringify(err))
     );
   }
   // if not up to data, request transactions data
@@ -38,9 +38,11 @@ export class ActivityService {
       console.log('Requesting transactions');
       this.getTransactions(pkh, data);
     } else {
-      console.log('Transactions up to date');
       if (this.visibleTransactions.findIndex(a => a.block === 'prevalidation') !== -1) {
+        console.log('Trying to validate blocks');
         this.getUnconfirmedTransactions(pkh);
+      } else {
+        console.log('Transactions up to date');
       }
     }
   }
@@ -56,8 +58,7 @@ export class ActivityService {
     }
     this.http.get('https://api.tzscan.io/v1/operations/' + pkh + '?type=Transaction&number=' + n + '&p=0').subscribe(
       data => this.handleUnconfirmedTransactionsResponse(pkh, data),
-      err => this.messageService.add(JSON.stringify(err)),
-      () => console.log('done loading transactions')
+      err => this.messageService.addError(JSON.stringify(err))
     );
   }
   handleUnconfirmedTransactionsResponse(pkh: string, data: any) {
@@ -67,7 +68,9 @@ export class ActivityService {
         this.visibleTransactions[i].block = data[i].block_hash;
         const index = this.transactionsData.findIndex(a => a.pkh === pkh);
         this.transactionsData[index].transactions[i].block = data[i].block_hash;
-        this.getTimestamp(pkh, data[i].block_hash, data[i].hash);
+        if (data[i].block_hash !== 'prevalidation') {
+          this.getTimestamp(pkh, data[i].block_hash, data[i].hash);
+        }
       }
     }
   }
@@ -75,7 +78,7 @@ export class ActivityService {
   getTransactions(pkh: string, counter: number) {
     this.http.get('https://api.tzscan.io/v1/operations/' + pkh + '?type=Transaction&number=10&p=0').subscribe(
       data => this.handleTransactionsResponse(pkh, data, counter),
-      err => this.messageService.add(JSON.stringify(err)),
+      err => this.messageService.addError(JSON.stringify(err)),
       () => console.log('done loading transactions')
     );
   }
@@ -122,18 +125,20 @@ export class ActivityService {
       console.log('Update transactions entry');
     }
     for (let i = 0; i < this.visibleTransactions.length; i++) {
-      this.getTimestamp(pkh, this.visibleTransactions[i].block, this.visibleTransactions[i].hash);
+      if (this.visibleTransactions[i].block !== 'prevalidation') {
+        this.getTimestamp(pkh, this.visibleTransactions[i].block, this.visibleTransactions[i].hash);
+      } else {
+        this.timestampCounter--;
+      }
     }
   }
   getTimestamp(pkh: string, block: string, hash) {
-    console.log('Sending timestamp request');
     this.http.get('https://api.tzscan.io/v1/timestamp/' + block).subscribe(
       data => this.handleTimestampResponse(pkh, block, data, hash),
-      err => this.messageService.add(JSON.stringify(err))
+      err => this.messageService.addError(JSON.stringify(err))
     );
   }
   handleTimestampResponse(pkh: string, block: string, time: any, hash: any) {
-    console.log('Getting timestamp response, time: ' + time);
     const pkhIndex = this.transactionsData.findIndex(a => a.pkh === pkh);
     const transactionIndex = this.transactionsData[pkhIndex].transactions.findIndex(a => a.hash === hash);
     if (time) { time = new Date(time); }
@@ -164,7 +169,7 @@ export class ActivityService {
   getDelegate(pkh: string) {
     this.http.post('http://liquidity.tzscan.io/blocks/head/proto/context/contracts/' + pkh, '{}').subscribe(
       data => this.handleDelegateResponse(pkh, data),
-      err => this.messageService.add(JSON.stringify(err)),
+      err => this.messageService.addError(JSON.stringify(err)),
       () => console.log('done loading delegate')
     );
   }

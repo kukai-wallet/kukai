@@ -32,7 +32,7 @@ export class ImportService {
       await this.findNumberOfAccounts(walletData.pkh);
       return true;
     } catch (err) {
-      this.messageService.add(err);
+      this.messageService.addError(err);
       return false;
     }
   }
@@ -49,7 +49,7 @@ export class ImportService {
     console.log('Find accounts...');
     this.http.get('http://api.tzscan.io/v1/number_operations/' + pkh + '?type=Origination').subscribe(
       data => this.findAccounts(pkh, data[0]),
-      err => this.messageService.add(JSON.stringify(err))
+      err => this.messageService.addError(JSON.stringify(err))
     );
   }
   findAccounts(pkh: string, n: number) {
@@ -63,7 +63,7 @@ export class ImportService {
         }
         this.walletService.storeWallet();
       },
-      err => this.messageService.add(JSON.stringify(err))
+      err => this.messageService.addError(JSON.stringify(err))
     );
   }
 }

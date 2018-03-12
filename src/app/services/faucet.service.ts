@@ -14,8 +14,8 @@ export class FaucetService {
       const promise = lib.eztz.alphanet.faucet(pkh);
       if (promise) {
         return promise.then(
-          (val) => { this.messageService.add('Here you got 100 000ꜩ!'); return true; },
-          (err) => { this.messageService.add('Error from faucet: ' + JSON.stringify(err)); return false; }
+          (val) => { this.messageService.addSuccess('Here you got 100 000ꜩ!'); return true; },
+          (err) => { this.messageService.addError('Error from faucet: ' + JSON.stringify(err)); return false; }
         );
       }
     } else {

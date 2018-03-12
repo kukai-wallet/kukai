@@ -17,14 +17,22 @@ export class WalletService {
   /*
     Wallet creation
   */
-  createNewWallet(): string {
-    return bip39.generateMnemonic();
+  createNewWallet(extraEntropy: string): string {
+    const entropy = bip39.mnemonicToEntropy(bip39.generateMnemonic());
+    let mixed = '';
+    for (let i = 0; i < 32; i++) {
+      mixed = mixed + (Number('0x' + entropy[i]) ^ Number('0x' + extraEntropy[i])).toString(16);
+    }
+    if (mixed.length !== 32) {
+      return null;
+    }
+    return bip39.entropyToMnemonic(mixed);
   }
   createEncryptedWallet(mnemonic: string, password: string): any {
     this.wallet.salt =  rnd2('aA0', 32);
     this.wallet.accounts = [];
     this.wallet.identity = this.createIdentity(mnemonic);
-    this.wallet.encryptedMnemonic = this.encryptionService.encrypt(mnemonic, password, this.wallet.salt);
+    this.wallet.encryptedMnemonic = this.encryptionService.encrypt(bip39.mnemonicToEntropy(mnemonic), password, this.wallet.salt);
     return {wallet: 'Kukai', type: 'FullWallet', version: '1.0', seed: this.wallet.encryptedMnemonic,
             salt: this.wallet.salt, pkh: this.wallet.identity.pkh};
   }
@@ -46,8 +54,8 @@ export class WalletService {
     if (promise != null) {
       promise.then(
         (val) => {this.addAccount(val.contracts[0]);
-          this.messageService.add('New account created!'); },
-        (err) => this.messageService.add('Create new account failed: ' + JSON.stringify(err))
+          this.messageService.addSuccess('New account created!'); },
+        (err) => this.messageService.addError('Create new account failed: ' + JSON.stringify(err))
       );
     }
   }
@@ -68,10 +76,11 @@ export class WalletService {
     return this.wallet.accounts.findIndex(a => a.pkh === pkh);
   }
   getKeys(password: string): KeyPair {
-    const mnemonic = this.encryptionService.decrypt(this.wallet.encryptedMnemonic, password, this.wallet.salt);
+    let mnemonic = this.encryptionService.decrypt(this.wallet.encryptedMnemonic, password, this.wallet.salt);
     if (!mnemonic) {
-      this.messageService.add('Decryption failed');
+      this.messageService.addError('Decryption failed');
     } else {
+      mnemonic = bip39.entropyToMnemonic(mnemonic);
       return lib.eztz.crypto.generateKeys(mnemonic, '');
     }
     return null;

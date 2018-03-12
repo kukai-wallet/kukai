@@ -1,3 +1,192 @@
+
+<!-- First Modal -->
+<ng-template #modal1>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Send tezzies</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="close1()">
+            <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body">
+        <div class="form-group">
+            <label for="fromAdress">From:</label>
+            <select [(ngModel)]="fromPkh" id="fromAdress" class="form-control">
+                <option [value]="identity.pkh">{{ identity.pkh }} ({{ identity.balance / 100 | number:'1.0' }}ꜩ)</option>
+                <option *ngFor="let account of accounts" [value]="account.pkh">{{ account.pkh }} ({{account.balance / 100 | number:'1.0' }}ꜩ)</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="toAddress">To:</label>
+            <input [(ngModel)]="toPkh" type="text" id="toAddress" class="form-control">
+        </div>
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label for="ammount">Amount:</label>
+                <input [(ngModel)]="amount" type="text" id="ammount" class="form-control" placeholder="0.00">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="fee">Fee:</label>
+                <input [(ngModel)]="fee" type="text" id="fee" class="form-control" placeholder="0.00">
+            </div>
+        </div>
+        <button type="button" class="btn btn-primary" id="sub" (click)="open2(modal2)">Preview</button>
+        {{ formInvalid }}
+    </div>
+    
+</ng-template>
+
+<!-- Confirmation Modal -->
+<ng-template #modal2>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Authenticate transaction</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="close2()">
+            <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+                <p>From: {{ fromPkh }}
+                To: {{ toPkh }}
+                Amount: {{ amount | number:'1.0' }}
+                Fee: {{ fee | number:'1.0' }}</p>
+            <div class="form-group col-md-6">
+                <label for="pwd">Password:</label>
+                <input [(ngModel)]="password" type="password" id="pwd" class="form-control">
+            </div>
+        </div>
+        <button type="button" class="btn btn-primary" id="sub" (click)="open3(modal3)">Confirm</button>
+        {{ pwdValid }}
+    </div>
+</ng-template>
+
+<!-- Final Modal -->
+<ng-template #modal3>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Confirmation</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="close3()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div *ngIf='!sendResponse'>
+            Please wait...
+        </div>
+
+        <div *ngIf='sendResponse === "success"'>
+            <i class="fa fa-check-circle"></i>
+            <br><br>
+            <p>Your transaction has been successfully transmitted to the network</p>
+        </div>
+
+        <div *ngIf='sendResponse === "failure"'>
+            Failure!
+        </div>
+        <button type="button" class="btn btn-primary" id="sub" (click)="close3()">Close</button>
+    </div>
+</ng-template>
+
+
+<!-- Button trigger modal
+<button class="btn btn-lg btn-primary" (click)="open1(modal1)">Launch Windows 1</button>
+-->
+
+  <!--
+    <ng-template #sendModal1>
+
+        <div class="modal-header">
+            <h4 class="modal-title">Send Tezos</h4>
+
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+
+                <div class="form-group">
+                    <label for="fromAdress">From:</label>
+                    <select [(ngModel)]="fromPkh" id="fromAdress" class="form-control">
+                        <option [value]="identity.pkh">{{ identity.pkh }} ({{ identity.balance / 100}}ꜩ)</option>
+                        <option *ngFor="let account of accounts" [value]="account.pkh">{{ account.pkh }} ({{account.balance / 100}}ꜩ)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="toAddress">To:</label>
+                    <input [(ngModel)]="toPkh" type="text" id="toAddress" class="form-control">
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label for="ammount">Amount:</label>
+                        <input [(ngModel)]="amount" type="text" id="ammount" class="form-control" placeholder="0.00">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="fee">Fee:</label>
+                        <input [(ngModel)]="fee" type="text" id="fee" class="form-control" placeholder="0.00">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label for="pwd">Password:</label>
+                        <input [(ngModel)]="password" type="password" id="pwd" class="form-control">
+                    </div>
+                </div>
+
+                
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" (click)="c('Close click')">Close</button>
+
+            <button type="button" class="btn btn-primary" id="sub" (click)="sendTransaction()">Send</button>
+        </div>
+    </ng-template>
+-->
+<!--
+    <ng-template #sendModal2 let-c="close" let-d="dismiss">
+
+        <div class="modal-header">
+            <h4 class="modal-title">Send Tezos</h4>
+
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <div class="modal-body">
+            <p>One fine body&hellip;</p>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" (click)="c('Close click')">Close</button>
+        </div>
+    </ng-template>
+
+    <ng-template #sendModal3 let-c="close" let-d="dismiss">
+
+        <div class="modal-header">
+            <h4 class="modal-title">Success</h4>
+
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <div class="modal-body modal-body-success">
+
+            <i class="fa fa-check-circle"></i>
+
+            <br><br>
+
+            <p>Your transaction has been successfully transmitted to the network</p>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" (click)="c('Close click')">Close</button>
+        </div>
+    </ng-template>
+
+
+<!--
 <div *ngIf='identity'>
   <div class="form-group">
     <label for="fromAdress">From:</label>
@@ -28,6 +217,7 @@
   </div>
   <button id="sub" (click)="sendTransaction()" class="btn btn-primary">Send</button>
 </div>
+-->
 <p *ngIf='!identity'>
     Wallet not configured
 </p>

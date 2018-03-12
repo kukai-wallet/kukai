@@ -11,20 +11,24 @@ export class TransactionService {
     private messageService: MessageService,
     private balanceService: BalanceService
   ) { }
-  sendTransaction(keys: KeyPair, from: string, to: string, amount: number, fee: number) {
+  async sendTransaction(keys: KeyPair, from: string, to: string, amount: number, fee: number): Promise<boolean> {
     if (keys) {
       const promise = lib.eztz.rpc.transfer(keys, from, to, amount, fee);
       if (promise != null) {
-        promise.then(
+        return promise.then(
           (val) => this.successfulTransaction(val),
-          (err) => this.messageService.add('err: ' + JSON.stringify(err))
+          (err) => this.unSsuccessfulTransaction(err)
         );
       }
     }
   }
-  successfulTransaction(val: any, ) {
-    this.messageService.add('Transation sent!');
+  successfulTransaction(val: any, ): boolean {
     this.balanceService.getBalanceAll();
+    return true;
+  }
+  unSsuccessfulTransaction(err: any, ) {
+    this.messageService.addError('err: ' + JSON.stringify(err));
+    return false;
   }
   setDelegate(keys: KeyPair, from: string, to: string, fee: number) {
     if (keys) {
@@ -32,12 +36,12 @@ export class TransactionService {
       if (promise != null) {
         promise.then(
           (val) => this.successfulDelegation(val),
-          (err) => this.messageService.add('err: ' + JSON.stringify(err))
+          (err) => this.messageService.addError('err: ' + JSON.stringify(err))
         );
       }
     }
   }
   successfulDelegation(val: any, ) {
-    this.messageService.add('Delegate set!');
+    this.messageService.addSuccess('Delegate set!');
   }
 }

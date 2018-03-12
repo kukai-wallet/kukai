@@ -25,12 +25,14 @@ export class BalanceService {
     }
   }
   handleBalanceErrors(err: any, pkh: string) {
-    if (err === 'Empty response returned') { // Account probably empty and should be removed
-      this.walletService.wallet.accounts[this.walletService.getIndexFromPkh(pkh)].balance = 0;
-      this.walletService.storeWallet();
+    if (!err) {
+      this.messageService.addError('BalanceError: No response');
+    } else if (err === 'Empty response returned') { // Account probably empty and should be removed
+      this.messageService.addError('BalanceError: Empty response');
+      // this.walletService.wallet.accounts[this.walletService.getIndexFromPkh(pkh)].balance = 0;
+      // this.walletService.storeWallet();
     } else {
-      this.messageService.add('BalanceError: ' + JSON.stringify(err));
-      this.messageService.add(err);
+      this.messageService.addError('BalanceError: ' + JSON.stringify(err));
     }
   }
   updateIdentityBalance(newBalance: number) {
