@@ -1,7 +1,12 @@
-import { Component, OnInit, Input, Query } from '@angular/core';
+import { Component, OnInit, Input, Query, HostListener } from '@angular/core';
 import { WalletService } from '../../services/wallet.service';
 import { MessageService } from '../../services/message.service';
 import { ChangeDetectorRef } from '@angular/core';
+
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/observable/fromEvent';
+import * as bip39 from 'bip39';
+
 // import { Router } from '@angular/router';
 
 @Component({
@@ -22,7 +27,7 @@ export class NewWalletComponent implements OnInit {
     pkh: ''
   };
   mnemonic: string;
-
+  entropyMsg: string;
   // Verify password boolean
   isValidPass = {
     empty: true,
@@ -30,19 +35,45 @@ export class NewWalletComponent implements OnInit {
     match: true,
     confirmed: false
   };
-
+  counter = 0;
+  counter2 = 0;
+  entr: number;
+  entropy = 'ffffffffffffffffffffffffffffffff';
+  @HostListener('document:mousemove', ['$event'])
+  onMouseMove(e) {
+    if (this.activePanel === 0) {
+      const x = Math.round(e.pageX * 255 / document.body.clientWidth);
+      const y = Math.round(e.pageY * 255 / document.body.clientHeight);
+      let part = this.entropy.substr(this.counter * 4, 4);
+      const newPart = Number('0x' + part) ^ (x + y * 16 * 16);
+      part = newPart.toString(16);
+      if (!part[1]) { part = '0' + part; }
+      if (!part[2]) { part = '0' + part; }
+      if (!part[3]) { part = '0' + part; }
+      part = this.entropy.substr(0, this.counter * 4) + part + this.entropy.substr((this.counter + 1) * 4, this.entropy.length);
+      this.entropy = part;
+      this.counter = ( this.counter + 1 ) % 8; // 0-7
+      if (this.counter === 0) { this.counter2++; }
+      if (this.counter2 === 100) {
+        this.activePanel++;
+        this.generateSeed();
+      }
+    }
+  }
   constructor(private walletService: WalletService,
     private messageService: MessageService,
     private cdRef: ChangeDetectorRef) { }
 
   ngOnInit() {
-    setTimeout(() => {
-      this.generateSeed();
-    }, 1);
   }
   generateSeed() {
-    this.mnemonic = this.walletService.createNewWallet();
+    this.mnemonic = this.walletService.createNewWallet(this.entropy);
     this.activePanel++;
+    // this.entr = bip39.mnemonicToEntropy(this.mnemonic);
+    /*
+    console.log('Entropy: ' + entr + ' Mnemonic: ' + bip39.entropyToMnemonic(entr));
+    this.activePanel++;
+    */
   }
   pwdView() {
     this.activePanel++;
