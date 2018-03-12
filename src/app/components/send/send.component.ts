@@ -1,4 +1,4 @@
-import { Component, TemplateRef, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, TemplateRef, OnInit, AfterViewInit, ViewEncapsulation, Input, ViewChild, ElementRef  } from '@angular/core';
 // import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
 import { WalletService } from '../../services/wallet.service';
@@ -15,7 +15,11 @@ import { KeyPair } from '../../interfaces';
   encapsulation: ViewEncapsulation.None,
   styleUrls: ['./send.component.scss']
 })
-export class SendComponent implements OnInit {
+export class SendComponent implements OnInit, AfterViewInit {
+
+  //@Input() modal1: TemplateRef<any>;
+  @ViewChild('modal1') modal1: TemplateRef<any>;
+
   identity = this.walletService.wallet.identity;
   accounts = this.walletService.wallet.accounts;
   fromPkh: string;
@@ -30,12 +34,31 @@ export class SendComponent implements OnInit {
   modalRef1: BsModalRef;
   modalRef2: BsModalRef;
   modalRef3: BsModalRef;
+
   constructor(
     private modalService: BsModalService,
     private walletService: WalletService,
     private messageService: MessageService,
     private transactionService: TransactionService
   ) { }
+
+  ngOnInit() {
+    if (this.identity) {
+      this.init();
+    }
+  }
+
+  ngAfterViewInit() {
+    this.open1(this.modal1);
+  }
+
+  init() {
+    this.fromPkh = this.identity.pkh;
+    console.log("I am in");
+    // this.open1(this.modal1);
+    
+    // this.open1(document.getElementById("modal1").innerHTML);
+  }
 
   open1(template1: TemplateRef<any>) {
     this.modalRef1 = this.modalService.show(template1, { class: 'modal-sm' });
@@ -72,15 +95,8 @@ export class SendComponent implements OnInit {
     this.modalRef3.hide();
     this.modalRef3 = null;
   }
-  ngOnInit() {
-    if (this.identity) {
-      this.init();
-    }
-  }
-  init() {
-    this.fromPkh = this.identity.pkh;
-  }
-  async sendTransaction(keys: KeyPair) {
+
+async sendTransaction(keys: KeyPair) {
       const toPkh = this.toPkh;
       let amount = this.amount;
       let fee = this.fee;

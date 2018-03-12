@@ -1,13 +1,13 @@
 
-<!-- Modal -->
-
+<!-- First Modal -->
 <ng-template #modal1>
     <div class="modal-header">
       <h4 class="modal-title pull-left">Send tezzies</h4>
       <button type="button" class="close pull-right" aria-label="Close" (click)="close1()">
-        <span aria-hidden="true">&times;</span>
+            <span aria-hidden="true">&times;</span>
       </button>
     </div>
+
     <div class="modal-body">
         <div class="form-group">
             <label for="fromAdress">From:</label>
@@ -33,13 +33,15 @@
         <button type="button" class="btn btn-primary" id="sub" (click)="open2(modal2)">Preview</button>
         {{ formInvalid }}
     </div>
-  </ng-template>
+    
+</ng-template>
 
-  <ng-template #modal2>
+<!-- Confirmation Modal -->
+<ng-template #modal2>
     <div class="modal-header">
       <h4 class="modal-title pull-left">Authenticate transaction</h4>
       <button type="button" class="close pull-right" aria-label="Close" (click)="close2()">
-        <span aria-hidden="true">&times;</span>
+            <span aria-hidden="true">&times;</span>
       </button>
     </div>
     <div class="modal-body">
@@ -56,33 +58,38 @@
         <button type="button" class="btn btn-primary" id="sub" (click)="open3(modal3)">Confirm</button>
         {{ pwdValid }}
     </div>
-  </ng-template>
+</ng-template>
 
-  <ng-template #modal3>
+<!-- Final Modal -->
+<ng-template #modal3>
     <div class="modal-header">
       <h4 class="modal-title pull-left">Confirmation</h4>
-      <button type="button" class="close pull-right" aria-label="Close" (click)="close3()">
-        <span aria-hidden="true">&times;</span>
-      </button>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="close3()">
+            <span aria-hidden="true">&times;</span>
+        </button>
     </div>
     <div class="modal-body">
         <div *ngIf='!sendResponse'>
             Please wait...
         </div>
+
         <div *ngIf='sendResponse === "success"'>
             <i class="fa fa-check-circle"></i>
             <br><br>
             <p>Your transaction has been successfully transmitted to the network</p>
         </div>
+
         <div *ngIf='sendResponse === "failure"'>
             Failure!
         </div>
         <button type="button" class="btn btn-primary" id="sub" (click)="close3()">Close</button>
     </div>
-  </ng-template>
+</ng-template>
 
-  <button class="btn btn-lg btn-primary" (click)="open1(modal1)">Launch Windows 1</button>
 
+<!-- Button trigger modal
+<button class="btn btn-lg btn-primary" (click)="open1(modal1)">Launch Windows 1</button>
+-->
 
   <!--
     <ng-template #sendModal1>
@@ -178,7 +185,6 @@
         </div>
     </ng-template>
 
-<!-- Button trigger modal -->
 
 <!--
 <div *ngIf='identity'>
