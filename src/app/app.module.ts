@@ -8,7 +8,7 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 // External libraries
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ComponentLoaderFactory } from 'ngx-bootstrap/component-loader/component-loader.factory';
-import { ModalModule } from 'ngx-bootstrap';
+import { ModalModule, AlertModule } from 'ngx-bootstrap';
 
 // Services
 import { MessagesComponent } from './components/messages/messages.component';
@@ -64,7 +64,8 @@ import { PositioningService } from 'ngx-bootstrap/positioning';
     AppRoutingModule,
     HttpClientModule,
     NgbModule.forRoot(),
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    AlertModule.forRoot()
   ],
   providers: [
     MessageService,

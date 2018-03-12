@@ -3,7 +3,7 @@
   <div class="form-group">
     <label for="fromAdress">From:</label>
     <select [(ngModel)]="fromPkh" id="fromAdress" class="form-control" (ngModelChange)="getDelegate()">
-      <option *ngFor="let account of accounts" [value]="account.pkh">{{ account.pkh }} ({{account.balance / 100}}ꜩ)</option>
+      <option *ngFor="let account of accounts" [value]="account.pkh">{{ account.pkh }} ({{account.balance / 100 | number:'1.0' }}ꜩ)</option>
     </select>
   </div>
   <div class="form-group">

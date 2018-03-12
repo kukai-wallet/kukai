@@ -80,7 +80,7 @@ export class SendComponent implements OnInit {
   init() {
     this.fromPkh = this.identity.pkh;
   }
-  sendTransaction(keys: KeyPair) {
+  async sendTransaction(keys: KeyPair) {
       const toPkh = this.toPkh;
       let amount = this.amount;
       let fee = this.fee;

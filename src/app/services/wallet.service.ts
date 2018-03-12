@@ -46,8 +46,8 @@ export class WalletService {
     if (promise != null) {
       promise.then(
         (val) => {this.addAccount(val.contracts[0]);
-          this.messageService.add('New account created!'); },
-        (err) => this.messageService.add('Create new account failed: ' + JSON.stringify(err))
+          this.messageService.addSuccess('New account created!'); },
+        (err) => this.messageService.addError('Create new account failed: ' + JSON.stringify(err))
       );
     }
   }
@@ -70,7 +70,7 @@ export class WalletService {
   getKeys(password: string): KeyPair {
     const mnemonic = this.encryptionService.decrypt(this.wallet.encryptedMnemonic, password, this.wallet.salt);
     if (!mnemonic) {
-      this.messageService.add('Decryption failed');
+      this.messageService.addError('Decryption failed');
     } else {
       return lib.eztz.crypto.generateKeys(mnemonic, '');
     }

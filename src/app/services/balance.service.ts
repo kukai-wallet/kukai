@@ -26,13 +26,13 @@ export class BalanceService {
   }
   handleBalanceErrors(err: any, pkh: string) {
     if (!err) {
-      this.messageService.add('BalanceError: No response');
+      this.messageService.addError('BalanceError: No response');
     } else if (err === 'Empty response returned') { // Account probably empty and should be removed
-      this.messageService.add('BalanceError: Empty response');
+      this.messageService.addError('BalanceError: Empty response');
       // this.walletService.wallet.accounts[this.walletService.getIndexFromPkh(pkh)].balance = 0;
       // this.walletService.storeWallet();
     } else {
-      this.messageService.add('BalanceError: ' + JSON.stringify(err));
+      this.messageService.addError('BalanceError: ' + JSON.stringify(err));
     }
   }
   updateIdentityBalance(newBalance: number) {

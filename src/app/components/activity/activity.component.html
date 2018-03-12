@@ -2,8 +2,8 @@
     <h1>Recent Movements</h1>
     <div class="form-group">
             <select [(ngModel)]="activePkh" (ngModelChange)="getTransactions()" id="fromAdress" class="form-control">
-                <option [value]="identity.pkh">{{ identity.pkh }} ({{ identity.balance / 100}}ꜩ)</option>
-                <option *ngFor="let account of accounts" [value]="account.pkh">{{ account.pkh }} ({{account.balance / 100}}ꜩ)</option>
+                <option [value]="identity.pkh">{{ identity.pkh }} ({{ identity.balance / 100 | number:'1.0' }}ꜩ)</option>
+                <option *ngFor="let account of accounts" [value]="account.pkh">{{ account.pkh }} ({{account.balance / 100 | number:'1.0' }}ꜩ)</option>
             </select>
         </div>
     <table class="table table-striped">

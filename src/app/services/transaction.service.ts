@@ -27,7 +27,7 @@ export class TransactionService {
     return true;
   }
   unSsuccessfulTransaction(err: any, ) {
-    this.messageService.add('err: ' + JSON.stringify(err));
+    this.messageService.addError('err: ' + JSON.stringify(err));
     return false;
   }
   setDelegate(keys: KeyPair, from: string, to: string, fee: number) {
@@ -36,12 +36,12 @@ export class TransactionService {
       if (promise != null) {
         promise.then(
           (val) => this.successfulDelegation(val),
-          (err) => this.messageService.add('err: ' + JSON.stringify(err))
+          (err) => this.messageService.addError('err: ' + JSON.stringify(err))
         );
       }
     }
   }
   successfulDelegation(val: any, ) {
-    this.messageService.add('Delegate set!');
+    this.messageService.addSuccess('Delegate set!');
   }
 }
