@@ -32,7 +32,7 @@ export class WalletService {
     this.wallet.salt =  rnd2('aA0', 32);
     this.wallet.accounts = [];
     this.wallet.identity = this.createIdentity(mnemonic);
-    this.wallet.encryptedMnemonic = this.encryptionService.encrypt(mnemonic, password, this.wallet.salt);
+    this.wallet.encryptedMnemonic = this.encryptionService.encrypt(bip39.mnemonicToEntropy(mnemonic), password, this.wallet.salt);
     return {wallet: 'Kukai', type: 'FullWallet', version: '1.0', seed: this.wallet.encryptedMnemonic,
             salt: this.wallet.salt, pkh: this.wallet.identity.pkh};
   }
@@ -76,10 +76,11 @@ export class WalletService {
     return this.wallet.accounts.findIndex(a => a.pkh === pkh);
   }
   getKeys(password: string): KeyPair {
-    const mnemonic = this.encryptionService.decrypt(this.wallet.encryptedMnemonic, password, this.wallet.salt);
+    let mnemonic = this.encryptionService.decrypt(this.wallet.encryptedMnemonic, password, this.wallet.salt);
     if (!mnemonic) {
       this.messageService.addError('Decryption failed');
     } else {
+      mnemonic = bip39.entropyToMnemonic(mnemonic);
       return lib.eztz.crypto.generateKeys(mnemonic, '');
     }
     return null;
