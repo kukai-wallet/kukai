@@ -14,6 +14,7 @@ export class ActivityService {
   timestampCounter = 0; // Make sure last timestamp trigger backup
   visibleTransactions: Transaction[] = [];
   transactionsData: AccountData[] = [];
+  maxTransactions = 5;
   constructor(private http: HttpClient,
     private messageService: MessageService) { }
 
@@ -76,7 +77,7 @@ export class ActivityService {
   }
   // Get latest transaction
   getTransactions(pkh: string, counter: number) {
-    this.http.get('https://api.tzscan.io/v1/operations/' + pkh + '?type=Transaction&number=10&p=0').subscribe(
+    this.http.get('https://api.tzscan.io/v1/operations/' + pkh + '?type=Transaction&number=' + this.maxTransactions + '&p=0').subscribe(
       data => this.handleTransactionsResponse(pkh, data, counter),
       err => this.messageService.addError(JSON.stringify(err)),
       () => console.log('done loading transactions')

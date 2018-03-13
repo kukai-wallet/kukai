@@ -1,10 +1,7 @@
-import { Component, TemplateRef, OnInit, AfterViewInit, ViewEncapsulation, Input, ViewChild, ElementRef  } from '@angular/core';
-// import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
-
+import { Component, TemplateRef, OnInit, ViewEncapsulation, Input, ViewChild, ElementRef } from '@angular/core';
 import { WalletService } from '../../services/wallet.service';
 import { MessageService } from '../../services/message.service';
 import { TransactionService } from '../../services/transaction.service';
-
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { KeyPair } from '../../interfaces';
@@ -15,14 +12,12 @@ import { KeyPair } from '../../interfaces';
   encapsulation: ViewEncapsulation.None,
   styleUrls: ['./send.component.scss']
 })
-export class SendComponent implements OnInit, AfterViewInit {
-
-  //@Input() modal1: TemplateRef<any>;
+export class SendComponent implements OnInit {
   @ViewChild('modal1') modal1: TemplateRef<any>;
 
   identity = this.walletService.wallet.identity;
   accounts = this.walletService.wallet.accounts;
-  fromPkh: string;
+  @Input() activePkh: string;
   toPkh: string;
   amount: string;
   fee: string;
@@ -48,18 +43,8 @@ export class SendComponent implements OnInit, AfterViewInit {
     }
   }
 
-  ngAfterViewInit() {
-    this.open1(this.modal1);
-  }
-
   init() {
-    this.fromPkh = this.identity.pkh;
-    console.log("I am in");
-    // this.open1(this.modal1);
-    
-    // this.open1(document.getElementById("modal1").innerHTML);
   }
-
   open1(template1: TemplateRef<any>) {
     this.modalRef1 = this.modalService.show(template1, { class: 'modal-sm' });
   }
@@ -106,7 +91,7 @@ async sendTransaction(keys: KeyPair) {
       if (!amount) { amount = '0'; }
       if (!fee) { fee = '0'; }
       setTimeout(async () => {
-        if (await this.transactionService.sendTransaction(keys, this.fromPkh, toPkh, Number(amount), Number(fee) * 100)) {
+        if (await this.transactionService.sendTransaction(keys, this.activePkh, toPkh, Number(amount), Number(fee) * 100)) {
           this.sendResponse = 'success';
         } else {
           this.sendResponse = 'failure';

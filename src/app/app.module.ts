@@ -38,6 +38,7 @@ import { NewWalletComponent } from './components/new-wallet/new-wallet.component
 import { ReceiveComponent } from './components/receive/receive.component';
 import { DelegateComponent } from './components/delegate/delegate.component';
 import { PositioningService } from 'ngx-bootstrap/positioning';
+import { AccountComponent } from './components/account/account.component';
 
 
 @NgModule({
@@ -56,7 +57,8 @@ import { PositioningService } from 'ngx-bootstrap/positioning';
     SendComponent,
     NewAccountComponent,
     ReceiveComponent,
-    DelegateComponent
+    DelegateComponent,
+    AccountComponent
   ],
   imports: [
     BrowserModule,

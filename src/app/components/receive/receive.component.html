@@ -1,14 +1,23 @@
-<div *ngIf='identity'>
-  <div class="form-group">
-    <select [(ngModel)]="activePkh" (ngModelChange)="getQR()" id="fromAdress" class="form-control">
-      <option [value]="identity.pkh">{{ identity.pkh }} ({{ identity.balance / 100 | number:'1.0' }}ꜩ)</option>
-      <option *ngFor="let account of accounts" [value]="account.pkh">{{ account.pkh }} ({{account.balance / 100 | number:'1.0' }}ꜩ)</option>
-    </select>
-  </div>
-  <div *ngIf='activePkh'>
-    <canvas id='canvas'></canvas>
-  </div>
-</div>
+<ng-template #modal1>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Receive tezzies</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="close1()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+            <input [(ngModel)]="activePkh" type="text" id="toAddress" class="form-control" disabled>
+        </div>
+        <div class="row" *ngIf='activePkh'>
+          <canvas id='canvas'></canvas>
+        </div>
+    </div>
+</ng-template>
+    <button type="button" class="btn btn-primary" id="send" (click)="open1(modal1)">Receive</button>
+
+
+
 <div *ngIf='!identity'>
   Wallet not configured
 </div>
