@@ -1,7 +1,12 @@
 <div id="content">
   <div class="center-content">
     <div class="card text-center fix-size entropy" *ngIf="activePanel==0">
-      Please move the mous over the screen to create extra randomness for the wallet creation... {{ counter2 }}%
+      Please move the mouse over the screen to create extra randomness for the wallet creation...
+      <div class="col-lg-12">
+        <div class="mb-3">
+          <progressbar [value]="counter2" type="info" [striped]="true">{{ counter2 }}%</progressbar>
+        </div>
+      </div>
     </div>
     <!-- Seed card -->
     <div class="card text-center fix-size" *ngIf="activePanel==2">
