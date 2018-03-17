@@ -14,7 +14,7 @@ export class StartComponent implements OnInit {
 
   ngOnInit() {
     if (this.walletService.wallet.identity) {
-      this.router.navigate(['/accounts']);
+      this.router.navigate(['/overview']);
     }
   }
 

@@ -1,9 +1,16 @@
+a:hover {
+    cursor:pointer;
+   }
+th, td {
+    padding: 5px 15px;
+}
+.mono {
+    font-family: "Courier New", Courier, monospace;
+}
 #content {
     display: flex; 
     min-height: 100vh;
     min-width: 85vw;
-    // width: 100%;
-    // max-width: 85vw;
 }
 .center-content {
     margin: 10vh auto 0px auto;

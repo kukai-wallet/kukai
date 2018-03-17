@@ -5,11 +5,11 @@ import { FaucetService } from '../../services/faucet.service';
 import { BalanceService } from '../../services/balance.service';
 
 @Component({
-  selector: 'app-accounts',
-  templateUrl: './accounts.component.html',
-  styleUrls: ['./accounts.component.scss']
+  selector: 'app-overview',
+  templateUrl: './overview.component.html',
+  styleUrls: ['./overview.component.scss']
 })
-export class AccountsComponent implements OnInit {
+export class OverviewComponent implements OnInit {
   identity = this.walletService.wallet.identity;
   constructor(
     private walletService: WalletService,

@@ -34,7 +34,6 @@ export class ReceiveComponent implements OnInit {
   }
   open1(template1: TemplateRef<any>) {
     this.modalRef1 = this.modalService.show(template1, { class: 'modal-sm' });
-    console.log(this.activePkh);
     setTimeout(() => {
       this.getQR();
     }, 100);

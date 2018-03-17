@@ -8,28 +8,28 @@ export class MessageService {
     this.messages.push({
       type: 'info',
       msg: message,
-      timeout: 10000
+      timeout: 5000
     });
   }
   addError(message: string) {
     this.messages.push({
       type: 'danger',
       msg: message,
-      timeout: 10000
+      timeout: 5000
     });
   }
   addWarning(message: string) {
     this.messages.push({
       type: 'warning',
       msg: message,
-      timeout: 10000
+      timeout: 5000
     });
   }
   addSuccess(message: string) {
     this.messages.push({
       type: 'success',
       msg: message,
-      timeout: 10000
+      timeout: 5000
     });
   }
   clear() {

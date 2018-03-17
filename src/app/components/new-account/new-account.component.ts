@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, TemplateRef } from '@angular/core';
 import { WalletService } from '../../services/wallet.service';
 import { MessageService } from '../../services/message.service';
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
+import { KeyPair } from '../../interfaces';
 
 @Component({
   selector: 'app-new-account',
@@ -8,15 +11,23 @@ import { MessageService } from '../../services/message.service';
   styleUrls: ['./new-account.component.scss']
 })
 export class NewAccountComponent implements OnInit {
+  @ViewChild('modal1') modal1: TemplateRef<any>;
   identity = this.walletService.wallet.identity;
   // accounts = this.walletService.wallet.accounts;
   fromPkh: string;
   amount: string;
   fee: string;
   password: string;
+  modalRef1: BsModalRef;
+  modalRef2: BsModalRef;
+  modalRef3: BsModalRef;
+  formInvalid = '';
+  pwdValid: string;
+  sendResponse = '';
   constructor(
     private walletService: WalletService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private modalService: BsModalService
   ) { }
 
   ngOnInit() {
@@ -27,33 +38,73 @@ export class NewAccountComponent implements OnInit {
   init() {
     this.fromPkh = this.identity.pkh;
   }
-  newAccount() {
-    const pwd = this.password;
-    this.password = '';
-    if (this.validInput(pwd)) {
-      // Clear form
-      let amount = this.amount;
-      let fee = this.fee;
-      this.amount = '';
-      this.fee = '';
-      if (!amount) { amount = '0'; }
-      if (!fee) { fee = '0'; }
-      setTimeout(() => {
-        this.walletService.createAccount(pwd, this.fromPkh, Number(amount), Number(fee) * 100);
-      }, 100);
-      // Send
+  open1(template1: TemplateRef<any>) {
+    this.clearForm();
+    this.modalRef1 = this.modalService.show(template1, { class: 'modal-sm' });
+  }
+  open2(template: TemplateRef<any>) {
+    this.formInvalid = this.invalidInput();
+    if (!this.formInvalid) {
+      if (!this.fee) { this.fee = '0'; }
+      this.close1();
+      this.modalRef2 = this.modalService.show(template, { class: 'second' });
     }
   }
-  validInput(pwd: string) {
-    if (!Number(this.amount) && this.amount && this.amount !== '0') {
-      this.messageService.add('invalid amount');
-    } else if (!Number(this.fee) && this.fee && this.fee !== '0') {
-      this.messageService.add('invalid fee');
-    } else if (!pwd || pwd === '') {
-      this.messageService.add('Password needed');
+  async open3(template: TemplateRef<any>) {
+    const pwd = this.password;
+    this.password = '';
+    let keys;
+    if (keys = this.walletService.getKeys(pwd)) {
+      this.pwdValid = '';
+      this.close2();
+      this.modalRef3 = this.modalService.show(template, { class: 'third' });
+      this.newAccount(keys);
     } else {
-      return true;
+      this.pwdValid = 'Wrong password!';
     }
-    return false;
+  }
+  close1() {
+    this.modalRef1.hide();
+    this.modalRef1 = null;
+  }
+  close2() {
+    this.modalRef2.hide();
+    this.modalRef2 = null;
+  }
+  close3() {
+    this.modalRef3.hide();
+    this.modalRef3 = null;
+  }
+  async newAccount(keys: KeyPair) {
+    let amount = this.amount;
+    let fee = this.fee;
+    this.amount = '';
+    this.fee = '';
+    if (!amount) { amount = '0'; }
+    if (!fee) { fee = '0'; }
+    setTimeout(async () => {
+      if (await this.walletService.createAccount(keys, this.fromPkh, Number(amount), Number(fee) * 100)) {
+        this.sendResponse = 'success';
+      } else {
+        this.sendResponse = 'failure';
+      }
+    }, 100);
+  }
+  invalidInput(): string {
+    if (!Number(this.amount) || Number(this.amount) < 0) {
+      return 'invalid amount';
+    } else if (!Number(this.fee) && this.fee && this.fee !== '0') {
+      return 'invalid fee';
+    } else {
+      return '';
+    }
+  }
+  clearForm() {
+    this.amount = '';
+    this.fee = '';
+    this.password = '';
+    this.pwdValid = '';
+    this.formInvalid = '';
+    this.sendResponse = '';
   }
 }

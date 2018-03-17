@@ -38,24 +38,34 @@ export class NewWalletComponent implements OnInit {
   counter = 0;
   counter2 = 0;
   entr: number;
-  entropy = 'ffffffffffffffffffffffffffffffff';
+  entropy = 'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff' +
+            'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
   @HostListener('document:mousemove', ['$event'])
   onMouseMove(e) {
     if (this.activePanel === 0) {
       const x = Math.round(e.pageX * 255 / document.body.clientWidth);
       const y = Math.round(e.pageY * 255 / document.body.clientHeight);
-      let part = this.entropy.substr(this.counter * 4, 4);
+      let part = this.entropy.substr(this.counter * 4, 4); // part of string to replace
       const newPart = Number('0x' + part) ^ (x + y * 16 * 16);
       part = newPart.toString(16);
-      if (!part[1]) { part = '0' + part; }
-      if (!part[2]) { part = '0' + part; }
-      if (!part[3]) { part = '0' + part; }
+      for (let i = 1; i <= 3; i++) { // make sure part got 4 characters
+        if (!part[i]) { part = '0' + part; }
+      }
       part = this.entropy.substr(0, this.counter * 4) + part + this.entropy.substr((this.counter + 1) * 4, this.entropy.length);
       this.entropy = part;
-      this.counter = ( this.counter + 1 ) % 8; // 0-7
-      if (this.counter === 0) { this.counter2++; }
+      this.counter = ( this.counter + 1 ) % (this.entropy.length / 4);
+      if (this.counter % 8 === 0) { this.counter2++; }
       if (this.counter2 === 100) {
         this.activePanel++;
+        let finalEntropy = '';
+        for (let i = 0; i < 40; i++) {
+          let hex = 0;
+          for (let j = 0; j < 4; j++) {
+              hex = hex ^ Number('0x' + this.entropy[i * 4 + j]);
+          }
+          finalEntropy = finalEntropy + hex.toString(16);
+        }
+        this.entropy = finalEntropy;
         this.generateSeed();
       }
     }
@@ -65,6 +75,11 @@ export class NewWalletComponent implements OnInit {
     private cdRef: ChangeDetectorRef) { }
 
   ngOnInit() {
+  }
+  skipExtraEntropy() {
+    this.activePanel++;
+    this.entropy = '';
+    this.generateSeed();
   }
   generateSeed() {
     this.mnemonic = this.walletService.createNewWallet(this.entropy);

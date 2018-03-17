@@ -46,11 +46,14 @@ export class SendComponent implements OnInit {
   init() {
   }
   open1(template1: TemplateRef<any>) {
+    this.clearForm();
     this.modalRef1 = this.modalService.show(template1, { class: 'modal-sm' });
   }
   open2(template: TemplateRef<any>) {
     this.formInvalid = this.invalidInput();
     if (!this.formInvalid) {
+      if (!this.amount) { this.amount = '0'; }
+      if (!this.fee) { this.fee = '0'; }
       this.close1();
       this.modalRef2 = this.modalService.show(template, { class: 'second' });
     }
@@ -97,6 +100,15 @@ async sendTransaction(keys: KeyPair) {
           this.sendResponse = 'failure';
         }
       }, 100);
+  }
+  clearForm() {
+    this.toPkh = '';
+    this.amount = '';
+    this.fee = '';
+    this.password = '';
+    this.pwdValid = '';
+    this.formInvalid = '';
+    this.sendResponse = '';
   }
   invalidInput(): string {
     if (!this.toPkh || this.toPkh.length !== 36) {

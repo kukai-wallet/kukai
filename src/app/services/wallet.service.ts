@@ -18,12 +18,17 @@ export class WalletService {
     Wallet creation
   */
   createNewWallet(extraEntropy: string): string {
-    const entropy = bip39.mnemonicToEntropy(bip39.generateMnemonic());
+    if (extraEntropy.length < 40) {
+      console.log('Skipping extra entropy');
+      return bip39.generateMnemonic(160);
+    }
+    const entropy = bip39.mnemonicToEntropy(bip39.generateMnemonic(160));
     let mixed = '';
-    for (let i = 0; i < 32; i++) {
+    for (let i = 0; i < 40; i++) {
       mixed = mixed + (Number('0x' + entropy[i]) ^ Number('0x' + extraEntropy[i])).toString(16);
     }
-    if (mixed.length !== 32) {
+    if (mixed.length !== 40) {
+      console.log('Not 160 bits entropy');
       return null;
     }
     return bip39.entropyToMnemonic(mixed);
@@ -48,15 +53,18 @@ export class WalletService {
   /*
     Handle accounts
   */
-  createAccount(pwd: string, pkh: string, amount: number, fee: number) {
-    const keys = this.getKeys(pwd);
+  async createAccount(keys: KeyPair, pkh: string, amount: number, fee: number): Promise<boolean> {
     const promise = lib.eztz.rpc.account(keys, amount, true, true, keys.pkh, fee);
     if (promise != null) {
-      promise.then(
+      return promise.then(
         (val) => {this.addAccount(val.contracts[0]);
-          this.messageService.addSuccess('New account created!'); },
-        (err) => this.messageService.addError('Create new account failed: ' + JSON.stringify(err))
+          this.messageService.addSuccess('New account created!');
+        return true; },
+        (err) => { this.messageService.addError('Create new account failed: ' + JSON.stringify(err));
+      return false; }
       );
+    } else {
+      return false;
     }
   }
   addAccount(pkh) {

@@ -1,10 +1,5 @@
-<!--
-<div *ngIf="messageService.messages.length">
-  <h2>Messages</h2>
-  <button class="btn btn-default" (click)="messageService.clear()">clear</button>
-  <div *ngFor='let message of messageService.messages'> {{message}} </div>
-</div>
--->
+<div class='container'>
 <div *ngFor="let message of messageService.messages">
   <alert [type]="message.type" [dismissOnTimeout]="message.timeout">{{ message.msg }}</alert>
+</div>
 </div>

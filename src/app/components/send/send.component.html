@@ -40,12 +40,12 @@
         </button>
     </div>
     <div class="modal-body">
+        <p>From: {{ activePkh }}<BR>
+            To: {{ toPkh }}<BR>
+            Amount: {{ amount | number:'1.0' }}ꜩ<BR>
+            Fee: {{ fee | number:'1.0' }}ꜩ
+        </p>
         <div class="row">
-            <p>From: {{ fromPkh }}
-                To: {{ toPkh }}
-                Amount: {{ amount | number:'1.0' }}
-                Fee: {{ fee | number:'1.0' }}
-            </p>
             <div class="form-group col-md-6">
                 <label for="pwd">Password:</label>
                 <input [(ngModel)]="password" type="password" id="pwd" class="form-control">
@@ -71,7 +71,7 @@
         <div *ngIf='sendResponse === "success"'>
             <i class="fa fa-check-circle"></i>
             <br><br>
-            <p>Your transaction has been successfully transmitted to the network</p>
+            <p>Your transaction has been successfully broadcasted to the network</p>
         </div>
         <div *ngIf='sendResponse === "failure"'>
             Failure!

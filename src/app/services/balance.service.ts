@@ -38,6 +38,7 @@ export class BalanceService {
   updateIdentityBalance(newBalance: number) {
     if (newBalance !== this.walletService.wallet.identity.balance) {
       this.walletService.wallet.identity.balance = newBalance;
+      this.updateTotalBalance();
       this.walletService.storeWallet();
     }
   }
@@ -53,7 +54,16 @@ export class BalanceService {
   updateAccountBalance(index: number, newBalance: number) {
     if (newBalance !== this.walletService.wallet.accounts[index].balance) {
       this.walletService.wallet.accounts[index].balance = newBalance;
+      this.updateTotalBalance();
       this.walletService.storeWallet();
     }
+  }
+  updateTotalBalance() {
+    let balance = 0;
+    balance += this.walletService.wallet.identity.balance;
+    for (let i = 0; i < this.walletService.wallet.accounts.length; i++) {
+      balance += this.walletService.wallet.accounts[i].balance;
+    }
+    this.walletService.wallet.balance = balance;
   }
 }

@@ -1,13 +1,22 @@
 <div id="content">
   <div class="center-content">
-    <div class="card text-center fix-size entropy" *ngIf="activePanel==0">
-      Please move the mouse over the screen to create extra randomness for the wallet creation...
-      <div class="col-lg-12">
-        <div class="mb-3">
-          <progressbar [value]="counter2" type="info" [striped]="true">{{ counter2 }}%</progressbar>
-        </div>
+
+    <!-- Mouse movements card -->
+    <div class="card text-center fix-size" *ngIf="activePanel==0">
+      <div class="card-body">
+        <h1 class="card-title">Collecting additional entropy</h1>
+        <div class="card-text">
+          <p class ="mono">{{ entropy }}</p>
+          <progressbar [value]="counter2" type="info" [striped]="true"><ng-container *ngIf="counter2 > 4">{{ counter2 }}%</ng-container></progressbar>
+          <p>Please move the mouse over the screen to create extra entropy for the wallet creation.</p>
+          <p>This step ensures your seed is generated truly random by collecting unpredictabel data.</p>
+      </div>
+      </div>
+      <div class="card-footer text-right">
+          <button type="button" class="btn btn-primary btn-lg" (click)="skipExtraEntropy()">Skip</button>
       </div>
     </div>
+
     <!-- Seed card -->
     <div class="card text-center fix-size" *ngIf="activePanel==2">
       <div class="card-body">
@@ -68,7 +77,7 @@
         </div>
       </div>
       <div class="card-footer text-right">
-        <button type="button" class="btn btn-primary btn-lg" routerLink="/accounts">Finish</button>
+        <button type="button" class="btn btn-primary btn-lg" routerLink="/overview">Finish</button>
       </div>
     </div>
     

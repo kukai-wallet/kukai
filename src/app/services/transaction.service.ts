@@ -19,6 +19,8 @@ export class TransactionService {
           (val) => this.successfulTransaction(val),
           (err) => this.unSsuccessfulTransaction(err)
         );
+      } else {
+        return false;
       }
     }
   }

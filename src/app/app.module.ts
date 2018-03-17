@@ -28,7 +28,7 @@ import { BroadcastComponent } from './components/broadcast/broadcast.component';
 import { ImportComponent } from './components/import/import.component';
 import { StartComponent } from './components/start/start.component';
 import { ActivityComponent } from './components/activity/activity.component';
-import { AccountsComponent } from './/components/accounts/accounts.component';
+import { OverviewComponent } from './/components/overview/overview.component';
 import { BackupComponent } from './components/backup/backup.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { SendComponent } from './components/send/send.component';
@@ -51,7 +51,7 @@ import { AccountComponent } from './components/account/account.component';
     ImportComponent,
     StartComponent,
     ActivityComponent,
-    AccountsComponent,
+    OverviewComponent,
     BackupComponent,
     SettingsComponent,
     SendComponent,

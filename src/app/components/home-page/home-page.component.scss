@@ -53,6 +53,7 @@ a, a:hover, a:focus {
     display: flex;
     align-items: stretch;
     min-height: 100vh;
+    width: 100%;
 }
 
 #sidebar {
@@ -156,7 +157,7 @@ ul.CTAs a {
 }
 
 .bottom-CTAs {
-    padding-top: 39vh !important;
+    padding-top: 46vh !important;
 }
 
 .bottom-CTAs .fa {
