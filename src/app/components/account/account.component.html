@@ -1,12 +1,11 @@
-<div id="content" *ngIf="identity">
+<div id="content" *ngIf="accounts">
     <div class="center-content">
-        <div class="card text-center fix-size" *ngIf="identity">
+        <div class="card text-center fix-size">
             <div class="card-body">
                 <h1>{{ balance / 100 | number:'1.0' }}ꜩ</h1>
                     <p><app-send [activePkh]="activePkh"></app-send>
                     <app-receive [activePkh]="activePkh"></app-receive></p>
                 <select [(ngModel)]="activePkh" (change)="updateBalance()" id="fromAdress" class="form-control">
-                    <option [value]="identity.pkh">{{ identity.pkh }}</option>
                     <option *ngFor="let account of accounts" [value]="account.pkh">{{ account.pkh }}</option>
                 </select>
                 <app-activity [activePkh]="activePkh"></app-activity>
@@ -14,3 +13,7 @@
         </div>
     </div>
 </div>
+<p *ngIf='!accounts'>
+    Wallet not configured
+</p>
+    

@@ -79,7 +79,7 @@
         <button type="button" class="btn btn-primary" id="sub" (click)="close3()">Close</button>
     </div>
 </ng-template>
-<button *ngIf='identity' type="button" class="btn btn-primary" id="send" (click)="open1(modal1)">Send</button>
-<p *ngIf='!identity'>
+<button *ngIf='accounts' type="button" class="btn btn-primary" id="send" (click)="open1(modal1)">Send</button>
+<p *ngIf='!accounts'>
     Wallet not configured
 </p>

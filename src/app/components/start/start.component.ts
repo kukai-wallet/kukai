@@ -13,7 +13,7 @@ export class StartComponent implements OnInit {
               private router: Router) { }
 
   ngOnInit() {
-    if (this.walletService.wallet.identity) {
+    if (this.walletService.wallet) {
       this.router.navigate(['/overview']);
     }
   }

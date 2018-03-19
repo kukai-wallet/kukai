@@ -9,9 +9,8 @@ import { BalanceService } from '../../services/balance.service';
   styleUrls: ['./account.component.scss']
 })
 export class AccountComponent implements OnInit {
-  identity = this.walletService.wallet.identity;
-  accounts = this.walletService.wallet.accounts;
-  balance = this.identity.balance;
+  accounts = null;
+  balance = 0;
   activePkh: string;
   constructor(
     private walletService: WalletService,
@@ -19,16 +18,14 @@ export class AccountComponent implements OnInit {
     private balanceService: BalanceService
   ) { }
 
-  ngOnInit() { if (this.identity) { this.init(); } }
+  ngOnInit() { if (this.walletService.wallet) { this.init(); } }
   init() {
-    this.activePkh = this.identity.pkh;
+    this.accounts = this.walletService.wallet.accounts;
+    this.activePkh = this.accounts[0].pkh;
+    this.balance = this.accounts[0].balance.balanceXTZ;
     this.balanceService.getBalanceAll();
   }
   updateBalance() {
-    if (this.activePkh === this.identity.pkh) {
-      this.balance = this.identity.balance;
-    } else {
-      this.balance = this.accounts[this.walletService.getIndexFromPkh(this.activePkh)].balance;
-    }
+    this.balance = this.accounts[this.walletService.getIndexFromPkh(this.activePkh)].balance.balanceXTZ;
   }
 }

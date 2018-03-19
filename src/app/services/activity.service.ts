@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { MessageService } from './message.service';
-import { Transaction, AccountData } from './../interfaces';
+import { WalletService } from './wallet.service';
+import { Activity } from '../interfaces';
 
 const httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -10,14 +11,13 @@ const httpOptions = {
 
 @Injectable()
 export class ActivityService {
-  storeKey = `kukai-transactions`;
   timestampCounter = 0; // Make sure last timestamp trigger backup
-  // visibleTransactions: Transaction[] = [];
-  transactionsData: AccountData[] = [];
   maxTransactions = 5;
-  constructor(private http: HttpClient,
-    private messageService: MessageService) { }
-
+  constructor(
+    private walletService: WalletService,
+    private http: HttpClient,
+    private messageService: MessageService
+  ) { }
   // Show transactions for current pkh, then function call to see if current data is up to date
   updateTransactions(pkh: string) {
     // const aIndex = this.transactionsData.findIndex(a => a.pkh === pkh);
@@ -31,12 +31,12 @@ export class ActivityService {
   }
   // if not up to data, request transactions data
   handleTransactionsCounterResponse(pkh: string, data: number) {
-    const index = this.transactionsData.findIndex(a => a.pkh === pkh);
-    if (index === -1 || this.transactionsData[index].numberOfTransactions !== data) {
+    const index = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
+    if (index === -1 || this.walletService.wallet.accounts[index].numberOfActivites !== data) {
       console.log('Requesting transactions');
       this.getTransactions(pkh, data);
     } else {
-      if (this.transactionsData[index].transactions.findIndex(a => a.block === 'prevalidation') !== -1) {
+      if (this.walletService.wallet.accounts[index].activities.findIndex(a => a.block === 'prevalidation') !== -1) {
         console.log('Trying to validate blocks');
         this.getUnconfirmedTransactions(pkh);
       } else {
@@ -46,10 +46,10 @@ export class ActivityService {
   }
   // Try to validate unconfirmed transaction
   getUnconfirmedTransactions(pkh: string) {
-    const index = this.transactionsData.findIndex(a => a.pkh === pkh);
+    const index = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
     let n = 0;
-    for (let i = 0; i < this.transactionsData[index].transactions.length; i++) {
-      if (this.transactionsData[index].transactions[i].block === 'prevalidation') {
+    for (let i = 0; i < this.walletService.wallet.accounts[index].activities.length; i++) {
+      if (this.walletService.wallet.accounts[index].activities[i].block === 'prevalidation') {
         n = i + 1;
       } else {
         break;
@@ -61,13 +61,13 @@ export class ActivityService {
     );
   }
   handleUnconfirmedTransactionsResponse(pkh: string, data: any) {
-    const aIndex = this.transactionsData.findIndex(a => a.pkh === pkh);
+    const aIndex = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
     this.timestampCounter = data.length;
     for (let i = 0; i < data.length; i++) {
-      if (this.transactionsData[aIndex].transactions[i].hash === data[i].hash) {
-        this.transactionsData[aIndex].transactions[i].block = data[i].block_hash;
-        const index = this.transactionsData.findIndex(a => a.pkh === pkh);
-        this.transactionsData[index].transactions[i].block = data[i].block_hash;
+      if (this.walletService.wallet.accounts[aIndex].activities[i].hash === data[i].hash) {
+        this.walletService.wallet.accounts[aIndex].activities[i].block = data[i].block_hash;
+        const index = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
+        this.walletService.wallet.accounts[index].activities[i].block = data[i].block_hash;
         if (data[i].block_hash !== 'prevalidation') {
           this.getTimestamp(pkh, data[i].block_hash, data[i].hash);
         }
@@ -84,7 +84,7 @@ export class ActivityService {
   }
   handleTransactionsResponse(pkh: string, data: any, counter: number) {
     this.timestampCounter = data.length;
-    const newTransactions: Transaction[] = [];
+    const newTransactions: Activity[] = [];
     for (let i = 0; i < data.length; i++) {
       let type;
       if (pkh === data[i].type.source) {
@@ -125,18 +125,19 @@ export class ActivityService {
         });
       }
     }
-    const index = this.transactionsData.findIndex(a => a.pkh === pkh);
+    const index = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
     if (index === -1) {
-      this.transactionsData.push({
+      this.walletService.wallet.accounts.push({
         pkh: pkh,
         delegate: '',
-        numberOfTransactions: counter,
-        transactions: newTransactions
+        balance: this.walletService.emptyBalance(),
+        numberOfActivites: counter,
+        activities: newTransactions
       });
       console.log('Creating new transactions entry');
     } else  {
-      this.transactionsData[index].numberOfTransactions = counter;
-      this.transactionsData[index].transactions = newTransactions;
+      this.walletService.wallet.accounts[index].numberOfActivites = counter;
+      this.walletService.wallet.accounts[index].activities = newTransactions;
       console.log('Update transactions entry');
     }
     for (let i = 0; i < newTransactions.length; i++) {
@@ -154,30 +155,16 @@ export class ActivityService {
     );
   }
   handleTimestampResponse(pkh: string, block: string, time: any, hash: any) {
-    const pkhIndex = this.transactionsData.findIndex(a => a.pkh === pkh);
-    const transactionIndex = this.transactionsData[pkhIndex].transactions.findIndex(a => a.hash === hash);
+    const pkhIndex = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
+    const transactionIndex = this.walletService.wallet.accounts[pkhIndex].activities.findIndex(a => a.hash === hash);
     if (time) { time = new Date(time); }
-    this.transactionsData[pkhIndex].transactions[transactionIndex].timestamp = time;
+    this.walletService.wallet.accounts[pkhIndex].activities[transactionIndex].timestamp = time;
     this.timestampCounter--;
     if (this.timestampCounter <= 0) {
       this.timestampCounter = 10;
       console.log('Store transactions data');
-      this.storeTransactions();
+      this.walletService.storeWallet();
     }
-  }
-  storeTransactions() {
-    localStorage.setItem(this.storeKey, JSON.stringify(this.transactionsData));
-  }
-  loadStoredTransactions() {
-    const transactionsData = localStorage.getItem(this.storeKey);
-    if (transactionsData) {
-      this.transactionsData = JSON.parse(transactionsData);
-      console.log('Transactions loaded from local storage');
-    }
-  }
-  clearTransactions() {
-    this.transactionsData = [];
-    localStorage.removeItem(this.storeKey);
   }
   getDelegate(pkh: string) {
     this.http.post('http://liquidity.tzscan.io/blocks/head/proto/context/contracts/' + pkh, '{}').subscribe(
@@ -187,24 +174,25 @@ export class ActivityService {
     );
   }
   handleDelegateResponse(pkh: string, data: any) {
-    const index = this.transactionsData.findIndex(a => a.pkh === pkh);
+    const index = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
     if (index === -1) {
-      this.transactionsData.push({
+      this.walletService.wallet.accounts.push({
         pkh: pkh,
         delegate: data.ok.delegate.value,
-        numberOfTransactions: 0,
-        transactions: []
+        balance: this.walletService.emptyBalance(),
+        numberOfActivites: 0,
+        activities: []
       });
       console.log('Creating new transactions entry');
-      this.storeTransactions();
-    } else  if (this.transactionsData[index].delegate !== data.ok.delegate.value) {
-      this.transactionsData[index].numberOfTransactions = 0;
-      this.transactionsData[index].delegate = data.ok.delegate.value;
+      this.walletService.storeWallet();
+    } else  if (this.walletService.wallet.accounts[index].delegate !== data.ok.delegate.value) {
+      this.walletService.wallet.accounts[index].numberOfActivites = 0;
+      this.walletService.wallet.accounts[index].delegate = data.ok.delegate.value;
       console.log('Update transactions entry');
-      this.storeTransactions();
+      this.walletService.storeWallet();
     }
   }
   getIndex(pkh: string): number {
-    return this.transactionsData.findIndex(a => a.pkh === pkh);
+    return this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
   }
 }

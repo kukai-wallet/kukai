@@ -1,25 +1,16 @@
-<div *ngIf='identity'>
-    <!--<div class="form-group">
-        <select [(ngModel)]="activePkh" (ngModelChange)="getTransactions()" id="fromAdress" class="form-control">
-            <option [value]="identity.pkh">{{ identity.pkh }} ({{ identity.balance / 100 | number:'1.0' }}ꜩ)</option>
-            <option *ngFor="let account of accounts" [value]="account.pkh">{{ account.pkh }} ({{account.balance / 100 | number:'1.0' }}ꜩ)</option>
-        </select>
-    </div>-->
+<div *ngIf='accounts'>
     <table class="table table-striped">
-        <thead><!--
+        <thead>
             <tr>
                 <th>Date</th>
-                <th>Source</th>
-                <th>Destination</th>
                 <th>Type</th>
                 <th>Amount (ꜩ)</th>
-                <th>Fee (ꜩ)</th>
                 <th>Status</th>
-            </tr>-->
+            </tr>
         </thead>
-        <ng-container *ngFor="let aData of activityService.transactionsData">
+        <ng-container *ngFor="let aData of accounts">
             <ng-container *ngIf="aData.pkh === activePkh">
-                <tbody *ngFor="let transaction of aData.transactions">
+                <tbody *ngFor="let transaction of aData.activities">
                     <tr>
                         <td>{{ transaction.timestamp | date:'yyyy-MM-dd HH:mm:ss' }}</td>
                         <!-- <td>{{ transaction.source }}</td>
@@ -35,6 +26,6 @@
     </table>
 </div>
 
-<p *ngIf='!identity'>
-    Wallet not configured
+<p *ngIf='!accounts'>
+    Wallet not configured!
 </p>

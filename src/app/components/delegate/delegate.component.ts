@@ -10,9 +10,7 @@ import { ActivityService } from '../../services/activity.service';
   styleUrls: ['./delegate.component.scss']
 })
 export class DelegateComponent implements OnInit {
-  identity = this.walletService.wallet.identity;
-  accounts = this.walletService.wallet.accounts;
-  transactionData = this.activityService.transactionsData;
+  accounts = null;
   fromPkh: string;
   toPkh: string;
   delegate = '';
@@ -26,11 +24,12 @@ export class DelegateComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    if (this.identity) {
+    if (this.walletService.wallet) {
       this.init();
     }
   }
   init() {
+    this.accounts = this.walletService.wallet.accounts;
     if (this.accounts[0]) {
       this.fromPkh = this.accounts[0].pkh;
       this.getDelegate();

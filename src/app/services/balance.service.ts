@@ -10,18 +10,8 @@ export class BalanceService {
     private messageService: MessageService) { }
 
   getBalanceAll() {
-  this.getIdentityBalance();
     for (let i = 0; i < this.walletService.wallet.accounts.length; i++) {
       this.getAccountBalance(i);
-    }
-  }
-  getIdentityBalance() {
-    const promise = lib.eztz.rpc.getBalance(this.walletService.wallet.identity.pkh);
-    if (promise != null) {
-      promise.then(
-        (val) => this.updateIdentityBalance(val),
-        (err) => this.handleBalanceErrors(err, this.walletService.wallet.identity.pkh)
-      );
     }
   }
   handleBalanceErrors(err: any, pkh: string) {
@@ -35,13 +25,6 @@ export class BalanceService {
       this.messageService.addError('BalanceError: ' + JSON.stringify(err));
     }
   }
-  updateIdentityBalance(newBalance: number) {
-    if (newBalance !== this.walletService.wallet.identity.balance) {
-      this.walletService.wallet.identity.balance = newBalance;
-      this.updateTotalBalance();
-      this.walletService.storeWallet();
-    }
-  }
   getAccountBalance(index: number) {
     const promise = lib.eztz.rpc.getBalance(this.walletService.wallet.accounts[index].pkh);
     if (promise != null) {
@@ -52,18 +35,17 @@ export class BalanceService {
     }
   }
   updateAccountBalance(index: number, newBalance: number) {
-    if (newBalance !== this.walletService.wallet.accounts[index].balance) {
-      this.walletService.wallet.accounts[index].balance = newBalance;
+    if (newBalance !== this.walletService.wallet.accounts[index].balance.balanceXTZ) {
+      this.walletService.wallet.accounts[index].balance.balanceXTZ = newBalance;
       this.updateTotalBalance();
       this.walletService.storeWallet();
     }
   }
   updateTotalBalance() {
     let balance = 0;
-    balance += this.walletService.wallet.identity.balance;
     for (let i = 0; i < this.walletService.wallet.accounts.length; i++) {
-      balance += this.walletService.wallet.accounts[i].balance;
+      balance += this.walletService.wallet.accounts[i].balance.balanceXTZ;
     }
-    this.walletService.wallet.balance = balance;
+    this.walletService.wallet.balance.balanceXTZ = balance;
   }
 }

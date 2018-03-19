@@ -14,9 +14,7 @@ import { KeyPair } from '../../interfaces';
 })
 export class SendComponent implements OnInit {
   @ViewChild('modal1') modal1: TemplateRef<any>;
-
-  identity = this.walletService.wallet.identity;
-  accounts = this.walletService.wallet.accounts;
+  accounts = null;
   @Input() activePkh: string;
   toPkh: string;
   amount: string;
@@ -38,12 +36,13 @@ export class SendComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    if (this.identity) {
+    if (this.walletService.wallet) {
       this.init();
     }
   }
 
   init() {
+    this.accounts = this.walletService.wallet.accounts;
   }
   open1(template1: TemplateRef<any>) {
     this.clearForm();

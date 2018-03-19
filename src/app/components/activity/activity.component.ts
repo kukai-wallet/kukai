@@ -9,8 +9,7 @@ import { ActivityService } from '../../services/activity.service';
   styleUrls: ['./activity.component.scss']
 })
 export class ActivityComponent implements OnInit, OnChanges {
-  identity = this.walletService.wallet.identity;
-  accounts = this.walletService.wallet.accounts;
+  accounts = null;
   @Input() activePkh: string;
   constructor(
     private walletService: WalletService,
@@ -18,8 +17,9 @@ export class ActivityComponent implements OnInit, OnChanges {
     private activityService: ActivityService
   ) { }
 
-  ngOnInit() { if (this.identity) { this.init(); } }
+  ngOnInit() { if (this.walletService.wallet) { this.init(); } }
   init() {
+    this.accounts = this.walletService.wallet.accounts;
   }
   getTransactions() {
     this.activityService.updateTransactions(this.activePkh);

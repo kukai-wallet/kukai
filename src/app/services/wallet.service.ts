@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MessageService } from './message.service';
-import { Wallet, Identity, Account, KeyPair } from './../interfaces';
+import { Wallet, Account, Balance, KeyPair } from './../interfaces';
 import { EncryptionService } from './encryption.service';
 
 import * as lib from '../../assets/js/main.js';
@@ -10,7 +10,7 @@ import * as rnd2 from 'randomatic';
 @Injectable()
 export class WalletService {
   storeKey = `kukai-wallet`;
-  wallet: Wallet = this.emptyWallet();
+  wallet: Wallet;
   constructor(
     private messageService: MessageService,
     private encryptionService: EncryptionService) { }
@@ -34,21 +34,13 @@ export class WalletService {
     return bip39.entropyToMnemonic(mixed);
   }
   createEncryptedWallet(mnemonic: string, password: string): any {
+    this.wallet = this.emptyWallet();
     this.wallet.salt =  rnd2('aA0', 32);
     this.wallet.accounts = [];
-    this.wallet.identity = this.createIdentity(mnemonic);
-    this.wallet.encryptedMnemonic = this.encryptionService.encrypt(bip39.mnemonicToEntropy(mnemonic), password, this.wallet.salt);
-    return {wallet: 'Kukai', type: 'FullWallet', version: '1.0', seed: this.wallet.encryptedMnemonic,
-            salt: this.wallet.salt, pkh: this.wallet.identity.pkh};
-  }
-  createIdentity(mnemonic: string): Identity {
-    return {
-      pkh: lib.eztz.crypto.generateKeys(mnemonic, '').pkh,
-      balance: 0,
-      pending: 0,
-      balanceFiat: 0,
-      pendingFiat: 0
-    };
+    this.addAccount(lib.eztz.crypto.generateKeys(mnemonic, '').pkh);
+    this.wallet.encryptedSeed = this.encryptionService.encrypt(bip39.mnemonicToEntropy(mnemonic), password, this.wallet.salt);
+    return {wallet: 'Kukai', type: 'FullWallet', version: '1.0', seed: this.wallet.encryptedSeed,
+            salt: this.wallet.salt, pkh: this.wallet.accounts[0].pkh};
   }
   /*
     Handle accounts
@@ -70,10 +62,10 @@ export class WalletService {
   addAccount(pkh) {
     this.wallet.accounts.push({
       pkh: pkh,
-      balance: 0,
-      pending: 0,
-      balanceFiat: 0,
-      pendingFiat: 0
+      delegate: '',
+      balance: this.emptyBalance(),
+      numberOfActivites: 0,
+      activities: []
     });
     this.storeWallet();
   }
@@ -84,7 +76,7 @@ export class WalletService {
     return this.wallet.accounts.findIndex(a => a.pkh === pkh);
   }
   getKeys(password: string): KeyPair {
-    let mnemonic = this.encryptionService.decrypt(this.wallet.encryptedMnemonic, password, this.wallet.salt);
+    let mnemonic = this.encryptionService.decrypt(this.wallet.encryptedSeed, password, this.wallet.salt);
     if (!mnemonic) {
       this.messageService.addError('Decryption failed');
     } else {
@@ -97,19 +89,23 @@ export class WalletService {
     Clear wallet data from browser
   */
   clearWallet() {
-    this.wallet = this.emptyWallet();
+    this.wallet = null;
     localStorage.removeItem(this.storeKey);
   }
   emptyWallet(): Wallet {
     return {
-      encryptedMnemonic: null,
-      identity: null,
+      encryptedSeed: null,
       salt: null,
-      balance: 0,
-      pending: 0,
-      balanceFiat: 0,
-      pendingFiat: 0,
+      balance: this.emptyBalance(),
       accounts: []
+    };
+  }
+  emptyBalance(): Balance {
+    return {
+      balanceXTZ: 0,
+      pendingXTZ: 0,
+      balanceFiat: 0,
+      pendingFiat: 0
     };
   }
   /*

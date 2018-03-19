@@ -4,7 +4,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { MessageService } from './message.service';
 import { BalanceService } from './balance.service';
-import { Identity } from './../interfaces';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -26,8 +25,8 @@ export class ImportService {
         throw new Error(`Unsupported wallet format`);
       }
       this.walletService.wallet = this.walletService.emptyWallet();
-      this.walletService.wallet.identity = this.importIdentity(walletData.pkh);
-      this.walletService.wallet.encryptedMnemonic = walletData.seed;
+      this.walletService.addAccount(walletData.pkh);
+      this.walletService.wallet.encryptedSeed = walletData.seed;
       this.walletService.wallet.salt = walletData.salt;
       await this.findNumberOfAccounts(walletData.pkh);
       return true;
@@ -35,15 +34,6 @@ export class ImportService {
       this.messageService.addError(err);
       return false;
     }
-  }
-  importIdentity(pkh: string): Identity {
-    return {
-      pkh: pkh,
-      balance: 0,
-      pending: 0,
-      balanceFiat: 0,
-      pendingFiat: 0
-    };
   }
   findNumberOfAccounts(pkh: string) {
     console.log('Find accounts...');

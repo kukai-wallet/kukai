@@ -19,7 +19,6 @@ export class HomePageComponent implements OnInit {
   }
   logout() {
     this.walletService.clearWallet();
-    this.activityService.clearTransactions();
     this.router.navigate(['']);
   }
 }

@@ -10,7 +10,7 @@ import { BalanceService } from '../../services/balance.service';
   styleUrls: ['./overview.component.scss']
 })
 export class OverviewComponent implements OnInit {
-  identity = this.walletService.wallet.identity;
+  identity = null;
   constructor(
     private walletService: WalletService,
     private faucetService: FaucetService,
@@ -18,7 +18,8 @@ export class OverviewComponent implements OnInit {
     private balanceService: BalanceService) { }
 
   ngOnInit() {
-    if (this.walletService.wallet.identity) {
+    if (this.walletService.wallet) {
+      this.identity = this.walletService.wallet.accounts[0];
       this.balanceService.getBalanceAll();
     }
   }
@@ -27,7 +28,7 @@ export class OverviewComponent implements OnInit {
   }
   async freeTezzies(pkh: string) {
     if (await this.faucetService.freeTezzies(pkh)) {
-      this.balanceService.getIdentityBalance();
+      this.balanceService.getBalanceAll();
     }
   }
 }

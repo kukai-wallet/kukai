@@ -14,7 +14,7 @@
         </div>
     </div>
 </ng-template>
-    <button type="button" class="btn btn-primary" id="send" (click)="open1(modal1)">Receive</button>
-<div *ngIf='!identity'>
+<button *ngIf='accounts' type="button" class="btn btn-primary" id="send" (click)="open1(modal1)">Receive</button>
+<div *ngIf='!accounts'>
   Wallet not configured
 </div>

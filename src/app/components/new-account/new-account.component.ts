@@ -12,7 +12,7 @@ import { KeyPair } from '../../interfaces';
 })
 export class NewAccountComponent implements OnInit {
   @ViewChild('modal1') modal1: TemplateRef<any>;
-  identity = this.walletService.wallet.identity;
+  identity = this.walletService.wallet.accounts[0];
   // accounts = this.walletService.wallet.accounts;
   fromPkh: string;
   amount: string;

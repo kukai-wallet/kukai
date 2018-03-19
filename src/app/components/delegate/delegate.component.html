@@ -1,5 +1,4 @@
-<div *ngIf='identity'>
-  <div *ngFor="let data of transactionData"><div *ngIf="data.pkh === fromPkh">Current delegate: {{ data.delegate }}</div></div>
+<div *ngIf='accounts'>
   <div class="form-group">
     <label for="fromAdress">From:</label>
     <select [(ngModel)]="fromPkh" id="fromAdress" class="form-control" (ngModelChange)="getDelegate()">
@@ -9,7 +8,7 @@
   <div class="form-group">
     <label for="toAddress">To:</label>
     <input [(ngModel)]="toPkh" type="text" id="toAddress" class="form-control">
-    <ng-container *ngFor="let data of transactionData"><small *ngIf="data.pkh === fromPkh" id="currentDelegate" class="form-text text-muted">
+    <ng-container *ngFor="let data of accounts"><small *ngIf="data.pkh === fromPkh" id="currentDelegate" class="form-text text-muted">
       Current delegate: {{ data.delegate }}</small></ng-container>
   </div>
   <div class="row">
@@ -24,7 +23,7 @@
   </div>
   <button id="sub" (click)="setDelegate()" class="btn btn-primary">Send</button>
 </div>
-<p *ngIf='!identity'>
-    Wallet not configured
+<p *ngIf='!accounts'>
+    Wallet not configured!
 </p>
   

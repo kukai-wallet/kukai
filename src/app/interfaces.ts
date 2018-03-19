@@ -3,31 +3,20 @@ export interface KeyPair {
     pk: string|null;
     pkh: string;
 }
+export interface Wallet {
+  encryptedSeed: null|string;
+  salt: string|null;
+  balance: Balance;
+  accounts: Account[];
+}
 export interface Account {
   pkh: string|null;
-  balance: number;
-  pending: number;
-  balanceFiat: number;
-  pendingFiat: number;
+  delegate: string;
+  balance: Balance;
+  numberOfActivites: number;
+  activities: Activity[];
 }
-export interface Identity {
-  pkh: string;
-  balance: number;
-  pending: number;
-  balanceFiat: number;
-  pendingFiat: number;
-}
-export interface Wallet {
-  encryptedMnemonic: null|string;
-  salt: string|null;
-  balance: number;
-  pending: number;
-  balanceFiat: number;
-  pendingFiat: number;
-  accounts: Account[];
-  identity: Identity|null;
-}
-export interface Transaction {
+export interface Activity {
   hash: string;
   block: string;
   source: string;
@@ -37,9 +26,9 @@ export interface Transaction {
   timestamp: null|Date;
   type: string;
 }
-export interface AccountData {
-  pkh: string;
-  delegate: string;
-  numberOfTransactions: number;
-  transactions: Transaction[];
+export interface Balance {
+  balanceXTZ: number;
+  pendingXTZ: number;
+  balanceFiat: number;
+  pendingFiat: number;
 }
