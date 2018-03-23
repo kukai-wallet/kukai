@@ -9,7 +9,9 @@
 /*
 Boostrap personalization
 Info for shades: https://www.w3schools.com/colors/colors_picker.asp
+Colour Palette: http://paletton.com/#uid=3140u0kvisfkpzUpQvpyimKFchB (Triad)
 Main colour: #FAB915
+Triad: #FAB915 / #09698D / #40129A
 */
 
 $blue:    #FAB915 !default;  //default value: #007bff, modified directly in node_modules/bootstrap/scss/_variables.scss
@@ -43,6 +45,18 @@ $blue:    #FAB915 !default;  //default value: #007bff, modified directly in node
 
   outline: 0;
   box-shadow: none!important;
+}
+
+// Outline buttons - In Overview
+.btn-outline-primary {
+  color: #09698D;
+  border-color: #09698D;;
+}
+
+.btn-outline-primary:hover  {
+  color: #fff;
+  background-color: #09698D;
+  border-color: #09698D;
 }
 
 /* Taking out the blue outline */

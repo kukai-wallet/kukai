@@ -1,4 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { SlicePipe } from '@angular/common';
+import { ButtonsModule } from 'ngx-bootstrap';
+
 import { WalletService } from '../../services/wallet.service';
 import { MessageService } from '../../services/message.service';
 import { FaucetService } from '../../services/faucet.service';
@@ -11,6 +14,8 @@ import { BalanceService } from '../../services/balance.service';
 })
 export class OverviewComponent implements OnInit {
   identity = null;
+  XTZrate = 2.21; // Rate taken from CMC ?
+
   constructor(
     private walletService: WalletService,
     private faucetService: FaucetService,

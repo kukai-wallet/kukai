@@ -47,6 +47,12 @@ export class SendComponent implements OnInit {
   open1(template1: TemplateRef<any>) {
     this.clearForm();
     this.modalRef1 = this.modalService.show(template1, { class: 'modal-sm' });
+/*
+    this.modalRef1 = this.modalService.show(
+      template1, 
+      Object.assign({}, { class: 'gray modal-lg' })
+    );
+*/
   }
   open2(template: TemplateRef<any>) {
     this.formInvalid = this.invalidInput();

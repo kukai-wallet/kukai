@@ -8,9 +8,55 @@
         </button>
     </div>
     <div class="modal-body">
+        <form>
+            <div class="form-row">
+                <div class="form-group col-md-8">
+                    <label for="fromAdress">From Address</label> 
+                    <select [(ngModel)]="fromPkh" id="fromAdress" class="form-control">
+                        <option selected [value]="identity.pkh">{{ identity.pkh }} ({{ identity.balance / 100 | number:'1.0' }})</option>
+                        <option *ngFor="let account of accounts" [value]="account.pkh">{{ account.pkh }} ({{account.balance / 100 | number:'1.0' }}ꜩ)</option>
+                    </select>
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label for="staticBalance">Current Balance</label>
+                    <!-- fromAdress.value -->
+                    <input type="text" readonly class="form-control-plaintext" id="staticBalance" value="{{ identity.balance / 100 | number:'1.0' }} ꜩ ($ 388,140.36 USD)">
+                    <small id="rateXTZ" class="form-text text-muted">Rate (ꜩ) $12.0 USD</small>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-8">
+                    <label for="inputEmail4">To Address</label>
+                    <input type="email" class="form-control" id="inputEmail4" placeholder="tz1gynCVMEe5ZYv22QeSpKw1nFark6QGTc1g">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-8">
+                    <label for="inputEmail4">Amout to Send (ꜩ)</label>
+                    <input type="email" class="form-control" id="inputEmail4" placeholder="Amount">
+                    <small id="smallSend" class="form-text text-muted">Send Entire Balance</small>
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label for="inputPassword4">Transaction Limit (ꜩ)</label>
+                    <input type="password" class="form-control" id="inputPassword4" placeholder="Fee">
+                </div>
+            </div>
+        </form>
+
         <div class="form-group">
             <label for="fromAdress">From:</label>
             <input [(ngModel)]="activePkh" type="text" id="fromAddress" class="form-control" disabled>
+        <!--
+            <label for="fromAdress2">From:</label>
+            <select [(ngModel)]="fromPkh" id="fromAdress2" class="form-control">
+                <option [value]="identity.pkh">{{ identity.pkh }} ({{ identity.balance / 100 | number:'1.0' }})</option>
+                <option *ngFor="let account of accounts" [value]="account.pkh">{{ account.pkh }} ({{account.balance / 100 | number:'1.0' }}ꜩ)</option>
+            </select>
+        -->
         </div>
         <div class="form-group">
             <label for="toAddress">To:</label>
@@ -26,8 +72,13 @@
                 <input [(ngModel)]="fee" type="text" id="fee" class="form-control" placeholder="0.00">
             </div>
         </div>
-        <button type="button" class="btn btn-primary" id="sub" (click)="open2(modal2)">Preview</button>
+
         {{ formInvalid }}
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary btn-lg" id="sub" (click)="open2(modal2)">Send</button>
+        </div>
+
     </div>
 </ng-template>
     

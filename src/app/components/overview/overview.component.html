@@ -1,24 +1,182 @@
-<div id="content">
-  <div class="center-content">
-    <div class="card text-center fix-size" *ngIf="identity">
-      <div class="card-body">
-        <h1 class="card-title">Overview</h1>
-        <div class="card-text">
-          <table>
-            <tr *ngIf='identity'><td class='mono'></td>
-              <td></td><td><a onclick="return false;" href (click)='freeTezzies(identity.pkh)'>Free tezzies</a></td></tr>
-            <tr  *ngFor="let account of walletService.wallet.accounts">
-              <td class='mono'>{{ account.pkh }}</td><td>{{ account.balance.balanceXTZ / 100 | number:'1.0' }}ꜩ</td><td></td>
-            </tr><tr>
-              <td *ngIf="walletService.wallet.accounts.length === 0" colspan="2"></td>
-              <ng-container *ngIf="walletService.wallet.accounts.length !== 0">
-                <td>Total:</td><td>{{ walletService.wallet.balance.balanceXTZ / 100 | number:'1.0' }}ꜩ</td>
-                </ng-container>
-              <td><app-new-account></app-new-account></td>
-            </tr>
-          </table>
+
+<div class="container">
+        <!-- Title -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Your Wallet</h1>
+            </div>
         </div>
-      </div>
-    </div>
-  </div>
+
+        <!-- Identity -->
+        <div class="row row-header">
+            <div class="col-sm-5">
+                Identity
+            </div>
+            <div class="col-sm-3">
+                Balance (ꜩ)
+            </div>
+
+            <div class="col-sm-4">
+                Value (USD)
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-sm-5">
+                {{ walletService.wallet.accounts[0].pkh }}
+            </div>
+            <div class="col-sm-3">
+                {{ walletService.wallet.accounts[0].balance.balanceXTZ / 100 | number:'1.00' }}ꜩ
+            </div>
+            <div class="col-sm-4">
+                $ {{ walletService.wallet.accounts[0].balance.balanceXTZ * XTZrate / 100 | number:'1.00' }} USD
+            </div>
+        </div>
+
+        <div class="row row-buttons">
+            <div class="col-12"> 
+                <div class="btn-group btn-group-sm">
+                    <button type="button" class="btn btn-outline-primary">Add Account</button>
+                    <button type="button" class="btn btn-outline-primary">Details</button>
+                    <button type="button" class="btn btn-outline-primary">Send</button>
+                </div>
+            </div>
+        </div>
+
+
+        <br><br>
+
+        <!-- Accounts -->
+        <div class="row row-header">
+            <div class="col-sm-5">
+                Accounts
+            </div>
+            <div class="col-sm-3">
+                Balance (ꜩ)
+            </div>
+
+            <div class="col-sm-4">
+                Value (USD)
+            </div>
+        </div>
+
+        <div class="row" *ngFor="let account of walletService.wallet.accounts | slice:1">
+            <div class="col-sm-5">
+                {{ account.pkh }}
+            </div>
+            <div class="col-sm-3">
+                {{ account.balance.balanceXTZ / 100 | number:'1.00' }}ꜩ
+            </div>
+            <div class="col-sm-4">
+                $ {{ account.balance.balanceXTZ * XTZrate / 100 | number:'1.00' }} USD
+            </div>
+        </div>
+
+        <div class="row row-buttons">
+            <div class="col-12"> 
+                <div class="btn-group btn-group-sm">
+                    <div class="btn-group btn-group-sm">
+                        <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown">
+                            Send <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#">TZ1m7ubVDg4s44ur2QXa1yF7De3rsEjK8tSt</a></li>
+                            <li><a href="#">TZ1YBpbAU8g6rZVAT1MamB34Ht9XvRcc7vMk</a></li>
+                            <li><a href="#">TZ1YFAcdaaQ84vVuB7DJG24pg7r9AHJAnj1U</a></li>
+                        </ul>
+                    </div>
+                    <div class="btn-group btn-group-sm">
+                        <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown">
+                            Receive <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#">TZ1m7ubVDg4s44ur2QXa1yF7De3rsEjK8tSt</a></li>
+                            <li><a href="#">TZ1YBpbAU8g6rZVAT1MamB34Ht9XvRcc7vMk</a></li>
+                            <li><a href="#">TZ1YFAcdaaQ84vVuB7DJG24pg7r9AHJAnj1U</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br><br>
+
+        <!-- Total - Last row -->
+        <div class="row row-header">
+            <div class="col-sm-5">
+                Total
+            </div>
+            <div class="col-sm-3">
+                {{ walletService.wallet.balance.balanceXTZ / 100 | number:'1.0' }} ꜩ 
+            </div>
+
+            <div class="col-sm-4">
+                $ {{ walletService.wallet.balance.balanceXTZ * XTZrate / 100 | number:'1.0' }} USD 
+            </div>
+        </div>
+
+    <!--
+        <table class="table">
+            <caption>Click on an account to view account details</caption>
+            <thead>
+                <tr>
+                <th scope="col">#</th>
+                <th scope="col">First</th>
+                <th scope="col">Last</th>
+                <th scope="col">Handle</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                <th scope="row">1</th>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+                </tr>
+                <tr>
+                <th scope="row">2</th>
+                <td>Jacob</td>
+                <td>Thornton</td>
+                <td>@fat</td>
+                </tr>
+            </tbody>
+        </table>
+    -->
 </div>
+
+<!--
+<div id="content">
+
+    <div class="center-content">
+        <div class="card text-center fix-size" *ngIf="identity">
+        <div class="card-body">
+            <h1 class="card-title">Overview</h1>
+            <div class="card-text">
+                    <table>
+                        <tr *ngIf='identity'>
+                            <td class='mono'></td>
+                            <td></td>
+                            <td><a onclick="return false;" href (click)='freeTezzies(identity.pkh)'>Free tezzies</a></td>
+                        </tr>
+                        
+                        <tr  *ngFor="let account of walletService.wallet.accounts">
+                            <td class='mono'>{{ account.pkh }}</td><td>{{ account.balance.balanceXTZ / 100 | number:'1.0' }} ꜩ</td><td></td>
+                        </tr>
+                        <tr>
+                            <td *ngIf="walletService.wallet.accounts.length === 0" colspan="2"></td>
+    
+                            <ng-container *ngIf="walletService.wallet.accounts.length !== 0">
+                                <td>Total:</td>
+                                <td>{{ walletService.wallet.balance.balanceXTZ / 100 | number:'1.0' }} ꜩ</td>
+                            </ng-container>
+    
+                            <td><app-new-account></app-new-account></td>
+                        </tr>
+                    </table>
+                </div>
+        </div>
+        </div>
+    </div>
+
+</div>
+-->
