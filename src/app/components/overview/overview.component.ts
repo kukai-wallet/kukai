@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { SlicePipe } from '@angular/common';
-import { ButtonsModule } from 'ngx-bootstrap';
+import { BsDropdownDirective } from 'ngx-bootstrap/dropdown/bs-dropdown.directive';
 
 import { WalletService } from '../../services/wallet.service';
 import { MessageService } from '../../services/message.service';

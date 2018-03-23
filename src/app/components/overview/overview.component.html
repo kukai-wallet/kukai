@@ -9,26 +9,26 @@
 
         <!-- Identity -->
         <div class="row row-header">
-            <div class="col-sm-5">
+            <div class="col-sm-5 col-border">
                 Identity
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-3 col-border">
                 Balance (ꜩ)
             </div>
 
-            <div class="col-sm-4">
+            <div class="col-sm-4 col-border">
                 Value (USD)
             </div>
         </div>
         
         <div class="row">
-            <div class="col-sm-5">
+            <div class="col-sm-5 col-border">
                 {{ walletService.wallet.accounts[0].pkh }}
             </div>
-            <div class="col-sm-3">
-                {{ walletService.wallet.accounts[0].balance.balanceXTZ / 100 | number:'1.00' }}ꜩ
+            <div class="col-sm-3 col-border">
+                {{ walletService.wallet.accounts[0].balance.balanceXTZ / 100 | number:'1.00' }} ꜩ
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-4 col-border">
                 $ {{ walletService.wallet.accounts[0].balance.balanceXTZ * XTZrate / 100 | number:'1.00' }} USD
             </div>
         </div>
@@ -36,38 +36,38 @@
         <div class="row row-buttons">
             <div class="col-12"> 
                 <div class="btn-group btn-group-sm">
-                    <button type="button" class="btn btn-outline-primary">Add Account</button>
+                    <button type="button" class="btn btn-outline-primary"><app-new-account></app-new-account></button>
                     <button type="button" class="btn btn-outline-primary">Details</button>
                     <button type="button" class="btn btn-outline-primary">Send</button>
                 </div>
+                <a onclick="return false;" href (click)='freeTezzies(identity.pkh)'>Free tezzies</a>
             </div>
         </div>
-
 
         <br><br>
 
         <!-- Accounts -->
         <div class="row row-header">
-            <div class="col-sm-5">
+            <div class="col-sm-5 col-border">
                 Accounts
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-3 col-border">
                 Balance (ꜩ)
             </div>
 
-            <div class="col-sm-4">
+            <div class="col-sm-4 col-border">
                 Value (USD)
             </div>
         </div>
 
         <div class="row" *ngFor="let account of walletService.wallet.accounts | slice:1">
-            <div class="col-sm-5">
+            <div class="col-sm-5 col-border">
                 {{ account.pkh }}
             </div>
-            <div class="col-sm-3">
-                {{ account.balance.balanceXTZ / 100 | number:'1.00' }}ꜩ
+            <div class="col-sm-3 col-border">
+                {{ account.balance.balanceXTZ / 100 | number:'1.00' }} ꜩ
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-4 col-border">
                 $ {{ account.balance.balanceXTZ * XTZrate / 100 | number:'1.00' }} USD
             </div>
         </div>
@@ -75,24 +75,22 @@
         <div class="row row-buttons">
             <div class="col-12"> 
                 <div class="btn-group btn-group-sm">
-                    <div class="btn-group btn-group-sm">
-                        <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown">
+                    <div class="btn-group btn-group-sm" dropdown>
+                    <!-- <div class="btn-group btn-group-sm" dropdown triggers="hover">  Remains active after mouseover -->
+
+                        <button dropdownToggle type="button" class="btn btn-outline-primary dropdown-toggle">
                             Send <span class="caret"></span>
                         </button>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a href="#">TZ1m7ubVDg4s44ur2QXa1yF7De3rsEjK8tSt</a></li>
-                            <li><a href="#">TZ1YBpbAU8g6rZVAT1MamB34Ht9XvRcc7vMk</a></li>
-                            <li><a href="#">TZ1YFAcdaaQ84vVuB7DJG24pg7r9AHJAnj1U</a></li>
+                        <ul *dropdownMenu class="dropdown-menu" role="menu">
+                            <li role="menuitem"><a class="dropdown-item" href="#" *ngFor="let account of walletService.wallet.accounts | slice:1">{{ account.pkh }}</a></li>
                         </ul>
                     </div>
-                    <div class="btn-group btn-group-sm">
-                        <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown">
+                    <div class="btn-group btn-group-sm" dropdown>
+                        <button dropdownToggle type="button" class="btn btn-outline-primary dropdown-toggle">
                             Receive <span class="caret"></span>
                         </button>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a href="#">TZ1m7ubVDg4s44ur2QXa1yF7De3rsEjK8tSt</a></li>
-                            <li><a href="#">TZ1YBpbAU8g6rZVAT1MamB34Ht9XvRcc7vMk</a></li>
-                            <li><a href="#">TZ1YFAcdaaQ84vVuB7DJG24pg7r9AHJAnj1U</a></li>
+                        <ul *dropdownMenu class="dropdown-menu" role="menu">
+                            <li role="menuitem"><a class="dropdown-item" href="#" *ngFor="let account of walletService.wallet.accounts | slice:1">{{ account.pkh }}</a></li>
                         </ul>
                     </div>
                 </div>
@@ -114,34 +112,6 @@
                 $ {{ walletService.wallet.balance.balanceXTZ * XTZrate / 100 | number:'1.0' }} USD 
             </div>
         </div>
-
-    <!--
-        <table class="table">
-            <caption>Click on an account to view account details</caption>
-            <thead>
-                <tr>
-                <th scope="col">#</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">Handle</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                </tr>
-                <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-                </tr>
-            </tbody>
-        </table>
-    -->
 </div>
 
 <!--

@@ -39,7 +39,7 @@ $blue:    #FAB915 !default;  //default value: #007bff, modified directly in node
   
 .btn-primary:active, .btn-primary.active,
 .show > .btn-primary.dropdown-toggle {
-  background-color: #af7e04 !important;
+  background-color: #e1a205 !important;
   background-image: none;
   border-color: #af7e04 !important;
 
@@ -57,6 +57,16 @@ $blue:    #FAB915 !default;  //default value: #007bff, modified directly in node
   color: #fff;
   background-color: #09698D;
   border-color: #09698D;
+}
+
+.btn-outline-primary:active, .btn-outline-primary.active,
+.show > .btn-outline-primary.dropdown-toggle {
+  background-color: #085a78 !important;
+  background-image: none;
+  border-color: #085a78 !important;
+
+  outline: 0;
+  box-shadow: none!important;
 }
 
 /* Taking out the blue outline */

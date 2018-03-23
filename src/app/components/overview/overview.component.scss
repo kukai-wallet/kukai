@@ -13,6 +13,21 @@
     padding-top: 5px;
 }
 
+.col-border {
+    //border: 1px solid;
+    //border-color: aquamarine;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+//For "New account" Button - Not working but working for dropdown-item (Send and Receive buttons)
+a:hover {
+    color: #fff !important;
+    background-color: #09698D !important;
+    border-color: #09698D !important;
+    text-decoration: none !important;
+}
+
 
 /* Responsive breakpoints */
 // Extra small devices (portrait phones, less than 576px)

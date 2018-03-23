@@ -1,4 +1,5 @@
 import { Component, TemplateRef, OnInit, ViewEncapsulation, Input, ViewChild, ElementRef } from '@angular/core';
+
 import { WalletService } from '../../services/wallet.service';
 import { MessageService } from '../../services/message.service';
 import { TransactionService } from '../../services/transaction.service';

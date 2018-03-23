@@ -8,7 +8,7 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 // External libraries
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ComponentLoaderFactory } from 'ngx-bootstrap/component-loader/component-loader.factory';
-import { ModalModule, AlertModule, ProgressbarModule } from 'ngx-bootstrap';
+import { ModalModule, AlertModule, ProgressbarModule, ButtonsModule, BsDropdownModule } from 'ngx-bootstrap';
 
 // Services
 import { MessagesComponent } from './components/messages/messages.component';
@@ -68,7 +68,9 @@ import { AccountComponent } from './components/account/account.component';
     NgbModule.forRoot(),
     ModalModule.forRoot(),
     AlertModule.forRoot(),
-    ProgressbarModule.forRoot()
+    ProgressbarModule.forRoot(),
+    ButtonsModule.forRoot(),
+    BsDropdownModule.forRoot()
   ],
   providers: [
     MessageService,
