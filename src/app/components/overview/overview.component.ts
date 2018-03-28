@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { SlicePipe } from '@angular/common';
 import { BsDropdownDirective } from 'ngx-bootstrap/dropdown/bs-dropdown.directive';
 
-import { Router } from '@angular/router'; 
+import { Router } from '@angular/router';
 
 import { WalletService } from '../../services/wallet.service';
 import { MessageService } from '../../services/message.service';
@@ -42,10 +42,5 @@ export class OverviewComponent implements OnInit {
     if (await this.faucetService.freeTezzies(pkh)) {
       this.balanceService.getBalanceAll();
     }
-  }
-
-  openSend(pkh: string) {
-    console.log(pkh);
-    this.router.navigate(['/send', { activePkh: pkh }]);
   }
 }

@@ -39,7 +39,8 @@
                 <div class="btn-group btn-group-sm">
                     <button type="button" class="btn btn-outline-primary"><app-new-account></app-new-account></button>
                     <button type="button" class="btn btn-outline-primary">Details</button>
-                    <button type="button" class="btn btn-outline-primary" (click)="openSend(walletService.wallet.accounts[0].pkh)">Send</button>
+                    <app-send [activePkh]="walletService.wallet.accounts[0].pkh"></app-send>
+                    <!--<button type="button" class="btn btn-outline-primary" (click)="openSend(walletService.wallet.accounts[0].pkh)">Send</button>-->
                 </div>
                 <a onclick="return false;" href (click)='freeTezzies(identity.pkh)'>Free tezzies</a>
             </div>
