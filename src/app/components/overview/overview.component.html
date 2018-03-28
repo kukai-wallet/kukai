@@ -26,7 +26,7 @@
                 {{ walletService.wallet.accounts[0].pkh }}
             </div>
             <div class="col-sm-auto col-border border border-warning text-truncate min-size-other-cell">
-                {{ walletService.wallet.accounts[0].balance.balanceXTZ / 100 | number:'1.00' }} ꜩ
+                {{ walletService.wallet.accounts[0].balance.balanceXTZ / 1000000 | number:'1.00' }} ꜩ
             </div>
             <div class="col-sm-auto col-border border border-warning text-truncate min-size-other-cell">
                 USD {{ walletService.wallet.accounts[0].balance.balanceXTZ * XTZrate / 100 | number:'1.00' }}
@@ -70,7 +70,7 @@
                     {{ account.pkh }}
                 </div>
                 <div class="col-sm-3 col-border text-truncate">
-                    {{ account.balance.balanceXTZ / 100 | number:'1.00' }} ꜩ
+                    {{ account.balance.balanceXTZ / 1000000 | number:'1.00' }} ꜩ
                 </div>
                 <div class="col-sm-4 col-border text-truncate">
                     USD {{ account.balance.balanceXTZ * XTZrate / 100 | number:'1.00' }}
@@ -110,7 +110,7 @@
                     Total
                 </div>
                 <div class="col-sm-3">
-                    {{ walletService.wallet.balance.balanceXTZ / 100 | number:'1.0' }} ꜩ 
+                    {{ walletService.wallet.balance.balanceXTZ / 1000000 | number:'1.0' }} ꜩ 
                 </div>
 
                 <div class="col-sm-4">
