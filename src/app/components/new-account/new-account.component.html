@@ -76,4 +76,4 @@
       <button type="button" class="btn btn-primary" id="sub" (click)="close3()">Close</button>
   </div>
 </ng-template>
-<a *ngIf='identity' onclick="return false;" href (click)="open1(modal1)">New account</a>
+<button *ngIf='identity' type="button" href (click)="open1(modal1)" class="btn btn-outline-primary">New account</button>
