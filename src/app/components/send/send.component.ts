@@ -49,7 +49,7 @@ export class SendComponent implements OnInit {
   }
   open1(template1: TemplateRef<any>) {
     this.clearForm();
-    this.modalRef1 = this.modalService.show(template1, { class: 'modal-sm' });
+    this.modalRef1 = this.modalService.show(template1, { class: 'first' });
 /*
     this.modalRef1 = this.modalService.show(
       template1,
@@ -120,7 +120,7 @@ async sendTransaction(keys: KeyPair) {
   }
   invalidInput(): string {
     if (!this.toPkh || this.toPkh.length !== 36) {
-      return 'invalid reciever address';
+      return 'invalid receiver address';
     } else if (!Number(this.amount) && this.amount && this.amount !== '0') {
       return 'invalid amount';
     } else if (!Number(this.fee) && this.fee && this.fee !== '0') {

@@ -16,7 +16,7 @@ import { BalanceService } from '../../services/balance.service';
 })
 export class OverviewComponent implements OnInit {
     identity = null;
-    XTZrate = 20.21; // Rate taken from CMC ?
+    XTZrate = 1; // Rate taken from CMC ?
 
     accounts = null;
     activePkh: string;

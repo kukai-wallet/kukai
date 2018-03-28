@@ -29,7 +29,7 @@
                 {{ walletService.wallet.accounts[0].balance.balanceXTZ / 1000000 | number:'1.00' }} ꜩ
             </div>
             <div class="col-sm-auto col-border border border-warning text-truncate min-size-other-cell">
-                USD {{ walletService.wallet.accounts[0].balance.balanceXTZ * XTZrate / 100 | number:'1.00' }}
+                USD {{ walletService.wallet.accounts[0].balance.balanceXTZ * XTZrate / 1000000 | number:'1.00' }}
             </div>
         </div>
 
@@ -73,7 +73,7 @@
                     {{ account.balance.balanceXTZ / 1000000 | number:'1.00' }} ꜩ
                 </div>
                 <div class="col-sm-auto col-border border border-warning text-truncate min-size-other-cell">
-                    USD {{ account.balance.balanceXTZ * XTZrate / 100 | number:'1.00' }}
+                    USD {{ account.balance.balanceXTZ * XTZrate / 1000000 | number:'1.00' }}
                 </div>
             </div>
 
@@ -88,7 +88,15 @@
                                 Send <span class="caret"></span>
                             </button>
                             <ul *dropdownMenu class="dropdown-menu" role="menu">
+                                
                                 <li role="menuitem"><a class="dropdown-item" href="#" *ngFor="let account of walletService.wallet.accounts | slice:1" (click)="openSend(account.pkh)">{{ account.pkh }}</a></li>
+                                <!--
+                                <li role="menuitem">
+                                    <a class="dropdown-item" href="#" *ngFor="let account of walletService.wallet.accounts | slice:1" (click)="openSend(account.pkh)">
+                                        <app-send [activePkh]="account.pkh"></app-send>
+                                    </a>
+                                </li>
+                                -->
                             </ul>
                         </div>
                         <div class="btn-group btn-group-sm" dropdown>
