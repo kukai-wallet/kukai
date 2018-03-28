@@ -24,7 +24,7 @@ export class ActivityService {
     this.getTransactonsCounter(pkh);
   }
   getTransactonsCounter(pkh) {
-    this.http.get('https://api.tzscan.io/v1/number_operations/' + pkh).subscribe(
+    this.http.get('http://zeronet-api.tzscan.io/v1/number_operations/' + pkh).subscribe(
       data => this.handleTransactionsCounterResponse(pkh, data[0]),
       err => this.messageService.addError(JSON.stringify(err))
     );
@@ -55,7 +55,7 @@ export class ActivityService {
         break;
       }
     }
-    this.http.get('https://api.tzscan.io/v1/operations/' + pkh + '?number=' + n + '&p=0').subscribe(
+    this.http.get('http://zeronet-api.tzscan.io/v1/operations/' + pkh + '?number=' + n + '&p=0').subscribe(
       data => this.handleUnconfirmedTransactionsResponse(pkh, data),
       err => this.messageService.addError(JSON.stringify(err))
     );
@@ -76,7 +76,7 @@ export class ActivityService {
   }
   // Get latest transaction
   getTransactions(pkh: string, counter: number) {
-    this.http.get('https://api.tzscan.io/v1/operations/' + pkh + '?number=' + this.maxTransactions + '&p=0').subscribe(
+    this.http.get('http://zeronet-api.tzscan.io/v1/operations/' + pkh + '?number=' + this.maxTransactions + '&p=0').subscribe(
       data => this.handleTransactionsResponse(pkh, data, counter),
       err => this.messageService.addError(JSON.stringify(err)),
       () => console.log('done loading transactions')
@@ -149,7 +149,7 @@ export class ActivityService {
     }
   }
   getTimestamp(pkh: string, block: string, hash) {
-    this.http.get('https://api.tzscan.io/v1/timestamp/' + block).subscribe(
+    this.http.get('http://zeronet-api.tzscan.io/v1/timestamp/' + block).subscribe(
       data => this.handleTimestampResponse(pkh, block, data, hash),
       err => this.messageService.addError(JSON.stringify(err))
     );

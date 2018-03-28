@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { WalletService } from './wallet.service';
 import { MessageService } from './message.service';
-import * as lib from '../../assets/js/main.js';
+import * as lib from '../../assets/js/main2.js';
 
 @Injectable()
 export class BalanceService {

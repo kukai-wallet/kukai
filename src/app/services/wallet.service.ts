@@ -3,7 +3,7 @@ import { MessageService } from './message.service';
 import { Wallet, Account, Balance, KeyPair } from './../interfaces';
 import { EncryptionService } from './encryption.service';
 
-import * as lib from '../../assets/js/main.js';
+import * as lib from '../../assets/js/main2.js';
 import * as bip39 from 'bip39';
 import * as rnd2 from 'randomatic';
 

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BalanceService } from './balance.service';
 import { MessageService } from './message.service';
-import * as lib from '../../assets/js/main.js';
+import * as lib from '../../assets/js/main2.js';
 import { KeyPair } from './../interfaces';
 
 @Injectable()
