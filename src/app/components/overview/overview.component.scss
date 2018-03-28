@@ -2,10 +2,18 @@
     padding-bottom: 9px;
     margin: 40px 0 20px;
     border-bottom: 1px solid #eee;
+    min-height: 125px; //Alignment  with sidebar
+
+    //Vertical Alignment 
+    display: flex;
+    align-items: center; //flex-end; 
 }
 
 .row-header {
     font-weight: bold;
+}
+
+.col-header {
     background-color: #fde19b;
 }
 
@@ -18,6 +26,14 @@
     //border-color: aquamarine;
     padding-top: 2px;
     padding-bottom: 2px;
+}
+
+.min-size-address-cell {
+    min-width: 342px;
+}
+
+.min-size-other-cell {
+    min-width: 125px;
 }
 
 //For "New account" Button - Not working but working for dropdown-item (Send and Receive buttons)

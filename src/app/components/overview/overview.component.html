@@ -9,30 +9,31 @@
 
         <!-- Identity -->
         <div class="row row-header">
-            <div class="col-sm-5 col-border">
+            <div class="col-sm-auto col-header col-border border border-warning min-size-address-cell">
                 Identity
             </div>
-            <div class="col-sm-3 col-border">
+            <div class="col-sm-auto col-header col-border border border-warning min-size-other-cell">
                 Balance (ꜩ)
             </div>
 
-            <div class="col-sm-4 col-border">
+            <div class="col-sm-auto col-header col-border border border-warning min-size-other-cell">
                 Value (USD)
             </div>
         </div>
         
         <div class="row">
-            <div class="col-sm-5 col-border">
+            <div class="col-sm-auto col-border border border-warning text-truncate min-size-address-cell">
                 {{ walletService.wallet.accounts[0].pkh }}
             </div>
-            <div class="col-sm-3 col-border">
+            <div class="col-sm-auto col-border border border-warning text-truncate min-size-other-cell">
                 {{ walletService.wallet.accounts[0].balance.balanceXTZ / 100 | number:'1.00' }} ꜩ
             </div>
-            <div class="col-sm-4 col-border">
-                $ {{ walletService.wallet.accounts[0].balance.balanceXTZ * XTZrate / 100 | number:'1.00' }} USD
+            <div class="col-sm-auto col-border border border-warning text-truncate min-size-other-cell">
+                USD {{ walletService.wallet.accounts[0].balance.balanceXTZ * XTZrate / 100 | number:'1.00' }}
             </div>
         </div>
 
+        <!-- Identity Action buttons -->
         <div class="row row-buttons">
             <div class="col-12"> 
                 <div class="btn-group btn-group-sm">
@@ -46,72 +47,76 @@
 
         <br><br>
 
-        <!-- Accounts -->
-        <div class="row row-header">
-            <div class="col-sm-5 col-border">
-                Accounts
-            </div>
-            <div class="col-sm-3 col-border">
-                Balance (ꜩ)
+        <!-- Accounts + Total sections shown only if there are accounts -->
+        <span *ngIf="walletService.wallet.accounts[1]">
+
+            <!-- Accounts -->
+            <div class="row row-header">
+                <div class="col-sm-5 col-border">
+                    Accounts
+                </div>
+                <div class="col-sm-3 col-border">
+                    Balance (ꜩ)
+                </div>
+
+                <div class="col-sm-4 col-border">
+                    Value (USD)
+                </div>
             </div>
 
-            <div class="col-sm-4 col-border">
-                Value (USD)
+            <div class="row" *ngFor="let account of walletService.wallet.accounts | slice:1">
+                <div class="col-sm-5 col-border text-truncate">
+                    {{ account.pkh }}
+                </div>
+                <div class="col-sm-3 col-border text-truncate">
+                    {{ account.balance.balanceXTZ / 100 | number:'1.00' }} ꜩ
+                </div>
+                <div class="col-sm-4 col-border text-truncate">
+                    USD {{ account.balance.balanceXTZ * XTZrate / 100 | number:'1.00' }}
+                </div>
             </div>
-        </div>
 
-        <div class="row" *ngFor="let account of walletService.wallet.accounts | slice:1">
-            <div class="col-sm-5 col-border">
-                {{ account.pkh }}
-            </div>
-            <div class="col-sm-3 col-border">
-                {{ account.balance.balanceXTZ / 100 | number:'1.00' }} ꜩ
-            </div>
-            <div class="col-sm-4 col-border">
-                $ {{ account.balance.balanceXTZ * XTZrate / 100 | number:'1.00' }} USD
-            </div>
-        </div>
+            <!-- Accounts Action buttons -->
+            <div class="row row-buttons">
+                <div class="col-12"> 
+                    <div class="btn-group btn-group-sm">
+                        <div class="btn-group btn-group-sm" dropdown>
+                        <!-- <div class="btn-group btn-group-sm" dropdown triggers="hover">  Remains active after mouseover -->
 
-        <div class="row row-buttons">
-            <div class="col-12"> 
-                <div class="btn-group btn-group-sm">
-                    <div class="btn-group btn-group-sm" dropdown>
-                    <!-- <div class="btn-group btn-group-sm" dropdown triggers="hover">  Remains active after mouseover -->
-
-                        <button dropdownToggle type="button" class="btn btn-outline-primary dropdown-toggle">
-                            Send <span class="caret"></span>
-                        </button>
-                        <ul *dropdownMenu class="dropdown-menu" role="menu">
-                            <li role="menuitem"><a class="dropdown-item" href="#" *ngFor="let account of walletService.wallet.accounts | slice:1">{{ account.pkh }}</a></li>
-                        </ul>
-                    </div>
-                    <div class="btn-group btn-group-sm" dropdown>
-                        <button dropdownToggle type="button" class="btn btn-outline-primary dropdown-toggle">
-                            Receive <span class="caret"></span>
-                        </button>
-                        <ul *dropdownMenu class="dropdown-menu" role="menu">
-                            <li role="menuitem"><a class="dropdown-item" href="#" *ngFor="let account of walletService.wallet.accounts | slice:1">{{ account.pkh }}</a></li>
-                        </ul>
+                            <button dropdownToggle type="button" class="btn btn-outline-primary dropdown-toggle">
+                                Send <span class="caret"></span>
+                            </button>
+                            <ul *dropdownMenu class="dropdown-menu" role="menu">
+                                <li role="menuitem"><a class="dropdown-item" href="#" *ngFor="let account of walletService.wallet.accounts | slice:1">{{ account.pkh }}</a></li>
+                            </ul>
+                        </div>
+                        <div class="btn-group btn-group-sm" dropdown>
+                            <button dropdownToggle type="button" class="btn btn-outline-primary dropdown-toggle">
+                                Receive <span class="caret"></span>
+                            </button>
+                            <ul *dropdownMenu class="dropdown-menu" role="menu">
+                                <li role="menuitem"><a class="dropdown-item" href="#" *ngFor="let account of walletService.wallet.accounts | slice:1">{{ account.pkh }}</a></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+            <br><br>
+        
+            <!-- Total - Last row -->
+            <div class="row row-header">
+                <div class="col-sm-5">
+                    Total
+                </div>
+                <div class="col-sm-3">
+                    {{ walletService.wallet.balance.balanceXTZ / 100 | number:'1.0' }} ꜩ 
+                </div>
 
-        <br><br>
-
-        <!-- Total - Last row -->
-        <div class="row row-header">
-            <div class="col-sm-5">
-                Total
+                <div class="col-sm-4">
+                    $ {{ walletService.wallet.balance.balanceXTZ * XTZrate / 100 | number:'1.0' }} USD 
+                </div>
             </div>
-            <div class="col-sm-3">
-                {{ walletService.wallet.balance.balanceXTZ / 100 | number:'1.0' }} ꜩ 
-            </div>
-
-            <div class="col-sm-4">
-                $ {{ walletService.wallet.balance.balanceXTZ * XTZrate / 100 | number:'1.0' }} USD 
-            </div>
-        </div>
+        </span>
 </div>
 
 <!--
