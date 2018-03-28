@@ -10,37 +10,47 @@ import { FaucetService } from '../../services/faucet.service';
 import { BalanceService } from '../../services/balance.service';
 
 @Component({
-  selector: 'app-overview',
-  templateUrl: './overview.component.html',
-  styleUrls: ['./overview.component.scss']
+    selector: 'app-overview',
+    templateUrl: './overview.component.html',
+    styleUrls: ['./overview.component.scss']
 })
 export class OverviewComponent implements OnInit {
-  identity = null;
-  XTZrate = 2.21; // Rate taken from CMC ?
+    identity = null;
+    XTZrate = 2.21; // Rate taken from CMC ?
 
-  accounts = null;
-  activePkh: string;
+    accounts = null;
+    activePkh: string;
 
 
-  constructor(
-    private router: Router,
-    private walletService: WalletService,
-    private faucetService: FaucetService,
-    private messageService: MessageService,
-    private balanceService: BalanceService) { }
+    constructor(
+        private router: Router,
+        private walletService: WalletService,
+        private faucetService: FaucetService,
+        private messageService: MessageService,
+        private balanceService: BalanceService) { }
 
-  ngOnInit() {
-    if (this.walletService.wallet) {
-      this.identity = this.walletService.wallet.accounts[0];
-      this.balanceService.getBalanceAll();
+    ngOnInit() {
+        if (this.walletService.wallet) {
+            this.identity = this.walletService.wallet.accounts[0];
+            this.balanceService.getBalanceAll();
+        }
     }
-  }
-  addAccount() {
-    // this.walletService.createAccount();
-  }
-  async freeTezzies(pkh: string) {
-    if (await this.faucetService.freeTezzies(pkh)) {
-      this.balanceService.getBalanceAll();
+    addAccount() {
+        // this.walletService.createAccount();
     }
-  }
+    async freeTezzies(pkh: string) {
+        if (await this.faucetService.freeTezzies(pkh)) {
+            this.balanceService.getBalanceAll();
+        }
+    }
+
+    // Not working
+    openSend(pkh: string) {
+        console.log(pkh);
+        this.router.navigate(['/send', { activePkh: pkh }]);
+    }
+
+    openReceive(pkh: string) {
+        console.log(pkh);
+    }
 }

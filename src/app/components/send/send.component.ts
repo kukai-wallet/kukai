@@ -39,6 +39,8 @@ export class SendComponent implements OnInit {
   ngOnInit() {
     if (this.walletService.wallet) {
       this.init();
+      console.log('in SendComponent', this.activePkh);
+      // this.open1(modal1);
     }
   }
 
@@ -50,7 +52,7 @@ export class SendComponent implements OnInit {
     this.modalRef1 = this.modalService.show(template1, { class: 'modal-sm' });
 /*
     this.modalRef1 = this.modalService.show(
-      template1, 
+      template1,
       Object.assign({}, { class: 'gray modal-lg' })
     );
 */
