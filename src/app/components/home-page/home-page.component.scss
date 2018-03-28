@@ -24,6 +24,12 @@ a, a:hover, a:focus {
     cursor:pointer;
 }
 
+//Sidebar buttons are centered in FF and Chrome, align="center" not working in FF
+.btn-main-action {
+    display: flex !important;
+    justify-content: center !important;
+}
+
 .navbar {
     padding: 15px 10px;
     background: #fff;

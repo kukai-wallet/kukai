@@ -9,39 +9,41 @@
 
         <br>
 
-        <ul class="list-unstyled components top">
+        <ul class="list-unstyled components">
             <li routerLinkActive="active">
-                <a routerLink="/overview" align="center">Overview</a>
+                <a routerLink="/overview" class="btn-main-action">Overview</a>
             </li>
             <li routerLinkActive="active">
-                <a routerLink="/account" align="center">Accounts</a>
+                <a routerLink="/account" class="btn-main-action">Accounts</a>
             </li>
             <!--
             <li routerLinkActive="active">
-                <a routerLink="/send" align="center">Send</a>
+                <a routerLink="/send" class="btn-main-action">Send</a>
             </li>
             <li routerLinkActive="active">
-                <a routerLink="/receive" align="center">Receive</a>
+                <a routerLink="/receive" class="btn-main-action">Receive</a>
             </li>
             <li routerLinkActive="active">
-                <a routerLink="/delegate" align="center">Delegate</a>
+                <a routerLink="/delegate" class="btn-main-action">Delegate</a>
             </li>-->
         </ul>
 
 
-        <ul class="list-unstyled components bottom-CTAs" align="center">
+        <ul class="list-unstyled components bottom-CTAs">
             <!--<li routerLinkActive="active" class="bottom-category">
                 <a routerLink="/settings" align="center">Settings</a>
             </li>-->
             <li routerLinkActive="active">
-                    <a routerLink="/backup" align="center">Backup</a>
+                    <a routerLink="/backup" class="btn-main-action">Backup</a>
             </li>
             <li class="bottom-category">
-                <a (click)="logout();" align="center" data-toggle="tooltip" title="Clear wallet data">Logout</a>
+                <a (click)="logout();" class="btn-main-action" data-toggle="tooltip" title="Clear wallet data">Logout</a>
             </li>
-            <a href="https://github.com/tezwallet/wallet" target="_blank"><i class="fa fa-github"></i></a>
-            <a href="https://riot.im/app/#/room/!fAygufidcqAVLeKCYU:matrix.org" target="_blank"><i class="fa fa-comments"></i></a>
-            <a href="https://twitter.com/" target="_blank"><i class="fa fa-twitter"></i></a>
+            <span class="btn-main-action">
+                <a href="https://github.com/tezwallet/wallet" target="_blank"><i class="fa fa-github"></i></a>
+                <a href="https://riot.im/app/#/room/!fAygufidcqAVLeKCYU:matrix.org" target="_blank"><i class="fa fa-comments"></i></a>
+                <a href="https://twitter.com/" target="_blank"><i class="fa fa-twitter"></i></a>
+            </span>
         </ul>
     </nav>
 

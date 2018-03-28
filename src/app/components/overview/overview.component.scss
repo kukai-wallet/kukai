@@ -29,12 +29,21 @@
 }
 
 .min-size-address-cell {
-    min-width: 342px;
+    min-width: 368px;
 }
 
 .min-size-other-cell {
     min-width: 125px;
 }
+
+/* Taking out underline link in router link (New Account btn) */
+a.active-link {
+    text-decoration: none;
+
+    color: #fff !important; //Not working
+    background-color: #09698D !important; //Not working
+    border-color: #09698D !important; //Not working
+ }
 
 //For "New account" Button - Not working but working for dropdown-item (Send and Receive buttons)
 a:hover {
