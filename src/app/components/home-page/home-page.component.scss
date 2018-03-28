@@ -163,7 +163,13 @@ ul.CTAs a {
 }
 
 .bottom-CTAs {
-    padding-top: 46vh !important;
+    padding-top: 38vh !important;  //This needs to change - creates vertical scroll bar
+
+    //display:inline-block !important;
+    //align-self: flex-end !important;
+    //display: flex !important;
+    //align-content: flex-end !important;
+    //vertical-align: bottom !important;
 }
 
 .bottom-CTAs .fa {

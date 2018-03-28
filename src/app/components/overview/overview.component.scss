@@ -61,6 +61,7 @@ a:hover {
 // Small devices (landscape phones, 576px and up)
 @media (min-width: 576px) { 
     .container {
+        padding-left: 2em;
         min-width: 85vw
     }
  }
@@ -78,6 +79,7 @@ a:hover {
 // Extra large devices (large desktops, 1200px and up)
 @media (min-width: 1200px) { 
     .container {
+        padding-left: 2em;
         min-width: 65vw
     } 
 }
