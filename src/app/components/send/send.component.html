@@ -107,8 +107,10 @@
 </ng-template>
 
 <!--<button *ngIf='accounts' type="button" class="btn btn-sm btn-outline-primary" (click)="modal1.show()">Send</button>-->
-<button *ngIf='accounts' type="button" (click)="open1(modal1)" class="btn btn-sm btn-outline-primary">Send</button>
+<button *ngIf='accounts && actionButton' type="button" (click)="open1(modal1)" class="btn btn-sm btn-outline-primary">Send</button>
 <!--<button  type="button" class="btn btn-primary" id="send" (click)="open1(modal1)">Send</button>-->
+
+<span *ngIf='accounts && !actionButton' class="dropdown-item" (click)="open1(modal1)">{{ activePkh }}</span>
 
 <p *ngIf='!accounts'>
     Wallet not configured

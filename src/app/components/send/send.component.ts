@@ -17,7 +17,7 @@ export class SendComponent implements OnInit {
     @ViewChild('modal1') modal1: TemplateRef<any>;
     accounts = null;
     @Input() activePkh: string;
-    @Input() accounts2: any;
+    @Input() actionButton: boolean;
     activeAccount = null;
     toPkh: string;
     amount: string;
@@ -39,15 +39,6 @@ export class SendComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-        if (this.accounts2) {
-            this.activeAccount = this.accounts2;
-            console.log('activeAccount', this.activeAccount);
-            console.log('activeAccount.pkh', this.activeAccount.pkh);
-            console.log('activeAccount.balance.balanceXTZ', this.activeAccount.balance.balanceXTZ / 1000000);
-
-            console.log('accounts2', this.accounts2);
-        }
-
         if (this.walletService.wallet) {
             this.init();
         }

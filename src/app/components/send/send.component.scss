@@ -31,6 +31,24 @@
   padding-left: 0rem; // original 0.5rem;
 }
 
+.dropdown-item {
+  cursor:pointer;
+}
+
+// Changing placeholder colour
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: #ced4da;
+}
+::-moz-placeholder { /* Firefox 19+ */
+  color: #ced4da;
+}
+:-ms-input-placeholder { /* IE 10+ */
+  color: #ced4da;
+}
+:-moz-placeholder { /* Firefox 18- */
+  color: #ced4da;
+}
+
 .fa { 
   color: #28a745; //#5cb85c;
   font-size: 96px;
