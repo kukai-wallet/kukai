@@ -35,7 +35,7 @@
   cursor:pointer;
 }
 
-// Changing placeholder colour
+// Changing placeholder colour - Not working
 ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
   color: #ced4da;
 }
@@ -47,6 +47,14 @@
 }
 :-moz-placeholder { /* Firefox 18- */
   color: #ced4da;
+}
+
+// For dropdown-item when hover (Send and Receive buttons)
+.dropdown-item:hover {
+  color: #fff !important;
+  background-color: #09698D !important;
+  border-color: #09698D !important;
+  text-decoration: none !important;
 }
 
 .fa { 
