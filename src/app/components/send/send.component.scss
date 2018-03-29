@@ -15,6 +15,22 @@
   text-align: center;
 }
 
+.text-color {
+  color: #6c757d;
+  text-align: right;
+}
+
+.text-right {
+  //text-align: right;
+  justify-content: flex-end;
+}
+
+.btn-balance {
+  color: #6c757d;
+  padding-right: 0rem; // original 0.5rem;
+  padding-left: 0rem; // original 0.5rem;
+}
+
 .fa { 
   color: #28a745; //#5cb85c;
   font-size: 96px;

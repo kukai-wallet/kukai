@@ -79,84 +79,86 @@
 -->
 <ng-template #modal1>
 
-                <div class="modal-header">
-                    <h4 class="modal-title pull-left">Send tezzies</h4>
-                    <button type="button" class="close pull-right" aria-label="Close" (click)="close1()">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Send tezzies</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="close1()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form>
+            <div class="form-row">
+                <div class="form-group col-md-8">
+                    <label for="fromAdress">From Address</label> 
+                    <select [(ngModel)]="activePkh" id="fromAdress" class="form-control" name="first">
+                        <option *ngFor="let account of accounts" [ngValue]="account.pkh">{{ account.pkh }}</option>
+                    </select>
                 </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="form-row">
-                            <div class="form-group col-md-8">
-                                <label for="fromAdress">From Address</label> 
-                                <select [(ngModel)]="fromPkh" id="fromAdress" class="form-control">
-                                    <option selected [value]="activePkh">{{ activePkh }} ({{ identity.balance / 100 | number:'1.0' }})</option>
-                                    <option *ngFor="let account of accounts" [value]="account.pkh">{{ account.pkh }} ({{account.balance / 100 | number:'1.0' }}ꜩ)</option>
-                                </select>
-                            </div>
 
-                            <div class="form-group col-md-4">
-                                <label for="staticBalance">Current Balance</label>
-                                <!-- fromAdress.value -->
-                                <input type="text" readonly class="form-control-plaintext" id="staticBalance" value="{{ identity.balance / 100 | number:'1.0' }} ꜩ ($ 388,140.36 USD)">
-                                <small id="rateXTZ" class="form-text text-muted">Rate (ꜩ) $12.0 USD</small>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group col-md-8">
-                                <label for="inputEmail4">To Address</label>
-                                <input type="email" class="form-control" id="inputEmail4" placeholder="tz1gynCVMEe5ZYv22QeSpKw1nFark6QGTc1g">
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group col-md-8">
-                                <label for="inputEmail4">Amout to Send (ꜩ)</label>
-                                <input type="email" class="form-control" id="inputEmail4" placeholder="Amount">
-                                <small id="smallSend" class="form-text text-muted">Send Entire Balance</small>
-                            </div>
-
-                            <div class="form-group col-md-4">
-                                <label for="inputPassword4">Transaction Limit (ꜩ)</label>
-                                <input type="password" class="form-control" id="inputPassword4" placeholder="Fee">
-                            </div>
-                        </div>
-                    </form>
-
-                    <div class="form-group">
-                        <label for="fromAdress">From:</label>
-                        <input [(ngModel)]="activePkh" type="text" id="fromAddress" class="form-control" disabled>
-                    <!--
-                        <label for="fromAdress2">From:</label>
-                        <select [(ngModel)]="fromPkh" id="fromAdress2" class="form-control">
-                            <option [value]="identity.pkh">{{ identity.pkh }} ({{ identity.balance / 100 | number:'1.0' }})</option>
-                            <option *ngFor="let account of accounts" [value]="account.pkh">{{ account.pkh }} ({{account.balance / 100 | number:'1.0' }}ꜩ)</option>
-                        </select>
-                    -->
-                    </div>
-                    <div class="form-group">
-                        <label for="toAddress">To:</label>
-                        <input [(ngModel)]="toPkh" type="text" id="toAddress" class="form-control">
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-md-6">
-                            <label for="ammount">Amount:</label>
-                            <input [(ngModel)]="amount" type="text" id="ammount" class="form-control" placeholder="0.00">
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="fee">Fee:</label>
-                            <input [(ngModel)]="fee" type="text" id="fee" class="form-control" placeholder="0.00">
-                        </div>
-                    </div>
-
-                    {{ formInvalid }}
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary btn-lg" id="sub" (click)="open2(modal2)">Send</button>
-                    </div>
+                <div class="form-group col-md-4 text-right">
+                    <label for="staticBalance" class="text-right">Current Balance</label>
+                    <input type="text" readonly class="form-control-plaintext text-color" id="staticBalance" [value]="showAccountBalance(activePkh)">
+                    <small id="rateXTZ" class="form-text text-muted text-color">Rate (ꜩ) $12.0 USD</small>
                 </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-8">
+                    <label for="toAdress">To Address</label>
+                    <input type="text" class="form-control" id="toAdress" placeholder="tz1gynCVMEe5ZYv22QeSpKw1nFark6QGTc1g" [(ngModel)]="toPkh" name="second">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-8">
+                    <label for="sendAmount">Amount to Send (ꜩ)</label>
+                    <div>
+                    <input type="text" class="form-control" id="sendAmount" placeholder="Amount" [(ngModel)]="amount" name="three">
+                </div>
+                    <small id="smallSend" class="form-text text-muted"><button type="button" class="btn btn-outline-light btn-sm btn-balance" (click)="sendEntireBalance(activePkh, $event)">Send Entire Balance</button></small> 
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label for="transactionFee">Transaction Limit (ꜩ)</label>
+                    <input type="text" class="form-control" id="transactionFee" placeholder="Fee" [(ngModel)]="fee" name="four">
+                </div>
+            </div>
+        </form>
+
+        <!-- To Delete Everything Below --
+        <div class="form-group">
+            <label for="fromAdress">From:</label>
+            <input [(ngModel)]="activePkh" type="text" id="fromAddress" class="form-control" disabled>
+
+            <label for="fromAdress2">From:</label>
+            <select [(ngModel)]="fromPkh" id="fromAdress2" class="form-control">
+                <option [value]="identity.pkh">{{ identity.pkh }} ({{ identity.balance / 100 | number:'1.0' }})</option>
+                <option *ngFor="let account of accounts" [value]="account.pkh">{{ account.pkh }} ({{account.balance / 100 | number:'1.0' }}ꜩ)</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="toAddress">To:</label>
+            <input [(ngModel)]="toPkh" type="text" id="toAddress" class="form-control">
+        </div>
+       
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label for="amount">Amount:</label>
+                <input [(ngModel)]="amount" type="text" id="amount" class="form-control" placeholder="0.00">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="fee">Fee:</label>
+                <input [(ngModel)]="fee" type="text" id="fee" class="form-control" placeholder="0.00">
+            </div>
+        </div>
+        -->
+        {{ formInvalid }}
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary btn-lg" id="sub" (click)="open2(modal2)">Send</button>
+        </div>
+    </div>
 
 </ng-template>
 

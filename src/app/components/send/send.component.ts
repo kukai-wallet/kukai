@@ -17,6 +17,8 @@ export class SendComponent implements OnInit {
   @ViewChild('modal1') modal1: TemplateRef<any>;
   accounts = null;
   @Input() activePkh: string;
+  @Input() accounts2: any;
+  activeAccount = null;
   toPkh: string;
   amount: string;
   fee: string;
@@ -37,16 +39,58 @@ export class SendComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    if (this.accounts2) {
+      this.activeAccount = this.accounts2;
+      console.log('activeAccount', this.activeAccount);
+      console.log('activeAccount.pkh', this.activeAccount.pkh);
+      console.log('activeAccount.balance.balanceXTZ', this.activeAccount.balance.balanceXTZ / 1000000);
+
+      console.log('accounts2', this.accounts2);
+    }
+
     if (this.walletService.wallet) {
       this.init();
-      console.log('in SendComponent', this.activePkh);
-      // this.open1(modal1);
     }
   }
 
   init() {
     this.accounts = this.walletService.wallet.accounts;
   }
+
+  showAccountBalance(accountPkh: string) {
+    let accountBalance: number;
+    let accountBalanceString: string;
+    let index;
+    // finding the index
+    index = this.accounts.findIndex(account => account.pkh === accountPkh);
+
+    accountBalance = this.accounts[index].balance.balanceXTZ / 1000000;
+    accountBalanceString = this.numberWithCommas(accountBalance) + ' ꜩ';
+
+    return accountBalanceString;
+  }
+
+  numberWithCommas(x: number) {
+    let parts: Array<string> = [];
+    parts = x.toString().split('.');
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    return parts.join('.');
+}
+
+sendEntireBalance(accountPkh: string, event: Event) {
+
+  event.stopPropagation();
+
+  let accountBalance: number;
+  let index;
+  // finding the index
+  index = this.accounts.findIndex(account => account.pkh === accountPkh);
+
+  accountBalance = this.accounts[index].balance.balanceXTZ / 1000000;
+
+  this.amount = accountBalance.toString();
+}
+
   open1(template1: TemplateRef<any>) {
     this.clearForm();
     this.modalRef1 = this.modalService.show(template1, { class: 'first' });

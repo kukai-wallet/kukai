@@ -1,0 +1,39 @@
+<br><br>
+{{myModel | json}}
+<select [(ngModel)]="myModel">
+  <option *ngFor="let i of items" [ngValue]="i">{{i | json}}</option>
+</select>
+
+<form>
+
+    <div class="form-row">
+        <div class="form-group col-md-8">
+            <label for="fromAdress">From Address</label> 
+            <select [(ngModel)]="myModel" id="fromAdress" class="form-control" name="first">
+                <option *ngFor="let account of items" [ngValue]="account">{{ account | json }}</option>
+            </select>
+        </div>
+
+        <div class="form-group col-md-4">
+            <label for="staticBalance">Current Balance</label>
+            <input type="text" readonly class="form-control-plaintext" id="staticBalance" [value]="myModel | json">
+            <small id="rateXTZ" class="form-text text-muted">Rate (ꜩ) $12.0 USD</small>
+        </div>
+    </div>
+    <!--
+    <div class="form-row">
+        <div class="form-group col-md-8">
+            <label for="fromAdress">From Address</label> 
+            <select [(ngModel)]="accounts[0].pkh" id="fromAdress" class="form-control">
+                <option *ngFor="let account of accounts" [value]="account.pkh">{{ account.pkh }}</option>
+            </select>
+        </div>
+
+        <div class="form-group col-md-4">
+            <label for="staticBalance">Current Balance</label>
+            <input type="text" readonly class="form-control-plaintext" id="staticBalance" value="{{ identity.balance / 100 | number:'1.0' }} ꜩ ($ 388,140.36 USD)">
+            <small id="rateXTZ" class="form-text text-muted">Rate (ꜩ) $12.0 USD</small>
+        </div>
+    </div>
+    -->
+</form>
