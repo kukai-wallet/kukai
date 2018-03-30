@@ -15,9 +15,17 @@ import { KeyPair } from '../../interfaces';
 })
 export class SendComponent implements OnInit {
     @ViewChild('modal1') modal1: TemplateRef<any>;
-    accounts = null;
+
     @Input() activePkh: string;
-    @Input() actionButton: boolean;
+    @Input() actionButtonString: string;
+
+    showSendFormat = {
+        btnOutline: false,
+        dropdownItem: false,
+        btnSidebar: false
+    };
+
+    accounts = null;
     activeAccount = null;
     toPkh: string;
     amount: string;
@@ -39,6 +47,10 @@ export class SendComponent implements OnInit {
     ) { }
 
     ngOnInit() {
+        if (this.actionButtonString) {
+            this.setSendFormat();
+        }
+
         if (this.walletService.wallet) {
             this.init();
         }
@@ -46,6 +58,35 @@ export class SendComponent implements OnInit {
 
     init() {
         this.accounts = this.walletService.wallet.accounts;
+    }
+
+    setSendFormat() {
+        switch (this.actionButtonString) {
+            case 'btnOutline': {
+                this.showSendFormat.btnOutline = true;
+                this.showSendFormat.dropdownItem = false;
+                this.showSendFormat.btnSidebar = false;
+                break;
+            }
+            case 'dropdownItem': {
+                this.showSendFormat.btnOutline = false;
+                this.showSendFormat.dropdownItem = true;
+                this.showSendFormat.btnSidebar = false;
+                break;
+            }
+            case 'btnSidebar': {
+                this.showSendFormat.btnOutline = false;
+                this.showSendFormat.dropdownItem = false;
+                this.showSendFormat.btnSidebar = true;
+
+                this.activePkh = this.walletService.wallet.accounts[0].pkh;
+                break;
+            }
+            default: {
+                console.log('actionButtonString wronglyset ', this.actionButtonString);
+                break;
+             }
+        }
     }
 
     showAccountBalance(accountPkh: string) {

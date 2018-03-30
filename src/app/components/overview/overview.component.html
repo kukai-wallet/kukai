@@ -39,7 +39,7 @@
                 <div class="btn-group btn-group-sm">
                     <app-new-account></app-new-account>
                     <button type="button" class="btn btn-outline-primary">Details</button>
-                    <app-send [activePkh]="walletService.wallet.accounts[0].pkh" [actionButton]="true" ></app-send>
+                    <app-send [activePkh]="walletService.wallet.accounts[0].pkh" [actionButtonString]="'btnOutline'"></app-send>
                     <!--<button type="button" class="btn btn-outline-primary" (click)="openSend(walletService.wallet.accounts[0].pkh)">Send</button>-->
                 </div>
                 <a onclick="return false;" href (click)='freeTezzies(identity.pkh)'>Free tezzies</a>
@@ -90,7 +90,7 @@
                             <ul *dropdownMenu class="dropdown-menu" role="menu">
                                 
                                 <li role="menuitem">
-                                    <app-send *ngFor="let account of walletService.wallet.accounts | slice:1" [activePkh]="account.pkh" [actionButton]="false" ></app-send>
+                                    <app-send *ngFor="let account of walletService.wallet.accounts | slice:1" [activePkh]="account.pkh" [actionButtonString]="'dropdownItem'"></app-send>
                                     <!--
                                     <a class="dropdown-item" href="#" *ngFor="let account of walletService.wallet.accounts | slice:1" (click)="openSend(account.pkh)">{{ account.pkh }}</a>
                                     -->

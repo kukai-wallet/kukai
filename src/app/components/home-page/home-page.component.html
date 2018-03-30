@@ -18,7 +18,10 @@
             </li>
             
             <li routerLinkActive="active">
-                <a routerLink="/send" class="btn-main-action">Send</a>
+                <a class="btn-main-action">
+                    <app-send [activePkh]="null" [actionButtonString]="'btnSidebar'"></app-send>
+                </a>
+                
             </li>
             <!--
             <li routerLinkActive="active">
