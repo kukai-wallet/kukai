@@ -44,7 +44,7 @@ export class BalanceService {
   updateTotalBalance() {
     let balance = 0;
     for (let i = 0; i < this.walletService.wallet.accounts.length; i++) {
-      balance =  balance + this.walletService.wallet.accounts[i].balance.balanceXTZ;
+      balance =  balance + Number(this.walletService.wallet.accounts[i].balance.balanceXTZ);
       console.log(balance);
     }
     this.walletService.wallet.balance.balanceXTZ = balance;
