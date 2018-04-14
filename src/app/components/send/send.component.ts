@@ -47,16 +47,15 @@ export class SendComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-        if (this.actionButtonString) {
-            this.setSendFormat();
-        }
-
         if (this.walletService.wallet) {
             this.init();
         }
     }
 
     init() {
+        if (this.actionButtonString) {
+            this.setSendFormat();
+        }
         this.accounts = this.walletService.wallet.accounts;
     }
 

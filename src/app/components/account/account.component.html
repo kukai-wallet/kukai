@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" *ngIf="this.walletService.wallet">
     <!-- Title -->
     <div class="row">
         <div class="col-6">
@@ -42,6 +42,5 @@
 <!-- /To Delete -->
 
 <p *ngIf='!accounts'>
-    Wallet not configured
+    You need to <a routerLink="">create or import</a> a wallet to see this view...
 </p>
-    

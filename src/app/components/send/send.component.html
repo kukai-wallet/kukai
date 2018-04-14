@@ -1,3 +1,4 @@
+<ng-container *ngIf="accounts">
 <!-- SEND MODALS -->
 <!-- First Modal -->
 <ng-template #modal1>
@@ -113,7 +114,8 @@
 <span *ngIf='accounts && showSendFormat.dropdownItem' class="dropdown-item" (click)="open1(modal1)">{{ activePkh }}</span>
 
 <span *ngIf='accounts && showSendFormat.btnSidebar' class="btnSidebar" (click)="open1(modal1)">Send</span>
+</ng-container>
 
 <p *ngIf='!accounts'>
-    Wallet not configured
+    Send
 </p>
