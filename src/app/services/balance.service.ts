@@ -1,15 +1,21 @@
 import { Injectable } from '@angular/core';
 import { WalletService } from './wallet.service';
 import { MessageService } from './message.service';
+import { TzrateService } from './tzrate.service';
 import * as lib from '../../assets/js/main2.js';
 
 @Injectable()
 export class BalanceService {
   constructor(
     private walletService: WalletService,
-    private messageService: MessageService) { }
+    private messageService: MessageService,
+    private tzrateService: TzrateService) { }
 
-  getBalanceAll() {
+  async getBalanceAll() {
+    await this.getXTZBalanceAll();
+    this.tzrateService.getTzrate();
+  }
+  getXTZBalanceAll() {
     for (let i = 0; i < this.walletService.wallet.accounts.length; i++) {
       this.getAccountBalance(i);
     }
@@ -45,7 +51,6 @@ export class BalanceService {
     let balance = 0;
     for (let i = 0; i < this.walletService.wallet.accounts.length; i++) {
       balance =  balance + Number(this.walletService.wallet.accounts[i].balance.balanceXTZ);
-      console.log(balance);
     }
     this.walletService.wallet.balance.balanceXTZ = balance;
   }

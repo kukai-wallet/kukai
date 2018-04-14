@@ -27,7 +27,6 @@ export class OverviewComponent implements OnInit {
         private faucetService: FaucetService,
         private messageService: MessageService,
         private balanceService: BalanceService,
-        private tzrateService: TzrateService
     ) { }
 
     ngOnInit() {
@@ -35,7 +34,6 @@ export class OverviewComponent implements OnInit {
         if (this.walletService.wallet) {
             this.identity = this.walletService.wallet.accounts[0];
             this.balanceService.getBalanceAll();
-            this.tzrateService.getTzrate();
         }
     }
     addAccount() {
