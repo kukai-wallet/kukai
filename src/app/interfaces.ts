@@ -7,6 +7,7 @@ export interface Wallet {
   encryptedSeed: null|string;
   salt: string|null;
   balance: Balance;
+  XTZrate: number;
   accounts: Account[];
 }
 export interface Account {

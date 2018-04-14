@@ -17,8 +17,6 @@ import { TzrateService } from '../../services/tzrate.service';
 })
 export class OverviewComponent implements OnInit {
     identity = null;
-    XTZrate: number;
-
     accounts = null;
     activePkh: string;
 
@@ -33,11 +31,11 @@ export class OverviewComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-        this.XTZrate = this.tzrateService.getTzrate();
 
         if (this.walletService.wallet) {
             this.identity = this.walletService.wallet.accounts[0];
             this.balanceService.getBalanceAll();
+            this.tzrateService.getTzrate();
         }
     }
     addAccount() {

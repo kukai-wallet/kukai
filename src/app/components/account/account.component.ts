@@ -12,7 +12,6 @@ import { TzrateService } from '../../services/tzrate.service';
 export class AccountComponent implements OnInit {
   accounts = null;
   balance = 0;
-  XTZrate = 0;
 
   activePkh: string;
   constructor(
@@ -28,7 +27,7 @@ export class AccountComponent implements OnInit {
     this.activePkh = this.accounts[0].pkh;
     this.balance = this.accounts[0].balance.balanceXTZ;
     this.balanceService.getBalanceAll();
-    this.XTZrate = this.tzrateService.getTzrate();
+    this.tzrateService.getTzrate();
   }
   updateBalance() {
     this.balance = this.accounts[this.walletService.getIndexFromPkh(this.activePkh)].balance.balanceXTZ;

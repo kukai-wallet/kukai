@@ -97,6 +97,7 @@ export class WalletService {
       encryptedSeed: null,
       salt: null,
       balance: this.emptyBalance(),
+      XTZrate: 0,
       accounts: []
     };
   }

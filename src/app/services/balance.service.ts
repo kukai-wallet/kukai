@@ -29,7 +29,7 @@ export class BalanceService {
     const promise = lib.eztz.rpc.getBalance(this.walletService.wallet.accounts[index].pkh);
     if (promise != null) {
       promise.then(
-        (val) => this.updateAccountBalance(index, val),
+        (val) => this.updateAccountBalance(index, Number(val)),
         (err) => this.handleBalanceErrors(err, this.walletService.wallet.accounts[index].pkh)
       );
     }
@@ -44,7 +44,8 @@ export class BalanceService {
   updateTotalBalance() {
     let balance = 0;
     for (let i = 0; i < this.walletService.wallet.accounts.length; i++) {
-      balance += this.walletService.wallet.accounts[i].balance.balanceXTZ;
+      balance =  balance + this.walletService.wallet.accounts[i].balance.balanceXTZ;
+      console.log(balance);
     }
     this.walletService.wallet.balance.balanceXTZ = balance;
   }
