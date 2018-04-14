@@ -40,6 +40,7 @@ import { ReceiveComponent } from './components/receive/receive.component';
 import { DelegateComponent } from './components/delegate/delegate.component';
 import { PositioningService } from 'ngx-bootstrap/positioning';
 import { AccountComponent } from './components/account/account.component';
+import { IcoWalletComponent } from './components/ico-wallet/ico-wallet.component';
 
 
 @NgModule({
@@ -59,7 +60,8 @@ import { AccountComponent } from './components/account/account.component';
     NewAccountComponent,
     ReceiveComponent,
     DelegateComponent,
-    AccountComponent
+    AccountComponent,
+    IcoWalletComponent
   ],
   imports: [
     BrowserModule,

@@ -14,12 +14,14 @@ import { NewAccountComponent } from './components/new-account/new-account.compon
 import { ReceiveComponent } from './components/receive/receive.component';
 import { DelegateComponent } from './components/delegate/delegate.component';
 import { AccountComponent } from './components/account/account.component';
+import { IcoWalletComponent } from './components/ico-wallet/ico-wallet.component';
 
 const routes: Routes = [
   { path: '', component: StartComponent },  // Content Centre position
   { path: 'new-wallet', component: NewWalletComponent },  // Content Centre position
   { path: 'import', component: ImportComponent },  // Content Centre position
   { path: 'broadcast', component: BroadcastComponent },  // Content Centre position
+  { path: 'ico-wallet', component: IcoWalletComponent },
   { path: 'activity', component: ActivityComponent },
   { path: 'overview', component: OverviewComponent },
   { path: 'backup', component: BackupComponent },

@@ -1,0 +1,39 @@
+.row {
+    padding-bottom: 0.7vh;
+}
+
+.fix-size {
+    width: 40rem;
+    height: 40rem;
+}
+
+/* ---------------------------------------------------
+    CONTENT STYLE
+----------------------------------------------------- */
+//Horizontal and Vertical Aligment of child div
+#content {
+    display: flex; 
+    min-height: 100vh;
+    min-width: 75vw;
+}
+.center-content {
+    margin: auto; 
+}
+
+.card-title {
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.125);
+}
+
+.card-text{
+    padding-top: 2rem;
+}
+
+.card-footer {
+    background-color: rgba(0, 0, 0, 0);
+}
+
+//For inputs
+.form-control {
+    line-height: 2;  //Default at 1.5
+}

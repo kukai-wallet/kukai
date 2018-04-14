@@ -1,0 +1,38 @@
+<div id="content">
+    <div class="center-content">
+        <!-- Password card -->
+        <div class="card text-center fix-size">
+            <div class="card-body">
+                <h1 class="card-title">Retrieve your Wallet</h1>
+                <div class="card-text">            
+                    <form>
+                        <!-- mnemonic -->
+                        <div class="form-group row">
+                            <div class="col-sm-12">
+                                <input type="text" [(ngModel)]="mnemonic" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Mnemonic">
+                            </div>
+                        </div>
+                        <!-- email -->
+                        <div class="form-group row">
+                            <div class="col-sm-12">
+                                <input type="email" [(ngModel)]="email" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Email">
+                            </div>
+                        </div>
+                        <!-- password -->
+                        <div class="form-group row">
+                            <div class="col-sm-12">
+                                <input type="password" [(ngModel)]="pwd" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Password">
+                            </div>
+                        </div>
+                    </form>
+                    <p>This is an alphanet version, please use the faucet website to get test wallet credential that you can retrieve here.</p>
+                    <br>
+                    <p>At the launch of betanet, you can use your wallet credentials from the pdf file generated during ICO</p>
+                </div>
+            </div>
+            <div class="card-footer text-right">
+                <button type="button" class="btn btn-primary btn-lg" (click)="retrieve()">Retrieve</button>
+            </div>
+        </div>
+    </div>
+</div>
