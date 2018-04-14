@@ -20,6 +20,7 @@ import { EncryptionService } from './services/encryption.service';
 import { FaucetService } from './services/faucet.service';
 import { TransactionService } from './services/transaction.service';
 import { ImportService } from './services/import.service';
+import { TzrateService } from './services/tzrate.service';
 
 import { AppComponent } from './app.component';
 
@@ -83,7 +84,8 @@ import { AccountComponent } from './components/account/account.component';
     ImportService,
     BsModalService,
     ComponentLoaderFactory,
-    PositioningService
+    PositioningService,
+    TzrateService
   ],
   bootstrap: [AppComponent]
 })

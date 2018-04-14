@@ -1,3 +1,60 @@
+.page-header {
+    margin: 40px 0px 10px 0px; //top right bottom left
+
+    //Vertical Alignment 
+    //display: flex;
+    //align-items: center; //flex-end; 
+}
+
+.bottom-separator {
+    padding-top: 10px;
+    padding-bottom: 27px;
+    border-bottom: 1px solid #eee; //Alignment  with sidebar
+}
+
+
+
+
+
+
+
+
+
+
+
+/* Responsive breakpoints */
+// Extra small devices (portrait phones, less than 576px)
+// No media query since this is the default in Bootstrap
+
+// Small devices (landscape phones, 576px and up)
+@media (min-width: 576px) { 
+    .container {
+        padding-left: 2em;
+        min-width: 85vw
+    }
+ }
+
+// Medium devices (tablets, 768px and up)
+//@media (min-width: 768px) { ... }
+
+// Large devices (desktops, 992px and up)
+@media (min-width: 992px) { 
+    //.container {
+    //    min-width: 70vw
+    //} 
+ }
+
+// Extra large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) { 
+    .container {
+        padding-left: 2em;
+        min-width: 65vw
+    } 
+}
+
+
+//To delete
+/*
 #content {
     display: flex; 
     min-height: 100vh;
@@ -16,3 +73,4 @@
 .card-text{
     padding-top: 2rem;
 }
+*/

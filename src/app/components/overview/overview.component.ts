@@ -8,6 +8,7 @@ import { WalletService } from '../../services/wallet.service';
 import { MessageService } from '../../services/message.service';
 import { FaucetService } from '../../services/faucet.service';
 import { BalanceService } from '../../services/balance.service';
+import { TzrateService } from '../../services/tzrate.service';
 
 @Component({
     selector: 'app-overview',
@@ -16,7 +17,7 @@ import { BalanceService } from '../../services/balance.service';
 })
 export class OverviewComponent implements OnInit {
     identity = null;
-    XTZrate = 1; // Rate taken from CMC ?
+    XTZrate: number;
 
     accounts = null;
     activePkh: string;
@@ -27,9 +28,13 @@ export class OverviewComponent implements OnInit {
         private walletService: WalletService,
         private faucetService: FaucetService,
         private messageService: MessageService,
-        private balanceService: BalanceService) { }
+        private balanceService: BalanceService,
+        private tzrateService: TzrateService
+    ) { }
 
     ngOnInit() {
+        this.XTZrate = this.tzrateService.getTzrate();
+
         if (this.walletService.wallet) {
             this.identity = this.walletService.wallet.accounts[0];
             this.balanceService.getBalanceAll();

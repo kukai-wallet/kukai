@@ -1,12 +1,16 @@
 .page-header {
-    padding-bottom: 9px;
-    margin: 40px 0 20px;
-    border-bottom: 1px solid #eee;
-    min-height: 125px; //Alignment  with sidebar
+    margin: 40px 0px 10px 0px; //top right bottom left
 
     //Vertical Alignment 
-    display: flex;
-    align-items: center; //flex-end; 
+    //display: flex;
+    //align-items: center; //flex-end; 
+}
+
+.bottom-separator {
+    //padding-top: 10px;
+    padding-bottom: 27px;
+    border-bottom: 1px solid #eee; //Alignment  with sidebar
+    margin-bottom: 0.5rem; //space between border and next content
 }
 
 .row-header {
