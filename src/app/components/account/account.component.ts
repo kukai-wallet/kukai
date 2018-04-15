@@ -16,8 +16,7 @@ export class AccountComponent implements OnInit {
     activePkh: string;
     constructor(
         private walletService: WalletService,
-        private messageService: MessageService,
-        private balanceService: BalanceService,
+        private messageService: MessageService
     ) { }
 
     ngOnInit() {
@@ -30,7 +29,6 @@ export class AccountComponent implements OnInit {
         this.accounts = this.walletService.wallet.accounts;
         this.activePkh = this.accounts[0].pkh;
         this.balance = this.accounts[0].balance.balanceXTZ;
-        this.balanceService.getBalanceAll();
     }
     updateBalance() {
         this.balance = this.accounts[this.walletService.getIndexFromPkh(this.activePkh)].balance.balanceXTZ;

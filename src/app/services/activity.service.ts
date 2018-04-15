@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { MessageService } from './message.service';
 import { WalletService } from './wallet.service';
+import { BalanceService } from './balance.service';
 import { Activity } from '../interfaces';
 
 const httpOptions = {
@@ -11,13 +12,21 @@ const httpOptions = {
 
 @Injectable()
 export class ActivityService {
-  timestampCounter = 0; // Make sure last timestamp trigger backup
+  // timestampCounter = 0; // Make sure last timestamp trigger backup
+  timestampCounterMap: Map<string, number> = new Map<string, number>();
   maxTransactions = 5;
   constructor(
     private walletService: WalletService,
     private http: HttpClient,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private balanceService: BalanceService
   ) { }
+  updateAllTransactions() {
+    console.log('updating transactions');
+    for (let i = 0; i < this.walletService.wallet.accounts.length; i++) {
+      this.updateTransactions(this.walletService.wallet.accounts[i].pkh);
+    }
+  }
   // Show transactions for current pkh, then function call to see if current data is up to date
   updateTransactions(pkh: string) {
     // const aIndex = this.transactionsData.findIndex(a => a.pkh === pkh);
@@ -35,6 +44,7 @@ export class ActivityService {
     if (index === -1 || this.walletService.wallet.accounts[index].numberOfActivites !== data) {
       console.log('Requesting transactions');
       this.getTransactions(pkh, data);
+      this.balanceService.getXTZBalanceAll();
     } else {
       if (this.walletService.wallet.accounts[index].activities.findIndex(a => a.block === 'prevalidation') !== -1) {
         console.log('Trying to validate blocks');
@@ -62,7 +72,8 @@ export class ActivityService {
   }
   handleUnconfirmedTransactionsResponse(pkh: string, data: any) {
     const aIndex = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
-    this.timestampCounter = data.length;
+    // this.timestampCounter = data.length;
+    this.timestampCounterMap.set(pkh, data.length);
     for (let i = 0; i < data.length; i++) {
       if (this.walletService.wallet.accounts[aIndex].activities[i].hash === data[i].hash) {
         this.walletService.wallet.accounts[aIndex].activities[i].block = data[i].block_hash;
@@ -83,7 +94,8 @@ export class ActivityService {
     );
   }
   handleTransactionsResponse(pkh: string, data: any, counter: number) {
-    this.timestampCounter = data.length;
+    // this.timestampCounter = data.length;
+    this.timestampCounterMap.set(pkh, data.length);
     const newTransactions: Activity[] = [];
     for (let i = 0; i < data.length; i++) {
       let type;
@@ -144,7 +156,8 @@ export class ActivityService {
       if (newTransactions[i].block !== 'prevalidation') {
         this.getTimestamp(pkh, newTransactions[i].block, newTransactions[i].hash);
       } else {
-        this.timestampCounter--;
+        // this.timestampCounter--;
+        this.timestampCounterMap.set(pkh, this.timestampCounterMap.get(pkh) - 1);
       }
     }
   }
@@ -159,9 +172,12 @@ export class ActivityService {
     const transactionIndex = this.walletService.wallet.accounts[pkhIndex].activities.findIndex(a => a.hash === hash);
     if (time) { time = new Date(time); }
     this.walletService.wallet.accounts[pkhIndex].activities[transactionIndex].timestamp = time;
-    this.timestampCounter--;
-    if (this.timestampCounter <= 0) {
-      this.timestampCounter = 10;
+    // this.timestampCounter--;
+    this.timestampCounterMap.set(pkh, this.timestampCounterMap.get(pkh) - 1);
+    // if (this.timestampCounter <= 0) {
+    //   this.timestampCounter = 10;
+    if (this.timestampCounterMap.get(pkh) <= 0) {
+      this.timestampCounterMap.set(pkh, 10);
       console.log('Store transactions data');
       this.walletService.storeWallet();
     }

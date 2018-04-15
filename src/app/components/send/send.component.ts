@@ -2,6 +2,7 @@ import { Component, TemplateRef, OnInit, ViewEncapsulation, Input, ViewChild, El
 
 import { WalletService } from '../../services/wallet.service';
 import { MessageService } from '../../services/message.service';
+import { UpdateCoordinatorService } from '../../services/update-coordinator.service';
 import { TransactionService } from '../../services/transaction.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
@@ -45,7 +46,8 @@ export class SendComponent implements OnInit {
         private modalService: BsModalService,
         private walletService: WalletService,
         private messageService: MessageService,
-        private transactionService: TransactionService
+        private transactionService: TransactionService,
+        private updateCoordinatorService: UpdateCoordinatorService
     ) { }
 
     ngOnInit() {
@@ -126,8 +128,10 @@ export class SendComponent implements OnInit {
     }
 
     open1(template1: TemplateRef<any>) {
-        this.clearForm();
-        this.modalRef1 = this.modalService.show(template1, { class: 'first' });
+        if (this.walletService.wallet) {
+            this.clearForm();
+            this.modalRef1 = this.modalService.show(template1, { class: 'first' });
+        }
         /*
         this.modalRef1 = this.modalService.show(
         template1,
@@ -193,6 +197,7 @@ export class SendComponent implements OnInit {
         setTimeout(async () => {
             if (await this.transactionService.sendTransaction(keys, this.activePkh, toPkh, Number(amount), Number(fee) * 100)) {
                 this.sendResponse = 'success';
+                this.updateCoordinatorService.boost();
             } else {
                 this.sendResponse = 'failure';
             }

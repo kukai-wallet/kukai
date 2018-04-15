@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { WalletService } from './services/wallet.service';
+import { UpdateCoordinatorService } from './services/update-coordinator.service';
 
 @Component({
   selector: 'app-root',
@@ -9,8 +10,10 @@ import { WalletService } from './services/wallet.service';
 export class AppComponent implements OnInit {
 
   constructor(
-    private walletService: WalletService) { }
+    private walletService: WalletService,
+    private updateCoordinatorService: UpdateCoordinatorService) { }
   ngOnInit() {
     this.walletService.loadStoredWallet();
+    this.updateCoordinatorService.start();
   }
 }

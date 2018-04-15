@@ -41,6 +41,7 @@ import { DelegateComponent } from './components/delegate/delegate.component';
 import { PositioningService } from 'ngx-bootstrap/positioning';
 import { AccountComponent } from './components/account/account.component';
 import { IcoWalletComponent } from './components/ico-wallet/ico-wallet.component';
+import { UpdateCoordinatorService } from './services/update-coordinator.service';
 
 
 @NgModule({
@@ -87,7 +88,8 @@ import { IcoWalletComponent } from './components/ico-wallet/ico-wallet.component
     BsModalService,
     ComponentLoaderFactory,
     PositioningService,
-    TzrateService
+    TzrateService,
+    UpdateCoordinatorService
   ],
   bootstrap: [AppComponent]
 })

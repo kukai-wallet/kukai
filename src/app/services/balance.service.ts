@@ -13,7 +13,6 @@ export class BalanceService {
 
   async getBalanceAll() {
     await this.getXTZBalanceAll();
-    this.tzrateService.getTzrate();
   }
   getXTZBalanceAll() {
     for (let i = 0; i < this.walletService.wallet.accounts.length; i++) {
@@ -44,6 +43,7 @@ export class BalanceService {
     if (newBalance !== this.walletService.wallet.accounts[index].balance.balanceXTZ) {
       this.walletService.wallet.accounts[index].balance.balanceXTZ = newBalance;
       this.updateTotalBalance();
+      this.tzrateService.updateFiatBalances();
       this.walletService.storeWallet();
     }
   }
