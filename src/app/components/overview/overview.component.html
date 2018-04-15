@@ -8,7 +8,7 @@
         </div>
         <div class="row bottom-separator">
             <div class="col-6">
-                Balance: {{ walletService.wallet.balance.balanceXTZ / 1000000 | number:'1.0' }} ꜩ  <span>($ {{ walletService.wallet.XTZrate | number:'1.0' }} USD)</span>
+                Balance: {{ walletService.wallet.balance.balanceXTZ / 1000000 | number:'1.0' }} ꜩ  <span *ngIf="walletService.wallet.balance.balanceXTZ > 0">(${{ walletService.wallet.balance.balanceXTZ / 1000000 * walletService.wallet.XTZrate | number:'1.00' }} USD)</span>
             </div>
         </div>
 

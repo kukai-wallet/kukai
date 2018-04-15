@@ -35,6 +35,8 @@ export class SendComponent implements OnInit {
     formInvalid = '';
     sendResponse: string;
 
+    XTZrate = 0;
+
     modalRef1: BsModalRef;
     modalRef2: BsModalRef;
     modalRef3: BsModalRef;
@@ -57,6 +59,7 @@ export class SendComponent implements OnInit {
             this.setSendFormat();
         }
         this.accounts = this.walletService.wallet.accounts;
+        this.XTZrate = this.walletService.wallet.XTZrate;
     }
 
     setSendFormat() {

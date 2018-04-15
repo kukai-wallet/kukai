@@ -22,7 +22,7 @@
                 <div class="form-group col-md-4 text-right">
                     <label for="staticBalance" class="text-right">Current Balance</label>
                     <input type="text" readonly class="form-control-plaintext text-color" id="staticBalance" [value]="showAccountBalance(activePkh)">
-                    <small id="rateXTZ" class="form-text text-muted text-color">Rate (ꜩ) $12.0 USD</small>
+                    <small id="rateXTZ" class="form-text text-muted text-color" *ngIf="XTZrate > 0">Rate (ꜩ) ${{ XTZrate | number:'1.00' }} USD</small>
                 </div>
             </div>
 
@@ -37,9 +37,13 @@
                 <div class="form-group col-md-8">
                     <label for="sendAmount">Amount to Send (ꜩ)</label>
                     <div>
-                    <input type="text" class="form-control" id="sendAmount" placeholder="Amount" [(ngModel)]="amount" name="three">
-                </div>
-                    <small id="smallSend" class="form-text text-muted"><button type="button" class="btn btn-outline-light btn-sm btn-balance" (click)="sendEntireBalance(activePkh, $event)">Send Entire Balance</button></small> 
+                        <input type="text" class="form-control" id="sendAmount" placeholder="Amount" [(ngModel)]="amount" name="three">
+                    </div>
+                    <small id="smallSend" class="form-text text-muted">
+                        <button type="button" class="btn btn-outline-light btn-sm btn-balance" (click)="sendEntireBalance(activePkh, $event)">Send Entire Balance</button>
+                        
+                        <span class="align-middle" *ngIf="amount * XTZrate > 0">(${{amount * XTZrate | number:'1.0'}} USD)</span>
+                    </small> 
                 </div>
 
                 <div class="form-group col-md-4">
