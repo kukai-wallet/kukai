@@ -1,3 +1,23 @@
-<p *ngIf="!this.walletService.wallet">
-    You need to <a routerLink="">create or import</a> a wallet to see this view...
-</p>
+
+<!-- Default message - No account created -->
+<div class="container" *ngIf="!this.walletService.wallet">
+    <!-- Title -->
+    <div class="row bottom-separator-no-account">
+        <div class="col-lg-12">
+            <h1 class="page-header-no-account">Backup</h1>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-lg-12">
+            <p>Before making a backup, you will need to <a routerLink="">create or import</a> a wallet.</p>
+            <!--
+            You need to <a routerLink="">create or import</a> a wallet to see this view...
+            -->
+        </div>
+    </div>
+</div>
+
+    
+
