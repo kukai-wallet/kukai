@@ -8,7 +8,7 @@ import { WalletService } from '../../services/wallet.service';
 import { MessageService } from '../../services/message.service';
 import { FaucetService } from '../../services/faucet.service';
 import { BalanceService } from '../../services/balance.service';
-import { TzrateService } from '../../services/tzrate.service';
+import { UpdateCoordinatorService } from '../../services/update-coordinator.service';
 
 @Component({
     selector: 'app-overview',
@@ -27,13 +27,14 @@ export class OverviewComponent implements OnInit {
         private faucetService: FaucetService,
         private messageService: MessageService,
         private balanceService: BalanceService,
+        private updateCoordinatorService: UpdateCoordinatorService
     ) { }
 
     ngOnInit() {
 
         if (this.walletService.wallet) {
             this.identity = this.walletService.wallet.accounts[0];
-            this.balanceService.getBalanceAll();
+            this.updateCoordinatorService.start();
         }
     }
     addAccount() {

@@ -17,8 +17,6 @@ export class AccountComponent implements OnInit {
   constructor(
     private walletService: WalletService,
     private messageService: MessageService,
-    private balanceService: BalanceService,
-    private tzrateService: TzrateService
   ) { }
 
   ngOnInit() { if (this.walletService.wallet) { this.init(); } }
@@ -26,8 +24,6 @@ export class AccountComponent implements OnInit {
     this.accounts = this.walletService.wallet.accounts;
     this.activePkh = this.accounts[0].pkh;
     this.balance = this.accounts[0].balance.balanceXTZ;
-    this.balanceService.getBalanceAll();
-    this.tzrateService.getTzrate();
   }
   updateBalance() {
     this.balance = this.accounts[this.walletService.getIndexFromPkh(this.activePkh)].balance.balanceXTZ;
