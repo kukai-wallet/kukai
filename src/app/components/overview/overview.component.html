@@ -93,12 +93,8 @@
                                 Send <span class="caret"></span>
                             </button>
                             <ul *dropdownMenu class="dropdown-menu" role="menu">
-                                
                                 <li role="menuitem">
                                     <app-send *ngFor="let account of walletService.wallet.accounts | slice:1" [activePkh]="account.pkh" [actionButtonString]="'dropdownItem'"></app-send>
-                                    <!--
-                                    <a class="dropdown-item" href="#" *ngFor="let account of walletService.wallet.accounts | slice:1" (click)="openSend(account.pkh)">{{ account.pkh }}</a>
-                                    -->
                                 </li>
                                 <!--
                                 <li role="menuitem">
@@ -114,7 +110,10 @@
                                 Receive <span class="caret"></span>
                             </button>
                             <ul *dropdownMenu class="dropdown-menu" role="menu">
-                                <li role="menuitem"><a class="dropdown-item" href="#" *ngFor="let account of walletService.wallet.accounts | slice:1" (click)="openReceive(account.pkh)">{{ account.pkh }}</a></li>
+                                <li role="menuitem">
+                                    <app-receive *ngFor="let account of walletService.wallet.accounts | slice:1" [activePkh]="account.pkh" [actionButtonString]="'dropdownItem'"></app-receive>
+                                    <!-- <a class="dropdown-item" href="#" *ngFor="let account of walletService.wallet.accounts | slice:1" (click)="openReceive(account.pkh)">{{ account.pkh }}</a> -->
+                                </li>
                             </ul>
                         </div>
                     </div>

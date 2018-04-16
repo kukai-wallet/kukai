@@ -18,7 +18,7 @@ export class SendComponent implements OnInit {
     @ViewChild('modal1') modal1: TemplateRef<any>;
 
     @Input() activePkh: string;
-    @Input() actionButtonString: string;
+    @Input() actionButtonString: string;  // Possible values: btnOutline / dropdownItem / btnSidebar
 
     showSendFormat = {
         btnOutline: false,
@@ -87,7 +87,7 @@ export class SendComponent implements OnInit {
                 break;
             }
             default: {
-                console.log('actionButtonString wronglyset ', this.actionButtonString);
+                console.log('actionButtonString wrongly set ', this.actionButtonString);
                 break;
              }
         }

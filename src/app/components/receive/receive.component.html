@@ -1,20 +1,30 @@
-<ng-template #modal1>
-    <div class="modal-header">
-        <h4 class="modal-title pull-left">Receive tezzies</h4>
-        <button type="button" class="close pull-right" aria-label="Close" (click)="close1()">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    <div class="modal-body">
-        <div class="form-group">
-            <input [(ngModel)]="activePkh" type="text" id="toAddress" class="form-control" disabled>
+<ng-container>
+
+    <!-- Receive Modal -->
+    <ng-template #modal1>
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">Receive tezzies</h4>
+            <button type="button" class="close pull-right" aria-label="Close" (click)="close1()">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
-        <div class="row" *ngIf='activePkh'>
-          <canvas id='canvas'></canvas>
+        <div class="modal-body">
+            <div class="form-group">
+                <input [(ngModel)]="activePkh" type="text" id="toAddress" class="form-control" disabled>
+            </div>
+            <div class="row" *ngIf='activePkh'>
+            <canvas id='canvas'></canvas>
+            </div>
         </div>
-    </div>
-</ng-template>
-<button *ngIf='accounts' type="button" class="btn btn-primary" id="send" (click)="open1(modal1)">Receive</button>
+    </ng-template>
+
+    <!-- Showing different Receive Format according to actionButtonString -->
+    <button *ngIf='accounts && showReceiveFormat.btnOutline' type="button" (click)="open1(modal1)" class="btn btn-sm btn-outline-primary">Send</button>
+    <span *ngIf='accounts && showReceiveFormat.dropdownItem' class="dropdown-item" (click)="open1(modal1)">{{ activePkh }}</span>
+    <!-- <button *ngIf='accounts' type="button" class="btn btn-primary" id="send" (click)="open1(modal1)">Receive</button> -->
+
+</ng-container>
+
 <div *ngIf='!accounts'>
   Wallet not configured
 </div>

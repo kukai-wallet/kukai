@@ -1,125 +1,126 @@
 <ng-container *ngIf="accounts">
-<!-- SEND MODALS -->
-<!-- First Modal -->
-<ng-template #modal1>
+    <!-- SEND MODALS -->
+    <!-- First Modal -->
+    <ng-template #modal1>
 
-    <div class="modal-header">
-        <h4 class="modal-title pull-left">Send tezzies</h4>
-        <button type="button" class="close pull-right" aria-label="Close" (click)="close1()">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    <div class="modal-body">
-        <form>
-            <div class="form-row">
-                <div class="form-group col-md-8">
-                    <label for="fromAdress">From Address</label> 
-                    <select [(ngModel)]="activePkh" id="fromAdress" class="form-control" name="first">
-                        <option *ngFor="let account of accounts" [ngValue]="account.pkh">{{ account.pkh }}</option>
-                    </select>
-                </div>
-
-                <div class="form-group col-md-4 text-right">
-                    <label for="staticBalance" class="text-right">Current Balance</label>
-                    <input type="text" readonly class="form-control-plaintext text-color" id="staticBalance" [value]="showAccountBalance(activePkh)">
-                    <small id="rateXTZ" class="form-text text-muted text-color" *ngIf="XTZrate > 0">Rate (ꜩ) ${{ XTZrate | number:'1.00' }} USD</small>
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group col-md-8">
-                    <label for="toAdress">To Address</label>
-                    <input type="text" class="form-control" id="toAdress" placeholder="" [(ngModel)]="toPkh" name="second">
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group col-md-8">
-                    <label for="sendAmount">Amount to Send (ꜩ)</label>
-                    <div>
-                        <input type="text" class="form-control" id="sendAmount" placeholder="Amount" [(ngModel)]="amount" name="three">
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">Send tezzies</h4>
+            <button type="button" class="close pull-right" aria-label="Close" (click)="close1()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form>
+                <div class="form-row">
+                    <div class="form-group col-md-8">
+                        <label for="fromAdress">From Address</label> 
+                        <select [(ngModel)]="activePkh" id="fromAdress" class="form-control" name="first">
+                            <option *ngFor="let account of accounts" [ngValue]="account.pkh">{{ account.pkh }}</option>
+                        </select>
                     </div>
-                    <small id="smallSend" class="form-text text-muted">
-                        <button type="button" class="btn btn-outline-light btn-sm btn-balance" (click)="sendEntireBalance(activePkh, $event)">Send Entire Balance</button>
-                        
-                        <span class="align-middle" *ngIf="amount * XTZrate > 0">(${{amount * XTZrate | number:'1.0'}} USD)</span>
-                    </small> 
+
+                    <div class="form-group col-md-4 text-right">
+                        <label for="staticBalance" class="text-right">Current Balance</label>
+                        <input type="text" readonly class="form-control-plaintext text-color" id="staticBalance" [value]="showAccountBalance(activePkh)">
+                        <small id="rateXTZ" class="form-text text-muted text-color" *ngIf="XTZrate > 0">Rate (ꜩ) ${{ XTZrate | number:'1.00' }} USD</small>
+                    </div>
                 </div>
 
-                <div class="form-group col-md-4">
-                    <label for="transactionFee">Transaction Limit (ꜩ)</label>
-                    <input type="text" class="form-control" id="transactionFee" placeholder="Fee" [(ngModel)]="fee" name="four">
+                <div class="form-row">
+                    <div class="form-group col-md-8">
+                        <label for="toAdress">To Address</label>
+                        <input type="text" class="form-control" id="toAdress" placeholder="" [(ngModel)]="toPkh" name="second">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-8">
+                        <label for="sendAmount">Amount to Send (ꜩ)</label>
+                        <div>
+                            <input type="text" class="form-control" id="sendAmount" placeholder="Amount" [(ngModel)]="amount" name="three">
+                        </div>
+                        <small id="smallSend" class="form-text text-muted">
+                            <button type="button" class="btn btn-outline-light btn-sm btn-balance" (click)="sendEntireBalance(activePkh, $event)">Send Entire Balance</button>
+                            
+                            <span class="align-middle" *ngIf="amount * XTZrate > 0">(${{amount * XTZrate | number:'1.0'}} USD)</span>
+                        </small> 
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        <label for="transactionFee">Transaction Limit (ꜩ)</label>
+                        <input type="text" class="form-control" id="transactionFee" placeholder="Fee" [(ngModel)]="fee" name="four">
+                    </div>
+                </div>
+            </form>
+
+            {{ formInvalid }}
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary btn-lg" id="sub" (click)="open2(modal2)">Send</button>
+            </div>
+        </div>
+
+    </ng-template>
+
+    <!-- Confirmation Modal -->
+    <ng-template #modal2>
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">Authenticate transaction</h4>
+            <button type="button" class="close pull-right" aria-label="Close" (click)="close2()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p>From: {{ activePkh }}<BR>
+                To: {{ toPkh }}<BR>
+                Amount: {{ amount | number:'1.0' }}ꜩ<BR>
+                Fee: {{ fee | number:'1.0' }}ꜩ
+            </p>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label for="pwd">Password:</label>
+                    <input [(ngModel)]="password" type="password" id="pwd" class="form-control">
                 </div>
             </div>
-        </form>
-
-        {{ formInvalid }}
-
-        <div class="modal-footer">
-            <button type="button" class="btn btn-primary btn-lg" id="sub" (click)="open2(modal2)">Send</button>
+            <button type="button" class="btn btn-primary" id="sub" (click)="open3(modal3)">Confirm</button>
+            {{ pwdValid }}
         </div>
-    </div>
+    </ng-template>
 
-</ng-template>
-
-<!-- Confirmation Modal -->
-<ng-template #modal2>
-    <div class="modal-header">
-        <h4 class="modal-title pull-left">Authenticate transaction</h4>
-        <button type="button" class="close pull-right" aria-label="Close" (click)="close2()">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    <div class="modal-body">
-        <p>From: {{ activePkh }}<BR>
-            To: {{ toPkh }}<BR>
-            Amount: {{ amount | number:'1.0' }}ꜩ<BR>
-            Fee: {{ fee | number:'1.0' }}ꜩ
-        </p>
-        <div class="row">
-            <div class="form-group col-md-6">
-                <label for="pwd">Password:</label>
-                <input [(ngModel)]="password" type="password" id="pwd" class="form-control">
+    <!-- Final Modal -->
+    <ng-template #modal3>
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">Confirmation</h4>
+            <button type="button" class="close pull-right" aria-label="Close" (click)="close3()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div *ngIf='!sendResponse'>
+                Please wait...
             </div>
+            <div *ngIf='sendResponse === "success"'>
+                <i class="fa fa-check-circle"></i>
+                <br><br>
+                <p>Your transaction has been successfully broadcasted to the network</p>
+            </div>
+            <div *ngIf='sendResponse === "failure"'>
+                Failure!
+            </div>
+            <button type="button" class="btn btn-primary" id="sub" (click)="close3()">Close</button>
         </div>
-        <button type="button" class="btn btn-primary" id="sub" (click)="open3(modal3)">Confirm</button>
-        {{ pwdValid }}
-    </div>
-</ng-template>
+    </ng-template>
 
-<!-- Final Modal -->
-<ng-template #modal3>
-    <div class="modal-header">
-        <h4 class="modal-title pull-left">Confirmation</h4>
-        <button type="button" class="close pull-right" aria-label="Close" (click)="close3()">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    <div class="modal-body">
-        <div *ngIf='!sendResponse'>
-            Please wait...
-        </div>
-        <div *ngIf='sendResponse === "success"'>
-            <i class="fa fa-check-circle"></i>
-            <br><br>
-            <p>Your transaction has been successfully broadcasted to the network</p>
-        </div>
-        <div *ngIf='sendResponse === "failure"'>
-            Failure!
-        </div>
-        <button type="button" class="btn btn-primary" id="sub" (click)="close3()">Close</button>
-    </div>
-</ng-template>
 
-<!--<button *ngIf='accounts' type="button" class="btn btn-sm btn-outline-primary" (click)="modal1.show()">Send</button>-->
-<button *ngIf='accounts && showSendFormat.btnOutline' type="button" (click)="open1(modal1)" class="btn btn-sm btn-outline-primary">Send</button>
-<!--<button  type="button" class="btn btn-primary" id="send" (click)="open1(modal1)">Send</button>-->
+    <!-- Showing different Send Format according to actionButtonString -->
+    <button *ngIf='accounts && showSendFormat.btnOutline' type="button" (click)="open1(modal1)" class="btn btn-sm btn-outline-primary">Send</button>
+    <span *ngIf='accounts && showSendFormat.dropdownItem' class="dropdown-item" (click)="open1(modal1)">{{ activePkh }}</span>
+    <span *ngIf='accounts && showSendFormat.btnSidebar' class="btnSidebar" (click)="open1(modal1)">Send</span>
+    <!--<button *ngIf='accounts' type="button" class="btn btn-sm btn-outline-primary" (click)="modal1.show()">Send</button>-->
+    <!--<button  type="button" class="btn btn-primary" id="send" (click)="open1(modal1)">Send</button>-->
 
-<span *ngIf='accounts && showSendFormat.dropdownItem' class="dropdown-item" (click)="open1(modal1)">{{ activePkh }}</span>
-
-<span *ngIf='accounts && showSendFormat.btnSidebar' class="btnSidebar" (click)="open1(modal1)">Send</span>
 </ng-container>
 
 <p *ngIf='!accounts'>
-    Send
+    Send <!-- Wallet not configured, just Send string shown on sidebar -->
 </p>
