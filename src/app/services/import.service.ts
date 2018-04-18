@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { MessageService } from './message.service';
 import { BalanceService } from './balance.service';
+import * as bip39 from 'bip39';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -55,5 +56,12 @@ export class ImportService {
       },
       err => this.messageService.addError(JSON.stringify(err))
     );
+  }
+  importTgeWallet(mnemonic, email, password): Promise<boolean> {
+    // salt = unicodedata.normalize(
+    // "NFKD", (email + password).decode("utf8")).encode("utf8")
+    // seed = bitcoin.mnemonic_to_seed(mnemonic, salt)
+    const salt = email + password;
+    return this.importWalletData(this.walletService.createEncryptedTgeWallet(mnemonic, email, password));
   }
 }

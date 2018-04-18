@@ -6,6 +6,7 @@ export interface KeyPair {
 export interface Wallet {
   encryptedSeed: null|string;
   salt: string|null;
+  email: string|null;
   balance: Balance;
   XTZrate: number;
   accounts: Account[];

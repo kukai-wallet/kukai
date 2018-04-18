@@ -25,7 +25,7 @@ export class ImportComponent implements OnInit {
   }
   import() {
     if (this.importService.importWalletData(this.encryptedWallet)) {
-      this.router.navigate(['/accounts']);
+      this.router.navigate(['/overview']);
     } else {
       this.messageService.add('Failed to import wallet!');
     }

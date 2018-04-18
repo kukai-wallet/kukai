@@ -42,6 +42,16 @@ export class WalletService {
     return {wallet: 'Kukai', type: 'FullWallet', version: '1.0', seed: this.wallet.encryptedSeed,
             salt: this.wallet.salt, pkh: this.wallet.accounts[0].pkh};
   }
+  createEncryptedTgeWallet(mnemonic: string, email: string, password: string): any {
+    this.wallet = this.emptyWallet();
+    this.wallet.salt =  rnd2('aA0', 32);
+    this.wallet.email = email;
+    this.wallet.accounts = [];
+    this.addAccount(lib.eztz.crypto.generateKeys(mnemonic, email + password).pkh);
+    this.wallet.encryptedSeed = this.encryptionService.encrypt(bip39.mnemonicToEntropy(mnemonic), password, this.wallet.salt);
+    return {wallet: 'Kukai', type: 'FullWallet', version: '1.0', seed: this.wallet.encryptedSeed,
+    salt: this.wallet.salt, pkh: this.wallet.accounts[0].pkh};
+  }
   /*
     Handle accounts
   */
@@ -96,6 +106,7 @@ export class WalletService {
     return {
       encryptedSeed: null,
       salt: null,
+      email: null,
       balance: this.emptyBalance(),
       XTZrate: 0,
       accounts: []

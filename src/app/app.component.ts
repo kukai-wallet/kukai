@@ -14,6 +14,8 @@ export class AppComponent implements OnInit {
     private updateCoordinatorService: UpdateCoordinatorService) { }
   ngOnInit() {
     this.walletService.loadStoredWallet();
-    this.updateCoordinatorService.start();
+    if (this.walletService.wallet) {
+      this.updateCoordinatorService.start();
+    }
   }
 }

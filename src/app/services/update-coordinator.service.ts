@@ -28,6 +28,7 @@ export class UpdateCoordinatorService {
     clearInterval(this.activityInterval);
     clearInterval(this.tzrateInterval);
     clearInterval(this.boostInterval);
+    this.activityInterval = null;
   }
   boost() {
     clearInterval(this.activityInterval);
