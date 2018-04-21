@@ -32,15 +32,16 @@ export class ImportService {
       await this.findNumberOfAccounts(walletData.pkh);
       return true;
     } catch (err) {
-      this.messageService.addError(err);
+      this.messageService.addError('ImportError(1)' + err);
       return false;
     }
   }
   findNumberOfAccounts(pkh: string) {
     console.log('Find accounts...');
+    console.log('pkh: ' + pkh);
     this.http.get('http://api.tzscan.io/v1/number_operations/' + pkh + '?type=Origination').subscribe(
       data => this.findAccounts(pkh, data[0]),
-      err => this.messageService.addError(JSON.stringify(err))
+      err => this.messageService.addError('ImportError(2)' + JSON.stringify(err))
     );
   }
   findAccounts(pkh: string, n: number) {
@@ -54,14 +55,16 @@ export class ImportService {
         }
         this.walletService.storeWallet();
       },
-      err => this.messageService.addError(JSON.stringify(err))
+      err => this.messageService.addError('ImportError(3)' + JSON.stringify(err))
     );
   }
-  importTgeWallet(mnemonic, email, password): Promise<boolean> {
+  importTgeWallet(mnemonic, email, password): boolean {
     // salt = unicodedata.normalize(
     // "NFKD", (email + password).decode("utf8")).encode("utf8")
     // seed = bitcoin.mnemonic_to_seed(mnemonic, salt)
     const salt = email + password;
-    return this.importWalletData(this.walletService.createEncryptedTgeWallet(mnemonic, email, password));
+    const pkh = this.walletService.createEncryptedTgeWallet(mnemonic, email, password);
+    this.findNumberOfAccounts(pkh);
+    return true;
   }
 }

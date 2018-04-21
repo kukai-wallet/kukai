@@ -42,6 +42,7 @@ import { PositioningService } from 'ngx-bootstrap/positioning';
 import { AccountComponent } from './components/account/account.component';
 import { IcoWalletComponent } from './components/ico-wallet/ico-wallet.component';
 import { UpdateCoordinatorService } from './services/update-coordinator.service';
+import { OperationService } from './services/operation.service';
 
 
 @NgModule({
@@ -89,7 +90,8 @@ import { UpdateCoordinatorService } from './services/update-coordinator.service'
     ComponentLoaderFactory,
     PositioningService,
     TzrateService,
-    UpdateCoordinatorService
+    UpdateCoordinatorService,
+    OperationService
   ],
   bootstrap: [AppComponent]
 })

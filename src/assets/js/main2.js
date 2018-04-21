@@ -39,7 +39,7 @@ function _process(p){
   }
 }
 const Buffer = require('buffer/').Buffer,
-defaultProvider = "https://tezrpc.me/zeronet",
+defaultProvider = "https://tezrpc.me/api",
 library = {
   bs58check : require('bs58check'),
   sodium : require('libsodium-wrappers'),
@@ -644,5 +644,5 @@ eztz.alphanet.faucet = function(toAddress){
 }
 module.exports = {
   defaultProvider,
-  eztz: eztz,
+  eztz: eztz
 };
