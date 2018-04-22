@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { of } from 'rxjs/observable/of';
 import { Observable } from 'rxjs/Observable';
 import { MessageService } from './message.service';
 import { UpdateCoordinatorService } from './update-coordinator.service';
@@ -109,12 +110,20 @@ export class OperationService {
                   signature: signed.edsig
                 };
                 return this.http.post('http://zeronet-node.tzscan.io/blocks/head/proto/helpers/apply_operation', aop)
-                .flatMap((applied: any) => {
-                  const sop = {
-                    signedOperationContents: sopbytes,
-                    chain_id: head.chain_id
-                  };
-                    return this.http.post('http://zeronet-node.tzscan.io/inject_operation', sop);
+                  .flatMap((applied: any) => {
+                    const sop = {
+                      signedOperationContents: sopbytes,
+                      chain_id: head.chain_id
+                    };
+                      return this.http.post('http://zeronet-node.tzscan.io/inject_operation', sop)
+                      .flatMap((final: any) => {
+                        return of(
+                          {
+                            opHash: final.injectedOperation,
+                            newPkh: applied.contracts[0]
+                          }
+                        );
+                      });
                   });
               });
           });

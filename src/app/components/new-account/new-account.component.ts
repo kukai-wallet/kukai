@@ -87,8 +87,10 @@ export class NewAccountComponent implements OnInit {
     setTimeout(async () => {
       this.operationService.originate(keys, this.fromPkh, Number(amount), Number(fee)).subscribe(
         (ans: any) => {
-          if (ans.injectedOperation) {
+          console.log(JSON.stringify(ans));
+          if (ans.opHash) {
             this.sendResponse = 'success';
+            this.walletService.addAccount(ans.newPkh);
           } else {
             this.sendResponse = 'failure';
           }
