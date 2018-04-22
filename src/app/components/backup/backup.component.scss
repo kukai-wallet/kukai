@@ -1,3 +1,13 @@
+.page-header {
+    margin: 40px 0px 10px 0px; //top right bottom left
+}
+
+.bottom-separator {
+    padding-bottom: 27px;
+    border-bottom: 1px solid #eee; //Alignment  with sidebar
+    margin-bottom: 0.5rem; //space between border and next content
+}
+
 .page-header-no-account {
     margin: 40px 0px 10px 0px; //top right bottom left
 }
@@ -7,6 +17,22 @@
     border-bottom: 1px solid #eee; //Alignment  with sidebar
     margin-bottom: 0.5rem; //space between border and next content
 }
+
+
+.btn-second {
+    min-width: 96px;
+    color: #333333;
+}
+
+.btn-second:hover {
+    background-color: #cccccc;
+}
+
+.btn-second:active {
+    background-color: #b3b3b3;
+}
+
+
 
 
 /* Responsive breakpoints */
