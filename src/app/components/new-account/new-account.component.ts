@@ -4,6 +4,7 @@ import { MessageService } from '../../services/message.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { KeyPair } from '../../interfaces';
+import { OperationService } from '../../services/operation.service';
 
 @Component({
   selector: 'app-new-account',
@@ -27,7 +28,8 @@ export class NewAccountComponent implements OnInit {
   constructor(
     private walletService: WalletService,
     private messageService: MessageService,
-    private modalService: BsModalService
+    private modalService: BsModalService,
+    private operationService: OperationService
   ) { }
 
   ngOnInit() {
@@ -83,7 +85,7 @@ export class NewAccountComponent implements OnInit {
     if (!amount) { amount = '0'; }
     if (!fee) { fee = '0'; }
     setTimeout(async () => {
-      if (await this.walletService.createAccount(keys, this.fromPkh, Number(amount), Number(fee) * 100)) {
+      if (this.operationService.originate(keys, this.fromPkh, Number(amount), Number(fee) * 100)) {
         this.sendResponse = 'success';
       } else {
         this.sendResponse = 'failure';

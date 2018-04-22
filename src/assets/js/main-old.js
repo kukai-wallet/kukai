@@ -54,14 +54,6 @@ prefix = {
     o: new Uint8Array([5, 116]),
 },
 utility = {
-  mintotz : function(m){
-    return parseInt(m)/1000000;
-  },
-  tztomin : function(tz){
-    var r = tz.toFixed(6)*1000000;
-    if (r > 4294967296) r = r.toString();
-    return r;
-  },
   b58cencode : function(payload, prefix) {
       var n = new Uint8Array(prefix.length + payload.length);
       n.set(prefix);
@@ -149,32 +141,21 @@ utility = {
   ml2mic : function me (mi){
         var ret = [], inseq = false, seq = '', val = '', pl = 0, bl = 0, sopen = false, escaped = false;
         for(var i = 0; i < mi.length; i++){
-            if (val == "}" || val == ";") {
-              val = "";
-            }
             if (inseq) {
                 if (mi[i] == "}"){
-                    bl--;
-                } else if (mi[i] == "{") {
-                  bl++;
-                }
-                if (bl == 0){
-                  var st = me(val);
-                  ret.push({
-                      prim : seq.trim(),
-                      args : [st]
-                  });
-                  val = '';
-                  bl = 0;
-                  inseq = false;
+                    ret.push({
+                        prim : seq.trim(),
+                        args : [me(val)]
+                    });
+                    val = '';
+                    continue;
                 }
             } 
             else if (mi[i] == "{") {
-                  bl++;
-                  seq = val;
-                  val = '';
-                  inseq = true;
-                  continue;
+                seq = val;
+                val = '';
+                inseq = true;
+                continue;
             }
             else if (escaped){
                 val += mi[i];
@@ -183,10 +164,6 @@ utility = {
             } 
             else if ((i == (mi.length - 1) && sopen == false) || (mi[i] == ";" && pl == 0 && sopen == false)){
                 if (i == (mi.length - 1)) val += mi[i];
-                if (val.trim() == "" || val.trim() == "}" || val.trim() == ";") {
-                  val = "";
-                  continue;
-                }
                 ret.push(eztz.utility.ml2tzjson(val));
                 val = '';
                 continue;
@@ -199,16 +176,7 @@ utility = {
             val += mi[i];
         }
         return ret;
-  },
-  formatMoney: function(n, c, d, t) {
-    var c = isNaN(c = Math.abs(c)) ? 2 : c, 
-    d = d == undefined ? "." : d, 
-    t = t == undefined ? "," : t, 
-    s = n < 0 ? "-" : "", 
-    i = String(parseInt(n = Math.abs(Number(n) || 0).toFixed(c))), 
-    j = (j = i.length) > 3 ? j % 3 : 0;
-    return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
-  }
+    }
 },
 crypto = {
   generateMnemonic : function(){
@@ -286,11 +254,7 @@ crypto = {
 }
 node = {
   activeProvider: defaultProvider,
-  debugMode: false,
   async: true,
-  setDebugMode : function(t){
-    node.debugMode = t;
-  },
   setProvider : function(u){
     node.activeProvider = u;
   },
@@ -304,8 +268,6 @@ node = {
       http.open("POST", node.activeProvider + e, node.async);
       http.onload = function() {
           if(http.status == 200) {
-            if (node.debugMode)
-              console.log(e, o, http.responseText);
              if (http.responseText){
                   var r = JSON.parse(http.responseText);
                   if (typeof r.error != 'undefined'){
@@ -332,7 +294,7 @@ rpc = {
   account : function(keys, amount, spendable, delegatable, delegate, fee){
     var operation = {
       "kind": "origination",
-      "balance": utility.tztomin(amount),
+      "balance": amount.toFixed(2)*100,
       "managerPubkey": keys.pkh,
       "spendable": (typeof spendable != "undefined" ? spendable : true),
       "delegatable": (typeof delegatable != "undefined" ? delegatable : true),
@@ -346,7 +308,7 @@ rpc = {
     .then(function(f){
       head = f;
       pred_block = head.predecessor;
-      return node.query('/blocks/prevalidation/proto/helpers/forge/forge/operations', {
+      return node.query('/blocks/prevalidation/proto/helpers/forge/operations', {
           "branch": pred_block,
           "operations": [{
               "kind" : "faucet",
@@ -368,24 +330,14 @@ rpc = {
       npkh = f.contracts[0];
       return node.query('/inject_operation', {
          "signedOperationContents" : opbytes,
-      })
-      .then(function(f){
-        return npkh
       });
     })
-    .then(function(f) {
-      return new Promise(function(resolve, reject) {
-        setTimeout(() => resolve(f), 500);
-      });
+    .then(function(f){
+      return npkh
     });
   },
   getBalance : function(tz1){
-    return node.query("/blocks/prevalidation/proto/context/contracts/"+tz1+"/balance").then(function(r){
-      return r.balance;
-    });;
-  },
-  getDelegate : function(tz1){
-    return node.query("/blocks/prevalidation/proto/context/contracts/"+tz1+"/delegate");
+    return node.query("/blocks/prevalidation/proto/context/contracts/"+tz1+"/balance");
   },
   getHead : function(){
     return node.query("/blocks/head");
@@ -403,33 +355,18 @@ rpc = {
     return Promise.all(promises).then(function(f){
       head = f[0];
       pred_block = head.predecessor;
-      var ops;
-      if (Array.isArray(operation)){
-        ops = operation;
-      } else if (operation.kind == "transaction" || operation.kind == "delegation" || operation.kind == "origination"){
-        ops = [
-          {
-              kind : "reveal",
-              public_key : keys.pk
-          },
-          operation
-        ];
-      } else {
-        ops = [operation];
-      }
       var opOb = {
           "branch": pred_block,
-          "kind" : 'manager',
           "source": keys.pkh,
-          "operations": ops
+          "operations": [operation]
       }
-      if (typeof fee != 'undefined') {
-        counter = f[1].counter +1;
+      if (typeof fee != 'unfedined') {
+        counter = f[1]+1;
         opOb['fee'] = fee;
         opOb['counter'] = counter;
-        //opOb['public_key'] = keys.pk;
+        opOb['public_key'] = keys.pk;
       }
-      return node.query('/blocks/prevalidation/proto/helpers/forge/forge/operations', opOb);
+      return node.query('/blocks/prevalidation/proto/helpers/forge/operations', opOb);
     })
     .then(function(f){ 
       var opbytes = f.operation;
@@ -452,40 +389,12 @@ rpc = {
     .then(function(f){
       f['contracts'] = returnedContracts;
       return f
-    })
-    .then(function(e) {
-      return new Promise(function(resolve, reject) {
-        setTimeout(() => resolve(e), 500);
-      });
     });
-  },
-  freeDefaultAccount: function(keys) {
-    var k, m, op;
-    m = crypto.generateMnemonic();
-    k = crypto.generateKeys(m);
-    op = {
-      kind: "transaction",
-      amount: utility.tztomin(100000),
-      destination: keys.pkh,
-      parameters: undefined
-    };
-    return rpc
-      .freeAccount(k)
-      .then(function(r) {
-        k.pkh = r;
-        return rpc.sendOperation(op, k, 0);
-      })
-      .then(function(r) {
-        return keys.pkh;
-      })
-      .catch(function(e) {
-        return Promise.reject(e ? "RPC error: " + e : "RPC error.");
-      });
   },
   transfer : function(keys, from, to, amount, fee){
     var operation = {
       "kind" : "transaction",
-      "amount" : utility.tztomin(amount),
+      "amount" : amount.toFixed(2)*100,
       "destination" : to
     };
     return rpc.sendOperation(operation, {pk : keys.pk, pkh : from, sk : keys.sk}, fee);
@@ -493,15 +402,18 @@ rpc = {
   originate : function(keys, amount, code, init, spendable, delegatable, delegate, fee){
     var _code = utility.ml2mic(code), script = {
       code : _code,
-      storage : utility.sexp2mic(init)
+      storage : {
+        storageType : _code.storageType,
+        storage : utility.sexp2mic(init)
+      }
     }, operation = {
       "kind": "origination",
+      "balance": amount.toFixed(2)*100,
       "managerPubkey": keys.pkh,
-      "balance": utility.tztomin(amount),
+      "script": script,
       "spendable": (typeof spendable != "undefined" ? spendable : false),
       "delegatable": (typeof delegatable != "undefined" ? delegatable : false),
-      "delegate": (typeof delegate != "undefined" && delegate ? delegate : keys.pkh),
-      "script": script,
+      "delegate": (typeof delegate != "undefined" ? delegate : keys.pkh),
     };
     return rpc.sendOperation(operation, keys, fee);
   },
@@ -511,13 +423,6 @@ rpc = {
       "delegate": (typeof delegate != "undefined" ? delegate : keys.pkh),
     };
     return rpc.sendOperation(operation, {pk : keys.pk, pkh : account, sk : keys.sk}, fee);
-  },
-  registerDelegate(keys, fee){
-    var operation = {
-      "kind": "delegation",
-      "delegate": keys.pkh,
-    };
-    return rpc.sendOperation(operation, keys, fee);
   },
   typecheckCode(code){
     var _code = utility.ml2mic(code);
@@ -534,20 +439,20 @@ rpc = {
     var ep = (trace ? 'trace_code' : 'run_code');
     return node.query("/blocks/head/proto/helpers/" + ep, {
       script : utility.ml2mic(code),
-      amount : utility.tztomin(amount),
+      amount : amount.toFixed(2)*100,
       input : utility.sexp2mic(input),
       storage : utility.sexp2mic(storage),
     });
   }
 },
 contract = {
-  originate : function(keys, amount, code, init, spendable, delegatable, delegate, fee){
-    return rpc.originate(keys, amount, code, init, spendable, delegatable, delegate, fee);
+  originate : function(keys, amount, code, init, spendable, delegatable, delegate){
+    rpc.originate(keys, amount, code, init, spendable, delegatable, delegate);
   },
   storage : function(contract){
     return new Promise(function (resolve, reject) {
       eztz.node.query("/blocks/head/proto/context/contracts/"+contract).then(function(r){
-        resolve(r.storage);
+        resolve(r.script.storage.storage);
       }).catch(function(e){
         reject(e);
       });
@@ -556,11 +461,11 @@ contract = {
   load : function(contract){
     return eztz.node.query("/blocks/head/proto/context/contracts/"+contract);
   },
-  watch : function(cc, timeout, cb){
+  watch : function(contract, timeout, cb){
     var storage = [];
     var ct = function(){
-      contract.storage(cc).then(function(r){
-        var ns = eztz.utility.mic2arr(r);
+      eztz.node.query("/blocks/head/proto/context/contracts/"+contract).then(function(r){
+        var ns = eztz.utility.mic2arr(r.script.storage);
         if (JSON.stringify(storage) != JSON.stringify(ns)){
           storage = ns;
           cb(storage);
@@ -573,7 +478,7 @@ contract = {
   send : function(contract, keys, amount, parameter, fee){
     return eztz.rpc.sendOperation({
       "kind": "transaction",
-      "amount": utility.tztomin(amount),
+      "amount": amount*100,
       "destination": contract,
       "parameters": eztz.utility.sexp2mic(parameter)
     }, keys, fee);
@@ -597,6 +502,9 @@ eztz = {
 
 //Alpha only functions
 eztz.alphanet = {};
+eztz.alphanet.sleep = function(ms){
+    return new Promise(resolve => setTimeout(resolve, ms));
+  };
 eztz.alphanet.faucet = function(toAddress){
   var keys = crypto.generateKeysNoSeed();
   var head, pred_block, opbytes, npkh;
@@ -604,7 +512,7 @@ eztz.alphanet.faucet = function(toAddress){
   .then(function(f){
     head = f;
     pred_block = head.predecessor;
-    return node.query('/blocks/prevalidation/proto/helpers/forge/forge/operations', {
+    return node.query('/blocks/prevalidation/proto/helpers/forge/operations', {
         "branch": pred_block,
         "operations": [{
             "kind" : "faucet",
@@ -628,7 +536,8 @@ eztz.alphanet.faucet = function(toAddress){
        "signedOperationContents" : opbytes,
     });
   })
-  .then(function(f){
+  .then(async function(f){
+    await eztz.alphanet.sleep(500);
     return node.query('/blocks/prevalidation/proto/context/contracts/'+npkh+'/manager');
   })
   .then(function(f){
@@ -636,7 +545,7 @@ eztz.alphanet.faucet = function(toAddress){
       keys.pkh = npkh;
       var operation = {
         "kind": "transaction",
-        "amount": utility.tztomin(100000),
+        "amount": 10000000,
         "destination": toAddress
       };
       return rpc.sendOperation(operation, keys, 0);
@@ -644,5 +553,5 @@ eztz.alphanet.faucet = function(toAddress){
 }
 module.exports = {
   defaultProvider,
-  eztz: eztz
+  eztz: eztz,
 };

@@ -22,7 +22,7 @@ export class ActivityService {
     private balanceService: BalanceService
   ) { }
   updateAllTransactions() {
-    console.log('updating transactions');
+    // console.log('updating transactions');
     for (let i = 0; i < this.walletService.wallet.accounts.length; i++) {
       this.updateTransactions(this.walletService.wallet.accounts[i].pkh);
     }

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { MessageService } from './message.service';
 import { Wallet, Account, Balance, KeyPair } from './../interfaces';
 import { EncryptionService } from './encryption.service';
-import * as lib from '../../assets/js/main2.js';
+import * as lib from '../../assets/js/main.js';
 import * as bip39 from 'bip39';
 import * as rnd2 from 'randomatic';
 
@@ -36,7 +36,7 @@ export class WalletService {
     this.wallet = this.emptyWallet();
     this.wallet.salt =  rnd2('aA0', 32);
     this.wallet.accounts = [];
-    this.addAccount(lib.eztz.crypto.generateKeys(mnemonic, '').pkh);
+    this.addAccount(lib.crypto.generateKeys(mnemonic, '').pkh);
     this.wallet.encryptedSeed = this.encryptionService.encrypt(bip39.mnemonicToEntropy(mnemonic), password, this.wallet.salt);
     return {wallet: 'Kukai', type: 'FullWallet', version: '1.0', seed: this.wallet.encryptedSeed,
             salt: this.wallet.salt, pkh: this.wallet.accounts[0].pkh};
@@ -46,7 +46,7 @@ export class WalletService {
     this.wallet.salt =  rnd2('aA0', 32);
     this.wallet.email = email;
     this.wallet.accounts = [];
-    this.addAccount(lib.eztz.crypto.generateKeys(mnemonic, email + password).pkh);
+    this.addAccount(lib.crypto.generateKeys(mnemonic, email + password).pkh);
     this.wallet.encryptedSeed = this.encryptionService.encrypt(bip39.mnemonicToEntropy(mnemonic), password, this.wallet.salt);
     return this.wallet.accounts[0].pkh;
   }
@@ -89,7 +89,11 @@ export class WalletService {
       this.messageService.addError('Decryption failed');
     } else {
       mnemonic = bip39.entropyToMnemonic(mnemonic);
-      return lib.eztz.crypto.generateKeys(mnemonic, '');
+      if (this.wallet.email) {
+        return lib.eztz.crypto.generateKeys(mnemonic, this.wallet.email + password);
+      } else {
+        return lib.eztz.crypto.generateKeys(mnemonic, '');
+      }
     }
     return null;
   }

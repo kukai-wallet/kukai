@@ -4,7 +4,7 @@ import { MessageService } from './message.service';
 import { TzrateService } from './tzrate.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import * as lib from '../../assets/js/main2.js';
+import * as lib from '../../assets/js/main.js';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })

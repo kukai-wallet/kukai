@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { MessageService } from '../../services/message.service';
 import { OperationService } from '../../services/operation.service';
 import { WalletService } from '../../services/wallet.service';
-import { setTimeout } from 'timers';
 // https://www.npmjs.com/package/load-json-file
 @Component({
   selector: 'app-ico-wallet',
