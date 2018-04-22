@@ -85,11 +85,18 @@ export class NewAccountComponent implements OnInit {
     if (!amount) { amount = '0'; }
     if (!fee) { fee = '0'; }
     setTimeout(async () => {
-      if (this.operationService.originate(keys, this.fromPkh, Number(amount), Number(fee) * 100)) {
-        this.sendResponse = 'success';
-      } else {
-        this.sendResponse = 'failure';
-      }
+      this.operationService.originate(keys, this.fromPkh, Number(amount), Number(fee)).subscribe(
+        (ans: any) => {
+          if (ans.injectedOperation) {
+            this.sendResponse = 'success';
+          } else {
+            this.sendResponse = 'failure';
+          }
+        },
+        err => {console.log(JSON.stringify(err));
+          this.sendResponse = 'failure';
+        }
+      );
     }, 100);
   }
   invalidInput(): string {

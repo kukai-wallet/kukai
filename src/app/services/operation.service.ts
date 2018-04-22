@@ -72,32 +72,17 @@ export class OperationService {
       }
     );
   }
-  originate(keys: KeyPair, pkh: string, amount: number, fee: number): boolean {
-    console.log('ORIGINATE');
-    console.log(pkh);
-    console.log(JSON.stringify(keys));
-    console.log('Request head');
-    let branch;
-    let chain_id;
-    let predecessor_hash;
-    this.http.get('http://zeronet-api.tzscan.io/v2/head').subscribe(
-      (data: any) => {
-        branch = data.hash;
-        predecessor_hash = data.predecessor_hash;
-        chain_id = data.chain_id; },
-      err => { console.log(JSON.stringify(err)); return false; },
-      () => {
-        let counter;
-        this.http.post('http://zeronet-node.tzscan.io/blocks/head/proto/context/contracts/' + pkh, {}).subscribe(
-          (data: any) => counter = Number(data.counter),
-          err => console.log(JSON.stringify(err)),
-          () => {
+  originate(keys: KeyPair, pkh: string, amount: number, fee: number): Observable<any> {
+    return this.http.get('http://zeronet-api.tzscan.io/v2/head')
+      .flatMap((head: any) => {
+        return this.http.post('http://zeronet-node.tzscan.io/blocks/head/proto/context/contracts/' + pkh, {})
+          .flatMap((actions: any) => {
             const fop = {
-              branch: branch,
+              branch: head.hash,
               kind: 'manager',
               source: pkh,
               fee: fee * this.tzfull,
-              counter: ++counter,
+              counter: ++actions.counter,
               operations: [
                 {
                   kind: 'reveal',
@@ -112,55 +97,28 @@ export class OperationService {
                 }
               ]
             };
-            let opbytes;
-            this.messageService.addSuccess('Counter is: ' + counter);
-            this.http.post('http://zeronet-node.tzscan.io/blocks/head/proto/helpers/forge/operations', fop).subscribe(
-              (data: any) => {
-                  opbytes = data.operation;
-                },
-              err => console.log(JSON.stringify(err)),
-              () => {
-                this.messageService.addSuccess('opbytes is: ' + opbytes);
-                //     opbytes = f.operation;
-                // var operationHash = utility.b58cencode(library.sodium.crypto_generichash(32, utility.hex2buf(opbytes)), prefix.o);
-                const signed = this.sign(opbytes, keys.sk);
+            return this.http.post('http://zeronet-node.tzscan.io/blocks/head/proto/helpers/forge/operations', fop)
+              .flatMap((opbytes: any) => {
+                const signed = this.sign(opbytes.operation, keys.sk);
                 const sopbytes = signed.sbytes;
                 const opHash = this.b58cencode(libs.crypto_generichash(32, this.hex2buf(sopbytes)), prefix.o);
                 const aop = {
-                  pred_block: predecessor_hash,
+                  pred_block: head.predecessor_hash,
                   operation_hash: opHash,
-                  forged_operation: opbytes,
+                  forged_operation: opbytes.operation,
                   signature: signed.edsig
                 };
-                this.http.post('http://zeronet-node.tzscan.io/blocks/head/proto/helpers/apply_operation', aop).subscribe(
-                  (data: any) => {
-                      // soc = data.operation;
-                      console.log(JSON.stringify(data));
-                    },
-                  err => console.log(JSON.stringify(err)),
-                  () => {
-                    console.log('Inject operations');
-                    const sop = {
-                      signedOperationContents: sopbytes,
-                      chain_id: chain_id
-                    };
-                    this.http.post('http://zeronet-node.tzscan.io/inject_operation', sop).subscribe(
-                      data => console.log(JSON.stringify(data)),
-                      err => console.log(JSON.stringify(err)),
-                      () => {
-                        this.updateCoordinatorService.boost();
-                        this.messageService.addSuccess('Origination successfully broadcasted to the network');
-                      }
-                    );
-                  }
-                );
-              }
-            );
-          }
-        );
-      }
-    );
-    return false;
+                return this.http.post('http://zeronet-node.tzscan.io/blocks/head/proto/helpers/apply_operation', aop)
+                .flatMap((applied: any) => {
+                  const sop = {
+                    signedOperationContents: sopbytes,
+                    chain_id: head.chain_id
+                  };
+                    return this.http.post('http://zeronet-node.tzscan.io/inject_operation', sop);
+                  });
+              });
+          });
+      });
   }
   hex2buf(hex) {
     return new Uint8Array(hex.match(/[\da-f]{2}/gi).map(function (h) {
