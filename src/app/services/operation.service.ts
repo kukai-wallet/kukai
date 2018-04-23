@@ -2,31 +2,24 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { of } from 'rxjs/observable/of';
 import { Observable } from 'rxjs/Observable';
-import { MessageService } from './message.service';
-import { UpdateCoordinatorService } from './update-coordinator.service';
 import { KeyPair } from './../interfaces';
 import { Buffer } from 'buffer';
 import * as libs from 'libsodium-wrappers';
 import * as Bs58check from 'bs58check';
 
-const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-};
-const prefix = {
-  tz1: new Uint8Array([6, 161, 159]),
-  edpk: new Uint8Array([13, 15, 37, 217]),
-  edsk: new Uint8Array([43, 246, 78, 7]),
-  edsig: new Uint8Array([9, 245, 205, 134, 18]),
-  o: new Uint8Array([5, 116]),
-};
-
 @Injectable()
 export class OperationService {
   nodeURL = 'http://zeronet-node.tzscan.io';
+  prefix = {
+    tz1: new Uint8Array([6, 161, 159]),
+    edpk: new Uint8Array([13, 15, 37, 217]),
+    edsk: new Uint8Array([43, 246, 78, 7]),
+    edsig: new Uint8Array([9, 245, 205, 134, 18]),
+    o: new Uint8Array([5, 116]),
+  };
+  toMicro = 1000000;
   constructor(
-    private http: HttpClient,
-    private messageService: MessageService,
-    private updateCoordinatorService: UpdateCoordinatorService
+    private http: HttpClient
   ) { }
   /*
     Returns an observable for the activation of an ICO identity
@@ -60,18 +53,19 @@ export class OperationService {
     });
   }
   /*
-    Returns an observable for the origination of new accounts. Note that amounts and fees are of the unit micro (10^-6) tezzies.
+    Returns an observable for the origination of new accounts.
   */
   originate(keys: KeyPair, pkh: string, amount: number, fee: number): Observable<any> {
+    console.log(amount * this.toMicro);
     return this.http.post(this.nodeURL + '/blocks/head', {})
       .flatMap((head: any) => {
-        return this.http.post(this.nodeURL + '/blocks/head/proto/context/contracts/' + pkh, {})
+        return this.http.post(this.nodeURL + '/blocks/head/proto/context/contracts/' + pkh + '/counter', {})
           .flatMap((actions: any) => {
             const fop = {
               branch: head.hash,
               kind: 'manager',
               source: pkh,
-              fee: fee,
+              fee: (fee * this.toMicro).toString(),
               counter: ++actions.counter,
               operations: [
                 {
@@ -81,19 +75,20 @@ export class OperationService {
                 {
                   kind: 'origination',
                   managerPubkey: pkh,
-                  balance: amount,
+                  balance: (amount * this.toMicro).toString(),
                   spendable: true,
                   delegatable: true
                 }
               ]
             };
+            console.log(JSON.stringify(fop));
             return this.http.post(this.nodeURL + '/blocks/head/proto/helpers/forge/operations', fop)
               .flatMap((opbytes: any) => {
                 return this.http.post(this.nodeURL + '/blocks/head/predecessor', {})
                   .flatMap((headp: any) => {
                     const signed = this.sign(opbytes.operation, keys.sk);
                     const sopbytes = signed.sbytes;
-                    const opHash = this.b58cencode(libs.crypto_generichash(32, this.hex2buf(sopbytes)), prefix.o);
+                    const opHash = this.b58cencode(libs.crypto_generichash(32, this.hex2buf(sopbytes)), this.prefix.o);
                     const aop = {
                       pred_block: headp.predecessor,
                       operation_hash: opHash,
@@ -121,6 +116,69 @@ export class OperationService {
           });
       });
   }
+  /*
+    Returns an observable for the transaction of tezzies.
+  */
+ transfer(keys: KeyPair, from: string, to: string, amount: number, fee: number): Observable<any> {
+  return this.http.post(this.nodeURL + '/blocks/head', {})
+    .flatMap((head: any) => {
+      return this.http.post(this.nodeURL + '/blocks/head/proto/context/contracts/' + from + '/counter', {})
+        .flatMap((actions: any) => {
+          const fop = {
+            branch: head.hash,
+            kind: 'manager',
+            source: from,
+            fee: fee * this.toMicro,
+            counter: ++actions.counter,
+            operations: [
+              {
+                kind: 'reveal',
+                public_key: keys.pk
+              },
+              {
+                kind: 'transaction',
+                amount: amount * this.toMicro,
+                destination: to,
+                parameters: {
+                  prim: 'Unit',
+                  args: []
+                }
+              }
+            ]
+          };
+          return this.http.post(this.nodeURL + '/blocks/head/proto/helpers/forge/operations', fop)
+            .flatMap((opbytes: any) => {
+              return this.http.post(this.nodeURL + '/blocks/head/predecessor', {})
+                .flatMap((headp: any) => {
+                  const signed = this.sign(opbytes.operation, keys.sk);
+                  const sopbytes = signed.sbytes;
+                  const opHash = this.b58cencode(libs.crypto_generichash(32, this.hex2buf(sopbytes)), this.prefix.o);
+                  const aop = {
+                    pred_block: headp.predecessor,
+                    operation_hash: opHash,
+                    forged_operation: opbytes.operation,
+                    signature: signed.edsig
+                  };
+                  return this.http.post(this.nodeURL + '/blocks/head/proto/helpers/apply_operation', aop)
+                  .flatMap((applied: any) => {
+                    const sop = {
+                      signedOperationContents: sopbytes,
+                      chain_id: head.chain_id
+                    };
+                      return this.http.post(this.nodeURL + '/inject_operation', sop)
+                      .flatMap((final: any) => {
+                        return of(
+                          {
+                            opHash: final.injectedOperation
+                          }
+                        );
+                      });
+                  });
+                });
+            });
+        });
+    });
+}
   hex2buf(hex) {
     return new Uint8Array(hex.match(/[\da-f]{2}/gi).map(function (h) {
       return parseInt(h, 16);
@@ -147,8 +205,8 @@ export class OperationService {
     return n;
   }
   sign(bytes, sk): any {
-    const sig = libs.crypto_sign_detached(this.hex2buf(bytes), this.b58cdecode(sk, prefix.edsk), 'uint8array');
-    const edsig = this.b58cencode(sig, prefix.edsig);
+    const sig = libs.crypto_sign_detached(this.hex2buf(bytes), this.b58cdecode(sk, this.prefix.edsk), 'uint8array');
+    const edsig = this.b58cencode(sig, this.prefix.edsig);
     const sbytes = bytes + this.buf2hex(sig);
     return {
       bytes: bytes,

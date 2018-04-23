@@ -87,7 +87,7 @@ export class NewAccountComponent implements OnInit {
     if (!amount) { amount = '0'; }
     if (!fee) { fee = '0'; }
     setTimeout(async () => {
-      this.operationService.originate(keys, this.fromPkh, Number(amount) * 1000000, Number(fee) * 1000000).subscribe(
+      this.operationService.originate(keys, this.fromPkh, Number(amount), Number(fee)).subscribe(
         (ans: any) => {
           console.log(JSON.stringify(ans));
           if (ans.opHash) {
