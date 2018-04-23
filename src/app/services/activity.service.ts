@@ -14,7 +14,7 @@ const httpOptions = {
 export class ActivityService {
   // timestampCounter = 0; // Make sure last timestamp trigger backup
   timestampCounterMap: Map<string, number> = new Map<string, number>();
-  maxTransactions = 5;
+  maxTransactions = 10;
   constructor(
     private walletService: WalletService,
     private http: HttpClient,

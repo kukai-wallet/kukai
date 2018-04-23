@@ -46,8 +46,7 @@ export class OperationService {
               return of(
                 {
                   opHash: final.injectedOperation
-                }
-              );
+                });
             });
         });
     });
@@ -56,7 +55,6 @@ export class OperationService {
     Returns an observable for the origination of new accounts.
   */
   originate(keys: KeyPair, pkh: string, amount: number, fee: number): Observable<any> {
-    console.log(amount * this.toMicro);
     return this.http.post(this.nodeURL + '/blocks/head', {})
       .flatMap((head: any) => {
         return this.http.post(this.nodeURL + '/blocks/head/proto/context/contracts/' + pkh + '/counter', {})
@@ -107,14 +105,13 @@ export class OperationService {
                             {
                               opHash: final.injectedOperation,
                               newPkh: applied.contracts[0]
-                            }
-                          );
+                            });
                         });
                     });
-                  });
-              });
-          });
-      });
+                });
+            });
+        });
+    });
   }
   /*
     Returns an observable for the transaction of tezzies.
@@ -128,7 +125,7 @@ export class OperationService {
             branch: head.hash,
             kind: 'manager',
             source: from,
-            fee: fee * this.toMicro,
+            fee: (fee * this.toMicro).toString(),
             counter: ++actions.counter,
             operations: [
               {
@@ -137,7 +134,7 @@ export class OperationService {
               },
               {
                 kind: 'transaction',
-                amount: amount * this.toMicro,
+                amount: (amount * this.toMicro).toString(),
                 destination: to,
                 parameters: {
                   prim: 'Unit',
@@ -170,14 +167,13 @@ export class OperationService {
                         return of(
                           {
                             opHash: final.injectedOperation
-                          }
-                        );
+                          });
                       });
                   });
-                });
-            });
-        });
-    });
+              });
+          });
+      });
+  });
 }
   hex2buf(hex) {
     return new Uint8Array(hex.match(/[\da-f]{2}/gi).map(function (h) {
