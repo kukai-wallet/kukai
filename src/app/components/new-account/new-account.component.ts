@@ -5,6 +5,7 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { KeyPair } from '../../interfaces';
 import { OperationService } from '../../services/operation.service';
+import { UpdateCoordinatorService } from '../../services/update-coordinator.service';
 
 @Component({
   selector: 'app-new-account',
@@ -29,7 +30,8 @@ export class NewAccountComponent implements OnInit {
     private walletService: WalletService,
     private messageService: MessageService,
     private modalService: BsModalService,
-    private operationService: OperationService
+    private operationService: OperationService,
+    private updateCoordinatorService: UpdateCoordinatorService
   ) { }
 
   ngOnInit() {
@@ -85,12 +87,13 @@ export class NewAccountComponent implements OnInit {
     if (!amount) { amount = '0'; }
     if (!fee) { fee = '0'; }
     setTimeout(async () => {
-      this.operationService.originate(keys, this.fromPkh, Number(amount), Number(fee)).subscribe(
+      this.operationService.originate(keys, this.fromPkh, Number(amount) * 1000000, Number(fee) * 1000000).subscribe(
         (ans: any) => {
           console.log(JSON.stringify(ans));
           if (ans.opHash) {
             this.sendResponse = 'success';
             this.walletService.addAccount(ans.newPkh);
+            this.updateCoordinatorService.boost();
           } else {
             this.sendResponse = 'failure';
           }

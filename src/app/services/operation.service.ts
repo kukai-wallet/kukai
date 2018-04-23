@@ -22,67 +22,56 @@ const prefix = {
 
 @Injectable()
 export class OperationService {
-  tzfull = 1000000;
+  nodeURL = 'http://zeronet-node.tzscan.io';
   constructor(
     private http: HttpClient,
     private messageService: MessageService,
     private updateCoordinatorService: UpdateCoordinatorService
   ) { }
-  async activate(pkh: string, secret: string) {
-    console.log('ACTIVATE');
-    console.log('Request head');
-    let branch;
-    let chain_id;
-    this.http.get('http://zeronet-api.tzscan.io/v2/head').subscribe(
-      (data: any) => {
-        branch = data.hash;
-        chain_id = data.chain_id; },
-      err => console.log(JSON.stringify(err)),
-      () => {
-        console.log('Request forge/operations');
-        const op = {
-          branch: branch,
+  /*
+    Returns an observable for the activation of an ICO identity
+  */
+  activate(pkh: string, secret: string): Observable<any> {
+    return this.http.post(this.nodeURL + '/blocks/head', {})
+      .flatMap((head: any) => {
+        const fop = {
+          branch: head.hash,
           operations: [{
             kind: 'activation',
             pkh: pkh,
             secret: secret}
           ]
         };
-        let soc;
-        this.http.post('http://zeronet-node.tzscan.io/blocks/head/proto/helpers/forge/operations', op).subscribe(
-          (data: any) => {
-              soc = data.operation;
-            },
-          err => console.log(JSON.stringify(err)),
-          () => {
-            console.log('Inject operations');
+        return this.http.post(this.nodeURL + '/blocks/head/proto/helpers/forge/operations', fop)
+          .flatMap((opbytes: any) => {
             const sop = {
-              signedOperationContents: soc,
-              chain_id: chain_id
+              signedOperationContents: opbytes.operation,
+              chain_id: head.chain_id
             };
-            this.http.post('http://zeronet-node.tzscan.io/inject_operation', sop).subscribe(
-              data => console.log(JSON.stringify(data)),
-              err => console.log(JSON.stringify(err)),
-              () => {
-                this.updateCoordinatorService.boost();
-                this.messageService.addSuccess('Genesis wallet activated! Please wait for balance to update...');
-              }
-            );
-          }
-        );
-      }
-    );
+            return this.http.post(this.nodeURL + '/inject_operation', sop)
+            .flatMap((final: any) => {
+              return of(
+                {
+                  opHash: final.injectedOperation
+                }
+              );
+            });
+        });
+    });
   }
+  /*
+    Returns an observable for the origination of new accounts. Note that amounts and fees are of the unit micro (10^-6) tezzies.
+  */
   originate(keys: KeyPair, pkh: string, amount: number, fee: number): Observable<any> {
-    return this.http.get('http://zeronet-api.tzscan.io/v2/head')
+    return this.http.post(this.nodeURL + '/blocks/head', {})
       .flatMap((head: any) => {
-        return this.http.post('http://zeronet-node.tzscan.io/blocks/head/proto/context/contracts/' + pkh, {})
+        return this.http.post(this.nodeURL + '/blocks/head/proto/context/contracts/' + pkh, {})
           .flatMap((actions: any) => {
             const fop = {
               branch: head.hash,
               kind: 'manager',
               source: pkh,
-              fee: fee * this.tzfull,
+              fee: fee,
               counter: ++actions.counter,
               operations: [
                 {
@@ -92,38 +81,41 @@ export class OperationService {
                 {
                   kind: 'origination',
                   managerPubkey: pkh,
-                  balance: amount * this.tzfull,
+                  balance: amount,
                   spendable: true,
                   delegatable: true
                 }
               ]
             };
-            return this.http.post('http://zeronet-node.tzscan.io/blocks/head/proto/helpers/forge/operations', fop)
+            return this.http.post(this.nodeURL + '/blocks/head/proto/helpers/forge/operations', fop)
               .flatMap((opbytes: any) => {
-                const signed = this.sign(opbytes.operation, keys.sk);
-                const sopbytes = signed.sbytes;
-                const opHash = this.b58cencode(libs.crypto_generichash(32, this.hex2buf(sopbytes)), prefix.o);
-                const aop = {
-                  pred_block: head.predecessor_hash,
-                  operation_hash: opHash,
-                  forged_operation: opbytes.operation,
-                  signature: signed.edsig
-                };
-                return this.http.post('http://zeronet-node.tzscan.io/blocks/head/proto/helpers/apply_operation', aop)
-                  .flatMap((applied: any) => {
-                    const sop = {
-                      signedOperationContents: sopbytes,
-                      chain_id: head.chain_id
+                return this.http.post(this.nodeURL + '/blocks/head/predecessor', {})
+                  .flatMap((headp: any) => {
+                    const signed = this.sign(opbytes.operation, keys.sk);
+                    const sopbytes = signed.sbytes;
+                    const opHash = this.b58cencode(libs.crypto_generichash(32, this.hex2buf(sopbytes)), prefix.o);
+                    const aop = {
+                      pred_block: headp.predecessor,
+                      operation_hash: opHash,
+                      forged_operation: opbytes.operation,
+                      signature: signed.edsig
                     };
-                      return this.http.post('http://zeronet-node.tzscan.io/inject_operation', sop)
-                      .flatMap((final: any) => {
-                        return of(
-                          {
-                            opHash: final.injectedOperation,
-                            newPkh: applied.contracts[0]
-                          }
-                        );
-                      });
+                    return this.http.post(this.nodeURL + '/blocks/head/proto/helpers/apply_operation', aop)
+                    .flatMap((applied: any) => {
+                      const sop = {
+                        signedOperationContents: sopbytes,
+                        chain_id: head.chain_id
+                      };
+                        return this.http.post(this.nodeURL + '/inject_operation', sop)
+                        .flatMap((final: any) => {
+                          return of(
+                            {
+                              opHash: final.injectedOperation,
+                              newPkh: applied.contracts[0]
+                            }
+                          );
+                        });
+                    });
                   });
               });
           });

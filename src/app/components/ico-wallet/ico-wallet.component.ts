@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { MessageService } from '../../services/message.service';
 import { OperationService } from '../../services/operation.service';
 import { WalletService } from '../../services/wallet.service';
+import { UpdateCoordinatorService } from '../../services/update-coordinator.service';
 // https://www.npmjs.com/package/load-json-file
 @Component({
   selector: 'app-ico-wallet',
@@ -24,7 +25,8 @@ export class IcoWalletComponent implements OnInit {
     private router: Router,
     private messageService: MessageService,
     private operationService: OperationService,
-    private walletService: WalletService
+    private walletService: WalletService,
+    private updateCoordinatorService: UpdateCoordinatorService
   ) { }
 
   ngOnInit() {
@@ -38,7 +40,19 @@ export class IcoWalletComponent implements OnInit {
         setTimeout(() => {
           if (this.walletService.wallet && this.walletService.wallet.accounts[0].numberOfActivites === 0) {
             this.messageService.add('Trying to activate genesis wallet...');
-            this.operationService.activate(this.walletService.wallet.accounts[0].pkh, this.secret);
+            this.operationService.activate(this.walletService.wallet.accounts[0].pkh, this.secret).subscribe(
+              (ans: any) => {
+                this.updateCoordinatorService.boost();
+                if (ans.opHash) {
+                  this.messageService.addSuccess('Wallet activated!');
+                } else {
+                  this.messageService.addWarning('Couldn\'t retrive an operation hash');
+                }
+              },
+              err => {console.log(JSON.stringify(err));
+                this.messageService.addError('Error: ' + err);
+              }
+            );
           }
         }, 5000);
         this.router.navigate(['/overview']);
@@ -49,7 +63,7 @@ export class IcoWalletComponent implements OnInit {
   }
   handleFileInput(files: FileList) {
     let fileToUpload = files.item(0);
-    //if (fileToUpload.type === 'application/json') {
+    // if (fileToUpload.type === 'application/json') {
       console.log('fileToUpload', fileToUpload);
 
       if (!this.validateFile(fileToUpload.name)) {
@@ -82,7 +96,7 @@ export class IcoWalletComponent implements OnInit {
           }
         };
       }
-    //}
+    // }
   }
 
   validateFile(name: String) {
