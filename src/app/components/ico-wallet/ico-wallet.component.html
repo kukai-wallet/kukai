@@ -6,9 +6,13 @@
                 <h1 class="card-title">Retrieve your Wallet</h1>
                 <div class="card-text">
                     <form class="form-group">
+                        
                         <div class="form-group row">
-                            <input type="file" (change)="handleFileInput($event.target.files)" class="form-control-file" id="file">
+                            <div class="col-sm-12">
+                                <input type="file" (change)="handleFileInput($event.target.files)" class="form-control-file" id="file" accept=".json">
+                            </div>
                         </div>
+
                         <!-- mnemonic -->
                         <div class="form-group row">
                             <div class="col-sm-12">
@@ -33,6 +37,7 @@
                                 <input type="text" [(ngModel)]="secret" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Secret">
                             </div>
                         </div>
+
                     </form>
                     <p>This is an alphanet version, please use the faucet website to get test wallet credential that you can retrieve <a href="https://faucet.tzalpha.net/" target="blank">here</a>.</p>
                     <br>

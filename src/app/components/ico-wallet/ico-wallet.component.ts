@@ -17,6 +17,8 @@ export class IcoWalletComponent implements OnInit {
   pwd: string;
   secret: string;
 
+  showWrongFileUploadMsg: false;
+
   constructor(
     private importService: ImportService,
     private router: Router,
@@ -46,26 +48,49 @@ export class IcoWalletComponent implements OnInit {
     }
   }
   handleFileInput(files: FileList) {
-    const fileToUpload = files.item(0);
-    if (fileToUpload.type === 'application/json') {
-      const reader = new FileReader();
-      reader.readAsText(fileToUpload);
-      reader.onload = () => {
-        const res = JSON.parse(reader.result);
-        if (res.mnemonic) {
-          let mnemonic = res.mnemonic[0];
-          for (let i = 1; i < 15; i++) {
-            mnemonic = mnemonic + ' ' + res.mnemonic[i];
+    let fileToUpload = files.item(0);
+    //if (fileToUpload.type === 'application/json') {
+      console.log('fileToUpload', fileToUpload);
+
+      if (!this.validateFile(fileToUpload.name)) {
+        console.log('Selected file format is not supported');
+        fileToUpload = null;
+        return false;
+      } else {
+
+        const reader = new FileReader();
+        reader.readAsText(fileToUpload);
+        reader.onload = () => {
+
+          console.log('file has been loaded!!');
+
+          const res = JSON.parse(reader.result);
+
+          if (res.mnemonic) {
+            console.log(res.mnemonic[0]);
+            let mnemonic = res.mnemonic[0];
+            for (let i = 1; i < 15; i++) {
+              mnemonic = mnemonic + ' ' + res.mnemonic[i];
+            }
+            this.mnemonic = mnemonic;
+          } if (res.email) {
+            this.email = res.email;
+          } if (res.password) {
+            this.pwd = res.password;
+          } if (res.secret) {
+            this.secret = res.secret;
           }
-          this.mnemonic = mnemonic;
-        } if (res.email) {
-          this.email = res.email;
-        } if (res.password) {
-          this.pwd = res.password;
-        } if (res.secret) {
-          this.secret = res.secret;
-        }
-      };
+        };
+      }
+    //}
+  }
+
+  validateFile(name: String) {
+    const ext = name.substring(name.lastIndexOf('.') + 1);
+    if (ext.toLowerCase() === 'json') {
+        return true;
+    } else {
+        return false;
     }
-}
+  }
 }
