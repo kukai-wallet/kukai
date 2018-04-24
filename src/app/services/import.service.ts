@@ -27,7 +27,7 @@ export class ImportService {
       }
       this.walletService.wallet = this.walletService.emptyWallet();
       this.walletService.addAccount(walletData.pkh);
-      this.walletService.wallet.encryptedSeed = walletData.seed;
+      this.walletService.wallet.seed = walletData.seed;
       this.walletService.wallet.salt = walletData.salt;
       await this.findNumberOfAccounts(walletData.pkh);
       return true;
@@ -39,14 +39,14 @@ export class ImportService {
   findNumberOfAccounts(pkh: string) {
     console.log('Find accounts...');
     console.log('pkh: ' + pkh);
-    this.http.get('http://api.tzscan.io/v1/number_operations/' + pkh + '?type=Origination').subscribe(
+    this.http.get('http://zeronet-api.tzscan.io/v1/number_operations/' + pkh + '?type=Origination').subscribe(
       data => this.findAccounts(pkh, data[0]),
       err => this.messageService.addError('ImportError(2)' + JSON.stringify(err))
     );
   }
   findAccounts(pkh: string, n: number) {
     console.log('Accounts found: ' + n);
-    this.http.get('http://api.tzscan.io/v1/operations/' + pkh + '?type=Origination&number=' + n + '&p=0').subscribe(
+    this.http.get('http://zeronet-api.tzscan.io/v1/operations/' + pkh + '?type=Origination&number=' + n + '&p=0').subscribe(
       data => {
         for (let i = 0; i < n; i++) {
           this.walletService.addAccount(data[i].type.tz1);
@@ -62,8 +62,8 @@ export class ImportService {
     // salt = unicodedata.normalize(
     // "NFKD", (email + password).decode("utf8")).encode("utf8")
     // seed = bitcoin.mnemonic_to_seed(mnemonic, salt)
-    const salt = email + password;
-    const pkh = this.walletService.createEncryptedTgeWallet(mnemonic, email, password);
+    const passphrase = email + password;
+    const pkh = this.walletService.createEncryptedTgeWallet(mnemonic, passphrase);
     this.findNumberOfAccounts(pkh);
     return true;
   }

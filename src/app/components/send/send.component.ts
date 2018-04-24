@@ -152,7 +152,12 @@ export class SendComponent implements OnInit {
         const pwd = this.password;
         this.password = '';
         let keys;
-        if (keys = this.walletService.getKeys(pwd)) {
+        if (this.walletService.wallet.salt) {
+          keys = this.walletService.getKeys(pwd, null);
+        } else {
+          keys = this.walletService.getKeys(null, pwd);
+        }
+        if (keys) {
             this.pwdValid = '';
             this.close2();
             this.modalRef3 = this.modalService.show(template, { class: 'third' });

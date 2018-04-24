@@ -37,17 +37,15 @@ export class WalletService {
     this.wallet.salt =  rnd2('aA0', 32);
     this.wallet.accounts = [];
     this.addAccount(lib.eztz.crypto.generateKeys(mnemonic, '').pkh);
-    this.wallet.encryptedSeed = this.encryptionService.encrypt(bip39.mnemonicToEntropy(mnemonic), password, this.wallet.salt);
-    return {wallet: 'Kukai', type: 'FullWallet', version: '1.0', seed: this.wallet.encryptedSeed,
+    this.wallet.seed = this.encryptionService.encrypt(bip39.mnemonicToEntropy(mnemonic), password, this.wallet.salt);
+    return {wallet: 'Kukai', type: 'FullWallet', version: '1.0', seed: this.wallet.seed,
             salt: this.wallet.salt, pkh: this.wallet.accounts[0].pkh};
   }
-  createEncryptedTgeWallet(mnemonic: string, email: string, password: string): string {
+  createEncryptedTgeWallet(mnemonic: string, passphrase: string): string {
     this.wallet = this.emptyWallet();
-    this.wallet.salt =  rnd2('aA0', 32);
-    this.wallet.email = email;
     this.wallet.accounts = [];
-    this.addAccount(lib.eztz.crypto.generateKeys(mnemonic, email + password).pkh);
-    this.wallet.encryptedSeed = this.encryptionService.encrypt(bip39.mnemonicToEntropy(mnemonic), password, this.wallet.salt);
+    this.addAccount(lib.eztz.crypto.generateKeys(mnemonic, passphrase).pkh);
+    this.wallet.seed = bip39.mnemonicToEntropy(mnemonic);
     return this.wallet.accounts[0].pkh;
   }
   /*
@@ -83,19 +81,22 @@ export class WalletService {
   getIndexFromPkh(pkh: string): number {
     return this.wallet.accounts.findIndex(a => a.pkh === pkh);
   }
-  getKeys(password: string): KeyPair {
-    let mnemonic = this.encryptionService.decrypt(this.wallet.encryptedSeed, password, this.wallet.salt);
-    if (!mnemonic) {
-      this.messageService.addError('Decryption failed');
+  getKeys(password: string, passphrase): KeyPair {
+    let seed;
+    if (password) {
+      seed = this.encryptionService.decrypt(this.wallet.seed, password, this.wallet.salt);
+      if (!seed) {
+        this.messageService.addError('Decryption failed');
+      }
     } else {
-      mnemonic = bip39.entropyToMnemonic(mnemonic);
-      if (this.wallet.email) {
-        return lib.eztz.crypto.generateKeys(mnemonic, this.wallet.email + password);
+      seed = this.wallet.seed;
+    }
+      const mnemonic = bip39.entropyToMnemonic(seed);
+      if (passphrase) {
+        return lib.eztz.crypto.generateKeys(mnemonic, passphrase);
       } else {
         return lib.eztz.crypto.generateKeys(mnemonic, '');
-      }
     }
-    return null;
   }
   /*
     Clear wallet data from browser
@@ -106,9 +107,9 @@ export class WalletService {
   }
   emptyWallet(): Wallet {
     return {
-      encryptedSeed: null,
+      seed: null,
       salt: null,
-      email: null,
+      passphrase: null,
       balance: this.emptyBalance(),
       XTZrate: 0,
       accounts: []

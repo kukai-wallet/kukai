@@ -38,7 +38,7 @@ export class IcoWalletComponent implements OnInit {
       console.log(this.mnemonic, this.email, this.pwd, this.secret);
       if (this.importService.importTgeWallet(this.mnemonic, this.email, this.pwd)) {
         setTimeout(() => {
-          if (this.walletService.wallet && this.walletService.wallet.accounts[0].numberOfActivites === 0) {
+          if (this.secret && this.walletService.wallet && this.walletService.wallet.accounts[0].numberOfActivites === 0) {
             this.messageService.add('Trying to activate genesis wallet...');
             this.operationService.activate(this.walletService.wallet.accounts[0].pkh, this.secret).subscribe(
               (ans: any) => {
