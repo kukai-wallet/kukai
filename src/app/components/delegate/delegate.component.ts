@@ -49,7 +49,7 @@ export class DelegateComponent implements OnInit {
       this.fee = '';
       if (!fee) { fee = '0'; }
       setTimeout(() => {
-        const keys = this.walletService.getKeys(pwd);
+        const keys = this.walletService.getKeys(pwd, null);
         this.transactionService.setDelegate(keys, this.fromPkh, toPkh, Number(fee) * 100);
       }, 100);
       // Send

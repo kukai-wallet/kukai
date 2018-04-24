@@ -14,7 +14,7 @@ const httpOptions = {
 export class ActivityService {
   // timestampCounter = 0; // Make sure last timestamp trigger backup
   timestampCounterMap: Map<string, number> = new Map<string, number>();
-  maxTransactions = 5;
+  maxTransactions = 10;
   constructor(
     private walletService: WalletService,
     private http: HttpClient,
@@ -35,7 +35,7 @@ export class ActivityService {
   getTransactonsCounter(pkh) {
     this.http.get('http://zeronet-api.tzscan.io/v1/number_operations/' + pkh).subscribe(
       data => this.handleTransactionsCounterResponse(pkh, data[0]),
-      err => this.messageService.addError(JSON.stringify(err))
+      err => console.log(JSON.stringify(err))
     );
   }
   // if not up to data, request transactions data
@@ -44,13 +44,12 @@ export class ActivityService {
     if (index === -1 || this.walletService.wallet.accounts[index].numberOfActivites !== data) {
       console.log('Requesting transactions');
       this.getTransactions(pkh, data);
-      this.balanceService.getXTZBalanceAll();
     } else {
       if (this.walletService.wallet.accounts[index].activities.findIndex(a => a.block === 'prevalidation') !== -1) {
         console.log('Trying to validate blocks');
         this.getUnconfirmedTransactions(pkh);
       } else {
-        console.log('Transactions up to date');
+        // console.log('Transactions up to date');
       }
     }
   }
@@ -67,7 +66,7 @@ export class ActivityService {
     }
     this.http.get('http://zeronet-api.tzscan.io/v1/operations/' + pkh + '?number=' + n + '&p=0').subscribe(
       data => this.handleUnconfirmedTransactionsResponse(pkh, data),
-      err => this.messageService.addError(JSON.stringify(err))
+      err => console.log(JSON.stringify(err))
     );
   }
   handleUnconfirmedTransactionsResponse(pkh: string, data: any) {
@@ -89,7 +88,7 @@ export class ActivityService {
   getTransactions(pkh: string, counter: number) {
     this.http.get('http://zeronet-api.tzscan.io/v1/operations/' + pkh + '?number=' + this.maxTransactions + '&p=0').subscribe(
       data => this.handleTransactionsResponse(pkh, data, counter),
-      err => this.messageService.addError(JSON.stringify(err)),
+      err => console.log(JSON.stringify(err)),
       () => console.log('done loading transactions')
     );
   }
@@ -107,6 +106,8 @@ export class ActivityService {
         }
       } else if (pkh === data[i].type.destination) {
         type = 'Receive';
+      } else if (data[i].type.secret) {
+        type = 'Activation';
       } else if (data[i].type.credit) {
         type = 'Originate';
       } else {
@@ -164,7 +165,7 @@ export class ActivityService {
   getTimestamp(pkh: string, block: string, hash) {
     this.http.get('http://zeronet-api.tzscan.io/v1/timestamp/' + block).subscribe(
       data => this.handleTimestampResponse(pkh, block, data, hash),
-      err => this.messageService.addError(JSON.stringify(err))
+      err => console.log(JSON.stringify(err))
     );
   }
   handleTimestampResponse(pkh: string, block: string, time: any, hash: any) {
@@ -180,12 +181,13 @@ export class ActivityService {
       this.timestampCounterMap.set(pkh, 10);
       console.log('Store transactions data');
       this.walletService.storeWallet();
+      this.balanceService.getXTZBalanceAll();
     }
   }
   getDelegate(pkh: string) {
     this.http.post('http://liquidity.tzscan.io/blocks/head/proto/context/contracts/' + pkh, '{}').subscribe(
       data => this.handleDelegateResponse(pkh, data),
-      err => this.messageService.addError(JSON.stringify(err)),
+      err => console.log(JSON.stringify(err)),
       () => console.log('done loading delegate')
     );
   }

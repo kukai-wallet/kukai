@@ -5,29 +5,37 @@ export class MessageService {
   messages: any[] = [];
 
   add(message: string) {
+    const type = 'info';
+    console.log(type + ': ' + message);
     this.messages.push({
-      type: 'info',
+      type: type,
       msg: message,
       timeout: 5000
     });
   }
   addError(message: string) {
+    const type = 'danger';
+    console.log(type + ': ' + message);
     this.messages.push({
-      type: 'danger',
+      type: type,
       msg: message,
       timeout: 5000
     });
   }
   addWarning(message: string) {
+    const type = 'warning';
+    console.log(type + ': ' + message);
     this.messages.push({
-      type: 'warning',
+      type: type,
       msg: message,
       timeout: 5000
     });
   }
   addSuccess(message: string) {
+    const type = 'success';
+    console.log(type + ': ' + message);
     this.messages.push({
-      type: 'success',
+      type: type,
       msg: message,
       timeout: 5000
     });

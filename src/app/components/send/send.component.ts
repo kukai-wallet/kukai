@@ -3,7 +3,7 @@ import { Component, TemplateRef, OnInit, ViewEncapsulation, Input, ViewChild, El
 import { WalletService } from '../../services/wallet.service';
 import { MessageService } from '../../services/message.service';
 import { UpdateCoordinatorService } from '../../services/update-coordinator.service';
-import { TransactionService } from '../../services/transaction.service';
+import { OperationService } from '../../services/operation.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { KeyPair } from '../../interfaces';
@@ -46,7 +46,7 @@ export class SendComponent implements OnInit {
         private modalService: BsModalService,
         private walletService: WalletService,
         private messageService: MessageService,
-        private transactionService: TransactionService,
+        private operationService: OperationService,
         private updateCoordinatorService: UpdateCoordinatorService
     ) { }
 
@@ -152,7 +152,12 @@ export class SendComponent implements OnInit {
         const pwd = this.password;
         this.password = '';
         let keys;
-        if (keys = this.walletService.getKeys(pwd)) {
+        if (this.walletService.wallet.salt) {
+          keys = this.walletService.getKeys(pwd, null);
+        } else {
+          keys = this.walletService.getKeys(null, pwd);
+        }
+        if (keys) {
             this.pwdValid = '';
             this.close2();
             this.modalRef3 = this.modalService.show(template, { class: 'third' });
@@ -195,12 +200,26 @@ export class SendComponent implements OnInit {
         }
 
         setTimeout(async () => {
-            if (await this.transactionService.sendTransaction(keys, this.activePkh, toPkh, Number(amount), Number(fee) * 100)) {
+            /*if (await this.transactionService.sendTransaction(keys, this.activePkh, toPkh, Number(amount), Number(fee) * 100)) {
                 this.sendResponse = 'success';
                 this.updateCoordinatorService.boost();
             } else {
                 this.sendResponse = 'failure';
-            }
+            }*/
+            this.operationService.transfer(keys, this.activePkh, toPkh, Number(amount), Number(fee)).subscribe(
+                (ans: any) => {
+                  console.log(JSON.stringify(ans));
+                  if (ans.opHash) {
+                    this.sendResponse = 'success';
+                    this.updateCoordinatorService.boost();
+                  } else {
+                    this.sendResponse = 'failure';
+                  }
+                },
+                err => {console.log(JSON.stringify(err));
+                  this.sendResponse = 'failure';
+                }
+              );
         }, 100);
     }
     clearForm() {

@@ -4,6 +4,8 @@ import { MessageService } from '../../services/message.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { KeyPair } from '../../interfaces';
+import { OperationService } from '../../services/operation.service';
+import { UpdateCoordinatorService } from '../../services/update-coordinator.service';
 
 @Component({
   selector: 'app-new-account',
@@ -27,7 +29,9 @@ export class NewAccountComponent implements OnInit {
   constructor(
     private walletService: WalletService,
     private messageService: MessageService,
-    private modalService: BsModalService
+    private modalService: BsModalService,
+    private operationService: OperationService,
+    private updateCoordinatorService: UpdateCoordinatorService
   ) { }
 
   ngOnInit() {
@@ -54,7 +58,12 @@ export class NewAccountComponent implements OnInit {
     const pwd = this.password;
     this.password = '';
     let keys;
-    if (keys = this.walletService.getKeys(pwd)) {
+    if (this.walletService.wallet.salt) {
+      keys = this.walletService.getKeys(pwd, null);
+    } else {
+      keys = this.walletService.getKeys(null, pwd);
+    }
+    if (keys) {
       this.pwdValid = '';
       this.close2();
       this.modalRef3 = this.modalService.show(template, { class: 'third' });
@@ -83,11 +92,21 @@ export class NewAccountComponent implements OnInit {
     if (!amount) { amount = '0'; }
     if (!fee) { fee = '0'; }
     setTimeout(async () => {
-      if (await this.walletService.createAccount(keys, this.fromPkh, Number(amount), Number(fee) * 100)) {
-        this.sendResponse = 'success';
-      } else {
-        this.sendResponse = 'failure';
-      }
+      this.operationService.originate(keys, this.fromPkh, Number(amount), Number(fee)).subscribe(
+        (ans: any) => {
+          console.log(JSON.stringify(ans));
+          if (ans.opHash) {
+            this.sendResponse = 'success';
+            this.walletService.addAccount(ans.newPkh);
+            this.updateCoordinatorService.boost();
+          } else {
+            this.sendResponse = 'failure';
+          }
+        },
+        err => {console.log(JSON.stringify(err));
+          this.sendResponse = 'failure';
+        }
+      );
     }, 100);
   }
   invalidInput(): string {

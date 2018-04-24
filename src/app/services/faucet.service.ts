@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MessageService } from './message.service';
-import * as lib from '../../assets/js/main2.js';
+import * as lib from '../../assets/js/main.js';
 
 @Injectable()
 export class FaucetService {

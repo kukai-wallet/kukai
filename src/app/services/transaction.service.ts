@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BalanceService } from './balance.service';
 import { MessageService } from './message.service';
-import * as lib from '../../assets/js/main2.js';
+import * as lib from '../../assets/js/main.js';
 import { KeyPair } from './../interfaces';
 
 @Injectable()
@@ -13,7 +13,7 @@ export class TransactionService {
   ) { }
   async sendTransaction(keys: KeyPair, from: string, to: string, amount: number, fee: number): Promise<boolean> {
     if (keys) {
-      const promise = lib.eztz.rpc.transfer(keys, from, to, amount, fee);
+      const promise = lib.rpc.transfer(keys, from, to, amount, fee);
       if (promise != null) {
         return promise.then(
           (val) => this.successfulTransaction(val),
@@ -34,7 +34,7 @@ export class TransactionService {
   }
   setDelegate(keys: KeyPair, from: string, to: string, fee: number) {
     if (keys) {
-      const promise = lib.eztz.rpc.setDelegate(keys, from, to, fee);
+      const promise = lib.rpc.setDelegate(keys, from, to, fee);
       if (promise != null) {
         promise.then(
           (val) => this.successfulDelegation(val),
