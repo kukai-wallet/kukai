@@ -1,86 +1,83 @@
 <!-- NEW ACCOUNT MODALS -->
 <!-- First Modal -->
 <ng-template #modal1>
-  <div class="modal-header">
-      <h4 class="modal-title pull-left">Fund new account</h4>
-      <button type="button" class="close pull-right" aria-label="Close" (click)="close1()">
-          <span aria-hidden="true">&times;</span>
-      </button>
-  </div>
-  <div class="modal-body">
-    <div class="form-group">
-      <label for="fromAdress">Fund from:</label>
-      <select [(ngModel)]="fromPkh" id="fromAdress" class="form-control">
-        <option [value]="identity.pkh">{{ identity.pkh }} ({{ identity.balance / 100 | number:'1.0' }}ꜩ)</option>
-      </select>
+    <div class="modal-header">
+            <h4 class="modal-title pull-left">Fund new account</h4>
+            <button type="button" class="close pull-right" aria-label="Close" (click)="close1()">
+                <span aria-hidden="true">&times;</span>
+            </button>
     </div>
-    <div class="row">
-      <div class="form-group col-md-6">
-        <label for="ammount">Amount:</label>
-        <input [(ngModel)]="amount" type="text" id="ammount" class="form-control" placeholder="0.00">
-      </div>
-      <div class="form-group col-md-6">
-        <label for="fee">Fee:</label>
-        <input [(ngModel)]="fee" type="text" id="fee" class="form-control" placeholder="0.00">
-      </div>
+    <div class="modal-body">
+            <div class="form-group">
+            <label for="fromAdress">Fund from:</label>
+                <select [(ngModel)]="fromPkh" id="fromAdress" class="form-control">
+                    <option [value]="identity.pkh">{{ identity.pkh }} ({{ identity.balance / 100 | number:'1.0' }}ꜩ)</option>
+                </select>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label for="ammount">Amount:</label>
+                    <input [(ngModel)]="amount" type="text" id="ammount" class="form-control" placeholder="0.00">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="fee">Fee:</label>
+                    <input [(ngModel)]="fee" type="text" id="fee" class="form-control" placeholder="0.00">
+                </div>
+            </div>
+            <button type="button" class="btn btn-primary" id="sub" (click)="open2(modal2)">Preview</button>
+            {{ formInvalid }}
     </div>
-      <button type="button" class="btn btn-primary" id="sub" (click)="open2(modal2)">Preview</button>
-      {{ formInvalid }}
-  </div>
 </ng-template>
   
 <!-- Confirmation Modal -->
 <ng-template #modal2>
-  <div class="modal-header">
-      <h4 class="modal-title pull-left">Authenticate new account</h4>
-      <button type="button" class="close pull-right" aria-label="Close" (click)="close2()">
-          <span aria-hidden="true">&times;</span>
-      </button>
-  </div>
-  <div class="modal-body">
-          <p>From: {{ fromPkh }}<BR>
-              Amount: {{ amount | number:'1.0' }}ꜩ<BR>
-              Fee: {{ fee | number:'1.0' }}ꜩ<BR>
-          </p>
-          <div class="row">
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Authenticate new account</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="close2()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p>From: {{ fromPkh }}<BR>
+            Amount: {{ amount | number:'1.0' }}ꜩ<BR>
+            Fee: {{ fee | number:'1.0' }}ꜩ<BR>
+        </p>
+        <div class="row">
             <div class="form-group col-md-6">
-              <label for="pwd">Email:</label>
-              <input [(ngModel)]="email" type="email" id="email" class="form-control">
+                <label for="pwd">Password:</label>
+                <input [(ngModel)]="password" type="password" id="pwd" class="form-control">
+                <small id="passwordHelpBlock" class="form-text text-muted" *ngIf='!isValidModal2.neverConfirmed && !isValidModal2.password'>
+                    {{ pwdValid }} - for ICO wallet, your password is combined with your email i.e. "me@tezos.comq7zZB1E1Br"
+                </small>
             </div>
-          </div>
-          <div class="row">
-            <div class="form-group col-md-6">
-              <label for="pwd">Password:</label>
-              <input [(ngModel)]="password" type="password" id="pwd" class="form-control">
-            </div>
-          </div>
-      <button type="button" class="btn btn-primary" id="sub" (click)="open3(modal3)">Confirm</button>
-      {{ pwdValid }}
-  </div>
+        </div>
+        <button type="button" class="btn btn-primary" id="sub" (click)="open3(modal3)">Confirm</button>
+        
+    </div>
 </ng-template>
 
 <!-- Final Modal -->
 <ng-template #modal3>
-  <div class="modal-header">
-      <h4 class="modal-title pull-left">Confirmation</h4>
-      <button type="button" class="close pull-right" aria-label="Close" (click)="close3()">
-          <span aria-hidden="true">&times;</span>
-      </button>
-  </div>
-  <div class="modal-body">
-      <div *ngIf='!sendResponse'>
-          Please wait...
-      </div>
-      <div *ngIf='sendResponse === "success"'>
-          <i class="fa fa-check-circle"></i>
-          <br><br>
-          <p>Your funding of a new account have successfully been broadcasted to the network</p>
-      </div>
-      <div *ngIf='sendResponse === "failure"'>
-          Failure!
-      </div>
-      <button type="button" class="btn btn-primary" id="sub" (click)="close3()">Close</button>
-  </div>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Confirmation</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="close3()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div *ngIf='!sendResponse'>
+            Please wait...
+        </div>
+        <div *ngIf='sendResponse === "success"'>
+            <i class="fa fa-check-circle"></i>
+            <br><br>
+            <p>Your funding of a new account have successfully been broadcasted to the network</p>
+        </div>
+        <div *ngIf='sendResponse === "failure"'>
+            Failure!
+        </div>
+        <button type="button" class="btn btn-primary" id="sub" (click)="close3()">Close</button>
+    </div>
 </ng-template>
 
 <button *ngIf='identity' type="button" href (click)="open1(modal1)" class="btn btn-sm btn-outline-primary">New account</button>

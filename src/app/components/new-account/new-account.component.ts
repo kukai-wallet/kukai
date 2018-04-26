@@ -19,7 +19,6 @@ export class NewAccountComponent implements OnInit {
   fromPkh: string;
   amount: string;
   fee: string;
-  email: string;
   password: string;
   modalRef1: BsModalRef;
   modalRef2: BsModalRef;
@@ -27,6 +26,12 @@ export class NewAccountComponent implements OnInit {
   formInvalid = '';
   pwdValid: string;
   sendResponse = '';
+
+  isValidModal2 = {
+    password: false,
+    neverConfirmed: true
+  };
+
   constructor(
     private walletService: WalletService,
     private messageService: MessageService,
@@ -40,13 +45,16 @@ export class NewAccountComponent implements OnInit {
       this.init();
     }
   }
+
   init() {
     this.fromPkh = this.identity.pkh;
   }
+
   open1(template1: TemplateRef<any>) {
     this.clearForm();
     this.modalRef1 = this.modalService.show(template1, { class: 'modal-sm' });
   }
+
   open2(template: TemplateRef<any>) {
     this.formInvalid = this.invalidInput();
     if (!this.formInvalid) {
@@ -55,10 +63,9 @@ export class NewAccountComponent implements OnInit {
       this.modalRef2 = this.modalService.show(template, { class: 'second' });
     }
   }
-  async open3(template: TemplateRef<any>) {
-    const pwd = this.email.concat(this.password);
 
-    this.email = '';
+  async open3(template: TemplateRef<any>) {
+    const pwd = this.password;
     this.password = '';
 
     let keys;
@@ -69,14 +76,18 @@ export class NewAccountComponent implements OnInit {
       keys = this.walletService.getKeys(null, pwd);
     }
     if (keys) {
+      console.log('keys1', keys);
       this.pwdValid = '';
       this.close2();
       this.modalRef3 = this.modalService.show(template, { class: 'third' });
       this.newAccount(keys);
     } else {
-      this.pwdValid = 'Wrong password!';
+      console.log('keys2', keys);
+      this.isValidModal2.neverConfirmed = false;
+      this.pwdValid = 'Your Password is invalid';
     }
   }
+
   close1() {
     this.modalRef1.hide();
     this.modalRef1 = null;
@@ -114,6 +125,7 @@ export class NewAccountComponent implements OnInit {
       );
     }, 100);
   }
+
   invalidInput(): string {
     if (!Number(this.amount) && this.amount && this.amount !== '0') {
       return 'invalid amount';
@@ -123,6 +135,7 @@ export class NewAccountComponent implements OnInit {
       return '';
     }
   }
+
   clearForm() {
     this.amount = '';
     this.fee = '';
@@ -130,5 +143,8 @@ export class NewAccountComponent implements OnInit {
     this.pwdValid = '';
     this.formInvalid = '';
     this.sendResponse = '';
+
+    this.isValidModal2.password = false;
+    this.isValidModal2.neverConfirmed = true;
   }
 }

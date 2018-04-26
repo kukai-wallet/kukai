@@ -47,6 +47,20 @@ $blue:    #FAB915 !default;  //default value: #007bff, modified directly in node
   box-shadow: none!important;
 }
 
+// Changing the blue glow for input
+.form-control:focus, textarea:focus, input:focus, .uneditable-input:focus {
+  border-color: rgba(250, 185, 21, 0.8) !important;
+  box-shadow: 0 1px 1px rgba(250, 185, 21, 0.075) inset, 0 0 8px rgba(250, 185, 21, 0.6) !important;
+  outline: 0 none !important;
+}
+
+/*
+textarea:focus, input:focus, .uneditable-input:focus {   
+  border-color: rgba(229, 103, 23, 0.8) !important;
+  box-shadow: 0 1px 1px rgba(229, 103, 23, 0.075) inset, 0 0 8px rgba(229, 103, 23, 0.6) !important;
+  outline: 0 none !important;
+} */
+
 // Outline buttons - In Overview
 .btn-outline-primary {
   color: #09698D;
