@@ -31,6 +31,7 @@ export class SendComponent implements OnInit {
     toPkh: string;
     amount: string;
     fee: string;
+    email: string;
     password: string;
     pwdValid: string;
     formInvalid = '';
@@ -149,7 +150,9 @@ export class SendComponent implements OnInit {
         }
     }
     async open3(template: TemplateRef<any>) {
-        const pwd = this.password;
+        const pwd = this.email.concat(this.password);
+
+        this.email = '';
         this.password = '';
         let keys;
         if (this.walletService.wallet.salt) {

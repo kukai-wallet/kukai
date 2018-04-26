@@ -19,6 +19,7 @@ export class NewAccountComponent implements OnInit {
   fromPkh: string;
   amount: string;
   fee: string;
+  email: string;
   password: string;
   modalRef1: BsModalRef;
   modalRef2: BsModalRef;
@@ -55,9 +56,13 @@ export class NewAccountComponent implements OnInit {
     }
   }
   async open3(template: TemplateRef<any>) {
-    const pwd = this.password;
+    const pwd = this.email.concat(this.password);
+
+    this.email = '';
     this.password = '';
+
     let keys;
+
     if (this.walletService.wallet.salt) {
       keys = this.walletService.getKeys(pwd, null);
     } else {
@@ -84,6 +89,7 @@ export class NewAccountComponent implements OnInit {
     this.modalRef3.hide();
     this.modalRef3 = null;
   }
+
   async newAccount(keys: KeyPair) {
     let amount = this.amount;
     let fee = this.fee;
