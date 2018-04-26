@@ -116,17 +116,18 @@ export class OperationService {
   /*
     Returns an observable for the transaction of tezzies.
   */
- transfer(keys: KeyPair, from: string, to: string, amount: number, fee: number): Observable<any> {
+ transfer(keys: KeyPair, from: string, to: string, amount: number, fee: number, extraIncr: number): Observable<any> {
   return this.http.post(this.nodeURL + '/blocks/head', {})
     .flatMap((head: any) => {
       return this.http.post(this.nodeURL + '/blocks/head/proto/context/contracts/' + from + '/counter', {})
         .flatMap((actions: any) => {
+          console.log('===> Counter: ' + actions.counter);
           const fop = {
             branch: head.hash,
             kind: 'manager',
             source: from,
             fee: (fee * this.toMicro).toString(),
-            counter: ++actions.counter,
+            counter: ++actions.counter + extraIncr,
             operations: [
               {
                 kind: 'reveal',

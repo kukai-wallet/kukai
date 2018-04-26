@@ -44,6 +44,7 @@ export class WalletService {
   createEncryptedTgeWallet(mnemonic: string, passphrase: string): string {
     this.wallet = this.emptyWallet();
     this.wallet.accounts = [];
+    this.wallet.passphrase = true;
     this.addAccount(lib.eztz.crypto.generateKeys(mnemonic, passphrase).pkh);
     this.wallet.seed = bip39.mnemonicToEntropy(mnemonic);
     return this.wallet.accounts[0].pkh;
@@ -134,5 +135,25 @@ export class WalletService {
     if (walletData) {
       this.wallet = JSON.parse(walletData);
     }
+  }
+  /*
+  Used to decide wallet type
+  */
+  isReadOnly() {
+    if (this.wallet.seed) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+  isPasswordProtected() {
+    if (this.wallet.salt) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  isPassphraseProtected() {
+    return this.wallet.passphrase;
   }
 }

@@ -200,13 +200,23 @@ export class SendComponent implements OnInit {
         }
 
         setTimeout(async () => {
-            /*if (await this.transactionService.sendTransaction(keys, this.activePkh, toPkh, Number(amount), Number(fee) * 100)) {
-                this.sendResponse = 'success';
-                this.updateCoordinatorService.boost();
-            } else {
-                this.sendResponse = 'failure';
-            }*/
-            this.operationService.transfer(keys, this.activePkh, toPkh, Number(amount), Number(fee)).subscribe(
+            this.operationService.transfer(keys, this.activePkh, toPkh, Number(amount), Number(fee), 0).subscribe(
+                (ans: any) => {
+                  console.log(JSON.stringify(ans));
+                  if (ans.opHash) {
+                    this.sendResponse = 'success';
+                    // this.updateCoordinatorService.boost();
+                  } else {
+                    this.sendResponse = 'failure';
+                  }
+                },
+                err => {console.log(JSON.stringify(err));
+                  this.sendResponse = 'failure';
+                }
+              );
+        }, 100);
+        /*setTimeout(async () => {
+            this.operationService.transfer(keys, this.activePkh, toPkh, Number(amount), Number(fee), 2).subscribe(
                 (ans: any) => {
                   console.log(JSON.stringify(ans));
                   if (ans.opHash) {
@@ -220,7 +230,7 @@ export class SendComponent implements OnInit {
                   this.sendResponse = 'failure';
                 }
               );
-        }, 100);
+        }, 3100);*/
     }
     clearForm() {
         this.toPkh = '';

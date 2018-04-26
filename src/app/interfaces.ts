@@ -6,7 +6,7 @@ export interface KeyPair {
 export interface Wallet {
   seed: null|string; // If both salt and passphrase null, this will be unencrypted
   salt: string|null;
-  passphrase: string|null;
+  passphrase: boolean|null;
   balance: Balance;
   XTZrate: number;
   accounts: Account[];

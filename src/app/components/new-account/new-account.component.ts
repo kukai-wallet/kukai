@@ -98,7 +98,6 @@ export class NewAccountComponent implements OnInit {
           if (ans.opHash) {
             this.sendResponse = 'success';
             this.walletService.addAccount(ans.newPkh);
-            this.updateCoordinatorService.boost();
           } else {
             this.sendResponse = 'failure';
           }
@@ -110,7 +109,7 @@ export class NewAccountComponent implements OnInit {
     }, 100);
   }
   invalidInput(): string {
-    if (!Number(this.amount) || Number(this.amount) < 0) {
+    if (!Number(this.amount) && this.amount && this.amount !== '0') {
       return 'invalid amount';
     } else if (!Number(this.fee) && this.fee && this.fee !== '0') {
       return 'invalid fee';
