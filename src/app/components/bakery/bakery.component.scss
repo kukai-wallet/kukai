@@ -22,6 +22,7 @@ h4 {
     font-weight: 400;
 }
 
+//btn-second
 .btn-second {
     min-width: 96px;
     color: #333333;
@@ -35,7 +36,31 @@ h4 {
     background-color: #b3b3b3;
 }
 
+//Accounts table
+.row-header {
+    font-weight: bold;
+}
 
+.col-header {
+    background-color: #fde19b;
+}
+
+.row-buttons {
+    padding-top: 5px;
+}
+
+.col-border {
+    padding-top: 0.4em;
+    padding-bottom: 0.4em;
+}
+
+.min-size-address-cell {
+    min-width: 372px;  // 388px;
+}
+
+.min-size-other-cell {
+    min-width: 180px;  // 188px;
+}
 
 
 /* Responsive breakpoints */
@@ -64,6 +89,6 @@ h4 {
 @media (min-width: 1200px) { 
     .container {
         padding-left: 2em;
-        min-width: 65vw
+        min-width: 85vw  // 65vw
     } 
 }

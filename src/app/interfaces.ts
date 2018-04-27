@@ -17,6 +17,7 @@ export interface Account {
   balance: Balance;
   numberOfActivites: number;
   activities: Activity[];
+  delegatedXTZ: number;  // Test purpose - modification needed in wallet.service.ts, activity.service.ts
 }
 export interface Activity {
   hash: string;

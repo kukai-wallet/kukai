@@ -70,6 +70,7 @@ export class WalletService {
     this.wallet.accounts.push({
       pkh: pkh,
       delegate: '',
+      delegatedXTZ: 0,
       balance: this.emptyBalance(),
       numberOfActivites: 0,
       activities: []
