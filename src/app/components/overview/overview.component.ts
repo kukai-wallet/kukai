@@ -34,7 +34,7 @@ export class OverviewComponent implements OnInit {
 
         if (this.walletService.wallet) {
             this.identity = this.walletService.wallet.accounts[0];
-            this.updateCoordinatorService.start();
+            this.updateCoordinatorService.startAll();
         }
     }
     addAccount() {

@@ -25,9 +25,10 @@ export class ActivityService {
     private balanceService: BalanceService
   ) { }
   updateAllTransactions() {
-    console.log('updating transactions');
+    // console.log('updating transactions');
     for (let i = 0; i < this.walletService.wallet.accounts.length; i++) {
-      console.log('start update(' + i + '): ' + this.walletService.wallet.accounts[i].pkh);
+      // console.log('start update(' + i + '): ' + this.walletService.wallet.accounts[i].pkh);
+      // States to return: Modified structure, Up to date {save, upToDate}
       this.updateTransactions(this.walletService.wallet.accounts[i].pkh)
       .subscribe((ans: any) => console.log(JSON.stringify(ans)),
       err => console.log('some error'),
@@ -43,17 +44,17 @@ export class ActivityService {
     .flatMap((number_operations: any) => {
       const index = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
       if (index === -1 || this.walletService.wallet.accounts[index].numberOfActivites !== number_operations[0]) {
-        console.log('Requesting transactions');
+        // console.log('Requesting transactions');
         return this.getTransactions(pkh, number_operations[0]);
       } else {
         if (this.walletService.wallet.accounts[index].activities.findIndex(a => a.block === 'prevalidation') !== -1) {
-          console.log('Trying to validate blocks');
+          // console.log('Trying to validate blocks');
           return this.getUnconfirmedTransactions(pkh);
         } else {
-          console.log('Transactions up to date');
+          // console.log('Transactions up to date');
           return of(
             {
-              done: true
+              upToDate: true
             });
         }
       }
@@ -61,7 +62,7 @@ export class ActivityService {
   }
   // Try to validate unconfirmed transaction
   getUnconfirmedTransactions(pkh: string): Observable<any> {
-    console.log('getUnconfirmedTransactions()');
+    // console.log('getUnconfirmedTransactions()');
     const index = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
     let n = 0;
     for (let i = 0; i < this.walletService.wallet.accounts[index].activities.length; i++) {
@@ -95,7 +96,7 @@ export class ActivityService {
   }
   // Get latest transaction
   getTransactions(pkh: string, counter: number): Observable<any> {
-    console.log('getTransactions()');
+    // console.log('getTransactions()');
     return this.http.get('http://zeronet-api.tzscan.io/v1/operations/' + pkh + '?number=' + this.maxTransactions + '&p=0')
     .flatMap((data: any) => {
       this.timestampCounterMap.set(pkh, data.length);
@@ -151,13 +152,13 @@ export class ActivityService {
           numberOfActivites: counter,
           activities: newTransactions
         });
-        console.log('Creating new transactions entry');
+        // console.log('Creating new transactions entry');
       } else  {
         this.walletService.wallet.accounts[index].numberOfActivites = counter;
         this.walletService.wallet.accounts[index].activities = newTransactions;
-        console.log('Update transactions entry');
+        // console.log('Update transactions entry');
       }
-      console.log('from size ' + newTransactions.length);
+      // console.log('from size ' + newTransactions.length);
       const payload = [];
       for (let i = 0; i < newTransactions.length; i++) {
         if (newTransactions[i].block !== 'prevalidation') {
@@ -166,28 +167,28 @@ export class ActivityService {
             hash: newTransactions[i].hash});
           }
         }
-        return this.getTimestamps(pkh, payload);
+        return this.getTimestamps(pkh, payload)
+          .flatMap(() => of({ save: true }));
     });
   }
   getTimestamps(pkh: string, payloads: any[]): Observable<any> {
-    console.log('Get timestamps...');
-    return of.apply(this, payloads)
+    // console.log('Get timestamps...');
+    return forkJoin(of.apply(this, payloads)
       .pipe(
         flatMap((payload: any) =>
           this.getTimestamp(pkh, payload.block, payload.hash).pipe(
             timeout(5000)
             , catchError(error => {
-              console.log('Timeout!!!');
               return of('Timeout'); })
           )
         )
-      );
+      ));
   }
 
   getTimestamp(pkh: string, block: string, hash): Observable<any> {
     return this.http.get('http://zeronet-api.tzscan.io/v1/timestamp/' + block)
     .flatMap((time: any) => {
-      console.log('Got time');
+      // console.log('Got time');
       const pkhIndex = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
       const transactionIndex = this.walletService.wallet.accounts[pkhIndex].activities.findIndex(a => a.hash === hash);
       if (time) { time = new Date(time); }
@@ -204,7 +205,7 @@ export class ActivityService {
       }
       return of(
         {
-          done: true
+          save: true
         });
     });
   }
@@ -226,12 +227,12 @@ export class ActivityService {
         numberOfActivites: 0,
         activities: []
       });
-      console.log('Creating new transactions entry');
+      // console.log('Creating new transactions entry');
       this.walletService.storeWallet();
     } else  if (this.walletService.wallet.accounts[index].delegate !== data.ok.delegate.value) {
       this.walletService.wallet.accounts[index].numberOfActivites = 0;
       this.walletService.wallet.accounts[index].delegate = data.ok.delegate.value;
-      console.log('Update transactions entry');
+      // console.log('Update transactions entry');
       this.walletService.storeWallet();
     }
   }
