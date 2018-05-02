@@ -147,7 +147,6 @@ export class ActivityService {
         this.walletService.wallet.accounts.push({
           pkh: pkh,
           delegate: '',
-          delegatedXTZ: 0,  // newly added - baking UI test
           balance: this.walletService.emptyBalance(),
           numberOfActivites: counter,
           activities: newTransactions
@@ -223,7 +222,6 @@ export class ActivityService {
       this.walletService.wallet.accounts.push({
         pkh: pkh,
         delegate: data.ok.delegate.value,
-        delegatedXTZ: 0,  // newly added - baking UI test
         balance: this.walletService.emptyBalance(),
         numberOfActivites: 0,
         activities: []
