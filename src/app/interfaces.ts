@@ -11,7 +11,7 @@ export interface Wallet {
   XTZrate: number;
   accounts: Account[];
 }
-export class Account {
+export interface Account {
   pkh: string|null;
   delegate: string;
   balance: Balance;
@@ -33,15 +33,4 @@ export interface Balance {
   pendingXTZ: number;
   balanceFiat: number;
   pendingFiat: number;
-}
-export class Delegate {  // use of class for type-checking and the underlying implementation
-  public pkh: string;
-  public alias: string|null;
-  public link: string|null;
-
-  constructor(pkh: string, alias: string, link: string) {
-    this.pkh = pkh;
-    this.alias = alias;
-    this.link = link;
-}
 }

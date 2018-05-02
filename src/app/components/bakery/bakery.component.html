@@ -52,20 +52,83 @@
                 {{ account.delegate }}
             </div>
             <div class="col-sm-auto col-border">
-                <button type="button" class="btn btn-sm btn-clear btn-second" (Click)='toggleSettings()'>Delegate</button>
+                <button type="button" class="btn btn-sm btn-clear btn-second">Delegate</button>
+            </div>
+        </div>
+
+        <br><br>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <button type="button" class="btn btn-link" *ngIf="!isSettingActive" (click)='toggleSettings()'>Bakery Settings</button>
+                <button type="button" class="btn btn-success" *ngIf="isSettingActive" (click)='toggleSettings()'>Bakery Settings</button>
+                <button type="button" class="btn btn-clear btn-second margin-left" *ngIf="isSettingActive" (click)='addDelegate()'>Add Delegate</button>
+                <small class="text-danger margin-left" *ngIf="isSettingActive&&isDelegateInputIncorrect.all">
+                    Both Delegate and Address fields need to be filled up correctly. Note that Address field should start with 'TZ1...'
+                </small>
             </div>
         </div>
 
         <br>
 
-        <div class="row">
-            <div class="col-lg-12">
-                <button type="button" class="btn btn-link" *ngIf="!isSettingActive" (Click)='toggleSettings()'>Bakery Settings</button>
-                <button type="button" class="btn btn-success" *ngIf="isSettingActive" (Click)='toggleSettings()'>Bakery Settings</button>
+        <span *ngIf="isSettingActive">
+
+            <div class="row">
+                <div class="col-sm-8">
+                    <form>
+                        <div class="form-group row">
+                            <label for="inputName" class="col-sm-2 col-form-label">Delegate</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="inputName" placeholder="Name" [(ngModel)]="delegate.alias" [ngModelOptions]="{standalone: true}">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputPkh" class="col-sm-2 col-form-label">Address</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="inputPkh" placeholder="Address" [(ngModel)]="delegate.pkh" [ngModelOptions]="{standalone: true}">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputInfo" class="col-sm-2 col-form-label">More info (optional)</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="inputInfo" placeholder="http:// full link or comments" [(ngModel)]="delegate.link" [ngModelOptions]="{standalone: true}">
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </div>
-        
-    </span>
+            <span *ngIf="delegateList[0]">
+                <div class="row row-header">
+                    <div class="col-sm-auto col-header col-border border border-warning min-size-other-cell">
+                        Delegate Name
+                    </div>
+                    <div class="col-sm-auto col-header col-border border border-warning min-size-address-cell">
+                        Address
+                    </div>
+                    <div class="col-sm-auto col-header col-border border border-warning min-size-address-cell">
+                        More info
+                    </div>
+                </div>
+                <div class="row" *ngFor="let delegate of delegateList; let i = index">
+                    <div class="col-sm-auto col-border border border-warning text-truncate min-size-other-cell">
+                        {{ delegate.alias }}
+                    </div>
+                    <div class="col-sm-auto col-border border border-warning text-truncate min-size-address-cell">
+                        {{ delegate.pkh }}
+                    </div>
+                    <div class="col-sm-auto col-border border border-warning text-truncate min-size-address-cell">
+                        <a [href]="delegate.link" target="_blank" *ngIf="delegate.link.slice(0, 5) === 'http:'">{{ delegate.link }}</a>
+                        <span *ngIf="!(delegate.link.slice(0, 5) === 'http:')">{{ delegate.link }}</span>
+                    </div>
+                    <div class="col-sm-auto col-border">
+                        <button type="button" class="btn btn-sm btn-clear btn-second" (click)="deleteDelegate(i)">Delete</button>
+                    </div>
+                </div>
+            </span> <!-- Shown if there is a delegate -->
+
+        </span> <!-- Shown if setting is active -->
+
+    </span>  <!-- Shown if identity has an account -->
 
 </div>
 
