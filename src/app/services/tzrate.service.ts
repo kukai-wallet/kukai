@@ -14,7 +14,6 @@ export class TzrateService {
     }
 
     getTzrate() {
-        console.log('updating xtz price');
         this.http.get(this.apiUrl).subscribe(
             data => {
                 this.walletService.wallet.XTZrate = data[0]['price_usd'];

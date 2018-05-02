@@ -18,13 +18,9 @@ enum State {
 
 @Injectable()
 export class UpdateCoordinatorService {
-  /*activityInterval: any;
-  tzrateInterval: any;
-  boostInterval: any;
-  boostCount = 0;*/
   scheduler: Map<string, any> = new Map<string, any>(); // pkh + delay
-  defaultDelayActivity = 60000; // 30s
-  shortDelayActivity = 3000; // 3s
+  defaultDelayActivity = 60000; // 60s
+  shortDelayActivity = 5000; // 5s
   tzrateInterval: any;
   defaultDelayPrice = 300000; // 300s
   constructor(
@@ -39,9 +35,9 @@ export class UpdateCoordinatorService {
     this.tzrateService.getTzrate();
     this.tzrateInterval = setInterval(() => this.tzrateService.getTzrate(), this.defaultDelayPrice);
   }
-  start(pkh: string) {
+  async start(pkh: string) {
     if (!this.scheduler.get(pkh)) {
-      console.log('Starting sceduler for: ' + pkh);
+      console.log('Starting scheduler for: ' + pkh);
       const scheduleData: ScheduleData = {
         state: State.UpToDate,
         interval: setInterval(() => this.update(pkh), this.defaultDelayActivity),
@@ -51,7 +47,7 @@ export class UpdateCoordinatorService {
       this.update(pkh);
     }
   }
-  boost(pkh: string) { // Expect action
+  async boost(pkh: string) { // Expect action
     if (this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh) !== -1) {
       this.changeState(pkh, State.Wait);
       this.update(pkh);
@@ -62,9 +58,10 @@ export class UpdateCoordinatorService {
           this.changeState(pkh, State.UpToDate);
         }
       }, 150000);
+    } else {
     }
   }
-  update(pkh) {
+  async update(pkh) {
     this.activityService.updateTransactions(pkh).subscribe(
       (ans: any) => {
         switch (this.scheduler.get(pkh).state) {
@@ -87,6 +84,7 @@ export class UpdateCoordinatorService {
             break;
           }
           default: {
+            console.log('No state found!');
             break;
           }
         }
@@ -96,8 +94,7 @@ export class UpdateCoordinatorService {
       () => null // console.log('Done for: ' + pkh)
     );
   }
-  changeState(pkh: string, state: State) {
-    console.log(pkh + ': => State: ' + state.toString());
+  async changeState(pkh: string, state: State) {
     const scheduleData: ScheduleData = this.scheduler.get(pkh);
     scheduleData.state = state;
     if (state === State.Wait || state === State.Updating) {
@@ -117,8 +114,8 @@ export class UpdateCoordinatorService {
     }
     clearInterval(this.tzrateInterval);
   }
-  stop(pkh) {
-    console.log('Stoping sceduler for: ' + pkh);
+  async stop(pkh) {
+    console.log('Stoping scheduler for: ' + pkh);
     this.scheduler.delete(pkh);
   }
 }
