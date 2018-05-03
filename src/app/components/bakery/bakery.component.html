@@ -37,7 +37,7 @@
             </div>
         </div>
 
-        <div class="row" *ngFor="let account of walletService.wallet.accounts | slice:1">
+        <div class="row" *ngFor="let account of accounts | slice:1">
             <div class="col-sm-auto col-border border border-warning text-truncate min-size-address-cell">
                 {{ account.pkh }}
             </div>
@@ -49,7 +49,7 @@
                 <span *ngIf="!account.delegate">No</span>
             </div>
             <div class="col-sm-auto col-border border border-warning text-truncate min-size-address-cell">
-                {{ account.delegate }}
+                {{ account.alias }}
             </div>
             <div class="col-sm-auto col-border">
                 <button type="button" class="btn btn-sm btn-clear btn-second">Delegate</button>

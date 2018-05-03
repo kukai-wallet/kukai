@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { WalletService } from '../../services/wallet.service';
 
+import { Account, Balance, Activity } from '../../interfaces';
+
 export class Delegate {  // use of class for type-checking and the underlying implementation
     public pkh: string;
     public alias: string|null;
@@ -13,6 +15,24 @@ export class Delegate {  // use of class for type-checking and the underlying im
     }
 }
 
+export class AccountDelegate implements Account {
+    pkh: string|null;
+    delegate: string;
+    balance: Balance;
+    numberOfActivites: number;
+    activities: Activity[];
+
+    alias: string|null;
+    constructor (account: Account, alias: string) {
+      this.pkh = account.pkh;
+      this.delegate = account.delegate;
+      this.balance = account.balance;
+      this.numberOfActivites = account.numberOfActivites;
+      this.activities = account.activities;
+      this.alias = alias;
+    }
+  }
+
 @Component({
     selector: 'app-bakery',
     templateUrl: './bakery.component.html',
@@ -22,7 +42,8 @@ export class BakeryComponent implements OnInit {
 
     delegateList: Delegate[] = [];
     isSettingActive = false;
-    isAddDelegateInputIncorrect = false;
+
+    accounts: AccountDelegate[] = [];
 
     isDelegateInputIncorrect: any = {
         pkh: false,
@@ -53,10 +74,36 @@ export class BakeryComponent implements OnInit {
             this.walletService.wallet.accounts[3].delegate = 'TZ1gTL92wCSgio19wKjERLmCTJm1bzHSmkDY';
         }
 
+        // Prepares view to show Aliases
+        if (this.walletService) {
+            for (const account of this.walletService.wallet.accounts) {
+                if (account.delegate !== '') {
+                    let alias = '';
+                    for (const delegate of this.delegateList) {
+                        if (delegate.pkh === account.delegate) {
+                            alias = delegate.alias;
+                            break;
+                        }
+                    }
+                    if (alias === '') {  // Account is delegated but no alias was found
+                        alias = account.pkh;
+                    }
+                    this.accounts.push(new AccountDelegate(account, alias));
+                } else {  // there's no delegate
+                    this.accounts.push(new AccountDelegate(account, ''));  // Alias is set to ''
+                }
+            }
+        }
+
     }
 
     toggleSettings() {
         this.isSettingActive = !this.isSettingActive;
+        this.isDelegateInputIncorrect = {
+            pkh: false,
+            alias: false,
+            all: false
+        };
     }
 
     addDelegate() {
