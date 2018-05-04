@@ -211,29 +211,32 @@ export class ActivityService {
   }
 
   getDelegate(pkh: string) {
-    this.http.post('http://liquidity.tzscan.io/blocks/head/proto/context/contracts/' + pkh, '{}').subscribe(
+    this.http.post('http://zeronet-node.tzscan.io/blocks/head/proto/context/contracts/' + pkh, '{}', httpOptions).subscribe(
       data => this.handleDelegateResponse(pkh, data),
       err => console.log(JSON.stringify(err)),
       () => console.log('done loading delegate')
     );
   }
   handleDelegateResponse(pkh: string, data: any) {
-    const index = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
-    if (index === -1) {
-      this.walletService.wallet.accounts.push({
-        pkh: pkh,
-        delegate: data.ok.delegate.value,
-        balance: this.walletService.emptyBalance(),
-        numberOfActivites: 0,
-        activities: []
-      });
-      // console.log('Creating new transactions entry');
-      this.walletService.storeWallet();
-    } else  if (this.walletService.wallet.accounts[index].delegate !== data.ok.delegate.value) {
-      this.walletService.wallet.accounts[index].numberOfActivites = 0;
-      this.walletService.wallet.accounts[index].delegate = data.ok.delegate.value;
-      // console.log('Update transactions entry');
-      this.walletService.storeWallet();
+    console.log(JSON.stringify(data));
+    if (data.delegate.value) {
+      const index = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
+      if (index === -1) {
+        this.walletService.wallet.accounts.push({
+          pkh: pkh,
+          delegate: data.delegate.value,
+          balance: this.walletService.emptyBalance(),
+          numberOfActivites: 0,
+          activities: []
+        });
+        // console.log('Creating new transactions entry');
+        this.walletService.storeWallet();
+      } else  if (this.walletService.wallet.accounts[index].delegate !== data.delegate.value) {
+        this.walletService.wallet.accounts[index].numberOfActivites = 0;
+        this.walletService.wallet.accounts[index].delegate = data.delegate.value;
+        // console.log('Update transactions entry');
+        this.walletService.storeWallet();
+      }
     }
   }
   getIndex(pkh: string): number {

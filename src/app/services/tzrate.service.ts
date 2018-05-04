@@ -18,6 +18,7 @@ export class TzrateService {
             data => {
                 this.walletService.wallet.XTZrate = data[0]['price_usd'];
                 this.updateFiatBalances();
+                console.log('XTZ = $' + data[0]['price_usd']);
             },
             err => console.log('Failed to get xtz price from CMC: ' + JSON.stringify(err))
         );

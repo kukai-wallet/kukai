@@ -3,6 +3,7 @@ import { WalletService } from '../../services/wallet.service';
 import { MessageService } from '../../services/message.service';
 import { TransactionService } from '../../services/transaction.service';
 import { ActivityService } from '../../services/activity.service';
+import { OperationService } from '../../services/operation.service';
 
 @Component({
   selector: 'app-delegate',
@@ -20,7 +21,8 @@ export class DelegateComponent implements OnInit {
     private walletService: WalletService,
     private messageService: MessageService,
     private transactionService: TransactionService,
-    private activityService: ActivityService
+    private activityService: ActivityService,
+    private operationService: OperationService
   ) { }
 
   ngOnInit() {
@@ -49,8 +51,27 @@ export class DelegateComponent implements OnInit {
       this.fee = '';
       if (!fee) { fee = '0'; }
       setTimeout(() => {
-        const keys = this.walletService.getKeys(pwd, null);
-        this.transactionService.setDelegate(keys, this.fromPkh, toPkh, Number(fee) * 100);
+        let keys;
+        if (this.walletService.wallet.salt) {
+          keys = this.walletService.getKeys(pwd, null);
+        } else {
+          keys = this.walletService.getKeys(null, pwd);
+        }
+        this.operationService.delegate(keys, this.fromPkh, toPkh, Number(fee) * 100).subscribe(
+          (ans: any) => {
+            console.log(JSON.stringify(ans));
+            if (ans.opHash) {
+              // this.sendResponse = 'success';
+              // this.updateCoordinatorService.boost(this.activePkh);
+              // this.updateCoordinatorService.boost(toPkh);
+            } else {
+              // this.sendResponse = 'failure';
+            }
+          },
+          err => {console.log(JSON.stringify(err));
+            // this.sendResponse = 'failure';
+          }
+        );
       }, 100);
       // Send
     }

@@ -32,8 +32,10 @@ export class UpdateCoordinatorService {
     for (let i = 0; i < this.walletService.wallet.accounts.length; i++) {
       this.start(this.walletService.wallet.accounts[i].pkh);
     }
+    if (!this.tzrateInterval) {
     this.tzrateService.getTzrate();
     this.tzrateInterval = setInterval(() => this.tzrateService.getTzrate(), this.defaultDelayPrice);
+    }
   }
   async start(pkh: string) {
     if (!this.scheduler.get(pkh)) {
@@ -48,7 +50,7 @@ export class UpdateCoordinatorService {
     }
   }
   async boost(pkh: string) { // Expect action
-    if (this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh) !== -1) {
+    if (this.walletService.getIndexFromPkh(pkh) !== -1) {
       this.changeState(pkh, State.Wait);
       this.update(pkh);
       const counter = this.scheduler.get(pkh).stateCounter;
@@ -62,7 +64,7 @@ export class UpdateCoordinatorService {
     }
   }
   async update(pkh) {
-    console.log(pkh + ': =>');
+    console.log('account[' + this.walletService.getIndexFromPkh(pkh) + ']: >>');
     this.setDelay(pkh, this.defaultDelayActivity);
     this.activityService.updateTransactions(pkh).subscribe(
       (ans: any) => {
@@ -97,7 +99,7 @@ export class UpdateCoordinatorService {
         // console.log('response from transaction(): ' + JSON.stringify(ans));
     },
       err => console.log('Error in start()'),
-      () => console.log(pkh + ': <=')
+      () => console.log('account[' + this.walletService.getIndexFromPkh(pkh) + ']: <<')
     );
   }
   changeState(pkh: string, newState: State) {

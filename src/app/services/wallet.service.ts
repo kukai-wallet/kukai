@@ -34,9 +34,10 @@ export class WalletService {
   }
   createEncryptedWallet(mnemonic: string, password: string): any {
     this.wallet = this.emptyWallet();
-    this.wallet.salt =  rnd2('aA0', 32);
+    // this.wallet.salt =  rnd2('aA0', 32);
     this.wallet.accounts = [];
     this.addAccount(lib.eztz.crypto.generateKeys(mnemonic, '').pkh);
+    this.wallet.salt = this.wallet.accounts[0].pkh.slice(19, 36);
     this.wallet.seed = this.encryptionService.encrypt(bip39.mnemonicToEntropy(mnemonic), password, this.wallet.salt);
     return {wallet: 'Kukai', type: 'FullWallet', version: '1.0', seed: this.wallet.seed,
             salt: this.wallet.salt, pkh: this.wallet.accounts[0].pkh};

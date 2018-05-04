@@ -176,6 +176,64 @@ export class OperationService {
       });
   });
 }
+  /*
+    Returns an observable for the delegation of baking rights.
+  */
+ delegate(keys: KeyPair, from: string, to: string, fee: number): Observable<any> {
+  return this.http.post(this.nodeURL + '/blocks/head', {})
+    .flatMap((head: any) => {
+      return this.http.post(this.nodeURL + '/blocks/head/proto/context/contracts/' + from + '/counter', {})
+        .flatMap((actions: any) => {
+          console.log('===> Counter: ' + actions.counter);
+          const fop = {
+            branch: head.hash,
+            kind: 'manager',
+            source: from,
+            fee: (fee * this.toMicro).toString(),
+            counter: ++actions.counter,
+            operations: [
+              {
+                kind: 'reveal',
+                public_key: keys.pk
+              },
+              {
+                kind: 'delegation',
+                delegate: to
+              }
+            ]
+          };
+          return this.http.post(this.nodeURL + '/blocks/head/proto/helpers/forge/operations', fop)
+            .flatMap((opbytes: any) => {
+              return this.http.post(this.nodeURL + '/blocks/head/predecessor', {})
+                .flatMap((headp: any) => {
+                  const signed = this.sign(opbytes.operation, keys.sk);
+                  const sopbytes = signed.sbytes;
+                  const opHash = this.b58cencode(libs.crypto_generichash(32, this.hex2buf(sopbytes)), this.prefix.o);
+                  const aop = {
+                    pred_block: headp.predecessor,
+                    operation_hash: opHash,
+                    forged_operation: opbytes.operation,
+                    signature: signed.edsig
+                  };
+                  return this.http.post(this.nodeURL + '/blocks/head/proto/helpers/apply_operation', aop)
+                  .flatMap((applied: any) => {
+                    const sop = {
+                      signedOperationContents: sopbytes,
+                      chain_id: head.chain_id
+                    };
+                      return this.http.post(this.nodeURL + '/inject_operation', sop)
+                      .flatMap((final: any) => {
+                        return of(
+                          {
+                            opHash: final.injectedOperation
+                          });
+                      });
+                  });
+              });
+          });
+      });
+  });
+}
   hex2buf(hex) {
     return new Uint8Array(hex.match(/[\da-f]{2}/gi).map(function (h) {
       return parseInt(h, 16);
