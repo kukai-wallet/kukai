@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+
 import { WalletService } from '../../services/wallet.service';
+import { MessageService } from '../../services/message.service';
+import { TransactionService } from '../../services/transaction.service';
 
 import { Account, Balance, Activity } from '../../interfaces';
 
@@ -23,6 +26,8 @@ export class AccountDelegate implements Account {
     activities: Activity[];
 
     alias: string|null;
+    showDelegateInput: boolean;
+    changeDelegate: boolean;
     constructor (account: Account, alias: string) {
       this.pkh = account.pkh;
       this.delegate = account.delegate;
@@ -30,8 +35,10 @@ export class AccountDelegate implements Account {
       this.numberOfActivites = account.numberOfActivites;
       this.activities = account.activities;
       this.alias = alias;
+      this.showDelegateInput = false;
+      this.changeDelegate = false;
     }
-  }
+}
 
 @Component({
     selector: 'app-bakery',
@@ -42,6 +49,12 @@ export class BakeryComponent implements OnInit {
 
     delegateList: Delegate[] = [];
     isSettingActive = false;
+    delegateInput: string;
+
+    password: string;
+    fee: string;
+
+    showPasswordInput = false;
 
     accounts: AccountDelegate[] = [];
 
@@ -57,11 +70,16 @@ export class BakeryComponent implements OnInit {
         link: ''
     };
 
-    constructor(private walletService: WalletService) { }
+    constructor(
+        private walletService: WalletService,
+        private messageService: MessageService,
+        private transactionService: TransactionService
+    ) { }
 
     ngOnInit() {
 
         // Temp - UI test purpose - to be deleted
+        this.delegateList.push(new Delegate('', 'none', ''));
         this.delegateList.push(new Delegate('TZ1mvKHBkSci3Vq9mVXg8iAVBjEMz8a9aS5m', 'tezzigator', 'http://tezzigator.com/delegation.html'));
         this.delegateList.push(new Delegate('TZ1gTL92wCSgio19wKjERLmCTJm1bzHSmkDY', 'mycryptodelegate', 'http://mycryptodelegate.com'));
 
@@ -136,7 +154,75 @@ export class BakeryComponent implements OnInit {
     }
 
     deleteDelegate(index: number) {
+        index++; // index is incremented because array is sliced in the template so `none` is never shown in Bakery Settings
         this.delegateList.splice(index, 1);  // Deletes the delegate
     }
+
+    delegateAccount(account: AccountDelegate) {
+        this.delegateInput = '';
+
+        if (account.showDelegateInput) {
+            for ( const  acc of this.accounts) {
+                acc.showDelegateInput = false;
+                // acc.showPasswordInput = false;
+                this.showPasswordInput = false;
+            }
+        } else {
+
+            for ( const  acc of this.accounts) {
+                acc.showDelegateInput = false;
+                // acc.showPasswordInput = false;
+                this.showPasswordInput = false;
+            }
+            account.showDelegateInput = true;
+        }
+    }
+
+    showPassword(account: AccountDelegate) {
+        this.showPasswordInput = true;
+        for ( const  acc of this.accounts) {
+            acc.changeDelegate = false;
+        }
+        account.changeDelegate = true;
+    }
+
+    setDelegate() {
+        const pwd = this.password;
+        this.password = '';
+
+        for ( const  acc of this.accounts) {
+            if (acc.changeDelegate) {
+                if (this.validInput(pwd)) {
+                    // Clear form
+                    let fee = this.fee;
+                    this.fee = '';
+
+                    if (!fee) {
+                        fee = '0';
+                    }
+
+                    setTimeout(() => {
+                      const keys = this.walletService.getKeys(pwd, null);
+                      this.transactionService.setDelegate(keys, acc.pkh, this.delegateInput, Number(fee) * 100);
+                    }, 100);
+                    // Send
+                  }
+            }
+        }
+    }
+
+    validInput(pwd: string) {
+        if (!this.delegateInput || this.delegateInput.length !== 36) {
+            this.messageService.add('invalid delegate address');
+        } else if (!Number(this.fee) && this.fee && this.fee !== '0') {
+            this.messageService.add('invalid fee');
+        } else if (!pwd || pwd === '') {
+            console.log('PASSWORD', pwd);
+            this.messageService.add('Password needed');
+        } else {
+            return true;
+        }
+        return false;
+      }
 
 }
