@@ -212,9 +212,13 @@ export class BakeryComponent implements OnInit {
     }
 
     validInput(pwd: string) {
+        /*
         if (!this.delegateInput || this.delegateInput.length !== 36) {
+            // Does all delegate addresses are 36 char long? / How to remove a delegate when this.delegateInput = ''?
             this.messageService.add('invalid delegate address');
-        } else if (!Number(this.fee) && this.fee && this.fee !== '0') {
+        } else 
+        */
+        if (!Number(this.fee) && this.fee && this.fee !== '0') {
             this.messageService.add('invalid fee');
         } else if (!pwd || pwd === '') {
             console.log('PASSWORD', pwd);
