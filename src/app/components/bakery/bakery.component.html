@@ -59,7 +59,8 @@
                 </span>
             </div>
             <div class="col-sm-auto col-border">
-                <button type="button" class="btn btn-sm btn-clear btn-second" (click)='setDelegate(account)'>Delegate</button>
+                    <app-delegate [activePkh]="account.pkh"></app-delegate>
+                <!--<button type="button" class="btn btn-sm btn-clear btn-second" (click)='setDelegate(account)'>Delegate</button>-->
             </div>
         </div>
 

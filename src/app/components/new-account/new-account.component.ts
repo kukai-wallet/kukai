@@ -115,6 +115,8 @@ export class NewAccountComponent implements OnInit {
           if (ans.opHash) {
             this.sendResponse = 'success';
             this.walletService.addAccount(ans.newPkh);
+            this.updateCoordinatorService.boost(this.fromPkh);
+            this.updateCoordinatorService.boost(ans.newPkh);
           } else {
             this.sendResponse = 'failure';
           }

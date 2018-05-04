@@ -20,8 +20,8 @@ export class HomePageComponent implements OnInit {
   ngOnInit() {
   }
   logout() {
+    this.updateCoordinatorService.stopAll();
     this.walletService.clearWallet();
-    this.updateCoordinatorService.stop();
     this.router.navigate(['']);
   }
 }

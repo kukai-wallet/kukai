@@ -208,7 +208,8 @@ export class SendComponent implements OnInit {
                   console.log(JSON.stringify(ans));
                   if (ans.opHash) {
                     this.sendResponse = 'success';
-                    // this.updateCoordinatorService.boost();
+                    this.updateCoordinatorService.boost(this.activePkh);
+                    this.updateCoordinatorService.boost(toPkh);
                   } else {
                     this.sendResponse = 'failure';
                   }

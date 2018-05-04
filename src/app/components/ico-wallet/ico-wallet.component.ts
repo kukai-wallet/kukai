@@ -42,7 +42,7 @@ export class IcoWalletComponent implements OnInit {
             this.messageService.add('Trying to activate genesis wallet...');
             this.operationService.activate(this.walletService.wallet.accounts[0].pkh, this.secret).subscribe(
               (ans: any) => {
-                this.updateCoordinatorService.boost();
+                // this.updateCoordinatorService.boost();
                 if (ans.opHash) {
                   this.messageService.addSuccess('Wallet activated!');
                 } else {

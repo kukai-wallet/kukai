@@ -1,8 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, TemplateRef, OnInit, ViewEncapsulation, Input, ViewChild, ElementRef } from '@angular/core';
+
 import { WalletService } from '../../services/wallet.service';
 import { MessageService } from '../../services/message.service';
-import { TransactionService } from '../../services/transaction.service';
-import { ActivityService } from '../../services/activity.service';
+import { UpdateCoordinatorService } from '../../services/update-coordinator.service';
+import { OperationService } from '../../services/operation.service';
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
+import { KeyPair } from '../../interfaces';
 
 @Component({
   selector: 'app-delegate',
@@ -10,62 +14,132 @@ import { ActivityService } from '../../services/activity.service';
   styleUrls: ['./delegate.component.scss']
 })
 export class DelegateComponent implements OnInit {
+  @ViewChild('modal1') modal1: TemplateRef<any>;
+
+  @Input() activePkh: string;
+
   accounts = null;
-  fromPkh: string;
+  activeAccount = null;
   toPkh: string;
-  delegate = '';
   fee: string;
   password: string;
+  pwdValid: string;
+  formInvalid = '';
+  sendResponse: string;
+
+  modalRef1: BsModalRef;
+  modalRef2: BsModalRef;
+  modalRef3: BsModalRef;
+
   constructor(
-    private walletService: WalletService,
-    private messageService: MessageService,
-    private transactionService: TransactionService,
-    private activityService: ActivityService
+      private modalService: BsModalService,
+      private walletService: WalletService,
+      private messageService: MessageService,
+      private operationService: OperationService,
+      private updateCoordinatorService: UpdateCoordinatorService
   ) { }
 
   ngOnInit() {
-    if (this.walletService.wallet) {
-      this.init();
-    }
+      if (this.walletService.wallet) {
+          this.init();
+      }
   }
+
   init() {
-    this.accounts = this.walletService.wallet.accounts;
-    if (this.accounts[0]) {
-      this.fromPkh = this.accounts[0].pkh;
-      this.getDelegate();
-    }
+      this.accounts = this.walletService.wallet.accounts;
   }
-  getDelegate() {
-    this.activityService.getDelegate(this.fromPkh);
+
+  open1(template1: TemplateRef<any>) {
+      if (this.walletService.wallet) {
+          this.clearForm();
+          this.modalRef1 = this.modalService.show(template1, { class: 'first' });
+      }
   }
-  setDelegate() {
-    const pwd = this.password;
-    this.password = '';
-    if (this.validInput(pwd)) {
-      // Clear form
+  open2(template: TemplateRef<any>) {
+      this.formInvalid = this.invalidInput();
+      if (!this.formInvalid) {
+          if (!this.fee) { this.fee = '0'; }
+          this.close1();
+          this.modalRef2 = this.modalService.show(template, { class: 'second' });
+      }
+  }
+  async open3(template: TemplateRef<any>) {
+      const pwd = this.password;
+      this.password = '';
+      let keys;
+      if (this.walletService.wallet.salt) {
+        keys = this.walletService.getKeys(pwd, null);
+      } else {
+        keys = this.walletService.getKeys(null, pwd);
+      }
+      if (keys) {
+          this.pwdValid = '';
+          this.close2();
+          this.modalRef3 = this.modalService.show(template, { class: 'third' });
+          this.sendDelegation(keys);
+      } else {
+          this.pwdValid = 'Wrong password!';
+      }
+  }
+
+  close1() {
+      this.modalRef1.hide();
+      this.modalRef1 = null;
+  }
+
+  close2() {
+      this.modalRef2.hide();
+      this.modalRef2 = null;
+  }
+
+  close3() {
+      this.modalRef3.hide();
+      this.modalRef3 = null;
+  }
+
+  async sendDelegation(keys: KeyPair) {
+
       const toPkh = this.toPkh;
       let fee = this.fee;
       this.toPkh = '';
       this.fee = '';
-      if (!fee) { fee = '0'; }
-      setTimeout(() => {
-        const keys = this.walletService.getKeys(pwd, null);
-        this.transactionService.setDelegate(keys, this.fromPkh, toPkh, Number(fee) * 100);
+
+      if (!fee) {
+          fee = '0';
+      }
+
+      setTimeout(async () => {
+          this.operationService.delegate(keys, this.activePkh, toPkh, Number(fee)).subscribe(
+              (ans: any) => {
+                console.log(JSON.stringify(ans));
+                if (ans.opHash) {
+                  this.sendResponse = 'success';
+                } else {
+                  this.sendResponse = 'failure';
+                }
+              },
+              err => {console.log(JSON.stringify(err));
+                this.sendResponse = 'failure';
+              }
+            );
       }, 100);
-      // Send
-    }
   }
-  validInput(pwd: string) {
-    if (!this.toPkh || this.toPkh.length !== 36) {
-      this.messageService.add('invalid reciever address');
-    } else if (!Number(this.fee) && this.fee && this.fee !== '0') {
-      this.messageService.add('invalid fee');
-    } else if (!pwd || pwd === '') {
-      this.messageService.add('Password needed');
-    } else {
-      return true;
-    }
-    return false;
+  clearForm() {
+      this.toPkh = '';
+      this.fee = '';
+      this.password = '';
+      this.pwdValid = '';
+      this.formInvalid = '';
+      this.sendResponse = '';
+  }
+  invalidInput(): string {
+
+      if (!this.toPkh || this.toPkh.length !== 36) {
+          return 'invalid receiver address';
+      } else if (!Number(this.fee) && this.fee && this.fee !== '0') {
+          return 'invalid fee';
+      } else {
+          return '';
+      }
   }
 }
-
