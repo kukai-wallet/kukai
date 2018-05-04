@@ -209,7 +209,11 @@ export class ActivityService {
         });
     });
   }
-
+  getDelegates() {
+    for (let i = 0; i < this.walletService.wallet.accounts.length; i++) {
+      this.getDelegate(this.walletService.wallet.accounts[i].pkh);
+    }
+  }
   getDelegate(pkh: string) {
     this.http.post('http://zeronet-node.tzscan.io/blocks/head/proto/context/contracts/' + pkh, '{}', httpOptions).subscribe(
       data => this.handleDelegateResponse(pkh, data),

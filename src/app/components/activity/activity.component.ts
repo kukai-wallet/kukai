@@ -18,8 +18,6 @@ export class ActivityComponent implements OnInit {
   ngOnInit() { if (this.walletService.wallet) { this.init(); } }
   init() {
     this.accounts = this.walletService.wallet.accounts;
-
-    console.log('this.accounts.activities', this.accounts[0].activities);
   }
   getStatus(hash: string): string {
     if (hash === 'prevalidation') {

@@ -38,7 +38,7 @@ export class UpdateCoordinatorService {
     }
   }
   async start(pkh: string) {
-    if (!this.scheduler.get(pkh)) {
+    if (pkh && !this.scheduler.get(pkh)) {
       console.log('Starting scheduler for: ' + pkh);
       const scheduleData: ScheduleData = {
         state: State.UpToDate,
