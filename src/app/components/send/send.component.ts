@@ -1,5 +1,5 @@
 import { Component, TemplateRef, OnInit, ViewEncapsulation, Input, ViewChild, ElementRef } from '@angular/core';
-
+import { DOCUMENT } from '@angular/platform-browser';
 import { WalletService } from '../../services/wallet.service';
 import { MessageService } from '../../services/message.service';
 import { UpdateCoordinatorService } from '../../services/update-coordinator.service';
@@ -16,7 +16,6 @@ import { KeyPair } from '../../interfaces';
 })
 export class SendComponent implements OnInit {
     @ViewChild('modal1') modal1: TemplateRef<any>;
-
     @Input() activePkh: string;
     @Input() actionButtonString: string;  // Possible values: btnOutline / dropdownItem / btnSidebar
 
@@ -26,6 +25,7 @@ export class SendComponent implements OnInit {
         btnSidebar: false
     };
 
+    dom: Document;
     accounts = null;
     activeAccount = null;
     toPkh: string;
@@ -99,11 +99,13 @@ export class SendComponent implements OnInit {
         let index;
         // finding the index
         index = this.accounts.findIndex(account => account.pkh === accountPkh);
-
-        accountBalance = this.accounts[index].balance.balanceXTZ / 1000000;
-        accountBalanceString = this.numberWithCommas(accountBalance) + ' ꜩ';
-
-        return accountBalanceString;
+        if (index !== -1) {
+            accountBalance = this.accounts[index].balance.balanceXTZ / 1000000;
+            accountBalanceString = this.numberWithCommas(accountBalance) + ' ꜩ';
+            return accountBalanceString;
+        } else {
+            return null;
+        }
     }
 
     numberWithCommas(x: number) {
@@ -216,22 +218,6 @@ export class SendComponent implements OnInit {
                 }
               );
         }, 100);
-        /*setTimeout(async () => {
-            this.operationService.transfer(keys, this.activePkh, toPkh, Number(amount), Number(fee), 2).subscribe(
-                (ans: any) => {
-                  console.log(JSON.stringify(ans));
-                  if (ans.opHash) {
-                    this.sendResponse = 'success';
-                    this.updateCoordinatorService.boost();
-                  } else {
-                    this.sendResponse = 'failure';
-                  }
-                },
-                err => {console.log(JSON.stringify(err));
-                  this.sendResponse = 'failure';
-                }
-              );
-        }, 3100);*/
     }
     clearForm() {
         this.toPkh = '';
@@ -244,7 +230,9 @@ export class SendComponent implements OnInit {
     }
     invalidInput(): string {
 
-        if (!this.toPkh || this.toPkh.length !== 36) {
+        if (!this.activePkh || this.activePkh.length !== 36) {
+            return 'invalid sender address';
+        } else if (!this.toPkh || this.toPkh.length !== 36) {
             return 'invalid receiver address';
         } else if (!Number(this.amount) && this.amount && this.amount !== '0') {
             return 'invalid amount';

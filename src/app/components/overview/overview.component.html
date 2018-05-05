@@ -26,9 +26,9 @@
             </div>
         </div>
         
-        <div class="row">
-            <div class="col-sm-auto col-border border border-warning text-truncate min-size-address-cell">
-                {{ walletService.wallet.accounts[0].pkh }}
+        <div class="row" (click)="click(walletService.wallet.accounts[0].pkh)">
+            <div class="col-sm-auto col-border border border-warning text-truncate min-size-address-cell" [class.selectedPkh]="selectedPkh === walletService.wallet.accounts[0].pkh">
+                <span (dblclick)="dblclick(walletService.wallet.accounts[0].pkh)">{{ walletService.wallet.accounts[0].pkh }}</span>
             </div>
             <div class="col-sm-auto col-border border border-warning text-truncate min-size-other-cell">
                 {{ walletService.wallet.accounts[0].balance.balanceXTZ / 1000000 | number:'1.00' }} ꜩ
@@ -37,21 +37,6 @@
                 {{ walletService.wallet.accounts[0].balance.balanceFiat | number:'1.0-0' }} USD
             </div>
         </div>
-
-        <!-- Identity Action buttons -->
-        <div class="row row-buttons">
-            <div class="col-12"> 
-                <div class="btn-group btn-group-sm">
-                    <app-new-account></app-new-account>
-                    <button type="button" class="btn btn-outline-primary">Details</button>
-                    <app-send [activePkh]="walletService.wallet.accounts[0].pkh" [actionButtonString]="'btnOutline'"></app-send>
-                    <!--<button type="button" class="btn btn-outline-primary" (click)="openSend(walletService.wallet.accounts[0].pkh)">Send</button>-->
-                </div>
-            </div>
-        </div>
-
-        <br><br>
-
         <!-- Accounts + Total sections shown only if there are accounts -->
         <span *ngIf="walletService.wallet.accounts[1]">
 
@@ -69,9 +54,9 @@
                 </div>
             </div>
 
-            <div class="row" *ngFor="let account of walletService.wallet.accounts | slice:1">
-                <div class="col-sm-auto col-border border border-warning text-truncate min-size-address-cell">
-                    {{ account.pkh }}
+            <div class="row" *ngFor="let account of walletService.wallet.accounts | slice:1" (click)="click(account.pkh)">
+                <div class="col-sm-auto col-border border border-warning text-truncate min-size-address-cell" [class.selectedPkh]="selectedPkh === account.pkh">
+                    <span (dblclick)="dblclick(account.pkh)">{{ account.pkh }}</span>
                 </div>
                 <div class="col-sm-auto col-border border border-warning text-truncate min-size-other-cell">
                     {{ account.balance.balanceXTZ / 1000000 | number:'1.00' }} ꜩ
@@ -81,40 +66,14 @@
                 </div>
             </div>
 
-            <!-- Accounts Action buttons -->
+            <!-- Shared Action buttons -->
             <div class="row row-buttons">
                 <div class="col-12"> 
                     <div class="btn-group btn-group-sm">
-                        <div class="btn-group btn-group-sm" dropdown>
-                        <!-- <div class="btn-group btn-group-sm" dropdown triggers="hover">  Remains active after mouseover -->
-
-                            <button dropdownToggle type="button" class="btn btn-outline-primary dropdown-toggle">
-                                Send <span class="caret"></span>
-                            </button>
-                            <ul *dropdownMenu class="dropdown-menu" role="menu">
-                                <li role="menuitem">
-                                    <app-send *ngFor="let account of walletService.wallet.accounts | slice:1" [activePkh]="account.pkh" [actionButtonString]="'dropdownItem'"></app-send>
-                                </li>
-                                <!--
-                                <li role="menuitem">
-                                    <a class="dropdown-item" href="#" *ngFor="let account of walletService.wallet.accounts | slice:1" (click)="openSend(account.pkh)">
-                                        <app-send [activePkh]="account.pkh"></app-send>
-                                    </a>
-                                </li>
-                                -->
-                            </ul>
-                        </div>
-                        <div class="btn-group btn-group-sm" dropdown>
-                            <button dropdownToggle type="button" class="btn btn-outline-primary dropdown-toggle">
-                                Receive <span class="caret"></span>
-                            </button>
-                            <ul *dropdownMenu class="dropdown-menu" role="menu">
-                                <li role="menuitem">
-                                    <app-receive *ngFor="let account of walletService.wallet.accounts | slice:1" [activePkh]="account.pkh" [actionButtonString]="'dropdownItem'"></app-receive>
-                                    <!-- <a class="dropdown-item" href="#" *ngFor="let account of walletService.wallet.accounts | slice:1" (click)="openReceive(account.pkh)">{{ account.pkh }}</a> -->
-                                </li>
-                            </ul>
-                        </div>
+                        <app-new-account></app-new-account>
+                        <button type="button" class="btn btn-outline-primary">Details</button>
+                        <app-send [activePkh]="selectedPkh" [actionButtonString]="'btnOutline'"></app-send>
+                        <!--<button type="button" class="btn btn-outline-primary" (click)="openSend(walletService.wallet.accounts[0].pkh)">Send</button>-->
                     </div>
                 </div>
             </div>

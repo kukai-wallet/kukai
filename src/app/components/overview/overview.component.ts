@@ -1,9 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Inject, Injectable } from '@angular/core';
+import { DOCUMENT } from '@angular/platform-browser';
 import { SlicePipe } from '@angular/common';
 import { BsDropdownDirective } from 'ngx-bootstrap/dropdown/bs-dropdown.directive';
-
 import { Router } from '@angular/router';
-
 import { WalletService } from '../../services/wallet.service';
 import { MessageService } from '../../services/message.service';
 import { BalanceService } from '../../services/balance.service';
@@ -18,15 +17,18 @@ export class OverviewComponent implements OnInit {
     identity = null;
     accounts = null;
     activePkh: string;
+    selectedPkh: string;
+    dom: Document;
 
 
     constructor(
+        @Inject( DOCUMENT ) dom: Document,
         private router: Router,
         private walletService: WalletService,
         private messageService: MessageService,
         private balanceService: BalanceService,
         private updateCoordinatorService: UpdateCoordinatorService
-    ) { }
+    ) { this.dom = dom; }
 
     ngOnInit() {
 
@@ -47,5 +49,18 @@ export class OverviewComponent implements OnInit {
 
     openReceive(pkh: string) {
         console.log(pkh);
+    }
+    click(pkh: string) {
+        // console.log('clicked on pkh: ' + pkh);
+        if (this.selectedPkh === pkh) {
+            this.selectedPkh = null;
+        } else {
+            this.selectedPkh = pkh;
+        }
+    }
+    dblclick(pkh: string) {
+        console.log('double clicked on: ' + pkh);
+        this.dom.execCommand('copy');
+        this.messageService.add(pkh + ' copied to clipboard!');
     }
 }

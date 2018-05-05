@@ -47,6 +47,9 @@
 .min-size-other-cell {
     min-width: 188px;
 }
+.selectedPkh {
+    background-color: #ccffcc;
+}
 
 /* Taking out underline link in router link (New Account btn) */
 a.active-link {

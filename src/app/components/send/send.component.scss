@@ -61,15 +61,16 @@
   text-decoration: none !important;
 }
 
-// Sidebar button
-.btnSidebar {
-
-}
-
-.fa { 
+.fa-check-circle { 
   color: #28a745; //#5cb85c;
   font-size: 96px;
 }
 .bb2 {
   width: 120px;
+}
+.fa-paste {
+  padding-top: 40px;
+  cursor: pointer;
+  color: black;
+  font-size: 20px;
 }
