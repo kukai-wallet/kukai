@@ -38,7 +38,7 @@
 @media (min-width: 576px) { 
     .container {
         padding-left: 2em;
-        min-width: 85vw
+        min-width: 0vw
     }
  }
 
@@ -48,7 +48,7 @@
 // Large devices (desktops, 992px and up)
 @media (min-width: 992px) { 
     //.container {
-    //    min-width: 70vw
+    min-width: 0vw
     //} 
  }
 
@@ -56,7 +56,7 @@
 @media (min-width: 1200px) { 
     .container {
         padding-left: 2em;
-        min-width: 65vw
+        min-width: 0vw
     } 
 }
 

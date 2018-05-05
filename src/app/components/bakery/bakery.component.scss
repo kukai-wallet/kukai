@@ -79,7 +79,7 @@ h4 {
 @media (min-width: 576px) { 
     .container {
         padding-left: 2em;
-        min-width: 85vw
+        min-width: 0vw;
     }
  }
 
@@ -89,7 +89,7 @@ h4 {
 // Large devices (desktops, 992px and up)
 @media (min-width: 992px) { 
     //.container {
-    //    min-width: 70vw
+        min-width: 0vw;
     //} 
  }
 
@@ -97,6 +97,6 @@ h4 {
 @media (min-width: 1200px) { 
     .container {
         padding-left: 2em;
-        min-width: 85vw  // 65vw
+        min-width: 0vw;  // 65vw
     } 
 }
