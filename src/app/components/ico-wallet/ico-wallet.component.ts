@@ -42,7 +42,7 @@ export class IcoWalletComponent implements OnInit {
             this.messageService.add('Trying to activate genesis wallet...');
             this.operationService.activate(this.walletService.wallet.accounts[0].pkh, this.secret).subscribe(
               (ans: any) => {
-                // this.updateCoordinatorService.boost();
+                this.updateCoordinatorService.boost(this.walletService.wallet.accounts[0].pkh);
                 if (ans.opHash) {
                   this.messageService.addSuccess('Wallet activated!');
                 } else {
@@ -63,8 +63,6 @@ export class IcoWalletComponent implements OnInit {
   }
   handleFileInput(files: FileList) {
     let fileToUpload = files.item(0);
-    // if (fileToUpload.type === 'application/json') {
-      console.log('fileToUpload', fileToUpload);
 
       if (!this.validateFile(fileToUpload.name)) {
         console.log('Selected file format is not supported');
@@ -75,13 +73,9 @@ export class IcoWalletComponent implements OnInit {
         const reader = new FileReader();
         reader.readAsText(fileToUpload);
         reader.onload = () => {
-
-          console.log('file has been loaded!!');
-
           const res = JSON.parse(reader.result);
 
           if (res.mnemonic) {
-            console.log(res.mnemonic[0]);
             let mnemonic = res.mnemonic[0];
             for (let i = 1; i < 15; i++) {
               mnemonic = mnemonic + ' ' + res.mnemonic[i];

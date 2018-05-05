@@ -20,7 +20,7 @@ enum State {
 export class UpdateCoordinatorService {
   scheduler: Map<string, any> = new Map<string, any>(); // pkh + delay
   defaultDelayActivity = 60000; // 60s
-  shortDelayActivity = 1000; // 5s
+  shortDelayActivity = 2000; // 5s
   tzrateInterval: any;
   defaultDelayPrice = 300000; // 300s
   constructor(
@@ -39,7 +39,7 @@ export class UpdateCoordinatorService {
   }
   async start(pkh: string) {
     if (pkh && !this.scheduler.get(pkh)) {
-      console.log('Starting scheduler for: ' + pkh);
+      console.log('Start scheduler ' + this.walletService.getIndexFromPkh(pkh));
       const scheduleData: ScheduleData = {
         state: State.UpToDate,
         interval: setInterval(() => this.update(pkh), this.defaultDelayActivity),
@@ -51,6 +51,9 @@ export class UpdateCoordinatorService {
   }
   async boost(pkh: string) { // Expect action
     if (this.walletService.getIndexFromPkh(pkh) !== -1) {
+      if (!this.scheduler.get(pkh)) {
+        await this.start(pkh);
+      }
       this.changeState(pkh, State.Wait);
       this.update(pkh);
       const counter = this.scheduler.get(pkh).stateCounter;
@@ -64,7 +67,7 @@ export class UpdateCoordinatorService {
     }
   }
   async update(pkh) {
-    console.log('account[' + this.walletService.getIndexFromPkh(pkh) + ']: >>');
+    console.log('account[' + this.walletService.getIndexFromPkh(pkh) + '][' + this.scheduler.get(pkh).state + ']: >>');
     this.setDelay(pkh, this.defaultDelayActivity);
     this.activityService.updateTransactions(pkh).subscribe(
       (ans: any) => {
@@ -99,7 +102,7 @@ export class UpdateCoordinatorService {
         // console.log('response from transaction(): ' + JSON.stringify(ans));
     },
       err => console.log('Error in start()'),
-      () => console.log('account[' + this.walletService.getIndexFromPkh(pkh) + ']: <<')
+      () => console.log('account[' + this.walletService.getIndexFromPkh(pkh) + '][' + this.scheduler.get(pkh).state + ']: <<')
     );
   }
   changeState(pkh: string, newState: State) {
@@ -121,14 +124,15 @@ export class UpdateCoordinatorService {
     this.scheduler.set(pkh, scheduleData);
   }
   stopAll() {
-    console.log('Update coordinator: Stoping all schedulers');
+    console.log('Stop all schedulers');
     for (let i = 0; i < this.walletService.wallet.accounts.length; i++) {
       this.stop(this.walletService.wallet.accounts[i].pkh);
     }
     clearInterval(this.tzrateInterval);
   }
   async stop(pkh) {
-    console.log('Stoping scheduler for: ' + pkh);
+    console.log('Stop scheduler ' + this.walletService.getIndexFromPkh(pkh));
+    clearInterval(this.scheduler.get(pkh).interval);
     this.scheduler.delete(pkh);
   }
 }

@@ -76,13 +76,11 @@ export class NewAccountComponent implements OnInit {
       keys = this.walletService.getKeys(null, pwd);
     }
     if (keys) {
-      console.log('keys1', keys);
       this.pwdValid = '';
       this.close2();
       this.modalRef3 = this.modalService.show(template, { class: 'third' });
       this.newAccount(keys);
     } else {
-      console.log('keys2', keys);
       this.isValidModal2.neverConfirmed = false;
       this.pwdValid = 'Your Password is invalid';
     }
@@ -116,7 +114,7 @@ export class NewAccountComponent implements OnInit {
             this.sendResponse = 'success';
             this.walletService.addAccount(ans.newPkh);
             this.updateCoordinatorService.boost(this.fromPkh);
-            this.updateCoordinatorService.boost(ans.newPkh);
+            this.updateCoordinatorService.start(ans.newPkh);
           } else {
             this.sendResponse = 'failure';
           }

@@ -87,7 +87,6 @@ export class ActivityService {
               payload.push({
                 block: data[i].block_hash,
                 hash: data[i].hash});
-              // return this.getTimestamp(pkh, data[i].block_hash, data[i].hash).pipe(timeout(5000));
             }
           }
         }
@@ -174,7 +173,9 @@ export class ActivityService {
     });
   }
   getTimestamps(pkh: string, payloads: any[]): Observable<any> {
-    // console.log('Get timestamps...');
+    if (payloads.length === 0) {
+      return of('EmptyPayload');
+    }
     return forkJoin(of.apply(this, payloads)
       .pipe(
         flatMap((payload: any) =>
