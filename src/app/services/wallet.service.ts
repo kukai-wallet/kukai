@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { MessageService } from './message.service';
 import { Wallet, Account, Balance, KeyPair } from './../interfaces';
 import { EncryptionService } from './encryption.service';
-import * as lib from '../../assets/js/main.js';
+import { OperationService } from './operation.service';
+// import * as lib from '../../assets/js/main.js';
 import * as bip39 from 'bip39';
 import * as rnd2 from 'randomatic';
 
@@ -12,7 +13,9 @@ export class WalletService {
   wallet: Wallet;
   constructor(
     private messageService: MessageService,
-    private encryptionService: EncryptionService) { }
+    private encryptionService: EncryptionService,
+    private operationService: OperationService
+  ) { }
   /*
     Wallet creation
   */
@@ -36,7 +39,7 @@ export class WalletService {
     this.wallet = this.emptyWallet();
     // this.wallet.salt =  rnd2('aA0', 32);
     this.wallet.accounts = [];
-    this.addAccount(lib.eztz.crypto.generateKeys(mnemonic, '').pkh);
+    this.addAccount(this.operationService.generateKeys(mnemonic, '').pkh);
     this.wallet.salt = this.wallet.accounts[0].pkh.slice(19, 36);
     this.wallet.seed = this.encryptionService.encrypt(bip39.mnemonicToEntropy(mnemonic), password, this.wallet.salt);
     return {wallet: 'Kukai', type: 'FullWallet', version: '1.0', seed: this.wallet.seed,
@@ -46,13 +49,14 @@ export class WalletService {
     this.wallet = this.emptyWallet();
     this.wallet.accounts = [];
     this.wallet.passphrase = true;
-    this.addAccount(lib.eztz.crypto.generateKeys(mnemonic, passphrase).pkh);
+    this.addAccount(this.operationService.generateKeys(mnemonic, passphrase).pkh);
     this.wallet.seed = bip39.mnemonicToEntropy(mnemonic);
     return this.wallet.accounts[0].pkh;
   }
   /*
     Handle accounts
   */
+ /*
   async createAccount(keys: KeyPair, pkh: string, amount: number, fee: number): Promise<boolean> {
     const promise = lib.eztz.rpc.account(keys, amount, true, true, keys.pkh, fee);
     if (promise != null) {
@@ -66,7 +70,7 @@ export class WalletService {
     } else {
       return false;
     }
-  }
+  }*/
   addAccount(pkh) {
     this.wallet.accounts.push({
       pkh: pkh,
@@ -95,9 +99,9 @@ export class WalletService {
     }
       const mnemonic = bip39.entropyToMnemonic(seed);
       if (passphrase) {
-        return lib.eztz.crypto.generateKeys(mnemonic, passphrase);
+        return this.operationService.generateKeys(mnemonic, passphrase);
       } else {
-        return lib.eztz.crypto.generateKeys(mnemonic, '');
+        return this.operationService.generateKeys(mnemonic, '');
     }
   }
   /*

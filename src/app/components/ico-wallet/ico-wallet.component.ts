@@ -35,7 +35,6 @@ export class IcoWalletComponent implements OnInit {
   retrieve() {
     // console.log('File: ' + JSON.stringify(this.file));
     if (this.mnemonic && this.email && this.pwd && this.secret) {
-      console.log(this.mnemonic, this.email, this.pwd, this.secret);
       if (this.importService.importTgeWallet(this.mnemonic, this.email, this.pwd)) {
         setTimeout(() => {
           if (this.secret && this.walletService.wallet && this.walletService.wallet.accounts[0].numberOfActivites === 0) {

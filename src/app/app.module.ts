@@ -17,8 +17,6 @@ import { WalletService } from './services/wallet.service';
 import { ActivityService } from './services/activity.service';
 import { BalanceService } from './services/balance.service';
 import { EncryptionService } from './services/encryption.service';
-import { FaucetService } from './services/faucet.service';
-import { TransactionService } from './services/transaction.service';
 import { ImportService } from './services/import.service';
 import { TzrateService } from './services/tzrate.service';
 
@@ -84,9 +82,7 @@ import { BakeryComponent } from './components/bakery/bakery.component';
     WalletService,
     ActivityService,
     EncryptionService,
-    FaucetService,
     BalanceService,
-    TransactionService,
     ImportService,
     BsModalService,
     ComponentLoaderFactory,

@@ -6,6 +6,7 @@ import { KeyPair } from './../interfaces';
 import { Buffer } from 'buffer';
 import * as libs from 'libsodium-wrappers';
 import * as Bs58check from 'bs58check';
+import * as bip39 from 'bip39';
 
 @Injectable()
 export class OperationService {
@@ -116,18 +117,17 @@ export class OperationService {
   /*
     Returns an observable for the transaction of tezzies.
   */
- transfer(keys: KeyPair, from: string, to: string, amount: number, fee: number, extraIncr: number): Observable<any> {
+ transfer(keys: KeyPair, from: string, to: string, amount: number, fee: number): Observable<any> {
   return this.http.post(this.nodeURL + '/blocks/head', {})
     .flatMap((head: any) => {
       return this.http.post(this.nodeURL + '/blocks/head/proto/context/contracts/' + from + '/counter', {})
         .flatMap((actions: any) => {
-          console.log('===> Counter: ' + actions.counter);
           const fop = {
             branch: head.hash,
             kind: 'manager',
             source: from,
             fee: (fee * this.toMicro).toString(),
-            counter: ++actions.counter + extraIncr,
+            counter: ++actions.counter,
             operations: [
               {
                 kind: 'reveal',
@@ -233,7 +233,17 @@ export class OperationService {
           });
       });
   });
-}
+  }
+  generateKeys(mnemonic: string, passphrase: string): KeyPair {
+    const seed = bip39.mnemonicToSeed(mnemonic, passphrase).slice(0, 32);
+    const keyPair = libs.crypto_sign_seed_keypair(seed);
+    return {
+      sk: this.b58cencode(keyPair.privateKey, this.prefix.edsk),
+      pk: this.b58cencode(keyPair.publicKey, this.prefix.edpk),
+      pkh: this.b58cencode(libs.crypto_generichash(20, keyPair.publicKey), this.prefix.tz1)
+    };
+  }
+
   hex2buf(hex) {
     return new Uint8Array(hex.match(/[\da-f]{2}/gi).map(function (h) {
       return parseInt(h, 16);

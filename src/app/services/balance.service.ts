@@ -4,7 +4,6 @@ import { MessageService } from './message.service';
 import { TzrateService } from './tzrate.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import * as lib from '../../assets/js/main.js';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -18,7 +17,6 @@ export class BalanceService {
     private tzrateService: TzrateService,
     private http: HttpClient
   ) { }
-    eztz = false;
 
   async getBalanceAll() {
     await this.getXTZBalanceAll();
@@ -42,20 +40,10 @@ export class BalanceService {
   }
   getAccountBalance(index: number) {
     const pkh = this.walletService.wallet.accounts[index].pkh;
-    if (this.eztz) {
-      const promise = lib.rpc.getBalance(pkh);
-      if (promise != null) {
-        promise.then(
-          (val) => this.updateAccountBalance(index, Number(val)),
-          (err) => this.handleBalanceErrors(err, pkh)
-        );
-      }
-    } else {
-      this.http.post('http://zeronet-node.tzscan.io/blocks/head/proto/context/contracts/' + pkh, {}).subscribe(
-        (val: any) => this.updateAccountBalance(index, Number(val.balance)),
-        err => this.handleBalanceErrors(err, pkh)
-      );
-    }
+    this.http.post('http://zeronet-node.tzscan.io/blocks/head/proto/context/contracts/' + pkh, {}).subscribe(
+      (val: any) => this.updateAccountBalance(index, Number(val.balance)),
+      err => this.handleBalanceErrors(err, pkh)
+    );
   }
   updateAccountBalance(index: number, newBalance: number) {
     if (newBalance !== this.walletService.wallet.accounts[index].balance.balanceXTZ) {

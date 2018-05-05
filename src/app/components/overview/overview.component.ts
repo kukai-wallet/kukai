@@ -6,7 +6,6 @@ import { Router } from '@angular/router';
 
 import { WalletService } from '../../services/wallet.service';
 import { MessageService } from '../../services/message.service';
-import { FaucetService } from '../../services/faucet.service';
 import { BalanceService } from '../../services/balance.service';
 import { UpdateCoordinatorService } from '../../services/update-coordinator.service';
 
@@ -24,7 +23,6 @@ export class OverviewComponent implements OnInit {
     constructor(
         private router: Router,
         private walletService: WalletService,
-        private faucetService: FaucetService,
         private messageService: MessageService,
         private balanceService: BalanceService,
         private updateCoordinatorService: UpdateCoordinatorService
@@ -39,11 +37,6 @@ export class OverviewComponent implements OnInit {
     }
     addAccount() {
         // this.walletService.createAccount();
-    }
-    async freeTezzies(pkh: string) {
-        if (await this.faucetService.freeTezzies(pkh)) {
-            this.balanceService.getBalanceAll();
-        }
     }
 
     // Not working
