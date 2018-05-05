@@ -50,6 +50,10 @@
 .selectedPkh {
     background-color: #ccffcc;
 }
+.pkh-cell:hover {
+    background-color: #ccffcc !important;
+    cursor: pointer !important;
+}
 
 /* Taking out underline link in router link (New Account btn) */
 a.active-link {
