@@ -114,7 +114,9 @@ export class UpdateCoordinatorService {
   }
   setDelay(pkh: string, time: number) {
     const scheduleData: ScheduleData = this.scheduler.get(pkh);
-    clearInterval(scheduleData.interval);
+    if (scheduleData.interval) {
+      clearInterval(scheduleData.interval);
+    }
     scheduleData.interval = setInterval(() => this.update(pkh), time);
     this.scheduler.set(pkh, scheduleData);
   }

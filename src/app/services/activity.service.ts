@@ -113,6 +113,8 @@ export class ActivityService {
           type = 'Receive';
         } else if (data[i].type.secret) {
           type = 'Activation';
+        } else if (data[i].type.delegate) {
+          type = 'Delegation';
         } else if (data[i].type.credit) {
           type = 'Originate';
         } else {
