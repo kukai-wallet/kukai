@@ -27,8 +27,8 @@
         </div>
         
         <div class="row" (click)="click(walletService.wallet.accounts[0].pkh)">
-            <div class="col-sm-auto col-border border border-warning text-truncate min-size-address-cell" [class.selectedPkh]="selectedPkh === walletService.wallet.accounts[0].pkh">
-                <span (dblclick)="dblclick(walletService.wallet.accounts[0].pkh)">{{ walletService.wallet.accounts[0].pkh }}</span>
+            <div class="col-sm-auto col-border border border-warning text-truncate min-size-address-cell pkh-cell" (dblclick)="dblclick(walletService.wallet.accounts[0].pkh)" [class.selectedPkh]="selectedPkh === walletService.wallet.accounts[0].pkh">
+                {{ walletService.wallet.accounts[0].pkh }}
             </div>
             <div class="col-sm-auto col-border border border-warning text-truncate min-size-other-cell">
                 {{ walletService.wallet.accounts[0].balance.balanceXTZ / 1000000 | number:'1.00' }} ꜩ
@@ -55,8 +55,8 @@
             </div>
 
             <div class="row" *ngFor="let account of walletService.wallet.accounts | slice:1" (click)="click(account.pkh)">
-                <div class="col-sm-auto col-border border border-warning text-truncate min-size-address-cell" [class.selectedPkh]="selectedPkh === account.pkh">
-                    <span (dblclick)="dblclick(account.pkh)">{{ account.pkh }}</span>
+                <div class="col-sm-auto col-border border border-warning text-truncate min-size-address-cell pkh-cell" (dblclick)="dblclick(account.pkh)" [class.selectedPkh]="selectedPkh === account.pkh">
+                    {{ account.pkh }}
                 </div>
                 <div class="col-sm-auto col-border border border-warning text-truncate min-size-other-cell">
                     {{ account.balance.balanceXTZ / 1000000 | number:'1.00' }} ꜩ
