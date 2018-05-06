@@ -22,13 +22,13 @@ export class ImportService {
   async importWalletData(json: string): Promise<boolean> {
     try {
       const walletData = JSON.parse(json);
-      if (walletData.wallet !== 'Kukai' || walletData.type !== 'FullWallet') {
+      if (walletData.provider !== 'Kukai' || walletData.type !== 'FullWallet') {
         throw new Error(`Unsupported wallet format`);
       }
       this.walletService.wallet = this.walletService.emptyWallet();
       this.walletService.addAccount(walletData.pkh);
       this.walletService.wallet.seed = walletData.seed;
-      this.walletService.wallet.salt = walletData.salt;
+      this.walletService.wallet.passphrase = walletData.passphrase;
       await this.findNumberOfAccounts(walletData.pkh);
       return true;
     } catch (err) {

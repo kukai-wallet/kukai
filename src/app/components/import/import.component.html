@@ -66,7 +66,7 @@
         <div class="form-group row">
             <div class="col-sm-8">
                 <label for="fileFormControl">Import your wallet from file</label>
-                <input type="file" class="form-control-file btn btn-clear btn-second" id="fileFormControl">
+                <input type="file" (change)="handleFileInput($event.target.files)" accept=".ekf" class="form-control-file btn btn-clear btn-second" id="fileFormControl">
             </div>
         </div>
     </form>

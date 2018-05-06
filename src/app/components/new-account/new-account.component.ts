@@ -70,7 +70,7 @@ export class NewAccountComponent implements OnInit {
 
     let keys;
 
-    if (this.walletService.wallet.salt) {
+    if (this.walletService.isPasswordProtected()) {
       keys = this.walletService.getKeys(pwd, null);
     } else {
       keys = this.walletService.getKeys(null, pwd);

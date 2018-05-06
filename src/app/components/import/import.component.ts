@@ -23,11 +23,41 @@ export class ImportComponent implements OnInit {
 
   ngOnInit() {
   }
-  import() {
-    if (this.importService.importWalletData(this.encryptedWallet)) {
+  importFromTextbox() {
+    this.import(this.encryptedWallet);
+  }
+  import(keyFile: string) {
+    if (this.importService.importWalletData(keyFile)) {
       this.router.navigate(['/overview']);
     } else {
       this.messageService.add('Failed to import wallet!');
+    }
+  }
+  handleFileInput(files: FileList) {
+    let fileToUpload = files.item(0);
+
+      if (!this.validateFile(fileToUpload.name)) {
+        console.log('Selected file format is not supported');
+        fileToUpload = null;
+        return false;
+      } else {
+
+        const reader = new FileReader();
+        reader.readAsText(fileToUpload);
+        reader.onload = () => {
+          this.import(reader.result);
+
+        };
+      }
+    // }
+  }
+
+  validateFile(name: String) {
+    const ext = name.substring(name.lastIndexOf('.') + 1);
+    if (ext.toLowerCase() === 'ekf') {
+        return true;
+    } else {
+        return false;
     }
   }
 }

@@ -37,12 +37,13 @@ export class WalletService {
   }
   createEncryptedWallet(mnemonic: string, password: string): any {
     this.wallet = this.emptyWallet();
-    // this.wallet.salt =  rnd2('aA0', 32);
     this.wallet.accounts = [];
     this.addAccount(this.operationService.generateKeys(mnemonic, '').pkh);
-    this.wallet.salt = this.wallet.accounts[0].pkh.slice(19, 36);
-    this.wallet.seed = this.encryptionService.encrypt(bip39.mnemonicToEntropy(mnemonic), password, this.wallet.salt);
+    this.wallet.seed = this.encryptionService.encrypt(bip39.mnemonicToEntropy(mnemonic), password, this.getSalt());
     return this.exportKeyStore();
+  }
+  getSalt() {
+    return this.wallet.accounts[0].pkh.slice(19, 36);
   }
   createEncryptedTgeWallet(mnemonic: string, passphrase: string): string {
     this.wallet = this.emptyWallet();
@@ -89,7 +90,7 @@ export class WalletService {
   getKeys(password: string, passphrase): KeyPair {
     let seed;
     if (password) {
-      seed = this.encryptionService.decrypt(this.wallet.seed, password, this.wallet.salt);
+      seed = this.encryptionService.decrypt(this.wallet.seed, password, this.getSalt());
       if (!seed) {
         this.messageService.addError('Decryption failed');
       }
@@ -113,7 +114,6 @@ export class WalletService {
   emptyWallet(): Wallet {
     return {
       seed: null,
-      salt: null,
       passphrase: null,
       balance: this.emptyBalance(),
       XTZrate: 0,
@@ -152,6 +152,7 @@ export class WalletService {
   }
   isPasswordProtected() {
     if (this.wallet.seed.slice(this.wallet.seed.length - 2, this.wallet.seed.length) === '==') {
+      console.log('pwd protected');
       return true;
     } else {
       return false;
