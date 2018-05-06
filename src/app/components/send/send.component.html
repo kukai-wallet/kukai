@@ -113,7 +113,7 @@
 
 
     <!-- Showing different Send Format according to actionButtonString -->
-    <button *ngIf='accounts && showSendFormat.btnOutline' type="button" (click)="open1(modal1)" class="btn btn-sm btn-outline-primary">Send</button>
+    <button *ngIf='accounts && showSendFormat.btnOutline' type="button" (click)="open1(modal1)" class="btn btn-sm btn-outline-primary btn-op">Send</button>
     <span *ngIf='accounts && showSendFormat.dropdownItem' class="dropdown-item" (click)="open1(modal1)">{{ activePkh }}</span>
     <span *ngIf='accounts && showSendFormat.btnSidebar' class="btnSidebar" (click)="open1(modal1)">Send</span>
     <!--<button *ngIf='accounts' type="button" class="btn btn-sm btn-outline-primary" (click)="modal1.show()">Send</button>-->
