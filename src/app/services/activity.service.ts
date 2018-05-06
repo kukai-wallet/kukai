@@ -15,8 +15,6 @@ const httpOptions = {
 
 @Injectable()
 export class ActivityService {
-  // timestampCounter = 0; // Make sure last timestamp trigger backup
-  timestampCounterMap: Map<string, number> = new Map<string, number>();
   maxTransactions = 3;
   constructor(
     private walletService: WalletService,
@@ -37,7 +35,15 @@ export class ActivityService {
   }
   // Show transactions for current pkh, then function call to see if current data is up to date
   updateTransactions(pkh: string): Observable<any> {
-    return this.getTransactonsCounter(pkh);
+    return this.getTransactonsCounter(pkh)
+    .flatMap((ans) => {
+      // console.log('Response : ' + JSON.stringify(ans));
+      if (ans.save) {
+        this.walletService.storeWallet();
+        this.balanceService.getXTZBalanceAll();
+      }
+      return of(ans);
+    });
   }
   getTransactonsCounter(pkh): Observable<any> {
     return this.http.get('http://zeronet-api.tzscan.io/v1/number_operations/' + pkh)
@@ -75,8 +81,6 @@ export class ActivityService {
     return this.http.get('http://zeronet-api.tzscan.io/v1/operations/' + pkh + '?number=' + n + '&p=0')
       .flatMap((data: any) => {
         const aIndex = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
-        // this.timestampCounter = data.length;
-        this.timestampCounterMap.set(pkh, data.length);
         const payload = [];
         for (let i = 0; i < data.length; i++) {
           if (this.walletService.wallet.accounts[aIndex].activities[i].hash === data[i].hash) {
@@ -98,29 +102,29 @@ export class ActivityService {
     // console.log('getTransactions()');
     return this.http.get('http://zeronet-api.tzscan.io/v1/operations/' + pkh + '?number=' + this.maxTransactions + '&p=0')
     .flatMap((data: any) => {
-      this.timestampCounterMap.set(pkh, data.length);
       const newTransactions: Activity[] = [];
       for (let i = 0; i < data.length; i++) {
         let type;
         if (pkh === data[i].type.source) {
           if (pkh === data[i].type.destination) {
-            type = 'Send/Recieve';
+            type = 'Transaction*';
           } else {
-            type = 'Send';
+            type = 'Transaction'; // Send
+            data[i].type.amount = data[i].type.amount * -1;
           }
         } else if (pkh === data[i].type.destination) {
-          type = 'Receive';
+          type = 'Transaction'; // Receive
         } else if (data[i].type.secret) {
           type = 'Activation';
+        } else if (data[i].type.credit) {
+          type = 'Origination';
         } else if (data[i].type.delegate) {
           type = 'Delegation';
-        } else if (data[i].type.credit) {
-          type = 'Originate';
         } else {
           type = 'Unknown';
           console.log('Unknown Type: ' + JSON.stringify(data[i]));
         }
-        if (type === 'Originate') {
+        if (type === 'Origination') {
           newTransactions.push( {
             hash: data[i].hash,
             block: data[i].block_hash,
@@ -168,8 +172,7 @@ export class ActivityService {
             hash: newTransactions[i].hash});
           }
         }
-        return this.getTimestamps(pkh, payload)
-          .flatMap(() => of({ save: true }));
+        return this.getTimestamps(pkh, payload);
     });
   }
   getTimestamps(pkh: string, payloads: any[]): Observable<any> {
@@ -196,16 +199,6 @@ export class ActivityService {
       const transactionIndex = this.walletService.wallet.accounts[pkhIndex].activities.findIndex(a => a.hash === hash);
       if (time) { time = new Date(time); }
       this.walletService.wallet.accounts[pkhIndex].activities[transactionIndex].timestamp = time;
-      // this.timestampCounter--;
-      this.timestampCounterMap.set(pkh, this.timestampCounterMap.get(pkh) - 1);
-      // if (this.timestampCounter <= 0) {
-      //   this.timestampCounter = 10;
-      if (this.timestampCounterMap.get(pkh) <= 0) {
-        this.timestampCounterMap.set(pkh, 10);
-        console.log('Store transactions data');
-        this.walletService.storeWallet();
-        this.balanceService.getXTZBalanceAll();
-      }
       return of(
         {
           save: true

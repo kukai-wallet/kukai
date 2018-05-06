@@ -109,7 +109,7 @@ export class DelegateComponent implements OnInit {
       }
 
       setTimeout(async () => {
-          this.operationService.delegate(keys, this.activePkh, toPkh, Number(fee)).subscribe(
+          this.operationService.delegate(this.activePkh, toPkh, Number(fee), keys).subscribe(
               (ans: any) => {
                 console.log(JSON.stringify(ans));
                 if (ans.opHash) {

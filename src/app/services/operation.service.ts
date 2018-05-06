@@ -55,7 +55,7 @@ export class OperationService {
   /*
     Returns an observable for the origination of new accounts.
   */
-  originate(keys: KeyPair, pkh: string, amount: number, fee: number): Observable<any> {
+  originate(pkh: string, amount: number, fee: number = 0, keys: KeyPair): Observable<any> {
     return this.http.post(this.nodeURL + '/blocks/head', {})
       .flatMap((head: any) => {
         return this.http.post(this.nodeURL + '/blocks/head/proto/context/contracts/' + pkh + '/counter', {})
@@ -80,7 +80,6 @@ export class OperationService {
                 }
               ]
             };
-            console.log(JSON.stringify(fop));
             return this.http.post(this.nodeURL + '/blocks/head/proto/helpers/forge/operations', fop)
               .flatMap((opbytes: any) => {
                 return this.http.post(this.nodeURL + '/blocks/head/predecessor', {})
@@ -117,7 +116,7 @@ export class OperationService {
   /*
     Returns an observable for the transaction of tezzies.
   */
- transfer(keys: KeyPair, from: string, to: string, amount: number, fee: number): Observable<any> {
+ transfer(from: string, to: string, amount: number, fee: number = 0, keys: KeyPair): Observable<any> {
   return this.http.post(this.nodeURL + '/blocks/head', {})
     .flatMap((head: any) => {
       return this.http.post(this.nodeURL + '/blocks/head/proto/context/contracts/' + from + '/counter', {})
@@ -179,7 +178,7 @@ export class OperationService {
   /*
     Returns an observable for the delegation of baking rights.
   */
- delegate(keys: KeyPair, from: string, to: string, fee: number): Observable<any> {
+ delegate(from: string, to: string, fee: number = 0, keys: KeyPair): Observable<any> {
   return this.http.post(this.nodeURL + '/blocks/head', {})
     .flatMap((head: any) => {
       return this.http.post(this.nodeURL + '/blocks/head/proto/context/contracts/' + from + '/counter', {})

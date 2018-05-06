@@ -1,4 +1,3 @@
-
 <div class="container" *ngIf="this.walletService.wallet">
         <!-- Title -->
         <div class="row">
@@ -65,6 +64,18 @@
                     {{ account.balance.balanceFiat | number:'1.0-0' }} USD
                 </div>
             </div>
+            <!-- Total - Last row -->
+            <div class="row row-header">
+                <div class="col-sm-auto col-header col-border border border-warning min-size-address-cell">
+                    Total
+                </div>
+                <div class="col-sm-auto col-header col-border border border-warning min-size-other-cell">
+                    {{ walletService.wallet.balance.balanceXTZ / 1000000 | number:'1.0' }} ꜩ 
+                </div>
+                <div class="col-sm-auto col-header col-border border border-warning min-size-other-cell">
+                    $ {{ walletService.wallet.balance.balanceFiat | number:'1.0-0' }} USD 
+                </div>
+            </div>
         </span>
         <!-- Shared Action buttons -->
         <div class="row row-buttons">
@@ -75,59 +86,7 @@
                     <button type="button" class="btn btn-outline-primary btn-op">Details</button>
                 </div>
         </div>
-        <br><br>
-        <span *ngIf="walletService.wallet.accounts[1]">
-        <!-- Total - Last row -->
-        <div class="row row-header">
-            <div class="col-sm-auto col-header col-border border border-warning min-size-address-cell">
-                Total
-            </div>
-            <div class="col-sm-auto col-header col-border border border-warning min-size-other-cell">
-                {{ walletService.wallet.balance.balanceXTZ / 1000000 | number:'1.0' }} ꜩ 
-            </div>
-            <div class="col-sm-auto col-header col-border border border-warning min-size-other-cell">
-                $ {{ walletService.wallet.balance.balanceFiat | number:'1.0-0' }} USD 
-            </div>
-        </div>
-    </span>
 </div>
-
-<!--
-<div id="content">
-
-    <div class="center-content">
-        <div class="card text-center fix-size" *ngIf="identity">
-        <div class="card-body">
-            <h1 class="card-title">Overview</h1>
-            <div class="card-text">
-                    <table>
-                        <tr *ngIf='identity'>
-                            <td class='mono'></td>
-                            <td></td>
-                            <td><a onclick="return false;" href (click)='freeTezzies(identity.pkh)'>Free tezzies</a></td>
-                        </tr>
-                        
-                        <tr  *ngFor="let account of walletService.wallet.accounts">
-                            <td class='mono'>{{ account.pkh }}</td><td>{{ account.balance.balanceXTZ / 100 | number:'1.0' }} ꜩ</td><td></td>
-                        </tr>
-                        <tr>
-                            <td *ngIf="walletService.wallet.accounts.length === 0" colspan="2"></td>
-    
-                            <ng-container *ngIf="walletService.wallet.accounts.length !== 0">
-                                <td>Total:</td>
-                                <td>{{ walletService.wallet.balance.balanceXTZ / 100 | number:'1.0' }} ꜩ</td>
-                            </ng-container>
-    
-                            <td><app-new-account></app-new-account></td>
-                        </tr>
-                    </table>
-                </div>
-        </div>
-        </div>
-    </div>
-
-</div>
--->
 <!-- Default message - No account created -->
 <div class="container" *ngIf="!this.walletService.wallet">
     <!-- Title -->

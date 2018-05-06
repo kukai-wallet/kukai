@@ -202,7 +202,7 @@ export class SendComponent implements OnInit {
         }
 
         setTimeout(async () => {
-            this.operationService.transfer(keys, this.activePkh, toPkh, Number(amount), Number(fee)).subscribe(
+            this.operationService.transfer(this.activePkh, toPkh, Number(amount), Number(fee), keys).subscribe(
                 (ans: any) => {
                   console.log(JSON.stringify(ans));
                   if (ans.opHash) {
