@@ -48,10 +48,10 @@
     min-width: 188px;
 }
 .selectedPkh {
-    background-color: #ccffcc;
+    background-color: #b3ffb3 !important;
 }
-.pkh-cell:hover {
-    background-color: #ccffcc !important;
+.pkh-row:hover { //#e6ffe6
+    background-color: #e6ffe6;
     cursor: pointer !important;
 }
 

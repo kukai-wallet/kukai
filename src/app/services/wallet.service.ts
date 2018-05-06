@@ -42,8 +42,7 @@ export class WalletService {
     this.addAccount(this.operationService.generateKeys(mnemonic, '').pkh);
     this.wallet.salt = this.wallet.accounts[0].pkh.slice(19, 36);
     this.wallet.seed = this.encryptionService.encrypt(bip39.mnemonicToEntropy(mnemonic), password, this.wallet.salt);
-    return {wallet: 'Kukai', type: 'FullWallet', version: '1.0', seed: this.wallet.seed,
-            salt: this.wallet.salt, pkh: this.wallet.accounts[0].pkh};
+    return this.exportKeyStore();
   }
   createEncryptedTgeWallet(mnemonic: string, passphrase: string): string {
     this.wallet = this.emptyWallet();
@@ -152,13 +151,21 @@ export class WalletService {
     }
   }
   isPasswordProtected() {
-    if (this.wallet.salt) {
+    if (this.wallet.seed.slice(this.wallet.seed.length - 2, this.wallet.seed.length) === '==') {
       return true;
     } else {
       return false;
     }
   }
-  isPassphraseProtected() {
-    return this.wallet.passphrase;
+  isPassphraseProtected(): boolean {
+    if (this.wallet.passphrase) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  exportKeyStore() {
+    return {provider: 'Kukai', type: 'FullWallet', version: '1.0', seed: this.wallet.seed,
+    passphrase: this.isPassphraseProtected(), pkh: this.wallet.accounts[0].pkh};
   }
 }

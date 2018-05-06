@@ -26,8 +26,8 @@
             </div>
         </div>
         
-        <div class="row" (click)="click(walletService.wallet.accounts[0].pkh)">
-            <div class="col-sm-auto col-border border border-warning text-truncate min-size-address-cell pkh-cell" (dblclick)="dblclick(walletService.wallet.accounts[0].pkh)" [class.selectedPkh]="selectedPkh === walletService.wallet.accounts[0].pkh">
+        <div class="row pkh-row" [class.selectedPkh]="selectedPkh === walletService.wallet.accounts[0].pkh" (click)="click(walletService.wallet.accounts[0].pkh)">
+            <div class="col-sm-auto col-border border border-warning text-truncate min-size-address-cell" (dblclick)="dblclick(walletService.wallet.accounts[0].pkh)">
                 {{ walletService.wallet.accounts[0].pkh }}
             </div>
             <div class="col-sm-auto col-border border border-warning text-truncate min-size-other-cell">
@@ -54,8 +54,8 @@
                 </div>
             </div>
 
-            <div class="row" *ngFor="let account of walletService.wallet.accounts | slice:1" (click)="click(account.pkh)">
-                <div class="col-sm-auto col-border border border-warning text-truncate min-size-address-cell pkh-cell" (dblclick)="dblclick(account.pkh)" [class.selectedPkh]="selectedPkh === account.pkh">
+            <div class="row pkh-row" *ngFor="let account of walletService.wallet.accounts | slice:1" (click)="click(account.pkh)" [class.selectedPkh]="selectedPkh === account.pkh">
+                <div class="col-sm-auto col-border border border-warning text-truncate min-size-address-cell" (dblclick)="dblclick(account.pkh)">
                     {{ account.pkh }}
                 </div>
                 <div class="col-sm-auto col-border border border-warning text-truncate min-size-other-cell">
@@ -65,34 +65,33 @@
                     {{ account.balance.balanceFiat | number:'1.0-0' }} USD
                 </div>
             </div>
-
-            <!-- Shared Action buttons -->
-            <div class="row row-buttons">
-                <div class="col-12"> 
-                    <div class="btn-group btn-group-sm">
-                        <app-new-account></app-new-account>
-                        <button type="button" class="btn btn-outline-primary">Details</button>
-                        <app-send [activePkh]="selectedPkh" [actionButtonString]="'btnOutline'"></app-send>
-                        <!--<button type="button" class="btn btn-outline-primary" (click)="openSend(walletService.wallet.accounts[0].pkh)">Send</button>-->
-                    </div>
-                </div>
-            </div>
-            <br><br>
-        
-            <!-- Total - Last row -->
-            <div class="row row-header">
-                <div class="col-sm-auto col-header col-border border border-warning min-size-address-cell">
-                    Total
-                </div>
-                <div class="col-sm-auto col-header col-border border border-warning min-size-other-cell">
-                    {{ walletService.wallet.balance.balanceXTZ / 1000000 | number:'1.0' }} ꜩ 
-                </div>
-
-                <div class="col-sm-auto col-header col-border border border-warning min-size-other-cell">
-                    $ {{ walletService.wallet.balance.balanceFiat | number:'1.0-0' }} USD 
-                </div>
-            </div>
         </span>
+        <!-- Shared Action buttons -->
+        <div class="row row-buttons">
+            <div class="col-12"> 
+                <div class="btn-group btn-group-sm">
+                    <app-new-account></app-new-account>
+                    <button type="button" class="btn btn-outline-primary">Details</button>
+                    <app-send [activePkh]="selectedPkh" [actionButtonString]="'btnOutline'"></app-send>
+                    <!--<button type="button" class="btn btn-outline-primary" (click)="openSend(walletService.wallet.accounts[0].pkh)">Send</button>-->
+                </div>
+            </div>
+        </div>
+        <br><br>
+        <span *ngIf="walletService.wallet.accounts[1]">
+        <!-- Total - Last row -->
+        <div class="row row-header">
+            <div class="col-sm-auto col-header col-border border border-warning min-size-address-cell">
+                Total
+            </div>
+            <div class="col-sm-auto col-header col-border border border-warning min-size-other-cell">
+                {{ walletService.wallet.balance.balanceXTZ / 1000000 | number:'1.0' }} ꜩ 
+            </div>
+            <div class="col-sm-auto col-header col-border border border-warning min-size-other-cell">
+                $ {{ walletService.wallet.balance.balanceFiat | number:'1.0-0' }} USD 
+            </div>
+        </div>
+    </span>
 </div>
 
 <!--

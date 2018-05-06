@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Query, HostListener } from '@angular/core';
 import { WalletService } from '../../services/wallet.service';
 import { MessageService } from '../../services/message.service';
 import { ChangeDetectorRef } from '@angular/core';
-
+import { saveAs } from 'file-saver/FileSaver';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/fromEvent';
 import * as bip39 from 'bip39';
@@ -15,17 +15,12 @@ import * as bip39 from 'bip39';
   styleUrls: ['./new-wallet.component.scss']
 })
 export class NewWalletComponent implements OnInit {
+  MIN_PWD_LENGTH = 8;
   @Input() pwd1 = '';
   @Input() pwd2 = '';
+  ekfDownloaded = false;
   activePanel = 0;
-  data = {
-    wallet: '',
-    type: '',
-    version: '',
-    seed: '',
-    salt: '',
-    pkh: ''
-  };
+  data: any;
   mnemonic: string;
   entropyMsg: string;
   // Verify password boolean
@@ -106,7 +101,7 @@ export class NewWalletComponent implements OnInit {
     }
   }
   validatePwd(): boolean {
-    if (this.pwd1.length < 6 || this.pwd2.length < 6) {
+    if (this.pwd1.length < this.MIN_PWD_LENGTH || this.pwd2.length < this.MIN_PWD_LENGTH) {
         this.isValidPass.minLength = false;
         console.log('isValidPass.length', this.isValidPass.minLength);
     } else {
@@ -131,5 +126,10 @@ export class NewWalletComponent implements OnInit {
   }
   export(): string {
     return JSON.stringify(this.data);
+  }
+  download() {
+    const blob = new Blob([JSON.stringify(this.data)], { type: 'application/json' });
+    saveAs(blob, this.data.pkh + '.ekf');
+    this.ekfDownloaded = true;
   }
 }

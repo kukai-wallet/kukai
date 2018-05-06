@@ -49,8 +49,8 @@
               <div class="form-group row">
                 <div class="col-sm-12">
                   <input type="password" [(ngModel)]="pwd2" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Confirm Password">
-                  <small id="emailHelp1" class="form-text text-muted text-left">Minimum 6 characters</small>
-                  <small id="emailHelp2" class="form-text alert-danger text-left" *ngIf="!isValidPass.minLength">There must be a minimum of 6 characters</small>
+                  <small id="emailHelp1" class="form-text text-muted text-left">Minimum {{ this.MIN_PWD_LENGTH }} characters</small>
+                  <small id="emailHelp2" class="form-text alert-danger text-left" *ngIf="!isValidPass.minLength">There must be a minimum of {{ MIN_PWD_LENGTH }} characters</small>
                   <small id="emailHelp3" class="form-text alert-danger text-left" *ngIf="!isValidPass.match">Passswords doesn't match!</small>
                   <small id="emailHelp4" class="form-text alert-success text-left" *ngIf="isValidPass.confirmed">Password confirmed</small>
                 </div>
@@ -73,11 +73,12 @@
           <p class="seed"><b>{{ export() }}</b></p>
           <br>
           <p>Your wallet is now set up and ready to use.</p>
-          <p>Please save your encrypted wallet data in a safe, secure place.</p>
+          <p>Please download your Encrypted Keystore File..</p>
+          <button type="button" class="btn btn-primary btn-lg" (click)="download()">Download</button>
         </div>
       </div>
       <div class="card-footer text-right">
-        <button type="button" class="btn btn-primary btn-lg" routerLink="/overview">Finish</button>
+        <button type="button" class="btn btn-primary btn-lg" [disabled]="!ekfDownloaded" routerLink="/overview">Finish</button>
       </div>
     </div>
     
