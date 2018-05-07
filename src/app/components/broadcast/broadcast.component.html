@@ -1,1 +1,74 @@
-<a routerLink="/"><button class="btn btn-clear btn-second pull-right">Back</button></a>
+<div class="container">
+    <!-- Title -->
+    <div class="row bottom-separator">
+        <div class="col-lg-12">
+            <h1 class="page-header">Offline transactions</h1>
+        </div>
+    </div>
+
+    <!-- Subheading -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h4>In 3 easy steps, you can broadcast an operation to the tezos network without ever needing to use your wallet in an online environment. With step 2, you can load your wallet in an air-gaped offline computer to sign your operation and then, in step 3, broadcast the operation hash to the network.</h4>
+        </div>
+    </div>
+    <br>
+
+    <!-- Step 1 -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h3>1. Create an unsigned operation</h3>
+        </div>
+    </div>
+    <form>
+        <div class="form-group row">
+            <div class="col-sm-8">
+                <label for="seedTextarea">Import your previous wallet from seed</label>
+                <textarea rows="3" [(ngModel)]="encryptedWallet" [ngModelOptions]="{standalone: true}" class="form-control" id="seedTextarea"></textarea>
+            </div>
+        </div>
+    </form>
+    <div class="row">
+        <div class="col-lg-8">
+            <button type="button" class="btn btn-clear btn-second pull-right">Import from Seed</button>
+        </div>
+    </div>
+    <br>
+
+    <!-- Step 2 -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h3>2. Import wallet and sign</h3>
+        </div>
+    </div>
+    <form>
+        <div class="form-group row">
+            <div class="col-sm-8">
+                <label for="fileFormControl">Import your wallet from file</label>
+                <input type="file" (change)="handleFileInput($event.target.files)" accept=".ekf" class="form-control-file btn btn-clear btn-second" id="fileFormControl">
+            </div>
+        </div>
+    </form>
+    <br>
+
+    <!-- Step 3 -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h3>3. Broadcast </h3>
+        </div>
+    </div>
+    <form>
+        <div class="form-group row">
+            <div class="col-sm-8">
+                <label for="seedTextarea">Transmit your transaction to the network</label>
+                <textarea rows="3" [(ngModel)]="encryptedWallet" [ngModelOptions]="{standalone: true}" class="form-control" id="seedTextarea"></textarea>
+            </div>
+        </div>
+    </form>
+    <div class="row">
+        <div class="col-lg-8">
+            <button type="button" class="btn btn-clear btn-second pull-right">Broadcast</button>
+        </div>
+    </div>
+</div>
+
