@@ -152,7 +152,6 @@ export class WalletService {
   }
   isPasswordProtected() {
     if (this.wallet.seed.slice(this.wallet.seed.length - 2, this.wallet.seed.length) === '==') {
-      console.log('pwd protected');
       return true;
     } else {
       return false;

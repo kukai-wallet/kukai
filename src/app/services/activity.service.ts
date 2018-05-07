@@ -36,9 +36,8 @@ export class ActivityService {
   // Show transactions for current pkh, then function call to see if current data is up to date
   updateTransactions(pkh: string): Observable<any> {
     return this.getTransactonsCounter(pkh)
-    .flatMap((ans) => {
-      // console.log('Response : ' + JSON.stringify(ans));
-      if (ans.save) {
+    .flatMap((ans: any) => {
+      if (ans[0] && ans[0].save) {
         this.walletService.storeWallet();
         this.balanceService.getXTZBalanceAll();
       }
