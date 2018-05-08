@@ -55,9 +55,15 @@ export class BalanceService {
   }
   updateTotalBalance() {
     let balance = 0;
+    let change = false;
     for (let i = 0; i < this.walletService.wallet.accounts.length; i++) {
+      if (this.walletService.wallet.accounts[i].balance.balanceXTZ) {
       balance =  balance + Number(this.walletService.wallet.accounts[i].balance.balanceXTZ);
+      change = true;
+      }
     }
-    this.walletService.wallet.balance.balanceXTZ = balance;
+    if (change) {
+      this.walletService.wallet.balance.balanceXTZ = balance;
+    }
   }
 }

@@ -56,21 +56,6 @@ export class WalletService {
   /*
     Handle accounts
   */
- /*
-  async createAccount(keys: KeyPair, pkh: string, amount: number, fee: number): Promise<boolean> {
-    const promise = lib.eztz.rpc.account(keys, amount, true, true, keys.pkh, fee);
-    if (promise != null) {
-      return promise.then(
-        (val) => {this.addAccount(val.contracts[0]);
-          this.messageService.addSuccess('New account created!');
-        return true; },
-        (err) => { this.messageService.addError('Create new account failed: ' + JSON.stringify(err));
-      return false; }
-      );
-    } else {
-      return false;
-    }
-  }*/
   addAccount(pkh) {
     this.wallet.accounts.push({
       pkh: pkh,
@@ -116,16 +101,16 @@ export class WalletService {
       seed: null,
       passphrase: null,
       balance: this.emptyBalance(),
-      XTZrate: 0,
+      XTZrate: null,
       accounts: []
     };
   }
   emptyBalance(): Balance {
     return {
-      balanceXTZ: 0,
-      pendingXTZ: 0,
-      balanceFiat: 0,
-      pendingFiat: 0
+      balanceXTZ: null,
+      pendingXTZ: null,
+      balanceFiat: null,
+      pendingFiat: null
     };
   }
   /*

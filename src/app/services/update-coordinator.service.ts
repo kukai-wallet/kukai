@@ -36,9 +36,9 @@ export class UpdateCoordinatorService {
   }
   startXTZ() {
     if (!this.tzrateInterval) {
+      console.log('Start scheduler XTZ');
       this.tzrateService.getTzrate();
       this.tzrateInterval = setInterval(() => this.tzrateService.getTzrate(), this.defaultDelayPrice);
-      console.log('Start scheduler XTZ');
     }
   }
   async start(pkh: string) {
@@ -133,11 +133,13 @@ export class UpdateCoordinatorService {
         this.stop(this.walletService.wallet.accounts[i].pkh);
       }
       clearInterval(this.tzrateInterval);
+      this.tzrateInterval = null;
     }
   }
   async stop(pkh) {
     console.log('Stop scheduler ' + this.walletService.getIndexFromPkh(pkh));
     clearInterval(this.scheduler.get(pkh).interval);
+    this.scheduler.get(pkh).interval = null;
     this.scheduler.delete(pkh);
   }
 }

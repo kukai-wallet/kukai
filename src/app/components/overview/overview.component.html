@@ -30,10 +30,10 @@
                 {{ walletService.wallet.accounts[0].pkh }}
             </div>
             <div class="col-sm-auto col-border border border-warning text-truncate min-size-other-cell">
-                {{ walletService.wallet.accounts[0].balance.balanceXTZ / 1000000 | number:'1.00' }} ꜩ
+                <ng-container *ngIf="walletService.wallet.accounts[0].balance.balanceXTZ !== null">{{ walletService.wallet.accounts[0].balance.balanceXTZ / 1000000 | number:'1.00' }} ꜩ</ng-container>
             </div>
             <div class="col-sm-auto col-border border border-warning text-truncate min-size-other-cell">
-                {{ walletService.wallet.accounts[0].balance.balanceFiat | number:'1.0-0' }} USD
+                <ng-container *ngIf="walletService.wallet.accounts[0].balance.balanceFiat !== null">{{ walletService.wallet.accounts[0].balance.balanceFiat | number:'1.0-0' }} USD</ng-container>
             </div>
         </div>
         <!-- Accounts + Total sections shown only if there are accounts -->
@@ -58,10 +58,10 @@
                     {{ account.pkh }}
                 </div>
                 <div class="col-sm-auto col-border border border-warning text-truncate min-size-other-cell">
-                    {{ account.balance.balanceXTZ / 1000000 | number:'1.00' }} ꜩ
+                    <ng-container *ngIf="account.balance.balanceXTZ !== null">{{ account.balance.balanceXTZ / 1000000 | number:'1.00' }} ꜩ</ng-container>
                 </div>
                 <div class="col-sm-auto col-border border border-warning text-truncate min-size-other-cell">
-                    {{ account.balance.balanceFiat | number:'1.0-0' }} USD
+                    <ng-container *ngIf="account.balance.balanceFiat !== null">{{ account.balance.balanceFiat | number:'1.0-0' }} USD</ng-container>
                 </div>
             </div>
             <!-- Total - Last row -->
@@ -70,10 +70,10 @@
                     Total
                 </div>
                 <div class="col-sm-auto col-header col-border border border-warning min-size-other-cell">
-                    {{ walletService.wallet.balance.balanceXTZ / 1000000 | number:'1.0' }} ꜩ 
+                    <ng-container *ngIf="walletService.wallet.balance.balanceXTZ !== null">{{ walletService.wallet.balance.balanceXTZ / 1000000 | number:'1.0' }} ꜩ</ng-container>
                 </div>
                 <div class="col-sm-auto col-header col-border border border-warning min-size-other-cell">
-                    $ {{ walletService.wallet.balance.balanceFiat | number:'1.0-0' }} USD 
+                    <ng-container *ngIf="walletService.wallet.balance.balanceFiat !== null">$ {{ walletService.wallet.balance.balanceFiat | number:'1.0-0' }} USD</ng-container>
                 </div>
             </div>
         </span>
