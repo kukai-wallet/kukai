@@ -2,12 +2,16 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { of } from 'rxjs/observable/of';
 import { Observable } from 'rxjs/Observable';
-import { KeyPair } from './../interfaces';
 import { Buffer } from 'buffer';
 import * as libs from 'libsodium-wrappers';
 import * as Bs58check from 'bs58check';
 import * as bip39 from 'bip39';
 
+export interface KeyPair {
+  sk: string|null;
+  pk: string|null;
+  pkh: string;
+}
 @Injectable()
 export class OperationService {
   nodeURL = 'http://zeronet-node.tzscan.io';
@@ -153,11 +157,7 @@ export class OperationService {
           };
           return this.http.post(this.nodeURL + '/blocks/head/proto/helpers/forge/operations', fop)
             .flatMap((opbytes: any) => {
-              // console.log('Unsigned operation: ' + opbytes.operation);
-              // console.log('Unsigned operation (2): ' + this.hex2buf(opbytes.operation));
-              // console.log('Unsigned operation (3): ' + this.b58cencode(this.hex2buf(opbytes.operation), this.prefix.o));
               if (!keys.sk) { // If sk doesn't exist, return unsigned operation
-              console.log('Returning unsigned op');
               return of(
                 {
                   unsignedOperation: opbytes.operation
@@ -203,7 +203,6 @@ export class OperationService {
     .flatMap((head: any) => {
       return this.http.post(this.nodeURL + '/blocks/head/proto/context/contracts/' + from + '/counter', {})
         .flatMap((actions: any) => {
-          console.log('===> Counter: ' + actions.counter);
           const fop = {
             branch: head.hash,
             kind: 'manager',
@@ -223,7 +222,6 @@ export class OperationService {
           };
           return this.http.post(this.nodeURL + '/blocks/head/proto/helpers/forge/operations', fop)
             .flatMap((opbytes: any) => {
-              // console.log('Unsigned operation: ' + opbytes.operation);
               if (!keys.sk) { // If sk doesn't exist, return unsigned operation
               return of(
                 {
@@ -270,6 +268,9 @@ export class OperationService {
       pk: this.b58cencode(keyPair.publicKey, this.prefix.edpk),
       pkh: this.b58cencode(libs.crypto_generichash(20, keyPair.publicKey), this.prefix.tz1)
     };
+  }
+  generateMnemonic(): string {
+    return bip39.generateMnemonic(160);
   }
   pk2pkh(pk: string): string {
     const pkDecoded = this.b58cdecode(pk, this.prefix.edpk);

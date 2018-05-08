@@ -32,9 +32,12 @@ export class UpdateCoordinatorService {
     for (let i = 0; i < this.walletService.wallet.accounts.length; i++) {
       this.start(this.walletService.wallet.accounts[i].pkh);
     }
+  }
+  startXTZ() {
     if (!this.tzrateInterval) {
-    this.tzrateService.getTzrate();
-    this.tzrateInterval = setInterval(() => this.tzrateService.getTzrate(), this.defaultDelayPrice);
+      this.tzrateService.getTzrate();
+      this.tzrateInterval = setInterval(() => this.tzrateService.getTzrate(), this.defaultDelayPrice);
+      console.log('Start scheduler XTZ');
     }
   }
   async start(pkh: string) {
@@ -99,7 +102,6 @@ export class UpdateCoordinatorService {
             break;
           }
         }
-        // console.log('response from transaction(): ' + JSON.stringify(ans));
     },
       err => console.log('Error in start()'),
       () => console.log('account[' + this.walletService.getIndexFromPkh(pkh) + '][' + this.scheduler.get(pkh).state + ']: <<')
@@ -124,11 +126,13 @@ export class UpdateCoordinatorService {
     this.scheduler.set(pkh, scheduleData);
   }
   stopAll() {
-    console.log('Stop all schedulers');
-    for (let i = 0; i < this.walletService.wallet.accounts.length; i++) {
-      this.stop(this.walletService.wallet.accounts[i].pkh);
+    if (this.walletService.wallet) {
+      console.log('Stop all schedulers');
+      for (let i = 0; i < this.walletService.wallet.accounts.length; i++) {
+        this.stop(this.walletService.wallet.accounts[i].pkh);
+      }
+      clearInterval(this.tzrateInterval);
     }
-    clearInterval(this.tzrateInterval);
   }
   async stop(pkh) {
     console.log('Stop scheduler ' + this.walletService.getIndexFromPkh(pkh));

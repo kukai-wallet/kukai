@@ -12,6 +12,8 @@ import { ImportService } from '../../services/import.service';
 export class ImportComponent implements OnInit {
   activePanel = 0;
   @Input() encryptedWallet = '';
+  @Input() pkh = '';
+  @Input() pk = '';
   data = {
     seed: '',
     salt: ''
@@ -25,6 +27,15 @@ export class ImportComponent implements OnInit {
   }
   importFromTextbox() {
     this.import(this.encryptedWallet);
+  }
+  importFromPkh() {
+    console.log('Call import service');
+    this.importService.importWalletFromPkh(this.pkh);
+    this.router.navigate(['/overview']);
+  }
+  importFromPk() {
+    this.importService.importWalletFromPk(this.pk);
+    this.router.navigate(['/overview']);
   }
   import(keyFile: string) {
     if (this.importService.importWalletData(keyFile)) {
@@ -49,7 +60,6 @@ export class ImportComponent implements OnInit {
 
         };
       }
-    // }
   }
 
   validateFile(name: String) {

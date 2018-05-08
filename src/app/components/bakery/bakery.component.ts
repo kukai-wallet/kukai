@@ -19,6 +19,8 @@ export class BakeryComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-        this.activityService.getDelegates();
+        if (this.walletService.wallet) {
+            this.activityService.getDelegates();
+        }
     }
 }
