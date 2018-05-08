@@ -13,7 +13,7 @@ export class BackupComponent implements OnInit, OnDestroy {
     showFileButton = false;
     saveSuccessfully = false;
     pk = '';
-    wait = '';
+    wait = 0;
 
     constructor(private walletService: WalletService) { }
 
@@ -37,7 +37,7 @@ export class BackupComponent implements OnInit, OnDestroy {
         this.pwd3 = '';
         if (pwd) {
             let keys;
-            this.wait = true;
+            this.wait = 1;
             setTimeout(() => {
                 if (this.walletService.isPasswordProtected()) {
                 keys = this.walletService.getKeys(pwd, null);
@@ -46,7 +46,7 @@ export class BackupComponent implements OnInit, OnDestroy {
                 }
                 this.pk = keys.pk;
                 console.log(keys.pk);
-                this.wait = false;
+                this.wait = 0;
             }, 100);
         }
     }
