@@ -32,6 +32,7 @@ export class UpdateCoordinatorService {
     for (let i = 0; i < this.walletService.wallet.accounts.length; i++) {
       this.start(this.walletService.wallet.accounts[i].pkh);
     }
+    this.startXTZ();
   }
   startXTZ() {
     if (!this.tzrateInterval) {

@@ -164,6 +164,15 @@ export class WalletService {
       return false;
     }
   }
+  type(): string {
+    if (!this.wallet.seed) {
+      return 'ReadOnlyWallet';
+    }
+    if (this.wallet.seed.slice(0, 4) === 'edpk') {
+      return 'HalfWallet';
+    }
+    return 'FullWallet';
+  }
   exportKeyStore() {
     return {provider: 'Kukai', type: 'FullWallet', version: '1.0', seed: this.wallet.seed,
     passphrase: this.isPassphraseProtected(), pkh: this.wallet.accounts[0].pkh};

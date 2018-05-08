@@ -78,7 +78,7 @@
             </div>
         </span>
         <!-- Shared Action buttons -->
-        <div class="row row-buttons">
+        <div class="row row-buttons" *ngIf="this.walletService.type() !== 'ReadOnlyWallet'">
                 <div class="btn-group btn-group-sm">
                     <app-send [activePkh]="selectedPkh" [actionButtonString]="'btnOutline'"></app-send>
                     <button type="button" class="btn btn-outline-primary btn-op">Receive</button>

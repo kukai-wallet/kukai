@@ -217,7 +217,7 @@ export class ActivityService {
     );
   }
   handleDelegateResponse(pkh: string, data: any) {
-    console.log(JSON.stringify(data));
+    // console.log(JSON.stringify(data));
     if (data.delegate.value) {
       const index = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
       if (index === -1) {
