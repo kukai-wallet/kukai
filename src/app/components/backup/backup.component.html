@@ -52,9 +52,25 @@
         <input type="password" class="form-control mb-2 mr-sm-2" id="inlineFormInputPassword2" placeholder="Password" aria-describedby="passwordHelpInline">
 
         <button type="submit" class="btn btn-clear btn-second mb-2 mr-sm-2" (click)="revealFileButton()">Decrypt</button>
-        <button type="button" class="btn btn-clear btn-second mb-2 mr-sm-2" aria-describedby="saveFileButton" *ngIf="showFileButton" (click)="saveFile()">Save File</button>
+        <button type="button" class="btn btn-clear btn-second mb-2 mr-sm-2" aria-describedby="saveFileButton" *ngIf="showFileButton" (click)="saveFile()">Download</button>
+
         <small id="saveFileButton" class="text-success" *ngIf="saveSuccessfully">
             File has been saved - please store it safely
+        </small>
+    </form>
+    <BR>
+    <!-- Export PK -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h3>3. Show Publik Key</h3>
+        </div>
+    </div>
+    <form class="form-inline">
+        <label class="sr-only" for="inlineFormInputPassword3">Password</label>
+        <input type="password" class="form-control mb-2 mr-sm-2" [(ngModel)]="pwd3" name="pwd3" placeholder="Password" aria-describedby="passwordHelpInline">
+        <button type="submit" id="pkDecrypt" class="btn btn-clear btn-second mb-2 mr-sm-2" [class.wait]="wait === pk" (click)="decryptPk()">Decrypt</button>
+        <small *ngIf="pk">
+            {{ pk }}
         </small>
     </form>
 </div>

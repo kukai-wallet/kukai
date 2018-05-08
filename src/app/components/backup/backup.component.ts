@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { WalletService } from '../../services/wallet.service';
 
 @Component({
@@ -8,9 +8,12 @@ import { WalletService } from '../../services/wallet.service';
 })
 
 export class BackupComponent implements OnInit, OnDestroy {
+    @Input() pwd3 = '';
     mySeed = '';
     showFileButton = false;
     saveSuccessfully = false;
+    pk = '';
+    wait = '';
 
     constructor(private walletService: WalletService) { }
 
@@ -29,7 +32,24 @@ export class BackupComponent implements OnInit, OnDestroy {
     saveFile() {
         this.saveSuccessfully = true;
     }
-
+    decryptPk() {
+        const pwd = this.pwd3;
+        this.pwd3 = '';
+        if (pwd) {
+            let keys;
+            this.wait = true;
+            setTimeout(() => {
+                if (this.walletService.isPasswordProtected()) {
+                keys = this.walletService.getKeys(pwd, null);
+                } else {
+                keys = this.walletService.getKeys(null, pwd);
+                }
+                this.pk = keys.pk;
+                console.log(keys.pk);
+                this.wait = false;
+            }, 100);
+        }
+    }
     ngOnDestroy() {
         this.mySeed = '';
         this.showFileButton = false;
