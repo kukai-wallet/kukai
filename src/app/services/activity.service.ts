@@ -129,7 +129,7 @@ export class ActivityService {
             block: data[i].block_hash,
             source: data[i].type.source,
             destination: data[i].type.tz1,
-            amount: data[i].type.credit,
+            amount: data[i].type.credit * -1,
             fee: data[i].type.fee,
             timestamp: null,
             type: type

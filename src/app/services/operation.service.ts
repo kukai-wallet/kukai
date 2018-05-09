@@ -78,7 +78,7 @@ export class OperationService {
                 },
                 {
                   kind: 'origination',
-                  managerPubkey: pkh,
+                  managerPubkey: keys.pkh,
                   balance: (amount * this.toMicro).toString(),
                   spendable: true,
                   delegatable: true

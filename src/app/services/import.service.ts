@@ -50,17 +50,21 @@ export class ImportService {
     this.walletService.addAccount(pkh);
     this.findNumberOfAccounts(pkh);
   }
-  findNumberOfAccounts(pkh: string) {
+  async findNumberOfAccounts(pkh: string) {
     if (pkh) {
       console.log('Find accounts...');
       console.log('pkh: ' + pkh);
       this.http.get('http://zeronet-api.tzscan.io/v1/number_operations/' + pkh + '?type=Origination').subscribe(
-        data => this.findAccounts(pkh, data[0]),
+        data => {
+          if (data[0]) {
+            this.findAccounts(pkh, data[0]);
+          }
+        },
         err => this.messageService.addError('ImportError(2)' + JSON.stringify(err))
       );
     }
   }
-  findAccounts(pkh: string, n: number) {
+  async findAccounts(pkh: string, n: number) {
     console.log('Accounts found: ' + n);
     this.updateCoordinatorService.start(pkh);
     this.updateCoordinatorService.startXTZ();
@@ -70,6 +74,7 @@ export class ImportService {
           this.walletService.addAccount(data[i].type.tz1);
           console.log('Added: ' + data[i].type.tz1);
           this.updateCoordinatorService.start(data[i].type.tz1);
+          this.findNumberOfAccounts(data[i].type.tz1); // Recursive call
         }
         this.walletService.storeWallet();
       },

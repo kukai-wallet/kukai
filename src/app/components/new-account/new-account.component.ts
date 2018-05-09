@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild, TemplateRef } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, TemplateRef, Input } from '@angular/core';
 import { WalletService } from '../../services/wallet.service';
 import { MessageService } from '../../services/message.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
@@ -14,9 +14,9 @@ import { UpdateCoordinatorService } from '../../services/update-coordinator.serv
 })
 export class NewAccountComponent implements OnInit {
   @ViewChild('modal1') modal1: TemplateRef<any>;
-  identity = this.walletService.wallet.accounts[0];
-  // accounts = this.walletService.wallet.accounts;
-  fromPkh: string;
+  @Input() activePkh: string;
+   // accounts = this.walletService.wallet.accounts;
+  accounts = null;
   amount: string;
   fee: string;
   password: string;
@@ -41,13 +41,13 @@ export class NewAccountComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    if (this.identity) {
+    if (this.walletService.wallet) {
       this.init();
     }
   }
 
   init() {
-    this.fromPkh = this.identity.pkh;
+    this.accounts = this.walletService.wallet.accounts;
   }
 
   open1(template1: TemplateRef<any>) {
@@ -107,12 +107,12 @@ export class NewAccountComponent implements OnInit {
     if (!amount) { amount = '0'; }
     if (!fee) { fee = '0'; }
     setTimeout(async () => {
-      this.operationService.originate(this.fromPkh, Number(amount), Number(fee), keys).subscribe(
+      this.operationService.originate(this.activePkh, Number(amount), Number(fee), keys).subscribe(
         (ans: any) => {
           if (ans.opHash) {
             this.sendResponse = 'success';
             this.walletService.addAccount(ans.newPkh);
-            this.updateCoordinatorService.boost(this.fromPkh);
+            this.updateCoordinatorService.boost(this.activePkh);
             this.updateCoordinatorService.start(ans.newPkh);
           } else {
             this.sendResponse = 'failure';

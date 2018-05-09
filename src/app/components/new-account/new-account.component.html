@@ -10,8 +10,8 @@
     <div class="modal-body">
             <div class="form-group">
             <label for="fromAdress">Fund from:</label>
-                <select [(ngModel)]="fromPkh" id="fromAdress" class="form-control">
-                    <option [value]="identity.pkh">{{ identity.pkh }} ({{ identity.balance / 100 | number:'1.0' }}ꜩ)</option>
+            <select [(ngModel)]="activePkh" id="fromAdress" class="form-control mono" name="first">
+                    <option *ngFor="let account of accounts" [ngValue]="account.pkh">{{ account.pkh }}</option>
                 </select>
             </div>
             <div class="row">
@@ -38,7 +38,7 @@
         </button>
     </div>
     <div class="modal-body">
-        <p>From: {{ fromPkh }}<BR>
+        <p>From: {{ activePkh }}<BR>
             Amount: {{ amount | number:'1.0' }}ꜩ<BR>
             Fee: {{ fee | number:'1.0' }}ꜩ<BR>
         </p>
@@ -80,4 +80,4 @@
     </div>
 </ng-template>
 
-<button *ngIf='identity' type="button" href (click)="open1(modal1)" class="btn btn-sm btn-outline-primary btn-op">New account</button>
+<button *ngIf='accounts' type="button" href (click)="open1(modal1)" class="btn btn-sm btn-outline-primary btn-op">New account</button>
