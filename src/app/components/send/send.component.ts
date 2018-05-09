@@ -204,8 +204,10 @@ export class SendComponent implements OnInit {
                   console.log(JSON.stringify(ans));
                   this.sendResponse = ans;
                   if (ans.success === true) {
-                    this.updateCoordinatorService.boost(this.activePkh);
-                    this.updateCoordinatorService.boost(toPkh);
+                      if (ans.payload.opHash) {
+                        this.updateCoordinatorService.boost(this.activePkh);
+                        this.updateCoordinatorService.boost(toPkh);
+                      }
                   }
                 },
                 err => {

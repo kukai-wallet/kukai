@@ -11,8 +11,20 @@ export class ExportService {
   ) { }
   downloadWallet(data = this.walletService.exportKeyStore()) {
     const blob = new Blob([JSON.stringify(data, null, 4)], { type: 'application/json' });
-    const filename = 'wallet.tez';
+    let filename = 'wallet.tez';
+    if (data.walletType === 1) {
+      filename = 'view-only_wallet.tez';
+    } else if (data.walletType === 2) {
+      filename = 'observer_wallet.tez';
+    }
     saveAs(blob, filename);
+  }
+  downloadViewOnlyWallet(pk: string) {
+    const keyStore = this.walletService.exportKeyStore();
+    keyStore.data = pk;
+    keyStore.passphrase = false;
+    keyStore.walletType = WalletType.ViewOnlyWallet;
+    this.downloadWallet(keyStore);
   }
   downloadOperationData(hex: string, signed: boolean) {
     const data = {

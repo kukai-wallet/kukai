@@ -17,7 +17,7 @@
             Balance: {{ balance / 1000000 | number:'1.0' }} ꜩ <span *ngIf="balanceUSD > 0">(${{ balanceUSD | number:'1.00'}} USD)</span>
         </div>
     </div>
-    <button (click)='triggerOperationReload()'>triggerOperationReload()</button>
+    <!--<button (click)='triggerOperationReload()'>triggerOperationReload()</button>-->
     <div class="row">
         <app-activity [activePkh]="activePkh"></app-activity> 
     </div>

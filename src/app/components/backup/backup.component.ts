@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { WalletService } from '../../services/wallet.service';
 import { ExportService } from '../../services/export.service';
+import { MessageService } from '../../services/message.service';
 
 @Component({
     selector: 'app-backup',
@@ -18,7 +19,8 @@ export class BackupComponent implements OnInit, OnDestroy {
 
     constructor(
         private walletService: WalletService,
-        private exportService: ExportService
+        private exportService: ExportService,
+        private messageService: MessageService
     ) { }
 
     ngOnInit() {
@@ -34,6 +36,7 @@ export class BackupComponent implements OnInit, OnDestroy {
     }
 
     saveFile() {
+        this.messageService.addSuccess('Exporting Wallet to file...');
         this.exportService.downloadWallet();
     }
     decryptPk() {
@@ -42,16 +45,16 @@ export class BackupComponent implements OnInit, OnDestroy {
         if (pwd) {
             let keys;
             this.wait = 1;
+            this.messageService.addSuccess('Exporting View-only Wallet to file...');
             setTimeout(() => {
                 if (this.walletService.isPasswordProtected()) {
                 keys = this.walletService.getKeys(pwd, null);
                 } else {
                 keys = this.walletService.getKeys(null, pwd);
                 }
-                this.pk = keys.pk;
-                console.log(keys.pk);
+                this.exportService.downloadViewOnlyWallet(keys.pk);
                 this.wait = 0;
-            }, 100);
+            }, 200);
         }
     }
     ngOnDestroy() {

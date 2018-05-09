@@ -47,6 +47,9 @@ export class BalanceService {
   }
   updateAccountBalance(index: number, newBalance: number) {
     if (newBalance !== this.walletService.wallet.accounts[index].balance.balanceXTZ) {
+      if (this.walletService.wallet.accounts[index].balance.balanceXTZ) {
+        this.messageService.add('Balance updated for: ' + this.walletService.wallet.accounts[index].pkh);
+      }
       this.walletService.wallet.accounts[index].balance.balanceXTZ = newBalance;
       this.updateTotalBalance();
       this.tzrateService.updateFiatBalances();

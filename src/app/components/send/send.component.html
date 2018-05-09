@@ -2,7 +2,6 @@
     <!-- SEND MODALS -->
     <!-- First Modal -->
     <ng-template #modal1>
-
         <div class="modal-header">
             <h4 class="modal-title pull-left">Send tezzies</h4>
             <button type="button" class="close pull-right" aria-label="Close" (click)="close1()">
@@ -14,11 +13,10 @@
                 <div class="form-row">
                     <div class="form-group col-md-8">
                         <label for="fromAdress">From Address</label> 
-                        <select [(ngModel)]="activePkh" id="fromAdress" class="form-control" name="first">
+                        <select [(ngModel)]="activePkh" id="fromAdress" class="form-control mono" name="first">
                             <option *ngFor="let account of accounts" [ngValue]="account.pkh">{{ account.pkh }}</option>
                         </select>
                     </div>
-
                     <div class="form-group col-md-4 text-right">
                         <label for="staticBalance" class="text-right">Current Balance</label>
                         <input type="text" readonly class="form-control-plaintext text-color" id="staticBalance" [value]="showAccountBalance(activePkh)">
@@ -27,9 +25,9 @@
                 </div>
 
                 <div class="form-row">
-                    <div class="form-group col-md-8">
+                    <div class="form-group col-md-12">
                         <label for="toAdress">To Address</label>
-                        <input type="text" class="form-control" id="toAddress" placeholder="" [(ngModel)]="toPkh" name="second">
+                        <input type="text" class="form-control mono" id="toAddress" placeholder="" [(ngModel)]="toPkh" name="second">
                     </div>
                 </div>
 
@@ -59,7 +57,6 @@
                 <button type="button" class="btn btn-primary btn-lg" id="sub" (click)="open2(modal2)">Send</button>
             </div>
         </div>
-
     </ng-template>
 
     <!-- Confirmation Modal -->
@@ -113,7 +110,7 @@
                     </ng-container>
                     <ng-container *ngIf='sendResponse.payload.unsignedOperation'>
                         <p>Your unsigned transaction have successfully been created</p>
-                        <p>{{ sendResponse.payload.unsignedOperation }}</p>
+                        <!--<p>{{ sendResponse.payload.unsignedOperation }}</p>-->
                     </ng-container>
                 </div>
                 <div *ngIf='sendResponse.success === false'>

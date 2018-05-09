@@ -64,7 +64,7 @@ export class UpdateCoordinatorService {
       this.update(pkh);
       const counter = this.scheduler.get(pkh).stateCounter;
       setTimeout(() => { // Failsafe
-        if (this.scheduler.get(pkh).stateCounter === counter) {
+        if (this.scheduler && this.scheduler.get(pkh).stateCounter === counter) {
           console.log('Timeout from wait state');
           this.changeState(pkh, State.UpToDate);
         }

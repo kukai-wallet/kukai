@@ -26,7 +26,7 @@ export class ImportService {
   async importWalletData(json: string): Promise<boolean> {
     try {
       const walletData = JSON.parse(json);
-      if (walletData.provider !== 'Kukai' || walletData.type !== 'FullWallet') {
+      if (walletData.provider !== 'Kukai') {
         throw new Error(`Unsupported wallet format`);
       }
       this.walletService.wallet = this.walletService.emptyWallet();

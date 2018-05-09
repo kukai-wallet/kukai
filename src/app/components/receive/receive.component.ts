@@ -71,10 +71,12 @@ export class ReceiveComponent implements OnInit {
     }
 
     open1(template1: TemplateRef<any>) {
-        this.modalRef1 = this.modalService.show(template1, { class: 'modal-sm' });
-        setTimeout(() => {
-        this.getQR();
-        }, 100);
+        if (this.activePkh) {
+            this.modalRef1 = this.modalService.show(template1, { class: 'modal-sm' });
+            setTimeout(() => {
+            this.getQR();
+            }, 100);
+        }
     }
 
     close1() {
