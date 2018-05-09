@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MessageService } from './message.service';
-import { Wallet, Account, Balance, KeyPair } from './../interfaces';
+import { Wallet, Account, Balance, KeyPair, WalletType } from './../interfaces';
 import { EncryptionService } from './encryption.service';
 import { OperationService } from './operation.service';
 // import * as lib from '../../assets/js/main.js';
@@ -89,6 +89,23 @@ export class WalletService {
         return this.operationService.generateKeys(mnemonic, '');
     }
   }
+  getKeysHelper(pwd: string): KeyPair {
+    let keys;
+    if (this.type() === WalletType.FullWallet) {
+        if (this.isPasswordProtected()) {
+        keys = this.getKeys(pwd, null);
+        } else {
+        keys = this.getKeys(null, pwd);
+        }
+    } else if (this.type() === WalletType.ViewOnlyWallet) {
+        keys = {
+            sk: null,
+            pk: this.wallet.seed,
+            pkh: this.wallet.accounts[0].pkh
+        };
+    }
+    return keys;
+  }
   /*
     Clear wallet data from browser
   */
@@ -149,17 +166,35 @@ export class WalletService {
       return false;
     }
   }
-  type(): string {
+  isFullWallet(): boolean {
+    if (this.type() === WalletType.FullWallet) {
+      return true;
+    }
+    return false;
+  }
+  isViewOnlyWallet(): boolean {
+    if (this.type() === WalletType.ViewOnlyWallet) {
+      return true;
+    }
+    return false;
+  }
+  isObserverWallet(): boolean {
+    if (this.type() === WalletType.ObserverWallet) {
+      return true;
+    }
+    return false;
+  }
+  type(): WalletType {
     if (!this.wallet.seed) {
-      return 'ReadOnlyWallet';
+      return WalletType.ObserverWallet;
     }
     if (this.wallet.seed.slice(0, 4) === 'edpk') {
-      return 'HalfWallet';
+      return WalletType.ViewOnlyWallet;
     }
-    return 'FullWallet';
+    return WalletType.FullWallet;
   }
   exportKeyStore() {
-    return {provider: 'Kukai', type: 'FullWallet', version: '1.0', seed: this.wallet.seed,
+    return {provider: 'Kukai', walletType: this.type(), version: 1.0, data: this.wallet.seed,
     passphrase: this.isPassphraseProtected(), pkh: this.wallet.accounts[0].pkh};
   }
 }

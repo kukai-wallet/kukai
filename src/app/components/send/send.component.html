@@ -78,10 +78,14 @@
             </p>
             <div class="row">
                 <div class="form-group col-md-6">
-                    <label for="pwd">Password:</label>
-                    <input [(ngModel)]="password" type="password" id="pwd" class="form-control">
+                    <label for="pwd">
+                        <ng-container *ngIf="walletService.isPasswordProtected()">Password:</ng-container>
+                        <ng-container *ngIf="walletService.isPassphraseProtected()">Passphrase:</ng-container>
+                    </label>
+                    <input *ngIf='walletService.isFullWallet()' [(ngModel)]="password" type="password" id="pwd" class="form-control">
                 </div>
             </div>
+
             <button type="button" class="btn btn-primary" id="sub" (click)="open3(modal3)">Confirm</button>
             {{ pwdValid }}
         </div>
@@ -99,14 +103,25 @@
             <div *ngIf='!sendResponse'>
                 Please wait...
             </div>
-            <div *ngIf='sendResponse === "success"'>
-                <i class="fa fa-check-circle"></i>
-                <br><br>
-                <p>Your transaction has been successfully broadcasted to the network</p>
+            <ng-container *ngIf='sendResponse'>
+                <div *ngIf='sendResponse.success === true'>
+                    <i class="fa fa-check-circle"></i>
+                    <br><br>
+                    <ng-container *ngIf='sendResponse.payload.opHash'>
+                        <p>Your transaction has been successfully broadcasted to the network</p>
+                        <p>{{ sendResponse.payload.opHash }}</p>
+                    </ng-container>
+                    <ng-container *ngIf='sendResponse.payload.unsignedOperation'>
+                        <p>Your unsigned transaction have successfully been created</p>
+                        <p>{{ sendResponse.payload.unsignedOperation }}</p>
+                    </ng-container>
+                </div>
+                <div *ngIf='sendResponse.success === false'>
+                    <p>Failure!</p>
+                    <p>{{ sendResponse.payload.msg }}</p>
             </div>
-            <div *ngIf='sendResponse === "failure"'>
-                Failure!
-            </div>
+            <button *ngIf='sendResponse.payload.unsignedOperation' type="button" class="btn btn-primary" (click)="download()">Download</button>
+            </ng-container>
             <button type="button" class="btn btn-primary" id="sub" (click)="close3()">Close</button>
         </div>
     </ng-template>

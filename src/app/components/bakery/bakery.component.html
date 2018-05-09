@@ -58,7 +58,7 @@
                     </div>
                 </span>
             </div>
-            <div class="col-sm-auto col-border" *ngIf="this.walletService.type() !== 'ReadOnlyWallet'">
+            <div class="col-sm-auto col-border" *ngIf="!this.walletService.isObserverWallet()">
                     <app-delegate [activePkh]="account.pkh"></app-delegate>
                 <!--<button type="button" class="btn btn-sm btn-clear btn-second" (click)='setDelegate(account)'>Delegate</button>-->
             </div>

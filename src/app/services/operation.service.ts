@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { of } from 'rxjs/observable/of';
+import { catchError } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
 import { Buffer } from 'buffer';
 import * as libs from 'libsodium-wrappers';
@@ -160,7 +161,10 @@ export class OperationService {
               if (!keys.sk) { // If sk doesn't exist, return unsigned operation
               return of(
                 {
-                  unsignedOperation: opbytes.operation
+                  success: true,
+                    payload: {
+                    unsignedOperation: opbytes.operation
+                    }
                 });
               } else { // If sk exists, sign and broadcast operation
                 return this.http.post(this.nodeURL + '/blocks/head/predecessor', {})
@@ -184,17 +188,30 @@ export class OperationService {
                         .flatMap((final: any) => {
                           return of(
                             {
-                              opHash: final.injectedOperation,
-                              unsignedOperation: null
+                              success: true,
+                              payload: {
+                                opHash: final.injectedOperation,
+                                unsignedOperation: null
+                              }
                             });
                         });
                     });
                 });
               }
-          });
-      });
-  });
-}
+            });
+        });
+    }).pipe(catchError(err => this.errHandler(err)));
+  }
+  errHandler(error: any): Observable<any> {
+    return of(
+      {
+        success: false,
+        payload: {
+          msg: error
+        }
+      }
+    );
+  }
   /*
     Returns an observable for the delegation of baking rights.
   */

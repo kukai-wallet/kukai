@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { WalletService } from '../../services/wallet.service';
+import { ExportService } from '../../services/export.service';
 
 @Component({
     selector: 'app-backup',
@@ -15,7 +16,10 @@ export class BackupComponent implements OnInit, OnDestroy {
     pk = '';
     wait = 0;
 
-    constructor(private walletService: WalletService) { }
+    constructor(
+        private walletService: WalletService,
+        private exportService: ExportService
+    ) { }
 
     ngOnInit() {
 
@@ -30,7 +34,7 @@ export class BackupComponent implements OnInit, OnDestroy {
     }
 
     saveFile() {
-        this.saveSuccessfully = true;
+        this.exportService.downloadWallet();
     }
     decryptPk() {
         const pwd = this.pwd3;

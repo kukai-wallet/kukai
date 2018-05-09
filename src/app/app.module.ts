@@ -19,6 +19,7 @@ import { BalanceService } from './services/balance.service';
 import { EncryptionService } from './services/encryption.service';
 import { ImportService } from './services/import.service';
 import { TzrateService } from './services/tzrate.service';
+import { ExportService } from './services/export.service';
 
 import { AppComponent } from './app.component';
 
@@ -89,7 +90,8 @@ import { BakeryComponent } from './components/bakery/bakery.component';
     PositioningService,
     TzrateService,
     UpdateCoordinatorService,
-    OperationService
+    OperationService,
+    ExportService
   ],
   bootstrap: [AppComponent]
 })

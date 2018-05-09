@@ -26,7 +26,8 @@ export class UpdateCoordinatorService {
   constructor(
     private activityService: ActivityService,
     private tzrateService: TzrateService,
-    private walletService: WalletService
+    private walletService: WalletService,
+    private balanceService: BalanceService
   ) { }
   startAll() {
     for (let i = 0; i < this.walletService.wallet.accounts.length; i++) {
@@ -39,6 +40,7 @@ export class UpdateCoordinatorService {
       console.log('Start scheduler XTZ');
       this.tzrateService.getTzrate();
       this.tzrateInterval = setInterval(() => this.tzrateService.getTzrate(), this.defaultDelayPrice);
+      this.balanceService.getBalanceAll();
     }
   }
   async start(pkh: string) {

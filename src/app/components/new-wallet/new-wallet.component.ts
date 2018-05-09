@@ -2,10 +2,10 @@ import { Component, OnInit, Input, Query, HostListener } from '@angular/core';
 import { WalletService } from '../../services/wallet.service';
 import { MessageService } from '../../services/message.service';
 import { ChangeDetectorRef } from '@angular/core';
-import { saveAs } from 'file-saver/FileSaver';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/fromEvent';
 import * as bip39 from 'bip39';
+import { ExportService } from '../../services/export.service';
 
 // import { Router } from '@angular/router';
 
@@ -67,6 +67,7 @@ export class NewWalletComponent implements OnInit {
   }
   constructor(private walletService: WalletService,
     private messageService: MessageService,
+    private exportService: ExportService,
     private cdRef: ChangeDetectorRef) { }
 
   ngOnInit() {
@@ -128,8 +129,7 @@ export class NewWalletComponent implements OnInit {
     return JSON.stringify(this.data);
   }
   download() {
-    const blob = new Blob([JSON.stringify(this.data)], { type: 'application/json' });
-    saveAs(blob, this.data.pkh + '.ekf');
+    this.exportService.downloadWallet(this.data);
     this.ekfDownloaded = true;
   }
 }

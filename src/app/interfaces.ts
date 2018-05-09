@@ -33,3 +33,8 @@ export interface Balance {
   balanceFiat: number | null;
   pendingFiat: number | null;
 }
+export enum WalletType {
+  FullWallet,
+  ViewOnlyWallet,
+  ObserverWallet
+}

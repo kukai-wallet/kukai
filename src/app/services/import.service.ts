@@ -31,7 +31,7 @@ export class ImportService {
       }
       this.walletService.wallet = this.walletService.emptyWallet();
       this.walletService.addAccount(walletData.pkh);
-      this.walletService.wallet.seed = walletData.seed;
+      this.walletService.wallet.seed = walletData.data;
       this.walletService.wallet.passphrase = walletData.passphrase;
       await this.findNumberOfAccounts(walletData.pkh);
       return true;

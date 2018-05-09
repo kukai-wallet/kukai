@@ -48,15 +48,8 @@
         </div>
     </div>
     <form class="form-inline">
-        <label class="sr-only" for="inlineFormInputPassword2">Password</label>
-        <input type="password" class="form-control mb-2 mr-sm-2" id="inlineFormInputPassword2" placeholder="Password" aria-describedby="passwordHelpInline">
+        <button type="button" class="btn btn-clear btn-second mb-2 mr-sm-2" aria-describedby="saveFileButton" (click)="saveFile()">Download</button>
 
-        <button type="submit" class="btn btn-clear btn-second mb-2 mr-sm-2" (click)="revealFileButton()">Decrypt</button>
-        <button type="button" class="btn btn-clear btn-second mb-2 mr-sm-2" aria-describedby="saveFileButton" *ngIf="showFileButton" (click)="saveFile()">Download</button>
-
-        <small id="saveFileButton" class="text-success" *ngIf="saveSuccessfully">
-            File has been saved - please store it safely
-        </small>
     </form>
     <BR>
     <!-- Export PK -->
