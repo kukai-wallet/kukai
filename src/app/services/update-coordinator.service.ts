@@ -9,6 +9,7 @@ export interface ScheduleData {
   state: State;
   interval: any;
   stateCounter: number;
+  changedDelegate?: boolean;
 }
 enum State {
   UpToDate,
@@ -53,12 +54,17 @@ export class UpdateCoordinatorService {
       };
       this.scheduler.set(pkh, scheduleData);
       this.update(pkh);
+      if (this.walletService.wallet.accounts[0].pkh !== pkh) {
+        this.activityService.getDelegate(pkh);
+      }
     }
   }
-  async boost(pkh: string) { // Expect action
+  async boost(pkh: string, changedDelegate?: boolean) { // Expect action
     if (this.walletService.getIndexFromPkh(pkh) !== -1) {
       if (!this.scheduler.get(pkh)) {
         await this.start(pkh);
+      } if (changedDelegate) {
+      this.setChangedDelegate(pkh);
       }
       this.changeState(pkh, State.Wait);
       this.update(pkh);
@@ -113,6 +119,11 @@ export class UpdateCoordinatorService {
   changeState(pkh: string, newState: State) {
     const scheduleData: ScheduleData = this.scheduler.get(pkh);
     scheduleData.state = newState;
+    if (newState === State.UpToDate && scheduleData.changedDelegate) { // Update delegate
+      console.log('Looking for new delegate for ' + pkh);
+      this.activityService.getDelegate(pkh);
+      this.clearChangedDelegate(pkh);
+    }
     if (newState === State.Wait || newState === State.Updating) {
       clearInterval(scheduleData.interval);
       scheduleData.interval = setInterval(() => this.update(pkh), this.shortDelayActivity);
@@ -126,6 +137,16 @@ export class UpdateCoordinatorService {
       clearInterval(scheduleData.interval);
     }
     scheduleData.interval = setInterval(() => this.update(pkh), time);
+    this.scheduler.set(pkh, scheduleData);
+  }
+  setChangedDelegate(pkh: string) {
+    const scheduleData: ScheduleData = this.scheduler.get(pkh);
+    scheduleData.changedDelegate = true;
+    this.scheduler.set(pkh, scheduleData);
+  }
+  clearChangedDelegate(pkh: string) {
+    const scheduleData: ScheduleData = this.scheduler.get(pkh);
+    scheduleData.changedDelegate = undefined;
     this.scheduler.set(pkh, scheduleData);
   }
   stopAll() {
