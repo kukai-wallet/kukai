@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { WalletService } from '../../services/wallet.service';
 import { MessageService } from '../../services/message.service';
 import { ActivityService } from '../../services/activity.service';
-import { UpdateCoordinatorService } from '../../services/update-coordinator.service';
+import { UpdateCoordinatorService } from '../../services/coordinator.service';
 import { Router } from '@angular/router';
 
 @Component({

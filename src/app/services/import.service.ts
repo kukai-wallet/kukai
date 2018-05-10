@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { MessageService } from './message.service';
 import { BalanceService } from './balance.service';
 import * as bip39 from 'bip39';
-import { UpdateCoordinatorService } from './update-coordinator.service';
+import { UpdateCoordinatorService } from './coordinator.service';
 import { OperationService } from './operation.service';
 
 const httpOptions = {

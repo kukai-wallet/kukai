@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { WalletService } from '../../services/wallet.service';
 import { MessageService } from '../../services/message.service';
 import { BalanceService } from '../../services/balance.service';
-import { UpdateCoordinatorService } from '../../services/update-coordinator.service';
+import { UpdateCoordinatorService } from '../../services/coordinator.service';
 import * as copy from 'copy-to-clipboard';
 
 @Component({

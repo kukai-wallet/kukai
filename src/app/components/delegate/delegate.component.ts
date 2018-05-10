@@ -2,7 +2,7 @@ import { Component, TemplateRef, OnInit, ViewEncapsulation, Input, ViewChild, El
 
 import { WalletService } from '../../services/wallet.service';
 import { MessageService } from '../../services/message.service';
-import { UpdateCoordinatorService } from '../../services/update-coordinator.service';
+import { UpdateCoordinatorService } from '../../services/coordinator.service';
 import { OperationService } from '../../services/operation.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';

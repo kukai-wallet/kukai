@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { WalletService } from './services/wallet.service';
-import { UpdateCoordinatorService } from './services/update-coordinator.service';
+import { UpdateCoordinatorService } from './services/coordinator.service';
 
 @Component({
   selector: 'app-root',

@@ -1,6 +1,6 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { UpdateCoordinatorService } from './update-coordinator.service';
+import { UpdateCoordinatorService } from './coordinator.service';
 
 describe('UpdateCoordinatorService', () => {
   beforeEach(() => {

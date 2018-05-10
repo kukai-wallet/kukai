@@ -6,7 +6,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-6">
+        <div class="col-6 mono">
             <select [(ngModel)]="activePkh" (change)="updateBalance()" id="fromAdress" class="form-control">
                 <option *ngFor="let account of accounts" [value]="account.pkh">{{ account.pkh }}</option>
             </select>

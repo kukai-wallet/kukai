@@ -5,7 +5,7 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { KeyPair } from '../../interfaces';
 import { OperationService } from '../../services/operation.service';
-import { UpdateCoordinatorService } from '../../services/update-coordinator.service';
+import { UpdateCoordinatorService } from '../../services/coordinator.service';
 
 @Component({
   selector: 'app-new-account',

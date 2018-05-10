@@ -9,7 +9,10 @@
     min-height: 568px;
     background-color: white;
 }
-
+.mono {
+    font-family: "Courier New", Courier, monospace;
+    //font-family: "Lucida Console", Monaco, monospace;    
+}
 @media(min-width:768px) {
     #page-wrapper {
         position: inherit;

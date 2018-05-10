@@ -38,7 +38,7 @@
         </div>
 
         <div class="row" *ngFor="let account of walletService.wallet.accounts | slice:1">
-            <div class="col-sm-auto col-border border border-warning text-truncate min-size-address-cell">
+            <div class="col-sm-auto col-border border border-warning text-truncate min-size-address-cell mono">
                 {{ account.pkh }}
             </div>
             <div class="col-sm-auto col-border border border-warning text-truncate min-size-other-cell">
@@ -48,15 +48,8 @@
                 <span *ngIf="account.delegate">Yes</span>
                 <span *ngIf="!account.delegate">No</span>
             </div>-->
-            <div class="col-sm-auto col-border border border-warning text-truncate min-size-address-cell">
+            <div class="col-sm-auto col-border border border-warning text-truncate min-size-address-cell mono">
                 <span *ngIf="account.delegate">{{ account.delegate }}</span>
-                <span *ngIf="account.showDelegateInput">
-                    <div class="form-group no-margin">
-                        <select [(ngModel)]="delegateInput"  id="setDelegate" class="form-control" (ngModelChange)="showPassword(account)">
-                            <option *ngFor="let delegate of delegateList" [value]="delegate.pkh">{{ delegate.alias }}</option>
-                        </select>
-                    </div>
-                </span>
             </div>
             <div class="col-sm-auto col-border" *ngIf="!this.walletService.isObserverWallet()">
                     <app-delegate [activePkh]="account.pkh"></app-delegate>
