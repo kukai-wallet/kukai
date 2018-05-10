@@ -10,10 +10,12 @@ import { MessageService } from '../../services/message.service';
 })
 
 export class BackupComponent implements OnInit, OnDestroy {
+    @Input() pwd2 = '';
     @Input() pwd3 = '';
     mySeed = '';
     showFileButton = false;
     saveSuccessfully = false;
+    pwdType = '';
     pk = '';
     wait = 0;
 
@@ -24,11 +26,27 @@ export class BackupComponent implements OnInit, OnDestroy {
     ) { }
 
     ngOnInit() {
-
+        if (this.walletService.wallet && this.walletService.isFullWallet()) {
+            if (this.walletService.isPasswordProtected()) {
+                this.pwdType = 'Password';
+            } else if (this.walletService.isPassphraseProtected()) {
+                this.pwdType = 'Passphrase';
+            }
+        }
     }
 
     decryptSeed() {
-        this.mySeed = 'item similar grow aim monster kick debris empty early pelican senior history creek impulse slim';
+        if (this.pwd3) {
+            const pwd = this.pwd3;
+            this.pwd3 = '';
+            this.mySeed = this.walletService.getMnemonicHelper(pwd);
+            if (!this.mySeed) {
+                this.messageService.addError('Failed to reveal seed. Wrong password?');
+            }
+        }
+    }
+    clearSeed() {
+        this.mySeed = '';
     }
 
     revealFileButton() {
@@ -39,22 +57,18 @@ export class BackupComponent implements OnInit, OnDestroy {
         this.messageService.addSuccess('Exporting Wallet to file...');
         this.exportService.downloadWallet();
     }
-    decryptPk() {
-        const pwd = this.pwd3;
-        this.pwd3 = '';
+    async decryptPk() {
+        const pwd = this.pwd2;
+        this.pwd2 = '';
         if (pwd) {
             let keys;
-            this.wait = 1;
             this.messageService.addSuccess('Exporting View-only Wallet to file...');
-            setTimeout(() => {
-                if (this.walletService.isPasswordProtected()) {
-                keys = this.walletService.getKeys(pwd, null);
-                } else {
-                keys = this.walletService.getKeys(null, pwd);
-                }
+            if (this.walletService.isFullWallet()) {
+                this.wait = 1;
+                keys = this.walletService.getKeysHelper(pwd);
                 this.exportService.downloadViewOnlyWallet(keys.pk);
-                this.wait = 0;
-            }, 200);
+            }
+            // document.body.style.cursor = 'default';
         }
     }
     ngOnDestroy() {

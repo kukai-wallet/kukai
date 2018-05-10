@@ -277,7 +277,7 @@ export class OperationService {
       });
   });
   }
-  generateKeys(mnemonic: string, passphrase: string): KeyPair {
+  generateKeys(mnemonic: string, passphrase: string = ''): KeyPair {
     const seed = bip39.mnemonicToSeed(mnemonic, passphrase).slice(0, 32);
     const keyPair = libs.crypto_sign_seed_keypair(seed);
     return {

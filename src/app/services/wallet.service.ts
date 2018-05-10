@@ -38,7 +38,7 @@ export class WalletService {
   createEncryptedWallet(mnemonic: string, password: string): any {
     this.wallet = this.emptyWallet();
     this.wallet.accounts = [];
-    this.addAccount(this.operationService.generateKeys(mnemonic, '').pkh);
+    this.addAccount(this.operationService.generateKeys(mnemonic).pkh);
     this.wallet.seed = this.encryptionService.encrypt(bip39.mnemonicToEntropy(mnemonic), password, this.getSalt());
     return this.exportKeyStore();
   }
@@ -86,18 +86,18 @@ export class WalletService {
       if (passphrase) {
         return this.operationService.generateKeys(mnemonic, passphrase);
       } else {
-        return this.operationService.generateKeys(mnemonic, '');
+        return this.operationService.generateKeys(mnemonic);
     }
   }
   getKeysHelper(pwd: string): KeyPair {
     let keys;
-    if (this.type() === WalletType.FullWallet) {
+    if (this.isFullWallet()) {
         if (this.isPasswordProtected()) {
         keys = this.getKeys(pwd, null);
         } else {
         keys = this.getKeys(null, pwd);
         }
-    } else if (this.type() === WalletType.ViewOnlyWallet) {
+    } else if (this.isViewOnlyWallet()) {
         keys = {
             sk: null,
             pk: this.wallet.seed,
@@ -105,6 +105,20 @@ export class WalletService {
         };
     }
     return keys;
+  }
+  getMnemonicHelper(pwd: string): string {
+    try {
+      if (this.isFullWallet()) {
+        if (this.isPasswordProtected()) {
+          return bip39.entropyToMnemonic(this.encryptionService.decrypt(this.wallet.seed, pwd, this.getSalt()));
+        } else if (this.isPassphraseProtected()) {
+          return bip39.entropyToMnemonic(this.wallet.seed);
+        }
+      }
+    } catch (err) {
+      console.log('Error in getMnemonicHelper(): ' + err);
+    }
+    return '';
   }
   /*
     Clear wallet data from browser
@@ -145,13 +159,6 @@ export class WalletService {
   /*
   Used to decide wallet type
   */
-  isReadOnly() {
-    if (this.wallet.seed) {
-      return false;
-    } else {
-      return true;
-    }
-  }
   isPasswordProtected() {
     if (this.wallet.seed.slice(this.wallet.seed.length - 2, this.wallet.seed.length) === '==') {
       return true;
