@@ -7,7 +7,7 @@ export interface Wallet {
   seed: null|string;
   passphrase: boolean|null;
   balance: Balance;
-  XTZrate: number;
+  XTZrate: number | null;
   accounts: Account[];
 }
 export interface Account {
@@ -28,8 +28,13 @@ export interface Activity {
   type: string;
 }
 export interface Balance {
-  balanceXTZ: number;
-  pendingXTZ: number;
-  balanceFiat: number;
-  pendingFiat: number;
+  balanceXTZ: number | null;
+  pendingXTZ: number | null;
+  balanceFiat: number | null;
+  pendingFiat: number | null;
+}
+export enum WalletType {
+  FullWallet,
+  ViewOnlyWallet,
+  ObserverWallet
 }

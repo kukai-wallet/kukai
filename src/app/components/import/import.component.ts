@@ -12,59 +12,64 @@ import { ImportService } from '../../services/import.service';
 })
 
 export class ImportComponent implements OnInit {
-    activePanel = 0;
+  activePanel = 0;
+  @Input() encryptedWallet = '';
+  @Input() pkh = '';
+  @Input() pk = '';
+  data = {
+    seed: '',
+    salt: ''
+  };
+  constructor(private walletService: WalletService,
+    private router: Router,
+    private messageService: MessageService,
+    private importService: ImportService) { }
 
-    @Input() encryptedWallet = '';
-
-    data = {
-        seed: '',
-        salt: ''
-    };
-
-    constructor(
-        private walletService: WalletService,
-        private router: Router,
-        private messageService: MessageService,
-        private importService: ImportService
-    ) { }
-
-    ngOnInit() {
+  ngOnInit() {
+  }
+  importFromTextbox() {
+    this.import(this.encryptedWallet);
+  }
+  importFromPkh() {
+    console.log('Call import service');
+    this.importService.importWalletFromPkh(this.pkh);
+    this.router.navigate(['/overview']);
+  }
+  importFromPk() {
+    this.importService.importWalletFromPk(this.pk);
+    this.router.navigate(['/overview']);
+  }
+  import(keyFile: string) {
+    if (this.importService.importWalletData(keyFile)) {
+      this.router.navigate(['/overview']);
+    } else {
+      this.messageService.add('Failed to import wallet!');
     }
+  }
+  handleFileInput(files: FileList) {
+    let fileToUpload = files.item(0);
 
-    importFromTextbox() {
-        this.import(this.encryptedWallet);
+      if (!this.validateFile(fileToUpload.name)) {
+        console.log('Selected file format is not supported');
+        fileToUpload = null;
+        return false;
+      } else {
+
+        const reader = new FileReader();
+        reader.readAsText(fileToUpload);
+        reader.onload = () => {
+          this.import(reader.result);
+
+        };
+      }
+  }
+
+  validateFile(name: String) {
+    const ext = name.substring(name.lastIndexOf('.') + 1);
+    if (ext.toLowerCase() === 'tez') {
+        return true;
+    } else {
+        return false;
     }
-
-    import(keyFile: string) {
-        if (this.importService.importWalletData(keyFile)) {
-            this.router.navigate(['/overview']);
-        } else {
-            this.messageService.add('Failed to import wallet!');
-        }
-    }
-
-    handleFileInput(files: FileList) {
-        let fileToUpload = files.item(0);
-
-        if (!this.validateFile(fileToUpload.name)) {
-            console.log('Selected file format is not supported');
-            fileToUpload = null;
-            return false;
-        } else {
-            const reader = new FileReader();
-            reader.readAsText(fileToUpload);
-            reader.onload = () => {
-                this.import(reader.result);
-            };
-        }
-    }
-
-    validateFile(name: String) {
-        const ext = name.substring(name.lastIndexOf('.') + 1);
-        if (ext.toLowerCase() === 'ekf') {
-            return true;
-        } else {
-            return false;
-        }
-    }
+}
 }

@@ -9,6 +9,7 @@ export interface ScheduleData {
   state: State;
   interval: any;
   stateCounter: number;
+  changedDelegate?: boolean;
 }
 enum State {
   UpToDate,
@@ -26,15 +27,21 @@ export class UpdateCoordinatorService {
   constructor(
     private activityService: ActivityService,
     private tzrateService: TzrateService,
-    private walletService: WalletService
+    private walletService: WalletService,
+    private balanceService: BalanceService
   ) { }
   startAll() {
     for (let i = 0; i < this.walletService.wallet.accounts.length; i++) {
       this.start(this.walletService.wallet.accounts[i].pkh);
     }
+    this.startXTZ();
+  }
+  startXTZ() {
     if (!this.tzrateInterval) {
-    this.tzrateService.getTzrate();
-    this.tzrateInterval = setInterval(() => this.tzrateService.getTzrate(), this.defaultDelayPrice);
+      console.log('Start scheduler XTZ');
+      this.tzrateService.getTzrate();
+      this.tzrateInterval = setInterval(() => this.tzrateService.getTzrate(), this.defaultDelayPrice);
+      this.balanceService.getBalanceAll();
     }
   }
   async start(pkh: string) {
@@ -47,18 +54,23 @@ export class UpdateCoordinatorService {
       };
       this.scheduler.set(pkh, scheduleData);
       this.update(pkh);
+      if (this.walletService.wallet.accounts[0].pkh !== pkh) {
+        this.activityService.getDelegate(pkh);
+      }
     }
   }
-  async boost(pkh: string) { // Expect action
+  async boost(pkh: string, changedDelegate?: boolean) { // Expect action
     if (this.walletService.getIndexFromPkh(pkh) !== -1) {
       if (!this.scheduler.get(pkh)) {
         await this.start(pkh);
+      } if (changedDelegate) {
+      this.setChangedDelegate(pkh);
       }
       this.changeState(pkh, State.Wait);
       this.update(pkh);
       const counter = this.scheduler.get(pkh).stateCounter;
       setTimeout(() => { // Failsafe
-        if (this.scheduler.get(pkh).stateCounter === counter) {
+        if (this.scheduler && this.scheduler.get(pkh).stateCounter === counter) {
           console.log('Timeout from wait state');
           this.changeState(pkh, State.UpToDate);
         }
@@ -99,7 +111,6 @@ export class UpdateCoordinatorService {
             break;
           }
         }
-        // console.log('response from transaction(): ' + JSON.stringify(ans));
     },
       err => console.log('Error in start()'),
       () => console.log('account[' + this.walletService.getIndexFromPkh(pkh) + '][' + this.scheduler.get(pkh).state + ']: <<')
@@ -108,6 +119,11 @@ export class UpdateCoordinatorService {
   changeState(pkh: string, newState: State) {
     const scheduleData: ScheduleData = this.scheduler.get(pkh);
     scheduleData.state = newState;
+    if (newState === State.UpToDate && scheduleData.changedDelegate) { // Update delegate
+      console.log('Looking for new delegate for ' + pkh);
+      this.activityService.getDelegate(pkh);
+      this.clearChangedDelegate(pkh);
+    }
     if (newState === State.Wait || newState === State.Updating) {
       clearInterval(scheduleData.interval);
       scheduleData.interval = setInterval(() => this.update(pkh), this.shortDelayActivity);
@@ -123,16 +139,30 @@ export class UpdateCoordinatorService {
     scheduleData.interval = setInterval(() => this.update(pkh), time);
     this.scheduler.set(pkh, scheduleData);
   }
+  setChangedDelegate(pkh: string) {
+    const scheduleData: ScheduleData = this.scheduler.get(pkh);
+    scheduleData.changedDelegate = true;
+    this.scheduler.set(pkh, scheduleData);
+  }
+  clearChangedDelegate(pkh: string) {
+    const scheduleData: ScheduleData = this.scheduler.get(pkh);
+    scheduleData.changedDelegate = undefined;
+    this.scheduler.set(pkh, scheduleData);
+  }
   stopAll() {
-    console.log('Stop all schedulers');
-    for (let i = 0; i < this.walletService.wallet.accounts.length; i++) {
-      this.stop(this.walletService.wallet.accounts[i].pkh);
+    if (this.walletService.wallet) {
+      console.log('Stop all schedulers');
+      for (let i = 0; i < this.walletService.wallet.accounts.length; i++) {
+        this.stop(this.walletService.wallet.accounts[i].pkh);
+      }
+      clearInterval(this.tzrateInterval);
+      this.tzrateInterval = null;
     }
-    clearInterval(this.tzrateInterval);
   }
   async stop(pkh) {
     console.log('Stop scheduler ' + this.walletService.getIndexFromPkh(pkh));
     clearInterval(this.scheduler.get(pkh).interval);
+    this.scheduler.get(pkh).interval = null;
     this.scheduler.delete(pkh);
   }
 }

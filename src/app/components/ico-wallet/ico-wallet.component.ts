@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { MessageService } from '../../services/message.service';
 import { OperationService } from '../../services/operation.service';
 import { WalletService } from '../../services/wallet.service';
-import { UpdateCoordinatorService } from '../../services/update-coordinator.service';
+import { UpdateCoordinatorService } from '../../services/coordinator.service';
 // https://www.npmjs.com/package/load-json-file
 @Component({
   selector: 'app-ico-wallet',

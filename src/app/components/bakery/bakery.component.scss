@@ -1,3 +1,7 @@
+.mono {
+    font-family: "Courier New", Courier, monospace;
+    //font-family: "Lucida Console", Monaco, monospace;    
+}
 .page-header {
     margin: 40px 0px 10px 0px; //top right bottom left
 }
@@ -55,7 +59,7 @@ h4 {
 }
 
 .min-size-address-cell {
-    min-width: 372px;  // 388px;
+    min-width: 380px;  // 388px;
 }
 
 .min-size-other-cell {

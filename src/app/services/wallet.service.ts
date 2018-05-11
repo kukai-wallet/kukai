@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MessageService } from './message.service';
-import { Wallet, Account, Balance, KeyPair } from './../interfaces';
+import { Wallet, Account, Balance, KeyPair, WalletType } from './../interfaces';
 import { EncryptionService } from './encryption.service';
 import { OperationService } from './operation.service';
 // import * as lib from '../../assets/js/main.js';
@@ -56,21 +56,6 @@ export class WalletService {
   /*
     Handle accounts
   */
- /*
-  async createAccount(keys: KeyPair, pkh: string, amount: number, fee: number): Promise<boolean> {
-    const promise = lib.eztz.rpc.account(keys, amount, true, true, keys.pkh, fee);
-    if (promise != null) {
-      return promise.then(
-        (val) => {this.addAccount(val.contracts[0]);
-          this.messageService.addSuccess('New account created!');
-        return true; },
-        (err) => { this.messageService.addError('Create new account failed: ' + JSON.stringify(err));
-      return false; }
-      );
-    } else {
-      return false;
-    }
-  }*/
   addAccount(pkh) {
     this.wallet.accounts.push({
       pkh: pkh,
@@ -104,6 +89,23 @@ export class WalletService {
         return this.operationService.generateKeys(mnemonic, '');
     }
   }
+  getKeysHelper(pwd: string): KeyPair {
+    let keys;
+    if (this.type() === WalletType.FullWallet) {
+        if (this.isPasswordProtected()) {
+        keys = this.getKeys(pwd, null);
+        } else {
+        keys = this.getKeys(null, pwd);
+        }
+    } else if (this.type() === WalletType.ViewOnlyWallet) {
+        keys = {
+            sk: null,
+            pk: this.wallet.seed,
+            pkh: this.wallet.accounts[0].pkh
+        };
+    }
+    return keys;
+  }
   /*
     Clear wallet data from browser
   */
@@ -116,16 +118,16 @@ export class WalletService {
       seed: null,
       passphrase: null,
       balance: this.emptyBalance(),
-      XTZrate: 0,
+      XTZrate: null,
       accounts: []
     };
   }
   emptyBalance(): Balance {
     return {
-      balanceXTZ: 0,
-      pendingXTZ: 0,
-      balanceFiat: 0,
-      pendingFiat: 0
+      balanceXTZ: null,
+      pendingXTZ: null,
+      balanceFiat: null,
+      pendingFiat: null
     };
   }
   /*
@@ -152,7 +154,6 @@ export class WalletService {
   }
   isPasswordProtected() {
     if (this.wallet.seed.slice(this.wallet.seed.length - 2, this.wallet.seed.length) === '==') {
-      console.log('pwd protected');
       return true;
     } else {
       return false;
@@ -165,8 +166,35 @@ export class WalletService {
       return false;
     }
   }
+  isFullWallet(): boolean {
+    if (this.type() === WalletType.FullWallet) {
+      return true;
+    }
+    return false;
+  }
+  isViewOnlyWallet(): boolean {
+    if (this.type() === WalletType.ViewOnlyWallet) {
+      return true;
+    }
+    return false;
+  }
+  isObserverWallet(): boolean {
+    if (this.type() === WalletType.ObserverWallet) {
+      return true;
+    }
+    return false;
+  }
+  type(): WalletType {
+    if (!this.wallet.seed) {
+      return WalletType.ObserverWallet;
+    }
+    if (this.wallet.seed.slice(0, 4) === 'edpk') {
+      return WalletType.ViewOnlyWallet;
+    }
+    return WalletType.FullWallet;
+  }
   exportKeyStore() {
-    return {provider: 'Kukai', type: 'FullWallet', version: '1.0', seed: this.wallet.seed,
+    return {provider: 'Kukai', walletType: this.type(), version: 1.0, data: this.wallet.seed,
     passphrase: this.isPassphraseProtected(), pkh: this.wallet.accounts[0].pkh};
   }
 }

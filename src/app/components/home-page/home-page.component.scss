@@ -163,7 +163,7 @@ ul.CTAs a {
 }
 
 .bottom-CTAs {
-    padding-top: 38vh !important;  //This needs to change - creates vertical scroll bar
+    padding-top: 33vh !important;  //This needs to change - creates vertical scroll bar
 
     //display:inline-block !important;
     //align-self: flex-end !important;
@@ -218,7 +218,7 @@ ul.CTAs a {
 /* ---------------------------------------------------
     MEDIAQUERIES
 ----------------------------------------------------- */
-@media (max-width: 768px) {
+/*@media (max-width: 768px) {
     #sidebar {
         margin-left: -250px;
     }
@@ -228,4 +228,4 @@ ul.CTAs a {
     #sidebarCollapse span {
         display: none;
     }
-}
+}*/

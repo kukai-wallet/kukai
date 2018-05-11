@@ -25,12 +25,18 @@ export class TzrateService {
     }
     updateFiatBalances() {
         let tot = 0;
+        let change = false;
         for (let i = 0; i < this.walletService.wallet.accounts.length; i++) {
-            this.walletService.wallet.accounts[i].balance.balanceFiat =
-            Number(this.walletService.wallet.accounts[i].balance.balanceXTZ / 1000000 * this.walletService.wallet.XTZrate);
-            tot += this.walletService.wallet.accounts[i].balance.balanceFiat;
+            if (this.walletService.wallet.accounts[i].balance.balanceXTZ !== null) {
+                this.walletService.wallet.accounts[i].balance.balanceFiat =
+                Number(this.walletService.wallet.accounts[i].balance.balanceXTZ / 1000000 * this.walletService.wallet.XTZrate);
+                tot += this.walletService.wallet.accounts[i].balance.balanceFiat;
+                change = true;
+            }
         }
-        this.walletService.wallet.balance.balanceFiat = Number(tot);
-        this.walletService.storeWallet();
+        if (change) {
+            this.walletService.wallet.balance.balanceFiat = Number(tot);
+            this.walletService.storeWallet();
+        }
     }
 }

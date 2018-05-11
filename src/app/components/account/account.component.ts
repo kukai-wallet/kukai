@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { WalletService } from '../../services/wallet.service';
 import { MessageService } from '../../services/message.service';
 import { BalanceService } from '../../services/balance.service';
-import { UpdateCoordinatorService } from '../../services/update-coordinator.service';
+import { UpdateCoordinatorService } from '../../services/coordinator.service';
 
 @Component({
     selector: 'app-account',

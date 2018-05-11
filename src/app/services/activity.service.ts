@@ -36,9 +36,8 @@ export class ActivityService {
   // Show transactions for current pkh, then function call to see if current data is up to date
   updateTransactions(pkh: string): Observable<any> {
     return this.getTransactonsCounter(pkh)
-    .flatMap((ans) => {
-      // console.log('Response : ' + JSON.stringify(ans));
-      if (ans.save) {
+    .flatMap((ans: any) => {
+      if (ans[0] && ans[0].save) {
         this.walletService.storeWallet();
         this.balanceService.getXTZBalanceAll();
       }
@@ -130,7 +129,7 @@ export class ActivityService {
             block: data[i].block_hash,
             source: data[i].type.source,
             destination: data[i].type.tz1,
-            amount: data[i].type.credit,
+            amount: data[i].type.credit * -1,
             fee: data[i].type.fee,
             timestamp: null,
             type: type
@@ -218,7 +217,7 @@ export class ActivityService {
     );
   }
   handleDelegateResponse(pkh: string, data: any) {
-    console.log(JSON.stringify(data));
+    // console.log(JSON.stringify(data));
     if (data.delegate.value) {
       const index = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
       if (index === -1) {

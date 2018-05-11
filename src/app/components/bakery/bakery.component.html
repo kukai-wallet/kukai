@@ -38,7 +38,7 @@
         </div>
 
         <div class="row" *ngFor="let account of walletService.wallet.accounts | slice:1">
-            <div class="col-sm-auto col-border border border-warning text-truncate min-size-address-cell">
+            <div class="col-sm-auto col-border border border-warning text-truncate min-size-address-cell mono">
                 {{ account.pkh }}
             </div>
             <div class="col-sm-auto col-border border border-warning text-truncate min-size-other-cell">
@@ -48,47 +48,14 @@
                 <span *ngIf="account.delegate">Yes</span>
                 <span *ngIf="!account.delegate">No</span>
             </div>-->
-            <div class="col-sm-auto col-border border border-warning text-truncate min-size-address-cell">
+            <div class="col-sm-auto col-border border border-warning text-truncate min-size-address-cell mono">
                 <span *ngIf="account.delegate">{{ account.delegate }}</span>
-                <span *ngIf="account.showDelegateInput">
-                    <div class="form-group no-margin">
-                        <select [(ngModel)]="delegateInput"  id="setDelegate" class="form-control" (ngModelChange)="showPassword(account)">
-                            <option *ngFor="let delegate of delegateList" [value]="delegate.pkh">{{ delegate.alias }}</option>
-                        </select>
-                    </div>
-                </span>
             </div>
-            <div class="col-sm-auto col-border">
+            <div class="col-sm-auto col-border" *ngIf="!this.walletService.isObserverWallet()">
                     <app-delegate [activePkh]="account.pkh"></app-delegate>
                 <!--<button type="button" class="btn btn-sm btn-clear btn-second" (click)='setDelegate(account)'>Delegate</button>-->
             </div>
         </div>
-
-        <br>
-
-        <div class="row">
-            <div class="col-lg-12"> 
-                <span *ngIf='showPasswordInput'>
-                    <!--
-                    <div class="form-group">
-                        <input [(ngModel)]="password" type="Password" id="pwd" class="form-control">
-                    </div>
-                    -->
-                    <form class="form-inline">
-                        <div class="form-group mx-sm-3 mb-2">
-                            <label for="inputFee" class="sr-only">Fee</label>
-                            <input type="text" class="form-control" id="inputFee" [(ngModel)]="fee" placeholder="Fee" [ngModelOptions]="{standalone: true}">
-                        </div>
-                        <div class="form-group mx-sm-3 mb-2">
-                            <label for="inputPassword" class="sr-only">Password</label>
-                            <input type="password" class="form-control" id="inputPassword" [(ngModel)]="password" placeholder="Password" [ngModelOptions]="{standalone: true}">
-                        </div>
-                        <button type="submit" class="btn btn-primary mb-2" (click)='setDelegate()'>Confirm Delegate</button>
-                    </form>
-                </span>
-            </div>
-        </div>
-
     </span>  <!-- Shown if identity has an account -->
 
 </div>

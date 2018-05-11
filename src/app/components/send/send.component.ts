@@ -2,8 +2,9 @@ import { Component, TemplateRef, OnInit, ViewEncapsulation, Input, ViewChild, El
 import { DOCUMENT } from '@angular/platform-browser';
 import { WalletService } from '../../services/wallet.service';
 import { MessageService } from '../../services/message.service';
-import { UpdateCoordinatorService } from '../../services/update-coordinator.service';
+import { UpdateCoordinatorService } from '../../services/coordinator.service';
 import { OperationService } from '../../services/operation.service';
+import { ExportService } from '../../services/export.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { KeyPair } from '../../interfaces';
@@ -34,7 +35,7 @@ export class SendComponent implements OnInit {
     password: string;
     pwdValid: string;
     formInvalid = '';
-    sendResponse: string;
+    sendResponse: any;
 
     XTZrate = 0;
 
@@ -47,7 +48,8 @@ export class SendComponent implements OnInit {
         private walletService: WalletService,
         private messageService: MessageService,
         private operationService: OperationService,
-        private updateCoordinatorService: UpdateCoordinatorService
+        private updateCoordinatorService: UpdateCoordinatorService,
+        private exportService: ExportService
     ) { }
 
     ngOnInit() {
@@ -153,12 +155,7 @@ export class SendComponent implements OnInit {
     async open3(template: TemplateRef<any>) {
         const pwd = this.password;
         this.password = '';
-        let keys;
-        if (this.walletService.isPasswordProtected()) {
-          keys = this.walletService.getKeys(pwd, null);
-        } else {
-          keys = this.walletService.getKeys(null, pwd);
-        }
+        const keys = this.walletService.getKeysHelper(pwd);
         if (keys) {
             this.pwdValid = '';
             this.close2();
@@ -205,17 +202,17 @@ export class SendComponent implements OnInit {
             this.operationService.transfer(this.activePkh, toPkh, Number(amount), Number(fee), keys).subscribe(
                 (ans: any) => {
                   console.log(JSON.stringify(ans));
-                  if (ans.opHash) {
-                    this.sendResponse = 'success';
-                    this.updateCoordinatorService.boost(this.activePkh);
-                    this.updateCoordinatorService.boost(toPkh);
-                  } else {
-                    this.sendResponse = 'failure';
+                  this.sendResponse = ans;
+                  if (ans.success === true) {
+                      if (ans.payload.opHash) {
+                        this.updateCoordinatorService.boost(this.activePkh);
+                        this.updateCoordinatorService.boost(toPkh);
+                      }
                   }
                 },
-                err => {console.log(JSON.stringify(err));
-                  this.sendResponse = 'failure';
-                }
+                err => {
+                    console.log(JSON.stringify(err));
+                },
               );
         }, 100);
     }
@@ -241,5 +238,8 @@ export class SendComponent implements OnInit {
         } else {
             return '';
         }
+    }
+    download() {
+        this.exportService.downloadOperationData(this.sendResponse.payload.unsignedOperation, false);
     }
 }

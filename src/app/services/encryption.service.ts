@@ -5,7 +5,7 @@ import * as CryptoJS from 'crypto-js';
 
 @Injectable()
 export class EncryptionService {
-  hashRounds = 10000;
+  hashRounds = 10000; // 10 000 rounds
   constructor() { }
 
  encrypt(plaintext: string, password: string, salt: string): string {

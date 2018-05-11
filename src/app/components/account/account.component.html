@@ -6,8 +6,8 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-6">
-            <select [(ngModel)]="activePkh" (change)="updateBalance()" id="fromAdress" class="form-control">
+        <div class="col-10 mono">
+            <select [(ngModel)]="activePkh" (change)="updateBalance()" id="fromAdress" class="form-control min-width">
                 <option *ngFor="let account of accounts" [value]="account.pkh">{{ account.pkh }}</option>
             </select>
         </div>
@@ -17,7 +17,7 @@
             Balance: {{ balance / 1000000 | number:'1.0' }} ꜩ <span *ngIf="balanceUSD > 0">(${{ balanceUSD | number:'1.00'}} USD)</span>
         </div>
     </div>
-    <button (click)='triggerOperationReload()'>triggerOperationReload()</button>
+    <!--<button (click)='triggerOperationReload()'>triggerOperationReload()</button>-->
     <div class="row">
         <app-activity [activePkh]="activePkh"></app-activity> 
     </div>

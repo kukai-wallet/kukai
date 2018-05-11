@@ -1,7 +1,19 @@
+.mono {
+    font-family: "Courier New", Courier, monospace;
+    //font-family: "Lucida Console", Monaco, monospace;    
+}
 .btn-op {
     width: 120px;
-    margin-right: 5px;
+    //margin-right: 5px;
+    border-radius: 0rem;
+    border-top-right-radius: 0.4rem;
+    border-bottom-right-radius: 0.4rem;
 }
+
+.padding-top-row {
+    padding-top: 0.8rem !important; //default at 5px;
+}
+
 .page-header {
     margin: 40px 0px 10px 0px; //top right bottom left
 
