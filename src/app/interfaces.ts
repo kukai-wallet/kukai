@@ -5,7 +5,9 @@ export interface KeyPair {
 }
 export interface Wallet {
   seed: null|string;
-  passphrase: boolean|null;
+  password: boolean;
+  passphrase: boolean;
+  type: WalletType;
   balance: Balance;
   XTZrate: number | null;
   accounts: Account[];

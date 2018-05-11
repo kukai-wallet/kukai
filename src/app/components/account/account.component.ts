@@ -31,6 +31,7 @@ export class AccountComponent implements OnInit {
         this.accounts = this.walletService.wallet.accounts;
         this.activePkh = this.accounts[0].pkh;
         this.balance = this.accounts[0].balance.balanceXTZ;
+        this.balanceUSD = this.accounts[0].balance.balanceFiat;
     }
     updateBalance() {
         this.balance = this.accounts[this.walletService.getIndexFromPkh(this.activePkh)].balance.balanceXTZ;

@@ -43,6 +43,7 @@ import { IcoWalletComponent } from './components/ico-wallet/ico-wallet.component
 import { UpdateCoordinatorService } from './services/coordinator.service';
 import { OperationService } from './services/operation.service';
 import { BakeryComponent } from './components/bakery/bakery.component';
+import { SignComponent } from './components/sign/sign.component';
 
 
 @NgModule({
@@ -64,7 +65,8 @@ import { BakeryComponent } from './components/bakery/bakery.component';
     DelegateComponent,
     AccountComponent,
     IcoWalletComponent,
-    BakeryComponent
+    BakeryComponent,
+    SignComponent
   ],
   imports: [
     BrowserModule,

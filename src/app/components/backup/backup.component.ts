@@ -36,7 +36,7 @@ export class BackupComponent implements OnInit, OnDestroy {
     }
 
     decryptSeed() {
-        if (this.pwd3) {
+        if (this.pwd3 || this.walletService.isPassphraseProtected()) {
             const pwd = this.pwd3;
             this.pwd3 = '';
             this.mySeed = this.walletService.getMnemonicHelper(pwd);

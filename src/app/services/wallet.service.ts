@@ -36,7 +36,7 @@ export class WalletService {
     return bip39.entropyToMnemonic(mixed);
   }
   createEncryptedWallet(mnemonic: string, password: string): any {
-    this.wallet = this.emptyWallet();
+    this.wallet = this.emptyWallet(true, false, WalletType.FullWallet);
     this.wallet.accounts = [];
     this.addAccount(this.operationService.generateKeys(mnemonic).pkh);
     this.wallet.seed = this.encryptionService.encrypt(bip39.mnemonicToEntropy(mnemonic), password, this.getSalt());
@@ -46,7 +46,7 @@ export class WalletService {
     return this.wallet.accounts[0].pkh.slice(19, 36);
   }
   createEncryptedTgeWallet(mnemonic: string, passphrase: string): string {
-    this.wallet = this.emptyWallet();
+    this.wallet = this.emptyWallet(false, true, WalletType.FullWallet);
     this.wallet.accounts = [];
     this.wallet.passphrase = true;
     this.addAccount(this.operationService.generateKeys(mnemonic, passphrase).pkh);
@@ -84,7 +84,11 @@ export class WalletService {
     }
       const mnemonic = bip39.entropyToMnemonic(seed);
       if (passphrase) {
-        return this.operationService.generateKeys(mnemonic, passphrase);
+        let keys = this.operationService.generateKeys(mnemonic, passphrase);
+        if (this.wallet.accounts[0].pkh && this.wallet.accounts[0].pkh !== keys.pkh) {
+          keys = null; // Wrong passphrase
+        }
+        return keys;
       } else {
         return this.operationService.generateKeys(mnemonic);
     }
@@ -127,10 +131,12 @@ export class WalletService {
     this.wallet = null;
     localStorage.removeItem(this.storeKey);
   }
-  emptyWallet(): Wallet {
+  emptyWallet(password: boolean, passphrase: boolean, type: WalletType): Wallet {
     return {
       seed: null,
-      passphrase: null,
+      password: password,
+      passphrase: passphrase,
+      type: type,
       balance: this.emptyBalance(),
       XTZrate: null,
       accounts: []
@@ -145,6 +151,31 @@ export class WalletService {
     };
   }
   /*
+  Used to decide wallet type
+  */
+  isPasswordProtected(): boolean {
+    return this.wallet.password;
+  }
+  isPassphraseProtected(): boolean {
+    return this.wallet.passphrase;
+  }
+  isFullWallet(): boolean {
+    return (this.wallet.type === WalletType.FullWallet);
+  }
+  isViewOnlyWallet(): boolean {
+    return (this.wallet.type === WalletType.ViewOnlyWallet);
+  }
+  isObserverWallet(): boolean {
+    return (this.wallet.type === WalletType.ObserverWallet);
+  }
+  /*
+    Export
+  */
+  exportKeyStore() {
+    return {provider: 'Kukai', walletType: this.wallet.type, version: 1.0, data: this.wallet.seed,
+    password: this.isPasswordProtected(), passphrase: this.isPassphraseProtected(), pkh: this.wallet.accounts[0].pkh};
+  }
+  /*
     Read and write to localStorage
   */
   storeWallet() {
@@ -155,53 +186,5 @@ export class WalletService {
     if (walletData) {
       this.wallet = JSON.parse(walletData);
     }
-  }
-  /*
-  Used to decide wallet type
-  */
-  isPasswordProtected() {
-    if (this.wallet.seed.slice(this.wallet.seed.length - 2, this.wallet.seed.length) === '==') {
-      return true;
-    } else {
-      return false;
-    }
-  }
-  isPassphraseProtected(): boolean {
-    if (this.wallet.passphrase) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-  isFullWallet(): boolean {
-    if (this.type() === WalletType.FullWallet) {
-      return true;
-    }
-    return false;
-  }
-  isViewOnlyWallet(): boolean {
-    if (this.type() === WalletType.ViewOnlyWallet) {
-      return true;
-    }
-    return false;
-  }
-  isObserverWallet(): boolean {
-    if (this.type() === WalletType.ObserverWallet) {
-      return true;
-    }
-    return false;
-  }
-  type(): WalletType {
-    if (!this.wallet.seed) {
-      return WalletType.ObserverWallet;
-    }
-    if (this.wallet.seed.slice(0, 4) === 'edpk') {
-      return WalletType.ViewOnlyWallet;
-    }
-    return WalletType.FullWallet;
-  }
-  exportKeyStore() {
-    return {provider: 'Kukai', walletType: this.type(), version: 1.0, data: this.wallet.seed,
-    passphrase: this.isPassphraseProtected(), pkh: this.wallet.accounts[0].pkh};
   }
 }

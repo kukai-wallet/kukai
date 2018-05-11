@@ -10,7 +10,7 @@ export class MessageService {
     this.messages.push({
       type: type,
       msg: message,
-      timeout: 5000
+      timeout: 10000
     });
   }
   addError(message: string) {
@@ -19,7 +19,7 @@ export class MessageService {
     this.messages.push({
       type: type,
       msg: message,
-      timeout: 5000
+      timeout: 10000
     });
   }
   addWarning(message: string) {
@@ -28,7 +28,7 @@ export class MessageService {
     this.messages.push({
       type: type,
       msg: message,
-      timeout: 5000
+      timeout: 10000
     });
   }
   addSuccess(message: string) {
@@ -37,7 +37,7 @@ export class MessageService {
     this.messages.push({
       type: type,
       msg: message,
-      timeout: 5000
+      timeout: 10000
     });
   }
   clear() {

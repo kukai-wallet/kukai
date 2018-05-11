@@ -68,7 +68,7 @@
 
         <form class="form-inline">
             <label class="sr-only" for="inlineFormInputPassword">Password</label>
-            <input type="password" class="form-control mb-2 mr-sm-2" [(ngModel)]="pwd3" name="pwd3" placeholder="Password" aria-describedby="passwordHelpInline">
+            <input *ngIf="walletService.isPasswordProtected()" type="password" class="form-control mb-2 mr-sm-2" [(ngModel)]="pwd3" name="pwd3" placeholder="Password" aria-describedby="passwordHelpInline">
 
             <button type="submit" class="btn btn-clear btn-second mb-2 pull-right" (click)="decryptSeed()">Reveal</button>
             <button type="submit" class="btn btn-clear btn-second mb-2 pull-right" (click)="clearSeed()">Hide</button>

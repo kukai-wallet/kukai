@@ -14,8 +14,9 @@ import { UpdateCoordinatorService } from '../../services/coordinator.service';
 export class IcoWalletComponent implements OnInit {
 
   mnemonic: string;
-  email: string;
-  pwd: string;
+  // email: string;
+  // pwd: string;
+  passphrase: string;
   secret: string;
 
   showWrongFileUploadMsg: false;
@@ -34,31 +35,51 @@ export class IcoWalletComponent implements OnInit {
 
   retrieve() {
     // console.log('File: ' + JSON.stringify(this.file));
-    if (this.mnemonic && this.email && this.pwd && this.secret) {
-      if (this.importService.importTgeWallet(this.mnemonic, this.email, this.pwd)) {
-        setTimeout(() => {
-          if (this.secret && this.walletService.wallet && this.walletService.wallet.accounts[0].numberOfActivites === 0) {
-            this.messageService.add('Trying to activate genesis wallet...');
-            this.operationService.activate(this.walletService.wallet.accounts[0].pkh, this.secret).subscribe(
-              (ans: any) => {
-                this.updateCoordinatorService.boost(this.walletService.wallet.accounts[0].pkh);
-                if (ans.opHash) {
-                  this.messageService.addSuccess('Wallet activated!');
-                } else {
-                  this.messageService.addWarning('Couldn\'t retrive an operation hash');
-                }
-              },
-              err => {console.log(JSON.stringify(err));
-                this.messageService.addError('Error: ' + err);
-              }
-            );
-          }
-        }, 5000);
+    if (this.mnemonic && this.passphrase) {
+      if (this.importService.importTgeWallet(this.mnemonic, this.passphrase)) {
+        if (this.secret) {
+          setTimeout(() => {
+            if (this.walletService.wallet) {
+              this.activate(this.walletService.wallet.accounts[0].pkh, this.secret);
+            } else { // retry
+              setTimeout(() => {
+                this.activate(this.walletService.wallet.accounts[0].pkh, this.secret);
+              }, 10000);
+            }
+          }, 5000);
+        }
         this.router.navigate(['/overview']);
       } else {
         this.messageService.add('Failed to import wallet!');
       }
     }
+  }
+  activate(pkh: string, secret: string, tries: number = 3) {
+    setTimeout(() => {
+      if (this.walletService.wallet && this.walletService.wallet.accounts[0].numberOfActivites === 0) {
+        console.log('No. ' + this.walletService.wallet.accounts[0].numberOfActivites);
+        this.operationService.activate(pkh, secret).subscribe(
+          (ans: any) => {
+            this.updateCoordinatorService.boost(this.walletService.wallet.accounts[0].pkh);
+            if (ans.opHash) {
+              this.messageService.addSuccess('Wallet activated! Balance will soon be visible...');
+            } else {
+              this.messageService.addWarning('Couldn\'t retrive an operation hash');
+            }
+          },
+          err => {
+            if (!tries) {
+            this.messageService.addError('Failed to activate wallet!');
+            console.log(JSON.stringify(err));
+            } else {
+              this.activate(pkh, secret, tries--);
+            }
+          }
+        );
+      } else {
+        this.messageService.add('Wallet already activated!');
+      }
+    }, 5000);
   }
   handleFileInput(files: FileList) {
     let fileToUpload = files.item(0);
@@ -80,10 +101,8 @@ export class IcoWalletComponent implements OnInit {
               mnemonic = mnemonic + ' ' + res.mnemonic[i];
             }
             this.mnemonic = mnemonic;
-          } if (res.email) {
-            this.email = res.email;
-          } if (res.password) {
-            this.pwd = res.password;
+          } if (res.email && res.password) {
+            this.passphrase = res.email + res.password;
           } if (res.secret) {
             this.secret = res.secret;
           }

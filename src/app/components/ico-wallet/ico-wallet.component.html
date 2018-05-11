@@ -17,29 +17,26 @@
                         <div class="form-group row">
                             <div class="col-sm-12">
                                 <input type="text" [(ngModel)]="mnemonic" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Mnemonic">
+                                <small class="form-text text-left">The 15 words from your PDF.</small>
                             </div>
                         </div>
-                        <!-- email -->
+                        <!-- passphrase -->
                         <div class="form-group row">
                             <div class="col-sm-12">
-                                <input type="email" [(ngModel)]="email" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Email">
-                            </div>
-                        </div>
-                        <!-- password -->
-                        <div class="form-group row">
-                            <div class="col-sm-12">
-                                <input type="password" [(ngModel)]="pwd" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Password">
+                                <input type="password" [(ngModel)]="passphrase" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Passphrase">
+                                <small class="form-text text-left">The email and password you submitted during the ICO (e.g. "email@example.comPassword")</small>
                             </div>
                         </div>
                         <!-- secret -->
                         <div class="form-group row">
                             <div class="col-sm-12">
                                 <input type="text" [(ngModel)]="secret" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Activation code (optional)">
+                                <small class="form-text text-left">If you want to activate your wallet now.</small>
                             </div>
                         </div>
 
                     </form>
-                    <p>This is an alphanet version, please use the faucet website to get test wallet credential that you can retrieve <a href="https://faucet.tzalpha.net/" target="blank">here</a>.</p>
+                    <p>This is an zeronet version, please use the faucet website to get test wallet credential that you can retrieve <a href="https://faucet.tzalpha.net/" target="blank">here</a>.</p>
                     <br>
                     <p>At the launch of betanet, you can use your wallet credentials from the pdf file generated during ICO</p>
                 </div>

@@ -1,0 +1,5 @@
+<div *ngIf="this.walletService.wallet">
+  <textarea [(ngModel)]="unsigned" rows="6" cols="150" placeholder="Unsigned operation"></textarea><BR>
+  <textarea [(ngModel)]="signed" rows="6" cols="150" placeholder="Signed operation"></textarea><BR>
+  <input [(ngModel)]="pwd" type="password" placeholder="{{ pwdPlaceholder }}"><button (click)="sign()">Sign</button>
+</div>
