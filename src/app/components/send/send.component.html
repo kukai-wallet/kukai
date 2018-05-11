@@ -74,9 +74,9 @@
                 Fee: {{ fee | number:'1.0' }}ꜩ
             </p>
             <div class="row">
-                <div class="form-group col-md-6">
+                <div *ngIf='walletService.isFullWallet()' class="form-group col-md-6">
                     <label for="pwd">Password:</label>
-                    <input *ngIf='walletService.isFullWallet()' [(ngModel)]="password" type="password" id="pwd" class="form-control">
+                    <input [(ngModel)]="password" type="password" id="pwd" class="form-control">
                 </div>
             </div>
 

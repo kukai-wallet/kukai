@@ -71,7 +71,15 @@ export class WalletService {
     return this.wallet.accounts.findIndex(a => a.pkh === pkh);
   }
   getKeys(pwd: string): KeyPair {
-    return this.operationService.seed2keyPair(this.encryptionService.decrypt(this.wallet.seed, pwd, this.getSalt()));
+    if (this.isFullWallet()) {
+      return this.operationService.seed2keyPair(this.encryptionService.decrypt(this.wallet.seed, pwd, this.getSalt()));
+    } else if (this.isViewOnlyWallet()) {
+      return {
+        pkh: this.wallet.accounts[0].pkh,
+        pk: this.wallet.seed,
+        sk: null
+      };
+    }
   }
   /*getKeysHelper(pwd: string): KeyPair {
     let keys;
