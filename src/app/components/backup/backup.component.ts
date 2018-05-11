@@ -12,47 +12,14 @@ import { MessageService } from '../../services/message.service';
 export class BackupComponent implements OnInit, OnDestroy {
     @Input() pwd2 = '';
     @Input() pwd3 = '';
-    mySeed = '';
-    showFileButton = false;
-    saveSuccessfully = false;
-    pwdType = '';
     pk = '';
-    wait = 0;
-
     constructor(
         private walletService: WalletService,
         private exportService: ExportService,
         private messageService: MessageService
     ) { }
-
     ngOnInit() {
-        if (this.walletService.wallet && this.walletService.isFullWallet()) {
-            if (this.walletService.isPasswordProtected()) {
-                this.pwdType = 'Password';
-            } else if (this.walletService.isPassphraseProtected()) {
-                this.pwdType = 'Passphrase';
-            }
-        }
     }
-
-    decryptSeed() {
-        if (this.pwd3 || this.walletService.isPassphraseProtected()) {
-            const pwd = this.pwd3;
-            this.pwd3 = '';
-            this.mySeed = this.walletService.getMnemonicHelper(pwd);
-            if (!this.mySeed) {
-                this.messageService.addError('Failed to reveal seed. Wrong password?');
-            }
-        }
-    }
-    clearSeed() {
-        this.mySeed = '';
-    }
-
-    revealFileButton() {
-        this.showFileButton = true;
-    }
-
     saveFile() {
         this.messageService.addSuccess('Exporting Wallet to file...');
         this.exportService.downloadWallet();
@@ -63,18 +30,11 @@ export class BackupComponent implements OnInit, OnDestroy {
         if (pwd) {
             let keys;
             this.messageService.addSuccess('Exporting View-only Wallet to file...');
-            if (this.walletService.isFullWallet()) {
-                this.wait = 1;
-                keys = this.walletService.getKeysHelper(pwd);
-                this.exportService.downloadViewOnlyWallet(keys.pk);
-            }
-            // document.body.style.cursor = 'default';
+            keys = this.walletService.getKeys(pwd);
+            this.exportService.downloadViewOnlyWallet(keys.pk);
         }
     }
     ngOnDestroy() {
-        this.mySeed = '';
-        this.showFileButton = false;
-        this.saveSuccessfully = false;
     }
 
 }

@@ -155,7 +155,7 @@ export class SendComponent implements OnInit {
     async open3(template: TemplateRef<any>) {
         const pwd = this.password;
         this.password = '';
-        const keys = this.walletService.getKeysHelper(pwd);
+        const keys = this.walletService.getKeys(pwd);
         if (keys) {
             this.pwdValid = '';
             this.close2();

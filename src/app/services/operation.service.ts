@@ -277,14 +277,16 @@ export class OperationService {
       });
   });
   }
-  generateKeys(mnemonic: string, passphrase: string = ''): KeyPair {
-    const seed = bip39.mnemonicToSeed(mnemonic, passphrase).slice(0, 32);
+  seed2keyPair(seed: string): KeyPair {
     const keyPair = libs.crypto_sign_seed_keypair(seed);
     return {
       sk: this.b58cencode(keyPair.privateKey, this.prefix.edsk),
       pk: this.b58cencode(keyPair.publicKey, this.prefix.edpk),
       pkh: this.b58cencode(libs.crypto_generichash(20, keyPair.publicKey), this.prefix.tz1)
     };
+  }
+  mnemonic2seed(mnemonic: string, passphrase: string = '') {
+    return bip39.mnemonicToSeed(mnemonic, passphrase).slice(0, 32);
   }
   generateMnemonic(): string {
     return bip39.generateMnemonic(160);

@@ -80,11 +80,6 @@ export class NewWalletComponent implements OnInit {
   generateSeed() {
     this.mnemonic = this.walletService.createNewWallet(this.entropy);
     this.activePanel++;
-    // this.entr = bip39.mnemonicToEntropy(this.mnemonic);
-    /*
-    console.log('Entropy: ' + entr + ' Mnemonic: ' + bip39.entropyToMnemonic(entr));
-    this.activePanel++;
-    */
   }
   pwdView() {
     this.activePanel++;

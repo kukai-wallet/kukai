@@ -35,24 +35,22 @@ export class WalletService {
     }
     return bip39.entropyToMnemonic(mixed);
   }
-  createEncryptedWallet(mnemonic: string, password: string): any {
-    this.wallet = this.emptyWallet(true, false, WalletType.FullWallet);
-    this.wallet.accounts = [];
-    this.addAccount(this.operationService.generateKeys(mnemonic).pkh);
-    this.wallet.seed = this.encryptionService.encrypt(bip39.mnemonicToEntropy(mnemonic), password, this.getSalt());
-    return this.exportKeyStore();
+  createEncryptedWallet(mnemonic: string, password: string, passphrase: string = ''): any {
+    let seed = this.operationService.mnemonic2seed(mnemonic, passphrase);
+    const keyPair: KeyPair = this.operationService.seed2keyPair(seed);
+    seed = this.encryptionService.encrypt(seed, password, this.getSalt(keyPair.pkh));
+    return this.exportKeyStoreInit(WalletType.FullWallet, keyPair.pkh, seed);
   }
-  getSalt() {
-    return this.wallet.accounts[0].pkh.slice(19, 36);
+  getSalt(pkh: string = this.wallet.accounts[0].pkh) {
+    return pkh.slice(3, 19);
   }
-  createEncryptedTgeWallet(mnemonic: string, passphrase: string): string {
+  /*createEncryptedTgeWallet(mnemonic: string, passphrase: string): string {
     this.wallet = this.emptyWallet(false, true, WalletType.FullWallet);
     this.wallet.accounts = [];
-    this.wallet.passphrase = true;
-    this.addAccount(this.operationService.generateKeys(mnemonic, passphrase).pkh);
+    this.addAccount(this.operationService.seed2keyPair(this.operationService.mnemonic2seed(mnemonic, passphrase)).pkh);
     this.wallet.seed = bip39.mnemonicToEntropy(mnemonic);
     return this.wallet.accounts[0].pkh;
-  }
+  }*/
   /*
     Handle accounts
   */
@@ -72,28 +70,10 @@ export class WalletService {
   getIndexFromPkh(pkh: string): number {
     return this.wallet.accounts.findIndex(a => a.pkh === pkh);
   }
-  getKeys(password: string, passphrase): KeyPair {
-    let seed;
-    if (password) {
-      seed = this.encryptionService.decrypt(this.wallet.seed, password, this.getSalt());
-      if (!seed) {
-        this.messageService.addError('Decryption failed');
-      }
-    } else {
-      seed = this.wallet.seed;
-    }
-      const mnemonic = bip39.entropyToMnemonic(seed);
-      if (passphrase) {
-        let keys = this.operationService.generateKeys(mnemonic, passphrase);
-        if (this.wallet.accounts[0].pkh && this.wallet.accounts[0].pkh !== keys.pkh) {
-          keys = null; // Wrong passphrase
-        }
-        return keys;
-      } else {
-        return this.operationService.generateKeys(mnemonic);
-    }
+  getKeys(pwd: string): KeyPair {
+    return this.operationService.seed2keyPair(this.encryptionService.decrypt(this.wallet.seed, pwd, this.getSalt()));
   }
-  getKeysHelper(pwd: string): KeyPair {
+  /*getKeysHelper(pwd: string): KeyPair {
     let keys;
     if (this.isFullWallet()) {
         if (this.isPasswordProtected()) {
@@ -109,8 +89,8 @@ export class WalletService {
         };
     }
     return keys;
-  }
-  getMnemonicHelper(pwd: string): string {
+  }*/
+  /*getMnemonicHelper(pwd: string): string {
     try {
       if (this.isFullWallet()) {
         if (this.isPasswordProtected()) {
@@ -123,7 +103,7 @@ export class WalletService {
       console.log('Error in getMnemonicHelper(): ' + err);
     }
     return '';
-  }
+  }*/
   /*
     Clear wallet data from browser
   */
@@ -131,11 +111,9 @@ export class WalletService {
     this.wallet = null;
     localStorage.removeItem(this.storeKey);
   }
-  emptyWallet(password: boolean, passphrase: boolean, type: WalletType): Wallet {
+  emptyWallet(type: WalletType): Wallet {
     return {
       seed: null,
-      password: password,
-      passphrase: passphrase,
       type: type,
       balance: this.emptyBalance(),
       XTZrate: null,
@@ -153,12 +131,6 @@ export class WalletService {
   /*
   Used to decide wallet type
   */
-  isPasswordProtected(): boolean {
-    return this.wallet.password;
-  }
-  isPassphraseProtected(): boolean {
-    return this.wallet.passphrase;
-  }
   isFullWallet(): boolean {
     return (this.wallet.type === WalletType.FullWallet);
   }
@@ -172,8 +144,28 @@ export class WalletService {
     Export
   */
   exportKeyStore() {
-    return {provider: 'Kukai', walletType: this.wallet.type, version: 1.0, data: this.wallet.seed,
-    password: this.isPasswordProtected(), passphrase: this.isPassphraseProtected(), pkh: this.wallet.accounts[0].pkh};
+    const data: any = {
+      provider: 'Kukai',
+      version: 1.0,
+      walletType: this.wallet.type,
+      pkh: this.wallet.accounts[0].pkh
+    };
+    if (this.isFullWallet()) {
+      data.seed = this.wallet.seed;
+    } else if (this.isViewOnlyWallet()) {
+      data.pk = this.wallet.seed;
+    }
+    return data;
+  }
+  exportKeyStoreInit(type: WalletType, pkh: string, seed: string) {
+    const data: any = {
+      provider: 'Kukai',
+      version: 1.0,
+      walletType: type,
+      pkh: pkh,
+      seed: seed
+    };
+    return data;
   }
   /*
     Read and write to localStorage

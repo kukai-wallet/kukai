@@ -23,18 +23,14 @@ export class SignComponent implements OnInit {
     }
   }
   init() {
-    if (this.walletService.isPasswordProtected()) {
-      this.pwdPlaceholder = 'Password';
-    } else if (this.walletService.isPassphraseProtected()) {
-      this.pwdPlaceholder = 'Passphrase';
+    this.pwdPlaceholder = 'Password';
     }
-  }
   sign() {
     if (this.pwd) {
       console.log('sign');
       const pwd = this.pwd;
       this.pwd = '';
-      const keys = this.walletService.getKeysHelper(pwd);
+      const keys = this.walletService.getKeys(pwd);
       if (keys) {
         const signed = this.operationService.sign(this.unsigned, keys.sk);
         this.signed = signed.sbytes;

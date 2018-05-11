@@ -24,15 +24,24 @@ export class ImportService {
     private operationService: OperationService,
     private http: HttpClient
   ) { }
-  async importWalletData(json: string): Promise<boolean> {
+  async importWalletData(json: string, isJson: boolean = true): Promise<boolean> {
     try {
-      const walletData = JSON.parse(json);
+      let walletData;
+      if (isJson) {
+        walletData = JSON.parse(json);
+      } else {
+        walletData = json;
+      }
       if (walletData.provider !== 'Kukai') {
         throw new Error(`Unsupported wallet format`);
       }
-      this.walletService.wallet = this.walletService.emptyWallet(walletData.password, walletData.passphrase, walletData.walletType);
+      this.walletService.wallet = this.walletService.emptyWallet(walletData.walletType);
       this.walletService.addAccount(walletData.pkh);
-      this.walletService.wallet.seed = walletData.data;
+      if (walletData.seed) {
+        this.walletService.wallet.seed = walletData.seed;
+      } else if (walletData.pk) {
+        this.walletService.wallet.seed = walletData.pk;
+      }
       await this.findNumberOfAccounts(walletData.pkh);
       return true;
     } catch (err) {
@@ -53,7 +62,7 @@ export class ImportService {
   }
   importWalletFromPkh(pkh: string, type: WalletType = WalletType.ObserverWallet) {
     try {
-      this.walletService.wallet = this.walletService.emptyWallet(false, false, type);
+      this.walletService.wallet = this.walletService.emptyWallet(type);
       this.walletService.addAccount(pkh);
     } catch (err) {
       this.messageService.addError('Failed to load wallet!');
@@ -92,12 +101,5 @@ export class ImportService {
       },
       err => this.messageService.addError('ImportError(3)' + JSON.stringify(err))
     );
-  }
-  importTgeWallet(mnemonic, passphrase): boolean {
-    let pkh;
-   if (pkh = this.walletService.createEncryptedTgeWallet(mnemonic, passphrase)) {
-      this.findNumberOfAccounts(pkh);
-   }
-    return pkh;
   }
 }

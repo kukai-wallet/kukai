@@ -36,17 +36,12 @@ export class IcoWalletComponent implements OnInit {
   retrieve() {
     // console.log('File: ' + JSON.stringify(this.file));
     if (this.mnemonic && this.passphrase) {
-      if (this.importService.importTgeWallet(this.mnemonic, this.passphrase)) {
+      const walletData = this.walletService.createEncryptedWallet(this.mnemonic, 'password', this.passphrase);
+      if (this.importService.importWalletData(walletData, false)) {
         if (this.secret) {
-          setTimeout(() => {
-            if (this.walletService.wallet) {
-              this.activate(this.walletService.wallet.accounts[0].pkh, this.secret);
-            } else { // retry
-              setTimeout(() => {
-                this.activate(this.walletService.wallet.accounts[0].pkh, this.secret);
-              }, 10000);
-            }
-          }, 5000);
+          if (this.walletService.wallet) {
+            this.activate(this.walletService.wallet.accounts[0].pkh, this.secret);
+          }
         }
         this.router.navigate(['/overview']);
       } else {

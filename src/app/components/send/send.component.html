@@ -75,10 +75,7 @@
             </p>
             <div class="row">
                 <div class="form-group col-md-6">
-                    <label for="pwd">
-                        <ng-container *ngIf="walletService.isPasswordProtected()">Password:</ng-container>
-                        <ng-container *ngIf="walletService.isPassphraseProtected()">Passphrase:</ng-container>
-                    </label>
+                    <label for="pwd">Password:</label>
                     <input *ngIf='walletService.isFullWallet()' [(ngModel)]="password" type="password" id="pwd" class="form-control">
                 </div>
             </div>

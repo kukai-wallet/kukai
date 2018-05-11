@@ -23,8 +23,7 @@
             <h3 *ngIf="walletService.isFullWallet()">1. Export your Full Wallet to File</h3>
             <h3 *ngIf="walletService.isViewOnlyWallet()">1. Export your View-only Wallet to File</h3>
             <h3 *ngIf="walletService.isObserverWallet()">1. Export your Observer Wallet to File</h3>
-            <p *ngIf="walletService.isPasswordProtected()">This wallet file contain your private seed encrypted with your password.</p>
-            <p *ngIf="walletService.isPassphraseProtected()">This wallet file will contain your private seed encrypted with your passphrase.</p>
+            <p *ngIf="walletService.isFullWallet()">This wallet file will contain your private seed encrypted with your password.</p>
             <p *ngIf="walletService.isViewOnlyWallet()">This wallet file will contain your public key.</p>
             <p *ngIf="walletService.isObserverWallet()">This wallet file will contain your public key hash.</p>
         </div>
@@ -51,28 +50,6 @@
             </small>
         </form>
 
-        <!-- Reveal Seed -->
-        <div class="row">
-            <div class="col-lg-12">
-                <h3>3. Backup your Seed</h3>
-            </div>
-        </div>
-        <form>
-            <div class="form-group row">
-                <div class="col-sm-8">
-                    <label for="seedTextarea">Reveal Seed</label>
-                    <textarea rows="3" class="form-control" id="seedTextarea" [placeholder]="mySeed" disabled></textarea>
-                </div>
-            </div>
-        </form>
-
-        <form class="form-inline">
-            <label class="sr-only" for="inlineFormInputPassword">Password</label>
-            <input *ngIf="walletService.isPasswordProtected()" type="password" class="form-control mb-2 mr-sm-2" [(ngModel)]="pwd3" name="pwd3" placeholder="Password" aria-describedby="passwordHelpInline">
-
-            <button type="submit" class="btn btn-clear btn-second mb-2 pull-right" (click)="decryptSeed()">Reveal</button>
-            <button type="submit" class="btn btn-clear btn-second mb-2 pull-right" (click)="clearSeed()">Hide</button>
-        </form>
     </ng-container>
 </div>
 

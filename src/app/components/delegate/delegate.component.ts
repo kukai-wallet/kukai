@@ -66,12 +66,7 @@ export class DelegateComponent implements OnInit {
   async open3(template: TemplateRef<any>) {
       const pwd = this.password;
       this.password = '';
-      let keys;
-      if (this.walletService.isPasswordProtected()) {
-        keys = this.walletService.getKeys(pwd, null);
-      } else {
-        keys = this.walletService.getKeys(null, pwd);
-      }
+      const keys = this.walletService.getKeys(pwd);
       if (keys) {
           this.pwdValid = '';
           this.close2();
