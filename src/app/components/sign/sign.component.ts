@@ -1,6 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { WalletService } from '../../services/wallet.service';
 import { OperationService } from '../../services/operation.service';
+import { ExportService } from '../../services/export.service';
+import { MessageService } from '../../services/message.service';
 
 @Component({
   selector: 'app-sign',
@@ -14,7 +16,9 @@ export class SignComponent implements OnInit {
   pwdPlaceholder = '';
   constructor(
     private walletService: WalletService,
-    private operationService: OperationService
+    private operationService: OperationService,
+    private exportService: ExportService,
+    private messageService: MessageService
   ) { }
 
   ngOnInit() {
@@ -36,5 +40,25 @@ export class SignComponent implements OnInit {
         this.signed = signed.sbytes;
       }
     }
+  }
+  download() {
+    this.exportService.downloadOperationData(this.signed, true);
+  }
+  import(files: FileList) {
+  const fileToUpload = files.item(0);
+    const reader = new FileReader();
+    reader.readAsText(fileToUpload);
+    reader.onload = () => {
+      if (reader.result) {
+        const data = JSON.parse(reader.result);
+        if (data.signed === false && data.hex) {
+          this.unsigned = data.hex;
+        } else {
+          this.messageService.addWarning('Not an unsigned operation!');
+        }
+      } else {
+        this.messageService.addError('Failed to read file!');
+      }
+    };
   }
 }

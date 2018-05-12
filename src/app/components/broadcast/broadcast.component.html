@@ -1,4 +1,5 @@
 <div>
+    <input type="file" (change)="import($event.target.files)" accept=".tzop"><BR>
     <textarea [(ngModel)]="signed" rows="6" cols="150" placeholder="Signed operation"></textarea><BR>
-    <button (click)="sign()">Broadcast</button>
+    <button (click)="broadcast()">Broadcast</button>
 </div>

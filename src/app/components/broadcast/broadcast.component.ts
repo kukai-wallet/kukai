@@ -35,5 +35,21 @@ export class BroadcastComponent implements OnInit {
       );
     }
   }
-
+  import(files: FileList) {
+    const fileToUpload = files.item(0);
+      const reader = new FileReader();
+      reader.readAsText(fileToUpload);
+      reader.onload = () => {
+        if (reader.result) {
+          const data = JSON.parse(reader.result);
+          if (data.signed === true && data.hex) {
+            this.signed = data.hex;
+          } else {
+            this.messageService.addWarning('Not an unsigned operation!');
+          }
+        } else {
+          this.messageService.addError('Failed to read file!');
+        }
+      };
+    }
 }
