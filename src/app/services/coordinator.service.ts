@@ -18,7 +18,7 @@ enum State {
 }
 
 @Injectable()
-export class UpdateCoordinatorService {
+export class CoordinatorService {
   scheduler: Map<string, any> = new Map<string, any>(); // pkh + delay
   defaultDelayActivity = 60000; // 60s
   shortDelayActivity = 2000; // 5s
@@ -45,7 +45,7 @@ export class UpdateCoordinatorService {
     }
   }
   async start(pkh: string) {
-    if (pkh && !this.scheduler.get(pkh)) {
+    if (pkh && !this.scheduler.get(pkh)) { // maybe add delay if !this.walletService.getIndexFromPkh(pkh) or prevent it
       console.log('Start scheduler ' + this.walletService.getIndexFromPkh(pkh));
       const scheduleData: ScheduleData = {
         state: State.UpToDate,
@@ -64,7 +64,7 @@ export class UpdateCoordinatorService {
       if (!this.scheduler.get(pkh)) {
         await this.start(pkh);
       } if (changedDelegate) {
-      this.setChangedDelegate(pkh);
+        this.setChangedDelegate(pkh);
       }
       this.changeState(pkh, State.Wait);
       this.update(pkh);
@@ -111,7 +111,7 @@ export class UpdateCoordinatorService {
             break;
           }
         }
-    },
+      },
       err => console.log('Error in update()'),
       () => console.log('account[' + this.walletService.getIndexFromPkh(pkh) + '][' + this.scheduler.get(pkh).state + ']: <<')
     );

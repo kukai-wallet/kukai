@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { WalletService } from '../../services/wallet.service';
 import { MessageService } from '../../services/message.service';
 import { BalanceService } from '../../services/balance.service';
-import { UpdateCoordinatorService } from '../../services/coordinator.service';
+import { CoordinatorService } from '../../services/coordinator.service';
 import * as copy from 'copy-to-clipboard';
 
 @Component({
@@ -28,14 +28,14 @@ export class OverviewComponent implements OnInit {
         private walletService: WalletService,
         private messageService: MessageService,
         private balanceService: BalanceService,
-        private updateCoordinatorService: UpdateCoordinatorService
+        private coordinatorService: CoordinatorService
     ) { /* this.dom = dom; */ }
 
     ngOnInit() {
 
         if (this.walletService.wallet) {
             this.identity = this.walletService.wallet.accounts[0];
-            this.updateCoordinatorService.startAll();
+            this.coordinatorService.startAll();
         }
     }
     addAccount() {

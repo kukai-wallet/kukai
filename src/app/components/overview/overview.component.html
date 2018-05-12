@@ -1,20 +1,56 @@
 <div class="container" *ngIf="this.walletService.wallet">
-        <!-- Title -->
-        <div class="row">
-            <div class="col-lg-12">
-                <h1 class="page-header">Your Wallet</h1>
-            </div>
+    <!-- Title -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Your Wallet</h1>
         </div>
-        <div class="row bottom-separator">
-            <div class="col-6">
-                Balance: {{ walletService.wallet.balance.balanceXTZ / 1000000 | number:'1.0' }} ꜩ  <span *ngIf="walletService.wallet.balance.balanceXTZ > 0">(${{ walletService.wallet.balance.balanceXTZ / 1000000 * walletService.wallet.XTZrate | number:'1.00' }} USD)</span>
-            </div>
+    </div>
+    <div class="row bottom-separator">
+        <div class="col-6">
+            <ng-container *ngIf="walletService.wallet">
+                <span *ngIf="walletService.wallet.balance.balanceXTZ > 0">Balance: {{ walletService.wallet.balance.balanceXTZ / 1000000 | number:'1.0' }} ꜩ</span>
+                <span *ngIf="walletService.wallet.balance.balanceXTZ > 0">(${{ walletService.wallet.balance.balanceXTZ / 1000000 * walletService.wallet.XTZrate | number:'1.00' }}
+                    USD)</span>
+            </ng-container>
+
+        </div>
+    </div>
+
+    <!-- Identity -->
+    <div class="row row-header">
+        <div class="col-sm-auto col-header col-border border border-warning min-size-address-cell">
+            Identity
+        </div>
+        <div class="col-sm-auto col-header col-border border border-warning min-size-other-cell">
+            Balance (ꜩ)
         </div>
 
-        <!-- Identity -->
+        <div class="col-sm-auto col-header col-border border border-warning min-size-other-cell">
+            Value (USD)
+        </div>
+    </div>
+<ng-container *ngIf="walletService.wallet.accounts[0]">
+    <div class="row pkh-row" [class.selectedPkh]="selectedPkh === walletService.wallet.accounts[0].pkh" (click)="click(walletService.wallet.accounts[0].pkh)">
+        <div class="col-sm-auto col-border border border-warning text-truncate min-size-address-cell mono" (dblclick)="dblclick(walletService.wallet.accounts[0].pkh)">
+            {{ walletService.wallet.accounts[0].pkh }}
+        </div>
+        
+        <div class="col-sm-auto col-border border border-warning text-truncate min-size-other-cell">
+            <ng-container *ngIf="walletService.wallet.accounts[0].balance.balanceXTZ !== null">{{ walletService.wallet.accounts[0].balance.balanceXTZ / 1000000 | number:'1.0-6' }} ꜩ</ng-container>
+        </div>
+        <div class="col-sm-auto col-border border border-warning text-truncate min-size-other-cell">
+            <ng-container *ngIf="walletService.wallet.accounts[0].balance.balanceFiat !== null">{{ walletService.wallet.accounts[0].balance.balanceFiat | number:'1.0-0' }} USD</ng-container>
+        </div>
+    </div>
+    </ng-container>
+
+    <!-- Accounts + Total sections shown only if there are accounts -->
+    <span *ngIf="walletService.wallet.accounts[1]">
+
+        <!-- Accounts -->
         <div class="row row-header">
             <div class="col-sm-auto col-header col-border border border-warning min-size-address-cell">
-                Identity
+                Accounts
             </div>
             <div class="col-sm-auto col-header col-border border border-warning min-size-other-cell">
                 Balance (ꜩ)
@@ -24,69 +60,41 @@
                 Value (USD)
             </div>
         </div>
-        
-        <div class="row pkh-row" [class.selectedPkh]="selectedPkh === walletService.wallet.accounts[0].pkh" (click)="click(walletService.wallet.accounts[0].pkh)">
-            <div class="col-sm-auto col-border border border-warning text-truncate min-size-address-cell mono" (dblclick)="dblclick(walletService.wallet.accounts[0].pkh)">
-                {{ walletService.wallet.accounts[0].pkh }}
+
+        <div class="row pkh-row" *ngFor="let account of walletService.wallet.accounts | slice:1" (click)="click(account.pkh)" [class.selectedPkh]="selectedPkh === account.pkh">
+            <div class="col-sm-auto col-border border border-warning text-truncate min-size-address-cell mono" (dblclick)="dblclick(account.pkh)">
+                {{ account.pkh }}
             </div>
             <div class="col-sm-auto col-border border border-warning text-truncate min-size-other-cell">
-                <ng-container *ngIf="walletService.wallet.accounts[0].balance.balanceXTZ !== null">{{ walletService.wallet.accounts[0].balance.balanceXTZ / 1000000 | number:'1.0-6' }} ꜩ</ng-container>
+                <ng-container *ngIf="account.balance.balanceXTZ !== null">{{ account.balance.balanceXTZ / 1000000 | number:'1.0-6' }} ꜩ</ng-container>
             </div>
             <div class="col-sm-auto col-border border border-warning text-truncate min-size-other-cell">
-                <ng-container *ngIf="walletService.wallet.accounts[0].balance.balanceFiat !== null">{{ walletService.wallet.accounts[0].balance.balanceFiat | number:'1.0-0' }} USD</ng-container>
+                <ng-container *ngIf="account.balance.balanceFiat !== null">{{ account.balance.balanceFiat | number:'1.0-0' }} USD</ng-container>
             </div>
         </div>
-        <!-- Accounts + Total sections shown only if there are accounts -->
-        <span *ngIf="walletService.wallet.accounts[1]">
-
-            <!-- Accounts -->
-            <div class="row row-header">
-                <div class="col-sm-auto col-header col-border border border-warning min-size-address-cell">
-                    Accounts
-                </div>
-                <div class="col-sm-auto col-header col-border border border-warning min-size-other-cell">
-                    Balance (ꜩ)
-                </div>
-
-                <div class="col-sm-auto col-header col-border border border-warning min-size-other-cell">
-                    Value (USD)
-                </div>
+        <!-- Total - Last row -->
+        <div class="row row-header">
+            <div class="col-sm-auto col-header col-border border border-warning min-size-address-cell">
+                Total
             </div>
-
-            <div class="row pkh-row" *ngFor="let account of walletService.wallet.accounts | slice:1" (click)="click(account.pkh)" [class.selectedPkh]="selectedPkh === account.pkh">
-                <div class="col-sm-auto col-border border border-warning text-truncate min-size-address-cell mono" (dblclick)="dblclick(account.pkh)">
-                    {{ account.pkh }}
-                </div>
-                <div class="col-sm-auto col-border border border-warning text-truncate min-size-other-cell">
-                    <ng-container *ngIf="account.balance.balanceXTZ !== null">{{ account.balance.balanceXTZ / 1000000 | number:'1.0-6' }} ꜩ</ng-container>
-                </div>
-                <div class="col-sm-auto col-border border border-warning text-truncate min-size-other-cell">
-                    <ng-container *ngIf="account.balance.balanceFiat !== null">{{ account.balance.balanceFiat | number:'1.0-0' }} USD</ng-container>
-                </div>
+            <div class="col-sm-auto col-header col-border border border-warning min-size-other-cell">
+                <ng-container *ngIf="walletService.wallet.balance.balanceXTZ !== null">{{ walletService.wallet.balance.balanceXTZ / 1000000 | number:'1.0-6' }} ꜩ</ng-container>
             </div>
-            <!-- Total - Last row -->
-            <div class="row row-header">
-                <div class="col-sm-auto col-header col-border border border-warning min-size-address-cell">
-                    Total
-                </div>
-                <div class="col-sm-auto col-header col-border border border-warning min-size-other-cell">
-                    <ng-container *ngIf="walletService.wallet.balance.balanceXTZ !== null">{{ walletService.wallet.balance.balanceXTZ / 1000000 | number:'1.0-6' }} ꜩ</ng-container>
-                </div>
-                <div class="col-sm-auto col-header col-border border border-warning min-size-other-cell">
-                    <ng-container *ngIf="walletService.wallet.balance.balanceFiat !== null">$ {{ walletService.wallet.balance.balanceFiat | number:'1.0-0' }} USD</ng-container>
-                </div>
+            <div class="col-sm-auto col-header col-border border border-warning min-size-other-cell">
+                <ng-container *ngIf="walletService.wallet.balance.balanceFiat !== null">$ {{ walletService.wallet.balance.balanceFiat | number:'1.0-0' }} USD</ng-container>
             </div>
-        </span>
-        <!-- Shared Action buttons -->
-        <div class="row row-buttons" *ngIf="!this.walletService.isObserverWallet()">
-                <div class="btn-group btn-group-sm">
-                    <app-send [activePkh]="selectedPkh" [actionButtonString]="'btnOutline'"></app-send>
-                    <app-receive [activePkh]="selectedPkh" [actionButtonString]="'btnOutline'"></app-receive>
-                    <!--<button type="button" class="btn btn-outline-primary btn-op">Receive</button>-->
-                    <app-new-account [activePkh]="selectedPkh"></app-new-account>
-                    <button type="button" class="btn btn-outline-primary btn-op">Details</button>
-                </div>
         </div>
+    </span>
+    <!-- Shared Action buttons -->
+    <div class="row row-buttons" *ngIf="!this.walletService.isObserverWallet()">
+        <div class="btn-group btn-group-sm">
+            <app-send [activePkh]="selectedPkh" [actionButtonString]="'btnOutline'"></app-send>
+            <app-receive [activePkh]="selectedPkh" [actionButtonString]="'btnOutline'"></app-receive>
+            <!--<button type="button" class="btn btn-outline-primary btn-op">Receive</button>-->
+            <app-new-account [activePkh]="selectedPkh"></app-new-account>
+            <button type="button" class="btn btn-outline-primary btn-op">Details</button>
+        </div>
+    </div>
 </div>
 <!-- Default message - No account created -->
 <div class="container" *ngIf="!this.walletService.wallet">
@@ -100,7 +108,8 @@
 
     <div class="row">
         <div class="col-lg-12">
-            <p>You can get all your wallet details and create new accounts in here but before, you will need to <a routerLink="">create or import</a> a wallet.</p>
+            <p>You can get all your wallet details and create new accounts in here but before, you will need to
+                <a routerLink="">create or import</a> a wallet.</p>
             <!--
             <p>Before making a backup, you will need to <a routerLink="">create or import</a> a wallet.</p>
             You need to <a routerLink="">create or import</a> a wallet to see this view...

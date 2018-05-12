@@ -5,7 +5,7 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { KeyPair } from '../../interfaces';
 import { OperationService } from '../../services/operation.service';
-import { UpdateCoordinatorService } from '../../services/coordinator.service';
+import { CoordinatorService } from '../../services/coordinator.service';
 import { ExportService } from '../../services/export.service';
 
 @Component({
@@ -38,7 +38,7 @@ export class NewAccountComponent implements OnInit {
     private messageService: MessageService,
     private modalService: BsModalService,
     private operationService: OperationService,
-    private updateCoordinatorService: UpdateCoordinatorService,
+    private coordinatorService: CoordinatorService,
     private exportService: ExportService
   ) { }
 
@@ -113,8 +113,8 @@ export class NewAccountComponent implements OnInit {
           if (ans.success === true) {
             if (ans.payload.opHash) {
               this.walletService.addAccount(ans.payload.newPkh);
-              this.updateCoordinatorService.boost(this.activePkh);
-              this.updateCoordinatorService.start(ans.newPkh);
+              this.coordinatorService.boost(this.activePkh);
+              this.coordinatorService.start(ans.payload.newPkh);
             }
           }
         },

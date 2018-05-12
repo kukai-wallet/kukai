@@ -40,7 +40,7 @@ import { DelegateComponent } from './components/delegate/delegate.component';
 import { PositioningService } from 'ngx-bootstrap/positioning';
 import { AccountComponent } from './components/account/account.component';
 import { IcoWalletComponent } from './components/ico-wallet/ico-wallet.component';
-import { UpdateCoordinatorService } from './services/coordinator.service';
+import { CoordinatorService } from './services/coordinator.service';
 import { OperationService } from './services/operation.service';
 import { BakeryComponent } from './components/bakery/bakery.component';
 import { SignComponent } from './components/sign/sign.component';
@@ -91,7 +91,7 @@ import { SignComponent } from './components/sign/sign.component';
     ComponentLoaderFactory,
     PositioningService,
     TzrateService,
-    UpdateCoordinatorService,
+    CoordinatorService,
     OperationService,
     ExportService
   ],

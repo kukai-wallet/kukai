@@ -1,6 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { OperationService } from '../../services/operation.service';
 import { MessageService } from '../../services/message.service';
+import { WalletService } from '../../services/wallet.service';
+import { CoordinatorService } from '../../services/coordinator.service';
 
 @Component({
   selector: 'app-broadcast',
@@ -11,7 +13,9 @@ export class BroadcastComponent implements OnInit {
   @Input() signed = '';
   constructor(
     private operationService: OperationService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private walletService: WalletService,
+    private coordinatorService: CoordinatorService
   ) { }
 
   ngOnInit() {
@@ -22,8 +26,9 @@ export class BroadcastComponent implements OnInit {
       this.signed = '';
       this.operationService.broadcast(signed).subscribe(
         (ans: any) => {
+          console.log(JSON.stringify(ans));
           if (ans.success) {
-            this.messageService.addSuccess('Operation successfully broadcasted to the network: ' + ans.opHash);
+            this.messageService.addSuccess('Operation successfully broadcasted to the network: ' + ans.payload.opHash);
           } else {
             this.messageService.addWarning('Couldn\'t retrive operation hash!');
           }

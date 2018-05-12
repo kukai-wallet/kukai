@@ -54,14 +54,14 @@ export class WalletService {
     Handle accounts
   */
   addAccount(pkh) {
-    this.wallet.accounts.push({
-      pkh: pkh,
-      delegate: '',
-      balance: this.emptyBalance(),
-      numberOfActivites: 0,
-      activities: []
-    });
-    this.storeWallet();
+      this.wallet.accounts.push({
+        pkh: pkh,
+        delegate: '',
+        balance: this.emptyBalance(),
+        numberOfActivites: 0,
+        activities: []
+      });
+      this.storeWallet();
   }
   /*
     Help functions

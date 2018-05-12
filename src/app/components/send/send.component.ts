@@ -2,7 +2,7 @@ import { Component, TemplateRef, OnInit, ViewEncapsulation, Input, ViewChild, El
 import { DOCUMENT } from '@angular/platform-browser';
 import { WalletService } from '../../services/wallet.service';
 import { MessageService } from '../../services/message.service';
-import { UpdateCoordinatorService } from '../../services/coordinator.service';
+import { CoordinatorService } from '../../services/coordinator.service';
 import { OperationService } from '../../services/operation.service';
 import { ExportService } from '../../services/export.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
@@ -48,7 +48,7 @@ export class SendComponent implements OnInit {
         private walletService: WalletService,
         private messageService: MessageService,
         private operationService: OperationService,
-        private updateCoordinatorService: UpdateCoordinatorService,
+        private coordinatorService: CoordinatorService,
         private exportService: ExportService
     ) { }
 
@@ -192,8 +192,8 @@ export class SendComponent implements OnInit {
                     this.sendResponse = ans;
                     if (ans.success === true) {
                         if (ans.payload.opHash) {
-                            this.updateCoordinatorService.boost(this.activePkh);
-                            this.updateCoordinatorService.boost(toPkh);
+                            this.coordinatorService.boost(this.activePkh);
+                            this.coordinatorService.boost(toPkh);
                         }
                     }
                 },

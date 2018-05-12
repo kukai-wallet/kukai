@@ -64,11 +64,8 @@ export class OperationService {
   originate(pkh: string, amount: number, fee: number = 0, keys: KeyPair): Observable<any> {
     return this.http.post(this.nodeURL + '/blocks/head', {})
       .flatMap((head: any) => {
-        console.log('1');
         return this.http.post(this.nodeURL + '/blocks/head/proto/context/contracts/' + pkh + '/counter', {})
           .flatMap((actions: any) => {
-            console.log('2');
-            console.log('\"' + keys.pk + '\"');
             const fop = {
               branch: head.hash,
               kind: 'manager',

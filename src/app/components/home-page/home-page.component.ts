@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { WalletService } from '../../services/wallet.service';
 import { MessageService } from '../../services/message.service';
 import { ActivityService } from '../../services/activity.service';
-import { UpdateCoordinatorService } from '../../services/coordinator.service';
+import { CoordinatorService } from '../../services/coordinator.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -14,13 +14,13 @@ export class HomePageComponent implements OnInit {
   constructor(private walletService: WalletService,
     private messageService: MessageService,
     private activityService: ActivityService,
-    private updateCoordinatorService: UpdateCoordinatorService,
+    private coordinatorService: CoordinatorService,
     private router: Router) { }
 
   ngOnInit() {
   }
   logout() {
-    this.updateCoordinatorService.stopAll();
+    this.coordinatorService.stopAll();
     this.walletService.clearWallet();
     this.router.navigate(['']);
   }

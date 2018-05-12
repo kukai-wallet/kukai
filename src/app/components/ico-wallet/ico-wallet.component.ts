@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { MessageService } from '../../services/message.service';
 import { OperationService } from '../../services/operation.service';
 import { WalletService } from '../../services/wallet.service';
-import { UpdateCoordinatorService } from '../../services/coordinator.service';
+import { CoordinatorService } from '../../services/coordinator.service';
 // https://www.npmjs.com/package/load-json-file
 @Component({
   selector: 'app-ico-wallet',
@@ -27,7 +27,7 @@ export class IcoWalletComponent implements OnInit {
     private messageService: MessageService,
     private operationService: OperationService,
     private walletService: WalletService,
-    private updateCoordinatorService: UpdateCoordinatorService
+    private coordinatorService: CoordinatorService
   ) { }
 
   ngOnInit() {
@@ -55,7 +55,7 @@ export class IcoWalletComponent implements OnInit {
         console.log('No. ' + this.walletService.wallet.accounts[0].numberOfActivites);
         this.operationService.activate(pkh, secret).subscribe(
           (ans: any) => {
-            this.updateCoordinatorService.boost(this.walletService.wallet.accounts[0].pkh);
+            this.coordinatorService.boost(this.walletService.wallet.accounts[0].pkh);
             if (ans.opHash) {
               this.messageService.addSuccess('Wallet activated! Balance will soon be visible...');
             } else {
