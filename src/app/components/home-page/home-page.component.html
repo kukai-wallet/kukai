@@ -3,7 +3,7 @@
     <!-- Sidebar Holder -->
     <nav id="sidebar">
         <div class="sidebar-header">
-            <h1 class="title" align="center">Kukai</h1>
+                <a routerLink=""><h1 class="title" align="center">Kukai</h1></a>
             <p class="sub-heading" align="center">on a path of self-discovery</p>
         </div>
 
@@ -38,8 +38,9 @@
             <!--<li routerLinkActive="active" class="bottom-category">
                 <a routerLink="/settings" align="center">Settings</a>
             </li>-->
-            <li>
-                    <a class="btn-main-action">Sign/Broadcast</a>
+            <li routerLinkActive="active">
+                    <a *ngIf="walletService.isFullWallet()" routerLink="/sign" class="btn-main-action">Sign</a>
+                    <a *ngIf="!walletService.isFullWallet()" routerLink="/broadcast" class="btn-main-action">Broadcast</a>
             </li>
             <li routerLinkActive="active">
                     <a routerLink="/backup" class="btn-main-action">Backup</a>

@@ -277,6 +277,25 @@ export class OperationService {
       });
   });
   }
+  broadcast(sopbytes: string): Observable<any> {
+    return this.http.post(this.nodeURL + '/blocks/head', {})
+      .flatMap((head: any) => {
+        const sop = {
+          signedOperationContents: sopbytes,
+          chain_id: head.chain_id
+        };
+        return this.http.post(this.nodeURL + '/inject_operation', sop)
+        .flatMap((final: any) => {
+          return of(
+            {
+              success: true,
+              payload: {
+                opHash: final.injectedOperation
+              }
+            });
+        });
+      });
+  }
   seed2keyPair(seed: string): KeyPair {
     const keyPair = libs.crypto_sign_seed_keypair(seed);
     return {

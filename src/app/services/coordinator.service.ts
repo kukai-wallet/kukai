@@ -112,7 +112,7 @@ export class UpdateCoordinatorService {
           }
         }
     },
-      err => console.log('Error in start()'),
+      err => console.log('Error in update()'),
       () => console.log('account[' + this.walletService.getIndexFromPkh(pkh) + '][' + this.scheduler.get(pkh).state + ']: <<')
     );
   }

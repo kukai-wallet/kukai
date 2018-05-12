@@ -100,6 +100,7 @@ export class NewAccountComponent implements OnInit {
     this.fee = '';
     if (!amount) { amount = '0'; }
     if (!fee) { fee = '0'; }
+    console.log('1');
     setTimeout(async () => {
       this.operationService.originate(this.activePkh, Number(amount), Number(fee), keys).subscribe(
         (ans: any) => {

@@ -140,13 +140,13 @@ export class WalletService {
   Used to decide wallet type
   */
   isFullWallet(): boolean {
-    return (this.wallet.type === WalletType.FullWallet);
+    return (this.wallet && this.wallet.type === WalletType.FullWallet);
   }
   isViewOnlyWallet(): boolean {
-    return (this.wallet.type === WalletType.ViewOnlyWallet);
+    return (this.wallet && this.wallet.type === WalletType.ViewOnlyWallet);
   }
   isObserverWallet(): boolean {
-    return (this.wallet.type === WalletType.ObserverWallet);
+    return (this.wallet && this.wallet.type === WalletType.ObserverWallet);
   }
   /*
     Export

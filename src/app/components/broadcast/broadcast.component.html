@@ -1,1 +1,4 @@
-<a routerLink="/"><button class="btn btn-clear btn-second pull-right">Back</button></a>
+<div>
+    <textarea [(ngModel)]="signed" rows="6" cols="150" placeholder="Signed operation"></textarea><BR>
+    <button (click)="sign()">Broadcast</button>
+</div>
