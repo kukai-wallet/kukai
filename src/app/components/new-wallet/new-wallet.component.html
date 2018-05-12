@@ -6,10 +6,10 @@
       <div class="card-body">
         <h1 class="card-title">Collecting additional entropy</h1>
         <div class="card-text">
-          <p class ="mono">{{ entropy }}</p>
-          <progressbar [value]="counter2" type="info" [striped]="true"><ng-container *ngIf="counter2 > 4">{{ counter2 }}%</ng-container></progressbar>
+          <p class ="mono rndp">{{ entropy }}</p>
+          <progressbar [value]="counter2" type="info" [striped]="true"><ng-container *ngIf="counter2 > 4">{{ counter2 | number: '1.0-0' }}%</ng-container></progressbar>
           <p>Please move the mouse over the screen to create extra entropy for the wallet creation.</p>
-          <p>This step ensures your seed is generated truly random by collecting unpredictabel data.</p>
+          <p>This step ensures your seed is generated random by collecting unpredictabel data.</p>
       </div>
       </div>
       <div class="card-footer text-right">
@@ -28,15 +28,28 @@
           <p>**Do not lose it!** It cannot be recovered if you lose it.</p>
           <p>**Do not share it!** Your funds will be stolen if you use seed on a malicious/phishing site.</p>
           <p>**Make a backup!** Secure it like the millions it may be worth one day.</p>
+        </div>
+      </div>
+      <div class="card-footer text-right">
+        <button type="button" class="btn btn-primary btn-lg" (click)="verifyView()">Next</button>
+      </div>
+    </div>
+    <!-- Seed card -->
+    <div class="card text-center fix-size" *ngIf="activePanel==3">
+      <div class="card-body">
+        <h1 class="card-title">Verify your Seed</h1>
+        <div class="card-text">
+          <textarea [(ngModel)]="userMnemonic" rows="3" cols="80" 
+          placeholder="word1 word2 word3 word4 word5 word6 word7 word8 word9 word10 word11 word12 word13 word14 word15"></textarea><BR>
       </div>
       </div>
       <div class="card-footer text-right">
-        <button type="button" class="btn btn-primary btn-lg" (click)="pwdView()">Next</button>
+        <button type="button" class="btn btn-primary btn-lg" [disabled]="!mnemonicMatch()" (click)="pwdView()">Next</button>
       </div>
     </div>
 
     <!-- Password card -->
-    <div class="card text-center fix-size" *ngIf="activePanel==3">
+    <div class="card text-center fix-size" *ngIf="activePanel==4">
         <div class="card-body">
           <h1 class="card-title">Choose your Password</h1>
           <div class="card-text">            
@@ -61,12 +74,12 @@
         </div>
       </div>
       <div class="card-footer text-right">
-        <button type="button" class="btn btn-primary btn-lg" (click)="encryptWallet()">Encrypt</button>
+        <button type="button" class="btn btn-primary btn-lg" [disabled]="!pwd1" (click)="encryptWallet()">Encrypt</button>
       </div>
     </div>
 
     <!-- Seed card -->
-    <div class="card text-center fix-size" *ngIf="activePanel==4">
+    <div class="card text-center fix-size" *ngIf="activePanel==5">
       <div class="card-body">
         <h1 class="card-title">Wallet created</h1>
         <div class="card-text">
@@ -78,7 +91,7 @@
         </div>
       </div>
       <div class="card-footer text-right">
-        <button type="button" class="btn btn-primary btn-lg" [disabled]="!ekfDownloaded" routerLink="">Finish</button>
+        <button type="button" class="btn btn-primary btn-lg" [disabled]="!ekfDownloaded" (click)="done()" routerLink="">Finish</button>
       </div>
     </div>
     

@@ -37,8 +37,8 @@ export class ImportService {
       }
       this.walletService.wallet = this.walletService.emptyWallet(walletData.walletType);
       this.walletService.addAccount(walletData.pkh);
-      if (walletData.seed) {
-        this.walletService.wallet.seed = walletData.seed;
+      if (walletData.encryptedSeed) {
+        this.walletService.wallet.seed = walletData.encryptedSeed;
       } else if (walletData.pk) {
         this.walletService.wallet.seed = walletData.pk;
       }

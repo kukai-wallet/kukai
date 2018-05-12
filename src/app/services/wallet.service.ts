@@ -5,7 +5,6 @@ import { EncryptionService } from './encryption.service';
 import { OperationService } from './operation.service';
 // import * as lib from '../../assets/js/main.js';
 import * as bip39 from 'bip39';
-import * as rnd2 from 'randomatic';
 
 @Injectable()
 export class WalletService {
@@ -72,7 +71,12 @@ export class WalletService {
   }
   getKeys(pwd: string): KeyPair {
     if (this.isFullWallet()) {
-      return this.operationService.seed2keyPair(this.encryptionService.decrypt(this.wallet.seed, pwd, this.getSalt()));
+      const keys = this.operationService.seed2keyPair(this.encryptionService.decrypt(this.wallet.seed, pwd, this.getSalt()));
+      if (keys.pkh === this.wallet.accounts[0].pkh) {
+        return keys;
+      } else {
+        return null;
+      }
     } else if (this.isViewOnlyWallet()) {
       return {
         pkh: this.wallet.accounts[0].pkh,
@@ -159,7 +163,7 @@ export class WalletService {
       pkh: this.wallet.accounts[0].pkh
     };
     if (this.isFullWallet()) {
-      data.seed = this.wallet.seed;
+      data.encryptedSeed = this.wallet.seed;
     } else if (this.isViewOnlyWallet()) {
       data.pk = this.wallet.seed;
     }
@@ -171,7 +175,7 @@ export class WalletService {
       version: 1.0,
       walletType: type,
       pkh: pkh,
-      seed: seed
+      encryptedSeed: seed
     };
     return data;
   }

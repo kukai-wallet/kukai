@@ -30,12 +30,13 @@ export class BroadcastComponent implements OnInit {
         },
         err => {
           this.messageService.addError('Node responed with an error!');
-          console.log(err);
+          console.log(JSON.stringify(err));
         }
       );
     }
   }
   import(files: FileList) {
+    console.log('Files length: ' + files.length);
     const fileToUpload = files.item(0);
       const reader = new FileReader();
       reader.readAsText(fileToUpload);

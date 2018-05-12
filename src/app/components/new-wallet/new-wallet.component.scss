@@ -24,6 +24,10 @@
 .mono {
     font-family: "Courier New", Courier, monospace;
 }
+.rndp {
+    width: 390px;
+    margin: auto;
+}
 .tmp {
     background-color: lightblue;
 }
@@ -64,6 +68,8 @@ div.entropy {
     padding-right: 0.75rem;
     padding-left: 0.75rem;
     background-color: rgba(0, 0, 0, 0.125);
+    white-space: pre-line;
+    font-size: 120%;
 }
 
 .card-footer {
