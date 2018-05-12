@@ -27,12 +27,17 @@ export class BackupComponent implements OnInit, OnDestroy {
     async decryptPk() {
         const pwd = this.pwd2;
         this.pwd2 = '';
-        if (pwd) {
-            let keys;
-            this.messageService.addSuccess('Exporting View-only Wallet to file...');
-            keys = this.walletService.getKeys(pwd);
-            this.exportService.downloadViewOnlyWallet(keys.pk);
-        }
+        setTimeout(() => {
+            if (pwd) {
+                let keys;
+                if (keys = this.walletService.getKeys(pwd)) {
+                    this.messageService.addSuccess('Exporting View-only Wallet to file...');
+                    this.exportService.downloadViewOnlyWallet(keys.pk);
+                } else {
+                    this.messageService.addError('Wrong password!');
+                }
+            }
+        }, 100);
     }
     ngOnDestroy() {
     }

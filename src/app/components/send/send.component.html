@@ -12,7 +12,7 @@
             <form>
                 <div class="form-row">
                     <div class="form-group col-md-8">
-                        <label for="fromAdress">From Address</label> 
+                        <label for="fromAdress">From Address</label>
                         <select [(ngModel)]="activePkh" id="fromAdress" class="form-control mono" name="first">
                             <option *ngFor="let account of accounts" [ngValue]="account.pkh">{{ account.pkh }}</option>
                         </select>
@@ -39,9 +39,9 @@
                         </div>
                         <small id="smallSend" class="form-text text-muted">
                             <button type="button" class="btn btn-outline-light btn-sm btn-balance" (click)="sendEntireBalance(activePkh, $event)">Send Entire Balance</button>
-                            
+
                             <span class="align-middle" *ngIf="amount * XTZrate > 0">(${{amount * XTZrate | number:'1.0'}} USD)</span>
-                        </small> 
+                        </small>
                     </div>
 
                     <div class="form-group col-md-4">
@@ -68,10 +68,10 @@
             </button>
         </div>
         <div class="modal-body">
-            <p>From: {{ activePkh }}<BR>
-                To: {{ toPkh }}<BR>
-                Amount: {{ amount | number:'1.0' }}ꜩ<BR>
-                Fee: {{ fee | number:'1.0' }}ꜩ
+            <p>From: {{ activePkh }}
+                <BR> To: {{ toPkh }}
+                <BR> Amount: {{ amount | number:'1.0' }}ꜩ
+                <BR> Fee: {{ fee | number:'1.0' }}ꜩ
             </p>
             <div class="row">
                 <div *ngIf='walletService.isFullWallet()' class="form-group col-md-6">
@@ -100,21 +100,21 @@
             <ng-container *ngIf='sendResponse'>
                 <div *ngIf='sendResponse.success === true'>
                     <i class="fa fa-check-circle"></i>
-                    <br><br>
+                    <br>
+                    <br>
                     <ng-container *ngIf='sendResponse.payload.opHash'>
                         <p>Your transaction has been successfully broadcasted to the network</p>
                         <p>{{ sendResponse.payload.opHash }}</p>
                     </ng-container>
                     <ng-container *ngIf='sendResponse.payload.unsignedOperation'>
                         <p>Your unsigned transaction have successfully been created</p>
-                        <!--<p>{{ sendResponse.payload.unsignedOperation }}</p>-->
                     </ng-container>
                 </div>
                 <div *ngIf='sendResponse.success === false'>
                     <p>Failure!</p>
                     <p>{{ sendResponse.payload.msg }}</p>
-            </div>
-            <button *ngIf='sendResponse.payload.unsignedOperation' type="button" class="btn btn-primary" (click)="download()">Download</button>
+                </div>
+                <button *ngIf='sendResponse.payload.unsignedOperation' type="button" class="btn btn-primary" (click)="download()">Download</button>
             </ng-container>
             <button type="button" class="btn btn-primary" id="sub" (click)="close3()">Close</button>
         </div>
@@ -131,5 +131,6 @@
 </ng-container>
 
 <p class="no-accounts" *ngIf='!accounts'>
-    Send <!-- Wallet not configured, just Send string shown on sidebar -->
+    Send
+    <!-- Wallet not configured, just Send string shown on sidebar -->
 </p>

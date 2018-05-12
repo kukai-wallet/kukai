@@ -85,37 +85,6 @@ export class WalletService {
       };
     }
   }
-  /*getKeysHelper(pwd: string): KeyPair {
-    let keys;
-    if (this.isFullWallet()) {
-        if (this.isPasswordProtected()) {
-        keys = this.getKeys(pwd, null);
-        } else {
-        keys = this.getKeys(null, pwd);
-        }
-    } else if (this.isViewOnlyWallet()) {
-        keys = {
-            sk: null,
-            pk: this.wallet.seed,
-            pkh: this.wallet.accounts[0].pkh
-        };
-    }
-    return keys;
-  }*/
-  /*getMnemonicHelper(pwd: string): string {
-    try {
-      if (this.isFullWallet()) {
-        if (this.isPasswordProtected()) {
-          return bip39.entropyToMnemonic(this.encryptionService.decrypt(this.wallet.seed, pwd, this.getSalt()));
-        } else if (this.isPassphraseProtected()) {
-          return bip39.entropyToMnemonic(this.wallet.seed);
-        }
-      }
-    } catch (err) {
-      console.log('Error in getMnemonicHelper(): ' + err);
-    }
-    return '';
-  }*/
   /*
     Clear wallet data from browser
   */

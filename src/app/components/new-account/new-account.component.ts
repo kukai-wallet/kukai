@@ -6,6 +6,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { KeyPair } from '../../interfaces';
 import { OperationService } from '../../services/operation.service';
 import { UpdateCoordinatorService } from '../../services/coordinator.service';
+import { ExportService } from '../../services/export.service';
 
 @Component({
   selector: 'app-new-account',
@@ -15,7 +16,7 @@ import { UpdateCoordinatorService } from '../../services/coordinator.service';
 export class NewAccountComponent implements OnInit {
   @ViewChild('modal1') modal1: TemplateRef<any>;
   @Input() activePkh: string;
-   // accounts = this.walletService.wallet.accounts;
+  // accounts = this.walletService.wallet.accounts;
   accounts = null;
   amount: string;
   fee: string;
@@ -25,7 +26,7 @@ export class NewAccountComponent implements OnInit {
   modalRef3: BsModalRef;
   formInvalid = '';
   pwdValid: string;
-  sendResponse = '';
+  sendResponse: any;
 
   isValidModal2 = {
     password: false,
@@ -37,7 +38,8 @@ export class NewAccountComponent implements OnInit {
     private messageService: MessageService,
     private modalService: BsModalService,
     private operationService: OperationService,
-    private updateCoordinatorService: UpdateCoordinatorService
+    private updateCoordinatorService: UpdateCoordinatorService,
+    private exportService: ExportService
   ) { }
 
   ngOnInit() {
@@ -98,23 +100,26 @@ export class NewAccountComponent implements OnInit {
     let fee = this.fee;
     this.amount = '';
     this.fee = '';
+
     if (!amount) { amount = '0'; }
     if (!fee) { fee = '0'; }
-    console.log('1');
+
     setTimeout(async () => {
+      console.log('keys: ' + JSON.stringify(keys));
+      console.log('pkh: ' + this.activePkh);
       this.operationService.originate(this.activePkh, Number(amount), Number(fee), keys).subscribe(
         (ans: any) => {
-          if (ans.opHash) {
-            this.sendResponse = 'success';
-            this.walletService.addAccount(ans.newPkh);
-            this.updateCoordinatorService.boost(this.activePkh);
-            this.updateCoordinatorService.start(ans.newPkh);
-          } else {
-            this.sendResponse = 'failure';
+          this.sendResponse = ans;
+          if (ans.success === true) {
+            if (ans.payload.opHash) {
+              this.walletService.addAccount(ans.payload.newPkh);
+              this.updateCoordinatorService.boost(this.activePkh);
+              this.updateCoordinatorService.start(ans.newPkh);
+            }
           }
         },
-        err => {console.log(JSON.stringify(err));
-          this.sendResponse = 'failure';
+        err => {
+          console.log(JSON.stringify(err));
         }
       );
     }, 100);
@@ -136,9 +141,12 @@ export class NewAccountComponent implements OnInit {
     this.password = '';
     this.pwdValid = '';
     this.formInvalid = '';
-    this.sendResponse = '';
+    this.sendResponse = null;
 
     this.isValidModal2.password = false;
     this.isValidModal2.neverConfirmed = true;
   }
+  download() {
+    this.exportService.downloadOperationData(this.sendResponse.payload.unsignedOperation, false);
+}
 }

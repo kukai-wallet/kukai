@@ -21,7 +21,8 @@ export class ExportService {
   }
   downloadViewOnlyWallet(pk: string) {
     const keyStore = this.walletService.exportKeyStore();
-    keyStore.seed = pk;
+    keyStore.pk = pk;
+    keyStore.encryptedSeed = undefined;
     keyStore.walletType = WalletType.ViewOnlyWallet;
     this.downloadWallet(keyStore);
   }
