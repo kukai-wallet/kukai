@@ -29,6 +29,7 @@ export class BroadcastComponent implements OnInit {
           console.log(JSON.stringify(ans));
           if (ans.success) {
             this.messageService.addSuccess('Operation successfully broadcasted to the network: ' + ans.payload.opHash);
+            this.coordinatorService.setBroadcast();
           } else {
             this.messageService.addWarning('Couldn\'t retrive operation hash!');
           }

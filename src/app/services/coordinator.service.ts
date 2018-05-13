@@ -24,6 +24,7 @@ export class CoordinatorService {
   shortDelayActivity = 2000; // 5s
   tzrateInterval: any;
   defaultDelayPrice = 300000; // 300s
+  broadcastDone = false;
   constructor(
     private activityService: ActivityService,
     private tzrateService: TzrateService,
@@ -119,6 +120,27 @@ export class CoordinatorService {
   changeState(pkh: string, newState: State) {
     const scheduleData: ScheduleData = this.scheduler.get(pkh);
     scheduleData.state = newState;
+    if (!this.walletService.isFullWallet() && newState === State.UpToDate && this.broadcastDone) {
+      // Broadcasted operation included in block. Assume it could be any op (temp fix)
+      this.activityService.getDelegate(pkh);
+      // this.importService.findNumberOfAccounts(this.walletService.wallet.accounts[0].pkh);
+      const i = this.walletService.getIndexFromPkh(pkh);
+      for (let n = 0; n < this.walletService.wallet.accounts[i].activities.length; n++) {
+        const op = this.walletService.wallet.accounts[i].activities[n];
+        if (op.type === 'Origination') {
+          console.log('New origination found');
+          console.log(op.destination);
+          console.log(this.walletService.getIndexFromPkh(op.destination));
+          if (this.walletService.getIndexFromPkh(op.destination) === -1) {
+            console.log('New pkh, adding to wallet!');
+            this.walletService.addAccount(op.destination);
+            this.balanceService.getAccountBalance(this.walletService.getIndexFromPkh(op.destination));
+            this.start(op.destination);
+          }
+        }
+      }
+      this.broadcastDone = false;
+    }
     if (newState === State.UpToDate && scheduleData.changedDelegate) { // Update delegate
       console.log('Looking for new delegate for ' + pkh);
       this.activityService.getDelegate(pkh);
@@ -138,6 +160,9 @@ export class CoordinatorService {
     }
     scheduleData.interval = setInterval(() => this.update(pkh), time);
     this.scheduler.set(pkh, scheduleData);
+  }
+  setBroadcast() {
+    this.broadcastDone = true;
   }
   setChangedDelegate(pkh: string) {
     const scheduleData: ScheduleData = this.scheduler.get(pkh);
