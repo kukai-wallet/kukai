@@ -43,13 +43,6 @@ export class WalletService {
   getSalt(pkh: string = this.wallet.accounts[0].pkh) {
     return pkh.slice(3, 19);
   }
-  /*createEncryptedTgeWallet(mnemonic: string, passphrase: string): string {
-    this.wallet = this.emptyWallet(false, true, WalletType.FullWallet);
-    this.wallet.accounts = [];
-    this.addAccount(this.operationService.seed2keyPair(this.operationService.mnemonic2seed(mnemonic, passphrase)).pkh);
-    this.wallet.seed = bip39.mnemonicToEntropy(mnemonic);
-    return this.wallet.accounts[0].pkh;
-  }*/
   /*
     Handle accounts
   */

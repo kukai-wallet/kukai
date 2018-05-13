@@ -42,7 +42,7 @@ export class ImportService {
       } else if (walletData.pk) {
         this.walletService.wallet.seed = walletData.pk;
       }
-      await this.findNumberOfAccounts(walletData.pkh);
+      await this.findAllAccounts(walletData.pkh);
       return true;
     } catch (err) {
       this.messageService.addError('ImportWalletDataError: ' + err);
@@ -69,6 +69,9 @@ export class ImportService {
       this.walletService.clearWallet();
       throw (err);
     }
+    this.findAllAccounts(pkh);
+  }
+  async findAllAccounts(pkh: string) {
     this.findNumberOfAccounts(pkh);
   }
   async findNumberOfAccounts(pkh: string) {
@@ -81,7 +84,7 @@ export class ImportService {
             this.findAccounts(pkh, data[0]);
           }
         },
-        err => this.messageService.addError('ImportError(2)' + JSON.stringify(err))
+        err => console.log('ImportError: ' + JSON.stringify(err))
       );
     }
   }
