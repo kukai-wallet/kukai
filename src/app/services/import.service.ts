@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { WalletService } from './wallet.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { WalletType } from './../interfaces';
 import { Observable } from 'rxjs/Observable';
 import { MessageService } from './message.service';
 import { BalanceService } from './balance.service';
 import * as bip39 from 'bip39';
-import { UpdateCoordinatorService } from './coordinator.service';
+import { CoordinatorService } from './coordinator.service';
 import { OperationService } from './operation.service';
 
 const httpOptions = {
@@ -19,35 +20,58 @@ export class ImportService {
     private walletService: WalletService,
     private messageService: MessageService,
     private balanceService: BalanceService,
-    private updateCoordinatorService: UpdateCoordinatorService,
+    private coordinatorService: CoordinatorService,
     private operationService: OperationService,
     private http: HttpClient
   ) { }
-  async importWalletData(json: string): Promise<boolean> {
+  async importWalletData(json: string, isJson: boolean = true): Promise<boolean> {
     try {
-      const walletData = JSON.parse(json);
+      let walletData;
+      if (isJson) {
+        walletData = JSON.parse(json);
+      } else {
+        walletData = json;
+      }
       if (walletData.provider !== 'Kukai') {
         throw new Error(`Unsupported wallet format`);
       }
-      this.walletService.wallet = this.walletService.emptyWallet();
+      this.walletService.wallet = this.walletService.emptyWallet(walletData.walletType);
       this.walletService.addAccount(walletData.pkh);
-      this.walletService.wallet.seed = walletData.data;
-      this.walletService.wallet.passphrase = walletData.passphrase;
-      await this.findNumberOfAccounts(walletData.pkh);
+      if (walletData.encryptedSeed) {
+        this.walletService.wallet.seed = walletData.encryptedSeed;
+      } else if (walletData.pk) {
+        this.walletService.wallet.seed = walletData.pk;
+      }
+      await this.findAllAccounts(walletData.pkh);
       return true;
     } catch (err) {
-      this.messageService.addError('ImportError(1)' + err);
+      this.messageService.addError('ImportWalletDataError: ' + err);
+      this.walletService.clearWallet();
       return false;
     }
   }
   importWalletFromPk(pk: string) {
-    const pkh = this.operationService.pk2pkh(pk);
-    this.importWalletFromPkh(pkh);
-    this.walletService.wallet.seed = pk;
+    try {
+      const pkh = this.operationService.pk2pkh(pk);
+      this.importWalletFromPkh(pkh, WalletType.ViewOnlyWallet);
+      this.walletService.wallet.seed = pk;
+    } catch (err) {
+      this.walletService.clearWallet();
+      throw (err);
+    }
   }
-  importWalletFromPkh(pkh: string) {
-    this.walletService.wallet = this.walletService.emptyWallet();
-    this.walletService.addAccount(pkh);
+  importWalletFromPkh(pkh: string, type: WalletType = WalletType.ObserverWallet) {
+    try {
+      this.walletService.wallet = this.walletService.emptyWallet(type);
+      this.walletService.addAccount(pkh);
+    } catch (err) {
+      this.messageService.addError('Failed to load wallet!');
+      this.walletService.clearWallet();
+      throw (err);
+    }
+    this.findAllAccounts(pkh);
+  }
+  async findAllAccounts(pkh: string) {
     this.findNumberOfAccounts(pkh);
   }
   async findNumberOfAccounts(pkh: string) {
@@ -60,36 +84,25 @@ export class ImportService {
             this.findAccounts(pkh, data[0]);
           }
         },
-        err => this.messageService.addError('ImportError(2)' + JSON.stringify(err))
+        err => console.log('ImportError: ' + JSON.stringify(err))
       );
     }
   }
   async findAccounts(pkh: string, n: number) {
     console.log('Accounts found: ' + n);
-    this.updateCoordinatorService.start(pkh);
-    this.updateCoordinatorService.startXTZ();
+    this.coordinatorService.start(pkh);
+    this.coordinatorService.startXTZ();
     this.http.get('http://zeronet-api.tzscan.io/v1/operations/' + pkh + '?type=Origination&number=' + n + '&p=0').subscribe(
       data => {
         for (let i = 0; i < n; i++) {
           this.walletService.addAccount(data[i].type.tz1);
           console.log('Added: ' + data[i].type.tz1);
-          this.updateCoordinatorService.start(data[i].type.tz1);
+          this.coordinatorService.start(data[i].type.tz1);
           this.findNumberOfAccounts(data[i].type.tz1); // Recursive call
         }
         this.walletService.storeWallet();
       },
       err => this.messageService.addError('ImportError(3)' + JSON.stringify(err))
     );
-  }
-  importTgeWallet(mnemonic, email, password): boolean {
-    // salt = unicodedata.normalize(
-    // "NFKD", (email + password).decode("utf8")).encode("utf8")
-    // seed = bitcoin.mnemonic_to_seed(mnemonic, salt)
-    const passphrase = email + password;
-    let pkh;
-   if (pkh = this.walletService.createEncryptedTgeWallet(mnemonic, passphrase)) {
-      this.findNumberOfAccounts(pkh);
-   }
-    return pkh;
   }
 }

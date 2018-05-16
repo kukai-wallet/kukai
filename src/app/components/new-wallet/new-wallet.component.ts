@@ -6,6 +6,8 @@ import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/fromEvent';
 import * as bip39 from 'bip39';
 import { ExportService } from '../../services/export.service';
+import { ImportService } from '../../services/import.service';
+import * as rnd from 'randomatic';
 
 // import { Router } from '@angular/router';
 
@@ -18,11 +20,16 @@ export class NewWalletComponent implements OnInit {
   MIN_PWD_LENGTH = 8;
   @Input() pwd1 = '';
   @Input() pwd2 = '';
+  @Input() userMnemonic = '';
   ekfDownloaded = false;
   activePanel = 0;
   data: any;
   mnemonic: string;
   entropyMsg: string;
+  prevCoords = {
+    x: 0,
+    y: 0
+  };
   // Verify password boolean
   isValidPass = {
     empty: true,
@@ -40,37 +47,43 @@ export class NewWalletComponent implements OnInit {
     if (this.activePanel === 0) {
       const x = Math.round(e.pageX * 255 / document.body.clientWidth);
       const y = Math.round(e.pageY * 255 / document.body.clientHeight);
-      let part = this.entropy.substr(this.counter * 4, 4); // part of string to replace
-      const newPart = Number('0x' + part) ^ (x + y * 16 * 16);
-      part = newPart.toString(16);
-      for (let i = 1; i <= 3; i++) { // make sure part got 4 characters
-        if (!part[i]) { part = '0' + part; }
-      }
-      part = this.entropy.substr(0, this.counter * 4) + part + this.entropy.substr((this.counter + 1) * 4, this.entropy.length);
-      this.entropy = part;
-      this.counter = ( this.counter + 1 ) % (this.entropy.length / 4);
-      if (this.counter % 8 === 0) { this.counter2++; }
-      if (this.counter2 === 100) {
-        this.activePanel++;
-        let finalEntropy = '';
-        for (let i = 0; i < 40; i++) {
-          let hex = 0;
-          for (let j = 0; j < 4; j++) {
-              hex = hex ^ Number('0x' + this.entropy[i * 4 + j]);
-          }
-          finalEntropy = finalEntropy + hex.toString(16);
+      if (x !== this.prevCoords.x || y !== this.prevCoords.y) {
+        this.prevCoords.x = x;
+        this.prevCoords.y = y;
+        let part = this.entropy.substr(this.counter * 4, 4); // part of string to replace
+        const newPart = Number('0x' + part) ^ (x + y * 16 * 16);
+        part = newPart.toString(16);
+        for (let i = 1; i <= 3; i++) { // make sure part got 4 characters
+          if (!part[i]) { part = '0' + part; }
         }
-        this.entropy = finalEntropy;
-        this.generateSeed();
+        part = this.entropy.substr(0, this.counter * 4) + part + this.entropy.substr((this.counter + 1) * 4, this.entropy.length);
+        this.entropy = part;
+        this.counter = ( this.counter + 1 ) % (this.entropy.length / 4);
+        if (this.counter % 8 === 0) { this.counter2++; } // Set time for collection here
+        if (this.counter2 >= 100) {
+          this.activePanel++;
+          let finalEntropy = '';
+          for (let i = 0; i < 40; i++) {
+            let hex = 0;
+            for (let j = 0; j < 4; j++) {
+                hex = hex ^ Number('0x' + this.entropy[i * 4 + j]);
+            }
+            finalEntropy = finalEntropy + hex.toString(16);
+          }
+          this.entropy = finalEntropy;
+          this.generateSeed();
+        }
       }
     }
   }
   constructor(private walletService: WalletService,
     private messageService: MessageService,
     private exportService: ExportService,
+    private importService: ImportService,
     private cdRef: ChangeDetectorRef) { }
 
   ngOnInit() {
+    this.entropy = rnd('?', 160, {chars: '0123456789abcdef'});
   }
   skipExtraEntropy() {
     this.activePanel++;
@@ -79,26 +92,33 @@ export class NewWalletComponent implements OnInit {
   }
   generateSeed() {
     this.mnemonic = this.walletService.createNewWallet(this.entropy);
+    this.mnemonic = this.mnemonic.replace(/((?:.*?\s){4}.*?)\s/g, '$1\n'); // 5 words per line
     this.activePanel++;
-    // this.entr = bip39.mnemonicToEntropy(this.mnemonic);
-    /*
-    console.log('Entropy: ' + entr + ' Mnemonic: ' + bip39.entropyToMnemonic(entr));
+  }
+  verifyView() {
     this.activePanel++;
-    */
+    this.mnemonic = this.mnemonic.replace(/(\r\n\t|\n|\r\t| )/gm, ''); // remove white-spaces and linebreaks
   }
   pwdView() {
     this.activePanel++;
+    this.mnemonic = '';
+    this.userMnemonic = '';
+  }
+  mnemonicMatch(): boolean {
+    return (this.mnemonic === this.userMnemonic.replace(/(\r\n\t|\n|\r\t| )/gm, ''));
   }
   encryptWallet() {
     if (this.validatePwd()) {
-      setTimeout(() => {
-        this.data = this.walletService.createEncryptedWallet(this.mnemonic, this.pwd1);
+      const pwd = this.pwd1;
+      this.pwd1 = '';
+      this.pwd2 = '';
+      setTimeout(() => { // Prevent UI from freeze
+        console.log('Wait...');
+        this.data = this.walletService.createEncryptedWallet(this.mnemonic, pwd);
         this.mnemonic = '';
-        this.pwd1 = '';
-        this.pwd2 = '';
         this.activePanel++;
         this.walletService.storeWallet();
-      }, 1);
+      }, 100);
     }
   }
   validatePwd(): boolean {
@@ -124,6 +144,11 @@ export class NewWalletComponent implements OnInit {
   }
   reset() {
     this.activePanel = 0;
+  }
+  done() {
+    this.importService.importWalletData(this.data, false);
+    this.data = null;
+    this.messageService.addSuccess('Your new wallet is now set up and ready!');
   }
   export(): string {
     return JSON.stringify(this.data);

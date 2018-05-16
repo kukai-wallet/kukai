@@ -63,7 +63,6 @@ export class ImportComponent implements OnInit {
         };
       }
   }
-
   validateFile(name: String) {
     const ext = name.substring(name.lastIndexOf('.') + 1);
     if (ext.toLowerCase() === 'tez') {

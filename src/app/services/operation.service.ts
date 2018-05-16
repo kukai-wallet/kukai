@@ -9,8 +9,8 @@ import * as Bs58check from 'bs58check';
 import * as bip39 from 'bip39';
 
 export interface KeyPair {
-  sk: string|null;
-  pk: string|null;
+  sk: string | null;
+  pk: string | null;
   pkh: string;
 }
 @Injectable()
@@ -38,7 +38,8 @@ export class OperationService {
           operations: [{
             kind: 'activation',
             pkh: pkh,
-            secret: secret}
+            secret: secret
+          }
           ]
         };
         return this.http.post(this.nodeURL + '/blocks/head/proto/helpers/forge/operations', fop)
@@ -48,14 +49,14 @@ export class OperationService {
               chain_id: head.chain_id
             };
             return this.http.post(this.nodeURL + '/inject_operation', sop)
-            .flatMap((final: any) => {
-              return of(
-                {
-                  opHash: final.injectedOperation
-                });
-            });
-        });
-    });
+              .flatMap((final: any) => {
+                return of(
+                  {
+                    opHash: final.injectedOperation
+                  });
+              });
+          });
+      });
   }
   /*
     Returns an observable for the origination of new accounts.
@@ -88,10 +89,13 @@ export class OperationService {
             return this.http.post(this.nodeURL + '/blocks/head/proto/helpers/forge/operations', fop)
               .flatMap((opbytes: any) => {
                 if (!keys.sk) { // If sk doesn't exist, return unsigned operation
-                return of(
-                  {
-                    unsignedOperation: opbytes.operation
-                  });
+                  return of(
+                    {
+                      success: true,
+                      payload: {
+                        unsignedOperation: opbytes.operation
+                      }
+                    });
                 } else { // If sk exists, sign and broadcast operation
                   return this.http.post(this.nodeURL + '/blocks/head/predecessor', {})
                     .flatMap((headp: any) => {
@@ -105,102 +109,105 @@ export class OperationService {
                         signature: signed.edsig
                       };
                       return this.http.post(this.nodeURL + '/blocks/head/proto/helpers/apply_operation', aop)
-                      .flatMap((applied: any) => {
-                        const sop = {
-                          signedOperationContents: sopbytes,
-                          chain_id: head.chain_id
-                        };
+                        .flatMap((applied: any) => {
+                          const sop = {
+                            signedOperationContents: sopbytes,
+                            chain_id: head.chain_id
+                          };
                           return this.http.post(this.nodeURL + '/inject_operation', sop)
-                          .flatMap((final: any) => {
-                            return of(
-                              {
-                                opHash: final.injectedOperation,
-                                newPkh: applied.contracts[0],
-                                unsignedOperation: null
-                              });
-                          });
-                      });
-                  });
+                            .flatMap((final: any) => {
+                              return of(
+                                {
+                                  success: true,
+                                  payload: {
+                                    opHash: final.injectedOperation,
+                                    newPkh: applied.contracts[0],
+                                    unsignedOperation: null
+                                  }
+                                });
+                            });
+                        });
+                    });
                 }
-            });
-        });
-    });
+              });
+          });
+      });
   }
   /*
     Returns an observable for the transaction of tezzies.
   */
- transfer(from: string, to: string, amount: number, fee: number = 0, keys: KeyPair): Observable<any> {
-  return this.http.post(this.nodeURL + '/blocks/head', {})
-    .flatMap((head: any) => {
-      return this.http.post(this.nodeURL + '/blocks/head/proto/context/contracts/' + from + '/counter', {})
-        .flatMap((actions: any) => {
-          const fop = {
-            branch: head.hash,
-            kind: 'manager',
-            source: from,
-            fee: (fee * this.toMicro).toString(),
-            counter: ++actions.counter,
-            operations: [
-              {
-                kind: 'reveal',
-                public_key: keys.pk
-              },
-              {
-                kind: 'transaction',
-                amount: (amount * this.toMicro).toString(),
-                destination: to,
-                parameters: {
-                  prim: 'Unit',
-                  args: []
-                }
-              }
-            ]
-          };
-          return this.http.post(this.nodeURL + '/blocks/head/proto/helpers/forge/operations', fop)
-            .flatMap((opbytes: any) => {
-              if (!keys.sk) { // If sk doesn't exist, return unsigned operation
-              return of(
+  transfer(from: string, to: string, amount: number, fee: number = 0, keys: KeyPair): Observable<any> {
+    return this.http.post(this.nodeURL + '/blocks/head', {})
+      .flatMap((head: any) => {
+        return this.http.post(this.nodeURL + '/blocks/head/proto/context/contracts/' + from + '/counter', {})
+          .flatMap((actions: any) => {
+            const fop = {
+              branch: head.hash,
+              kind: 'manager',
+              source: from,
+              fee: (fee * this.toMicro).toString(),
+              counter: ++actions.counter,
+              operations: [
                 {
-                  success: true,
-                    payload: {
-                    unsignedOperation: opbytes.operation
-                    }
-                });
-              } else { // If sk exists, sign and broadcast operation
-                return this.http.post(this.nodeURL + '/blocks/head/predecessor', {})
-                  .flatMap((headp: any) => {
-                    const signed = this.sign(opbytes.operation, keys.sk);
-                    const sopbytes = signed.sbytes;
-                    const opHash = this.b58cencode(libs.crypto_generichash(32, this.hex2buf(sopbytes)), this.prefix.o);
-                    const aop = {
-                      pred_block: headp.predecessor,
-                      operation_hash: opHash,
-                      forged_operation: opbytes.operation,
-                      signature: signed.edsig
-                    };
-                    return this.http.post(this.nodeURL + '/blocks/head/proto/helpers/apply_operation', aop)
-                    .flatMap((applied: any) => {
-                      const sop = {
-                        signedOperationContents: sopbytes,
-                        chain_id: head.chain_id
+                  kind: 'reveal',
+                  public_key: keys.pk
+                },
+                {
+                  kind: 'transaction',
+                  amount: (amount * this.toMicro).toString(),
+                  destination: to,
+                  parameters: {
+                    prim: 'Unit',
+                    args: []
+                  }
+                }
+              ]
+            };
+            return this.http.post(this.nodeURL + '/blocks/head/proto/helpers/forge/operations', fop)
+              .flatMap((opbytes: any) => {
+                if (!keys.sk) { // If sk doesn't exist, return unsigned operation
+                  return of(
+                    {
+                      success: true,
+                      payload: {
+                        unsignedOperation: opbytes.operation
+                      }
+                    });
+                } else { // If sk exists, sign and broadcast operation
+                  return this.http.post(this.nodeURL + '/blocks/head/predecessor', {})
+                    .flatMap((headp: any) => {
+                      const signed = this.sign(opbytes.operation, keys.sk);
+                      const sopbytes = signed.sbytes;
+                      const opHash = this.b58cencode(libs.crypto_generichash(32, this.hex2buf(sopbytes)), this.prefix.o);
+                      const aop = {
+                        pred_block: headp.predecessor,
+                        operation_hash: opHash,
+                        forged_operation: opbytes.operation,
+                        signature: signed.edsig
                       };
-                        return this.http.post(this.nodeURL + '/inject_operation', sop)
-                        .flatMap((final: any) => {
-                          return of(
-                            {
-                              success: true,
-                              payload: {
-                                opHash: final.injectedOperation,
-                                unsignedOperation: null
-                              }
+                      return this.http.post(this.nodeURL + '/blocks/head/proto/helpers/apply_operation', aop)
+                        .flatMap((applied: any) => {
+                          const sop = {
+                            signedOperationContents: sopbytes,
+                            chain_id: head.chain_id
+                          };
+                          return this.http.post(this.nodeURL + '/inject_operation', sop)
+                            .flatMap((final: any) => {
+                              return of(
+                                {
+                                  success: true,
+                                  payload: {
+                                    opHash: final.injectedOperation,
+                                    unsignedOperation: null
+                                  }
+                                });
                             });
                         });
                     });
-                });
-              }
-            });
-        });
-    }).pipe(catchError(err => this.errHandler(err)));
+                }
+              });
+          });
+      }).pipe(catchError(err => this.errHandler(err)));
   }
   errHandler(error: any): Observable<any> {
     return of(
@@ -215,76 +222,97 @@ export class OperationService {
   /*
     Returns an observable for the delegation of baking rights.
   */
- delegate(from: string, to: string, fee: number = 0, keys: KeyPair): Observable<any> {
-  return this.http.post(this.nodeURL + '/blocks/head', {})
-    .flatMap((head: any) => {
-      return this.http.post(this.nodeURL + '/blocks/head/proto/context/contracts/' + from + '/counter', {})
-        .flatMap((actions: any) => {
-          const fop = {
-            branch: head.hash,
-            kind: 'manager',
-            source: from,
-            fee: (fee * this.toMicro).toString(),
-            counter: ++actions.counter,
-            operations: [
-              {
-                kind: 'reveal',
-                public_key: keys.pk
-              },
-              {
-                kind: 'delegation',
-                delegate: to
-              }
-            ]
-          };
-          return this.http.post(this.nodeURL + '/blocks/head/proto/helpers/forge/operations', fop)
-            .flatMap((opbytes: any) => {
-              if (!keys.sk) { // If sk doesn't exist, return unsigned operation
-              return of(
+  delegate(from: string, to: string, fee: number = 0, keys: KeyPair): Observable<any> {
+    return this.http.post(this.nodeURL + '/blocks/head', {})
+      .flatMap((head: any) => {
+        return this.http.post(this.nodeURL + '/blocks/head/proto/context/contracts/' + from + '/counter', {})
+          .flatMap((actions: any) => {
+            const fop = {
+              branch: head.hash,
+              kind: 'manager',
+              source: from,
+              fee: (fee * this.toMicro).toString(),
+              counter: ++actions.counter,
+              operations: [
                 {
-                  unsignedOperation: opbytes.operation
-                });
-              } else { // If sk exists, sign and broadcast operation
-                return this.http.post(this.nodeURL + '/blocks/head/predecessor', {})
-                  .flatMap((headp: any) => {
-                    const signed = this.sign(opbytes.operation, keys.sk);
-                    const sopbytes = signed.sbytes;
-                    const opHash = this.b58cencode(libs.crypto_generichash(32, this.hex2buf(sopbytes)), this.prefix.o);
-                    const aop = {
-                      pred_block: headp.predecessor,
-                      operation_hash: opHash,
-                      forged_operation: opbytes.operation,
-                      signature: signed.edsig
-                    };
-                    return this.http.post(this.nodeURL + '/blocks/head/proto/helpers/apply_operation', aop)
-                    .flatMap((applied: any) => {
-                      const sop = {
-                        signedOperationContents: sopbytes,
-                        chain_id: head.chain_id
+                  kind: 'reveal',
+                  public_key: keys.pk
+                },
+                {
+                  kind: 'delegation',
+                  delegate: to
+                }
+              ]
+            };
+            return this.http.post(this.nodeURL + '/blocks/head/proto/helpers/forge/operations', fop)
+              .flatMap((opbytes: any) => {
+                if (!keys.sk) { // If sk doesn't exist, return unsigned operation
+                  return of(
+                    {
+                      unsignedOperation: opbytes.operation
+                    });
+                } else { // If sk exists, sign and broadcast operation
+                  return this.http.post(this.nodeURL + '/blocks/head/predecessor', {})
+                    .flatMap((headp: any) => {
+                      const signed = this.sign(opbytes.operation, keys.sk);
+                      const sopbytes = signed.sbytes;
+                      const opHash = this.b58cencode(libs.crypto_generichash(32, this.hex2buf(sopbytes)), this.prefix.o);
+                      const aop = {
+                        pred_block: headp.predecessor,
+                        operation_hash: opHash,
+                        forged_operation: opbytes.operation,
+                        signature: signed.edsig
                       };
-                        return this.http.post(this.nodeURL + '/inject_operation', sop)
-                        .flatMap((final: any) => {
-                          return of(
-                            {
-                              opHash: final.injectedOperation,
-                              unsignedOperation: null
+                      return this.http.post(this.nodeURL + '/blocks/head/proto/helpers/apply_operation', aop)
+                        .flatMap((applied: any) => {
+                          const sop = {
+                            signedOperationContents: sopbytes,
+                            chain_id: head.chain_id
+                          };
+                          return this.http.post(this.nodeURL + '/inject_operation', sop)
+                            .flatMap((final: any) => {
+                              return of(
+                                {
+                                  opHash: final.injectedOperation,
+                                  unsignedOperation: null
+                                });
                             });
                         });
                     });
-                });
-              }
+                }
+              });
           });
       });
-  });
   }
-  generateKeys(mnemonic: string, passphrase: string): KeyPair {
-    const seed = bip39.mnemonicToSeed(mnemonic, passphrase).slice(0, 32);
+  broadcast(sopbytes: string): Observable<any> {
+    return this.http.post(this.nodeURL + '/blocks/head', {})
+      .flatMap((head: any) => {
+        const sop = {
+          signedOperationContents: sopbytes,
+          chain_id: head.chain_id
+        };
+        return this.http.post(this.nodeURL + '/inject_operation', sop)
+          .flatMap((final: any) => {
+            return of(
+              {
+                success: true,
+                payload: {
+                  opHash: final.injectedOperation
+                }
+              });
+          });
+      });
+  }
+  seed2keyPair(seed: string): KeyPair {
     const keyPair = libs.crypto_sign_seed_keypair(seed);
     return {
       sk: this.b58cencode(keyPair.privateKey, this.prefix.edsk),
       pk: this.b58cencode(keyPair.publicKey, this.prefix.edpk),
       pkh: this.b58cencode(libs.crypto_generichash(20, keyPair.publicKey), this.prefix.tz1)
     };
+  }
+  mnemonic2seed(mnemonic: string, passphrase: string = '') {
+    return bip39.mnemonicToSeed(mnemonic, passphrase).slice(0, 32);
   }
   generateMnemonic(): string {
     return bip39.generateMnemonic(160);

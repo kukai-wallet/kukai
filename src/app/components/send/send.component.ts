@@ -2,7 +2,7 @@ import { Component, TemplateRef, OnInit, ViewEncapsulation, Input, ViewChild, El
 import { DOCUMENT } from '@angular/platform-browser';
 import { WalletService } from '../../services/wallet.service';
 import { MessageService } from '../../services/message.service';
-import { UpdateCoordinatorService } from '../../services/coordinator.service';
+import { CoordinatorService } from '../../services/coordinator.service';
 import { OperationService } from '../../services/operation.service';
 import { ExportService } from '../../services/export.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
@@ -48,7 +48,7 @@ export class SendComponent implements OnInit {
         private walletService: WalletService,
         private messageService: MessageService,
         private operationService: OperationService,
-        private updateCoordinatorService: UpdateCoordinatorService,
+        private coordinatorService: CoordinatorService,
         private exportService: ExportService
     ) { }
 
@@ -91,7 +91,7 @@ export class SendComponent implements OnInit {
             default: {
                 console.log('actionButtonString wrongly set ', this.actionButtonString);
                 break;
-             }
+            }
         }
     }
 
@@ -136,12 +136,6 @@ export class SendComponent implements OnInit {
             this.clearForm();
             this.modalRef1 = this.modalService.show(template1, { class: 'first' });
         }
-        /*
-        this.modalRef1 = this.modalService.show(
-        template1,
-        Object.assign({}, { class: 'gray modal-lg' })
-        );
-        */
     }
     open2(template: TemplateRef<any>) {
         this.formInvalid = this.invalidInput();
@@ -155,7 +149,7 @@ export class SendComponent implements OnInit {
     async open3(template: TemplateRef<any>) {
         const pwd = this.password;
         this.password = '';
-        const keys = this.walletService.getKeysHelper(pwd);
+        const keys = this.walletService.getKeys(pwd);
         if (keys) {
             this.pwdValid = '';
             this.close2();
@@ -182,7 +176,6 @@ export class SendComponent implements OnInit {
     }
 
     async sendTransaction(keys: KeyPair) {
-
         const toPkh = this.toPkh;
         let amount = this.amount;
         let fee = this.fee;
@@ -190,30 +183,24 @@ export class SendComponent implements OnInit {
         this.amount = '';
         this.fee = '';
 
-        if (!amount) {
-            amount = '0';
-        }
-
-        if (!fee) {
-            fee = '0';
-        }
+        if (!amount) { amount = '0'; }
+        if (!fee) { fee = '0'; }
 
         setTimeout(async () => {
             this.operationService.transfer(this.activePkh, toPkh, Number(amount), Number(fee), keys).subscribe(
                 (ans: any) => {
-                  console.log(JSON.stringify(ans));
-                  this.sendResponse = ans;
-                  if (ans.success === true) {
-                      if (ans.payload.opHash) {
-                        this.updateCoordinatorService.boost(this.activePkh);
-                        this.updateCoordinatorService.boost(toPkh);
-                      }
-                  }
+                    this.sendResponse = ans;
+                    if (ans.success === true) {
+                        if (ans.payload.opHash) {
+                            this.coordinatorService.boost(this.activePkh);
+                            this.coordinatorService.boost(toPkh);
+                        }
+                    }
                 },
                 err => {
                     console.log(JSON.stringify(err));
                 },
-              );
+            );
         }, 100);
     }
     clearForm() {
@@ -223,7 +210,7 @@ export class SendComponent implements OnInit {
         this.password = '';
         this.pwdValid = '';
         this.formInvalid = '';
-        this.sendResponse = '';
+        this.sendResponse = null;
     }
     invalidInput(): string {
 

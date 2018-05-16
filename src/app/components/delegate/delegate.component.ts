@@ -2,7 +2,7 @@ import { Component, TemplateRef, OnInit, ViewEncapsulation, Input, ViewChild, El
 
 import { WalletService } from '../../services/wallet.service';
 import { MessageService } from '../../services/message.service';
-import { UpdateCoordinatorService } from '../../services/coordinator.service';
+import { CoordinatorService } from '../../services/coordinator.service';
 import { OperationService } from '../../services/operation.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
@@ -36,7 +36,7 @@ export class DelegateComponent implements OnInit {
       private walletService: WalletService,
       private messageService: MessageService,
       private operationService: OperationService,
-      private updateCoordinatorService: UpdateCoordinatorService
+      private coordinatorService: CoordinatorService
   ) { }
 
   ngOnInit() {
@@ -66,12 +66,7 @@ export class DelegateComponent implements OnInit {
   async open3(template: TemplateRef<any>) {
       const pwd = this.password;
       this.password = '';
-      let keys;
-      if (this.walletService.isPasswordProtected()) {
-        keys = this.walletService.getKeys(pwd, null);
-      } else {
-        keys = this.walletService.getKeys(null, pwd);
-      }
+      const keys = this.walletService.getKeys(pwd);
       if (keys) {
           this.pwdValid = '';
           this.close2();
@@ -114,7 +109,7 @@ export class DelegateComponent implements OnInit {
                 console.log(JSON.stringify(ans));
                 if (ans.opHash) {
                   this.sendResponse = 'success';
-                  this.updateCoordinatorService.boost(this.activePkh, true);
+                  this.coordinatorService.boost(this.activePkh, true);
                 } else {
                   this.sendResponse = 'failure';
                 }

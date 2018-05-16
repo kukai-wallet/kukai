@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { WalletService } from '../../services/wallet.service';
 import { MessageService } from '../../services/message.service';
 import { BalanceService } from '../../services/balance.service';
-import { UpdateCoordinatorService } from '../../services/coordinator.service';
+import { CoordinatorService } from '../../services/coordinator.service';
 
 @Component({
     selector: 'app-account',
@@ -18,7 +18,7 @@ export class AccountComponent implements OnInit {
     constructor(
         private walletService: WalletService,
         private messageService: MessageService,
-        private updateCoordinatorService: UpdateCoordinatorService
+        private coordinatorService: CoordinatorService
     ) { }
 
     ngOnInit() {
@@ -31,6 +31,7 @@ export class AccountComponent implements OnInit {
         this.accounts = this.walletService.wallet.accounts;
         this.activePkh = this.accounts[0].pkh;
         this.balance = this.accounts[0].balance.balanceXTZ;
+        this.balanceUSD = this.accounts[0].balance.balanceFiat;
     }
     updateBalance() {
         this.balance = this.accounts[this.walletService.getIndexFromPkh(this.activePkh)].balance.balanceXTZ;
@@ -39,6 +40,6 @@ export class AccountComponent implements OnInit {
     triggerOperationReload() {
         const index = this.walletService.getIndexFromPkh(this.activePkh);
         this.walletService.wallet.accounts[index].numberOfActivites--;
-        this.updateCoordinatorService.boost(this.activePkh);
+        this.coordinatorService.boost(this.activePkh);
     }
 }

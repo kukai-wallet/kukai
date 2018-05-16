@@ -1,0 +1,8 @@
+<div *ngIf="this.walletService.wallet">
+  <input type="file" (change)="import($event.target.files)" accept=".tzop"><BR>
+  <textarea [(ngModel)]="unsigned" rows="6" cols="150" placeholder="Unsigned operation"></textarea><BR>
+  <textarea [(ngModel)]="signed" rows="6" cols="150" placeholder="Signed operation"></textarea><BR>
+  <input [(ngModel)]="pwd" type="password" placeholder="{{ pwdPlaceholder }}">
+  <button (click)="sign()">Sign</button>
+  <button *ngIf="signed" (click)="download()">Download</button>
+</div>

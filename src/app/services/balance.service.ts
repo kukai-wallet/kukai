@@ -26,23 +26,11 @@ export class BalanceService {
       this.getAccountBalance(i);
     }
   }
-  handleBalanceErrors(err: any, pkh: string) {
-    if (!err) {
-      this.messageService.addError('BalanceError: No response');
-    } else if (err === 'Empty response returned') { // Account probably empty and should be removed
-      this.messageService.addError('BalanceError: Empty response');
-      // this.walletService.wallet.accounts[this.walletService.getIndexFromPkh(pkh)].balance = 0;
-      // this.walletService.storeWallet();
-    } else {
-      console.log('BalanceError: ' + JSON.stringify(err));
-      this.messageService.addError('BalanceError: ' + JSON.stringify(err));
-    }
-  }
   getAccountBalance(index: number) {
     const pkh = this.walletService.wallet.accounts[index].pkh;
     this.http.post('http://zeronet-node.tzscan.io/blocks/head/proto/context/contracts/' + pkh, {}).subscribe(
       (val: any) => this.updateAccountBalance(index, Number(val.balance)),
-      err => this.handleBalanceErrors(err, pkh)
+      err => console.log('BalanceError: ' + JSON.stringify(err))
     );
   }
   updateAccountBalance(index: number, newBalance: number) {
