@@ -45,8 +45,11 @@
             </li>
             -->
             <li routerLinkActive="active">
-                    <a *ngIf="walletService.isFullWallet()" routerLink="/sign" class="btn-main-action">Sign</a>
-                    <a *ngIf="!walletService.isFullWallet()" routerLink="/broadcast" class="btn-main-action">Broadcast</a>
+                <a routerLink="/broadcast" class="btn-main-action">Broadcast</a>
+                <!--
+                <a *ngIf="walletService.isFullWallet()" routerLink="/sign" class="btn-main-action">Sign</a>
+                <a *ngIf="!walletService.isFullWallet()" routerLink="/broadcast" class="btn-main-action">Broadcast</a>
+                -->
             </li>
             <li routerLinkActive="active">
                     <a routerLink="/backup" class="btn-main-action">Backup</a>
