@@ -16,7 +16,6 @@ import { DelegateComponent } from './components/delegate/delegate.component';
 import { AccountComponent } from './components/account/account.component';
 import { IcoWalletComponent } from './components/ico-wallet/ico-wallet.component';
 import { BakeryComponent } from './components/bakery/bakery.component';
-import { SignComponent } from './components/sign/sign.component';
 
 const routes: Routes = [
   { path: '', component: StartComponent },  // Content Centre position
@@ -33,8 +32,7 @@ const routes: Routes = [
   { path: 'receive', component: ReceiveComponent },
   { path: 'delegate', component: DelegateComponent },
   { path: 'account', component: AccountComponent },
-  { path: 'bakery', component: BakeryComponent },
-  { path: 'sign', component: SignComponent }
+  { path: 'bakery', component: BakeryComponent }
 ];
 
 @NgModule({

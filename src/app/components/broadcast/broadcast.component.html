@@ -73,12 +73,12 @@
     <!-- Step 2 -->
     <div class="row">
         <div class="col-lg-12">
-            <h3>1. Import wallet and create signed operation</h3>
+            <h3>1. Create signed operation</h3>
         </div>
     </div>
     <div class="row">
         <div class="col">
-            <p>Import your wallet from file (.tez), and then import or paste your unsigned operation</p>
+            <p>Import or paste your unsigned operation</p>
         </div>
     </div>
     <form>
@@ -165,21 +165,3 @@
         </div>
     </div>
 </div>
-
-<!-- Step 2 - Sign operations
-<div *ngIf="this.walletService.wallet">
-    <input type="file" (change)="import($event.target.files)" accept=".tzop"><BR>
-    <textarea [(ngModel)]="unsigned" rows="6" cols="150" placeholder="Unsigned operation"></textarea><BR>
-    <textarea [(ngModel)]="signed" rows="6" cols="150" placeholder="Signed operation"></textarea><BR>
-    <input [(ngModel)]="pwd" type="password" placeholder="{{ pwdPlaceholder }}">
-    <button (click)="sign()">Sign</button>
-    <button *ngIf="signed" (click)="download()">Download</button>
-</div>
---> 
-<!-- Step 3 - Broadcast
-<div>
-    <input type="file" (change)="import($event.target.files)" accept=".tzop"><BR>
-    <textarea [(ngModel)]="signed" rows="6" cols="150" placeholder="Signed operation"></textarea><BR>
-    <button (click)="broadcast()">Broadcast</button>
-</div>
--->
