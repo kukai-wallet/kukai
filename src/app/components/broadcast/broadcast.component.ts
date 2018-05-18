@@ -18,10 +18,12 @@ export class BroadcastComponent implements OnInit {
     InputImportOperationFileStep2 = 'Choose file';
     InputImportOperationFileStep3 = 'Choose file';
 
-    @Input() unsigned = '';
-    @Input() signed = '';
-    @Input() pwd = '';
+    unsigned = '';
+    signed = '';
+    pwd = '';
     pwdPlaceholder = '';
+
+    isObserverWallet = false;
 
     constructor(
         private walletService: WalletService,
@@ -35,6 +37,8 @@ export class BroadcastComponent implements OnInit {
         if (this.walletService.wallet && this.walletService.isFullWallet()) {
             this.init();
         }
+
+        this.isObserverWallet = this.walletService.isObserverWallet();
     }
 
     init() {
@@ -78,7 +82,7 @@ export class BroadcastComponent implements OnInit {
                     }
                 },
                 err => {
-                    this.messageService.addError('Node responed with an error!');
+                    this.messageService.addError('Node responded with an error!');
                     console.log(JSON.stringify(err));
                 }
             );

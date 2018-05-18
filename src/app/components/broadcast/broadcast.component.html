@@ -83,8 +83,8 @@
     </div>
     <form>
         <div class="form-group row">
-            <!-- Import Wallet Button - only shown when there's not a full Wallet available -->
-            <div class="input-group mb-3 col-sm-8" *ngIf="!walletService.isFullWallet()">
+            <!-- Import Wallet Button - only shown when there's not a full Wallet available *ngIf="!walletService.isFullWallet()" -->
+            <div class="input-group mb-3 col-sm-8" *ngIf="false">
                 <div class="input-group-prepend">
                     <span class="input-group-text min-size-prepend">Wallet</span>
                 </div>
@@ -93,13 +93,14 @@
                     <label class="custom-file-label" for="importWallet"> {{InputImportWalletFileStep2}} </label>
                 </div>
             </div>
+
             <!-- Import Unsigned Operation Button -->
             <div class="input-group col-sm-8">
                 <div class="input-group-prepend">
                     <span class="input-group-text min-size-prepend">Operation</span>
                 </div>
                 <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="importUnsignedOperation" accept=".tzop" (change)="handleUnsignedOperationFileInput($event.target.files)">
+                    <input [disabled]="isObserverWallet" type="file" class="custom-file-input" id="importUnsignedOperation" accept=".tzop" (change)="handleUnsignedOperationFileInput($event.target.files)">
                     <label class="custom-file-label" for="importUnsignedOperation"> {{InputImportOperationFileStep2}} </label>
                 </div>
             </div>
@@ -109,16 +110,19 @@
         <div class="form-group row">
             <div class="col-sm-8">
                 <label for="unsignedOperationTextarea" class="sr-only">Import or paste your unsigned operation</label>
-                <textarea rows="4" [(ngModel)]="unsigned" [ngModelOptions]="{standalone: true}" class="form-control" id="unsignedOperationTextarea" placeholder="Unsigned Operation"></textarea>
+                <textarea [disabled]="isObserverWallet" rows="4" [(ngModel)]="unsigned" [ngModelOptions]="{standalone: true}" class="form-control" id="unsignedOperationTextarea" placeholder="Unsigned Operation"></textarea>
             </div>
         </div>
     </form>
     <form class="form-inline">
         <label class="sr-only" for="inputPassword">Password</label>
-        <input type="password" class="form-control mb-2 mr-sm-2" id="inputPassword" [(ngModel)]="pwd" placeholder="{{ pwdPlaceholder }}">
+        <input [disabled]="isObserverWallet" type="password" class="form-control mb-2 mr-sm-2" id="inputPassword" [(ngModel)]="pwd" placeholder="{{ pwdPlaceholder }}" [ngModelOptions]="{standalone: true}">
         
-        <button type="submit" class="btn btn-clear btn-second mb-2 mr-sm-2" (click)="sign()">Submit</button>
-        <button *ngIf="signed" class="btn btn-clear btn-second mb-2" (click)="download()">Download</button>
+        <button [disabled]="isObserverWallet" type="button" class="btn btn-clear btn-second mb-2 mr-sm-2" (click)="sign()">Submit</button>
+        <button *ngIf="signed" class="btn btn-clear btn-second mb-2 mr-sm-2" (click)="download()">Download</button>
+        <small *ngIf="signed" class="text-success">
+            Operation successfully signed!
+        </small>
     </form>
     <br>
 

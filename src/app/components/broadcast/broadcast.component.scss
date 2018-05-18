@@ -21,13 +21,25 @@ h4 {
     min-width: 98px;
 }
 
+input:disabled {
+    cursor: not-allowed;
+}
+
+textarea:disabled {
+    cursor: not-allowed;
+}
+
 //btn-second
 .btn-second {
     min-width: 96px;
     color: #333333;
 }
 
-.btn-second:hover {
+.btn-second:disabled {
+    cursor: not-allowed;
+}
+
+.btn-second:hover:enabled {
     background-color: #cccccc;
 }
 
