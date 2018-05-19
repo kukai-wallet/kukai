@@ -109,7 +109,7 @@ export class DelegateComponent implements OnInit {
                 console.log(JSON.stringify(ans));
                 if (ans.opHash) {
                   this.sendResponse = 'success';
-                  this.coordinatorService.boost(this.activePkh, true);
+                  this.coordinatorService.boost(this.activePkh);
                 } else {
                   this.sendResponse = 'failure';
                 }

@@ -3,7 +3,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { MessageService } from './message.service';
 import { WalletService } from './wallet.service';
-import { BalanceService } from './balance.service';
 import { Activity } from '../interfaces';
 import { of } from 'rxjs/observable/of';
 import { forkJoin } from 'rxjs/observable/forkJoin';
@@ -20,8 +19,7 @@ export class ActivityService {
   constructor(
     private walletService: WalletService,
     private http: HttpClient,
-    private messageService: MessageService,
-    private balanceService: BalanceService
+    private messageService: MessageService
   ) { }
   updateAllTransactions() {
     // console.log('updating transactions');
@@ -40,7 +38,6 @@ export class ActivityService {
       .flatMap((ans: any) => {
         if (ans[0] && ans[0].save) {
           this.walletService.storeWallet();
-          this.balanceService.getXTZBalanceAll();
         }
         return of(ans);
       });

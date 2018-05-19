@@ -4,13 +4,13 @@ import { TzrateService } from './tzrate.service';
 import { BalanceService } from './balance.service';
 import { WalletService } from './wallet.service';
 import { DelegateService } from './delegate.service';
+import { OperationService } from './operation.service';
 // import { setInterval } from 'timers';
 
 export interface ScheduleData {
   state: State;
   interval: any;
   stateCounter: number;
-  changedDelegate?: boolean;
 }
 enum State {
   UpToDate,
@@ -31,7 +31,8 @@ export class CoordinatorService {
     private tzrateService: TzrateService,
     private walletService: WalletService,
     private balanceService: BalanceService,
-    private delegateService: DelegateService
+    private delegateService: DelegateService,
+    private operationService: OperationService
   ) { }
   startAll() {
     for (let i = 0; i < this.walletService.wallet.accounts.length; i++) {
@@ -44,7 +45,6 @@ export class CoordinatorService {
       console.log('Start scheduler XTZ');
       this.tzrateService.getTzrate();
       this.tzrateInterval = setInterval(() => this.tzrateService.getTzrate(), this.defaultDelayPrice);
-      this.balanceService.getBalanceAll();
     }
   }
   async start(pkh: string) {
@@ -57,17 +57,13 @@ export class CoordinatorService {
       };
       this.scheduler.set(pkh, scheduleData);
       this.update(pkh);
-      if (this.walletService.wallet.accounts[0].pkh !== pkh) {
-        this.delegateService.getDelegate(pkh);
-      }
+      this.updateAccountData(pkh);
     }
   }
   async boost(pkh: string, changedDelegate?: boolean) { // Expect action
     if (this.walletService.getIndexFromPkh(pkh) !== -1) {
       if (!this.scheduler.get(pkh)) {
         await this.start(pkh);
-      } if (changedDelegate) {
-        this.setChangedDelegate(pkh);
       }
       this.changeState(pkh, State.Wait);
       this.update(pkh);
@@ -123,18 +119,13 @@ export class CoordinatorService {
     const scheduleData: ScheduleData = this.scheduler.get(pkh);
     scheduleData.state = newState;
     if (!this.walletService.isFullWallet() && newState === State.UpToDate && this.broadcastDone) {
-      // Broadcasted operation included in block. Assume it could be any op (temp fix)
-      this.delegateService.getDelegate(pkh);
-      // this.importService.findNumberOfAccounts(this.walletService.wallet.accounts[0].pkh);
+      // Broadcasted operation included in block.
       const i = this.walletService.getIndexFromPkh(pkh);
       for (let n = 0; n < this.walletService.wallet.accounts[i].activities.length; n++) {
         const op = this.walletService.wallet.accounts[i].activities[n];
-        if (op.type === 'Origination') {
-          console.log('New origination found');
-          console.log(op.destination);
-          console.log(this.walletService.getIndexFromPkh(op.destination));
+        if (op.type === 'Origination') { // check for broadcasted originations
           if (this.walletService.getIndexFromPkh(op.destination) === -1) {
-            console.log('New pkh, adding to wallet!');
+            console.log('New account found, adding to wallet!');
             this.walletService.addAccount(op.destination);
             this.balanceService.getAccountBalance(this.walletService.getIndexFromPkh(op.destination));
             this.start(op.destination);
@@ -143,10 +134,9 @@ export class CoordinatorService {
       }
       this.broadcastDone = false;
     }
-    if (newState === State.UpToDate && scheduleData.changedDelegate) { // Update delegate
-      console.log('Looking for new delegate for ' + pkh);
+    if (newState === State.UpToDate) {
+      this.balanceService.getBalanceAll();
       this.delegateService.getDelegate(pkh);
-      this.clearChangedDelegate(pkh);
     }
     if (newState === State.Wait || newState === State.Updating) {
       clearInterval(scheduleData.interval);
@@ -166,16 +156,6 @@ export class CoordinatorService {
   setBroadcast() {
     this.broadcastDone = true;
   }
-  setChangedDelegate(pkh: string) {
-    const scheduleData: ScheduleData = this.scheduler.get(pkh);
-    scheduleData.changedDelegate = true;
-    this.scheduler.set(pkh, scheduleData);
-  }
-  clearChangedDelegate(pkh: string) {
-    const scheduleData: ScheduleData = this.scheduler.get(pkh);
-    scheduleData.changedDelegate = undefined;
-    this.scheduler.set(pkh, scheduleData);
-  }
   stopAll() {
     if (this.walletService.wallet) {
       console.log('Stop all schedulers');
@@ -191,5 +171,16 @@ export class CoordinatorService {
     clearInterval(this.scheduler.get(pkh).interval);
     this.scheduler.get(pkh).interval = null;
     this.scheduler.delete(pkh);
+  }
+  updateAccountData(pkh: string) { // Maybe also check for originations to account?
+    this.operationService.getAccount(pkh).subscribe(
+      (ans: any) => {
+        if (ans.success) {
+          const index = this.walletService.getIndexFromPkh(pkh);
+          this.balanceService.updateAccountBalance(index, ans.payload.balance);
+          this.delegateService.handleDelegateResponse(pkh, ans.payload.delegate);
+        }
+      }
+    );
   }
 }

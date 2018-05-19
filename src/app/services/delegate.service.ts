@@ -15,14 +15,16 @@ export class DelegateService {
     }
   }
   getDelegate(pkh: string) {
-    this.operationService.getDelegate(pkh).subscribe(
-      (data: any) => {
-        if (data.success) {
-        this.handleDelegateResponse(pkh, data.payload.delegate);
-        }
-      },
-      err => console.log(JSON.stringify(err))
-    );
+    if (pkh.slice(0, 3) === 'TZ1') {
+      this.operationService.getDelegate(pkh).subscribe(
+        (data: any) => {
+          if (data.success) {
+          this.handleDelegateResponse(pkh, data.payload.delegate);
+          }
+        },
+        err => console.log(JSON.stringify(err))
+      );
+    }
   }
   handleDelegateResponse(pkh: string, data: any) {
     // console.log(JSON.stringify(data));
