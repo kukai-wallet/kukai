@@ -119,7 +119,7 @@ export class NewAccountComponent implements OnInit {
           }
         },
         err => {
-          console.log(JSON.stringify(err));
+          console.log('Error(newAccount): ' + JSON.stringify(err));
         }
       );
     }, 100);

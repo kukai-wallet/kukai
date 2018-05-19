@@ -28,7 +28,7 @@ export class BalanceService {
   }
   getAccountBalance(index: number) {
     const pkh = this.walletService.wallet.accounts[index].pkh;
-    this.http.post('http://zeronet-node.tzscan.io/blocks/head/proto/context/contracts/' + pkh, {}).subscribe(
+    this.http.post('http://node.tzscan.io/blocks/head/proto/context/contracts/' + pkh, {}).subscribe(
       (val: any) => this.updateAccountBalance(index, Number(val.balance)),
       err => console.log('BalanceError: ' + JSON.stringify(err))
     );

@@ -15,6 +15,7 @@ const httpOptions = {
 
 @Injectable()
 export class ActivityService {
+  apiUrl = 'http://api.tzscan.io/';
   maxTransactions = 3;
   constructor(
     private walletService: WalletService,
@@ -45,7 +46,7 @@ export class ActivityService {
       });
   }
   getTransactonsCounter(pkh): Observable<any> {
-    return this.http.get('http://zeronet-api.tzscan.io/v1/number_operations/' + pkh)
+    return this.http.get(this.apiUrl + 'v1/number_operations/' + pkh)
       .flatMap((number_operations: any) => {
         const index = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
         if (index === -1 || this.walletService.wallet.accounts[index].numberOfActivites !== number_operations[0]) {
@@ -77,7 +78,7 @@ export class ActivityService {
         break;
       }
     }
-    return this.http.get('http://zeronet-api.tzscan.io/v1/operations/' + pkh + '?number=' + n + '&p=0')
+    return this.http.get(this.apiUrl + 'v1/operations/' + pkh + '?number=' + n + '&p=0')
       .flatMap((data: any) => {
         const aIndex = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
         const payload = [];
@@ -100,7 +101,7 @@ export class ActivityService {
   // Get latest transaction
   getTransactions(pkh: string, counter: number): Observable<any> {
     // console.log('getTransactions()');
-    return this.http.get('http://zeronet-api.tzscan.io/v1/operations/' + pkh + '?number=' + this.maxTransactions + '&p=0')
+    return this.http.get(this.apiUrl + 'v1/operations/' + pkh + '?number=' + this.maxTransactions + '&p=0')
       .flatMap((data: any) => {
         const newTransactions: Activity[] = [];
         for (let i = 0; i < data.length; i++) {
@@ -194,7 +195,7 @@ export class ActivityService {
   }
 
   getTimestamp(pkh: string, block: string, hash): Observable<any> {
-    return this.http.get('http://zeronet-api.tzscan.io/v1/timestamp/' + block)
+    return this.http.get(this.apiUrl + 'v1/timestamp/' + block)
       .flatMap((time: any) => {
         // console.log('Got time');
         const pkhIndex = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
@@ -213,7 +214,7 @@ export class ActivityService {
     }
   }
   getDelegate(pkh: string) {
-    this.http.post('http://zeronet-node.tzscan.io/blocks/head/proto/context/contracts/' + pkh, '{}', httpOptions).subscribe(
+    this.http.post('http://node.tzscan.io/blocks/head/proto/context/contracts/' + pkh, '{}', httpOptions).subscribe(
       data => this.handleDelegateResponse(pkh, data),
       err => console.log(JSON.stringify(err)),
       () => console.log('done loading delegate')

@@ -15,7 +15,7 @@ export interface KeyPair {
 }
 @Injectable()
 export class OperationService {
-  nodeURL = 'http://zeronet-node.tzscan.io';
+  nodeURL = 'http://node.tzscan.io';
   prefix = {
     tz1: new Uint8Array([6, 161, 159]),
     edpk: new Uint8Array([13, 15, 37, 217]),
@@ -347,7 +347,8 @@ export class OperationService {
     return n;
   }
   sign(bytes, sk): any {
-    const sig = libs.crypto_sign_detached(this.hex2buf(bytes), this.b58cdecode(sk, this.prefix.edsk), 'uint8array');
+    const hash = libs.crypto_generichash(32, this.hex2buf(bytes));
+    const sig = libs.crypto_sign_detached(hash, this.b58cdecode(sk, this.prefix.edsk), 'uint8array');
     const edsig = this.b58cencode(sig, this.prefix.edsig);
     const sbytes = bytes + this.buf2hex(sig);
     return {
