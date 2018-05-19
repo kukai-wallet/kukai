@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { WalletService } from './wallet.service';
 import { MessageService } from './message.service';
 import { TzrateService } from './tzrate.service';
+import { OperationService } from './operation.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
@@ -15,6 +16,7 @@ export class BalanceService {
     private walletService: WalletService,
     private messageService: MessageService,
     private tzrateService: TzrateService,
+    private operationService: OperationService,
     private http: HttpClient
   ) { }
 
@@ -28,10 +30,14 @@ export class BalanceService {
   }
   getAccountBalance(index: number) {
     const pkh = this.walletService.wallet.accounts[index].pkh;
-    this.http.post('http://node.tzscan.io/blocks/head/proto/context/contracts/' + pkh, {}).subscribe(
-      (val: any) => this.updateAccountBalance(index, Number(val.balance)),
-      err => console.log('BalanceError: ' + JSON.stringify(err))
-    );
+    this.operationService.getBalance(pkh)
+      .subscribe((ans: any) => {
+        if (ans.success) {
+          this.updateAccountBalance(index, ans.payload.balance);
+        } else {
+          console.log('BlanceError: ' + JSON.stringify(ans));
+        }
+      });
   }
   updateAccountBalance(index: number, newBalance: number) {
     if (newBalance !== this.walletService.wallet.accounts[index].balance.balanceXTZ) {
@@ -49,8 +55,8 @@ export class BalanceService {
     let change = false;
     for (let i = 0; i < this.walletService.wallet.accounts.length; i++) {
       if (this.walletService.wallet.accounts[i].balance.balanceXTZ) {
-      balance =  balance + Number(this.walletService.wallet.accounts[i].balance.balanceXTZ);
-      change = true;
+        balance = balance + Number(this.walletService.wallet.accounts[i].balance.balanceXTZ);
+        change = true;
       }
     }
     if (change) {

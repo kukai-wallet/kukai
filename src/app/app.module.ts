@@ -20,6 +20,7 @@ import { EncryptionService } from './services/encryption.service';
 import { ImportService } from './services/import.service';
 import { TzrateService } from './services/tzrate.service';
 import { ExportService } from './services/export.service';
+import { DelegateService } from './services/delegate.service';
 
 import { AppComponent } from './app.component';
 
@@ -91,7 +92,8 @@ import { BakeryComponent } from './components/bakery/bakery.component';
     TzrateService,
     CoordinatorService,
     OperationService,
-    ExportService
+    ExportService,
+    DelegateService
   ],
   bootstrap: [AppComponent]
 })

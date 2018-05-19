@@ -56,7 +56,7 @@ export class OperationService {
                   });
               });
           });
-      });
+      }).pipe(catchError(err => this.errHandler(err)));
   }
   /*
     Returns an observable for the origination of new accounts.
@@ -131,7 +131,7 @@ export class OperationService {
                 }
               });
           });
-      });
+      }).pipe(catchError(err => this.errHandler(err)));
   }
   /*
     Returns an observable for the transaction of tezzies.
@@ -209,16 +209,6 @@ export class OperationService {
           });
       }).pipe(catchError(err => this.errHandler(err)));
   }
-  errHandler(error: any): Observable<any> {
-    return of(
-      {
-        success: false,
-        payload: {
-          msg: error
-        }
-      }
-    );
-  }
   /*
     Returns an observable for the delegation of baking rights.
   */
@@ -282,7 +272,17 @@ export class OperationService {
                 }
               });
           });
-      });
+      }).pipe(catchError(err => this.errHandler(err)));
+  }
+  errHandler(error: any): Observable<any> {
+    return of(
+      {
+        success: false,
+        payload: {
+          msg: error
+        }
+      }
+    );
   }
   broadcast(sopbytes: string): Observable<any> {
     return this.http.post(this.nodeURL + '/blocks/head', {})
@@ -301,7 +301,71 @@ export class OperationService {
                 }
               });
           });
-      });
+      }).pipe(catchError(err => this.errHandler(err)));
+  }
+  getBalance(pkh: string): Observable<any> {
+    return this.http.post(this.nodeURL + '/blocks/head/proto/context/contracts/' + pkh + '/balance', {})
+      .flatMap((balance: any) => {
+        return of(
+          {
+            success: true,
+            payload: {
+              balance: balance.balance
+            }
+          }
+        );
+      }).pipe(catchError(err => this.errHandler(err)));
+  }
+  getDelegate(pkh: string): Observable<any> {
+    return this.http.post(this.nodeURL + '/blocks/head/proto/context/contracts/' + pkh + '/delegate', {})
+      .flatMap((delegate: any) => {
+        let value = '';
+        if (delegate.value) {
+          value = delegate.value;
+        }
+        return of(
+          {
+            success: true,
+            payload: {
+              delegate: value
+            }
+          }
+        );
+      }).pipe(catchError(err => this.errHandler(err)));
+  }
+  getCounter(pkh: string): Observable<any> {
+    return this.http.post(this.nodeURL + '/blocks/head/proto/context/contracts/' + pkh + '/counter', {})
+      .flatMap((counter: any) => {
+        return of(
+          {
+            success: true,
+            payload: {
+              counter: counter.counter
+            }
+          }
+        );
+      }).pipe(catchError(err => this.errHandler(err)));
+  }
+  getAccount(pkh: string): Observable<any> {
+    return this.http.post(this.nodeURL + '/blocks/head/proto/context/contracts/' + pkh, {})
+      .flatMap((contract: any) => {
+        console.log('contracts: ' + JSON.stringify(contract));
+        let delegate = '';
+        if (contract.delegate.value) {
+          delegate = contract.delegate.value;
+        }
+        return of(
+          {
+            success: true,
+            payload: {
+              balance: contract.balance,
+              manager: contract.manager,
+              delegate: delegate,
+              counter: contract.counter
+            }
+          }
+        );
+      }).pipe(catchError(err => this.errHandler(err)));
   }
   seed2keyPair(seed: string): KeyPair {
     const keyPair = libs.crypto_sign_seed_keypair(seed);

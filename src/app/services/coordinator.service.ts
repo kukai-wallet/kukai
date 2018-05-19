@@ -3,6 +3,7 @@ import { ActivityService } from './activity.service';
 import { TzrateService } from './tzrate.service';
 import { BalanceService } from './balance.service';
 import { WalletService } from './wallet.service';
+import { DelegateService } from './delegate.service';
 // import { setInterval } from 'timers';
 
 export interface ScheduleData {
@@ -29,7 +30,8 @@ export class CoordinatorService {
     private activityService: ActivityService,
     private tzrateService: TzrateService,
     private walletService: WalletService,
-    private balanceService: BalanceService
+    private balanceService: BalanceService,
+    private delegateService: DelegateService
   ) { }
   startAll() {
     for (let i = 0; i < this.walletService.wallet.accounts.length; i++) {
@@ -56,7 +58,7 @@ export class CoordinatorService {
       this.scheduler.set(pkh, scheduleData);
       this.update(pkh);
       if (this.walletService.wallet.accounts[0].pkh !== pkh) {
-        this.activityService.getDelegate(pkh);
+        this.delegateService.getDelegate(pkh);
       }
     }
   }
@@ -122,7 +124,7 @@ export class CoordinatorService {
     scheduleData.state = newState;
     if (!this.walletService.isFullWallet() && newState === State.UpToDate && this.broadcastDone) {
       // Broadcasted operation included in block. Assume it could be any op (temp fix)
-      this.activityService.getDelegate(pkh);
+      this.delegateService.getDelegate(pkh);
       // this.importService.findNumberOfAccounts(this.walletService.wallet.accounts[0].pkh);
       const i = this.walletService.getIndexFromPkh(pkh);
       for (let n = 0; n < this.walletService.wallet.accounts[i].activities.length; n++) {
@@ -143,7 +145,7 @@ export class CoordinatorService {
     }
     if (newState === State.UpToDate && scheduleData.changedDelegate) { // Update delegate
       console.log('Looking for new delegate for ' + pkh);
-      this.activityService.getDelegate(pkh);
+      this.delegateService.getDelegate(pkh);
       this.clearChangedDelegate(pkh);
     }
     if (newState === State.Wait || newState === State.Updating) {
