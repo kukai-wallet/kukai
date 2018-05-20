@@ -73,7 +73,7 @@
     <!-- Step 2 -->
     <div class="row">
         <div class="col-lg-12">
-            <h3>1. Create signed operation</h3>
+            <h3>1. Sign operation (offline wallet)</h3>
         </div>
     </div>
     <div class="row">
@@ -100,7 +100,7 @@
                     <span class="input-group-text min-size-prepend">Operation</span>
                 </div>
                 <div class="custom-file">
-                    <input [disabled]="isObserverWallet" type="file" class="custom-file-input" id="importUnsignedOperation" accept=".tzop" (change)="handleUnsignedOperationFileInput($event.target.files)">
+                    <input [disabled]="isObserverWallet" [disabled]="!walletService.isFullWallet()" type="file" class="custom-file-input" id="importUnsignedOperation" accept=".tzop" (change)="handleUnsignedOperationFileInput($event.target.files)">
                     <label class="custom-file-label" for="importUnsignedOperation"> {{InputImportOperationFileStep2}} </label>
                 </div>
             </div>
@@ -110,15 +110,15 @@
         <div class="form-group row">
             <div class="col-sm-8">
                 <label for="unsignedOperationTextarea" class="sr-only">Import or paste your unsigned operation</label>
-                <textarea [disabled]="isObserverWallet" rows="4" [(ngModel)]="unsigned" [ngModelOptions]="{standalone: true}" class="form-control" id="unsignedOperationTextarea" placeholder="Unsigned Operation"></textarea>
+                <textarea [disabled]="!walletService.isFullWallet()" rows="4" [(ngModel)]="unsigned" [ngModelOptions]="{standalone: true}" class="form-control" id="unsignedOperationTextarea" placeholder="Unsigned Operation"></textarea>
             </div>
         </div>
     </form>
     <form class="form-inline">
         <label class="sr-only" for="inputPassword">Password</label>
-        <input [disabled]="isObserverWallet" type="password" class="form-control mb-2 mr-sm-2" id="inputPassword" [(ngModel)]="pwd" placeholder="{{ pwdPlaceholder }}" [ngModelOptions]="{standalone: true}">
+        <input [disabled]="!walletService.isFullWallet()" type="password" class="form-control mb-2 mr-sm-2" id="inputPassword" [(ngModel)]="pwd" placeholder="{{ pwdPlaceholder }}" [ngModelOptions]="{standalone: true}">
         
-        <button [disabled]="isObserverWallet" type="button" class="btn btn-clear btn-second mb-2 mr-sm-2" (click)="sign()">Submit</button>
+        <button [disabled]="!walletService.isFullWallet()" type="button" class="btn btn-clear btn-second mb-2 mr-sm-2" (click)="sign()">Submit</button>
         <button *ngIf="signed" class="btn btn-clear btn-second mb-2 mr-sm-2" (click)="download()">Download</button>
         <small *ngIf="signed" class="text-success">
             Operation successfully signed!
@@ -129,7 +129,7 @@
     <!-- Step 3 -->
     <div class="row">
         <div class="col-lg-12">
-            <h3>2. Broadcast </h3>
+            <h3>2. Broadcast (online)</h3>
         </div>
     </div>
     <div class="row">
@@ -145,7 +145,7 @@
                     <span class="input-group-text min-size-prepend">Operation</span>
                 </div>
                 <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="importWallet" accept=".tzop" (change)="handleSignedOperationFileInput($event.target.files)">
+                    <input type="file" [disabled]="walletService.isFullWallet()" class="custom-file-input" id="importWallet" accept=".tzop" (change)="handleSignedOperationFileInput($event.target.files)">
                     <label class="custom-file-label" for="importWallet"> {{InputImportOperationFileStep3}} </label>
                 </div>
             </div>
@@ -155,13 +155,13 @@
         <div class="form-group row">
             <div class="col-sm-8">
                 <label for="signedOperationTextarea" class="sr-only">Import your signed operation</label>
-                <textarea rows="4" [(ngModel)]="signed" [ngModelOptions]="{standalone: true}" class="form-control" id="signedOperationTextarea" placeholder="Signed Operation"></textarea>
+                <textarea rows="4" [disabled]="walletService.isFullWallet()" [(ngModel)]="signed" [ngModelOptions]="{standalone: true}" class="form-control" id="signedOperationTextarea" placeholder="Signed Operation"></textarea>
             </div>
         </div>
     </form>
     <div class="row">
         <div class="col-lg-8">
-            <button type="button" (click)="broadcast()" class="btn btn-clear btn-second pull-right">Broadcast</button>
+            <button type="button" [disabled]="walletService.isFullWallet()" (click)="broadcast()" class="btn btn-clear btn-second pull-right">Broadcast</button>
         </div>
     </div>
 </div>
