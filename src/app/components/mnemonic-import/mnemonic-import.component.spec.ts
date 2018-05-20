@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { IcoWalletComponent } from './ico-wallet.component';
+import { MnemonicImportComponent } from './mnemonic-import.component';
 
 describe('IcoWalletComponent', () => {
-  let component: IcoWalletComponent;
-  let fixture: ComponentFixture<IcoWalletComponent>;
+  let component: MnemonicImportComponent;
+  let fixture: ComponentFixture<MnemonicImportComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ IcoWalletComponent ]
+      declarations: [ MnemonicImportComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(IcoWalletComponent);
+    fixture = TestBed.createComponent(MnemonicImportComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

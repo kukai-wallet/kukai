@@ -52,7 +52,10 @@ export class OperationService {
               .flatMap((final: any) => {
                 return of(
                   {
-                    opHash: final.injectedOperation
+                    success: true,
+                    payload: {
+                      opHash: final.injectedOperation
+                    }
                   });
               });
           });
@@ -349,7 +352,6 @@ export class OperationService {
   getAccount(pkh: string): Observable<any> {
     return this.http.post(this.nodeURL + '/blocks/head/proto/context/contracts/' + pkh, {})
       .flatMap((contract: any) => {
-        console.log('contracts: ' + JSON.stringify(contract));
         let delegate = '';
         if (contract.delegate.value) {
           delegate = contract.delegate.value;
@@ -377,6 +379,9 @@ export class OperationService {
   }
   mnemonic2seed(mnemonic: string, passphrase: string = '') {
     return bip39.mnemonicToSeed(mnemonic, passphrase).slice(0, 32);
+  }
+  validMnemonic(mnemonic: string) {
+    return bip39.validateMnemonic(mnemonic);
   }
   generateMnemonic(): string {
     return bip39.generateMnemonic(160);

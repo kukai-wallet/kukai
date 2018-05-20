@@ -8,7 +8,7 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 // External libraries
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ComponentLoaderFactory } from 'ngx-bootstrap/component-loader/component-loader.factory';
-import { ModalModule, AlertModule, ProgressbarModule, ButtonsModule, BsDropdownModule } from 'ngx-bootstrap';
+import { ModalModule, AlertModule, ProgressbarModule, ButtonsModule, BsDropdownModule, TabsModule } from 'ngx-bootstrap';
 
 // Services
 import { MessagesComponent } from './components/messages/messages.component';
@@ -40,10 +40,11 @@ import { ReceiveComponent } from './components/receive/receive.component';
 import { DelegateComponent } from './components/delegate/delegate.component';
 import { PositioningService } from 'ngx-bootstrap/positioning';
 import { AccountComponent } from './components/account/account.component';
-import { IcoWalletComponent } from './components/ico-wallet/ico-wallet.component';
+import { MnemonicImportComponent } from './components/mnemonic-import/mnemonic-import.component';
 import { CoordinatorService } from './services/coordinator.service';
 import { OperationService } from './services/operation.service';
 import { BakeryComponent } from './components/bakery/bakery.component';
+import { ActivateComponent } from './components/activate/activate.component';
 
 
 @NgModule({
@@ -64,8 +65,9 @@ import { BakeryComponent } from './components/bakery/bakery.component';
     ReceiveComponent,
     DelegateComponent,
     AccountComponent,
-    IcoWalletComponent,
+    MnemonicImportComponent,
     BakeryComponent,
+    ActivateComponent,
   ],
   imports: [
     BrowserModule,
@@ -77,7 +79,8 @@ import { BakeryComponent } from './components/bakery/bakery.component';
     AlertModule.forRoot(),
     ProgressbarModule.forRoot(),
     ButtonsModule.forRoot(),
-    BsDropdownModule.forRoot()
+    BsDropdownModule.forRoot(),
+    TabsModule.forRoot()
   ],
   providers: [
     MessageService,

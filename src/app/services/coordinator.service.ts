@@ -119,11 +119,11 @@ export class CoordinatorService {
     const scheduleData: ScheduleData = this.scheduler.get(pkh);
     scheduleData.state = newState;
     if (!this.walletService.isFullWallet() && newState === State.UpToDate && this.broadcastDone) {
-      // Broadcasted operation included in block.
+      // Broadcasted operation included in block. Check for new accounts.
       const i = this.walletService.getIndexFromPkh(pkh);
       for (let n = 0; n < this.walletService.wallet.accounts[i].activities.length; n++) {
         const op = this.walletService.wallet.accounts[i].activities[n];
-        if (op.type === 'Origination') { // check for broadcasted originations
+        if (op.type === 'Origination') {
           if (this.walletService.getIndexFromPkh(op.destination) === -1) {
             console.log('New account found, adding to wallet!');
             this.walletService.addAccount(op.destination);

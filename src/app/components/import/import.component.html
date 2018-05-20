@@ -51,36 +51,15 @@
         </form>
         <br>
 
-    <!-- Import from Seed -->
-    <div class="row">
-        <div class="col-lg-12">
-            <h3>2. Import from Seed</h3>
-        </div>
-    </div>
-    <form>
-        <div class="form-group row">
-            <div class="col-sm-8">
-                <label for="seedTextarea">Import your previous wallet from seed</label>
-                <textarea rows="3" [(ngModel)]="encryptedWallet" [ngModelOptions]="{standalone: true}" class="form-control" id="seedTextarea"></textarea>
-            </div>
-        </div>
-    </form>
-    <div class="row">
-        <div class="col-lg-8">
-            <button type="button" class="btn btn-clear btn-second pull-right">Import from Seed</button>
-        </div>
-    </div>
-    <br>
-
     <!-- Retrieve ICO funds -->
     <div class="row">
         <div class="col-lg-12">
-            <h3>3. Retrieve ICO funds</h3>
+            <h3>2. Retrieve wallet from backup</h3>
         </div>
     </div>
     <div class="row">
         <div class="col-lg-12">
-            <a routerLink="/ico-wallet/">Retrieve ICO wallet</a>
+            <a routerLink="/mnemonic-import/">Retrieve</a> wallet from your mnemonic words
         </div>
     </div>
     <BR>
@@ -88,7 +67,7 @@
         <!-- Retrieve PKH wallet -->
     <div class="row">
         <div class="col-lg-12">
-            <h3>4. Observer wallet</h3>
+            <h3>3. Observer wallet</h3>
         </div>
     </div>
     <div class="row">

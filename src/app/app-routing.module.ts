@@ -14,15 +14,16 @@ import { NewAccountComponent } from './components/new-account/new-account.compon
 import { ReceiveComponent } from './components/receive/receive.component';
 import { DelegateComponent } from './components/delegate/delegate.component';
 import { AccountComponent } from './components/account/account.component';
-import { IcoWalletComponent } from './components/ico-wallet/ico-wallet.component';
+import { MnemonicImportComponent } from './components/mnemonic-import/mnemonic-import.component';
 import { BakeryComponent } from './components/bakery/bakery.component';
+import { ActivateComponent } from './components/activate/activate.component';
 
 const routes: Routes = [
   { path: '', component: StartComponent },  // Content Centre position
   { path: 'new-wallet', component: NewWalletComponent },  // Content Centre position
   { path: 'import', component: ImportComponent },  // Content Centre position
   { path: 'broadcast', component: BroadcastComponent },  // Content Centre position
-  { path: 'ico-wallet', component: IcoWalletComponent },
+  { path: 'mnemonic-import', component: MnemonicImportComponent },
   { path: 'activity', component: ActivityComponent },
   { path: 'overview', component: OverviewComponent },
   { path: 'backup', component: BackupComponent },
@@ -32,7 +33,8 @@ const routes: Routes = [
   { path: 'receive', component: ReceiveComponent },
   { path: 'delegate', component: DelegateComponent },
   { path: 'account', component: AccountComponent },
-  { path: 'bakery', component: BakeryComponent }
+  { path: 'bakery', component: BakeryComponent },
+  { path: 'activate', component: ActivateComponent }
 ];
 
 @NgModule({
