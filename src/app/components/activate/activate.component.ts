@@ -8,7 +8,8 @@ import { OperationService } from '../../services/operation.service';
   styleUrls: ['./activate.component.scss']
 })
 export class ActivateComponent implements OnInit {
-
+  pkh: string;
+  secret: string;
   constructor(
     private messageService: MessageService,
     private operationService: OperationService
@@ -16,13 +17,20 @@ export class ActivateComponent implements OnInit {
 
   ngOnInit() {
   }
-  activate(pkh: string, secret: string) {
+  activate() {
+    const pkh = this.pkh;
+    const secret = this.secret;
     this.operationService.activate(pkh, secret).subscribe(
       (ans: any) => {
-        if (ans.opHash) {
-          this.messageService.addSuccess('Wallet activated!');
+        if (ans.success) {
+          if (ans.payload.opHash) {
+            this.messageService.addSuccess('Wallet activated!');
+          } else {
+            this.messageService.addWarning('Couldn\'t retrive an operation hash');
+          }
         } else {
-          this.messageService.addWarning('Couldn\'t retrive an operation hash');
+          this.messageService.addWarning('NodeError');
+          console.log(JSON.stringify(ans.payload.msg));
         }
       },
       err => {

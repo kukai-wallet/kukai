@@ -31,6 +31,7 @@ export class OperationService {
     Returns an observable for the activation of an ICO identity
   */
   activate(pkh: string, secret: string): Observable<any> {
+    console.log(pkh + ' : ' + secret);
     return this.http.post(this.nodeURL + '/blocks/head', {})
       .flatMap((head: any) => {
         const fop = {
