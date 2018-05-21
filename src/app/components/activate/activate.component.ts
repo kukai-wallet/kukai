@@ -20,6 +20,8 @@ export class ActivateComponent implements OnInit {
   activate() {
     const pkh = this.pkh;
     const secret = this.secret;
+    this.pkh = '';
+    this.secret = '';
     this.operationService.activate(pkh, secret).subscribe(
       (ans: any) => {
         if (ans.success) {
