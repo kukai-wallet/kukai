@@ -23,7 +23,7 @@ export class BroadcastComponent implements OnInit {
     pwd = '';
     pwdPlaceholder = '';
 
-    isObserverWallet = false;
+    isFullWallet = false;
 
     constructor(
         private walletService: WalletService,
@@ -38,7 +38,7 @@ export class BroadcastComponent implements OnInit {
             this.init();
         }
 
-        this.isObserverWallet = this.walletService.isObserverWallet();
+        this.isFullWallet = this.walletService.isFullWallet();
     }
 
     init() {

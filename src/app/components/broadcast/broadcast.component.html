@@ -9,25 +9,30 @@
     <!-- Subheading -->
     <div class="row">
         <div class="col-lg-12">
-            <h4>In 2 easy steps, you can broadcast an operation to the tezos network without ever needing to use your secret key in an online environment. First, import your wallet and your unsigned operation in an air-gaped offline computer to sign your operation.  Secondly, broadcast your signed operation hash to the network.</h4>
             <!--
-            <h4>In 3 easy steps, you can broadcast an operation to the tezos network without ever needing to use your secret key in an online environment. First, you need to create an unsigned operation. In step 2, you can load your wallet in an air-gaped offline computer to sign your operation and, then finally, in step 3, you can broadcast the operation hash to the network.</h4>
+            <h4>In 2 easy steps, you can broadcast an operation to the tezos network without ever needing to use your secret key in an online environment. First, import your wallet and your unsigned operation in an air-gaped offline computer to sign your operation. Secondly, broadcast your signed operation hash to the network.</h4>
             -->
+            <h4>In 3 easy steps, you can broadcast an operation to the tezos network without ever needing to use your secret key in an online environment. First, you need to create an unsigned operation. Second, import your wallet and your unsigned operation in an air-gaped offline computer to sign your operation and, then finally, in step 3, broadcast your signed operation hash to the network.</h4>
+            
         </div>
     </div>
     <br>
 
-    <!-- Step 1 --
+    <!-- Step 1 -->
     <div class="row">
         <div class="col-lg-12">
-            <h3>1. Create an unsigned operation</h3>
+            <h3>1. Unsigned operation (online or offline)</h3>
         </div>
     </div>
     <div class="row">
         <div class="col">
+            <p>You can create an unsigned operation with your view-only wallet made from your public key (edpk...)</p>
+        <!--
             <p>Import your view-only wallet from file (.tzop) or insert your public key (edpk...)</p>
+        -->
         </div>
     </div>
+<!--
     <form>
         <div class="form-group row">
             <!-- Import Wallet Button --
@@ -49,6 +54,7 @@
         <button type="submit" class="btn btn-clear btn-second mb-2">Import</button>
         --
     </form>
+
     <form class="form-inline">
         <label for="inputOperation" class="mr-sm-2">Operation</label>
         <div class="form-check form-check-inline">
@@ -63,17 +69,18 @@
             <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">
             <label class="form-check-label" for="inlineRadio3">New Account</label>
         </div>
+    
         <!--
         <input type="text" class="form-control mb-2 mr-sm-2" id="inputOperation" placeholder="edpk...">
         --
     </form>
-
+-->
     <br>
-    -->
+
     <!-- Step 2 -->
     <div class="row">
         <div class="col-lg-12">
-            <h3>1. Sign operation (offline wallet)</h3>
+            <h3>2. Sign operation (offline wallet)</h3>
         </div>
     </div>
     <div class="row">
@@ -83,7 +90,7 @@
     </div>
     <form>
         <div class="form-group row">
-            <!-- Import Wallet Button - only shown when there's not a full Wallet available *ngIf="!walletService.isFullWallet()" -->
+            <!-- Import Wallet Button - only shown when there's not a full Wallet available *ngIf="!isFullWallet"  -->
             <div class="input-group mb-3 col-sm-8" *ngIf="false">
                 <div class="input-group-prepend">
                     <span class="input-group-text min-size-prepend">Wallet</span>
@@ -100,7 +107,7 @@
                     <span class="input-group-text min-size-prepend">Operation</span>
                 </div>
                 <div class="custom-file">
-                    <input [disabled]="isObserverWallet" [disabled]="!walletService.isFullWallet()" type="file" class="custom-file-input" id="importUnsignedOperation" accept=".tzop" (change)="handleUnsignedOperationFileInput($event.target.files)">
+                    <input [disabled]="!isFullWallet" type="file" class="custom-file-input" id="importUnsignedOperation" accept=".tzop" (change)="handleUnsignedOperationFileInput($event.target.files)">
                     <label class="custom-file-label" for="importUnsignedOperation"> {{InputImportOperationFileStep2}} </label>
                 </div>
             </div>
@@ -110,15 +117,15 @@
         <div class="form-group row">
             <div class="col-sm-8">
                 <label for="unsignedOperationTextarea" class="sr-only">Import or paste your unsigned operation</label>
-                <textarea [disabled]="!walletService.isFullWallet()" rows="4" [(ngModel)]="unsigned" [ngModelOptions]="{standalone: true}" class="form-control" id="unsignedOperationTextarea" placeholder="Unsigned Operation"></textarea>
+                <textarea [disabled]="!isFullWallet" rows="4" [(ngModel)]="unsigned" [ngModelOptions]="{standalone: true}" class="form-control" id="unsignedOperationTextarea" placeholder="Unsigned Operation"></textarea>
             </div>
         </div>
     </form>
     <form class="form-inline">
         <label class="sr-only" for="inputPassword">Password</label>
-        <input [disabled]="!walletService.isFullWallet()" type="password" class="form-control mb-2 mr-sm-2" id="inputPassword" [(ngModel)]="pwd" placeholder="{{ pwdPlaceholder }}" [ngModelOptions]="{standalone: true}">
+        <input [disabled]="!isFullWallet" type="password" class="form-control mb-2 mr-sm-2" id="inputPassword" [(ngModel)]="pwd" placeholder="{{ pwdPlaceholder }}" [ngModelOptions]="{standalone: true}">
         
-        <button [disabled]="!walletService.isFullWallet()" type="button" class="btn btn-clear btn-second mb-2 mr-sm-2" (click)="sign()">Submit</button>
+        <button [disabled]="!isFullWallet" type="button" class="btn btn-clear btn-second mb-2 mr-sm-2" (click)="sign()">Submit</button>
         <button *ngIf="signed" class="btn btn-clear btn-second mb-2 mr-sm-2" (click)="download()">Download</button>
         <small *ngIf="signed" class="text-success">
             Operation successfully signed!
@@ -129,7 +136,7 @@
     <!-- Step 3 -->
     <div class="row">
         <div class="col-lg-12">
-            <h3>2. Broadcast (online)</h3>
+            <h3>3. Broadcast (online)</h3>
         </div>
     </div>
     <div class="row">
