@@ -33,10 +33,19 @@
     background-color: rgba(0, 0, 0, 0);
 }
 
+.form-row-margin-top {
+    margin-top: 75px;
+}
+
+.form-min-height {
+    min-height: 442px;
+}
+
 //For inputs
 .form-control {
     line-height: 2;  //Default at 1.5
 }
+
 .seed {
     padding-top: 2rem;
     padding-bottom: 2rem;

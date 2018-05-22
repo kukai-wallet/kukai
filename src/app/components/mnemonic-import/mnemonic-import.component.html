@@ -4,7 +4,7 @@
             <div class="card-body">
                 <h1 class="card-title">Retrieve your Wallet</h1>
                 <div class="card-text">
-                    <form class="form-group">
+                    <form class="form-group form-min-height">
                         <div>
                             <tabset>
                               <tab heading="Regular import" id="tab1" (select)="tge = false"></tab>
@@ -22,7 +22,7 @@
                                 </div>
                             </div>
                         <!-- mnemonic -->
-                        <div class="form-group row">
+                        <div class="form-group row" [ngClass]="{ 'form-row-margin-top': !tge }"> <!-- ngClass => margin-top: 75px only for tab1 -->
                             <div class="col-sm-12">
                                 <input type="text" [(ngModel)]="mnemonic" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Mnemonic">
                                 <small class="form-text text-left">The mnemonic phrase (15 words)</small>
@@ -51,7 +51,6 @@
                         </div>
                     </form>
                     <p>This is an alphanet version, please use the faucet website to get test wallet credential that you can retrieve <a href="https://faucet.tzalpha.net/" target="blank">here</a>.</p>
-                    <br>
                     <p>At the launch of betanet, you can use your wallet credentials from the pdf file generated during ICO</p>
                 </div>
             </div>

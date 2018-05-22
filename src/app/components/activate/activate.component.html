@@ -1,31 +1,32 @@
 <div id="content">
-  <div class="center-content">
-      <div class="card text-center fix-size">
-          <div class="card-body">
-              <h1 class="card-title">Activate your Wallet</h1>
-              <div class="card-text">
-                  <form class="form-group">
-                      <!-- pkh -->
-                      <div class="form-group row">
-                          <div class="col-sm-12">
-                              <input type="text" [(ngModel)]="pkh" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="tz1...">
-                              <small class="form-text text-left">Your public key hash</small>
-                          </div>
-                      </div>
-                      <!-- secret -->
-                      <div class="form-group row">
-                          <div class="col-sm-12">
-                              <input type="text" [(ngModel)]="secret" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="code">
-                              <small class="form-text text-left">Your activation code</small>
-                          </div>
-                      </div>
-                  </form>
-                  <p>Wallets created during the ICO need to be activated. No private key is needed to complete the activation process.</p>
-              </div>
-          </div>
-          <div class="card-footer text-right">
-              <button type="button" class="btn btn-primary btn-lg" (click)="activate()">Activate</button>
-          </div>
-      </div>
-  </div>
+    <div class="center-content">
+        <div class="card text-center fix-size">
+            <div class="card-body">
+                <h1 class="card-title">Activate your Wallet</h1>
+                <div class="card-text">
+                    <form class="form-group">
+                        <!-- pkh -->
+                        <div class="form-group row">
+                            <div class="col-sm-12">
+                                <input type="text" [(ngModel)]="pkh" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="tz1...">
+                                <small class="form-text text-left">Your public key hash</small>
+                            </div>
+                        </div>
+                        <!-- secret -->
+                        <div class="form-group row">
+                            <div class="col-sm-12">
+                                <input type="text" [(ngModel)]="secret" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="code">
+                                <small class="form-text text-left">Your activation code</small>
+                            </div>
+                        </div>
+                    </form>
+                    <p class="p-margin-botton">Wallets created during the ICO need to be activated.</p> 
+                    <p>No private key is required for the activation process.</p>
+                </div>
+            </div>
+            <div class="card-footer text-right">
+                <button type="button" class="btn btn-primary btn-lg" (click)="activate()">Activate</button>
+            </div>
+        </div>
+    </div>
 </div>
