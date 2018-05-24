@@ -41,11 +41,12 @@
     "jquery": "^3.3.1",
     "libsodium-wrappers": "^0.5.4",
     "ngx-bootstrap": "^2.0.2",
-    "npm": "^5.8.0",
+    "npm": "^5.10.0",
     "pbkdf2": "^3.0.14",
     "qrcode": "^1.2.0",
     "randomatic": "^3.0.0",
     "rxjs": "^5.5.6",
+    "secure-password": "^3.0.0",
     "xmlhttprequest": "^1.8.0",
     "zone.js": "^0.8.19"
   },

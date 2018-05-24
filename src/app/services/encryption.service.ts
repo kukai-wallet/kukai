@@ -10,6 +10,7 @@ export class EncryptionService {
   constructor() { }
 
   encrypt(plaintext: any, password: string, salt: string): string {
+
     const key = pbkdf2.pbkdf2Sync(password, salt, this.hashRounds, 32, 'sha512');
     const aesCtr = new AES.ModeOfOperation.ctr(key);
     let chiphertext = aesCtr.encrypt(plaintext);

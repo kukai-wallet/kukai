@@ -31,7 +31,7 @@ export class ActivateComponent implements OnInit {
             this.messageService.addWarning('Couldn\'t retrive an operation hash');
           }
         } else {
-          this.messageService.addWarning('NodeError');
+          this.messageService.addError('NodeError');
           console.log(JSON.stringify(ans.payload.msg));
         }
       },

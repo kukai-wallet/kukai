@@ -195,6 +195,8 @@ export class SendComponent implements OnInit {
                             this.coordinatorService.boost(this.activePkh);
                             this.coordinatorService.boost(toPkh);
                         }
+                    } else {
+                        console.log(ans.payload.msg);
                     }
                 },
                 err => {
