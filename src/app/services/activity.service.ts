@@ -44,7 +44,8 @@ export class ActivityService {
   }
   getTransactonsCounter(pkh): Observable<any> {
     return this.http.get(this.apiUrl + 'v1/number_operations/' + pkh)
-      .flatMap((number_operations: any) => {
+    .pipe(
+      flatMap((number_operations: any) => {
         const index = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
         if (index === -1 || this.walletService.wallet.accounts[index].numberOfActivites !== number_operations[0]) {
           // console.log('Requesting transactions');
@@ -61,7 +62,8 @@ export class ActivityService {
               });
           }
         }
-      });
+      })
+    );
   }
   // Try to validate unconfirmed transaction
   getUnconfirmedTransactions(pkh: string): Observable<any> {
@@ -76,7 +78,8 @@ export class ActivityService {
       }
     }
     return this.http.get(this.apiUrl + 'v1/operations/' + pkh + '?number=' + n + '&p=0')
-      .flatMap((data: any) => {
+      .pipe(
+        flatMap((data: any) => {
         const aIndex = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
         const payload = [];
         for (let i = 0; i < data.length; i++) {
@@ -93,13 +96,15 @@ export class ActivityService {
           }
         }
         return this.getTimestamps(pkh, payload);
-      });
+      }))
+      ;
   }
   // Get latest transaction
   getTransactions(pkh: string, counter: number): Observable<any> {
     // console.log('getTransactions()');
     return this.http.get(this.apiUrl + 'v1/operations/' + pkh + '?number=' + this.maxTransactions + '&p=0')
-      .flatMap((data: any) => {
+      .pipe(
+        flatMap((data: any) => {
         const newTransactions: Activity[] = [];
         for (let i = 0; i < data.length; i++) {
           let type;
@@ -172,7 +177,8 @@ export class ActivityService {
           }
         }
         return this.getTimestamps(pkh, payload);
-      });
+      })
+    );
   }
   getTimestamps(pkh: string, payloads: any[]): Observable<any> {
     if (payloads.length === 0) {
@@ -193,7 +199,8 @@ export class ActivityService {
 
   getTimestamp(pkh: string, block: string, hash): Observable<any> {
     return this.http.get(this.apiUrl + 'v1/timestamp/' + block)
-      .flatMap((time: any) => {
+      .pipe(
+        flatMap((time: any) => {
         // console.log('Got time');
         const pkhIndex = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
         const transactionIndex = this.walletService.wallet.accounts[pkhIndex].activities.findIndex(a => a.hash === hash);
@@ -203,7 +210,7 @@ export class ActivityService {
           {
             save: true
           });
-      });
+      }));
   }
   getIndex(pkh: string): number {
     return this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
