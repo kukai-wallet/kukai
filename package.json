@@ -9,7 +9,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "deploy": "ng build --prod && angular-cli-ghpages --repo \"git@github.com:tezwallet/tezwallet.github.io.git\" --branch master"
+    "deploy": "ng build --prod && angular-cli-ghpages --repo \"git@github.com:tezwallet/tezwallet.github.io.git\" --branch master",
+    "alpha-deploy": "ng build --prod && angular-cli-ghpages --repo \"git@github.com:kukai-wallet/kukai-wallet.github.io.git\" --branch master"
   },
   "private": true,
   "dependencies": {

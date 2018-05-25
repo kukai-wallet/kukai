@@ -14,7 +14,7 @@ export class BackupComponent implements OnInit, OnDestroy {
     @Input() pwd3 = '';
     pk = '';
     constructor(
-        private walletService: WalletService,
+        public walletService: WalletService,
         private exportService: ExportService,
         private messageService: MessageService
     ) { }

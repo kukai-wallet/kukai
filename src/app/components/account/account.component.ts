@@ -16,7 +16,7 @@ export class AccountComponent implements OnInit {
 
     activePkh: string;
     constructor(
-        private walletService: WalletService,
+        public walletService: WalletService,
         private messageService: MessageService,
         private coordinatorService: CoordinatorService
     ) { }

@@ -13,7 +13,7 @@ import { Account, Balance, Activity } from '../../interfaces';
 export class BakeryComponent implements OnInit {
 
     constructor(
-        private walletService: WalletService,
+        public walletService: WalletService,
         private messageService: MessageService,
         private activityService: ActivityService
     ) { }

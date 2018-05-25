@@ -25,7 +25,7 @@ export class OverviewComponent implements OnInit {
     constructor(
         // @Inject( DOCUMENT ) dom: Document,
         private router: Router,
-        private walletService: WalletService,
+        public walletService: WalletService,
         private messageService: MessageService,
         private balanceService: BalanceService,
         private coordinatorService: CoordinatorService

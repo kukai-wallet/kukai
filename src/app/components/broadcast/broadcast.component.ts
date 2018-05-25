@@ -26,7 +26,7 @@ export class BroadcastComponent implements OnInit {
     isFullWallet = false;
 
     constructor(
-        private walletService: WalletService,
+        public walletService: WalletService,
         private operationService: OperationService,
         private messageService: MessageService,
         private exportService: ExportService,
