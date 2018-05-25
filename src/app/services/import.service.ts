@@ -15,7 +15,7 @@ const httpOptions = {
 
 @Injectable()
 export class ImportService {
-
+  apiUrl = 'https://zeronet-api.tzscan.io/';
   constructor(
     private walletService: WalletService,
     private messageService: MessageService,
@@ -78,7 +78,7 @@ export class ImportService {
     if (pkh) {
       console.log('Find accounts...');
       console.log('pkh: ' + pkh);
-      this.http.get('http://zeronet-api.tzscan.io/v1/number_operations/' + pkh + '?type=Origination').subscribe(
+      this.http.get(this.apiUrl + 'v1/number_operations/' + pkh + '?type=Origination').subscribe(
         data => {
           if (data[0]) {
             this.findAccounts(pkh, data[0]);
@@ -92,7 +92,7 @@ export class ImportService {
     console.log('Accounts found: ' + n);
     this.coordinatorService.start(pkh);
     this.coordinatorService.startXTZ();
-    this.http.get('http://zeronet-api.tzscan.io/v1/operations/' + pkh + '?type=Origination&number=' + n + '&p=0').subscribe(
+    this.http.get(this.apiUrl + 'v1/operations/' + pkh + '?type=Origination&number=' + n + '&p=0').subscribe(
       data => {
         for (let i = 0; i < n; i++) {
           this.walletService.addAccount(data[i].type.tz1);
