@@ -15,7 +15,7 @@ export interface KeyPair {
 }
 @Injectable()
 export class OperationService {
-  nodeURL = 'http://node.tzscan.io';
+  nodeURL = 'https://node.tzscan.io';
   prefix = {
     tz1: new Uint8Array([6, 161, 159]),
     edpk: new Uint8Array([13, 15, 37, 217]),

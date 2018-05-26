@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
 import { MessageService } from './message.service';
 import { WalletService } from './wallet.service';
 import { Activity } from '../interfaces';
 import { of } from 'rxjs/observable/of';
 import { forkJoin } from 'rxjs/observable/forkJoin';
-import { merge, concatMap, timeout, catchError, delay, flatMap } from 'rxjs/operators';
+import { timeout, catchError, flatMap, mergeMap } from 'rxjs/operators';
+import { Observable } from 'rxjs/Observable';
+
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -44,8 +45,7 @@ export class ActivityService {
   }
   getTransactonsCounter(pkh): Observable<any> {
     return this.http.get(this.apiUrl + 'v1/number_operations/' + pkh)
-    .pipe(
-      flatMap((number_operations: any) => {
+      .flatMap((number_operations: any) => {
         const index = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
         if (index === -1 || this.walletService.wallet.accounts[index].numberOfActivites !== number_operations[0]) {
           // console.log('Requesting transactions');
@@ -62,7 +62,7 @@ export class ActivityService {
               });
           }
         }
-      })
+      }
     );
   }
   // Try to validate unconfirmed transaction
@@ -78,8 +78,7 @@ export class ActivityService {
       }
     }
     return this.http.get(this.apiUrl + 'v1/operations/' + pkh + '?number=' + n + '&p=0')
-      .pipe(
-        flatMap((data: any) => {
+        .flatMap((data: any) => {
         const aIndex = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
         const payload = [];
         for (let i = 0; i < data.length; i++) {
@@ -96,15 +95,14 @@ export class ActivityService {
           }
         }
         return this.getTimestamps(pkh, payload);
-      }))
+      })
       ;
   }
   // Get latest transaction
   getTransactions(pkh: string, counter: number): Observable<any> {
     // console.log('getTransactions()');
     return this.http.get(this.apiUrl + 'v1/operations/' + pkh + '?number=' + this.maxTransactions + '&p=0')
-      .pipe(
-        flatMap((data: any) => {
+        .flatMap((data: any) => {
         const newTransactions: Activity[] = [];
         for (let i = 0; i < data.length; i++) {
           let type;
@@ -177,7 +175,7 @@ export class ActivityService {
           }
         }
         return this.getTimestamps(pkh, payload);
-      })
+      }
     );
   }
   getTimestamps(pkh: string, payloads: any[]): Observable<any> {
@@ -199,8 +197,7 @@ export class ActivityService {
 
   getTimestamp(pkh: string, block: string, hash): Observable<any> {
     return this.http.get(this.apiUrl + 'v1/timestamp/' + block)
-      .pipe(
-        flatMap((time: any) => {
+        .flatMap((time: any) => {
         // console.log('Got time');
         const pkhIndex = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
         const transactionIndex = this.walletService.wallet.accounts[pkhIndex].activities.findIndex(a => a.hash === hash);
@@ -210,7 +207,7 @@ export class ActivityService {
           {
             save: true
           });
-      }));
+      });
   }
   getIndex(pkh: string): number {
     return this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
