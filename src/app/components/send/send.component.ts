@@ -137,6 +137,7 @@ export class SendComponent implements OnInit {
             this.modalRef1 = this.modalService.show(template1, { class: 'first' });
         }
     }
+
     open2(template: TemplateRef<any>) {
         this.formInvalid = this.invalidInput();
         if (!this.formInvalid) {
@@ -146,6 +147,7 @@ export class SendComponent implements OnInit {
             this.modalRef2 = this.modalService.show(template, { class: 'second' });
         }
     }
+
     async open3(template: TemplateRef<any>) {
         const pwd = this.password;
         this.password = '';
@@ -191,20 +193,23 @@ export class SendComponent implements OnInit {
                 (ans: any) => {
                     this.sendResponse = ans;
                     if (ans.success === true) {
+                        console.log('Transaction successful ', ans);
                         if (ans.payload.opHash) {
                             this.coordinatorService.boost(this.activePkh);
                             this.coordinatorService.boost(toPkh);
                         }
                     } else {
-                        console.log(ans.payload.msg);
+                        console.log('Transaction error id ', ans.payload.msg.error[0].id);
+                        // console.log('Failed message ', ans.payload.msg);
                     }
                 },
                 err => {
-                    console.log(JSON.stringify(err));
+                    console.log('Error Message ', JSON.stringify(err));
                 },
             );
         }, 100);
     }
+
     clearForm() {
         this.toPkh = '';
         this.amount = '';
@@ -214,6 +219,7 @@ export class SendComponent implements OnInit {
         this.formInvalid = '';
         this.sendResponse = null;
     }
+
     invalidInput(): string {
 
         if (!this.activePkh || this.activePkh.length !== 36) {
@@ -228,6 +234,7 @@ export class SendComponent implements OnInit {
             return '';
         }
     }
+
     download() {
         this.exportService.downloadOperationData(this.sendResponse.payload.unsignedOperation, false);
     }

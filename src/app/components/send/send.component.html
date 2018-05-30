@@ -1,6 +1,7 @@
 <ng-container *ngIf="accounts">
     <!-- SEND MODALS -->
-    <!-- First Modal -->
+
+    <!-- 1. Send tezzies -->
     <ng-template #modal1>
         <div class="modal-header">
             <h4 class="modal-title pull-left">Send tezzies</h4>
@@ -59,7 +60,7 @@
         </div>
     </ng-template>
 
-    <!-- Confirmation Modal -->
+    <!-- 2. Authenticate transaction -->
     <ng-template #modal2>
         <div class="modal-header">
             <h4 class="modal-title pull-left">Authenticate transaction</h4>
@@ -74,9 +75,13 @@
                 <BR> Fee: {{ fee | number:'1.0' }}ꜩ
             </p>
             <div class="row">
-                <div *ngIf='walletService.isFullWallet()' class="form-group col-md-6">
-                    <label for="pwd">Password:</label>
-                    <input [(ngModel)]="password" type="password" id="pwd" class="form-control">
+                <div *ngIf='walletService.isFullWallet()' class="col-md-6">
+                    <form>
+                        <div class="form-group">
+                            <label for="pwd">Password:</label>
+                            <input [(ngModel)]="password" type="password" id="pwd" class="form-control" [ngModelOptions]="{standalone: true}">
+                        </div>
+                    </form>
                 </div>
             </div>
 
@@ -85,7 +90,7 @@
         </div>
     </ng-template>
 
-    <!-- Final Modal -->
+    <!-- 3. Confirmation -->
     <ng-template #modal3>
         <div class="modal-header">
             <h4 class="modal-title pull-left">Confirmation</h4>
@@ -93,11 +98,15 @@
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
+
         <div class="modal-body">
+            
             <div *ngIf='!sendResponse'>
                 Please wait...
             </div>
+
             <ng-container *ngIf='sendResponse'>
+
                 <div *ngIf='sendResponse.success === true'>
                     <i class="fa fa-check-circle"></i>
                     <br>
@@ -110,14 +119,19 @@
                         <p>Your unsigned transaction have successfully been created</p>
                     </ng-container>
                 </div>
+
                 <div *ngIf='sendResponse.success === false'>
                     <p>Failure!</p>
-                    <p>{{ sendResponse.payload.msg }}</p>
+                    <p>{{ sendResponse.payload.msg.error[0].id | errorHandling }}</p>
                 </div>
+
                 <button *ngIf='sendResponse.payload.unsignedOperation' type="button" class="btn btn-primary" (click)="download()">Download</button>
+
             </ng-container>
+
             <button type="button" class="btn btn-primary" id="sub" (click)="close3()">Close</button>
         </div>
+
     </ng-template>
 
 

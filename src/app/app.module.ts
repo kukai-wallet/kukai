@@ -10,6 +10,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ComponentLoaderFactory } from 'ngx-bootstrap/component-loader/component-loader.factory';
 import { ModalModule, AlertModule, ProgressbarModule, ButtonsModule, BsDropdownModule, TabsModule } from 'ngx-bootstrap';
 
+import { AppComponent } from './app.component';
+
 // Services
 import { MessagesComponent } from './components/messages/messages.component';
 import { MessageService } from './services/message.service';
@@ -21,8 +23,6 @@ import { ImportService } from './services/import.service';
 import { TzrateService } from './services/tzrate.service';
 import { ExportService } from './services/export.service';
 import { DelegateService } from './services/delegate.service';
-
-import { AppComponent } from './app.component';
 
 // View components
 import { BroadcastComponent } from './components/broadcast/broadcast.component';
@@ -46,6 +46,9 @@ import { OperationService } from './services/operation.service';
 import { BakeryComponent } from './components/bakery/bakery.component';
 import { ActivateComponent } from './components/activate/activate.component';
 
+// Pipes
+import { ErrorHandlingPipe } from './pipes/error-handling.pipe';
+
 
 @NgModule({
   declarations: [
@@ -68,6 +71,7 @@ import { ActivateComponent } from './components/activate/activate.component';
     MnemonicImportComponent,
     BakeryComponent,
     ActivateComponent,
+    ErrorHandlingPipe,
   ],
   imports: [
     BrowserModule,

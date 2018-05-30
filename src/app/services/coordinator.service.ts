@@ -78,7 +78,7 @@ export class CoordinatorService {
     }
   }
   async update(pkh) {
-    console.log('account[' + this.walletService.getIndexFromPkh(pkh) + '][' + this.scheduler.get(pkh).state + ']: >>');
+    // console.log('account[' + this.walletService.getIndexFromPkh(pkh) + '][' + this.scheduler.get(pkh).state + ']: >>');
     this.setDelay(pkh, this.defaultDelayActivity);
     this.activityService.updateTransactions(pkh).subscribe(
       (ans: any) => {
