@@ -7,6 +7,8 @@ import { DelegateService } from './delegate.service';
 import { OperationService } from './operation.service';
 // import { setInterval } from 'timers';
 
+import { ErrorHandlingPipe } from '../pipes/error-handling.pipe';
+
 export interface ScheduleData {
   state: State;
   interval: any;
@@ -32,7 +34,8 @@ export class CoordinatorService {
     private walletService: WalletService,
     private balanceService: BalanceService,
     private delegateService: DelegateService,
-    private operationService: OperationService
+    private operationService: OperationService,
+    private errorHandlingPipe: ErrorHandlingPipe
   ) { }
   startAll() {
     for (let i = 0; i < this.walletService.wallet.accounts.length; i++) {
@@ -179,6 +182,8 @@ export class CoordinatorService {
           const index = this.walletService.getIndexFromPkh(pkh);
           this.balanceService.updateAccountBalance(index, ans.payload.balance);
           this.delegateService.handleDelegateResponse(pkh, ans.payload.delegate);
+        } else {
+          console.log('updateAccountData -> getAccount failed ', ans.payload.msg);
         }
       }
     );

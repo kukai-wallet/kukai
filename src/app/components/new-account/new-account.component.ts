@@ -116,10 +116,12 @@ export class NewAccountComponent implements OnInit {
               this.coordinatorService.boost(this.activePkh);
               this.coordinatorService.start(ans.payload.newPkh);
             }
+          } else {
+            console.log('Account creation failed ', ans.payload.msg);
           }
         },
         err => {
-          console.log('Error(newAccount): ' + JSON.stringify(err));
+          console.log('Error(newAccount): ' + JSON.stringify(err.payload.msg));
         }
       );
     }, 100);

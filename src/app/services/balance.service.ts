@@ -35,7 +35,7 @@ export class BalanceService {
         if (ans.success) {
           this.updateAccountBalance(index, ans.payload.balance);
         } else {
-          console.log('BlanceError: ' + JSON.stringify(ans));
+          console.log('Balance Error: ' + JSON.stringify(ans.payload.msg));
         }
       });
   }

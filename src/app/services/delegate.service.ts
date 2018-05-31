@@ -20,6 +20,8 @@ export class DelegateService {
         (data: any) => {
           if (data.success) {
           this.handleDelegateResponse(pkh, data.payload.delegate);
+          } else {
+            console.log('getDelegate failed ', data.payload.msg);
           }
         },
         err => console.log(JSON.stringify(err))

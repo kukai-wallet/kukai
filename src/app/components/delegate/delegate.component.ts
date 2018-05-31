@@ -26,6 +26,7 @@ export class DelegateComponent implements OnInit {
   pwdValid: string;
   formInvalid = '';
   sendResponse: string;
+  errorMessage = '';
 
   modalRef1: BsModalRef;
   modalRef2: BsModalRef;
@@ -112,9 +113,11 @@ export class DelegateComponent implements OnInit {
                   this.coordinatorService.boost(this.activePkh);
                 } else {
                   this.sendResponse = 'failure';
+                  console.log('Delegation error id ', ans.payload.msg);
+                  this.errorMessage = ans.payload.msg;
                 }
               },
-              err => {console.log(JSON.stringify(err));
+              err => {console.log('Error Message ', JSON.stringify(err));
                 this.sendResponse = 'failure';
               }
             );

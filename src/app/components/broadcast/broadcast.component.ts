@@ -23,6 +23,8 @@ export class BroadcastComponent implements OnInit {
     pwd = '';
     pwdPlaceholder = '';
 
+    errorMessage = '';
+
     isFullWallet = false;
 
     constructor(
@@ -78,7 +80,11 @@ export class BroadcastComponent implements OnInit {
                         this.messageService.addSuccess('Operation successfully broadcasted to the network: ' + ans.payload.opHash);
                         this.coordinatorService.setBroadcast();
                     } else {
+                        this.errorMessage = ans.payload.msg;
                         this.messageService.addWarning('Couldn\'t retrive operation hash!');
+                        if (typeof ans.payload.msg === 'string') {
+                            this.messageService.addWarning(this.errorMessage);
+                        }
                     }
                 },
                 err => {

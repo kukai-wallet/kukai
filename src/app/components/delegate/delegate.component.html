@@ -86,7 +86,8 @@
               <p>Your delegation has been successfully broadcasted to the network</p>
           </div>
           <div *ngIf='sendResponse === "failure"'>
-              Failure!
+              Set delegation failed!
+              <p class="text-danger">{{ errorMessage }}</p>
           </div>
           <button type="button" class="btn btn-primary" id="sub" (click)="close3()">Close</button>
       </div>

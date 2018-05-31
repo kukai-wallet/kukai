@@ -31,11 +31,23 @@ export class ActivateComponent implements OnInit {
             this.messageService.addWarning('Couldn\'t retrive an operation hash');
           }
         } else {
-          this.messageService.addError('NodeError');
+          let errorMessage = '';
+          if (typeof ans.payload.msg === 'string') {
+            errorMessage = 'NodeError ' + ans.payload.msg;
+          } else {
+            errorMessage = 'NodeError';
+          }
+          this.messageService.addError(errorMessage);
           console.log(JSON.stringify(ans.payload.msg));
         }
       },
       err => {
+        let errorMessage = '';
+        if (typeof err.payload.msg === 'string') {
+          errorMessage = 'Failed to activate wallet! ' + err.payload.msg;
+        } else {
+          errorMessage = 'Failed to activate wallet!';
+        }
         this.messageService.addError('Failed to activate wallet!');
         console.log(JSON.stringify(err));
       }

@@ -100,7 +100,8 @@ import { ErrorHandlingPipe } from './pipes/error-handling.pipe';
     CoordinatorService,
     OperationService,
     ExportService,
-    DelegateService
+    DelegateService,
+    ErrorHandlingPipe
   ],
   bootstrap: [AppComponent]
 })

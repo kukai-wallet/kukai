@@ -8,6 +8,8 @@ import * as libs from 'libsodium-wrappers';
 import * as Bs58check from 'bs58check';
 import * as bip39 from 'bip39';
 
+import { ErrorHandlingPipe } from '../pipes/error-handling.pipe';
+
 export interface KeyPair {
   sk: string | null;
   pk: string | null;
@@ -25,7 +27,8 @@ export class OperationService {
   };
   toMicro = 1000000;
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private errorHandlingPipe: ErrorHandlingPipe
   ) { }
   /*
     Returns an observable for the activation of an ICO identity
@@ -279,15 +282,30 @@ export class OperationService {
       }).pipe(catchError(err => this.errHandler(err)));
   }
   errHandler(error: any): Observable<any> {
-    return of(
-      {
-        success: false,
-        // errorMessage: error[0].id,
-        payload: {
-          msg: error
+    console.log('error in errHandler() ', error);
+    console.log('HttpErrorResponse in errHandler() ', error.error[0].id);
+    if (error.error[0].id) {  // if there's an RPC error id then return user message
+      const errorId = error.error[0].id;
+      const errorMsg = this.errorHandlingPipe.transform(errorId);
+      // console.log('errorMsg in errHandler() ', errorMsg);
+      return of(
+        {
+          success: false,
+          payload: {
+            msg: errorMsg
+          }
         }
-      }
-    );
+      );
+    } else {
+      return of(
+        {
+          success: false,
+          payload: {
+            msg: error
+          }
+        }
+      );
+    }
   }
   broadcast(sopbytes: string): Observable<any> {
     return this.http.post(this.nodeURL + '/blocks/head', {})

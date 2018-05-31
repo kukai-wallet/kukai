@@ -36,6 +36,7 @@ export class SendComponent implements OnInit {
     pwdValid: string;
     formInvalid = '';
     sendResponse: any;
+    errorMessage = '';
 
     XTZrate = 0;
 
@@ -199,8 +200,8 @@ export class SendComponent implements OnInit {
                             this.coordinatorService.boost(toPkh);
                         }
                     } else {
-                        console.log('Transaction error id ', ans.payload.msg.error[0].id);
-                        // console.log('Failed message ', ans.payload.msg);
+                        console.log('Transaction error id ', ans.payload.msg);
+                        this.errorMessage = this.sendResponse.payload.msg;
                     }
                 },
                 err => {
