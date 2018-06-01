@@ -7,6 +7,7 @@ import { of } from 'rxjs/observable/of';
 import { forkJoin } from 'rxjs/observable/forkJoin';
 import { timeout, catchError, flatMap, mergeMap } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/mergeMap';
 
 
 const httpOptions = {

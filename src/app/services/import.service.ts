@@ -15,7 +15,7 @@ const httpOptions = {
 
 @Injectable()
 export class ImportService {
-  apiUrl = 'https://zeronet-api.tzscan.io/';
+  apiUrl = 'https://api.tzscan.io/';
   constructor(
     private walletService: WalletService,
     private messageService: MessageService,
