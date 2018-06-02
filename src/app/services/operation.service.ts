@@ -141,7 +141,7 @@ export class OperationService {
       }).pipe(catchError(err => this.errHandler(err)));
   }
   /*
-    Returns an observable for the transaction of tezzies.
+    Returns an observable for the transaction of tez.
   */
   transfer(from: string, to: string, amount: number, fee: number = 0, keys: KeyPair): Observable<any> {
     return this.http.post(this.nodeURL + '/blocks/head', {})

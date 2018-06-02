@@ -17,7 +17,7 @@ const httpOptions = {
 @Injectable()
 export class ActivityService {
   apiUrl = 'https://api.tzscan.io/';
-  maxTransactions = 3;
+  maxTransactions = 10;
   constructor(
     private walletService: WalletService,
     private http: HttpClient,
