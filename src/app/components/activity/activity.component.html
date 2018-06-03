@@ -4,7 +4,7 @@
             <tr>
                 <th>Timestamp</th>
                 <th>Type</th>
-                <th>Amount (ꜩ)</th>
+                <th>Amount (&#42793;)</th>
                 <th>Status</th>
             </tr>
         </thead>
@@ -16,7 +16,8 @@
                         <!-- <td>{{ transaction.source }}</td>
                         <td>{{ transaction.destination }}</td> -->
                         <td>{{ transaction.type }}</td>
-                        <td><ng-container *ngIf="transaction.amount">{{ transaction.amount / 1000000 | number:'1.0' }}ꜩ</ng-container></td>
+                        <td><ng-container *ngIf="transaction.amount">{{ transaction.amount / 1000000 | number:'1.0' }} &#42793;
+                        </ng-container></td>
                         <!-- <td>{{ transaction.fee / 100 }}</td> -->
                         <td><a href="http://tzscan.io/{{transaction.hash}}" target="_blank">{{ getStatus(transaction.block) }}</a></td>           
                     </tr>

@@ -153,7 +153,7 @@ export class ErrorHandlingPipe implements PipeTransform {
                 break;
             }
             case 'proto.alpha.contract.empty_transaction': {
-                errorMessage = 'Forbidden to credit 0ꜩ to a contract without code.';
+                errorMessage = 'Forbidden to credit 0&#42793; to a contract without code.';
                 break;
             }
             case 'proto.alpha.contract.failure': {
@@ -769,7 +769,7 @@ export class ErrorHandlingPipe implements PipeTransform {
                 break;
             }
             case 'badTezArg': {
-                errorMessage = 'Invalid ꜩ notation in parameter.';
+                errorMessage = 'Invalid &#42793; notation in parameter.';
                 break;
             }
             case 'cli.key.invalid_uri': {

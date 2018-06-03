@@ -29,7 +29,7 @@
 
               <div class="form-row">
                   <div class="form-group col-md-4">
-                      <label for="transactionFee">Transaction Limit (ꜩ)</label>
+                      <label for="transactionFee">Transaction Limit (&#42793;)</label>
                       <input type="text" class="form-control" id="transactionFee" placeholder="Fee" [(ngModel)]="fee" name="four">
                   </div>
               </div>
@@ -55,7 +55,7 @@
       <div class="modal-body">
           <p>Account: {{ activePkh }}<BR>
               Delegate: {{ toPkh }}<BR>
-              Fee: {{ fee | number:'1.0' }}ꜩ
+              Fee: {{ fee | number:'1.0' }}&#42793;
           </p>
           <div class="row">
               <div class="form-group col-md-6">

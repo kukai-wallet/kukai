@@ -14,7 +14,7 @@
     </div>
     <div class="row bottom-separator">
         <div class="col-6">
-            Balance: {{ balance / 1000000 | number:'1.0' }} ꜩ <span *ngIf="balanceUSD > 0">(${{ balanceUSD | number:'1.00'}} USD)</span>
+            Balance: {{ balance / 1000000 | number:'1.0' }} &#42793; <span *ngIf="balanceUSD > 0">(${{ balanceUSD | number:'1.00'}} USD)</span>
         </div>
     </div>
     <!--<button (click)='triggerOperationReload()'>triggerOperationReload()</button>-->
@@ -28,7 +28,7 @@
     <div class="center-content">
         <div class="card text-center fix-size">
             <div class="card-body">
-                <h1>{{ balance / 1000000 | number:'1.0' }}ꜩ</h1>
+                <h1>{{ balance / 1000000 | number:'1.0' }}&#42793;</h1>
                     <p><app-send [activePkh]="activePkh"></app-send>
                     <app-receive [activePkh]="activePkh"></app-receive></p>
 

@@ -21,7 +21,7 @@
                     <div class="form-group col-md-4 text-right">
                         <label for="staticBalance" class="text-right">Current Balance</label>
                         <input type="text" readonly class="form-control-plaintext text-color" id="staticBalance" [value]="showAccountBalance(activePkh)">
-                        <small id="rateXTZ" class="form-text text-muted text-color" *ngIf="XTZrate > 0">Rate (ꜩ) ${{ XTZrate | number:'1.00' }} USD</small>
+                        <small id="rateXTZ" class="form-text text-muted text-color" *ngIf="XTZrate > 0">Rate (&#42793;) ${{ XTZrate | number:'1.00' }} USD</small>
                     </div>
                 </div>
 
@@ -34,7 +34,7 @@
 
                 <div class="form-row">
                     <div class="form-group col-md-8">
-                        <label for="sendAmount">Amount to Send (ꜩ)</label>
+                        <label for="sendAmount">Amount to Send (&#42793;)</label>
                         <div>
                             <input type="text" class="form-control" id="sendAmount" placeholder="Amount" [(ngModel)]="amount" name="three">
                         </div>
@@ -46,7 +46,7 @@
                     </div>
 
                     <div class="form-group col-md-4">
-                        <label for="transactionFee">Fee (ꜩ)</label>
+                        <label for="transactionFee">Fee (&#42793;)</label>
                         <input type="text" class="form-control" id="transactionFee" placeholder="Fee" [(ngModel)]="fee" name="four">
                     </div>
                 </div>
@@ -71,8 +71,8 @@
         <div class="modal-body">
             <p>From: {{ activePkh }}
                 <BR> To: {{ toPkh }}
-                <BR> Amount: {{ amount | number:'1.0' }}ꜩ
-                <BR> Fee: {{ fee | number:'1.0' }}ꜩ
+                <BR> Amount: {{ amount | number:'1.0' }}&#42793;
+                <BR> Fee: {{ fee | number:'1.0' }}&#42793;
             </p>
             <div class="row">
                 <div *ngIf='walletService.isFullWallet()' class="col-md-6">
