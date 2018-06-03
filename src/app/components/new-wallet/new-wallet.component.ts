@@ -101,7 +101,6 @@ export class NewWalletComponent implements OnInit {
   }
   pwdView() {
     this.activePanel++;
-    this.mnemonic = '';
     this.userMnemonic = '';
   }
   mnemonicMatch(): boolean {

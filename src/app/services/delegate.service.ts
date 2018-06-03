@@ -10,7 +10,7 @@ export class DelegateService {
     private operationService: OperationService
   ) { }
   getDelegates() {
-    for (let i = 0; i < this.walletService.wallet.accounts.length; i++) {
+    for (let i = 1; i < this.walletService.wallet.accounts.length; i++) {
       this.getDelegate(this.walletService.wallet.accounts[i].pkh);
     }
   }

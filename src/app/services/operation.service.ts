@@ -390,6 +390,9 @@ export class OperationService {
       }).pipe(catchError(err => this.errHandler(err)));
   }
   seed2keyPair(seed: string): KeyPair {
+    if (!seed) {
+      throw new Error('NullSeed');
+    }
     const keyPair = libs.crypto_sign_seed_keypair(seed);
     return {
       sk: this.b58cencode(keyPair.privateKey, this.prefix.edsk),
@@ -398,6 +401,9 @@ export class OperationService {
     };
   }
   mnemonic2seed(mnemonic: string, passphrase: string = '') {
+    if (!mnemonic) {
+      throw new Error('NullMnemonic');
+    }
     return bip39.mnemonicToSeed(mnemonic, passphrase).slice(0, 32);
   }
   validMnemonic(mnemonic: string) {
