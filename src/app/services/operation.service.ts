@@ -401,8 +401,8 @@ export class OperationService {
     };
   }
   mnemonic2seed(mnemonic: string, passphrase: string = '') {
-    if (!mnemonic) {
-      throw new Error('NullMnemonic');
+    if (!this.validMnemonic(mnemonic)) {
+      throw new Error('InvalidMnemonic');
     }
     return bip39.mnemonicToSeed(mnemonic, passphrase).slice(0, 32);
   }

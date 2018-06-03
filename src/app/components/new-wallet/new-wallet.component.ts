@@ -25,6 +25,7 @@ export class NewWalletComponent implements OnInit {
   activePanel = 0;
   data: any;
   mnemonic: string;
+  mnemonic2: string;
   entropyMsg: string;
   prevCoords = {
     x: 0,
@@ -92,19 +93,19 @@ export class NewWalletComponent implements OnInit {
   }
   generateSeed() {
     this.mnemonic = this.walletService.createNewWallet(this.entropy);
-    this.mnemonic = this.mnemonic.replace(/((?:.*?\s){4}.*?)\s/g, '$1\n'); // 5 words per line
+    this.mnemonic2 = this.mnemonic.replace(/((?:.*?\s){4}.*?)\s/g, '$1\n'); // 5 words per line
     this.activePanel++;
   }
   verifyView() {
     this.activePanel++;
-    this.mnemonic = this.mnemonic.replace(/(\r\n\t|\n|\r\t| )/gm, ''); // remove white-spaces and linebreaks
+    this.mnemonic2 = this.mnemonic2.replace(/(\r\n\t|\n|\r\t| )/gm, ''); // remove white-spaces and linebreaks
   }
   pwdView() {
     this.activePanel++;
     this.userMnemonic = '';
   }
   mnemonicMatch(): boolean {
-    return (this.mnemonic === this.userMnemonic.replace(/(\r\n\t|\n|\r\t| )/gm, ''));
+    return (this.mnemonic2 === this.userMnemonic.replace(/(\r\n\t|\n|\r\t| )/gm, ''));
   }
   encryptWallet() {
     if (this.validatePwd()) {
@@ -115,6 +116,7 @@ export class NewWalletComponent implements OnInit {
         console.log('Wait...');
         this.data = this.walletService.createEncryptedWallet(this.mnemonic, pwd);
         this.mnemonic = '';
+        this.mnemonic2 = '';
         this.activePanel++;
         this.walletService.storeWallet();
       }, 100);
