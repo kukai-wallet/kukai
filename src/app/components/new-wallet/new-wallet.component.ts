@@ -43,39 +43,19 @@ export class NewWalletComponent implements OnInit {
   entr: number;
   entropy = 'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff' +
             'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
+  @HostListener('document:touchmove', ['$event'])
+  ontouchmove(e) {
+    /*console.log('(' + e.touches[0].clientX + ', ' + e.touches[0].clientY + ') of (' +
+    document.body.clientWidth + ', ' + document.body.clientHeight + ')');*/
+    const x = Math.round(e.touches[0].clientX * 255 / document.body.clientWidth);
+    const y = Math.round(e.touches[0].clientY * 255 / document.body.clientHeight);
+    this.addEntropy(x, y);
+  }
   @HostListener('document:mousemove', ['$event'])
   onMouseMove(e) {
-    if (this.activePanel === 0) {
-      const x = Math.round(e.pageX * 255 / document.body.clientWidth);
-      const y = Math.round(e.pageY * 255 / document.body.clientHeight);
-      if (x !== this.prevCoords.x || y !== this.prevCoords.y) {
-        this.prevCoords.x = x;
-        this.prevCoords.y = y;
-        let part = this.entropy.substr(this.counter * 4, 4); // part of string to replace
-        const newPart = Number('0x' + part) ^ (x + y * 16 * 16);
-        part = newPart.toString(16);
-        for (let i = 1; i <= 3; i++) { // make sure part got 4 characters
-          if (!part[i]) { part = '0' + part; }
-        }
-        part = this.entropy.substr(0, this.counter * 4) + part + this.entropy.substr((this.counter + 1) * 4, this.entropy.length);
-        this.entropy = part;
-        this.counter = ( this.counter + 1 ) % (this.entropy.length / 4);
-        if (this.counter % 8 === 0) { this.counter2++; } // Set time for collection here
-        if (this.counter2 >= 100) {
-          this.activePanel++;
-          let finalEntropy = '';
-          for (let i = 0; i < 40; i++) {
-            let hex = 0;
-            for (let j = 0; j < 4; j++) {
-                hex = hex ^ Number('0x' + this.entropy[i * 4 + j]);
-            }
-            finalEntropy = finalEntropy + hex.toString(16);
-          }
-          this.entropy = finalEntropy;
-          this.generateSeed();
-        }
-      }
-    }
+    const x = Math.round(e.pageX * 255 / document.body.clientWidth);
+    const y = Math.round(e.pageY * 255 / document.body.clientHeight);
+    this.addEntropy(x, y);
   }
   constructor(private walletService: WalletService,
     private messageService: MessageService,
@@ -157,5 +137,36 @@ export class NewWalletComponent implements OnInit {
   download() {
     this.exportService.downloadWallet(this.data);
     this.ekfDownloaded = true;
+  }
+  addEntropy(x: number, y: number) {
+    if (this.activePanel === 0) {
+      if (x !== this.prevCoords.x || y !== this.prevCoords.y) {
+        this.prevCoords.x = x;
+        this.prevCoords.y = y;
+        let part = this.entropy.substr(this.counter * 4, 4); // part of string to replace
+        const newPart = Number('0x' + part) ^ (x + y * 16 * 16);
+        part = newPart.toString(16);
+        for (let i = 1; i <= 3; i++) { // make sure part got 4 characters
+          if (!part[i]) { part = '0' + part; }
+        }
+        part = this.entropy.substr(0, this.counter * 4) + part + this.entropy.substr((this.counter + 1) * 4, this.entropy.length);
+        this.entropy = part;
+        this.counter = ( this.counter + 1 ) % (this.entropy.length / 4);
+        if (this.counter % 8 === 0) { this.counter2++; } // Set time for collection here
+        if (this.counter2 >= 100) {
+          this.activePanel++;
+          let finalEntropy = '';
+          for (let i = 0; i < 40; i++) {
+            let hex = 0;
+            for (let j = 0; j < 4; j++) {
+                hex = hex ^ Number('0x' + this.entropy[i * 4 + j]);
+            }
+            finalEntropy = finalEntropy + hex.toString(16);
+          }
+          this.entropy = finalEntropy;
+          this.generateSeed();
+        }
+      }
+    }
   }
 }
