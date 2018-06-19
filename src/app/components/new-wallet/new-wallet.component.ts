@@ -49,13 +49,21 @@ export class NewWalletComponent implements OnInit {
     document.body.clientWidth + ', ' + document.body.clientHeight + ')');*/
     const x = Math.round(e.touches[0].clientX * 255 / document.body.clientWidth);
     const y = Math.round(e.touches[0].clientY * 255 / document.body.clientHeight);
-    this.addEntropy(x, y);
+    if (x >= 0 && x < 256 && y >= 0 && y < 256) {
+      this.addEntropy(x, y);
+    } else {
+      console.log('Out of range');
+    }
   }
   @HostListener('document:mousemove', ['$event'])
   onMouseMove(e) {
     const x = Math.round(e.pageX * 255 / document.body.clientWidth);
     const y = Math.round(e.pageY * 255 / document.body.clientHeight);
-    this.addEntropy(x, y);
+    if (x >= 0 && x < 256 && y >= 0 && y < 256) {
+      this.addEntropy(x, y);
+    } else {
+      console.log('Out of range');
+    }
   }
   constructor(private walletService: WalletService,
     private messageService: MessageService,
