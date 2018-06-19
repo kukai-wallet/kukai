@@ -23,6 +23,7 @@ import { ImportService } from './services/import.service';
 import { TzrateService } from './services/tzrate.service';
 import { ExportService } from './services/export.service';
 import { DelegateService } from './services/delegate.service';
+import { TzscanService } from './services/tzscan.service';
 
 // View components
 import { BroadcastComponent } from './components/broadcast/broadcast.component';
@@ -101,6 +102,7 @@ import { ErrorHandlingPipe } from './pipes/error-handling.pipe';
     OperationService,
     ExportService,
     DelegateService,
+    TzscanService,
     ErrorHandlingPipe
   ],
   bootstrap: [AppComponent]

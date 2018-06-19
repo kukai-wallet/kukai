@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { WalletService } from './wallet.service';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { WalletType } from './../interfaces';
 import { Observable } from 'rxjs/Observable';
 import { MessageService } from './message.service';
@@ -8,21 +7,17 @@ import { BalanceService } from './balance.service';
 import * as bip39 from 'bip39';
 import { CoordinatorService } from './coordinator.service';
 import { OperationService } from './operation.service';
-
-const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-};
+import { TzscanService } from './tzscan.service';
 
 @Injectable()
 export class ImportService {
-  apiUrl = 'https://api.tzscan.io/';
   constructor(
     private walletService: WalletService,
     private messageService: MessageService,
     private balanceService: BalanceService,
     private coordinatorService: CoordinatorService,
     private operationService: OperationService,
-    private http: HttpClient
+    private tzscanService: TzscanService
   ) { }
   async importWalletData(json: string, isJson: boolean = true): Promise<boolean> {
     try {
@@ -78,7 +73,7 @@ export class ImportService {
     if (pkh) {
       console.log('Find accounts...');
       console.log('pkh: ' + pkh);
-      this.http.get(this.apiUrl + 'v1/number_operations/' + pkh + '?type=Origination').subscribe(
+      this.tzscanService.numberOperationsOrigination(pkh).subscribe(
         data => {
           if (data[0]) {
             this.findAccounts(pkh, data[0]);
@@ -92,7 +87,7 @@ export class ImportService {
     console.log('Accounts found: ' + n);
     this.coordinatorService.start(pkh);
     this.coordinatorService.startXTZ();
-    this.http.get(this.apiUrl + 'v1/operations/' + pkh + '?type=Origination&number=' + n + '&p=0').subscribe(
+    this.tzscanService.operationsOrigination(pkh, n).subscribe(
       data => {
         for (let i = 0; i < n; i++) {
           this.walletService.addAccount(data[i].type.tz1);
