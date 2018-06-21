@@ -3,12 +3,7 @@ import { WalletService } from './wallet.service';
 import { MessageService } from './message.service';
 import { TzrateService } from './tzrate.service';
 import { OperationService } from './operation.service';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-
-const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-};
 
 @Injectable()
 export class BalanceService {
@@ -16,8 +11,7 @@ export class BalanceService {
     private walletService: WalletService,
     private messageService: MessageService,
     private tzrateService: TzrateService,
-    private operationService: OperationService,
-    private http: HttpClient
+    private operationService: OperationService
   ) { }
 
   async getBalanceAll() {

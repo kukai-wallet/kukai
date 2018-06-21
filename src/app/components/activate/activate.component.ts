@@ -35,7 +35,7 @@ export class ActivateComponent implements OnInit {
           if (typeof ans.payload.msg === 'string') {
             errorMessage = 'NodeError ' + ans.payload.msg;
           } else {
-            errorMessage = 'NodeError';
+            errorMessage = 'NodeError ' + JSON.stringify(ans.payload.msg);
           }
           this.messageService.addError(errorMessage);
           console.log(JSON.stringify(ans.payload.msg));
