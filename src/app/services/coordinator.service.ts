@@ -23,7 +23,7 @@ enum State {
 @Injectable()
 export class CoordinatorService {
   scheduler: Map<string, any> = new Map<string, any>(); // pkh + delay
-  defaultDelayActivity = 60000; // 60s
+  defaultDelayActivity = 30000; // 30s
   shortDelayActivity = 2000; // 5s
   tzrateInterval: any;
   defaultDelayPrice = 300000; // 300s
