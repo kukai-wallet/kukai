@@ -4,7 +4,10 @@
     <nav id="sidebar">
         <div class="sidebar-header">
                 <a routerLink=""><h1 class="title" align="center">Kukai</h1></a>
-            <p class="sub-heading" align="center">on a path of self-discovery</p>
+            <p class="sub-heading" align="center">
+                on a path of self-discovery<BR>
+                {{ this.walletService.walletTypePrint() }}
+            </p>
         </div>
 
         <br>
@@ -24,7 +27,7 @@
                 
             </li>-->
             <li routerLinkActive="active">
-                <a routerLink="/bakery" class="btn-main-action">Baking</a>
+                <a routerLink="/bakery" class="btn-main-action">Bakery</a>
             </li>
             <!--
             <li routerLinkActive="active">

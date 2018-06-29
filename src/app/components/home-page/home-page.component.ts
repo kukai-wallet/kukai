@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./home-page.component.scss']
 })
 export class HomePageComponent implements OnInit {
-  constructor(private walletService: WalletService,
+  constructor(public walletService: WalletService,
     private messageService: MessageService,
     private activityService: ActivityService,
     private coordinatorService: CoordinatorService,

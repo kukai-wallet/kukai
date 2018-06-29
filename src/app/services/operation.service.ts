@@ -249,7 +249,7 @@ export class OperationService {
                         .flatMap((applied: any) => {
                           console.log('applied: ' + JSON.stringify(applied));
                           console.log('sop: ' + sopbytes);
-                          return this.http.post(this.nodeURL + '/injection/operation', JSON.stringify(sopbytes))
+                          return this.http.post(this.nodeURL + '/injection/operation', JSON.stringify(sopbytes), httpOptions)
                             .flatMap((final: any) => {
                               console.log('final: ' + JSON.stringify(final));
                               return this.opCheck(final);
@@ -323,7 +323,7 @@ export class OperationService {
                         .flatMap((applied: any) => {
                           console.log('applied: ' + JSON.stringify(applied));
                           console.log('sop: ' + sopbytes);
-                          return this.http.post(this.nodeURL + '/injection/operation', JSON.stringify(sopbytes))
+                          return this.http.post(this.nodeURL + '/injection/operation', JSON.stringify(sopbytes), httpOptions)
                             .flatMap((final: any) => {
                               return this.opCheck(final);
                             });
@@ -425,6 +425,7 @@ export class OperationService {
   getAccount(pkh: string): Observable<any> {
     return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + pkh, {})
       .flatMap((contract: any) => {
+        console.log('contracts data: ' + JSON.stringify(contract));
         let delegate = '';
         if (contract.delegate.value) {
           delegate = contract.delegate.value;
@@ -559,7 +560,6 @@ export class OperationService {
       throw new Error('TagError');
     }
     op.data.public_key = this.b58cencode(this.hex2buf(op.rest.slice(index, index += 64)), this.prefix.edpk);
-    console.log('pk: ' + op.data.public_key);
     if (op.rest.length === index) {
       return [op.data];
     } else {
@@ -576,14 +576,10 @@ export class OperationService {
       throw new Error('TagError');
     }
     op.data.managerPubkey = this.b58cencode(this.hex2buf(op.rest.slice(index, index += 40)), this.prefix.tz1);
-    console.log('pubkey: ' + op.data.managerPubkey);
     const balance = this.zarithDecode(op.rest.slice(index));
     op.data.balance = balance.value.toString();
-    console.log('balance: ' + op.data.balance);
-    console.log('test1: ' + op.rest.slice(index));
     op.data.spendable = ( op.rest.slice(index += balance.count * 2, index += 2) === 'ff' );
     op.data.delegatable = ( op.rest.slice(index, index += 2) === 'ff' );
-    console.log('test2: ' + op.rest.slice(index));
     if (op.rest.slice(index, index += 2) === 'ff') { // delegate?
       console.log('delegate ' + op.rest.slice(index - 2));
       throw new Error('UnsupportedTag');
@@ -592,7 +588,6 @@ export class OperationService {
       console.log('script ' + op.rest.slice(index - 2));
       throw new Error('UnsupportedTag');
     }
-    console.log('rest: ' + op.rest.slice(index));
     if (op.rest.length === index) {
       return [op.data];
     } else {
@@ -609,15 +604,11 @@ export class OperationService {
       throw new Error('TagError');
     }
     data.source = this.b58cencode(this.hex2buf(content.slice(index, index += 40)), this.prefix.tz1);
-    console.log('source: ' + data.source);
     // data.fee = Number('0x' + content.slice(index, index += 16));
     const fee = this.zarithDecode(content.slice(index));
     data.fee = fee.value.toString();
-    console.log('fee: ' + data.fee);
-    console.log('preCount: ' + content.slice(index + fee.count * 2, index + fee.count * 2 + 8));
     const counter = this.zarithDecode(content.slice(index += fee.count * 2));
     data.counter = counter.value.toString();
-    console.log('counter: ' + data.counter);
     const gas_limit = this.zarithDecode(content.slice(index += counter.count * 2));
     data.gas_limit = gas_limit.value.toString();
     const storage_limit = this.zarithDecode(content.slice(index += gas_limit.count * 2));
@@ -650,8 +641,8 @@ export class OperationService {
   validOrigination(fop: any, opbytes: string): boolean {
     console.log('Validating...');
     const fop2: any = this.decodeOpBytes(opbytes);
-    console.log('1: ' + JSON.stringify(fop));
-    console.log('2: ' + JSON.stringify(fop2));
+    // console.log('1: ' + JSON.stringify(fop));
+    // console.log('2: ' + JSON.stringify(fop2));
     if (JSON.stringify(fop) === JSON.stringify(fop2)) {
       return true;
     }
