@@ -98,9 +98,13 @@ export class ActivityService {
     // console.log('getTransactions()');
     return this.tzscanService.operations(pkh, this.maxTransactions)
         .flatMap((data: any) => {
+          // console.log('ops: ' + JSON.stringify(data));
         const newTransactions: Activity[] = [];
         for (let i = 0; i < data.length; i++) {
-          let type;
+          const op: any = this.tzscanService.getOp(data[i], pkh);
+          console.log(JSON.stringify(op));
+          newTransactions.push(op);
+          /*let type;
           if (pkh === data[i].type.source) {
             if (pkh === data[i].type.destination) {
               type = 'Transaction*';
@@ -142,7 +146,7 @@ export class ActivityService {
               timestamp: null,
               type: type
             });
-          }
+          }*/
         }
         const index = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
         if (index === -1) {

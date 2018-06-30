@@ -15,7 +15,7 @@ export class DelegateService {
     }
   }
   getDelegate(pkh: string) {
-    if (pkh.slice(0, 3) === 'TZ1') {
+    if (pkh.slice(0, 3) === 'KT1') {
       this.operationService.getDelegate(pkh).subscribe(
         (data: any) => {
           if (data.success) {

@@ -20,8 +20,9 @@ export interface KeyPair {
 }
 @Injectable()
 export class OperationService {
-  nodeURL = 'http://96.126.99.67:3000'; // Use only for internal testing
+  // nodeURL = 'http://96.126.99.67:3000'; // Use only for internal testing
   // nodeURL = 'https://tezrpc.me/zeronet';
+  nodeURL = 'https://rpc.tezrpc.me';
   // nodeURL = 'https://zeronet.tzscan.io';
   CHAIN_ID = 'ProtoALphaALphaALphaALphaALphaALphaALphaALphaDdp3zK';
   prefix = {
@@ -31,7 +32,8 @@ export class OperationService {
     edsig: new Uint8Array([9, 245, 205, 134, 18]),
     o: new Uint8Array([5, 116]),
     B: new Uint8Array([1, 52]),
-    TZ: new Uint8Array([3, 99, 29])
+    TZ: new Uint8Array([3, 99, 29]),
+    KT: new Uint8Array([2, 90, 121])
   };
   toMicro = 1000000;
   // dummyPk = 'edpkteDwHwoNPB18tKToFKeSCykvr1ExnoMV5nawTJy9Y9nLTfQ541';
@@ -72,7 +74,6 @@ export class OperationService {
       }).pipe(catchError(err => this.errHandler(err)));
   }
   opCheck(final: any, newPkh: string = null): Observable<any> {
-    console.log(typeof (final) + '<>' + final.length);
     if (typeof (final) === 'string' && final.length === 51) {
       return of(
         {
@@ -141,7 +142,7 @@ export class OperationService {
                 return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/forge/operations', fop)
                   .flatMap((opbytes: any) => {
                     console.log('opbytes: ' + opbytes);
-                    if (!this.validOrigination(fop, opbytes)) {
+                    if (!this.validOpBytes(fop, opbytes)) {
                       throw new Error('ValidationError');
                     }
                     if (!keys.sk) { // If sk doesn't exist, return unsigned operation
@@ -161,6 +162,7 @@ export class OperationService {
                       return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/preapply/operations', [fop])
                         .flatMap((applied: any) => {
                           console.log('applied: ' + JSON.stringify(applied));
+                          this.checkApplied(applied);
                           console.log('sop: ' + sopbytes);
                           return this.http.post(this.nodeURL + '/injection/operation', JSON.stringify(sopbytes), httpOptions)
                             .flatMap((final: any) => {
@@ -191,17 +193,13 @@ export class OperationService {
                 let counter: number = Number(actions);
                 const fop: any = {
                   branch: hash,
-                  /*kind: 'manager',
-                  source: from,
-                  fee: (fee * this.toMicro).toString(),
-                  counter: ++actions.counter,*/
                   contents: [
                     {
                       kind: 'transaction',
                       source: from,
                       fee: (fee * this.toMicro).toString(),
                       counter: (++counter).toString(),
-                      gas_limit: '0',
+                      gas_limit: '200',
                       storage_limit: '60000',
                       amount: (amount * this.toMicro).toString(),
                       destination: to,
@@ -228,6 +226,9 @@ export class OperationService {
                 return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/forge/operations', fop)
                   .flatMap((opbytes: any) => {
                     console.log('opbytes: ' + opbytes);
+                    if (!this.validOpBytes(fop, opbytes)) {
+                      throw new Error('ValidationError');
+                    }
                     if (!keys.sk) { // If sk doesn't exist, return unsigned operation
                       return of(
                         {
@@ -247,6 +248,7 @@ export class OperationService {
                       fop.signature = signed.edsig;
                       return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/preapply/operations', [fop])
                         .flatMap((applied: any) => {
+                          this.checkApplied(applied);
                           console.log('applied: ' + JSON.stringify(applied));
                           console.log('sop: ' + sopbytes);
                           return this.http.post(this.nodeURL + '/injection/operation', JSON.stringify(sopbytes), httpOptions)
@@ -280,7 +282,7 @@ export class OperationService {
                       source: from,
                       fee: (fee * this.toMicro).toString(),
                       counter: (++counter).toString(),
-                      gas_limit: '0',
+                      gas_limit: '200',
                       storage_limit: '60000',
                       delegate: to
                     }
@@ -302,6 +304,9 @@ export class OperationService {
                 return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/forge/operations', fop)
                   .flatMap((opbytes: any) => {
                     console.log('opbytes: ' + opbytes);
+                    if (!this.validOpBytes(fop, opbytes)) {
+                      throw new Error('ValidationError');
+                    }
                     if (!keys.sk) { // If sk doesn't exist, return unsigned operation
                       return of(
                         {
@@ -311,17 +316,17 @@ export class OperationService {
                           }
                         });
                     } else { // If sk exists, sign and broadcast operation
-                      /*return this.http.get(this.nodeURL + '/chains/main/blocks/head/header/', {})
-                        .flatMap((header: any) => {
-                          console.log('header: ' + JSON.stringify(header.predecessor));*/
-                      const signed = this.sign(opbytes.operation, keys.sk);
+                      console.log('sign ->');
+                      const signed = this.sign(opbytes, keys.sk);
                       const sopbytes = signed.sbytes;
                       const opHash = this.b58cencode(libs.crypto_generichash(32, this.hex2buf(sopbytes)), this.prefix.o);
                       fop.protocol = this.CHAIN_ID;
                       fop.signature = signed.edsig;
+                      console.log('preapply ->');
                       return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/preapply/operations', [fop])
                         .flatMap((applied: any) => {
-                          console.log('applied: ' + JSON.stringify(applied));
+                          this.checkApplied(applied);
+                          console.log('applied full: ' + JSON.stringify(applied));
                           console.log('sop: ' + sopbytes);
                           return this.http.post(this.nodeURL + '/injection/operation', JSON.stringify(sopbytes), httpOptions)
                             .flatMap((final: any) => {
@@ -334,8 +339,17 @@ export class OperationService {
           });
       }).pipe(catchError(err => this.errHandler(err)));
   }
+  checkApplied(applied: any) {
+    for (let i = 0; i < applied[0].contents.length; i++) {
+      if (applied[0].contents[i].metadata.operation_result.status === 'failed') {
+        console.log('throw error ->');
+        throw new Error(applied[0].contents[i].metadata.operation_result.errors[0].id);
+      }
+    }
+    console.log('applied part: ' + JSON.stringify(applied[0].contents[0].metadata.operation_result.status));
+  }
   errHandler(error: any): Observable<any> {
-    if (error.error[0] && error.error[0].id) {  // if there's an RPC error id then return user message
+    if (error.error && error.error[0] && error.error[0].id) {  // if there's an RPC error id then return user message
       console.log('HttpErrorResponse in errHandler() ', error.error[0].id);
       const errorId = error.error[0].id;
       const errorMsg = this.errorHandlingPipe.transform(errorId);
@@ -380,52 +394,38 @@ export class OperationService {
       }).pipe(catchError(err => this.errHandler(err)));
   }
   getBalance(pkh: string): Observable<any> {
-    return this.http.post(this.nodeURL + '/blocks/head/proto/context/contracts/' + pkh + '/balance', {})
+    return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + pkh + '/balance')
       .flatMap((balance: any) => {
         return of(
           {
             success: true,
             payload: {
-              balance: balance.balance
+              balance: balance
             }
           }
         );
       }).pipe(catchError(err => this.errHandler(err)));
   }
   getDelegate(pkh: string): Observable<any> {
-    return this.http.post(this.nodeURL + '/blocks/head/proto/context/contracts/' + pkh + '/delegate', {})
+    return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + pkh + '/delegate')
       .flatMap((delegate: any) => {
-        let value = '';
+        let d = '';
         if (delegate.value) {
-          value = delegate.value;
+          d = delegate.value;
         }
         return of(
           {
             success: true,
             payload: {
-              delegate: value
-            }
-          }
-        );
-      }).pipe(catchError(err => this.errHandler(err)));
-  }
-  getCounter(pkh: string): Observable<any> {
-    return this.http.post(this.nodeURL + '/blocks/head/proto/context/contracts/' + pkh + '/counter', {})
-      .flatMap((counter: any) => {
-        return of(
-          {
-            success: true,
-            payload: {
-              counter: counter.counter
+              delegate: d
             }
           }
         );
       }).pipe(catchError(err => this.errHandler(err)));
   }
   getAccount(pkh: string): Observable<any> {
-    return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + pkh, {})
+    return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + pkh)
       .flatMap((contract: any) => {
-        console.log('contracts data: ' + JSON.stringify(contract));
         let delegate = '';
         if (contract.delegate.value) {
           delegate = contract.delegate.value;
@@ -567,7 +567,20 @@ export class OperationService {
     }
   }
   decodeTransaction(content: any): any { // Tag 8
-    return [{data: 'To be implemented'}];
+    let index = 0;
+    const op = this.decodeCommon({kind: 'transaction'}, content);
+    const amount = this.zarithDecode(op.rest.slice(index));
+    op.data.amount = amount.value.toString();
+    op.data.destination = this.decodeContractId(op.rest.slice(index += amount.count * 2, index += 44));
+    if (op.rest.slice(index, index += 2) === 'ff') { // parameters?
+      console.log('parameters ' + op.rest.slice(index - 2));
+      throw new Error('UnsupportedTag');
+    }
+    if (op.rest.length === index) {
+      return [op.data];
+    } else {
+      return [op.data].concat(this.decodeContents(op.rest.slice(index)));
+    }
   }
   decodeOrigination(content: any): any { // Tag 9
     let index = 0;
@@ -595,15 +608,28 @@ export class OperationService {
     }
   }
   decodeDelegation(content: any): any { // Tag 10
-    return [{data: 'To be implemented'}];
+    let index = 0;
+    const op = this.decodeCommon({kind: 'delegation'}, content);
+    console.log('hex: ' + op.rest + ' ' + op.rest.length);
+    const tag = op.rest.slice(index, index += 2);
+    if (tag === 'ff') {
+      if (op.rest.slice(index, index += 2) === '00') {
+        op.data.delegate = this.b58cencode(this.hex2buf(op.rest.slice(index, index += 40)), this.prefix.tz1);
+      } else {
+        throw new Error('TagError');
+      }
+    } else if (tag !== '00') {
+      throw new Error('TagError');
+    }
+    if (op.rest.length === index) {
+      return [op.data];
+    } else {
+      return [op.data].concat(this.decodeContents(op.rest.slice(index)));
+    }
   }
   decodeCommon(data: any, content: any): any {
     let index = 0;
-    if (content.slice(index, index += 4) !== '0000') {
-      console.log('Unsupported tags');
-      throw new Error('TagError');
-    }
-    data.source = this.b58cencode(this.hex2buf(content.slice(index, index += 40)), this.prefix.tz1);
+    data.source = this.decodeContractId(content.slice(index, index += 44));
     // data.fee = Number('0x' + content.slice(index, index += 16));
     const fee = this.zarithDecode(content.slice(index));
     data.fee = fee.value.toString();
@@ -635,16 +661,30 @@ export class OperationService {
       count: count
     };
   }
+  decodeContractId(hex: string): string {
+    console.log('hex: ' + hex);
+    if (hex.slice(0, 2) === '00') {
+      console.log('tz1');
+      return this.b58cencode(this.hex2buf(hex.slice(4, 44)), this.prefix.tz1);
+    } else if (hex.slice(0, 2) === '01') {
+      console.log('KT1');
+      return this.b58cencode(this.hex2buf(hex.slice(2, 42)), this.prefix.KT);
+    } else {
+      console.log('Unsupported tags');
+      throw new Error('TagError');
+    }
+  }
   /*
     Validate binaries
   */
-  validOrigination(fop: any, opbytes: string): boolean {
+  validOpBytes(fop: any, opbytes: string): boolean {
     console.log('Validating...');
     const fop2: any = this.decodeOpBytes(opbytes);
-    // console.log('1: ' + JSON.stringify(fop));
-    // console.log('2: ' + JSON.stringify(fop2));
+    /*console.log('1: ' + JSON.stringify(fop));
+      console.log('2: ' + JSON.stringify(fop2));*/
     if (JSON.stringify(fop) === JSON.stringify(fop2)) {
-      return true;
+      console.log('Valid bytes!');
+      return true; // Client and node agree the opbytes are correct!
     }
     return false;
   }

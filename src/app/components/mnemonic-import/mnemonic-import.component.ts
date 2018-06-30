@@ -13,7 +13,7 @@ import { ExportService } from '../../services/export.service';
   styleUrls: ['./mnemonic-import.component.scss']
 })
 export class MnemonicImportComponent implements OnInit {
-  MIN_PWD_LENGTH = 8;
+  MIN_PWD_LENGTH = 9;
   mnemonic: string;
   email: string;
   password: string;
@@ -103,7 +103,7 @@ export class MnemonicImportComponent implements OnInit {
   }
   validPwd(): boolean {
     if (this.pwd1.length < this.MIN_PWD_LENGTH || this.pwd2.length < this.MIN_PWD_LENGTH) {
-      this.messageService.addError('Password too short!');
+      this.messageService.addError('Password too short! At least ' + this.MIN_PWD_LENGTH + ' characters expected.');
       return false;
     } if (this.pwd1 !== this.pwd2) {
       this.messageService.addError('Passwords doesn\'t match!');

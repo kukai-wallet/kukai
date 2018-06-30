@@ -90,10 +90,15 @@ export class ImportService {
     this.tzscanService.operationsOrigination(pkh, n).subscribe(
       data => {
         for (let i = 0; i < n; i++) {
-          this.walletService.addAccount(data[i].type.tz1);
-          console.log('Added: ' + data[i].type.tz1);
-          this.coordinatorService.start(data[i].type.tz1);
-          this.findNumberOfAccounts(data[i].type.tz1); // Recursive call
+          let index = 0;
+          if (data[i].type.operations[0].kind === 'reveal') {
+            index = 1;
+          }
+          const KT = data[i].type.operations[i].tz1;
+          this.walletService.addAccount(KT);
+          console.log('Added: ' + KT);
+          this.coordinatorService.start(KT);
+          this.findNumberOfAccounts(KT); // Recursive call
         }
         this.walletService.storeWallet();
       },

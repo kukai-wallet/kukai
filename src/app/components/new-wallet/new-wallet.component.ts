@@ -17,7 +17,7 @@ import * as rnd from 'randomatic';
   styleUrls: ['./new-wallet.component.scss']
 })
 export class NewWalletComponent implements OnInit {
-  MIN_PWD_LENGTH = 8;
+  MIN_PWD_LENGTH = 9;
   @Input() pwd1 = '';
   @Input() pwd2 = '';
   @Input() userMnemonic = '';
@@ -72,6 +72,8 @@ export class NewWalletComponent implements OnInit {
     private cdRef: ChangeDetectorRef) { }
 
   ngOnInit() {
+    // rnd() only to create an offset for better visualisation.
+    // Final seed = mouse movements (optional) XOR bip39.generateMnemonic() (crypto safe)
     this.entropy = rnd('?', 160, {chars: '0123456789abcdef'});
   }
   skipExtraEntropy() {
@@ -160,7 +162,7 @@ export class NewWalletComponent implements OnInit {
         part = this.entropy.substr(0, this.counter * 4) + part + this.entropy.substr((this.counter + 1) * 4, this.entropy.length);
         this.entropy = part;
         this.counter = ( this.counter + 1 ) % (this.entropy.length / 4);
-        if (this.counter % 8 === 0) { this.counter2++; } // Set time for collection here
+        if (this.counter % 8 === 0) { this.counter2++; } // Set how much to collect here
         if (this.counter2 >= 100) {
           this.activePanel++;
           let finalEntropy = '';

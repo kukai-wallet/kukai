@@ -30,7 +30,7 @@ export class WalletService {
     }
     if (mixed.length !== 40) {
       console.log('Not 160 bits entropy');
-      return null;
+      throw new Error('Invalid entropy mix');
     }
     return bip39.entropyToMnemonic(mixed);
   }

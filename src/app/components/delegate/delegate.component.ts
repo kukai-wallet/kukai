@@ -108,7 +108,7 @@ export class DelegateComponent implements OnInit {
           this.operationService.delegate(this.activePkh, toPkh, Number(fee), keys).subscribe(
               (ans: any) => {
                 console.log(JSON.stringify(ans));
-                if (ans.opHash) {
+                if (ans.payload.opHash) {
                   this.sendResponse = 'success';
                   this.coordinatorService.boost(this.activePkh);
                 } else {

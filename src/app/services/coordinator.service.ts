@@ -52,7 +52,7 @@ export class CoordinatorService {
   }
   async start(pkh: string) {
     if (pkh && !this.scheduler.get(pkh)) { // maybe add delay if !this.walletService.getIndexFromPkh(pkh) or prevent it
-      console.log('Start scheduler ' + this.walletService.getIndexFromPkh(pkh));
+      console.log('Start scheduler ' + this.walletService.getIndexFromPkh(pkh) + ' ' + pkh);
       const scheduleData: ScheduleData = {
         state: State.UpToDate,
         interval: setInterval(() => this.update(pkh), this.defaultDelayActivity),
@@ -76,7 +76,7 @@ export class CoordinatorService {
           console.log('Timeout from wait state');
           this.changeState(pkh, State.UpToDate);
         }
-      }, 150000);
+      }, 75000);
     } else {
     }
   }
@@ -114,7 +114,7 @@ export class CoordinatorService {
           }
         }
       },
-      err => console.log('Error in update()'),
+      err => console.log('Error in update(): ' + JSON.stringify(err)),
       () => console.log('account[' + this.walletService.getIndexFromPkh(pkh) + '][' + this.scheduler.get(pkh).state + ']: <<')
     );
   }

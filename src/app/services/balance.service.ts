@@ -14,8 +14,8 @@ export class BalanceService {
     private operationService: OperationService
   ) { }
 
-  async getBalanceAll() {
-    await this.getXTZBalanceAll();
+  getBalanceAll() {
+    this.getXTZBalanceAll();
   }
   getXTZBalanceAll() {
     for (let i = 0; i < this.walletService.wallet.accounts.length; i++) {
@@ -24,6 +24,7 @@ export class BalanceService {
   }
   getAccountBalance(index: number) {
     const pkh = this.walletService.wallet.accounts[index].pkh;
+    console.log('for ' + pkh);
     this.operationService.getBalance(pkh)
       .subscribe((ans: any) => {
         if (ans.success) {
