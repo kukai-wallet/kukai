@@ -22,8 +22,8 @@ export interface KeyPair {
 export class OperationService {
   // nodeURL = 'https://tezrpc.me/zeronet';
   // nodeURL = 'https://rpc.tezrpc.me';
-  // nodeURL = 'https://zeronet.tzscan.io';
-  nodeURL = 'http://45.56.90.73:3000';
+  nodeURL = 'https://zeronet-node.tzscan.io';
+  // nodeURL = 'http://45.56.90.73:3000';
   CHAIN_ID = 'ProtoALphaALphaALphaALphaALphaALphaALphaALphaDdp3zK';
   prefix = {
     tz1: new Uint8Array([6, 161, 159]),
@@ -420,7 +420,6 @@ export class OperationService {
   getAccount(pkh: string): Observable<any> {
     return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + pkh)
       .flatMap((contract: any) => {
-        console.log('x: ' + JSON.stringify(contract));
         let delegate = '';
         if (contract.delegate.value) {
           delegate = contract.delegate.value;
