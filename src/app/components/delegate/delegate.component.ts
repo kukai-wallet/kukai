@@ -133,7 +133,7 @@ export class DelegateComponent implements OnInit {
   }
   invalidInput(): string {
 
-      if (!this.toPkh || this.toPkh.length !== 36) {
+      if ((this.toPkh.length !== 0) && (this.toPkh.length !== 36)) {
           return 'invalid receiver address';
       } else if (!Number(this.fee) && this.fee && this.fee !== '0') {
           return 'invalid fee';

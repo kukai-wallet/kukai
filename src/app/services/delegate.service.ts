@@ -30,8 +30,8 @@ export class DelegateService {
   }
   handleDelegateResponse(pkh: string, data: any) {
     // console.log(JSON.stringify(data));
+    const index = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
     if (data) {
-      const index = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
       if (index === -1) {
         this.walletService.wallet.accounts.push({
           pkh: pkh,
@@ -45,7 +45,12 @@ export class DelegateService {
       } else if (this.walletService.wallet.accounts[index].delegate !== data) {
         this.walletService.wallet.accounts[index].numberOfActivites = 0;
         this.walletService.wallet.accounts[index].delegate = data;
-        // console.log('Update transactions entry');
+        this.walletService.storeWallet();
+      }
+    } else {
+      if (this.walletService.wallet.accounts[index].delegate !== '') {
+        this.walletService.wallet.accounts[index].numberOfActivites = 0;
+        this.walletService.wallet.accounts[index].delegate = '';
         this.walletService.storeWallet();
       }
     }

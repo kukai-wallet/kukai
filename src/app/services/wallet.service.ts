@@ -115,17 +115,15 @@ export class WalletService {
     return (this.wallet && this.wallet.type === WalletType.ObserverWallet);
   }
   walletTypePrint(): string {
-    const postfix = ' [Testnet]';
     if (this.isFullWallet()) {
-      return 'Full wallet' + postfix;
+      return 'Full wallet';
     } else if (this.isViewOnlyWallet()) {
-      return 'View-only wallet' + postfix;
+      return 'View-only wallet';
     } else if (this.isObserverWallet()) {
-      return 'Observer wallet' + postfix;
+      return 'Observer wallet';
     } else {
-      return postfix;
+      return '';
     }
-
   }
   /*
     Export

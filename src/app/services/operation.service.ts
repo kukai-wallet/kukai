@@ -276,10 +276,12 @@ export class OperationService {
                       counter: (++counter).toString(),
                       gas_limit: '200',
                       storage_limit: '60000',
-                      delegate: to
                     }
                   ]
                 };
+                if (to !== '') {
+                  fop.contents[0].delegate = to;
+                }
                 if (manager.key === undefined) {
                   fop.contents[1] = fop.contents[0];
                   fop.contents[0] = {
@@ -398,17 +400,18 @@ export class OperationService {
       }).pipe(catchError(err => this.errHandler(err)));
   }
   getDelegate(pkh: string): Observable<any> {
-    return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + pkh + '/delegate')
-      .flatMap((delegate: any) => {
-        let d = '';
-        if (delegate.value) {
-          d = delegate.value;
+    console.log('<Looking for delegate>');
+    return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + pkh)
+      .flatMap((contract: any) => {
+        let delegate = '';
+        if (contract.delegate.value) {
+          delegate = contract.delegate.value;
         }
         return of(
           {
             success: true,
             payload: {
-              delegate: d
+              delegate: delegate
             }
           }
         );
@@ -417,6 +420,7 @@ export class OperationService {
   getAccount(pkh: string): Observable<any> {
     return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + pkh)
       .flatMap((contract: any) => {
+        console.log('x: ' + JSON.stringify(contract));
         let delegate = '';
         if (contract.delegate.value) {
           delegate = contract.delegate.value;
