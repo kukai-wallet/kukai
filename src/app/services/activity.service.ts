@@ -18,17 +18,13 @@ export class ActivityService {
     private tzscanService: TzscanService
   ) { }
   updateAllTransactions() {
-    // console.log('updating transactions');
     for (let i = 0; i < this.walletService.wallet.accounts.length; i++) {
-      // console.log('start update(' + i + '): ' + this.walletService.wallet.accounts[i].pkh);
-      // States to return: Modified structure, Up to date {save, upToDate}
       this.updateTransactions(this.walletService.wallet.accounts[i].pkh)
         .subscribe((ans: any) => console.log(JSON.stringify(ans)),
-          err => console.log('some error'),
+          err => console.log('updateAllTransactions Error'),
           () => console.log('done update(' + i + '): ' + this.walletService.wallet.accounts[i].pkh));
     }
   }
-  // Show transactions for current pkh, then function call to see if current data is up to date
   updateTransactions(pkh: string): Observable<any> {
     return this.getTransactonsCounter(pkh)
       .flatMap((ans: any) => {
@@ -43,14 +39,11 @@ export class ActivityService {
       .flatMap((number_operations: any) => {
         const index = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
         if (index === -1 || this.walletService.wallet.accounts[index].numberOfActivites !== number_operations[0]) {
-          // console.log('Requesting transactions');
           return this.getTransactions(pkh, number_operations[0]);
         } else {
           if (this.walletService.wallet.accounts[index].activities.findIndex(a => a.block === 'prevalidation') !== -1) {
-            // console.log('Trying to validate blocks');
             return this.getUnconfirmedTransactions(pkh);
           } else {
-            // console.log('Transactions up to date');
             return of(
               {
                 upToDate: true
@@ -62,7 +55,6 @@ export class ActivityService {
   }
   // Try to validate unconfirmed transaction
   getUnconfirmedTransactions(pkh: string): Observable<any> {
-    // console.log('getUnconfirmedTransactions()');
     const index = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
     let n = 0;
     for (let i = 0; i < this.walletService.wallet.accounts[index].activities.length; i++) {
@@ -95,58 +87,13 @@ export class ActivityService {
   }
   // Get latest transaction
   getTransactions(pkh: string, counter: number): Observable<any> {
-    // console.log('getTransactions()');
     return this.tzscanService.operations(pkh, this.maxTransactions)
         .flatMap((data: any) => {
-          // console.log('ops: ' + JSON.stringify(data));
         const newTransactions: Activity[] = [];
         for (let i = 0; i < data.length; i++) {
           const op: any = this.tzscanService.getOp(data[i], pkh);
           console.log(JSON.stringify(op));
           newTransactions.push(op);
-          /*let type;
-          if (pkh === data[i].type.source) {
-            if (pkh === data[i].type.destination) {
-              type = 'Transaction*';
-            } else {
-              type = 'Transaction'; // Send
-              data[i].type.amount = data[i].type.amount * -1;
-            }
-          } else if (pkh === data[i].type.destination) {
-            type = 'Transaction'; // Receive
-          } else if (data[i].type.secret) {
-            type = 'Activation';
-          } else if (data[i].type.credit) {
-            type = 'Origination';
-          } else if (data[i].type.delegate) {
-            type = 'Delegation';
-          } else {
-            type = 'Unknown';
-            console.log('Unknown Type: ' + JSON.stringify(data[i]));
-          }
-          if (type === 'Origination') {
-            newTransactions.push({
-              hash: data[i].hash,
-              block: data[i].block_hash,
-              source: data[i].type.source,
-              destination: data[i].type.tz1,
-              amount: data[i].type.credit * -1,
-              fee: data[i].type.fee,
-              timestamp: null,
-              type: type
-            });
-          } else {
-            newTransactions.push({
-              hash: data[i].hash,
-              block: data[i].block_hash,
-              source: data[i].type.source,
-              destination: data[i].type.destination,
-              amount: data[i].type.amount,
-              fee: data[i].type.fee,
-              timestamp: null,
-              type: type
-            });
-          }*/
         }
         const index = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
         if (index === -1) {
@@ -157,13 +104,10 @@ export class ActivityService {
             numberOfActivites: counter,
             activities: newTransactions
           });
-          // console.log('Creating new transactions entry');
         } else {
           this.walletService.wallet.accounts[index].numberOfActivites = counter;
           this.walletService.wallet.accounts[index].activities = newTransactions;
-          // console.log('Update transactions entry');
         }
-        // console.log('from size ' + newTransactions.length);
         const payload = [];
         for (let i = 0; i < newTransactions.length; i++) {
           if (newTransactions[i].block !== 'prevalidation') {
@@ -197,7 +141,6 @@ export class ActivityService {
   getTimestamp(pkh: string, block: string, hash): Observable<any> {
     return this.tzscanService.timestamp(block)
         .flatMap((time: any) => {
-        // console.log('Got time');
         const pkhIndex = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
         const transactionIndex = this.walletService.wallet.accounts[pkhIndex].activities.findIndex(a => a.hash === hash);
         if (time) { time = new Date(time); }

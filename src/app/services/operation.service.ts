@@ -20,10 +20,10 @@ export interface KeyPair {
 }
 @Injectable()
 export class OperationService {
-  // nodeURL = 'http://96.126.99.67:3000'; // Use only for internal testing
   // nodeURL = 'https://tezrpc.me/zeronet';
-  nodeURL = 'https://rpc.tezrpc.me';
+  // nodeURL = 'https://rpc.tezrpc.me';
   // nodeURL = 'https://zeronet.tzscan.io';
+  nodeURL = 'http://45.56.90.73:3000';
   CHAIN_ID = 'ProtoALphaALphaALphaALphaALphaALphaALphaALphaDdp3zK';
   prefix = {
     tz1: new Uint8Array([6, 161, 159]),
@@ -36,7 +36,6 @@ export class OperationService {
     KT: new Uint8Array([2, 90, 121])
   };
   toMicro = 1000000;
-  // dummyPk = 'edpkteDwHwoNPB18tKToFKeSCykvr1ExnoMV5nawTJy9Y9nLTfQ541';
   constructor(
     private http: HttpClient,
     private errorHandlingPipe: ErrorHandlingPipe
@@ -203,10 +202,6 @@ export class OperationService {
                       storage_limit: '60000',
                       amount: (amount * this.toMicro).toString(),
                       destination: to,
-                      /*parameters: {
-                        prim: 'Unit',
-                        args: []
-                      }*/
                     }
                   ]
                 };
@@ -238,9 +233,6 @@ export class OperationService {
                           }
                         });
                     } else { // If sk exists, sign and broadcast operation
-                      /*return this.http.post(this.nodeURL + '/chains/main/blocks/head/header/', {})
-                        .flatMap((header: any) => {
-                          console.log('header: ' + JSON.stringify(header.predecessor));*/
                       const signed = this.sign(opbytes, keys.sk);
                       const sopbytes = signed.sbytes;
                       const opHash = this.b58cencode(libs.crypto_generichash(32, this.hex2buf(sopbytes)), this.prefix.o);
@@ -349,11 +341,11 @@ export class OperationService {
     console.log('applied part: ' + JSON.stringify(applied[0].contents[0].metadata.operation_result.status));
   }
   errHandler(error: any): Observable<any> {
-    if (error.error && error.error[0] && error.error[0].id) {  // if there's an RPC error id then return user message
+    // if there's an RPC error id then return user message
+    if (error.error && error.error[0] && error.error[0].id) {
       console.log('HttpErrorResponse in errHandler() ', error.error[0].id);
       const errorId = error.error[0].id;
       const errorMsg = this.errorHandlingPipe.transform(errorId);
-      // console.log('errorMsg in errHandler() ', errorMsg);
       return of(
         {
           success: false,
@@ -363,7 +355,6 @@ export class OperationService {
         }
       );
     } else {
-      console.log('error in errHandler() ', error);
       return of(
         {
           success: false,
@@ -514,6 +505,9 @@ export class OperationService {
       sbytes: sbytes,
     };
   }
+  /*
+    Binary decoding
+  */
   decodeOpBytes(opbytes: string) {
     // First 32 bytes = branch
     const branch = this.b58cencode(this.hex2buf(opbytes.slice(0, 64)), this.prefix.B);
@@ -544,9 +538,6 @@ export class OperationService {
       }
     }
   }
-  /*
-    Binary decoding
-  */
   decodeActivateAccount(content: any): any { // Tag 4
     const data: any = {kind: 'activate'};
     data.pkh = this.b58cencode(this.hex2buf(content.slice(0, 40)), this.prefix.tz1);
@@ -630,7 +621,6 @@ export class OperationService {
   decodeCommon(data: any, content: any): any {
     let index = 0;
     data.source = this.decodeContractId(content.slice(index, index += 44));
-    // data.fee = Number('0x' + content.slice(index, index += 16));
     const fee = this.zarithDecode(content.slice(index));
     data.fee = fee.value.toString();
     const counter = this.zarithDecode(content.slice(index += fee.count * 2));
@@ -683,7 +673,6 @@ export class OperationService {
     /*console.log('1: ' + JSON.stringify(fop));
       console.log('2: ' + JSON.stringify(fop2));*/
     if (JSON.stringify(fop) === JSON.stringify(fop2)) {
-      console.log('Valid bytes!');
       return true; // Client and node agree the opbytes are correct!
     }
     return false;

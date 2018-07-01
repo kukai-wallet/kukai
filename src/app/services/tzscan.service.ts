@@ -26,6 +26,7 @@ export class TzscanService {
     return this.http.get(this.apiUrl + 'v1/timestamp/' + block);
   }
   getOp(data: any, pkh: string): any {
+    // console.log('data: ' + JSON.stringify(data));
     let type = 'Unknown';
     let index = 0;
     if (data.type.operations[0].kind === 'reveal') {

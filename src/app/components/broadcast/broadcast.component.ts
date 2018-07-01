@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-
 import { WalletService } from '../../services/wallet.service';
 import { OperationService } from '../../services/operation.service';
 import { MessageService } from '../../services/message.service';
@@ -22,7 +21,7 @@ export class BroadcastComponent implements OnInit {
     signed = '';
     pwd = '';
     pwdPlaceholder = '';
-
+    decodeOutput = '';
     errorMessage = '';
 
     isFullWallet = false;
@@ -56,7 +55,20 @@ export class BroadcastComponent implements OnInit {
         const walletFileInput = files.item(0);
         this.InputImportWalletFileStep2 = walletFileInput.name;
     }
-
+    decodeUnsignedOp() {
+        if (!this.unsigned) {
+            this.decodeOutput = '';
+            console.log('don\'t decode');
+        } else {
+            console.log('decode...');
+            try {
+                const op = this.operationService.decodeOpBytes(this.unsigned);
+                this.decodeOutput = '### PLEASE VERIFY THAT THIS DATA ARE CORRECT BEFORE SIGNING ###\n' + JSON.stringify(op, null, 4);
+            } catch {
+                this.decodeOutput = '### FAILED TO DECODE OPERATION BYTES! YOU ARE ADVICED TO NOT PROCEED ###';
+            }
+        }
+    }
     /*
     handleUnsignedOperationFileInput(files: FileList) {
         const operationFileInput = files.item(0);
@@ -148,6 +160,7 @@ export class BroadcastComponent implements OnInit {
 
                 if (data.signed === false && data.hex) {
                     this.unsigned = data.hex;
+                    this.decodeUnsignedOp();
                 } else {
                 this.messageService.addWarning('Not an unsigned operation!');
                 }

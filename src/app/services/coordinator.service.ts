@@ -5,8 +5,6 @@ import { BalanceService } from './balance.service';
 import { WalletService } from './wallet.service';
 import { DelegateService } from './delegate.service';
 import { OperationService } from './operation.service';
-// import { setInterval } from 'timers';
-
 import { ErrorHandlingPipe } from '../pipes/error-handling.pipe';
 
 export interface ScheduleData {
@@ -81,7 +79,6 @@ export class CoordinatorService {
     }
   }
   async update(pkh) {
-    // console.log('account[' + this.walletService.getIndexFromPkh(pkh) + '][' + this.scheduler.get(pkh).state + ']: >>');
     this.setDelay(pkh, this.defaultDelayActivity);
     this.activityService.updateTransactions(pkh).subscribe(
       (ans: any) => {

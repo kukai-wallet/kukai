@@ -1,15 +1,15 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { UpdateCoordinatorService } from './coordinator.service';
+import { CoordinatorService } from './coordinator.service';
 
 describe('UpdateCoordinatorService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [UpdateCoordinatorService]
+      providers: [CoordinatorService]
     });
   });
 
-  it('should be created', inject([UpdateCoordinatorService], (service: UpdateCoordinatorService) => {
+  it('should be created', inject([CoordinatorService], (service: CoordinatorService) => {
     expect(service).toBeTruthy();
   }));
 });
