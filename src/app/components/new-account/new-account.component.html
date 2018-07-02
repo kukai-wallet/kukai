@@ -41,6 +41,10 @@
         <p>From: {{ activePkh }}
             <BR> Amount: {{ amount | number:'1.0' }}&#42793;
             <BR> Fee: {{ fee | number:'1.0' }}&#42793;
+            <BR> Origination burn: 
+                <ng-container *ngIf="originationBurn">
+                    {{ originationBurn | number:'1.0' }}&#42793;
+                </ng-container>
             <BR>
         </p>
         <div class="row">

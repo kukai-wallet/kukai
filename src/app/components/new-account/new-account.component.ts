@@ -27,7 +27,7 @@ export class NewAccountComponent implements OnInit {
   formInvalid = '';
   pwdValid: string;
   sendResponse: any;
-
+  originationBurn;
   isValidModal2 = {
     password: false,
     neverConfirmed: true
@@ -63,6 +63,9 @@ export class NewAccountComponent implements OnInit {
       if (!this.fee) { this.fee = '0'; }
       this.close1();
       this.modalRef2 = this.modalService.show(template, { class: 'second' });
+      this.operationService.getConstants()
+      .subscribe(((ans: any) => this.originationBurn = Number(ans.origination_burn) / 1000000)
+      );
     }
   }
 
@@ -116,7 +119,7 @@ export class NewAccountComponent implements OnInit {
               this.coordinatorService.start(ans.payload.newPkh);
             }
           } else {
-            console.log('Account creation failed ', ans.payload.msg);
+            console.log('Account creation failed ', JSON.stringify(ans.payload.msg));
           }
         },
         err => {
