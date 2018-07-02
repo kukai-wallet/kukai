@@ -12,8 +12,6 @@ import { CoordinatorService } from '../../services/coordinator.service';
 })
 export class BroadcastComponent implements OnInit {
 
-    InputImportWalletFileStep1 = 'Choose file';
-    InputImportWalletFileStep2 = 'Choose file';
     InputImportOperationFileStep2 = 'Choose file';
     InputImportOperationFileStep3 = 'Choose file';
 
@@ -54,15 +52,6 @@ export class BroadcastComponent implements OnInit {
             this.showInstructions = true;
             this.instructionBtn = 'Hide help';
         }
-    }
-    handleViewOnlyWalletFileInput(files: FileList) {
-        const walletFileInput = files.item(0);
-        this.InputImportWalletFileStep1 = walletFileInput.name;
-    }
-
-    handleWalletFileInput(files: FileList) {
-        const walletFileInput = files.item(0);
-        this.InputImportWalletFileStep2 = walletFileInput.name;
     }
     decodeUnsignedOp() {
         if (!this.unsigned) {

@@ -7,9 +7,10 @@
                     <form class="form-group form-min-height">
                         <div>
                             <tabset>
-                              <tab heading="Regular import" id="tab1" (select)="tge = false"></tab>
-                              <tab heading="ICO import" (select)="tge = true"></tab>
-                            </tabset><BR>
+                                <tab heading="ICO import" (select)="tge = true"></tab>
+                                <tab heading="Regular import" id="tab1" (select)="tge = false"></tab>
+                            </tabset>
+                            <BR>
                         </div>
                         <div class="form-group row" *ngIf="tge">
                             <div class="col-sm-12">
@@ -17,12 +18,14 @@
                             </div>
                         </div>
                         <div class="form-group row" *ngIf="tge">
-                                <div class="col-sm-12">
-                                    <p>Please make sure to first <a routerLink="/activate">activate</a> your ICO-wallet.</p>
-                                </div>
+                            <div class="col-sm-12">
+                                <p>Please make sure to first
+                                    <a routerLink="/activate">activate</a> your ICO-wallet.</p>
                             </div>
+                        </div>
                         <!-- mnemonic -->
-                        <div class="form-group row" [ngClass]="{ 'form-row-margin-top': !tge }"> <!-- ngClass => margin-top: 75px only for tab1 -->
+                        <div class="form-group row" [ngClass]="{ 'form-row-margin-top': !tge }">
+                            <!-- ngClass => margin-top: 75px only for tab1 -->
                             <div class="col-sm-12">
                                 <input type="text" [(ngModel)]="mnemonic" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Mnemonic">
                                 <small class="form-text text-left">The mnemonic phrase (15 words)</small>
@@ -49,8 +52,18 @@
                                 <small class="form-text text-left">The password you choose during the ICO.</small>
                             </div>
                         </div>
+                        <!-- Pkh -->
+                        <div class="form-group row">
+                            <div class="col-sm-12">
+                                <input type="text" [(ngModel)]="pkh" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="tz1... (optional)">
+                                <small class="form-text text-left" *ngIf="tge">Provide the public key hash to verify your email and password are correct</small>
+                                <small class="form-text text-left" *ngIf="!tge">Provide the public key hash to verify your passphrase are correct</small>
+                            </div>
+                        </div>
                     </form>
-                    <p>This is an alphanet version, please use the faucet website to get test wallet credential that you can retrieve <a href="https://faucet.tzalpha.net/" target="blank">here</a>.</p>
+                    <p>This is an alphanet version, please use the faucet website to get test wallet credential that you can
+                        retrieve
+                        <a href="https://faucet.tzalpha.net/" target="blank">here</a>.</p>
                     <p>At the launch of betanet, you can use your wallet credentials from the pdf file generated during ICO</p>
                 </div>
             </div>
@@ -100,7 +113,9 @@
                 <h1 class="card-title">Wallet created</h1>
                 <div class="card-text">
                     <form class="form-group">
-                        <p class="seed"><b>{{ export() }}</b></p>
+                        <p class="seed">
+                            <b>{{ export() }}</b>
+                        </p>
                         <br>
                         <p>Your wallet is now set up and ready to use.</p>
                         <p>Please download your Encrypted Keystore File..</p>

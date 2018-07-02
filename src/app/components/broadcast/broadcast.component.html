@@ -51,17 +51,6 @@
     </div>
     <form>
         <div class="form-group row">
-            <!-- Import Wallet Button - not working - only shown when there's not a full Wallet available *ngIf="!isFullWallet"  -->
-            <div class="input-group mb-3 col-sm-8" *ngIf="false">
-                <div class="input-group-prepend">
-                    <span class="input-group-text min-size-prepend">Wallet</span>
-                </div>
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="importWallet" (change)="handleWalletFileInput($event.target.files)">
-                    <label class="custom-file-label" for="importWallet"> {{InputImportWalletFileStep2}} </label>
-                </div>
-            </div>
-
             <!-- Import Unsigned Operation Button -->
             <div class="input-group col-sm-8">
                 <div class="input-group-prepend">
