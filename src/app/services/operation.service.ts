@@ -187,47 +187,6 @@ export class OperationService {
       }).pipe(catchError(err => this.errHandler(err)));
   }
   /*
-    Help function for operations
-  */
-  operation(fop: any, keys: KeyPair, origination: boolean = false): Observable<any> {
-    return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/forge/operations', fop)
-      .flatMap((opbytes: any) => {
-        if (!this.validOpBytes(fop, opbytes)) {
-          throw new Error('ValidationError');
-        }
-        if (!keys.sk) { // If sk doesn't exist, return unsigned operation
-          return of(
-            {
-              success: true,
-              payload: {
-                unsignedOperation: opbytes
-              }
-            });
-        } else { // If sk exists, sign and broadcast operation
-          const signed = this.sign(opbytes, keys.sk);
-          const sopbytes = signed.sbytes;
-          const opHash = this.b58cencode(libs.crypto_generichash(32, this.hex2buf(sopbytes)), this.prefix.o);
-          fop.protocol = this.CHAIN_ID;
-          fop.signature = signed.edsig;
-          return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/preapply/operations', [fop])
-            .flatMap((applied: any) => {
-              console.log('applied: ' + JSON.stringify(applied));
-              this.checkApplied(applied);
-              console.log('sop: ' + sopbytes);
-              return this.http.post(this.nodeURL + '/injection/operation', JSON.stringify(sopbytes), httpOptions)
-                .flatMap((final: any) => {
-                  let newPkh = null;
-                  if (origination) {
-                    newPkh = applied[0].contents[fop.contents.length - 1].
-                      metadata.operation_result.originated_contracts[0];
-                  }
-                  return this.opCheck(final, newPkh);
-                });
-            });
-        }
-      });
-  }
-  /*
     Returns an observable for the delegation of baking rights.
   */
   delegate(from: string, to: string, fee: number = 0, keys: KeyPair): Observable<any> {
@@ -272,6 +231,67 @@ export class OperationService {
           });
       }).pipe(catchError(err => this.errHandler(err)));
   }
+  /*
+  Help function for operations
+*/
+  operation(fop: any, keys: KeyPair, origination: boolean = false): Observable<any> {
+    return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/forge/operations', fop)
+      .flatMap((opbytes: any) => {
+        if (!this.validOpBytes(fop, opbytes)) {
+          throw new Error('ValidationError');
+        }
+        if (!keys.sk) { // If sk doesn't exist, return unsigned operation
+          return of(
+            {
+              success: true,
+              payload: {
+                unsignedOperation: opbytes
+              }
+            });
+        } else { // If sk exists, sign and broadcast operation
+          const signed = this.sign(opbytes, keys.sk);
+          const sopbytes = signed.sbytes;
+          const opHash = this.b58cencode(libs.crypto_generichash(32, this.hex2buf(sopbytes)), this.prefix.o);
+          fop.protocol = this.CHAIN_ID;
+          fop.signature = signed.edsig;
+          return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/preapply/operations', [fop])
+            .flatMap((applied: any) => {
+              console.log('applied: ' + JSON.stringify(applied));
+              this.checkApplied(applied);
+              console.log('sop: ' + sopbytes);
+              return this.http.post(this.nodeURL + '/injection/operation', JSON.stringify(sopbytes), httpOptions)
+                .flatMap((final: any) => {
+                  let newPkh = null;
+                  if (origination) {
+                    newPkh = applied[0].contents[fop.contents.length - 1].
+                      metadata.operation_result.originated_contracts[0];
+                  }
+                  return this.opCheck(final, newPkh);
+                });
+            });
+        }
+      });
+  }
+  broadcast(sopbytes: string): Observable<any> {
+    const opbytes = sopbytes.slice(0, sopbytes.length - 128);
+    const edsig = this.sig2edsig(sopbytes.slice(sopbytes.length - 128));
+    const fop: any = this.decodeOpBytes(opbytes);
+    fop.protocol = this.CHAIN_ID;
+    fop.signature = edsig;
+    return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/preapply/operations', [fop])
+      .flatMap((parsed: any) => {
+        let newPkh = null;
+        for (let i = 0; i < parsed[0].contents.length; i++) {
+          if (parsed[0].contents[i].kind === 'origination') {
+            newPkh = parsed[0].contents[i].metadata.operation_result.originated_contracts[0];
+          }
+        }
+        return this.http.post(this.nodeURL + '/injection/operation', JSON.stringify(sopbytes), httpOptions)
+          .flatMap((final: any) => {
+            return this.opCheck(final, newPkh);
+          });
+      }).pipe(catchError(err => this.errHandler(err)));
+  }
   checkApplied(applied: any) {
     for (let i = 0; i < applied[0].contents.length; i++) {
       if (applied[0].contents[i].metadata.operation_result.status === 'failed') {
@@ -301,12 +321,6 @@ export class OperationService {
         }
       }
     );
-  }
-  broadcast(sopbytes: string): Observable<any> {
-    return this.http.post(this.nodeURL + '/injection/operation', JSON.stringify(sopbytes), httpOptions)
-      .flatMap((final: any) => {
-        return this.opCheck(final);
-      }).pipe(catchError(err => this.errHandler(err)));
   }
   getBalance(pkh: string): Observable<any> {
     return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + pkh + '/balance')
@@ -432,6 +446,9 @@ export class OperationService {
       edsig: edsig,
       sbytes: sbytes,
     };
+  }
+  sig2edsig(sig: string): any {
+    return this.b58cencode(this.hex2buf(sig), this.prefix.edsig);
   }
   /*
     Binary decoding

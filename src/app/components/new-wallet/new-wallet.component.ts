@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Query, HostListener } from '@angular/core';
 import { WalletService } from '../../services/wallet.service';
 import { MessageService } from '../../services/message.service';
 import { ChangeDetectorRef } from '@angular/core';
-import {Observable} from 'rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/fromEvent';
 import * as bip39 from 'bip39';
 import { ExportService } from '../../services/export.service';

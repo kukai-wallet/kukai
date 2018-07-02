@@ -9,20 +9,19 @@
     <!-- Subheading -->
     <div class="row">
         <div class="col-lg-12">
+                <button class="btn btn-clear btn-second mb-2 mr-sm-2" (click)="toggleShowInstructions()">{{ instructionBtn }}</button>
             <!--
             <h4>In 2 easy steps, you can broadcast an operation to the tezos network without ever needing to use your secret key in an online environment. First, import your wallet and your unsigned operation in an air-gaped offline computer to sign your operation. Secondly, broadcast your signed operation hash to the network.</h4>
             -->
-            <h4>In 3 easy steps, you can broadcast an operation to the tezos network without ever needing to use your secret key in an online environment. 
+            <h4 *ngIf="showInstructions">In 3 easy steps, you can broadcast an operation to the tezos network without ever needing to use your secret key in an online environment. 
                 Make sure you have first exported a view-only wallet from the backup view in your full wallet. 
                 The full wallet should be stored on an offline system and the view-only wallet on an online system. 
                 In the view-only wallet proceed with the operation (step 1). This will create an unsigned operation that will be exported to a file. 
                 Move the unsigned operation to your full wallet and sign it (step 2).
                 The signed operation can now be exported and transfered back to an online system and broadcasted (step 3).</h4>
-            
         </div>
     </div>
-    <br>
-
+    <BR>
     <!-- Step 1 -->
     <div class="row">
         <div class="col-lg-12">
@@ -31,7 +30,7 @@
     </div>
     <div class="row">
         <div class="col">
-            <p>You can create an unsigned operation with your view-only wallet in the overview.</p>
+            <p>You can create an unsigned operation with your view-only wallet in the <a routerLink="/overview" class="btn-main-action">Overview</a>.</p>
         <!--
             <p>Import your view-only wallet from file (.tzop) or insert your public key (edpk...)</p>
         -->
@@ -79,7 +78,7 @@
         <div class="form-group row">
             <div class="col-sm-8">
                 <label for="unsignedOperationTextarea" class="sr-only">Import or paste your unsigned operation</label>
-                <textarea [disabled]="!isFullWallet" rows="4" [(ngModel)]="unsigned" [ngModelOptions]="{standalone: true}" (change)="decodeUnsignedOp()" class="form-control" id="unsignedOperationTextarea" placeholder="Unsigned Operation"></textarea>
+                <textarea [disabled]="!isFullWallet" rows="3" cols="130" [(ngModel)]="unsigned" [ngModelOptions]="{standalone: true}" (change)="decodeUnsignedOp()" class="form-control" id="unsignedOperationTextarea" placeholder="Unsigned Operation"></textarea>
             </div>
         </div>
     </form>
@@ -88,7 +87,7 @@
         <label class="sr-only" for="inputPassword">Password</label>
         <input [disabled]="!isFullWallet" type="password" class="form-control mb-2 mr-sm-2" id="inputPassword" [(ngModel)]="pwd" placeholder="{{ pwdPlaceholder }}" [ngModelOptions]="{standalone: true}">
         
-        <button [disabled]="!isFullWallet" type="button" class="btn btn-clear btn-second mb-2 mr-sm-2" (click)="sign()">Submit</button>
+        <button [disabled]="!isFullWallet" type="button" class="btn btn-clear btn-second mb-2 mr-sm-2" (click)="sign()">Sign</button>
         <button *ngIf="signed" class="btn btn-clear btn-second mb-2 mr-sm-2" (click)="download()">Download</button>
         <small *ngIf="signed" class="text-success">
             Operation successfully signed!
@@ -125,7 +124,7 @@
         <div class="form-group row">
             <div class="col-sm-8">
                 <label for="signedOperationTextarea" class="sr-only">Import your signed operation</label>
-                <textarea rows="4" [disabled]="walletService.isFullWallet()" [(ngModel)]="signed" [ngModelOptions]="{standalone: true}" class="form-control" id="signedOperationTextarea" placeholder="Signed Operation"></textarea>
+                <textarea rows="3" cols="130" [disabled]="walletService.isFullWallet()" [(ngModel)]="signed" [ngModelOptions]="{standalone: true}" class="form-control" id="signedOperationTextarea" placeholder="Signed Operation"></textarea>
             </div>
         </div>
     </form>

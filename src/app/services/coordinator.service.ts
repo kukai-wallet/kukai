@@ -25,7 +25,6 @@ export class CoordinatorService {
   shortDelayActivity = 2000; // 2s
   tzrateInterval: any;
   defaultDelayPrice = 300000; // 300s
-  broadcastDone = false;
   constructor(
     private activityService: ActivityService,
     private tzrateService: TzrateService,
@@ -118,22 +117,6 @@ export class CoordinatorService {
   changeState(pkh: string, newState: State) {
     const scheduleData: ScheduleData = this.scheduler.get(pkh);
     scheduleData.state = newState;
-    if (!this.walletService.isFullWallet() && newState === State.UpToDate && this.broadcastDone) {
-      // Broadcasted operation included in block. Check for new accounts.
-      const i = this.walletService.getIndexFromPkh(pkh);
-      for (let n = 0; n < this.walletService.wallet.accounts[i].activities.length; n++) {
-        const op = this.walletService.wallet.accounts[i].activities[n];
-        if (op.type === 'Origination') {
-          if (this.walletService.getIndexFromPkh(op.destination) === -1) {
-            console.log('New account found, adding to wallet!');
-            this.walletService.addAccount(op.destination);
-            this.balanceService.getAccountBalance(this.walletService.getIndexFromPkh(op.destination));
-            this.start(op.destination);
-          }
-        }
-      }
-      this.broadcastDone = false;
-    }
     if (newState === State.UpToDate) {
       this.balanceService.getBalanceAll();
       this.delegateService.getDelegate(pkh);
@@ -152,9 +135,6 @@ export class CoordinatorService {
     }
     scheduleData.interval = setInterval(() => this.update(pkh), time);
     this.scheduler.set(pkh, scheduleData);
-  }
-  setBroadcast() {
-    this.broadcastDone = true;
   }
   stopAll() {
     if (this.walletService.wallet) {

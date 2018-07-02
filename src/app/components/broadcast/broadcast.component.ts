@@ -23,7 +23,8 @@ export class BroadcastComponent implements OnInit {
     pwdPlaceholder = '';
     decodeOutput = '';
     errorMessage = '';
-
+    showInstructions = false;
+    instructionBtn = 'Show help';
     isFullWallet = false;
 
     constructor(
@@ -45,7 +46,15 @@ export class BroadcastComponent implements OnInit {
     init() {
         this.pwdPlaceholder = 'Password';
     }
-
+    toggleShowInstructions() {
+        if (this.showInstructions) {
+            this.showInstructions = false;
+            this.instructionBtn = 'Show help';
+        } else {
+            this.showInstructions = true;
+            this.instructionBtn = 'Hide help';
+        }
+    }
     handleViewOnlyWalletFileInput(files: FileList) {
         const walletFileInput = files.item(0);
         this.InputImportWalletFileStep1 = walletFileInput.name;
@@ -79,7 +88,11 @@ export class BroadcastComponent implements OnInit {
                     console.log(JSON.stringify(ans));
                     if (ans.success) {
                         this.messageService.addSuccess('Operation successfully broadcasted to the network: ' + ans.payload.opHash);
-                        this.coordinatorService.setBroadcast();
+                        if (ans.payload.newPkh) {
+                            console.log('New pkh found: ' + ans.payload.newPkh);
+                            this.walletService.addAccount(ans.payload.newPkh);
+                            this.coordinatorService.start(ans.payload.newPkh);
+                        }
                     } else {
                         this.errorMessage = ans.payload.msg;
                         this.messageService.addWarning('Couldn\'t retrive operation hash!');
