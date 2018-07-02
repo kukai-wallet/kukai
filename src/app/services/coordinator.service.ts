@@ -21,8 +21,8 @@ enum State {
 @Injectable()
 export class CoordinatorService {
   scheduler: Map<string, any> = new Map<string, any>(); // pkh + delay
-  defaultDelayActivity = 30000; // 30s
-  shortDelayActivity = 2000; // 5s
+  defaultDelayActivity = 60000; // 30s
+  shortDelayActivity = 2000; // 2s
   tzrateInterval: any;
   defaultDelayPrice = 300000; // 300s
   broadcastDone = false;
@@ -74,7 +74,7 @@ export class CoordinatorService {
           console.log('Timeout from wait state');
           this.changeState(pkh, State.UpToDate);
         }
-      }, 75000);
+      }, 150000);
     } else {
     }
   }

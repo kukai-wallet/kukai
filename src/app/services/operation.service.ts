@@ -22,8 +22,8 @@ export interface KeyPair {
 export class OperationService {
   // nodeURL = 'https://tezrpc.me/zeronet';
   // nodeURL = 'https://rpc.tezrpc.me';
-  nodeURL = 'https://zeronet-node.tzscan.io';
-  // nodeURL = 'http://45.56.90.73:3000';
+  // nodeURL = 'https://zeronet-node.tzscan.io';
+  nodeURL = 'http://45.56.90.73:3000';
   CHAIN_ID = 'ProtoALphaALphaALphaALphaALphaALphaALphaALphaDdp3zK';
   prefix = {
     tz1: new Uint8Array([6, 161, 159]),
@@ -166,9 +166,10 @@ export class OperationService {
                           return this.http.post(this.nodeURL + '/injection/operation', JSON.stringify(sopbytes), httpOptions)
                             .flatMap((final: any) => {
                               console.log('final: ' + JSON.stringify(final));
+
                               console.log('newPkh: ' +
-                              JSON.stringify(applied[0].contents[fop.contents.length - 1]
-                                .metadata.operation_result.originated_contracts[0]));
+                                JSON.stringify(applied[0].contents[fop.contents.length - 1]
+                                  .metadata.operation_result.originated_contracts[0]));
                               return this.opCheck(final, applied[0].contents[fop.contents.length - 1].
                                 metadata.operation_result.originated_contracts[0]);
                             });
@@ -348,42 +349,23 @@ export class OperationService {
       console.log('HttpErrorResponse in errHandler() ', error.error[0].id);
       const errorId = error.error[0].id;
       const errorMsg = this.errorHandlingPipe.transform(errorId);
-      return of(
-        {
-          success: false,
-          payload: {
-            msg: errorMsg
-          }
-        }
-      );
-    } else {
-      return of(
-        {
-          success: false,
-          payload: {
-            msg: error
-          }
-        }
-      );
+      error = errorMsg;
+    } else if (error.error && error.error[0] && error.error[0].error) {
+      error = error.error[0].error;
     }
+    return of(
+      {
+        success: false,
+        payload: {
+          msg: error
+        }
+      }
+    );
   }
   broadcast(sopbytes: string): Observable<any> {
-    return this.http.post(this.nodeURL + '/blocks/head', {})
-      .flatMap((head: any) => {
-        const sop = {
-          signedOperationContents: sopbytes,
-          chain_id: head.chain_id
-        };
-        return this.http.post(this.nodeURL + '/inject_operation', sop)
-          .flatMap((final: any) => {
-            return of(
-              {
-                success: true,
-                payload: {
-                  opHash: final.injectedOperation
-                }
-              });
-          });
+    return this.http.post(this.nodeURL + '/injection/operation', JSON.stringify(sopbytes), httpOptions)
+      .flatMap((final: any) => {
+        return this.opCheck(final);
       }).pipe(catchError(err => this.errHandler(err)));
   }
   getBalance(pkh: string): Observable<any> {
@@ -515,7 +497,7 @@ export class OperationService {
     // First 32 bytes = branch
     const branch = this.b58cencode(this.hex2buf(opbytes.slice(0, 64)), this.prefix.B);
     const contents = this.decodeContents(opbytes.slice(64));
-    return  {
+    return {
       branch: branch,
       contents: contents
     };
@@ -525,15 +507,15 @@ export class OperationService {
     const tag = Number(this.hex2buf(content.slice(0, 2)));
     console.log('tag: ' + tag);
     switch (tag) {
-      case 4 : {
+      case 4: {
         return this.decodeActivateAccount(content.slice(2));
-      } case 7 : {
+      } case 7: {
         return this.decodeReveal(content.slice(2));
-      } case 8 : {
+      } case 8: {
         return this.decodeTransaction(content.slice(2));
-      } case 9 : {
+      } case 9: {
         return this.decodeOrigination(content.slice(2));
-      } case 10 : {
+      } case 10: {
         return this.decodeDelegation(content.slice(2));
       } default: {
         console.log('content: ' + content);
@@ -542,14 +524,14 @@ export class OperationService {
     }
   }
   decodeActivateAccount(content: any): any { // Tag 4
-    const data: any = {kind: 'activate'};
+    const data: any = { kind: 'activate' };
     data.pkh = this.b58cencode(this.hex2buf(content.slice(0, 40)), this.prefix.tz1);
     data.secret = content.slice(40, 80);
     return data;
   }
   decodeReveal(content: any): any { // Tag 7
     let index = 0;
-    const op = this.decodeCommon({kind: 'reveal'}, content);
+    const op = this.decodeCommon({ kind: 'reveal' }, content);
     if (op.rest.slice(index, index += 2) !== '00') {
       throw new Error('TagError');
     }
@@ -562,7 +544,7 @@ export class OperationService {
   }
   decodeTransaction(content: any): any { // Tag 8
     let index = 0;
-    const op = this.decodeCommon({kind: 'transaction'}, content);
+    const op = this.decodeCommon({ kind: 'transaction' }, content);
     const amount = this.zarithDecode(op.rest.slice(index));
     op.data.amount = amount.value.toString();
     op.data.destination = this.decodeContractId(op.rest.slice(index += amount.count * 2, index += 44));
@@ -578,15 +560,15 @@ export class OperationService {
   }
   decodeOrigination(content: any): any { // Tag 9
     let index = 0;
-    const op = this.decodeCommon({kind: 'origination'}, content);
+    const op = this.decodeCommon({ kind: 'origination' }, content);
     if (op.rest.slice(index, index += 2) !== '00') {
       throw new Error('TagError');
     }
     op.data.managerPubkey = this.b58cencode(this.hex2buf(op.rest.slice(index, index += 40)), this.prefix.tz1);
     const balance = this.zarithDecode(op.rest.slice(index));
     op.data.balance = balance.value.toString();
-    op.data.spendable = ( op.rest.slice(index += balance.count * 2, index += 2) === 'ff' );
-    op.data.delegatable = ( op.rest.slice(index, index += 2) === 'ff' );
+    op.data.spendable = (op.rest.slice(index += balance.count * 2, index += 2) === 'ff');
+    op.data.delegatable = (op.rest.slice(index, index += 2) === 'ff');
     if (op.rest.slice(index, index += 2) === 'ff') { // delegate?
       console.log('delegate ' + op.rest.slice(index - 2));
       throw new Error('UnsupportedTag');
@@ -603,7 +585,7 @@ export class OperationService {
   }
   decodeDelegation(content: any): any { // Tag 10
     let index = 0;
-    const op = this.decodeCommon({kind: 'delegation'}, content);
+    const op = this.decodeCommon({ kind: 'delegation' }, content);
     console.log('hex: ' + op.rest + ' ' + op.rest.length);
     const tag = op.rest.slice(index, index += 2);
     if (tag === 'ff') {
@@ -644,7 +626,7 @@ export class OperationService {
     while (1) {
       const byte = Number('0x' + hex.slice(0 + count * 2, 2 + count * 2));
       value = value ^ ((byte & 127) << (7 * count));
-      count ++;
+      count++;
       if ((byte & 128) !== 128) {
         break;
       }

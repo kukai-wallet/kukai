@@ -69,17 +69,6 @@ export class BroadcastComponent implements OnInit {
             }
         }
     }
-    /*
-    handleUnsignedOperationFileInput(files: FileList) {
-        const operationFileInput = files.item(0);
-        this.InputImportOperationFileStep2 = operationFileInput.name;
-    }
-
-    handleSignedOperationFileInput(files: FileList) {
-        const signedOperationFileInput = files.item(0);
-        this.InputImportOperationFileStep3 = signedOperationFileInput.name;
-    }
-    */
     broadcast() {
         if (this.signed) {
             const signed = this.signed;
@@ -95,7 +84,7 @@ export class BroadcastComponent implements OnInit {
                         this.errorMessage = ans.payload.msg;
                         this.messageService.addWarning('Couldn\'t retrive operation hash!');
                         if (typeof ans.payload.msg === 'string') {
-                            this.messageService.addWarning(this.errorMessage);
+                            this.messageService.addError(this.errorMessage);
                         }
                     }
                 },
@@ -110,38 +99,40 @@ export class BroadcastComponent implements OnInit {
     handleSignedOperationFileInput(files: FileList) {
         console.log('Files length: ' + files.length);
         const fileToUpload = files.item(0);
-        this.InputImportOperationFileStep3 = fileToUpload.name;
+        if (fileToUpload) {
+            this.InputImportOperationFileStep3 = fileToUpload.name;
 
-        const reader = new FileReader();
-        reader.readAsText(fileToUpload);
+            const reader = new FileReader();
+            reader.readAsText(fileToUpload);
 
-        reader.onload = () => {
-            if (reader.result) {
-                const data = JSON.parse(reader.result);
+            reader.onload = () => {
+                if (reader.result) {
+                    const data = JSON.parse(reader.result);
 
-                if (data.signed === true && data.hex) {
-                    this.signed = data.hex;
+                    if (data.signed === true && data.hex) {
+                        this.signed = data.hex;
+                    } else {
+                        this.messageService.addWarning('Not an unsigned operation!');
+                    }
                 } else {
-                    this.messageService.addWarning('Not an unsigned operation!');
+                    this.messageService.addError('Failed to read file!');
                 }
-            } else {
-                this.messageService.addError('Failed to read file!');
-            }
-        };
+            };
+        }
     }
 
     sign() {
         if (this.pwd) {
-          console.log('sign');
-          const pwd = this.pwd;
-          this.pwd = '';
-          const keys = this.walletService.getKeys(pwd);
-          if (keys) {
-            const signed = this.operationService.sign(this.unsigned, keys.sk);
-            this.signed = signed.sbytes;
-          }
+            console.log('sign');
+            const pwd = this.pwd;
+            this.pwd = '';
+            const keys = this.walletService.getKeys(pwd);
+            if (keys) {
+                const signed = this.operationService.sign(this.unsigned, keys.sk);
+                this.signed = signed.sbytes;
+            }
         }
-      }
+    }
 
     download() {
         this.exportService.downloadOperationData(this.signed, true);
@@ -162,7 +153,7 @@ export class BroadcastComponent implements OnInit {
                     this.unsigned = data.hex;
                     this.decodeUnsignedOp();
                 } else {
-                this.messageService.addWarning('Not an unsigned operation!');
+                    this.messageService.addWarning('Not an unsigned operation!');
                 }
             } else {
                 this.messageService.addError('Failed to read file!');
