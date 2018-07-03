@@ -16,7 +16,9 @@ export class BroadcastComponent implements OnInit {
     InputImportOperationFileStep3 = 'Choose file';
 
     unsigned = '';
-    signed = '';
+    signed1 = '';
+    signed2 = '';
+    signedOp = '';
     pwd = '';
     pwdPlaceholder = '';
     decodeOutput = '';
@@ -68,9 +70,9 @@ export class BroadcastComponent implements OnInit {
         }
     }
     broadcast() {
-        if (this.signed) {
-            const signed = this.signed;
-            this.signed = '';
+        if (this.signed2) {
+            const signed = this.signed2;
+            this.signed2 = '';
 
             this.operationService.broadcast(signed).subscribe(
                 (ans: any) => {
@@ -112,7 +114,7 @@ export class BroadcastComponent implements OnInit {
                     const data = JSON.parse(reader.result);
 
                     if (data.signed === true && data.hex) {
-                        this.signed = data.hex;
+                        this.signed2 = data.hex;
                     } else {
                         this.messageService.addWarning('Not an unsigned operation!');
                     }
@@ -131,13 +133,13 @@ export class BroadcastComponent implements OnInit {
             const keys = this.walletService.getKeys(pwd);
             if (keys) {
                 const signed = this.operationService.sign(this.unsigned, keys.sk);
-                this.signed = signed.sbytes;
+                this.signed1 = signed.sbytes;
             }
         }
     }
 
     download() {
-        this.exportService.downloadOperationData(this.signed, true);
+        this.exportService.downloadOperationData(this.signed1, true);
     }
 
     handleUnsignedOperationFileInput(files: FileList) {

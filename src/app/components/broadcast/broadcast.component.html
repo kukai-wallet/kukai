@@ -77,8 +77,8 @@
         <input [disabled]="!isFullWallet" type="password" class="form-control mb-2 mr-sm-2" id="inputPassword" [(ngModel)]="pwd" placeholder="{{ pwdPlaceholder }}" [ngModelOptions]="{standalone: true}">
         
         <button [disabled]="!isFullWallet" type="button" class="btn btn-clear btn-second mb-2 mr-sm-2" (click)="sign()">Sign</button>
-        <button *ngIf="signed" class="btn btn-clear btn-second mb-2 mr-sm-2" (click)="download()">Download</button>
-        <small *ngIf="signed" class="text-success">
+        <button *ngIf="signed1" class="btn btn-clear btn-second mb-2 mr-sm-2" (click)="download()">Download</button>
+        <small *ngIf="signed1" class="text-success">
             Operation successfully signed!
         </small>
     </form>
@@ -113,7 +113,7 @@
         <div class="form-group row">
             <div class="col-sm-8">
                 <label for="signedOperationTextarea" class="sr-only">Import your signed operation</label>
-                <textarea rows="3" cols="130" [disabled]="walletService.isFullWallet()" [(ngModel)]="signed" [ngModelOptions]="{standalone: true}" class="form-control" id="signedOperationTextarea" placeholder="Signed Operation"></textarea>
+                <textarea rows="3" cols="130" [disabled]="walletService.isFullWallet()" [(ngModel)]="signed2" [ngModelOptions]="{standalone: true}" class="form-control" id="signedOperationTextarea" placeholder="Signed Operation"></textarea>
             </div>
         </div>
     </form>

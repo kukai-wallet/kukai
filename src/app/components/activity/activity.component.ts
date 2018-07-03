@@ -19,8 +19,10 @@ export class ActivityComponent implements OnInit {
   init() {
     this.accounts = this.walletService.wallet.accounts;
   }
-  getStatus(hash: string): string {
-    if (hash === 'prevalidation') {
+  getStatus(transaction: any): string {
+    if (transaction.failed) {
+      return 'Failed';
+    } else if (transaction.block === 'prevalidation') {
       return 'Unconfirmed';
     } else {
       return 'Confirmed';

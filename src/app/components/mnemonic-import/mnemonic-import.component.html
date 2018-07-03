@@ -27,7 +27,7 @@
                         <div class="form-group row" [ngClass]="{ 'form-row-margin-top': !tge }">
                             <!-- ngClass => margin-top: 75px only for tab1 -->
                             <div class="col-sm-12">
-                                <input type="text" [(ngModel)]="mnemonic" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Mnemonic">
+                                <textarea rows="2" [(ngModel)]="mnemonic" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Mnemonic"></textarea>
                                 <small class="form-text text-left">The mnemonic phrase (15 words)</small>
                             </div>
                         </div>

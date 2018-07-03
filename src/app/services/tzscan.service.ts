@@ -26,13 +26,14 @@ export class TzscanService {
     return this.http.get(this.apiUrl + 'v1/timestamp/' + block);
   }
   getOp(data: any, pkh: string): any {
-    // console.log('data: ' + JSON.stringify(data));
+    console.log('data: ' + JSON.stringify(data));
     let type = 'Unknown';
     let index = 0;
     if (data.type.operations[0].kind === 'reveal') {
       index = 1;
     }
     type = data.type.operations[index].kind;
+    const failed = data.type.operations[index].failed;
     let source = data.type.source;
     let destination = '';
     let amount = 0;
@@ -65,7 +66,8 @@ export class TzscanService {
       amount: amount,
       fee: fee,
       timestamp: null,
-      type: type
+      type: type,
+      failed: failed
     };
     return op;
   }

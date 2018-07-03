@@ -47,12 +47,12 @@ export class MnemonicImportComponent implements OnInit {
     }
     const pkh = this.operationService.seed2keyPair(this.operationService.mnemonic2seed(this.mnemonic, this.passphrase)).pkh;
     if (!this.operationService.validMnemonic(this.mnemonic)) {
-      this.messageService.addError('Invalid mnemonic!');
+      this.messageService.addError('Invalid mnemonic!', 10);
     } else if (pkh !== this.pkh) {
       if (this.tge) {
-        this.messageService.addError('Invalid email or password!');
+        this.messageService.addError('Invalid email or password!', 5);
       } else {
-        this.messageService.addError('Invalid passphrase!');
+        this.messageService.addError('Invalid passphrase!', 5);
       }
     } else {
       this.activePanel++;
