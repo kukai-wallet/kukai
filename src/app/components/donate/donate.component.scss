@@ -1,0 +1,90 @@
+#content {
+    display: flex; 
+    min-height: 100vh;
+    min-width: 75vw;
+}
+.center-content {
+    margin: auto; 
+}
+.row {
+    padding-bottom: 0.7vh;
+}
+
+.btn-generate {
+    font-size: 24px;
+}
+
+.btn-second {
+    min-width: 90px;
+}
+
+.btn-second:hover {
+    background-color: #cccccc;
+}
+
+/* Fix the buttons */
+.btn-fix {
+    color: red !important;
+    position: absolute;
+    left: 60vw;
+    top: 48vh;
+}
+.mono {
+    font-family: "Courier New", Courier, monospace;
+}
+.rndp {
+    width: 390px;
+    margin: auto;
+}
+.tmp {
+    background-color: lightblue;
+}
+
+.fix-size {
+    width: 40rem;
+    height: 40rem;
+}
+div.entropy {
+    border-style: solid;
+    border-width: 5px;
+}
+/* ---------------------------------------------------
+    CONTENT STYLE
+----------------------------------------------------- */
+//Horizontal and Vertical Aligment of child div
+#content {
+    display: flex; 
+    min-height: 100vh;
+    min-width: 75vw;
+}
+.center-content {
+    margin: auto; 
+}
+
+.card-title {
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.125);
+}
+
+.card-text{
+    padding-top: 2rem;
+}
+
+.seed {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    padding-right: 0.75rem;
+    padding-left: 0.75rem;
+    background-color: rgba(0, 0, 0, 0.125);
+    white-space: pre-line;
+    font-size: 120%;
+}
+
+.card-footer {
+    background-color: rgba(0, 0, 0, 0);
+}
+
+//For password inputs
+.form-control {
+    line-height: 2;  //Default at 1.5
+}

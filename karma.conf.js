@@ -3,6 +3,7 @@
 
 module.exports = function (config) {
   config.set({
+    webpack: { node: { fs: 'empty', } },
     basePath: '',
     frameworks: ['jasmine', '@angular/cli'],
     plugins: [

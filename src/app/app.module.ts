@@ -32,7 +32,6 @@ import { StartComponent } from './components/start/start.component';
 import { ActivityComponent } from './components/activity/activity.component';
 import { OverviewComponent } from './/components/overview/overview.component';
 import { BackupComponent } from './components/backup/backup.component';
-import { SettingsComponent } from './components/settings/settings.component';
 import { SendComponent } from './components/send/send.component';
 import { NewAccountComponent } from './components/new-account/new-account.component';
 import { HomePageComponent } from './components/home-page/home-page.component';
@@ -49,6 +48,7 @@ import { ActivateComponent } from './components/activate/activate.component';
 
 // Pipes
 import { ErrorHandlingPipe } from './pipes/error-handling.pipe';
+import { DonateComponent } from './components/donate/donate.component';
 
 
 @NgModule({
@@ -63,7 +63,6 @@ import { ErrorHandlingPipe } from './pipes/error-handling.pipe';
     ActivityComponent,
     OverviewComponent,
     BackupComponent,
-    SettingsComponent,
     SendComponent,
     NewAccountComponent,
     ReceiveComponent,
@@ -73,6 +72,7 @@ import { ErrorHandlingPipe } from './pipes/error-handling.pipe';
     BakeryComponent,
     ActivateComponent,
     ErrorHandlingPipe,
+    DonateComponent,
   ],
   imports: [
     BrowserModule,
