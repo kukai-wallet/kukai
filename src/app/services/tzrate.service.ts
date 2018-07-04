@@ -8,7 +8,6 @@ import 'rxjs/add/operator/map';
 export class TzrateService {
 
     private apiUrl = 'https://api.coinmarketcap.com/v1/ticker/tezos/'; // returns a json object, key: price_usd
-
     constructor(private http: HttpClient,
         private walletService: WalletService) {
     }
@@ -29,7 +28,7 @@ export class TzrateService {
         for (let i = 0; i < this.walletService.wallet.accounts.length; i++) {
             if (this.walletService.wallet.accounts[i].balance.balanceXTZ !== null) {
                 this.walletService.wallet.accounts[i].balance.balanceFiat =
-                Number(this.walletService.wallet.accounts[i].balance.balanceXTZ / 1000000 * this.walletService.wallet.XTZrate);
+                    Number(this.walletService.wallet.accounts[i].balance.balanceXTZ / 1000000 * this.walletService.wallet.XTZrate);
                 tot += this.walletService.wallet.accounts[i].balance.balanceFiat;
                 change = true;
             }

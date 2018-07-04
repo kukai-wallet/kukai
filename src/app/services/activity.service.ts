@@ -51,9 +51,9 @@ export class ActivityService {
           }
         }
       }
-    );
+      );
   }
-  // Try to validate unconfirmed transaction
+  // Try to validate unconfirmed transaction - deprecated?
   getUnconfirmedTransactions(pkh: string): Observable<any> {
     const index = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
     let n = 0;
@@ -65,7 +65,7 @@ export class ActivityService {
       }
     }
     return this.tzscanService.operations(pkh, n)
-        .flatMap((data: any) => {
+      .flatMap((data: any) => {
         const aIndex = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
         const payload = [];
         for (let i = 0; i < data.length; i++) {
@@ -88,7 +88,7 @@ export class ActivityService {
   // Get latest transaction
   getTransactions(pkh: string, counter: number): Observable<any> {
     return this.tzscanService.operations(pkh, this.maxTransactions)
-        .flatMap((data: any) => {
+      .flatMap((data: any) => {
         const newTransactions: Activity[] = [];
         for (let i = 0; i < data.length; i++) {
           const op: any = this.tzscanService.getOp(data[i], pkh);
@@ -119,7 +119,7 @@ export class ActivityService {
         }
         return this.getTimestamps(pkh, payload);
       }
-    );
+      );
   }
   getTimestamps(pkh: string, payloads: any[]): Observable<any> {
     if (payloads.length === 0) {
@@ -140,7 +140,7 @@ export class ActivityService {
 
   getTimestamp(pkh: string, block: string, hash): Observable<any> {
     return this.tzscanService.timestamp(block)
-        .flatMap((time: any) => {
+      .flatMap((time: any) => {
         const pkhIndex = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
         const transactionIndex = this.walletService.wallet.accounts[pkhIndex].activities.findIndex(a => a.hash === hash);
         if (time) { time = new Date(time); }

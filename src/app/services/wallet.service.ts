@@ -3,7 +3,6 @@ import { MessageService } from './message.service';
 import { Wallet, Account, Balance, KeyPair, WalletType } from './../interfaces';
 import { EncryptionService } from './encryption.service';
 import { OperationService } from './operation.service';
-// import * as lib from '../../assets/js/main.js';
 import * as bip39 from 'bip39';
 
 @Injectable()
@@ -47,14 +46,14 @@ export class WalletService {
     Handle accounts
   */
   addAccount(pkh) {
-      this.wallet.accounts.push({
-        pkh: pkh,
-        delegate: '',
-        balance: this.emptyBalance(),
-        numberOfActivites: 0,
-        activities: []
-      });
-      this.storeWallet();
+    this.wallet.accounts.push({
+      pkh: pkh,
+      delegate: '',
+      balance: this.emptyBalance(),
+      numberOfActivites: 0,
+      activities: []
+    });
+    this.storeWallet();
   }
   /*
     Help functions

@@ -19,7 +19,7 @@ export class DelegateService {
       this.operationService.getDelegate(pkh).subscribe(
         (data: any) => {
           if (data.success) {
-          this.handleDelegateResponse(pkh, data.payload.delegate);
+            this.handleDelegateResponse(pkh, data.payload.delegate);
           } else {
             console.log('getDelegate failed ', data.payload.msg);
           }
@@ -29,7 +29,6 @@ export class DelegateService {
     }
   }
   handleDelegateResponse(pkh: string, data: any) {
-    // console.log(JSON.stringify(data));
     const index = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
     if (data) {
       if (index === -1) {
@@ -40,7 +39,6 @@ export class DelegateService {
           numberOfActivites: 0,
           activities: []
         });
-        // console.log('Creating new transactions entry');
         this.walletService.storeWallet();
       } else if (this.walletService.wallet.accounts[index].delegate !== data) {
         this.walletService.wallet.accounts[index].numberOfActivites = 0;
@@ -55,5 +53,4 @@ export class DelegateService {
       }
     }
   }
-
 }
