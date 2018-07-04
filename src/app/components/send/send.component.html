@@ -36,7 +36,7 @@
                     <div class="form-group col-md-8">
                         <label for="sendAmount">Amount to Send (&#42793;)</label>
                         <div>
-                            <input type="text" class="form-control" id="sendAmount" placeholder="Amount" [(ngModel)]="amount" name="three">
+                            <input type="text" class="form-control" id="sendAmount" placeholder="0.00" [(ngModel)]="amount" name="three">
                         </div>
                         <small id="smallSend" class="form-text text-muted">
                             <button type="button" class="btn btn-outline-light btn-sm btn-balance" (click)="sendEntireBalance(activePkh, $event)">Send Entire Balance</button>
@@ -47,7 +47,7 @@
 
                     <div class="form-group col-md-4">
                         <label for="transactionFee">Fee (&#42793;)</label>
-                        <input type="text" class="form-control" id="transactionFee" placeholder="Fee" [(ngModel)]="fee" name="four">
+                        <input type="text" class="form-control" id="transactionFee" placeholder="0.00" [(ngModel)]="fee" name="four">
                     </div>
                 </div>
             </form>
@@ -100,7 +100,7 @@
         </div>
 
         <div class="modal-body">
-            
+
             <div *ngIf='!sendResponse'>
                 Please wait...
             </div>
@@ -139,9 +139,6 @@
     <button *ngIf='accounts && showSendFormat.btnOutline' type="button" (click)="open1(modal1)" class="btn btn-sm btn-outline-primary btn-op">Send</button>
     <span *ngIf='accounts && showSendFormat.dropdownItem' class="dropdown-item" (click)="open1(modal1)">{{ activePkh }}</span>
     <span *ngIf='accounts && showSendFormat.btnSidebar' class="btnSidebar" (click)="open1(modal1)">Send</span>
-    <!--<button *ngIf='accounts' type="button" class="btn btn-sm btn-outline-primary" (click)="modal1.show()">Send</button>-->
-    <!--<button  type="button" class="btn btn-primary" id="send" (click)="open1(modal1)">Send</button>-->
-
 </ng-container>
 
 <p class="no-accounts" *ngIf='!accounts'>

@@ -39,7 +39,6 @@ export class BroadcastComponent implements OnInit {
         if (this.walletService.wallet && this.walletService.isFullWallet()) {
             this.init();
         }
-
         this.isFullWallet = this.walletService.isFullWallet();
     }
 
@@ -105,14 +104,11 @@ export class BroadcastComponent implements OnInit {
         const fileToUpload = files.item(0);
         if (fileToUpload) {
             this.InputImportOperationFileStep3 = fileToUpload.name;
-
             const reader = new FileReader();
             reader.readAsText(fileToUpload);
-
             reader.onload = () => {
                 if (reader.result) {
                     const data = JSON.parse(reader.result);
-
                     if (data.signed === true && data.hex) {
                         this.signed2 = data.hex;
                     } else {
@@ -145,14 +141,11 @@ export class BroadcastComponent implements OnInit {
     handleUnsignedOperationFileInput(files: FileList) {
         const fileToUpload = files.item(0);
         this.InputImportOperationFileStep2 = fileToUpload.name;
-
         const reader = new FileReader();
         reader.readAsText(fileToUpload);
-
         reader.onload = () => {
             if (reader.result) {
                 const data = JSON.parse(reader.result);
-
                 if (data.signed === false && data.hex) {
                     this.unsigned = data.hex;
                     this.decodeUnsignedOp();

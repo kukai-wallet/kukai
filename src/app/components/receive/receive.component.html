@@ -15,7 +15,7 @@
                 </div>
             </div>
             <div class="row" *ngIf='activePkh'>
-            <canvas id='canvas'></canvas>
+                <canvas id='canvas'></canvas>
             </div>
         </div>
     </ng-template>
@@ -23,10 +23,8 @@
     <!-- Showing different Receive Format according to actionButtonString -->
     <button *ngIf='accounts && showReceiveFormat.btnOutline' type="button" (click)="open1(modal1)" class="btn btn-sm btn-outline-primary btn-op">Receive</button>
     <span *ngIf='accounts && showReceiveFormat.dropdownItem' class="dropdown-item" (click)="open1(modal1)">{{ activePkh }}</span>
-    <!-- <button *ngIf='accounts' type="button" class="btn btn-primary" id="send" (click)="open1(modal1)">Receive</button> -->
-
 </ng-container>
 
 <div *ngIf='!accounts'>
-  Wallet not configured
+    Wallet not configured
 </div>

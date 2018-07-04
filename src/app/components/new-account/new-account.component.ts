@@ -16,7 +16,6 @@ import { ExportService } from '../../services/export.service';
 export class NewAccountComponent implements OnInit {
   @ViewChild('modal1') modal1: TemplateRef<any>;
   @Input() activePkh: string;
-  // accounts = this.walletService.wallet.accounts;
   accounts = null;
   amount: string;
   fee: string;
@@ -64,8 +63,8 @@ export class NewAccountComponent implements OnInit {
       this.close1();
       this.modalRef2 = this.modalService.show(template, { class: 'second' });
       this.operationService.getConstants()
-      .subscribe(((ans: any) => this.originationBurn = Number(ans.origination_burn) / 1000000)
-      );
+        .subscribe(((ans: any) => this.originationBurn = Number(ans.origination_burn) / 1000000)
+        );
     }
   }
 
@@ -152,5 +151,5 @@ export class NewAccountComponent implements OnInit {
   }
   download() {
     this.exportService.downloadOperationData(this.sendResponse.payload.unsignedOperation, false);
-}
+  }
 }

@@ -6,9 +6,9 @@ import { ImportService } from '../../services/import.service';
 
 
 @Component({
-    selector: 'app-import',
-    templateUrl: './import.component.html',
-    styleUrls: ['./import.component.scss']
+  selector: 'app-import',
+  templateUrl: './import.component.html',
+  styleUrls: ['./import.component.scss']
 })
 
 export class ImportComponent implements OnInit {
@@ -48,27 +48,24 @@ export class ImportComponent implements OnInit {
   }
   handleFileInput(files: FileList) {
     let fileToUpload = files.item(0);
-
-      if (!this.validateFile(fileToUpload.name)) {
-        console.log('Selected file format is not supported');
-        fileToUpload = null;
-        return false;
-      } else {
-
-        const reader = new FileReader();
-        reader.readAsText(fileToUpload);
-        reader.onload = () => {
-          this.import(reader.result);
-
-        };
-      }
+    if (!this.validateFile(fileToUpload.name)) {
+      console.log('Selected file format is not supported');
+      fileToUpload = null;
+      return false;
+    } else {
+      const reader = new FileReader();
+      reader.readAsText(fileToUpload);
+      reader.onload = () => {
+        this.import(reader.result);
+      };
+    }
   }
   validateFile(name: String) {
     const ext = name.substring(name.lastIndexOf('.') + 1);
     if (ext.toLowerCase() === 'tez') {
-        return true;
+      return true;
     } else {
-        return false;
+      return false;
     }
-}
+  }
 }

@@ -272,6 +272,9 @@ export class OperationService {
         }
       });
   }
+  /*
+    Broadcast a signed operation to the network
+  */
   broadcast(sopbytes: string): Observable<any> {
     const opbytes = sopbytes.slice(0, sopbytes.length - 128);
     const edsig = this.sig2edsig(sopbytes.slice(sopbytes.length - 128));

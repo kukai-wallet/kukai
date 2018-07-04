@@ -41,5 +41,4 @@ export class BackupComponent implements OnInit, OnDestroy {
     }
     ngOnDestroy() {
     }
-
 }

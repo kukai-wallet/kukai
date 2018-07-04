@@ -12,12 +12,12 @@ export class StartComponent implements OnInit {
     constructor(
         private walletService: WalletService,
         private router: Router
-        ) {
-        }
+    ) {
+    }
 
     ngOnInit() {
         if (this.walletService.wallet) {
-        this.router.navigate(['/overview']);
+            this.router.navigate(['/overview']);
         }
     }
 }

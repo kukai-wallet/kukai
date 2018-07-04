@@ -1,100 +1,93 @@
 <ng-container *ngIf="accounts">
-  <!-- SEND MODALS -->
-  <!-- First Modal -->
-  <ng-template #modal1>
+    <!-- SEND MODALS -->
+    <!-- First Modal -->
+    <ng-template #modal1>
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">Delegate</h4>
+            <button type="button" class="close pull-right" aria-label="Close" (click)="close1()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form>
+                <div class="form-row">
+                    <div class="form-group col-md-8">
+                        <label for="fromAdress">From Address</label>
+                        <select [(ngModel)]="activePkh" id="fromAdress" class="form-control" name="first">
+                            <option *ngFor="let account of accounts" [ngValue]="account.pkh">{{ account.pkh }}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-8">
+                        <label for="toAdress">To Address</label>
+                        <input type="text" class="form-control" id="toAdress" placeholder="" [(ngModel)]="toPkh" name="second">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="transactionFee">Transaction Limit (&#42793;)</label>
+                        <input type="text" class="form-control" id="transactionFee" placeholder="Fee" [(ngModel)]="fee" name="four">
+                    </div>
+                </div>
+            </form>
+            {{ formInvalid }}
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary btn-lg" id="sub" (click)="open2(modal2)">Send</button>
+            </div>
+        </div>
+    </ng-template>
 
-      <div class="modal-header">
-          <h4 class="modal-title pull-left">Delegate</h4>
-          <button type="button" class="close pull-right" aria-label="Close" (click)="close1()">
-              <span aria-hidden="true">&times;</span>
-          </button>
-      </div>
-      <div class="modal-body">
-          <form>
-              <div class="form-row">
-                  <div class="form-group col-md-8">
-                      <label for="fromAdress">From Address</label> 
-                      <select [(ngModel)]="activePkh" id="fromAdress" class="form-control" name="first">
-                          <option *ngFor="let account of accounts" [ngValue]="account.pkh">{{ account.pkh }}</option>
-                      </select>
-                  </div>
-              </div>
+    <!-- Confirmation Modal -->
+    <ng-template #modal2>
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">Authenticate delegation</h4>
+            <button type="button" class="close pull-right" aria-label="Close" (click)="close2()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p>Account: {{ activePkh }}
+                <BR> Delegate: {{ toPkh }}
+                <BR> Fee: {{ fee | number:'1.0' }}&#42793;
+            </p>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label for="pwd">Password:</label>
+                    <input [(ngModel)]="password" type="password" id="pwd" class="form-control">
+                </div>
+            </div>
+            <button type="button" class="btn btn-primary" id="sub" (click)="open3(modal3)">Confirm</button>
+            {{ pwdValid }}
+        </div>
+    </ng-template>
 
-              <div class="form-row">
-                  <div class="form-group col-md-8">
-                      <label for="toAdress">To Address</label>
-                      <input type="text" class="form-control" id="toAdress" placeholder="" [(ngModel)]="toPkh" name="second">
-                  </div>
-              </div>
+    <!-- Final Modal -->
+    <ng-template #modal3>
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">Confirmation</h4>
+            <button type="button" class="close pull-right" aria-label="Close" (click)="close3()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div *ngIf='!sendResponse'>
+                Please wait...
+            </div>
+            <div *ngIf='sendResponse === "success"'>
+                <i class="fa fa-check-circle"></i>
+                <br>
+                <br>
+                <p>Your delegation has been successfully broadcasted to the network</p>
+            </div>
+            <div *ngIf='sendResponse === "failure"'>
+                Set delegation failed!
+                <p class="text-danger">{{ errorMessage }}</p>
+            </div>
+            <button type="button" class="btn btn-primary" id="sub" (click)="close3()">Close</button>
+        </div>
+    </ng-template>
 
-              <div class="form-row">
-                  <div class="form-group col-md-4">
-                      <label for="transactionFee">Transaction Limit (&#42793;)</label>
-                      <input type="text" class="form-control" id="transactionFee" placeholder="Fee" [(ngModel)]="fee" name="four">
-                  </div>
-              </div>
-          </form>
-
-          {{ formInvalid }}
-
-          <div class="modal-footer">
-              <button type="button" class="btn btn-primary btn-lg" id="sub" (click)="open2(modal2)">Send</button>
-          </div>
-      </div>
-
-  </ng-template>
-
-  <!-- Confirmation Modal -->
-  <ng-template #modal2>
-      <div class="modal-header">
-          <h4 class="modal-title pull-left">Authenticate delegation</h4>
-          <button type="button" class="close pull-right" aria-label="Close" (click)="close2()">
-              <span aria-hidden="true">&times;</span>
-          </button>
-      </div>
-      <div class="modal-body">
-          <p>Account: {{ activePkh }}<BR>
-              Delegate: {{ toPkh }}<BR>
-              Fee: {{ fee | number:'1.0' }}&#42793;
-          </p>
-          <div class="row">
-              <div class="form-group col-md-6">
-                  <label for="pwd">Password:</label>
-                  <input [(ngModel)]="password" type="password" id="pwd" class="form-control">
-              </div>
-          </div>
-          <button type="button" class="btn btn-primary" id="sub" (click)="open3(modal3)">Confirm</button>
-          {{ pwdValid }}
-      </div>
-  </ng-template>
-
-  <!-- Final Modal -->
-  <ng-template #modal3>
-      <div class="modal-header">
-          <h4 class="modal-title pull-left">Confirmation</h4>
-          <button type="button" class="close pull-right" aria-label="Close" (click)="close3()">
-              <span aria-hidden="true">&times;</span>
-          </button>
-      </div>
-      <div class="modal-body">
-          <div *ngIf='!sendResponse'>
-              Please wait...
-          </div>
-          <div *ngIf='sendResponse === "success"'>
-              <i class="fa fa-check-circle"></i>
-              <br><br>
-              <p>Your delegation has been successfully broadcasted to the network</p>
-          </div>
-          <div *ngIf='sendResponse === "failure"'>
-              Set delegation failed!
-              <p class="text-danger">{{ errorMessage }}</p>
-          </div>
-          <button type="button" class="btn btn-primary" id="sub" (click)="close3()">Close</button>
-      </div>
-  </ng-template>
-
-
-  <!-- Showing different Send Format according to actionButtonString -->
-  <button *ngIf='accounts' type="button" (click)="open1(modal1)" class="btn btn-sm btn-outline-primary">Delegate</button>
-
+    <!-- Showing different Send Format according to actionButtonString -->
+    <button *ngIf='accounts' type="button" (click)="open1(modal1)" class="btn btn-sm btn-outline-primary">Delegate</button>
 </ng-container>

@@ -97,10 +97,6 @@ a, a:hover, a:focus {
     border-bottom: 1px solid #47748b;
 }
 
-/*.top {
-    padding: 20px 0;
-}*/
-
 #sidebar ul p {
     color: #fff;
     padding: 10px;
@@ -168,12 +164,6 @@ ul.CTAs a {
 
 .bottom-CTAs {
     padding-top: 31vh !important;  //This needs to change - creates vertical scroll bar
-
-    //display:inline-block !important;
-    //align-self: flex-end !important;
-    //display: flex !important;
-    //align-content: flex-end !important;
-    //vertical-align: bottom !important;
 }
 
 .bottom-CTAs .fa {
@@ -195,41 +185,3 @@ ul.CTAs a {
 	color: #1DA1F3 !important;
 }
 
-
-/* ---------------------------------------------------
-    CONTENT STYLE
------------------------------------------------------ */
-//Horizontal Aligment
-#content {
-    /*padding: 20px;*/
-    //min-height: 100vh;  //working
-    //margin: 0px auto 0px auto;  //working
-    //transition: all 0.3s;  //working
-}
-
-//Vertical Alignment
-.center-content {
-    
-    //padding-top: 42vh !important;  //working
-    /*
-    padding-left: 30vw !important;
-    //
-    margin: 0px auto 0px auto;
-    width: 600px;
-    */
-}
-
-/* ---------------------------------------------------
-    MEDIAQUERIES
------------------------------------------------------ */
-/*@media (max-width: 768px) {
-    #sidebar {
-        margin-left: -250px;
-    }
-    #sidebar.active {
-        margin-left: 0;
-    }
-    #sidebarCollapse span {
-        display: none;
-    }
-}*/

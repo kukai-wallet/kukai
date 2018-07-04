@@ -41,10 +41,10 @@
         <p>From: {{ activePkh }}
             <BR> Amount: {{ amount | number:'1.0' }}&#42793;
             <BR> Fee: {{ fee | number:'1.0' }}&#42793;
-            <BR> Origination burn: 
-                <ng-container *ngIf="originationBurn">
-                    {{ originationBurn | number:'1.0' }}&#42793;
-                </ng-container>
+            <BR> Origination burn:
+            <ng-container *ngIf="originationBurn">
+                {{ originationBurn | number:'1.0' }}&#42793;
+            </ng-container>
             <BR>
         </p>
         <div class="row">
@@ -94,5 +94,4 @@
         <button type="button" class="btn btn-primary" id="sub" (click)="close3()">Close</button>
     </div>
 </ng-template>
-
 <button *ngIf='accounts' type="button" href (click)="open1(modal1)" class="btn btn-sm btn-outline-primary btn-op">New account</button>

@@ -1,17 +1,17 @@
-
 <div class="wrapper">
     <!-- Sidebar Holder -->
     <nav id="sidebar">
         <div class="sidebar-header">
-                <a routerLink=""><h1 class="title" align="center">Kukai</h1></a>
+            <a routerLink="">
+                <h1 class="title" align="center">Kukai</h1>
+            </a>
             <p class="sub-heading" align="center">
-                on a path of self-discovery<BR>
-                {{ this.walletService.walletTypePrint() }} <span class="red">[ Testnet ]</span>
+                on a path of self-discovery
+                <BR> {{ this.walletService.walletTypePrint() }}
+                <span class="red">[ Testnet ]</span>
             </p>
         </div>
-
         <br>
-
         <ul class="list-unstyled components">
             <li routerLinkActive="active">
                 <a routerLink="/overview" class="btn-main-action">Overview</a>
@@ -19,48 +19,40 @@
             <li routerLinkActive="active">
                 <a routerLink="/account" class="btn-main-action">Account</a>
             </li>
-            
-            <!--<li routerLinkActive="active">
-                <a class="btn-main-action">
-                    <app-send [activePkh]="null" [actionButtonString]="'btnSidebar'"></app-send>
-                </a>
-                
-            </li>-->
+
             <li routerLinkActive="active">
                 <a routerLink="/bakery" class="btn-main-action">Bakery</a>
             </li>
-            <!--
-            <li routerLinkActive="active">
-                <a routerLink="/receive" class="btn-main-action">Receive</a>
-            </li>
-            -->
         </ul>
 
 
         <ul class="list-unstyled components bottom-CTAs">
-            <!--<li routerLinkActive="active" class="bottom-category">
-                <a routerLink="/settings" align="center">Settings</a>
-            </li>-->
             <li routerLinkActive="active">
                 <a routerLink="/broadcast" class="btn-main-action">Broadcast</a>
             </li>
             <li routerLinkActive="active">
-                    <a routerLink="/backup" class="btn-main-action">Backup</a>
+                <a routerLink="/backup" class="btn-main-action">Backup</a>
             </li>
             <li class="bottom-category">
                 <a (click)="logout();" class="btn-main-action" data-toggle="tooltip" title="Clear wallet data">Logout</a>
             </li>
             <span class="btn-main-action">
-                <a href="https://github.com/kukai-wallet" target="_blank"><i class="fa fa-github"></i></a>
-                <a href="https://riot.im/app/#/room/#kukai:matrix.org" target="_blank"><i class="fa fa-comments"></i></a>
-                <a href="https://twitter.com/KukaiWallet/" target="_blank"><i class="fa fa-twitter"></i></a>
+                <a href="https://github.com/kukai-wallet" target="_blank">
+                    <i class="fa fa-github"></i>
+                </a>
+                <a href="https://riot.im/app/#/room/#kukai:matrix.org" target="_blank">
+                    <i class="fa fa-comments"></i>
+                </a>
+                <a href="https://twitter.com/KukaiWallet/" target="_blank">
+                    <i class="fa fa-twitter"></i>
+                </a>
             </span>
         </ul>
     </nav>
 
     <!-- Page Content Holder -->
     <div id="content">
-        
+
         <div class="center-content">
             <router-outlet></router-outlet>
             <app-messages></app-messages>

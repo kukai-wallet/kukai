@@ -1,6 +1,5 @@
 .mono {
-    font-family: "Courier New", Courier, monospace;
-    //font-family: "Lucida Console", Monaco, monospace;    
+    font-family: "Courier New", Courier, monospace;  
 }
 .btn-op {
     width: 120px;
@@ -16,10 +15,6 @@
 
 .page-header {
     margin: 40px 0px 10px 0px; //top right bottom left
-
-    //Vertical Alignment 
-    //display: flex;
-    //align-items: center; //flex-end; 
 }
 
 .bottom-separator {
@@ -106,9 +101,7 @@ a:hover {
 
 // Large devices (desktops, 992px and up)
 @media (min-width: 992px) { 
-    //.container {
     min-width: 0vw
-    //} 
  }
 
 // Extra large devices (large desktops, 1200px and up)
@@ -118,31 +111,3 @@ a:hover {
         min-width: 0vw
     } 
 }
-
-/* Commented code 
-a:hover {
-    cursor:pointer;
-   }
-th, td {
-    padding: 5px 15px;
-}
-.mono {
-    font-family: "Courier New", Courier, monospace;
-}
-#content {
-    display: flex; 
-    min-height: 100vh;
-    min-width: 85vw;
-}
-.center-content {
-    margin: 10vh auto 0px auto;
-}
-.card-title {
-    padding-bottom: 0.75rem;
-    border-bottom: 2px solid rgba(0, 0, 0, 0.125);
-}
-
-.card-text{
-    padding-top: 2rem;
-}
-*/

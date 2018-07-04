@@ -6,14 +6,16 @@
       <div class="card-body">
         <h1 class="card-title">Collecting additional entropy</h1>
         <div class="card-text">
-          <p class ="mono rndp">{{ entropy }}</p>
-          <progressbar [value]="counter2" type="info" [striped]="true"><ng-container *ngIf="counter2 > 4">{{ counter2 | number: '1.0-0' }}%</ng-container></progressbar>
+          <p class="mono rndp">{{ entropy }}</p>
+          <progressbar [value]="counter2" type="info" [striped]="true">
+            <ng-container *ngIf="counter2 > 4">{{ counter2 | number: '1.0-0' }}%</ng-container>
+          </progressbar>
           <p>Please move the mouse over the screen to create extra entropy for the wallet creation.</p>
           <p>This step ensures your seed is generated random by collecting unpredictabel data.</p>
-      </div>
+        </div>
       </div>
       <div class="card-footer text-right">
-          <button type="button" class="btn btn-primary btn-lg" (click)="skipExtraEntropy()">Skip</button>
+        <button type="button" class="btn btn-primary btn-lg" (click)="skipExtraEntropy()">Skip</button>
       </div>
     </div>
 
@@ -22,8 +24,11 @@
       <div class="card-body">
         <h1 class="card-title">Save your Seed</h1>
         <div class="card-text">
-          <p class="seed"><b>{{ mnemonic }}</b></p>
-          <p>When you create a new account, a new Tezos seed is generated. Your Tezos seed is the master key of all your wallets and any money inside it.</p>
+          <p class="seed">
+            <b>{{ mnemonic2 }}</b>
+          </p>
+          <p>When you create a new account, a new Tezos seed is generated. Your Tezos seed is the master key of all your wallets
+            and any money inside it.</p>
           <p>Make sure to back it up, write it down, and keep it incredibly safe!</p>
           <p>**Do not lose it!** It cannot be recovered if you lose it.</p>
           <p>**Do not share it!** Your funds will be stolen if you use seed on a malicious/phishing site.</p>
@@ -39,9 +44,9 @@
       <div class="card-body">
         <h1 class="card-title">Verify your Seed</h1>
         <div class="card-text">
-          <textarea [(ngModel)]="userMnemonic" rows="3" cols="80" 
-          placeholder="word1 word2 word3 word4 word5 word6 word7 word8 word9 word10 word11 word12 word13 word14 word15"></textarea><BR>
-      </div>
+          <textarea [(ngModel)]="userMnemonic" rows="3" cols="80" placeholder="word1 word2 word3 word4 word5 word6 word7 word8 word9 word10 word11 word12 word13 word14 word15"></textarea>
+          <BR>
+        </div>
       </div>
       <div class="card-footer text-right">
         <button type="button" class="btn btn-primary btn-lg" [disabled]="!mnemonicMatch()" (click)="pwdView()">Next</button>
@@ -50,27 +55,27 @@
 
     <!-- Password card -->
     <div class="card text-center fix-size" *ngIf="activePanel==4">
-        <div class="card-body">
-          <h1 class="card-title">Choose your Password</h1>
-          <div class="card-text">            
-            <form>
-              <div class="form-group row">
-                <div class="col-sm-12">
-                  <input type="password" [(ngModel)]="pwd1" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Password">
-                </div>
+      <div class="card-body">
+        <h1 class="card-title">Choose your Password</h1>
+        <div class="card-text">
+          <form>
+            <div class="form-group row">
+              <div class="col-sm-12">
+                <input type="password" [(ngModel)]="pwd1" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Password">
               </div>
-              <div class="form-group row">
-                <div class="col-sm-12">
-                  <input type="password" [(ngModel)]="pwd2" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Confirm Password">
-                  <small id="emailHelp1" class="form-text text-muted text-left">Minimum {{ this.MIN_PWD_LENGTH }} characters</small>
-                  <small id="emailHelp2" class="form-text alert-danger text-left" *ngIf="!isValidPass.minLength">There must be a minimum of {{ MIN_PWD_LENGTH }} characters</small>
-                  <small id="emailHelp3" class="form-text alert-danger text-left" *ngIf="!isValidPass.match">Passswords doesn't match!</small>
-                  <small id="emailHelp4" class="form-text alert-success text-left" *ngIf="isValidPass.confirmed">Password confirmed</small>
-                </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-sm-12">
+                <input type="password" [(ngModel)]="pwd2" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Confirm Password">
+                <small id="emailHelp1" class="form-text text-muted text-left">Minimum {{ this.MIN_PWD_LENGTH }} characters</small>
+                <small id="emailHelp2" class="form-text alert-danger text-left" *ngIf="!isValidPass.minLength">There must be a minimum of {{ MIN_PWD_LENGTH }} characters</small>
+                <small id="emailHelp3" class="form-text alert-danger text-left" *ngIf="!isValidPass.match">Passswords doesn't match!</small>
+                <small id="emailHelp4" class="form-text alert-success text-left" *ngIf="isValidPass.confirmed">Password confirmed</small>
               </div>
-            </form>
-            <p>This password encrypts your private key.</p>
-            <p>It is also used to lock and unlock the sensitive parts of your wallet (private keys, sending).</p>
+            </div>
+          </form>
+          <p>This password encrypts your private key.</p>
+          <p>It is also used to lock and unlock the sensitive parts of your wallet (private keys, sending).</p>
         </div>
       </div>
       <div class="card-footer text-right">
@@ -83,7 +88,9 @@
       <div class="card-body">
         <h1 class="card-title">Wallet created</h1>
         <div class="card-text">
-          <p class="seed"><b>{{ export() }}</b></p>
+          <p class="seed">
+            <b>Public key hash: {{ getPkh() }}</b>
+          </p>
           <br>
           <p>Your wallet is now set up and ready to use.</p>
           <p>Please download your Encrypted Keystore File..</p>

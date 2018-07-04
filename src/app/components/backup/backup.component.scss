@@ -2,7 +2,7 @@
     cursor: wait !important;
 }
 .page-header {
-    margin: 40px 0px 10px 0px; //top right bottom left
+    margin: 40px 0px 10px 0px;
 }
 
 .bottom-separator {
@@ -12,7 +12,7 @@
 }
 
 .page-header-no-account {
-    margin: 40px 0px 10px 0px; //top right bottom left
+    margin: 40px 0px 10px 0px;
 }
 
 .bottom-separator-no-account {
@@ -38,9 +38,6 @@ h4 {
     background-color: #b3b3b3;
 }
 
-
-
-
 /* Responsive breakpoints */
 // Extra small devices (portrait phones, less than 576px)
 // No media query since this is the default in Bootstrap
@@ -57,11 +54,11 @@ h4 {
 //@media (min-width: 768px) { ... }
 
 // Large devices (desktops, 992px and up)
-@media (min-width: 992px) { 
-    //.container {
-    //    min-width: 70vw
-    //} 
- }
+/*@media (min-width: 992px) { 
+    .container {
+        min-width: 70vw
+    } 
+ }*/
 
 // Extra large devices (large desktops, 1200px and up)
 @media (min-width: 1200px) { 

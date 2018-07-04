@@ -6,7 +6,7 @@ import { OperationService } from '../../services/operation.service';
 import { WalletService } from '../../services/wallet.service';
 import { CoordinatorService } from '../../services/coordinator.service';
 import { ExportService } from '../../services/export.service';
-// https://www.npmjs.com/package/load-json-file
+
 @Component({
   selector: 'app-mnemonic-import-wallet',
   templateUrl: './mnemonic-import.component.html',
@@ -74,39 +74,38 @@ export class MnemonicImportComponent implements OnInit {
   handleFileInput(files: FileList) {
     let fileToUpload = files.item(0);
 
-      if (!this.validateFile(fileToUpload.name)) {
-        console.log('Selected file format is not supported');
-        fileToUpload = null;
-        return false;
-      } else {
+    if (!this.validateFile(fileToUpload.name)) {
+      console.log('Selected file format is not supported');
+      fileToUpload = null;
+      return false;
+    } else {
 
-        const reader = new FileReader();
-        reader.readAsText(fileToUpload);
-        reader.onload = () => {
-          const res = JSON.parse(reader.result);
+      const reader = new FileReader();
+      reader.readAsText(fileToUpload);
+      reader.onload = () => {
+        const res = JSON.parse(reader.result);
 
-          if (res.mnemonic) {
-            let mnemonic = res.mnemonic[0];
-            for (let i = 1; i < 15; i++) {
-              mnemonic = mnemonic + ' ' + res.mnemonic[i];
-            }
-            this.mnemonic = mnemonic;
-          } if (res.email) {
-            this.email = res.email;
-          } if (res.password) {
-            this.password = res.password;
+        if (res.mnemonic) {
+          let mnemonic = res.mnemonic[0];
+          for (let i = 1; i < 15; i++) {
+            mnemonic = mnemonic + ' ' + res.mnemonic[i];
           }
-        };
-      }
-    // }
+          this.mnemonic = mnemonic;
+        } if (res.email) {
+          this.email = res.email;
+        } if (res.password) {
+          this.password = res.password;
+        }
+      };
+    }
   }
 
   validateFile(name: String) {
     const ext = name.substring(name.lastIndexOf('.') + 1);
     if (ext.toLowerCase() === 'json') {
-        return true;
+      return true;
     } else {
-        return false;
+      return false;
     }
   }
   validPwd(): boolean {

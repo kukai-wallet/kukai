@@ -1,5 +1,4 @@
 <div class="container" *ngIf="this.walletService.wallet">
-    <!-- Title -->
     <div class="row">
         <div class="col-6">
             <h1 class="page-header">Account</h1>
@@ -14,53 +13,24 @@
     </div>
     <div class="row bottom-separator">
         <div class="col-6">
-            Balance: {{ balance / 1000000 | number:'1.0' }} &#42793; <span *ngIf="balanceUSD > 0">(${{ balanceUSD | number:'1.00'}} USD)</span>
+            Balance: {{ balance / 1000000 | number:'1.0' }} &#42793;
+            <span *ngIf="balanceUSD > 0">(${{ balanceUSD | number:'1.00'}} USD)</span>
         </div>
     </div>
-    <!--<button (click)='triggerOperationReload()'>triggerOperationReload()</button>-->
     <div class="row">
-        <app-activity [activePkh]="activePkh"></app-activity> 
+        <app-activity [activePkh]="activePkh"></app-activity>
     </div>
 </div>
-
-<!-- To Delete --
-<div id="content" *ngIf="accounts">
-    <div class="center-content">
-        <div class="card text-center fix-size">
-            <div class="card-body">
-                <h1>{{ balance / 1000000 | number:'1.0' }}&#42793;</h1>
-                    <p><app-send [activePkh]="activePkh"></app-send>
-                    <app-receive [activePkh]="activePkh"></app-receive></p>
-
-                <app-activity [activePkh]="activePkh"></app-activity>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- /To Delete -->
-
-<!--
-<p *ngIf='!accounts'>
-    You need to <a routerLink="">create or import</a> a wallet to see this view...
-</p>
--->
-<!-- Default message - No account created -->
 <div class="container" *ngIf="!this.walletService.wallet">
-    <!-- Title -->
     <div class="row bottom-separator-no-account">
         <div class="col-lg-12">
             <h1 class="page-header-no-account">Account</h1>
         </div>
     </div>
-
-
     <div class="row">
         <div class="col-lg-12">
-            <p>You can get your individual account details in here but before, you will need to <a routerLink="">create or import</a> a wallet.</p>
-            <!--
-            <p>Before making a backup, you will need to <a routerLink="">create or import</a> a wallet.</p>
-            You need to <a routerLink="">create or import</a> a wallet to see this view...
-            -->
+            <p>You can get your individual account details in here but before, you will need to
+                <a routerLink="">create or import</a> a wallet.</p>
         </div>
     </div>
 </div>

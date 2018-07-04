@@ -222,7 +222,6 @@ export class SendComponent implements OnInit {
     }
 
     invalidInput(): string {
-
         if (!this.activePkh || this.activePkh.length !== 36) {
             return 'invalid sender address';
         } else if (!this.toPkh || this.toPkh.length !== 36) {

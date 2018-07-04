@@ -1,5 +1,5 @@
 <div class='container'>
-<div *ngFor="let message of messageService.messages">
-  <alert [type]="message.type" [dismissOnTimeout]="message.timeout">{{ message.msg }}</alert>
-</div>
+  <div *ngFor="let message of messageService.messages">
+    <alert [type]="message.type" [dismissOnTimeout]="message.timeout">{{ message.msg }}</alert>
+  </div>
 </div>

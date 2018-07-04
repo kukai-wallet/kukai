@@ -95,10 +95,12 @@ export class ImportService {
             index = 1;
           }
           const KT = data[i].type.operations[i].tz1;
-          this.walletService.addAccount(KT);
-          console.log('Added: ' + KT);
-          this.coordinatorService.start(KT);
-          this.findNumberOfAccounts(KT); // Recursive call
+          if (KT !== pkh) {
+            this.walletService.addAccount(KT);
+            console.log('Added: ' + KT);
+            this.coordinatorService.start(KT);
+            this.findNumberOfAccounts(KT); // Recursive call
+          }
         }
         this.walletService.storeWallet();
       },

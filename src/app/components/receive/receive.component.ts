@@ -7,9 +7,9 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
 @Component({
-  selector: 'app-receive',
-  templateUrl: './receive.component.html',
-  styleUrls: ['./receive.component.scss']
+    selector: 'app-receive',
+    templateUrl: './receive.component.html',
+    styleUrls: ['./receive.component.scss']
 })
 export class ReceiveComponent implements OnInit {
     @ViewChild('modal1') modal1: TemplateRef<any>;
@@ -42,7 +42,6 @@ export class ReceiveComponent implements OnInit {
             this.setReceiveFormat();
         }
         this.accounts = this.walletService.wallet.accounts;
-        // this.activePkh = this.accounts[0].pkh;
     }
 
     setReceiveFormat() {
@@ -60,13 +59,13 @@ export class ReceiveComponent implements OnInit {
             default: {
                 console.log('actionButtonString wrongly set ', this.actionButtonString);
                 break;
-             }
+            }
         }
     }
 
     getQR() {
         QRCode.toCanvas(document.getElementById('canvas'), this.activePkh, { errorCorrectionLevel: 'H' }, function (err, canvas) {
-        if (err) { throw err; }
+            if (err) { throw err; }
         });
     }
 
@@ -74,7 +73,7 @@ export class ReceiveComponent implements OnInit {
         if (this.activePkh) {
             this.modalRef1 = this.modalService.show(template1, { class: 'modal-sm' });
             setTimeout(() => {
-            this.getQR();
+                this.getQR();
             }, 100);
         }
     }

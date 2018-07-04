@@ -1,9 +1,5 @@
 .page-header {
-    margin: 40px 0px 10px 0px; //top right bottom left
-
-    //Vertical Alignment 
-    //display: flex;
-    //align-items: center; //flex-end; 
+    margin: 40px 0px 10px 0px;
 }
 
 .bottom-separator {
@@ -13,29 +9,22 @@
 }
 
 .page-header-no-account {
-    margin: 40px 0px 10px 0px; //top right bottom left
+    margin: 40px 0px 10px 0px;
 }
 
 .bottom-separator-no-account {
     padding-bottom: 27px;
     border-bottom: 1px solid #eee; //Alignment  with sidebar
-    margin-bottom: 0.5rem; //space between border and next content
+    margin-bottom: 0.5rem;
 }
-
-
-
 
 .mono {
     font-family: "Courier New", Courier, monospace;
-    //font-family: "Lucida Console", Monaco, monospace;    
 }
 
 .min-width {
     min-width: 394px !important;
 }
-
-
-
 
 /* Responsive breakpoints */
 // Extra small devices (portrait phones, less than 576px)
@@ -54,9 +43,7 @@
 
 // Large devices (desktops, 992px and up)
 @media (min-width: 992px) { 
-    //.container {
     min-width: 0vw
-    //} 
  }
 
 // Extra large devices (large desktops, 1200px and up)
@@ -66,26 +53,3 @@
         min-width: 0vw
     } 
 }
-
-
-//To delete
-/*
-#content {
-    display: flex; 
-    min-height: 100vh;
-    min-width: 85vw;
-    // width: 100%;
-    // max-width: 85vw;
-}
-.center-content {
-    margin: 10vh auto 0px auto;
-}
-.card-title {
-    padding-bottom: 0.75rem;
-    border-bottom: 2px solid rgba(0, 0, 0, 0.125);
-}
-
-.card-text{
-    padding-top: 2rem;
-}
-*/

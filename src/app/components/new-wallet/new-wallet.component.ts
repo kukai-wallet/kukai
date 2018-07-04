@@ -9,8 +9,6 @@ import { ExportService } from '../../services/export.service';
 import { ImportService } from '../../services/import.service';
 import * as rnd from 'randomatic';
 
-// import { Router } from '@angular/router';
-
 @Component({
   selector: 'app-new-wallet',
   templateUrl: './new-wallet.component.html',
@@ -42,7 +40,7 @@ export class NewWalletComponent implements OnInit {
   counter2 = 0;
   entr: number;
   entropy = 'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff' +
-            'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
+    'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
   @HostListener('document:touchmove', ['$event'])
   ontouchmove(e) {
     /*console.log('(' + e.touches[0].clientX + ', ' + e.touches[0].clientY + ') of (' +
@@ -74,7 +72,7 @@ export class NewWalletComponent implements OnInit {
   ngOnInit() {
     // rnd() only to create an offset for better visualisation.
     // Final seed = mouse movements (optional) XOR bip39.generateMnemonic() (crypto safe)
-    this.entropy = rnd('?', 160, {chars: '0123456789abcdef'});
+    this.entropy = rnd('?', 160, { chars: '0123456789abcdef' });
   }
   skipExtraEntropy() {
     this.activePanel++;
@@ -114,20 +112,20 @@ export class NewWalletComponent implements OnInit {
   }
   validatePwd(): boolean {
     if (this.pwd1.length < this.MIN_PWD_LENGTH || this.pwd2.length < this.MIN_PWD_LENGTH) {
-        this.isValidPass.minLength = false;
-        console.log('isValidPass.length', this.isValidPass.minLength);
+      this.isValidPass.minLength = false;
+      console.log('isValidPass.length', this.isValidPass.minLength);
     } else {
       this.isValidPass.minLength = true;
     }
     if (this.pwd1 !== this.pwd2) {
-        this.isValidPass.match = false;
-        console.log('isValidPass.match', this.isValidPass.match);
+      this.isValidPass.match = false;
+      console.log('isValidPass.match', this.isValidPass.match);
     } else {
       this.isValidPass.match = true;
     } if (this.isValidPass.minLength && this.isValidPass.match) {
-        this.isValidPass.confirmed = true;
-        console.log('Success', this.isValidPass.confirmed);
-        return true;
+      this.isValidPass.confirmed = true;
+      console.log('Success', this.isValidPass.confirmed);
+      return true;
     } else {
       this.isValidPass.confirmed = false;
     }
@@ -143,6 +141,9 @@ export class NewWalletComponent implements OnInit {
   }
   export(): string {
     return JSON.stringify(this.data);
+  }
+  getPkh(): string {
+    return this.data.pkh;
   }
   download() {
     this.exportService.downloadWallet(this.data);
@@ -161,7 +162,7 @@ export class NewWalletComponent implements OnInit {
         }
         part = this.entropy.substr(0, this.counter * 4) + part + this.entropy.substr((this.counter + 1) * 4, this.entropy.length);
         this.entropy = part;
-        this.counter = ( this.counter + 1 ) % (this.entropy.length / 4);
+        this.counter = (this.counter + 1) % (this.entropy.length / 4);
         if (this.counter % 8 === 0) { this.counter2++; } // Set how much to collect here
         if (this.counter2 >= 100) {
           this.activePanel++;
@@ -169,7 +170,7 @@ export class NewWalletComponent implements OnInit {
           for (let i = 0; i < 40; i++) {
             let hex = 0;
             for (let j = 0; j < 4; j++) {
-                hex = hex ^ Number('0x' + this.entropy[i * 4 + j]);
+              hex = hex ^ Number('0x' + this.entropy[i * 4 + j]);
             }
             finalEntropy = finalEntropy + hex.toString(16);
           }

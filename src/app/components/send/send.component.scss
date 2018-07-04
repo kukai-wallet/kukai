@@ -1,24 +1,12 @@
-/*
-.dark-modal .modal-content {
-    background-color: #292b2c;
-    color: white;
-  }
-  
-.dark-modal .close {
-  color: white;   
-}
-*/
 .modal-container {
   width: 1000px;
   margin: auto;
 }
 .mono {
   font-family: "Courier New", Courier, monospace;
-  //font-family: "Lucida Console", Monaco, monospace;    
 }
 .btn-op {
   width: 120px;
-  //margin-right: 5px;
   border-radius: 0rem;
   border-top-left-radius: 0.4rem;
   border-bottom-left-radius: 0.4rem;
@@ -36,7 +24,6 @@
 }
 
 .text-right {
-  //text-align: right;
   justify-content: flex-end;
 }
 

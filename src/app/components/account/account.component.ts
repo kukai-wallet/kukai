@@ -13,7 +13,6 @@ export class AccountComponent implements OnInit {
     accounts = null;
     balance = 0;
     balanceUSD = 0;
-
     activePkh: string;
     constructor(
         public walletService: WalletService,
@@ -23,10 +22,9 @@ export class AccountComponent implements OnInit {
 
     ngOnInit() {
         if (this.walletService.wallet) {
-                this.init();
-            }
+            this.init();
+        }
     }
-
     init() {
         this.accounts = this.walletService.wallet.accounts;
         this.activePkh = this.accounts[0].pkh;

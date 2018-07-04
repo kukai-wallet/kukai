@@ -16,10 +16,14 @@
                         <!-- <td>{{ transaction.source }}</td>
                         <td>{{ transaction.destination }}</td> -->
                         <td>{{ transaction.type }}</td>
-                        <td><ng-container *ngIf="transaction.amount">{{ transaction.amount / 1000000 | number:'1.0' }} &#42793;
-                        </ng-container></td>
+                        <td>
+                            <ng-container *ngIf="transaction.amount">{{ transaction.amount / 1000000 | number:'1.0' }} &#42793;
+                            </ng-container>
+                        </td>
                         <!-- <td>{{ transaction.fee / 100 }}</td> -->
-                        <td><a href="http://zeronet.tzscan.io/{{transaction.hash}}" target="_blank">{{ getStatus(transaction) }}</a></td>           
+                        <td>
+                            <a href="http://zeronet.tzscan.io/{{transaction.hash}}" target="_blank">{{ getStatus(transaction) }}</a>
+                        </td>
                     </tr>
                 </tbody>
             </ng-container>
