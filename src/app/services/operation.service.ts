@@ -47,7 +47,6 @@ export class OperationService {
     console.log(pkh + ' : ' + secret);
     return this.http.get(this.nodeURL + '/chains/main/blocks/head/hash', {})
       .flatMap((hash: any) => {
-        console.log('hash: ' + hash);
         const fop = {
           branch: hash,
           contents: [{
@@ -58,11 +57,8 @@ export class OperationService {
         };
         return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/forge/operations', fop)
           .flatMap((opbytes: any) => {
-            console.log('opbytes: ' + opbytes);
-            console.log('bytes: ' + opbytes.length / 2);
             this.decodeOpBytes(opbytes);
             const sopbytes: string = opbytes + Array(129).join('0');
-            console.log('sopbytes: ' + sopbytes);
             return this.http.post(this.nodeURL + '/injection/operation',
               JSON.stringify(sopbytes), httpOptions)
               .flatMap((final: any) => {
@@ -116,7 +112,7 @@ export class OperationService {
                       fee: (fee * this.toMicro).toString(),
                       counter: (++counter).toString(),
                       gas_limit: '0',
-                      storage_limit: '60000',
+                      storage_limit: '0',
                       managerPubkey: keys.pkh,
                       balance: (amount * this.toMicro).toString(),
                       spendable: true,
@@ -132,7 +128,7 @@ export class OperationService {
                     fee: '0',
                     counter: (counter).toString(),
                     gas_limit: '0',
-                    storage_limit: '60000',
+                    storage_limit: '0', // '60000',
                     public_key: keys.pk
                   };
                   fop.contents[1].counter = (Number(fop.contents[1].counter) + 1).toString();
@@ -162,7 +158,7 @@ export class OperationService {
                       fee: (fee * this.toMicro).toString(),
                       counter: (++counter).toString(),
                       gas_limit: '200',
-                      storage_limit: '60000',
+                      storage_limit: '0',
                       amount: (amount * this.toMicro).toString(),
                       destination: to,
                     }
@@ -176,7 +172,7 @@ export class OperationService {
                     fee: '0',
                     counter: (counter).toString(),
                     gas_limit: '0',
-                    storage_limit: '60000',
+                    storage_limit: '0',
                     public_key: keys.pk
                   };
                   fop.contents[1].counter = (Number(fop.contents[1].counter) + 1).toString();
@@ -205,8 +201,8 @@ export class OperationService {
                       source: from,
                       fee: (fee * this.toMicro).toString(),
                       counter: (++counter).toString(),
-                      gas_limit: '200',
-                      storage_limit: '60000',
+                      gas_limit: '0',
+                      storage_limit: '0',
                     }
                   ]
                 };
@@ -221,7 +217,7 @@ export class OperationService {
                     fee: '0',
                     counter: (counter).toString(),
                     gas_limit: '0',
-                    storage_limit: '60000',
+                    storage_limit: '0',
                     public_key: keys.pk
                   };
                   fop.contents[1].counter = (Number(fop.contents[1].counter) + 1).toString();
@@ -283,6 +279,7 @@ export class OperationService {
     fop.signature = edsig;
     return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/preapply/operations', [fop])
       .flatMap((parsed: any) => {
+        console.log(JSON.stringify(parsed));
         let newPkh = null;
         for (let i = 0; i < parsed[0].contents.length; i++) {
           if (parsed[0].contents[i].kind === 'origination') {

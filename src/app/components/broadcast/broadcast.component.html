@@ -2,7 +2,7 @@
     <!-- Title -->
     <div class="row bottom-separator">
         <div class="col-lg-12">
-            <h1 class="page-header">Offline transactions</h1>
+            <h1 class="page-header">Offline signing</h1>
         </div>
     </div>
 
@@ -64,13 +64,15 @@
             <div class="col-sm-8">
                 <label for="unsignedOperationTextarea" class="sr-only">Import or paste your unsigned operation</label>
                 <textarea [disabled]="!isFullWallet" rows="3" cols="130" [(ngModel)]="unsigned" [ngModelOptions]="{standalone: true}" (change)="decodeUnsignedOp()"
-                    class="form-control" id="unsignedOperationTextarea" placeholder="Unsigned Operation"></textarea>
+                    class="form-control" id="unsignedOperationTextarea" placeholder="Unsigned Operation">
+                </textarea>
             </div>
         </div>
     </form>
     <div *ngIf='decodeOutput' id="decodeDiv">
         <pre>{{ decodeOutput }}</pre>
     </div>
+    <p>{{ note }}</p>
     <form class="form-inline">
         <label class="sr-only" for="inputPassword">Password</label>
         <input [disabled]="!isFullWallet" type="password" class="form-control mb-2 mr-sm-2" id="inputPassword" [(ngModel)]="pwd"

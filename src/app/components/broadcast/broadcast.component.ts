@@ -23,6 +23,7 @@ export class BroadcastComponent implements OnInit {
     pwdPlaceholder = '';
     decodeOutput = '';
     errorMessage = '';
+    note = '';
     showInstructions = false;
     instructionBtn = 'Show help';
     isFullWallet = false;
@@ -55,6 +56,7 @@ export class BroadcastComponent implements OnInit {
         }
     }
     decodeUnsignedOp() {
+        this.note = '';
         if (!this.unsigned) {
             this.decodeOutput = '';
             console.log('don\'t decode');
@@ -62,9 +64,10 @@ export class BroadcastComponent implements OnInit {
             console.log('decode...');
             try {
                 const op = this.operationService.decodeOpBytes(this.unsigned);
-                this.decodeOutput = '### PLEASE VERIFY THAT THIS DATA ARE CORRECT BEFORE SIGNING ###\n' + JSON.stringify(op, null, 4);
+                this.decodeOutput = '### PLEASE VERIFY THIS DATA ARE CORRECT BEFORE SIGNING ###\n\n' + JSON.stringify(op, null, 4);
+                this.note = '*Unit for amount and fee are in micro tez';
             } catch {
-                this.decodeOutput = '### FAILED TO DECODE OPERATION BYTES! YOU ARE ADVICED TO NOT PROCEED ###';
+                this.decodeOutput = '\n### FAILED TO DECODE OPERATION BYTES! YOU ARE ADVICED TO NOT PROCEED ###\n';
             }
         }
     }
