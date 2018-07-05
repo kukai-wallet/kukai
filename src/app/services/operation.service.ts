@@ -24,7 +24,7 @@ export class OperationService {
   nodeURL = 'https://rpc.tezrpc.me';
   // nodeURL = 'https://zeronet-node.tzscan.io';
   // nodeURL = 'http://45.56.90.73:3000';
-  CHAIN_ID = 'ooE8PeqV4wsiFRvarhkKQeVBpCVWBuK2ucXR1Wxyz3whs6k8Bcb';
+  CHAIN_ID = 'PtCJ7pwoxe8JasnHY8YonnLYjcVHmhiARPJvqcC6VfHT5s8k8sY';
   prefix = {
     tz1: new Uint8Array([6, 161, 159]),
     edpk: new Uint8Array([13, 15, 37, 217]),
