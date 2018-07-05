@@ -14,11 +14,6 @@
                         </div>
                         <div class="form-group row" *ngIf="tge">
                             <div class="col-sm-12">
-                                <input type="file" (change)="handleFileInput($event.target.files)" class="form-control-file" id="file" accept=".json">
-                            </div>
-                        </div>
-                        <div class="form-group row" *ngIf="tge">
-                            <div class="col-sm-12">
                                 <p>Please make sure to first
                                     <a routerLink="/activate">activate</a> your ICO-wallet.</p>
                             </div>

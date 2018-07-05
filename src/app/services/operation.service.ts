@@ -21,10 +21,10 @@ export interface KeyPair {
 @Injectable()
 export class OperationService {
   // nodeURL = 'https://tezrpc.me/zeronet';
-  // nodeURL = 'https://rpc.tezrpc.me';
+  nodeURL = 'https://rpc.tezrpc.me';
   // nodeURL = 'https://zeronet-node.tzscan.io';
-  nodeURL = 'http://45.56.90.73:3000';
-  CHAIN_ID = 'ProtoALphaALphaALphaALphaALphaALphaALphaALphaDdp3zK';
+  // nodeURL = 'http://45.56.90.73:3000';
+  CHAIN_ID = 'ooE8PeqV4wsiFRvarhkKQeVBpCVWBuK2ucXR1Wxyz3whs6k8Bcb';
   prefix = {
     tz1: new Uint8Array([6, 161, 159]),
     edpk: new Uint8Array([13, 15, 37, 217]),
