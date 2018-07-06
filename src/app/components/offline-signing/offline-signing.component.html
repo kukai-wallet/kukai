@@ -53,7 +53,7 @@
                     <span class="input-group-text min-size-prepend">Operation</span>
                 </div>
                 <div class="custom-file">
-                    <input [disabled]="!isFullWallet" type="file" class="custom-file-input" id="importUnsignedOperation" accept=".tzop" (change)="handleUnsignedOperationFileInput($event.target.files)">
+                    <input [disabled]="notAllowedToSign()" type="file" class="custom-file-input" id="importUnsignedOperation" accept=".tzop" (change)="handleUnsignedOperationFileInput($event.target.files)">
                     <label class="custom-file-label" for="importUnsignedOperation"> {{InputImportOperationFileStep2}} </label>
                 </div>
             </div>
@@ -63,7 +63,7 @@
         <div class="form-group row">
             <div class="col-sm-8">
                 <label for="unsignedOperationTextarea" class="sr-only">Import or paste your unsigned operation</label>
-                <textarea [disabled]="!isFullWallet" rows="3" cols="130" [(ngModel)]="unsigned" [ngModelOptions]="{standalone: true}" (change)="decodeUnsignedOp()"
+                <textarea [disabled]="notAllowedToSign()" rows="3" cols="130" [(ngModel)]="unsigned" [ngModelOptions]="{standalone: true}" (change)="decodeUnsignedOp()"
                     class="form-control" id="unsignedOperationTextarea" placeholder="Unsigned Operation">
                 </textarea>
             </div>
@@ -75,10 +75,10 @@
     <p>{{ note }}</p>
     <form class="form-inline">
         <label class="sr-only" for="inputPassword">Password</label>
-        <input [disabled]="!isFullWallet" type="password" class="form-control mb-2 mr-sm-2" id="inputPassword" [(ngModel)]="pwd"
+        <input [disabled]="notAllowedToSign()" type="password" class="form-control mb-2 mr-sm-2" id="inputPassword" [(ngModel)]="pwd"
             placeholder="{{ pwdPlaceholder }}" [ngModelOptions]="{standalone: true}">
 
-        <button [disabled]="!isFullWallet" type="button" class="btn btn-clear btn-second mb-2 mr-sm-2" (click)="sign()">Sign</button>
+        <button [disabled]="notAllowedToSign()" type="button" class="btn btn-clear btn-second mb-2 mr-sm-2" (click)="sign()">Sign</button>
         <button *ngIf="signed1" class="btn btn-clear btn-second mb-2 mr-sm-2" (click)="download()">Download</button>
         <small *ngIf="signed1" class="text-success">
             Operation successfully signed!
