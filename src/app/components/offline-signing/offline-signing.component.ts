@@ -71,6 +71,12 @@ export class OfflineSigningComponent implements OnInit {
             }
         }
     }
+    isOnline(): boolean {
+        return (this.walletService.wallet.XTZrate !== null || this.walletService.wallet.balance.balanceXTZ !== null);
+    }
+    notAllowedToSign(): boolean {
+        return (!this.isFullWallet || this.isOnline());
+    }
     broadcast() {
         if (this.signed2) {
             const signed = this.signed2;
