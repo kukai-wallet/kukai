@@ -26,7 +26,7 @@ export class ActivateComponent implements OnInit {
       (ans: any) => {
         if (ans.success) {
           if (ans.payload.opHash) {
-            this.messageService.addSuccess('Wallet activated!');
+            this.messageService.addSuccess('Activation successfully broadcasted to the blockchain!');
           } else {
             this.messageService.addWarning('Couldn\'t retrive an operation hash');
           }

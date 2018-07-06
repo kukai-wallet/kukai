@@ -89,7 +89,7 @@ a, a:hover, a:focus {
 
 #sidebar .sub-heading {
     font-size: 0.9em;
-    color: #fff !important;
+    color: #000 !important;
 }
 
 #sidebar ul.components {
@@ -163,7 +163,7 @@ ul.CTAs a {
 }
 
 .bottom-CTAs {
-    padding-top: 31vh !important;  //This needs to change - creates vertical scroll bar
+    padding-top: 27vh !important;  //This needs to change - creates vertical scroll bar
 }
 
 .bottom-CTAs .fa {

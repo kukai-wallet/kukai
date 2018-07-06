@@ -9,8 +9,7 @@
     <!-- Subheading -->
     <div class="row">
         <div class="col-lg-12">
-            <h4>Import your previous wallet through your seed or your encrypted file. You can also create a new wallet and retrieve
-                your funds from the genesis block with your ICO credentials.</h4>
+            <h4>Import your previous wallet through your seed or your encrypted file. You can also import wallets with your ICO credentials.</h4>
         </div>
     </div>
     <br>
@@ -50,16 +49,18 @@
 
     <!-- 3. Retrieve PKH wallet -->
     <div class="row">
-        <div class="col-lg-12">
-            <h3>3. Observer wallet</h3>
+            <div class="col-lg-12">
+                <h3>3. Observer wallet</h3>
+            </div>
         </div>
-    </div>
+        <p>
+                Track a wallet from its public key hash
+        </p>
     <div class="row">
         <div class="col-lg-12">
             <form class="form-inline">
-                <label class="sr-only" for="inputObserverWallet">Observer wallet</label>
-                <input type="text" class="form-control mb-2 mr-sm-2" id="inputObserverWallet" [(ngModel)]="pkh" placeholder="tz1..." [ngModelOptions]="{standalone: true}">
-                <button type="button" class="btn btn-clear btn-second mb-2 mr-sm-2" (click)='importFromPkh()'>Import</button>
+                        <input type="text" class="form-control mb-2 mr-sm-2" id="inputObserverWallet" [(ngModel)]="pkh" placeholder="tz1..." [ngModelOptions]="{standalone: true}">
+                        <button type="button" class="btn btn-clear btn-second mb-2 mr-sm-2" (click)='importFromPkh()'>Import</button>
                 <!-- HANDLE ERRORS - NEED USER MESSAGE-->
             </form>
         </div>
