@@ -47,7 +47,7 @@ export class OperationService {
     console.log(pkh + ' : ' + secret);
     return this.http.get(this.nodeURL + '/chains/main/blocks/head/hash', {})
       .flatMap((hash: any) => {
-        const fop = {
+        const fop: any = {
           branch: hash,
           contents: [{
             kind: 'activate_account',
@@ -59,11 +59,16 @@ export class OperationService {
           .flatMap((opbytes: any) => {
             this.decodeOpBytes(opbytes);
             const sopbytes: string = opbytes + Array(129).join('0');
-            return this.http.post(this.nodeURL + '/injection/operation',
-              JSON.stringify(sopbytes), httpOptions)
-              .flatMap((final: any) => {
-                console.log(JSON.stringify(final));
-                return this.opCheck(final);
+            fop.protocol = this.CHAIN_ID;
+            fop.signature = 'edsigtXomBKi5CTRf5cjATJWSyaRvhfYNHqSUGrn4SdbYRcGwQrUGjzEfQDTuqHhuA8b2d8NarZjz8TRf65WkpQmo423BtomS8Q';
+            return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/preapply/operations', [fop])
+              .flatMap((parsed: any) => {
+                return this.http.post(this.nodeURL + '/injection/operation',
+                  JSON.stringify(sopbytes), httpOptions)
+                  .flatMap((final: any) => {
+                    console.log(JSON.stringify(final));
+                    return this.opCheck(final);
+                  });
               });
           });
       }).pipe(catchError(err => this.errHandler(err)));
@@ -272,11 +277,16 @@ export class OperationService {
     Broadcast a signed operation to the network
   */
   broadcast(sopbytes: string): Observable<any> {
-    const opbytes = sopbytes.slice(0, sopbytes.length - 128);
-    const edsig = this.sig2edsig(sopbytes.slice(sopbytes.length - 128));
-    const fop: any = this.decodeOpBytes(opbytes);
-    fop.protocol = this.CHAIN_ID;
-    fop.signature = edsig;
+    let fop: any;
+    try {
+      const opbytes = sopbytes.slice(0, sopbytes.length - 128);
+      const edsig = this.sig2edsig(sopbytes.slice(sopbytes.length - 128));
+      fop = this.decodeOpBytes(opbytes);
+      fop.protocol = this.CHAIN_ID;
+      fop.signature = edsig;
+    } catch (e) {
+      return this.errHandler('Invalid bytes');
+    }
     return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/preapply/operations', [fop])
       .flatMap((parsed: any) => {
         console.log(JSON.stringify(parsed));
@@ -302,7 +312,6 @@ export class OperationService {
     console.log('applied part: ' + JSON.stringify(applied[0].contents[0].metadata.operation_result.status));
   }
   errHandler(error: any): Observable<any> {
-    console.log('ERROR!!! ' + JSON.stringify(error));
     if (error.error && error.error[0] && error.error[0].id) {
       console.log('HttpErrorResponse in errHandler() ', error.error[0].id);
       const errorId = error.error[0].id;

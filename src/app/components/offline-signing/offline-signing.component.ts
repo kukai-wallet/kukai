@@ -6,11 +6,11 @@ import { ExportService } from '../../services/export.service';
 import { CoordinatorService } from '../../services/coordinator.service';
 
 @Component({
-    selector: 'app-broadcast',
-    templateUrl: './broadcast.component.html',
-    styleUrls: ['./broadcast.component.scss']
+    selector: 'app-offline-signing',
+    templateUrl: './offline-signing.component.html',
+    styleUrls: ['./offline-signing.component.scss']
 })
-export class BroadcastComponent implements OnInit {
+export class OfflineSigningComponent implements OnInit {
 
     InputImportOperationFileStep2 = 'Choose file';
     InputImportOperationFileStep3 = 'Choose file';
@@ -88,9 +88,9 @@ export class BroadcastComponent implements OnInit {
                         }
                     } else {
                         this.errorMessage = ans.payload.msg;
-                        this.messageService.addWarning('Couldn\'t retrive operation hash!');
                         if (typeof ans.payload.msg === 'string') {
                             this.messageService.addError(this.errorMessage);
+                            this.signed2 = signed;
                         }
                     }
                 },

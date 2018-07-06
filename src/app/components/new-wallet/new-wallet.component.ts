@@ -22,8 +22,8 @@ export class NewWalletComponent implements OnInit {
   ekfDownloaded = false;
   activePanel = 0;
   data: any;
-  mnemonic: string;
-  mnemonic2: string;
+  MNEMONIC: string;
+  mnemonicOut: string;
   entropyMsg: string;
   prevCoords = {
     x: 0,
@@ -80,20 +80,20 @@ export class NewWalletComponent implements OnInit {
     this.generateSeed();
   }
   generateSeed() {
-    this.mnemonic = this.walletService.createNewWallet(this.entropy);
-    this.mnemonic2 = this.mnemonic.replace(/((?:.*?\s){4}.*?)\s/g, '$1\n'); // 5 words per line
+    this.MNEMONIC = this.walletService.createNewWallet(this.entropy);
+    this.mnemonicOut = this.MNEMONIC.replace(/((?:.*?\s){4}.*?)\s/g, '$1\n'); // 5 words per line
     this.activePanel++;
   }
   verifyView() {
     this.activePanel++;
-    this.mnemonic2 = this.mnemonic2.replace(/(\r\n\t|\n|\r\t| )/gm, ''); // remove white-spaces and linebreaks
+    this.mnemonicOut = this.mnemonicOut.replace(/(\r\n\t|\n|\r\t| )/gm, ''); // remove white-spaces and linebreaks
   }
   pwdView() {
     this.activePanel++;
     this.userMnemonic = '';
   }
   mnemonicMatch(): boolean {
-    return (this.mnemonic2 === this.userMnemonic.replace(/(\r\n\t|\n|\r\t| )/gm, ''));
+    return (this.mnemonicOut === this.userMnemonic.replace(/(\r\n\t|\n|\r\t| )/gm, ''));
   }
   encryptWallet() {
     if (this.validatePwd()) {
@@ -102,9 +102,9 @@ export class NewWalletComponent implements OnInit {
       this.pwd2 = '';
       setTimeout(() => { // Prevent UI from freeze
         console.log('Wait...');
-        this.data = this.walletService.createEncryptedWallet(this.mnemonic, pwd);
-        this.mnemonic = '';
-        this.mnemonic2 = '';
+        this.data = this.walletService.createEncryptedWallet(this.MNEMONIC, pwd);
+        this.MNEMONIC = '';
+        this.mnemonicOut = '';
         this.activePanel++;
         this.walletService.storeWallet();
       }, 100);
@@ -137,7 +137,7 @@ export class NewWalletComponent implements OnInit {
   done() {
     this.importService.importWalletData(this.data, false);
     this.data = null;
-    this.messageService.addSuccess('Your new wallet is now set up and ready!');
+    this.messageService.addSuccess('Your new wallet is now set up and ready to use!');
   }
   export(): string {
     return JSON.stringify(this.data);

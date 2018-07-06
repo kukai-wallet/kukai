@@ -26,7 +26,7 @@ import { DelegateService } from './services/delegate.service';
 import { TzscanService } from './services/tzscan.service';
 
 // View components
-import { BroadcastComponent } from './components/broadcast/broadcast.component';
+import { OfflineSigningComponent } from './components/offline-signing/offline-signing.component';
 import { ImportComponent } from './components/import/import.component';
 import { StartComponent } from './components/start/start.component';
 import { ActivityComponent } from './components/activity/activity.component';
@@ -57,7 +57,7 @@ import { DonateComponent } from './components/donate/donate.component';
     NewWalletComponent,
     MessagesComponent,
     AppComponent,
-    BroadcastComponent,
+    OfflineSigningComponent,
     ImportComponent,
     StartComponent,
     ActivityComponent,

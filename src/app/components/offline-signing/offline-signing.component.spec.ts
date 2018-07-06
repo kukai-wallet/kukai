@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BroadcastComponent } from './broadcast.component';
+import { OfflineSigningComponent } from './offline-signing.component';
 
-describe('BroadcastComponent', () => {
-  let component: BroadcastComponent;
-  let fixture: ComponentFixture<BroadcastComponent>;
+describe('OfflineSigningComponent', () => {
+  let component: OfflineSigningComponent;
+  let fixture: ComponentFixture<OfflineSigningComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ BroadcastComponent ]
+      declarations: [ OfflineSigningComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(BroadcastComponent);
+    fixture = TestBed.createComponent(OfflineSigningComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

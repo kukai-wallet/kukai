@@ -11,11 +11,14 @@
             <ng-container *ngIf="counter2 > 4">{{ counter2 | number: '1.0-0' }}%</ng-container>
           </progressbar>
           <p>Please move the mouse over the screen to create extra entropy for the wallet creation.</p>
-          <p>This step ensures your seed is generated random by collecting unpredictabel data.</p>
+          <p>This step is optional, but will add an extra layer of randomness when generating your wallet.</p>
         </div>
       </div>
       <div class="card-footer text-right">
-        <button type="button" class="btn btn-primary btn-lg" (click)="skipExtraEntropy()">Skip</button>
+          <a routerLink="/">
+            <button type="button" class="btn btn-primary btn-lg btn-float-left">Back</button>
+          </a>
+        <button type="button" class="btn btn-primary btn-lg" (click)="skipExtraEntropy()">Continue</button>
       </div>
     </div>
 
@@ -24,14 +27,12 @@
       <div class="card-body">
         <h1 class="card-title">Save your Seed</h1>
         <div class="card-text">
-          <p class="seed">
-            <b>{{ mnemonic2 }}</b>
-          </p>
-          <p>When you create a new account, a new Tezos seed is generated. Your Tezos seed is the master key of all your wallets
-            and any money inside it.</p>
+          <p class="seed"><b>{{ mnemonicOut }}</b></p>
+          <p>When you create a new wallet, a new Tezos seed is generated. Your Tezos seed is the master key of all your wallet
+            and any value inside it.</p>
           <p>Make sure to back it up, write it down, and keep it incredibly safe!</p>
           <p>**Do not lose it!** It cannot be recovered if you lose it.</p>
-          <p>**Do not share it!** Your funds will be stolen if you use seed on a malicious/phishing site.</p>
+          <p>**Do not share it!** Your funds will be stolen if you use the seed on a malicious/phishing site.</p>
           <p>**Make a backup!** Secure it like the millions it may be worth one day.</p>
         </div>
       </div>
@@ -46,6 +47,7 @@
         <div class="card-text">
           <textarea [(ngModel)]="userMnemonic" rows="3" cols="80" placeholder="word1 word2 word3 word4 word5 word6 word7 word8 word9 word10 word11 word12 word13 word14 word15"></textarea>
           <BR>
+            <p>Please submit your seed words to verify you written down the words correctly.</p>
         </div>
       </div>
       <div class="card-footer text-right">
@@ -74,8 +76,8 @@
               </div>
             </div>
           </form>
-          <p>This password encrypts your private key.</p>
-          <p>It is also used to lock and unlock the sensitive parts of your wallet (private keys, sending).</p>
+          <p>This password will encrypt your secret key.</p>
+          <p>When performing operations that need to be signed with your secret key, this password will be required.</p>
         </div>
       </div>
       <div class="card-footer text-right">
@@ -88,9 +90,8 @@
       <div class="card-body">
         <h1 class="card-title">Wallet created</h1>
         <div class="card-text">
-          <p class="seed">
-            <b>Public key hash: {{ getPkh() }}</b>
-          </p>
+          <p class="seed"><b>Your public key hash:
+            {{ getPkh() }}</b></p>
           <br>
           <p>Your wallet is now set up and ready to use.</p>
           <p>Please download your Encrypted Keystore File..</p>

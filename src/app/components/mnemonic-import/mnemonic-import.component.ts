@@ -121,6 +121,9 @@ export class MnemonicImportComponent implements OnInit {
   export(): string {
     return JSON.stringify(this.walletData);
   }
+  showPkh(): string {
+    return this.walletData.pkh;
+  }
   download() {
     this.exportService.downloadWallet(this.walletData);
     this.Downloaded = true;
