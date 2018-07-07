@@ -12,7 +12,7 @@
         </div>
     </div>
     <div class="row bottom-separator">
-        <div class="col-6">
+        <div class="col-12">
             Balance: {{ balance / 1000000 | number:'1.0' }} &#42793;
             <span *ngIf="balanceUSD > 0">(${{ balanceUSD | number:'1.00'}} USD)</span>
         </div>

@@ -67,13 +67,15 @@ export class OfflineSigningComponent implements OnInit {
                 for (let i = 0; i < output.length; i++) {
                     this.decodeOutput = this.decodeOutput + '\n' + output[i];
                 }
-                // + JSON.stringify(op, null, 4);
             } catch (e) {
                 this.decodeOutput = '\n### FAILED TO DECODE OPERATION BYTES! YOU ARE ADVICED TO NOT PROCEED ###\n';
             }
         }
     }
     isOnline(): boolean {
+        if (!this.walletService.wallet) {
+            return true;
+        }
         return (this.walletService.wallet.XTZrate !== null || this.walletService.wallet.balance.balanceXTZ !== null);
     }
     notAllowedToSign(): boolean {

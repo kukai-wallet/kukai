@@ -48,7 +48,6 @@ import { ActivateComponent } from './components/activate/activate.component';
 
 // Pipes
 import { ErrorHandlingPipe } from './pipes/error-handling.pipe';
-import { DonateComponent } from './components/donate/donate.component';
 
 
 @NgModule({
@@ -71,8 +70,7 @@ import { DonateComponent } from './components/donate/donate.component';
     MnemonicImportComponent,
     BakeryComponent,
     ActivateComponent,
-    ErrorHandlingPipe,
-    DonateComponent,
+    ErrorHandlingPipe
   ],
   imports: [
     BrowserModule,
