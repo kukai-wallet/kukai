@@ -72,7 +72,6 @@
     <div *ngIf='decodeOutput' id="decodeDiv">
         <pre>{{ decodeOutput }}</pre>
     </div>
-    <p>{{ note }}</p>
     <form class="form-inline">
         <label class="sr-only" for="inputPassword">Password</label>
         <input [disabled]="notAllowedToSign()" type="password" class="form-control mb-2 mr-sm-2" id="inputPassword" [(ngModel)]="pwd"
@@ -105,7 +104,7 @@
                     <span class="input-group-text min-size-prepend">Operation</span>
                 </div>
                 <div class="custom-file">
-                    <input type="file" [disabled]="walletService.isFullWallet()" class="custom-file-input" id="importWallet" accept=".tzop" (change)="handleSignedOperationFileInput($event.target.files)">
+                    <input type="file" [disabled]="!isOnline()" class="custom-file-input" id="importWallet" accept=".tzop" (change)="handleSignedOperationFileInput($event.target.files)">
                     <label class="custom-file-label" for="importWallet"> {{InputImportOperationFileStep3}} </label>
                 </div>
             </div>
@@ -115,14 +114,14 @@
         <div class="form-group row">
             <div class="col-sm-8">
                 <label for="signedOperationTextarea" class="sr-only">Import your signed operation</label>
-                <textarea rows="3" cols="130" [disabled]="walletService.isFullWallet()" [(ngModel)]="signed2" [ngModelOptions]="{standalone: true}"
+                <textarea rows="3" cols="130" [disabled]="!isOnline()" [(ngModel)]="signed2" [ngModelOptions]="{standalone: true}"
                     class="form-control" id="signedOperationTextarea" placeholder="Signed Operation"></textarea>
             </div>
         </div>
     </form>
     <div class="row">
         <div class="col-lg-8">
-            <button type="button" [disabled]="walletService.isFullWallet()" (click)="broadcast()" class="btn btn-clear btn-second pull-right">Broadcast</button>
+            <button type="button" [disabled]="!isOnline()" (click)="broadcast()" class="btn btn-clear btn-second pull-right">Broadcast</button>
         </div>
     </div>
 </div>

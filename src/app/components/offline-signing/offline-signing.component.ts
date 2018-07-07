@@ -23,7 +23,6 @@ export class OfflineSigningComponent implements OnInit {
     pwdPlaceholder = '';
     decodeOutput = '';
     errorMessage = '';
-    note = '';
     showInstructions = false;
     instructionBtn = 'Show help';
     isFullWallet = false;
@@ -56,7 +55,6 @@ export class OfflineSigningComponent implements OnInit {
         }
     }
     decodeUnsignedOp() {
-        this.note = '';
         if (!this.unsigned) {
             this.decodeOutput = '';
             console.log('don\'t decode');
@@ -64,9 +62,13 @@ export class OfflineSigningComponent implements OnInit {
             console.log('decode...');
             try {
                 const op = this.operationService.decodeOpBytes(this.unsigned);
-                this.decodeOutput = '### PLEASE VERIFY THIS DATA ARE CORRECT BEFORE SIGNING ###\n\n' + JSON.stringify(op, null, 4);
-                this.note = '*Unit for amount and fee are in micro tez';
-            } catch {
+                this.decodeOutput = '\n### PLEASE VERIFY THIS DATA ARE CORRECT BEFORE SIGNING ###\n';
+                const output = this.operationService.fop2strings(op);
+                for (let i = 0; i < output.length; i++) {
+                    this.decodeOutput = this.decodeOutput + '\n' + output[i];
+                }
+                // + JSON.stringify(op, null, 4);
+            } catch (e) {
                 this.decodeOutput = '\n### FAILED TO DECODE OPERATION BYTES! YOU ARE ADVICED TO NOT PROCEED ###\n';
             }
         }
