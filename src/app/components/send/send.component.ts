@@ -96,7 +96,7 @@ export class SendComponent implements OnInit {
         }
     }
 
-    showAccountBalance(accountPkh: string) {
+    showAccountBalance(accountPkh: string = this.activePkh) {
         let accountBalance: number;
         let accountBalanceString: string;
         let index;
@@ -104,7 +104,7 @@ export class SendComponent implements OnInit {
         index = this.accounts.findIndex(account => account.pkh === accountPkh);
         if (index !== -1) {
             accountBalance = this.accounts[index].balance.balanceXTZ / 1000000;
-            accountBalanceString = this.numberWithCommas(accountBalance) + ' &#42793;';
+            accountBalanceString = this.numberWithCommas(accountBalance) + ' XTZ';
             return accountBalanceString;
         } else {
             return null;

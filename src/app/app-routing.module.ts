@@ -16,7 +16,6 @@ import { AccountComponent } from './components/account/account.component';
 import { MnemonicImportComponent } from './components/mnemonic-import/mnemonic-import.component';
 import { BakeryComponent } from './components/bakery/bakery.component';
 import { ActivateComponent } from './components/activate/activate.component';
-import { DonateComponent } from './components/donate/donate.component';
 
 const routes: Routes = [
   { path: '', component: StartComponent },  // Content Centre position
@@ -33,8 +32,7 @@ const routes: Routes = [
   { path: 'delegate', component: DelegateComponent },
   { path: 'account', component: AccountComponent },
   { path: 'bakery', component: BakeryComponent },
-  { path: 'activate', component: ActivateComponent },
-  { path: 'donate', component: DonateComponent }
+  { path: 'activate', component: ActivateComponent }
 ];
 
 @NgModule({
