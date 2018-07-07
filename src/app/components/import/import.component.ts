@@ -32,12 +32,20 @@ export class ImportComponent implements OnInit {
   }
   importFromPkh() {
     console.log('Call import service');
-    this.importService.importWalletFromPkh(this.pkh);
-    this.router.navigate(['/overview']);
+    if (this.pkh.slice(0, 3) === 'tz1' && this.pkh.length === 36) {
+      this.importService.importWalletFromPkh(this.pkh);
+      this.router.navigate(['/overview']);
+    } else {
+      this.messageService.addError('Invalid public key hash');
+    }
   }
   importFromPk() {
-    this.importService.importWalletFromPk(this.pk);
-    this.router.navigate(['/overview']);
+    if (this.pkh.slice(0, 4) === 'edpk') {
+      this.importService.importWalletFromPk(this.pk);
+      this.router.navigate(['/overview']);
+    } else {
+      this.messageService.addError('Invalid prefix!');
+    }
   }
   import(keyFile: string) {
     if (this.importService.importWalletData(keyFile)) {
