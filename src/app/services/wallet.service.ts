@@ -23,10 +23,13 @@ export class WalletService {
       return bip39.generateMnemonic(160);
     }
     const entropy = bip39.mnemonicToEntropy(bip39.generateMnemonic(160));
+    // console.log('Entropy 1: ' + entropy);
+    // console.log('Entropy 2: ' + extraEntropy);
     let mixed = '';
     for (let i = 0; i < 40; i++) {
       mixed = mixed + (Number('0x' + entropy[i]) ^ Number('0x' + extraEntropy[i])).toString(16);
     }
+    // console.log('Entropy m: ' + mixed);
     if (mixed.length !== 40) {
       console.log('Not 160 bits entropy');
       throw new Error('Invalid entropy mix');

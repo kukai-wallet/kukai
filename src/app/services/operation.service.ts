@@ -619,7 +619,7 @@ export class OperationService {
     }
   }
   /*
-    Validate binaries
+    Validate operation bytes
   */
   validOpBytes(fop: any, opbytes: string): boolean {
     console.log('Validating...');
@@ -630,5 +630,30 @@ export class OperationService {
       return true; // Client and node agree the opbytes are correct!
     }
     return false;
+  }
+  /*
+    Output
+  */
+  fop2strings(fop: any): any {
+    const output: string[] = [];
+    for (let i = 0; i < fop.contents.length; i++) {
+      if (fop.contents[i].kind !== 'reveal') {
+        output.push('Type: ' + fop.contents[i].kind);
+        output.push('Source: ' + fop.contents[i].source);
+        if (fop.contents[i].kind === 'transaction') {
+          output.push('Destination: ' + fop.contents[i].destination);
+          output.push('Amount: ' + (Number(fop.contents[i].amount) / this.toMicro).toString() + ' tez');
+        } else if (fop.contents[i].kind === 'origination') {
+          output.push('Manager: ' + fop.contents[i].managerPubkey);
+          output.push('Balance: ' + (Number(fop.contents[i].balance) / this.toMicro).toString() + ' tez');
+        } else if (fop.contents[i].kind === 'delegation') {
+          output.push('Delegate: ' + fop.contents[i].delegate);
+        } else {
+          throw new Error('Tag not supported. Failed to convert to strings.');
+        }
+        output.push('Fee: ' + (Number(fop.contents[i].fee) / this.toMicro).toString() + ' tez');
+      }
+    }
+    return output;
   }
 }
