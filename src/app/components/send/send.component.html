@@ -71,8 +71,8 @@
         <div class="modal-body">
             <p>From: {{ activePkh }}
                 <BR> To: {{ toPkh }}
-                <BR> Amount: {{ amount | number:'1.0' }}&#42793;
-                <BR> Fee: {{ fee | number:'1.0' }}&#42793;
+                <BR> Amount: {{ amount | number:'1.0-6' }}&#42793;
+                <BR> Fee: {{ fee | number:'1.0-6' }}&#42793;
             </p>
             <div class="row">
                 <div *ngIf='walletService.isFullWallet()' class="col-md-6">

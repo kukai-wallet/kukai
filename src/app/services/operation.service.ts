@@ -593,7 +593,6 @@ export class OperationService {
     let value = 0;
     while (1) {
       const byte = Number('0x' + hex.slice(0 + count * 2, 2 + count * 2));
-      console.log('byte ' + hex.slice(0 + count * 2, 2 + count * 2));
       value += ((byte & 127) * (128 ** count));
       count++;
       if ((byte & 128) !== 128) {
