@@ -233,6 +233,7 @@ export class OperationService {
   Help function for operations
 */
   operation(fop: any, keys: KeyPair, origination: boolean = false): Observable<any> {
+    console.log('fop to send: ' + JSON.stringify(fop));
     return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/forge/operations', fop)
       .flatMap((opbytes: any) => {
         if (!this.validOpBytes(fop, opbytes)) {
@@ -587,11 +588,13 @@ export class OperationService {
     };
   }
   zarithDecode(hex: string): any {
+    console.log('hex ' + hex);
     let count = 0;
     let value = 0;
     while (1) {
       const byte = Number('0x' + hex.slice(0 + count * 2, 2 + count * 2));
-      value = value ^ ((byte & 127) << (7 * count));
+      console.log('byte ' + hex.slice(0 + count * 2, 2 + count * 2));
+      value += ((byte & 127) * (128 ** count));
       count++;
       if ((byte & 128) !== 128) {
         break;
@@ -621,8 +624,8 @@ export class OperationService {
   validOpBytes(fop: any, opbytes: string): boolean {
     console.log('Validating...');
     const fop2: any = this.decodeOpBytes(opbytes);
-    /*console.log('1: ' + JSON.stringify(fop));
-      console.log('2: ' + JSON.stringify(fop2));*/
+    console.log('1: ' + JSON.stringify(fop));
+      console.log('2: ' + JSON.stringify(fop2));
     if (JSON.stringify(fop) === JSON.stringify(fop2)) {
       return true; // Client and node agree the opbytes are correct!
     }
