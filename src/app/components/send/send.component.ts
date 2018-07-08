@@ -201,7 +201,6 @@ export class SendComponent implements OnInit {
                         }
                     } else {
                         console.log('Transaction error id ', ans.payload.msg);
-                        this.errorMessage = this.sendResponse.payload.msg;
                     }
                 },
                 err => {

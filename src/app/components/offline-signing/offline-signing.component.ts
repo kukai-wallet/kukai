@@ -93,8 +93,10 @@ export class OfflineSigningComponent implements OnInit {
                         this.messageService.addSuccess('Operation successfully broadcasted to the network: ' + ans.payload.opHash);
                         if (ans.payload.newPkh) {
                             console.log('New pkh found: ' + ans.payload.newPkh);
-                            this.walletService.addAccount(ans.payload.newPkh);
-                            this.coordinatorService.start(ans.payload.newPkh);
+                            if (this.walletService.wallet) {
+                                this.walletService.addAccount(ans.payload.newPkh);
+                                this.coordinatorService.start(ans.payload.newPkh);
+                            }
                         }
                     } else {
                         this.errorMessage = ans.payload.msg;

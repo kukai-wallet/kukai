@@ -122,7 +122,7 @@
 
                 <div *ngIf='sendResponse.success === false'>
                     <p>Operation failed!</p>
-                    <p class="text-danger">{{ errorMessage }}</p>
+                    <p class="text-danger">{{ sendResponse.payload.msg }}</p>
                 </div>
 
                 <button *ngIf='sendResponse.payload.unsignedOperation' type="button" class="btn btn-primary" (click)="download()">Download</button>

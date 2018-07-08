@@ -24,6 +24,8 @@ export class OperationService {
   CHAIN_ID = 'PtCJ7pwoxe8JasnHY8YonnLYjcVHmhiARPJvqcC6VfHT5s8k8sY';
   prefix = {
     tz1: new Uint8Array([6, 161, 159]),
+    tz2: new Uint8Array([6, 161, 161]),
+    tz3: new Uint8Array([6, 161, 164]),
     edpk: new Uint8Array([13, 15, 37, 217]),
     edsk: new Uint8Array([43, 246, 78, 7]),
     edsig: new Uint8Array([9, 245, 205, 134, 18]),
@@ -500,7 +502,7 @@ export class OperationService {
     let index = 0;
     const op = this.decodeCommon({ kind: 'reveal' }, content);
     if (op.rest.slice(index, index += 2) !== '00') {
-      throw new Error('TagError');
+      throw new Error('TagErrorR1');
     }
     op.data.public_key = this.b58cencode(this.hex2buf(op.rest.slice(index, index += 64)), this.prefix.edpk);
     if (op.rest.length === index) {
@@ -517,7 +519,7 @@ export class OperationService {
     op.data.destination = this.decodeContractId(op.rest.slice(index += amount.count * 2, index += 44));
     if (op.rest.slice(index, index += 2) === 'ff') { // parameters?
       console.log('parameters ' + op.rest.slice(index - 2));
-      throw new Error('UnsupportedTag');
+      throw new Error('UnsupportedTagT1');
     }
     if (op.rest.length === index) {
       return [op.data];
@@ -528,21 +530,18 @@ export class OperationService {
   decodeOrigination(content: any): any { // Tag 9
     let index = 0;
     const op = this.decodeCommon({ kind: 'origination' }, content);
-    if (op.rest.slice(index, index += 2) !== '00') {
-      throw new Error('TagError');
-    }
-    op.data.managerPubkey = this.b58cencode(this.hex2buf(op.rest.slice(index, index += 40)), this.prefix.tz1);
+    op.data.managerPubkey = this.decodePkh(op.rest.slice(index, index += 42));
     const balance = this.zarithDecode(op.rest.slice(index));
     op.data.balance = balance.value.toString();
     op.data.spendable = (op.rest.slice(index += balance.count * 2, index += 2) === 'ff');
     op.data.delegatable = (op.rest.slice(index, index += 2) === 'ff');
     if (op.rest.slice(index, index += 2) === 'ff') { // delegate?
       console.log('delegate ' + op.rest.slice(index - 2));
-      throw new Error('UnsupportedTag');
+      throw new Error('UnsupportedTagO1');
     }
     if (op.rest.slice(index, index += 2) === 'ff') { // script?
       console.log('script ' + op.rest.slice(index - 2));
-      throw new Error('UnsupportedTag');
+      throw new Error('UnsupportedTagO2');
     }
     if (op.rest.length === index) {
       return [op.data];
@@ -554,16 +553,11 @@ export class OperationService {
     let index = 0;
     const op = this.decodeCommon({ kind: 'delegation' }, content);
     console.log('hex: ' + op.rest + ' ' + op.rest.length);
-    const tag = op.rest.slice(index, index += 2);
-    if (tag === 'ff') {
-      if (op.rest.slice(index, index += 2) === '00') {
-        op.data.delegate = this.b58cencode(this.hex2buf(op.rest.slice(index, index += 40)), this.prefix.tz1);
-      } else {
-        throw new Error('TagError');
-      }
-    } else if (tag !== '00') {
-      throw new Error('TagError');
+    if (op.rest.slice(index, index += 2) !== 'ff') {
+      throw new Error('TagErrorD1');
     }
+    op.data.delegate = this.decodePkh(op.rest.slice(index, index += 42));
+    console.log('INDEX' + index);
     if (op.rest.length === index) {
       return [op.data];
     } else {
@@ -587,6 +581,21 @@ export class OperationService {
       rest: rest
     };
   }
+  decodePkh(bytes: string): string {
+    console.log('Pkh tag: ' + bytes.slice(0, 2));
+    if (bytes.slice(0, 2) === '00') {
+      return this.b58cencode(this.hex2buf(bytes.slice(2, 42)), this.prefix.tz1);
+    } else if (bytes.slice(0, 2) === '01') {
+      return this.b58cencode(this.hex2buf(bytes.slice(2, 42)), this.prefix.tz2);
+    } else if (bytes.slice(0, 2) === '02') {
+      return this.b58cencode(this.hex2buf(bytes.slice(2, 42)), this.prefix.tz3);
+    } else {
+      throw new Error('TagErrorPkh');
+    }
+  }
+  decodePk() {
+    return null;
+  }
   zarithDecode(hex: string): any {
     console.log('hex ' + hex);
     let count = 0;
@@ -608,7 +617,7 @@ export class OperationService {
     console.log('hex: ' + hex);
     if (hex.slice(0, 2) === '00') {
       console.log('tz1');
-      return this.b58cencode(this.hex2buf(hex.slice(4, 44)), this.prefix.tz1);
+      return this.decodePkh(hex.slice(2, 44));
     } else if (hex.slice(0, 2) === '01') {
       console.log('KT1');
       return this.b58cencode(this.hex2buf(hex.slice(2, 42)), this.prefix.KT);

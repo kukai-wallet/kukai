@@ -14,7 +14,7 @@
                     <div class="form-group col-md-8">
                         <label for="fromAdress">From Address</label>
                         <select [(ngModel)]="activePkh" id="fromAdress" class="form-control" name="first">
-                            <option *ngFor="let account of accounts" [ngValue]="account.pkh">{{ account.pkh }}</option>
+                            <option *ngFor="let account of accounts | slice:1" [ngValue]="account.pkh">{{ account.pkh }}</option>
                         </select>
                     </div>
                 </div>
@@ -52,7 +52,7 @@
                 <BR> Fee: {{ fee | number:'1.0' }}&#42793;
             </p>
             <div class="row">
-                <div class="form-group col-md-6">
+                <div *ngIf='walletService.isFullWallet()' class="form-group col-md-6">
                     <label for="pwd">Password:</label>
                     <input [(ngModel)]="password" type="password" id="pwd" class="form-control">
                 </div>
@@ -74,16 +74,24 @@
             <div *ngIf='!sendResponse'>
                 Please wait...
             </div>
-            <div *ngIf='sendResponse === "success"'>
-                <i class="fa fa-check-circle"></i>
-                <br>
-                <br>
-                <p>Your delegation has been successfully broadcasted to the network</p>
-            </div>
-            <div *ngIf='sendResponse === "failure"'>
-                Set delegation failed!
-                <p class="text-danger">{{ errorMessage }}</p>
-            </div>
+            <ng-container *ngIf='sendResponse'>
+                <div *ngIf='sendResponse.success === true'>
+                    <i class="fa fa-check-circle"></i>
+                    <br>
+                    <br>
+                    <ng-container *ngIf='sendResponse.payload.opHash'>
+                        <p>Your funding of a new account have successfully been broadcasted to the network</p>
+                    </ng-container>
+                    <ng-container *ngIf='sendResponse.payload.unsignedOperation'>
+                        <p>Your unsigned transaction have successfully been created</p>
+                    </ng-container>
+                </div>
+                <div *ngIf='sendResponse.success === false'>
+                    <p>Operation failed!</p>
+                    <p class="text-danger">{{ sendResponse.payload.msg }}</p>
+                </div>
+                <button *ngIf='sendResponse.payload.unsignedOperation' type="button" class="btn btn-primary" (click)="download()">Download</button>
+            </ng-container>
             <button type="button" class="btn btn-primary" id="sub" (click)="close3()">Close</button>
         </div>
     </ng-template>

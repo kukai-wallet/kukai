@@ -7,6 +7,7 @@ import { OperationService } from '../../services/operation.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { KeyPair } from '../../interfaces';
+import { ExportService } from '../../services/export.service';
 
 @Component({
     selector: 'app-delegate',
@@ -25,8 +26,7 @@ export class DelegateComponent implements OnInit {
     password: string;
     pwdValid: string;
     formInvalid = '';
-    sendResponse: string;
-    errorMessage = '';
+    sendResponse: any;
 
     modalRef1: BsModalRef;
     modalRef2: BsModalRef;
@@ -37,7 +37,8 @@ export class DelegateComponent implements OnInit {
         private walletService: WalletService,
         private messageService: MessageService,
         private operationService: OperationService,
-        private coordinatorService: CoordinatorService
+        private coordinatorService: CoordinatorService,
+        private exportService: ExportService
     ) { }
 
     ngOnInit() {
@@ -105,19 +106,18 @@ export class DelegateComponent implements OnInit {
         setTimeout(async () => {
             this.operationService.delegate(this.activePkh, toPkh, Number(fee), keys).subscribe(
                 (ans: any) => {
+                    this.sendResponse = ans;
                     console.log(JSON.stringify(ans));
-                    if (ans.payload.opHash) {
-                        this.sendResponse = 'success';
-                        this.coordinatorService.boost(this.activePkh);
+                    if (ans.success === true) {
+                        if (ans.payload.opHash) {
+                            this.coordinatorService.boost(this.activePkh);
+                        }
                     } else {
-                        this.sendResponse = 'failure';
                         console.log('Delegation error id ', ans.payload.msg);
-                        this.errorMessage = ans.payload.msg;
                     }
                 },
                 err => {
                     console.log('Error Message ', JSON.stringify(err));
-                    this.sendResponse = 'failure';
                 }
             );
         }, 100);
@@ -139,4 +139,7 @@ export class DelegateComponent implements OnInit {
             return '';
         }
     }
+    download() {
+        this.exportService.downloadOperationData(this.sendResponse.payload.unsignedOperation, false);
+      }
 }

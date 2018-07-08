@@ -86,8 +86,8 @@
                 </ng-container>
             </div>
             <div *ngIf='sendResponse.success === false'>
-                <p>Failure!</p>
-                <p>{{ sendResponse.payload.msg }}</p>
+                <p>Operation failed!</p>
+                <p class="text-danger">{{ sendResponse.payload.msg }}</p>
             </div>
             <button *ngIf='sendResponse.payload.unsignedOperation' type="button" class="btn btn-primary" (click)="download()">Download</button>
         </ng-container>
