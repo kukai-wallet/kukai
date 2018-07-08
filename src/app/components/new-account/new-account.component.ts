@@ -59,6 +59,7 @@ export class NewAccountComponent implements OnInit {
   open2(template: TemplateRef<any>) {
     this.formInvalid = this.invalidInput();
     if (!this.formInvalid) {
+      if (!this.amount) { this.amount = '0'; }
       if (!this.fee) { this.fee = '0'; }
       this.close1();
       this.modalRef2 = this.modalService.show(template, { class: 'second' });
