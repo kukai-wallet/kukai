@@ -49,7 +49,7 @@
           <form class="form-group">
             <div class="form-group row">
               <div class="col-sm-12">
-                <textarea [(ngModel)]="userMnemonic" [ngModelOptions]="{standalone: true}" rows="4" class="form-control" placeholder="word1 word2 word3 word4 word5 word6 word7 word8 word9 word10 word11 word12 word13 word14 word15 "></textarea>
+                <textarea [(ngModel)]="userMnemonic" [ngModelOptions]="{standalone: true}" rows="4" class="form-control" placeholder="word1 word2 word3 word4 word5 word6 word7 word8 word9 word10 word11 word12 word13 word14 word15"></textarea>
               </div>
             </div>
           </form>
@@ -57,31 +57,29 @@
           <p>Please submit your seed words to verify you written down the words correctly.</p>
         </div>
       </div>
-      <div class="card-footer text-right ">
-        <button type="button " class="btn btn-primary btn-lg " [disabled]="!mnemonicMatch() " (click)="pwdView() ">Next</button>
+      <div class="card-footer text-right">
+        <button type="button" class="btn btn-primary btn-lg" [disabled]="!mnemonicMatch()" (click)="pwdView()">Next</button>
       </div>
     </div>
 
     <!-- Password card -->
-    <div class="card text-center fix-size " *ngIf="activePanel==4 ">
-      <div class="card-body ">
-        <h1 class="card-title ">Choose your Password</h1>
-        <div class="card-text ">
+    <div class="card text-center fix-size" *ngIf="activePanel==4">
+      <div class="card-body">
+        <h1 class="card-title">Choose your Password</h1>
+        <div class="card-text">
           <form>
-            <div class="form-group row ">
-              <div class="col-sm-12 ">
-                <input type="password " [(ngModel)]="pwd1 " [ngModelOptions]="{standalone: true} " class="form-control
-            " placeholder="Password ">
+            <div class="form-group row">
+              <div class="col-sm-12">
+                <input type="password" [(ngModel)]="pwd1" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Password">
               </div>
             </div>
-            <div class="form-group row ">
-              <div class="col-sm-12 ">
-                <input type="password " [(ngModel)]="pwd2 " [ngModelOptions]="{standalone: true} " class="form-control
-            " placeholder="Confirm Password ">
-                <small id="emailHelp1 " class="form-text text-muted text-left ">Minimum {{ this.MIN_PWD_LENGTH }} characters</small>
-                <small id="emailHelp2 " class="form-text alert-danger text-left " *ngIf="!isValidPass.minLength ">There must be a minimum of {{ MIN_PWD_LENGTH }} characters</small>
-                <small id="emailHelp3 " class="form-text alert-danger text-left " *ngIf="!isValidPass.match ">Passswords doesn't match!</small>
-                <small id="emailHelp4 " class="form-text alert-success text-left " *ngIf="isValidPass.confirmed ">Password confirmed</small>
+            <div class="form-group row">
+              <div class="col-sm-12">
+                <input type="password" [(ngModel)]="pwd2" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Confirm Password">
+                <small id="emailHelp1" class="form-text text-muted text-left">Minimum {{ this.MIN_PWD_LENGTH }} characters</small>
+                <small id="emailHelp2" class="form-text alert-danger text-left" *ngIf="!isValidPass.minLength">There must be a minimum of {{ MIN_PWD_LENGTH }} characters</small>
+                <small id="emailHelp3" class="form-text alert-danger text-left" *ngIf="!isValidPass.match">Passswords doesn't match!</small>
+                <small id="emailHelp4" class="form-text alert-success text-left" *ngIf="isValidPass.confirmed">Password confirmed</small>
               </div>
             </div>
           </form>
@@ -89,28 +87,27 @@
           <p>When performing operations that need to be signed with your secret key, this password will be required.</p>
         </div>
       </div>
-      <div class="card-footer text-right ">
-        <button type="button " class="btn btn-primary btn-lg " [disabled]="!pwd1 " (click)="encryptWallet() ">Encrypt</button>
+      <div class="card-footer text-right">
+        <button type="button" class="btn btn-primary btn-lg" [disabled]="!pwd1" (click)="encryptWallet()">Encrypt</button>
       </div>
     </div>
 
     <!-- Seed card -->
-    <div class="card text-center fix-size " *ngIf="activePanel==5 ">
-      <div class="card-body ">
-        <h1 class="card-title ">Wallet created</h1>
-        <div class="card-text ">
-          <p class="seed ">
+    <div class="card text-center fix-size" *ngIf="activePanel==5">
+      <div class="card-body">
+        <h1 class="card-title">Wallet created</h1>
+        <div class="card-text">
+          <p class="seed">
             <b>Your public key hash: {{ getPkh() }}</b>
           </p>
           <br>
           <p>Your wallet is now set up and ready to use.</p>
           <p>Please download your Encrypted Keystore File..</p>
-          <button type="button " class="btn btn-primary btn-lg " (click)="download() ">Download</button>
+          <button type="button" class="btn btn-primary btn-lg" (click)="download()">Download</button>
         </div>
       </div>
-      <div class="card-footer text-right ">
-        <button type="button " class="btn btn-primary btn-lg " [disabled]="!ekfDownloaded " (click)="done()
-            " routerLink=" ">Finish</button>
+      <div class="card-footer text-right">
+        <button type="button" class="btn btn-primary btn-lg" [disabled]="!ekfDownloaded" (click)="done()" routerLink="">Finish</button>
       </div>
     </div>
   </div>
