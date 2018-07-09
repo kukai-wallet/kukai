@@ -166,9 +166,21 @@ ul.CTAs a {
     padding-top: 22vh !important;  //This needs to change - creates vertical scroll bar
 }
 .donation {
-    font-size: 0.74em;
-    padding-left: 10px;
-    margin: 0 0 0 0;
+    font-size: 0.8em;
+    //padding-left: 10px;
+    //margin: 0 0 0 0;
+
+    //Center
+    //display: flex !important;
+    //justify-content: center !important;
+}
+
+.donation-address {
+    padding-left: 3px;
+}
+
+.donation:hover {
+    color: rgb(255, 0, 64) !important;
 }
 
 .bottom-CTAs .fa {
@@ -191,10 +203,9 @@ ul.CTAs a {
 }
 .fa-gratipay {
     font-size: 16px !important;
-    padding: 0px !important;
-    margin: 0px !important;
+    color: rgb(187, 91, 115) !important;
+    padding: 5px !important;
+    padding-left: 15px !important;
 }
-.fa-gratipay:hover {
-    color: rgb(255, 0, 64) !important;
-}
+
 
