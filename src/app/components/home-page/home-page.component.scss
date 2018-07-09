@@ -163,11 +163,12 @@ ul.CTAs a {
 }
 
 .bottom-CTAs {
-    padding-top: 25vh !important;  //This needs to change - creates vertical scroll bar
+    padding-top: 22vh !important;  //This needs to change - creates vertical scroll bar
 }
-#donation {
+.donation {
     font-size: 0.74em;
     padding-left: 10px;
+    margin: 0 0 0 0;
 }
 
 .bottom-CTAs .fa {
@@ -188,7 +189,12 @@ ul.CTAs a {
 .fa-twitter:hover {
 	color: #1DA1F3 !important;
 }
+.fa-gratipay {
+    font-size: 16px !important;
+    padding: 0px !important;
+    margin: 0px !important;
+}
 .fa-gratipay:hover {
-	color: rgb(255, 0, 64) !important;
+    color: rgb(255, 0, 64) !important;
 }
 
