@@ -616,7 +616,7 @@ export class OperationService {
   decodeContractId(hex: string): string {
     console.log('hex: ' + hex);
     if (hex.slice(0, 2) === '00') {
-      console.log('tz1');
+      console.log('tz');
       return this.decodePkh(hex.slice(2, 44));
     } else if (hex.slice(0, 2) === '01') {
       console.log('KT1');

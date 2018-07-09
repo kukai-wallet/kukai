@@ -32,7 +32,7 @@ export class ImportComponent implements OnInit {
   }
   importFromPkh() {
     console.log('Call import service');
-    if (this.pkh.slice(0, 3) === 'tz1' && this.pkh.length === 36) {
+    if (this.pkh.slice(0, 2) === 'tz' && this.pkh.length === 36) {
       this.importService.importWalletFromPkh(this.pkh);
       this.router.navigate(['/overview']);
     } else {
