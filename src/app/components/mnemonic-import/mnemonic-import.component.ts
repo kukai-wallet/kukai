@@ -45,17 +45,19 @@ export class MnemonicImportComponent implements OnInit {
     if (this.tge) {
       this.passphrase = this.email + this.password;
     }
-    const pkh = this.operationService.seed2keyPair(this.operationService.mnemonic2seed(this.mnemonic, this.passphrase)).pkh;
     if (!this.operationService.validMnemonic(this.mnemonic)) {
       this.messageService.addError('Invalid mnemonic!', 10);
-    } else if (this.pkh && pkh !== this.pkh) {
-      if (this.tge) {
-        this.messageService.addError('Invalid email or password!', 5);
-      } else {
-        this.messageService.addError('Invalid passphrase!', 5);
-      }
     } else {
-      this.activePanel++;
+      const pkh = this.operationService.seed2keyPair(this.operationService.mnemonic2seed(this.mnemonic, this.passphrase)).pkh;
+      if (this.pkh && pkh !== this.pkh) {
+        if (this.tge) {
+          this.messageService.addError('Invalid email or password!', 5);
+        } else {
+          this.messageService.addError('Invalid passphrase!', 5);
+        }
+      } else {
+        this.activePanel++;
+      }
     }
   }
   setPwd() {
