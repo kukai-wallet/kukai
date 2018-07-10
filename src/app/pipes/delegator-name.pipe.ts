@@ -17,7 +17,6 @@ export class DelegatorNamePipe implements PipeTransform {
     ['tz1L5GqtsKbasq9yD4hvtGC7VprPXDPmeb9V', 'Tezos Bakes']
   ]);
   transform(pkh: string): any {
-    console.log('Get delegator name');
     if (!pkh) {
       return '';
     }
@@ -25,7 +24,7 @@ export class DelegatorNamePipe implements PipeTransform {
     if (name) {
       return name;
     } else {
-      return '';
+      return pkh;
     }
   }
 }
