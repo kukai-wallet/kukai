@@ -38,7 +38,7 @@
                 {{ account.balance.balanceXTZ / 1000000 | number:'1.00' }} &#42793;
             </div>
             <div class="col-sm-auto col-border border border-warning text-truncate min-size-address-cell mono">
-                <span *ngIf="account.delegate">{{ account.delegate }}</span>
+                <span *ngIf="account.delegate">{{ account.delegate | delegatorName }}</span>
             </div>
             <div class="col-sm-auto col-border" *ngIf="!this.walletService.isObserverWallet()">
                 <app-delegate [activePkh]="account.pkh"></app-delegate>

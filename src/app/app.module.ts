@@ -48,6 +48,7 @@ import { ActivateComponent } from './components/activate/activate.component';
 
 // Pipes
 import { ErrorHandlingPipe } from './pipes/error-handling.pipe';
+import { DelegatorNamePipe } from './pipes/delegator-name.pipe';
 
 
 @NgModule({
@@ -70,7 +71,8 @@ import { ErrorHandlingPipe } from './pipes/error-handling.pipe';
     MnemonicImportComponent,
     BakeryComponent,
     ActivateComponent,
-    ErrorHandlingPipe
+    ErrorHandlingPipe,
+    DelegatorNamePipe
   ],
   imports: [
     BrowserModule,
@@ -101,7 +103,8 @@ import { ErrorHandlingPipe } from './pipes/error-handling.pipe';
     ExportService,
     DelegateService,
     TzscanService,
-    ErrorHandlingPipe
+    ErrorHandlingPipe,
+    DelegatorNamePipe
   ],
   bootstrap: [AppComponent]
 })

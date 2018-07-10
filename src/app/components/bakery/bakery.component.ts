@@ -3,6 +3,7 @@ import { WalletService } from '../../services/wallet.service';
 import { MessageService } from '../../services/message.service';
 import { ActivityService } from '../../services/activity.service';
 import { Account, Balance, Activity } from '../../interfaces';
+import { DelegatorNamePipe } from '../../pipes/delegator-name.pipe';
 
 
 @Component({
@@ -15,7 +16,8 @@ export class BakeryComponent implements OnInit {
     constructor(
         public walletService: WalletService,
         private messageService: MessageService,
-        private activityService: ActivityService
+        private activityService: ActivityService,
+        private delegatorNamePipe: DelegatorNamePipe
     ) { }
 
     ngOnInit() {
