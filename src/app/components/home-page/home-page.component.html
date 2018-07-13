@@ -1,6 +1,87 @@
+<div class="row border-bottom row-mobile">
+
+    <!-- Menu Button -->
+    <div class="col-sm">
+
+    <!-- SideMenu Toggle Button --
+        <button class="navbar-toggler bars-margin-top" (click)="isCollapsed = !isCollapsed" type="button"  
+            aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fa fa-bars"></i>
+        </button>
+    -->
+    
+        
+    </div>
+
+    <div class="col-sm">
+    </div>
+
+    <div class="col-sm">
+
+        <!-- Language Button -->
+        <div class="btn-group dropdown-padding" dropdown>
+            <button id="button-language" dropdownToggle type="button" class="btn btn-light dropdown-toggle btn-sm"
+                    aria-controls="dropdown-basic">
+                Language <span class="caret"></span>
+            </button>
+            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+                role="menu" aria-labelledby="button-language">
+                <li role="menuitem"><span class="dropdown-item">English</span></li> <!-- 1.12 bn million -->
+                <li role="menuitem"><span class="dropdown-item">中国</span></li> <!-- 1.10 bn - Chinese Simplified -->
+                <li role="menuitem"><span class="dropdown-item">Español</span></li> <!-- 512.9 million - Spanish -->
+                <li role="menuitem"><span class="dropdown-item">Français</span></li> <!-- 284.9 million - French -->
+                <li role="menuitem"><span class="dropdown-item">Pусский</span></li> <!-- 264.3 million - Russian -->
+                <li role="menuitem"><span class="dropdown-item">日本の</span></li> <!-- 128.3 million - Japanese -->
+                <li role="menuitem"><span class="dropdown-item">한국어</span></li> <!-- 77.2 million - Korean -->
+                <li role="menuitem"><span class="dropdown-item">Svenska</span></li> <!-- Swedish -->
+
+                <!-- Most spoken languages
+                <li role="menuitem"><a class="dropdown-item" href="#">English</a></li> <!-- 1.12 bn million --
+                <li role="menuitem"><a class="dropdown-item" href="#">中国</a></li> <!-- 1.10 bn - Chinese Simplified --
+                <li role="menuitem"><a class="dropdown-item" href="#">हिन्दी</a></li> <!-- 697.4 million - Hindi --
+                <li role="menuitem"><a class="dropdown-item" href="#">Español</a></li> <!-- 512.9 million - Spanish --
+                <li role="menuitem"><a class="dropdown-item" href="#">عربى</a></li> <!-- 422 million - Arabic --
+                <li role="menuitem"><a class="dropdown-item" href="#">Français</a></li> <!-- 284.9 million - French --
+                <li role="menuitem"><a class="dropdown-item" href="#">Melayu</a></li> <!-- 281 million - Malay is an official language in Singapore, Brunei, Indonesia, and Malaysia. --
+                <li role="menuitem"><a class="dropdown-item" href="#">Pусский</a></li> <!-- 264.3 million - Russian --
+                <li role="menuitem"><a class="dropdown-item" href="#">বাঙালি</a></li> <!-- 261.8 million - Bengali --
+                <li role="menuitem"><a class="dropdown-item" href="#">Português</a></li>  <!-- 236.5 million - Portuguese --
+                <li role="menuitem"><a class="dropdown-item" href="#">Deutsch</a></li> <!-- 132 million - German --
+                <li role="menuitem"><a class="dropdown-item" href="#">日本の</a></li> <!-- 128.3 million - Japanese --
+                <li role="menuitem"><a class="dropdown-item" href="#">Kiswahili</a></li> <!-- 98.3 million - Swahili (Niger–Congo, Bantu) --
+                <li role="menuitem"><a class="dropdown-item" href="#">한국어</a></li> <!-- 77.2 million - Korean --
+                <li role="menuitem"><a class="dropdown-item" href="#">Tiếng Việt</a></li> <!-- 67.9 millio - Vietnamese --
+                <li role="menuitem"><a class="dropdown-item" href="#">Italiano</a></li> <!-- 67.8 million - Italian --
+                <li role="menuitem"><a class="dropdown-item" href="#">Svenska</a></li> <!-- Swedish --
+                --> 
+            </ul>
+        </div>
+
+        <!-- Currency Button -->
+        <div class="btn-group dropdown-padding" dropdown>
+            <button id="button-Currency" dropdownToggle type="button" class="btn btn-light dropdown-toggle btn-sm"
+                    aria-controls="dropdown-basic">
+                Currency <span class="caret"></span>
+            </button>
+            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+                role="menu" aria-labelledby="button-Currency">
+                <li role="menuitem"><span class="dropdown-item">USD</span></li>
+                <li role="menuitem"><span class="dropdown-item">EUR</span></li>
+                <li role="menuitem"><span class="dropdown-item">CNY</span></li>
+                <li role="menuitem"><span class="dropdown-item">JPY</span></li>
+                <li role="menuitem"><span class="dropdown-item">KRW</span></li>
+                <li role="menuitem"><span class="dropdown-item">RUB</span></li>
+                <li role="menuitem"><span class="dropdown-item">GBP</span></li>
+                <li role="menuitem"><span class="dropdown-item">INR</span></li>
+            </ul>
+        </div>
+        
+    </div>
+</div>
+
 <div class="wrapper">
     <!-- Sidebar Holder -->
-    <nav id="sidebar">
+    <nav id="sidebar" [collapse]="isCollapsed">
         <div class="sidebar-header">
             <a routerLink="">
                 <img src="assets/img/logo.png" alt="Kukai" class="center" height="121" width="210">

@@ -9,6 +9,7 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ComponentLoaderFactory } from 'ngx-bootstrap/component-loader/component-loader.factory';
 import { ModalModule, AlertModule, ProgressbarModule, ButtonsModule, BsDropdownModule, TabsModule } from 'ngx-bootstrap';
+import { CollapseModule } from 'ngx-bootstrap/collapse';
 
 import { AppComponent } from './app.component';
 
@@ -80,6 +81,7 @@ import { DelegatorNamePipe } from './pipes/delegator-name.pipe';
     AppRoutingModule,
     HttpClientModule,
     NgbModule.forRoot(),
+    CollapseModule.forRoot(),
     ModalModule.forRoot(),
     AlertModule.forRoot(),
     ProgressbarModule.forRoot(),
