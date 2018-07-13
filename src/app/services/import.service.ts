@@ -94,7 +94,7 @@ export class ImportService {
           if (data[i].type.operations[0].kind === 'reveal') {
             index = 1;
           }
-          const KT = data[i].type.operations[i].tz1;
+          const KT = data[i].type.operations[index].tz1;
           if (KT !== pkh) {
             this.walletService.addAccount(KT);
             console.log('Added: ' + KT);
