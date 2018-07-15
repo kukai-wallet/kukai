@@ -21,7 +21,8 @@ export class OfflineSigningComponent implements OnInit {
     signedOp = '';
     pwd = '';
     pwdPlaceholder = '';
-    decodeOutput = '';
+    decodeUnsignedOutput = '';
+    decodeSignedOutput = '';
     errorMessage = '';
     showInstructions = false;
     instructionBtn = 'Show help';
@@ -57,21 +58,41 @@ export class OfflineSigningComponent implements OnInit {
     }
     decodeUnsignedOp() {
         if (!this.unsigned) {
-            this.decodeOutput = '';
+            this.decodeUnsignedOutput = '';
             console.log('don\'t decode');
         } else {
             console.log('decode...');
             try {
                 const op = this.operationService.decodeOpBytes(this.unsigned);
-                this.decodeOutput = '\n### PLEASE VERIFY THIS DATA IS CORRECT BEFORE SIGNING ###\n';
+                this.decodeUnsignedOutput = '\n### PLEASE VERIFY THIS DATA IS CORRECT BEFORE SIGNING ###\n';
                 const output = this.operationService.fop2strings(op);
 
                 for (let i = 0; i < output.length; i++) {
-                    this.decodeOutput = this.decodeOutput + '\n' + output[i];
+                    this.decodeUnsignedOutput = this.decodeUnsignedOutput + '\n' + output[i];
                 }
-                this.decodeOutput = this.decodeOutput + '\n' + '\n';
+                this.decodeUnsignedOutput = this.decodeUnsignedOutput + '\n' + '\n';
             } catch (e) {
-                this.decodeOutput = '\n### FAILED TO DECODE OPERATION BYTES! YOU ARE ADVICED TO NOT PROCEED ###\n';
+                this.decodeUnsignedOutput = '\n### FAILED TO DECODE OPERATION BYTES! YOU ARE ADVICED TO NOT PROCEED ###\n';
+            }
+        }
+    }
+    decodeSignedOp() {
+        if (!this.signed2) {
+            this.decodeSignedOutput = '';
+            console.log('don\'t decode');
+        } else {
+            console.log('decode...');
+            try {
+                const op = this.operationService.decodeOpBytes(this.signed2);
+                this.decodeSignedOutput = '\n### PLEASE VERIFY THIS DATA IS CORRECT BEFORE SIGNING ###\n';
+                const output = this.operationService.fop2strings(op);
+
+                for (let i = 0; i < output.length; i++) {
+                    this.decodeSignedOutput = this.decodeSignedOutput + '\n' + output[i];
+                }
+                this.decodeSignedOutput = this.decodeSignedOutput + '\n' + '\n';
+            } catch (e) {
+                this.decodeSignedOutput = '\n### FAILED TO DECODE OPERATION BYTES! YOU ARE ADVICED TO NOT PROCEED ###\n';
             }
         }
     }
