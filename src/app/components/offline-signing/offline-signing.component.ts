@@ -15,7 +15,7 @@ export class OfflineSigningComponent implements OnInit {
     InputImportOperationFileStep2 = 'Choose file';
     InputImportOperationFileStep3 = 'Choose file';
 
-    unsigned = '';
+    unsigned = '';  // Will contain the unsigned hash
     signed1 = '';
     signed2 = '';
     signedOp = '';
@@ -26,6 +26,7 @@ export class OfflineSigningComponent implements OnInit {
     showInstructions = false;
     instructionBtn = 'Show help';
     isFullWallet = false;
+    notAllowOnlineSigning = true;
 
     constructor(
         public walletService: WalletService,
@@ -62,11 +63,13 @@ export class OfflineSigningComponent implements OnInit {
             console.log('decode...');
             try {
                 const op = this.operationService.decodeOpBytes(this.unsigned);
-                this.decodeOutput = '\n### PLEASE VERIFY THIS DATA ARE CORRECT BEFORE SIGNING ###\n';
+                this.decodeOutput = '\n### PLEASE VERIFY THIS DATA IS CORRECT BEFORE SIGNING ###\n';
                 const output = this.operationService.fop2strings(op);
+
                 for (let i = 0; i < output.length; i++) {
                     this.decodeOutput = this.decodeOutput + '\n' + output[i];
                 }
+                this.decodeOutput = this.decodeOutput + '\n' + '\n';
             } catch (e) {
                 this.decodeOutput = '\n### FAILED TO DECODE OPERATION BYTES! YOU ARE ADVICED TO NOT PROCEED ###\n';
             }
@@ -78,8 +81,11 @@ export class OfflineSigningComponent implements OnInit {
         }
         return (this.walletService.wallet.XTZrate !== null || this.walletService.wallet.balance.balanceXTZ !== null);
     }
+    allowToSignInOnlineWallet() {
+        this.notAllowOnlineSigning = false;
+    }
     notAllowedToSign(): boolean {
-        return (!this.isFullWallet || this.isOnline());
+        return (!this.isFullWallet || (this.isOnline() && this.notAllowOnlineSigning));
     }
     broadcast() {
         if (this.signed2) {
