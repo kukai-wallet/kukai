@@ -18,6 +18,7 @@ export class ActivityComponent implements OnInit {
   ngOnInit() { if (this.walletService.wallet) { this.init(); } }
   init() {
     this.accounts = this.walletService.wallet.accounts;
+    console.log('transaction', this.accounts[0].activities);
   }
   getStatus(transaction: any): string {
     if (transaction.failed) {

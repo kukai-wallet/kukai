@@ -2,8 +2,11 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>Timestamp</th>
+                <th>Txn Hash</th>
+                <th>Block</th>
+                <th>Date</th>
                 <th>Type</th>
+                <th>Counterparty</th> <!-- To or From -->
                 <th>Amount (&#42793;)</th>
                 <th>Status</th>
             </tr>
@@ -11,17 +14,41 @@
         <ng-container *ngFor="let aData of accounts">
             <ng-container *ngIf="aData.pkh === activePkh">
                 <tbody *ngFor="let transaction of aData.activities">
+                
                     <tr>
-                        <td>{{ transaction.timestamp | date:'yyyy-MM-dd HH:mm:ss' }}</td>
-                        <!-- <td>{{ transaction.source }}</td>
-                        <td>{{ transaction.destination }}</td> -->
-                        <td>{{ transaction.type }}</td>
+                        <!-- Txn Hash -->
                         <td>
+                            {{ transaction.hash }}
+                        </td>
+
+                        <!-- Block -->
+                        <td> 
+                            {{ transaction.block }} 
+                        </td>
+
+                        <!-- Date -->
+                        <td> 
+                            {{ transaction.timestamp | date:'yyyy-MM-dd HH:mm:ss' }}
+                        </td>
+
+                        <!-- Type -->
+                        <td> 
+                            {{ transaction.type }} 
+                        </td>
+
+                        <!-- Counterparty: `To` or `From` -->
+                        <td> 
+                            {{ transaction.source.tz }}
+                        </td>
+
+                        <!-- Amount -->
+                        <td> 
                             <ng-container *ngIf="transaction.amount">{{ transaction.amount / 1000000 | number:'1.0' }} &#42793;
                             </ng-container>
                         </td>
-                        <!-- <td>{{ transaction.fee / 100 }}</td> -->
-                        <td>
+
+                        <!-- Status -->
+                        <td> 
                             <a href="https://tzscan.io/{{transaction.hash}}" target="_blank">{{ getStatus(transaction) }}</a>
                         </td>
                     </tr>
@@ -34,3 +61,5 @@
 <p *ngIf='!accounts'>
     Wallet not configured!
 </p>
+
+<!-- Type of operations: activation, transfers, delegation, origination --- endorsements, baking, rewards -->
