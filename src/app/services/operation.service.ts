@@ -20,8 +20,8 @@ export interface KeyPair {
 }
 @Injectable()
 export class OperationService {
-  nodeURL = 'https://rpc.tezrpc.me';
-  CHAIN_ID = 'PtCJ7pwoxe8JasnHY8YonnLYjcVHmhiARPJvqcC6VfHT5s8k8sY';
+  nodeURL = 'https://zeronet-node.tzscan.io';
+  CHAIN_ID = 'ProtoALphaALphaALphaALphaALphaALphaALphaALphaDdp3zK';
   prefix = {
     tz1: new Uint8Array([6, 161, 159]),
     tz2: new Uint8Array([6, 161, 161]),

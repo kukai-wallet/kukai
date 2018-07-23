@@ -7,7 +7,7 @@ const httpOptions = {
 
 @Injectable()
 export class TzscanService {
-  apiUrl = 'https://api.tzscan.io/';
+  apiUrl = 'https://zeronet-api.tzscan.io/';
   constructor(private http: HttpClient) { }
 
   numberOperations(pkh: string) {
