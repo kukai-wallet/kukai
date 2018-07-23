@@ -21,7 +21,7 @@ export interface KeyPair {
 @Injectable()
 export class OperationService {
   nodeURL = 'https://rpc.tezrpc.me';
-  CHAIN_ID = 'PtCJ7pwoxe8JasnHY8YonnLYjcVHmhiARPJvqcC6VfHT5s8k8sY';
+  CHAIN_ID = 'PsYLVpVvgbLhAhoqAkMFUo6gudkJ9weNXhUYCiLDzcUpFpkk8Wt';
   prefix = {
     tz1: new Uint8Array([6, 161, 159]),
     tz2: new Uint8Array([6, 161, 161]),
