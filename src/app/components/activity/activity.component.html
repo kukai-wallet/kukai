@@ -18,18 +18,24 @@
                     <tr>
                         <!-- Txn Hash -->
                         <td>
-                            <a href="https://zeronet.tzscan.io/{{transaction.hash}}" target="_blank"> {{ transaction.hash | truncate: '4':'true'}} </a>
+                            <span data-toggle="tooltip" [title]="transaction.hash">
+                                <a href="https://zeronet.tzscan.io/{{transaction.hash}}" target="_blank"> {{ transaction.hash | truncate: '4':'true'}} </a>
+                            </span>
                         </td>
 
                         <!-- Block -->
                         <td> 
-                            <a href="https://zeronet.tzscan.io/{{transaction.block}}" target="_blank"> {{ transaction.block | truncate: '4':'true'}} </a>
+                            <span data-toggle="tooltip" [title]="transaction.block">
+                                <a href="https://zeronet.tzscan.io/{{transaction.block}}" target="_blank"> {{ transaction.block | truncate: '4':'true'}} </a>
+                            </span>
                         </td>
 
                         <!-- Date -->
                         <td> 
                             <!-- {{ transaction.timestamp | date:'yyyy-MM-dd HH:mm:ss' }} -->
-                            {{ transaction.timestamp | timeAgo }}
+                            <span data-toggle="tooltip" [title]="transaction.timestamp | date:'yyyy-MM-dd HH:mm:ss'">
+                                {{ transaction.timestamp | timeAgo }}
+                            </span>
                         </td>
 
                         <!-- Type -->

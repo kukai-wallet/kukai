@@ -18,11 +18,8 @@ export class TimeAgoPipe implements PipeTransform {
         // time since transaction was made in seconds
         const delta = (now - dateValue.getTime()) / 1000;
 
-        console.log ('dateString ', dateString);
-
         // If transaction has just been broadcasted then dateString will be null in the first few seconds (prevalidation stage)
         if (delta < 20 || (dateString === null)) {
-            console.log ('dateString in the if', dateString);
             return 'just now';
         }
 
