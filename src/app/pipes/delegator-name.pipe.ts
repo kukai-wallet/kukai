@@ -36,7 +36,7 @@ export class DelegatorNamePipe implements PipeTransform {
         ['tz1SdwBHocSrcuMFNLPUg4LPRfx9eaqjVUEL', 'TezDele Baker B']
     ]);
 
-  transform(pkh: string): any {
+    transform(pkh: string): string {
         if (!pkh) {
             return '';
         }

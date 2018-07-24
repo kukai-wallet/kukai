@@ -18,12 +18,12 @@
                     <tr>
                         <!-- Txn Hash -->
                         <td>
-                            {{ transaction.hash }}
+                            <a href="https://zeronet.tzscan.io/{{transaction.hash}}" target="_blank"> {{ transaction.hash | truncate: '4':'true'}} </a>
                         </td>
 
                         <!-- Block -->
                         <td> 
-                            {{ transaction.block }} 
+                            <a href="https://zeronet.tzscan.io/{{transaction.block}}" target="_blank"> {{ transaction.block | truncate: '4':'true'}} </a>
                         </td>
 
                         <!-- Date -->
