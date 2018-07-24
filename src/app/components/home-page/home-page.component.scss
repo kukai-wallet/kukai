@@ -13,6 +13,10 @@ body {
     font-weight: bold;
 }
 
+.white {
+    color: #fafafa;
+}
+
 p {
     font-family: 'Poppins', sans-serif;
     font-size: 1.1em;
@@ -90,6 +94,7 @@ a, a:hover, a:focus {
 #sidebar .sub-heading {
     font-size: 0.9em;
     color: #000 !important;
+    margin-bottom: 0px;
 }
 
 #sidebar ul.components {
@@ -99,7 +104,7 @@ a, a:hover, a:focus {
 
 #sidebar ul p {
     color: #fff;
-    padding: 10px;
+    padding: 7x;
 }
 
 #sidebar ul li a {

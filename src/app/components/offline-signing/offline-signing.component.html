@@ -44,7 +44,7 @@
     <div class="row">
         <div class="col">
             <p>Import or paste your unsigned operation</p>
-            <small *ngIf="isOnline() && notAllowOnlineSigning" class="text-danger">
+            <small *ngIf="isFullWallet && isOnline() && notAllowOnlineSigning" class="text-danger">
                 Wallet is online. Are you sure you want to proceed with the signature process? <button class="btn btn-sm btn-outline-danger mb-2 mr-sm-2" (click)="allowToSignInOnlineWallet()">Yes</button>
             </small>
         </div>
