@@ -19,14 +19,14 @@
                         <!-- Txn Hash -->
                         <td>
                             <span data-toggle="tooltip" [title]="transaction.hash">
-                                <a href="https://zeronet.tzscan.io/{{transaction.hash}}" target="_blank"> {{ transaction.hash | truncate: '4':'true'}} </a>
+                                <a href="{{ CONSTANTS.NET.BLOCK_EXPLORER_URL + transaction.hash }}" target="_blank"> {{ transaction.hash | truncate: '4':'true'}} </a>
                             </span>
                         </td>
 
                         <!-- Block -->
                         <td> 
                             <span data-toggle="tooltip" [title]="transaction.block">
-                                <a href="https://zeronet.tzscan.io/{{transaction.block}}" target="_blank"> {{ transaction.block | truncate: '4':'true'}} </a>
+                                <a href="{{ CONSTANTS.NET.BLOCK_EXPLORER_URL + transaction.block }}" target="_blank"> {{ transaction.block | truncate: '4':'true'}} </a>
                             </span>
                         </td>
 
@@ -56,10 +56,7 @@
 
                         <!-- Status -->
                         <td>
-                            <!--
-                            <a href="https://tzscan.io/{{transaction.hash}}" target="_blank">{{ getStatus(transaction) }}</a>
-                            -->
-                            <a href="https://zeronet.tzscan.io/{{transaction.hash}}" target="_blank">{{ getStatus(transaction) }}</a>
+                            <a href="{{ CONSTANTS.NET.BLOCK_EXPLORER_URL + transaction.hash }}" target="_blank">{{ getStatus(transaction) }}</a>
                         </td>
                     </tr>
                 </tbody>

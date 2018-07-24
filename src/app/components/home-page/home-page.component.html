@@ -8,7 +8,7 @@
             <p class="sub-heading" align="center">
                 on a path of self-discovery
                 <BR> <span class="white">{{ this.walletService.walletTypePrint() }}</span>
-                <BR> <span class="red">[ Zeronet ]</span>
+                <BR> <span [ngClass]="{'zeronet' : CONSTANTS.NET.NAME == 'Zeronet',  'betanet' : CONSTANTS.NET.NAME == 'Betanet'}">[ {{ CONSTANTS.NET.NAME }} ]</span>
             </p>
         </div>
         <br>

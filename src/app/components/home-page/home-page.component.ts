@@ -4,6 +4,7 @@ import { MessageService } from '../../services/message.service';
 import { ActivityService } from '../../services/activity.service';
 import { CoordinatorService } from '../../services/coordinator.service';
 import { Router } from '@angular/router';
+import { Constants } from '../../constants';
 
 @Component({
   selector: 'app-home-page',
@@ -11,6 +12,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./home-page.component.scss']
 })
 export class HomePageComponent implements OnInit {
+  CONSTANTS = new Constants();
   constructor(public walletService: WalletService,
     private messageService: MessageService,
     private activityService: ActivityService,
