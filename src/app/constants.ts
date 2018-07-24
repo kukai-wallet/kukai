@@ -26,7 +26,7 @@ export class Constants {
             API_URL:  'https://api.tzscan.io/',
             NODE_URL: 'https://rpc.tezrpc.me/',
             BLOCK_EXPLORER_URL: 'https://tzscan.io/',
-            CHAIN_ID: 'PtCJ7pwoxe8JasnHY8YonnLYjcVHmhiARPJvqcC6VfHT5s8k8sY'
+            CHAIN_ID: 'PsYLVpVvgbLhAhoqAkMFUo6gudkJ9weNXhUYCiLDzcUpFpkk8Wt'
         };
         return BETANET;
     }
