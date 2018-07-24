@@ -28,7 +28,8 @@
 
                         <!-- Date -->
                         <td> 
-                            {{ transaction.timestamp | date:'yyyy-MM-dd HH:mm:ss' }}
+                            <!-- {{ transaction.timestamp | date:'yyyy-MM-dd HH:mm:ss' }} -->
+                            {{ transaction.timestamp | timeAgo }}
                         </td>
 
                         <!-- Type -->

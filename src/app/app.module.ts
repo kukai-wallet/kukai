@@ -50,6 +50,7 @@ import { MessagesComponent } from './components/messages/messages.component';  /
 import { ErrorHandlingPipe } from './pipes/error-handling.pipe';
 import { DelegatorNamePipe } from './pipes/delegator-name.pipe';
 import { TruncatePipe } from './pipes/truncate.pipe';
+import { TimeAgoPipe } from './pipes/time-ago.pipe';
 
 @NgModule({
   declarations: [
@@ -77,7 +78,8 @@ import { TruncatePipe } from './pipes/truncate.pipe';
     // Pipes
     ErrorHandlingPipe,
     DelegatorNamePipe,
-    TruncatePipe
+    TruncatePipe,
+    TimeAgoPipe
   ],
   imports: [
     BrowserModule,
@@ -113,7 +115,8 @@ import { TruncatePipe } from './pipes/truncate.pipe';
     // Pipes
     ErrorHandlingPipe,
     DelegatorNamePipe,
-    TruncatePipe
+    TruncatePipe,
+    TimeAgoPipe
   ],
   bootstrap: [AppComponent]
 })
