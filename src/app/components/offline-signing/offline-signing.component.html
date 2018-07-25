@@ -118,7 +118,7 @@
         </div>
     </form>
     <small *ngIf="signed2" class="text-info">
-        Would you like to decode the operation hash? <button class="btn btn-sm btn-outline-info mb-2 mr-sm-2" (click)="decodeSignedOp()">Yes</button>
+        Would you like to decode the operation? <button class="btn btn-sm btn-outline-info mb-2 mr-sm-2" (click)="decodeSignedOp()">Yes</button>
     </small>
     <div *ngIf='decodeSignedOutput'>
         <pre id="decodeDiv">{{ decodeSignedOutput }}</pre>

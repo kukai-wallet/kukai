@@ -83,7 +83,7 @@ export class OfflineSigningComponent implements OnInit {
         } else {
             console.log('decode...');
             try {
-                const op = this.operationService.decodeOpBytes(this.signed2);
+                const op = this.operationService.decodeOpBytes(this.signed2.slice(0, this.signed2.length - 128));
                 this.decodeSignedOutput = '\n### PLEASE VERIFY THIS DATA IS CORRECT BEFORE SIGNING ###\n';
                 const output = this.operationService.fop2strings(op);
 
