@@ -15,6 +15,7 @@
 
 .table-rows {
     vertical-align: middle;
+    padding: 8px;
 }
 
 .row-hash {
@@ -39,7 +40,9 @@
 .amount {
     text-align: right;
 }
-
+.smallText {
+    font-size: 80%;
+}
 @media(min-width:768px) {
     #page-wrapper {
         position: inherit;

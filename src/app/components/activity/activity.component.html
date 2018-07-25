@@ -44,12 +44,12 @@
                         </td>
 
                         <!-- Counterparty: `To` or `From` -->
-                        <td> 
+                        <td class="table-rows"> 
                             <!-- {{ transaction.source.tz }} -->
 
                             <span *ngIf="activePkh === transaction.source;then to else from"> From </span>
-                            <ng-template #from>from</ng-template>
-                            <ng-template #to>to</ng-template>
+                            <ng-template #from><span class="smallText">from</span></ng-template>
+                            <ng-template #to><span class="smallText">to</span></ng-template>
 
                             <br>
                             <span class="counterparty">
