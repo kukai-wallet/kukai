@@ -44,12 +44,8 @@
     <div class="row">
         <div class="col">
             <p>Import or paste your unsigned operation</p>
-            <small *ngIf="isFullWallet && isOnline() && notAllowOnlineSigning" class="text-danger">
-                Wallet is online. Are you sure you want to proceed with the signature process? <button class="btn btn-sm btn-outline-danger mb-2 mr-sm-2" (click)="allowToSignInOnlineWallet()">Yes</button>
-            </small>
         </div>
     </div>
-    <br>
     <form>
         <div class="form-group row">
             <!-- Import Unsigned Operation Button -->
@@ -58,7 +54,7 @@
                     <span class="input-group-text min-size-prepend">Operation</span>
                 </div>
                 <div class="custom-file">
-                    <input [disabled]="notAllowedToSign()" type="file" class="custom-file-input" id="importUnsignedOperation" accept=".tzop" (change)="handleUnsignedOperationFileInput($event.target.files)">
+                    <input [disabled]="!isFullWallet" type="file" class="custom-file-input" id="importUnsignedOperation" accept=".tzop" (change)="handleUnsignedOperationFileInput($event.target.files)">
                     <label class="custom-file-label" for="importUnsignedOperation"> {{InputImportOperationFileStep2}} </label>
                 </div>
             </div>
@@ -68,14 +64,16 @@
         <div class="form-group row">
             <div class="col-sm-8">
                 <label for="unsignedOperationTextarea" class="sr-only">Import or paste your unsigned operation</label>
-                <textarea [disabled]="notAllowedToSign()" rows="3" cols="130" [(ngModel)]="unsigned" [ngModelOptions]="{standalone: true}" (change)="decodeUnsignedOp()"
+                <textarea [disabled]="!isFullWallet" rows="3" cols="130" [(ngModel)]="unsigned" [ngModelOptions]="{standalone: true}" (change)="decodeUnsignedOp()"
                     class="form-control" id="unsignedOperationTextarea" placeholder="Unsigned Operation">
                 </textarea>
             </div>
         </div>
     </form>
-
-    <div *ngIf='decodeUnsignedOutput'>
+    <small *ngIf="isFullWallet && isOnline() && notAllowOnlineSigning && decodeUnsignedOutput" class="text-danger">
+        Wallet appear to be online. Are you really sure you want to proceed with the signature process? <button class="btn btn-sm btn-outline-danger mb-2 mr-sm-2" (click)="allowToSignInOnlineWallet()">Yes</button>
+    </small>
+    <div *ngIf='!notAllowedToSign() && decodeUnsignedOutput'>
         <pre id="decodeDiv">{{ decodeUnsignedOutput }}</pre>
     </div>
 
