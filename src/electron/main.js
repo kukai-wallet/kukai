@@ -1,11 +1,11 @@
-const {app, BrowserWindow, Menu, MenuItem} = require('electron')
+const {app, BrowserWindow, Menu} = require('electron')
   
   // Keep a global reference of the window object, if you don't, the window will
   // be closed automatically when the JavaScript object is garbage collected.
   let win
   
   // Context menu
-  // let contextMenu = Menu.buildFromTemplate(require('./contextMenu.js'))
+  //let contextMenu = Menu.buildFromTemplate(require('./contextMenu.js'))  //TypeError: Invalid template for Menu
 
   // TestContext menu
   let testContextMenu = Menu.buildFromTemplate([
@@ -16,18 +16,6 @@ const {app, BrowserWindow, Menu, MenuItem} = require('electron')
     {role:'redo'}
   ])
 
-  /*
-  let menuItem1 = new MenuItem({
-    label: 'Electron',
-    submenu: [
-      {label: 'Item 1'},
-      {label: 'Item 2'}
-    ]
-  })
-*/
-
-  // testContextMenu.append(menuItem1)
-
   function createWindow () {
     // Create the browser window.
     win = new BrowserWindow({width: 1400, height: 1000, autoHideMenuBar: true, icon: 'assets/icons/png/64x64.png'})
@@ -37,7 +25,7 @@ const {app, BrowserWindow, Menu, MenuItem} = require('electron')
     // Listening to right-mouse-click
     win.webContents.on('context-menu', (e) => {
       e.preventDefault()
-      testContextMenu.popup()
+      testContextMenu.popup(win)
     })
 
 
@@ -58,7 +46,7 @@ const {app, BrowserWindow, Menu, MenuItem} = require('electron')
   // Some APIs can only be used after this event occurs.
   app.on('ready', () => {
     createWindow()
-    //Menu.setApplicationMenu(testContextMenu)
+    //Menu.setApplicationMenu(contextMenu)
   })
   
   // Quit when all windows are closed.
