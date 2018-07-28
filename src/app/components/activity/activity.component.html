@@ -1,37 +1,36 @@
 <div *ngIf='accounts'>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th scope="col">Txn Hash</th>
-                <th scope="col">Block</th>
-                <th scope="col">Date</th>
-                <th scope="col">Type</th>
-                <th scope="col">Counterparty</th> <!-- To or From -->
-                <th scope="col">Amount (&#42793;)</th>
-                <th scope="col">Status</th>
-            </tr>
-        </thead>
-        <tbody *ngFor="let aData of accounts">
-            <ng-container *ngIf="aData.pkh === activePkh">
-                <ng-container *ngFor="let transaction of aData.activities">
-                
+    <ng-container *ngFor="let account of accounts">
+        <ng-container *ngIf="account.pkh === activePkh && account.activities.length > 0">
+            <table class="table table-striped">
+                <thead>
                     <tr>
+                        <th scope="col">Txn Hash</th>
+                        <th scope="col">Block</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Counterparty</th> <!-- To or From -->
+                        <th scope="col">Amount (&#42793;)</th>
+                        <th scope="col">Status</th>
+                    </tr>
+                </thead>
+                <tbody *ngFor="let transaction of account.activities">
+                    <tr class="table-row">
                         <!-- Txn Hash -->
-                        <th scope="row" class="row-hash table-rows">
+                        <th scope="row" class="row-hash table-cell">
                             <span data-toggle="tooltip" [title]="transaction.hash">
                                 <a href="{{ CONSTANTS.NET.BLOCK_EXPLORER_URL + transaction.hash }}" target="_blank"> {{ transaction.hash | truncate: '4':'true'}} </a>
                             </span>
                         </th>
 
                         <!-- Block -->
-                        <td class="table-rows"> 
+                        <td class="table-cell"> 
                             <span data-toggle="tooltip" [title]="transaction.block">
                                 <a href="{{ CONSTANTS.NET.BLOCK_EXPLORER_URL + transaction.block }}" target="_blank"> {{ transaction.block | truncate: '4':'true'}} </a>
                             </span>
                         </td>
 
                         <!-- Date -->
-                        <td class="table-rows"> 
+                        <td class="table-cell"> 
                             <!-- {{ transaction.timestamp | date:'yyyy-MM-dd HH:mm:ss' }} -->
                             <span data-toggle="tooltip" [title]="transaction.timestamp | date:'yyyy-MM-dd HH:mm:ss'">
                                 {{ transaction.timestamp | timeAgo }}
@@ -39,18 +38,18 @@
                         </td>
 
                         <!-- Type -->
-                        <td class="table-rows">
+                        <td class="table-cell">
                             <span class = "transaction badge badge-secondary" [ngClass]="{'received' : getType(transaction) == 'received', 'sent' : getType(transaction) == 'sent'}"> {{ getType(transaction) }} </span>
                         </td>
 
                         <!-- Counterparty: `To` or `From` -->
-                        <td class="table-rows"> 
+                        <td class="table-cell"> 
                             <!-- {{ transaction.source.tz }} -->
-
-                            <span *ngIf="activePkh === transaction.source;then to else from"> From </span>
-                            <ng-template #from><span class="smallText">from</span></ng-template>
-                            <ng-template #to><span class="smallText">to</span></ng-template>
-
+                            <span *ngIf="transaction.type != 'activation'">
+                                <span *ngIf="activePkh === transaction.source;then to else from"> From </span>
+                                <ng-template #from><span class="smallText">from</span></ng-template>
+                                <ng-template #to><span class="smallText">to</span></ng-template>
+                            </span>
                             <br>
                             <span class="counterparty">
                                 {{ getCounterparty(transaction) }}
@@ -58,21 +57,21 @@
                         </td>
 
                         <!-- Amount -->
-                        <td class="amount table-rows"> 
+                        <td class="amount table-cell"> 
                             <ng-container *ngIf="transaction.amount">
                                 {{ transaction.amount / 1000000 | number:'1.0' }} &#42793;
                             </ng-container>
                         </td>
 
                         <!-- Status -->
-                        <td class="amount table-rows">
+                        <td class="amount table-cell">
                             <a href="{{ CONSTANTS.NET.BLOCK_EXPLORER_URL + transaction.hash }}" target="_blank">{{ getStatus(transaction) }}</a>
                         </td>
                     </tr>
-                </ng-container>
-            </ng-container>
-        </tbody>
-    </table>
+                </tbody>
+            </table>
+        </ng-container>
+    </ng-container>
 </div>
 
 <p *ngIf='!accounts'>

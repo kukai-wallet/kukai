@@ -13,9 +13,12 @@
     font-family: "Courier New", Courier, monospace;  
 }
 
-.table-rows {
+.table-row {
+    line-height: 1.2;  //original at 1.5
+}
+.table-cell {
     vertical-align: middle;
-    padding: 8px;
+    padding: 10px;
 }
 
 .row-hash {
