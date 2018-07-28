@@ -1,7 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { WalletService } from '../../services/wallet.service';
-import { MessageService } from '../../services/message.service';
-import { BalanceService } from '../../services/balance.service';
 import { CoordinatorService } from '../../services/coordinator.service';
 
 @Component({
@@ -16,7 +14,6 @@ export class AccountComponent implements OnInit {
     activePkh: string;
     constructor(
         public walletService: WalletService,
-        private messageService: MessageService,
         private coordinatorService: CoordinatorService
     ) { }
 
