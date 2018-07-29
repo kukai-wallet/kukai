@@ -555,10 +555,11 @@ export class OperationService {
     let index = 0;
     const op = this.decodeCommon({ kind: 'delegation' }, content);
     console.log('hex: ' + op.rest + ' ' + op.rest.length);
-    if (op.rest.slice(index, index += 2) !== 'ff') {
+    if (op.rest.slice(index, index += 2) === 'ff') {
+      op.data.delegate = this.decodePkh(op.rest.slice(index, index += 42));
+    } else if (op.rest.slice(index - 2, index) !== '00') {
       throw new Error('TagErrorD1');
     }
-    op.data.delegate = this.decodePkh(op.rest.slice(index, index += 42));
     console.log('INDEX' + index);
     if (op.rest.length === index) {
       return [op.data];
