@@ -7,6 +7,7 @@ import { Buffer } from 'buffer';
 import * as libs from 'libsodium-wrappers';
 import * as Bs58check from 'bs58check';
 import * as bip39 from 'bip39';
+import { Constants } from '../constants';
 import { ErrorHandlingPipe } from '../pipes/error-handling.pipe';
 
 const httpOptions = {
@@ -20,8 +21,9 @@ export interface KeyPair {
 }
 @Injectable()
 export class OperationService {
-  nodeURL = 'https://rpc.tezrpc.me';
-  CHAIN_ID = 'PtCJ7pwoxe8JasnHY8YonnLYjcVHmhiARPJvqcC6VfHT5s8k8sY';
+  CONSTANTS = new Constants();
+  nodeURL = this.CONSTANTS.NET.NODE_URL;
+  CHAIN_ID = this.CONSTANTS.NET.CHAIN_ID;
   prefix = {
     tz1: new Uint8Array([6, 161, 159]),
     tz2: new Uint8Array([6, 161, 161]),

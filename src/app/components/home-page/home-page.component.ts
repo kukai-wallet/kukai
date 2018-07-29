@@ -6,6 +6,7 @@ import { MessageService } from '../../services/message.service';
 import { ActivityService } from '../../services/activity.service';
 import { CoordinatorService } from '../../services/coordinator.service';
 
+import { Constants } from '../../constants';
 
 @Component({
     selector: 'app-home-page',
@@ -14,6 +15,8 @@ import { CoordinatorService } from '../../services/coordinator.service';
 })
 export class HomePageComponent implements OnInit {
     isCollapsed = false;
+
+    CONSTANTS = new Constants();
 
     constructor(
         private router: Router,

@@ -17,10 +17,12 @@
             <span *ngIf="balanceUSD > 0">(${{ balanceUSD | number:'1.00'}} USD)</span>
         </div>
     </div>
+    
     <div class="row">
         <app-activity [activePkh]="activePkh"></app-activity>
     </div>
 </div>
+
 <div class="container" *ngIf="!this.walletService.wallet">
     <div class="row bottom-separator-no-account">
         <div class="col-lg-12">
