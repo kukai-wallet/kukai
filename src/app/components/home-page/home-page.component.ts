@@ -18,7 +18,7 @@ export class HomePageComponent implements OnInit {
 
     constructor(
         private router: Router,
-        private walletService: WalletService,
+        public walletService: WalletService,
         private coordinatorService: CoordinatorService
     ) { }
 
