@@ -8,6 +8,7 @@ import * as libs from 'libsodium-wrappers';
 import * as Bs58check from 'bs58check';
 import * as bip39 from 'bip39';
 import { Constants } from '../constants';
+
 import { ErrorHandlingPipe } from '../pipes/error-handling.pipe';
 
 const httpOptions = {

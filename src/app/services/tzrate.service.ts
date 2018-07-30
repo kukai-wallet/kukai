@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Response } from '@angular/http';
-import { WalletService } from './wallet.service';
+
 import 'rxjs/add/operator/map';
+
+import { WalletService } from './wallet.service';
+
 
 @Injectable()
 export class TzrateService {

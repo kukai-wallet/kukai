@@ -24,7 +24,10 @@
                 <input [(ngModel)]="fee" type="text" id="fee" class="form-control" placeholder="0.00">
             </div>
         </div>
-        <button type="button" class="btn btn-primary" id="sub" (click)="open2(modal2)">Preview</button>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" id="sub" (click)="open2(modal2)">Preview</button>
+        </div>
         {{ formInvalid }}
     </div>
 </ng-template>
@@ -56,9 +59,12 @@
                 </small>
             </div>
         </div>
-        <button type="button" class="btn btn-primary" id="sub" (click)="open3(modal3)">Confirm</button>
 
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" id="sub" (click)="open3(modal3)">Confirm</button>
+        </div>
     </div>
+
 </ng-template>
 
 <!-- Final Modal -->
@@ -89,9 +95,12 @@
                 <p>Operation failed!</p>
                 <p class="text-danger">{{ sendResponse.payload.msg }}</p>
             </div>
-            <button *ngIf='sendResponse.payload.unsignedOperation' type="button" class="btn btn-primary" (click)="download()">Download</button>
         </ng-container>
-        <button type="button" class="btn btn-primary" id="sub" (click)="close3()">Close</button>
+
+        <div class="modal-footer">
+            <button *ngIf='sendResponse.payload.unsignedOperation' type="button" class="btn btn-primary" (click)="download()">Download</button>
+            <button type="button" class="btn btn-primary" id="sub" (click)="close3()">Close</button>
+        </div>
     </div>
 </ng-template>
 <button *ngIf='accounts' type="button" href (click)="open1(modal1)" class="btn btn-sm btn-outline-primary btn-op">New account</button>

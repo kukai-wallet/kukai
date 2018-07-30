@@ -44,7 +44,7 @@
         </div>
         <form class="form-inline">
             <label class="sr-only" for="inlineFormInputPassword3">Password</label>
-            <input type="password" class="form-control mb-2 mr-sm-2" [(ngModel)]="pwd2" name="pwd2" placeholder="{{ pwdType }}" aria-describedby="passwordHelpInline">
+            <input type="password" class="form-control mb-2 mr-sm-2" [(ngModel)]="pwd2" name="pwd2" placeholder="Password" aria-describedby="passwordHelpInline">
             <button type="submit" id="pkDecrypt" class="btn btn-clear btn-second mb-2 mr-sm-2" [class.wait]="wait === 1" (click)="decryptPk()">Generate</button>
             <small *ngIf="pk">
                 {{ pk }}

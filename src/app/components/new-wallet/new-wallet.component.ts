@@ -1,13 +1,14 @@
-import { Component, OnInit, Input, Query, HostListener } from '@angular/core';
-import { WalletService } from '../../services/wallet.service';
-import { MessageService } from '../../services/message.service';
-import { ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input, HostListener } from '@angular/core';
+
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/fromEvent';
-import * as bip39 from 'bip39';
+import * as rnd from 'randomatic';
+
+import { WalletService } from '../../services/wallet.service';
+import { MessageService } from '../../services/message.service';
 import { ExportService } from '../../services/export.service';
 import { ImportService } from '../../services/import.service';
-import * as rnd from 'randomatic';
+
 
 @Component({
   selector: 'app-new-wallet',
@@ -63,11 +64,12 @@ export class NewWalletComponent implements OnInit {
       console.log('Out of range');
     }
   }
-  constructor(private walletService: WalletService,
+  constructor(
+    private walletService: WalletService,
     private messageService: MessageService,
     private exportService: ExportService,
-    private importService: ImportService,
-    private cdRef: ChangeDetectorRef) { }
+    private importService: ImportService
+  ) { }
 
   ngOnInit() {
     // rnd() only to create an offset for better visualisation.

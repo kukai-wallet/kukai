@@ -13,6 +13,18 @@ h4 {
     font-weight: 400;
 }
 
+.help-steps {
+    font-weight: 400;
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
+    padding-right: 1.5rem;
+    padding-left: 1.5rem;
+}
+
+.help-steps > ol > li {
+    padding-top: 0.4rem;
+}
+
 .min-size-prepend {
     min-width: 98px;
 }

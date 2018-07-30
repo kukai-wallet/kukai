@@ -1,16 +1,18 @@
 import { Injectable } from '@angular/core';
-import { MessageService } from './message.service';
-import { Wallet, Account, Balance, KeyPair, WalletType } from './../interfaces';
+
+import * as bip39 from 'bip39';
+
+import { Wallet, Balance, KeyPair, WalletType } from './../interfaces';
+
 import { EncryptionService } from './encryption.service';
 import { OperationService } from './operation.service';
-import * as bip39 from 'bip39';
+
 
 @Injectable()
 export class WalletService {
   storeKey = `kukai-wallet`;
   wallet: Wallet;
   constructor(
-    private messageService: MessageService,
     private encryptionService: EncryptionService,
     private operationService: OperationService
   ) { }
