@@ -82,10 +82,10 @@
                     <br>
                     <br>
                     <ng-container *ngIf='sendResponse.payload.opHash'>
-                        <p>Your delegation operation has been successfully broadcasted to the network</p>
+                        <p>Your delegation operation has been broadcasted successfully to the network</p>
                     </ng-container>
                     <ng-container *ngIf='sendResponse.payload.unsignedOperation'>
-                        <p>Your unsigned transaction have successfully been created</p>
+                        <p>Your unsigned transaction have been created successfully</p>
                     </ng-container>
                 </div>
                 <div *ngIf='sendResponse.success === false'>
