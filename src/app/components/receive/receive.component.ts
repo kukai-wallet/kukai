@@ -1,10 +1,13 @@
-import { NgModel } from '@angular/forms';
-import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, TemplateRef, Input } from '@angular/core';
-import { WalletService } from '../../services/wallet.service';
-import { MessageService } from '../../services/message.service';
-import * as QRCode from 'qrcode';
+import { Component, OnInit, ViewChild, TemplateRef, Input } from '@angular/core';
+
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
+
+import * as QRCode from 'qrcode';
+
+import { WalletService } from '../../services/wallet.service';
+
+
 
 @Component({
     selector: 'app-receive',
@@ -27,7 +30,6 @@ export class ReceiveComponent implements OnInit {
 
     constructor(
         private walletService: WalletService,
-        private messageService: MessageService,
         private modalService: BsModalService
     ) { }
 
@@ -71,7 +73,7 @@ export class ReceiveComponent implements OnInit {
 
     open1(template1: TemplateRef<any>) {
         if (this.activePkh) {
-            this.modalRef1 = this.modalService.show(template1, { class: 'modal-sm' });
+            this.modalRef1 = this.modalService.show(template1, { class: 'first' });  // modal-sm / modal-lg
             setTimeout(() => {
                 this.getQR();
             }, 100);

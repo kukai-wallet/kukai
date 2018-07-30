@@ -1,12 +1,11 @@
-import { Component, TemplateRef, OnInit, ViewEncapsulation, Input, ViewChild, ElementRef } from '@angular/core';
-
-import { WalletService } from '../../services/wallet.service';
-import { MessageService } from '../../services/message.service';
-import { CoordinatorService } from '../../services/coordinator.service';
-import { OperationService } from '../../services/operation.service';
+import { Component, TemplateRef, OnInit, Input, ViewChild } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
+
 import { KeyPair } from '../../interfaces';
+import { WalletService } from '../../services/wallet.service';
+import { CoordinatorService } from '../../services/coordinator.service';
+import { OperationService } from '../../services/operation.service';
 import { ExportService } from '../../services/export.service';
 
 @Component({
@@ -35,7 +34,6 @@ export class DelegateComponent implements OnInit {
     constructor(
         private modalService: BsModalService,
         private walletService: WalletService,
-        private messageService: MessageService,
         private operationService: OperationService,
         private coordinatorService: CoordinatorService,
         private exportService: ExportService

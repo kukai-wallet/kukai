@@ -1,7 +1,7 @@
 <ng-container>
 
     <!-- Receive Modal -->
-    <ng-template #modal1>
+    <ng-template #modal1 class="receive-modal">
         <div class="modal-header">
             <h4 class="modal-title pull-left">Receive tez</h4>
             <button type="button" class="close pull-right" aria-label="Close" (click)="close1()">
@@ -17,6 +17,9 @@
             <div class="row" *ngIf='activePkh'>
                 <canvas id='canvas'></canvas>
             </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" id="sub" (click)="close1()">Close</button>
         </div>
     </ng-template>
 

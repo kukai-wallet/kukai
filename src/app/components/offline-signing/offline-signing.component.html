@@ -10,13 +10,24 @@
     <div class="row">
         <div class="col-lg-12">
             <button class="btn btn-clear btn-second mb-2 mr-sm-2" (click)="toggleShowInstructions()">{{ instructionBtn }}</button>
-            <h4 *ngIf="showInstructions">In 3 easy steps, you can broadcast an operation to the tezos network without ever needing to use your secret
-                key in an online environment. Wallet client that can be used offline is found on our <a href="https://github.com/kukai-wallet/kukai" target="_blank">GitHub</a>. 
-                Make sure you have exported a view-only wallet from the backup view in
-                your full wallet. The full wallet should be stored on an offline system and the view-only wallet on an online
-                system. In the view-only wallet proceed with the operation (step 1). This will create an unsigned operation
-                that will be exported to a file. Move the unsigned operation to your full wallet and sign it (step 2). The
-                signed operation can now be exported and transfered back to an online system and broadcasted (step 3).</h4>
+            <span *ngIf="showInstructions">
+                <h4>In 3 easy steps, you can broadcast an operation to the tezos network without ever exposing your seed
+                    to an online environment. Desktop client for the offline signature can be found on our <a href="https://github.com/kukai-wallet/kukai/releases" target="_blank">GitHub</a>. 
+                    Make sure you have exported a view-only wallet from the backup view in your full wallet.
+                </h4>
+                <h5 class="help-steps">
+                    <ol>
+                        <li>
+                            The full wallet should be created and stored in an offline system. You can export a view-only wallet which has your public key to an online system 
+                            and can be used to create unsigned operations.
+                        </li>
+                        <li>From your view-only wallet, you can create and download an unsigned operation in a *.tzop file. Import this unsigned operation to your full wallet, 
+                            verify its content and then insert your password to sign the operation. You can download the new signed operation in another *.tzop file. 
+                        </li> 
+                        <li>The signed operation can now be transferred back to an online system, verify its content and then broadcast it to the Tezos network.</li>
+                    </ol>
+                </h5>
+            </span>
         </div>
     </div>
     <BR>
@@ -30,7 +41,7 @@
     <div class="row">
         <div class="col">
             <p>You can create an unsigned operation with your view-only wallet in the
-                <a routerLink="/overview" class="btn-main-action">Overview</a>.</p>
+                <a routerLink="/overview" class="btn-main-action">Overview</a> section.</p>
         </div>
     </div>
     <br>
@@ -71,7 +82,8 @@
         </div>
     </form>
     <small *ngIf="isFullWallet && isOnline() && notAllowOnlineSigning && decodeUnsignedOutput" class="text-danger">
-        Wallet appear to be online. Are you really sure you want to proceed with the signature process? <button class="btn btn-sm btn-outline-danger mb-2 mr-sm-2" (click)="allowToSignInOnlineWallet()">Yes</button>
+        Wallet appear to be online. Are you really sure you want to proceed with the signature process? 
+        <button class="btn btn-sm btn-outline-danger mb-2 mr-sm-2" (click)="allowToSignInOnlineWallet()">Yes</button>
     </small>
     <div *ngIf='!notAllowedToSign() && decodeUnsignedOutput'>
         <pre id="decodeDiv">{{ decodeUnsignedOutput }}</pre>
@@ -116,7 +128,8 @@
         </div>
     </form>
     <small *ngIf="signed2" class="text-info">
-        Would you like to decode the operation? <button class="btn btn-sm btn-outline-info mb-2 mr-sm-2" (click)="decodeSignedOp()">Yes</button>
+        Would you like to decode the operation? 
+        <button class="btn btn-sm btn-outline-info mb-2 mr-sm-2" (click)="decodeSignedOp()">Yes</button>
     </small>
     <div *ngIf='decodeSignedOutput'>
         <pre id="decodeDiv">{{ decodeSignedOutput }}</pre>

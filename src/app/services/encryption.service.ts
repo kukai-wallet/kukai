@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { WalletService } from './wallet.service';
+
 import * as pbkdf2 from 'pbkdf2';
-import * as CryptoJS from 'crypto-js';
 import * as AES from 'aes-js';
 
 @Injectable()

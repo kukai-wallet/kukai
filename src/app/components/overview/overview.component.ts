@@ -1,13 +1,11 @@
-import { Component, OnInit, Input, Inject, Injectable } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 // import { DOCUMENT } from '@angular/platform-browser';
-import { SlicePipe } from '@angular/common';
-import { BsDropdownDirective } from 'ngx-bootstrap/dropdown/bs-dropdown.directive';
-import { Router } from '@angular/router';
+
+import * as copy from 'copy-to-clipboard';
+
 import { WalletService } from '../../services/wallet.service';
 import { MessageService } from '../../services/message.service';
-import { BalanceService } from '../../services/balance.service';
 import { CoordinatorService } from '../../services/coordinator.service';
-import * as copy from 'copy-to-clipboard';
 
 @Component({
     selector: 'app-overview',
@@ -22,10 +20,8 @@ export class OverviewComponent implements OnInit {
     dom: Document;
 
     constructor(
-        private router: Router,
         public walletService: WalletService,
         private messageService: MessageService,
-        private balanceService: BalanceService,
         private coordinatorService: CoordinatorService
     ) { }
 

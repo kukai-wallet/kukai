@@ -1,5 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { WalletService } from '../../services/wallet.service';
+
 import { CoordinatorService } from '../../services/coordinator.service';
 
 @Component({

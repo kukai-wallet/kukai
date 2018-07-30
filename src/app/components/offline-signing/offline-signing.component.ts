@@ -1,4 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+
 import { WalletService } from '../../services/wallet.service';
 import { OperationService } from '../../services/operation.service';
 import { MessageService } from '../../services/message.service';
@@ -154,7 +155,7 @@ export class OfflineSigningComponent implements OnInit {
                     if (data.signed === true && data.hex) {
                         this.signed2 = data.hex;
                     } else {
-                        this.messageService.addWarning('Not an unsigned operation!');
+                        this.messageService.addWarning('Not a signed operation!');
                     }
                 } else {
                     this.messageService.addError('Failed to read file!');

@@ -1,9 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { WalletService } from '../../services/wallet.service';
-import { MessageService } from '../../services/message.service';
-import { ActivityService } from '../../services/activity.service';
-import { CoordinatorService } from '../../services/coordinator.service';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+
+import { WalletService } from '../../services/wallet.service';
+import { CoordinatorService } from '../../services/coordinator.service';
+
 import { Constants } from '../../constants';
 
 @Component({
@@ -12,12 +12,15 @@ import { Constants } from '../../constants';
   styleUrls: ['./home-page.component.scss']
 })
 export class HomePageComponent implements OnInit {
-  CONSTANTS = new Constants();
-  constructor(public walletService: WalletService,
-    private messageService: MessageService,
-    private activityService: ActivityService,
-    private coordinatorService: CoordinatorService,
-    private router: Router) { }
+    isCollapsed = false;
+
+    CONSTANTS = new Constants();
+
+    constructor(
+        private router: Router,
+        private walletService: WalletService,
+        private coordinatorService: CoordinatorService
+    ) { }
 
   ngOnInit() {
   }
