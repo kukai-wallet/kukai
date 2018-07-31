@@ -73,7 +73,7 @@ export class OfflineSigningComponent implements OnInit {
                 }
                 this.decodeUnsignedOutput = this.decodeUnsignedOutput + '\n' + '\n';
             } catch (e) {
-                this.decodeUnsignedOutput = '\n### FAILED TO DECODE OPERATION BYTES! YOU ARE ADVICED TO NOT PROCEED ###\n';
+                this.decodeUnsignedOutput = '\n### FAILED TO DECODE OPERATION BYTES! YOU ARE ADVISED TO NOT PROCEED ###\n';
             }
         }
     }
