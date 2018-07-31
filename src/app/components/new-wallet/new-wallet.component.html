@@ -77,7 +77,7 @@
                 <input type="password" [(ngModel)]="pwd2" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Confirm Password">
                 <small id="emailHelp1" class="form-text text-muted text-left">Minimum {{ this.MIN_PWD_LENGTH }} characters</small>
                 <small id="emailHelp2" class="form-text alert-danger text-left" *ngIf="!isValidPass.minLength">There must be a minimum of {{ MIN_PWD_LENGTH }} characters</small>
-                <small id="emailHelp3" class="form-text alert-danger text-left" *ngIf="!isValidPass.match">Passswords doesn't match!</small>
+                <small id="emailHelp3" class="form-text alert-danger text-left" *ngIf="!isValidPass.match">Passwords doesn't match!</small>
                 <small id="emailHelp4" class="form-text alert-success text-left" *ngIf="isValidPass.confirmed">Password confirmed</small>
               </div>
             </div>

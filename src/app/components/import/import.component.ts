@@ -37,7 +37,7 @@ export class ImportComponent implements OnInit {
       this.importService.importWalletFromPkh(this.pkh);
       this.router.navigate(['/overview']);
     } else {
-      this.messageService.addError('Invalid public key hash');
+      this.messageService.addError('Invalid public key hash!');
     }
   }
   importFromPk() {

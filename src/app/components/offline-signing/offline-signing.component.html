@@ -12,19 +12,19 @@
             <button class="btn btn-clear btn-second mb-2 mr-sm-2" (click)="toggleShowInstructions()">{{ instructionBtn }}</button>
             <span *ngIf="showInstructions">
                 <h4>In 3 easy steps, you can broadcast an operation to the tezos network without ever exposing your seed
-                    to an online environment. Desktop client for the offline signature can be found on our <a href="https://github.com/kukai-wallet/kukai/releases" target="_blank">GitHub</a>. 
-                    Make sure you have exported a view-only wallet from the backup view in your full wallet.
+                    to an online environment. Desktop client for the offline signature can be found on our <a href="https://github.com/kukai-wallet/kukai/releases" target="_blank">GitHub</a>.
                 </h4>
                 <h5 class="help-steps">
                     <ol>
                         <li>
-                            The full wallet should be created and stored in an offline system. You can export a view-only wallet which has your public key to an online system 
-                            and can be used to create unsigned operations.
+                            The full wallet should be created in an offline system. Use that wallet to export a View-only wallet, which does not contain your private key. 
+                            This wallet can be safely used on an online system to create unsigned operations.
                         </li>
-                        <li>From your view-only wallet, you can create and download an unsigned operation in a *.tzop file. Import this unsigned operation to your full wallet, 
-                            verify its content and then insert your password to sign the operation. You can download the new signed operation in another *.tzop file. 
+                        <li>
+                            From your View-only wallet, you can create and download an unsigned operation file ('.tzop'). Import this unsigned operation to your full wallet, 
+                            verify its content and then enter your wallet password to sign the operation. You can download the new signed operation in another '.tzop' file. 
                         </li> 
-                        <li>The signed operation can now be transferred back to an online system, verify its content and then broadcast it to the Tezos network.</li>
+                        <li>The signed operation can now be transferred back to an online system. Verify its content and then broadcast it to the Tezos network.</li>
                     </ol>
                 </h5>
             </span>
