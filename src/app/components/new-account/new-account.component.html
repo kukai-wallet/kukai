@@ -9,18 +9,18 @@
     </div>
     <div class="modal-body">
         <div class="form-group">
-            <label for="fromAdress">Fund from:</label>
+            <label for="fromAdress">Funds from</label>
             <select [(ngModel)]="activePkh" id="fromAdress" class="form-control mono" name="first">
                 <option *ngFor="let account of accounts" [ngValue]="account.pkh">{{ account.pkh }}</option>
             </select>
         </div>
         <div class="row">
             <div class="form-group col-md-6">
-                <label for="ammount">Amount:</label>
+                <label for="ammount">Amount to Send (&#42793;)</label>
                 <input [(ngModel)]="amount" type="text" id="ammount" class="form-control" placeholder="0.00">
             </div>
             <div class="form-group col-md-6">
-                <label for="fee">Fee:</label>
+                <label for="fee">Fee (&#42793;)</label>
                 <input [(ngModel)]="fee" type="text" id="fee" class="form-control" placeholder="0.00">
             </div>
         </div>
@@ -85,10 +85,10 @@
                 <br>
                 <br>
                 <ng-container *ngIf='sendResponse.payload.opHash'>
-                    <p>Your funding of a new account have successfully been broadcasted to the network</p>
+                    <p>Your funding of a new account has been broadcasted successfully to the network</p>
                 </ng-container>
                 <ng-container *ngIf='sendResponse.payload.unsignedOperation'>
-                    <p>Your unsigned transaction have successfully been created</p>
+                    <p>Your unsigned transaction has been created successfully</p>
                 </ng-container>
             </div>
             <div *ngIf='sendResponse.success === false'>

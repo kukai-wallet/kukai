@@ -31,9 +31,9 @@
           <p>When you create a new wallet, a new Tezos seed is generated. Your Tezos seed is the master key of all your wallet
             and any value inside it.</p>
           <p>Make sure to back it up, write it down, and keep it incredibly safe!</p>
-          <p>**Do not lose it!** It cannot be recovered if you lose it.</p>
-          <p>**Do not share it!** Your funds will be stolen if you use the seed on a malicious/phishing site.</p>
-          <p>**Make a backup!** Secure it like the millions it may be worth one day.</p>
+          <p class="text-danger">**Do not lose it!** It cannot be recovered if you lose it.</p>
+          <p class="text-danger">**Do not share it!** Your funds will be stolen if you use the seed on a malicious/phishing site.</p>
+          <p class="text-danger"><b>**Make a backup!** Secure it like the millions it may be worth one day.</b></p>
         </div>
       </div>
       <div class="card-footer text-right">
@@ -77,7 +77,7 @@
                 <input type="password" [(ngModel)]="pwd2" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Confirm Password">
                 <small id="emailHelp1" class="form-text text-muted text-left">Minimum {{ this.MIN_PWD_LENGTH }} characters</small>
                 <small id="emailHelp2" class="form-text alert-danger text-left" *ngIf="!isValidPass.minLength">There must be a minimum of {{ MIN_PWD_LENGTH }} characters</small>
-                <small id="emailHelp3" class="form-text alert-danger text-left" *ngIf="!isValidPass.match">Passswords doesn't match!</small>
+                <small id="emailHelp3" class="form-text alert-danger text-left" *ngIf="!isValidPass.match">Passwords doesn't match!</small>
                 <small id="emailHelp4" class="form-text alert-success text-left" *ngIf="isValidPass.confirmed">Password confirmed</small>
               </div>
             </div>
