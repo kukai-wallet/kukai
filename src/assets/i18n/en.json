@@ -1,0 +1,6 @@
+{
+    "HELLO": "hello {{value}}",
+    "HOME": {
+        "HELLO": "hello {{value}}"
+    }
+}

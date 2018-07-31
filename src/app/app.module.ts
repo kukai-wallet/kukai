@@ -1,9 +1,13 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { BsModalService } from 'ngx-bootstrap/modal';
+
+// For translation
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 
 // External libraries
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -53,6 +57,11 @@ import { DelegatorNamePipe } from './pipes/delegator-name.pipe';
 import { TruncatePipe } from './pipes/truncate.pipe';
 import { TimeAgoPipe } from './pipes/time-ago.pipe';
 
+// AoT requires an exported function for factories
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http);
+}
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -94,7 +103,14 @@ import { TimeAgoPipe } from './pipes/time-ago.pipe';
     ProgressbarModule.forRoot(),
     ButtonsModule.forRoot(),
     BsDropdownModule.forRoot(),
-    TabsModule.forRoot()
+    TabsModule.forRoot(),
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+    }
+    })  // lazy loading will need TranslateModule.forChild() in the lazy loaded modules
   ],
   providers: [
     // Services
