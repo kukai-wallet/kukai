@@ -1,9 +1,24 @@
 #canvas {
     margin: auto;
 }
+
+#toAddress {
+  // background-color: black;
+  // min-width: 321px;  // not working
+}
+
+.modal-content {
+    // width: 70% !important;  // not working
+}
+
 .modal-header {
     text-align: center;
 }
+
+.modal-footer {
+    padding-bottom: 1rem;
+}
+
 .btn-op {
     width: 120px;
     border-radius: 0rem;

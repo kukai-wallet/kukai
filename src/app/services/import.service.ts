@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
-import { WalletService } from './wallet.service';
-import { WalletType } from './../interfaces';
 import { Observable } from 'rxjs/Observable';
+import * as bip39 from 'bip39';
+
+import { WalletType } from './../interfaces';
+
+import { WalletService } from './wallet.service';
 import { MessageService } from './message.service';
 import { BalanceService } from './balance.service';
-import * as bip39 from 'bip39';
 import { CoordinatorService } from './coordinator.service';
 import { OperationService } from './operation.service';
 import { TzscanService } from './tzscan.service';
@@ -95,7 +97,7 @@ export class ImportService {
             index = 1;
           }
           const KT = data[i].type.operations[index].tz1.tz;
-          if (KT !== pkh) {
+          if (this.walletService.wallet.accounts.findIndex(a => a.pkh === KT) === -1) {
             this.walletService.addAccount(KT);
             console.log('Added: ' + KT);
             this.coordinatorService.start(KT);

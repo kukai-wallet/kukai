@@ -13,7 +13,6 @@ import { ModalModule, AlertModule, ProgressbarModule, ButtonsModule, BsDropdownM
 import { AppComponent } from './app.component';
 
 // Services
-import { MessagesComponent } from './components/messages/messages.component';
 import { MessageService } from './services/message.service';
 import { WalletService } from './services/wallet.service';
 import { ActivityService } from './services/activity.service';
@@ -45,18 +44,21 @@ import { CoordinatorService } from './services/coordinator.service';
 import { OperationService } from './services/operation.service';
 import { BakeryComponent } from './components/bakery/bakery.component';
 import { ActivateComponent } from './components/activate/activate.component';
+import { MessagesComponent } from './components/messages/messages.component';  // Empty
 
 // Pipes
 import { ErrorHandlingPipe } from './pipes/error-handling.pipe';
 import { DelegatorNamePipe } from './pipes/delegator-name.pipe';
-
+import { TruncatePipe } from './pipes/truncate.pipe';
+import { TimeAgoPipe } from './pipes/time-ago.pipe';
 
 @NgModule({
   declarations: [
+    AppComponent,
+
+    // View components
     HomePageComponent,
     NewWalletComponent,
-    MessagesComponent,
-    AppComponent,
     OfflineSigningComponent,
     ImportComponent,
     StartComponent,
@@ -71,8 +73,13 @@ import { DelegatorNamePipe } from './pipes/delegator-name.pipe';
     MnemonicImportComponent,
     BakeryComponent,
     ActivateComponent,
+    MessagesComponent,  // Empty
+
+    // Pipes
     ErrorHandlingPipe,
-    DelegatorNamePipe
+    DelegatorNamePipe,
+    TruncatePipe,
+    TimeAgoPipe
   ],
   imports: [
     BrowserModule,
@@ -88,6 +95,7 @@ import { DelegatorNamePipe } from './pipes/delegator-name.pipe';
     TabsModule.forRoot()
   ],
   providers: [
+    // Services
     MessageService,
     WalletService,
     ActivityService,
@@ -103,8 +111,12 @@ import { DelegatorNamePipe } from './pipes/delegator-name.pipe';
     ExportService,
     DelegateService,
     TzscanService,
+
+    // Pipes
     ErrorHandlingPipe,
-    DelegatorNamePipe
+    DelegatorNamePipe,
+    TruncatePipe,
+    TimeAgoPipe
   ],
   bootstrap: [AppComponent]
 })

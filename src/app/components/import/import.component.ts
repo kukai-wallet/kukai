@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { WalletService } from '../../services/wallet.service';
 import { Router } from '@angular/router';
+
+import { WalletService } from '../../services/wallet.service';
 import { MessageService } from '../../services/message.service';
 import { ImportService } from '../../services/import.service';
 
@@ -36,7 +37,7 @@ export class ImportComponent implements OnInit {
       this.importService.importWalletFromPkh(this.pkh);
       this.router.navigate(['/overview']);
     } else {
-      this.messageService.addError('Invalid public key hash');
+      this.messageService.addError('Invalid public key hash!');
     }
   }
   importFromPk() {

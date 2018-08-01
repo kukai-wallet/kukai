@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { WalletService } from '../../services/wallet.service';
+
 import { Router } from '@angular/router';
+
+import { WalletService } from '../../services/wallet.service';
 
 @Component({
     selector: 'app-start',

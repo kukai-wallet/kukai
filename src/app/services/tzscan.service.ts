@@ -1,13 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
+import { Constants } from '../constants';
+
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
 
 @Injectable()
 export class TzscanService {
-  apiUrl = 'https://api.tzscan.io/';
+  CONSTANTS = new Constants();
+  apiUrl = this.CONSTANTS.NET.API_URL;
   constructor(private http: HttpClient) { }
 
   numberOperations(pkh: string) {

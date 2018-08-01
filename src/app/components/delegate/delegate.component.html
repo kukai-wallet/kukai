@@ -33,7 +33,7 @@
             </form>
             {{ formInvalid }}
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary btn-lg" id="sub" (click)="open2(modal2)">Send</button>
+                <button type="button" class="btn btn-primary" id="sub" (click)="open2(modal2)">Preview</button>
             </div>
         </div>
     </ng-template>
@@ -57,8 +57,10 @@
                     <input [(ngModel)]="password" type="password" id="pwd" class="form-control">
                 </div>
             </div>
-            <button type="button" class="btn btn-primary" id="sub" (click)="open3(modal3)">Confirm</button>
             {{ pwdValid }}
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="sub" (click)="open3(modal3)">Confirm</button>
+            </div>
         </div>
     </ng-template>
 
@@ -80,10 +82,10 @@
                     <br>
                     <br>
                     <ng-container *ngIf='sendResponse.payload.opHash'>
-                        <p>Your funding of a new account have successfully been broadcasted to the network</p>
+                        <p>Your delegation operation has been broadcasted successfully to the network</p>
                     </ng-container>
                     <ng-container *ngIf='sendResponse.payload.unsignedOperation'>
-                        <p>Your unsigned transaction have successfully been created</p>
+                        <p>Your unsigned transaction have been created successfully</p>
                     </ng-container>
                 </div>
                 <div *ngIf='sendResponse.success === false'>
@@ -92,7 +94,9 @@
                 </div>
                 <button *ngIf='sendResponse.payload.unsignedOperation' type="button" class="btn btn-primary" (click)="download()">Download</button>
             </ng-container>
-            <button type="button" class="btn btn-primary" id="sub" (click)="close3()">Close</button>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="sub" (click)="close3()">Close</button>
+            </div>
         </div>
     </ng-template>
 

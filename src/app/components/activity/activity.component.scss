@@ -12,6 +12,40 @@
 .mono {
     font-family: "Courier New", Courier, monospace;  
 }
+
+.table-row {
+    line-height: 1.2;  //original at 1.5
+}
+.table-cell {
+    vertical-align: middle;
+    padding: 10px;
+}
+
+.row-hash {
+    font-weight: normal;
+}
+.transaction {
+    //font-weight: bold;
+}
+
+.counterparty {
+    //word-wrap: break-word;
+}
+
+.received {
+    background-color: #5cb85c;  // rgb(0, 110, 9);
+}
+
+.sent {
+    background-color: rgb(221, 21, 21);
+}
+
+.amount {
+    text-align: right;
+}
+.smallText {
+    font-size: 80%;
+}
 @media(min-width:768px) {
     #page-wrapper {
         position: inherit;

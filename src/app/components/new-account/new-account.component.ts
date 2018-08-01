@@ -1,6 +1,6 @@
-import { Component, OnInit, ElementRef, ViewChild, TemplateRef, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef, Input } from '@angular/core';
+
 import { WalletService } from '../../services/wallet.service';
-import { MessageService } from '../../services/message.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { KeyPair } from '../../interfaces';
@@ -34,7 +34,6 @@ export class NewAccountComponent implements OnInit {
 
   constructor(
     private walletService: WalletService,
-    private messageService: MessageService,
     private modalService: BsModalService,
     private operationService: OperationService,
     private coordinatorService: CoordinatorService,
@@ -53,7 +52,7 @@ export class NewAccountComponent implements OnInit {
 
   open1(template1: TemplateRef<any>) {
     this.clearForm();
-    this.modalRef1 = this.modalService.show(template1, { class: 'modal-sm' });
+    this.modalRef1 = this.modalService.show(template1, { class: 'first' });
   }
 
   open2(template: TemplateRef<any>) {
@@ -131,9 +130,9 @@ export class NewAccountComponent implements OnInit {
 
   invalidInput(): string {
     if (!Number(this.amount) && this.amount && this.amount !== '0') {
-      return 'invalid amount';
+      return 'Invalid amount';
     } else if (!Number(this.fee) && this.fee && this.fee !== '0') {
-      return 'invalid fee';
+      return 'Invalid fee';
     } else {
       return '';
     }

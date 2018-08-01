@@ -1,4 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+
 import { WalletService } from '../../services/wallet.service';
 import { OperationService } from '../../services/operation.service';
 import { MessageService } from '../../services/message.service';
@@ -15,17 +16,19 @@ export class OfflineSigningComponent implements OnInit {
     InputImportOperationFileStep2 = 'Choose file';
     InputImportOperationFileStep3 = 'Choose file';
 
-    unsigned = '';
+    unsigned = '';  // Will contain the unsigned hash
     signed1 = '';
     signed2 = '';
     signedOp = '';
     pwd = '';
     pwdPlaceholder = '';
-    decodeOutput = '';
+    decodeUnsignedOutput = '';
+    decodeSignedOutput = '';
     errorMessage = '';
     showInstructions = false;
     instructionBtn = 'Show help';
     isFullWallet = false;
+    notAllowOnlineSigning = true;
 
     constructor(
         public walletService: WalletService,
@@ -56,19 +59,41 @@ export class OfflineSigningComponent implements OnInit {
     }
     decodeUnsignedOp() {
         if (!this.unsigned) {
-            this.decodeOutput = '';
+            this.decodeUnsignedOutput = '';
             console.log('don\'t decode');
         } else {
             console.log('decode...');
             try {
                 const op = this.operationService.decodeOpBytes(this.unsigned);
-                this.decodeOutput = '\n### PLEASE VERIFY THIS DATA ARE CORRECT BEFORE SIGNING ###\n';
+                this.decodeUnsignedOutput = '\n### PLEASE VERIFY THIS DATA IS CORRECT BEFORE SIGNING IT ###\n';
                 const output = this.operationService.fop2strings(op);
+
                 for (let i = 0; i < output.length; i++) {
-                    this.decodeOutput = this.decodeOutput + '\n' + output[i];
+                    this.decodeUnsignedOutput = this.decodeUnsignedOutput + '\n' + output[i];
                 }
+                this.decodeUnsignedOutput = this.decodeUnsignedOutput + '\n' + '\n';
             } catch (e) {
-                this.decodeOutput = '\n### FAILED TO DECODE OPERATION BYTES! YOU ARE ADVICED TO NOT PROCEED ###\n';
+                this.decodeUnsignedOutput = '\n### FAILED TO DECODE OPERATION BYTES! YOU ARE ADVISED TO NOT PROCEED ###\n';
+            }
+        }
+    }
+    decodeSignedOp() {
+        if (!this.signed2) {
+            this.decodeSignedOutput = '';
+            console.log('don\'t decode');
+        } else {
+            console.log('decode...');
+            try {
+                const op = this.operationService.decodeOpBytes(this.signed2.slice(0, this.signed2.length - 128));
+                this.decodeSignedOutput = '\n### PLEASE VERIFY THIS DATA IS CORRECT BEFORE BROADCASTING IT ###\n';
+                const output = this.operationService.fop2strings(op);
+
+                for (let i = 0; i < output.length; i++) {
+                    this.decodeSignedOutput = this.decodeSignedOutput + '\n' + output[i];
+                }
+                this.decodeSignedOutput = this.decodeSignedOutput + '\n' + '\n';
+            } catch (e) {
+                this.decodeSignedOutput = '\n### FAILED TO DECODE OPERATION BYTES! YOU ARE ADVICED TO NOT PROCEED ###\n';
             }
         }
     }
@@ -78,8 +103,11 @@ export class OfflineSigningComponent implements OnInit {
         }
         return (this.walletService.wallet.XTZrate !== null || this.walletService.wallet.balance.balanceXTZ !== null);
     }
+    allowToSignInOnlineWallet() {
+        this.notAllowOnlineSigning = false;
+    }
     notAllowedToSign(): boolean {
-        return (!this.isFullWallet || this.isOnline());
+        return (!this.isFullWallet || (this.isOnline() && this.notAllowOnlineSigning));
     }
     broadcast() {
         if (this.signed2) {
@@ -127,7 +155,7 @@ export class OfflineSigningComponent implements OnInit {
                     if (data.signed === true && data.hex) {
                         this.signed2 = data.hex;
                     } else {
-                        this.messageService.addWarning('Not an unsigned operation!');
+                        this.messageService.addWarning('Not a signed operation!');
                     }
                 } else {
                     this.messageService.addError('Failed to read file!');

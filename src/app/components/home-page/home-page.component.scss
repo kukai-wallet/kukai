@@ -8,9 +8,18 @@ body {
     font-family: 'Poppins', sans-serif;
     background: #fafafa;
 }
-.red {
+.zeronet {
+    color: rgb(230, 0, 0);
+    font-weight: bold;
+}
+
+.betanet {
     color: rgb(0, 110, 9);
     font-weight: bold;
+}
+
+.white {
+    color: #fafafa;
 }
 
 p {
@@ -90,6 +99,7 @@ a, a:hover, a:focus {
 #sidebar .sub-heading {
     font-size: 0.9em;
     color: #000 !important;
+    margin-bottom: 0px;
 }
 
 #sidebar ul.components {
@@ -99,7 +109,7 @@ a, a:hover, a:focus {
 
 #sidebar ul p {
     color: #fff;
-    padding: 10px;
+    padding: 7x;
 }
 
 #sidebar ul li a {

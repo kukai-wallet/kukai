@@ -1,13 +1,14 @@
-import { Component, TemplateRef, OnInit, ViewEncapsulation, Input, ViewChild, ElementRef } from '@angular/core';
-import { DOCUMENT } from '@angular/platform-browser';
+import { Component, TemplateRef, OnInit, ViewEncapsulation, Input, ViewChild } from '@angular/core';
+
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
+
+import { KeyPair } from '../../interfaces';
+
 import { WalletService } from '../../services/wallet.service';
-import { MessageService } from '../../services/message.service';
 import { CoordinatorService } from '../../services/coordinator.service';
 import { OperationService } from '../../services/operation.service';
 import { ExportService } from '../../services/export.service';
-import { BsModalService } from 'ngx-bootstrap/modal';
-import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
-import { KeyPair } from '../../interfaces';
 
 @Component({
     selector: 'app-send',
@@ -47,7 +48,6 @@ export class SendComponent implements OnInit {
     constructor(
         private modalService: BsModalService,
         private walletService: WalletService,
-        private messageService: MessageService,
         private operationService: OperationService,
         private coordinatorService: CoordinatorService,
         private exportService: ExportService
@@ -135,7 +135,7 @@ export class SendComponent implements OnInit {
     open1(template1: TemplateRef<any>) {
         if (this.walletService.wallet) {
             this.clearForm();
-            this.modalRef1 = this.modalService.show(template1, { class: 'first' });
+            this.modalRef1 = this.modalService.show(template1, { class: 'first' });  // modal-sm / modal-lg
         }
     }
 
@@ -222,13 +222,13 @@ export class SendComponent implements OnInit {
 
     invalidInput(): string {
         if (!this.activePkh || this.activePkh.length !== 36) {
-            return 'invalid sender address';
+            return 'Invalid sender address';
         } else if (!this.toPkh || this.toPkh.length !== 36) {
-            return 'invalid receiver address';
+            return 'Invalid receiver address';
         } else if (!Number(this.amount) && this.amount && this.amount !== '0') {
-            return 'invalid amount';
+            return 'Invalid amount';
         } else if (!Number(this.fee) && this.fee && this.fee !== '0') {
-            return 'invalid fee';
+            return 'Invalid fee';
         } else {
             return '';
         }
