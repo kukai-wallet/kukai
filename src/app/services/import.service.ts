@@ -97,7 +97,7 @@ export class ImportService {
             index = 1;
           }
           const KT = data[i].type.operations[index].tz1.tz;
-          if (KT !== pkh) {
+          if (this.walletService.wallet.accounts.findIndex(a => a.pkh === KT) === -1) {
             this.walletService.addAccount(KT);
             console.log('Added: ' + KT);
             this.coordinatorService.start(KT);
