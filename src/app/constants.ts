@@ -7,8 +7,8 @@ interface Net {
   }
 export class Constants {
     // Select Betanet or Zeronet
-    // readonly NET: Net = this.betanet();
-    readonly NET: Net = this.zeronet();
+    readonly NET: Net = this.betanet();
+    // readonly NET: Net = this.zeronet();
 
     zeronet(): Net {
         const ZERONET: Net = {
