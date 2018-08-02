@@ -1,8 +1,1 @@
-<div>{{ 'HELLO' | translate:param }}</div>
-<div>{{ 'HOME.HELLO' | translate:param }}</div>
-
-<select #langSelect (change)="translate.use(langSelect.value)">
-    <option *ngFor="let lang of translate.getLangs()" [value]="lang" [selected]="lang === translate.currentLang">{{ lang }}</option>
-</select>
-
 <app-home-page></app-home-page>

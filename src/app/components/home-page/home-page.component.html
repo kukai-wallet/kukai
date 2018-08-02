@@ -24,16 +24,30 @@
                     aria-controls="dropdown-basic">
                 Language <span class="caret"></span>
             </button>
-            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+
+            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-language">
+                <li role="menuitem" *ngFor="let lang of translate.getLangs()" [value]="lang" (click)="translate.use(lang)"> 
+                    <span class="dropdown-item"> {{ returnLanguage (lang) }} </span>
+                </li>
+            </ul>
+
+            <!-- Working - Basic UI
+            <select #langSelect2 (change)="translate.use(langSelect2.value)">
+                <option *ngFor="let lang of translate.getLangs()" [value]="lang" [selected]="lang === translate.currentLang">{{ lang }}</option>
+            </select>
+            -->
+
+            <!-- 
+            <ul id="dropdown-basictmp" *dropdownMenu class="dropdown-menu"
                 role="menu" aria-labelledby="button-language">
-                <li role="menuitem"><span class="dropdown-item">English</span></li> <!-- 1.12 bn million -->
-                <li role="menuitem"><span class="dropdown-item">中国</span></li> <!-- 1.10 bn - Chinese Simplified -->
-                <li role="menuitem"><span class="dropdown-item">Español</span></li> <!-- 512.9 million - Spanish -->
-                <li role="menuitem"><span class="dropdown-item">Français</span></li> <!-- 284.9 million - French -->
-                <li role="menuitem"><span class="dropdown-item">Pусский</span></li> <!-- 264.3 million - Russian -->
-                <li role="menuitem"><span class="dropdown-item">日本の</span></li> <!-- 128.3 million - Japanese -->
-                <li role="menuitem"><span class="dropdown-item">한국어</span></li> <!-- 77.2 million - Korean -->
-                <li role="menuitem"><span class="dropdown-item">Svenska</span></li> <!-- Swedish -->
+                <li role="menuitem"><span class="dropdown-item">English</span></li> <!-- 1.12 bn million --
+                <li role="menuitem"><span class="dropdown-item">中国</span></li> <!-- 1.10 bn - Chinese Simplified --
+                <li role="menuitem"><span class="dropdown-item">Español</span></li> <!-- 512.9 million - Spanish --
+                <li role="menuitem"><span class="dropdown-item">Français</span></li> <!-- 284.9 million - French --
+                <li role="menuitem"><span class="dropdown-item">Pусский</span></li> <!-- 264.3 million - Russian --
+                <li role="menuitem"><span class="dropdown-item">日本の</span></li> <!-- 128.3 million - Japanese --
+                <li role="menuitem"><span class="dropdown-item">한국어</span></li> <!-- 77.2 million - Korean --
+                <li role="menuitem"><span class="dropdown-item">Svenska</span></li> <!-- Swedish --
 
                 <!-- Most spoken languages
                 <li role="menuitem"><a class="dropdown-item" href="#">English</a></li> <!-- 1.12 bn million --
@@ -53,8 +67,9 @@
                 <li role="menuitem"><a class="dropdown-item" href="#">Tiếng Việt</a></li> <!-- 67.9 millio - Vietnamese --
                 <li role="menuitem"><a class="dropdown-item" href="#">Italiano</a></li> <!-- 67.8 million - Italian --
                 <li role="menuitem"><a class="dropdown-item" href="#">Svenska</a></li> <!-- Swedish --
-                --> 
+                --
             </ul>
+            -->
         </div>
 
         <!-- Currency Button -->
@@ -105,6 +120,15 @@
                 <a routerLink="/bakery" class="btn-main-action">Bakery</a>
             </li>
         </ul>
+
+        <!-- TEST LANGUAGE TRANSLATION -->
+        <div>{{ 'HELLO' | translate:param }}</div>
+        <div>{{ 'HOME.HELLO' | translate:param }}</div>
+        <!--
+        <select #langSelect (change)="translate.use(langSelect.value)">
+            <option *ngFor="let lang of translate.getLangs()" [value]="lang" [selected]="lang === translate.currentLang">{{ lang }}</option>
+        </select>
+        -->
 
 
         <ul class="list-unstyled bottom-CTAs">
