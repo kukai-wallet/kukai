@@ -22,7 +22,7 @@
         <div class="btn-group dropdown-padding" dropdown>
             <button id="button-language" dropdownToggle type="button" class="btn btn-light dropdown-toggle btn-sm"
                     aria-controls="dropdown-basic">
-                Language <span class="caret"></span>
+                {{ returnLanguage (translate.currentLang) }} <span class="caret"></span>
             </button>
 
             <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-language">
@@ -76,7 +76,7 @@
         <div class="btn-group dropdown-padding" dropdown>
             <button id="button-Currency" dropdownToggle type="button" class="btn btn-light dropdown-toggle btn-sm"
                     aria-controls="dropdown-basic">
-                Currency <span class="caret"></span>
+                {{ 'HOMEPAGECOMPONENT.CURRENCY' | translate }} <span class="caret"></span>
             </button>
             <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
                 role="menu" aria-labelledby="button-Currency">
@@ -102,7 +102,7 @@
                 <img src="assets/img/logo.png" alt="Kukai" class="center" height="121" width="210">
             </a>
             <p class="sub-heading" align="center">
-                on a path of self-discovery
+                {{ 'HOMEPAGECOMPONENT.MOTO' | translate }}
                 <BR> <span class="white">{{ this.walletService.walletTypePrint() }}</span>
                 <BR> <span [ngClass]="{'zeronet' : CONSTANTS.NET.NAME == 'Zeronet',  'betanet' : CONSTANTS.NET.NAME == 'Betanet'}">[ {{ CONSTANTS.NET.NAME }} ]</span>
             </p>
@@ -110,20 +110,21 @@
         <br>
         <ul class="list-unstyled components">
             <li routerLinkActive="active">
-                <a routerLink="/overview" class="btn-main-action">Overview</a>
+                <a routerLink="/overview" class="btn-main-action">{{ 'HOMEPAGECOMPONENT.OVERVIEW' | translate }}</a>
             </li>
             <li routerLinkActive="active">
-                <a routerLink="/account" class="btn-main-action">Account</a>
+                <a routerLink="/account" class="btn-main-action">{{ 'HOMEPAGECOMPONENT.ACCOUNT' | translate }}</a>
             </li>
 
             <li routerLinkActive="active">
-                <a routerLink="/bakery" class="btn-main-action">Bakery</a>
+                <a routerLink="/bakery" class="btn-main-action">{{ 'HOMEPAGECOMPONENT.BAKERY' | translate }}</a>
             </li>
         </ul>
 
-        <!-- TEST LANGUAGE TRANSLATION -->
+        <!-- TEST LANGUAGE TRANSLATION --
         <div>{{ 'HELLO' | translate:param }}</div>
         <div>{{ 'HOME.HELLO' | translate:param }}</div>
+        -->
         <!--
         <select #langSelect (change)="translate.use(langSelect.value)">
             <option *ngFor="let lang of translate.getLangs()" [value]="lang" [selected]="lang === translate.currentLang">{{ lang }}</option>
@@ -133,13 +134,13 @@
 
         <ul class="list-unstyled bottom-CTAs">
             <li routerLinkActive="active">
-                <a routerLink="/offline-signing" class="btn-main-action">Offline signing</a>
+                <a routerLink="/offline-signing" class="btn-main-action">{{ 'HOMEPAGECOMPONENT.OFFLINESIGNING' | translate }}</a>
             </li>
             <li routerLinkActive="active">
-                <a routerLink="/backup" class="btn-main-action">Backup</a>
+                <a routerLink="/backup" class="btn-main-action">{{ 'HOMEPAGECOMPONENT.BACKUP' | translate }}</a>
             </li>
             <li class="bottom-category">
-                <a (click)="logout();" class="btn-main-action" data-toggle="tooltip" title="Clear wallet data">Logout</a>
+                <a (click)="logout();" class="btn-main-action" data-toggle="tooltip" [title]="'HOMEPAGECOMPONENT.CLEARDATA' | translate">{{ 'HOMEPAGECOMPONENT.LOGOUT' | translate }}</a>
             </li>
             <span class="btn-main-action">
                 <a href="https://github.com/kukai-wallet/kukai" target="_blank">
@@ -153,8 +154,8 @@
                 </a>
             </span>
 
-            <div class="donation" data-toggle="tooltip" title="Donation address">
-                <i class="fa fa-gratipay"></i> Donations are always appreciated!
+            <div class="donation" data-toggle="tooltip" [title]="'HOMEPAGECOMPONENT.DONATIONADDRESS' | translate">
+                <i class="fa fa-gratipay"></i> {{ 'HOMEPAGECOMPONENT.DONATIONSINFO' | translate }}
                 <br>
                 <span class="donation-address">tz1L5F33JZ9bsyRdSoshMujjZxdEzhwBHCDq</span>
             </div>

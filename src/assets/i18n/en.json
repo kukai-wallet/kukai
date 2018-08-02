@@ -2,5 +2,24 @@
     "HELLO": "hello {{value}}",
     "HOME": {
         "HELLO": "hello {{value}}"
+    },
+    "HOMEPAGECOMPONENT": {
+        "LANGUAGE" : "Language",
+        "CURRENCY" : "Currency",
+        "MOTO" : "on a path of self-discovery",
+        "OVERVIEW" : "Overview",
+        "ACCOUNT" : "Account",
+        "BAKERY" : "Bakery",
+        "OFFLINESIGNING" : "Offline signing",
+        "BACKUP" : "Backup",
+        "LOGOUT" : "Logout",
+        "CLEARDATA" : "Clear wallet data",
+        "DONATIONADDRESS" : "Donation address",
+        "DONATIONSINFO" : "Donations are always appreciated!"
+    },
+    "STARTCOMPONENT": {
+        "IMPORTWALLET" : "Import wallet",
+        "NEWWALLET" : "New wallet",
+        "ACTIVATE" : "Activate"
     }
 }

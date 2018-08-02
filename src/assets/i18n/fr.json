@@ -2,5 +2,24 @@
     "HELLO": "bonjour {{value}}",
     "HOME": {
         "HELLO": "bonjour {{value}}"
+    },
+    "HOMEPAGECOMPONENT": {
+        "LANGUAGE" : "Langue",
+        "CURRENCY" : "Devise",
+        "MOTO" : "sur le chemin de la découverte ",
+        "OVERVIEW" : "Vue d'ensemble",
+        "ACCOUNT" : "Compte",
+        "BAKERY" : "Boulangerie",
+        "OFFLINESIGNING" : "Signer hors-ligne",
+        "BACKUP" : "Sauvegarder",
+        "LOGOUT" : "Quitter",
+        "CLEARDATA" : "Effacer les données locales",
+        "DONATIONADDRESS" : "Adresse de donation",
+        "DONATIONSINFO" : "Les donations sont toujours appréciées!"
+    },
+    "STARTCOMPONENT": {
+        "IMPORTWALLET" : "Importer un portefeuille",
+        "NEWWALLET" : "Nouveau",
+        "ACTIVATE" : "Activer"
     }
 }
