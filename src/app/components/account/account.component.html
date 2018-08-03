@@ -1,7 +1,7 @@
 <div class="container" *ngIf="this.walletService.wallet">
     <div class="row">
         <div class="col-6">
-            <h1 class="page-header">Account</h1>
+            <h1 class="page-header">{{ 'ACCOUNTCOMPONENT.ACCOUNT' | translate }}</h1>
         </div>
     </div>
     <div class="row">
@@ -13,7 +13,7 @@
     </div>
     <div class="row bottom-separator">
         <div class="col-12">
-            Balance: {{ balance / 1000000 | number:'1.0' }} &#42793;
+            {{ 'ACCOUNTCOMPONENT.BALANCE' | translate }} {{ balance / 1000000 | number:'1.0' }} &#42793;
             <span *ngIf="balanceUSD > 0">(${{ balanceUSD | number:'1.00'}} USD)</span>
         </div>
     </div>
@@ -26,13 +26,18 @@
 <div class="container" *ngIf="!this.walletService.wallet">
     <div class="row bottom-separator-no-account">
         <div class="col-lg-12">
-            <h1 class="page-header-no-account">Account</h1>
+            <h1 class="page-header-no-account">{{ 'ACCOUNTCOMPONENT.ACCOUNT' | translate }}</h1>
         </div>
     </div>
     <div class="row">
         <div class="col-lg-12">
+            <!--
             <p>You can get your individual account details in here but before, you will need to
                 <a routerLink="">create or import</a> a wallet.</p>
+            -->
+            <p>
+                {{ 'ACCOUNTCOMPONENT.EMPTY' | translate }}
+            </p>
         </div>
     </div>
 </div>

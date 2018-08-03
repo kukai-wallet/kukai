@@ -3,6 +3,18 @@
     "HOME": {
         "HELLO": "bonjour {{value}}"
     },
+    "TIMEAGOPIPE": {
+
+    },
+    "BALANCESERVICE": {
+
+    },
+    "OPERATIONSERVICE": {
+
+    },
+    "WALLETSERVICE": {
+
+    },
     "HOMEPAGECOMPONENT": {
         "LANGUAGE" : "Langue",
         "CURRENCY" : "Devise",
@@ -16,6 +28,113 @@
         "CLEARDATA" : "Effacer les données locales",
         "DONATIONADDRESS" : "Adresse de donation",
         "DONATIONSINFO" : "Les donations sont toujours appréciées!"
+    },
+    "ACCOUNTCOMPONENT": {
+        "ACCOUNT" : "Compte",
+        "BALANCE" : "Solde:",
+        "EMPTY" : "Vous pouvez voir les détails de vos comptes indviduels, mais avant vous devez créer ou importer un portefeuille"
+    },
+    "ACTIVATECOMPONENT": {
+        "TITLE" : "Activer votre portefeuille de donateur",
+        "PKH" : "Votre hash de clef publique",
+        "CODE" : "Votre code d'activation",
+        "INFO1" : "Les portefeuilles créés pendant l'ICO doivent être activés",
+        "INFO2" : "La clef secrète n'est pas requise pendant le processus d'activation",
+        "BACK" : "Retour",
+        "ACTIVATE" : "Activer"
+    },
+    "ACTIVITYCOMPONENT": {
+        "TXNHASH" : "Transaction",
+        "BLOCK" : "Bloc",
+        "DATE" : "Date",
+        "TYPE" : "Type",
+        "COUNTERPARTY" : "Contrepartie",
+        "AMOUNT" : "Montant",
+        "STATUS" : "Statut",
+        "FROM" : "de",
+        "TO" : "à ",
+        "EMPTY" : "Portefeuille non configuré!"
+    },
+    "BACKUPCOMPONENT": {
+        "TITLE" : "Sauvegarder votre portefeuille",
+        "HEADING1" : "La sauvegarde de votre portefeuille vous permet de protéger vos tez en cas de panne informatique. Si vous n'avez pas fait de sauvegarde et ne pouvez plus accéder à votre portefeuille, vos tez sont perdus à jamais.",
+        "HEADING2" : "Il est recommandé de stocker les sauvegardes des deux formes de votre clé (la version cryptée et le germe de votre clef) dans deux endroits physiques separés",
+        "EXPORTFULLWALLET" : "1. Enregistrer votre portefeuille complet",
+        "EXPORTVIEWONLYWALLET" : "1. Enregistrer votre portefeuille en lecture seule",
+        "EXPORTOBSERVERWALLET" : "1. Enregistrer votre portefeuille observable ",
+        "INFOFULLWALLET" : "Le fichier contiendra votre germe crypté avec votre mot de passse.",
+        "INFOVIEWONLYWALLET" : "Le fichier contiendra votre clef publique",
+        "INFOOBSERVERWALLET" : "Le fichier contiendra votre hash de la clef hash",
+        "DOWNLOAD" : "Télécharger",
+        "EXPORTVIEWONLYWALLET2" : "Exporter votre portefeuille en lecture seule",
+        "INFOVIEWONLYWALLET2" : "Le fichier contiendra votre clef publique (nécessaire pour créer les opérations non signées).",
+        "PASSWORD" : "Mot de passe",
+        "GENERATE" : "Générer ",
+        "BACKUP" : "Sauvegarder",
+        "EMPTY" : "Avant de créer une sauvegarde, vous devez créer ou importer un portefeuille."
+    },
+    "BAKERYCOMPONENT": {
+        "BAKERY" : "Boulangerie",
+        "HEADING" : "Dans la boulangerie, vous pouvez facilement choisir les différents délégués de votre compte.",
+        "INFO" : "Veuillez noter que vous ne pouvez pas déléguer avec votre compte principal. Vous avez besoin de créer un compte secondaire.",
+        "ACCOUNTS" : "Comptes",
+        "BALANCE" : "Solde",
+        "DELEGATED TO" : "Déléguer à",
+        "EMPTY" : "Si vous souhaitez mettre en place les délégués de vos tez, vous aurez besoin de créer ou importer un portefeuille."
+    },
+    "DELEGATECOMPONENT": {
+        "TITLE1" : "Déléguer",
+        "FROM" : "De l'adresse",
+        "TO" : "À l'adresse",
+        "PREVIEW" : "Aperçu",
+        "TITLE2" : "Vérifier la délégation",
+        "ACCOUNT" : "Compte",
+        "DELEGATE" : "Déléguer",
+        "FEE" : "Frais",
+        "CONFIRM" : "Confirmer",
+        "TITLE3" : "Confirmation",
+        "WAIT" : "Veuillez patienter...",
+        "DELEGATIONSUCCESS" : "Votre opération de délégation a été diffusée avec succès sur le réseau",
+        "UNSIGNEDSUCCESS" : "Votre transaction non signée a été créée avec succès.",
+        "FAILED" : "Opération échouée!",
+        "DOWNLOAD" : "Télécharger",
+        "CLOSE" : "Fermer"
+    },
+    "IMPORTCOMPONENT": {
+        "IMPORTTITLE" : "Importer votre portefeuille.",
+        "IMPORTHEADING" : "Importer le portefeuille avec votre germe ou fichier crypté. Vous pouvez aussi importer le portefeuilles avec vos références de l'ICO.",
+        "IMPORTSUBTITLE1" : "1. Importer le portefeuille",
+        "IMPORTINFO1" : "Importer le portefeuille à partir du fichier (*.tez). Les deux types de portefeuilles (complet ou en lecture seule) peuvent être importés ici.",
+        "IMPORTSUBTITLE2" : "2. Importer votre portefeuille du Germe ou références ICO.",
+        "IMPORTINFO2" : "Récupérer le portefeuilles grâce à la phrase mnémonique",
+        "IMPORTSUBTITLE3" : "3. Portefeuille observable",
+        "IMPORTINFO3" : "Suivre un portefeuille avec le hash de la clef publique",
+        "IMPORT" : "Importer",
+        "INVALIDPKH" : "Hash de clef publique invalide!",
+        "INVALIDPREFIX" : "Préfixe invalide!",
+        "IMPORTFAILED" : "Échec de l'import!",
+        "FILENOTSUPPORTED" : "Format du fichier sélectionné n'est pas supporté"
+    },
+    "MNEMONICIMPORTCOMPONENT": {
+
+    },
+    "NEWACCOUNTCOMPONENT": {
+
+    },
+    "NEWWALLETCOMPONENT": {
+
+    },
+    "OFFLINESIGNINGCOMPONENT": {
+
+    },
+    "OVERVIEWCOMPONENT": {
+
+    },
+    "RECEIVECOMPONENT": {
+
+    },
+    "SENDCOMPONENT": {
+
     },
     "STARTCOMPONENT": {
         "IMPORTWALLET" : "Importer un portefeuille",

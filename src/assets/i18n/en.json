@@ -3,6 +3,18 @@
     "HOME": {
         "HELLO": "hello {{value}}"
     },
+    "TIMEAGOPIPE": {
+
+    },
+    "BALANCESERVICE": {
+
+    },
+    "OPERATIONSERVICE": {
+
+    },
+    "WALLETSERVICE": {
+
+    },
     "HOMEPAGECOMPONENT": {
         "LANGUAGE" : "Language",
         "CURRENCY" : "Currency",
@@ -16,6 +28,113 @@
         "CLEARDATA" : "Clear wallet data",
         "DONATIONADDRESS" : "Donation address",
         "DONATIONSINFO" : "Donations are always appreciated!"
+    },
+    "ACCOUNTCOMPONENT": {
+        "ACCOUNT" : "Account",
+        "BALANCE" : "Balance:",
+        "EMPTY" : "You can get your individual account details in here but before, you will need to create or import a wallet."
+    },
+    "ACTIVATECOMPONENT": {
+        "TITLE" : "Activate your ICO Wallet",
+        "PKH" : "Your public key hash",
+        "CODE" : "Your activation code",
+        "INFO1" : "Wallets created during the ICO need to be activated.",
+        "INFO2" : "No private key is required for the activation process.",
+        "BACK" : "Back",
+        "ACTIVATE" : "Activate"
+    },
+    "ACTIVITYCOMPONENT": {
+        "TXNHASH" : "Txn Hash",
+        "BLOCK" : "Block",
+        "DATE" : "Date",
+        "TYPE" : "Type",
+        "COUNTERPARTY" : "Counterparty",
+        "AMOUNT" : "Amount",
+        "STATUS" : "Status",
+        "FROM" : "from",
+        "TO" : "to",
+        "EMPTY" : "Wallet not configured!"
+    },
+    "BACKUPCOMPONENT": {
+        "TITLE" : "Backup Your Wallet",
+        "HEADING1" : "A wallet backup protects your tez against computer or software failure. If you lose the backup and can't access your wallet for some reasons, your tez are permanently lost!",
+        "HEADING2" : "It is recommended that you store backups of both forms of your key (the Keystore file version and paper wallet version) in physically separate, offline environments.",
+        "EXPORTFULLWALLET" : "1. Export your Full Wallet to File",
+        "EXPORTVIEWONLYWALLET" : "1. Export your View-only Wallet to File",
+        "EXPORTOBSERVERWALLET" : "1. Export your Observer Wallet to File",
+        "INFOFULLWALLET" : "This wallet file will contain your private seed encrypted with your password.",
+        "INFOVIEWONLYWALLET" : "This wallet file will contain your public key.",
+        "INFOOBSERVERWALLET" : "This wallet file will contain your public key hash.",
+        "DOWNLOAD" : "Download",
+        "EXPORTVIEWONLYWALLET2" : "2. Export View-only Wallet to file",
+        "INFOVIEWONLYWALLET2" : "This wallet file will contain your public key (Needed to create unsigned operations).",
+        "PASSWORD" : "Password",
+        "GENERATE" : "Generate",
+        "BACKUP" : "Backup",
+        "EMPTY" : "Before making a backup, you will need to create or import a wallet."
+    },
+    "BAKERYCOMPONENT": {
+        "BAKERY" : "Bakery",
+        "HEADING" : "In the bakery, you can easily set different delegates for your accounts.",
+        "INFO" : "Please note that you can't delegate with your identity. You need to create new accounts.",
+        "ACCOUNTS" : "Accounts",
+        "BALANCE" : "Balance",
+        "DELEGATED TO" : "Delegated to",
+        "EMPTY" : "If you want to set delegates for your tez, you will need to create or import a wallet."
+    },
+    "DELEGATECOMPONENT": {
+        "TITLE1" : "Delegate",
+        "FROM" : "From Address",
+        "TO" : "To Address",
+        "PREVIEW" : "Preview",
+        "TITLE2" : "Authenticate delegation",
+        "ACCOUNT" : "Account:",
+        "DELEGATE" : "Delegate:",
+        "FEE" : "Fee:",
+        "CONFIRM" : "Confirm",
+        "TITLE3" : "Confirmation",
+        "WAIT" : "Please wait...",
+        "DELEGATIONSUCCESS" : "Your delegation operation has been broadcasted successfully to the network",
+        "UNSIGNEDSUCCESS" : "Your unsigned transaction has been created successfully",
+        "FAILED" : "Operation failed!",
+        "DOWNLOAD" : "Download",
+        "CLOSE" : "Close"
+    },
+    "IMPORTCOMPONENT": {
+        "IMPORTTITLE" : "Import Your Wallet",
+        "IMPORTHEADING" : "Import your previous wallet through your seed or your encrypted file. You can also import wallets with your ICO credentials.",
+        "IMPORTSUBTITLE1" : "1. Import wallet from File",
+        "IMPORTINFO1" : "Import your wallet from file (.tez). Both encrypted keystore files for full-wallet (with seed) or view-only wallets (with public key) can be imported here.",
+        "IMPORTSUBTITLE2" : "2. Import wallet from Seed or ICO credentials",
+        "IMPORTINFO2" : "Retrieve wallet from your mnemonic words",
+        "IMPORTSUBTITLE3" : "3. Observer wallet",
+        "IMPORTINFO3" : "Track a wallet from its public key hash",
+        "IMPORT" : "Import",
+        "INVALIDPKH" : "Invalid public key hash'",
+        "INVALIDPREFIX" : "Invalid prefix!'",
+        "IMPORTFAILED" : "Failed to import wallet!'",
+        "FILENOTSUPPORTED" : "Selected file format is not supported'"
+    },
+    "MNEMONICIMPORTCOMPONENT": {
+
+    },
+    "NEWACCOUNTCOMPONENT": {
+
+    },
+    "NEWWALLETCOMPONENT": {
+
+    },
+    "OFFLINESIGNINGCOMPONENT": {
+
+    },
+    "OVERVIEWCOMPONENT": {
+
+    },
+    "RECEIVECOMPONENT": {
+
+    },
+    "SENDCOMPONENT": {
+
     },
     "STARTCOMPONENT": {
         "IMPORTWALLET" : "Import wallet",
