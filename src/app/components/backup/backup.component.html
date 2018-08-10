@@ -2,7 +2,7 @@
     <!-- Title -->
     <div class="row bottom-separator">
         <div class="col-lg-12">
-            <h1 class="page-header">Backup Your Wallet</h1>
+            <h1 class="page-header">{{ 'BACKUPCOMPONENT.TITLE' | translate }}</h1>
         </div>
     </div>
 
@@ -10,10 +10,8 @@
     <div class="row">
         <div class="col-lg-12">
             <h4>
-                <p>A wallet backup protects your tez against computer or software failure. If you lose the backup and can't
-                    access your wallet for some reasons, your tez are permanently lost!</p>
-                <p>It is recommended that you store backups of both forms of your key (the Keystore file version and paper wallet
-                    version) in physically separate, offline environments.</p>
+                <p>{{ 'BACKUPCOMPONENT.HEADING1' | translate }}</p>
+                <p>{{ 'BACKUPCOMPONENT.HEADING2' | translate }}</p>
             </h4>
         </div>
     </div>
@@ -22,30 +20,30 @@
     <!-- Export File -->
     <div class="row">
         <div class="col-lg-12">
-            <h3 *ngIf="walletService.isFullWallet()">1. Export your Full Wallet to File</h3>
-            <h3 *ngIf="walletService.isViewOnlyWallet()">1. Export your View-only Wallet to File</h3>
-            <h3 *ngIf="walletService.isObserverWallet()">1. Export your Observer Wallet to File</h3>
-            <p *ngIf="walletService.isFullWallet()">This wallet file will contain your private seed encrypted with your password.</p>
-            <p *ngIf="walletService.isViewOnlyWallet()">This wallet file will contain your public key.</p>
-            <p *ngIf="walletService.isObserverWallet()">This wallet file will contain your public key hash.</p>
+            <h3 *ngIf="walletService.isFullWallet()">{{ 'BACKUPCOMPONENT.EXPORTFULLWALLET' | translate }}</h3>
+            <h3 *ngIf="walletService.isViewOnlyWallet()">{{ 'BACKUPCOMPONENT.EXPORTVIEWONLYWALLET' | translate }}</h3>
+            <h3 *ngIf="walletService.isObserverWallet()">{{ 'BACKUPCOMPONENT.EXPORTOBSERVERWALLET' | translate }}</h3>
+            <p *ngIf="walletService.isFullWallet()">{{ 'BACKUPCOMPONENT.INFOFULLWALLET' | translate }}</p>
+            <p *ngIf="walletService.isViewOnlyWallet()">{{ 'BACKUPCOMPONENT.INFOVIEWONLYWALLET' | translate }}</p>
+            <p *ngIf="walletService.isObserverWallet()">{{ 'BACKUPCOMPONENT.INFOOBSERVERWALLET' | translate }}</p>
         </div>
     </div>
     <form class="form-inline">
-        <button type="button" class="btn btn-clear btn-second mb-2 mr-sm-2" aria-describedby="saveFileButton" (click)="saveFile()">Download</button>
+        <button type="button" class="btn btn-clear btn-second mb-2 mr-sm-2" aria-describedby="saveFileButton" (click)="saveFile()">{{ 'BACKUPCOMPONENT.DOWNLOAD' | translate }}</button>
     </form>
     <BR>
     <ng-container *ngIf="walletService.isFullWallet()">
         <!-- Export PK -->
         <div class="row">
             <div class="col-lg-12">
-                <h3>2. Export View-only Wallet to file</h3>
-                <p>This wallet file will contain your public key (Needed to create unsigned operations).</p>
+                <h3>{{ 'BACKUPCOMPONENT.EXPORTVIEWONLYWALLET2' | translate }}</h3>
+                <p>{{ 'BACKUPCOMPONENT.INFOVIEWONLYWALLET2' | translate }}</p>
             </div>
         </div>
         <form class="form-inline">
-            <label class="sr-only" for="inlineFormInputPassword3">Password</label>
+            <label class="sr-only" for="inlineFormInputPassword3">{{ 'BACKUPCOMPONENT.PASSWORD' | translate }}</label>
             <input type="password" class="form-control mb-2 mr-sm-2" [(ngModel)]="pwd2" name="pwd2" placeholder="Password" aria-describedby="passwordHelpInline">
-            <button type="submit" id="pkDecrypt" class="btn btn-clear btn-second mb-2 mr-sm-2" [class.wait]="wait === 1" (click)="decryptPk()">Generate</button>
+            <button type="submit" id="pkDecrypt" class="btn btn-clear btn-second mb-2 mr-sm-2" [class.wait]="wait === 1" (click)="decryptPk()">{{ 'BACKUPCOMPONENT.GENERATE' | translate }}</button>
             <small *ngIf="pk">
                 {{ pk }}
             </small>
@@ -58,13 +56,18 @@
     <!-- Title -->
     <div class="row bottom-separator-no-account">
         <div class="col-lg-12">
-            <h1 class="page-header-no-account">Backup</h1>
+            <h1 class="page-header-no-account">{{ 'BACKUPCOMPONENT.BACKUP' | translate }}</h1>
         </div>
     </div>
     <div class="row">
         <div class="col-lg-12">
+            <!--
             <p>Before making a backup, you will need to
                 <a routerLink="">create or import</a> a wallet.</p>
+            -->
+            <p>
+                {{ 'BACKUPCOMPONENT.EMPTY' | translate }}
+            </p>
         </div>
     </div>
 </div>
