@@ -148,6 +148,7 @@
         "INVALIDMNEMONIC" : "無効なニーモニックです！",
         "INVALIDEMAILPASSWORD" : "無効なEメールアドレスもしくはパスワードです！",
         "INVALIDPASSPHRASE" : "無効なパスフレーズです！",
+        "FILENOTSUPPORTED" : "選択されたファイルフォーマットはサポートされていません。",
         "SHORTPASSWORD" : "パスワードが短すぎます！少なくとも９文字以上にしてください。",
         "NOMATCHPASSWORDS" : "パスワードが一致しません！",
         "WALLETREADY" : "あなたの新しいウォレットはセットアップされ、使用可能です！",
@@ -265,7 +266,8 @@
     "RECEIVECOMPONENT": {
         "RECEIVETEZ" : "テゾスの受信",
         "RECEIVE" : "受信",
-        "EMPTYINFO" : "ウォレットが設定されていません。"
+        "EMPTYINFO" : "ウォレットが設定されていません。",
+        "CLOSE" : "閉じる"
     },
     "SENDCOMPONENT": {
         "TITLE" : "テゾスの送信",

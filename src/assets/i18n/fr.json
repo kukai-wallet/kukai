@@ -99,9 +99,9 @@
         "TO" : "À l'adresse",
         "PREVIEW" : "Aperçu",
         "TITLE2" : "Vérifier la délégation",
-        "ACCOUNT" : "Compte",
-        "DELEGATE" : "Déléguer",
-        "FEE" : "Frais",
+        "ACCOUNT" : "Compte:",
+        "DELEGATE" : "Délégué:",
+        "FEE" : "Frais:",
         "CONFIRM" : "Confirmer",
         "TITLE3" : "Confirmation",
         "WAIT" : "Veuillez patienter...",
@@ -140,7 +140,7 @@
         "INFOPASSWORD2" : "Le mot de passe est utilisé pour crypter votre clef secrète.",
         "ENCRYPT" : "Crypter",
         "TITLE3" : "Portefeuille créé",
-        "PKH" : "Le hash de votre clef publique",
+        "PKH" : "Le hash de votre clef publique:",
         "INFOCONFIRMATION" : "Votre portefeuille a été créé et prêt pour l'emploi.",
         "INFODOWNLOAD" : "Veuillez télécharger votre fichier avec votre clef crypté.",
         "DOWNLOAD" : "Télécharger",
@@ -148,6 +148,7 @@
         "INVALIDMNEMONIC" : "Phrase mnémonique invalide!",
         "INVALIDEMAILPASSWORD" : "Email adresse ou mot de passe invalide!",
         "INVALIDPASSPHRASE" : "Phrase secrète invalide!",
+        "FILENOTSUPPORTED" : "Format du fichier sélectionné n'est pas supporté",
         "SHORTPASSWORD" : "Mot de passe trop court! Au moins 9 caractères requis!",
         "NOMATCHPASSWORDS" : "Les mots de passe ne correspondent pas!",
         "WALLETREADY" : "Votre nouveau portefeuille est prêt pour l'emploi!",
@@ -162,7 +163,7 @@
         "FUNDSFROM" : "Financer de",
         "AMOUNTSEND" : "Montant:",
         "FEE" : "Frais:",
-        "PREVIEW" : "Aperçu:",
+        "PREVIEW" : "Aperçu",
         "TITLE2" : "Vérifier le nouveau compte",
         "FROM" : "De:",
         "AMOUNT" : "Montant:",
@@ -252,7 +253,7 @@
     },
     "OVERVIEWCOMPONENT": {
         "TITLE" : "Votre portefeuille",
-        "BALANCE" : "Solde",
+        "BALANCE" : "Solde:",
         "IDENTITY" : "Compte principal",
         "BALANCETABLE" : "Solde",
         "VALUE" : "Valeur (USD)",
@@ -265,7 +266,8 @@
     "RECEIVECOMPONENT": {
         "RECEIVETEZ" : "Recevoir les tez",
         "RECEIVE" : "Recevoir",
-        "EMPTYINFO" : "Portefeuille non configuré!"
+        "EMPTYINFO" : "Portefeuille non configuré!",
+        "CLOSE" : "Fermer"
     },
     "SENDCOMPONENT": {
         "TITLE" : "Envoyer les tez",

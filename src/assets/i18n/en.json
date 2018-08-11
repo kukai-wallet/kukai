@@ -121,10 +121,10 @@
         "IMPORTSUBTITLE3" : "3. Observer wallet",
         "IMPORTINFO3" : "Track a wallet from its public key hash",
         "IMPORT" : "Import",
-        "INVALIDPKH" : "Invalid public key hash'",
-        "INVALIDPREFIX" : "Invalid prefix!'",
-        "IMPORTFAILED" : "Failed to import wallet!'",
-        "FILENOTSUPPORTED" : "Selected file format is not supported'"
+        "INVALIDPKH" : "Invalid public key hash",
+        "INVALIDPREFIX" : "Invalid prefix!",
+        "IMPORTFAILED" : "Failed to import wallet!",
+        "FILENOTSUPPORTED" : "Selected file format is not supported"
     },
     "MNEMONICIMPORTCOMPONENT": {
         "TITLE" : "Retrieve your Wallet",
@@ -146,11 +146,12 @@
         "DOWNLOAD" : "Download",
         "FINISH" : "Finish",
         "INVALIDMNEMONIC" : "Invalid mnemonic!'",
-        "INVALIDEMAILPASSWORD" : "Invalid email or password!'",
-        "INVALIDPASSPHRASE" : "Invalid passphrase!'",
-        "SHORTPASSWORD" : "Password too short! At least 9 characters expected.'",
+        "INVALIDEMAILPASSWORD" : "Invalid email or password!",
+        "INVALIDPASSPHRASE" : "Invalid passphrase!",
+        "FILENOTSUPPORTED" : "Selected file format is not supported",
+        "SHORTPASSWORD" : "Password too short! At least 9 characters expected.",
         "NOMATCHPASSWORDS" : "Passwords doesn't match!'",
-        "WALLETREADY" : "Your new wallet is now set up and ready!'",
+        "WALLETREADY" : "Your new wallet is now set up and ready!",
         "MNEMONIC" : "Mnemonic",
         "PASSPHRASE" : "Passphrase (optional)",
         "EMAIL" : "Email",
@@ -265,7 +266,8 @@
     "RECEIVECOMPONENT": {
         "RECEIVETEZ" : "Receive tez",
         "RECEIVE" : "Receive",
-        "EMPTYINFO" : "Wallet not configured"
+        "EMPTYINFO" : "Wallet not configured",
+        "CLOSE" : "Close"
     },
     "SENDCOMPONENT": {
         "TITLE" : "Send tez",

@@ -2,7 +2,7 @@
     <div class="center-content">
         <div class="card text-center fix-size">
             <div class="card-body">
-                <h1 class="card-title">Retrieve your Wallet</h1>
+                <h1 class="card-title"> {{ 'MNEMONICIMPORTCOMPONENT.TITLE' | translate }} </h1>
                 <div class="card-text">
                     <form class="form-group form-min-height">
                         <div>
@@ -14,52 +14,58 @@
                         </div>
                         <div class="form-group row" *ngIf="tge">
                             <div class="col-sm-12">
-                                <p>Please make sure to first
-                                    <a routerLink="/activate">activate</a> your ICO-wallet.</p>
+                                <!--
+                                <p> Please make sure to first
+                                    <a routerLink="/activate">activate</a> your ICO-wallet.
+                                </p>
+                                -->
+                                <p>
+                                    <a routerLink="/activate"> {{ 'MNEMONICIMPORTCOMPONENT.INFO' | translate }} </a>
+                                </p>
                             </div>
                         </div>
                         <!-- mnemonic -->
                         <div class="form-group row" [ngClass]="{ 'form-row-margin-top': !tge }">
                             <!-- ngClass => margin-top: 75px only for tab1 -->
                             <div class="col-sm-12">
-                                <textarea rows="2" [(ngModel)]="mnemonic" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Mnemonic"></textarea>
-                                <small class="form-text text-left">The mnemonic phrase (15 words)</small>
+                                <textarea rows="2" [(ngModel)]="mnemonic" [ngModelOptions]="{standalone: true}" class="form-control" [placeholder]="'MNEMONICIMPORTCOMPONENT.MNEMONIC' | translate"></textarea>
+                                <small class="form-text text-left"> {{ 'MNEMONICIMPORTCOMPONENT.INFOMNEMONIC' | translate }} </small>
                             </div>
                         </div>
                         <!-- passphrase -->
                         <div class="form-group row" *ngIf="!tge">
                             <div class="col-sm-12">
-                                <input type="password" [(ngModel)]="passphrase" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Passphrase (optional)">
-                                <small class="form-text text-left">If your mnemonic phrase is protected with a passphrase, it needs to be entered here</small>
+                                <input type="password" [(ngModel)]="passphrase" [ngModelOptions]="{standalone: true}" class="form-control" [placeholder]="'MNEMONICIMPORTCOMPONENT.PASSPHRASE' | translate">
+                                <small class="form-text text-left"> {{ 'MNEMONICIMPORTCOMPONENT.INFOPASSPHRASE' | translate }} </small>
                             </div>
                         </div>
                         <!-- email -->
                         <div class="form-group row" *ngIf="tge">
                             <div class="col-sm-12">
-                                <input type="text" [(ngModel)]="email" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Email">
-                                <small class="form-text text-left">The email used during the ICO (e.g. example@email.com)</small>
+                                <input type="text" [(ngModel)]="email" [ngModelOptions]="{standalone: true}" class="form-control" [placeholder]="'MNEMONICIMPORTCOMPONENT.EMAIL' | translate">
+                                <small class="form-text text-left"> {{ 'MNEMONICIMPORTCOMPONENT.INFOEMAIL' | translate }} </small>
                             </div>
                         </div>
                         <!-- password -->
                         <div class="form-group row" *ngIf="tge">
                             <div class="col-sm-12">
-                                <input type="password" [(ngModel)]="password" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Password">
-                                <small class="form-text text-left">The password you choose during the ICO.</small>
+                                <input type="password" [(ngModel)]="password" [ngModelOptions]="{standalone: true}" class="form-control" [placeholder]="'MNEMONICIMPORTCOMPONENT.PASSWORD' | translate">
+                                <small class="form-text text-left"> {{ 'MNEMONICIMPORTCOMPONENT.INFOPASSWORD' | translate }} </small>
                             </div>
                         </div>
                         <!-- Pkh -->
                         <div class="form-group row">
                             <div class="col-sm-12">
-                                <input type="text" [(ngModel)]="pkh" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="tz1... (optional)">
-                                <small class="form-text text-left" *ngIf="tge">Provide the public key hash to verify your email and password are correct</small>
-                                <small class="form-text text-left" *ngIf="!tge">Provide the public key hash to verify your passphrase is correct</small>
+                                <input type="text" [(ngModel)]="pkh" [ngModelOptions]="{standalone: true}" class="form-control" [placeholder]="'MNEMONICIMPORTCOMPONENT.TZ1' | translate">
+                                <small class="form-text text-left" *ngIf="tge"> {{ 'MNEMONICIMPORTCOMPONENT.INFOPKHICO' | translate }} </small>
+                                <small class="form-text text-left" *ngIf="!tge"> {{ 'MNEMONICIMPORTCOMPONENT.INFOPKH' | translate }} </small>
                             </div>
                         </div>
                     </form>
                 </div>
             </div>
             <div class="card-footer text-right">
-                <button type="button" class="btn btn-primary btn-lg" (click)="retrieve()">Retrieve</button>
+                <button type="button" class="btn btn-primary btn-lg" (click)="retrieve()"> {{ 'MNEMONICIMPORTCOMPONENT.RETRIEVE' | translate }} </button>
             </div>
         </div>
     </div>
@@ -69,7 +75,7 @@
     <div class="center-content">
         <div class="card text-center fix-size">
             <div class="card-body">
-                <h1 class="card-title">Set a password</h1>
+                <h1 class="card-title"> {{ 'MNEMONICIMPORTCOMPONENT.TITLE2' | translate }} </h1>
                 <div class="card-text">
                     <form class="form-group">
                         <!-- password 1 -->
@@ -87,11 +93,11 @@
                             </div>
                         </div>
                     </form>
-                    <p>The password is used to encrypt your private key.</p>
+                    <p> {{ 'MNEMONICIMPORTCOMPONENT.INFOPASSWORD2' | translate }} </p>
                 </div>
             </div>
             <div class="card-footer text-right">
-                <button type="button" class="btn btn-primary btn-lg" (click)="setPwd()">Encrypt</button>
+                <button type="button" class="btn btn-primary btn-lg" (click)="setPwd()"> {{ 'MNEMONICIMPORTCOMPONENT.ENCRYPT' | translate }} </button>
             </div>
         </div>
     </div>
@@ -101,21 +107,23 @@
     <div class="center-content">
         <div class="card text-center fix-size">
             <div class="card-body">
-                <h1 class="card-title">Wallet created</h1>
+                <h1 class="card-title"> {{ 'MNEMONICIMPORTCOMPONENT.TITLE3' | translate }} </h1>
                 <div class="card-text">
                     <form class="form-group">
-                        <p class="seed"><b>Your public key hash:
-                                {{ showPkh() }}</b>
+                        <p class="seed">
+                            <b> {{ 'MNEMONICIMPORTCOMPONENT.PKH' | translate }}
+                                {{ showPkh() }}
+                            </b>
                         </p>
                         <br>
-                        <p>Your wallet is now set up and ready to use.</p>
-                        <p>Please download your Encrypted Keystore File.</p>
-                        <button type="button" class="btn btn-primary btn-lg" (click)="download()">Download</button>
+                        <p> {{ 'MNEMONICIMPORTCOMPONENT.INFOCONFIRMATION' | translate }} </p>
+                        <p> {{ 'MNEMONICIMPORTCOMPONENT.INFODOWNLOAD' | translate }} </p>
+                        <button type="button" class="btn btn-primary btn-lg" (click)="download()"> {{ 'MNEMONICIMPORTCOMPONENT.DOWNLOAD' | translate }} </button>
                     </form>
                 </div>
             </div>
             <div class="card-footer text-right">
-                <button type="button" class="btn btn-primary btn-lg" [disabled]="!Downloaded" (click)="done()">Finish</button>
+                <button type="button" class="btn btn-primary btn-lg" [disabled]="!Downloaded" (click)="done()"> {{ 'MNEMONICIMPORTCOMPONENT.FINISH' | translate }} </button>
             </div>
         </div>
     </div>
