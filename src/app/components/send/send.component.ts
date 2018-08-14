@@ -5,6 +5,8 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
 import { KeyPair } from '../../interfaces';
 
+import { TranslateService } from '@ngx-translate/core';  // Multiple instances created ?
+
 import { WalletService } from '../../services/wallet.service';
 import { CoordinatorService } from '../../services/coordinator.service';
 import { OperationService } from '../../services/operation.service';
@@ -46,6 +48,7 @@ export class SendComponent implements OnInit {
     modalRef3: BsModalRef;
 
     constructor(
+        private translate: TranslateService,
         private modalService: BsModalService,
         private walletService: WalletService,
         private operationService: OperationService,
@@ -159,7 +162,12 @@ export class SendComponent implements OnInit {
             this.modalRef3 = this.modalService.show(template, { class: 'third' });
             this.sendTransaction(keys);
         } else {
-            this.pwdValid = 'Wrong password!';
+            let wrongPassword = '';
+            this.translate.get('SENDCOMPONENT.WRONGPASSWORD').subscribe(
+                (res: string) => wrongPassword = res
+            );
+
+            this.pwdValid = wrongPassword;  // 'Wrong password!';
         }
     }
 
@@ -222,13 +230,34 @@ export class SendComponent implements OnInit {
 
     invalidInput(): string {
         if (!this.activePkh || this.activePkh.length !== 36) {
-            return 'Invalid sender address';
+
+            let invalidSender = '';
+            this.translate.get('SENDCOMPONENT.INVALIDSENDERADDRESS').subscribe(
+                (res: string) => invalidSender = res
+            );
+            return invalidSender;  // 'Invalid sender address';
+
         } else if (!this.toPkh || this.toPkh.length !== 36) {
-            return 'Invalid receiver address';
+            let invalidReceiver = '';
+            this.translate.get('SENDCOMPONENT.INVALIDRECEIVERADDRESS').subscribe(
+                (res: string) => invalidReceiver = res
+            );
+            return invalidReceiver;  // 'Invalid receiver address';
+
         } else if (!Number(this.amount) && this.amount && this.amount !== '0') {
-            return 'Invalid amount';
+            let invalidAmount = '';
+            this.translate.get('SENDCOMPONENT.INVALIDAMOUNT').subscribe(
+                (res: string) => invalidAmount = res
+            );
+            return invalidAmount;  // 'Invalid amount';
+
         } else if (!Number(this.fee) && this.fee && this.fee !== '0') {
-            return 'Invalid fee';
+            let invalidFee = '';
+            this.translate.get('SENDCOMPONENT.INVALIDFEE').subscribe(
+                (res: string) => invalidFee = res
+            );
+            return invalidFee;  // 'Invalid fee';
+
         } else {
             return '';
         }

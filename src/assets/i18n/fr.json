@@ -10,16 +10,16 @@
         "BALANCEUPDATE" : "Solde mise à jour pour"
     },
     "OPERATIONSERVICE": {
-        "TYPE" : "Type",
-        "SOURCE" : "Source",
-        "DESTINATION" : "Destination",
-        "AMOUNT" : "Montant",
-        "MANAGER" : "Gestionnaire",
-        "BALANCE" : "Solde",
-        "DELEGATE" : "Délégué",
+        "TYPE" : "Type:",
+        "SOURCE" : "Source:",
+        "DESTINATION" : "Destination:",
+        "AMOUNT" : "Montant:",
+        "MANAGER" : "Gestionnaire:",
+        "BALANCE" : "Solde:",
+        "DELEGATE" : "Délégué:",
         "TAGNOTSUPPORTED" : "Tag non pris en charge. Échec de la conversion en texte",
-        "FEE" : "Frais",
-        "RECIPIENT" : "Destinataire"
+        "FEE" : "Frais:",
+        "RECIPIENT" : "Destinataire:"
     },
     "WALLETSERVICE": {
         "FULLWALLET" : "Portefeuille complet",
@@ -207,23 +207,25 @@
         "INFOPASSWORD" : "Pour signer une opération avec votre clef secrète, le mot de passe sera nécessaire pour décrypter la clef.",
         "ENCRYPT" : "Crypter",
         "TITLE5" : "Portefeuille crée",
-        "YOURPUBLICKEYHASH" : "Votre hash de clef publique",
+        "YOURPUBLICKEYHASH" : "Votre hash de clef publique:",
         "INFOWALLETREADY" : "Votre portefeuille a été créé et prêt pour l'emploi.",
         "INFODOWNLOAD" : "Veuillez télécharger votre fichier avec votre clef crypté.",
         "DOWNLOAD" : "Télécharger",
         "FINISH" : "Terminer",
-        "WORD1WORD2" : "mot1 mot2 mot3 mot4 mot5",
+        "WORD1WORD2" : "mot1 mot2 mot3 mot4 mot5 mot6 mot7 mot8 mot9 mot10 mot11 mot12 mot13 mot14 mot15",
         "PASSWORD" : "Mot de passe",
         "CONFIRMPASSWORD" : "Confirmez le mot de passe"
     },
     "OFFLINESIGNINGCOMPONENT": {
         "TITLE" : "Signature hors-ligne",
-        "MAININFO" : "En 3 étapes, vous pouvez diffuser une opération sur le réseau Tezos sans jamais utiliser votre clef secrète dans un environnement en ligne. Vous pouvez télécharger le logiciel pour la signature hors-ligne sur notre GitHub.",
+        "MAININFO" : "En 3 étapes, vous pouvez diffuser une opération sur le réseau Tezos sans jamais utiliser votre clef secrète dans un environnement en ligne. Vous pouvez télécharger le logiciel pour la signature hors-ligne sur notre ",
+        "MAININFOGITHUB" : "GitHub.",
         "INFOSTEP1" : "Le portefeuille complet doit être créé et stocké dans un système hors-ligne. Vous pouvez exporter un portefeuille en lecture seule ne contenant que votre clef publique sur un système en ligne pour ensuite créer des opérations non signées.",
         "INFOSTEP2" : "Avec le portefeuille en lecture seul, vous pouvez créer et télécharger une opération non signée dans un fichier (*.tzop). Importez cette opération non signée dans votre portefeuille complet, vérifiez son contenu, puis entrez votre mot de passe pour signer l'opération. Vous pouvez télécharger la nouvelle opération signée dans un autre fichier (*.tzop).",
         "INFOSTEP3" : "L'opération signée peut maintenant être transférée vers un système en ligne. Vérifier son contenu pour ensuite la diffuser sur le réseau Tezos.",
         "SUBTITLE1" : "1. Créer la transaction non signée (en ligne)",
-        "INFOUNSIGNEDOPERATION" : "Vous pouvez créer une opération non signée avec votre portefeuille en lecture-seule dans la section Vue d'ensemble.",
+        "INFOUNSIGNEDOPERATION" : "Vous pouvez créer une opération non signée avec votre portefeuille en lecture-seule dans la section",
+        "INFOUNSIGNEDOPERATIONLINK" : "Vue d'ensemble.",
         "SUBTITLE2" : "2. Signer la transaction (hors-ligne)",
         "INFOIMPORTUNSIGNEDOPERATION" : "Importer ou coller l'opération non signée",
         "OPERATION" : "Transaction",
@@ -249,7 +251,8 @@
         "NODEERROR" : "Node a répondu avec une erreur!",
         "NOTASIGNEDOPERATION" : "Opération signée invalide!",
         "FAILEDTOREADFILE" : "Impossible de lire le fichier!",
-        "NOTANUNSIGNEDOPERATION" : "Opération non signée invalide!"
+        "NOTANUNSIGNEDOPERATION" : "Opération non signée invalide!",
+        "CHOOSEFILE" : "Choisir le fichier"
     },
     "OVERVIEWCOMPONENT": {
         "TITLE" : "Votre portefeuille",

@@ -7,24 +7,24 @@
 
     },
     "BALANCESERVICE": {
-        "BALANCEUPDATE" : "Balance updated for: '"
+        "BALANCEUPDATE" : "Balance updated for:"
     },
     "OPERATIONSERVICE": {
-        "TYPE" : "Type: '",
-        "SOURCE" : "Source: '",
-        "DESTINATION" : "Destination: '",
-        "AMOUNT" : "Amount: '",
-        "MANAGER" : "Manager: '",
-        "BALANCE" : "Balance: '",
-        "DELEGATE" : "Delegate: '",
-        "TAGNOTSUPPORTED" : "Tag not supported. Failed to convert to strings.'",
-        "FEE" : "Fee: '",
-        "RECIPIENT" : "Recipient"
+        "TYPE" : "Type:",
+        "SOURCE" : "Source:",
+        "DESTINATION" : "Destination:",
+        "AMOUNT" : "Amount:",
+        "MANAGER" : "Manager:",
+        "BALANCE" : "Balance:",
+        "DELEGATE" : "Delegate:",
+        "TAGNOTSUPPORTED" : "Tag not supported. Failed to convert to strings.",
+        "FEE" : "Fee:",
+        "RECIPIENT" : "Recipient:"
     },
     "WALLETSERVICE": {
-        "FULLWALLET" : "Full wallet'",
-        "VIEWONLYWALLET" : "View-only wallet'",
-        "OBSERVERWALLET" : "Observer wallet'"
+        "FULLWALLET" : "Full wallet",
+        "VIEWONLYWALLET" : "View-only wallet",
+        "OBSERVERWALLET" : "Observer wallet"
     },
     "HOMEPAGECOMPONENT": {
         "LANGUAGE" : "Language",
@@ -145,12 +145,12 @@
         "INFODOWNLOAD" : "Please download your Encrypted Keystore File.",
         "DOWNLOAD" : "Download",
         "FINISH" : "Finish",
-        "INVALIDMNEMONIC" : "Invalid mnemonic!'",
+        "INVALIDMNEMONIC" : "Invalid mnemonic!",
         "INVALIDEMAILPASSWORD" : "Invalid email or password!",
         "INVALIDPASSPHRASE" : "Invalid passphrase!",
         "FILENOTSUPPORTED" : "Selected file format is not supported",
         "SHORTPASSWORD" : "Password too short! At least 9 characters expected.",
-        "NOMATCHPASSWORDS" : "Passwords doesn't match!'",
+        "NOMATCHPASSWORDS" : "Passwords doesn't match!",
         "WALLETREADY" : "Your new wallet is now set up and ready!",
         "MNEMONIC" : "Mnemonic",
         "PASSPHRASE" : "Passphrase (optional)",
@@ -179,9 +179,9 @@
         "DOWNLOAD" : "Download",
         "CLOSE" : "Close",
         "NEWACCOUNT" : "New account",
-        "INVALIDPASSWORD" : "Your Password is invalid'",
-        "INVALIDAMOUNT" : "Invalid amount'",
-        "INVALIDFEE" : "Invalid fee'"
+        "INVALIDPASSWORD" : "Your Password is invalid",
+        "INVALIDAMOUNT" : "Invalid amount",
+        "INVALIDFEE" : "Invalid fee"
     },
     "NEWWALLETCOMPONENT": {
         "TITLE" : "Collecting additional entropy",
@@ -212,18 +212,20 @@
         "INFODOWNLOAD" : "Please download your Encrypted Keystore File.",
         "DOWNLOAD" : "Download",
         "FINISH" : "Finish",
-        "WORD1WORD2" : "word1 word2 word3 word4 word5",
+        "WORD1WORD2" : "word1 word2 word3 word4 word5 word6 word7 word8 word9 word10 word11 word12 word13 word14 word15",
         "PASSWORD" : "Password",
         "CONFIRMPASSWORD" : "Confirm Password"
     },
     "OFFLINESIGNINGCOMPONENT": {
         "TITLE" : "Offline signing",
-        "MAININFO" : "In 3 easy steps, you can broadcast an operation to the tezos network without ever exposing your seed to an online environment. Desktop client for the offline signature can be found on our GitHub.",
+        "MAININFO" : "In 3 easy steps, you can broadcast an operation to the tezos network without ever exposing your seed to an online environment. Desktop client for the offline signature can be found on our ",
+        "MAININFOGITHUB" : "GitHub.",
         "INFOSTEP1" : "The full wallet should be created in an offline system. Use that wallet to export a View-only wallet, which does not contain your private key. This wallet can be safely used on an online system to create unsigned operations.",
         "INFOSTEP2" : "From your View-only wallet, you can create and download an unsigned operation file ('.tzop'). Import this unsigned operation to your full wallet, verify its content and then enter your wallet password to sign the operation. You can download the new signed operation in another '.tzop' file.",
         "INFOSTEP3" : "The signed operation can now be transferred back to an online system. Verify its content and then broadcast it to the Tezos network.",
         "SUBTITLE1" : "1. Unsigned operation (online)",
-        "INFOUNSIGNEDOPERATION" : "You can create an unsigned operation with your view-only wallet in the Overview section.",
+        "INFOUNSIGNEDOPERATION" : "You can create an unsigned operation with your view-only wallet in the",
+        "INFOUNSIGNEDOPERATIONLINK" : "Overview section.",
         "SUBTITLE2" : "2. Sign operation (offline)",
         "INFOIMPORTUNSIGNEDOPERATION" : "Import or paste your unsigned operation",
         "OPERATION" : "Operation",
@@ -240,16 +242,17 @@
         "BROADCAST" : "Broadcast",
         "UNSIGNEDOPERATION" : "Unsigned Operation",
         "SIGNEDOPERATION" : "Signed Operation",
-        "SHOWHELP" : "Show help'",
-        "HIDEHELP" : "Hide help'",
+        "SHOWHELP" : "Show help",
+        "HIDEHELP" : "Hide help",
         "SIGNVERIFYTHISDATA" : "PLEASE VERIFY THIS DATA IS CORRECT BEFORE SIGNING IT",
         "ALERTFAILEDTODECODE" : "FAILED TO DECODE OPERATION BYTES! YOU ARE ADVISED TO NOT PROCEED",
         "BROADCASTVERIFYTHISDATA" : "PLEASE VERIFY THIS DATA IS CORRECT BEFORE BROADCASTING IT",
-        "BROADCASTSUCCESSFUL" : "Operation successfully broadcasted to the network: '",
-        "NODEERROR" : "Node responded with an error!'",
-        "NOTASIGNEDOPERATION" : "Not a signed operation!'",
-        "FAILEDTOREADFILE" : "Failed to read file!'",
-        "NOTANUNSIGNEDOPERATION" : "Not an unsigned operation!'"
+        "BROADCASTSUCCESSFUL" : "Operation successfully broadcasted to the network:",
+        "NODEERROR" : "Node responded with an error!",
+        "NOTASIGNEDOPERATION" : "Not a signed operation!",
+        "FAILEDTOREADFILE" : "Failed to read file!",
+        "NOTANUNSIGNEDOPERATION" : "Not an unsigned operation!",
+        "CHOOSEFILE" : "Choose file"
     },
     "OVERVIEWCOMPONENT": {
         "TITLE" : "Your Wallet",
@@ -261,7 +264,7 @@
         "TOTAL" : "Total",
         "OVERVIEW" : "Overview",
         "EMPTYINFO" : "You can get all your wallet details and create new accounts in here but before, you will need to create or import a wallet.",
-        "COPIEDTOCLIPBOARD" : "copied to clipboard!'"
+        "COPIEDTOCLIPBOARD" : "copied to clipboard!"
     },
     "RECEIVECOMPONENT": {
         "RECEIVETEZ" : "Receive tez",
@@ -294,14 +297,14 @@
         "DOWNLOAD" : "Download",
         "CLOSE" : "Close",
         "SEND" : "Send",
-        "WRONGPASSWORD" : "Wrong password!'",
-        "SUCCESS" : "Transaction successful '",
-        "ERRORID" : "Transaction error id '",
-        "ERRORMESSAGE" : "Error Message '",
-        "INVALIDSENDERADDRESS" : "Invalid sender address'",
-        "INVALIDRECEIVERADDRESS" : "Invalid receiver address'",
-        "INVALIDAMOUNT" : "Invalid amount'",
-        "INVALIDFEE" : "Invalid fee'"
+        "WRONGPASSWORD" : "Wrong password!",
+        "SUCCESS" : "Transaction successful",
+        "ERRORID" : "Transaction error id",
+        "ERRORMESSAGE" : "Error Message",
+        "INVALIDSENDERADDRESS" : "Invalid sender address",
+        "INVALIDRECEIVERADDRESS" : "Invalid receiver address",
+        "INVALIDAMOUNT" : "Invalid amount",
+        "INVALIDFEE" : "Invalid fee"
     },
     "STARTCOMPONENT": {
         "IMPORTWALLET" : "Import wallet",

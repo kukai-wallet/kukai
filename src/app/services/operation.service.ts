@@ -7,6 +7,9 @@ import { Buffer } from 'buffer';
 import * as libs from 'libsodium-wrappers';
 import * as Bs58check from 'bs58check';
 import * as bip39 from 'bip39';
+
+import { TranslateService } from '@ngx-translate/core';  // Multiple instances created ?
+
 import { Constants } from '../constants';
 
 import { ErrorHandlingPipe } from '../pipes/error-handling.pipe';
@@ -40,6 +43,7 @@ export class OperationService {
   toMicro = 1000000;
   constructor(
     private http: HttpClient,
+    private translate: TranslateService,
     private errorHandlingPipe: ErrorHandlingPipe
   ) { }
   /*
@@ -650,20 +654,66 @@ export class OperationService {
     const output: string[] = [];
     for (let i = 0; i < fop.contents.length; i++) {
       if (fop.contents[i].kind !== 'reveal') {
-        output.push('Type: ' + fop.contents[i].kind);
-        output.push('Source: ' + fop.contents[i].source);
+        let typeTmp = '';
+        let sourceTmp = '';
+        this.translate.get('OPERATIONSERVICE.TYPE').subscribe(
+            (res: string) => typeTmp = res
+        );
+        this.translate.get('OPERATIONSERVICE.SOURCE').subscribe(
+            (res: string) => sourceTmp = res
+        );
+        output.push(typeTmp + ' ' + fop.contents[i].kind);
+        output.push(sourceTmp + ' ' + fop.contents[i].source);
+        // output.push('Type: ' + fop.contents[i].kind);
+        // output.push('Source: ' + fop.contents[i].source);
         if (fop.contents[i].kind === 'transaction') {
-          output.push('Destination: ' + fop.contents[i].destination);
-          output.push('Amount: ' + (Number(fop.contents[i].amount) / this.toMicro).toString() + ' tez');
+          let destinationTmp = '';
+          let amountTmp = '';
+          this.translate.get('OPERATIONSERVICE.DESTINATION').subscribe(
+              (res: string) => destinationTmp = res
+          );
+          this.translate.get('OPERATIONSERVICE.AMOUNT').subscribe(
+              (res: string) => amountTmp = res
+          );
+          output.push(destinationTmp + ' ' + fop.contents[i].destination);
+          output.push(amountTmp + ' ' + (Number(fop.contents[i].amount) / this.toMicro).toString() + ' tez');
+          // output.push('Destination: ' + fop.contents[i].destination);
+          // output.push('Amount: ' + (Number(fop.contents[i].amount) / this.toMicro).toString() + ' tez');
         } else if (fop.contents[i].kind === 'origination') {
-          output.push('Manager: ' + fop.contents[i].managerPubkey);
-          output.push('Balance: ' + (Number(fop.contents[i].balance) / this.toMicro).toString() + ' tez');
+          let managerTmp = '';
+          let balanceTmp = '';
+          this.translate.get('OPERATIONSERVICE.MANAGER').subscribe(
+              (res: string) => managerTmp = res
+          );
+          this.translate.get('OPERATIONSERVICE.BALANCE').subscribe(
+              (res: string) => balanceTmp = res
+          );
+          output.push(managerTmp + ' ' + fop.contents[i].managerPubkey);
+          output.push(balanceTmp + ' ' + (Number(fop.contents[i].balance) / this.toMicro).toString() + ' tez');
+          // output.push('Manager: ' + fop.contents[i].managerPubkey);
+          // output.push('Balance: ' + (Number(fop.contents[i].balance) / this.toMicro).toString() + ' tez');
         } else if (fop.contents[i].kind === 'delegation') {
-          output.push('Delegate: ' + fop.contents[i].delegate);
+          let delegateTmp = '';
+          this.translate.get('OPERATIONSERVICE.DELEGATE').subscribe(
+              (res: string) => delegateTmp = res
+          );
+          output.push(delegateTmp + ' ' + fop.contents[i].delegate);
+          // output.push('Delegate: ' + fop.contents[i].delegate);
         } else {
-          throw new Error('Tag not supported. Failed to convert to strings.');
+          let tagNotSupportedTmp = '';
+          this.translate.get('OPERATIONSERVICE.TAGNOTSUPPORTED').subscribe(
+              (res: string) => tagNotSupportedTmp = res
+          );
+          throw new Error(tagNotSupportedTmp);
+          // throw new Error('Tag not supported. Failed to convert to strings.');
         }
-        output.push('Fee: ' + (Number(fop.contents[i].fee) / this.toMicro).toString() + ' tez');
+
+        let feeTmp = '';
+        this.translate.get('OPERATIONSERVICE.FEE').subscribe(
+            (res: string) => feeTmp = res
+        );
+        output.push(feeTmp + ' ' + (Number(fop.contents[i].fee) / this.toMicro).toString() + ' tez');
+        // output.push('Fee: ' + (Number(fop.contents[i].fee) / this.toMicro).toString() + ' tez');
       }
     }
     return output;
