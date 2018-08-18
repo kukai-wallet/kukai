@@ -77,7 +77,14 @@
         "STATUS" : "状態",
         "FROM" : "送信元",
         "TO" : "送信先",
-        "EMPTY" : "ウォレットが設定されていません！"
+        "EMPTY" : "ウォレットが設定されていません！",
+        "CONFIRMED" : "Confirmed",
+        "UNCONFIRMED" : "Unconfirmed",
+        "FAILED" : "Failed",
+        "DELEGATE" : "delegate",
+        "UNDELEGATE" : "undelegate",
+        "RECEIVED" : "received",
+        "SENT" : "sent"
     },
     "BACKUPCOMPONENT": {
         "TITLE" : "ウォレットのバックアップ",
@@ -265,7 +272,8 @@
         "NOTASIGNEDOPERATION" : "署名済みオペレーションではありません！",
         "FAILEDTOREADFILE" : "ファイルの読み込みに失敗しました！",
         "NOTANUNSIGNEDOPERATION" : "未署名ファイルではありません！",
-        "CHOOSEFILE" : "ファイルの選択"
+        "CHOOSEFILE" : "ファイルの選択",
+        "BROWSE" : "Browse"
     },
     "OVERVIEWCOMPONENT": {
         "TITLE" : "あなたのウォレット",

@@ -22,11 +22,11 @@
         <div class="col-sm-auto col-header col-border border border-warning min-size-address-cell">
             {{ 'OVERVIEWCOMPONENT.IDENTITY' | translate }}
         </div>
-        <div class="col-sm-auto col-header col-border border border-warning min-size-other-cell">
+        <div class="col-sm-auto col-header col-border border border-warning min-size-balance-cell">
             {{ 'OVERVIEWCOMPONENT.BALANCETABLE' | translate }} (&#42793;)
         </div>
 
-        <div class="col-sm-auto col-header col-border border border-warning min-size-other-cell">
+        <div class="col-sm-auto col-header col-border border border-warning min-size-value-cell">
             {{ 'OVERVIEWCOMPONENT.VALUE' | translate }}
         </div>
     </div>
@@ -37,10 +37,10 @@
                 {{ walletService.wallet.accounts[0].pkh }}
             </div>
 
-            <div class="col-sm-auto col-border border border-warning text-truncate min-size-other-cell">
+            <div class="col-sm-auto col-border border border-warning text-truncate min-size-balance-cell">
                 <ng-container *ngIf="walletService.wallet.accounts[0].balance.balanceXTZ !== null">{{ walletService.wallet.accounts[0].balance.balanceXTZ / 1000000 | number:'1.0-6' }} &#42793;</ng-container>
             </div>
-            <div class="col-sm-auto col-border border border-warning text-truncate min-size-other-cell">
+            <div class="col-sm-auto col-border border border-warning text-truncate min-size-value-cell">
                 <ng-container *ngIf="walletService.wallet.accounts[0].balance.balanceFiat !== null">{{ walletService.wallet.accounts[0].balance.balanceFiat | number:'1.0-0' }} USD</ng-container>
             </div>
         </div>
@@ -60,10 +60,10 @@
             <div class="col-sm-auto col-border border border-warning text-truncate min-size-address-cell mono" (dblclick)="dblclick(account.pkh)">
                 {{ account.pkh }}
             </div>
-            <div class="col-sm-auto col-border border border-warning text-truncate min-size-other-cell">
+            <div class="col-sm-auto col-border border border-warning text-truncate min-size-balance-cell">
                 <ng-container *ngIf="account.balance.balanceXTZ !== null">{{ account.balance.balanceXTZ / 1000000 | number:'1.0-6' }} &#42793;</ng-container>
             </div>
-            <div class="col-sm-auto col-border border border-warning text-truncate min-size-other-cell">
+            <div class="col-sm-auto col-border border border-warning text-truncate min-size-value-cell">
                 <ng-container *ngIf="account.balance.balanceFiat !== null">{{ account.balance.balanceFiat | number:'1.0-0' }} USD</ng-container>
             </div>
         </div>
@@ -73,10 +73,10 @@
             <div class="col-sm-auto col-header col-border border border-warning min-size-address-cell">
                  {{ 'OVERVIEWCOMPONENT.TOTAL' | translate }}
             </div>
-            <div class="col-sm-auto col-header col-border border border-warning min-size-other-cell">
+            <div class="col-sm-auto col-header col-border border border-warning min-size-balance-cell">
                 <ng-container *ngIf="walletService.wallet.balance.balanceXTZ !== null">{{ walletService.wallet.balance.balanceXTZ / 1000000 | number:'1.0-6' }} &#42793;</ng-container>
             </div>
-            <div class="col-sm-auto col-header col-border border border-warning min-size-other-cell">
+            <div class="col-sm-auto col-header col-border border border-warning min-size-value-cell">
                 <ng-container *ngIf="walletService.wallet.balance.balanceFiat !== null">$ {{ walletService.wallet.balance.balanceFiat | number:'1.0-0' }} USD</ng-container>
             </div>
         </div>

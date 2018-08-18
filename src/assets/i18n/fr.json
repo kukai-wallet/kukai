@@ -77,7 +77,14 @@
         "STATUS" : "Statut",
         "FROM" : "de",
         "TO" : "à ",
-        "EMPTY" : "Portefeuille non configuré!"
+        "EMPTY" : "Portefeuille non configuré!",
+        "CONFIRMED" : "Confirmé",
+        "UNCONFIRMED" : "En cours",
+        "FAILED" : "Echoué",
+        "DELEGATE" : "délégué",
+        "UNDELEGATE" : "redélégué",
+        "RECEIVED" : "reçu",
+        "SENT" : "envoyé"
     },
     "BACKUPCOMPONENT": {
         "TITLE" : "Sauvegarder votre portefeuille",
@@ -265,7 +272,8 @@
         "NOTASIGNEDOPERATION" : "Opération signée invalide!",
         "FAILEDTOREADFILE" : "Impossible de lire le fichier!",
         "NOTANUNSIGNEDOPERATION" : "Opération non signée invalide!",
-        "CHOOSEFILE" : "Choisir le fichier"
+        "CHOOSEFILE" : "Choisir le fichier",
+        "BROWSE" : "Parcourir"
     },
     "OVERVIEWCOMPONENT": {
         "TITLE" : "Votre portefeuille",

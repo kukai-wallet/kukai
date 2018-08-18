@@ -77,7 +77,14 @@
         "STATUS" : "Status",
         "FROM" : "from",
         "TO" : "to",
-        "EMPTY" : "Wallet not configured!"
+        "EMPTY" : "Wallet not configured!",
+        "CONFIRMED" : "Confirmed",
+        "UNCONFIRMED" : "Unconfirmed",
+        "FAILED" : "Failed",
+        "DELEGATE" : "delegate",
+        "UNDELEGATE" : "undelegate",
+        "RECEIVED" : "received",
+        "SENT" : "sent"
     },
     "BACKUPCOMPONENT": {
         "TITLE" : "Backup Your Wallet",
@@ -265,7 +272,8 @@
         "NOTASIGNEDOPERATION" : "Not a signed operation!",
         "FAILEDTOREADFILE" : "Failed to read file!",
         "NOTANUNSIGNEDOPERATION" : "Not an unsigned operation!",
-        "CHOOSEFILE" : "Choose file"
+        "CHOOSEFILE" : "Choose file",
+        "BROWSE" : "Browse"
     },
     "OVERVIEWCOMPONENT": {
         "TITLE" : "Your Wallet",
