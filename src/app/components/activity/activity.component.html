@@ -45,7 +45,8 @@
                         <!-- Counterparty: `To` or `From` -->
                         <td class="table-cell"> 
                             <!-- {{ transaction.source.tz }} -->
-                            <span *ngIf="transaction.type != 'activation'">
+                            <span *ngIf="transaction.type != 'activation' && !(transaction.type === 'delegation' && !transaction.destination)">
+                            <!-- to and from only shown when it's not an origination (transaction.type != 'activation') and when it's not an undelegate operation: !(transaction.type === 'delegation' && !transaction.destination) -->
                                 <span *ngIf="activePkh === transaction.source;then to else from"> {{ 'ACTIVITYCOMPONENT.FROM' | translate }} </span>
                                 <ng-template #from><span class="smallText">{{ 'ACTIVITYCOMPONENT.FROM' | translate }}</span></ng-template>
                                 <ng-template #to><span class="smallText">{{ 'ACTIVITYCOMPONENT.TO' | translate }}</span></ng-template>

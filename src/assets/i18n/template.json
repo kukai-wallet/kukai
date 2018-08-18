@@ -4,7 +4,20 @@
         "HELLO": "Russian {{value}}"
     },
     "TIMEAGOPIPE": {
-
+        "JUSTNOW" : "",
+        "SEC" : "",
+        "SECS" : "",
+        "MINUTE" : "",
+        "MINUTES" : "",
+        "HOUR" : "",
+        "HOURS" : "",
+        "DAY" : "",
+        "DAYS" : "",
+        "MONTH" : "",
+        "MONTHS" : "",
+        "YEAR" : "",
+        "YEARS" : "",
+        "AGO" : ""
     },
     "BALANCESERVICE": {
         

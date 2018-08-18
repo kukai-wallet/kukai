@@ -4,7 +4,20 @@
         "HELLO": "Japanese {{value}}"
     },
     "TIMEAGOPIPE": {
-
+        "JUSTNOW" : "今",
+        "SEC" : "秒前",
+        "SECS" : "秒前",
+        "MINUTE" : "分",
+        "MINUTES" : "分",
+        "HOUR" : "時間前",
+        "HOURS" : "時間前",
+        "DAY" : "日と",
+        "DAYS" : "日と",
+        "MONTH" : "",
+        "MONTHS" : "",
+        "YEAR" : "",
+        "YEARS" : "",
+        "AGO" : "前"
     },
     "BALANCESERVICE": {
         "BALANCEUPDATE" : "更新後の残高："
@@ -252,7 +265,7 @@
         "NOTASIGNEDOPERATION" : "署名済みオペレーションではありません！",
         "FAILEDTOREADFILE" : "ファイルの読み込みに失敗しました！",
         "NOTANUNSIGNEDOPERATION" : "未署名ファイルではありません！",
-        "CHOOSEFILE" : "ファイルを選ぶ"
+        "CHOOSEFILE" : "ファイルの選択"
     },
     "OVERVIEWCOMPONENT": {
         "TITLE" : "あなたのウォレット",

@@ -4,7 +4,20 @@
         "HELLO": "Russian {{value}}"
     },
     "TIMEAGOPIPE": {
-
+        "JUSTNOW" : "только что",
+        "SEC" : "секунд",
+        "SECS" : "секунд",
+        "MINUTE" : "минуту",
+        "MINUTES" : "минут",
+        "HOUR" : "час",
+        "HOURS" : "часов",
+        "DAY" : "день",
+        "DAYS" : "дня",
+        "MONTH" : "месяц",
+        "MONTHS" : "месяцев",
+        "YEAR" : "год",
+        "YEARS" : "года",
+        "AGO" : "назад"
     },
     "BALANCESERVICE": {
         "BALANCEUPDATE" : "Состояние баланса обновлено для:"

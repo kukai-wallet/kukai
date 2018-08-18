@@ -4,7 +4,20 @@
         "HELLO": "bonjour {{value}}"
     },
     "TIMEAGOPIPE": {
-
+        "JUSTNOW" : "à l'instant",
+        "SEC" : "s",
+        "SECS" : "s",
+        "MINUTE" : "m",
+        "MINUTES" : "m",
+        "HOUR" : "h",
+        "HOURS" : "h",
+        "DAY" : "jour",
+        "DAYS" : "jours",
+        "MONTH" : "mois",
+        "MONTHS" : "mois",
+        "YEAR" : "an",
+        "YEARS" : "ans",
+        "AGO" : ""
     },
     "BALANCESERVICE": {
         "BALANCEUPDATE" : "Solde mise à jour pour"
