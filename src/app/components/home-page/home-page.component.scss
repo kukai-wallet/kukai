@@ -92,6 +92,16 @@ a, a:hover, a:focus {
     height: 5vh;
 }
 
+.top-bar-btn {
+    display: flex;
+    align-items: center;
+    // justify-content: flex-end;  // btn are pushed to far-right
+}
+
+.language-btn {
+    padding-right: 8px;
+}
+
 
 /* ---------------------------------------------------
     SIDEBAR STYLE
