@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterContentInit } from '@angular/core';
 
 import { TranslateService } from '@ngx-translate/core';  // Multiple instances created ?
 
@@ -13,7 +13,7 @@ import { CoordinatorService } from '../../services/coordinator.service';
     templateUrl: './offline-signing.component.html',
     styleUrls: ['./offline-signing.component.scss']
 })
-export class OfflineSigningComponent implements OnInit {
+export class OfflineSigningComponent implements OnInit, AfterContentInit {
 
     InputImportOperationFileStep2 = ''; // 'Choose file';
     InputImportOperationFileStep3 = ''; // 'Choose file';
@@ -46,6 +46,16 @@ export class OfflineSigningComponent implements OnInit {
             this.init();
         }
         this.isFullWallet = this.walletService.isFullWallet();
+    }
+
+    // Called once after the first ngDoCheck()
+    ngAfterContentInit() {
+        let instructionBtnInit = '';
+        this.translate.get('OFFLINESIGNINGCOMPONENT.SHOWHELP').subscribe(
+            (res: string) => instructionBtnInit = res
+        );
+
+        this.instructionBtn = instructionBtnInit;
     }
 
     init() {
