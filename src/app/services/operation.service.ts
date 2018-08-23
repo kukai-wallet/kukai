@@ -124,7 +124,8 @@ export class OperationService {
                       counter: (++counter).toString(),
                       gas_limit: '0',
                       storage_limit: '0',
-                      managerPubkey: keys.pkh,
+                      // managerPubkey: keys.pkh,  // Betanet
+                      manager_pubkey: keys.pkh,  // Zeronet
                       balance: (amount * this.toMicro).toString(),
                       spendable: true,
                       delegatable: true
@@ -537,7 +538,8 @@ export class OperationService {
   decodeOrigination(content: any): any { // Tag 9
     let index = 0;
     const op = this.decodeCommon({ kind: 'origination' }, content);
-    op.data.managerPubkey = this.decodePkh(op.rest.slice(index, index += 42));
+    // op.data.managerPubkey = this.decodePkh(op.rest.slice(index, index += 42));  // betanet
+    op.data.manager_pubkey = this.decodePkh(op.rest.slice(index, index += 42));  // zeronet
     const balance = this.zarithDecode(op.rest.slice(index));
     op.data.balance = balance.value.toString();
     op.data.spendable = (op.rest.slice(index += balance.count * 2, index += 2) === 'ff');
@@ -688,7 +690,8 @@ export class OperationService {
           this.translate.get('OPERATIONSERVICE.BALANCE').subscribe(
               (res: string) => balanceTmp = res
           );
-          output.push(managerTmp + ' ' + fop.contents[i].managerPubkey);
+          // output.push(managerTmp + ' ' + fop.contents[i].managerPubkey);  // betanet
+          output.push(managerTmp + ' ' + fop.contents[i].manager_pubkey);  // zeronet
           output.push(balanceTmp + ' ' + (Number(fop.contents[i].balance) / this.toMicro).toString() + ' tez');
           // output.push('Manager: ' + fop.contents[i].managerPubkey);
           // output.push('Balance: ' + (Number(fop.contents[i].balance) / this.toMicro).toString() + ' tez');

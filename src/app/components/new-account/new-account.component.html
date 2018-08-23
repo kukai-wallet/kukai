@@ -79,7 +79,7 @@
         <div *ngIf='!sendResponse'>
             {{ 'NEWACCOUNTCOMPONENT.PLEASEWAIT' | translate }} 
         </div>
-        <ng-container *ngIf='false'>
+        <ng-container *ngIf='sendResponse'>
             <div *ngIf='sendResponse.success === true'>
                 <i class="fa fa-check-circle"></i>
                 <br>
