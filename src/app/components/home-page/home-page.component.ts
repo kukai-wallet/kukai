@@ -55,7 +55,7 @@ export class HomePageComponent implements OnInit {
         ['es', 'Español'],
         ['fr', 'Français'],
         ['ru', 'Pусский'],
-        ['jp', '日本の'],
+        ['jp', '日本語'],
         ['kr', '한국어'],
         ['swe', 'Svenska']
     ]);
