@@ -50,7 +50,7 @@ export class SendComponent implements OnInit {
     formInvalid = '';
     sendResponse: any;
     errorMessage = '';
-
+    transactions = [];
     XTZrate = 0;
 
     modalRef1: BsModalRef;
@@ -158,6 +158,11 @@ export class SendComponent implements OnInit {
             if (!this.amount) { this.amount = '0'; }
             if (!this.fee) { this.fee = '0'; }
             if (!this.toMultipleDestinationsString) { this.toMultipleDestinationsString = ''; }
+            if (this.isMultipleDestinations) {
+                this.transactions = this.parseMultipleTransactions(this.toMultipleDestinationsString);
+            } else {
+                this.transactions = [{to: this.toPkh, amount: Number(this.amount)}];
+            }
             this.close1();
             this.modalRef2 = this.modalService.show(template, { class: 'second' });
         }
@@ -205,6 +210,7 @@ export class SendComponent implements OnInit {
         this.toPkh = '';
         this.amount = '';
         this.fee = '';
+        const toMultipleDestinationsString = this.toMultipleDestinationsString;
         this.toMultipleDestinationsString = '';
 
         if (!amount) { amount = '0'; }
@@ -212,14 +218,16 @@ export class SendComponent implements OnInit {
         // if (!toMultipleDestinationsString) { toMultipleDestinationsString = '0'; }
 
         setTimeout(async () => {
-            this.operationService.transfer(this.activePkh, toPkh, Number(amount), Number(fee), keys).subscribe(
+            this.operationService.transfer(this.activePkh, this.transactions, Number(fee), keys).subscribe(
                 (ans: any) => {
                     this.sendResponse = ans;
                     if (ans.success === true) {
                         console.log('Transaction successful ', ans);
                         if (ans.payload.opHash) {
                             this.coordinatorService.boost(this.activePkh);
-                            this.coordinatorService.boost(toPkh);
+                            for (let i = 0; i < this.transactions.length; i++) {
+                                this.coordinatorService.boost(this.transactions[i].to);
+                            }
                         }
                     } else {
                         console.log('Transaction error id ', ans.payload.msg);
@@ -231,7 +239,18 @@ export class SendComponent implements OnInit {
             );
         }, 100);
     }
-
+    parseMultipleTransactions(multipleTransactionsString: string): any {
+        const multipleTransactionsObject: any = [];
+        const splitted = multipleTransactionsString.split(';');
+        for (let i = 0; i < splitted.length; i++) {
+            if (splitted[i]) {
+                const splitted2 = splitted[i].trim().split(' ');
+                multipleTransactionsObject.push({to: splitted2[0], amount: Number(splitted2[1])});
+            }
+        }
+        console.log(JSON.stringify(multipleTransactionsObject));
+        return multipleTransactionsObject;
+    }
     toggleDestination() {
         this.isMultipleDestinations = !this.isMultipleDestinations;
     }

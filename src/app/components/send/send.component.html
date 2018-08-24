@@ -84,8 +84,10 @@
         </div>
         <div class="modal-body">
             <p> {{ 'SENDCOMPONENT.FROM' | translate }}  {{ activePkh }}
-                <BR> {{ 'SENDCOMPONENT.TO' | translate }}  {{ toPkh }}
-                <BR> {{ 'SENDCOMPONENT.AMOUNT' | translate }} {{ amount | number:'1.0-6' }}&#42793;
+                <ng-container *ngFor="let transaction of transactions">
+                        <BR> {{ 'SENDCOMPONENT.TO' | translate }}  {{ transaction.to }}
+                        <BR> {{ 'SENDCOMPONENT.AMOUNT' | translate }} {{ transaction.amount | number:'1.0-6' }}&#42793;
+                </ng-container>
                 <BR> {{ 'SENDCOMPONENT.FEE2' | translate }} {{ fee | number:'1.0-6' }}&#42793;
             </p>
             <div class="row">
@@ -139,13 +141,11 @@
                     <p> {{ 'SENDCOMPONENT.OPERATIONFAILED' | translate }} </p>
                     <p class="text-danger">{{ sendResponse.payload.msg }}</p>
                 </div>
-
+                <div class="modal-footer">
+                        <button *ngIf='sendResponse.payload.unsignedOperation' type="button" class="btn btn-primary" (click)="download()"> {{ 'SENDCOMPONENT.DOWNLOAD' | translate }} </button>
+                        <button type="button" class="btn btn-primary" id="sub" (click)="close3()"> {{ 'SENDCOMPONENT.CLOSE' | translate }} </button>
+                    </div>
             </ng-container>
-
-            <div class="modal-footer">
-                <button *ngIf='sendResponse.payload.unsignedOperation' type="button" class="btn btn-primary" (click)="download()"> {{ 'SENDCOMPONENT.DOWNLOAD' | translate }} </button>
-                <button type="button" class="btn btn-primary" id="sub" (click)="close3()"> {{ 'SENDCOMPONENT.CLOSE' | translate }} </button>
-            </div>
         </div>
 
     </ng-template>
