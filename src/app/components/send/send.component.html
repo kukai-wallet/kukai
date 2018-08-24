@@ -24,37 +24,51 @@
                         <small id="rateXTZ" class="form-text text-muted text-color" *ngIf="XTZrate > 0"> {{ 'SENDCOMPONENT.RATE' | translate }} (&#42793;) ${{ XTZrate | number:'1.00' }} USD</small>
                     </div>
                 </div>
+                <!-- Single destination -->
+                <div *ngIf="!isMultipleDestinations" class="send-span">
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="toAdress"> {{ 'SENDCOMPONENT.TOADDRESS' | translate }} </label>
+                            <input type="text" class="form-control mono" id="toAddress" placeholder="" [(ngModel)]="toPkh" name="second">
+                        </div>
+                    </div>
 
-                <div class="form-row">
-                    <div class="form-group col-md-12">
-                        <label for="toAdress"> {{ 'SENDCOMPONENT.TOADDRESS' | translate }} </label>
-                        <input type="text" class="form-control mono" id="toAddress" placeholder="" [(ngModel)]="toPkh" name="second">
+                    <div class="form-row">
+                        <div class="form-group col-md-8">
+                            <label for="sendAmount"> {{ 'SENDCOMPONENT.AMOUNTTOSEND' | translate }} (&#42793;)</label>
+                            <div>
+                                <input type="text" class="form-control" id="sendAmount" placeholder="0.00" [(ngModel)]="amount" name="three">
+                            </div>
+                            <small id="smallSend" class="form-text text-muted">
+                                <button type="button" class="btn btn-outline-light btn-sm btn-balance" (click)="sendEntireBalance(activePkh, $event)"> {{ 'SENDCOMPONENT.SENDBALANCE' | translate }} </button>
+
+                                <span class="align-middle" *ngIf="amount * XTZrate > 0">(${{amount * XTZrate | number:'1.0'}} USD)</span>
+                            </small>
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            <label for="transactionFee"> {{ 'SENDCOMPONENT.FEE' | translate }} (&#42793;)</label>
+                            <input type="text" class="form-control" id="transactionFee" placeholder="0.00" [(ngModel)]="fee" name="four">
+                        </div>
                     </div>
                 </div>
 
-                <div class="form-row">
-                    <div class="form-group col-md-8">
-                        <label for="sendAmount"> {{ 'SENDCOMPONENT.AMOUNTTOSEND' | translate }} (&#42793;)</label>
-                        <div>
-                            <input type="text" class="form-control" id="sendAmount" placeholder="0.00" [(ngModel)]="amount" name="three">
+                <!-- Multiple destinations -->
+                <div *ngIf="isMultipleDestinations" class="send-span">
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="multipleDestinations">To Addresses and Amounts</label>
+                            <textarea class="form-control mono" id="multipleDestinations" rows="5" placeholder="tz1L5F33JZ9bsyRdSoshMujjZxdEzhwBHCDq 5; tz1aDTfsXMh1UGGy7FYL86AqRRgrDdFS7a8q 5; tz1TCF... 5; tz1tezexinfo... 5;" [(ngModel)]="toMultipleDestinationsString" name="second"></textarea>
                         </div>
-                        <small id="smallSend" class="form-text text-muted">
-                            <button type="button" class="btn btn-outline-light btn-sm btn-balance" (click)="sendEntireBalance(activePkh, $event)"> {{ 'SENDCOMPONENT.SENDBALANCE' | translate }} </button>
-
-                            <span class="align-middle" *ngIf="amount * XTZrate > 0">(${{amount * XTZrate | number:'1.0'}} USD)</span>
-                        </small>
-                    </div>
-
-                    <div class="form-group col-md-4">
-                        <label for="transactionFee"> {{ 'SENDCOMPONENT.FEE' | translate }} (&#42793;)</label>
-                        <input type="text" class="form-control" id="transactionFee" placeholder="0.00" [(ngModel)]="fee" name="four">
                     </div>
                 </div>
             </form>
-
-            {{ formInvalid }}
-
-            <div class="modal-footer">
+            <span *ngIf="formInvalid" class="text-danger">
+                {{ formInvalid }}
+            </span>
+            <div class="modal-footer first-modal">
+                <button *ngIf="isMultipleDestinations" type="button" class="btn btn-outline-light btn-sm btn-balance" (click)="toggleDestination()"> Single destination </button>
+                <button *ngIf="!isMultipleDestinations" type="button" class="btn btn-outline-light btn-sm btn-balance" (click)="toggleDestination()"> Multiple destinations </button>
                 <button type="button" class="btn btn-primary" id="sub" (click)="open2(modal2)"> {{ 'SENDCOMPONENT.PREVIEW' | translate }} </button>
             </div>
         </div>

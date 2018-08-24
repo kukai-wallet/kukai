@@ -12,6 +12,11 @@ import { CoordinatorService } from '../../services/coordinator.service';
 import { OperationService } from '../../services/operation.service';
 import { ExportService } from '../../services/export.service';
 
+interface SendData {
+    address: string;
+    amount: string;
+}
+
 @Component({
     selector: 'app-send',
     templateUrl: './send.component.html',
@@ -28,6 +33,11 @@ export class SendComponent implements OnInit {
         dropdownItem: false,
         btnSidebar: false
     };
+
+    isMultipleDestinations = false;
+
+    toMultipleDestinationsString = '';
+    toMultipleDestinations: SendData[] = [];
 
     dom: Document;
     accounts = null;
@@ -143,10 +153,11 @@ export class SendComponent implements OnInit {
     }
 
     open2(template: TemplateRef<any>) {
-        this.formInvalid = this.invalidInput();
+        this.formInvalid = this.checkInput();
         if (!this.formInvalid) {
             if (!this.amount) { this.amount = '0'; }
             if (!this.fee) { this.fee = '0'; }
+            if (!this.toMultipleDestinationsString) { this.toMultipleDestinationsString = ''; }
             this.close1();
             this.modalRef2 = this.modalService.show(template, { class: 'second' });
         }
@@ -190,12 +201,15 @@ export class SendComponent implements OnInit {
         const toPkh = this.toPkh;
         let amount = this.amount;
         let fee = this.fee;
+        // let toMultipleDestinationsString = this.toMultipleDestinationsString;
         this.toPkh = '';
         this.amount = '';
         this.fee = '';
+        this.toMultipleDestinationsString = '';
 
         if (!amount) { amount = '0'; }
         if (!fee) { fee = '0'; }
+        // if (!toMultipleDestinationsString) { toMultipleDestinationsString = '0'; }
 
         setTimeout(async () => {
             this.operationService.transfer(this.activePkh, toPkh, Number(amount), Number(fee), keys).subscribe(
@@ -218,17 +232,36 @@ export class SendComponent implements OnInit {
         }, 100);
     }
 
+    toggleDestination() {
+        this.isMultipleDestinations = !this.isMultipleDestinations;
+    }
+
     clearForm() {
         this.toPkh = '';
         this.amount = '';
         this.fee = '';
+        this.toMultipleDestinationsString = '';
+        this.toMultipleDestinations = [];
         this.password = '';
         this.pwdValid = '';
         this.formInvalid = '';
         this.sendResponse = null;
     }
 
-    invalidInput(): string {
+    checkInput(): string {
+        let result;
+
+        if (this.isMultipleDestinations) {
+            result = this.invalidInputMultiple();
+            console.log('result in checkInput()', result);
+        } else {
+            result = this.invalidInputSingle();
+        }
+
+        return result;
+    }
+
+    invalidInputSingle(): string {
         if (!this.activePkh || this.activePkh.length !== 36) {
 
             let invalidSender = '';
@@ -236,20 +269,6 @@ export class SendComponent implements OnInit {
                 (res: string) => invalidSender = res
             );
             return invalidSender;  // 'Invalid sender address';
-
-        } else if (!this.toPkh || this.toPkh.length !== 36) {
-            let invalidReceiver = '';
-            this.translate.get('SENDCOMPONENT.INVALIDRECEIVERADDRESS').subscribe(
-                (res: string) => invalidReceiver = res
-            );
-            return invalidReceiver;  // 'Invalid receiver address';
-
-        } else if (!Number(this.amount) && this.amount && this.amount !== '0') {
-            let invalidAmount = '';
-            this.translate.get('SENDCOMPONENT.INVALIDAMOUNT').subscribe(
-                (res: string) => invalidAmount = res
-            );
-            return invalidAmount;  // 'Invalid amount';
 
         } else if (!Number(this.fee) && this.fee && this.fee !== '0') {
             let invalidFee = '';
@@ -259,8 +278,83 @@ export class SendComponent implements OnInit {
             return invalidFee;  // 'Invalid fee';
 
         } else {
-            return '';
+            const result = this.checkReceiverAndAmmout(this.toPkh, this.amount);
+            return result;
         }
+    }
+
+    checkReceiverAndAmmout(toPkh: string, amount: string): string {
+        let result = '';
+        console.log('In checkReceiverAndAmmout toPkh: ', toPkh);
+        if (!toPkh || toPkh.length !== 36) {
+            let invalidReceiver = '';
+            this.translate.get('SENDCOMPONENT.INVALIDRECEIVERADDRESS').subscribe(
+                (res: string) => invalidReceiver = res
+            );
+            result = invalidReceiver;  // 'Invalid receiver address';
+
+        } else if (!Number(amount) && amount && amount !== '0') {
+            let invalidAmount = '';
+            this.translate.get('SENDCOMPONENT.INVALIDAMOUNT').subscribe(
+                (res: string) => invalidAmount = res
+            );
+            result = invalidAmount;  // 'Invalid amount';
+        }
+
+        return result;
+    }
+
+    invalidInputMultiple(): string {
+        let result = '';
+        let toMultipleDestinationsArray;
+        let singleSendDataArray;
+
+        toMultipleDestinationsArray = this.toMultipleDestinationsString.split(';');
+
+        toMultipleDestinationsArray.forEach((item, index) => {
+            // Eliminate white spaces from both sides of a string
+            toMultipleDestinationsArray[index] = item.trim();
+
+            if (toMultipleDestinationsArray[index] !== '') {
+                singleSendDataArray = toMultipleDestinationsArray[index].split(' ');
+                console.log('singleSendDataArray: ', singleSendDataArray );
+                if (singleSendDataArray.length === 2) {
+                    const singleSendDataCheckresult = this.checkReceiverAndAmmout(singleSendDataArray[0], singleSendDataArray[1]);
+                    console.log('singleSendDataArray.length: ', singleSendDataArray.length );
+                    console.log('singleSendDataCheckresult', singleSendDataCheckresult);
+                    if (singleSendDataCheckresult === '') {
+                        this.toMultipleDestinations.push({address: singleSendDataArray[0], amount: singleSendDataArray[1]});
+
+                    } else {
+                        this.toMultipleDestinations = [];
+                        const itemIndex =  index + 1;
+                        result = singleSendDataCheckresult + '. ' + 'Error in item ' + itemIndex;
+                        return result;
+                    }
+                }
+            }
+        });
+
+        console.log('toMultipleDestinations: ', JSON.stringify(this.toMultipleDestinations));
+
+        // If this loops ends then everything has been veified
+        return result;
+        /*
+        for (const sendInfo of this.toMultipleDestinations) {
+            result = this.checkReceiverAndAmmout(sendInfo.address, sendInfo.amount);
+            if (result !== '') {
+                // address or amount in sendInfo is invalid
+                // reinitialise variables
+                this.toMultipleDestinations = [];
+
+                return result;
+            }
+        }
+
+        console.log('toMultipleDestinationsArray: ', toMultipleDestinationsArray);
+        console.log('toMultipleDestinations: ', JSON.stringify(this.toMultipleDestinations));
+        */
+        // return 'All Good';  // result;
     }
 
     download() {
