@@ -279,6 +279,8 @@ export class SendComponent implements OnInit {
         this.pwdValid = '';
         this.formInvalid = '';
         this.sendResponse = null;
+
+        this.showBtn = 'Show More';
     }
 
     checkInput(): string {
