@@ -39,6 +39,21 @@
   justify-content: flex-end;
 }
 
+.transaction-info {
+  border-style: dotted;
+  border-color: red;
+  //width: 642px; // 625px;
+  display: inline-block;
+  padding-left: 20px;
+  padding-right: 20px;
+  background-color: #eeeeee;
+}
+
+.show-more {
+
+  font-size: 0.9rem;
+}
+
 .btn-balance {
   color: #6c757d;
   padding-right: 0rem; // original 0.5rem;

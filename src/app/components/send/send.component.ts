@@ -13,8 +13,8 @@ import { OperationService } from '../../services/operation.service';
 import { ExportService } from '../../services/export.service';
 
 interface SendData {
-    address: string;
-    amount: string;
+    to: string;
+    amount: number;
 }
 
 @Component({
@@ -50,8 +50,11 @@ export class SendComponent implements OnInit {
     formInvalid = '';
     sendResponse: any;
     errorMessage = '';
-    transactions = [];
+    transactions: SendData[] = [];
+    showTransactions: SendData[] = [];
     XTZrate = 0;
+
+    showBtn = 'Show More';
 
     modalRef1: BsModalRef;
     modalRef2: BsModalRef;
@@ -159,7 +162,14 @@ export class SendComponent implements OnInit {
             if (!this.fee) { this.fee = '0'; }
             if (!this.toMultipleDestinationsString) { this.toMultipleDestinationsString = ''; }
             if (this.isMultipleDestinations) {
-                this.transactions = this.parseMultipleTransactions(this.toMultipleDestinationsString);
+                // this.transactions = this.parseMultipleTransactions(this.toMultipleDestinationsString);
+                this.transactions = this.toMultipleDestinations;
+                if (this.transactions.length > 1) {
+                    this.showTransactions.push(this.transactions[0], this.transactions[1]);
+                } else {
+                    // In case user picks isMultipleDestinations but inserts only one transaction
+                    this.showTransactions.push(this.transactions[0]);
+                }
             } else {
                 this.transactions = [{to: this.toPkh, amount: Number(this.amount)}];
             }
@@ -203,15 +213,15 @@ export class SendComponent implements OnInit {
     }
 
     async sendTransaction(keys: KeyPair) {
-        const toPkh = this.toPkh;
         let amount = this.amount;
         let fee = this.fee;
-        // let toMultipleDestinationsString = this.toMultipleDestinationsString;
+
         this.toPkh = '';
         this.amount = '';
         this.fee = '';
-        const toMultipleDestinationsString = this.toMultipleDestinationsString;
         this.toMultipleDestinationsString = '';
+        this.toMultipleDestinations = [];
+        this.showTransactions = [];
 
         if (!amount) { amount = '0'; }
         if (!fee) { fee = '0'; }
@@ -239,6 +249,8 @@ export class SendComponent implements OnInit {
             );
         }, 100);
     }
+
+    // Function not used - transaction array is built in invalidInputMultiple()
     parseMultipleTransactions(multipleTransactionsString: string): any {
         const multipleTransactionsObject: any = [];
         const splitted = multipleTransactionsString.split(';');
@@ -251,6 +263,7 @@ export class SendComponent implements OnInit {
         console.log(JSON.stringify(multipleTransactionsObject));
         return multipleTransactionsObject;
     }
+
     toggleDestination() {
         this.isMultipleDestinations = !this.isMultipleDestinations;
     }
@@ -261,6 +274,7 @@ export class SendComponent implements OnInit {
         this.fee = '';
         this.toMultipleDestinationsString = '';
         this.toMultipleDestinations = [];
+        this.showTransactions = [];
         this.password = '';
         this.pwdValid = '';
         this.formInvalid = '';
@@ -297,14 +311,14 @@ export class SendComponent implements OnInit {
             return invalidFee;  // 'Invalid fee';
 
         } else {
-            const result = this.checkReceiverAndAmmout(this.toPkh, this.amount);
+            const result = this.checkReceiverAndAmount(this.toPkh, this.amount);
             return result;
         }
     }
 
-    checkReceiverAndAmmout(toPkh: string, amount: string): string {
+    checkReceiverAndAmount(toPkh: string, amount: string): string {
         let result = '';
-        console.log('In checkReceiverAndAmmout toPkh: ', toPkh);
+        console.log('In checkReceiverAndAmount toPkh: ', toPkh);
         if (!toPkh || toPkh.length !== 36) {
             let invalidReceiver = '';
             this.translate.get('SENDCOMPONENT.INVALIDRECEIVERADDRESS').subscribe(
@@ -323,6 +337,7 @@ export class SendComponent implements OnInit {
         return result;
     }
 
+    // Checking toMultipleDestinationsString and building up toMultipleDestinations[to: string, amount: number]
     invalidInputMultiple(): string {
         let result = '';
         let toMultipleDestinationsArray;
@@ -338,11 +353,11 @@ export class SendComponent implements OnInit {
                 singleSendDataArray = toMultipleDestinationsArray[index].split(' ');
                 console.log('singleSendDataArray: ', singleSendDataArray );
                 if (singleSendDataArray.length === 2) {
-                    const singleSendDataCheckresult = this.checkReceiverAndAmmout(singleSendDataArray[0], singleSendDataArray[1]);
+                    const singleSendDataCheckresult = this.checkReceiverAndAmount(singleSendDataArray[0], singleSendDataArray[1]);
                     console.log('singleSendDataArray.length: ', singleSendDataArray.length );
                     console.log('singleSendDataCheckresult', singleSendDataCheckresult);
                     if (singleSendDataCheckresult === '') {
-                        this.toMultipleDestinations.push({address: singleSendDataArray[0], amount: singleSendDataArray[1]});
+                        this.toMultipleDestinations.push({to: singleSendDataArray[0], amount: Number(singleSendDataArray[1])});
 
                     } else {
                         this.toMultipleDestinations = [];
@@ -356,24 +371,26 @@ export class SendComponent implements OnInit {
 
         console.log('toMultipleDestinations: ', JSON.stringify(this.toMultipleDestinations));
 
-        // If this loops ends then everything has been veified
-        return result;
-        /*
-        for (const sendInfo of this.toMultipleDestinations) {
-            result = this.checkReceiverAndAmmout(sendInfo.address, sendInfo.amount);
-            if (result !== '') {
-                // address or amount in sendInfo is invalid
-                // reinitialise variables
-                this.toMultipleDestinations = [];
+        return result;  // If this loops ends then everything has been verified and result will remain ''
+    }
 
-                return result;
-            }
+    totalAmount(): number {
+        let totalSent = 0;
+        for (const item of this.toMultipleDestinations) {
+            totalSent = totalSent + item.amount;
         }
+        return totalSent;
+    }
 
-        console.log('toMultipleDestinationsArray: ', toMultipleDestinationsArray);
-        console.log('toMultipleDestinations: ', JSON.stringify(this.toMultipleDestinations));
-        */
-        // return 'All Good';  // result;
+    toggleTransactions() {
+        if (this.showTransactions.length === 2) {
+            this.showTransactions = this.transactions;
+            this.showBtn = 'Show Less';
+        } else {
+            this.showTransactions = [];
+            this.showTransactions.push(this.transactions[0], this.transactions[1]);
+            this.showBtn = 'Show More';
+        }
     }
 
     download() {

@@ -83,12 +83,46 @@
             </button>
         </div>
         <div class="modal-body">
-            <p> {{ 'SENDCOMPONENT.FROM' | translate }}  {{ activePkh }}
+            <p> 
+                {{ 'SENDCOMPONENT.FROM' | translate }}  {{ activePkh }}
+                <BR> 
+                <span *ngIf="isMultipleDestinations"> Total Sent: {{ totalAmount() | number:'1.0-6' }}&#42793; </span>
+                <span *ngIf="!isMultipleDestinations">
+                    {{ 'SENDCOMPONENT.TO' | translate }}  {{ transactions[0].to }}
+                    <BR> {{ 'SENDCOMPONENT.AMOUNT' | translate }} {{ transactions[0].amount | number:'1.0-6' }}&#42793;
+                </span>
+                <BR> {{ 'SENDCOMPONENT.FEE2' | translate }} {{ fee | number:'1.0-6' }}&#42793;
+                <BR><BR>
+                <!-- 
                 <ng-container *ngFor="let transaction of transactions">
                         <BR> {{ 'SENDCOMPONENT.TO' | translate }}  {{ transaction.to }}
                         <BR> {{ 'SENDCOMPONENT.AMOUNT' | translate }} {{ transaction.amount | number:'1.0-6' }}&#42793;
                 </ng-container>
-                <BR> {{ 'SENDCOMPONENT.FEE2' | translate }} {{ fee | number:'1.0-6' }}&#42793;
+                -->
+                <ng-container *ngIf="isMultipleDestinations">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th scope="col">{{ 'SENDCOMPONENT.TO' | translate }}</th>
+                                <th scope="col">{{ 'SENDCOMPONENT.AMOUNT' | translate }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let transaction of showTransactions">
+                                <td>{{ transaction.to }}</td>
+                                <td>{{ transaction.amount | number:'1.0-6' }}&#42793;</td>
+                            </tr>
+                            <tr *ngIf='transactions.length > 2'>
+                                <td></td>
+                                <td>
+                                    <button type="button" class="btn btn-outline-light btn-sm btn-balance show-more" aria-label="More" (click)="toggleTransactions()">
+                                        <span aria-hidden="true"> {{ showBtn }} </span>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </ng-container>
             </p>
             <div class="row">
                 <div *ngIf='walletService.isFullWallet()' class="col-md-6">
