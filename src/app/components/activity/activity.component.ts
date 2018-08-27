@@ -88,8 +88,16 @@ export class ActivityComponent implements OnInit {
         let newOperations: any;
         this.extraCalls = this.extraCalls + 1;
         this.showBtn = 'Show Less';
-        newOperations = this.tzscanService.operations(this.activePkh, 10, this.extraCalls);
-
-        console.log('newOperations: ', newOperations);
+        // newOperations = this.tzscanService.operations(this.activePkh, 10, this.extraCalls);
+        this.tzscanService.operations(this.activePkh, 10, this.extraCalls).subscribe(
+            (res: any) => {
+                newOperations = res;
+                console.log('showActivities before: ', this.showActivities);
+                this.showActivities = this.showActivities.concat(res);
+                console.log('res: ', res);  // working - getting next 10 operations
+                console.log('showActivities after: ', this.showActivities);
+            }
+        );
+        console.log('newOperations: ', newOperations);  // not working - undefined
     }
 }
