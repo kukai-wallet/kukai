@@ -33,7 +33,8 @@ export class DelegatorNamePipe implements PipeTransform {
         ['tz1YdCPrYbksK7HCoYKDyzgfXwY16Fy9rrGa', 'Norn Delegate'],
         ['tz1LesY3S4wfe15SNm1W3qJmQzWxLqVjTruH', 'Xtez.io'],
         ['tz1Yc6ATtfUJyDjHwJ8WoVL22sJueDenueke', 'TezDele Baker A'],
-        ['tz1SdwBHocSrcuMFNLPUg4LPRfx9eaqjVUEL', 'TezDele Baker B']
+        ['tz1SdwBHocSrcuMFNLPUg4LPRfx9eaqjVUEL', 'TezDele Baker B'],
+        ['tz1LBEKXaxQbd5Gtzbc1ATCwc3pppu81aWGc', 'Tez-Baking.com']
     ]);
 
     transform(pkh: string): string {
