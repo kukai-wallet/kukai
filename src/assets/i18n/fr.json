@@ -1,8 +1,4 @@
 {
-    "HELLO": "bonjour {{value}}",
-    "HOME": {
-        "HELLO": "bonjour {{value}}"
-    },
     "TIMEAGOPIPE": {
         "JUSTNOW" : "à l'instant",
         "SEC" : "s",

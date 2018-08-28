@@ -1,8 +1,4 @@
 {
-    "HELLO": "Russian {{value}}",
-    "HOME": {
-        "HELLO": "Russian {{value}}"
-    },
     "TIMEAGOPIPE": {
         "JUSTNOW" : "только что",
         "SEC" : "секунд",

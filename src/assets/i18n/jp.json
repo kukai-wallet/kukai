@@ -1,8 +1,4 @@
 {
-    "HELLO": "Japanese {{value}}",
-    "HOME": {
-        "HELLO": "Japanese {{value}}"
-    },
     "TIMEAGOPIPE": {
         "JUSTNOW" : "今",
         "SEC" : "秒前",
