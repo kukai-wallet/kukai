@@ -26,7 +26,7 @@ export class HomePageComponent implements OnInit {
         public walletService: WalletService,
         private coordinatorService: CoordinatorService
     ) {
-        translate.addLangs(['en', 'fr', 'ru', 'jp']);
+        translate.addLangs(['en', 'fr', 'ru', 'jp', 'por']);
 
         // this language will be used as a fallback when a translation isn't found in the current language
         translate.setDefaultLang('en');
@@ -34,7 +34,7 @@ export class HomePageComponent implements OnInit {
         // the lang to use, if the lang isn't available, it will use the current loader to get them
         const browserLang = translate.getBrowserLang();
         console.log('browserLang ', browserLang);
-        translate.use(browserLang.match(/en|fr|ru|jp/) ? browserLang : 'en');
+        translate.use(browserLang.match(/en|fr|ru|jp|por/) ? browserLang : 'en');
     }
 
   ngOnInit() {
@@ -56,6 +56,7 @@ export class HomePageComponent implements OnInit {
         ['fr', 'Français'],
         ['ru', 'Pусский'],
         ['jp', '日本語'],
+        ['por', 'Português'],
         ['kr', '한국어'],
         ['swe', 'Svenska']
     ]);

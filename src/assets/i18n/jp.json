@@ -1,8 +1,4 @@
 {
-    "HELLO": "Japanese {{value}}",
-    "HOME": {
-        "HELLO": "Japanese {{value}}"
-    },
     "TIMEAGOPIPE": {
         "JUSTNOW" : "今",
         "SEC" : "秒前",
@@ -13,10 +9,10 @@
         "HOURS" : "時間前",
         "DAY" : "日と",
         "DAYS" : "日と",
-        "MONTH" : "",
-        "MONTHS" : "",
-        "YEAR" : "",
-        "YEARS" : "",
+        "MONTH" : "か月",
+        "MONTHS" : "か月",
+        "YEAR" : "年と",
+        "YEARS" : "年と",
         "AGO" : "前"
     },
     "BALANCESERVICE": {
@@ -78,13 +74,13 @@
         "FROM" : "送信元",
         "TO" : "送信先",
         "EMPTY" : "ウォレットが設定されていません！",
-        "CONFIRMED" : "Confirmed",
-        "UNCONFIRMED" : "Unconfirmed",
-        "FAILED" : "Failed",
-        "DELEGATE" : "delegate",
-        "UNDELEGATE" : "undelegate",
-        "RECEIVED" : "received",
-        "SENT" : "sent"
+        "CONFIRMED" : "認証されました。",
+        "UNCONFIRMED" : "認証されていないません。",
+        "FAILED" : "失敗しました。",
+        "DELEGATE" : "デリゲートする",
+        "UNDELEGATE" : "デリゲートをやめる",
+        "RECEIVED" : "受け取りました。",
+        "SENT" : "送りました。"
     },
     "BACKUPCOMPONENT": {
         "TITLE" : "ウォレットのバックアップ",
@@ -273,7 +269,7 @@
         "FAILEDTOREADFILE" : "ファイルの読み込みに失敗しました！",
         "NOTANUNSIGNEDOPERATION" : "未署名ファイルではありません！",
         "CHOOSEFILE" : "ファイルの選択",
-        "BROWSE" : "Browse"
+        "BROWSE" : "閲覧する"
     },
     "OVERVIEWCOMPONENT": {
         "TITLE" : "あなたのウォレット",
