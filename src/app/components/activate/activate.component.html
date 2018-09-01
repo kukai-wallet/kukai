@@ -2,33 +2,33 @@
     <div class="center-content">
         <div class="card text-center fix-size">
             <div class="card-body">
-                <h1 class="card-title">Activate your ICO Wallet</h1>
+                <h1 class="card-title">{{ 'ACTIVATECOMPONENT.TITLE' | translate }}</h1>
                 <div class="card-text">
                     <form class="form-group">
                         <!-- pkh -->
                         <div class="form-group row">
                             <div class="col-sm-12">
                                 <input type="text" [(ngModel)]="pkh" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="tz1...">
-                                <small class="form-text text-left">Your public key hash</small>
+                                <small class="form-text text-left">{{ 'ACTIVATECOMPONENT.PKH' | translate }}</small>
                             </div>
                         </div>
                         <!-- secret -->
                         <div class="form-group row">
                             <div class="col-sm-12">
                                 <input type="text" [(ngModel)]="secret" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="code">
-                                <small class="form-text text-left">Your activation code</small>
+                                <small class="form-text text-left">{{ 'ACTIVATECOMPONENT.CODE' | translate }}</small>
                             </div>
                         </div>
                     </form>
-                    <p class="p-margin-botton">Wallets created during the ICO need to be activated.</p>
-                    <p>No private key is required for the activation process.</p>
+                    <p class="p-margin-botton">{{ 'ACTIVATECOMPONENT.INFO1' | translate }}</p>
+                    <p>{{ 'ACTIVATECOMPONENT.INFO2' | translate }}</p>
                 </div>
             </div>
             <div class="card-footer text-right">
                 <a routerLink="/">
-                    <button type="button" class="btn btn-primary btn-lg btn-float-left">Back</button>
+                    <button type="button" class="btn btn-primary btn-lg btn-float-left">{{ 'ACTIVATECOMPONENT.BACK' | translate }}</button>
                 </a>
-                <button type="button" class="btn btn-primary btn-lg" (click)="activate()">Activate</button>
+                <button type="button" class="btn btn-primary btn-lg" (click)="activate()">{{ 'ACTIVATECOMPONENT.ACTIVATE' | translate }}</button>
             </div>
         </div>
     </div>

@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild, TemplateRef, Input } from '@angular/core';
 
+import { TranslateService } from '@ngx-translate/core';  // Multiple instances created ?
+
 import { WalletService } from '../../services/wallet.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
@@ -33,6 +35,7 @@ export class NewAccountComponent implements OnInit {
   };
 
   constructor(
+    private translate: TranslateService,
     private walletService: WalletService,
     private modalService: BsModalService,
     private operationService: OperationService,
@@ -80,7 +83,12 @@ export class NewAccountComponent implements OnInit {
       this.newAccount(keys);
     } else {
       this.isValidModal2.neverConfirmed = false;
-      this.pwdValid = 'Your Password is invalid';
+      let passwordInvalid = '';
+      this.translate.get('NEWACCOUNTCOMPONENT.INVALIDPASSWORD').subscribe(
+        (res: string) => passwordInvalid = res
+      );
+      this.pwdValid = passwordInvalid;
+      // this.pwdValid = 'Your Password is invalid';
     }
   }
 
@@ -130,9 +138,19 @@ export class NewAccountComponent implements OnInit {
 
   invalidInput(): string {
     if (!Number(this.amount) && this.amount && this.amount !== '0') {
-      return 'Invalid amount';
+      let invalidAmount = '';
+      this.translate.get('NEWACCOUNTCOMPONENT.INVALIDAMOUNT').subscribe(
+        (res: string) => invalidAmount = res
+      );
+      return invalidAmount;
+      // return 'Invalid amount';
     } else if (!Number(this.fee) && this.fee && this.fee !== '0') {
-      return 'Invalid fee';
+      let invalidFee = '';
+      this.translate.get('NEWACCOUNTCOMPONENT.INVALIDFEE').subscribe(
+        (res: string) => invalidFee = res
+      );
+      return invalidFee;
+      // return 'Invalid fee';
     } else {
       return '';
     }

@@ -2,7 +2,7 @@
     <!-- Title -->
     <div class="row bottom-separator">
         <div class="col-lg-12">
-            <h1 class="page-header">Bakery</h1>
+            <h1 class="page-header">{{ 'BAKERYCOMPONENT.TITLE' | translate }}</h1>
         </div>
     </div>
 
@@ -10,8 +10,8 @@
     <div class="row">
         <div class="col-lg-12">
             <h4>
-                <p>In the bakery, you can easily set different delegates for your accounts.</p>
-                <p *ngIf="!walletService.wallet.accounts[1]">Please note that you can't delegate with your identity. You need to create new accounts.</p>
+                <p>{{ 'BAKERYCOMPONENT.HEADING' | translate }}</p>
+                <p *ngIf="!walletService.wallet.accounts[1]">{{ 'BAKERYCOMPONENT.INFO' | translate }}</p>
             </h4>
         </div>
     </div>
@@ -21,13 +21,13 @@
         <!-- Accounts -->
         <div class="row row-header">
             <div class="col-sm-auto col-header col-border border border-warning min-size-address-cell">
-                Accounts
+                {{ 'BAKERYCOMPONENT.ACCOUNTS' | translate }}
             </div>
             <div class="col-sm-auto col-header col-border border border-warning min-size-other-cell">
-                Balance (&#42793;)
+                {{ 'BAKERYCOMPONENT.BALANCE' | translate }} (&#42793;)
             </div>
             <div class="col-sm-auto col-header col-border border border-warning min-size-address-cell">
-                Delegated to
+                {{ 'BAKERYCOMPONENT.DELEGATEDTO' | translate }}
             </div>
         </div>
         <div class="row" *ngFor="let account of walletService.wallet.accounts | slice:1">
@@ -51,13 +51,18 @@
 <div class="container" *ngIf="!this.walletService.wallet">
     <div class="row bottom-separator-no-account">
         <div class="col-lg-12">
-            <h1 class="page-header-no-account">Bakery</h1>
+            <h1 class="page-header-no-account">{{ 'BAKERYCOMPONENT.TITLE' | translate }}</h1>
         </div>
     </div>
     <div class="row">
         <div class="col-lg-12">
+            <!--
             <p>If you want to set delegates for your tez, you will need to
                 <a routerLink="">create or import</a> a wallet.
+            </p>
+            -->
+            <p>
+                {{ 'BAKERYCOMPONENT.EMPTY' | translate }}
             </p>
         </div>
     </div>

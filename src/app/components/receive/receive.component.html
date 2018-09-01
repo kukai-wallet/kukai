@@ -3,7 +3,7 @@
     <!-- Receive Modal -->
     <ng-template #modal1 class="receive-modal">
         <div class="modal-header">
-            <h4 class="modal-title pull-left">Receive tez</h4>
+            <h4 class="modal-title pull-left"> {{ 'RECEIVECOMPONENT.RECEIVETEZ' | translate }} </h4>
             <button type="button" class="close pull-right" aria-label="Close" (click)="close1()">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -19,15 +19,15 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-primary" id="sub" (click)="close1()">Close</button>
+            <button type="button" class="btn btn-primary" id="sub" (click)="close1()"> {{ 'RECEIVECOMPONENT.CLOSE' | translate }} </button>
         </div>
     </ng-template>
 
     <!-- Showing different Receive Format according to actionButtonString -->
-    <button *ngIf='accounts && showReceiveFormat.btnOutline' type="button" (click)="open1(modal1)" class="btn btn-sm btn-outline-primary btn-op">Receive</button>
+    <button *ngIf='accounts && showReceiveFormat.btnOutline' type="button" (click)="open1(modal1)" class="btn btn-sm btn-outline-primary btn-op"> {{ 'RECEIVECOMPONENT.RECEIVE' | translate }} </button>
     <span *ngIf='accounts && showReceiveFormat.dropdownItem' class="dropdown-item" (click)="open1(modal1)">{{ activePkh }}</span>
 </ng-container>
 
 <div *ngIf='!accounts'>
-    Wallet not configured
+    {{ 'RECEIVECOMPONENT.EMPTYINFO' | translate }} 
 </div>

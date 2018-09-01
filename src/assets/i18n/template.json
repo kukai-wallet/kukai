@@ -1,0 +1,79 @@
+{
+    "HELLO": "Russian {{value}}",
+    "HOME": {
+        "HELLO": "Russian {{value}}"
+    },
+    "TIMEAGOPIPE": {
+        "JUSTNOW" : "",
+        "SEC" : "",
+        "SECS" : "",
+        "MINUTE" : "",
+        "MINUTES" : "",
+        "HOUR" : "",
+        "HOURS" : "",
+        "DAY" : "",
+        "DAYS" : "",
+        "MONTH" : "",
+        "MONTHS" : "",
+        "YEAR" : "",
+        "YEARS" : "",
+        "AGO" : ""
+    },
+    "BALANCESERVICE": {
+        
+    },
+    "OPERATIONSERVICE": {
+        
+    },
+    "WALLETSERVICE": {
+        
+    },
+    "HOMEPAGECOMPONENT": {
+        
+    },
+    "ACCOUNTCOMPONENT": {
+        
+    },
+    "ACTIVATECOMPONENT": {
+        
+    },
+    "ACTIVITYCOMPONENT": {
+        
+    },
+    "BACKUPCOMPONENT": {
+        
+    },
+    "BAKERYCOMPONENT": {
+        
+    },
+    "DELEGATECOMPONENT": {
+        
+    },
+    "IMPORTCOMPONENT": {
+       
+    },
+    "MNEMONICIMPORTCOMPONENT": {
+        
+    },
+    "NEWACCOUNTCOMPONENT": {
+        
+    },
+    "NEWWALLETCOMPONENT": {
+        
+    },
+    "OFFLINESIGNINGCOMPONENT": {
+
+    },
+    "OVERVIEWCOMPONENT": {
+
+    },
+    "RECEIVECOMPONENT": {
+
+    },
+    "SENDCOMPONENT": {
+
+    },
+    "STARTCOMPONENT": {
+
+    }
+}

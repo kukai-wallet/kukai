@@ -32,7 +32,15 @@ export class ActivityComponent implements OnInit {
 
     getType(transaction: any): string {
         if (transaction.type !== 'transaction') {
-            return transaction.type;
+            if (transaction.type === 'delegation') {
+                if (transaction.destination) {
+                    return 'delegate';
+                } else {
+                    return 'undelegate';
+                }
+            } else {
+                return transaction.type;
+            }
         } else {
             let operationType = '';
             if (transaction.amount > 0) {
@@ -50,7 +58,11 @@ export class ActivityComponent implements OnInit {
 
         // Checks for delegation as destination is stored in transaction.destination.tz
         if (transaction.type === 'delegation') {
-            return transaction.destination.tz;
+            if (transaction.destination) {
+             return transaction.destination.tz;
+            } else {
+                return '';  // User has undelegate
+            }
         }
 
         if (this.activePkh === transaction.source) {
