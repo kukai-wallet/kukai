@@ -153,7 +153,8 @@ export class OperationService {
   /*
     Returns an observable for the transaction of tez.
   */
-  transfer(from: string, to: string, amount: number, fee: number = 0, keys: KeyPair): Observable<any> {
+  // transfer(from: string, to: string, amount: number, fee: number = 0, keys: KeyPair): Observable<any> {
+  transfer(from: string, transactions: any, fee: number = 0, keys: KeyPair): Observable<any> {
     return this.http.get(this.nodeURL + '/chains/main/blocks/head/hash', {})
       .flatMap((hash: any) => {
         return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + from + '/counter', {})
@@ -163,31 +164,30 @@ export class OperationService {
                 let counter: number = Number(actions);
                 const fop: any = {
                   branch: hash,
-                  contents: [
-                    {
-                      kind: 'transaction',
-                      source: from,
-                      fee: (fee * this.toMicro).toString(),
-                      counter: (++counter).toString(),
-                      gas_limit: '200',
-                      storage_limit: '0',
-                      amount: (amount * this.toMicro).toString(),
-                      destination: to,
-                    }
-                  ]
+                  contents: []
                 };
                 if (manager.key === undefined) {
-                  fop.contents[1] = fop.contents[0];
-                  fop.contents[0] = {
+                  fop.contents.push({
                     kind: 'reveal',
                     source: from,
                     fee: '0',
-                    counter: (counter).toString(),
+                    counter: (++counter).toString(),
                     gas_limit: '0',
                     storage_limit: '0',
                     public_key: keys.pk
-                  };
-                  fop.contents[1].counter = (Number(fop.contents[1].counter) + 1).toString();
+                  });
+                }
+                for (let i = 0; i < transactions.length; i++) {
+                  fop.contents.push({
+                    kind: 'transaction',
+                    source: from,
+                    fee: (fee * this.toMicro).toString(),
+                    counter: (++counter).toString(),
+                    gas_limit: '200',
+                    storage_limit: '0',
+                    amount: (transactions[i].amount * this.toMicro).toString(),
+                    destination: transactions[i].to,
+                  });
                 }
                 return this.operation(fop, keys);
               });

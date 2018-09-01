@@ -1,6 +1,6 @@
 <div *ngIf='accounts'>
     <ng-container *ngFor="let account of accounts">
-        <ng-container *ngIf="account.pkh === activePkh && account.activities.length > 0">
+        <ng-container *ngIf="account.pkh === activePkh && showActivities.length > 0">
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -13,8 +13,8 @@
                         <th scope="col">{{ 'ACTIVITYCOMPONENT.STATUS' | translate }}</th>
                     </tr>
                 </thead>
-                <tbody *ngFor="let transaction of account.activities">
-                    <tr class="table-row">
+                <tbody>
+                    <tr class="table-row" *ngFor="let transaction of showActivities">
                         <!-- Txn Hash -->
                         <th scope="row" class="row-hash table-cell">
                             <span data-toggle="tooltip" [title]="transaction.hash">
@@ -69,6 +69,18 @@
                             <a href="{{ CONSTANTS.NET.BLOCK_EXPLORER_URL + transaction.hash }}" target="_blank">{{ getStatus(transaction) }}</a>
                         </td>
                     </tr>
+                    <!-- Show More Button -->
+                    <!--
+                    <tr class="last-btn-column">
+                        <td colspan="6">
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-outline-light btn-sm btn-balance show-more" aria-label="More" (click)="toggleTransactions()">
+                                <span aria-hidden="true"> {{ showBtn }} </span>
+                            </button>
+                        </td>
+                    </tr>
+                    -->
                 </tbody>
             </table>
         </ng-container>
