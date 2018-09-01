@@ -19,7 +19,8 @@
     "package-electron-linux-ia32": "electron-packager dist --overwrite --asar --platform=linux --arch=ia32 --icon=dist/assets/icons/png/1024x1024.png --prune=true --out=release-builds",
     "package-electron-linux-x64": "electron-packager dist --overwrite --asar --platform=linux --arch=x64 --icon=dist/assets/icons/png/1024x1024.png --prune=true --out=release-builds",
     "package-electron-all": "npm run build-electron && npm run package-electron-win && npm run package-electron-mac && npm run package-electron-linux",
-    "run-electron": "npm run build-electron && electron dist"
+    "run-electron": "npm run build-electron && electron dist",
+    "count": "cloc app/"
   },
   "private": true,
   "dependencies": {
@@ -67,9 +68,11 @@
     "@types/jasmine": "~2.8.3",
     "@types/jasminewd2": "~2.0.2",
     "@types/node": "~6.0.60",
+    "cloc": "^2.3.3",
     "codelyzer": "^4.0.1",
     "electron": "^2.0.4",
     "electron-packager": "^12.1.0",
+    "font-awesome": "^4.7.0",
     "jasmine-core": "~2.8.0",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~2.0.0",
@@ -80,7 +83,6 @@
     "protractor": "~5.1.2",
     "ts-node": "~4.1.0",
     "tslint": "~5.9.1",
-    "typescript": "~2.5.3",
-    "font-awesome": "^4.7.0"
+    "typescript": "~2.5.3"
   }
 }
