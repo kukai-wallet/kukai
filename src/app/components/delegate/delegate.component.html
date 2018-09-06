@@ -3,7 +3,7 @@
     <!-- First Modal -->
     <ng-template #modal1>
         <div class="modal-header">
-            <h4 class="modal-title pull-left">Delegate</h4>
+            <h4 class="modal-title pull-left"> {{ 'DELEGATECOMPONENT.TITLE1' | translate }} </h4>
             <button type="button" class="close pull-right" aria-label="Close" (click)="close1()">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -12,7 +12,7 @@
             <form>
                 <div class="form-row">
                     <div class="form-group col-md-8">
-                        <label for="fromAdress">From Address</label>
+                        <label for="fromAdress"> {{ 'DELEGATECOMPONENT.FROM' | translate }} </label>
                         <select [(ngModel)]="activePkh" id="fromAdress" class="form-control" name="first">
                             <option *ngFor="let account of accounts | slice:1" [ngValue]="account.pkh">{{ account.pkh }}</option>
                         </select>
@@ -20,20 +20,20 @@
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-8">
-                        <label for="toAdress">To Address</label>
+                        <label for="toAdress"> {{ 'DELEGATECOMPONENT.TO' | translate }} </label>
                         <input type="text" class="form-control" id="toAdress" placeholder="" [(ngModel)]="toPkh" name="second">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-4">
-                        <label for="transactionFee">Fee: (&#42793;)</label>
+                        <label for="transactionFee">{{ 'DELEGATECOMPONENT.FEE' | translate }} (&#42793;)</label>
                         <input type="text" class="form-control" id="transactionFee" placeholder="0.00" [(ngModel)]="fee" name="four">
                     </div>
                 </div>
             </form>
             {{ formInvalid }}
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="sub" (click)="open2(modal2)">Preview</button>
+                <button type="button" class="btn btn-primary" id="sub" (click)="open2(modal2)"> {{ 'DELEGATECOMPONENT.PREVIEW' | translate }} </button>
             </div>
         </div>
     </ng-template>
@@ -41,15 +41,15 @@
     <!-- Confirmation Modal -->
     <ng-template #modal2>
         <div class="modal-header">
-            <h4 class="modal-title pull-left">Authenticate delegation</h4>
+            <h4 class="modal-title pull-left"> {{ 'DELEGATECOMPONENT.TITLE2' | translate }} </h4>
             <button type="button" class="close pull-right" aria-label="Close" (click)="close2()">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
         <div class="modal-body">
-            <p>Account: {{ activePkh }}
-                <BR> Delegate: {{ toPkh }}
-                <BR> Fee: {{ fee | number:'1.0' }}&#42793;
+            <p> {{ 'DELEGATECOMPONENT.ACCOUNT' | translate }} {{ activePkh }}
+                <BR> {{ 'DELEGATECOMPONENT.DELEGATE' | translate }} {{ toPkh }}
+                <BR> {{ 'DELEGATECOMPONENT.FEE' | translate }} {{ fee | number:'1.0' }}&#42793;
             </p>
             <div class="row">
                 <div *ngIf='walletService.isFullWallet()' class="form-group col-md-6">
@@ -59,7 +59,7 @@
             </div>
             {{ pwdValid }}
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="sub" (click)="open3(modal3)">Confirm</button>
+                <button type="button" class="btn btn-primary" id="sub" (click)="open3(modal3)"> {{ 'DELEGATECOMPONENT.CONFIRM' | translate }} </button>
             </div>
         </div>
     </ng-template>
@@ -67,14 +67,14 @@
     <!-- Final Modal -->
     <ng-template #modal3>
         <div class="modal-header">
-            <h4 class="modal-title pull-left">Confirmation</h4>
+            <h4 class="modal-title pull-left"> {{ 'DELEGATECOMPONENT.TITLE3' | translate }} </h4>
             <button type="button" class="close pull-right" aria-label="Close" (click)="close3()">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
         <div class="modal-body">
             <div *ngIf='!sendResponse'>
-                Please wait...
+                {{ 'DELEGATECOMPONENT.PLEASEWAIT' | translate }}
             </div>
             <ng-container *ngIf='sendResponse'>
                 <div *ngIf='sendResponse.success === true'>
@@ -82,24 +82,24 @@
                     <br>
                     <br>
                     <ng-container *ngIf='sendResponse.payload.opHash'>
-                        <p>Your delegation operation has been broadcasted successfully to the network</p>
+                        <p> {{ 'DELEGATECOMPONENT.DELEGATIONSUCCESS' | translate }} </p>
                     </ng-container>
                     <ng-container *ngIf='sendResponse.payload.unsignedOperation'>
-                        <p>Your unsigned transaction have been created successfully</p>
+                        <p> {{ 'DELEGATECOMPONENT.UNSIGNEDSUCCESS' | translate }} </p>
                     </ng-container>
                 </div>
                 <div *ngIf='sendResponse.success === false'>
-                    <p>Operation failed!</p>
+                    <p> {{ 'DELEGATECOMPONENT.FAILED' | translate }} </p>
                     <p class="text-danger">{{ sendResponse.payload.msg }}</p>
                 </div>
-                <button *ngIf='sendResponse.payload.unsignedOperation' type="button" class="btn btn-primary" (click)="download()">Download</button>
+                <button *ngIf='sendResponse.payload.unsignedOperation' type="button" class="btn btn-primary" (click)="download()"> {{ 'DELEGATECOMPONENT.DOWNLOAD' | translate }} </button>
             </ng-container>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="sub" (click)="close3()">Close</button>
+                <button type="button" class="btn btn-primary" id="sub" (click)="close3()"> {{ 'DELEGATECOMPONENT.CLOSE' | translate }} </button>
             </div>
         </div>
     </ng-template>
 
     <!-- Showing different Send Format according to actionButtonString -->
-    <button *ngIf='accounts' type="button" (click)="open1(modal1)" class="btn btn-sm btn-outline-primary">Delegate</button>
+    <button *ngIf='accounts' type="button" (click)="open1(modal1)" class="btn btn-sm btn-outline-primary"> {{ 'DELEGATECOMPONENT.TITLE1' | translate }} </button>
 </ng-container>

@@ -92,7 +92,7 @@ export class ActivityService {
         const newTransactions: Activity[] = [];
         for (let i = 0; i < data.length; i++) {
           const op: any = this.tzscanService.getOp(data[i], pkh);
-          console.log(JSON.stringify(op));
+          console.log('op in activity.service ', JSON.stringify(op));
           newTransactions.push(op);
         }
         const index = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);

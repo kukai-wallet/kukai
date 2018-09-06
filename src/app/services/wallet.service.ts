@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 
 import * as bip39 from 'bip39';
 
+import { TranslateService } from '@ngx-translate/core';  // Multiple instances created ?
+
 import { Wallet, Balance, KeyPair, WalletType } from './../interfaces';
 
 import { EncryptionService } from './encryption.service';
@@ -13,6 +15,7 @@ export class WalletService {
   storeKey = `kukai-wallet`;
   wallet: Wallet;
   constructor(
+    private translate: TranslateService,
     private encryptionService: EncryptionService,
     private operationService: OperationService
   ) { }
@@ -120,11 +123,23 @@ export class WalletService {
   }
   walletTypePrint(): string {
     if (this.isFullWallet()) {
-      return 'Full wallet';
+      let fullWallet = '';
+      this.translate.get('WALLETSERVICE.FULLWALLET').subscribe(
+          (res: string) => fullWallet = res
+      );
+      return fullWallet;  // 'Full wallet';
     } else if (this.isViewOnlyWallet()) {
-      return 'View-only wallet';
+      let viewOnlyWallet = '';
+      this.translate.get('WALLETSERVICE.FULLWALLET').subscribe(
+          (res: string) => viewOnlyWallet = res
+      );
+      return viewOnlyWallet;  // 'View-only wallet';
     } else if (this.isObserverWallet()) {
-      return 'Observer wallet';
+      let observerWallet = '';
+      this.translate.get('WALLETSERVICE.FULLWALLET').subscribe(
+          (res: string) => observerWallet = res
+      );
+      return observerWallet;  // 'Observer wallet';
     } else {
       return '';
     }

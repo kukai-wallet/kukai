@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterContentInit } from '@angular/core';
+
+import { TranslateService } from '@ngx-translate/core';  // Multiple instances created ?
 
 import { WalletService } from '../../services/wallet.service';
 import { OperationService } from '../../services/operation.service';
@@ -11,10 +13,10 @@ import { CoordinatorService } from '../../services/coordinator.service';
     templateUrl: './offline-signing.component.html',
     styleUrls: ['./offline-signing.component.scss']
 })
-export class OfflineSigningComponent implements OnInit {
+export class OfflineSigningComponent implements OnInit, AfterContentInit {
 
-    InputImportOperationFileStep2 = 'Choose file';
-    InputImportOperationFileStep3 = 'Choose file';
+    InputImportOperationFileStep2 = ''; // 'Choose file';
+    InputImportOperationFileStep3 = ''; // 'Choose file';
 
     unsigned = '';  // Will contain the unsigned hash
     signed1 = '';
@@ -26,11 +28,12 @@ export class OfflineSigningComponent implements OnInit {
     decodeSignedOutput = '';
     errorMessage = '';
     showInstructions = false;
-    instructionBtn = 'Show help';
+    instructionBtn = ''; // 'Show help';
     isFullWallet = false;
     notAllowOnlineSigning = true;
 
     constructor(
+        private translate: TranslateService,
         public walletService: WalletService,
         private operationService: OperationService,
         private messageService: MessageService,
@@ -45,16 +48,62 @@ export class OfflineSigningComponent implements OnInit {
         this.isFullWallet = this.walletService.isFullWallet();
     }
 
-    init() {
-        this.pwdPlaceholder = 'Password';
+    // Called once after the first ngDoCheck()
+    ngAfterContentInit() {
+        let instructionBtnInit = '';
+        this.translate.get('OFFLINESIGNINGCOMPONENT.SHOWHELP').subscribe(
+            (res: string) => instructionBtnInit = res
+        );
+
+        this.instructionBtn = instructionBtnInit;
     }
+
+    init() {
+        // Getting button and placeholder names - Issue: Needs language change detection
+        let pwdPlaceholderInit = '';
+        let InputImportOperationFileStep2Init = '';
+        let InputImportOperationFileStep3Init = '';
+        let instructionBtnInit = '';
+
+        this.translate.get('OFFLINESIGNINGCOMPONENT.PASSWORD').subscribe(
+            (res: string) => pwdPlaceholderInit = res
+        );
+        this.translate.get('OFFLINESIGNINGCOMPONENT.CHOOSEFILE').subscribe(
+            (res: string) => InputImportOperationFileStep2Init = res
+        );
+        this.translate.get('OFFLINESIGNINGCOMPONENT.CHOOSEFILE').subscribe(
+            (res: string) => InputImportOperationFileStep3Init = res
+        );
+        this.translate.get('OFFLINESIGNINGCOMPONENT.SHOWHELP').subscribe(
+            (res: string) => instructionBtnInit = res
+        );
+
+        this.pwdPlaceholder = pwdPlaceholderInit;
+        this.InputImportOperationFileStep2 = InputImportOperationFileStep2Init;
+        this.InputImportOperationFileStep3 = InputImportOperationFileStep3Init;
+        this.instructionBtn = instructionBtnInit;
+    }
+
     toggleShowInstructions() {
         if (this.showInstructions) {
             this.showInstructions = false;
-            this.instructionBtn = 'Show help';
+
+            let showHelp = '';
+            this.translate.get('OFFLINESIGNINGCOMPONENT.SHOWHELP').subscribe(
+                (res: string) => showHelp = res
+            );
+
+            this.instructionBtn = showHelp;
+
         } else {
             this.showInstructions = true;
-            this.instructionBtn = 'Hide help';
+
+            let hideHelp = '';
+            this.translate.get('OFFLINESIGNINGCOMPONENT.HIDEHELP').subscribe(
+                (res: string) => hideHelp = res
+            );
+
+            this.instructionBtn = hideHelp;
         }
     }
     decodeUnsignedOp() {
@@ -65,7 +114,13 @@ export class OfflineSigningComponent implements OnInit {
             console.log('decode...');
             try {
                 const op = this.operationService.decodeOpBytes(this.unsigned);
-                this.decodeUnsignedOutput = '\n### PLEASE VERIFY THIS DATA IS CORRECT BEFORE SIGNING IT ###\n';
+
+                let verifyData = '';
+                this.translate.get('OFFLINESIGNINGCOMPONENT.SIGNVERIFYTHISDATA').subscribe(
+                    (res: string) => verifyData = '\n### ' + res + ' ###\n'
+                );
+
+                this.decodeUnsignedOutput = verifyData;  // '\n### PLEASE VERIFY THIS DATA IS CORRECT BEFORE SIGNING IT ###\n';
                 const output = this.operationService.fop2strings(op);
 
                 for (let i = 0; i < output.length; i++) {
@@ -73,7 +128,13 @@ export class OfflineSigningComponent implements OnInit {
                 }
                 this.decodeUnsignedOutput = this.decodeUnsignedOutput + '\n' + '\n';
             } catch (e) {
-                this.decodeUnsignedOutput = '\n### FAILED TO DECODE OPERATION BYTES! YOU ARE ADVISED TO NOT PROCEED ###\n';
+
+                let failedDecode = '';
+                this.translate.get('OFFLINESIGNINGCOMPONENT.ALERTFAILEDTODECODE').subscribe(
+                    (res: string) => failedDecode = '\n### ' + res + ' ###\n'
+                );
+
+                this.decodeUnsignedOutput = failedDecode; // '\n### FAILED TO DECODE OPERATION BYTES! YOU ARE ADVISED TO NOT PROCEED ###\n';
             }
         }
     }
@@ -85,7 +146,13 @@ export class OfflineSigningComponent implements OnInit {
             console.log('decode...');
             try {
                 const op = this.operationService.decodeOpBytes(this.signed2.slice(0, this.signed2.length - 128));
-                this.decodeSignedOutput = '\n### PLEASE VERIFY THIS DATA IS CORRECT BEFORE BROADCASTING IT ###\n';
+
+                let verifyData = '';
+                this.translate.get('OFFLINESIGNINGCOMPONENT.BROADCASTVERIFYTHISDATA').subscribe(
+                    (res: string) => verifyData = '\n### ' + res + ' ###\n'
+                );
+
+                this.decodeSignedOutput = verifyData;  // '\n### PLEASE VERIFY THIS DATA IS CORRECT BEFORE BROADCASTING IT ###\n';
                 const output = this.operationService.fop2strings(op);
 
                 for (let i = 0; i < output.length; i++) {
@@ -93,7 +160,13 @@ export class OfflineSigningComponent implements OnInit {
                 }
                 this.decodeSignedOutput = this.decodeSignedOutput + '\n' + '\n';
             } catch (e) {
-                this.decodeSignedOutput = '\n### FAILED TO DECODE OPERATION BYTES! YOU ARE ADVICED TO NOT PROCEED ###\n';
+
+                let failedDecode = '';
+                this.translate.get('OFFLINESIGNINGCOMPONENT.ALERTFAILEDTODECODE').subscribe(
+                    (res: string) => failedDecode = '\n### ' + res + ' ###\n'
+                );
+
+                this.decodeSignedOutput = failedDecode; // '\n### FAILED TO DECODE OPERATION BYTES! YOU ARE ADVICED TO NOT PROCEED ###\n';
             }
         }
     }
@@ -118,7 +191,12 @@ export class OfflineSigningComponent implements OnInit {
                 (ans: any) => {
                     console.log(JSON.stringify(ans));
                     if (ans.success) {
-                        this.messageService.addSuccess('Operation successfully broadcasted to the network: ' + ans.payload.opHash);
+                        let brodcastSuccessful = '';
+                        this.translate.get('OFFLINESIGNINGCOMPONENT.BROADCASTSUCCESSFUL').subscribe(
+                            (res: string) => brodcastSuccessful = res
+                        );
+                        this.messageService.addSuccess(brodcastSuccessful + ' ' + ans.payload.opHash);
+                        // this.messageService.addSuccess('Operation successfully broadcasted to the network: ' + ans.payload.opHash);
                         if (ans.payload.newPkh) {
                             console.log('New pkh found: ' + ans.payload.newPkh);
                             if (this.walletService.wallet) {
@@ -135,7 +213,12 @@ export class OfflineSigningComponent implements OnInit {
                     }
                 },
                 err => {
-                    this.messageService.addError('Node responded with an error!');
+                    let nodeError = '';
+                    this.translate.get('OFFLINESIGNINGCOMPONENT.NODEERROR').subscribe(
+                        (res: string) => nodeError = res
+                    );
+                    this.messageService.addError(nodeError);
+                    // this.messageService.addError('Node responded with an error!');
                     console.log(JSON.stringify(err));
                 }
             );
@@ -155,10 +238,20 @@ export class OfflineSigningComponent implements OnInit {
                     if (data.signed === true && data.hex) {
                         this.signed2 = data.hex;
                     } else {
-                        this.messageService.addWarning('Not a signed operation!');
+                        let notSignedOperation = '';
+                    this.translate.get('OFFLINESIGNINGCOMPONENT.NOTASIGNEDOPERATION').subscribe(
+                        (res: string) => notSignedOperation = res
+                    );
+                    this.messageService.addWarning(notSignedOperation);
+                    // this.messageService.addWarning('Not a signed operation!');
                     }
                 } else {
-                    this.messageService.addError('Failed to read file!');
+                    let failedToRead = '';
+                    this.translate.get('OFFLINESIGNINGCOMPONENT.FAILEDTOREADFILE').subscribe(
+                        (res: string) => failedToRead = res
+                    );
+                    this.messageService.addError(failedToRead);
+                    // this.messageService.addError('Failed to read file!');
                 }
             };
         }
@@ -193,10 +286,20 @@ export class OfflineSigningComponent implements OnInit {
                     this.unsigned = data.hex;
                     this.decodeUnsignedOp();
                 } else {
-                    this.messageService.addWarning('Not an unsigned operation!');
+                    let notUnSignedOperation = '';
+                    this.translate.get('OFFLINESIGNINGCOMPONENT.NOTANUNSIGNEDOPERATION').subscribe(
+                        (res: string) => notUnSignedOperation = res
+                    );
+                    this.messageService.addWarning(notUnSignedOperation);
+                    // this.messageService.addWarning('Not an unsigned operation!');
                 }
             } else {
-                this.messageService.addError('Failed to read file!');
+                let failedToRead = '';
+                this.translate.get('OFFLINESIGNINGCOMPONENT.FAILEDTOREADFILE').subscribe(
+                    (res: string) => failedToRead = res
+                );
+                this.messageService.addError(failedToRead);
+                // this.messageService.addError('Failed to read file!');
             }
         };
     }
