@@ -43,9 +43,28 @@
 .amount {
     text-align: right;
 }
+
 .smallText {
     font-size: 80%;
 }
+
+.btn-balance {
+    color: #6c757d;
+    padding-right: 0rem; // original 0.5rem;
+    padding-left: 0rem; // original 0.5rem;
+}
+
+.last-btn-column > td {
+    background-color: white;
+    padding-top: 0.25rem;  // default at 0.75rem
+    padding-bottom: 0.25rem;  // default at 0.75rem
+}
+
+.show-more {
+    font-size: 0.9rem;
+    width: 73px;
+}
+
 @media(min-width:768px) {
     #page-wrapper {
         position: inherit;

@@ -1,20 +1,20 @@
 <div *ngIf='accounts'>
     <ng-container *ngFor="let account of accounts">
-        <ng-container *ngIf="account.pkh === activePkh && account.activities.length > 0">
+        <ng-container *ngIf="account.pkh === activePkh && showActivities.length > 0">
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th scope="col">Txn Hash</th>
-                        <th scope="col">Block</th>
-                        <th scope="col">Date</th>
-                        <th scope="col">Type</th>
-                        <th scope="col">Counterparty</th> <!-- To or From -->
-                        <th scope="col">Amount (&#42793;)</th>
-                        <th scope="col">Status</th>
+                        <th scope="col">{{ 'ACTIVITYCOMPONENT.TXNHASH' | translate }}</th>
+                        <th scope="col">{{ 'ACTIVITYCOMPONENT.BLOCK' | translate }}</th>
+                        <th scope="col">{{ 'ACTIVITYCOMPONENT.DATE' | translate }}</th>
+                        <th scope="col">{{ 'ACTIVITYCOMPONENT.TYPE' | translate }}</th>
+                        <th scope="col">{{ 'ACTIVITYCOMPONENT.COUNTERPARTY' | translate }}</th> <!-- To or From -->
+                        <th scope="col">{{ 'ACTIVITYCOMPONENT.AMOUNT' | translate }} (&#42793;)</th>
+                        <th scope="col">{{ 'ACTIVITYCOMPONENT.STATUS' | translate }}</th>
                     </tr>
                 </thead>
-                <tbody *ngFor="let transaction of account.activities">
-                    <tr class="table-row">
+                <tbody>
+                    <tr class="table-row" *ngFor="let transaction of showActivities">
                         <!-- Txn Hash -->
                         <th scope="row" class="row-hash table-cell">
                             <span data-toggle="tooltip" [title]="transaction.hash">
@@ -45,10 +45,11 @@
                         <!-- Counterparty: `To` or `From` -->
                         <td class="table-cell"> 
                             <!-- {{ transaction.source.tz }} -->
-                            <span *ngIf="transaction.type != 'activation'">
-                                <span *ngIf="activePkh === transaction.source;then to else from"> From </span>
-                                <ng-template #from><span class="smallText">from</span></ng-template>
-                                <ng-template #to><span class="smallText">to</span></ng-template>
+                            <span *ngIf="transaction.type != 'activation' && !(transaction.type === 'delegation' && !transaction.destination)">
+                            <!-- to and from only shown when it's not an origination (transaction.type != 'activation') and when it's not an undelegate operation: !(transaction.type === 'delegation' && !transaction.destination) -->
+                                <span *ngIf="activePkh === transaction.source;then to else from"> {{ 'ACTIVITYCOMPONENT.FROM' | translate }} </span>
+                                <ng-template #from><span class="smallText">{{ 'ACTIVITYCOMPONENT.FROM' | translate }}</span></ng-template>
+                                <ng-template #to><span class="smallText">{{ 'ACTIVITYCOMPONENT.TO' | translate }}</span></ng-template>
                             </span>
                             <br>
                             <span class="counterparty">
@@ -68,6 +69,18 @@
                             <a href="{{ CONSTANTS.NET.BLOCK_EXPLORER_URL + transaction.hash }}" target="_blank">{{ getStatus(transaction) }}</a>
                         </td>
                     </tr>
+                    <!-- Show More Button -->
+                    <!--
+                    <tr class="last-btn-column">
+                        <td colspan="6">
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-outline-light btn-sm btn-balance show-more" aria-label="More" (click)="toggleTransactions()">
+                                <span aria-hidden="true"> {{ showBtn }} </span>
+                            </button>
+                        </td>
+                    </tr>
+                    -->
                 </tbody>
             </table>
         </ng-container>
@@ -75,7 +88,7 @@
 </div>
 
 <p *ngIf='!accounts'>
-    Wallet not configured!
+    {{ 'ACTIVITYCOMPONENT.EMPTY' | translate }}
 </p>
 
 <!-- Type of operations: activation, transfers, delegation, origination --- endorsements, baking, rewards -->

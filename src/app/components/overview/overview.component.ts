@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 
 import * as copy from 'copy-to-clipboard';
 
+import { TranslateService } from '@ngx-translate/core';  // Multiple instances created ?
+
 import { WalletService } from '../../services/wallet.service';
 import { MessageService } from '../../services/message.service';
 import { CoordinatorService } from '../../services/coordinator.service';
@@ -20,6 +22,7 @@ export class OverviewComponent implements OnInit {
     dom: Document;
 
     constructor(
+        private translate: TranslateService,
         public walletService: WalletService,
         private messageService: MessageService,
         private coordinatorService: CoordinatorService
@@ -40,6 +43,12 @@ export class OverviewComponent implements OnInit {
     }
     dblclick(pkh: string) {
         copy(pkh);
-        this.messageService.add(pkh + ' copied to clipboard!');
+
+        let copyToClipboard = '';
+        this.translate.get('OVERVIEWCOMPONENT.COPIEDTOCLIPBOARD').subscribe(
+            (res: string) => copyToClipboard = res
+          );
+
+        this.messageService.add(pkh + ' ' + copyToClipboard);
     }
 }

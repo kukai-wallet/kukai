@@ -2,31 +2,31 @@
 <!-- First Modal -->
 <ng-template #modal1>
     <div class="modal-header">
-        <h4 class="modal-title pull-left">Fund new account</h4>
+        <h4 class="modal-title pull-left"> {{ 'NEWACCOUNTCOMPONENT.TITLE' | translate }} </h4>
         <button type="button" class="close pull-right" aria-label="Close" (click)="close1()">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
     <div class="modal-body">
         <div class="form-group">
-            <label for="fromAdress">Funds from</label>
+            <label for="fromAdress"> {{ 'NEWACCOUNTCOMPONENT.FUNDSFROM' | translate }} </label>
             <select [(ngModel)]="activePkh" id="fromAdress" class="form-control mono" name="first">
                 <option *ngFor="let account of accounts" [ngValue]="account.pkh">{{ account.pkh }}</option>
             </select>
         </div>
         <div class="row">
             <div class="form-group col-md-6">
-                <label for="ammount">Amount to Send (&#42793;)</label>
+                <label for="ammount"> {{ 'NEWACCOUNTCOMPONENT.AMOUNTSEND' | translate }} (&#42793;)</label>
                 <input [(ngModel)]="amount" type="text" id="ammount" class="form-control" placeholder="0.00">
             </div>
             <div class="form-group col-md-6">
-                <label for="fee">Fee (&#42793;)</label>
+                <label for="fee"> {{ 'NEWACCOUNTCOMPONENT.FEE' | translate }} (&#42793;)</label>
                 <input [(ngModel)]="fee" type="text" id="fee" class="form-control" placeholder="0.00">
             </div>
         </div>
 
         <div class="modal-footer">
-            <button type="button" class="btn btn-primary" id="sub" (click)="open2(modal2)">Preview</button>
+            <button type="button" class="btn btn-primary" id="sub" (click)="open2(modal2)"> {{ 'NEWACCOUNTCOMPONENT.PREVIEW' | translate }} </button>
         </div>
         {{ formInvalid }}
     </div>
@@ -35,16 +35,16 @@
 <!-- Confirmation Modal -->
 <ng-template #modal2>
     <div class="modal-header">
-        <h4 class="modal-title pull-left">Authenticate new account</h4>
+        <h4 class="modal-title pull-left"> {{ 'NEWACCOUNTCOMPONENT.TITLE2' | translate }} </h4>
         <button type="button" class="close pull-right" aria-label="Close" (click)="close2()">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
     <div class="modal-body">
-        <p>From: {{ activePkh }}
-            <BR> Amount: {{ amount | number:'1.0-6' }}&#42793;
-            <BR> Fee: {{ fee | number:'1.0-6' }}&#42793;
-            <BR> Origination burn:
+        <p> {{ 'NEWACCOUNTCOMPONENT.FROM' | translate }}  {{ activePkh }}
+            <BR> {{ 'NEWACCOUNTCOMPONENT.AMOUNT' | translate }}  {{ amount | number:'1.0-6' }}&#42793;
+            <BR> {{ 'NEWACCOUNTCOMPONENT.FEE2' | translate }}  {{ fee | number:'1.0-6' }}&#42793;
+            <BR> {{ 'NEWACCOUNTCOMPONENT.ORIGINATIONBURN' | translate }} 
             <ng-container *ngIf="originationBurn">
                 {{ originationBurn | number:'1.0-6' }}&#42793;
             </ng-container>
@@ -52,7 +52,7 @@
         </p>
         <div class="row">
             <div *ngIf='walletService.isFullWallet()' class="form-group col-md-6">
-                <label for="pwd">Password:</label>
+                <label for="pwd"> {{ 'NEWACCOUNTCOMPONENT.PASSWORD' | translate }} </label>
                 <input [(ngModel)]="password" type="password" id="pwd" class="form-control">
                 <small id="passwordHelpBlock" class="form-text text-muted" *ngIf='!isValidModal2.neverConfirmed && !isValidModal2.password'>
                     {{ pwdValid }}
@@ -61,7 +61,7 @@
         </div>
 
         <div class="modal-footer">
-            <button type="button" class="btn btn-primary" id="sub" (click)="open3(modal3)">Confirm</button>
+            <button type="button" class="btn btn-primary" id="sub" (click)="open3(modal3)"> {{ 'NEWACCOUNTCOMPONENT.CONFIRM' | translate }} </button>
         </div>
     </div>
 
@@ -70,14 +70,14 @@
 <!-- Final Modal -->
 <ng-template #modal3>
     <div class="modal-header">
-        <h4 class="modal-title pull-left">Confirmation</h4>
+        <h4 class="modal-title pull-left"> {{ 'NEWACCOUNTCOMPONENT.TITLE3' | translate }} </h4>
         <button type="button" class="close pull-right" aria-label="Close" (click)="close3()">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
     <div class="modal-body">
         <div *ngIf='!sendResponse'>
-            Please wait...
+            {{ 'NEWACCOUNTCOMPONENT.PLEASEWAIT' | translate }} 
         </div>
         <ng-container *ngIf='sendResponse'>
             <div *ngIf='sendResponse.success === true'>
@@ -85,22 +85,22 @@
                 <br>
                 <br>
                 <ng-container *ngIf='sendResponse.payload.opHash'>
-                    <p>Your funding of a new account has been broadcasted successfully to the network</p>
+                    <p> {{ 'NEWACCOUNTCOMPONENT.INFO' | translate }} </p>
                 </ng-container>
                 <ng-container *ngIf='sendResponse.payload.unsignedOperation'>
-                    <p>Your unsigned transaction has been created successfully</p>
+                    <p> {{ 'NEWACCOUNTCOMPONENT.INFOUNSIGNED' | translate }} </p>
                 </ng-container>
             </div>
             <div *ngIf='sendResponse.success === false'>
-                <p>Operation failed!</p>
+                <p> {{ 'NEWACCOUNTCOMPONENT.OPERATIONFAILED' | translate }} </p>
                 <p class="text-danger">{{ sendResponse.payload.msg }}</p>
             </div>
         </ng-container>
 
         <div class="modal-footer">
-            <button *ngIf='sendResponse.payload.unsignedOperation' type="button" class="btn btn-primary" (click)="download()">Download</button>
-            <button type="button" class="btn btn-primary" id="sub" (click)="close3()">Close</button>
+            <button *ngIf='sendResponse.payload.unsignedOperation' type="button" class="btn btn-primary" (click)="download()"> {{ 'NEWACCOUNTCOMPONENT.DOWNLOAD' | translate }} </button>
+            <button type="button" class="btn btn-primary" id="sub" (click)="close3()"> {{ 'NEWACCOUNTCOMPONENT.CLOSE' | translate }} </button>
         </div>
     </div>
 </ng-template>
-<button *ngIf='accounts' type="button" href (click)="open1(modal1)" class="btn btn-sm btn-outline-primary btn-op">New account</button>
+<button *ngIf='accounts' type="button" href (click)="open1(modal1)" class="btn btn-sm btn-outline-primary btn-op"> {{ 'NEWACCOUNTCOMPONENT.NEWACCOUNT' | translate }} </button>

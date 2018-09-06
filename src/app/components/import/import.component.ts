@@ -1,6 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { TranslateService } from '@ngx-translate/core';  // Multiple instances created ?
+
 import { WalletService } from '../../services/wallet.service';
 import { MessageService } from '../../services/message.service';
 import { ImportService } from '../../services/import.service';
@@ -21,10 +23,13 @@ export class ImportComponent implements OnInit {
     seed: '',
     salt: ''
   };
-  constructor(private walletService: WalletService,
+  constructor(
+    private translate: TranslateService,
+    private walletService: WalletService,
     private router: Router,
     private messageService: MessageService,
-    private importService: ImportService) { }
+    private importService: ImportService
+  ) { }
 
   ngOnInit() {
   }
@@ -37,7 +42,11 @@ export class ImportComponent implements OnInit {
       this.importService.importWalletFromPkh(this.pkh);
       this.router.navigate(['/overview']);
     } else {
-      this.messageService.addError('Invalid public key hash!');
+      let invalidPKH = '';
+      this.translate.get('IMPORTCOMPONENT.INVALIDPKH').subscribe(
+        (res: string) => invalidPKH = res
+      );
+      this.messageService.addError(invalidPKH);
     }
   }
   importFromPk() {
@@ -45,22 +54,38 @@ export class ImportComponent implements OnInit {
       this.importService.importWalletFromPk(this.pk);
       this.router.navigate(['/overview']);
     } else {
-      this.messageService.addError('Invalid prefix!');
+      let invalidPrefix = '';
+      this.translate.get('IMPORTCOMPONENT.INVALIDPREFIX').subscribe(
+        (res: string) => invalidPrefix = res
+      );
+      this.messageService.addError(invalidPrefix);
     }
   }
   import(keyFile: string) {
     if (this.importService.importWalletData(keyFile)) {
       this.router.navigate(['/overview']);
     } else {
-      this.messageService.add('Failed to import wallet!');
+      let importFailed = '';
+      this.translate.get('IMPORTCOMPONENT.IMPORTFAILED').subscribe(
+        (res: string) => importFailed = res
+      );
+      this.messageService.add(importFailed);
     }
   }
   handleFileInput(files: FileList) {
     let fileToUpload = files.item(0);
     if (!this.validateFile(fileToUpload.name)) {
+
+      let fileNotSupported = '';
+      this.translate.get('IMPORTCOMPONENT.FILENOTSUPPORTED').subscribe(
+        (res: string) => fileNotSupported = res
+      );
+      this.messageService.add(fileNotSupported);
+
       console.log('Selected file format is not supported');
       fileToUpload = null;
       return false;
+
     } else {
       const reader = new FileReader();
       reader.readAsText(fileToUpload);

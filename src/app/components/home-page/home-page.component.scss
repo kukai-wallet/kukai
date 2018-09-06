@@ -1,8 +1,5 @@
 /*
-    DEMO STYLE
-
 @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
-Source from: https://bootstrapious.com/p/bootstrap-sidebar
 */
 body {
     font-family: 'Poppins', sans-serif;
@@ -41,6 +38,7 @@ a, a:hover, a:focus {
 .btn-main-action {
     display: flex !important;
     justify-content: center !important;
+    text-align: center;
 }
 
 .navbar {
@@ -66,12 +64,52 @@ a, a:hover, a:focus {
 }
 
 /* ---------------------------------------------------
+    TOPBAR STYLE
+----------------------------------------------------- */
+.dropdown-padding {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.bars-margin-top {
+    font-size: 1.5rem;
+    margin-top: 4px !important;
+    color: #fff;
+}
+
+.row-mobile {
+    //background-color: #191919 ;  // Only when sidebar is collapse
+
+    //fallback for old browsers
+    background: #191919;
+    //Chrome 10-25, Safari 5.1-6
+    background: -webkit-linear-gradient(90deg,#e1a205 20%, #191919);
+    //W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari
+    background: linear-gradient(90deg,#e1a205 20%, #191919);
+}
+.topmenu {
+    width: 100vw;
+    height: 5vh;
+}
+
+.top-bar-btn {
+    display: flex;
+    align-items: center;
+    // justify-content: flex-end;  // btn are pushed to far-right
+}
+
+.language-btn {
+    padding-right: 8px;
+}
+
+
+/* ---------------------------------------------------
     SIDEBAR STYLE
 ----------------------------------------------------- */
 .wrapper {
     display: flex;
     align-items: stretch;
-    min-height: 100vh;
+    min-height: 95vh;
     width: 100%;
 }
 
@@ -97,6 +135,9 @@ a, a:hover, a:focus {
 }
 
 #sidebar .sub-heading {
+    margin-top:0.5rem;
+    margin-bottom:0rem;
+    
     font-size: 0.9em;
     color: #000 !important;
     margin-bottom: 0px;
@@ -173,10 +214,11 @@ ul.CTAs a {
 }
 
 .bottom-CTAs {
-    padding-top: 22vh !important;  //This needs to change - creates vertical scroll bar
+    padding-top: 16vh !important; // 22vh !important;  //This needs to change - creates vertical scroll bar
 }
 .donation {
     font-size: 0.8em;
+    text-align:center;
     //padding-left: 10px;
     //margin: 0 0 0 0;
 

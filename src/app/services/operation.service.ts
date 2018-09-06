@@ -7,6 +7,9 @@ import { Buffer } from 'buffer';
 import * as libs from 'libsodium-wrappers';
 import * as Bs58check from 'bs58check';
 import * as bip39 from 'bip39';
+
+import { TranslateService } from '@ngx-translate/core';  // Multiple instances created ?
+
 import { Constants } from '../constants';
 
 import { ErrorHandlingPipe } from '../pipes/error-handling.pipe';
@@ -40,6 +43,7 @@ export class OperationService {
   toMicro = 1000000;
   constructor(
     private http: HttpClient,
+    private translate: TranslateService,
     private errorHandlingPipe: ErrorHandlingPipe
   ) { }
   /*
@@ -120,7 +124,8 @@ export class OperationService {
                       counter: (++counter).toString(),
                       gas_limit: '0',
                       storage_limit: '0',
-                      managerPubkey: keys.pkh,
+                      // managerPubkey: keys.pkh,  // Betanet
+                      manager_pubkey: keys.pkh,  // Zeronet
                       balance: (amount * this.toMicro).toString(),
                       spendable: true,
                       delegatable: true
@@ -148,7 +153,8 @@ export class OperationService {
   /*
     Returns an observable for the transaction of tez.
   */
-  transfer(from: string, to: string, amount: number, fee: number = 0, keys: KeyPair): Observable<any> {
+  // transfer(from: string, to: string, amount: number, fee: number = 0, keys: KeyPair): Observable<any> {
+  transfer(from: string, transactions: any, fee: number = 0, keys: KeyPair): Observable<any> {
     return this.http.get(this.nodeURL + '/chains/main/blocks/head/hash', {})
       .flatMap((hash: any) => {
         return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + from + '/counter', {})
@@ -158,31 +164,30 @@ export class OperationService {
                 let counter: number = Number(actions);
                 const fop: any = {
                   branch: hash,
-                  contents: [
-                    {
-                      kind: 'transaction',
-                      source: from,
-                      fee: (fee * this.toMicro).toString(),
-                      counter: (++counter).toString(),
-                      gas_limit: '200',
-                      storage_limit: '0',
-                      amount: (amount * this.toMicro).toString(),
-                      destination: to,
-                    }
-                  ]
+                  contents: []
                 };
                 if (manager.key === undefined) {
-                  fop.contents[1] = fop.contents[0];
-                  fop.contents[0] = {
+                  fop.contents.push({
                     kind: 'reveal',
                     source: from,
                     fee: '0',
-                    counter: (counter).toString(),
+                    counter: (++counter).toString(),
                     gas_limit: '0',
                     storage_limit: '0',
                     public_key: keys.pk
-                  };
-                  fop.contents[1].counter = (Number(fop.contents[1].counter) + 1).toString();
+                  });
+                }
+                for (let i = 0; i < transactions.length; i++) {
+                  fop.contents.push({
+                    kind: 'transaction',
+                    source: from,
+                    fee: (fee * this.toMicro).toString(),
+                    counter: (++counter).toString(),
+                    gas_limit: '200',
+                    storage_limit: '0',
+                    amount: (transactions[i].amount * this.toMicro).toString(),
+                    destination: transactions[i].to,
+                  });
                 }
                 return this.operation(fop, keys);
               });
@@ -533,7 +538,8 @@ export class OperationService {
   decodeOrigination(content: any): any { // Tag 9
     let index = 0;
     const op = this.decodeCommon({ kind: 'origination' }, content);
-    op.data.managerPubkey = this.decodePkh(op.rest.slice(index, index += 42));
+    // op.data.managerPubkey = this.decodePkh(op.rest.slice(index, index += 42));  // betanet
+    op.data.manager_pubkey = this.decodePkh(op.rest.slice(index, index += 42));  // zeronet
     const balance = this.zarithDecode(op.rest.slice(index));
     op.data.balance = balance.value.toString();
     op.data.spendable = (op.rest.slice(index += balance.count * 2, index += 2) === 'ff');
@@ -650,20 +656,67 @@ export class OperationService {
     const output: string[] = [];
     for (let i = 0; i < fop.contents.length; i++) {
       if (fop.contents[i].kind !== 'reveal') {
-        output.push('Type: ' + fop.contents[i].kind);
-        output.push('Source: ' + fop.contents[i].source);
+        let typeTmp = '';
+        let sourceTmp = '';
+        this.translate.get('OPERATIONSERVICE.TYPE').subscribe(
+            (res: string) => typeTmp = res
+        );
+        this.translate.get('OPERATIONSERVICE.SOURCE').subscribe(
+            (res: string) => sourceTmp = res
+        );
+        output.push(typeTmp + ' ' + fop.contents[i].kind);
+        output.push(sourceTmp + ' ' + fop.contents[i].source);
+        // output.push('Type: ' + fop.contents[i].kind);
+        // output.push('Source: ' + fop.contents[i].source);
         if (fop.contents[i].kind === 'transaction') {
-          output.push('Destination: ' + fop.contents[i].destination);
-          output.push('Amount: ' + (Number(fop.contents[i].amount) / this.toMicro).toString() + ' tez');
+          let destinationTmp = '';
+          let amountTmp = '';
+          this.translate.get('OPERATIONSERVICE.DESTINATION').subscribe(
+              (res: string) => destinationTmp = res
+          );
+          this.translate.get('OPERATIONSERVICE.AMOUNT').subscribe(
+              (res: string) => amountTmp = res
+          );
+          output.push(destinationTmp + ' ' + fop.contents[i].destination);
+          output.push(amountTmp + ' ' + (Number(fop.contents[i].amount) / this.toMicro).toString() + ' tez');
+          // output.push('Destination: ' + fop.contents[i].destination);
+          // output.push('Amount: ' + (Number(fop.contents[i].amount) / this.toMicro).toString() + ' tez');
         } else if (fop.contents[i].kind === 'origination') {
-          output.push('Manager: ' + fop.contents[i].managerPubkey);
-          output.push('Balance: ' + (Number(fop.contents[i].balance) / this.toMicro).toString() + ' tez');
+          let managerTmp = '';
+          let balanceTmp = '';
+          this.translate.get('OPERATIONSERVICE.MANAGER').subscribe(
+              (res: string) => managerTmp = res
+          );
+          this.translate.get('OPERATIONSERVICE.BALANCE').subscribe(
+              (res: string) => balanceTmp = res
+          );
+          // output.push(managerTmp + ' ' + fop.contents[i].managerPubkey);  // betanet
+          output.push(managerTmp + ' ' + fop.contents[i].manager_pubkey);  // zeronet
+          output.push(balanceTmp + ' ' + (Number(fop.contents[i].balance) / this.toMicro).toString() + ' tez');
+          // output.push('Manager: ' + fop.contents[i].managerPubkey);
+          // output.push('Balance: ' + (Number(fop.contents[i].balance) / this.toMicro).toString() + ' tez');
         } else if (fop.contents[i].kind === 'delegation') {
-          output.push('Delegate: ' + fop.contents[i].delegate);
+          let delegateTmp = '';
+          this.translate.get('OPERATIONSERVICE.DELEGATE').subscribe(
+              (res: string) => delegateTmp = res
+          );
+          output.push(delegateTmp + ' ' + fop.contents[i].delegate);
+          // output.push('Delegate: ' + fop.contents[i].delegate);
         } else {
-          throw new Error('Tag not supported. Failed to convert to strings.');
+          let tagNotSupportedTmp = '';
+          this.translate.get('OPERATIONSERVICE.TAGNOTSUPPORTED').subscribe(
+              (res: string) => tagNotSupportedTmp = res
+          );
+          throw new Error(tagNotSupportedTmp);
+          // throw new Error('Tag not supported. Failed to convert to strings.');
         }
-        output.push('Fee: ' + (Number(fop.contents[i].fee) / this.toMicro).toString() + ' tez');
+
+        let feeTmp = '';
+        this.translate.get('OPERATIONSERVICE.FEE').subscribe(
+            (res: string) => feeTmp = res
+        );
+        output.push(feeTmp + ' ' + (Number(fop.contents[i].fee) / this.toMicro).toString() + ' tez');
+        // output.push('Fee: ' + (Number(fop.contents[i].fee) / this.toMicro).toString() + ' tez');
       }
     }
     return output;
