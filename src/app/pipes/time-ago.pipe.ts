@@ -1,17 +1,16 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 import { TranslateService } from '@ngx-translate/core';  // Multiple instances created ?
+import { timeout } from 'rxjs/operators';
 
 @Pipe({
     name: 'timeAgo',
     pure: true  // if false pipe will be called at each changes - necessary for translation - is there a better way?
 })
 export class TimeAgoPipe implements PipeTransform {
-
     constructor(
         private translate: TranslateService
-    ) { }
-
+    ) {}
     transform(dateString: string | null): string {
 
         let result: string;
@@ -29,38 +28,19 @@ export class TimeAgoPipe implements PipeTransform {
         let yearTmp = '';
         let yearsTmp = '';
 
-        this.translate.stream('TIMEAGOPIPE.SEC').subscribe(
-            (res: string) => secTmp = res
-        );
+        secTmp = this.translate.instant('TIMEAGOPIPE.SEC');
+        console.log('loaded? ' + secTmp);
         secsTmp = secTmp;
-        this.translate.get('TIMEAGOPIPE.MINUTE').subscribe(
-            (res: string) => mnTmp = res
-        );
+        mnTmp = this.translate.instant('TIMEAGOPIPE.MINUTE');
         mnsTmp = mnTmp;
-        this.translate.get('TIMEAGOPIPE.HOUR').subscribe(
-            (res: string) => hrTmp = res
-        );
-        this.translate.get('TIMEAGOPIPE.HOURS').subscribe(
-            (res: string) => hrsTmp = res
-        );
-        this.translate.get('TIMEAGOPIPE.DAY').subscribe(
-            (res: string) => dayTmp = res
-        );
-        this.translate.get('TIMEAGOPIPE.DAYS').subscribe(
-            (res: string) => daysTmp = res
-        );
-        this.translate.get('TIMEAGOPIPE.MONTH').subscribe(
-            (res: string) => monthTmp = res
-        );
-        this.translate.get('TIMEAGOPIPE.MONTHS').subscribe(
-            (res: string) => monthsTmp = res
-        );
-        this.translate.get('TIMEAGOPIPE.YEAR').subscribe(
-            (res: string) => yearTmp = res
-        );
-        this.translate.get('TIMEAGOPIPE.YEARS').subscribe(
-            (res: string) => yearsTmp = res
-        );
+        hrTmp = this.translate.instant('TIMEAGOPIPE.HOUR');
+        hrsTmp = this.translate.instant('TIMEAGOPIPE.HOURS');
+        dayTmp = this.translate.instant('TIMEAGOPIPE.DAY');
+        daysTmp = this.translate.instant('TIMEAGOPIPE.DAYS');
+        monthTmp = this.translate.instant('TIMEAGOPIPE.MONTH');
+        monthsTmp = this.translate.instant('TIMEAGOPIPE.MONTHS');
+        yearTmp = this.translate.instant('TIMEAGOPIPE.YEAR');
+        yearsTmp = this.translate.instant('TIMEAGOPIPE.YEARS');
 
         // Tranforming from String to Date format
         const dateValue: Date = new Date(dateString);
@@ -73,11 +53,8 @@ export class TimeAgoPipe implements PipeTransform {
 
         // If transaction has just been broadcasted then dateString will be null in the first few seconds (prevalidation stage)
         if (delta < 20 || (dateString === null)) {
-            let justNow = '';
-            this.translate.get('TIMEAGOPIPE.JUSTNOW').subscribe(
-                (res: string) => justNow = res
-            );
-            return justNow;  // 'just now';
+            return this.translate.instant('TIMEAGOPIPE.JUSTNOW');
+            // 'just now';
         }
 
         // Return interval format in seconds, hours or days
@@ -156,14 +133,10 @@ export class TimeAgoPipe implements PipeTransform {
         }
 
         // const agoTmp = this.translate.instant('TIMEAGOPIPE.AGO');  // not working
-        let agoTmp = '';
-        this.translate.get('TIMEAGOPIPE.AGO').subscribe(
-            (res: string) => agoTmp = res
-        );
+        const agoTmp = this.translate.instant('TIMEAGOPIPE.AGO');
 
         result = result + agoTmp;
         console.log('in time-ago return result: ', result);  // working but View not updated when language is changed and pipe is pure
-
         return result;
     }
 }

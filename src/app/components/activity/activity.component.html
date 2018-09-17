@@ -1,6 +1,6 @@
 <div *ngIf='accounts'>
     <ng-container *ngFor="let account of accounts">
-        <ng-container *ngIf="account.pkh === activePkh && showActivities.length > 0">
+        <ng-container *ngIf="account.pkh === activePkh && 'ACTIVITYCOMPONENT.TXNHASH' | translate">
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -14,7 +14,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="table-row" *ngFor="let transaction of showActivities">
+                    <tr class="table-row" *ngFor="let transaction of account.activities">
                         <!-- Txn Hash -->
                         <th scope="row" class="row-hash table-cell">
                             <span data-toggle="tooltip" [title]="transaction.hash">
