@@ -29,7 +29,7 @@ export class TimeAgoPipe implements PipeTransform {
         let yearsTmp = '';
 
         secTmp = this.translate.instant('TIMEAGOPIPE.SEC');
-        console.log('loaded? ' + secTmp);
+        // console.log('loaded? ' + secTmp);
         secsTmp = secTmp;
         mnTmp = this.translate.instant('TIMEAGOPIPE.MINUTE');
         mnsTmp = mnTmp;
@@ -136,7 +136,7 @@ export class TimeAgoPipe implements PipeTransform {
         const agoTmp = this.translate.instant('TIMEAGOPIPE.AGO');
 
         result = result + agoTmp;
-        console.log('in time-ago return result: ', result);  // working but View not updated when language is changed and pipe is pure
+        // console.log('in time-ago return result: ', result);  // working but View not updated when language is changed and pipe is pure
         return result;
     }
 }

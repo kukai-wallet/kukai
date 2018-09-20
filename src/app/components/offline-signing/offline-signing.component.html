@@ -126,13 +126,6 @@
             </div>
         </div>
     </form>
-    <small *ngIf="signed2" class="text-info">
-        {{ 'OFFLINESIGNINGCOMPONENT.INFODECODE' | translate }} 
-        <button class="btn btn-sm btn-outline-info mb-2 mr-sm-2" (click)="decodeSignedOp()"> {{ 'OFFLINESIGNINGCOMPONENT.YES' | translate }} </button>
-    </small>
-    <div *ngIf='decodeSignedOutput'>
-        <pre id="decodeDiv">{{ decodeSignedOutput }}</pre>
-    </div>
     <!-- Broadcast textarea -->
     <form>
         <div class="form-group row">
@@ -143,6 +136,13 @@
             </div>
         </div>
     </form>
+    <small *ngIf="signed2" class="text-info">
+        {{ 'OFFLINESIGNINGCOMPONENT.INFODECODE' | translate }} 
+        <button class="btn btn-sm btn-outline-info mb-2 mr-sm-2" (click)="decodeSignedOp()"> {{ 'OFFLINESIGNINGCOMPONENT.YES' | translate }} </button>
+    </small>
+    <div *ngIf='decodeSignedOutput'>
+        <pre id="decodeDiv">{{ decodeSignedOutput }}</pre>
+    </div>
     <div class="row">
         <div class="col-lg-8">
             <button type="button" [disabled]="!isOnline()" (click)="broadcast()" class="btn btn-clear btn-second pull-right"> {{ 'OFFLINESIGNINGCOMPONENT.BROADCAST' | translate }} </button>

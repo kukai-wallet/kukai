@@ -383,6 +383,14 @@ export class SendComponent implements OnInit {
         }
         return totalSent;
     }
+    totalFee(): number {
+        let fee = 0;
+        if (this.fee) {
+            fee = Number(this.fee);
+        }
+        const totalFee = fee * this.toMultipleDestinations.length;
+        return totalFee;
+    }
 
     toggleTransactions() {
         if (this.showTransactions.length === 2) {

@@ -123,7 +123,6 @@ export class ActivityService {
       );
   }
   getTimestamps(pkh: string, payloads: any[]): Observable<any> {
-    console.log('@ Get times for ' + pkh);
     if (payloads.length === 0) {
       return of('EmptyPayload');
     }
@@ -143,13 +142,12 @@ export class ActivityService {
   getTimestamp(pkh: string, block: string, hash: string): Observable<any> {
     return this.tzscanService.timestamp(block)
       .flatMap((time: any) => {
+        if (time) { time = new Date(time); }
         const pkhIndex = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
-        console.log('###>> pkhIndex: ' + pkhIndex);
         for (let ti = 0; ti < this.walletService.wallet.accounts[pkhIndex].activities.length; ti++) {
           if (this.walletService.wallet.accounts[pkhIndex].activities[ti].hash === hash) {
-            if (time) { time = new Date(time); }
+            this.walletService.wallet.accounts[pkhIndex].activities[ti].block = block;
             this.walletService.wallet.accounts[pkhIndex].activities[ti].timestamp = time;
-            console.log('###>>>> ' + pkhIndex + ':' + ti);
           }
         }
         return of(
