@@ -8,6 +8,7 @@ interface Net {
 export class Constants {
     // Select Zeronet, Alphanet or Mainnet
     readonly NET: Net = this.alphanet();
+    // readonly NET: Net = this.mainnet();
 
     zeronet(): Net {
         const ZERONET: Net = {
@@ -30,9 +31,10 @@ export class Constants {
         return ALPHANET;
     }
     mainnet(): Net {
+        const n = Math.floor(Math.random() * 6) + 1;
         const MAINNET: Net = {
             NAME:  'Mainnet',
-            API_URL:  'https://api6.tzscan.io/',
+            API_URL:  'https://api' + n + '.tzscan.io/',
             NODE_URL: 'https://rpc.tezrpc.me/',
             BLOCK_EXPLORER_URL: 'https://tzscan.io/',
             CHAIN_ID: 'PsYLVpVvgbLhAhoqAkMFUo6gudkJ9weNXhUYCiLDzcUpFpkk8Wt'
