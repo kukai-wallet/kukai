@@ -20,7 +20,8 @@ export class TzscanService {
     return this.http.get(this.apiUrl + 'v1/number_operations/' + pkh + '?type=Origination');
   }
   operations(pkh: string, n: number, p: number = 0) {
-    return this.http.get(this.apiUrl + 'v1/operations/' + pkh + '?number=' + n + '&p=' + p);
+    return this.http.get(this.apiUrl + 'v1/operations/' + pkh +
+    '?type=Transaction,Delegation,Origination,Activation&number=' + n + '&p=' + p);
   }
   operationsOrigination(pkh: string, n: number) {
     return this.http.get(this.apiUrl + 'v1/operations/' + pkh + '?type=Origination&number=' + n + '&p=0');

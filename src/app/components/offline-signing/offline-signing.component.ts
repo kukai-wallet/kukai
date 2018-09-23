@@ -42,14 +42,12 @@ export class OfflineSigningComponent implements OnInit, AfterContentInit {
     ) { }
 
     ngOnInit() {
-        if (this.walletService.wallet && this.walletService.isFullWallet()) {
-            this.init();
-        }
         this.isFullWallet = this.walletService.isFullWallet();
     }
 
     // Called once after the first ngDoCheck()
     ngAfterContentInit() {
+        this.init();
     }
 
     init() {
