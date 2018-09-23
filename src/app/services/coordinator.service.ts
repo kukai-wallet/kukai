@@ -65,16 +65,17 @@ export class CoordinatorService {
       if (!this.scheduler.get(pkh)) {
         await this.start(pkh);
       }
-      this.changeState(pkh, State.Wait);
-      this.update(pkh);
-      const counter = this.scheduler.get(pkh).stateCounter;
-      setTimeout(() => { // Failsafe
-        if (this.scheduler && this.scheduler.get(pkh).stateCounter === counter) {
-          console.log('Timeout from wait state');
-          this.changeState(pkh, State.UpToDate);
-        }
-      }, 150000);
-    } else {
+      if (this.scheduler.get(pkh).state !== State.Wait) {
+        this.changeState(pkh, State.Wait);
+        this.update(pkh);
+        const counter = this.scheduler.get(pkh).stateCounter;
+        setTimeout(() => { // Failsafe
+          if (this.scheduler && this.scheduler.get(pkh).stateCounter === counter) {
+            console.log('Timeout from wait state');
+            this.changeState(pkh, State.UpToDate);
+          }
+        }, 150000);
+      }
     }
   }
   async update(pkh) {

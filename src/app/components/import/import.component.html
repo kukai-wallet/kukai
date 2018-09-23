@@ -2,14 +2,14 @@
     <!-- Title -->
     <div class="row bottom-separator">
         <div class="col-lg-12">
-            <h1 class="page-header">Import Your Wallet</h1>
+            <h1 class="page-header"> {{ 'IMPORTCOMPONENT.IMPORTTITLE' | translate }} </h1>
         </div>
     </div>
 
     <!-- Subheading -->
     <div class="row">
         <div class="col-lg-12">
-            <h4>Import your previous wallet through your seed or your encrypted file. You can also import wallets with your ICO credentials.</h4>
+            <h4> {{ 'IMPORTCOMPONENT.IMPORTHEADING' | translate }} </h4>
         </div>
     </div>
     <br>
@@ -17,14 +17,14 @@
     <!-- 1. Import from File -->
     <div class="row">
         <div class="col-lg-12">
-            <h3>1. Import wallet from File</h3>
+            <h3> {{ 'IMPORTCOMPONENT.IMPORTSUBTITLE1' | translate }} </h3>
         </div>
     </div>
     <form>
         <div class="form-group row">
             <div class="col-sm-8">
-                <label for="fileFormControl">Import your wallet from file (.tez). Both encrypted keystore files and view-only wallets can be imported
-                    here.
+                <label for="fileFormControl">
+                        {{ 'IMPORTCOMPONENT.IMPORTINFO1' | translate }}
                 </label>
                 <input type="file" (change)="handleFileInput($event.target.files)" accept=".tez" class="form-control-file btn btn-clear btn-second"
                     id="fileFormControl">
@@ -36,12 +36,12 @@
     <!-- 2. Retrieve from Seed or ICO wallet -->
     <div class="row">
         <div class="col-lg-12">
-            <h3>2. Import wallet from Seed or ICO credentials</h3>
+            <h3> {{ 'IMPORTCOMPONENT.IMPORTSUBTITLE2' | translate }} </h3>
         </div>
     </div>
     <div class="row">
         <div class="col-lg-12">
-            <a routerLink="/mnemonic-import/">Retrieve wallet</a> from your mnemonic words
+            <a routerLink="/mnemonic-import/"> {{ 'IMPORTCOMPONENT.IMPORTINFO2' | translate }} </a>
         </div>
     </div>
     <br>
@@ -50,15 +50,15 @@
     <!-- 3. Retrieve PKH wallet -->
     <div class="row">
             <div class="col-lg-12">
-                <h3>3. Observer wallet</h3>
+                <h3> {{ 'IMPORTCOMPONENT.IMPORTSUBTITLE3' | translate }} </h3>
             </div>
         </div>
-        <p> Track a wallet from its public key hash </p>
+        <p> {{ 'IMPORTCOMPONENT.IMPORTINFO3' | translate }} </p>
     <div class="row">
         <div class="col-lg-12">
             <form class="form-inline">
                         <input type="text" class="form-control mb-2 mr-sm-2" id="inputObserverWallet" [(ngModel)]="pkh" placeholder="tz..." [ngModelOptions]="{standalone: true}">
-                        <button type="button" class="btn btn-clear btn-second mb-2 mr-sm-2" (click)='importFromPkh()'>Import</button>
+                        <button type="button" class="btn btn-clear btn-second mb-2 mr-sm-2" (click)='importFromPkh()'>{{ 'IMPORTCOMPONENT.IMPORT' | translate }}</button>
                 <!-- HANDLE ERRORS - NEED USER MESSAGE-->
             </form>
         </div>

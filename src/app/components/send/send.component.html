@@ -4,7 +4,7 @@
     <!-- 1. Send tez -->
     <ng-template #modal1>
         <div class="modal-header">
-            <h4 class="modal-title pull-left">Send tez</h4>
+            <h4 class="modal-title pull-left"> {{ 'SENDCOMPONENT.TITLE' | translate }} </h4>
             <button type="button" class="close pull-right" aria-label="Close" (click)="close1()">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -13,49 +13,70 @@
             <form>
                 <div class="form-row">
                     <div class="form-group col-md-8">
-                        <label for="fromAdress">From Address</label>
+                        <label for="fromAdress"> {{ 'SENDCOMPONENT.FROMADDRESS' | translate }} </label>
                         <select [(ngModel)]="activePkh" id="fromAdress" class="form-control mono" name="first1">
                             <option *ngFor="let account of accounts" [ngValue]="account.pkh">{{ account.pkh }}</option>
                         </select>
                     </div>
                     <div class="form-group col-md-4 text-right">
-                        <label for="staticBalance" class="text-right">Current Balance</label>
+                        <label for="staticBalance" class="text-right"> {{ 'SENDCOMPONENT.BALANCE' | translate }} </label>
                         <input type="text" readonly class="form-control-plaintext text-color" id="staticBalance" [value]="showAccountBalance(activePkh)">
-                        <small id="rateXTZ" class="form-text text-muted text-color" *ngIf="XTZrate > 0">Rate (&#42793;) ${{ XTZrate | number:'1.00' }} USD</small>
+                        <small id="rateXTZ" class="form-text text-muted text-color" *ngIf="XTZrate > 0"> {{ 'SENDCOMPONENT.RATE' | translate }} (&#42793;) ${{ XTZrate | number:'1.00' }} USD</small>
                     </div>
                 </div>
-
-                <div class="form-row">
-                    <div class="form-group col-md-12">
-                        <label for="toAdress">To Address</label>
-                        <input type="text" class="form-control mono" id="toAddress" placeholder="" [(ngModel)]="toPkh" name="second">
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group col-md-8">
-                        <label for="sendAmount">Amount to Send (&#42793;)</label>
-                        <div>
-                            <input type="text" class="form-control" id="sendAmount" placeholder="0.00" [(ngModel)]="amount" name="three">
+                <!-- Single destination -->
+                <div *ngIf="!isMultipleDestinations" class="send-span">
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="toAdress"> {{ 'SENDCOMPONENT.TOADDRESS' | translate }} </label>
+                            <input type="text" class="form-control mono" id="toAddress" placeholder="" [(ngModel)]="toPkh" name="second">
                         </div>
-                        <small id="smallSend" class="form-text text-muted">
-                            <button type="button" class="btn btn-outline-light btn-sm btn-balance" (click)="sendEntireBalance(activePkh, $event)">Send Entire Balance</button>
-
-                            <span class="align-middle" *ngIf="amount * XTZrate > 0">(${{amount * XTZrate | number:'1.0'}} USD)</span>
-                        </small>
                     </div>
 
-                    <div class="form-group col-md-4">
-                        <label for="transactionFee">Fee (&#42793;)</label>
-                        <input type="text" class="form-control" id="transactionFee" placeholder="0.00" [(ngModel)]="fee" name="four">
+                    <div class="form-row">
+                        <div class="form-group col-md-8">
+                            <label for="sendAmount"> {{ 'SENDCOMPONENT.AMOUNTTOSEND' | translate }} (&#42793;)</label>
+                            <div>
+                                <input type="text" class="form-control" id="sendAmount" placeholder="0.00" [(ngModel)]="amount" name="three">
+                            </div>
+                            <small id="smallSend" class="form-text text-muted">
+                                <button type="button" class="btn btn-outline-light btn-sm btn-balance" (click)="sendEntireBalance(activePkh, $event)"> {{ 'SENDCOMPONENT.SENDBALANCE' | translate }} </button>
+
+                                <span class="align-middle" *ngIf="amount * XTZrate > 0">(${{amount * XTZrate | number:'1.0'}} USD)</span>
+                            </small>
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            <label for="transactionFee"> {{ 'SENDCOMPONENT.FEE' | translate }} (&#42793;)</label>
+                            <input type="text" class="form-control" id="transactionFee" placeholder="0.00" [(ngModel)]="fee" name="four">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Multiple destinations -->
+                <div *ngIf="isMultipleDestinations" class="send-span">
+                    <div class="form-row">
+                        <div class="form-group col-md-12 input-multi-send">
+                            <label for="multipleDestinations">To Addresses and Amounts</label>
+                            <textarea class="form-control mono" id="multipleDestinations" rows="3" placeholder="tz1L5F33JZ9bsyRdSoshMujjZxdEzhwBHCDq 5; KT1AKo4H8sxnE5jwyGL1HUZtYMgVqEoXPVP4 1.2; tz1TCF... 52; tz1tezexinfo... 137.68;" [(ngModel)]="toMultipleDestinationsString" name="second"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="transactionFee"> {{ 'SENDCOMPONENT.FEE' | translate }} (&#42793;)</label>
+                            <input type="text" class="form-control" id="transactionFee" placeholder="0.00" [(ngModel)]="fee" name="four">
+                        </div>
                     </div>
                 </div>
             </form>
-
-            {{ formInvalid }}
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="sub" (click)="open2(modal2)">Preview</button>
+            <span *ngIf="formInvalid" class="text-danger">
+                {{ formInvalid }}
+            </span>
+            <div class="modal-footer first-modal">
+                <button *ngIf="isMultipleDestinations" type="button" class="btn btn-outline-light btn-sm btn-balance" (click)="toggleDestination()"> Single destination </button>
+                <button *ngIf="!isMultipleDestinations" type="button" class="btn btn-outline-light btn-sm btn-balance" (click)="toggleDestination()"> Multiple destinations </button>
+                <button type="button" class="btn btn-primary" id="sub" (click)="open2(modal2)"> {{ 'SENDCOMPONENT.PREVIEW' | translate }} </button>
             </div>
         </div>
     </ng-template>
@@ -63,29 +84,65 @@
     <!-- 2. Authenticate transaction -->
     <ng-template #modal2>
         <div class="modal-header">
-            <h4 class="modal-title pull-left">Authenticate transaction</h4>
+            <h4 class="modal-title pull-left"> {{ 'SENDCOMPONENT.TITLE2' | translate }} </h4>
             <button type="button" class="close pull-right" aria-label="Close" (click)="close2()">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
         <div class="modal-body">
-            <p>From: {{ activePkh }}
-                <BR> To: {{ toPkh }}
-                <BR> Amount: {{ amount | number:'1.0-6' }}&#42793;
-                <BR> Fee: {{ fee | number:'1.0-6' }}&#42793;
+            <p> 
+                {{ 'SENDCOMPONENT.FROM' | translate }}  {{ activePkh }}
+                <BR> 
+                <span *ngIf="isMultipleDestinations"> Total Sent: {{ totalAmount() | number:'1.0-6' }}&#42793; </span>
+                <span *ngIf="!isMultipleDestinations">
+                    {{ 'SENDCOMPONENT.TO' | translate }}  {{ transactions[0].to }}
+                    <BR> {{ 'SENDCOMPONENT.AMOUNT' | translate }} {{ transactions[0].amount | number:'1.0-6' }}&#42793;
+                </span>
+                <BR> Total fee {{ totalFee() | number:'1.0-6' }}&#42793;
+                <BR><BR>
+                <!-- 
+                <ng-container *ngFor="let transaction of transactions">
+                        <BR> {{ 'SENDCOMPONENT.TO' | translate }}  {{ transaction.to }}
+                        <BR> {{ 'SENDCOMPONENT.AMOUNT' | translate }} {{ transaction.amount | number:'1.0-6' }}&#42793;
+                </ng-container>
+                -->
+                <ng-container *ngIf="isMultipleDestinations">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th scope="col">{{ 'SENDCOMPONENT.TO' | translate }}</th>
+                                <th scope="col">{{ 'SENDCOMPONENT.AMOUNT' | translate }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let transaction of showTransactions">
+                                <td>{{ transaction.to }}</td>
+                                <td>{{ transaction.amount | number:'1.0-6' }}&#42793;</td>
+                            </tr>
+                            <tr *ngIf='transactions.length > 2'>
+                                <td></td>
+                                <td>
+                                    <button type="button" class="btn btn-outline-light btn-sm btn-balance show-more" aria-label="More" (click)="toggleTransactions()">
+                                        <span aria-hidden="true"> {{ showBtn }} </span>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </ng-container>
             </p>
             <div class="row">
                 <div *ngIf='walletService.isFullWallet()' class="col-md-6">
                     <form>
                         <div class="form-group">
-                            <label for="pwd">Password:</label>
+                            <label for="pwd"> {{ 'SENDCOMPONENT.PASSWORD' | translate }} </label>
                             <input [(ngModel)]="password" type="password" id="pwd" class="form-control" [ngModelOptions]="{standalone: true}">
                         </div>
                     </form>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="sub" (click)="open3(modal3)">Confirm</button>
+                <button type="button" class="btn btn-primary" id="sub" (click)="open3(modal3)"> {{ 'SENDCOMPONENT.CONFIRM' | translate }} </button>
             </div>
             {{ pwdValid }}
         </div>
@@ -94,7 +151,7 @@
     <!-- 3. Confirmation -->
     <ng-template #modal3>
         <div class="modal-header">
-            <h4 class="modal-title pull-left">Confirmation</h4>
+            <h4 class="modal-title pull-left"> {{ 'SENDCOMPONENT.TITLE3' | translate }} </h4>
             <button type="button" class="close pull-right" aria-label="Close" (click)="close3()">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -103,7 +160,7 @@
         <div class="modal-body">
 
             <div *ngIf='!sendResponse'>
-                Please wait...
+                {{ 'SENDCOMPONENT.PLEASEWAIT' | translate }} 
             </div>
 
             <ng-container *ngIf='sendResponse'>
@@ -113,34 +170,32 @@
                     <br>
                     <br>
                     <ng-container *ngIf='sendResponse.payload.opHash'>
-                        <p>Your transaction has been broadcasted successfully to the network</p>
+                        <p> {{ 'SENDCOMPONENT.INFO' | translate }} </p>
                         <p>{{ sendResponse.payload.opHash }}</p>
                     </ng-container>
                     <ng-container *ngIf='sendResponse.payload.unsignedOperation'>
-                        <p>Your unsigned transaction has been created successfully</p>
+                        <p>{{ 'SENDCOMPONENT.INFOUNSIGNED' | translate }} </p>
                     </ng-container>
                 </div>
 
                 <div *ngIf='sendResponse.success === false'>
-                    <p>Operation failed!</p>
+                    <p> {{ 'SENDCOMPONENT.OPERATIONFAILED' | translate }} </p>
                     <p class="text-danger">{{ sendResponse.payload.msg }}</p>
                 </div>
-
+                <div class="modal-footer">
+                        <button *ngIf='sendResponse.payload.unsignedOperation' type="button" class="btn btn-primary" (click)="download()"> {{ 'SENDCOMPONENT.DOWNLOAD' | translate }} </button>
+                        <button type="button" class="btn btn-primary" id="sub" (click)="close3()"> {{ 'SENDCOMPONENT.CLOSE' | translate }} </button>
+                    </div>
             </ng-container>
-
-            <div class="modal-footer">
-                <button *ngIf='sendResponse.payload.unsignedOperation' type="button" class="btn btn-primary" (click)="download()">Download</button>
-                <button type="button" class="btn btn-primary" id="sub" (click)="close3()">Close</button>
-            </div>
         </div>
 
     </ng-template>
 
 
     <!-- Showing different Send Format according to actionButtonString -->
-    <button *ngIf='accounts && showSendFormat.btnOutline' type="button" (click)="open1(modal1)" class="btn btn-sm btn-outline-primary btn-op">Send</button>
+    <button *ngIf='accounts && showSendFormat.btnOutline' type="button" (click)="open1(modal1)" class="btn btn-sm btn-outline-primary btn-op"> {{ 'SENDCOMPONENT.SEND' | translate }} </button>
     <span *ngIf='accounts && showSendFormat.dropdownItem' class="dropdown-item" (click)="open1(modal1)">{{ activePkh }}</span>
-    <span *ngIf='accounts && showSendFormat.btnSidebar' class="btnSidebar" (click)="open1(modal1)">Send</span>
+    <span *ngIf='accounts && showSendFormat.btnSidebar' class="btnSidebar" (click)="open1(modal1)"> {{ 'SENDCOMPONENT.SEND' | translate }} </span>
 </ng-container>
 
 <p class="no-accounts" *ngIf='!accounts'>

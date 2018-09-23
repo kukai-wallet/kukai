@@ -18,8 +18,16 @@
   text-align: center;
 }
 
+.send-span {
+  height: 204px !important;
+}
+
 .modal-footer {
   padding-bottom: 0rem;
+}
+
+.first-modal {
+  justify-content: space-between;
 }
 
 .text-color {
@@ -29,6 +37,15 @@
 
 .text-right {
   justify-content: flex-end;
+}
+
+.input-multi-send {
+  margin-bottom: .5rem;  // default at 1rem;
+}
+
+.show-more {
+  font-size: 0.9rem;
+  width: 73px;
 }
 
 .btn-balance {

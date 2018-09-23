@@ -91,9 +91,10 @@ export class ActivityService {
       .flatMap((data: any) => {
         const newTransactions: Activity[] = [];
         for (let i = 0; i < data.length; i++) {
-          const op: any = this.tzscanService.getOp(data[i], pkh);
-          console.log(JSON.stringify(op));
-          newTransactions.push(op);
+          const ops: any = this.tzscanService.getOp(data[i], pkh);
+          for (let j = 0; j < ops.length; j++) {
+            newTransactions.push(ops[j]);
+          }
         }
         const index = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
         if (index === -1) {
@@ -129,7 +130,7 @@ export class ActivityService {
       .pipe(
         flatMap((payload: any) =>
           this.getTimestamp(pkh, payload.block, payload.hash).pipe(
-            timeout(5000)
+            timeout(20000)
             , catchError(error => {
               return of('Timeout');
             })
@@ -138,13 +139,17 @@ export class ActivityService {
       ));
   }
 
-  getTimestamp(pkh: string, block: string, hash): Observable<any> {
+  getTimestamp(pkh: string, block: string, hash: string): Observable<any> {
     return this.tzscanService.timestamp(block)
       .flatMap((time: any) => {
-        const pkhIndex = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
-        const transactionIndex = this.walletService.wallet.accounts[pkhIndex].activities.findIndex(a => a.hash === hash);
         if (time) { time = new Date(time); }
-        this.walletService.wallet.accounts[pkhIndex].activities[transactionIndex].timestamp = time;
+        const pkhIndex = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
+        for (let ti = 0; ti < this.walletService.wallet.accounts[pkhIndex].activities.length; ti++) {
+          if (this.walletService.wallet.accounts[pkhIndex].activities[ti].hash === hash) {
+            this.walletService.wallet.accounts[pkhIndex].activities[ti].block = block;
+            this.walletService.wallet.accounts[pkhIndex].activities[ti].timestamp = time;
+          }
+        }
         return of(
           {
             save: true

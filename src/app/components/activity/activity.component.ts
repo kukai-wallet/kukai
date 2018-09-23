@@ -1,6 +1,10 @@
 import { Component, Input, OnInit, AfterViewInit, SimpleChange } from '@angular/core';
 import { WalletService } from '../../services/wallet.service';
+import { TzscanService } from '../../services/tzscan.service';
+
 import { Constants } from '../../constants';
+import { TimeAgoPipe } from '../../pipes/time-ago.pipe';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-activity',
@@ -10,16 +14,19 @@ import { Constants } from '../../constants';
 export class ActivityComponent implements OnInit {
     accounts = null;
     CONSTANTS = new Constants();
+
     @Input() activePkh: string;
     constructor(
-        private walletService: WalletService
+        private walletService: WalletService,
+        private tzscanService: TzscanService,
     ) {}
 
     ngOnInit() { if (this.walletService.wallet) { this.init(); } }
     init() {
         this.accounts = this.walletService.wallet.accounts;
-        console.log('transaction', this.accounts[0].activities);
+        console.log('activePkh: ', this.activePkh);
     }
+
     getStatus(transaction: any): string {
         if (transaction.failed) {
             return 'Failed';
@@ -32,7 +39,15 @@ export class ActivityComponent implements OnInit {
 
     getType(transaction: any): string {
         if (transaction.type !== 'transaction') {
-            return transaction.type;
+            if (transaction.type === 'delegation') {
+                if (transaction.destination) {
+                    return 'delegate';
+                } else {
+                    return 'undelegate';
+                }
+            } else {
+                return transaction.type;
+            }
         } else {
             let operationType = '';
             if (transaction.amount > 0) {
@@ -45,12 +60,16 @@ export class ActivityComponent implements OnInit {
     }
 
     getCounterparty(transaction: any): string {
-        console.log('transaction - getCounterparty', transaction);
+        // console.log('transaction - getCounterparty', transaction);
         let counterparty = '';
 
         // Checks for delegation as destination is stored in transaction.destination.tz
         if (transaction.type === 'delegation') {
-            return transaction.destination.tz;
+            if (transaction.destination) {
+             return transaction.destination.tz;
+            } else {
+                return '';  // User has undelegate
+            }
         }
 
         if (this.activePkh === transaction.source) {

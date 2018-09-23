@@ -1,4 +1,7 @@
 import { Injectable } from '@angular/core';
+
+import { TranslateService } from '@ngx-translate/core';  // Multiple instances created ?
+
 import { WalletService } from './wallet.service';
 import { MessageService } from './message.service';
 import { TzrateService } from './tzrate.service';
@@ -8,6 +11,7 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class BalanceService {
   constructor(
+    private translate: TranslateService,
     private walletService: WalletService,
     private messageService: MessageService,
     private tzrateService: TzrateService,
@@ -37,7 +41,12 @@ export class BalanceService {
   updateAccountBalance(index: number, newBalance: number) {
     if (newBalance !== this.walletService.wallet.accounts[index].balance.balanceXTZ) {
       if (this.walletService.wallet.accounts[index].balance.balanceXTZ) {
-        this.messageService.add('Balance updated for: ' + this.walletService.wallet.accounts[index].pkh);
+        let balanceUpdated = '';
+        this.translate.get('BALANCESERVICE.BALANCEUPDATE').subscribe(
+            (res: string) => balanceUpdated = res
+        );
+        this.messageService.add(balanceUpdated + ' ' + this.walletService.wallet.accounts[index].pkh);
+        // this.messageService.add('Balance updated for: ' + this.walletService.wallet.accounts[index].pkh);
       }
       this.walletService.wallet.accounts[index].balance.balanceXTZ = newBalance;
       this.updateTotalBalance();

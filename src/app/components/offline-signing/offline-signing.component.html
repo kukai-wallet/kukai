@@ -1,8 +1,8 @@
-<div class="container">
+<div class="container" *ngIf="'STARTCOMPONENT.ACTIVATE' | translate">
     <!-- Title -->
     <div class="row bottom-separator">
         <div class="col-lg-12">
-            <h1 class="page-header">Offline signing</h1>
+            <h1 class="page-header"> {{ 'OFFLINESIGNINGCOMPONENT.TITLE' | translate }} </h1>
         </div>
     </div>
 
@@ -11,20 +11,13 @@
         <div class="col-lg-12">
             <button class="btn btn-clear btn-second mb-2 mr-sm-2" (click)="toggleShowInstructions()">{{ instructionBtn }}</button>
             <span *ngIf="showInstructions">
-                <h4>In 3 easy steps, you can broadcast an operation to the tezos network without ever exposing your seed
-                    to an online environment. Desktop client for the offline signature can be found on our <a href="https://github.com/kukai-wallet/kukai/releases" target="_blank">GitHub</a>.
+                <h4> {{ 'OFFLINESIGNINGCOMPONENT.MAININFO' | translate }}  <a href="https://github.com/kukai-wallet/kukai/releases" target="_blank"> {{ 'OFFLINESIGNINGCOMPONENT.MAININFOGITHUB' | translate }} </a>
                 </h4>
                 <h5 class="help-steps">
                     <ol>
-                        <li>
-                            The full wallet should be created in an offline system. Use that wallet to export a View-only wallet, which does not contain your private key. 
-                            This wallet can be safely used on an online system to create unsigned operations.
-                        </li>
-                        <li>
-                            From your View-only wallet, you can create and download an unsigned operation file ('.tzop'). Import this unsigned operation to your full wallet, 
-                            verify its content and then enter your wallet password to sign the operation. You can download the new signed operation in another '.tzop' file. 
-                        </li> 
-                        <li>The signed operation can now be transferred back to an online system. Verify its content and then broadcast it to the Tezos network.</li>
+                        <li> {{ 'OFFLINESIGNINGCOMPONENT.INFOSTEP1' | translate }} </li>
+                        <li> {{ 'OFFLINESIGNINGCOMPONENT.INFOSTEP2' | translate }} </li>
+                        <li> {{ 'OFFLINESIGNINGCOMPONENT.INFOSTEP3' | translate }} </li>
                     </ol>
                 </h5>
             </span>
@@ -35,13 +28,19 @@
     <!-- Step 1 -->
     <div class="row">
         <div class="col-lg-12">
-            <h3>1. Unsigned operation (online)</h3>
+            <h3> {{ 'OFFLINESIGNINGCOMPONENT.SUBTITLE1' | translate }} </h3>
         </div>
     </div>
     <div class="row">
         <div class="col">
+            <p>
+                {{ 'OFFLINESIGNINGCOMPONENT.INFOUNSIGNEDOPERATION' | translate }} 
+                <a routerLink="/overview" class="btn-main-action"> {{ 'OFFLINESIGNINGCOMPONENT.INFOUNSIGNEDOPERATIONLINK' | translate }} </a>
+            </p>
+            <!-- 
             <p>You can create an unsigned operation with your view-only wallet in the
                 <a routerLink="/overview" class="btn-main-action">Overview</a> section.</p>
+            -->
         </div>
     </div>
     <br>
@@ -49,12 +48,12 @@
     <!-- Step 2 -->
     <div class="row">
         <div class="col-lg-12">
-            <h3>2. Sign operation (offline)</h3>
+            <h3> {{ 'OFFLINESIGNINGCOMPONENT.SUBTITLE2' | translate }} </h3>
         </div>
     </div>
     <div class="row">
         <div class="col">
-            <p>Import or paste your unsigned operation</p>
+            <p> {{ 'OFFLINESIGNINGCOMPONENT.INFOIMPORTUNSIGNEDOPERATION' | translate }} </p>
         </div>
     </div>
     <form>
@@ -62,7 +61,7 @@
             <!-- Import Unsigned Operation Button -->
             <div class="input-group col-sm-8">
                 <div class="input-group-prepend">
-                    <span class="input-group-text min-size-prepend">Operation</span>
+                    <span class="input-group-text min-size-prepend"> {{ 'OFFLINESIGNINGCOMPONENT.OPERATION' | translate }} </span>
                 </div>
                 <div class="custom-file">
                     <input [disabled]="!isFullWallet" type="file" class="custom-file-input" id="importUnsignedOperation" accept=".tzop" (change)="handleUnsignedOperationFileInput($event.target.files)">
@@ -74,30 +73,30 @@
     <form>
         <div class="form-group row">
             <div class="col-sm-8">
-                <label for="unsignedOperationTextarea" class="sr-only">Import or paste your unsigned operation</label>
+                <label for="unsignedOperationTextarea" class="sr-only"> {{ 'OFFLINESIGNINGCOMPONENT.INFOIMPORTUNSIGNEDOPERATION' | translate }} </label>
                 <textarea [disabled]="!isFullWallet" rows="3" cols="130" [(ngModel)]="unsigned" [ngModelOptions]="{standalone: true}" (change)="decodeUnsignedOp()"
-                    class="form-control" id="unsignedOperationTextarea" placeholder="Unsigned Operation">
+                    class="form-control" id="unsignedOperationTextarea" [placeholder]="'OFFLINESIGNINGCOMPONENT.UNSIGNEDOPERATION' | translate">
                 </textarea>
             </div>
         </div>
     </form>
     <small *ngIf="isFullWallet && isOnline() && notAllowOnlineSigning && decodeUnsignedOutput" class="text-danger">
-        Wallet appear to be online. Are you really sure you want to proceed with the signature process? 
-        <button class="btn btn-sm btn-outline-danger mb-2 mr-sm-2" (click)="allowToSignInOnlineWallet()">Yes</button>
+        {{ 'OFFLINESIGNINGCOMPONENT.INFOWALLETONLINE' | translate }}
+        <button class="btn btn-sm btn-outline-danger mb-2 mr-sm-2" (click)="allowToSignInOnlineWallet()"> {{ 'OFFLINESIGNINGCOMPONENT.YES' | translate }} </button>
     </small>
     <div *ngIf='!notAllowedToSign() && decodeUnsignedOutput'>
         <pre id="decodeDiv">{{ decodeUnsignedOutput }}</pre>
     </div>
 
     <form class="form-inline">
-        <label class="sr-only" for="inputPassword">Password</label>
+        <label class="sr-only" for="inputPassword"> {{ 'OFFLINESIGNINGCOMPONENT.PASSWORD' | translate }} </label>
         <input [disabled]="notAllowedToSign()" type="password" class="form-control mb-2 mr-sm-2" id="inputPassword" [(ngModel)]="pwd"
-            placeholder="{{ pwdPlaceholder }}" [ngModelOptions]="{standalone: true}">
+            [placeholder]="pwdPlaceholder" [ngModelOptions]="{standalone: true}">
 
-        <button [disabled]="notAllowedToSign()" type="button" class="btn btn-clear btn-second mb-2 mr-sm-2" (click)="sign()">Sign</button>
-        <button *ngIf="signed1" class="btn btn-clear btn-second mb-2 mr-sm-2" (click)="download()">Download</button>
+        <button [disabled]="notAllowedToSign()" type="button" class="btn btn-clear btn-second mb-2 mr-sm-2" (click)="sign()"> {{ 'OFFLINESIGNINGCOMPONENT.SIGN' | translate }} </button>
+        <button *ngIf="signed1" class="btn btn-clear btn-second mb-2 mr-sm-2" (click)="download()"> {{ 'OFFLINESIGNINGCOMPONENT.DOWNLOAD' | translate }} </button>
         <small *ngIf="signed1" class="text-success">
-            Operation successfully signed!
+            {{ 'OFFLINESIGNINGCOMPONENT.OPERATIONSUCCESSFUL' | translate }} 
         </small>
     </form>
     <br>
@@ -105,12 +104,12 @@
     <!-- Step 3 -->
     <div class="row">
         <div class="col-lg-12">
-            <h3>3. Broadcast (online)</h3>
+            <h3> {{ 'OFFLINESIGNINGCOMPONENT.SUBTITLE3' | translate }} </h3>
         </div>
     </div>
     <div class="row">
         <div class="col">
-            <p>Import or paste your signed operation and transmit your operation to the Tezos network</p>
+            <p> {{ 'OFFLINESIGNINGCOMPONENT.INFOIMPORTSIGNEDOPERATION' | translate }} </p>
         </div>
     </div>
     <!-- Import Signed Operation Button -->
@@ -118,7 +117,7 @@
         <div class="form-group row">
             <div class="input-group col-sm-8">
                 <div class="input-group-prepend">
-                    <span class="input-group-text min-size-prepend">Operation</span>
+                    <span class="input-group-text min-size-prepend"> {{ 'OFFLINESIGNINGCOMPONENT.OPERATION' | translate }} </span>
                 </div>
                 <div class="custom-file">
                     <input type="file" [disabled]="!isOnline()" class="custom-file-input" id="importWallet" accept=".tzop" (change)="handleSignedOperationFileInput($event.target.files)">
@@ -127,26 +126,26 @@
             </div>
         </div>
     </form>
-    <small *ngIf="signed2" class="text-info">
-        Would you like to decode the operation? 
-        <button class="btn btn-sm btn-outline-info mb-2 mr-sm-2" (click)="decodeSignedOp()">Yes</button>
-    </small>
-    <div *ngIf='decodeSignedOutput'>
-        <pre id="decodeDiv">{{ decodeSignedOutput }}</pre>
-    </div>
     <!-- Broadcast textarea -->
     <form>
         <div class="form-group row">
             <div class="col-sm-8">
-                <label for="signedOperationTextarea" class="sr-only">Import your signed operation</label>
+                <label for="signedOperationTextarea" class="sr-only"> {{ 'OFFLINESIGNINGCOMPONENT.LABELIMPORTSIGNEDOPERATION' | translate }} </label>
                 <textarea rows="3" cols="130" [disabled]="!isOnline()" [(ngModel)]="signed2" [ngModelOptions]="{standalone: true}"
-                    class="form-control" id="signedOperationTextarea" placeholder="Signed Operation"></textarea>
+                    class="form-control" id="signedOperationTextarea" [placeholder]="'OFFLINESIGNINGCOMPONENT.SIGNEDOPERATION' | translate"></textarea>
             </div>
         </div>
     </form>
+    <small *ngIf="signed2" class="text-info">
+        {{ 'OFFLINESIGNINGCOMPONENT.INFODECODE' | translate }} 
+        <button class="btn btn-sm btn-outline-info mb-2 mr-sm-2" (click)="decodeSignedOp()"> {{ 'OFFLINESIGNINGCOMPONENT.YES' | translate }} </button>
+    </small>
+    <div *ngIf='decodeSignedOutput'>
+        <pre id="decodeDiv">{{ decodeSignedOutput }}</pre>
+    </div>
     <div class="row">
         <div class="col-lg-8">
-            <button type="button" [disabled]="!isOnline()" (click)="broadcast()" class="btn btn-clear btn-second pull-right">Broadcast</button>
+            <button type="button" [disabled]="!isOnline()" (click)="broadcast()" class="btn btn-clear btn-second pull-right"> {{ 'OFFLINESIGNINGCOMPONENT.BROADCAST' | translate }} </button>
         </div>
     </div>
 </div>

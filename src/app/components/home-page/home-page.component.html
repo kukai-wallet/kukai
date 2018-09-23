@@ -1,40 +1,147 @@
+<div class="topmenu row border-bottom row-mobile">
+
+    <!-- Menu Button -->
+    <div class="col-sm">
+
+    <!-- SideMenu Toggle Button --
+        <button class="navbar-toggler bars-margin-top" (click)="isCollapsed = !isCollapsed" type="button"  
+            aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fa fa-bars"></i>
+        </button>
+    -->
+    
+        
+    </div>
+
+    <div class="col-sm">
+    </div>
+
+    <div class="col-sm top-bar-btn">
+
+        <!-- Language Button -->
+        <div class="btn-group dropdown-padding language-btn" dropdown>
+            <button id="button-language" dropdownToggle type="button" class="btn btn-light dropdown-toggle btn-sm"
+                    aria-controls="dropdown-basic">
+                {{ returnLanguage (translate.currentLang) }} <span class="caret"></span>
+            </button>
+
+            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-language">
+                <li role="menuitem" *ngFor="let lang of translate.getLangs()" [value]="lang" (click)="translate.use(lang)"> 
+                    <span class="dropdown-item"> {{ returnLanguage (lang) }} </span>
+                </li>
+            </ul>
+
+            <!-- Working - Basic UI
+            <select #langSelect2 (change)="translate.use(langSelect2.value)">
+                <option *ngFor="let lang of translate.getLangs()" [value]="lang" [selected]="lang === translate.currentLang">{{ lang }}</option>
+            </select>
+            -->
+
+            <!-- 
+            <ul id="dropdown-basictmp" *dropdownMenu class="dropdown-menu"
+                role="menu" aria-labelledby="button-language">
+                <li role="menuitem"><span class="dropdown-item">English</span></li> <!-- 1.12 bn million --
+                <li role="menuitem"><span class="dropdown-item">中国</span></li> <!-- 1.10 bn - Chinese Simplified --
+                <li role="menuitem"><span class="dropdown-item">Español</span></li> <!-- 512.9 million - Spanish --
+                <li role="menuitem"><span class="dropdown-item">Français</span></li> <!-- 284.9 million - French --
+                <li role="menuitem"><span class="dropdown-item">Pусский</span></li> <!-- 264.3 million - Russian --
+                <li role="menuitem"><span class="dropdown-item">日本語</span></li> <!-- 128.3 million - Japanese --
+                <li role="menuitem"><span class="dropdown-item">한국어</span></li> <!-- 77.2 million - Korean --
+                <li role="menuitem"><span class="dropdown-item">Svenska</span></li> <!-- Swedish --
+
+                <!-- Most spoken languages
+                <li role="menuitem"><a class="dropdown-item" href="#">English</a></li> <!-- 1.12 bn million --
+                <li role="menuitem"><a class="dropdown-item" href="#">中国</a></li> <!-- 1.10 bn - Chinese Simplified --
+                <li role="menuitem"><a class="dropdown-item" href="#">हिन्दी</a></li> <!-- 697.4 million - Hindi --
+                <li role="menuitem"><a class="dropdown-item" href="#">Español</a></li> <!-- 512.9 million - Spanish --
+                <li role="menuitem"><a class="dropdown-item" href="#">عربى</a></li> <!-- 422 million - Arabic --
+                <li role="menuitem"><a class="dropdown-item" href="#">Français</a></li> <!-- 284.9 million - French --
+                <li role="menuitem"><a class="dropdown-item" href="#">Melayu</a></li> <!-- 281 million - Malay is an official language in Singapore, Brunei, Indonesia, and Malaysia. --
+                <li role="menuitem"><a class="dropdown-item" href="#">Pусский</a></li> <!-- 264.3 million - Russian --
+                <li role="menuitem"><a class="dropdown-item" href="#">বাঙালি</a></li> <!-- 261.8 million - Bengali --
+                <li role="menuitem"><a class="dropdown-item" href="#">Português</a></li>  <!-- 236.5 million - Portuguese --
+                <li role="menuitem"><a class="dropdown-item" href="#">Deutsch</a></li> <!-- 132 million - German --
+                <li role="menuitem"><a class="dropdown-item" href="#">日本語</a></li> <!-- 128.3 million - Japanese --
+                <li role="menuitem"><a class="dropdown-item" href="#">Kiswahili</a></li> <!-- 98.3 million - Swahili (Niger–Congo, Bantu) --
+                <li role="menuitem"><a class="dropdown-item" href="#">한국어</a></li> <!-- 77.2 million - Korean --
+                <li role="menuitem"><a class="dropdown-item" href="#">Tiếng Việt</a></li> <!-- 67.9 millio - Vietnamese --
+                <li role="menuitem"><a class="dropdown-item" href="#">Italiano</a></li> <!-- 67.8 million - Italian --
+                <li role="menuitem"><a class="dropdown-item" href="#">Svenska</a></li> <!-- Swedish --
+                --
+            </ul>
+            -->
+        </div>
+
+        <!-- Currency Button -->
+        <!-- 
+        <div class="btn-group dropdown-padding" dropdown>
+            <button id="button-Currency" dropdownToggle type="button" class="btn btn-light dropdown-toggle btn-sm"
+                    aria-controls="dropdown-basic">
+                {{ 'HOMEPAGECOMPONENT.CURRENCY' | translate }} <span class="caret"></span>
+            </button>
+            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+                role="menu" aria-labelledby="button-Currency">
+                <li role="menuitem"><span class="dropdown-item">USD</span></li>
+                <li role="menuitem"><span class="dropdown-item">EUR</span></li>
+                <li role="menuitem"><span class="dropdown-item">CNY</span></li>
+                <li role="menuitem"><span class="dropdown-item">JPY</span></li>
+                <li role="menuitem"><span class="dropdown-item">KRW</span></li>
+                <li role="menuitem"><span class="dropdown-item">RUB</span></li>
+                <li role="menuitem"><span class="dropdown-item">GBP</span></li>
+                <li role="menuitem"><span class="dropdown-item">INR</span></li>
+            </ul>
+        </div>
+        -->
+    </div>
+</div>
+
 <div class="wrapper">
     <!-- Sidebar Holder -->
-    <nav id="sidebar">
+    <nav id="sidebar" [collapse]="isCollapsed">
         <div class="sidebar-header">
             <a routerLink="">
                 <img src="assets/img/logo.png" alt="Kukai" class="center" height="121" width="210">
             </a>
             <p class="sub-heading" align="center">
-                on a path of self-discovery
+                {{ 'HOMEPAGECOMPONENT.MOTO' | translate }}
                 <BR> <span class="white">{{ this.walletService.walletTypePrint() }}</span>
-                <BR> <span [ngClass]="{'zeronet' : CONSTANTS.NET.NAME == 'Zeronet',  'betanet' : CONSTANTS.NET.NAME == 'Betanet'}">[ {{ CONSTANTS.NET.NAME }} ]</span>
+                <BR> <span [ngClass]="{'zeronet' : CONSTANTS.NET.NAME == 'Zeronet', 'mainnet' : CONSTANTS.NET.NAME == 'Mainnet', 'alphanet' : CONSTANTS.NET.NAME == 'Alphanet'}">[ {{ CONSTANTS.NET.NAME }} ]</span>
             </p>
         </div>
         <br>
         <ul class="list-unstyled components">
             <li routerLinkActive="active">
-                <a routerLink="/overview" class="btn-main-action">Overview</a>
+                <a routerLink="/overview" class="btn-main-action">{{ 'HOMEPAGECOMPONENT.OVERVIEW' | translate }}</a>
             </li>
             <li routerLinkActive="active">
-                <a routerLink="/account" class="btn-main-action">Account</a>
+                <a routerLink="/account" class="btn-main-action">{{ 'HOMEPAGECOMPONENT.ACCOUNT' | translate }}</a>
             </li>
 
             <li routerLinkActive="active">
-                <a routerLink="/bakery" class="btn-main-action">Bakery</a>
+                <a routerLink="/bakery" class="btn-main-action">{{ 'HOMEPAGECOMPONENT.BAKERY' | translate }}</a>
             </li>
         </ul>
+
+        <!-- TEST LANGUAGE TRANSLATION --
+        <div>{{ 'HELLO' | translate:param }}</div>
+        <div>{{ 'HOME.HELLO' | translate:param }}</div>
+        -->
+        <!--
+        <select #langSelect (change)="translate.use(langSelect.value)">
+            <option *ngFor="let lang of translate.getLangs()" [value]="lang" [selected]="lang === translate.currentLang">{{ lang }}</option>
+        </select>
+        -->
 
 
         <ul class="list-unstyled bottom-CTAs">
             <li routerLinkActive="active">
-                <a routerLink="/offline-signing" class="btn-main-action">Offline signing</a>
+                <a routerLink="/offline-signing" class="btn-main-action">{{ 'HOMEPAGECOMPONENT.OFFLINESIGNING' | translate }}</a>
             </li>
             <li routerLinkActive="active">
-                <a routerLink="/backup" class="btn-main-action">Backup</a>
+                <a routerLink="/backup" class="btn-main-action">{{ 'HOMEPAGECOMPONENT.BACKUP' | translate }}</a>
             </li>
             <li class="bottom-category">
-                <a (click)="logout();" class="btn-main-action" data-toggle="tooltip" title="Clear wallet data">Logout</a>
+                <a (click)="logout();" class="btn-main-action" data-toggle="tooltip" [title]="'HOMEPAGECOMPONENT.CLEARDATA' | translate">{{ 'HOMEPAGECOMPONENT.LOGOUT' | translate }}</a>
             </li>
             <span class="btn-main-action">
                 <a href="https://github.com/kukai-wallet/kukai" target="_blank">
@@ -48,8 +155,8 @@
                 </a>
             </span>
 
-            <div class="donation" data-toggle="tooltip" title="Donation address">
-                <i class="fa fa-gratipay"></i> Donations are always appreciated!
+            <div class="donation" data-toggle="tooltip" [title]="'HOMEPAGECOMPONENT.DONATIONADDRESS' | translate">
+                <i class="fa fa-gratipay"></i> {{ 'HOMEPAGECOMPONENT.DONATIONSINFO' | translate }}
                 <br>
                 <span class="donation-address">tz1L5F33JZ9bsyRdSoshMujjZxdEzhwBHCDq</span>
             </div>

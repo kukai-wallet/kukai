@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 
 import * as bip39 from 'bip39';
 
+import { TranslateService } from '@ngx-translate/core';  // Multiple instances created ?
+
 import { Wallet, Balance, KeyPair, WalletType } from './../interfaces';
 
 import { EncryptionService } from './encryption.service';
@@ -13,6 +15,7 @@ export class WalletService {
   storeKey = `kukai-wallet`;
   wallet: Wallet;
   constructor(
+    private translate: TranslateService,
     private encryptionService: EncryptionService,
     private operationService: OperationService
   ) { }
