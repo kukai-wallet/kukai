@@ -74,7 +74,7 @@
         </div>
         <div class="modal-body">
             <div *ngIf='!sendResponse'>
-                {{ 'DELEGATECOMPONENT.PLEASEWAIT' | translate }}
+                {{ 'DELEGATECOMPONENT.WAIT' | translate }}
             </div>
             <ng-container *ngIf='sendResponse'>
                 <div *ngIf='sendResponse.success === true'>

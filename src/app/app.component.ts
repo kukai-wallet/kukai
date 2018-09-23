@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { WalletService } from './services/wallet.service';
 import { CoordinatorService } from './services/coordinator.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-root',

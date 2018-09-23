@@ -3,6 +3,8 @@ import { WalletService } from '../../services/wallet.service';
 import { TzscanService } from '../../services/tzscan.service';
 
 import { Constants } from '../../constants';
+import { TimeAgoPipe } from '../../pipes/time-ago.pipe';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-activity',
@@ -12,9 +14,6 @@ import { Constants } from '../../constants';
 export class ActivityComponent implements OnInit {
     accounts = null;
     CONSTANTS = new Constants();
-    showBtn = 'Show More';
-    showActivities = [];
-    extraCalls = 0;
 
     @Input() activePkh: string;
     constructor(
@@ -23,11 +22,9 @@ export class ActivityComponent implements OnInit {
     ) {}
 
     ngOnInit() { if (this.walletService.wallet) { this.init(); } }
-
     init() {
         this.accounts = this.walletService.wallet.accounts;
-        this.showActivities = this.accounts[0].activities;
-        console.log('transaction', this.accounts[0].activities);
+        console.log('activePkh: ', this.activePkh);
     }
 
     getStatus(transaction: any): string {
@@ -82,22 +79,5 @@ export class ActivityComponent implements OnInit {
         }
 
         return counterparty;
-    }
-
-    toggleTransactions() {
-        let newOperations: any;
-        this.extraCalls = this.extraCalls + 1;
-        this.showBtn = 'Show Less';
-        // newOperations = this.tzscanService.operations(this.activePkh, 10, this.extraCalls);
-        this.tzscanService.operations(this.activePkh, 10, this.extraCalls).subscribe(
-            (res: any) => {
-                newOperations = res;
-                console.log('showActivities before: ', this.showActivities);
-                this.showActivities = this.showActivities.concat(res);
-                console.log('res: ', res);  // working - getting next 10 operations
-                console.log('showActivities after: ', this.showActivities);
-            }
-        );
-        console.log('newOperations: ', newOperations);  // not working - undefined
     }
 }

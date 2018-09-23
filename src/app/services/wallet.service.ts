@@ -123,23 +123,11 @@ export class WalletService {
   }
   walletTypePrint(): string {
     if (this.isFullWallet()) {
-      let fullWallet = '';
-      this.translate.get('WALLETSERVICE.FULLWALLET').subscribe(
-          (res: string) => fullWallet = res
-      );
-      return fullWallet;  // 'Full wallet';
+      return 'Full wallet';
     } else if (this.isViewOnlyWallet()) {
-      let viewOnlyWallet = '';
-      this.translate.get('WALLETSERVICE.FULLWALLET').subscribe(
-          (res: string) => viewOnlyWallet = res
-      );
-      return viewOnlyWallet;  // 'View-only wallet';
+      return 'View-only wallet';
     } else if (this.isObserverWallet()) {
-      let observerWallet = '';
-      this.translate.get('WALLETSERVICE.FULLWALLET').subscribe(
-          (res: string) => observerWallet = res
-      );
-      return observerWallet;  // 'Observer wallet';
+      return 'Observer wallet';
     } else {
       return '';
     }

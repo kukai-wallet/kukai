@@ -58,7 +58,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-12 input-multi-send">
                             <label for="multipleDestinations">To Addresses and Amounts</label>
-                            <textarea class="form-control mono" id="multipleDestinations" rows="3" placeholder="tz1L5F33JZ9bsyRdSoshMujjZxdEzhwBHCDq 5; tz1TCF... 5; tz1tezexinfo... 5;" [(ngModel)]="toMultipleDestinationsString" name="second"></textarea>
+                            <textarea class="form-control mono" id="multipleDestinations" rows="3" placeholder="tz1L5F33JZ9bsyRdSoshMujjZxdEzhwBHCDq 5; KT1AKo4H8sxnE5jwyGL1HUZtYMgVqEoXPVP4 1.2; tz1TCF... 52; tz1tezexinfo... 137.68;" [(ngModel)]="toMultipleDestinationsString" name="second"></textarea>
                         </div>
                     </div>
 
@@ -98,7 +98,7 @@
                     {{ 'SENDCOMPONENT.TO' | translate }}  {{ transactions[0].to }}
                     <BR> {{ 'SENDCOMPONENT.AMOUNT' | translate }} {{ transactions[0].amount | number:'1.0-6' }}&#42793;
                 </span>
-                <BR> {{ 'SENDCOMPONENT.FEE2' | translate }} {{ fee | number:'1.0-6' }}&#42793;
+                <BR> Total fee {{ totalFee() | number:'1.0-6' }}&#42793;
                 <BR><BR>
                 <!-- 
                 <ng-container *ngFor="let transaction of transactions">
@@ -174,7 +174,7 @@
                         <p>{{ sendResponse.payload.opHash }}</p>
                     </ng-container>
                     <ng-container *ngIf='sendResponse.payload.unsignedOperation'>
-                        <p>Y {{ 'SENDCOMPONENT.INFOUNSIGNED' | translate }} </p>
+                        <p>{{ 'SENDCOMPONENT.INFOUNSIGNED' | translate }} </p>
                     </ng-container>
                 </div>
 

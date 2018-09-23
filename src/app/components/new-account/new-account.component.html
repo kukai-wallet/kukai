@@ -95,10 +95,11 @@
                 <p> {{ 'NEWACCOUNTCOMPONENT.OPERATIONFAILED' | translate }} </p>
                 <p class="text-danger">{{ sendResponse.payload.msg }}</p>
             </div>
+
         </ng-container>
 
         <div class="modal-footer">
-            <button *ngIf='sendResponse.payload.unsignedOperation' type="button" class="btn btn-primary" (click)="download()"> {{ 'NEWACCOUNTCOMPONENT.DOWNLOAD' | translate }} </button>
+            <button *ngIf='sendResponse && sendResponse.payload.unsignedOperation' type="button" class="btn btn-primary" (click)="download()"> {{ 'NEWACCOUNTCOMPONENT.DOWNLOAD' | translate }} </button>
             <button type="button" class="btn btn-primary" id="sub" (click)="close3()"> {{ 'NEWACCOUNTCOMPONENT.CLOSE' | translate }} </button>
         </div>
     </div>
