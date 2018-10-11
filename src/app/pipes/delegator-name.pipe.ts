@@ -10,7 +10,7 @@ export class DelegatorNamePipe implements PipeTransform {
         ['tz1abTjX2tjtMdaq5VCzkDtBnMSCFPW2oRPa', 'TEZ Rocket'],
         ['tz1NortRftucvAkD1J58L32EhSVrQEWJCEnB', 'Bake’n’Rolls'],
         ['tz1bHzftcTKZMTZgLLtnrXydCm6UEqf4ivca', 'Tezos Vote'],
-        ['tz1LLNkQK4UQV6QcFShiXJ2vT2ELw449MzAA', 'Tezo Steam'],
+        ['tz1LLNkQK4UQV6QcFShiXJ2vT2ELw449MzAA', 'TezoSteam'],
         ['tz1Xek93iSXXckyQ6aYLVS5Rr2tge2en7ZxS', 'XTZ Delegate'],
         ['tz1TcH4Nb3aHNDJ7CGZhU7jgAK1BkSP4Lxds', 'XTZ Antipodes'],
         ['tz1fZ767VDbqx4DeKiFswPSHh513f51mKEUZ', 'Tezos Bakery'],
