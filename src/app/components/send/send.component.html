@@ -93,12 +93,14 @@
             <p> 
                 {{ 'SENDCOMPONENT.FROM' | translate }}  {{ activePkh }}
                 <BR> 
-                <span *ngIf="isMultipleDestinations"> Total Sent: {{ totalAmount() | number:'1.0-6' }}&#42793; </span>
+                <span *ngIf="isMultipleDestinations"> Total Sent: {{ totalAmount() | number:'1.0-6' }}&#42793;
+                    <BR> Total fee: {{ totalFee() | number:'1.0-6' }}&#42793;
+                </span>
                 <span *ngIf="!isMultipleDestinations">
                     {{ 'SENDCOMPONENT.TO' | translate }}  {{ transactions[0].to }}
                     <BR> {{ 'SENDCOMPONENT.AMOUNT' | translate }} {{ transactions[0].amount | number:'1.0-6' }}&#42793;
+                        <BR> Fee: {{ fee | number:'1.0-6' }}&#42793;
                 </span>
-                <BR> Total fee {{ totalFee() | number:'1.0-6' }}&#42793;
                 <BR><BR>
                 <!-- 
                 <ng-container *ngFor="let transaction of transactions">
