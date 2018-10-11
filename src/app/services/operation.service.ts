@@ -7,6 +7,7 @@ import { Buffer } from 'buffer';
 import * as libs from 'libsodium-wrappers';
 import * as Bs58check from 'bs58check';
 import * as bip39 from 'bip39';
+import Big from 'big.js';
 
 import { TranslateService } from '@ngx-translate/core';  // Multiple instances created ?
 
@@ -40,7 +41,7 @@ export class OperationService {
     TZ: new Uint8Array([3, 99, 29]),
     KT: new Uint8Array([2, 90, 121])
   };
-  toMicro = 1000000;
+  microTez = new Big(1000000);
   constructor(
     private http: HttpClient,
     private translate: TranslateService,
@@ -50,7 +51,6 @@ export class OperationService {
     Returns an observable for the activation of an ICO identity
   */
   activate(pkh: string, secret: string): Observable<any> {
-    console.log(pkh + ' : ' + secret);
     return this.http.get(this.nodeURL + '/chains/main/blocks/head/hash', {})
       .flatMap((hash: any) => {
         const fop: any = {
@@ -72,7 +72,6 @@ export class OperationService {
                 return this.http.post(this.nodeURL + '/injection/operation',
                   JSON.stringify(sopbytes), httpOptions)
                   .flatMap((final: any) => {
-                    console.log(JSON.stringify(final));
                     return this.opCheck(final);
                   });
               });
@@ -106,13 +105,10 @@ export class OperationService {
   originate(pkh: string, amount: number, fee: number = 0, keys: KeyPair): Observable<any> {
     return this.http.get(this.nodeURL + '/chains/main/blocks/head/hash', {})
       .flatMap((hash: string) => {
-        console.log(JSON.stringify(hash));
         return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + pkh + '/counter', {})
           .flatMap((actions: number) => {
-            console.log('number: ' + actions);
             return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + pkh + '/manager_key', {})
               .flatMap((manager: any) => {
-                console.log('managerKey: ' + JSON.stringify(manager));
                 let counter: number = Number(actions);
                 const fop: any = {
                   branch: hash,
@@ -120,13 +116,13 @@ export class OperationService {
                     {
                       kind: 'origination',
                       source: pkh,
-                      fee: (fee * this.toMicro).toString(),
+                      fee: this.microTez.times(fee).toString(),
                       counter: (++counter).toString(),
                       gas_limit: '0',
                       storage_limit: '0',
                       managerPubkey: keys.pkh,  // Mainnet
                       // manager_pubkey: keys.pkh,  // Zeronet
-                      balance: (amount * this.toMicro).toString(),
+                      balance: this.microTez.times(amount).toString(),
                       spendable: true,
                       delegatable: true
                     }
@@ -181,11 +177,11 @@ export class OperationService {
                   fop.contents.push({
                     kind: 'transaction',
                     source: from,
-                    fee: (fee * this.toMicro).toString(),
+                    fee: this.microTez.times(fee).toString(),
                     counter: (++counter).toString(),
-                    gas_limit: '200',
+                    gas_limit: '127',
                     storage_limit: '0',
-                    amount: (transactions[i].amount * this.toMicro).toString(),
+                    amount: this.microTez.times(transactions[i].amount).toString(),
                     destination: transactions[i].to,
                   });
                 }
@@ -211,7 +207,7 @@ export class OperationService {
                     {
                       kind: 'delegation',
                       source: from,
-                      fee: (fee * this.toMicro).toString(),
+                      fee: this.microTez.times(fee).toString(),
                       counter: (++counter).toString(),
                       gas_limit: '0',
                       storage_limit: '0',
@@ -297,7 +293,6 @@ export class OperationService {
     }
     return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/preapply/operations', [fop])
       .flatMap((parsed: any) => {
-        console.log(JSON.stringify(parsed));
         let newPkh = null;
         for (let i = 0; i < parsed[0].contents.length; i++) {
           if (parsed[0].contents[i].kind === 'origination') {
@@ -317,7 +312,6 @@ export class OperationService {
         throw new Error(applied[0].contents[i].metadata.operation_result.errors[0].id);
       }
     }
-    console.log('applied part: ' + JSON.stringify(applied[0].contents[0].metadata.operation_result.status));
   }
   errHandler(error: any): Observable<any> {
     if (error.error && error.error[0] && error.error[0].id) {
@@ -624,15 +618,11 @@ export class OperationService {
     };
   }
   decodeContractId(hex: string): string {
-    console.log('hex: ' + hex);
     if (hex.slice(0, 2) === '00') {
-      console.log('tz');
       return this.decodePkh(hex.slice(2, 44));
     } else if (hex.slice(0, 2) === '01') {
-      console.log('KT1');
       return this.b58cencode(this.hex2buf(hex.slice(2, 42)), this.prefix.KT);
     } else {
-      console.log('Unsupported tags');
       throw new Error('TagError');
     }
   }
@@ -640,10 +630,7 @@ export class OperationService {
     Validate operation bytes
   */
   validOpBytes(fop: any, opbytes: string): boolean {
-    console.log('Validating...');
     const fop2: any = this.decodeOpBytes(opbytes);
-    console.log('1: ' + JSON.stringify(fop));
-      console.log('2: ' + JSON.stringify(fop2));
     if (JSON.stringify(fop) === JSON.stringify(fop2)) {
       return true; // Client and node agree the opbytes are correct!
     }
@@ -670,7 +657,7 @@ export class OperationService {
           destinationTmp = this.translate.instant('OPERATIONSERVICE.DESTINATION');
           amountTmp = this.translate.instant('OPERATIONSERVICE.AMOUNT');
           output.push(destinationTmp + ' ' + fop.contents[i].destination);
-          output.push(amountTmp + ' ' + (Number(fop.contents[i].amount) / this.toMicro).toString() + ' tez');
+          output.push(amountTmp + ' ' + Big(Number(fop.contents[i].amount)).div(this.microTez).toString() + ' tez');
           // output.push('Destination: ' + fop.contents[i].destination);
           // output.push('Amount: ' + (Number(fop.contents[i].amount) / this.toMicro).toString() + ' tez');
         } else if (fop.contents[i].kind === 'origination') {
@@ -680,7 +667,7 @@ export class OperationService {
           balanceTmp = this.translate.instant('OPERATIONSERVICE.BALANCE');
           // output.push(managerTmp + ' ' + fop.contents[i].managerPubkey);  // betanet
           output.push(managerTmp + ' ' + fop.contents[i].manager_pubkey);  // zeronet
-          output.push(balanceTmp + ' ' + (Number(fop.contents[i].balance) / this.toMicro).toString() + ' tez');
+          output.push(balanceTmp + ' ' + Big(Number(fop.contents[i].balance)).div(this.microTez).toString() + ' tez');
           // output.push('Manager: ' + fop.contents[i].managerPubkey);
           // output.push('Balance: ' + (Number(fop.contents[i].balance) / this.toMicro).toString() + ' tez');
         } else if (fop.contents[i].kind === 'delegation') {
@@ -697,7 +684,7 @@ export class OperationService {
 
         let feeTmp = '';
         feeTmp = this.translate.instant('OPERATIONSERVICE.FEE');
-        output.push(feeTmp + ' ' + (Number(fop.contents[i].fee) / this.toMicro).toString() + ' tez');
+        output.push(feeTmp + ' ' + Big(Number(fop.contents[i].fee)).div(this.microTez).toString() + ' tez');
         // output.push('Fee: ' + (Number(fop.contents[i].fee) / this.toMicro).toString() + ' tez');
         if (i + 1 < fop.contents.length) {
           output.push('');
