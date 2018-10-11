@@ -48,7 +48,7 @@
         </div>
         <div class="modal-body">
             <p> {{ 'DELEGATECOMPONENT.ACCOUNT' | translate }} {{ activePkh }}
-                <BR> {{ 'DELEGATECOMPONENT.DELEGATE' | translate }} {{ toPkh }}
+                <BR> {{ 'DELEGATECOMPONENT.DELEGATE' | translate }} {{ toPkh | delegatorName }}
                 <BR> {{ 'DELEGATECOMPONENT.FEE' | translate }} {{ fee | number:'1.0' }}&#42793;
             </p>
             <div class="row">
