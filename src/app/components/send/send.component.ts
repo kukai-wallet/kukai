@@ -159,6 +159,7 @@ export class SendComponent implements OnInit {
         this.formInvalid = this.checkInput();
         if (!this.formInvalid) {
             if (!this.amount) { this.amount = '0'; }
+
             if (!this.fee) { this.fee = '0'; }
             if (!this.toMultipleDestinationsString) { this.toMultipleDestinationsString = ''; }
             if (this.isMultipleDestinations) {

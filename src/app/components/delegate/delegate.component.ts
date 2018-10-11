@@ -7,6 +7,7 @@ import { WalletService } from '../../services/wallet.service';
 import { CoordinatorService } from '../../services/coordinator.service';
 import { OperationService } from '../../services/operation.service';
 import { ExportService } from '../../services/export.service';
+import { DelegatorNamePipe } from '../../pipes/delegator-name.pipe';
 
 @Component({
     selector: 'app-delegate',
