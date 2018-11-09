@@ -58,6 +58,7 @@
     "qrcode": "^1.2.0",
     "randomatic": "^3.0.0",
     "rxjs": "^5.5.6",
+    "scryptsy": "^2.0.0",
     "secure-password": "^3.0.0",
     "xmlhttprequest": "^1.8.0",
     "zone.js": "^0.8.19"

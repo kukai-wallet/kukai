@@ -44,7 +44,7 @@ export class WalletService {
   createEncryptedWallet(mnemonic: string, password: string, passphrase: string = ''): any {
     let seed = this.operationService.mnemonic2seed(mnemonic, passphrase);
     const keyPair: KeyPair = this.operationService.seed2keyPair(seed);
-    seed = this.encryptionService.encrypt(seed, password, this.getSalt(keyPair.pkh));
+    seed = this.encryptionService.encrypt(seed, password, this.getSalt(keyPair.pkh), 2);
     return this.exportKeyStoreInit(WalletType.FullWallet, keyPair.pkh, seed);
   }
   getSalt(pkh: string = this.wallet.accounts[0].pkh) {
@@ -71,7 +71,8 @@ export class WalletService {
   }
   getKeys(pwd: string): KeyPair {
     if (this.isFullWallet()) {
-      const keys = this.operationService.seed2keyPair(this.encryptionService.decrypt(this.wallet.seed, pwd, this.getSalt()));
+      const keys = this.operationService.seed2keyPair(this.encryptionService.decrypt(
+        this.wallet.seed, pwd, this.getSalt(), this.wallet.encryptionVersion));
       if (keys.pkh === this.wallet.accounts[0].pkh) {
         return keys;
       } else {
@@ -95,6 +96,7 @@ export class WalletService {
   emptyWallet(type: WalletType): Wallet {
     return {
       seed: null,
+      encryptionVersion: null,
       type: type,
       balance: this.emptyBalance(),
       XTZrate: null,
@@ -152,7 +154,7 @@ export class WalletService {
   exportKeyStoreInit(type: WalletType, pkh: string, seed: string) {
     const data: any = {
       provider: 'Kukai',
-      version: 1.0,
+      version: 2.0,
       walletType: type,
       pkh: pkh,
       encryptedSeed: seed
@@ -169,6 +171,9 @@ export class WalletService {
     const walletData = localStorage.getItem(this.storeKey);
     if (walletData) {
       this.wallet = JSON.parse(walletData);
+      if (!this.wallet.encryptionVersion) { // Ensure backwards compability in the localStorage - only needed for a while
+        this.wallet.encryptionVersion = 1;
+      }
     }
   }
 }

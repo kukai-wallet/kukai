@@ -34,9 +34,10 @@ export class ImportService {
       }
       this.walletService.wallet = this.walletService.emptyWallet(walletData.walletType);
       this.walletService.addAccount(walletData.pkh);
-      if (walletData.encryptedSeed) {
+      if (walletData.encryptedSeed) { // Full Wallet
+        this.walletService.wallet.encryptionVersion = walletData.version;
         this.walletService.wallet.seed = walletData.encryptedSeed;
-      } else if (walletData.pk) {
+      } else if (walletData.pk) { // View-only Wallet
         this.walletService.wallet.seed = walletData.pk;
       }
       await this.findAllAccounts(walletData.pkh);
