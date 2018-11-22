@@ -16,7 +16,9 @@ import { ImportService } from '../../services/import.service';
 
 export class ImportComponent implements OnInit {
   activePanel = 0;
+  walletJson: string;
   @Input() encryptedWallet = '';
+  @Input() pwd = '';
   @Input() pkh = '';
   @Input() pk = '';
   data = {
@@ -61,16 +63,34 @@ export class ImportComponent implements OnInit {
       this.messageService.addError(invalidPrefix);
     }
   }
-  import(keyFile: string) {
-    if (this.importService.importWalletData(keyFile)) {
-      this.router.navigate(['/overview']);
+  importPreCheck(keyFile: string) {
+    if (this.importService.pwdRequired(keyFile)) {
+      this.walletJson = keyFile;
     } else {
-      let importFailed = '';
-      this.translate.get('IMPORTCOMPONENT.IMPORTFAILED').subscribe(
-        (res: string) => importFailed = res
-      );
-      this.messageService.add(importFailed);
+      this.import(keyFile);
     }
+  }
+  checkImportPwd() {
+    if (this.pwd) {
+      this.import(this.walletJson, this.pwd);
+      this.pwd = '';
+    }
+    console.log(this.pwd);
+  }
+  import(keyFile: string, pwd: string = '') {
+    this.importService.importWalletData(keyFile, true, '', pwd).then(
+      (success: boolean) => {
+        if (success) {
+          this.router.navigate(['/overview']);
+        } else {
+          let importFailed = '';
+          this.translate.get('IMPORTCOMPONENT.IMPORTFAILED').subscribe(
+            (res: string) => importFailed = res
+          );
+          this.messageService.add(importFailed);
+        }
+      }
+    );
   }
   handleFileInput(files: FileList) {
     let fileToUpload = files.item(0);
@@ -90,7 +110,11 @@ export class ImportComponent implements OnInit {
       const reader = new FileReader();
       reader.readAsText(fileToUpload);
       reader.onload = () => {
-        this.import(reader.result);
+        if (typeof reader.result === 'string') {
+        this.importPreCheck(reader.result);
+        } else {
+          throw new Error('Not a string import');
+        }
       };
     }
   }

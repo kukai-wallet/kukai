@@ -5,6 +5,7 @@ export interface KeyPair {
 }
 export interface Wallet {
   seed: null|string;
+  salt: null|string;
   encryptionVersion: number|null;
   type: WalletType;
   balance: Balance;

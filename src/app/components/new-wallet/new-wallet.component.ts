@@ -23,6 +23,7 @@ export class NewWalletComponent implements OnInit {
   ekfDownloaded = false;
   activePanel = 0;
   data: any;
+  pkh: string;
   MNEMONIC: string;
   mnemonicOut: string;
   entropyMsg: string;
@@ -104,7 +105,10 @@ export class NewWalletComponent implements OnInit {
       this.pwd2 = '';
       setTimeout(() => { // Prevent UI from freeze
         console.log('Wait...');
-        this.data = this.walletService.createEncryptedWallet(this.MNEMONIC, pwd);
+        const ans = this.walletService.createEncryptedWallet(this.MNEMONIC, pwd);
+        this.data = ans.data;
+        console.log('pkh ' + ans.pkh);
+        this.pkh = ans.pkh;
         this.MNEMONIC = '';
         this.mnemonicOut = '';
         this.activePanel++;
@@ -137,7 +141,7 @@ export class NewWalletComponent implements OnInit {
     this.activePanel = 0;
   }
   done() {
-    this.importService.importWalletData(this.data, false);
+    this.importService.importWalletData(this.data, false, this.pkh);
     this.data = null;
     this.messageService.addSuccess('Your new wallet is now set up and ready to use!');
   }
@@ -145,7 +149,7 @@ export class NewWalletComponent implements OnInit {
     return JSON.stringify(this.data);
   }
   getPkh(): string {
-    return this.data.pkh;
+    return this.pkh;
   }
   download() {
     this.exportService.downloadWallet(this.data);
