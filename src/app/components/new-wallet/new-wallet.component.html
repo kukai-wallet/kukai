@@ -1,28 +1,5 @@
 <div id="content">
   <div class="center-content">
-
-    <!-- Mouse movements card - Entropy -->
-    <div class="card text-center fix-size" *ngIf="activePanel==0">
-      <div class="card-body">
-        <h1 class="card-title"> {{ 'NEWWALLETCOMPONENT.TITLE' | translate }} </h1>
-        <div class="card-text">
-          <p class="mono rndp">{{ entropy }}</p>
-          <progressbar [value]="counter2" type="info" [striped]="true">
-            <ng-container *ngIf="counter2 > 4">{{ counter2 | number: '1.0-0' }}%</ng-container>
-          </progressbar>
-          <br>
-          <p> {{ 'NEWWALLETCOMPONENT.MOVEMOUSE' | translate }} </p>
-          <p> {{ 'NEWWALLETCOMPONENT.INFOMOVEMOUSE' | translate }} </p>
-        </div>
-      </div>
-      <div class="card-footer text-right">
-        <a routerLink="/">
-          <button type="button" class="btn btn-primary btn-lg btn-float-left"> {{ 'NEWWALLETCOMPONENT.BACK' | translate }} </button>
-        </a>
-        <button type="button" class="btn btn-primary btn-lg" (click)="skipExtraEntropy()"> {{ 'NEWWALLETCOMPONENT.CONTINUE' | translate }} </button>
-      </div>
-    </div>
-
     <!-- Seed card -->
     <div class="card text-center fix-size-seed" *ngIf="activePanel==2">
       <div class="card-body">

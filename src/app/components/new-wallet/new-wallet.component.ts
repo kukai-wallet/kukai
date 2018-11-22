@@ -1,8 +1,5 @@
-import { Component, OnInit, Input, HostListener } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/fromEvent';
-import * as rnd from 'randomatic';
 
 import { WalletService } from '../../services/wallet.service';
 import { MessageService } from '../../services/message.service';
@@ -21,16 +18,11 @@ export class NewWalletComponent implements OnInit {
   @Input() pwd2 = '';
   @Input() userMnemonic = '';
   ekfDownloaded = false;
-  activePanel = 0;
+  activePanel = 1;
   data: any;
   pkh: string;
   MNEMONIC: string;
   mnemonicOut: string;
-  entropyMsg: string;
-  prevCoords = {
-    x: 0,
-    y: 0
-  };
   // Verify password boolean
   isValidPass = {
     empty: true,
@@ -38,33 +30,6 @@ export class NewWalletComponent implements OnInit {
     match: true,
     confirmed: false
   };
-  counter = 0;
-  counter2 = 0;
-  entr: number;
-  entropy = 'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff' +
-    'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
-  @HostListener('document:touchmove', ['$event'])
-  ontouchmove(e) {
-    /*console.log('(' + e.touches[0].clientX + ', ' + e.touches[0].clientY + ') of (' +
-    document.body.clientWidth + ', ' + document.body.clientHeight + ')');*/
-    const x = Math.round(e.touches[0].clientX * 255 / document.body.clientWidth);
-    const y = Math.round(e.touches[0].clientY * 255 / document.body.clientHeight);
-    if (x >= 0 && x < 256 && y >= 0 && y < 256) {
-      this.addEntropy(x, y);
-    } else {
-      console.log('Out of range');
-    }
-  }
-  @HostListener('document:mousemove', ['$event'])
-  onMouseMove(e) {
-    const x = Math.round(e.pageX * 255 / document.body.clientWidth);
-    const y = Math.round(e.pageY * 255 / document.body.clientHeight);
-    if (x >= 0 && x < 256 && y >= 0 && y < 256) {
-      this.addEntropy(x, y);
-    } else {
-      console.log('Out of range');
-    }
-  }
   constructor(
     private walletService: WalletService,
     private messageService: MessageService,
@@ -73,17 +38,12 @@ export class NewWalletComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // rnd() only to create an offset for better visualisation.
-    // Final seed = mouse movements (optional) XOR bip39.generateMnemonic() (crypto safe)
-    this.entropy = rnd('?', 160, { chars: '0123456789abcdef' });
-  }
-  skipExtraEntropy() {
-    this.activePanel++;
-    this.entropy = '';
     this.generateSeed();
   }
+  skipExtraEntropy() {
+  }
   generateSeed() {
-    this.MNEMONIC = this.walletService.createNewWallet(this.entropy);
+    this.MNEMONIC = this.walletService.createNewWallet();
     this.mnemonicOut = this.MNEMONIC.replace(/((?:.*?\s){4}.*?)\s/g, '$1\n'); // 5 words per line
     this.activePanel++;
   }
@@ -138,7 +98,7 @@ export class NewWalletComponent implements OnInit {
     return false;
   }
   reset() {
-    this.activePanel = 0;
+    this.activePanel = 1;
   }
   done() {
     this.importService.importWalletData(this.data, false, this.pkh);
@@ -154,36 +114,5 @@ export class NewWalletComponent implements OnInit {
   download() {
     this.exportService.downloadWallet(this.data);
     this.ekfDownloaded = true;
-  }
-  addEntropy(x: number, y: number) {
-    if (this.activePanel === 0) {
-      if (x !== this.prevCoords.x || y !== this.prevCoords.y) {
-        this.prevCoords.x = x;
-        this.prevCoords.y = y;
-        let part = this.entropy.substr(this.counter * 4, 4); // part of string to replace
-        const newPart = Number('0x' + part) ^ (x + y * 16 * 16);
-        part = newPart.toString(16);
-        for (let i = 1; i <= 3; i++) { // make sure part got 4 characters
-          if (!part[i]) { part = '0' + part; }
-        }
-        part = this.entropy.substr(0, this.counter * 4) + part + this.entropy.substr((this.counter + 1) * 4, this.entropy.length);
-        this.entropy = part;
-        this.counter = (this.counter + 1) % (this.entropy.length / 4);
-        if (this.counter % 8 === 0) { this.counter2++; } // Set how much to collect here
-        if (this.counter2 >= 100) {
-          this.activePanel++;
-          let finalEntropy = '';
-          for (let i = 0; i < 40; i++) {
-            let hex = 0;
-            for (let j = 0; j < 4; j++) {
-              hex = hex ^ Number('0x' + this.entropy[i * 4 + j]);
-            }
-            finalEntropy = finalEntropy + hex.toString(16);
-          }
-          this.entropy = finalEntropy;
-          this.generateSeed();
-        }
-      }
-    }
   }
 }

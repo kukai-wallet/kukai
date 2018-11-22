@@ -22,24 +22,8 @@ export class WalletService {
   /*
     Wallet creation
   */
-  createNewWallet(extraEntropy: string): string {
-    if (extraEntropy.length < 40) {
-      console.log('Skipping extra entropy');
-      return bip39.generateMnemonic(160);
-    }
-    const entropy = bip39.mnemonicToEntropy(bip39.generateMnemonic(160));
-    // console.log('Entropy 1: ' + entropy);
-    // console.log('Entropy 2: ' + extraEntropy);
-    let mixed = '';
-    for (let i = 0; i < 40; i++) {
-      mixed = mixed + (Number('0x' + entropy[i]) ^ Number('0x' + extraEntropy[i])).toString(16);
-    }
-    // console.log('Entropy m: ' + mixed);
-    if (mixed.length !== 40) {
-      console.log('Not 160 bits entropy');
-      throw new Error('Invalid entropy mix');
-    }
-    return bip39.entropyToMnemonic(mixed);
+  createNewWallet(): string {
+    return bip39.generateMnemonic(160);
   }
   createEncryptedWallet(mnemonic: string, password: string, passphrase: string = ''): any {
     let seed = this.operationService.mnemonic2seed(mnemonic, passphrase);
@@ -47,7 +31,7 @@ export class WalletService {
     const encrypted = this.encryptionService.encrypt(seed, password, 2);
     seed = encrypted.chiphertext;
     const salt = encrypted.iv;
-    return {data: this.exportKeyStoreInit(WalletType.FullWallet, keyPair.pkh, seed, salt), pkh: keyPair.pkh};
+    return { data: this.exportKeyStoreInit(WalletType.FullWallet, keyPair.pkh, seed, salt), pkh: keyPair.pkh };
   }
   getSalt(pkh: string = this.wallet.accounts[0].pkh) {
     return pkh.slice(3, 19);
@@ -175,7 +159,7 @@ export class WalletService {
   }
   loadStoredWallet() {
     const walletData = localStorage.getItem(this.storeKey);
-    if (walletData && walletData !== 'undefined')  {
+    if (walletData && walletData !== 'undefined') {
       console.log('pip ' + JSON.stringify(walletData));
       this.wallet = JSON.parse(walletData);
       if (!this.wallet.encryptionVersion) { // Ensure backwards compability in the localStorage - only needed for a while
