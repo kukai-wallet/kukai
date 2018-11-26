@@ -40,7 +40,7 @@
                                 <input type="text" class="form-control" id="sendAmount" placeholder="0.00" [(ngModel)]="amount" name="three">
                             </div>
                             <small id="smallSend" class="form-text text-muted">
-                                <button type="button" class="btn btn-outline-light btn-sm btn-balance" (click)="sendEntireBalance(activePkh, $event)"> {{ 'SENDCOMPONENT.SENDBALANCE' | translate }} </button>
+                                <!--<button type="button" class="btn btn-outline-light btn-sm btn-balance" (click)="sendEntireBalance(activePkh, $event)"> {{ 'SENDCOMPONENT.SENDBALANCE' | translate }} </button>-->
 
                                 <span class="align-middle" *ngIf="amount * XTZrate > 0">(${{amount * XTZrate | number:'1.0'}} USD)</span>
                             </small>
@@ -48,7 +48,7 @@
 
                         <div class="form-group col-md-4">
                             <label for="transactionFee"> {{ 'SENDCOMPONENT.FEE' | translate }} (&#42793;)</label>
-                            <input type="text" class="form-control" id="transactionFee" placeholder="0.00" [(ngModel)]="fee" name="four">
+                            <input type="text" class="form-control" id="transactionFee" placeholder={{this.recommendedFee.toString()}} [(ngModel)]="fee" name="four">
                         </div>
                     </div>
                 </div>

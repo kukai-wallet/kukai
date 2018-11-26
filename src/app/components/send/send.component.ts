@@ -27,7 +27,7 @@ export class SendComponent implements OnInit {
     @ViewChild('modal1') modal1: TemplateRef<any>;
     @Input() activePkh: string;
     @Input() actionButtonString: string;  // Possible values: btnOutline / dropdownItem / btnSidebar
-
+    recommendedFee = 0.0014;
     showSendFormat = {
         btnOutline: false,
         dropdownItem: false,
@@ -150,6 +150,17 @@ export class SendComponent implements OnInit {
 
     open1(template1: TemplateRef<any>) {
         if (this.walletService.wallet) {
+            this.operationService.isRevealed(this.walletService.wallet.accounts[0].pkh)
+                .subscribe((revealed: boolean) => {
+                    if (!revealed) {
+                        this.recommendedFee = 0.0025;
+                    } else {
+                        this.recommendedFee = 0.0014;
+                    }
+                });
+            /*if (this.walletService.wallet.accounts[0].numberOfActivites === 0) {
+                this.recommendedFee += 0.0011;
+            }*/
             this.clearForm();
             this.modalRef1 = this.modalService.show(template1, { class: 'first' });  // modal-sm / modal-lg
         }
@@ -160,7 +171,7 @@ export class SendComponent implements OnInit {
         if (!this.formInvalid) {
             if (!this.amount) { this.amount = '0'; }
 
-            if (!this.fee) { this.fee = '0'; }
+            if (!this.fee) { this.fee = this.recommendedFee.toString(); }
             if (!this.toMultipleDestinationsString) { this.toMultipleDestinationsString = ''; }
             if (this.isMultipleDestinations) {
                 // this.transactions = this.parseMultipleTransactions(this.toMultipleDestinationsString);

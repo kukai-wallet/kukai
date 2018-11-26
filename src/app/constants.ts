@@ -7,13 +7,13 @@ interface Net {
   }
 export class Constants {
     // Select Zeronet, Alphanet or Mainnet
-    readonly NET: Net = this.mainnet();
     // readonly NET: Net = this.mainnet();
+    readonly NET: Net = this.zeronet();
 
     zeronet(): Net {
         const ZERONET: Net = {
             NAME:  'Zeronet',
-            API_URL:  'https://zeronet-api.tzscan.io/',
+            API_URL:  'https://api.zeronet.tzscan.io/',
             NODE_URL: 'https://zeronet-node.tzscan.io/',
             BLOCK_EXPLORER_URL: 'https://zeronet.tzscan.io/',
             CHAIN_ID: 'ProtoALphaALphaALphaALphaALphaALphaALphaALphaDdp3zK'

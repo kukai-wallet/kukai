@@ -15,6 +15,7 @@ import { DelegatorNamePipe } from '../../pipes/delegator-name.pipe';
     styleUrls: ['./delegate.component.scss']
 })
 export class DelegateComponent implements OnInit {
+    recommendedFee = 0.0012;
     @ViewChild('modal1') modal1: TemplateRef<any>;
 
     @Input() activePkh: string;
@@ -59,7 +60,7 @@ export class DelegateComponent implements OnInit {
     open2(template: TemplateRef<any>) {
         this.formInvalid = this.invalidInput();
         if (!this.formInvalid) {
-            if (!this.fee) { this.fee = '0'; }
+            if (!this.fee) { this.fee = this.recommendedFee.toString(); }
             this.close1();
             this.modalRef2 = this.modalService.show(template, { class: 'second' });
         }
