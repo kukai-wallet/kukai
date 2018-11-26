@@ -207,7 +207,7 @@ export class OperationService {
                     {
                       kind: 'delegation',
                       source: from,
-                      fee: '1200', // this.microTez.times(fee).toString(),
+                      fee: this.microTez.times(fee).toString(),
                       counter: (++counter).toString(),
                       gas_limit: '100000',
                       storage_limit: '0',

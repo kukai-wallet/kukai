@@ -40,7 +40,7 @@
                                 <input type="text" class="form-control" id="sendAmount" placeholder="0.00" [(ngModel)]="amount" name="three">
                             </div>
                             <small id="smallSend" class="form-text text-muted">
-                                <!--<button type="button" class="btn btn-outline-light btn-sm btn-balance" (click)="sendEntireBalance(activePkh, $event)"> {{ 'SENDCOMPONENT.SENDBALANCE' | translate }} </button>-->
+                                <button type="button" class="btn btn-outline-light btn-sm btn-balance" (click)="sendEntireBalance(activePkh, $event)"> {{ 'SENDCOMPONENT.SENDBALANCE' | translate }} </button>
 
                                 <span class="align-middle" *ngIf="amount * XTZrate > 0">(${{amount * XTZrate | number:'1.0'}} USD)</span>
                             </small>
@@ -100,6 +100,7 @@
                     {{ 'SENDCOMPONENT.TO' | translate }}  {{ transactions[0].to }}
                     <BR> {{ 'SENDCOMPONENT.AMOUNT' | translate }} {{ transactions[0].amount | number:'1.0-6' }}&#42793;
                         <BR> Fee: {{ fee | number:'1.0-6' }}&#42793;
+                    <ng-container *ngIf="transactions[0].burn"><BR>Burn: 0.257&#42793;</ng-container>
                 </span>
                 <BR><BR>
                 <!-- 
@@ -120,6 +121,7 @@
                             <tr *ngFor="let transaction of showTransactions">
                                 <td>{{ transaction.to }}</td>
                                 <td>{{ transaction.amount | number:'1.0-6' }}&#42793;</td>
+                                <td *ngIf="transaction.burn">Burn: 0.257&#42793;</td>
                             </tr>
                             <tr *ngIf='transactions.length > 2'>
                                 <td></td>
