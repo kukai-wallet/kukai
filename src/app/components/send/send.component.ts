@@ -28,7 +28,7 @@ export class SendComponent implements OnInit {
     @ViewChild('modal1') modal1: TemplateRef<any>;
     @Input() activePkh: string;
     @Input() actionButtonString: string;  // Possible values: btnOutline / dropdownItem / btnSidebar
-    recommendedFee = 0.0014;
+    recommendedFee = 0.0013;
     showSendFormat = {
         btnOutline: false,
         dropdownItem: false,
@@ -158,9 +158,9 @@ export class SendComponent implements OnInit {
             this.operationService.isRevealed(this.walletService.wallet.accounts[0].pkh)
                 .subscribe((revealed: boolean) => {
                     if (!revealed) {
-                        this.recommendedFee = 0.0025;
+                        this.recommendedFee = 0.0026;
                     } else {
-                        this.recommendedFee = 0.0014;
+                        this.recommendedFee = 0.0013;
                     }
                 });
             /*if (this.walletService.wallet.accounts[0].numberOfActivites === 0) {
