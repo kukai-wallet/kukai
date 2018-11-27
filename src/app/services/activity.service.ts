@@ -39,51 +39,16 @@ export class ActivityService {
       .flatMap((number_operations: any) => {
         const index = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
         if (index === -1 || this.walletService.wallet.accounts[index].numberOfActivites !== number_operations[0]) {
+          // return this.getTransactions(pkh, number_operations[0]);
           return this.getTransactions(pkh, number_operations[0]);
         } else {
-          if (this.walletService.wallet.accounts[index].activities.findIndex(a => a.block === 'prevalidation') !== -1) {
-            return this.getUnconfirmedTransactions(pkh);
-          } else {
-            return of(
-              {
-                upToDate: true
-              });
-          }
+          return of(
+            {
+              upToDate: true
+            });
         }
       }
       );
-  }
-  // Try to validate unconfirmed transaction - deprecated?
-  getUnconfirmedTransactions(pkh: string): Observable<any> {
-    const index = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
-    let n = 0;
-    for (let i = 0; i < this.walletService.wallet.accounts[index].activities.length; i++) {
-      if (this.walletService.wallet.accounts[index].activities[i].block === 'prevalidation') {
-        n = i + 1;
-      } else {
-        break;
-      }
-    }
-    return this.tzscanService.operations(pkh, n)
-      .flatMap((data: any) => {
-        const aIndex = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
-        const payload = [];
-        for (let i = 0; i < data.length; i++) {
-          if (this.walletService.wallet.accounts[aIndex].activities[i].hash === data[i].hash) {
-            this.walletService.wallet.accounts[aIndex].activities[i].block = data[i].block_hash;
-            const bIndex = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
-            this.walletService.wallet.accounts[bIndex].activities[i].block = data[i].block_hash;
-            if (data[i].block_hash !== 'prevalidation') {
-              payload.push({
-                block: data[i].block_hash,
-                hash: data[i].hash
-              });
-            }
-          }
-        }
-        return this.getTimestamps(pkh, payload);
-      })
-      ;
   }
   // Get latest transaction
   getTransactions(pkh: string, counter: number): Observable<any> {
@@ -118,7 +83,15 @@ export class ActivityService {
             });
           }
         }
-        return this.getTimestamps(pkh, payload);
+        return this.getTimestamps(pkh, payload).flatMap(
+          (res: any) => { // Sort
+            const pkhIndex = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
+            let cpy: any = this.walletService.wallet.accounts[pkhIndex].activities;
+            cpy = cpy.sort((a, b) => b.timestamp - a.timestamp);
+            this.walletService.wallet.accounts[pkhIndex].activities = cpy;
+            return of(res);
+          }
+        );
       }
       );
   }

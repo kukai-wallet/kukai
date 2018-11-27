@@ -2,6 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Constants } from '../constants';
+import { stringify } from '@angular/core/src/render3/util';
+import { of } from 'rxjs/observable/of';
+import { forkJoin } from 'rxjs/observable/forkJoin';
+import { timeout, catchError, flatMap, mergeMap } from 'rxjs/operators';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/mergeMap';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -19,9 +25,30 @@ export class TzscanService {
   numberOperationsOrigination(pkh: string) {
     return this.http.get(this.apiUrl + 'v1/number_operations/' + pkh + '?type=Origination');
   }
-  operations(pkh: string, n: number, p: number = 0) {
-    return this.http.get(this.apiUrl + 'v1/operations/' + pkh +
-    '?type=Transaction,Delegation,Origination,Activation&number=' + n + '&p=' + p);
+  operations(pkh: string, n: number, p: number = 0): Observable<any> {
+    return this.http.get(this.apiUrl + 'v1/operations/' + pkh + '?type=Transaction&number=' + n + '&p=' + p)
+      .flatMap((p1: any) => {
+        return this.http.get(this.apiUrl + 'v1/operations/' + pkh + '?type=Delegation&number=' + n + '&p=' + p)
+          .flatMap((p2: any) => {
+            return this.http.get(this.apiUrl + 'v1/operations/' + pkh + '?type=Origination&number=' + n + '&p=' + p)
+              .flatMap((p3: any) => {
+                return this.http.get(this.apiUrl + 'v1/operations/' + pkh + '?type=Activation&number=1&p=0')
+                  .flatMap((p4: any) => {
+                    const part = [p1, p2, p3, p4];
+                    const parts: any = [];
+                    for (let i = 0; i < 4; i++) {
+                      for (let j = 0; j < part[i].length; j++) {
+                        parts.push(part[i][j]);
+                      }
+                    }
+                    return of(parts);
+                  });
+              });
+          });
+      });
+  }
+  getCounter(op: any): number {
+    return Number(op.type.operations[0].counter);
   }
   operationsOrigination(pkh: string, n: number) {
     return this.http.get(this.apiUrl + 'v1/operations/' + pkh + '?type=Origination&number=' + n + '&p=0');

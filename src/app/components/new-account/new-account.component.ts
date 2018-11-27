@@ -16,6 +16,7 @@ import { ExportService } from '../../services/export.service';
   styleUrls: ['./new-account.component.scss']
 })
 export class NewAccountComponent implements OnInit {
+  recommendedFee = 0.0014;
   @ViewChild('modal1') modal1: TemplateRef<any>;
   @Input() activePkh: string;
   accounts = null;
@@ -54,20 +55,27 @@ export class NewAccountComponent implements OnInit {
   }
 
   open1(template1: TemplateRef<any>) {
-    this.clearForm();
-    this.modalRef1 = this.modalService.show(template1, { class: 'first' });
+    if (this.walletService.wallet) {
+      this.clearForm();
+      this.operationService.isRevealed(this.walletService.wallet.accounts[0].pkh)
+        .subscribe((revealed: boolean) => {
+          if (!revealed) {
+            this.recommendedFee = 0.0025;
+          } else {
+            this.recommendedFee = 0.0014;
+          }
+        });
+      this.modalRef1 = this.modalService.show(template1, { class: 'first' });
+    }
   }
 
   open2(template: TemplateRef<any>) {
     this.formInvalid = this.invalidInput();
     if (!this.formInvalid) {
       if (!this.amount) { this.amount = '0'; }
-      if (!this.fee) { this.fee = '0'; }
+      if (!this.fee) { this.fee = this.recommendedFee.toString(); }
       this.close1();
       this.modalRef2 = this.modalService.show(template, { class: 'second' });
-      this.operationService.getConstants()
-        .subscribe(((ans: any) => this.originationBurn = Number(ans.origination_burn) / 1000000)
-        );
     }
   }
 

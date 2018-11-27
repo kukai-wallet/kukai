@@ -18,7 +18,7 @@ const {app, BrowserWindow, Menu} = require('electron')
 
   function createWindow () {
     // Create the browser window.
-    win = new BrowserWindow({width: 1400, height: 1000, autoHideMenuBar: true, icon: 'assets/icons/png/64x64.png'})
+    win = new BrowserWindow({width: 1400, height: 1000, autoHideMenuBar: true, icon: 'assets/icons/png/64x64.png', contextIsolation: true, webPreferences: {nodeIntegration: false}})
     // and load the index.html of the app.
     win.loadFile('index.html')
 

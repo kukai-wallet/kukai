@@ -15,6 +15,7 @@ import { ExportService } from '../../services/export.service';
 interface SendData {
     to: string;
     amount: number;
+    burn: boolean;
 }
 
 @Component({
@@ -27,7 +28,7 @@ export class SendComponent implements OnInit {
     @ViewChild('modal1') modal1: TemplateRef<any>;
     @Input() activePkh: string;
     @Input() actionButtonString: string;  // Possible values: btnOutline / dropdownItem / btnSidebar
-
+    recommendedFee = 0.0014;
     showSendFormat = {
         btnOutline: false,
         dropdownItem: false,
@@ -144,12 +145,27 @@ export class SendComponent implements OnInit {
         index = this.accounts.findIndex(account => account.pkh === accountPkh);
 
         accountBalance = this.accounts[index].balance.balanceXTZ / 1000000;
-
+        if (!this.fee) {
+            accountBalance -= this.recommendedFee;
+        } else {
+            accountBalance -= Number(this.fee);
+        }
         this.amount = accountBalance.toString();
     }
 
     open1(template1: TemplateRef<any>) {
         if (this.walletService.wallet) {
+            this.operationService.isRevealed(this.walletService.wallet.accounts[0].pkh)
+                .subscribe((revealed: boolean) => {
+                    if (!revealed) {
+                        this.recommendedFee = 0.0025;
+                    } else {
+                        this.recommendedFee = 0.0014;
+                    }
+                });
+            /*if (this.walletService.wallet.accounts[0].numberOfActivites === 0) {
+                this.recommendedFee += 0.0011;
+            }*/
             this.clearForm();
             this.modalRef1 = this.modalService.show(template1, { class: 'first' });  // modal-sm / modal-lg
         }
@@ -160,7 +176,7 @@ export class SendComponent implements OnInit {
         if (!this.formInvalid) {
             if (!this.amount) { this.amount = '0'; }
 
-            if (!this.fee) { this.fee = '0'; }
+            if (!this.fee) { this.fee = this.recommendedFee.toString(); }
             if (!this.toMultipleDestinationsString) { this.toMultipleDestinationsString = ''; }
             if (this.isMultipleDestinations) {
                 // this.transactions = this.parseMultipleTransactions(this.toMultipleDestinationsString);
@@ -172,13 +188,33 @@ export class SendComponent implements OnInit {
                     this.showTransactions.push(this.transactions[0]);
                 }
             } else {
-                this.transactions = [{to: this.toPkh, amount: Number(this.amount)}];
+                this.transactions = [{to: this.toPkh, amount: Number(this.amount), burn: false}];
             }
+            this.detectBurns();
             this.close1();
             this.modalRef2 = this.modalService.show(template, { class: 'second' });
         }
     }
-
+    detectBurns() {
+        for (let i = 0; i < this.transactions.length; i++) {
+            if (this.transactions[i].to.slice(0, 2) === 'tz') {
+                this.operationService.getBalance(this.transactions[i].to).subscribe(
+                    (ans: any) => {
+                        if (ans.success && ans.payload.balance === '0') {
+                            console.log('Burn!');
+                            this.transactions[i].burn = true;
+                        } else {
+                            this.transactions[i].burn = false;
+                            console.log('No burn!');
+                        }
+                    }
+                );
+            } else {
+                console.log('Not tz...');
+                this.transactions[i].burn = false;
+            }
+        }
+    }
     async open3(template: TemplateRef<any>) {
         const pwd = this.password;
         this.password = '';
@@ -360,7 +396,7 @@ export class SendComponent implements OnInit {
                     console.log('singleSendDataArray.length: ', singleSendDataArray.length );
                     console.log('singleSendDataCheckresult', singleSendDataCheckresult);
                     if (singleSendDataCheckresult === '') {
-                        this.toMultipleDestinations.push({to: singleSendDataArray[0], amount: Number(singleSendDataArray[1])});
+                        this.toMultipleDestinations.push({to: singleSendDataArray[0], amount: Number(singleSendDataArray[1]), burn: false});
 
                     } else {
                         this.toMultipleDestinations = [];
