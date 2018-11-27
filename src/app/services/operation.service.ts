@@ -120,8 +120,8 @@ export class OperationService {
                       counter: (++counter).toString(),
                       gas_limit: '10000',
                       storage_limit: '277',
-                      // managerPubkey: keys.pkh,  // Mainnet
-                      manager_pubkey: keys.pkh,  // Zeronet
+                      managerPubkey: keys.pkh,  // Mainnet
+                      /// manager_pubkey: keys.pkh,  // Zeronet
                       balance: this.microTez.times(amount).toString(),
                       spendable: true,
                       delegatable: true
@@ -532,8 +532,8 @@ export class OperationService {
   decodeOrigination(content: any): any { // Tag 9
     let index = 0;
     const op = this.decodeCommon({ kind: 'origination' }, content);
-    // op.data.managerPubkey = this.decodePkh(op.rest.slice(index, index += 42));  // mainnet
-    op.data.manager_pubkey = this.decodePkh(op.rest.slice(index, index += 42));  // zeronet
+    op.data.managerPubkey = this.decodePkh(op.rest.slice(index, index += 42));  // mainnet
+    /// op.data.manager_pubkey = this.decodePkh(op.rest.slice(index, index += 42));  // zeronet
     const balance = this.zarithDecode(op.rest.slice(index));
     op.data.balance = balance.value.toString();
     op.data.spendable = (op.rest.slice(index += balance.count * 2, index += 2) === 'ff');
