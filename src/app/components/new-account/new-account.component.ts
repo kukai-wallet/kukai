@@ -16,7 +16,7 @@ import { ExportService } from '../../services/export.service';
   styleUrls: ['./new-account.component.scss']
 })
 export class NewAccountComponent implements OnInit {
-  recommendedFee = 0.0014;
+  recommendedFee = 0.0013;
   @ViewChild('modal1') modal1: TemplateRef<any>;
   @Input() activePkh: string;
   accounts = null;
@@ -60,9 +60,9 @@ export class NewAccountComponent implements OnInit {
       this.operationService.isRevealed(this.walletService.wallet.accounts[0].pkh)
         .subscribe((revealed: boolean) => {
           if (!revealed) {
-            this.recommendedFee = 0.0025;
+            this.recommendedFee = 0.0026;
           } else {
-            this.recommendedFee = 0.0014;
+            this.recommendedFee = 0.0013;
           }
         });
       this.modalRef1 = this.modalService.show(template1, { class: 'first' });
