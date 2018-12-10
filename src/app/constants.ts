@@ -24,7 +24,7 @@ export class Constants {
     alphanet(): Net {
         const ALPHANET: Net = {
             NAME:  'Alphanet',
-            API_URL:  'https://alphanet-api.tzscan.io/',
+            API_URL:  'https://api.alphanet.tzscan.io/',
             NODE_URL: 'https://alphanet-node.tzscan.io/',
             BLOCK_EXPLORER_URL: 'https://alphanet.tzscan.io/',
             CHAIN_ID: 'PsddFKi32cMJ2qPjf43Qv5GDWLDPZb3T3bF6fLKiF5HtvHNU7aP'
