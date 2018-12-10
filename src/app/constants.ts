@@ -7,8 +7,9 @@ interface Net {
   }
 export class Constants {
     // Select Zeronet, Alphanet or Mainnet
-    readonly NET: Net = this.mainnet();
+    // readonly NET: Net = this.mainnet();
     // readonly NET: Net = this.zeronet();
+    readonly NET: Net = this.alphanet();
 
     zeronet(): Net {
         const ZERONET: Net = {
@@ -26,7 +27,7 @@ export class Constants {
             API_URL:  'https://alphanet-api.tzscan.io/',
             NODE_URL: 'https://alphanet-node.tzscan.io/',
             BLOCK_EXPLORER_URL: 'https://alphanet.tzscan.io/',
-            CHAIN_ID: 'PsYLVpVvgbLhAhoqAkMFUo6gudkJ9weNXhUYCiLDzcUpFpkk8Wt'
+            CHAIN_ID: 'PsddFKi32cMJ2qPjf43Qv5GDWLDPZb3T3bF6fLKiF5HtvHNU7aP'
         };
         return ALPHANET;
     }

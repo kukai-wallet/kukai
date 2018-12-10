@@ -57,14 +57,7 @@ export class NewAccountComponent implements OnInit {
   open1(template1: TemplateRef<any>) {
     if (this.walletService.wallet) {
       this.clearForm();
-      this.operationService.isRevealed(this.walletService.wallet.accounts[0].pkh)
-        .subscribe((revealed: boolean) => {
-          if (!revealed) {
-            this.recommendedFee = 0.0026;
-          } else {
-            this.recommendedFee = 0.0013;
-          }
-        });
+      this.checkReveal();
       this.modalRef1 = this.modalService.show(template1, { class: 'first' });
     }
   }
@@ -143,7 +136,17 @@ export class NewAccountComponent implements OnInit {
       );
     }, 100);
   }
-
+  checkReveal() {
+    console.log('check reveal');
+    this.operationService.isRevealed(this.activePkh)
+            .subscribe((revealed: boolean) => {
+                if (!revealed) {
+                    this.recommendedFee = 0.0026;
+                } else {
+                    this.recommendedFee = 0.0013;
+                }
+            });
+}
   invalidInput(): string {
     if (!Number(this.amount) && this.amount && this.amount !== '0') {
       let invalidAmount = '';

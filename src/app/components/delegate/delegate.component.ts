@@ -54,6 +54,7 @@ export class DelegateComponent implements OnInit {
     open1(template1: TemplateRef<any>) {
         if (this.walletService.wallet) {
             this.clearForm();
+            this.checkReveal();
             this.modalRef1 = this.modalService.show(template1, { class: 'first' });
         }
     }
@@ -121,6 +122,17 @@ export class DelegateComponent implements OnInit {
                 }
             );
         }, 100);
+    }
+    checkReveal() {
+        console.log('check reveal');
+        this.operationService.isRevealed(this.activePkh)
+                .subscribe((revealed: boolean) => {
+                    if (!revealed) {
+                        this.recommendedFee = 0.0026;
+                    } else {
+                        this.recommendedFee = 0.0013;
+                    }
+                });
     }
     clearForm() {
         this.toPkh = '';
