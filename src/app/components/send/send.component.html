@@ -14,7 +14,7 @@
                 <div class="form-row">
                     <div class="form-group col-md-8">
                         <label for="fromAdress"> {{ 'SENDCOMPONENT.FROMADDRESS' | translate }} </label>
-                        <select [(ngModel)]="activePkh" id="fromAdress" class="form-control mono" name="first1">
+                        <select [(ngModel)]="activePkh" (change)="checkReveal()" id="fromAdress" class="form-control mono" name="first1">
                             <option *ngFor="let account of accounts" [ngValue]="account.pkh">{{ account.pkh }}</option>
                         </select>
                     </div>
@@ -65,7 +65,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-4">
                             <label for="transactionFee"> {{ 'SENDCOMPONENT.FEE' | translate }} (&#42793;)</label>
-                            <input type="text" class="form-control" id="transactionFee" placeholder="0.00" [(ngModel)]="fee" name="four">
+                            <input type="text" class="form-control" id="transactionFee" placeholder={{this.recommendedFee.toString()}} [(ngModel)]="fee" name="four">
                         </div>
                     </div>
                 </div>

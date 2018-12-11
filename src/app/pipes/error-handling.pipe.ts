@@ -2,7 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 /*
     Informs users on most common errors
-    RPC errors doc: http://doc.tzalpha.net/api/errors.html
+    RPC errors doc: http://tezos.gitlab.io/mainnet/api/errors.html
 */
 
 @Pipe({

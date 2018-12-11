@@ -13,7 +13,7 @@
                 <div class="form-row">
                     <div class="form-group col-md-8">
                         <label for="fromAdress"> {{ 'DELEGATECOMPONENT.FROM' | translate }} </label>
-                        <select [(ngModel)]="activePkh" id="fromAdress" class="form-control" name="first">
+                        <select [(ngModel)]="activePkh" (change)="checkReveal()" id="fromAdress" class="form-control" name="first">
                             <option *ngFor="let account of accounts | slice:1" [ngValue]="account.pkh">{{ account.pkh }}</option>
                         </select>
                     </div>
@@ -49,7 +49,7 @@
         <div class="modal-body">
             <p> {{ 'DELEGATECOMPONENT.ACCOUNT' | translate }} {{ activePkh }}
                 <BR> {{ 'DELEGATECOMPONENT.DELEGATE' | translate }} {{ toPkh | delegatorName }}
-                <BR> {{ 'DELEGATECOMPONENT.FEE' | translate }} {{ fee | number:'1.0' }}&#42793;
+                <BR> {{ 'DELEGATECOMPONENT.FEE' | translate }} {{ fee | number:'1.0-6' }}&#42793;
             </p>
             <div class="row">
                 <div *ngIf='walletService.isFullWallet()' class="form-group col-md-6">

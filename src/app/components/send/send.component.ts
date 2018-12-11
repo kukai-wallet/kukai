@@ -155,18 +155,8 @@ export class SendComponent implements OnInit {
 
     open1(template1: TemplateRef<any>) {
         if (this.walletService.wallet) {
-            this.operationService.isRevealed(this.walletService.wallet.accounts[0].pkh)
-                .subscribe((revealed: boolean) => {
-                    if (!revealed) {
-                        this.recommendedFee = 0.0026;
-                    } else {
-                        this.recommendedFee = 0.0013;
-                    }
-                });
-            /*if (this.walletService.wallet.accounts[0].numberOfActivites === 0) {
-                this.recommendedFee += 0.0011;
-            }*/
             this.clearForm();
+            this.checkReveal();
             this.modalRef1 = this.modalService.show(template1, { class: 'first' });  // modal-sm / modal-lg
         }
     }
@@ -332,7 +322,17 @@ export class SendComponent implements OnInit {
 
         return result;
     }
-
+    checkReveal() {
+        console.log('check reveal');
+        this.operationService.isRevealed(this.activePkh)
+                .subscribe((revealed: boolean) => {
+                    if (!revealed) {
+                        this.recommendedFee = 0.0026;
+                    } else {
+                        this.recommendedFee = 0.0013;
+                    }
+                });
+    }
     invalidInputSingle(): string {
         if (!this.activePkh || this.activePkh.length !== 36) {
 

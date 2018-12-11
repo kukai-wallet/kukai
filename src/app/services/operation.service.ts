@@ -121,7 +121,7 @@ export class OperationService {
                       gas_limit: '10000',
                       storage_limit: '277',
                       managerPubkey: keys.pkh,  // Mainnet
-                      /// manager_pubkey: keys.pkh,  // Zeronet
+                      // manager_pubkey: keys.pkh,  // Zeronet
                       balance: this.microTez.times(amount).toString(),
                       spendable: true,
                       delegatable: true
@@ -179,7 +179,7 @@ export class OperationService {
                     source: from,
                     fee: this.microTez.times(fee).toString(),
                     counter: (++counter).toString(),
-                    gas_limit: '10200',
+                    gas_limit: '10300',
                     storage_limit: '277',
                     amount: this.microTez.times(transactions[i].amount).toString(),
                     destination: transactions[i].to,
@@ -209,13 +209,26 @@ export class OperationService {
                       source: from,
                       fee: this.microTez.times(fee).toString(),
                       counter: (++counter).toString(),
-                      gas_limit: '100000',
+                      gas_limit: '10000',
                       storage_limit: '0',
                     }
                   ]
                 };
                 if (to !== '') {
                   fop.contents[0].delegate = to;
+                }
+                if (manager.key === undefined) {
+                  fop.contents[1] = fop.contents[0];
+                  fop.contents[0] = {
+                    kind: 'reveal',
+                    source: from,
+                    fee: '0',
+                    counter: (counter).toString(),
+                    gas_limit: '10000',
+                    storage_limit: '0', // '60000',
+                    public_key: keys.pk
+                  };
+                  fop.contents[1].counter = (Number(fop.contents[1].counter) + 1).toString();
                 }
                 return this.operation(fop, keys);
               });
@@ -533,7 +546,7 @@ export class OperationService {
     let index = 0;
     const op = this.decodeCommon({ kind: 'origination' }, content);
     op.data.managerPubkey = this.decodePkh(op.rest.slice(index, index += 42));  // mainnet
-    /// op.data.manager_pubkey = this.decodePkh(op.rest.slice(index, index += 42));  // zeronet
+    // op.data.manager_pubkey = this.decodePkh(op.rest.slice(index, index += 42));  // zeronet
     const balance = this.zarithDecode(op.rest.slice(index));
     op.data.balance = balance.value.toString();
     op.data.spendable = (op.rest.slice(index += balance.count * 2, index += 2) === 'ff');
