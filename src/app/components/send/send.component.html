@@ -65,7 +65,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-4">
                             <label for="transactionFee"> {{ 'SENDCOMPONENT.FEE' | translate }} (&#42793;)</label>
-                            <input type="text" class="form-control" id="transactionFee" placeholder="0.00" [(ngModel)]="fee" name="four">
+                            <input type="text" class="form-control" id="transactionFee" placeholder={{this.recommendedFee.toString()}} [(ngModel)]="fee" name="four">
                         </div>
                     </div>
                 </div>
