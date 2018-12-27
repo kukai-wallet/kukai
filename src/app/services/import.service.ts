@@ -68,7 +68,9 @@ export class ImportService {
             throw new Error('Wrong password!');
           }
           console.log('Correct pwd!');
-          this.walletService.addAccount(keys.pkh);
+          if (walletData.version === 2) {
+            this.walletService.addAccount(keys.pkh);
+          }
         }
       } else if (walletData.walletType === 1) { // View
         this.walletService.wallet.seed = walletData.pk; // set pk

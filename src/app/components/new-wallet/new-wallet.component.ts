@@ -5,6 +5,7 @@ import { WalletService } from '../../services/wallet.service';
 import { MessageService } from '../../services/message.service';
 import { ExportService } from '../../services/export.service';
 import { ImportService } from '../../services/import.service';
+import { InputValidationService } from '../../services/input-validation.service';
 
 
 @Component({
@@ -17,6 +18,7 @@ export class NewWalletComponent implements OnInit {
   @Input() pwd1 = '';
   @Input() pwd2 = '';
   @Input() userMnemonic = '';
+  pwdStrength = '';
   ekfDownloaded = false;
   activePanel = 1;
   data: any;
@@ -26,7 +28,7 @@ export class NewWalletComponent implements OnInit {
   // Verify password boolean
   isValidPass = {
     empty: true,
-    minLength: true,
+    minStrength: true,
     match: true,
     confirmed: false
   };
@@ -34,7 +36,8 @@ export class NewWalletComponent implements OnInit {
     private walletService: WalletService,
     private messageService: MessageService,
     private exportService: ExportService,
-    private importService: ImportService
+    private importService: ImportService,
+    private inputValidationService: InputValidationService
   ) { }
 
   ngOnInit() {
@@ -77,25 +80,20 @@ export class NewWalletComponent implements OnInit {
     }
   }
   validatePwd(): boolean {
-    if (this.pwd1.length < this.MIN_PWD_LENGTH || this.pwd2.length < this.MIN_PWD_LENGTH) {
-      this.isValidPass.minLength = false;
-      console.log('isValidPass.length', this.isValidPass.minLength);
-    } else {
-      this.isValidPass.minLength = true;
-    }
-    if (this.pwd1 !== this.pwd2) {
-      this.isValidPass.match = false;
-      console.log('isValidPass.match', this.isValidPass.match);
-    } else {
-      this.isValidPass.match = true;
-    } if (this.isValidPass.minLength && this.isValidPass.match) {
+    this.isValidPass.minStrength = this.inputValidationService.password(this.pwd1);
+    this.isValidPass.match = (this.pwd1 === this.pwd2);
+    if (this.isValidPass.minStrength && this.isValidPass.match) {
       this.isValidPass.confirmed = true;
       console.log('Success', this.isValidPass.confirmed);
       return true;
     } else {
       this.isValidPass.confirmed = false;
+      return false;
     }
-    return false;
+  }
+  calcStrength() {
+    console.log('calc');
+    this.pwdStrength = this.inputValidationService.passwordStrengthDisplay(this.pwd1);
   }
   reset() {
     this.activePanel = 1;

@@ -8,6 +8,7 @@ import { CoordinatorService } from '../../services/coordinator.service';
 import { OperationService } from '../../services/operation.service';
 import { ExportService } from '../../services/export.service';
 import { DelegatorNamePipe } from '../../pipes/delegator-name.pipe';
+import { InputValidationService } from '../../services/input-validation.service';
 
 @Component({
     selector: 'app-delegate',
@@ -37,7 +38,8 @@ export class DelegateComponent implements OnInit {
         private walletService: WalletService,
         private operationService: OperationService,
         private coordinatorService: CoordinatorService,
-        private exportService: ExportService
+        private exportService: ExportService,
+        private inputValidationService: InputValidationService
     ) { }
 
     ngOnInit() {
@@ -130,9 +132,9 @@ export class DelegateComponent implements OnInit {
         this.sendResponse = '';
     }
     invalidInput(): string {
-        if ((this.toPkh.length !== 0) && (this.toPkh.length !== 36)) {
+        if (!this.inputValidationService.address(this.toPkh)) {
             return 'invalid receiver address';
-        } else if (!Number(this.fee) && this.fee && this.fee !== '0') {
+        } else if (!this.inputValidationService.fee(this.fee)) {
             return 'invalid fee';
         } else {
             return '';

@@ -11,6 +11,7 @@ import { WalletService } from '../../services/wallet.service';
 import { CoordinatorService } from '../../services/coordinator.service';
 import { OperationService } from '../../services/operation.service';
 import { ExportService } from '../../services/export.service';
+import { InputValidationService } from '../../services/input-validation.service';
 
 interface SendData {
     to: string;
@@ -66,7 +67,8 @@ export class SendComponent implements OnInit {
         private walletService: WalletService,
         private operationService: OperationService,
         private coordinatorService: CoordinatorService,
-        private exportService: ExportService
+        private exportService: ExportService,
+        private inputValidationService: InputValidationService
     ) { }
 
     ngOnInit() {
@@ -298,56 +300,64 @@ export class SendComponent implements OnInit {
     }
 
     invalidInputSingle(): string {
-        if (!this.activePkh || this.activePkh.length !== 36) {
-
+        if (!this.inputValidationService.address(this.activePkh)) {
             let invalidSender = '';
             this.translate.get('SENDCOMPONENT.INVALIDSENDERADDRESS').subscribe(
                 (res: string) => invalidSender = res
             );
             return invalidSender;  // 'Invalid sender address';
 
-        } else if (!Number(this.fee) && this.fee && this.fee !== '0') {
+        } else if (!this.inputValidationService.fee(this.fee)) {
             let invalidFee = '';
             this.translate.get('SENDCOMPONENT.INVALIDFEE').subscribe(
                 (res: string) => invalidFee = res
             );
             return invalidFee;  // 'Invalid fee';
-
         } else {
             const result = this.checkReceiverAndAmount(this.toPkh, this.amount);
             return result;
         }
     }
-
     checkReceiverAndAmount(toPkh: string, amount: string): string {
         let result = '';
         console.log('In checkReceiverAndAmount toPkh: ', toPkh);
-        if (!toPkh || toPkh.length !== 36) {
+        if (!this.inputValidationService.address(toPkh)) {
             let invalidReceiver = '';
             this.translate.get('SENDCOMPONENT.INVALIDRECEIVERADDRESS').subscribe(
                 (res: string) => invalidReceiver = res
             );
             result = invalidReceiver;  // 'Invalid receiver address';
-
-        } else if (!Number(amount) && amount && amount !== '0') {
+        } else if (!this.inputValidationService.amount(amount)) {
             let invalidAmount = '';
             this.translate.get('SENDCOMPONENT.INVALIDAMOUNT').subscribe(
                 (res: string) => invalidAmount = res
             );
             result = invalidAmount;  // 'Invalid amount';
         }
-
         return result;
     }
 
     // Checking toMultipleDestinationsString and building up toMultipleDestinations[to: string, amount: number]
     invalidInputMultiple(): string {
+        if (!this.inputValidationService.address(this.activePkh)) {
+            let invalidSender = '';
+            this.translate.get('SENDCOMPONENT.INVALIDSENDERADDRESS').subscribe(
+                (res: string) => invalidSender = res
+            );
+            return invalidSender;  // 'Invalid sender address';
+
+        } else if (!this.inputValidationService.fee(this.fee)) {
+            let invalidFee = '';
+            this.translate.get('SENDCOMPONENT.INVALIDFEE').subscribe(
+                (res: string) => invalidFee = res
+            );
+            return invalidFee;  // 'Invalid fee';
+        }
         let result = '';
         let toMultipleDestinationsArray;
         let singleSendDataArray;
 
         toMultipleDestinationsArray = this.toMultipleDestinationsString.split(';');
-
         toMultipleDestinationsArray.forEach((item, index) => {
             // Eliminate white spaces from both sides of a string
             toMultipleDestinationsArray[index] = item.trim();
@@ -361,7 +371,6 @@ export class SendComponent implements OnInit {
                     console.log('singleSendDataCheckresult', singleSendDataCheckresult);
                     if (singleSendDataCheckresult === '') {
                         this.toMultipleDestinations.push({to: singleSendDataArray[0], amount: Number(singleSendDataArray[1])});
-
                     } else {
                         this.toMultipleDestinations = [];
                         const itemIndex =  index + 1;
@@ -369,6 +378,8 @@ export class SendComponent implements OnInit {
                         return result;
                     }
                 }
+            } else if (toMultipleDestinationsArray.length === 1) {
+                result = 'No addresses or amounts provided!';
             }
         });
 

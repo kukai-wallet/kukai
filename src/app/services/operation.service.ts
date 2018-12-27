@@ -407,6 +407,14 @@ export class OperationService {
   validMnemonic(mnemonic: string) {
     return bip39.validateMnemonic(mnemonic);
   }
+  validAddress(address: string) {
+    try {
+      this.b58cdecode(address, this.prefix.tz1);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
   generateMnemonic(): string {
     return bip39.generateMnemonic(160);
   }

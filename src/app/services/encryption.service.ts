@@ -5,7 +5,7 @@ import * as scrypt from 'scryptsy';
 import * as cryptob from 'crypto-browserify';
 import * as forge from 'node-forge';
 import * as CryptoJS from 'crypto-js';
-
+declare const Buffer;
 @Injectable()
 export class EncryptionService {
   constructor() { }

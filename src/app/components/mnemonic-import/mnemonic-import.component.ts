@@ -9,6 +9,7 @@ import { OperationService } from '../../services/operation.service';
 import { WalletService } from '../../services/wallet.service';
 import { CoordinatorService } from '../../services/coordinator.service';
 import { ExportService } from '../../services/export.service';
+import { InputValidationService } from '../../services/input-validation.service';
 
 @Component({
   selector: 'app-mnemonic-import-wallet',
@@ -24,9 +25,10 @@ export class MnemonicImportComponent implements OnInit {
   pkh: string;
   activePanel = 0;
   tge = true;
-  walletData: any;
+  wallet: any;
   pwd1: string;
   pwd2: string;
+  pwdStrength = '';
   Downloaded = false;
 
   showWrongFileUploadMsg: false;
@@ -39,7 +41,8 @@ export class MnemonicImportComponent implements OnInit {
     private operationService: OperationService,
     private walletService: WalletService,
     private coordinatorService: CoordinatorService,
-    private exportService: ExportService
+    private exportService: ExportService,
+    private inputValidationService: InputValidationService
   ) { }
 
   ngOnInit() {
@@ -49,12 +52,20 @@ export class MnemonicImportComponent implements OnInit {
     if (this.tge) {
       this.passphrase = this.email + this.password;
     }
-    if (!this.operationService.validMnemonic(this.mnemonic)) {
+    if (!this.inputValidationService.mnemonics(this.mnemonic)) {
       let invalidMnemonic = '';
       this.translate.get('MNEMONICIMPORTCOMPONENT.INVALIDMNEMONIC').subscribe(
         (res: string) => invalidMnemonic = res
       );
-      this.messageService.addError(invalidMnemonic, 10);
+      this.messageService.addWarning(invalidMnemonic, 10);
+    } else if (this.tge && !this.inputValidationService.email(this.email)) {
+      this.messageService.addWarning('Invalid email!', 10);
+    } else if (this.tge && !this.password) {
+      this.messageService.addWarning('Invalid password!', 10);
+    } else if (!this.inputValidationService.passphrase(this.passphrase)) {
+      this.messageService.addWarning('Invalid passphrase!', 10);
+    } else if (this.pkh && !this.inputValidationService.address(this.pkh)) {
+      this.messageService.addWarning('Invalid public key hash!', 10);
     } else {
       const pkh = this.operationService.seed2keyPair(this.operationService.mnemonic2seed(this.mnemonic, this.passphrase)).pkh;
       if (this.pkh && pkh !== this.pkh) {
@@ -63,13 +74,13 @@ export class MnemonicImportComponent implements OnInit {
           this.translate.get('MNEMONICIMPORTCOMPONENT.INVALIDEMAILPASSWORD').subscribe(
             (res: string) => invalidEmailPassword = res
           );
-          this.messageService.addError(invalidEmailPassword, 5);
+          this.messageService.addWarning(invalidEmailPassword, 5);
         } else {
           let invalidPassphrase = '';
           this.translate.get('MNEMONICIMPORTCOMPONENT.INVALIDPASSPHRASE').subscribe(
             (res: string) => invalidPassphrase = res
           );
-          this.messageService.addError(invalidPassphrase, 5);
+          this.messageService.addWarning(invalidPassphrase, 5);
         }
       } else {
         this.activePanel++;
@@ -81,7 +92,7 @@ export class MnemonicImportComponent implements OnInit {
       const password = this.pwd1;
       this.pwd1 = '';
       this.pwd2 = '';
-      this.walletData = this.walletService.createEncryptedWallet(this.mnemonic, password, this.passphrase);
+      this.wallet = this.walletService.createEncryptedWallet(this.mnemonic, password, this.passphrase);
       this.mnemonic = '';
       this.passphrase = '';
       this.email = '';
@@ -107,7 +118,7 @@ export class MnemonicImportComponent implements OnInit {
       const reader = new FileReader();
       reader.readAsText(fileToUpload);
       reader.onload = () => {
-        const res = JSON.parse(reader.result);
+        const res = JSON.parse(reader.result[0]);
 
         if (res.mnemonic) {
           let mnemonic = res.mnemonic[0];
@@ -133,37 +144,32 @@ export class MnemonicImportComponent implements OnInit {
     }
   }
   validPwd(): boolean {
-    if (this.pwd1.length < this.MIN_PWD_LENGTH || this.pwd2.length < this.MIN_PWD_LENGTH) {
-      let shortPassword = '';
-      this.translate.get('MNEMONICIMPORTCOMPONENT.SHORTPASSWORD').subscribe(
-        (res: string) => shortPassword = res
-      );
-      this.messageService.addError(shortPassword);  // Translation for 9 characters
-      // this.messageService.addError('Password too short! At least ' + this.MIN_PWD_LENGTH + ' characters expected.');
+    if (!this.inputValidationService.password(this.pwd1)) {
+      this.messageService.addWarning('Password is too weak!', 10);
       return false;
-    } if (this.pwd1 !== this.pwd2) {
-      let noMatchPassword = '';
-      this.translate.get('MNEMONICIMPORTCOMPONENT.NOMATCHPASSWORDS').subscribe(
-        (res: string) => noMatchPassword = res
-      );
-      this.messageService.addError(noMatchPassword);
+    } else if (this.pwd1 !== this.pwd2) {
+      this.messageService.addWarning('Passwords does not match!', 10);
       return false;
+    } else {
+      return true;
     }
-    return true;
+  }
+  calcStrength() {
+    this.pwdStrength = this.inputValidationService.passwordStrengthDisplay(this.pwd1);
   }
   export(): string {
-    return JSON.stringify(this.walletData);
+    return JSON.stringify(this.wallet.data);
   }
   showPkh(): string {
-    return this.walletData.pkh;
+    return this.wallet.pkh;
   }
   download() {
-    this.exportService.downloadWallet(this.walletData);
+    this.exportService.downloadWallet(this.wallet.data);
     this.Downloaded = true;
   }
   done() {
-    this.importService.importWalletData(this.walletData, false);
-    this.walletData = null;
+    this.importService.importWalletData(this.wallet.data, false, this.wallet.pkh);
+    this.wallet = null;
     this.router.navigate(['/overview']);
     let walletReady = '';
     this.translate.get('MNEMONICIMPORTCOMPONENT.WALLETREADY').subscribe(

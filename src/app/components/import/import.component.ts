@@ -6,6 +6,7 @@ import { TranslateService } from '@ngx-translate/core';  // Multiple instances c
 import { WalletService } from '../../services/wallet.service';
 import { MessageService } from '../../services/message.service';
 import { ImportService } from '../../services/import.service';
+import { InputValidationService } from '../../services/input-validation.service';
 
 
 @Component({
@@ -30,7 +31,8 @@ export class ImportComponent implements OnInit {
     private walletService: WalletService,
     private router: Router,
     private messageService: MessageService,
-    private importService: ImportService
+    private importService: ImportService,
+    private inputValidationService: InputValidationService
   ) { }
 
   ngOnInit() {
@@ -40,7 +42,7 @@ export class ImportComponent implements OnInit {
   }
   importFromPkh() {
     console.log('Call import service');
-    if (this.pkh.slice(0, 2) === 'tz' && this.pkh.length === 36) {
+    if (this.inputValidationService.address(this.pkh)) {
       this.importService.importWalletFromPkh(this.pkh);
       this.router.navigate(['/overview']);
     } else {
