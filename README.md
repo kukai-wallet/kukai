@@ -18,3 +18,8 @@ Package for deployment:
 Run during development:
 
 `ng serve --open`
+
+## Upgrade to Node v10
+1) Download and install LTS version https://nodejs.org/en/
+2) Upgrade npm: `npm install -g npm`
+3) Rebuild node-sass: `npm rebuild node-sass`
