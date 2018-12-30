@@ -19,7 +19,10 @@ Run during development:
 
 `ng serve --open`
 
-## Upgrade to Node v10
+## Troubleshooting
+Wallet needs Node v10 and has been built with Angular 5.2.5 and Angular Cli 1.6.8
 1) Download and install LTS version https://nodejs.org/en/
 2) Upgrade npm: `npm install -g npm`
-3) Rebuild node-sass: `npm rebuild node-sass`
+3) To have a global installation for Angular Cli use the following commands: `npm i -g @angular/cli@1.6.8`
+4) Rebuild node-sass: `npm rebuild node-sass`
+5) Modify `crypto` from `crypto: 'empty'` to `crypto: true` in \node_modules\@angular\cli\models\webpack-configs\browser.js - line 104
