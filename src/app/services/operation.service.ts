@@ -118,8 +118,8 @@ export class OperationService {
                       source: pkh,
                       fee: this.microTez.times(fee).toString(),
                       counter: (++counter).toString(),
-                      gas_limit: '0',
-                      storage_limit: '0',
+                      gas_limit: '10000',
+                      storage_limit: '277',
                       managerPubkey: keys.pkh,  // Mainnet
                       // manager_pubkey: keys.pkh,  // Zeronet
                       balance: this.microTez.times(amount).toString(),
@@ -135,7 +135,7 @@ export class OperationService {
                     source: pkh,
                     fee: '0',
                     counter: (counter).toString(),
-                    gas_limit: '0',
+                    gas_limit: '10000',
                     storage_limit: '0', // '60000',
                     public_key: keys.pk
                   };
@@ -162,25 +162,25 @@ export class OperationService {
                   branch: hash,
                   contents: []
                 };
-                if (manager.key === undefined) {
+                if (manager.key === undefined) { // Reveal
                   fop.contents.push({
                     kind: 'reveal',
                     source: from,
                     fee: '0',
                     counter: (++counter).toString(),
-                    gas_limit: '0',
+                    gas_limit: '10000',
                     storage_limit: '0',
                     public_key: keys.pk
                   });
                 }
-                for (let i = 0; i < transactions.length; i++) {
+                for (let i = 0; i < transactions.length; i++) { // Transfers
                   fop.contents.push({
                     kind: 'transaction',
                     source: from,
                     fee: this.microTez.times(fee).toString(),
                     counter: (++counter).toString(),
-                    gas_limit: '127',
-                    storage_limit: '0',
+                    gas_limit: '10300',
+                    storage_limit: '277',
                     amount: this.microTez.times(transactions[i].amount).toString(),
                     destination: transactions[i].to,
                   });
@@ -209,7 +209,7 @@ export class OperationService {
                       source: from,
                       fee: this.microTez.times(fee).toString(),
                       counter: (++counter).toString(),
-                      gas_limit: '0',
+                      gas_limit: '10000',
                       storage_limit: '0',
                     }
                   ]
@@ -224,8 +224,8 @@ export class OperationService {
                     source: from,
                     fee: '0',
                     counter: (counter).toString(),
-                    gas_limit: '0',
-                    storage_limit: '0',
+                    gas_limit: '10000',
+                    storage_limit: '0', // '60000',
                     public_key: keys.pk
                   };
                   fop.contents[1].counter = (Number(fop.contents[1].counter) + 1).toString();
@@ -363,6 +363,19 @@ export class OperationService {
           }
         );
       }).pipe(catchError(err => this.errHandler(err)));
+  }
+  isRevealed(pkh: string): Observable<boolean> {
+    return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + pkh + '/manager_key', {})
+    .flatMap((manager: any) => {
+      if (manager.key === undefined) {
+        return of(false);
+      } else {
+        return of(true);
+      }
+    }
+    ).pipe(catchError(err => {
+      return of(true);
+    })); // conservative action
   }
   getAccount(pkh: string): Observable<any> {
     return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + pkh)
@@ -657,8 +670,6 @@ export class OperationService {
         sourceTmp = this.translate.instant('OPERATIONSERVICE.SOURCE');
         output.push(typeTmp + ' ' + fop.contents[i].kind);
         output.push(sourceTmp + ' ' + fop.contents[i].source);
-        // output.push('Type: ' + fop.contents[i].kind);
-        // output.push('Source: ' + fop.contents[i].source);
         if (fop.contents[i].kind === 'transaction') {
           let destinationTmp = '';
           let amountTmp = '';
@@ -666,18 +677,14 @@ export class OperationService {
           amountTmp = this.translate.instant('OPERATIONSERVICE.AMOUNT');
           output.push(destinationTmp + ' ' + fop.contents[i].destination);
           output.push(amountTmp + ' ' + Big(Number(fop.contents[i].amount)).div(this.microTez).toString() + ' tez');
-          // output.push('Destination: ' + fop.contents[i].destination);
-          // output.push('Amount: ' + (Number(fop.contents[i].amount) / this.toMicro).toString() + ' tez');
         } else if (fop.contents[i].kind === 'origination') {
           let managerTmp = '';
           let balanceTmp = '';
           managerTmp = this.translate.instant('OPERATIONSERVICE.MANAGER');
           balanceTmp = this.translate.instant('OPERATIONSERVICE.BALANCE');
-          // output.push(managerTmp + ' ' + fop.contents[i].managerPubkey);  // betanet
-          output.push(managerTmp + ' ' + fop.contents[i].manager_pubkey);  // zeronet
+          output.push(managerTmp + ' ' + fop.contents[i].managerPubkey);  // betanet
+          // output.push(managerTmp + ' ' + fop.contents[i].manager_pubkey);  // zeronet
           output.push(balanceTmp + ' ' + Big(Number(fop.contents[i].balance)).div(this.microTez).toString() + ' tez');
-          // output.push('Manager: ' + fop.contents[i].managerPubkey);
-          // output.push('Balance: ' + (Number(fop.contents[i].balance) / this.toMicro).toString() + ' tez');
         } else if (fop.contents[i].kind === 'delegation') {
           let delegateTmp = '';
           delegateTmp = this.translate.instant('OPERATIONSERVICE.DELEGATE');
@@ -687,13 +694,11 @@ export class OperationService {
           let tagNotSupportedTmp = '';
           tagNotSupportedTmp = this.translate.instant('OPERATIONSERVICE.TAGNOTSUPPORTED');
           throw new Error(tagNotSupportedTmp);
-          // throw new Error('Tag not supported. Failed to convert to strings.');
         }
 
         let feeTmp = '';
         feeTmp = this.translate.instant('OPERATIONSERVICE.FEE');
         output.push(feeTmp + ' ' + Big(Number(fop.contents[i].fee)).div(this.microTez).toString() + ' tez');
-        // output.push('Fee: ' + (Number(fop.contents[i].fee) / this.toMicro).toString() + ' tez');
         if (i + 1 < fop.contents.length) {
           output.push('');
         }

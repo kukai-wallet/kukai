@@ -10,7 +10,7 @@
     <div class="modal-body">
         <div class="form-group">
             <label for="fromAdress"> {{ 'NEWACCOUNTCOMPONENT.FUNDSFROM' | translate }} </label>
-            <select [(ngModel)]="activePkh" id="fromAdress" class="form-control mono" name="first">
+            <select [(ngModel)]="activePkh" (change)="checkReveal()" id="fromAdress" class="form-control mono" name="first">
                 <option *ngFor="let account of accounts" [ngValue]="account.pkh">{{ account.pkh }}</option>
             </select>
         </div>
@@ -21,7 +21,7 @@
             </div>
             <div class="form-group col-md-6">
                 <label for="fee"> {{ 'NEWACCOUNTCOMPONENT.FEE' | translate }} (&#42793;)</label>
-                <input [(ngModel)]="fee" type="text" id="fee" class="form-control" placeholder="0.00">
+                <input [(ngModel)]="fee" type="text" id="fee" class="form-control" placeholder={{this.recommendedFee.toString()}}>
             </div>
         </div>
 
@@ -44,10 +44,7 @@
         <p> {{ 'NEWACCOUNTCOMPONENT.FROM' | translate }}  {{ activePkh }}
             <BR> {{ 'NEWACCOUNTCOMPONENT.AMOUNT' | translate }}  {{ amount | number:'1.0-6' }}&#42793;
             <BR> {{ 'NEWACCOUNTCOMPONENT.FEE2' | translate }}  {{ fee | number:'1.0-6' }}&#42793;
-            <BR> {{ 'NEWACCOUNTCOMPONENT.ORIGINATIONBURN' | translate }} 
-            <ng-container *ngIf="originationBurn">
-                {{ originationBurn | number:'1.0-6' }}&#42793;
-            </ng-container>
+            <BR> {{ 'NEWACCOUNTCOMPONENT.ORIGINATIONBURN' | translate }} 0.267&#42793;
             <BR>
         </p>
         <div class="row">

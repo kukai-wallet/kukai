@@ -16,6 +16,7 @@ import { InputValidationService } from '../../services/input-validation.service'
     styleUrls: ['./delegate.component.scss']
 })
 export class DelegateComponent implements OnInit {
+    recommendedFee = 0.0013;
     @ViewChild('modal1') modal1: TemplateRef<any>;
 
     @Input() activePkh: string;
@@ -55,13 +56,14 @@ export class DelegateComponent implements OnInit {
     open1(template1: TemplateRef<any>) {
         if (this.walletService.wallet) {
             this.clearForm();
+            this.checkReveal();
             this.modalRef1 = this.modalService.show(template1, { class: 'first' });
         }
     }
     open2(template: TemplateRef<any>) {
         this.formInvalid = this.invalidInput();
         if (!this.formInvalid) {
-            if (!this.fee) { this.fee = '0'; }
+            if (!this.fee) { this.fee = this.recommendedFee.toString(); }
             this.close1();
             this.modalRef2 = this.modalService.show(template, { class: 'second' });
         }
@@ -122,6 +124,17 @@ export class DelegateComponent implements OnInit {
                 }
             );
         }, 100);
+    }
+    checkReveal() {
+        console.log('check reveal');
+        this.operationService.isRevealed(this.activePkh)
+                .subscribe((revealed: boolean) => {
+                    if (!revealed) {
+                        this.recommendedFee = 0.0026;
+                    } else {
+                        this.recommendedFee = 0.0013;
+                    }
+                });
     }
     clearForm() {
         this.toPkh = '';

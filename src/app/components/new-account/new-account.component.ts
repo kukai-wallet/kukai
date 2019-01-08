@@ -17,6 +17,7 @@ import { InputValidationService } from '../../services/input-validation.service'
   styleUrls: ['./new-account.component.scss']
 })
 export class NewAccountComponent implements OnInit {
+  recommendedFee = 0.0013;
   @ViewChild('modal1') modal1: TemplateRef<any>;
   @Input() activePkh: string;
   accounts = null;
@@ -56,20 +57,20 @@ export class NewAccountComponent implements OnInit {
   }
 
   open1(template1: TemplateRef<any>) {
-    this.clearForm();
-    this.modalRef1 = this.modalService.show(template1, { class: 'first' });
+    if (this.walletService.wallet) {
+      this.clearForm();
+      this.checkReveal();
+      this.modalRef1 = this.modalService.show(template1, { class: 'first' });
+    }
   }
 
   open2(template: TemplateRef<any>) {
     this.formInvalid = this.invalidInput();
     if (!this.formInvalid) {
       if (!this.amount) { this.amount = '0'; }
-      if (!this.fee) { this.fee = '0'; }
+      if (!this.fee) { this.fee = this.recommendedFee.toString(); }
       this.close1();
       this.modalRef2 = this.modalService.show(template, { class: 'second' });
-      this.operationService.getConstants()
-        .subscribe(((ans: any) => this.originationBurn = Number(ans.origination_burn) / 1000000)
-        );
     }
   }
 
@@ -137,7 +138,17 @@ export class NewAccountComponent implements OnInit {
       );
     }, 100);
   }
-
+  checkReveal() {
+    console.log('check reveal');
+    this.operationService.isRevealed(this.activePkh)
+            .subscribe((revealed: boolean) => {
+                if (!revealed) {
+                    this.recommendedFee = 0.0026;
+                } else {
+                    this.recommendedFee = 0.0013;
+                }
+            });
+}
   invalidInput(): string {
     if (!this.inputValidationService.amount(this.amount)) {
       let invalidAmount = '';

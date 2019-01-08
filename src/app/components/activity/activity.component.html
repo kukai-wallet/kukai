@@ -14,7 +14,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="table-row" *ngFor="let transaction of account.activities">
+                    <tr class="table-row" *ngFor="let transaction of account.activities | slice:0:10">
                         <!-- Txn Hash -->
                         <th scope="row" class="row-hash table-cell">
                             <span data-toggle="tooltip" [title]="transaction.hash">
