@@ -32,13 +32,13 @@ export class ImportService {
       return false;
     }
   }
-  async importWalletData(json: string, isJson: boolean = true, pkh: string = '', pwd: string = ''): Promise<boolean> {
+  async importWalletData(data: any, isJson: boolean = true, pkh: string = '', pwd: string = ''): Promise<boolean> {
     try {
       let walletData;
       if (isJson) {
-        walletData = JSON.parse(json);
+        walletData = JSON.parse(data);
       } else {
-        walletData = json;
+        walletData = data;
       }
       if (walletData.provider !== 'Kukai') {
         throw new Error(`Unsupported wallet format`);

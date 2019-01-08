@@ -160,7 +160,6 @@ export class WalletService {
   loadStoredWallet() {
     const walletData = localStorage.getItem(this.storeKey);
     if (walletData && walletData !== 'undefined') {
-      console.log('pip ' + JSON.stringify(walletData));
       this.wallet = JSON.parse(walletData);
       if (!this.wallet.encryptionVersion) { // Ensure backwards compability in the localStorage - only needed for a while
         this.wallet.encryptionVersion = 1;

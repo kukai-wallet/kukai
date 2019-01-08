@@ -66,10 +66,37 @@ export class ImportComponent implements OnInit {
     }
   }
   importPreCheck(keyFile: string) {
+    this.typeCheckFile(keyFile);
     if (this.importService.pwdRequired(keyFile)) {
       this.walletJson = keyFile;
     } else {
       this.import(keyFile);
+    }
+  }
+  typeCheckFile(keyFile: string) {
+    const obj = JSON.parse(keyFile);
+    // Required
+    try {
+      if (typeof obj.provider !== 'string') {
+        throw new Error('provider not a string!');
+      } if (typeof obj.version !== 'number') {
+        throw new Error('version not a number!');
+      } if (typeof obj.walletType !== 'number') {
+        throw new Error('walletType not a number!');
+      }
+      // Optional
+      if (obj.encryptedSeed && typeof obj.encryptedSeed !== 'string') {
+        throw new Error('encryptedSeed not a string!');
+      } if (obj.pkh && typeof obj.pkh !== 'string') {
+        throw new Error('pkh not a string!');
+      } if (obj.iv && typeof obj.iv !== 'string') {
+        throw new Error('iv not a string!');
+      } if (obj.pk && typeof obj.pk !== 'string') {
+        throw new Error('pk not a string!');
+      }
+    } catch (e) {
+      this.messageService.addError(e);
+      throw e;
     }
   }
   checkImportPwd() {
@@ -80,6 +107,7 @@ export class ImportComponent implements OnInit {
     console.log(this.pwd);
   }
   import(keyFile: string, pwd: string = '') {
+    this.typeCheckFile(keyFile);
     this.importService.importWalletData(keyFile, true, '', pwd).then(
       (success: boolean) => {
         if (success) {
@@ -113,7 +141,7 @@ export class ImportComponent implements OnInit {
       reader.readAsText(fileToUpload);
       reader.onload = () => {
         if (typeof reader.result === 'string') {
-        this.importPreCheck(reader.result);
+          this.importPreCheck(reader.result);
         } else {
           throw new Error('Not a string import');
         }
