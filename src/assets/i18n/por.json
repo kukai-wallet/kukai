@@ -61,7 +61,10 @@
         "INFO1" : "Carteiras criadas durante a ICO precisam ser ativadas.",
         "INFO2" : "A private key não é necessária para o processo de ativação.",
         "BACK" : "Voltar",
-        "ACTIVATE" : "Ativar"
+        "ACTIVATE" : "Ativar",
+        "ACTIVATESUCCESS" : "Ativação transmitido com sucesso à blockchain!",
+        "RETRIEVEFAIL" : "Não foi possível recuperar um hash de operação",
+        "ACTIVATEFAIL" : "Falha ao ativar carteira!"
     },
     "ACTIVITYCOMPONENT": {
         "TXNHASH" : "Txn Hash",
@@ -171,7 +174,13 @@
         "PASSPHRASE" : "Palavra-passe (opcional)",
         "EMAIL" : "E-mail",
         "PASSWORD" : "Senha",
-        "TZ1" : "tz1... (opcional)"
+        "TZ1" : "tz1... (opcional)",
+        "PASSWORDSTRENGHT" : "Força da senha:",
+        "PASSWORDCONFIRM" : "Confirme a Senha",
+        "INVALIDEMAIL" : "E-mail inválido!",
+        "INVALIDPASSWORD" : "Senha inválida!",
+        "INVALIDPKH" : "hash da chave pública inválida!",
+        "PASSWORDWEAK" : "A senha é muito fraca!"
     },
     "NEWACCOUNTCOMPONENT": {
         "TITLE" : "Deposite em sua nova conta",
@@ -229,7 +238,9 @@
         "FINISH" : "Finalizar",
         "WORD1WORD2" : "palavra1 palavra2 palavra3 palavra4 palavra5 palavra6 palavra7 palavra8 palavra9 palavra10 palavra11 palavra12 palavra13 palavra14 palavra15",
         "PASSWORD" : "Senha",
-        "CONFIRMPASSWORD" : "Confirme a sua senha"
+        "CONFIRMPASSWORD" : "Confirme a sua senha",
+        "PASSWORDSTRENGTH" : "Força da senha:",
+        "WEAKPASSWORD" : "A senha é muito fraca!"
     },
     "OFFLINESIGNINGCOMPONENT": {
         "TITLE" : "Assinatura offline",
@@ -319,11 +330,19 @@
         "INVALIDSENDERADDRESS" : "Endereço do remetente inválido",
         "INVALIDRECEIVERADDRESS" : "Endereço do destinatário inválido",        
         "INVALIDAMOUNT" : "Quantidade inválida",
-        "INVALIDFEE" : "Taxa inválida"
+        "INVALIDFEE" : "Taxa inválida",
+        "NOADDRESSORAMOUNT" : "Sem endereço ou montante previsto!"
     },
     "STARTCOMPONENT": {
         "IMPORTWALLET" : "Importar carteira",
         "NEWWALLET" : "Nova carteira",
         "ACTIVATE" : "Ativar"
+    },
+    "INPUTVALIDATIONCOMPONENT": {
+        "CATASTROPHIC" : "Catastrófico!",
+        "VERYWEAK" : "Muito fraco!",
+        "WEAK" : "Fraco!",
+        "MODERATE" : "Moderado!",
+        "STRONG" : "Forte!"
     }
 }

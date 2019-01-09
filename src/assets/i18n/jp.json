@@ -61,7 +61,10 @@
         "INFO1" : "ICO中に作成されたウォレットはアクティベートされる必要があります。",
         "INFO2" : "アクティベーションプロセスのためにプライベートキーは要求されません。",
         "BACK" : "戻る",
-        "ACTIVATE" : "アクティベート"
+        "ACTIVATE" : "アクティベート",
+        "ACTIVATESUCCESS" : "Activation faite avec succès!",
+        "RETRIEVEFAIL" : "Impossible de récupérer le hash de l'opération",
+        "ACTIVATEFAIL" : "Échec de l'activation!"
     },
     "ACTIVITYCOMPONENT": {
         "TXNHASH" : "トランザクションハッシュ",
@@ -172,7 +175,13 @@
         "PASSPHRASE" : "パスフレーズ（オプション）",
         "EMAIL" : "Eメール",
         "PASSWORD" : "パスワード",
-        "TZ1" : "tz1....（オプション）"
+        "TZ1" : "tz1....（オプション）",
+        "PASSWORDSTRENGHT" : "パスワードの強度：",
+        "PASSWORDCONFIRM" : "パスワードを認証する",
+        "INVALIDEMAIL" : "無効なメール！",
+        "INVALIDPASSWORD" : "無効なパスワード！",
+        "INVALIDPKH" : "無効な公開鍵ハッシュ！",
+        "PASSWORDWEAK" : "パスワードが弱すぎます！"
     },
     "NEWACCOUNTCOMPONENT": {
         "TITLE" : "新しいアカウントへ送金する",
@@ -230,7 +239,9 @@
         "FINISH" : "終了",
         "WORD1WORD2" : "ワード1ワード2ワード3ワード4ワード5",
         "PASSWORD" : "パスワード",
-        "CONFIRMPASSWORD" : "パスワードの認証"
+        "CONFIRMPASSWORD" : "パスワードの認証",
+        "PASSWORDSTRENGTH" : "パスワードの強度：",
+        "WEAKPASSWORD" : "パスワードが弱すぎます！"
     },
     "OFFLINESIGNINGCOMPONENT": {
         "TITLE" : "オフライン署名",
@@ -321,11 +332,19 @@
         "INVALIDSENDERADDRESS" : "無効な送信元アドレス",
         "INVALIDRECEIVERADDRESS" : "無効な送信先アドレス",
         "INVALIDAMOUNT" : "無効な量",
-        "INVALIDFEE" : "無効な手数料"
+        "INVALIDFEE" : "無効な手数料",
+        "NOADDRESSORAMOUNT" : "いいえアドレスまたは量はありません！"
     },
     "STARTCOMPONENT": {
         "IMPORTWALLET" : "ウォレットのインポート",
         "NEWWALLET" : "新しいウォレット",
         "ACTIVATE" : "アクティベート"
+    },
+    "INPUTVALIDATIONCOMPONENT": {
+        "CATASTROPHIC" : "致命的な！",
+        "VERYWEAK" : "非常に弱い！",
+        "WEAK" : "弱い！",
+        "MODERATE" : "穏健派！",
+        "STRONG" : "強い！"
     }
 }
