@@ -28,6 +28,12 @@ const {app, BrowserWindow, Menu} = require('electron')
       testContextMenu.popup(win)
     })
 
+    // Listen to new windows
+    win.webContents.on('new-window', function(e, url) {
+      e.preventDefault();
+      require('electron').shell.openExternal(url);
+    });
+
 
     // Open the DevTools.
     // win.webContents.openDevTools()
