@@ -47,7 +47,7 @@
             <div class="form-group row">
               <div class="col-sm-12">
                 <input type="password" [(ngModel)]="pwd1" (keyup)="calcStrength()" [ngModelOptions]="{standalone: true}" class="form-control" [placeholder]="'NEWWALLETCOMPONENT.PASSWORD' | translate">
-                <small id="emailHelp1" class="form-text text-muted text-left"> Password strength: {{ pwdStrength }}</small>
+                <small id="emailHelp1" class="form-text text-muted text-left"> {{ 'NEWWALLETCOMPONENT.PASSWORDSTRENGTH' | translate }} {{ pwdStrength }}</small>
               </div>
             </div>
             <div class="form-group row">
@@ -55,7 +55,7 @@
                 <input type="password" [(ngModel)]="pwd2" [ngModelOptions]="{standalone: true}" class="form-control" [placeholder]="'NEWWALLETCOMPONENT.CONFIRMPASSWORD' | translate">
                 <!-- <small id="emailHelp1" class="form-text text-muted text-left">Minimum {{ this.MIN_PWD_LENGTH }} characters</small> -->
                 <!-- <small id="emailHelp2" class="form-text alert-danger text-left" *ngIf="!isValidPass.minLength">There must be a minimum of {{ MIN_PWD_LENGTH }} characters</small> -->
-                <small id="emailHelp2" class="form-text alert-danger text-left" *ngIf="!isValidPass.minStrength"> Password is too weak! </small>
+                <small id="emailHelp2" class="form-text alert-danger text-left" *ngIf="!isValidPass.minStrength"> {{ 'NEWWALLETCOMPONENT.WEAKPASSWORD' | translate }} </small>
                 <small id="emailHelp3" class="form-text alert-danger text-left" *ngIf="!isValidPass.match"> {{ 'NEWWALLETCOMPONENT.ALERTPASSWORDSNOTMATCHED' | translate }} </small>
                 <small id="emailHelp4" class="form-text alert-success text-left" *ngIf="isValidPass.confirmed"> {{ 'NEWWALLETCOMPONENT.INFOPASSWORDCONFIRMED' | translate }} </small>
               </div>

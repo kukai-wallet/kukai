@@ -4,6 +4,8 @@ import { MessageService } from '../../services/message.service';
 import { OperationService } from '../../services/operation.service';
 import { InputValidationService } from '../../services/input-validation.service';
 
+import { TranslateService } from '@ngx-translate/core';
+
 @Component({
   selector: 'app-activate',
   templateUrl: './activate.component.html',
@@ -16,7 +18,8 @@ export class ActivateComponent implements OnInit {
   constructor(
     private messageService: MessageService,
     private operationService: OperationService,
-    private inputValidationService: InputValidationService
+    private inputValidationService: InputValidationService,
+    private translate: TranslateService
   ) { }
 
   ngOnInit() {
@@ -32,9 +35,20 @@ export class ActivateComponent implements OnInit {
         (ans: any) => {
           if (ans.success) {
             if (ans.payload.opHash) {
-              this.messageService.addSuccess('Activation successfully broadcasted to the blockchain!');
+
+              let activationSuccess = '';
+              this.translate.get('ACTIVATECOMPONENT.ACTIVATESUCCESS').subscribe(
+                  (res: string) => activationSuccess = res
+              );
+              this.messageService.addSuccess(activationSuccess);  // 'Activation successfully broadcasted to the blockchain!'
+
             } else {
-              this.messageService.addWarning('Couldn\'t retrive an operation hash');
+
+              let retrieveFailed = '';
+              this.translate.get('ACTIVATECOMPONENT.RETRIEVEFAIL').subscribe(
+                  (res: string) => retrieveFailed = res
+              );
+              this.messageService.addWarning(retrieveFailed);  // Could not retrieve an operation hash
             }
           } else {
             let errorMessage = '';
@@ -49,12 +63,17 @@ export class ActivateComponent implements OnInit {
         },
         err => {
           let errorMessage = '';
+          let activateFailed = '';
+          this.translate.get('ACTIVATECOMPONENT.ACTIVATEFAIL').subscribe(
+              (res: string) => activateFailed = res  // 'Failed to activate wallet!'
+          );
+
           if (typeof err.payload.msg === 'string') {
-            errorMessage = 'Failed to activate wallet! ' + err.payload.msg;
+            errorMessage = activateFailed + ' ' + err.payload.msg;
           } else {
-            errorMessage = 'Failed to activate wallet!';
+            errorMessage = activateFailed;
           }
-          this.messageService.addError('Failed to activate wallet!');
+          this.messageService.addError(activateFailed);
           console.log(JSON.stringify(err));
         }
       );

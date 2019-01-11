@@ -63,7 +63,7 @@
         "BACK" : "Back",
         "ACTIVATE" : "Activate",
         "ACTIVATESUCCESS" : "Activation successfully broadcasted to the blockchain!",
-        "RETRIEVEFAIL" : "Couldn't retrieve an operation hash",
+        "RETRIEVEFAIL" : "Could not retrieve an operation hash",
         "ACTIVATEFAIL" : "Failed to activate wallet!"
     },
     "ACTIVITYCOMPONENT": {

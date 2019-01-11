@@ -416,7 +416,9 @@ export class SendComponent implements OnInit {
                     }
                 }
             } else if (toMultipleDestinationsArray.length === 1) {
-                result = 'No addresses or amounts provided!';
+                this.translate.get('SENDCOMPONENT.NOADDRESSORAMOUNT').subscribe(
+                    (res: string) => result = res  // 'No address or amount provided!'
+                );
             }
         });
 

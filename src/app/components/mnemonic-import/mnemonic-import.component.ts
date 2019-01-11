@@ -59,13 +59,38 @@ export class MnemonicImportComponent implements OnInit {
       );
       this.messageService.addWarning(invalidMnemonic, 10);
     } else if (this.tge && !this.inputValidationService.email(this.email)) {
-      this.messageService.addWarning('Invalid email!', 10);
+
+      let invalidEmail = '';
+      this.translate.get('MNEMONICIMPORTCOMPONENT.INVALIDEMAIL').subscribe(
+          (res: string) => invalidEmail = res
+      );
+      this.messageService.addWarning(invalidEmail, 10);  // 'Invalid email!'
+
     } else if (this.tge && !this.password) {
-      this.messageService.addWarning('Invalid password!', 10);
+
+      let invalidPassword = '';
+      this.translate.get('MNEMONICIMPORTCOMPONENT.INVALIDPASSWORD').subscribe(
+          (res: string) => invalidPassword = res
+      );
+      this.messageService.addWarning(invalidPassword, 10);  // 'Invalid password!'
+
     } else if (!this.inputValidationService.passphrase(this.passphrase)) {
-      this.messageService.addWarning('Invalid passphrase!', 10);
+
+      let invalidPassphrase = '';
+      this.translate.get('MNEMONICIMPORTCOMPONENT.INVALIDPASSPHRASE').subscribe(
+          (res: string) => invalidPassphrase = res
+      );
+      this.messageService.addWarning(invalidPassphrase, 10);  // 'Invalid passphrase!'
+
+
     } else if (this.pkh && !this.inputValidationService.address(this.pkh)) {
-      this.messageService.addWarning('Invalid public key hash!', 10);
+
+      let invalidPkh = '';
+      this.translate.get('MNEMONICIMPORTCOMPONENT.INVALIDPKH').subscribe(
+          (res: string) => invalidPkh = res
+      );
+      this.messageService.addWarning(invalidPkh, 10);  // 'Invalid public key hash!'
+
     } else {
       const pkh = this.operationService.seed2keyPair(this.operationService.mnemonic2seed(this.mnemonic, this.passphrase)).pkh;
       if (this.pkh && pkh !== this.pkh) {
@@ -145,11 +170,23 @@ export class MnemonicImportComponent implements OnInit {
   }
   validPwd(): boolean {
     if (!this.inputValidationService.password(this.pwd1)) {
-      this.messageService.addWarning('Password is too weak!', 10);
+
+      let passWeak = '';
+      this.translate.get('MNEMONICIMPORTCOMPONENT.PASSWORDWEAK').subscribe(
+        (res: string) => passWeak = res
+      );
+      this.messageService.addWarning(passWeak, 10);  // 'Password is too weak!'
       return false;
+
     } else if (this.pwd1 !== this.pwd2) {
-      this.messageService.addWarning('Passwords does not match!', 10);
+
+      let passNotMatch = '';
+      this.translate.get('MNEMONICIMPORTCOMPONENT.NOMATCHPASSWORDS').subscribe(
+        (res: string) => passNotMatch = res
+      );
+      this.messageService.addWarning(passNotMatch, 10);  // Passwords don't match!
       return false;
+
     } else {
       return true;
     }

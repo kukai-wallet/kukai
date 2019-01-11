@@ -341,10 +341,10 @@
         "ACTIVATE" : "Activer"
     },
     "INPUTVALIDATIONCOMPONENT": {
-        "CATASTROPHIC" : "Catastrophic!",
-        "VERYWEAK" : "Very weak!",
-        "WEAK" : "Weak!",
-        "MODERATE" : "Moderate!",
-        "STRONG" : "Strong!"
+        "CATASTROPHIC" : "Catastrophique!",
+        "VERYWEAK" : "Très faible!",
+        "WEAK" : "Faible!",
+        "MODERATE" : "Modéré!",
+        "STRONG" : "Fort!"
     }
 }

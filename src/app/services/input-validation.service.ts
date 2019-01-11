@@ -2,10 +2,15 @@ import { Injectable } from '@angular/core';
 import { OperationService } from '../services/operation.service';
 import * as zxcvbn from 'zxcvbn';
 
+import { TranslateService } from '@ngx-translate/core';
+
 @Injectable()
 export class InputValidationService {
 
-  constructor(private operationService: OperationService) { }
+  constructor(
+    private operationService: OperationService,
+    private translate: TranslateService
+  ) { }
   /*
     Input validations
   */
@@ -19,17 +24,34 @@ export class InputValidationService {
     if (!password) {
       return '';
     }
+
+    let result = '';
     switch (zxcvbn(password).score) {
       case 0: {
-        return 'Catastrophic!';
+        this.translate.get('INPUTVALIDATIONCOMPONENT.CATASTROPHIC').subscribe(
+          (res: string) => result = res
+        );
+        return result;  // 'Catastrophic!'
       } case 1: {
-        return 'Very weak!';
+        this.translate.get('INPUTVALIDATIONCOMPONENT.VERYWEAK').subscribe(
+          (res: string) => result = res
+        );
+        return result;  // 'Very weak!'
       } case 2: {
-        return 'Weak!';
+        this.translate.get('INPUTVALIDATIONCOMPONENT.WEAK').subscribe(
+          (res: string) => result = res
+        );
+        return result;  // 'Weak!'
        } case 3: {
-        return 'Moderate!';
+        this.translate.get('INPUTVALIDATIONCOMPONENT.MODERATE').subscribe(
+          (res: string) => result = res
+        );
+        return result;  // 'Moderate!'
       } case 4: {
-        return 'Strong!';
+        this.translate.get('INPUTVALIDATIONCOMPONENT.STRONG').subscribe(
+          (res: string) => result = res
+        );
+        return result;  // 'Strong!'
       } default: {
         return '';
       }
