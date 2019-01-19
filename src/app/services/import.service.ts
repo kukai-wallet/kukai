@@ -98,10 +98,21 @@ export class ImportService {
           }
           const KT = data[i].type.operations[index].tz1.tz;
           if (this.walletService.wallet.accounts.findIndex(a => a.pkh === KT) === -1) {
-            this.walletService.addAccount(KT);
-            console.log('Added: ' + KT);
-            this.coordinatorService.start(KT);
-            this.findNumberOfAccounts(KT); // Recursive call
+            const opIndex = data[i].type.operations.findIndex(a => a.kind === 'origination');
+            const opLevel = data[i].type.operations[opIndex].op_level;
+            this.operationService.getVerifiedOpBytes(opLevel, data[i].hash, pkh).subscribe(
+              opBytes => {
+                if (KT === this.operationService.createKTaddress(opBytes)) {
+                  console.log('Added: ' + KT);
+                  this.walletService.addAccount(KT);
+                  this.coordinatorService.start(KT);
+                  this.findNumberOfAccounts(KT); // Recursive call
+                } else {
+                  this.messageService.addError('Failed to verify KT address!');
+                }
+              },
+              err => this.messageService.addWarning('Something went wrong when searching after additional addresses! ' + err)
+            );
           }
         }
         this.walletService.storeWallet();
