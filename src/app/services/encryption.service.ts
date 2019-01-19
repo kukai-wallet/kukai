@@ -16,7 +16,7 @@ export class EncryptionService {
     } else if (version === 2) {
       return this.encrypt_v2(plaintext, password);
     } else {
-      throw new Error('Unrecognised encryption format');
+      throw new Error('Unrecognized encryption format');
     }
   }
   decrypt(chiphertext: string, password: string, salt: string, version: number): any {
@@ -25,7 +25,7 @@ export class EncryptionService {
     } else if (version === 2) {
       return this.decrypt_v2(chiphertext, password, salt);
     } else {
-      throw new Error('Unrecognised encryption format');
+      throw new Error('Unrecognized encryption format');
     }
   }
   // Version 1
