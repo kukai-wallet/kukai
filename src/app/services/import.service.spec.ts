@@ -22,6 +22,7 @@ import { TzscanService } from "./tzscan.service";
 import { TzrateService } from "./tzrate.service";
 import { ActivityService } from "./activity.service";
 import { DelegateService } from "./delegate.service";
+import { analyzeAndValidateNgModules } from "@angular/compiler";
 
 
 
@@ -48,8 +49,8 @@ describe('[ ImportService ]', () => {
 	let passphrase: string = 'Upward&Onward';
 	let publickeyhash: string = 'tz1WzGiA46TxyZdUHGJgUYHaR5HyUyH8Rssn';
 	let salt: string = 'WzGiA46TxyZdUHGJ';
-	let isJson: boolean = true;
-	let walletJson: string = JSON.stringify({"provider": "Kukai","version": 1,"walletType": 0,"pkh": "tz1WzGiA46TxyZdUHGJgUYHaR5HyUyH8Rssn","encryptedSeed": "66746740b4b925d2a336744339b31bf4850357a01a7d309e79604fe95fc11dd6"});
+//	let isJson: boolean = true;
+//	let walletJson: string = JSON.stringify({"provider": "Kukai","version": 1,"walletType": 0,"pkh": "tz1WzGiA46TxyZdUHGJgUYHaR5HyUyH8Rssn","encryptedSeed": "66746740b4b925d2a336744339b31bf4850357a01a7d309e79604fe95fc11dd6", iv:});
 	let seedkey: string = 'edskReZHRkGSEGDAKtrNWTo6Kd4L9tv7QwDEbAxBLqQKBavhBfTUzYy7BEgELbPW5LJUN4X1YZqAdmbiJXhRgsFtbBbsJWwS6Y';
 	let publickey: string = 'edpkv5PQ1dkf5avSEEPCn5oUe9cYmkbpbizuEo4SpybauNfSQ9Umyh';
 	let keys:KeyPair;
@@ -88,8 +89,8 @@ describe('[ ImportService ]', () => {
 		wallet = TestBed.get(WalletService);
 		operation = TestBed.get(OperationService);
 
-		spyOn(service, 'importWalletData');
-		spyOn(service, 'importWalletFromPkh')
+		//spyOn(service, 'importWalletData');
+		//spyOn(service, 'importWalletFromPkh')
 		spyOn(console, 'log');
 
 	});
@@ -103,19 +104,62 @@ describe('[ ImportService ]', () => {
 	});
 
 
-	describe('should import a wallet', () => {
+	describe('> Import Wallet', () => {
 		let walletdata: string;
-		beforeEach(() => {
-			walletdata = JSON.stringify({"provider": "Kukai","version": 1,"walletType": 0,"pkh": "tz1WzGiA46TxyZdUHGJgUYHaR5HyUyH8Rssn","encryptedSeed": "66746740b4b925d2a336744339b31bf4850357a01a7d309e79604fe95fc11dd6", iv: "testiv"});
+		let password: string;
+		let pkh: string;
 
+		beforeEach(() => {
+			// full wallet data
+			walletdata = JSON.stringify({"provider": "Kukai","version": 2,"walletType": 0,"encryptedSeed": "64324eedf2604c5af143f32ceb6a1beb9e717f745b209504718ec8cc42211e44==fc09b629d9ee0aeefac57d2e066914c2","iv": "b838931b9b7507fb8d5be5ecef08c2f5"});
+			
+			password = 'ILoveKukai!2019';
+			pkh = 'tz1NPLZjpov8oFBT3qfdWBedktALQZjs5Hkt';
+			
+		})
+		describe('> Import Full Wallet', () => {
+			let walletdata: string;
+			let password: string;
+			let pkh: string;
+	
+			beforeEach(() => {
+				// full wallet data
+				walletdata = JSON.stringify({"provider": "Kukai","version": 2,"walletType": 0,"encryptedSeed": "64324eedf2604c5af143f32ceb6a1beb9e717f745b209504718ec8cc42211e44==fc09b629d9ee0aeefac57d2e066914c2","iv": "b838931b9b7507fb8d5be5ecef08c2f5"});
+				
+				password = 'ILoveKukai!2019';
+				pkh = 'tz1NPLZjpov8oFBT3qfdWBedktALQZjs5Hkt';
+				
+			})
+	
+			it('should import full wallet v2', () => {       
+				service.importWalletData(walletdata, true, '', password);
+				console.log(wallet.wallet);
+
+				// expect a full wallet
+				expect(wallet.wallet.type).toBe(0);
+
+				// expect encryption version 2
+				expect(wallet.wallet.encryptionVersion).toBe(2);
+
+				// expect salt to be 'b838931b9b7507fb8d5be5ecef08c2f5'
+				expect(wallet.wallet.salt).toBe('b838931b9b7507fb8d5be5ecef08c2f5');
+
+				// expect seed to be '64324eedf2604c5af143f32ceb6a1beb9e717f745b209504718ec8cc42211e44==fc09b629d9ee0aeefac57d2e066914c2'
+				expect(wallet.wallet.seed).toBe('64324eedf2604c5af143f32ceb6a1beb9e717f745b209504718ec8cc42211e44==fc09b629d9ee0aeefac57d2e066914c2');
+
+				// expect pkh to be 'tz1NPLZjpov8oFBT3qfdWBedktALQZjs5Hkt'
+				expect(wallet.wallet.accounts[0].pkh).toBe('tz1NPLZjpov8oFBT3qfdWBedktALQZjs5Hkt');
+
+			});
 		})
 
-
-		/*
-		it('should import wallet data', () => {       
-
-		});
-		*/
+		describe('> Handle Importing Bad Data', () => {
+			it('should throw an error', () => {
+				service.importWalletData('baddata', true, '', password);
+				expect(wallet.wallet).toBeNull();
+			})
+		})
+		
 	})
 	
 

@@ -521,6 +521,30 @@ export class WalletTools extends AccountTools {
 			accounts: accounts
 		}
 	};
+
+		/**
+	 * Generate Wallet v2
+	 * @param seed 
+	 * @param type 
+	 * @param accountpkhs 
+	 * @param xtzrate 
+	 * @param balance 
+	 * 
+	 * @todo create actual password encrypted wallet
+	 */
+	generateWalletv2(seed:string, type: WalletType=0, accountpkhs:string[]=[], xtzrate:number=0.510272, balance: Balance=this.getEmptyBalance()): Wallet {
+		let accounts:Account[] = this.generateAccounts(accountpkhs);
+
+		return <Wallet> {
+			seed: seed,
+			salt: "salt",
+			encryptionVersion: 2,
+			type: type,
+			balance: this.getWalletBalance(accounts),
+			XTZrate: xtzrate,
+			accounts: accounts
+		}
+	};
 }
 
 
