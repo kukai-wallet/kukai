@@ -70,7 +70,9 @@ export class DelegatorNamePipe implements PipeTransform {
         ['tz1aiYKXmSRckyJ9EybKmpVry373rfyngJU8', 'View Nodes'],
         ['tz1PeZx7FXy7QRuMREGXGxeipb24RsMMzUNe', 'Tezos Panda'],
         ['tz1bTArEJxjYZKdXsMwLWixtpTnXNq6EZydC', 'Stack Tezos'],
-        ['tz1d6Fx42mYgVFnHUW8T8A7WBfJ6nD9pVok8', 'My Tezos Baking']
+        ['tz1d6Fx42mYgVFnHUW8T8A7WBfJ6nD9pVok8', 'My Tezos Baking'],
+        ['tz1YgNQBeLTgbwRb7QiyvHrx7hwN7AUbdqpB', 'Baker Avenue'],
+        ['tz1UJvHTgpVzcKWhTazGxVcn5wsHru5Gietg', 'Tezry']
     ]);
 
     transform(pkh: string): string {

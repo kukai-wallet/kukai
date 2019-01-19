@@ -12,472 +12,472 @@ export class ErrorHandlingPipe implements PipeTransform {
 
     transform(errorId: string, args?: any): any {
         let errorMessage = '';
-
+        const protocol = 'proto.003-PsddFKi3';
         switch (errorId) {
-            case 'proto.alpha.InconsistentTypesTypeError': {
+            case 'proto.003-PsddFKi3.InconsistentTypesTypeError': {
                 // tslint:disable-next-line:max-line-length
                 errorMessage = 'This is the basic type clash error, that appears in several places where the equality of two types have to be proven, it is always accompanied with another error that provides more context.';
                 break;
             }
-            case 'proto.alpha.badContractParameter': {
+            case 'proto.003-PsddFKi3.badContractParameter': {
                 // tslint:disable-next-line:max-line-length
                 errorMessage = 'Either no parameter was supplied to a contract, a parameter was passed to an account, or a parameter was supplied of the wrong type';
                 break;
             }
-            case 'proto.alpha.badReturnTypeError': {
+            case 'proto.003-PsddFKi3.badReturnTypeError': {
                 errorMessage = 'Unexpected stack at the end of a lambda or script.';
                 break;
             }
-            case 'proto.alpha.badStackItemTypeError': {
+            case 'proto.003-PsddFKi3.badStackItemTypeError': {
                 errorMessage = 'The type of a stack item is unexpected (this error is always accompanied by a more precise one).';
                 break;
             }
-            case 'proto.alpha.badStackTypeError': {
+            case 'proto.003-PsddFKi3.badStackTypeError': {
                 errorMessage = 'The stack has an unexpected length or contents.';
                 break;
             }
-            case 'proto.alpha.baking.cannot_freeze_baking_deposit': {
+            case 'proto.003-PsddFKi3.baking.cannot_freeze_baking_deposit': {
                 errorMessage = 'Impossible to debit the required tokens on the baker\'s contract';
                 break;
             }
-            case 'proto.alpha.baking.cannot_freeze_endorsement_deposit': {
+            case 'proto.003-PsddFKi3.baking.cannot_freeze_endorsement_deposit': {
                 errorMessage = 'Impossible to debit the required tokens on the endorser\'s contract';
                 break;
             }
-            case 'proto.alpha.baking.inconsisten_endorsement': {
+            case 'proto.003-PsddFKi3.baking.inconsisten_endorsement': {
                 errorMessage = 'The operation tries to endorse slots with distinct delegates';
                 break;
             }
-            case 'proto.alpha.baking.insufficient_proof_of_work': {
+            case 'proto.003-PsddFKi3.baking.insufficient_proof_of_work': {
                 errorMessage = 'The block\'s proof-of-work stamp is insufficient';
                 break;
             }
-            case 'proto.alpha.baking.invalid_block_signature': {
+            case 'proto.003-PsddFKi3.baking.invalid_block_signature': {
                 errorMessage = 'A block was not signed with the expected private key.';
                 break;
             }
-            case 'proto.alpha.baking.invalid_fitness_gap': {
+            case 'proto.003-PsddFKi3.baking.invalid_fitness_gap': {
                 errorMessage = 'The gap of fitness is out of bounds';
                 break;
             }
-            case 'proto.alpha.baking.invalid_signature': {
+            case 'proto.003-PsddFKi3.baking.invalid_signature': {
                 errorMessage = 'The block\'s signature is invalid';
                 break;
             }
-            case 'proto.alpha.baking.invalid_slot': {
+            case 'proto.003-PsddFKi3.baking.invalid_slot': {
                 errorMessage = 'The baking slot is out of bounds';
                 break;
             }
-            case 'proto.alpha.baking.timestamp_too_early': {
+            case 'proto.003-PsddFKi3.baking.timestamp_too_early': {
                 errorMessage = 'The block timestamp is before the first slot for this baker at this level';
                 break;
             }
-            case 'proto.alpha.block.inconsistent_double_baking_evidence': {
+            case 'proto.003-PsddFKi3.block.inconsistent_double_baking_evidence': {
                 errorMessage = 'A double-baking evidence is inconsistent (two distinct delegates)';
                 break;
             }
-            case 'proto.alpha.block.inconsistent_double_endorsement_evidence': {
+            case 'proto.003-PsddFKi3.block.inconsistent_double_endorsement_evidence': {
                 errorMessage = 'A double-endorsement evidence is inconsistent (two distinct delegates)';
                 break;
             }
-            case 'proto.alpha.block.invalid_commitment': {
+            case 'proto.003-PsddFKi3.block.invalid_commitment': {
                 errorMessage = 'The block header has invalid commitment.';
                 break;
             }
-            case 'proto.alpha.block.invalid_double_baking_evidence': {
+            case 'proto.003-PsddFKi3.block.invalid_double_baking_evidence': {
                 errorMessage = 'A double-baking evidence is inconsistent (two distinct level)';
                 break;
             }
-            case 'proto.alpha.block.invalid_double_endorsement_evidence': {
+            case 'proto.003-PsddFKi3.block.invalid_double_endorsement_evidence': {
                 errorMessage = 'A double-endorsement evidence is malformed';
                 break;
             }
-            case 'proto.alpha.block.multiple_revelation': {
+            case 'proto.003-PsddFKi3.block.multiple_revelation': {
                 errorMessage = 'A manager operation should not contain more than one revelation';
                 break;
             }
-            case 'proto.alpha.block.outdated_double_baking_evidence': {
+            case 'proto.003-PsddFKi3.block.outdated_double_baking_evidence': {
                 errorMessage = 'A double-baking evidence is outdated.';
                 break;
             }
-            case 'proto.alpha.block.outdated_double_endorsement_evidence': {
+            case 'proto.003-PsddFKi3.block.outdated_double_endorsement_evidence': {
                 errorMessage = 'A double-endorsement evidence is outdated.';
                 break;
             }
-            case 'proto.alpha.block.too_early_double_baking_evidence': {
+            case 'proto.003-PsddFKi3.block.too_early_double_baking_evidence': {
                 errorMessage = 'A double-baking evidence is in the future';
                 break;
             }
-            case 'proto.alpha.block.too_early_double_endorsement_evidence': {
+            case 'proto.003-PsddFKi3.block.too_early_double_endorsement_evidence': {
                 errorMessage = 'A double-endorsement evidence is in the future';
                 break;
             }
-            case 'proto.alpha.block.unrequired_double_baking_evidence': {
+            case 'proto.003-PsddFKi3.block.unrequired_double_baking_evidence': {
                 errorMessage = 'A double-baking evidence is unrequired';
                 break;
             }
-            case 'proto.alpha.block.unrequired_double_endorsement_evidence': {
+            case 'proto.003-PsddFKi3.block.unrequired_double_endorsement_evidence': {
                 errorMessage = 'A double-endorsement evidence is unrequired';
                 break;
             }
-            case 'proto.alpha.comparableTypeExpectedTypeError': {
+            case 'proto.003-PsddFKi3.comparableTypeExpectedTypeError': {
                 errorMessage = 'A non comparable type was used in a place where only comparable types are accepted.';
                 break;
             }
-            case 'proto.alpha.context.failed_to_decode_parameter': {
+            case 'proto.003-PsddFKi3.context.failed_to_decode_parameter': {
                 errorMessage = 'Unexpected JSON object.';
                 break;
             }
-            case 'proto.alpha.context.failed_to_parse_parameter': {
+            case 'proto.003-PsddFKi3.context.failed_to_parse_parameter': {
                 errorMessage = 'The protocol parameters are not valid JSON.';
                 break;
             }
-            case 'proto.alpha.context.storage_error': {
+            case 'proto.003-PsddFKi3.context.storage_error': {
                 errorMessage = 'An error that should never happen unless something has been deleted or corrupted in the database.';
                 break;
             }
-            case 'proto.alpha.contract.balance_too_low': {
+            case 'proto.003-PsddFKi3.contract.balance_too_low': {
                 errorMessage = 'An operation tried to spend more tokens than the contract has';
                 break;
             }
-            case 'proto.alpha.contract.cannot_pay_storage_fee': {
+            case 'proto.003-PsddFKi3.contract.cannot_pay_storage_fee': {
                 errorMessage = 'The storage fee is higher than the contract balance';
                 break;
             }
-            case 'proto.alpha.contract.counter_in_the_future': {
+            case 'proto.003-PsddFKi3.contract.counter_in_the_future': {
                 errorMessage = 'An operation assumed a contract counter in the future';
                 break;
             }
-            case 'proto.alpha.contract.counter_in_the_past': {
+            case 'proto.003-PsddFKi3.contract.counter_in_the_past': {
                 errorMessage = 'An operation assumed a contract counter in the past';
                 break;
             }
-            case 'proto.alpha.contract.empty_transaction': {
+            case 'proto.003-PsddFKi3.contract.empty_transaction': {
                 errorMessage = 'Forbidden to credit 0&#42793; to a contract without code.';
                 break;
             }
-            case 'proto.alpha.contract.failure': {
+            case 'proto.003-PsddFKi3.contract.failure': {
                 errorMessage = 'Unexpected contract storage error';
                 break;
             }
-            case 'proto.alpha.contract.invalid_contract_notation': {
+            case 'proto.003-PsddFKi3.contract.invalid_contract_notation': {
                 errorMessage = 'A malformed contract notation was given to an RPC or in a script.';
                 break;
             }
-            case 'proto.alpha.contract.manager.inconsistent_hash': {
+            case 'proto.003-PsddFKi3.contract.manager.inconsistent_hash': {
                 errorMessage = 'A revealed manager public key is inconsistent with the announced hash';
                 break;
             }
-            case 'proto.alpha.contract.manager.inconsistent_public_key': {
+            case 'proto.003-PsddFKi3.contract.manager.inconsistent_public_key': {
                 errorMessage = 'A provided manager public key is different with the public key stored in the contract';
                 break;
             }
-            case 'proto.alpha.contract.manager.unregistered_delegate': {
+            case 'proto.003-PsddFKi3.contract.manager.unregistered_delegate': {
                 errorMessage = 'A contract cannot be delegated to an unregistered delegate';
                 break;
             }
-            case 'proto.alpha.contract.non_existing_contract': {
+            case 'proto.003-PsddFKi3.contract.non_existing_contract': {
                 errorMessage = 'A contract handle is not present in the context (either it never was or it has been destroyed)';
                 break;
             }
-            case 'proto.alpha.contract.previously_revealed_key': {
+            case 'proto.003-PsddFKi3.contract.previously_revealed_key': {
                 errorMessage = 'One tried to revealed twice a manager public key';
                 break;
             }
-            case 'proto.alpha.contract.undelegatable_contract': {
+            case 'proto.003-PsddFKi3.contract.undelegatable_contract': {
                 errorMessage = 'Tried to delegate an implicit contract or a non delegatable originated contract';
                 break;
             }
-            case 'proto.alpha.contract.unrevealed_key': {
+            case 'proto.003-PsddFKi3.contract.unrevealed_key': {
                 errorMessage = 'One tried to apply a manager operation without revealing the manager public key';
                 break;
             }
-            case 'proto.alpha.contract.unspendable_contract': {
+            case 'proto.003-PsddFKi3.contract.unspendable_contract': {
                 errorMessage = 'An operation tried to spend tokens from an unspendable contract';
                 break;
             }
-            case 'proto.alpha.delegate.already_active': {
+            case 'proto.003-PsddFKi3.delegate.already_active': {
                 errorMessage = 'Useless delegate reactivation';
                 break;
             }
-            case 'proto.alpha.delegate.empty_delegate_account': {
+            case 'proto.003-PsddFKi3.delegate.empty_delegate_account': {
                 errorMessage = 'Cannot register a delegate when its implicit account is empty';
                 break;
             }
-            case 'proto.alpha.delegate.no_deletion': {
+            case 'proto.003-PsddFKi3.delegate.no_deletion': {
                 errorMessage = 'Tried to unregister a delegate';
                 break;
             }
-            case 'proto.alpha.delegate.unchanged': {
+            case 'proto.003-PsddFKi3.delegate.unchanged': {
                 errorMessage = 'Contract already delegated to the given delegate';
                 break;
             }
-            case 'proto.alpha.duplicateMapKeys': {
+            case 'proto.003-PsddFKi3.duplicateMapKeys': {
                 errorMessage = 'Map literals cannot contain duplicated keys';
                 break;
             }
-            case 'proto.alpha.duplicateScriptField': {
+            case 'proto.003-PsddFKi3.duplicateScriptField': {
                 errorMessage = 'When parsing script, a field was found more than once';
                 break;
             }
-            case 'proto.alpha.duplicateSetValuesInLiteral': {
+            case 'proto.003-PsddFKi3.duplicateSetValuesInLiteral': {
                 errorMessage = 'Set literals cannot contain duplicate elements, but a duplicae was found while parsing.';
                 break;
             }
-            case 'proto.alpha.failNotInTailPositionTypeError': {
+            case 'proto.003-PsddFKi3.failNotInTailPositionTypeError': {
                 errorMessage = 'There is non trivial garbage code after a FAIL instruction.';
                 break;
             }
-            case 'proto.alpha.gas_exhausted.block': {
+            case 'proto.003-PsddFKi3.gas_exhausted.block': {
                 errorMessage = 'The sum of gas consumed by all the operations in the block exceeds the hard gas limit per block';
                 break;
             }
-            case 'proto.alpha.gas_exhausted.operation': {
+            case 'proto.003-PsddFKi3.gas_exhausted.operation': {
                 errorMessage = 'A script or one of its callee took more time than the operation said it would';
                 break;
             }
-            case 'proto.alpha.gas_limit_too_high': {
+            case 'proto.003-PsddFKi3.gas_limit_too_high': {
                 errorMessage = 'A transaction tried to exceed the hard limit on gas';
                 break;
             }
-            case 'proto.alpha.illFormedTypeTypeError': {
+            case 'proto.003-PsddFKi3.illFormedTypeTypeError': {
                 errorMessage = 'The toplevel error thrown when trying to parse a type expression (always followed by more precise errors).';
                 break;
             }
-            case 'proto.alpha.illTypedContractTypeError': {
+            case 'proto.003-PsddFKi3.illTypedContractTypeError': {
                 // tslint:disable-next-line:max-line-length
                 errorMessage = 'The toplevel error thrown when trying to typecheck a contract code against given input, output and storage types (always followed by more precise errors).';
                 break;
             }
-            case 'proto.alpha.illTypedDataTypeError': {
+            case 'proto.003-PsddFKi3.illTypedDataTypeError': {
                 // tslint:disable-next-line:max-line-length
                 errorMessage = 'The toplevel error thrown when trying to typecheck a data expression against a given type (always followed by more precise errors).';
                 break;
             }
-            case 'proto.alpha.implicit.empty_implicit_contract': {
+            case 'proto.003-PsddFKi3.implicit.empty_implicit_contract': {
                 errorMessage = 'No manager operations are allowed on an empty implicit contract.';
                 break;
             }
-            case 'proto.alpha.inconsistentAnnotations': {
+            case 'proto.003-PsddFKi3.inconsistentAnnotations': {
                 errorMessage = 'The annotations on two types could not be merged';
                 break;
             }
-            case 'proto.alpha.inconsistentStackLengthsTypeError': {
+            case 'proto.003-PsddFKi3.inconsistentStackLengthsTypeError': {
                 errorMessage = 'A stack was of an unexpected length (this error is always in the context of a located error).';
                 break;
             }
-            case 'proto.alpha.inconsistentTypeAnnotations': {
+            case 'proto.003-PsddFKi3.inconsistentTypeAnnotations': {
                 errorMessage = 'The two types contain annotations that do not match';
                 break;
             }
-            case 'proto.alpha.internal_operation_replay': {
+            case 'proto.003-PsddFKi3.internal_operation_replay': {
                 errorMessage = 'An internal operation was emitted twice by a script';
                 break;
             }
-            case 'proto.alpha.invalidArityTypeError': {
+            case 'proto.003-PsddFKi3.invalidArityTypeError': {
                 errorMessage = 'In a script or data expression, a primitive was applied to an unsupported number of arguments.';
                 break;
             }
-            case 'proto.alpha.invalidConstantTypeError': {
+            case 'proto.003-PsddFKi3.invalidConstantTypeError': {
                 errorMessage = 'A data expression was invalid for its expected type.';
                 break;
             }
-            case 'proto.alpha.invalidContractTypeError': {
+            case 'proto.003-PsddFKi3.invalidContractTypeError': {
                 // tslint:disable-next-line:max-line-length
                 errorMessage = 'A script or data expression references a contract that does not exist or assumes a wrong type for an existing contract.';
                 break;
             }
-            case 'proto.alpha.invalidExpressionKindTypeError': {
+            case 'proto.003-PsddFKi3.invalidExpressionKindTypeError': {
                 // tslint:disable-next-line:max-line-length
                 errorMessage = 'In a script or data expression, an expression was of the wrong kind (for instance a string where only a primitive applications can appear).';
                 break;
             }
-            case 'proto.alpha.invalidIterBody': {
+            case 'proto.003-PsddFKi3.invalidIterBody': {
                 errorMessage = 'The body of an ITER instruction must result in the same stack type as before the ITER.';
                 break;
             }
-            case 'proto.alpha.invalidMapBlockFail': {
+            case 'proto.003-PsddFKi3.invalidMapBlockFail': {
                 errorMessage = 'FAIL cannot be the only instruction in the body. The propper type of the return list cannot be inferred.';
                 break;
             }
-            case 'proto.alpha.invalidMapBody': {
+            case 'proto.003-PsddFKi3.invalidMapBody': {
                 errorMessage = 'The body of a map block did not match the expected type';
                 break;
             }
-            case 'proto.alpha.invalidPrimitiveNameCaseTypeError': {
+            case 'proto.003-PsddFKi3.invalidPrimitiveNameCaseTypeError': {
                 errorMessage = 'In a script or data expression, a primitive name is neither uppercase, lowercase or capitalized.';
                 break;
             }
-            case 'proto.alpha.invalidPrimitiveNameTypeErro': {
+            case 'proto.003-PsddFKi3.invalidPrimitiveNameTypeErro': {
                 errorMessage = 'In a script or data expression, a primitive name is unknown or has a wrong case.';
                 break;
             }
-            case 'proto.alpha.invalidPrimitiveNamespaceTypeError': {
+            case 'proto.003-PsddFKi3.invalidPrimitiveNamespaceTypeError': {
                 errorMessage = 'In a script or data expression, a primitive was of the wrong namespace.';
                 break;
             }
-            case 'proto.alpha.invalidPrimitiveTypeError': {
+            case 'proto.003-PsddFKi3.invalidPrimitiveTypeError': {
                 errorMessage = 'In a script or data expression, a primitive was unknown.';
                 break;
             }
-            case 'proto.alpha.invalid_binary_format': {
+            case 'proto.003-PsddFKi3.invalid_binary_format': {
                 errorMessage = 'Could not deserialize some piece of data from its binary representation';
                 break;
             }
-            case 'proto.alpha.missingScriptField': {
+            case 'proto.003-PsddFKi3.missingScriptField': {
                 errorMessage = 'When parsing script, a field was expected, but not provided';
                 break;
             }
-            case 'proto.alpha.nonce.previously_revealed': {
+            case 'proto.003-PsddFKi3.nonce.previously_revealed': {
                 errorMessage = 'Duplicated revelation for a nonce.';
                 break;
             }
-            case 'proto.alpha.nonce.too_early_revelation': {
+            case 'proto.003-PsddFKi3.nonce.too_early_revelation': {
                 errorMessage = 'Nonce revelation happens before cycle end';
                 break;
             }
-            case 'proto.alpha.nonce.too_late_revelation': {
+            case 'proto.003-PsddFKi3.nonce.too_late_revelation': {
                 errorMessage = 'Nonce revelation happens too late';
                 break;
             }
-            case 'proto.alpha.nonce.unexpected': {
+            case 'proto.003-PsddFKi3.nonce.unexpected': {
                 errorMessage = 'The provided nonce is inconsistent with the commit nonce hash.';
                 break;
             }
-            case 'proto.alpha.operation.cannot_parse': {
+            case 'proto.003-PsddFKi3.operation.cannot_parse': {
                 errorMessage = 'The operation is ill-formed or for another protocol version';
                 break;
             }
-            case 'proto.alpha.operation.duplicate_endorsement': {
+            case 'proto.003-PsddFKi3.operation.duplicate_endorsement': {
                 errorMessage = 'Two endorsements received for the same slot';
                 break;
             }
-            case 'proto.alpha.operation.invalid_activation': {
+            case 'proto.003-PsddFKi3.operation.invalid_activation': {
                 errorMessage = 'The given key has already been activated or the given key does not correspond to any preallocated contract';
                 break;
             }
-            case 'proto.alpha.operation.invalid_endorsement_level': {
+            case 'proto.003-PsddFKi3.operation.invalid_endorsement_level': {
                 errorMessage = 'The level of an endorsement is inconsistent with the provided block hash.';
                 break;
             }
-            case 'proto.alpha.operation.invalid_signature': {
+            case 'proto.003-PsddFKi3.operation.invalid_signature': {
                 errorMessage = 'The operation signature is ill-formed or has been made with the wrong public key';
                 break;
             }
-            case 'proto.alpha.operation.missing_signature': {
+            case 'proto.003-PsddFKi3.operation.missing_signature': {
                 errorMessage = 'The operation is of a kind that must be signed, but the signature is missing';
                 break;
             }
-            case 'proto.alpha.operation.wrong_activation_secret': {
+            case 'proto.003-PsddFKi3.operation.wrong_activation_secret': {
                 errorMessage = 'The submitted activation key does not match the registered key.';
                 break;
             }
-            case 'proto.alpha.operation.wrong_endorsement_predecessor': {
+            case 'proto.003-PsddFKi3.operation.wrong_endorsement_predecessor': {
                 errorMessage = 'Trying to include an endorsement in a block that is not the successor of the endorsed one';
                 break;
             }
-            case 'proto.alpha.operation.wrong_voting_period': {
+            case 'proto.003-PsddFKi3.operation.wrong_voting_period': {
                 errorMessage = 'Trying to onclude a proposal or ballot meant for another voting period';
                 break;
             }
-            case 'proto.alpha.scriptOverflowRuntimeError': {
+            case 'proto.003-PsddFKi3.scriptOverflowRuntimeError': {
                 errorMessage = 'A FAIL instruction was reached due to the detection of an overflow';
                 break;
             }
-            case 'proto.alpha.scriptRejectedRuntimeError': {
+            case 'proto.003-PsddFKi3.scriptRejectedRuntimeError': {
                 errorMessage = 'A FAIL instruction was reached';
                 break;
             }
-            case 'proto.alpha.scriptRuntimeError': {
+            case 'proto.003-PsddFKi3.scriptRuntimeError': {
                 errorMessage = 'Toplevel error for all runtime script errors';
                 break;
             }
-            case 'proto.alpha.seed.unknown_seed': {
+            case 'proto.003-PsddFKi3.seed.unknown_seed': {
                 errorMessage = 'The requested seed is not available';
                 break;
             }
-            case 'proto.alpha.selfInLambda': {
+            case 'proto.003-PsddFKi3.selfInLambda': {
                 errorMessage = 'A SELF instruction was encountered in a lambda expression.';
                 break;
             }
-            case 'proto.alpha.storage_exhausted.block': {
+            case 'proto.003-PsddFKi3.storage_exhausted.block': {
                 errorMessage = 'The sum of storage consumed by all the operations in the block exceeds the hard storage limit per block';
                 break;
             }
-            case 'proto.alpha.storage_exhausted.operation': {
+            case 'proto.003-PsddFKi3.storage_exhausted.operation': {
                 errorMessage = 'A script or one of its callee wrote more bytes than the operation said it would';
                 break;
             }
-            case 'proto.alpha.storage_limit_too_high': {
+            case 'proto.003-PsddFKi3.storage_limit_too_high': {
                 errorMessage = 'A transaction tried to exceed the hard limit on storage';
                 break;
             }
-            case 'proto.alpha.tez.addition_overflow': {
+            case 'proto.003-PsddFKi3.tez.addition_overflow': {
                 errorMessage = 'An addition of two tez amounts overflowed';
                 break;
             }
-            case 'proto.alpha.tez.invalid_divisor': {
+            case 'proto.003-PsddFKi3.tez.invalid_divisor': {
                 errorMessage = 'Multiplication of a tez amount by a non positive integer';
                 break;
             }
-            case 'proto.alpha.tez.multiplication_overflow': {
+            case 'proto.003-PsddFKi3.tez.multiplication_overflow': {
                 errorMessage = 'A multiplication of a tez amount by an integer overflowed';
                 break;
             }
-            case 'proto.alpha.tez.negative_multiplicator': {
+            case 'proto.003-PsddFKi3.tez.negative_multiplicator': {
                 errorMessage = 'Multiplication of a tez amount by a negative integer';
                 break;
             }
-            case 'proto.alpha.tez.subtraction_underflow': {
+            case 'proto.003-PsddFKi3.tez.subtraction_underflow': {
                 errorMessage = 'An subtraction of two tez amounts underflowed';
                 break;
             }
-            case 'proto.alpha.too_many_internal_operations': {
+            case 'proto.003-PsddFKi3.too_many_internal_operations': {
                 errorMessage = 'A transaction exceeded the hard limit of internal operations it can emit';
                 break;
             }
-            case 'proto.alpha.typeTooLarge': {
+            case 'proto.003-PsddFKi3.typeTooLarge': {
                 errorMessage = 'An instruction generated a type larger than the limit.';
                 break;
             }
-            case 'proto.alpha.undefinedBinopTypeError': {
+            case 'proto.003-PsddFKi3.undefinedBinopTypeError': {
                 errorMessage = 'A binary operation is called on operands of types over which it is not defined.';
                 break;
             }
-            case 'proto.alpha.undefinedUnopTypeError': {
+            case 'proto.003-PsddFKi3.undefinedUnopTypeError': {
                 errorMessage = 'A unary operation is called on an operand of type over which it is not defined.';
                 break;
             }
-            case 'proto.alpha.undefined_operation_nonce': {
+            case 'proto.003-PsddFKi3.undefined_operation_nonce': {
                 errorMessage = 'An origination was attemped out of the scope of a manager operation';
                 break;
             }
-            case 'proto.alpha.unexpectedAnnotation': {
+            case 'proto.003-PsddFKi3.unexpectedAnnotation': {
                 errorMessage = 'A node in the syntax tree was impropperly annotated';
                 break;
             }
-            case 'proto.alpha.unexpectedBigMap': {
+            case 'proto.003-PsddFKi3.unexpectedBigMap': {
                 // tslint:disable-next-line:max-line-length
                 errorMessage = 'When parsing script, a big_map type was found somewhere else than in the left component of the toplevel storage pair.';
                 break;
             }
-            case 'proto.alpha.unexpectedOperation': {
+            case 'proto.003-PsddFKi3.unexpectedOperation': {
                 errorMessage = 'When parsing script, a operation type was found in the storage or parameter field.';
                 break;
             }
-            case 'proto.alpha.unknownPrimitiveNameTypeError': {
+            case 'proto.003-PsddFKi3.unknownPrimitiveNameTypeError': {
                 errorMessage = 'In a script or data expression, a primitive was unknown.';
                 break;
             }
-            case 'proto.alpha.unmatchedBranchesTypeError': {
+            case 'proto.003-PsddFKi3.unmatchedBranchesTypeError': {
                 errorMessage = 'At the join point at the end of two code branches the stacks have inconsistent lengths or contents.';
                 break;
             }
-            case 'proto.alpha.unorderedMapLiteral': {
+            case 'proto.003-PsddFKi3.unorderedMapLiteral': {
                 errorMessage = 'Map keys must be in strictly increasing order';
                 break;
             }
-            case 'proto.alpha.unorderedSetLiteral': {
+            case 'proto.003-PsddFKi3.unorderedSetLiteral': {
                 errorMessage = 'Set values must be in strictly increasing order';
                 break;
             }
