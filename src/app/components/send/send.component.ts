@@ -12,6 +12,7 @@ import { CoordinatorService } from '../../services/coordinator.service';
 import { OperationService } from '../../services/operation.service';
 import { ExportService } from '../../services/export.service';
 import { InputValidationService } from '../../services/input-validation.service';
+import Big from 'big.js';
 
 interface SendData {
     to: string;
@@ -139,18 +140,13 @@ export class SendComponent implements OnInit {
 
     sendEntireBalance(accountPkh: string, event: Event) {
         event.stopPropagation();
-
-        let accountBalance: number;
-        let index;
-
         // finding the index
-        index = this.accounts.findIndex(account => account.pkh === accountPkh);
-
-        accountBalance = this.accounts[index].balance.balanceXTZ / 1000000;
+        const index = this.accounts.findIndex(account => account.pkh === accountPkh);
+        let accountBalance = Big(this.accounts[index].balance.balanceXTZ).div(1000000);
         if (!this.fee) {
-            accountBalance -= this.recommendedFee;
+            accountBalance = accountBalance.minus(this.recommendedFee);
         } else {
-            accountBalance -= Number(this.fee);
+            accountBalance = accountBalance.minus(Number(this.fee));
         }
         this.amount = accountBalance.toString();
     }
