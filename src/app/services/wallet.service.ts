@@ -134,6 +134,11 @@ export class WalletService {
       walletType: this.wallet.type,
       pkh: this.wallet.accounts[0].pkh
     };
+    if (this.isFullWallet() && this.wallet.encryptionVersion === 2) {
+      data.iv = this.wallet.salt;
+    } else {
+      data.pkh = this.wallet.accounts[0].pkh;
+    }
     if (this.isFullWallet()) {
       data.encryptedSeed = this.wallet.seed;
     } else if (this.isViewOnlyWallet()) {
