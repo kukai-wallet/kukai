@@ -35,20 +35,13 @@ export class ActivateComponent implements OnInit {
         (ans: any) => {
           if (ans.success) {
             if (ans.payload.opHash) {
-
-              let activationSuccess = '';
               this.translate.get('ACTIVATECOMPONENT.ACTIVATESUCCESS').subscribe(
-                  (res: string) => activationSuccess = res
+                (res: string) => this.messageService.addSuccess(res)  // 'Activation successfully broadcasted to the blockchain!'
               );
-              this.messageService.addSuccess(activationSuccess);  // 'Activation successfully broadcasted to the blockchain!'
-
             } else {
-
-              let retrieveFailed = '';
               this.translate.get('ACTIVATECOMPONENT.RETRIEVEFAIL').subscribe(
-                  (res: string) => retrieveFailed = res
+                (res: string) => this.messageService.addWarning(res)  // Could not retrieve an operation hash
               );
-              this.messageService.addWarning(retrieveFailed);  // Could not retrieve an operation hash
             }
           } else {
             let errorMessage = '';
@@ -62,18 +55,18 @@ export class ActivateComponent implements OnInit {
           }
         },
         err => {
-          let errorMessage = '';
-          let activateFailed = '';
           this.translate.get('ACTIVATECOMPONENT.ACTIVATEFAIL').subscribe(
-              (res: string) => activateFailed = res  // 'Failed to activate wallet!'
+            (res: string) => {
+              let errorMessage = '';
+              const activateFailed = res;
+              if (typeof err.payload.msg === 'string') {
+                errorMessage = activateFailed + ' ' + err.payload.msg;
+              } else {
+                errorMessage = activateFailed;
+              }
+              this.messageService.addError(errorMessage);
+            }  // 'Failed to activate wallet!'
           );
-
-          if (typeof err.payload.msg === 'string') {
-            errorMessage = activateFailed + ' ' + err.payload.msg;
-          } else {
-            errorMessage = activateFailed;
-          }
-          this.messageService.addError(activateFailed);
           console.log(JSON.stringify(err));
         }
       );

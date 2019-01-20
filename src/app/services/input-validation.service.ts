@@ -24,34 +24,17 @@ export class InputValidationService {
     if (!password) {
       return '';
     }
-
-    let result = '';
     switch (zxcvbn(password).score) {
       case 0: {
-        this.translate.get('INPUTVALIDATIONCOMPONENT.CATASTROPHIC').subscribe(
-          (res: string) => result = res
-        );
-        return result;  // 'Catastrophic!'
+        return this.translate.instant('INPUTVALIDATIONCOMPONENT.CATASTROPHIC');  // 'Catastrophic!'
       } case 1: {
-        this.translate.get('INPUTVALIDATIONCOMPONENT.VERYWEAK').subscribe(
-          (res: string) => result = res
-        );
-        return result;  // 'Very weak!'
+        return this.translate.instant('INPUTVALIDATIONCOMPONENT.VERYWEAK');  // 'Very weak!'
       } case 2: {
-        this.translate.get('INPUTVALIDATIONCOMPONENT.WEAK').subscribe(
-          (res: string) => result = res
-        );
-        return result;  // 'Weak!'
+        return this.translate.instant('INPUTVALIDATIONCOMPONENT.WEAK');  // 'Weak!'
        } case 3: {
-        this.translate.get('INPUTVALIDATIONCOMPONENT.MODERATE').subscribe(
-          (res: string) => result = res
-        );
-        return result;  // 'Moderate!'
+        return this.translate.instant('INPUTVALIDATIONCOMPONENT.MODERATE');  // 'Moderate!'
       } case 4: {
-        this.translate.get('INPUTVALIDATIONCOMPONENT.STRONG').subscribe(
-          (res: string) => result = res
-        );
-        return result;  // 'Strong!'
+        return this.translate.instant('INPUTVALIDATIONCOMPONENT.STRONG');  // 'Strong!'
       } default: {
         return '';
       }

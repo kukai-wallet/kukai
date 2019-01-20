@@ -1,11 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
-
-
 import { WalletService } from '../../services/wallet.service';
 import { MessageService } from '../../services/message.service';
 import { ExportService } from '../../services/export.service';
 import { ImportService } from '../../services/import.service';
 import { InputValidationService } from '../../services/input-validation.service';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -14,7 +13,6 @@ import { InputValidationService } from '../../services/input-validation.service'
   styleUrls: ['./new-wallet.component.scss']
 })
 export class NewWalletComponent implements OnInit {
-  MIN_PWD_LENGTH = 9;
   @Input() pwd1 = '';
   @Input() pwd2 = '';
   @Input() userMnemonic = '';
@@ -25,14 +23,8 @@ export class NewWalletComponent implements OnInit {
   pkh: string;
   MNEMONIC: string;
   mnemonicOut: string;
-  // Verify password boolean
-  isValidPass = {
-    empty: true,
-    minStrength: true,
-    match: true,
-    confirmed: false
-  };
   constructor(
+    private translate: TranslateService,
     private walletService: WalletService,
     private messageService: MessageService,
     private exportService: ExportService,
@@ -42,8 +34,6 @@ export class NewWalletComponent implements OnInit {
 
   ngOnInit() {
     this.generateSeed();
-  }
-  skipExtraEntropy() {
   }
   generateSeed() {
     this.MNEMONIC = this.walletService.createNewWallet();
@@ -62,7 +52,7 @@ export class NewWalletComponent implements OnInit {
     return (this.mnemonicOut === this.userMnemonic.replace(/(\r\n\t|\n|\r\t| )/gm, ''));
   }
   encryptWallet() {
-    if (this.validatePwd()) {
+    if (this.validPwd()) {
       const pwd = this.pwd1;
       this.pwd1 = '';
       this.pwd2 = '';
@@ -79,16 +69,19 @@ export class NewWalletComponent implements OnInit {
       }, 100);
     }
   }
-  validatePwd(): boolean {
-    this.isValidPass.minStrength = this.inputValidationService.password(this.pwd1);
-    this.isValidPass.match = (this.pwd1 === this.pwd2);
-    if (this.isValidPass.minStrength && this.isValidPass.match) {
-      this.isValidPass.confirmed = true;
-      console.log('Success', this.isValidPass.confirmed);
-      return true;
-    } else {
-      this.isValidPass.confirmed = false;
+  validPwd(): boolean {
+    if (!this.inputValidationService.password(this.pwd1)) {
+      this.translate.get('MNEMONICIMPORTCOMPONENT.PASSWORDWEAK').subscribe(
+        (res: string) => this.messageService.addWarning(res, 10)  // 'Password is too weak!'
+      );
       return false;
+    } else if (this.pwd1 !== this.pwd2) {
+      this.translate.get('MNEMONICIMPORTCOMPONENT.NOMATCHPASSWORDS').subscribe(
+        (res: string) => this.messageService.addWarning(res, 10)  // Passwords don't match!
+      );
+      return false;
+    } else {
+      return true;
     }
   }
   calcStrength() {

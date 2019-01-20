@@ -412,14 +412,10 @@ export class SendComponent implements OnInit {
                     }
                 }
             } else if (toMultipleDestinationsArray.length === 1) {
-                this.translate.get('SENDCOMPONENT.NOADDRESSORAMOUNT').subscribe(
-                    (res: string) => result = res  // 'No address or amount provided!'
-                );
+                result = this.translate.instant('SENDCOMPONENT.NOADDRESSORAMOUNT'); // 'No address or amount provided!'
             }
         });
-
         console.log('toMultipleDestinations: ', JSON.stringify(this.toMultipleDestinations));
-
         return result;  // If this loops ends then everything has been verified and result will remain ''
     }
 
