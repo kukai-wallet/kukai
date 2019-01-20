@@ -12,7 +12,7 @@ describe('[ TruncatePipe ]', () => {
 	let pipe: TruncatePipe;
 	let mocktz1: string;
 
-	beforeEach(() => {		
+	beforeEach(() => {
 		// store injectors to call during tests
 		injector = getTestBed();
 		pipe = new TruncatePipe();
@@ -33,10 +33,10 @@ describe('[ TruncatePipe ]', () => {
 
 		it('returns truncated string ((3) char prefix limit & no post-fix', () => {
 			expect(pipe.transform(mocktz1, 3, false)).toEqual('tz1...');
-		})
+		});
 
 		it('returns truncated string ((3) char limit pre-fix & post-fix', () => {
 			expect(pipe.transform(mocktz1, 3, true)).toEqual('tz1...4MX');
-		})
+		});
 	});
 });

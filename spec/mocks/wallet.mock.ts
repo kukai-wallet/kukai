@@ -1,4 +1,4 @@
-import { Balance, Wallet, WalletType } from "./interfaces.mock";
+import { Balance, Wallet, WalletType } from './interfaces.mock';
 
 export class WalletServiceStub {
 	wallet: Wallet;

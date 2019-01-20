@@ -24,12 +24,12 @@ declare var require: any;
 
 // Prevent Karma from running prematurely.
 __karma__.loaded = function () {};
-    
+
 // First, initialize the Angular testing environment.
 getTestBed().initTestEnvironment(
-  BrowserDynamicTestingModule, 
+  BrowserDynamicTestingModule,
   platformBrowserDynamicTesting()
-); 
+);
 
 // Then we find all the tests.
 const context = require.context('./app/', true, /\.spec\.ts$/);
@@ -41,8 +41,8 @@ context
 
 	// The regex in require.context didn't work for filtering integration testing off
 	//return !element.endsWith('.component.spec.ts') && !element.endsWith('.pipe.spec.ts');
-	return element.endsWith('spec.ts')
+	return element.endsWith('spec.ts');
   })
   .map(context);
 // Finally, start Karma to run the tests.
-__karma__.start();      
+__karma__.start();

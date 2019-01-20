@@ -9,7 +9,8 @@ import { ErrorHandlingPipe } from '../pipes/error-handling.pipe';
 describe('[ InputValidationService ]', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-		imports: [ HttpClientModule, HttpClientTestingModule,TranslateModule.forRoot({ loader: { provide: TranslateLoader, useClass: TranslateFakeLoader }})],
+		imports: [ HttpClientModule, HttpClientTestingModule, TranslateModule.forRoot(
+      { loader: { provide: TranslateLoader, useClass: TranslateFakeLoader }})],
       providers: [InputValidationService, OperationService, ErrorHandlingPipe]
     });
   });

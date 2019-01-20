@@ -1,24 +1,24 @@
 // suite unit-test frameworks
-import { TestBed } from "@angular/core/testing";
-import { HttpTestingController, HttpClientTestingModule, TestRequest } from "@angular/common/http/testing";
+import { TestBed } from '@angular/core/testing';
+import { HttpTestingController, HttpClientTestingModule, TestRequest } from '@angular/common/http/testing';
 
 // class under inspection
-import { DelegateService } from "./delegate.service";
+import { DelegateService } from './delegate.service';
 
 // class dependencies
-import { HttpClientModule } from "@angular/common/http";
-import { WalletService } from "./wallet.service";
-import { OperationService } from "./operation.service";
-import { TranslateLoader, TranslateFakeLoader, TranslateModule, TranslateService } from "@ngx-translate/core";
-import { ErrorHandlingPipe } from "../pipes/error-handling.pipe";
+import { HttpClientModule } from '@angular/common/http';
+import { WalletService } from './wallet.service';
+import { OperationService } from './operation.service';
+import { TranslateLoader, TranslateFakeLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
+import { ErrorHandlingPipe } from '../pipes/error-handling.pipe';
 
 // class mocks
-import { Account, Activity, Balance, Wallet, WalletType } from "../../../spec/mocks/interfaces.mock"
-import { EncryptionService } from "./encryption.service";
+import { Account, Activity, Balance, Wallet, WalletType } from '../../../spec/mocks/interfaces.mock';
+import { EncryptionService } from './encryption.service';
 import 'rxjs/add/operator/mergeMap';
 
 /**
- * Suite: DelegateService 
+ * Suite: DelegateService
  * @todo: remove console.log spy, mock operation service calls entirely. it should never be tested.
  */
 describe('[ DelegateService ]', () => {
@@ -26,27 +26,28 @@ describe('[ DelegateService ]', () => {
 	let service: DelegateService;
 
 	// class dependencies
-	let walletsrv:WalletService;
-	let operationsrv:OperationService;
+	let walletsrv: WalletService;
+	let operationsrv: OperationService;
 	let httpMock: HttpTestingController;
 
 	// testing variables
-	const nodeurl: string = 'https://rpc.tezrpc.me/'
+	const nodeurl = 'https://rpc.tezrpc.me/';
 	let delegate: string;
 	let pkh: string;
 
-	let accounts:Account[];
-	let networkresponses:any[];
-	
+	let accounts: Account[];
+	let networkresponses: any[];
+
 	beforeEach(() => {
-		// WalletService mock	
+		// WalletService mock
 		TestBed.configureTestingModule({
-			imports: [HttpClientModule, HttpClientTestingModule, TranslateModule.forRoot({ loader: { provide: TranslateLoader, useClass: TranslateFakeLoader }})],
+			imports: [HttpClientModule, HttpClientTestingModule, TranslateModule.forRoot({
+				loader: { provide: TranslateLoader, useClass: TranslateFakeLoader }})],
 			providers: [
-				DelegateService, 
+				DelegateService,
 				WalletService,
-				TranslateService, 
-				OperationService, 
+				TranslateService,
+				OperationService,
 				EncryptionService,
 				ErrorHandlingPipe
 			]
@@ -54,13 +55,13 @@ describe('[ DelegateService ]', () => {
 
 		service = TestBed.get(DelegateService);
 		walletsrv = TestBed.get(WalletService);
-		operationsrv = TestBed.get(OperationService)
+		operationsrv = TestBed.get(OperationService);
 		httpMock  = TestBed.get(HttpTestingController);
 
 		// create mock empty full wallet
 		walletsrv.wallet = walletsrv.emptyWallet(0);
 
-		let emptybalance:Balance = <Balance>{
+		const emptybalance: Balance = <Balance>{
 			balanceXTZ: null,
 			pendingXTZ: null,
 			balanceFiat: null,
@@ -69,69 +70,69 @@ describe('[ DelegateService ]', () => {
 
 		accounts = [
 			{
-				pkh: 'tz1primary', 
-				delegate: '', 
+				pkh: 'tz1primary',
+				delegate: '',
 				balance: emptybalance,
 				numberOfActivites: 0,
 				activities: []
 			},
 			{
-				pkh: 'KT1contract1', 
-				delegate: '', 
+				pkh: 'KT1contract1',
+				delegate: '',
 				balance: emptybalance,
 				numberOfActivites: 0,
 				activities: []
 			},
 			{
-				pkh: 'KT1contract2', 
-				delegate: 'tz1tacocity', 
+				pkh: 'KT1contract2',
+				delegate: 'tz1tacocity',
 				balance: emptybalance,
 				numberOfActivites: 0,
 				activities: []
 			}];
-		
+
 		networkresponses = [
 			{
-				"manager":"tz1primary",
-				"balance":"3310767978478",
-				"spendable":true,
-				"delegate": {
-					"setable":false,
-					"value":""
+				'manager': 'tz1primary',
+				'balance': '3310767978478',
+				'spendable': true,
+				'delegate': {
+					'setable': false,
+					'value': ''
 				},
-				"counter":"10"
+				'counter': '10'
 			},
 			{
 				//KT1contract1
-				"manager":"tz1primary",
-				"balance":"110135021478",
-				"spendable":true,
-				"delegate": {
-					"setable":true,
-					"value":"tz1primary"
+				'manager': 'tz1primary',
+				'balance': '110135021478',
+				'spendable': true,
+				'delegate': {
+					'setable': true,
+					'value': 'tz1primary'
 				},
-				"counter":"10"
+				'counter': '10'
 			},
 			{
 				//KT1contract2
-				"manager":"tz1primary",
-				"balance":"767978868",
-				"spendable":true,
-				"delegate": {
-					"setable":true,
-					"value":"tz1bakerone"
+				'manager': 'tz1primary',
+				'balance': '767978868',
+				'spendable': true,
+				'delegate': {
+					'setable': true,
+					'value': 'tz1bakerone'
 				},
-				"counter":"10"
+				'counter': '10'
 			}];
 
 		pkh = accounts[1].pkh;
 		delegate = networkresponses[1].delegate.value;
-		
+
 		// configure spies
 		spyOn(walletsrv, 'storeWallet');
 		spyOn(operationsrv, 'getDelegate').and.callThrough();
 		spyOn(console, 'log'); // remove later
-		
+
 	});
 
 	afterEach(() => {
@@ -140,7 +141,7 @@ describe('[ DelegateService ]', () => {
 
 	it('should be created', () => {
 		expect(service).toBeTruthy();
-	})
+	});
 
 	it('should ignore TZ1 accounts', () => {
 		service.getDelegate('tz1mockaccount');
@@ -171,7 +172,7 @@ describe('[ DelegateService ]', () => {
 		service.getDelegates();
 
 		for(let i = 1; i < walletsrv.wallet.accounts.length; i++ ) {
-			httpMock.expectOne(nodeurl + '/chains/main/blocks/head/context/contracts/' + walletsrv.wallet.accounts[i].pkh)	
+			httpMock.expectOne(nodeurl + '/chains/main/blocks/head/context/contracts/' + walletsrv.wallet.accounts[i].pkh)
 				.flush(networkresponses[i]);
 		};
 

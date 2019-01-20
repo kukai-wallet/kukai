@@ -3,11 +3,11 @@ import { ExportService } from './export.service';
 
 // class dependencies
 import * as FileSaver from 'file-saver/FileSaver';
-import { WalletService } from "./wallet.service";
+import { WalletService } from './wallet.service';
 
 // unit-testing framework
-import { WalletServiceStub } from "../../../spec/mocks/wallet.mock";
-import { TestBed } from "@angular/core/testing";
+import { WalletServiceStub } from '../../../spec/mocks/wallet.mock';
+import { TestBed } from '@angular/core/testing';
 
 
 /**
@@ -15,7 +15,7 @@ import { TestBed } from "@angular/core/testing";
  * @todo: perform a deep equal on spied arguments? possible refactor.
  * @done: Imports: Could not find a declaration file for module 'file-saver/FileSaver'.
  * @done: Method: describe downloadOperationData
- * @done: Find a way to check the blob? 
+ * @done: Find a way to check the blob?
  * @done: Find a way to check the SaveAs file?
  * @done: Cleanup & re-enable mocha runner.
  * @done: mock keystore exports, move to integration testing?
@@ -23,44 +23,44 @@ import { TestBed } from "@angular/core/testing";
 describe('[ ExportService ]', () => {
 
 	// class to inspect & dependencies
-	let service:ExportService;
-	let walletService:WalletService;
+	let service: ExportService;
+	let walletService: WalletService;
 
 	// parameters to inspect
-	let data:any;
+	let data: any;
 
 	// arguments to inspect
 	let fileblob: Blob;
-	let filename:string;
-	
+	let filename: string;
+
   	beforeEach(() => {
 
 		TestBed.configureTestingModule({
-			providers:[ ExportService, {provide: WalletService, useClass: WalletServiceStub} ]
+			providers: [ ExportService, {provide: WalletService, useClass: WalletServiceStub} ]
 			});
-		
+
 		service = TestBed.get(ExportService);
 		walletService = TestBed.get(WalletService);
   });
 
-	it('should be created', () => { 
+	it('should be created', () => {
 		expect(service).toBeTruthy();
-	})
+	});
 
 	describe ('> Download Wallet', () => {
 
-		beforeEach(() => { 
+		beforeEach(() => {
 
-			data = { 
-				provider: 'Kukai',	
-				version: 1.0,	
+			data = {
+				provider: 'Kukai',
+				version: 1.0,
 				pkh: 'public key hash',
 				walletType: 2
-			}; 
+			};
 
 			/** filesaver.saveAs() arguments */
 			fileblob = new Blob( [JSON.stringify(data, null, 4)], { type: 'application/json' } );
-			filename = 'wallet.tez'
+			filename = 'wallet.tez';
 
 			/** spy on downloadWallet() function */
 			spyOn(service, 'downloadWallet').and.callThrough();
@@ -78,7 +78,7 @@ describe('[ ExportService ]', () => {
 			expect(walletService.exportKeyStore).toHaveBeenCalled();
 		});
 
-		it('should save file wallet.tez', () => {	
+		it('should save file wallet.tez', () => {
 
 			// mock data exportKeyStore()
 			data.walletType = 0;
@@ -86,32 +86,32 @@ describe('[ ExportService ]', () => {
 
 			// download full wallet
 			service.downloadWallet(data);
-			
+
 			// verify our arguments match
 			expect(FileSaver.saveAs).toHaveBeenCalledWith(fileblob, filename);
 
 		});
 
-		it('should save file observer_wallet.tez', () => {	
+		it('should save file observer_wallet.tez', () => {
 
 			/** filesaver.saveAs() arguments */
 			fileblob = new Blob( [JSON.stringify(data, null, 4)], { type: 'application/json' } );
-			filename = 'observer_wallet.tez'
+			filename = 'observer_wallet.tez';
 
 			// download full wallet
 			service.downloadWallet(data);
-			
+
 		});
 
 	});
 
 	describe ('> Download View-Only Wallet', () => {
-		let pk:string;
+		let pk: string;
 
-		beforeEach(() => { 
+		beforeEach(() => {
 			// set mock public key
-			pk = 'mockseed'
-		
+			pk = 'mockseed';
+
 			// set mock view-wallet export keystore
 			data = {
 				provider: 'Kukai',
@@ -119,11 +119,11 @@ describe('[ ExportService ]', () => {
 				walletType: 1,
 				pkh: 'mockpkh',
 				pk: 'mockseed'
-			}
+			};
 
 			/** filesaver.saveAs() arguments */
 			fileblob = new Blob( [JSON.stringify(data, null, 4)], { type: 'application/json' } );
-			filename = 'view-only_wallet.tez'
+			filename = 'view-only_wallet.tez';
 
 			/** spy on downloadvowallet */
 			spyOn(service, 'downloadViewOnlyWallet').and.callThrough();
@@ -146,18 +146,18 @@ describe('[ ExportService ]', () => {
 				expect(walletService.exportKeyStore).toHaveBeenCalled();
 		});
 
-		it('should pass keystore data downloadWallet', ()=> {
+		it('should pass keystore data downloadWallet', () => {
 			expect(service.downloadWallet).toHaveBeenCalledWith(data);
 		});
-		
-		it('should save file view-only_wallet.tez', ()=> {
+
+		it('should save file view-only_wallet.tez', () => {
 			expect(FileSaver.saveAs).toHaveBeenCalledWith(fileblob, filename);
 		});
 
 	});
 
 	describe('> Download Operation Data', () => {
-		let hex:string;
+		let hex: string;
 
 		beforeEach(() => {
 			hex = 'fd00000aa8660';
@@ -168,23 +168,23 @@ describe('[ ExportService ]', () => {
 			};
 
 			// spies
-			spyOn(service, 'downloadOperationData').and.callThrough();			
+			spyOn(service, 'downloadOperationData').and.callThrough();
 			spyOn(FileSaver, 'saveAs').and.callFake( function() {   } );
-			
+
 		});
 
-		it('should save signed ops file signed.tzop',()=>{		
-			
+		it('should save signed ops file signed.tzop', () => {
+
 			service.downloadOperationData(hex, true);
-			
+
 			expect(FileSaver.saveAs).toHaveBeenCalledWith( new Blob([JSON.stringify(data, null, 4)], { type: 'application/json' }), 'signed.tzop');
 		});
 
-		it('should save unsigned ops file unsigned.tzop',()=>{		
+		it('should save unsigned ops file unsigned.tzop', () => {
 			//signed = false;
 
 			service.downloadOperationData(hex, false);
-			
+
 			expect(FileSaver.saveAs).toHaveBeenCalledWith( new Blob([JSON.stringify(data, null, 4)], { type: 'application/json' }), 'unsigned.tzop');
 		});
 	});

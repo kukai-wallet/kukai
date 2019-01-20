@@ -11,29 +11,30 @@ import { CoordinatorService } from '../../src/app/services/coordinator.service';
 import { DelegateService } from '../../src/app/services/delegate.service';
 import { EncryptionService } from '../../src/app/services/encryption.service';
 import { ImportService } from '../../src/app/services/import.service';
-import { MessageService } from "../../src/app/services/message.service"
-import { OperationService } from "../../src/app/services/operation.service";
-import { TzrateService } from "../../src/app/services/tzrate.service";
-import { WalletService } from "../../src/app/services/wallet.service"
+import { MessageService } from '../../src/app/services/message.service';
+import { OperationService } from '../../src/app/services/operation.service';
+import { TzrateService } from '../../src/app/services/tzrate.service';
+import { WalletService } from '../../src/app/services/wallet.service';
 
 //-----------Pipe Imports-------------
-import { ErrorHandlingPipe } from "../../src/app/pipes/error-handling.pipe";
+import { ErrorHandlingPipe } from '../../src/app/pipes/error-handling.pipe';
 
 //-----------Mock Imports-------------
 import { WalletServiceStub } from '../mocks/wallet.mock';
 
 //-----------Interface Exports-------------
-export { Account, Activity, Balance, KeyPair, Wallet, WalletType } from "../../spec/mocks/interfaces.mock"
+export { Account, Activity, Balance, KeyPair, Wallet, WalletType } from '../../spec/mocks/interfaces.mock';
 
 //-----------Service Exports-------------
-export { WalletService } from "../../src/app/services/wallet.service"
-export { OperationService } from "../../src/app/services/operation.service"
+export { WalletService } from '../../src/app/services/wallet.service';
+export { OperationService } from '../../src/app/services/operation.service';
 export { BalanceService } from '../../src/app/services/balance.service';
 export { TranslateService } from '@ngx-translate/core';
-export { ErrorHandlingPipe } from "../../src/app/pipes/error-handling.pipe";
+export { ErrorHandlingPipe } from '../../src/app/pipes/error-handling.pipe';
 
 
-import * as Rx from "rxjs/Rx";
+// tslint:disable-next-line:import-blacklist
+import * as Rx from 'rxjs/Rx';
 
 import { TzscanService } from '../../src/app/services/tzscan.service';
 
@@ -43,23 +44,22 @@ export const rx = Rx;
 
 // imports
 export const default_imports = [ ];
-export const http_imports =[
-	HttpClientModule, 
+export const http_imports = [
+	HttpClientModule,
 	HttpClientTestingModule
 ];
 
-export const translate_imports = [	
-	HttpModule,
-	HttpClientModule, 
-	HttpClientTestingModule, 
+export const translate_imports = [
+	HttpClientModule,
+	HttpClientTestingModule,
 	TranslateModule.forRoot({ loader: { provide: TranslateLoader, useClass: TranslateFakeLoader }})
 ];
 
 export const balancesrv_providers = [
-	BalanceService, 
-	{provide:WalletService, useClass:WalletServiceStub},
-	TranslateService, 
-	OperationService, 
+	BalanceService,
+	{provide: WalletService, useClass: WalletServiceStub},
+	TranslateService,
+	OperationService,
 	ErrorHandlingPipe,
 	MessageService,
 	TzrateService
@@ -68,15 +68,15 @@ export const balancesrv_providers = [
 export const walletsrv_providers = [
 	WalletService,
 	ActivityService,
-	BalanceService, 
+	BalanceService,
 	CoordinatorService,
 	EncryptionService,
 	DelegateService,
 	ErrorHandlingPipe,
 	ImportService,
 	MessageService,
-	OperationService, 
-	TranslateService, 	
+	OperationService,
+	TranslateService,
 	TzrateService,
 	TzscanService
 ];

@@ -1,20 +1,20 @@
 // class under inspection
-import { MessageService } from "./message.service";
+import { MessageService } from './message.service';
 
 // provider sub-dependencies
-import { TestBed } from "@angular/core/testing";
+import { TestBed } from '@angular/core/testing';
 
 /**
  * Suite: MessageService
  */
 describe('[ MessageService ]', () => {
-  
+
 	// class under inspection
-	let service:MessageService;
+	let service: MessageService;
 
 	// vars
-	let type:string;
-	let message:string;
+	let type: string;
+	let message: string;
 
 	// testing data
 	const seconds = 15;
@@ -36,14 +36,14 @@ describe('[ MessageService ]', () => {
 		// do nothing on console logging
 		spyOn(console, 'log');
 
-	});	
+	});
 
 	it('should be created', () => {
-		expect(service).toBeTruthy();   
+		expect(service).toBeTruthy();
 	});
 
 	it('should create message object array', () => {
-		let messages = service.messages;
+		const messages = service.messages;
 		expect(messages instanceof Array).toBeTruthy();
 	});
 
@@ -52,7 +52,7 @@ describe('[ MessageService ]', () => {
 		message = 'informational message';
 		type = 'info';
 
-		service.add(message, seconds);	
+		service.add(message, seconds);
 
 		expect(infomsg).toEqual(service.messages.pop());
 		expect(console.log).toHaveBeenCalledWith(type + ': ' + message);
@@ -63,7 +63,7 @@ describe('[ MessageService ]', () => {
 		message = 'error message';
 		type = 'danger';
 
-		service.addError(message, seconds);	
+		service.addError(message, seconds);
 
 		expect(errormsg).toEqual(service.messages.pop());
 		expect(console.log).toHaveBeenCalledWith(type + ': ' + message);
@@ -74,8 +74,8 @@ describe('[ MessageService ]', () => {
 		message = 'warning message';
 		type = 'warning';
 
-		service.addWarning(message, seconds);		
-		
+		service.addWarning(message, seconds);
+
 		expect(warningmsg).toEqual(service.messages.pop());
 		expect(console.log).toHaveBeenCalledWith(type + ': ' + message);
 	});
@@ -94,7 +94,7 @@ describe('[ MessageService ]', () => {
 	it('should clear queue of (3) messages', () => {
 		// set message value
 		message = 'filler message';
-		
+
 		// add multiple messages to the queue
 		service.add(message, seconds);
 		service.add(message, seconds);
