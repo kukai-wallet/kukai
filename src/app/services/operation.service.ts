@@ -36,6 +36,7 @@ export class OperationService {
     edpk: new Uint8Array([13, 15, 37, 217]),
     edsk: new Uint8Array([43, 246, 78, 7]),
     edsig: new Uint8Array([9, 245, 205, 134, 18]),
+    sig: new Uint8Array([4, 130, 43]),
     o: new Uint8Array([5, 116]),
     B: new Uint8Array([1, 52]),
     TZ: new Uint8Array([3, 99, 29]),
@@ -309,20 +310,28 @@ export class OperationService {
     for (let i = 0; i < applied[0].contents.length; i++) {
       if (applied[0].contents[i].metadata.operation_result.status === 'failed') {
         console.log('throw error ->');
-        throw new Error(applied[0].contents[i].metadata.operation_result.errors[0].id);
+        throw new Error(applied[0].contents[i].metadata.operation_result.errors[0].id); // prevent failed operations
       }
     }
   }
   errHandler(error: any): Observable<any> {
     if (error.error && error.error[0] && error.error[0].id) {
-      console.log('HttpErrorResponse in errHandler() ', error.error[0].id);
+      console.log('found 2: ');
       const errorId = error.error[0].id;
       const errorMsg = this.errorHandlingPipe.transform(errorId);
       error = errorMsg;
     } else if (error.error && error.error[0] && error.error[0].error) {
+      console.log('found 3: ');
       error = error.error[0].error;
     } else if (error.statusText) {
+      console.log('found 4: ');
       error = error.statusText;
+    } if (error.message) {
+      console.log('found: ' + error.message);
+      error = this.errorHandlingPipe.transform(error.message);
+    } else {
+      console.log('Error not categorized');
+      console.log(JSON.stringify(error));
     }
     return of(
       {
@@ -366,16 +375,16 @@ export class OperationService {
   }
   isRevealed(pkh: string): Observable<boolean> {
     return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + pkh + '/manager_key', {})
-    .flatMap((manager: any) => {
-      if (manager.key === undefined) {
-        return of(false);
-      } else {
-        return of(true);
+      .flatMap((manager: any) => {
+        if (manager.key === undefined) {
+          return of(false);
+        } else {
+          return of(true);
+        }
       }
-    }
-    ).pipe(catchError(err => {
-      return of(true);
-    })); // conservative action
+      ).pipe(catchError(err => {
+        return of(true);
+      })); // conservative action
   }
   getAccount(pkh: string): Observable<any> {
     return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + pkh)
@@ -396,6 +405,51 @@ export class OperationService {
           }
         );
       }).pipe(catchError(err => this.errHandler(err)));
+  }
+  getVerifiedOpBytes(operationLevel, operationHash, pkh): Observable<string> {
+    return this.http.get(this.nodeURL + '/chains/main/blocks/' + operationLevel + '/operation_hashes/3', {})
+      .flatMap((opHashes: any) => {
+        const opIndex = opHashes.findIndex(a => a === operationHash);
+        return this.http.get(this.nodeURL + '/chains/main/blocks/' + operationLevel + '/operations/3/' + opIndex, {})
+          .flatMap((op: any) => {
+            let ans = '';
+            const sig = op.signature;
+            delete op.chain_id;
+            delete op.signature;
+            delete op.hash;
+            delete op.protocol;
+            for (let i = 0; i < op.contents.length; i++) {
+              delete op.contents[i].metadata;
+              if (op.contents[i].manager_pubkey) { // Fix for mainnet
+                op.contents[i].managerPubkey = op.contents[i].manager_pubkey;
+                delete op.contents[i].manager_pubkey;
+              }
+            }
+            return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/forge/operations', op)
+              .flatMap((opBytes: any) => {
+                return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + pkh + '/manager_key', {})
+                  .flatMap((manager: any) => {
+                    if (this.pk2pkh(manager.key) === pkh) {
+                      if (this.verify(opBytes, sig, manager.key)) {
+                        ans = opBytes + this.buf2hex(this.b58cdecode(sig, this.prefix.sig));
+                      } else {
+                        throw new Error('InvalidSignature');
+                      }
+                    } else {
+                      throw new Error('InvalidPublicKey');
+                    }
+                    return of(ans);
+                  });
+              });
+          });
+      });
+  }
+  createKTaddress(sopBytes: string): string {
+    const hash = libs.crypto_generichash(32, this.hex2buf(sopBytes));
+    const index = new Uint8Array([0, 0, 0, 0]);
+    const hash2 = libs.crypto_generichash(20, this.mergebuf(index, hash));
+    console.log('Calculated KT address ' + this.b58cencode(hash2, this.prefix.KT));
+    return this.b58cencode(hash2, this.prefix.KT);
   }
   getConstants(): Observable<any> {
     return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/constants');
@@ -419,6 +473,14 @@ export class OperationService {
   }
   validMnemonic(mnemonic: string) {
     return bip39.validateMnemonic(mnemonic);
+  }
+  validAddress(address: string) {
+    try {
+      this.b58cdecode(address, this.prefix.tz1);
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
   generateMnemonic(): string {
     return bip39.generateMnemonic(160);
@@ -452,8 +514,7 @@ export class OperationService {
     n = n.slice(prefixx.length);
     return n;
   }
-  mergebuf(b) {
-    const wm = new Uint8Array([3]);
+  mergebuf(b, wm = new Uint8Array([3])) {
     const r = new Uint8Array(wm.length + b.length);
     r.set(wm);
     r.set(b, wm.length);
@@ -470,6 +531,12 @@ export class OperationService {
       edsig: edsig,
       sbytes: sbytes,
     };
+  }
+  verify(bytes: string, sig: string, pk: string): Boolean {
+    const hash = libs.crypto_generichash(32, this.mergebuf(this.hex2buf(bytes)));
+    const signature = this.b58cdecode(sig, this.prefix.sig);
+    const publicKey = this.b58cdecode(pk, this.prefix.edpk);
+    return libs.crypto_sign_verify_detached(signature, hash, publicKey);
   }
   sig2edsig(sig: string): any {
     return this.b58cencode(this.hex2buf(sig), this.prefix.edsig);

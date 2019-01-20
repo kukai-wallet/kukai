@@ -61,7 +61,10 @@
         "INFO1" : "Wallets created during the ICO need to be activated.",
         "INFO2" : "No private key is required for the activation process.",
         "BACK" : "Back",
-        "ACTIVATE" : "Activate"
+        "ACTIVATE" : "Activate",
+        "ACTIVATESUCCESS" : "Activation successfully broadcasted to the blockchain!",
+        "RETRIEVEFAIL" : "Could not retrieve an operation hash",
+        "ACTIVATEFAIL" : "Failed to activate wallet!"
     },
     "ACTIVITYCOMPONENT": {
         "TXNHASH" : "Txn Hash",
@@ -172,7 +175,13 @@
         "PASSPHRASE" : "Passphrase (optional)",
         "EMAIL" : "Email",
         "PASSWORD" : "Password",
-        "TZ1" : "tz1... (optional)"
+        "TZ1" : "tz1... (optional)",
+        "PASSWORDSTRENGHT" : "Password strength:",
+        "PASSWORDCONFIRM" : "Confirm Password",
+        "INVALIDEMAIL" : "Invalid email!",
+        "INVALIDPASSWORD" : "Invalid password!",
+        "INVALIDPKH" : "Invalid public key hash!",
+        "PASSWORDWEAK" : "Password is too weak!"
     },
     "NEWACCOUNTCOMPONENT": {
         "TITLE" : "Fund new account",
@@ -230,7 +239,9 @@
         "FINISH" : "Finish",
         "WORD1WORD2" : "word1 word2 word3 word4 word5 word6 word7 word8 word9 word10 word11 word12 word13 word14 word15",
         "PASSWORD" : "Password",
-        "CONFIRMPASSWORD" : "Confirm Password"
+        "CONFIRMPASSWORD" : "Confirm Password",
+        "PASSWORDSTRENGTH" : "Password strength:",
+        "WEAKPASSWORD" : "Password is too weak!"
     },
     "OFFLINESIGNINGCOMPONENT": {
         "TITLE" : "Offline signing",
@@ -321,11 +332,20 @@
         "INVALIDSENDERADDRESS" : "Invalid sender address",
         "INVALIDRECEIVERADDRESS" : "Invalid receiver address",
         "INVALIDAMOUNT" : "Invalid amount",
-        "INVALIDFEE" : "Invalid fee"
+        "INVALIDFEE" : "Invalid fee",
+        "NOADDRESSORAMOUNT" : "No address or amount provided!"
     },
     "STARTCOMPONENT": {
         "IMPORTWALLET" : "Import wallet",
         "NEWWALLET" : "New wallet",
         "ACTIVATE" : "Activate"
+    },
+    "INPUTVALIDATIONCOMPONENT": {
+        "CATASTROPHIC" : "Catastrophic!",
+        "VERYWEAK" : "Very weak!",
+        "WEAK" : "Weak!",
+        "MODERATE" : "Moderate!",
+        "STRONG" : "Strong!"
     }
+
 }

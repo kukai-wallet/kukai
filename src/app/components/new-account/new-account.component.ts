@@ -9,6 +9,7 @@ import { KeyPair } from '../../interfaces';
 import { OperationService } from '../../services/operation.service';
 import { CoordinatorService } from '../../services/coordinator.service';
 import { ExportService } from '../../services/export.service';
+import { InputValidationService } from '../../services/input-validation.service';
 
 @Component({
   selector: 'app-new-account',
@@ -41,7 +42,8 @@ export class NewAccountComponent implements OnInit {
     private modalService: BsModalService,
     private operationService: OperationService,
     private coordinatorService: CoordinatorService,
-    private exportService: ExportService
+    private exportService: ExportService,
+    private inputValidationService: InputValidationService
   ) { }
 
   ngOnInit() {
@@ -85,7 +87,7 @@ export class NewAccountComponent implements OnInit {
     } else {
       this.isValidModal2.neverConfirmed = false;
       let passwordInvalid = '';
-      this.translate.get('NEWACCOUNTCOMPONENT.INVALIDPASSWORD').subscribe(
+      this.translate.get('SENDCOMPONENT.WRONGPASSWORD').subscribe(
         (res: string) => passwordInvalid = res
       );
       this.pwdValid = passwordInvalid;
@@ -148,14 +150,14 @@ export class NewAccountComponent implements OnInit {
             });
 }
   invalidInput(): string {
-    if (!Number(this.amount) && this.amount && this.amount !== '0') {
+    if (!this.inputValidationService.amount(this.amount)) {
       let invalidAmount = '';
       this.translate.get('NEWACCOUNTCOMPONENT.INVALIDAMOUNT').subscribe(
         (res: string) => invalidAmount = res
       );
       return invalidAmount;
       // return 'Invalid amount';
-    } else if (!Number(this.fee) && this.fee && this.fee !== '0') {
+    } else if (!this.inputValidationService.fee(this.fee)) {
       let invalidFee = '';
       this.translate.get('NEWACCOUNTCOMPONENT.INVALIDFEE').subscribe(
         (res: string) => invalidFee = res

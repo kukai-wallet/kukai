@@ -21,29 +21,69 @@ export class ImportService {
     private operationService: OperationService,
     private tzscanService: TzscanService
   ) { }
-  async importWalletData(json: string, isJson: boolean = true): Promise<boolean> {
+  pwdRequired(json: string) {
+    const walletData = JSON.parse(json);
+    if (walletData.provider !== 'Kukai') {
+      throw new Error(`Unsupported wallet format`);
+    }
+    if (walletData.walletType === 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  async importWalletData(data: any, isJson: boolean = true, pkh: string = '', pwd: string = ''): Promise<boolean> {
     try {
       let walletData;
       if (isJson) {
-        walletData = JSON.parse(json);
+        walletData = JSON.parse(data);
       } else {
-        walletData = json;
+        walletData = data;
       }
       if (walletData.provider !== 'Kukai') {
         throw new Error(`Unsupported wallet format`);
       }
+      // Create empty wallet & set wallet type
       this.walletService.wallet = this.walletService.emptyWallet(walletData.walletType);
-      this.walletService.addAccount(walletData.pkh);
-      if (walletData.encryptedSeed) {
+      // Set version
+      this.walletService.wallet.encryptionVersion = walletData.version;
+      // Set pkh
+      if (walletData.walletType === 0) { // Full
+        // Set seed
         this.walletService.wallet.seed = walletData.encryptedSeed;
-      } else if (walletData.pk) {
-        this.walletService.wallet.seed = walletData.pk;
+        // Set salt
+        if (walletData.version === 1) {
+          this.walletService.wallet.salt = this.walletService.getSalt(walletData.pkh);
+        } else if (walletData.version === 2) {
+          this.walletService.wallet.salt = walletData.iv;
+        }
+        if (pkh) {
+          this.walletService.addAccount(pkh);
+        } else {
+          if (walletData.version === 1) {
+            this.walletService.addAccount(walletData.pkh);
+          }
+          const keys = this.walletService.getKeys(pwd);
+          if (!keys) {
+            throw new Error('Wrong password!');
+          }
+          console.log('Correct pwd!');
+          if (walletData.version === 2) {
+            this.walletService.addAccount(keys.pkh);
+          }
+        }
+      } else if (walletData.walletType === 1) { // View
+        this.walletService.wallet.seed = walletData.pk; // set pk
+        this.walletService.addAccount(this.operationService.pk2pkh(walletData.pk));
+      } else if (walletData.walletType === 2) {
+        this.walletService.addAccount(walletData.pkh);
       }
-      await this.findAllAccounts(walletData.pkh);
+      await this.findAllAccounts(this.walletService.wallet.accounts[0].pkh);
       return true;
     } catch (err) {
-      this.messageService.addError('ImportWalletDataError: ' + err);
       this.walletService.clearWallet();
+      console.log(err);
+      this.messageService.addError(err);
       return false;
     }
   }
@@ -98,10 +138,25 @@ export class ImportService {
           }
           const KT = data[i].type.operations[index].tz1.tz;
           if (this.walletService.wallet.accounts.findIndex(a => a.pkh === KT) === -1) {
-            this.walletService.addAccount(KT);
-            console.log('Added: ' + KT);
-            this.coordinatorService.start(KT);
-            this.findNumberOfAccounts(KT); // Recursive call
+            const opIndex = data[i].type.operations.findIndex(a => a.kind === 'origination');
+            const opLevel = data[i].type.operations[opIndex].op_level;
+            this.operationService.getVerifiedOpBytes(opLevel, data[i].hash, pkh).subscribe(
+              opBytes => {
+                if (KT === this.operationService.createKTaddress(opBytes)) {
+                  console.log('Added: ' + KT);
+                  this.walletService.addAccount(KT);
+                  this.coordinatorService.start(KT);
+                  this.findNumberOfAccounts(KT); // Recursive call
+                } else {
+                  this.messageService.addError('Failed to verify KT address!');
+                }
+              },
+              err => {
+                // tslint:disable-next-line:max-line-length
+                this.messageService.addWarning('Something went wrong when searching after additional addresses. Try to reimport your keystor file.');
+                throw new Error(err);
+              }
+            );
           }
         }
         this.walletService.storeWallet();
