@@ -420,6 +420,10 @@ export class OperationService {
             delete op.protocol;
             for (let i = 0; i < op.contents.length; i++) {
               delete op.contents[i].metadata;
+              if (op.contents[i].manager_pubkey) { // Fix for mainnet
+                op.contents[i].managerPubkey = op.contents[i].manager_pubkey;
+                delete op.contents[i].manager_pubkey;
+              }
             }
             return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/forge/operations', op)
               .flatMap((opBytes: any) => {
