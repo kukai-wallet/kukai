@@ -6,6 +6,7 @@ import { TranslateService } from '@ngx-translate/core';  // Multiple instances c
 import { WalletService } from '../../services/wallet.service';
 import { MessageService } from '../../services/message.service';
 import { ImportService } from '../../services/import.service';
+import { InputValidationService } from '../../services/input-validation.service';
 
 
 @Component({
@@ -16,7 +17,9 @@ import { ImportService } from '../../services/import.service';
 
 export class ImportComponent implements OnInit {
   activePanel = 0;
+  walletJson: string;
   @Input() encryptedWallet = '';
+  @Input() pwd = '';
   @Input() pkh = '';
   @Input() pk = '';
   data = {
@@ -28,7 +31,8 @@ export class ImportComponent implements OnInit {
     private walletService: WalletService,
     private router: Router,
     private messageService: MessageService,
-    private importService: ImportService
+    private importService: ImportService,
+    private inputValidationService: InputValidationService
   ) { }
 
   ngOnInit() {
@@ -38,7 +42,7 @@ export class ImportComponent implements OnInit {
   }
   importFromPkh() {
     console.log('Call import service');
-    if (this.pkh.slice(0, 2) === 'tz' && this.pkh.length === 36) {
+    if (this.inputValidationService.address(this.pkh)) {
       this.importService.importWalletFromPkh(this.pkh);
       this.router.navigate(['/overview']);
     } else {
@@ -61,16 +65,62 @@ export class ImportComponent implements OnInit {
       this.messageService.addError(invalidPrefix);
     }
   }
-  import(keyFile: string) {
-    if (this.importService.importWalletData(keyFile)) {
-      this.router.navigate(['/overview']);
+  importPreCheck(keyFile: string) {
+    this.typeCheckFile(keyFile);
+    if (this.importService.pwdRequired(keyFile)) {
+      this.walletJson = keyFile;
     } else {
-      let importFailed = '';
-      this.translate.get('IMPORTCOMPONENT.IMPORTFAILED').subscribe(
-        (res: string) => importFailed = res
-      );
-      this.messageService.add(importFailed);
+      this.import(keyFile);
     }
+  }
+  typeCheckFile(keyFile: string) {
+    const obj = JSON.parse(keyFile);
+    // Required
+    try {
+      if (typeof obj.provider !== 'string') {
+        throw new Error('provider not a string!');
+      } if (typeof obj.version !== 'number') {
+        throw new Error('version not a number!');
+      } if (typeof obj.walletType !== 'number') {
+        throw new Error('walletType not a number!');
+      }
+      // Optional
+      if (obj.encryptedSeed && typeof obj.encryptedSeed !== 'string') {
+        throw new Error('encryptedSeed not a string!');
+      } if (obj.pkh && typeof obj.pkh !== 'string') {
+        throw new Error('pkh not a string!');
+      } if (obj.iv && typeof obj.iv !== 'string') {
+        throw new Error('iv not a string!');
+      } if (obj.pk && typeof obj.pk !== 'string') {
+        throw new Error('pk not a string!');
+      }
+    } catch (e) {
+      this.messageService.addError(e);
+      throw e;
+    }
+  }
+  checkImportPwd() {
+    if (this.pwd) {
+      this.import(this.walletJson, this.pwd);
+      this.pwd = '';
+    }
+    console.log(this.pwd);
+  }
+  import(keyFile: string, pwd: string = '') {
+    this.typeCheckFile(keyFile);
+    this.importService.importWalletData(keyFile, true, '', pwd).then(
+      (success: boolean) => {
+        if (success) {
+          this.router.navigate(['/overview']);
+        } else {
+          let importFailed = '';
+          this.translate.get('IMPORTCOMPONENT.IMPORTFAILED').subscribe(
+            (res: string) => importFailed = res
+          );
+          this.messageService.add(importFailed);
+        }
+      }
+    );
   }
   handleFileInput(files: FileList) {
     let fileToUpload = files.item(0);
@@ -90,7 +140,11 @@ export class ImportComponent implements OnInit {
       const reader = new FileReader();
       reader.readAsText(fileToUpload);
       reader.onload = () => {
-        this.import(reader.result);
+        if (typeof reader.result === 'string') {
+          this.importPreCheck(reader.result);
+        } else {
+          throw new Error('Not a string import');
+        }
       };
     }
   }

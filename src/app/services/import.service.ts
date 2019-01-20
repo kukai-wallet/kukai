@@ -21,29 +21,69 @@ export class ImportService {
     private operationService: OperationService,
     private tzscanService: TzscanService
   ) { }
-  async importWalletData(json: string, isJson: boolean = true): Promise<boolean> {
+  pwdRequired(json: string) {
+    const walletData = JSON.parse(json);
+    if (walletData.provider !== 'Kukai') {
+      throw new Error(`Unsupported wallet format`);
+    }
+    if (walletData.walletType === 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  async importWalletData(data: any, isJson: boolean = true, pkh: string = '', pwd: string = ''): Promise<boolean> {
     try {
       let walletData;
       if (isJson) {
-        walletData = JSON.parse(json);
+        walletData = JSON.parse(data);
       } else {
-        walletData = json;
+        walletData = data;
       }
       if (walletData.provider !== 'Kukai') {
         throw new Error(`Unsupported wallet format`);
       }
+      // Create empty wallet & set wallet type
       this.walletService.wallet = this.walletService.emptyWallet(walletData.walletType);
-      this.walletService.addAccount(walletData.pkh);
-      if (walletData.encryptedSeed) {
+      // Set version
+      this.walletService.wallet.encryptionVersion = walletData.version;
+      // Set pkh
+      if (walletData.walletType === 0) { // Full
+        // Set seed
         this.walletService.wallet.seed = walletData.encryptedSeed;
-      } else if (walletData.pk) {
-        this.walletService.wallet.seed = walletData.pk;
+        // Set salt
+        if (walletData.version === 1) {
+          this.walletService.wallet.salt = this.walletService.getSalt(walletData.pkh);
+        } else if (walletData.version === 2) {
+          this.walletService.wallet.salt = walletData.iv;
+        }
+        if (pkh) {
+          this.walletService.addAccount(pkh);
+        } else {
+          if (walletData.version === 1) {
+            this.walletService.addAccount(walletData.pkh);
+          }
+          const keys = this.walletService.getKeys(pwd);
+          if (!keys) {
+            throw new Error('Wrong password!');
+          }
+          console.log('Correct pwd!');
+          if (walletData.version === 2) {
+            this.walletService.addAccount(keys.pkh);
+          }
+        }
+      } else if (walletData.walletType === 1) { // View
+        this.walletService.wallet.seed = walletData.pk; // set pk
+        this.walletService.addAccount(this.operationService.pk2pkh(walletData.pk));
+      } else if (walletData.walletType === 2) {
+        this.walletService.addAccount(walletData.pkh);
       }
-      await this.findAllAccounts(walletData.pkh);
+      await this.findAllAccounts(this.walletService.wallet.accounts[0].pkh);
       return true;
     } catch (err) {
-      this.messageService.addError('ImportWalletDataError: ' + err);
       this.walletService.clearWallet();
+      console.log(err);
+      this.messageService.addError(err);
       return false;
     }
   }

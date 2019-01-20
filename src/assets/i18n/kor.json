@@ -65,7 +65,10 @@
         "INFO1" : "ICO 기간중 생성된 지갑은 활성화 되야 합니다.",
         "INFO2" : "개인키는 입력하지 마십시요.",
         "BACK" : "뒤로",
-        "ACTIVATE" : "활성화하기"
+        "ACTIVATE" : "활성화하기",
+        "ACTIVATESUCCESS" : "활성화가 성공적으로 blockchain에 방송!",
+        "RETRIEVEFAIL" : "연산 해시를 검색 할 수 없습니다.",
+        "ACTIVATEFAIL" : "지갑을 활성화하지 못했습니다!"
     },
     "ACTIVITYCOMPONENT": {
         "TXNHASH" : "트랜잭션 해시",
@@ -177,7 +180,13 @@
         "PASSPHRASE" : "암호 (선택사항)",
         "EMAIL" : "이메일",
         "PASSWORD" : "암호",
-        "TZ1" : "tz1... (선택사항)"
+        "TZ1" : "tz1... (선택사항)",
+        "PASSWORDSTRENGHT" : "비밀번호 강도:",
+        "PASSWORDCONFIRM" : "비밀번호 확인",
+        "INVALIDEMAIL" : "잘못된 이메일!",
+        "INVALIDPASSWORD" : "잘못된 비밀번호!",
+        "INVALIDPKH" : "잘못된 공개 키 해시!",
+        "PASSWORDWEAK" : "비밀번호가 너무 약합니다!"
     },
     "NEWACCOUNTCOMPONENT": {
         "TITLE" : "신규 계정으로 송금하기",
@@ -235,7 +244,9 @@
         "FINISH" : "마침",
         "WORD1WORD2" : "word1 word2 word3 word4 word5 word6 word7 word8 word9 word10 word11 word12 word13 word14 word15",
         "PASSWORD" : "암호",
-        "CONFIRMPASSWORD" : "암호 확인"
+        "CONFIRMPASSWORD" : "암호 확인",
+        "PASSWORDSTRENGTH" : "비밀번호 강도:",
+        "WEAKPASSWORD" : "비밀번호가 너무 약합니다!"
     },
     "OFFLINESIGNINGCOMPONENT": {
         "TITLE" : "오프라인 서명하기",
@@ -325,11 +336,19 @@
         "INVALIDSENDERADDRESS" : "잘못된 송신 주소",
         "INVALIDRECEIVERADDRESS" : "잘못된 수신 주소",
         "INVALIDAMOUNT" : "잘못된 수량",
-        "INVALIDFEE" : "잘못된 수수료"
+        "INVALIDFEE" : "잘못된 수수료",
+        "NOADDRESSORAMOUNT" : "어떤 주소 또는 금액은 제공되지 않습니다!"
     },
     "STARTCOMPONENT": {
         "IMPORTWALLET" : "지갑 가져오기",
         "NEWWALLET" : "새 지갑 만들기",
         "ACTIVATE" : "활성화 하기"
+    },
+    "INPUTVALIDATIONCOMPONENT": {
+        "CATASTROPHIC" : "치명적인!",
+        "VERYWEAK" : "매우 약한!",
+        "WEAK" : "약한!",
+        "MODERATE" : "보통의!",
+        "STRONG" : "강한!"
     }
 }

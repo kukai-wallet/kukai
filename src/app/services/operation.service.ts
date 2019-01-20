@@ -310,13 +310,14 @@ export class OperationService {
     for (let i = 0; i < applied[0].contents.length; i++) {
       if (applied[0].contents[i].metadata.operation_result.status === 'failed') {
         console.log('throw error ->');
-        throw new Error(applied[0].contents[i].metadata.operation_result.errors[0].id);
+        throw new Error(applied[0].contents[i].metadata.operation_result.errors[0].id); // prevent failed operations
       }
     }
   }
   errHandler(error: any): Observable<any> {
-    if (error.error && error.error[0] && error.error[0].id) {
-      console.log('HttpErrorResponse in errHandler() ', error.error[0].id);
+    if (error.message) {
+      error = this.errorHandlingPipe.transform(error.message);
+    } else if (error.error && error.error[0] && error.error[0].id) {
       const errorId = error.error[0].id;
       const errorMsg = this.errorHandlingPipe.transform(errorId);
       error = errorMsg;
@@ -461,6 +462,14 @@ export class OperationService {
   }
   validMnemonic(mnemonic: string) {
     return bip39.validateMnemonic(mnemonic);
+  }
+  validAddress(address: string) {
+    try {
+      this.b58cdecode(address, this.prefix.tz1);
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
   generateMnemonic(): string {
     return bip39.generateMnemonic(160);

@@ -61,7 +61,10 @@
         "INFO1" : "Les portefeuilles créés pendant l'ICO doivent être activés",
         "INFO2" : "La clef secrète n'est pas requise pendant le processus d'activation",
         "BACK" : "Retour",
-        "ACTIVATE" : "Activer"
+        "ACTIVATE" : "Activer",
+        "ACTIVATESUCCESS" : "Activation faite avec succès!",
+        "RETRIEVEFAIL" : "Impossible de récupérer le hash de l'opération",
+        "ACTIVATEFAIL" : "Échec de l'activation!"
     },
     "ACTIVITYCOMPONENT": {
         "TXNHASH" : "Transaction",
@@ -172,7 +175,13 @@
         "PASSPHRASE" : "Phrase secrète",
         "EMAIL" : "Email adresse",
         "PASSWORD" : "Mot de passe", 
-        "TZ1" : "tz1... (facultatif)"
+        "TZ1" : "tz1... (facultatif)",
+        "PASSWORDSTRENGHT" : "Fiabilité du mot de passe:",
+        "PASSWORDCONFIRM" : "Confirmer le mot de passe",
+        "INVALIDEMAIL" : "Email invalide!",
+        "INVALIDPASSWORD" : "Mot de passe incorrect!",
+        "INVALIDPKH" : "Hash de clef publique invalide!",
+        "PASSWORDWEAK" : "Mot de passe est trop faible!"
     },
     "NEWACCOUNTCOMPONENT": {
         "TITLE" : "Créer un nouveau compte",
@@ -230,7 +239,9 @@
         "FINISH" : "Terminer",
         "WORD1WORD2" : "mot1 mot2 mot3 mot4 mot5 mot6 mot7 mot8 mot9 mot10 mot11 mot12 mot13 mot14 mot15",
         "PASSWORD" : "Mot de passe",
-        "CONFIRMPASSWORD" : "Confirmez le mot de passe"
+        "CONFIRMPASSWORD" : "Confirmez le mot de passe",
+        "PASSWORDSTRENGTH" : "Fiabilité du mot de passe:",
+        "WEAKPASSWORD" : "Mot de passe est trop faible!"
     },
     "OFFLINESIGNINGCOMPONENT": {
         "TITLE" : "Signature hors-ligne",
@@ -321,11 +332,19 @@
         "INVALIDSENDERADDRESS" : "Adresse d'envoi invalide",
         "INVALIDRECEIVERADDRESS" : "Adresse du destinataire invalide",
         "INVALIDAMOUNT" : "Montant invalide",
-        "INVALIDFEE" : "Frais invalide"
+        "INVALIDFEE" : "Frais invalide",
+        "NOADDRESSORAMOUNT" : "Aucune adresse ou montant fournis!"
     },
     "STARTCOMPONENT": {
         "IMPORTWALLET" : "Importer un portefeuille",
         "NEWWALLET" : "Nouveau",
         "ACTIVATE" : "Activer"
+    },
+    "INPUTVALIDATIONCOMPONENT": {
+        "CATASTROPHIC" : "Catastrophique!",
+        "VERYWEAK" : "Très faible!",
+        "WEAK" : "Faible!",
+        "MODERATE" : "Modéré!",
+        "STRONG" : "Fort!"
     }
 }

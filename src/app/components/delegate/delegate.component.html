@@ -13,8 +13,10 @@
                 <div class="form-row">
                     <div class="form-group col-md-8">
                         <label for="fromAdress"> {{ 'DELEGATECOMPONENT.FROM' | translate }} </label>
-                        <select [(ngModel)]="activePkh" (change)="checkReveal()" id="fromAdress" class="form-control" name="first">
-                            <option *ngFor="let account of accounts | slice:1" [ngValue]="account.pkh">{{ account.pkh }}</option>
+                        <select [(ngModel)]="activePkh" (change)="checkReveal()" id="fromAdress" class="form-control"
+                            name="first">
+                            <option *ngFor="let account of accounts | slice:1" [ngValue]="account.pkh">{{ account.pkh
+                                }}</option>
                         </select>
                     </div>
                 </div>
@@ -27,13 +29,15 @@
                 <div class="form-row">
                     <div class="form-group col-md-4">
                         <label for="transactionFee">{{ 'DELEGATECOMPONENT.FEE' | translate }} (&#42793;)</label>
-                        <input type="text" class="form-control" id="transactionFee" placeholder={{this.recommendedFee.toString()}} [(ngModel)]="fee" name="four">
+                        <input type="text" class="form-control" id="transactionFee" placeholder={{this.recommendedFee.toString()}}
+                            [(ngModel)]="fee" name="four">
                     </div>
                 </div>
             </form>
             {{ formInvalid }}
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="sub" (click)="open2(modal2)"> {{ 'DELEGATECOMPONENT.PREVIEW' | translate }} </button>
+                <button type="button" class="btn btn-primary" id="sub" (click)="open2(modal2)"> {{
+                    'DELEGATECOMPONENT.PREVIEW' | translate }} </button>
             </div>
         </div>
     </ng-template>
@@ -59,7 +63,8 @@
             </div>
             {{ pwdValid }}
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="sub" (click)="open3(modal3)"> {{ 'DELEGATECOMPONENT.CONFIRM' | translate }} </button>
+                <button type="button" class="btn btn-primary" id="sub" (click)="open3(modal3)"> {{
+                    'DELEGATECOMPONENT.CONFIRM' | translate }} </button>
             </div>
         </div>
     </ng-template>
@@ -92,14 +97,17 @@
                     <p> {{ 'DELEGATECOMPONENT.FAILED' | translate }} </p>
                     <p class="text-danger">{{ sendResponse.payload.msg }}</p>
                 </div>
-                <button *ngIf='sendResponse.payload.unsignedOperation' type="button" class="btn btn-primary" (click)="download()"> {{ 'DELEGATECOMPONENT.DOWNLOAD' | translate }} </button>
             </ng-container>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="sub" (click)="close3()"> {{ 'DELEGATECOMPONENT.CLOSE' | translate }} </button>
+                <button *ngIf='sendResponse.payload.unsignedOperation' type="button" class="btn btn-primary" (click)="download()">
+                    {{ 'DELEGATECOMPONENT.DOWNLOAD' | translate }} </button>
+                <button type="button" class="btn btn-primary" id="sub" (click)="close3()"> {{ 'DELEGATECOMPONENT.CLOSE'
+                    | translate }} </button>
             </div>
         </div>
     </ng-template>
 
     <!-- Showing different Send Format according to actionButtonString -->
-    <button *ngIf='accounts' type="button" (click)="open1(modal1)" class="btn btn-sm btn-outline-primary"> {{ 'DELEGATECOMPONENT.TITLE1' | translate }} </button>
+    <button *ngIf='accounts' type="button" (click)="open1(modal1)" class="btn btn-sm btn-outline-primary"> {{
+        'DELEGATECOMPONENT.TITLE1' | translate }} </button>
 </ng-container>

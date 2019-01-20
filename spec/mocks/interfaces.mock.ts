@@ -4,14 +4,14 @@ export interface KeyPair {
     pkh: string;
 }
 export interface Wallet {
-  seed: null|string;
-  salt: null|string;
-  encryptionVersion: number|null;
-  type: WalletType;
-  balance: Balance;
-  XTZrate: number | null;
-  accounts: Account[];
-}
+	seed: null|string;
+	salt: null|string;
+	encryptionVersion: number|null;
+	type: WalletType;
+	balance: Balance;
+	XTZrate: number | null;
+	accounts: Account[];
+  }
 export interface Account {
   pkh: string|null;
   delegate: string;

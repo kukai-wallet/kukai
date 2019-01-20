@@ -28,6 +28,7 @@ import { TzrateService } from './services/tzrate.service';
 import { ExportService } from './services/export.service';
 import { DelegateService } from './services/delegate.service';
 import { TzscanService } from './services/tzscan.service';
+import { InputValidationService } from './services/input-validation.service';
 
 // View components
 import { OfflineSigningComponent } from './components/offline-signing/offline-signing.component';
@@ -131,6 +132,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ExportService,
     DelegateService,
     TzscanService,
+    InputValidationService,
 
     // Pipes
     ErrorHandlingPipe,
