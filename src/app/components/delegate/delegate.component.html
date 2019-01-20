@@ -99,8 +99,13 @@
                 </div>
             </ng-container>
             <div class="modal-footer">
-                <button *ngIf='sendResponse.payload.unsignedOperation' type="button" class="btn btn-primary" (click)="download()">
-                    {{ 'DELEGATECOMPONENT.DOWNLOAD' | translate }} </button>
+                <ng-container *ngIf='sendResponse'>
+                    <div *ngIf='sendResponse.success === true'>
+                        <button *ngIf='sendResponse.payload.unsignedOperation' type="button" class="btn btn-primary"
+                            (click)="download()">
+                            {{ 'DELEGATECOMPONENT.DOWNLOAD' | translate }} </button>
+                    </div>
+                </ng-container>
                 <button type="button" class="btn btn-primary" id="sub" (click)="close3()"> {{ 'DELEGATECOMPONENT.CLOSE'
                     | translate }} </button>
             </div>

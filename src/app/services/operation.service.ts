@@ -315,16 +315,23 @@ export class OperationService {
     }
   }
   errHandler(error: any): Observable<any> {
-    if (error.message) {
-      error = this.errorHandlingPipe.transform(error.message);
-    } else if (error.error && error.error[0] && error.error[0].id) {
+    if (error.error && error.error[0] && error.error[0].id) {
+      console.log('found 2: ');
       const errorId = error.error[0].id;
       const errorMsg = this.errorHandlingPipe.transform(errorId);
       error = errorMsg;
     } else if (error.error && error.error[0] && error.error[0].error) {
+      console.log('found 3: ');
       error = error.error[0].error;
     } else if (error.statusText) {
+      console.log('found 4: ');
       error = error.statusText;
+    } if (error.message) {
+      console.log('found: ' + error.message);
+      error = this.errorHandlingPipe.transform(error.message);
+    } else {
+      console.log('Error not categorized');
+      console.log(JSON.stringify(error));
     }
     return of(
       {
