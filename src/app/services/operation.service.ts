@@ -308,7 +308,7 @@ export class OperationService {
   }
   checkApplied(applied: any) {
     for (let i = 0; i < applied[0].contents.length; i++) {
-      if (applied[0].contents[i].metadata.operation_result.status === 'failed') {
+      if (applied[0].contents[i].metadata.operation_result.status !== 'applied') {
         console.log('throw error ->');
         throw new Error(applied[0].contents[i].metadata.operation_result.errors[0].id); // prevent failed operations
       }
