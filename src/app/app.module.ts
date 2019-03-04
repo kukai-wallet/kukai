@@ -51,6 +51,7 @@ import { OperationService } from './services/operation.service';
 import { BakeryComponent } from './components/bakery/bakery.component';
 import { ActivateComponent } from './components/activate/activate.component';
 import { MessagesComponent } from './components/messages/messages.component';  // Empty
+import { VotingComponent } from './components/voting/voting.component';
 
 // Pipes
 import { ErrorHandlingPipe } from './pipes/error-handling.pipe';
@@ -87,6 +88,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     BakeryComponent,
     ActivateComponent,
     MessagesComponent,  // Empty
+    VotingComponent,
 
     // Pipes
     ErrorHandlingPipe,

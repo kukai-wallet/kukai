@@ -1,0 +1,109 @@
+<!--
+<div class="container" *ngIf="this.walletService.wallet">
+-->
+<div class="container">
+    <!-- Title -->
+    <div class="row bottom-separator">
+        <div class="col-lg-12">
+            <h1 class="page-header"> Votes for Protocol amendments </h1>
+        </div>
+    </div>
+
+    <!-- Subheading -->
+    <div class="row row-subheading">
+        <div class="col-lg-12">
+            <h4>
+                <p>Athens amendments </p>
+            </h4>
+        </div>
+    </div>
+
+    <!-- Voting periods -->
+    <div class="row row-period">
+        <div class="col col-period col-active">
+            Proposal Period
+        </div>
+        <div class="col col-period">
+            Exploration Vote Period
+        </div>
+        <div class="col col-period">
+            Testing Period
+        </div>
+        <div class="col col-period col-period-end">
+            Promotion Period
+        </div>
+    </div>
+
+    <!-- Progress bar -->
+    <div class="row row-progress">
+        <div class="col">
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%"> 75% </div>
+            </div>
+        </div>
+        <div class="col">
+        </div>
+        <div class="col">
+        </div>
+        <div class="col">
+        </div>
+    </div>
+
+    <!-- doughnuts charts -->
+    <div class="row row-doughnut">
+        <div class="col">
+            <p class="title">Amendments votes</p>
+            <canvas #doughnutCanvasVotes></canvas>
+        </div>
+        <div class="col">
+            <p class="title">Participation</p>
+            <canvas #doughnutCanvasParticipation></canvas>
+        </div>
+    </div>
+
+    <br>
+    <br>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h3> More information </h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <p>
+                A protocol amendment goes through 4 voting periods. Each period lasts 8 cycles (~22.4 days). A quorum and supermajority is required for the <b>Exploration Vote</b> and <b>Promotion period</b>. 
+                You can check <a href="https://tezos.gitlab.io/master/whitedoc/voting.html" target="_blank">Tezos documentation</a> 
+                and the <a href="https://medium.com/tezos/amending-tezos-b77949d97e1e" target="_blank">excellent guide</a> by Jacob Arluck to learn more about the voting process.
+            </p>
+            <p>
+                <span data-toggle="tooltip" title="Pt24m4xiPbLDhVgVfABUjirbmda3yohdN82Sp9FeuAXJ4eV9otd"><b>Athens A</b></span> proposal is for the increase of gas limit and the reduction of roll size from 10,000 xtz to 8,000 xtz.
+                <span data-toggle="tooltip" title="Psd1ynUBhMZAeajwcZJAeq5NrxorM6UCU4GJqxZ7Bx2e9vUWB6z"><b>Athens B</b></span> proposal is for the increase of gas limit only.
+            </p>
+            <p>
+                You can view and participate in the community debate on  <a href="https://www.kialo.com/tezos-protocol-amendment-1-25295/25295.0/25295.0" target="_blank">Kialo</a> 
+                and check the <a href="https://blog.nomadic-labs.com/athens-our-proposals-for-the-first-voted-amendment.html" target="_blank">technical post</a> and <a href="https://blog.nomadic-labs.com/athens-proposals-injected.html" target="_blank">announcement</a> from Nomadic Labs. 
+            </p>
+            <p>With Tezvote's smart-contract you can also inform your baker of your preferred choice.</p>
+            <!-- <p>Connect to your wallet and inform your baker of your preferred choice via tezvote's smart-contract. </p> -->
+        </div>
+    </div>
+
+</div>
+
+<!-- Default message - No account created --
+<div class="container" *ngIf="!this.walletService.wallet">
+    <div class="row bottom-separator-no-account">
+        <div class="col-lg-12">
+            <h1 class="page-header-no-account"> Votes for Protocol amendments proposals </h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <p>
+                Connect to your wallet and inform your baker of your preferred choice via tezvote's smart-contract. 
+            </p>
+        </div>
+    </div>
+</div>
+-->
