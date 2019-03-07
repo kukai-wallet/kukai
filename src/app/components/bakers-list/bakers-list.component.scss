@@ -1,0 +1,113 @@
+.mono {
+    font-family: "Courier New", Courier, monospace;  
+}
+.page-header {
+    margin: 40px 0px 10px 0px; //top right bottom left
+}
+
+.bottom-separator {
+    padding-bottom: 27px;
+    border-bottom: 1px solid #eee; //Alignment  with sidebar
+    margin-bottom: 0.5rem; //space between border and next content
+}
+
+.page-header-no-account {
+    margin: 40px 0px 10px 0px; //top right bottom left
+}
+
+.bottom-separator-no-account {
+    padding-bottom: 27px;
+    border-bottom: 1px solid #eee; //Alignment  with sidebar
+    margin-bottom: 0.5rem; //space between border and next content
+}
+
+h4 {
+    font-weight: 400;
+}
+
+.row-subheading {
+    min-width: 992;
+}
+
+//btn-second
+.btn-second {
+    min-width: 96px;
+    color: #333333;
+}
+
+.btn-second:hover {
+    background-color: #cccccc;
+}
+
+.btn-second:active {
+    background-color: #b3b3b3;
+}
+
+//Accounts table
+.row-header {
+    font-weight: bold;
+}
+
+.col-header {
+    background-color: #fde19b;
+}
+
+.row-buttons {
+    padding-top: 5px;
+}
+
+.col-border {
+    padding-top: 0.4em;
+    padding-bottom: 0.4em;
+}
+
+.min-size-name-image-cell {
+    min-width: 200px;
+}
+
+.min-size-address-cell {
+    min-width: 380px;  // 388px;
+}
+
+.min-size-other-cell {
+    min-width: 180px;  // 188px;
+}
+
+.margin-left {
+    margin-left: 1rem;
+}
+
+.no-margin {
+    margin-bottom: 0rem //default at 1rem
+}
+
+
+/* Responsive breakpoints */
+// Extra small devices (portrait phones, less than 576px)
+// No media query since this is the default in Bootstrap
+
+// Small devices (landscape phones, 576px and up)
+@media (min-width: 576px) { 
+    .container {
+        padding-left: 2em;
+        min-width: 0vw;
+    }
+ }
+
+// Medium devices (tablets, 768px and up)
+//@media (min-width: 768px) { ... }
+
+// Large devices (desktops, 992px and up)
+@media (min-width: 992px) { 
+    //.container {
+        min-width: 0vw;
+    //} 
+ }
+
+// Extra large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) { 
+    .container {
+        padding-left: 2em;
+        min-width: 0vw;  // 65vw
+    } 
+}

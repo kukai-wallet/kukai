@@ -1,0 +1,69 @@
+<!--
+<div class="container" *ngIf="this.walletService.wallet">
+-->
+<div class="container">
+    <!-- Title -->
+    <div class="row bottom-separator">
+        <div class="col-lg-12">
+            <h1 class="page-header"> Bakers List </h1>
+        </div>
+    </div>
+
+    <!-- Subheading -->
+    <div class="row row-subheading">
+        <div class="col-lg-12">
+            <h4>
+                <p>Here, you can easily view the public bakers vote and participation</p>
+            </h4>
+        </div>
+    </div>
+    
+    <br>
+
+    <span *ngIf="bakersList">
+
+        <!-- Bakers List -->
+        <!-- Header -->
+        <div class="row row-header">
+            <div class="col-sm-auto col-header col-border border border-warning min-size-name-image-cell">
+                Name
+            </div>
+            <div class="col-sm-auto col-header col-border border border-warning  min-size-address-cell">
+                Identity
+            </div>
+            <div class="col-sm-auto col-header col-border border border-warning min-size-other-cell">
+                Voting Status
+            </div>
+        </div>
+        <!-- Content -->
+        <div class="row" *ngFor="let baker of bakersList">
+            <div class="col-sm-auto col-border border border-warning text-truncate min-size-name-image-cell">
+                <img [src]="baker.image" alt="Baker image" height="21" width="21"> {{ baker.baker_name }}
+            </div>
+            <div class="col-sm-auto col-border border border-warning text-truncate  min-size-address-cell mono">
+                {{ baker.identity }}
+            </div>
+            <div class="col-sm-auto col-border border border-warning text-truncate min-size-other-cell">
+                {{ baker.vote }}
+            </div>
+        </div>
+    </span>
+
+</div>
+
+<!-- Default message - No account created --
+<div class="container" *ngIf="!this.walletService.wallet">
+    <div class="row bottom-separator-no-account">
+        <div class="col-lg-12">
+            <h1 class="page-header-no-account"> Votes for Protocol amendments proposals </h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <p>
+                Connect to your wallet and inform your baker of your preferred choice via tezvote's smart-contract. 
+            </p>
+        </div>
+    </div>
+</div>
+-->
