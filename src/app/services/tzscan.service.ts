@@ -106,4 +106,15 @@ export class TzscanService {
     }
     return ops;
   }
+
+  getProposal() {
+    const apiUrlMainnet = 'https://api6.tzscan.io/';
+    return this.http.get(apiUrlMainnet + 'v3/proposals');
+  }
+
+  getProposalVotes(proposalHash) {
+    const apiUrlMainnet = 'https://api6.tzscan.io/';
+    return this.http.get(apiUrlMainnet + 'v3/proposal_votes/' + proposalHash + '?p=0&number=50');
+  }
+
 }

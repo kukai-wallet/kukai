@@ -25,69 +25,7 @@ h4 {
     font-weight: 400;
 }
 
-.row-subheading {
-    min-width: 992;
-}
 
-//btn-second
-.btn-second {
-    min-width: 96px;
-    color: #333333;
-}
-
-.btn-second:hover {
-    background-color: #cccccc;
-}
-
-.btn-second:active {
-    background-color: #b3b3b3;
-}
-
-//Voting bar
-.row-period {
-    font-weight: bold;
-    text-align: center;
-    color: #fafafa;
-}
-
-.col-period {
-    padding-top: 0.4em;
-    padding-bottom: 0.4em;
-    background: #191919;
-}
-
-.col-active {
-    background-color: #FAB915;
-    border-top-left-radius: 20px;
-    border-bottom-left-radius: 20px;
-}
-
-.col-period-end {
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
-}
-
-.row-progress {
-    padding-top: 0.8em;
-}
-
-.progress-bar {
-    background-color: #FAB915;
-}
-
-.row-doughnut {
-    padding-top: 0.8em;
-}
-
-.title {
-    font-weight: bold;
-    text-align: center;
-    font-size: 1.2rem;
-}
-
-.col-bakers-list {
-    text-align: right;
-}
 
 
 /* Responsive breakpoints */

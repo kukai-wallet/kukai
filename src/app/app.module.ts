@@ -52,6 +52,8 @@ import { BakeryComponent } from './components/bakery/bakery.component';
 import { ActivateComponent } from './components/activate/activate.component';
 import { MessagesComponent } from './components/messages/messages.component';  // Empty
 import { VotingComponent } from './components/voting/voting.component';
+import { CommunityComponent } from './components/community/community.component';
+import { BakersListComponent } from './components/bakers-list/bakers-list.component';
 
 // Pipes
 import { ErrorHandlingPipe } from './pipes/error-handling.pipe';
@@ -89,6 +91,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     ActivateComponent,
     MessagesComponent,  // Empty
     VotingComponent,
+    CommunityComponent,
+    BakersListComponent,
 
     // Pipes
     ErrorHandlingPipe,

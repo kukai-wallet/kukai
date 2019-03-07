@@ -40,3 +40,23 @@ export enum WalletType {
   ViewOnlyWallet,
   ObserverWallet
 }
+export interface Baker {
+  baker_name: string;
+  identity: string;
+  vote: Vote[];
+  image: string;
+}
+export interface Vote {
+  voting_period: string;
+  period_kind: PeriodKind;
+  proposal_hash: string[];
+  proposal_alias: string[];
+  votes: number[];
+  operation: string[];
+}
+export enum PeriodKind {
+  Proposal,
+  ExplorationVote,
+  Testing,
+  Promotion
+}
