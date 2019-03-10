@@ -54,6 +54,30 @@ export interface Vote {
   votes: number[];
   operation: string[];
 }
+export interface Period {
+  amendment: string;
+  period: number;
+  period_kind: PeriodKind;
+  proposal_hash: string[];
+  proposal_alias: string[];
+  start_level: number;
+  end_level: number;
+  level: number;
+  progress: number;
+  remaining: number;
+}
+export interface ParticipationPerPeriod {
+  proposal?: [{
+    hash: string;
+    alias: string;
+    count: number;
+    votes: number;
+  }];
+  unused_count: number;
+  total_count: number;
+  unused_votes: number;
+  total_votes: number;
+}
 export enum PeriodKind {
   Proposal,
   ExplorationVote,

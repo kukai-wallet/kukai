@@ -5,6 +5,26 @@ interface Net {
     BLOCK_EXPLORER_URL: string;
     CHAIN_ID: string;
   }
+
+export const VOTINGPERIOD: any = {
+    cycles: 8,
+    blocks: 32768
+};
+
+export const PROPOSALHASH: any = {
+    athensAHash: 'Pt24m4xiPbLDhVgVfABUjirbmda3yohdN82Sp9FeuAXJ4eV9otd',
+    athensBHash: 'Psd1ynUBhMZAeajwcZJAeq5NrxorM6UCU4GJqxZ7Bx2e9vUWB6z',
+};
+export const PROPOSALS: any = [
+    {
+        hash: PROPOSALHASH.athensAHash,
+        alias: 'Athens A'
+    },
+    {
+        hash: PROPOSALHASH.athensBHash,
+        alias: 'Athens B'
+    }
+];
 export class Constants {
     // Select Zeronet, Alphanet or Mainnet
     readonly NET: Net = this.alphanet();

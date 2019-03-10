@@ -108,13 +108,46 @@ export class TzscanService {
   }
 
   getProposal() {
-    const apiUrlMainnet = 'https://api6.tzscan.io/';
+    const apiUrlMainnet = 'https://api6.tzscan.io/';  //https://api6.tzscan.io/v3/proposals
     return this.http.get(apiUrlMainnet + 'v3/proposals');
   }
 
+  getProposalsCurrentPeriod(period: number) {
+    const apiUrlMainnet = 'https://api6.tzscan.io/';  //https://api6.tzscan.io/v3/proposals/?period=10
+    return this.http.get(apiUrlMainnet + 'v3/proposals/' + '?period=' + period);
+  }
+
+  //Needs improvement - Need to work with an array of hash strings
   getProposalVotes(proposalHash) {
     const apiUrlMainnet = 'https://api6.tzscan.io/';
-    return this.http.get(apiUrlMainnet + 'v3/proposal_votes/' + proposalHash + '?p=0&number=50');
+    return this.http.get(apiUrlMainnet + 'v3/proposal_votes/' + proposalHash + '?p=0&number=100');
   }
+
+  getPeriodInfo() {
+    const apiUrlMainnet = 'https://api6.tzscan.io/';  //https://api6.tzscan.io/v3/voting_period_info
+    return this.http.get(apiUrlMainnet + 'v3/voting_period_info');
+    // {"period":10,"kind":"proposal","cycle":84,"level":345815,"max_period":true}
+  }
+
+  getNbProposalVotes(proposalHash) {
+    const apiUrlMainnet = 'https://api6.tzscan.io/';  //https://api6.tzscan.io/v3/nb_proposal_votes/{proposal_hash}
+    return this.http.get(apiUrlMainnet + 'v3/nb_proposal_votes/' + proposalHash);
+    // {"count":57,"votes":11408}
+  }
+
+  getTotalVotes(period: number) {
+    const apiUrlMainnet = 'https://api6.tzscan.io/';  //https://api6.tzscan.io/v3/total_proposal_votes/10
+    return this.http.get(apiUrlMainnet + 'v3/total_proposal_votes/' + period);
+    // //https://api6.tzscan.io/v3/total_voters/10
+    // {"count":458,"votes":51604}
+    // https://api6.tzscan.io/v3/total_proposal_votes/10
+    // {"proposal_count":2,"total_count":458,"total_votes":51604,"used_count":107,"used_votes":15773,"unused_count":360,"unused_votes":36492}
+  }
+
+  /*  // Not needed
+  getCurrentHead() {
+    const apiUrlMainnet = 'https://api6.tzscan.io/';
+    return this.http.get(apiUrlMainnet + 'v3/head');
+  } */
 
 }

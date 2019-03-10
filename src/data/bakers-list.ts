@@ -1,4 +1,15 @@
 
+
+export const VOTINGPERIODHEADS: any = [
+    {
+        amendment: 'Athens',
+        period: 10,
+        kind: 'proposal',
+        start_level: 327681,
+        end_level: 360448
+    }
+];
+
 export const BAKERSLIST: any = [
     {
        baker_name: '888 XTZ',
@@ -113,12 +124,6 @@ export const BAKERSLIST: any = [
        identity: 'tz1Tnjaxk6tbAeC2TmMApPh8UsrEVQvhHvx5',
        vote: '',
        image: 'assets/img/bakers/cryptodelegate.png'
-    },
-    {
-       baker_name: 'Drunk Tortuga',
-       identity: 'tz1LsuPvP2u63nouVGAPi13AYqqB2VQjhoSF',
-       vote: '',
-       image: 'assets/img/bakers/drunktortuga.png'
     },
     {
        baker_name: 'Figment',
@@ -251,18 +256,6 @@ export const BAKERSLIST: any = [
        identity: 'tz1ZTG13gkvouxSANka3HG3uys8C5gu3DPXZ',
        vote: '',
        image: 'assets/img/bakers/justabaker.png'
-    },
-    {
-       baker_name: 'Kraken 1',
-       identity: 'tz1bDXD6nNSrebqmAnnKKwnX1QdePSMCj4MX',
-       vote: '',
-       image: 'assets/img/bakers/kraken.png'
-    },
-    {
-       baker_name: 'Kraken 2',
-       identity: 'tz1NH4A2kRyFQUYhyi9aL8jrrySQUrCgNsX9',
-       vote: '',
-       image: 'assets/img/bakers/kraken.png'
     },
     {
        baker_name: 'Lucid Mining',
