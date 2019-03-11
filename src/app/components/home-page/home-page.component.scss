@@ -93,7 +93,7 @@ a, a:hover, a:focus {
     background: linear-gradient(90deg,#e1a205 20%, #191919);
 }
 .topmenu {
-    width: 100vw;
+    width: 100%;
     height: 5vh;
 }
 
@@ -245,7 +245,7 @@ ul.CTAs a {
 }
 
 .bottom-CTAs {
-    padding-top: 14vh !important; // 22vh !important;  //This needs to change - creates vertical scroll bar
+    padding-top: 9vh !important; // 22vh !important;  //This needs to change - creates vertical scroll bar
 }
 .donation {
     font-size: 0.8em;
