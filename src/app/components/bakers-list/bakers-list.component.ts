@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { WalletService } from '../../services/wallet.service';
 import { TzscanService } from '../../services/tzscan.service';
+import { OperationService } from '../../services/operation.service';
 import { DelegatorNamePipe } from '../../pipes/delegator-name.pipe';
 
 import { BAKERSLIST } from '../../../data/bakers-list';
@@ -24,7 +25,8 @@ export class BakersListComponent implements OnInit, OnDestroy {
     constructor(
         public walletService: WalletService,
         private tzscanService: TzscanService,
-        private delegatorNamePipe: DelegatorNamePipe
+        private delegatorNamePipe: DelegatorNamePipe,
+        private operationService: OperationService
     ) { }
 
     ngOnInit() {  // or ngAfterViewInit  // ngOnInit
@@ -67,7 +69,6 @@ export class BakersListComponent implements OnInit, OnDestroy {
                                         }
                                     }
                                 }
-
                                 for (const athensBVotes of this.athensBVotes) {
                                     for (const baker of this.bakersList) {
                                         if (baker.identity === athensBVotes.source.tz) {
@@ -79,7 +80,22 @@ export class BakersListComponent implements OnInit, OnDestroy {
                                         }
                                     }
                                 }
-
+                                // Get number of votes
+                                this.operationService.getVotingRights().subscribe(
+                                    ((res: any) => {
+                                        console.log(res);
+                                        if (res.success) {
+                                            for (const voter of res.payload) {
+                                                console.log('voter: ' + voter);
+                                                for (const baker of this.bakersList) {
+                                                    if (baker.identity === voter.pkh) {
+                                                        baker.rolls = voter.rolls;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    })
+                                );
                             }
                         );
                     }

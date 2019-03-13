@@ -373,6 +373,18 @@ export class OperationService {
         );
       }).pipe(catchError(err => this.errHandler(err)));
   }
+  getVotingRights(): Observable<any> {
+    console.log('<Looking for voting rights>');
+    return this.http.get(this.nodeURL + '/chains/main/blocks/head/votes/listings')
+      .flatMap((listings: any) => {
+        return of(
+          {
+            success: true,
+            payload: listings
+          }
+        );
+      }).pipe(catchError(err => this.errHandler(err)));
+  }
   isRevealed(pkh: string): Observable<boolean> {
     return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + pkh + '/manager_key', {})
       .flatMap((manager: any) => {

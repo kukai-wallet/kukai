@@ -118,9 +118,23 @@ export class TzscanService {
   }
 
   //Needs improvement - Need to work with an array of hash strings
-  getProposalVotes(proposalHash) {
-    const apiUrlMainnet = 'https://api6.tzscan.io/';
-    return this.http.get(apiUrlMainnet + 'v3/proposal_votes/' + proposalHash + '?p=0&number=100');
+  getProposalVotes(proposalHash, p: number = 0, data?: any): Observable<any> {
+    return this.http.get('https://api6.tzscan.io/v3/proposal_votes/' + proposalHash + '?p=' + p + '&number=50')
+      .flatMap(
+        ((res: any) => {
+          if (res.length < 50) {
+            if (data) {
+              res = res.concat(data);
+            }
+            return of(res);
+          } else {
+            if (data) {
+              res = res.concat(data);
+            }
+            return this.getProposalVotes(proposalHash, ++p, res);
+          }
+        })
+      );
   }
 
   getPeriodInfo() {
