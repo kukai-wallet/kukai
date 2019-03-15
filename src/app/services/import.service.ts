@@ -151,7 +151,11 @@ export class ImportService {
                   this.messageService.addError('Failed to verify KT address!');
                 }
               },
-              err => this.messageService.addWarning('Something went wrong when searching after additional addresses! ' + err)
+              err => {
+                // tslint:disable-next-line:max-line-length
+                this.messageService.addWarning('Something went wrong when searching after additional addresses. Try to reimport your keystore file.');
+                throw new Error(err);
+              }
             );
           }
         }

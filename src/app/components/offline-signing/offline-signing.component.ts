@@ -101,8 +101,8 @@ export class OfflineSigningComponent implements OnInit, AfterContentInit {
         }
     }
     decodeSignedOp() {
+        this.decodeSignedOutput = '';
         if (!this.signed2) {
-            this.decodeSignedOutput = '';
             console.log('don\'t decode');
         } else {
             console.log('decode...');
