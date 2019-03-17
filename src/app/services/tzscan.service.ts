@@ -152,12 +152,17 @@ export class TzscanService {
   getTotalVotes(period: number) {
     const apiUrlMainnet = 'https://api6.tzscan.io/';  //https://api6.tzscan.io/v3/total_proposal_votes/10
     return this.http.get(apiUrlMainnet + 'v3/total_proposal_votes/' + period);
-    // //https://api6.tzscan.io/v3/total_voters/10
+    // https://api6.tzscan.io/v3/total_voters/10
     // {"count":458,"votes":51604}
     // https://api6.tzscan.io/v3/total_proposal_votes/10
     // {"proposal_count":2,"total_count":458,"total_votes":51604,"used_count":107,"used_votes":15773,"unused_count":360,"unused_votes":36492}
   }
 
+  getBallots(period: number) {
+    const apiUrlMainnet = 'https://api6.tzscan.io/';    //https://api6.tzscan.io/v3/ballots/11
+    return this.http.get(apiUrlMainnet + 'v3/ballots/' + period);
+    // {"proposal": "string","nb_yay": 0,"nb_nay": 0,"nb_pass": 0,"vote_yay": 0,"vote_nay": 0,"vote_pass": 0}
+}
   /*  // Not needed
   getCurrentHead() {
     const apiUrlMainnet = 'https://api6.tzscan.io/';

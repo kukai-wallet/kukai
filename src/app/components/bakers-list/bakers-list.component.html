@@ -20,40 +20,69 @@
     
     <br>
 
+    <div class="tableSection" *ngIf="bakersList">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Rolls</th>
+                        <!-- <th scope="col">‰</th> -->
+                        <th scope="col">Identity</th>
+                        <th scope="col">Proposal Period</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let baker of bakersList">
+                        <td>
+                            <img [src]="baker.image" alt="Baker image" height="21" width="21"> {{ baker.baker_name }}
+                        </td>
+                        <td> {{ baker.rolls }} </td>
+                        <!-- <td> {{ baker.rolls / currentParticipation.total_votes * 1000 | number:'1.0-2' }} ‰ </td> -->
+                        <td> {{ baker.identity }} </td>
+                        <td> {{ baker.vote }} </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!--
     <span *ngIf="bakersList">
 
-        <!-- Bakers List -->
-        <!-- Header -->
+        <!-- Bakers List --
+        <!-- Header --
         <div class="row row-header">
             <div class="col-sm-auto col-header col-border border border-warning min-size-name-image-cell">
                 Name
             </div>
-            <div class="col-sm-auto col-header col-border border border-warning  min-size-address-cell">
+            <div class="col-sm-auto col-header col-border border border-warning min-size-number-cell">
+                Rolls
+            </div>
+            <div class="col-sm-auto col-header col-border border border-warning min-size-address-cell">
                 Identity
             </div>
             <div class="col-sm-auto col-header col-border border border-warning min-size-other-cell">
-                Rolls
-            </div>
-            <div class="col-sm-auto col-header col-border border border-warning min-size-other-cell">
-                Propopal Period
+                Proposal Period
             </div>
         </div>
-        <!-- Content -->
+        <!-- Content --
         <div class="row" *ngFor="let baker of bakersList">
             <div class="col-sm-auto col-border border border-warning text-truncate min-size-name-image-cell">
                 <img [src]="baker.image" alt="Baker image" height="21" width="21"> {{ baker.baker_name }}
             </div>
+            <div class="col-sm-auto col-border border border-warning text-truncate min-size-number-cell">
+                {{ baker.rolls }}
+            </div>
             <div class="col-sm-auto col-border border border-warning text-truncate  min-size-address-cell mono">
                 {{ baker.identity }}
-            </div>
-            <div class="col-sm-auto col-border border border-warning text-truncate min-size-other-cell">
-                {{ baker.rolls }}
             </div>
             <div class="col-sm-auto col-border border border-warning text-truncate min-size-other-cell">
                 {{ baker.vote }}
             </div>
         </div>
     </span>
+    -->
 
 </div>
 

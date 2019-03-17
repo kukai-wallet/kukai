@@ -57,7 +57,7 @@ export interface Vote {
 export interface Period {
   amendment: string;
   period: number;
-  period_kind: PeriodKind;
+  period_kind: string;
   proposal_hash: string[];
   proposal_alias: string[];
   start_level: number;
@@ -77,6 +77,15 @@ export interface ParticipationPerPeriod {
   total_count: number;
   unused_votes: number;
   total_votes: number;
+}
+export interface Ballot {
+  proposal: string;
+  nb_yay: number;
+  nb_nay: number;
+  nb_pass: number;
+  vote_yay: number;
+  vote_nay: number;
+  vote_pass: number;
 }
 export enum PeriodKind {
   Proposal,

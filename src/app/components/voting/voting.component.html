@@ -20,16 +20,16 @@
 
     <!-- Voting periods -->
     <div class="row row-period">
-        <div class="col col-period col-active">
+        <div class="col col-period col-period-start" [ngClass]="{'col-active' : currentPeriod.period_kind == 'Proposal'}">
             Proposal Period
         </div>
-        <div class="col col-period">
+        <div class="col col-period" [ngClass]="{'col-active' : currentPeriod.period_kind == 'ExplorationVote'}">
             Exploration Vote Period
         </div>
-        <div class="col col-period">
+        <div class="col col-period" [ngClass]="{'col-active' : currentPeriod.period_kind == 'Testing'}">
             Testing Period
         </div>
-        <div class="col col-period col-period-end">
+        <div class="col col-period col-period-end" [ngClass]="{'col-active' : currentPeriod.period_kind == 'Promotion'}">
             Promotion Period
         </div>
     </div>
@@ -37,17 +37,32 @@
     <!-- Progress bar -->
     <div class="row row-progress">
         <div class="col">
-            <div class="donation" data-toggle="tooltip" [title]="currentPeriod.remaining + ' days remaining'">
+            <div class="donation" data-toggle="tooltip" [title]="currentPeriod.remaining + ' days remaining'" *ngIf="currentPeriod.period_kind == 'Proposal'">
                 <div class="progress">
                     <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" [attr.aria-valuenow]="currentPeriod.progress" aria-valuemin="0" aria-valuemax="100" [style.width]="currentPeriod.progress+'%'" > {{currentPeriod.progress}}% </div>
                 </div>
             </div>
         </div>
         <div class="col">
+            <div class="donation" data-toggle="tooltip" [title]="currentPeriod.remaining + ' days remaining'" *ngIf="currentPeriod.period_kind == 'ExplorationVote'">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" [attr.aria-valuenow]="currentPeriod.progress" aria-valuemin="0" aria-valuemax="100" [style.width]="currentPeriod.progress+'%'" > {{currentPeriod.progress}}% </div>
+                </div>
+            </div>
         </div>
         <div class="col">
+            <div class="donation" data-toggle="tooltip" [title]="currentPeriod.remaining + ' days remaining'" *ngIf="currentPeriod.period_kind == 'Testing'">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" [attr.aria-valuenow]="currentPeriod.progress" aria-valuemin="0" aria-valuemax="100" [style.width]="currentPeriod.progress+'%'" > {{currentPeriod.progress}}% </div>
+                </div>
+            </div>
         </div>
         <div class="col">
+            <div class="donation" data-toggle="tooltip" [title]="currentPeriod.remaining + ' days remaining'" *ngIf="currentPeriod.period_kind == 'Promotion'">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" [attr.aria-valuenow]="currentPeriod.progress" aria-valuemin="0" aria-valuemax="100" [style.width]="currentPeriod.progress+'%'" > {{currentPeriod.progress}}% </div>
+                </div>
+            </div>
         </div>
     </div>
 

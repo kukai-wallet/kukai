@@ -5,6 +5,8 @@ import { TzscanService } from '../../services/tzscan.service';
 import { OperationService } from '../../services/operation.service';
 import { DelegatorNamePipe } from '../../pipes/delegator-name.pipe';
 
+import { Period, PeriodKind } from '../../interfaces';
+import { VOTINGPERIODHEADS } from '../../../data/bakers-list';
 import { BAKERSLIST } from '../../../data/bakers-list';
 
 @Component({
@@ -21,6 +23,28 @@ export class BakersListComponent implements OnInit, OnDestroy {
     athensBHash = 'Psd1ynUBhMZAeajwcZJAeq5NrxorM6UCU4GJqxZ7Bx2e9vUWB6z';
     proposals = null;
     proposalsHash: string[] = [];
+
+    currentParticipation = {
+        proposal: [],
+        unused_count: -1,
+        unused_votes: -1,
+        total_count: -1,
+        total_votes: -1
+    };
+
+    votingPeriodHeads = VOTINGPERIODHEADS;
+    currentPeriod: Period = {
+        amendment: 'Athens',
+        period: 10,
+        period_kind: 'Proposal', //PeriodKind.Proposal,
+        proposal_hash: [],
+        proposal_alias: [],
+        start_level: this.votingPeriodHeads[0].start_level,  // 327681
+        end_level: this.votingPeriodHeads[0].end_level,  // 360448
+        level: -1,
+        progress: -1,
+        remaining: -1
+    };
 
     constructor(
         public walletService: WalletService,
@@ -93,6 +117,17 @@ export class BakersListComponent implements OnInit, OnDestroy {
                                                     }
                                                 }
                                             }
+
+                                            //Getting the totalNumbers
+                                            this.tzscanService.getTotalVotes(this.currentPeriod.period).subscribe(
+                                                result => {
+                                                    const totalVotes: any = result;
+                                                    this.currentParticipation.unused_count = totalVotes.unused_count;
+                                                    this.currentParticipation.unused_votes = totalVotes.unused_votes;
+                                                    this.currentParticipation.total_count = totalVotes.total_count;
+                                                    this.currentParticipation.total_votes = totalVotes.total_votes;
+                                                    console.log('currentParticipation ', this.currentParticipation);
+                                                });
                                         }
                                     })
                                 );
