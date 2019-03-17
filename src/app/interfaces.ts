@@ -89,7 +89,7 @@ export interface Ballot {
 }
 export enum PeriodKind {
   Proposal,
-  ExplorationVote,
+  Exploration,
   Testing,
   Promotion
 }

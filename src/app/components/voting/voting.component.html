@@ -44,7 +44,7 @@
             </div>
         </div>
         <div class="col">
-            <div class="donation" data-toggle="tooltip" [title]="currentPeriod.remaining + ' days remaining'" *ngIf="currentPeriod.period_kind == 'ExplorationVote'">
+            <div class="donation" data-toggle="tooltip" [title]="currentPeriod.remaining + ' days remaining'" *ngIf="currentPeriod.period_kind == 'Exploration'">
                 <div class="progress">
                     <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" [attr.aria-valuenow]="currentPeriod.progress" aria-valuemin="0" aria-valuemax="100" [style.width]="currentPeriod.progress+'%'" > {{currentPeriod.progress}}% </div>
                 </div>

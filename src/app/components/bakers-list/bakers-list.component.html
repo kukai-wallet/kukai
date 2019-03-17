@@ -29,7 +29,10 @@
                         <th scope="col">Rolls</th>
                         <!-- <th scope="col">‰</th> -->
                         <th scope="col">Identity</th>
-                        <th scope="col">Proposal Period</th>
+                        <th scope="col" *ngIf="this.showColumn.Proposal">Proposal Period</th>
+                        <th scope="col" *ngIf="this.showColumn.Exploration">Exploration</th>
+                        <th scope="col" *ngIf="this.showColumn.Testing">Testing</th>
+                        <th scope="col" *ngIf="this.showColumn.Promotion">Promotion</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -40,7 +43,10 @@
                         <td> {{ baker.rolls }} </td>
                         <!-- <td> {{ baker.rolls / currentParticipation.total_votes * 1000 | number:'1.0-2' }} ‰ </td> -->
                         <td> {{ baker.identity }} </td>
-                        <td> {{ baker.vote }} </td>
+                        <td *ngIf="this.showColumn.Proposal"> {{ baker.vote }} </td>
+                        <td *ngIf="this.showColumn.Exploration">  </td>
+                        <td *ngIf="this.showColumn.Testing">  </td>
+                        <td *ngIf="this.showColumn.Promotion">  </td>
                     </tr>
                 </tbody>
             </table>

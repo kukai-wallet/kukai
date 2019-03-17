@@ -45,7 +45,7 @@ export class VotingComponent implements OnInit {
         proposal_hash: [],
         proposal_alias: [],
         start_level: this.votingPeriodHeads[0].start_level,  // 327681
-        end_level: this.votingPeriodHeads[0].end_level,  // 360448
+        end_level: this.votingPeriodHeads[0].end_level,  // 360448 - not used
         level: -1,
         progress: -1,
         remaining: -1
@@ -156,22 +156,25 @@ export class VotingComponent implements OnInit {
                         break;
                     }
                     case 'exploration': {
-                        this.currentPeriod.period_kind = 'ExplorationVote';  //PeriodKind.ExplorationVote
+                        this.currentPeriod.period_kind = 'Exploration';  //PeriodKind.Exploration
+                        this.currentPeriod.start_level = this.currentPeriod.start_level + VOTINGPERIOD.blocks;
                         break;
                     }
                     case 'testing': {
                         this.currentPeriod.period_kind = 'Testing';  //PeriodKind.Testing
+                        this.currentPeriod.start_level = this.currentPeriod.start_level + VOTINGPERIOD.blocks * 2;
                         break;
                     }
                     case 'promotion': {
                         this.currentPeriod.period_kind = 'Promotion';  //PeriodKind.Promotion
+                        this.currentPeriod.start_level = this.currentPeriod.start_level + VOTINGPERIOD.blocks * 3;
                         break;
                     }
                     default: {
                         console.log('Error with period type');
                         break;
                     }
-                 }
+                }
 
                 // Progress bar
                 this.currentPeriod.level = periodInfo.level;
