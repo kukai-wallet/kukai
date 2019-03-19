@@ -111,6 +111,24 @@ export class BakersListComponent implements OnInit, OnDestroy {
                             // console.log('proposal.proposal_hash ', proposal.proposal_hash);
                         }
                         console.log('proposalsHash ', this.proposalsHash);
+
+                        /* To replace call made at l132 and l140
+                        //For Proposal Period, to get proposal votes details for each proposal
+                        for (const hash of this.proposalsHash) {
+                            this.tzscanService.getProposalVotes(hash).subscribe(
+                                votes => {
+                                    if (this.athensAHash === hash) {
+                                        this.athensAVotes = votes;
+                                    } else {
+                                        this.athensBVotes = votes;
+                                    }
+                                    console.log('athensAVotes ', this.athensAVotes);
+                                }
+                            );
+                        }
+                        console.log('athensAVotes ', this.athensAVotes);  // null
+                        console.log('athensBVotes ', this.athensBVotes);  // null
+                        */
                         this.tzscanService.getProposalVotes(this.proposalsHash[0]).subscribe(
                             votesA => {
                                 // console.log('votesA ', votesA);
@@ -127,8 +145,8 @@ export class BakersListComponent implements OnInit, OnDestroy {
                                             this.athensAVotes = votesB;
                                         }
                                         this.athensBVotes = votesB;
-                                        console.log('athensAVotes ', this.athensAVotes);
-                                        console.log('athensBVotes ', this.athensBVotes);
+                                        // console.log('athensAVotes ', this.athensAVotes);
+                                        // console.log('athensBVotes ', this.athensBVotes);
 
                                         for (const athensAVote of this.athensAVotes) {
                                             // console.log('athensAVote.source.tz ', athensAVote.source.tz);
