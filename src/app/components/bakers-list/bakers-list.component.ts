@@ -193,7 +193,6 @@ export class BakersListComponent implements OnInit, OnDestroy {
                                                             }
                                                         }
                                                     }
-
                                                     //Getting the totalNumbers
                                                     this.tzscanService.getTotalVotes(this.currentPeriod.period).subscribe(
                                                         result => {
@@ -217,7 +216,18 @@ export class BakersListComponent implements OnInit, OnDestroy {
             });
             // console.log('athensAVotes ', this.athensAVotes);  // returning null
     }
-
+    sortRolls() {
+        console.log('Sorting on rolls');
+        this.bakersList.sort((a, b) => b.rolls - a.rolls);
+    }
+    sortName() {
+        console.log('Sorting on name');
+        this.bakersList.sort((a, b) => {
+            if (a.baker_name < b.baker_name) { return -1; }
+            if (a.baker_name > b.baker_name) { return 1; }
+            return 0;
+        });
+    }
     ngOnDestroy() {
         this.bakersList = [];
     }
