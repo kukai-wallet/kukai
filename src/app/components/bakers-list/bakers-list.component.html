@@ -44,7 +44,7 @@
                         <!-- <td> {{ baker.rolls / currentParticipation.total_votes * 1000 | number:'1.0-2' }} ‰ </td> -->
                         <td> {{ baker.identity }} </td>
                         <td *ngIf="this.showColumn.Proposal"> {{ baker.vote }} </td>
-                        <td *ngIf="this.showColumn.Exploration">  </td>
+                        <td *ngIf="this.showColumn.Exploration"> {{ baker.vote2 }} </td>
                         <td *ngIf="this.showColumn.Testing">  </td>
                         <td *ngIf="this.showColumn.Promotion">  </td>
                     </tr>

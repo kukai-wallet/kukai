@@ -66,17 +66,15 @@ export class BakersListComponent implements OnInit, OnDestroy {
 
         this.tzscanService.getPeriodInfo().subscribe(
             period => {
-
                 const periodInfo: any = period;
                 console.log('getPeriodInfo ', period);
-
                 //Check Voting Period Type
                 switch (periodInfo.kind) {
                     case 'proposal': {
                         this.showColumn.Proposal = true;
                         break;
                     }
-                    case 'exploration': {
+                    case 'testing_vote': {
                         this.showColumn.Proposal = true;
                         this.showColumn.Exploration = true;
                         break;
@@ -168,12 +166,27 @@ export class BakersListComponent implements OnInit, OnDestroy {
                                             }
                                         }
                                         // Get number of votes
+                                        if (periodInfo.kind === 'testing_vote') {
+                                            this.tzscanService.getBallotVotes().subscribe(
+                                                (votes: any) => {
+                                                    for (const vote of votes) {
+                                                        const index = this.bakersList.findIndex(b => b.identity === vote.type.source.tz);
+                                                        if (index !== -1) {
+                                                            // console.log(JSON.stringify(this.bakersList[index]));
+                                                            if (!this.bakersList[index].vote2) {
+                                                                this.bakersList[index].vote2 = vote.type.ballot;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            );
+                                        }
                                         this.operationService.getVotingRights().subscribe(
                                             ((res: any) => {
                                                 console.log(res);
                                                 if (res.success) {
                                                     for (const voter of res.payload) {
-                                                        console.log('voter: ' + voter);
+                                                        // console.log('voter: ' + voter);
                                                         for (const baker of this.bakersList) {
                                                             if (baker.identity === voter.pkh) {
                                                                 baker.rolls = voter.rolls;

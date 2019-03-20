@@ -52,7 +52,8 @@ export class Constants {
         return ALPHANET;
     }
     mainnet(): Net {
-        const n = Math.floor(Math.random() * 6) + 1;
+        let n = Math.floor(Math.random() * 5) + 1;
+        if (n > 3) { n += 1; }
         const MAINNET: Net = {
             NAME:  'Mainnet',
             API_URL:  'https://api' + n + '.tzscan.io/',

@@ -53,10 +53,10 @@ export class VotingComponent implements OnInit {
 
     currentParticipation = {
         proposal: [],
-        unused_count: -1,
-        unused_votes: -1,
-        total_count: -1,
-        total_votes: -1
+        unused_count: 0,
+        unused_votes: 0,
+        total_count: 0,
+        total_votes: 0
     };
 
     constructor(
@@ -155,19 +155,22 @@ export class VotingComponent implements OnInit {
                         this.currentPeriod.period_kind = 'Proposal';  //PeriodKind.Proposal
                         break;
                     }
-                    case 'exploration': {
+                    case 'testing_vote': {
                         this.currentPeriod.period_kind = 'Exploration';  //PeriodKind.Exploration
                         this.currentPeriod.start_level = this.currentPeriod.start_level + VOTINGPERIOD.blocks;
+                        this.currentPeriod.end_level = this.currentPeriod.end_level + VOTINGPERIOD.blocks;
                         break;
                     }
                     case 'testing': {
                         this.currentPeriod.period_kind = 'Testing';  //PeriodKind.Testing
                         this.currentPeriod.start_level = this.currentPeriod.start_level + VOTINGPERIOD.blocks * 2;
+                        this.currentPeriod.end_level = this.currentPeriod.end_level + VOTINGPERIOD.blocks * 2;
                         break;
                     }
                     case 'promotion': {
                         this.currentPeriod.period_kind = 'Promotion';  //PeriodKind.Promotion
                         this.currentPeriod.start_level = this.currentPeriod.start_level + VOTINGPERIOD.blocks * 3;
+                        this.currentPeriod.end_level = this.currentPeriod.end_level + VOTINGPERIOD.blocks * 3;
                         break;
                     }
                     default: {
@@ -217,7 +220,7 @@ export class VotingComponent implements OnInit {
 
                         //For other 3 periods (Exploration, Testing, Promotion), to get ballot details (yah, nay or pass)
                         if (this.currentPeriod.period_kind !== 'Proposal') {
-                            this.tzscanService.getBallots(this.currentPeriod.period).subscribe(
+                            this.tzscanService.getBallots(this.currentPeriod.period, periodInfo.kind).subscribe(
                                 result => {  //{"proposal": "string","nb_yay": 0,"nb_nay": 0,"nb_pass": 0,"vote_yay": 0,"vote_nay": 0,"vote_pass": 0}
                                     const ballotresult: any = result;
 
@@ -230,11 +233,25 @@ export class VotingComponent implements OnInit {
                                         vote_nay: ballotresult.vote_nay,
                                         vote_pass: ballotresult.vote_pass
                                     };
+                                    this.tzscanService.getTotalVotes2(this.currentPeriod.period).subscribe(
+                                        result2 => {
+                                            const totalVotes: any = result2;
+                                            console.log('totalVotes ' + JSON.stringify(totalVotes));
+                                            this.currentParticipation.unused_count = totalVotes.count - (this.ballot.nb_yay + this.ballot.nb_nay + this.ballot.nb_pass);
+                                            this.currentParticipation.unused_votes = totalVotes.votes - (this.ballot.vote_yay + this.ballot.vote_nay + this.ballot.vote_pass);
+                                            this.currentParticipation.total_count = totalVotes.count;
+                                            this.currentParticipation.total_votes = totalVotes.votes;
+                                            console.log('currentParticipation ', this.currentParticipation);
+                                            //Display Doughnut Charts
+                                            this.showDoughnutCharts(this.currentParticipation);
+                                        }
+                                    );
                                 }
                             );
                         }
 
                         //Getting the totalNumbers
+                        if (this.currentPeriod.period_kind === 'Proposal') {
                         this.tzscanService.getTotalVotes(this.currentPeriod.period).subscribe(
                             result => {  //{"proposal_count":2,"total_count":458,"total_votes":51604,"used_count":107,"used_votes":15773,"unused_count":360,"unused_votes":36492}
                                 const totalVotes: any = result;
@@ -248,6 +265,7 @@ export class VotingComponent implements OnInit {
                                 this.showDoughnutCharts(this.currentParticipation);
                             }
                         );
+                        }
                     }
                 );
             }
