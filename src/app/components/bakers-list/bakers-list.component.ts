@@ -232,6 +232,8 @@ export class BakersListComponent implements OnInit, OnDestroy {
     sortName() {
         console.log('Sorting on name');
         this.bakersList.sort((a, b) => {
+            if (!a.baker_name) { return 1; }
+            if (!b.baker_name) { return -1; }
             if (a.baker_name < b.baker_name) { return -1; }
             if (a.baker_name > b.baker_name) { return 1; }
             return 0;
