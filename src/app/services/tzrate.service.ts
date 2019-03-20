@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/map';
 
 import { WalletService } from './wallet.service';
+import { TzscanService } from './tzscan.service';
 
 
 @Injectable()
@@ -11,17 +12,19 @@ export class TzrateService {
 
     private apiUrl = 'https://api.coinmarketcap.com/v1/ticker/tezos/'; // returns a json object, key: price_usd
     constructor(private http: HttpClient,
-        private walletService: WalletService) {
+        private walletService: WalletService,
+        private tzscanService: TzscanService) {
     }
 
     getTzrate() {
-        this.http.get(this.apiUrl).subscribe(
-            data => {
-                this.walletService.wallet.XTZrate = data[0]['price_usd'];
+        // this.http.get(this.apiUrl).subscribe(
+        this.tzscanService.getPriceUSD().subscribe(
+            price => {
+                this.walletService.wallet.XTZrate = price;
                 this.updateFiatBalances();
-                console.log('XTZ = $' + data[0]['price_usd']);
+                console.log('XTZ = $' + price);
             },
-            err => console.log('Failed to get xtz price from CMC: ' + JSON.stringify(err))
+            err => console.log('Failed to get xtz price: ' + JSON.stringify(err))
         );
     }
     updateFiatBalances() {

@@ -56,6 +56,12 @@ export class TzscanService {
   timestamp(block: string) {
     return this.http.get(this.apiUrl + 'v1/timestamp/' + block);
   }
+  getPriceUSD(): Observable<any> {
+    return this.http.get(this.apiUrl + 'v1/marketcap')
+      .flatMap((res: any) => {
+        return of(res[0].price_usd);
+      });
+  }
   getOp(data: any, pkh: string): any {
     const ops: any[] = [];
     for (let index = 0; index < data.type.operations.length; index++) {
