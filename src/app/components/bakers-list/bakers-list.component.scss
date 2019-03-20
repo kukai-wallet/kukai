@@ -20,7 +20,9 @@
     border-bottom: 1px solid #eee; //Alignment  with sidebar
     margin-bottom: 0.5rem; //space between border and next content
 }
-
+.column-sort {
+    cursor:pointer;
+}
 h4 {
     font-weight: 400;
 }

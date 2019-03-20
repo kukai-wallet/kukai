@@ -15,7 +15,7 @@ import { BAKERSLIST } from '../../../data/bakers-list';
     styleUrls: ['./bakers-list.component.scss']
 })
 export class BakersListComponent implements OnInit, OnDestroy {
-
+    showAll = false;
     bakersList = BAKERSLIST;
     athensAVotes = null;
     athensBVotes = null;
@@ -63,7 +63,7 @@ export class BakersListComponent implements OnInit, OnDestroy {
     ngOnInit() {  // or ngAfterViewInit  // ngOnInit
         //this.athensAVotes = this.tzscanService.getProposalVotes(this.athensAHash);
         //this.tzscanService.getProposalVotes(this.athensAHash).subscribe(
-
+        this.sortName();
         this.tzscanService.getPeriodInfo().subscribe(
             period => {
                 const periodInfo: any = period;
@@ -97,124 +97,133 @@ export class BakersListComponent implements OnInit, OnDestroy {
                         break;
                     }
                 }
-
-
-                this.tzscanService.getProposal().subscribe(
-                    data => {
-                        this.proposals = data;
-                        console.log('proposals ', this.proposals);
-
-                        for (const proposal of this.proposals) {
-                            this.proposalsHash.push(proposal.proposal_hash);
-                            // console.log('proposal.proposal_hash ', proposal.proposal_hash);
-                        }
-                        console.log('proposalsHash ', this.proposalsHash);
-
-                        /* To replace call made at l132 and l140
-                        //For Proposal Period, to get proposal votes details for each proposal
-                        for (const hash of this.proposalsHash) {
-                            this.tzscanService.getProposalVotes(hash).subscribe(
-                                votes => {
-                                    if (this.athensAHash === hash) {
-                                        this.athensAVotes = votes;
-                                    } else {
-                                        this.athensBVotes = votes;
+                this.operationService.getVotingRights().subscribe(
+                    ((res: any) => {
+                        console.log(res);
+                        if (res.success) {
+                            for (const voter of res.payload) {
+                                // console.log('voter: ' + voter);
+                                let known = false;
+                                for (const baker of this.bakersList) {
+                                    if (baker.identity === voter.pkh) {
+                                        baker.rolls = voter.rolls;
+                                        known = true;
                                     }
-                                    console.log('athensAVotes ', this.athensAVotes);
+                                } if (!known) { // Add unknown bakers
+                                    this.bakersList.push({
+                                        baker_name: '',
+                                        identity: voter.pkh,
+                                        vote: '',
+                                        rolls: voter.rolls,
+                                        vote2: '',
+                                        image: ''
+                                   });
                                 }
-                            );
-                        }
-                        console.log('athensAVotes ', this.athensAVotes);  // null
-                        console.log('athensBVotes ', this.athensBVotes);  // null
-                        */
-                        this.tzscanService.getProposalVotes(this.proposalsHash[0]).subscribe(
-                            votesA => {
-                                // console.log('votesA ', votesA);
-                                if (this.athensAHash === this.proposalsHash[0]) {
-                                    this.athensAVotes = votesA;
-                                } else {
-                                    this.athensBVotes = votesA;
-                                }
-                                this.tzscanService.getProposalVotes(this.proposalsHash[1]).subscribe(
-                                    votesB => {
-                                        if (this.athensBHash === this.proposalsHash[1]) {
-                                            this.athensBVotes = votesB;
-                                        } else {
-                                            this.athensAVotes = votesB;
-                                        }
-                                        this.athensBVotes = votesB;
-                                        // console.log('athensAVotes ', this.athensAVotes);
-                                        // console.log('athensBVotes ', this.athensBVotes);
+                            }
+                            //Getting the totalNumbers
+                            this.tzscanService.getTotalVotes(this.currentPeriod.period).subscribe(
+                                result => {
+                                    const totalVotes: any = result;
+                                    this.currentParticipation.unused_count = totalVotes.unused_count;
+                                    this.currentParticipation.unused_votes = totalVotes.unused_votes;
+                                    this.currentParticipation.total_count = totalVotes.total_count;
+                                    this.currentParticipation.total_votes = totalVotes.total_votes;
+                                    console.log('currentParticipation ', this.currentParticipation);
+                                });
+                            this.tzscanService.getProposal().subscribe(
+                                data => {
+                                    this.proposals = data;
+                                    console.log('proposals ', this.proposals);
 
-                                        for (const athensAVote of this.athensAVotes) {
-                                            // console.log('athensAVote.source.tz ', athensAVote.source.tz);
-                                            for (const baker of this.bakersList) {
-                                                if (baker.identity === athensAVote.source.tz) {
-                                                    baker.vote = 'Athens A';
+                                    for (const proposal of this.proposals) {
+                                        this.proposalsHash.push(proposal.proposal_hash);
+                                        // console.log('proposal.proposal_hash ', proposal.proposal_hash);
+                                    }
+                                    console.log('proposalsHash ', this.proposalsHash);
+
+                                    /* To replace call made at l132 and l140
+                                    //For Proposal Period, to get proposal votes details for each proposal
+                                    for (const hash of this.proposalsHash) {
+                                        this.tzscanService.getProposalVotes(hash).subscribe(
+                                            votes => {
+                                                if (this.athensAHash === hash) {
+                                                    this.athensAVotes = votes;
+                                                } else {
+                                                    this.athensBVotes = votes;
                                                 }
+                                                console.log('athensAVotes ', this.athensAVotes);
                                             }
-                                        }
-                                        for (const athensBVotes of this.athensBVotes) {
-                                            for (const baker of this.bakersList) {
-                                                if (baker.identity === athensBVotes.source.tz) {
-                                                    if ( baker.vote !== 'Athens A' ) {
-                                                        baker.vote = 'Athens B';
+                                        );
+                                    }
+                                    console.log('athensAVotes ', this.athensAVotes);  // null
+                                    console.log('athensBVotes ', this.athensBVotes);  // null
+                                    */
+                                    this.tzscanService.getProposalVotes(this.proposalsHash[0]).subscribe(
+                                        votesA => {
+                                            // console.log('votesA ', votesA);
+                                            if (this.athensAHash === this.proposalsHash[0]) {
+                                                this.athensAVotes = votesA;
+                                            } else {
+                                                this.athensBVotes = votesA;
+                                            }
+                                            this.tzscanService.getProposalVotes(this.proposalsHash[1]).subscribe(
+                                                votesB => {
+                                                    if (this.athensBHash === this.proposalsHash[1]) {
+                                                        this.athensBVotes = votesB;
                                                     } else {
-                                                        baker.vote = baker.vote.concat( '; Athens B' );
+                                                        this.athensAVotes = votesB;
                                                     }
-                                                }
-                                            }
-                                        }
-                                        // Get number of votes
-                                        if (periodInfo.kind === 'testing_vote') {
-                                            this.tzscanService.getBallotVotes().subscribe(
-                                                (votes: any) => {
-                                                    for (const vote of votes) {
-                                                        const index = this.bakersList.findIndex(b => b.identity === vote.type.source.tz);
-                                                        if (index !== -1) {
-                                                            // console.log(JSON.stringify(this.bakersList[index]));
-                                                            if (!this.bakersList[index].vote2) {
-                                                                this.bakersList[index].vote2 = vote.type.ballot;
+                                                    this.athensBVotes = votesB;
+                                                    // console.log('athensAVotes ', this.athensAVotes);
+                                                    // console.log('athensBVotes ', this.athensBVotes);
+
+                                                    for (const athensAVote of this.athensAVotes) {
+                                                        // console.log('athensAVote.source.tz ', athensAVote.source.tz);
+                                                        for (const baker of this.bakersList) {
+                                                            if (baker.identity === athensAVote.source.tz) {
+                                                                baker.vote = 'Athens A';
                                                             }
                                                         }
+                                                    }
+                                                    for (const athensBVotes of this.athensBVotes) {
+                                                        for (const baker of this.bakersList) {
+                                                            if (baker.identity === athensBVotes.source.tz) {
+                                                                if (baker.vote !== 'Athens A') {
+                                                                    baker.vote = 'Athens B';
+                                                                } else {
+                                                                    baker.vote = baker.vote.concat('; Athens B');
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    // Get number of votes
+                                                    if (periodInfo.kind === 'testing_vote') {
+                                                        this.tzscanService.getBallotVotes().subscribe(
+                                                            (votes: any) => {
+                                                                for (const vote of votes) {
+                                                                    const index = this.bakersList.findIndex(b => b.identity === vote.type.source.tz);
+                                                                    if (index !== -1) {
+                                                                        // console.log(JSON.stringify(this.bakersList[index]));
+                                                                        if (!this.bakersList[index].vote2) {
+                                                                            this.bakersList[index].vote2 = vote.type.ballot;
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        );
                                                     }
                                                 }
                                             );
                                         }
-                                        this.operationService.getVotingRights().subscribe(
-                                            ((res: any) => {
-                                                console.log(res);
-                                                if (res.success) {
-                                                    for (const voter of res.payload) {
-                                                        // console.log('voter: ' + voter);
-                                                        for (const baker of this.bakersList) {
-                                                            if (baker.identity === voter.pkh) {
-                                                                baker.rolls = voter.rolls;
-                                                            }
-                                                        }
-                                                    }
-                                                    //Getting the totalNumbers
-                                                    this.tzscanService.getTotalVotes(this.currentPeriod.period).subscribe(
-                                                        result => {
-                                                            const totalVotes: any = result;
-                                                            this.currentParticipation.unused_count = totalVotes.unused_count;
-                                                            this.currentParticipation.unused_votes = totalVotes.unused_votes;
-                                                            this.currentParticipation.total_count = totalVotes.total_count;
-                                                            this.currentParticipation.total_votes = totalVotes.total_votes;
-                                                            console.log('currentParticipation ', this.currentParticipation);
-                                                        });
-                                                }
-                                            })
-                                        );
-                                    }
-                                );
-                            }
-                        );
-                    },
-                    err => console.log('Failed to get proposal: ' + 'this.athensAHash ' + JSON.stringify(err))
+                                    );
+                                },
+                                err => console.log('Failed to get proposal: ' + 'this.athensAHash ' + JSON.stringify(err))
+                            );
+                        }
+                    })
                 );
             });
-            // console.log('athensAVotes ', this.athensAVotes);  // returning null
+        // console.log('athensAVotes ', this.athensAVotes);  // returning null
     }
     sortRolls() {
         console.log('Sorting on rolls');
@@ -227,6 +236,9 @@ export class BakersListComponent implements OnInit, OnDestroy {
             if (a.baker_name > b.baker_name) { return 1; }
             return 0;
         });
+    }
+    toggleShowAll() {
+        this.showAll = !this.showAll;
     }
     ngOnDestroy() {
         this.bakersList = [];

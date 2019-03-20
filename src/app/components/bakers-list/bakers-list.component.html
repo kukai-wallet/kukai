@@ -19,14 +19,14 @@
     </div>
     
     <br>
-
+    <input type="checkbox" (change)="toggleShowAll($event)"> Show all
     <div class="tableSection" *ngIf="bakersList">
         <div class="table-responsive">
             <table class="table">
                 <thead>
                     <tr>
-                        <th scope="col" (click)="sortName()">Name</th>
-                        <th scope="col" (click)="sortRolls()">Rolls </th>
+                        <th scope="col" class="column-sort" (click)="sortName()">Name &#9660;</th>
+                        <th scope="col" class="column-sort" (click)="sortRolls()">Rolls &#9660;</th>
                         <!-- <th scope="col">‰</th> -->
                         <th scope="col">Identity</th>
                         <th scope="col" *ngIf="this.showColumn.Proposal">Proposal Period</th>
@@ -36,9 +36,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let baker of bakersList">
+                    <ng-container *ngFor="let baker of bakersList">
+                    <tr *ngIf="baker.baker_name || showAll">
                         <td>
-                            <img [src]="baker.image" alt="Baker image" height="21" width="21"> {{ baker.baker_name }}
+                            <img *ngIf="baker.image" [src]="baker.image" alt="Baker image" height="21" width="21"> {{ baker.baker_name }}
                         </td>
                         <td> {{ baker.rolls }} </td>
                         <!-- <td> {{ baker.rolls / currentParticipation.total_votes * 1000 | number:'1.0-2' }} ‰ </td> -->
@@ -48,6 +49,7 @@
                         <td *ngIf="this.showColumn.Testing">  </td>
                         <td *ngIf="this.showColumn.Promotion">  </td>
                     </tr>
+                </ng-container>
                 </tbody>
             </table>
         </div>
