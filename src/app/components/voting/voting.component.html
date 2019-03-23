@@ -69,12 +69,25 @@
     <!-- doughnuts charts -->
     <div class="row row-doughnut">
         <div class="col">
-            <p class="title">Amendments votes</p>
+            <p class="title">
+                Amendments votes
+                <span class="sub-title" data-toggle="tooltip" title="Supermajority is achieved at 80%" [ngClass]="isSuperMajority ? 'text-success' : 'text-danger'">(supermajority: {{ballot.vote_yay/(ballot.vote_yay+ballot.vote_nay)*100 | number:'1.0-2'}} %)</span>
+            </p>
             <canvas #doughnutCanvasVotes></canvas>
         </div>
-        <div class="col">
-            <p class="title">Participation</p>
+        <div class="col" (click)="toggleParticipationCharts()" *ngIf="isBakersParticipation">
+            <p class="title">Bakers' Participation <i class="fa fa-repeat"></i></p>
             <canvas #doughnutCanvasParticipation></canvas>
+            <!--
+            <span *ngIf="!isBakersParticipation">
+                <p class="title">Vote counts <i class="fa fa-repeat"></i></p> 
+                <canvas #doughnutCanvasParticipation></canvas>
+            </span>
+            -->
+        </div>
+        <div class="col" (click)="toggleParticipationCharts()" *ngIf="!isBakersParticipation">
+                <p class="title">Vote counts <i class="fa fa-repeat"></i></p> 
+                <canvas #doughnutCanvasParticipation></canvas>
         </div>
     </div>
 

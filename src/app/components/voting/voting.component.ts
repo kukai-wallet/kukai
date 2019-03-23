@@ -34,6 +34,9 @@ export class VotingComponent implements OnInit {
     athensAVotes = null;
     athensBVotes = null;
 
+    isSuperMajority = true;
+    isBakersParticipation = true;
+
     doughnutVotes: any;
     doughnutParticipation: any;
 
@@ -95,6 +98,10 @@ export class VotingComponent implements OnInit {
             });
 
         } else {  // In ballot period
+            // Check SuperMajority
+            this.isSuperMajority = this.ballot.vote_yay / (this.ballot.vote_yay + this.ballot.vote_nay) > 0.8;
+            // console.log('Yes supermajority: ', this.ballot.vote_yay / (this.ballot.vote_yay + this.ballot.vote_nay) > 0.8);
+
             // Vote Counts
             this.doughnutVotes = new Chart(this.doughnutCanvasVotes.nativeElement, {
 
@@ -119,7 +126,15 @@ export class VotingComponent implements OnInit {
             });
         }
 
-        // Participation
+        // Bakers Participation
+        this.showParticipationDoughnutCharts(currentParticipation);
+    }
+
+    showParticipationDoughnutCharts(currentParticipation: any) {
+        const votersCounted = currentParticipation.total_count - currentParticipation.unused_count;
+        const votersUndecided = currentParticipation.unused_count;
+
+        // Bakers Participation
         this.doughnutParticipation = new Chart(this.doughnutCanvasParticipation.nativeElement, {
 
             type: 'doughnut',
@@ -139,6 +154,20 @@ export class VotingComponent implements OnInit {
                 }]
             }
         });
+    }
+
+    toggleParticipationCharts() {
+        this.isBakersParticipation = !this.isBakersParticipation;
+
+        if (this.isBakersParticipation) {
+            // Bakers Participation - docs: https://www.chartjs.org/docs/latest/developers/updates.html
+            this.doughnutParticipation.data.labels.push(['Voted', 'To be decided']);
+            this.doughnutParticipation.update();
+        } else {
+            // Vote counts
+            this.doughnutParticipation.data.labels.push(['XX', 'YY']);
+            this.doughnutParticipation.update();
+        }
     }
 
     ngOnInit() {
