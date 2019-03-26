@@ -42,9 +42,12 @@ export enum WalletType {
 }
 export interface Baker {
   baker_name: string;
-  identity: string;
-  vote: Vote[];
   image: string;
+  rolls: number;
+  identity: string;
+  vote: string;
+  vote2: string;
+  // vote: []
 }
 export interface Vote {
   voting_period: string;

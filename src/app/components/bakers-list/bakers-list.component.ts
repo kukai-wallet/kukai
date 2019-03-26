@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Sort } from '@angular/material';
 
 import { WalletService } from '../../services/wallet.service';
 import { TzscanService } from '../../services/tzscan.service';
@@ -15,6 +16,7 @@ import { BAKERSLIST } from '../../../data/bakers-list';
     styleUrls: ['./bakers-list.component.scss']
 })
 export class BakersListComponent implements OnInit, OnDestroy {
+
     showAll = false;
     bakersList = BAKERSLIST;
     athensAVotes = null;
@@ -23,6 +25,8 @@ export class BakersListComponent implements OnInit, OnDestroy {
     athensBHash = 'Psd1ynUBhMZAeajwcZJAeq5NrxorM6UCU4GJqxZ7Bx2e9vUWB6z';
     proposals = null;
     proposalsHash: string[] = [];
+
+    showBtn = 'Show all the bakers';
 
     showColumn = {
         Proposal: false,
@@ -54,11 +58,38 @@ export class BakersListComponent implements OnInit, OnDestroy {
     };
 
     constructor(
+        // Uncaught Error: Can't resolve all parameters for BakersListComponent: ([object Object], [object Object], [object Object], [object Object], ?).
         public walletService: WalletService,
         private tzscanService: TzscanService,
         private delegatorNamePipe: DelegatorNamePipe,
         private operationService: OperationService
     ) { }
+
+    sortData(sort: Sort) {
+        const data = this.bakersList.slice();
+        if (!sort.active || sort.direction === '') {
+          this.bakersList = data;
+          return;
+        }
+
+        this.bakersList = data.sort((a, b) => {
+          const isAsc = sort.direction === 'asc';
+          switch (sort.active) {
+            case 'name': return compare(a.baker_name, b.baker_name, isAsc);
+            case 'roll': return compare(+a.rolls, +b.rolls, isAsc);
+            case 'identity': return compare(+a.identity, +b.identity, isAsc);
+            case 'proposal': return compare(+a.vote, +b.vote, isAsc);
+            case 'exploration': return compare(+a.vote2, +b.vote2, isAsc);
+            //case 'testing': return compare(+a.protein, +b.protein, isAsc);
+            //case 'promotion': return compare(+a.protein, +b.protein, isAsc);
+            default: return 0;
+          }
+        });
+
+        function compare(a, b, isAsc) {
+            return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+        }
+    }
 
     ngOnInit() {  // or ngAfterViewInit  // ngOnInit
         //this.athensAVotes = this.tzscanService.getProposalVotes(this.athensAHash);
@@ -241,6 +272,12 @@ export class BakersListComponent implements OnInit, OnDestroy {
     }
     toggleShowAll() {
         this.showAll = !this.showAll;
+
+        if (this.showAll) {
+            this.showBtn = 'Show only Public Bakers';
+        } else {
+            this.showBtn = 'Show all the Bakers';
+        }
     }
     ngOnDestroy() {
         this.bakersList = [];
