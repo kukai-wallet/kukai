@@ -158,14 +158,13 @@ export class VotingComponent implements OnInit {
 
     toggleParticipationCharts() {
         this.isBakersParticipation = !this.isBakersParticipation;
-
         if (this.isBakersParticipation) {
             // Bakers Participation - docs: https://www.chartjs.org/docs/latest/developers/updates.html
-            this.doughnutParticipation.data.labels.push(['Voted', 'To be decided']);
+            this.doughnutParticipation.data.labels = ['Voted', 'To be decided'];
             this.doughnutParticipation.update();
         } else {
             // Vote counts
-            this.doughnutParticipation.data.labels.push(['XX', 'YY']);
+            this.doughnutParticipation.data.labels = ['XX', 'YY'];
             this.doughnutParticipation.update();
         }
     }

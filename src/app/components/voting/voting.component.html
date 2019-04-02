@@ -75,8 +75,8 @@
             </p>
             <canvas #doughnutCanvasVotes></canvas>
         </div>
-        <div class="col" (click)="toggleParticipationCharts()" *ngIf="isBakersParticipation">
-            <p class="title">Bakers' Participation <i class="fa fa-repeat"></i></p>
+        <div class="col" *ngIf="isBakersParticipation">
+            <p class="title">Bakers' Participation <!---<i class="fa fa-repeat"></i>--></p>
             <canvas #doughnutCanvasParticipation></canvas>
             <!--
             <span *ngIf="!isBakersParticipation">
