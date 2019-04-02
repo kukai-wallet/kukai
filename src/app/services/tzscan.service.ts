@@ -50,6 +50,12 @@ export class TzscanService {
   getCounter(op: any): number {
     return Number(op.type.operations[0].counter);
   }
+  getManagerKey(pkh: any): Observable<any> {
+    return this.http.get(this.apiUrl + 'v1/operations/' + pkh + '?type=Reveal&number=1&p=0')
+    .flatMap((res: any) => {
+      return of(res[0].type.operations[0].public_key);
+    });
+  }
   operationsOrigination(pkh: string, n: number) {
     return this.http.get(this.apiUrl + 'v1/operations/' + pkh + '?type=Origination&number=' + n + '&p=0');
   }

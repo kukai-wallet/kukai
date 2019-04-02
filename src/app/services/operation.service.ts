@@ -418,7 +418,17 @@ export class OperationService {
         );
       }).pipe(catchError(err => this.errHandler(err)));
   }
-  getVerifiedOpBytes(operationLevel, operationHash, pkh): Observable<string> {
+  getManagerKey(pkh: string): Observable<string> {
+    return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + pkh + '/manager_key', {})
+      .flatMap((manager: any) => {
+        if (manager.key) {
+          return of(manager.key);
+        } else {
+          return of('');
+        }
+      });
+  }
+  getVerifiedOpBytes(operationLevel, operationHash, pkh, pk): Observable<string> {
     return this.http.get(this.nodeURL + '/chains/main/blocks/' + operationLevel + '/operation_hashes/3', {})
       .flatMap((opHashes: any) => {
         const opIndex = opHashes.findIndex(a => a === operationHash);
@@ -439,19 +449,16 @@ export class OperationService {
             }
             return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/forge/operations', op)
               .flatMap((opBytes: any) => {
-                return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + pkh + '/manager_key', {})
-                  .flatMap((manager: any) => {
-                    if (this.pk2pkh(manager.key) === pkh) {
-                      if (this.verify(opBytes, sig, manager.key)) {
-                        ans = opBytes + this.buf2hex(this.b58cdecode(sig, this.prefix.sig));
-                      } else {
-                        throw new Error('InvalidSignature');
-                      }
-                    } else {
-                      throw new Error('InvalidPublicKey');
-                    }
-                    return of(ans);
-                  });
+                if (this.pk2pkh(pk) === pkh) {
+                  if (this.verify(opBytes, sig, pk)) {
+                    ans = opBytes + this.buf2hex(this.b58cdecode(sig, this.prefix.sig));
+                  } else {
+                    throw new Error('InvalidSignature');
+                  }
+                } else {
+                  throw new Error('InvalidPublicKey');
+                }
+                return of(ans);
               });
           });
       });

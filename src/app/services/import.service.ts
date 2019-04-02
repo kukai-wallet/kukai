@@ -109,23 +109,41 @@ export class ImportService {
     this.findAllAccounts(pkh);
   }
   async findAllAccounts(pkh: string) {
-    this.findNumberOfAccounts(pkh);
+    // Test start
+    console.log('searching after KT...');
+    this.operationService.getManagerKey(pkh).subscribe(
+      ((pk: string) => {
+        console.log('PK: ' + pk);
+        if (pk) {
+          this.findNumberOfAccounts(pkh, pk);
+        } else {
+          this.tzscanService.getManagerKey(pkh).subscribe(
+            ((pk2: string) => {
+              console.log('PK: ' + pk2);
+              if (pk2) {
+                this.findNumberOfAccounts(pkh, pk2);
+              }
+            })
+          );
+        }
+      })
+    );
   }
-  async findNumberOfAccounts(pkh: string) {
+  async findNumberOfAccounts(pkh: string, pk: string) {
     if (pkh) {
       console.log('Find accounts...');
       console.log('pkh: ' + pkh);
       this.tzscanService.numberOperationsOrigination(pkh).subscribe(
         data => {
           if (data[0]) {
-            this.findAccounts(pkh, data[0]);
+            this.findAccounts(pkh, pk, data[0]);
           }
         },
         err => console.log('ImportError: ' + JSON.stringify(err))
       );
     }
   }
-  async findAccounts(pkh: string, n: number) {
+  async findAccounts(pkh: string, pk: string, n: number) {
     console.log('Accounts found: ' + n);
     this.coordinatorService.start(pkh);
     this.coordinatorService.startXTZ();
@@ -140,13 +158,13 @@ export class ImportService {
           if (this.walletService.wallet.accounts.findIndex(a => a.pkh === KT) === -1) {
             const opIndex = data[i].type.operations.findIndex(a => a.kind === 'origination');
             const opLevel = data[i].type.operations[opIndex].op_level;
-            this.operationService.getVerifiedOpBytes(opLevel, data[i].hash, pkh).subscribe(
+            this.operationService.getVerifiedOpBytes(opLevel, data[i].hash, pkh, pk).subscribe(
               opBytes => {
                 if (KT === this.operationService.createKTaddress(opBytes)) {
                   console.log('Added: ' + KT);
                   this.walletService.addAccount(KT);
                   this.coordinatorService.start(KT);
-                  this.findNumberOfAccounts(KT); // Recursive call
+                  this.findNumberOfAccounts(KT, pk); // Recursive call
                 } else {
                   this.messageService.addError('Failed to verify KT address!');
                 }
