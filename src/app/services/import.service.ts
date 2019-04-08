@@ -33,6 +33,7 @@ export class ImportService {
     }
   }
   async importWalletData(data: any, isJson: boolean = true, pkh: string = '', pwd: string = ''): Promise<boolean> {
+    this.coordinatorService.stopAll();
     try {
       let walletData;
       if (isJson) {
@@ -88,6 +89,7 @@ export class ImportService {
     }
   }
   importWalletFromPk(pk: string) {
+    this.coordinatorService.stopAll();
     try {
       const pkh = this.operationService.pk2pkh(pk);
       this.importWalletFromPkh(pkh, WalletType.ViewOnlyWallet);
@@ -98,6 +100,7 @@ export class ImportService {
     }
   }
   importWalletFromPkh(pkh: string, type: WalletType = WalletType.ObserverWallet) {
+    this.coordinatorService.stopAll();
     try {
       this.walletService.wallet = this.walletService.emptyWallet(type);
       this.walletService.addAccount(pkh);
@@ -123,7 +126,8 @@ export class ImportService {
               if (pk2) {
                 this.findNumberOfAccounts(pkh, pk2);
               }
-            })
+            }),
+            err => console.log('No PK found!')
           );
         }
       })
