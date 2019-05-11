@@ -52,9 +52,9 @@ export class TzscanService {
   }
   getManagerKey(pkh: any): Observable<any> {
     return this.http.get(this.apiUrl + 'v1/operations/' + pkh + '?type=Reveal&number=1&p=0')
-    .flatMap((res: any) => {
-      return of(res[0].type.operations[0].public_key);
-    });
+      .flatMap((res: any) => {
+        return of(res[0].type.operations[0].public_key);
+      });
   }
   operationsOrigination(pkh: string, n: number) {
     return this.http.get(this.apiUrl + 'v1/operations/' + pkh + '?type=Origination&number=' + n + '&p=0');
@@ -179,38 +179,29 @@ export class TzscanService {
   }
   getBallotVotes(maxPeriod: number, p: number = 0, data?: any): Observable<any> {
     return this.http.get(this.apiUrl + 'v3/operations?type=Ballot&p=' + p + '&number=50')
-    .flatMap(
-      ((res: any) => {
-        if (res.length < 50) {
-          let inScope = [];
-            for (let i = 0; i < res.length; i++) {
-              if (res[i].type.period >= maxPeriod) {
-                inScope = inScope.concat(res[i]);
-              } else {
-                return of(inScope);
-              }
-            }
-          if (data) {
-            inScope = inScope.concat(data); // Append
-          } else {
-          }
-          return of(inScope); // We are done
-        } else {
+      .flatMap(
+        ((res: any) => {
           let inScope = [];
           for (let i = 0; i < res.length; i++) {
             if (res[i].type.period >= maxPeriod) {
               inScope = inScope.concat(res[i]);
             } else {
-              return of(inScope);
+              break;
             }
           }
-          if (data) {
-            inScope = inScope.concat(data); // Append
+          if (inScope.length < 50) {
+            if (data) {
+              inScope = inScope.concat(data);
+            }
+            return of(inScope); // We are done
+          } else {
+            if (data) {
+              inScope = inScope.concat(data);
+            }
+            return this.getBallotVotes(maxPeriod, ++p, inScope); // Do more calls
           }
-          return this.getBallotVotes(maxPeriod, ++p, inScope); // Do more calls
-        }
-      })
-    );
+        })
+      );
   }
   /*  // Not needed
   getCurrentHead() {
