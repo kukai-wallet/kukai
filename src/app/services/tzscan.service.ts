@@ -177,20 +177,37 @@ export class TzscanService {
     return this.http.get(apiUrlMainnet + 'v3/ballots/' + period + '?period_kind=' + kind);
     // {"proposal": "string","nb_yay": 0,"nb_nay": 0,"nb_pass": 0,"vote_yay": 0,"vote_nay": 0,"vote_pass": 0}
   }
-  getBallotVotes(p: number = 0, data?: any): Observable<any> {
+  getBallotVotes(maxPeriod: number, p: number = 0, data?: any): Observable<any> {
     return this.http.get(this.apiUrl + 'v3/operations?type=Ballot&p=' + p + '&number=50')
     .flatMap(
       ((res: any) => {
         if (res.length < 50) {
+          let inScope = [];
+            for (let i = 0; i < res.length; i++) {
+              if (res[i].type.period >= maxPeriod) {
+                inScope = inScope.concat(res[i]);
+              } else {
+                return of(inScope);
+              }
+            }
           if (data) {
-            res = res.concat(data);
+            inScope = inScope.concat(data); // Append
+          } else {
           }
-          return of(res);
+          return of(inScope); // We are done
         } else {
-          if (data) {
-            res = res.concat(data);
+          let inScope = [];
+          for (let i = 0; i < res.length; i++) {
+            if (res[i].type.period >= maxPeriod) {
+              inScope = inScope.concat(res[i]);
+            } else {
+              return of(inScope);
+            }
           }
-          return this.getBallotVotes(++p, res);
+          if (data) {
+            inScope = inScope.concat(data); // Append
+          }
+          return this.getBallotVotes(maxPeriod, ++p, inScope); // Do more calls
         }
       })
     );

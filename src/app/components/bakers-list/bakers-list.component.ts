@@ -113,13 +113,11 @@ export class BakersListComponent implements OnInit, OnDestroy {
                     case 'testing': {
                         this.showColumn.Proposal = true;
                         this.showColumn.Exploration = true;
-                        this.showColumn.Testing = true;
                         break;
                     }
-                    case 'promotion': {
+                    case 'promotion_vote': {
                         this.showColumn.Proposal = true;
                         this.showColumn.Exploration = true;
-                        this.showColumn.Testing = true;
                         this.showColumn.Promotion = true;
                         break;
                     }
@@ -228,15 +226,31 @@ export class BakersListComponent implements OnInit, OnDestroy {
                                                         }
                                                     }
                                                     // Get number of votes
-                                                    if (periodInfo.kind === 'testing_vote') {
-                                                        this.tzscanService.getBallotVotes().subscribe(
+                                                    if (this.showColumn.Exploration) {
+                                                        let maxPeriod = periodInfo.period;
+                                                        if (this.showColumn.Promotion) {
+                                                            maxPeriod -= 2;
+                                                        }
+                                                        this.tzscanService.getBallotVotes(maxPeriod).subscribe(
                                                             (votes: any) => {
                                                                 for (const vote of votes) {
                                                                     const index = this.bakersList.findIndex(b => b.identity === vote.type.source.tz);
                                                                     if (index !== -1) {
                                                                         // console.log(JSON.stringify(this.bakersList[index]));
-                                                                        if (!this.bakersList[index].vote2) {
-                                                                            this.bakersList[index].vote2 = vote.type.ballot;
+                                                                        if (!this.showColumn.Promotion) {
+                                                                            if (!this.bakersList[index].vote2) {
+                                                                                this.bakersList[index].vote2 = vote.type.ballot;
+                                                                            }
+                                                                        } else {
+                                                                            if (vote.type.period < periodInfo.period) {// exploration vote
+                                                                                if (!this.bakersList[index].vote2) {
+                                                                                    this.bakersList[index].vote2 = vote.type.ballot;
+                                                                                }
+                                                                            } else { // promotion vote
+                                                                                if (!this.bakersList[index].vote3) {
+                                                                                    this.bakersList[index].vote3 = vote.type.ballot;
+                                                                                }
+                                                                            }
                                                                         }
                                                                     }
                                                                 }

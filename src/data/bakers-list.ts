@@ -17,6 +17,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/888xtz.png'
      },
      {
@@ -25,6 +26,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/airbie.png'
      },
      {
@@ -33,6 +35,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/airfoil2.png'
      },
      {
@@ -41,6 +44,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/atjames.png'
      },
      {
@@ -49,6 +53,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/atticpool.png'
      },
      {
@@ -57,6 +62,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/bake_tz.png'
      },
      {
@@ -65,6 +71,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/bake_tz_for_me.jpg'
      },
      {
@@ -73,6 +80,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/bake_n_rolls.png'
      },
      {
@@ -81,6 +89,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/baked_tezos.jpg'
      },
      {
@@ -89,6 +98,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/bakemon.png'
      },
      {
@@ -97,6 +107,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/baker-avenue.png'
      },
      {
@@ -105,6 +116,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/bakery-il.png'
      },
      {
@@ -113,6 +125,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/bakingtacos.png'
      },
      {
@@ -121,6 +134,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/blockpowerstaking.png'
      },
      /*{
@@ -129,6 +143,7 @@ export const BAKERSLIST: any = [
           vote: '',
             rolls: '',
        vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/bitfinex.png'
      },*/
      {
@@ -137,6 +152,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/btfd.png'
      },
      {
@@ -145,6 +161,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/ceiboxtz2.png'
      },
      {
@@ -153,6 +170,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/cryptiumlabs.png'
      },
      {
@@ -161,6 +179,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/cryptodelegate.png'
      },
      {
@@ -169,6 +188,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/figment.png'
      },
      {
@@ -177,6 +197,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/firstblock.jpeg'
      },
      {
@@ -185,6 +206,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/flippintacos.png'
      },
      {
@@ -193,6 +215,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/foundationbaker.jpg'
      },
      {
@@ -201,6 +224,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/foundationbaker.jpg'
      },
      {
@@ -209,6 +233,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/foundationbaker.jpg'
      },
      {
@@ -217,6 +242,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/foundationbaker.jpg'
      },
      {
@@ -225,6 +251,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/foundationbaker.jpg'
      },
      {
@@ -233,6 +260,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/foundationbaker.jpg'
      },
      {
@@ -241,6 +269,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/foundationbaker.jpg'
      },
      {
@@ -249,6 +278,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/foundationbaker.jpg'
      },
      {
@@ -257,6 +287,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/fractalide.jpg'
      },
      {
@@ -265,6 +296,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/freshtezos.png'
      },
      {
@@ -273,6 +305,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/gateio.png'
      },
      {
@@ -281,6 +314,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/happytezos.png'
      },
      {
@@ -289,6 +323,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/hayeklab2.png'
      },
      {
@@ -297,6 +332,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/hotstake.png'
      },
      {
@@ -305,6 +341,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/hyperblocks.png'
      },
      {
@@ -313,6 +350,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/ibaketezos.jpg'
      },
      {
@@ -321,6 +359,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/illuminarean.png'
      },
      {
@@ -329,6 +368,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/infinitystones.jpg'
      },
      {
@@ -337,6 +377,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/justabaker.png'
      },
      {
@@ -345,6 +386,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/lucidmining.png'
      },
      {
@@ -353,6 +395,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/mytezosbaking.png'
      },
      {
@@ -361,6 +404,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/norndelegate.png'
      },
      {
@@ -369,6 +413,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/ocryptopool.png'
      },
      {
@@ -377,6 +422,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/ownblock.png'
      },
      {
@@ -385,6 +431,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/p2pvalidator.png'
      },
      {
@@ -393,6 +440,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/polychain.png'
      },
      {
@@ -401,6 +449,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/pos_bakerz.png'
      },
      {
@@ -409,6 +458,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/shakenbake.png'
      },
      {
@@ -417,6 +467,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/stacktezos.png'
      },
      {
@@ -425,6 +476,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/stake_bake.jpg'
      },
      {
@@ -433,6 +485,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/stake_house.png'
      },
      {
@@ -441,6 +494,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/staked.png'
      },
      {
@@ -449,6 +503,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/stakery.png'
      },
      {
@@ -457,6 +512,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/stakingfacilities.png'
      },
      {
@@ -465,6 +521,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/stirdelegate.png'
      },
      {
@@ -473,6 +530,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/tez_baker.png'
      },
      {
@@ -481,6 +539,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/tez_mania.jpg'
      },
      {
@@ -489,6 +548,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/tez_milk.png'
      },
      {
@@ -497,6 +557,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/tez_patisserie.png'
      },
      {
@@ -505,6 +566,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/tez_rocket.png'
      },
      {
@@ -513,6 +575,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/tez_whale.png'
      },
      {
@@ -521,6 +584,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/tezbaking.png'
      },
      {
@@ -529,6 +593,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/tezdele.png'
      },
      {
@@ -537,6 +602,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/tezdele.png'
      },
      {
@@ -545,6 +611,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/tezetetic.jpg'
      },
      {
@@ -553,6 +620,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/tezocracy.png'
      },
      {
@@ -561,6 +629,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/tezos_bakery.png'
      },
      {
@@ -569,6 +638,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/tezos_barcelona.png'
      },
      {
@@ -577,6 +647,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/tezos_berlin.jpg'
      },
      {
@@ -585,6 +656,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/tezos_capital.png'
      },
      {
@@ -593,6 +665,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/tezos_cat.png'
      },
      {
@@ -601,6 +674,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/tezos_chef.png'
      },
      {
@@ -609,6 +683,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/tezos_delegateEU.png'
      },
      {
@@ -617,6 +692,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/tezos_france.png'
      },
      {
@@ -625,6 +701,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/tezos_gold.png'
      },
      {
@@ -633,6 +710,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/tezos_hodl.png'
      },
      {
@@ -641,6 +719,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/tezos_hotbakery.png'
      },
      {
@@ -649,6 +728,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/tezos_istanbul.jpg'
      },
      {
@@ -657,6 +737,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/tezos_kitchen.png'
      },
      {
@@ -665,6 +746,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/tezos_korea.png'
      },
      {
@@ -673,6 +755,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/tezos_mars.png'
      },
      {
@@ -681,6 +764,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/tezos_moon.png'
      },
      {
@@ -689,6 +773,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/tezos_ninja.png'
      },
      {
@@ -697,6 +782,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/tezos_otc.png'
      },
      {
@@ -705,6 +791,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/tezos_panda.png'
      },
      {
@@ -713,6 +800,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/tezos_rio.png'
      },
      {
@@ -721,6 +809,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/tezos_suisse.jpg'
      },
      {
@@ -729,6 +818,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/tezos_tacos.jpg'
      },
      {
@@ -737,6 +827,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/tezos_tokyo.png'
      },
      {
@@ -745,22 +836,25 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/tezos_vote.png'
      },
      {
-          baker_name: 'TezosBakes I',
+          baker_name: 'PayTezos',
           identity: 'tz1Ldzz6k1BHdhuKvAtMRX7h5kJSMHESMHLC',
           vote: '',
           rolls: '',
           vote2: '',
-          image: 'assets/img/bakers/tezosbakes1.png'
+		vote3: '',
+          image: 'assets/img/bakers/paytezos.png'
      },
      {
-          baker_name: 'TezosBakes II',
+          baker_name: 'TezosBakes',
           identity: 'tz1PYLN9TsKZHfn2GtrXnxkeGvahmYdBTG5v',
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/tezosbakes2.png'
      },
      {
@@ -769,6 +863,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/tezosbc.png'
      },
      {
@@ -777,6 +872,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/tezosbrazil.png'
      },
      {
@@ -785,6 +881,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/tezosrus.jpg'
      },
      {
@@ -793,6 +890,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/tezosseasia.jpg'
      },
      {
@@ -801,6 +899,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/tezosteam2.jpg'
      },
      {
@@ -809,6 +908,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/tezry.png'
      },
      {
@@ -817,6 +917,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/tezzcity.jpg'
      },
      {
@@ -825,6 +926,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/tezzieland.png'
      },
      {
@@ -833,6 +935,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/tezzigator.png'
      },
      {
@@ -841,6 +944,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/tz_bake.png'
      },
      {
@@ -849,6 +953,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/tz_bakery.jpg'
      },
      {
@@ -857,6 +962,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/tz_bank.png'
      },
      {
@@ -865,6 +971,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/tz_dutch.png'
      },
      {
@@ -873,6 +980,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/tz_envoy.jpg'
      },
      {
@@ -881,6 +989,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/tz_node.png'
      },
      {
@@ -889,6 +998,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/tzbakeoven.gif'
      },
      {
@@ -897,6 +1007,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/tzscan.png'
      },
      {
@@ -905,6 +1016,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/viewnodestezos.jpg'
      },
      {
@@ -913,6 +1025,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/wetez.jpg'
      },
      {
@@ -921,6 +1034,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/xtzantipodes.png'
      },
      {
@@ -929,6 +1043,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/xtzbaker.png'
      },
      {
@@ -937,6 +1052,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/xtzbakery.jpg'
      },
      {
@@ -945,6 +1061,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/xtzdelegate.png'
      },
      {
@@ -953,6 +1070,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/xtzland.png'
      },
      {
@@ -961,6 +1079,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/xtzmaster.png'
      },
      {
@@ -969,6 +1088,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/youloafwebake.png'
      },
      {
@@ -977,6 +1097,7 @@ export const BAKERSLIST: any = [
           vote: '',
           rolls: '',
           vote2: '',
+		vote3: '',
           image: 'assets/img/bakers/zednode.png'
      }
 ];
