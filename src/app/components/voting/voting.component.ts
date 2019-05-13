@@ -142,7 +142,7 @@ export class VotingComponent implements OnInit {
                 labels: ['Voted', 'To be decided'],
                 datasets: [{
                     label: '# of Votes',
-                    data: [votersCounted, votersUndecided],
+                    data: [this.currentParticipation.total_votes - this.currentParticipation.unused_votes, this.currentParticipation.unused_votes],
                     backgroundColor: [
                         '#00bc6c',
                         '#9f9ff0'
@@ -158,13 +158,28 @@ export class VotingComponent implements OnInit {
 
     toggleParticipationCharts() {
         this.isBakersParticipation = !this.isBakersParticipation;
+        console.log(this.isBakersParticipation);
         if (this.isBakersParticipation) {
             // Bakers Participation - docs: https://www.chartjs.org/docs/latest/developers/updates.html
-            this.doughnutParticipation.data.labels = ['Voted', 'To be decided'];
+            /*this.doughnutParticipation.data.labels.pop();
+            this.doughnutParticipation.data.labels.pop();
+            this.doughnutParticipation.data.labels.push('Voted', 'To be decided');*/
+            //this.doughnutParticipation.data.labels = ['Voted', 'To be decided'];
+            this.doughnutParticipation.data.datasets.forEach((dataset) => {
+                dataset.data.pop();
+                dataset.data.pop();
+                dataset.data.push(this.currentParticipation.total_votes - this.currentParticipation.unused_votes);
+                dataset.data.push(this.currentParticipation.unused_votes);
+            });
             this.doughnutParticipation.update();
         } else {
             // Vote counts
-            this.doughnutParticipation.data.labels = ['XX', 'YY'];
+            this.doughnutParticipation.data.datasets.forEach((dataset) => {
+                dataset.data.pop();
+                dataset.data.pop();
+                dataset.data.push(this.currentParticipation.total_count - this.currentParticipation.unused_count);
+                dataset.data.push(this.currentParticipation.unused_count);
+            });
             this.doughnutParticipation.update();
         }
     }
@@ -195,7 +210,7 @@ export class VotingComponent implements OnInit {
                         this.currentPeriod.end_level = this.currentPeriod.end_level + VOTINGPERIOD.blocks * 2;
                         break;
                     }
-                    case 'promotion': {
+                    case 'promotion_vote': {
                         this.currentPeriod.period_kind = 'Promotion';  //PeriodKind.Promotion
                         this.currentPeriod.start_level = this.currentPeriod.start_level + VOTINGPERIOD.blocks * 3;
                         this.currentPeriod.end_level = this.currentPeriod.end_level + VOTINGPERIOD.blocks * 3;
