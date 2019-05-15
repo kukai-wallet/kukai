@@ -165,6 +165,15 @@ export const BAKERSLIST: any = [
           image: 'assets/img/bakers/ceiboxtz2.png'
      },
      {
+          baker_name: 'Coinone',
+          identity: 'tz1SYq214SCBy9naR6cvycQsYcUGpBqQAE8d',
+          vote: '',
+          rolls: '',
+          vote2: '',
+		vote3: '',
+          image: 'assets/img/bakers/coinone.png'
+     },
+     {
           baker_name: 'Cryptium Labs',
           identity: 'tz1eEnQhbwf6trb8Q8mPb2RaPkNk2rN7BKi8',
           vote: '',
@@ -930,7 +939,16 @@ export const BAKERSLIST: any = [
           image: 'assets/img/bakers/tezzieland.png'
      },
      {
-          baker_name: 'Tezzigator',
+          baker_name: 'Tezzigator (HSM)',
+          identity: 'tz3adcvQaKXTCg12zbninqo3q8ptKKtDFTLv',
+          vote: '',
+          rolls: '',
+          vote2: '',
+		vote3: '',
+          image: 'assets/img/bakers/tezzigator.png'
+     },
+     {
+          baker_name: 'Tezzigator (Legacy)',
           identity: 'tz1iZEKy4LaAjnTmn2RuGDf2iqdAQKnRi8kY',
           vote: '',
           rolls: '',
