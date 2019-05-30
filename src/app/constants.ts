@@ -57,7 +57,7 @@ export class Constants {
         const MAINNET: Net = {
             NAME:  'Mainnet',
             API_URL:  'https://api' + n + '.tzscan.io/',
-            NODE_URL: 'https://rpc.tezrpc.me/',
+            NODE_URL: 'https://mainnet-node.tzscan.io/',
             BLOCK_EXPLORER_URL: 'https://tzscan.io/',
             CHAIN_ID: 'Pt24m4xiPbLDhVgVfABUjirbmda3yohdN82Sp9FeuAXJ4eV9otd'
         };
