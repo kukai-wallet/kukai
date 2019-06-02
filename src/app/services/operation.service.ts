@@ -442,11 +442,12 @@ export class OperationService {
             delete op.protocol;
             for (let i = 0; i < op.contents.length; i++) {
               delete op.contents[i].metadata;
-              if (op.contents[i].manager_pubkey) { // Fix for mainnet
-                op.contents[i].manager_pubkey = op.contents[i].manager_pubkey;
+              if (op.contents[i].managerPubkey) { // Fix for mainnet
+                op.contents[i].manager_pubkey = op.contents[i].managerPubkey;
                 delete op.contents[i].managerPubkey;
               }
             }
+            console.log('DUMP: ' + JSON.stringify(op));
             return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/forge/operations', op)
               .flatMap((opBytes: any) => {
                 if (this.pk2pkh(pk) === pkh) {

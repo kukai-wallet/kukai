@@ -162,23 +162,32 @@ export class ImportService {
           if (this.walletService.wallet.accounts.findIndex(a => a.pkh === KT) === -1) {
             const opIndex = data[i].type.operations.findIndex(a => a.kind === 'origination');
             const opLevel = data[i].type.operations[opIndex].op_level;
-            this.operationService.getVerifiedOpBytes(opLevel, data[i].hash, pkh, pk).subscribe(
-              opBytes => {
-                if (KT === this.operationService.createKTaddress(opBytes)) {
-                  console.log('Added: ' + KT);
-                  this.walletService.addAccount(KT);
-                  this.coordinatorService.start(KT);
-                  this.findNumberOfAccounts(KT, pk); // Recursive call
-                } else {
-                  this.messageService.addError('Failed to verify KT address!');
+            const storedProof = localStorage.getItem(KT);
+            if (storedProof && storedProof !== 'undefined' && KT === this.operationService.createKTaddress(storedProof)) {
+              console.log('Stored proof found');
+              this.walletService.addAccount(KT);
+              this.coordinatorService.start(KT);
+              this.findNumberOfAccounts(KT, pk); // Recursive call
+            } else {
+              this.operationService.getVerifiedOpBytes(opLevel, data[i].hash, pkh, pk).subscribe(
+                opBytes => {
+                  if (KT === this.operationService.createKTaddress(opBytes)) {
+                    console.log('Store proof');
+                    localStorage.setItem(KT, opBytes);
+                    this.walletService.addAccount(KT);
+                    this.coordinatorService.start(KT);
+                    this.findNumberOfAccounts(KT, pk); // Recursive call
+                  } else {
+                    this.messageService.addError('Failed to verify KT address!');
+                  }
+                },
+                err => {
+                  // tslint:disable-next-line:max-line-length
+                  this.messageService.addWarning('Something went wrong when searching after additional addresses. Try to reimport your keystore file.');
+                  throw new Error(err);
                 }
-              },
-              err => {
-                // tslint:disable-next-line:max-line-length
-                this.messageService.addWarning('Something went wrong when searching after additional addresses. Try to reimport your keystore file.');
-                throw new Error(err);
-              }
-            );
+              );
+            }
           }
         }
         this.walletService.storeWallet();
