@@ -123,30 +123,24 @@ describe('[ EncryptionService ]', () => {
 		});
 
 	});
-
-	/** @todo finish the v2 methods
 	describe('> Encrypt & Decrypt v2', () => {
 		beforeEach(() => {
 			keypair = <KeyPair> {
 				sk: 'edskRkVvBf657kMmoRb47oKjkQBzzH6dExq9GKsoFCHte3p2qeAecwQyjoSH5mNMb9LLDPSFQUJwGQdi3KzGYh1hCQamREUdV4',
 				pk: 'edpktubBcCqnS8pUJaYyf7dqqvSR3CgTcLRXKP8L6AubzoZxTjYGpT',
 				pkh: 'tz1hyH4nZMnQcCbA8b2DmLE8Z9ctByhP54Fn'
-			}
-
-			let mnemonic = 'version general song belt roast random horror shop pitch fun earn badge drum submit output';
+			};
+			const mnemonic = 'version general song belt roast random horror shop pitch fun earn badge drum submit output';
 			seed = bip39.mnemonicToSeed(mnemonic, '').slice(0, 32);
-			salt = keypair.pkh.slice(3, 19);
 			ciphertext = '1145141c7e2cdd3448b477a6e6e2f4de2ab893f74afddfb26875a2f055628c69==9fd30af5d097d24675e0418220f478cc';
-			iv = '5fc2071f276ad69abc38a0348c0bd289'
 			password = 'Firebird87';
-			version = "2";
-		})
-
-		it('should encrypt a private key w/password', () => {
-			let encryptedseed = service.encrypt_v2(seed, password);
-			expect(encryptedseed).toEqual({ciphertext: ciphertext);
+			version = '2';
+		});
+		it('should encrypt and decrypt a seed successfully', () => {
+			const encryptedseed = service.encrypt_v2(seed, password);
+			decryptedseed = Buffer.from(service.decrypt_v2(encryptedseed.chiphertext, password, encryptedseed.iv));
+			expect(decryptedseed).toEqual(seed);
 		});
 
 	});
-	*/
 });
