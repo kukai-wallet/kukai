@@ -119,10 +119,9 @@ export class OperationService {
                       source: pkh,
                       fee: this.microTez.times(fee).toString(),
                       counter: (++counter).toString(),
-                      gas_limit: '10000',
+                      gas_limit: '10100',
                       storage_limit: '277',
-                      // managerPubkey: keys.pkh,  // Mainnet
-                      manager_pubkey: keys.pkh,  // Zeronet
+                      manager_pubkey: keys.pkh,
                       balance: this.microTez.times(amount).toString(),
                       spendable: true,
                       delegatable: true
@@ -137,7 +136,7 @@ export class OperationService {
                     fee: '0',
                     counter: (counter).toString(),
                     gas_limit: '10000',
-                    storage_limit: '0', // '60000',
+                    storage_limit: '0',
                     public_key: keys.pk
                   };
                   fop.contents[1].counter = (Number(fop.contents[1].counter) + 1).toString();
@@ -151,7 +150,7 @@ export class OperationService {
     Returns an observable for the transaction of tez.
   */
   // transfer(from: string, to: string, amount: number, fee: number = 0, keys: KeyPair): Observable<any> {
-  transfer(from: string, transactions: any, fee: number = 0, keys: KeyPair): Observable<any> {
+  transfer(from: string, transactions: any, fee: number = 0, keys: KeyPair, gasLimit: number, storageLimit: number): Observable<any> {
     return this.http.get(this.nodeURL + '/chains/main/blocks/head/hash', {})
       .flatMap((hash: any) => {
         return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + from + '/counter', {})
@@ -180,8 +179,8 @@ export class OperationService {
                     source: from,
                     fee: this.microTez.times(fee).toString(),
                     counter: (++counter).toString(),
-                    gas_limit: '10300',
-                    storage_limit: '277',
+                    gas_limit: gasLimit.toString(),
+                    storage_limit: storageLimit.toString(),
                     amount: this.microTez.times(transactions[i].amount).toString(),
                     destination: transactions[i].to,
                   });

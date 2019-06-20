@@ -45,7 +45,6 @@
                                 <span class="align-middle" *ngIf="amount * XTZrate > 0">(${{amount * XTZrate | number:'1.0'}} USD)</span>
                             </small>
                         </div>
-
                         <div class="form-group col-md-4">
                             <label for="transactionFee"> {{ 'SENDCOMPONENT.FEE' | translate }} (&#42793;)</label>
                             <input type="text" class="form-control" id="transactionFee" placeholder={{this.recommendedFee.toString()}} [(ngModel)]="fee" name="four">
@@ -67,6 +66,16 @@
                             <label for="transactionFee"> {{ 'SENDCOMPONENT.FEE' | translate }} (&#42793;)</label>
                             <input type="text" class="form-control" id="transactionFee" placeholder={{this.recommendedFee.toString()}} [(ngModel)]="fee" name="four">
                         </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="gasLimit">{{ 'SENDCOMPONENT.GASLIMIT' | translate }}</label>
+                        <input type="text" class="form-control" id="gasLimit" placeholder={{this.defaultGasLimit.toString()}} [(ngModel)]="gas" name="five">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="storageLimit">{{ 'SENDCOMPONENT.STORAGELIMIT' | translate }}</label>
+                        <input type="text" class="form-control" id="storageLimit" placeholder={{this.defaultStorageLimit.toString()}} [(ngModel)]="storage" name="six">
                     </div>
                 </div>
             </form>

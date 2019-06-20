@@ -314,6 +314,8 @@
         "FROM" : "From:",
         "TO" : "To:",
         "AMOUNT" : "Amount:",
+        "GASLIMIT": "Gas limit",
+        "STORAGELIMIT": "Storage limit",
         "FEE2" : "Fee:",
         "PASSWORD" : "Password:",
         "CONFIRM" : "Confirm",
@@ -333,6 +335,8 @@
         "INVALIDRECEIVERADDRESS" : "Invalid receiver address",
         "INVALIDAMOUNT" : "Invalid amount",
         "INVALIDFEE" : "Invalid fee",
+        "INVALIDGASLIMIT" : "Invalid gas limit",
+        "INVALIDSTORAGELIMIT" : "Invalid storage limit",
         "NOADDRESSORAMOUNT" : "No address or amount provided!"
     },
     "STARTCOMPONENT": {

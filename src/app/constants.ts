@@ -47,7 +47,7 @@ export class Constants {
             API_URL:  'https://api.alphanet.tzscan.io/',
             NODE_URL: 'https://alphanet-node.tzscan.io/',
             BLOCK_EXPLORER_URL: 'https://alphanet.tzscan.io/',
-            CHAIN_ID: 'PsddFKi32cMJ2qPjf43Qv5GDWLDPZb3T3bF6fLKiF5HtvHNU7aP'
+            CHAIN_ID: 'Pt24m4xiPbLDhVgVfABUjirbmda3yohdN82Sp9FeuAXJ4eV9otd'
         };
         return ALPHANET;
     }
@@ -57,7 +57,7 @@ export class Constants {
         const MAINNET: Net = {
             NAME:  'Mainnet',
             API_URL:  'https://api' + n + '.tzscan.io/',
-            NODE_URL: 'https://rpc.tezrpc.me/',
+            NODE_URL: 'https://mainnet.tezrpc.me/',
             BLOCK_EXPLORER_URL: 'https://tzscan.io/',
             CHAIN_ID: 'Pt24m4xiPbLDhVgVfABUjirbmda3yohdN82Sp9FeuAXJ4eV9otd'
         };
