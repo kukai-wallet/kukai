@@ -108,9 +108,9 @@ a, a:hover, a:focus {
     min-width: 90px;
 }
 
-.topbar-links {
-    // padding-right: 1.5em;
-}
+/*.topbar-links {
+    padding-right: 1.5em;
+}*/
 
 #topbar .topbar-links {
     color: #fff;
@@ -245,7 +245,7 @@ ul.CTAs a {
 }
 
 .bottom-CTAs {
-    padding-top: 9vh !important; // 22vh !important;  //This needs to change - creates vertical scroll bar
+    padding-top: 15vh !important;
 }
 .donation {
     font-size: 0.8em;
