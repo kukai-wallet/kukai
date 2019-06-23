@@ -119,9 +119,20 @@ export class TzscanService {
     return ops;
   }
 
-  getProposal() {
+  getProposals(latesProposalPeriod: string) {
     const apiUrlMainnet = 'https://api6.tzscan.io/';  //https://api6.tzscan.io/v3/proposals
-    return this.http.get(apiUrlMainnet + 'v3/proposals');
+    return this.http.get(apiUrlMainnet + 'v3/proposals')
+      .flatMap(
+        ((res: any) => {
+          const ans = [];
+          for (let i = 0; i < res.length; i++) {
+            if (res[i].voting_period === latesProposalPeriod) {
+                ans.push(res[i]);
+            }
+          }
+          return of(ans);
+        })
+      );
   }
 
   getProposalsCurrentPeriod(period: number) {

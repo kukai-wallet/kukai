@@ -225,8 +225,8 @@ export class VotingComponent implements OnInit {
                 // Progress bar
                 this.currentPeriod.level = periodInfo.level;
                 this.currentPeriod.period = periodInfo.period;
-                this.currentPeriod.progress = Math.round((this.currentPeriod.level - this.currentPeriod.start_level) / VOTINGPERIOD.blocks * 100);
-                this.currentPeriod.remaining = Math.round(((this.currentPeriod.end_level - this.currentPeriod.level) / 60 / 24 * 100)) / 100;
+                this.currentPeriod.progress = Math.round((this.currentPeriod.level % 32768) / VOTINGPERIOD.blocks * 100);
+                this.currentPeriod.remaining = Math.round(((32768 - (this.currentPeriod.level % 32768) ) / 60 / 24 * 100)) / 100;
                 console.log('currentPeriod.period ',  this.currentPeriod.period);
 
                 this.tzscanService.getProposalsCurrentPeriod(this.currentPeriod.period).subscribe(
