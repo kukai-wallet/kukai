@@ -5,6 +5,9 @@ import { HttpTestingController } from '@angular/common/http/testing';
 // class mocks
 import {Account, Balance, http_imports, translate_imports, balancesrv_providers, rx} from '../../../spec/helpers/service.helper';
 import { BalanceService, WalletService, OperationService } from '../../../spec/helpers/service.helper';
+
+// class dependencies
+import { TzscanService } from './tzscan.service';
 /**
  * Suite: BalanceService
  * @todo: remove console.log spy, mock operation service calls entirely. it should never be tested.
@@ -30,7 +33,7 @@ describe('[ BalanceService ]', () => {
 		// WalletService mock
 		TestBed.configureTestingModule({
 			imports: [http_imports, translate_imports],
-			providers: [ balancesrv_providers ]
+			providers: [ balancesrv_providers, TzscanService ]
 		});
 
 		service = TestBed.get(BalanceService);

@@ -50,11 +50,23 @@ export class TzscanService {
   getCounter(op: any): number {
     return Number(op.type.operations[0].counter);
   }
+  getManagerKey(pkh: any): Observable<any> {
+    return this.http.get(this.apiUrl + 'v1/operations/' + pkh + '?type=Reveal&number=1&p=0')
+      .flatMap((res: any) => {
+        return of(res[0].type.operations[0].public_key);
+      });
+  }
   operationsOrigination(pkh: string, n: number) {
     return this.http.get(this.apiUrl + 'v1/operations/' + pkh + '?type=Origination&number=' + n + '&p=0');
   }
   timestamp(block: string) {
     return this.http.get(this.apiUrl + 'v1/timestamp/' + block);
+  }
+  getPriceUSD(): Observable<any> {
+    return this.http.get(this.apiUrl + 'v1/marketcap')
+      .flatMap((res: any) => {
+        return of(res[0].price_usd);
+      });
   }
   getOp(data: any, pkh: string): any {
     const ops: any[] = [];
@@ -106,4 +118,95 @@ export class TzscanService {
     }
     return ops;
   }
+
+  getProposal() {
+    const apiUrlMainnet = 'https://api6.tzscan.io/';  //https://api6.tzscan.io/v3/proposals
+    return this.http.get(apiUrlMainnet + 'v3/proposals');
+  }
+
+  getProposalsCurrentPeriod(period: number) {
+    const apiUrlMainnet = 'https://api6.tzscan.io/';  //https://api6.tzscan.io/v3/proposals/?period=10
+    return this.http.get(apiUrlMainnet + 'v3/proposals/' + '?period=' + period);
+  }
+
+  //Needs improvement - Need to work with an array of hash strings
+  getProposalVotes(proposalHash, p: number = 0, data?: any): Observable<any> {
+    return this.http.get('https://api6.tzscan.io/v3/proposal_votes/' + proposalHash + '?p=' + p + '&number=50')
+      .flatMap(
+        ((res: any) => {
+          if (res.length < 50) {
+            if (data) {
+              res = res.concat(data);
+            }
+            return of(res);
+          } else {
+            if (data) {
+              res = res.concat(data);
+            }
+            return this.getProposalVotes(proposalHash, ++p, res);
+          }
+        })
+      );
+  }
+
+  getPeriodInfo() {
+    const apiUrlMainnet = 'https://api6.tzscan.io/';  //https://api6.tzscan.io/v3/voting_period_info
+    return this.http.get(apiUrlMainnet + 'v3/voting_period_info');
+    // {"period":10,"kind":"proposal","cycle":84,"level":345815,"max_period":true}
+  }
+
+  getNbProposalVotes(proposalHash) {
+    const apiUrlMainnet = 'https://api6.tzscan.io/';  //https://api6.tzscan.io/v3/nb_proposal_votes/{proposal_hash}
+    return this.http.get(apiUrlMainnet + 'v3/nb_proposal_votes/' + proposalHash);
+    // {"count":57,"votes":11408}
+  }
+
+  getTotalVotes(period: number) {
+    const apiUrlMainnet = 'https://api6.tzscan.io/';  //https://api6.tzscan.io/v3/total_proposal_votes/10
+    return this.http.get(apiUrlMainnet + 'v3/total_proposal_votes/' + period);
+    // https://api6.tzscan.io/v3/total_voters/10
+    // {"count":458,"votes":51604}
+    // https://api6.tzscan.io/v3/total_proposal_votes/10
+    // {"proposal_count":2,"total_count":458,"total_votes":51604,"used_count":107,"used_votes":15773,"unused_count":360,"unused_votes":36492}
+  }
+  getTotalVotes2(period: number) {
+    return this.http.get(this.apiUrl + 'v3/total_voters/' + period);
+  }
+  getBallots(period: number, kind: string) {
+    const apiUrlMainnet = 'https://api6.tzscan.io/';    //https://api6.tzscan.io/v3/ballots/11
+    return this.http.get(apiUrlMainnet + 'v3/ballots/' + period + '?period_kind=' + kind);
+    // {"proposal": "string","nb_yay": 0,"nb_nay": 0,"nb_pass": 0,"vote_yay": 0,"vote_nay": 0,"vote_pass": 0}
+  }
+  getBallotVotes(maxPeriod: number, p: number = 0, data?: any): Observable<any> {
+    return this.http.get(this.apiUrl + 'v3/operations?type=Ballot&p=' + p + '&number=50')
+      .flatMap(
+        ((res: any) => {
+          let inScope = [];
+          for (let i = 0; i < res.length; i++) {
+            if (res[i].type.period >= maxPeriod) {
+              inScope = inScope.concat(res[i]);
+            } else {
+              break;
+            }
+          }
+          if (inScope.length < 50) {
+            if (data) {
+              inScope = inScope.concat(data);
+            }
+            return of(inScope); // We are done
+          } else {
+            if (data) {
+              inScope = inScope.concat(data);
+            }
+            return this.getBallotVotes(maxPeriod, ++p, inScope); // Do more calls
+          }
+        })
+      );
+  }
+  /*  // Not needed
+  getCurrentHead() {
+    const apiUrlMainnet = 'https://api6.tzscan.io/';
+    return this.http.get(apiUrlMainnet + 'v3/head');
+  } */
+
 }

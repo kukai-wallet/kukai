@@ -33,6 +33,7 @@ export class ImportService {
     }
   }
   async importWalletData(data: any, isJson: boolean = true, pkh: string = '', pwd: string = ''): Promise<boolean> {
+    this.coordinatorService.stopAll();
     try {
       let walletData;
       if (isJson) {
@@ -88,6 +89,7 @@ export class ImportService {
     }
   }
   importWalletFromPk(pk: string) {
+    this.coordinatorService.stopAll();
     try {
       const pkh = this.operationService.pk2pkh(pk);
       this.importWalletFromPkh(pkh, WalletType.ViewOnlyWallet);
@@ -98,6 +100,7 @@ export class ImportService {
     }
   }
   importWalletFromPkh(pkh: string, type: WalletType = WalletType.ObserverWallet) {
+    this.coordinatorService.stopAll();
     try {
       this.walletService.wallet = this.walletService.emptyWallet(type);
       this.walletService.addAccount(pkh);
@@ -109,23 +112,42 @@ export class ImportService {
     this.findAllAccounts(pkh);
   }
   async findAllAccounts(pkh: string) {
-    this.findNumberOfAccounts(pkh);
+    // Test start
+    console.log('searching after KT...');
+    this.operationService.getManagerKey(pkh).subscribe(
+      ((pk: string) => {
+        console.log('PK: ' + pk);
+        if (pk) {
+          this.findNumberOfAccounts(pkh, pk);
+        } else {
+          this.tzscanService.getManagerKey(pkh).subscribe(
+            ((pk2: string) => {
+              console.log('PK: ' + pk2);
+              if (pk2) {
+                this.findNumberOfAccounts(pkh, pk2);
+              }
+            }),
+            err => console.log('No PK found!')
+          );
+        }
+      })
+    );
   }
-  async findNumberOfAccounts(pkh: string) {
+  async findNumberOfAccounts(pkh: string, pk: string) {
     if (pkh) {
       console.log('Find accounts...');
       console.log('pkh: ' + pkh);
       this.tzscanService.numberOperationsOrigination(pkh).subscribe(
         data => {
           if (data[0]) {
-            this.findAccounts(pkh, data[0]);
+            this.findAccounts(pkh, pk, data[0]);
           }
         },
         err => console.log('ImportError: ' + JSON.stringify(err))
       );
     }
   }
-  async findAccounts(pkh: string, n: number) {
+  async findAccounts(pkh: string, pk: string, n: number) {
     console.log('Accounts found: ' + n);
     this.coordinatorService.start(pkh);
     this.coordinatorService.startXTZ();
@@ -140,23 +162,32 @@ export class ImportService {
           if (this.walletService.wallet.accounts.findIndex(a => a.pkh === KT) === -1) {
             const opIndex = data[i].type.operations.findIndex(a => a.kind === 'origination');
             const opLevel = data[i].type.operations[opIndex].op_level;
-            this.operationService.getVerifiedOpBytes(opLevel, data[i].hash, pkh).subscribe(
-              opBytes => {
-                if (KT === this.operationService.createKTaddress(opBytes)) {
-                  console.log('Added: ' + KT);
-                  this.walletService.addAccount(KT);
-                  this.coordinatorService.start(KT);
-                  this.findNumberOfAccounts(KT); // Recursive call
-                } else {
-                  this.messageService.addError('Failed to verify KT address!');
+            const storedProof = localStorage.getItem(KT);
+            if (storedProof && storedProof !== 'undefined' && KT === this.operationService.createKTaddress(storedProof)) {
+              console.log('Stored proof found');
+              this.walletService.addAccount(KT);
+              this.coordinatorService.start(KT);
+              this.findNumberOfAccounts(KT, pk); // Recursive call
+            } else {
+              this.operationService.getVerifiedOpBytes(opLevel, data[i].hash, pkh, pk).subscribe(
+                opBytes => {
+                  if (KT === this.operationService.createKTaddress(opBytes)) {
+                    console.log('Store proof');
+                    localStorage.setItem(KT, opBytes);
+                    this.walletService.addAccount(KT);
+                    this.coordinatorService.start(KT);
+                    this.findNumberOfAccounts(KT, pk); // Recursive call
+                  } else {
+                    this.messageService.addError('Failed to verify KT address!');
+                  }
+                },
+                err => {
+                  // tslint:disable-next-line:max-line-length
+                  this.messageService.addWarning('Something went wrong when searching after additional addresses. Try to reimport your keystore file.');
+                  throw new Error(err);
                 }
-              },
-              err => {
-                // tslint:disable-next-line:max-line-length
-                this.messageService.addWarning('Something went wrong when searching after additional addresses. Try to reimport your keystor file.');
-                throw new Error(err);
-              }
-            );
+              );
+            }
           }
         }
         this.walletService.storeWallet();

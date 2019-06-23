@@ -119,10 +119,9 @@ export class OperationService {
                       source: pkh,
                       fee: this.microTez.times(fee).toString(),
                       counter: (++counter).toString(),
-                      gas_limit: '10000',
+                      gas_limit: '10100',
                       storage_limit: '277',
-                      managerPubkey: keys.pkh,  // Mainnet
-                      // manager_pubkey: keys.pkh,  // Zeronet
+                      manager_pubkey: keys.pkh,
                       balance: this.microTez.times(amount).toString(),
                       spendable: true,
                       delegatable: true
@@ -137,7 +136,7 @@ export class OperationService {
                     fee: '0',
                     counter: (counter).toString(),
                     gas_limit: '10000',
-                    storage_limit: '0', // '60000',
+                    storage_limit: '0',
                     public_key: keys.pk
                   };
                   fop.contents[1].counter = (Number(fop.contents[1].counter) + 1).toString();
@@ -151,7 +150,7 @@ export class OperationService {
     Returns an observable for the transaction of tez.
   */
   // transfer(from: string, to: string, amount: number, fee: number = 0, keys: KeyPair): Observable<any> {
-  transfer(from: string, transactions: any, fee: number = 0, keys: KeyPair): Observable<any> {
+  transfer(from: string, transactions: any, fee: number = 0, keys: KeyPair, gasLimit: number, storageLimit: number): Observable<any> {
     return this.http.get(this.nodeURL + '/chains/main/blocks/head/hash', {})
       .flatMap((hash: any) => {
         return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + from + '/counter', {})
@@ -180,8 +179,8 @@ export class OperationService {
                     source: from,
                     fee: this.microTez.times(fee).toString(),
                     counter: (++counter).toString(),
-                    gas_limit: '10300',
-                    storage_limit: '277',
+                    gas_limit: gasLimit.toString(),
+                    storage_limit: storageLimit.toString(),
                     amount: this.microTez.times(transactions[i].amount).toString(),
                     destination: transactions[i].to,
                   });
@@ -373,6 +372,18 @@ export class OperationService {
         );
       }).pipe(catchError(err => this.errHandler(err)));
   }
+  getVotingRights(): Observable<any> {
+    console.log('<Looking for voting rights>');
+    return this.http.get(this.nodeURL + '/chains/main/blocks/head/votes/listings')
+      .flatMap((listings: any) => {
+        return of(
+          {
+            success: true,
+            payload: listings
+          }
+        );
+      }).pipe(catchError(err => this.errHandler(err)));
+  }
   isRevealed(pkh: string): Observable<boolean> {
     return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + pkh + '/manager_key', {})
       .flatMap((manager: any) => {
@@ -406,7 +417,17 @@ export class OperationService {
         );
       }).pipe(catchError(err => this.errHandler(err)));
   }
-  getVerifiedOpBytes(operationLevel, operationHash, pkh): Observable<string> {
+  getManagerKey(pkh: string): Observable<string> {
+    return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + pkh + '/manager_key', {})
+      .flatMap((manager: any) => {
+        if (manager.key) {
+          return of(manager.key);
+        } else {
+          return of('');
+        }
+      });
+  }
+  getVerifiedOpBytes(operationLevel, operationHash, pkh, pk): Observable<string> {
     return this.http.get(this.nodeURL + '/chains/main/blocks/' + operationLevel + '/operation_hashes/3', {})
       .flatMap((opHashes: any) => {
         const opIndex = opHashes.findIndex(a => a === operationHash);
@@ -420,26 +441,24 @@ export class OperationService {
             delete op.protocol;
             for (let i = 0; i < op.contents.length; i++) {
               delete op.contents[i].metadata;
-              if (op.contents[i].manager_pubkey) { // Fix for mainnet
-                op.contents[i].managerPubkey = op.contents[i].manager_pubkey;
-                delete op.contents[i].manager_pubkey;
+              if (op.contents[i].managerPubkey) { // Fix for mainnet
+                op.contents[i].manager_pubkey = op.contents[i].managerPubkey;
+                delete op.contents[i].managerPubkey;
               }
             }
+            console.log('DUMP: ' + JSON.stringify(op));
             return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/forge/operations', op)
               .flatMap((opBytes: any) => {
-                return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + pkh + '/manager_key', {})
-                  .flatMap((manager: any) => {
-                    if (this.pk2pkh(manager.key) === pkh) {
-                      if (this.verify(opBytes, sig, manager.key)) {
-                        ans = opBytes + this.buf2hex(this.b58cdecode(sig, this.prefix.sig));
-                      } else {
-                        throw new Error('InvalidSignature');
-                      }
-                    } else {
-                      throw new Error('InvalidPublicKey');
-                    }
-                    return of(ans);
-                  });
+                if (this.pk2pkh(pk) === pkh) {
+                  if (this.verify(opBytes, sig, pk)) {
+                    ans = opBytes + this.buf2hex(this.b58cdecode(sig, this.prefix.sig));
+                  } else {
+                    throw new Error('InvalidSignature');
+                  }
+                } else {
+                  throw new Error('InvalidPublicKey');
+                }
+                return of(ans);
               });
           });
       });
@@ -612,8 +631,8 @@ export class OperationService {
   decodeOrigination(content: any): any { // Tag 9
     let index = 0;
     const op = this.decodeCommon({ kind: 'origination' }, content);
-    op.data.managerPubkey = this.decodePkh(op.rest.slice(index, index += 42));  // mainnet
-    // op.data.manager_pubkey = this.decodePkh(op.rest.slice(index, index += 42));  // zeronet
+    // op.data.managerPubkey = this.decodePkh(op.rest.slice(index, index += 42));  // mainnet
+    op.data.manager_pubkey = this.decodePkh(op.rest.slice(index, index += 42));  // zeronet
     const balance = this.zarithDecode(op.rest.slice(index));
     op.data.balance = balance.value.toString();
     op.data.spendable = (op.rest.slice(index += balance.count * 2, index += 2) === 'ff');
@@ -741,8 +760,8 @@ export class OperationService {
           let balanceTmp = '';
           managerTmp = this.translate.instant('OPERATIONSERVICE.MANAGER');
           balanceTmp = this.translate.instant('OPERATIONSERVICE.BALANCE');
-          output.push(managerTmp + ' ' + fop.contents[i].managerPubkey);  // betanet
-          // output.push(managerTmp + ' ' + fop.contents[i].manager_pubkey);  // zeronet
+          // output.push(managerTmp + ' ' + fop.contents[i].managerPubkey);  // betanet
+          output.push(managerTmp + ' ' + fop.contents[i].manager_pubkey);  // zeronet
           output.push(balanceTmp + ' ' + Big(Number(fop.contents[i].balance)).div(this.microTez).toString() + ' tez');
         } else if (fop.contents[i].kind === 'delegation') {
           let delegateTmp = '';

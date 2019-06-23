@@ -1,0 +1,59 @@
+.mono {
+    font-family: "Courier New", Courier, monospace;  
+}
+.page-header {
+    margin: 40px 0px 10px 0px; //top right bottom left
+}
+
+.bottom-separator {
+    padding-bottom: 27px;
+    border-bottom: 1px solid #eee; //Alignment  with sidebar
+    margin-bottom: 0.5rem; //space between border and next content
+}
+
+.page-header-no-account {
+    margin: 40px 0px 10px 0px; //top right bottom left
+}
+
+.bottom-separator-no-account {
+    padding-bottom: 27px;
+    border-bottom: 1px solid #eee; //Alignment  with sidebar
+    margin-bottom: 0.5rem; //space between border and next content
+}
+
+h4 {
+    font-weight: 400;
+}
+
+
+
+
+/* Responsive breakpoints */
+// Extra small devices (portrait phones, less than 576px)
+// No media query since this is the default in Bootstrap
+
+// Small devices (landscape phones, 576px and up)
+@media (min-width: 576px) { 
+    .container {
+        padding-left: 2em;
+        min-width: 0vw;
+    }
+ }
+
+// Medium devices (tablets, 768px and up)
+//@media (min-width: 768px) { ... }
+
+// Large devices (desktops, 992px and up)
+@media (min-width: 992px) { 
+    //.container {
+        min-width: 0vw;
+    //} 
+ }
+
+// Extra large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) { 
+    .container {
+        padding-left: 2em;
+        min-width: 0vw;  // 65vw
+    } 
+}

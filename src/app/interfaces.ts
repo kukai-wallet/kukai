@@ -40,3 +40,59 @@ export enum WalletType {
   ViewOnlyWallet,
   ObserverWallet
 }
+export interface Baker {
+  baker_name: string;
+  image: string;
+  rolls: number;
+  identity: string;
+  vote: string;
+  vote2: string;
+  // vote: []
+}
+export interface Vote {
+  voting_period: string;
+  period_kind: PeriodKind;
+  proposal_hash: string[];
+  proposal_alias: string[];
+  votes: number[];
+  operation: string[];
+}
+export interface Period {
+  amendment: string;
+  period: number;
+  period_kind: string;
+  proposal_hash: string[];
+  proposal_alias: string[];
+  start_level: number;
+  end_level: number;
+  level: number;
+  progress: number;
+  remaining: number;
+}
+export interface ParticipationPerPeriod {
+  proposal?: [{
+    hash: string;
+    alias: string;
+    count: number;
+    votes: number;
+  }];
+  unused_count: number;
+  total_count: number;
+  unused_votes: number;
+  total_votes: number;
+}
+export interface Ballot {
+  proposal: string;
+  nb_yay: number;
+  nb_nay: number;
+  nb_pass: number;
+  vote_yay: number;
+  vote_nay: number;
+  vote_pass: number;
+}
+export enum PeriodKind {
+  Proposal,
+  Exploration,
+  Testing,
+  Promotion
+}

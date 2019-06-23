@@ -1,0 +1,161 @@
+<!--
+<div class="container" *ngIf="this.walletService.wallet">
+-->
+<div class="container">
+    <!-- Title -->
+    <div class="row bottom-separator">
+        <div class="col-lg-12">
+            <h1 class="page-header"> Votes for Protocol amendments </h1>
+        </div>
+    </div>
+
+    <!-- Subheading -->
+    <div class="row row-subheading">
+        <div class="col-lg-12">
+            <h4>
+                <p>Athens amendments </p>
+            </h4>
+        </div>
+    </div>
+
+    <!-- Voting periods -->
+    <div class="row row-period">
+        <div class="col col-period col-period-start" [ngClass]="{'col-active' : currentPeriod.period_kind == 'Proposal'}">
+            Proposal Period
+        </div>
+        <div class="col col-period" [ngClass]="{'col-active' : currentPeriod.period_kind == 'Exploration'}">
+            Exploration Vote Period
+        </div>
+        <div class="col col-period" [ngClass]="{'col-active' : currentPeriod.period_kind == 'Testing'}">
+            Testing Period
+        </div>
+        <div class="col col-period col-period-end" [ngClass]="{'col-active' : currentPeriod.period_kind == 'Promotion'}">
+            Promotion Period
+        </div>
+    </div>
+
+    <!-- Progress bar -->
+    <div class="row row-progress">
+        <div class="col">
+            <div class="donation" data-toggle="tooltip" [title]="currentPeriod.remaining + ' days remaining'" *ngIf="currentPeriod.period_kind == 'Proposal'">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                        [attr.aria-valuenow]="currentPeriod.progress" aria-valuemin="0" aria-valuemax="100"
+                        [style.width]="currentPeriod.progress+'%'"> {{currentPeriod.progress}}% </div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="donation" data-toggle="tooltip" [title]="currentPeriod.remaining + ' days remaining'" *ngIf="currentPeriod.period_kind == 'Exploration'">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                        [attr.aria-valuenow]="currentPeriod.progress" aria-valuemin="0" aria-valuemax="100"
+                        [style.width]="currentPeriod.progress+'%'"> {{currentPeriod.progress}}% </div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="donation" data-toggle="tooltip" [title]="currentPeriod.remaining + ' days remaining'" *ngIf="currentPeriod.period_kind == 'Testing'">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                        [attr.aria-valuenow]="currentPeriod.progress" aria-valuemin="0" aria-valuemax="100"
+                        [style.width]="currentPeriod.progress+'%'"> {{currentPeriod.progress}}% </div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="donation" data-toggle="tooltip" [title]="currentPeriod.remaining + ' days remaining'" *ngIf="currentPeriod.period_kind == 'Promotion'">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                        [attr.aria-valuenow]="currentPeriod.progress" aria-valuemin="0" aria-valuemax="100"
+                        [style.width]="currentPeriod.progress+'%'"> {{currentPeriod.progress}}% </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- doughnuts charts -->
+    <div class="row row-doughnut">
+        <div class="col">
+            <p class="title">
+                Amendments votes
+                <span class="sub-title" data-toggle="tooltip" title="Supermajority is achieved at 80%" [ngClass]="isSuperMajority ? 'text-success' : 'text-danger'">(Acceptance:
+                    {{ballot.vote_yay/(ballot.vote_yay+ballot.vote_nay)*100 | number:'1.0-2'}} %)</span>
+            </p>
+            <canvas #doughnutCanvasVotes></canvas>
+        </div>
+
+        <div class="col">
+            <p *ngIf="isBakersParticipation" (click)="toggleParticipationCharts()" class="title">Bakers' Participation (rolls) <i class="fa fa-repeat"></i></p>
+            <p *ngIf="!isBakersParticipation" (click)="toggleParticipationCharts()" class="title">Bakers' Participation (nodes) <i class="fa fa-repeat"></i></p>
+            <canvas #doughnutCanvasParticipation></canvas>
+        </div>
+    </div>
+
+    <br>
+    <br>
+    <!---<button type="button" class="btn btn-outline-light btn-sm btn-balance show-more" aria-label="More" (click)="toggleTransactions()">
+        <span aria-hidden="true"> Check Public Bakers </span>
+    </button>-->
+    <div class="row">
+        <div class="col-lg-12 col-bakers-list">
+            <a routerLink="/bakers-list">Check Public Bakers</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h3> More information </h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <p>
+                A protocol amendment goes through 4 voting periods. Each period lasts 8 cycles (~22.4 days). A quorum
+                and supermajority is required for the <b>Exploration Vote</b> and <b>Promotion period</b>.
+                You can check <a href="https://tezos.gitlab.io/master/whitedoc/voting.html" target="_blank">Tezos
+                    documentation</a>
+                and the <a href="https://medium.com/tezos/amending-tezos-b77949d97e1e" target="_blank">excellent guide</a>
+                by Jacob Arluck to learn more about the voting process.
+            </p>
+            <p>
+                <span data-toggle="tooltip" title="Pt24m4xiPbLDhVgVfABUjirbmda3yohdN82Sp9FeuAXJ4eV9otd"><b>Athens A</b></span>
+                proposal is for the increase of gas limit and the reduction of roll size from 10,000 xtz to 8,000 xtz.
+                <span data-toggle="tooltip" title="Psd1ynUBhMZAeajwcZJAeq5NrxorM6UCU4GJqxZ7Bx2e9vUWB6z"><b>Athens B</b></span>
+                proposal is for the increase of gas limit only.
+            </p>
+            <p>
+                You can view and participate in the community debate on <a href="https://www.kialo.com/tezos-protocol-amendment-1-25295/25295.0/25295.0"
+                    target="_blank">Kialo</a>
+                and <a href="https://riot.im/app/#/room/#tezosgovernance:matrix.org" target="_blank">Riot</a>.
+                To learn more about the different amendments, you can check this <a href="https://medium.com/tezos/tezos-athens-379f6a0d5332"
+                    target="_blank">another great write-up</a> by Jacob Arluck,
+                the <a href="https://blog.nomadic-labs.com/athens-our-proposals-for-the-first-voted-amendment.html"
+                    target="_blank">technical post</a> and <a href="https://blog.nomadic-labs.com/athens-proposals-injected.html"
+                    target="_blank">announcement</a>
+                from Nomadic Labs.
+            </p>
+            <p>With <a href="https://tezvote.com/" target="_blank">Tezvote's smart-contract</a> you can also inform
+                your baker of your preferred choice.</p>
+            <!-- <p>Connect to your wallet and inform your baker of your preferred choice via tezvote's smart-contract. </p> -->
+        </div>
+    </div>
+
+</div>
+
+<!-- Default message - No account created --
+<div class="container" *ngIf="!this.walletService.wallet">
+    <div class="row bottom-separator-no-account">
+        <div class="col-lg-12">
+            <h1 class="page-header-no-account"> Votes for Protocol amendments proposals </h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <p>
+                Connect to your wallet and inform your baker of your preferred choice via tezvote's smart-contract. 
+            </p>
+        </div>
+    </div>
+</div>
+-->

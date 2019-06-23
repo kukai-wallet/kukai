@@ -61,6 +61,19 @@ amount(amount: string): Boolean {
 fee(fee: string): Boolean {
   return this.amount(fee); // same as amount
 }
+gas(amount: string): Boolean {
+  console.log('amount: ' + amount);
+  if (amount === '' || amount === '0') { // default value / zero
+    return true;
+  } else if (Number(amount) && 0 < Number(amount) && Number(amount) % 1 === 0) { // Positive integer
+    return true;
+  } else {
+    return false;
+  }
+}
+storage(amount: string) {
+  return this.gas(amount);
+}
 code(code: string): Boolean {
   if (code && code.length === 40 && code.match(/^[a-f0-9]*$/)) { // 40 hex chars
     return true;

@@ -19,7 +19,8 @@ interface SendData {
     amount: number;
     burn: boolean;
 }
-
+const transactionFee = 0.00135;
+const revealFee = 0.0013;
 @Component({
     selector: 'app-send',
     templateUrl: './send.component.html',
@@ -30,7 +31,9 @@ export class SendComponent implements OnInit {
     @ViewChild('modal1') modal1: TemplateRef<any>;
     @Input() activePkh: string;
     @Input() actionButtonString: string;  // Possible values: btnOutline / dropdownItem / btnSidebar
-    recommendedFee = 0.0013;
+    recommendedFee = transactionFee;
+    defaultGasLimit = 10600;
+    defaultStorageLimit = 277;
     showSendFormat = {
         btnOutline: false,
         dropdownItem: false,
@@ -48,6 +51,8 @@ export class SendComponent implements OnInit {
     toPkh: string;
     amount: string;
     fee: string;
+    gas = '';
+    storage = '';
     password: string;
     pwdValid: string;
     formInvalid = '';
@@ -120,7 +125,6 @@ export class SendComponent implements OnInit {
         let accountBalance: number;
         let accountBalanceString: string;
         let index;
-        // finding the index
         index = this.accounts.findIndex(account => account.pkh === accountPkh);
         if (index !== -1) {
             accountBalance = this.accounts[index].balance.balanceXTZ / 1000000;
@@ -140,7 +144,6 @@ export class SendComponent implements OnInit {
 
     sendEntireBalance(accountPkh: string, event: Event) {
         event.stopPropagation();
-        // finding the index
         const index = this.accounts.findIndex(account => account.pkh === accountPkh);
         let accountBalance = Big(this.accounts[index].balance.balanceXTZ).div(1000000);
         if (!this.fee) {
@@ -163,8 +166,9 @@ export class SendComponent implements OnInit {
         this.formInvalid = this.checkInput();
         if (!this.formInvalid) {
             if (!this.amount) { this.amount = '0'; }
-
             if (!this.fee) { this.fee = this.recommendedFee.toString(); }
+            if (!this.gas) { this.gas = this.defaultGasLimit.toString(); }
+            if (!this.storage) { this.storage = this.defaultStorageLimit.toString(); }
             if (!this.toMultipleDestinationsString) { this.toMultipleDestinationsString = ''; }
             if (this.isMultipleDestinations) {
                 // this.transactions = this.parseMultipleTransactions(this.toMultipleDestinationsString);
@@ -240,20 +244,26 @@ export class SendComponent implements OnInit {
     async sendTransaction(keys: KeyPair) {
         let amount = this.amount;
         let fee = this.fee;
+        let gas = this.gas;
+        let storage = this.storage;
 
         this.toPkh = '';
         this.amount = '';
         this.fee = '';
+        this.gas = '';
+        this.storage = '';
         this.toMultipleDestinationsString = '';
         this.toMultipleDestinations = [];
         this.showTransactions = [];
 
         if (!amount) { amount = '0'; }
         if (!fee) { fee = '0'; }
+        if (!gas) { gas = '0'; }
+        if (!storage) { storage = '0'; }
         // if (!toMultipleDestinationsString) { toMultipleDestinationsString = '0'; }
 
         setTimeout(async () => {
-            this.operationService.transfer(this.activePkh, this.transactions, Number(fee), keys).subscribe(
+            this.operationService.transfer(this.activePkh, this.transactions, Number(fee), keys, Number(gas), Number(storage)).subscribe(
                 (ans: any) => {
                     this.sendResponse = ans;
                     if (ans.success === true) {
@@ -297,6 +307,8 @@ export class SendComponent implements OnInit {
         this.toPkh = '';
         this.amount = '';
         this.fee = '';
+        this.gas = '';
+        this.storage = '';
         this.toMultipleDestinationsString = '';
         this.toMultipleDestinations = [];
         this.showTransactions = [];
@@ -325,9 +337,9 @@ export class SendComponent implements OnInit {
         this.operationService.isRevealed(this.activePkh)
                 .subscribe((revealed: boolean) => {
                     if (!revealed) {
-                        this.recommendedFee = 0.0026;
+                        this.recommendedFee = transactionFee + revealFee;
                     } else {
-                        this.recommendedFee = 0.0013;
+                        this.recommendedFee = transactionFee;
                     }
                 });
     }
@@ -346,8 +358,7 @@ export class SendComponent implements OnInit {
             );
             return invalidFee;  // 'Invalid fee';
         } else {
-            const result = this.checkReceiverAndAmount(this.toPkh, this.amount);
-            return result;
+            return this.checkReceiverAndAmount(this.toPkh, this.amount);
         }
     }
     checkReceiverAndAmount(toPkh: string, amount: string): string {
@@ -365,6 +376,10 @@ export class SendComponent implements OnInit {
                 (res: string) => invalidAmount = res
             );
             result = invalidAmount;  // 'Invalid amount';
+        } else if (!this.inputValidationService.gas(this.gas)) {
+            result = this.translate.instant('SENDCOMPONENT.INVALIDGASLIMIT');
+        } else if (!this.inputValidationService.gas(this.storage)) {
+            result = this.translate.instant('SENDCOMPONENT.INVALIDSTORAGELIMIT');
         }
         return result;
     }
@@ -403,7 +418,6 @@ export class SendComponent implements OnInit {
                     console.log('singleSendDataCheckresult', singleSendDataCheckresult);
                     if (singleSendDataCheckresult === '') {
                         this.toMultipleDestinations.push({to: singleSendDataArray[0], amount: Number(singleSendDataArray[1]), burn: false});
-
                     } else {
                         this.toMultipleDestinations = [];
                         const itemIndex =  index + 1;

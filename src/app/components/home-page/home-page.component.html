@@ -1,4 +1,4 @@
-<div class="topmenu row border-bottom row-mobile">
+<div id="topbar" class="topmenu row border-bottom row-mobile">
 
     <!-- Menu Button -->
     <div class="col-sm">
@@ -16,7 +16,7 @@
     <div class="col-sm">
     </div>
 
-    <div class="col-sm top-bar-btn">
+    <div class="col-sm topbar-btn">
 
         <!-- Language Button -->
         <div class="btn-group dropdown-padding language-btn" dropdown>
@@ -72,6 +72,32 @@
             -->
         </div>
 
+        <!--
+        <span class="topbar-links">
+            <div class="btn-topbar">
+                <a routerLink="/community">Community</a>
+            </div>
+        </span>
+        -->
+
+        <span class="topbar-links">
+            <div *ngIf="CONSTANTS.NET.NAME === 'Mainnet'" class="btn-topbar btn-topbar-alphanet">
+                <a href="https://alphanet.kukai.app/" target="_blank">Alphanet</a>
+            </div>
+            <div *ngIf="CONSTANTS.NET.NAME === 'Alphanet'" class="btn-topbar btn-topbar-mainnet">
+                <a href="https://kukai.app/" target="_blank">Mainnet</a>
+            </div>
+        </span>
+
+        <!-- Test 1
+        <div>
+            <button type="button" class="btn btn-light btn-sm">Community</button>
+        </div>
+        <div>
+            <button type="button" class="btn btn-light btn-sm" href="https://alphanet.kukai.app/" target="_blank">Alphanet</button>
+        </div>
+        -->
+
         <!-- Currency Button -->
         <!-- 
         <div class="btn-group dropdown-padding" dropdown>
@@ -120,6 +146,9 @@
             <li routerLinkActive="active">
                 <a routerLink="/bakery" class="btn-main-action">{{ 'HOMEPAGECOMPONENT.BAKERY' | translate }}</a>
             </li>
+            <!--<li routerLinkActive="active">
+                <a routerLink="/voting" class="btn-main-action"> Voting </a>
+            </li>-->
         </ul>
 
         <!-- TEST LANGUAGE TRANSLATION --

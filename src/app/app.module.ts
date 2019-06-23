@@ -5,6 +5,11 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { BsModalService } from 'ngx-bootstrap/modal';
 
+// From Angular Material
+import { MatSortModule } from '@angular/material';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+
 // For translation
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
@@ -51,6 +56,9 @@ import { OperationService } from './services/operation.service';
 import { BakeryComponent } from './components/bakery/bakery.component';
 import { ActivateComponent } from './components/activate/activate.component';
 import { MessagesComponent } from './components/messages/messages.component';  // Empty
+import { VotingComponent } from './components/voting/voting.component';
+import { CommunityComponent } from './components/community/community.component';
+import { BakersListComponent } from './components/bakers-list/bakers-list.component';
 
 // Pipes
 import { ErrorHandlingPipe } from './pipes/error-handling.pipe';
@@ -87,6 +95,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     BakeryComponent,
     ActivateComponent,
     MessagesComponent,  // Empty
+    VotingComponent,
+    CommunityComponent,
+    BakersListComponent,
 
     // Pipes
     ErrorHandlingPipe,
@@ -96,6 +107,8 @@ export function HttpLoaderFactory(http: HttpClient) {
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
+    MatSortModule,
     FormsModule,
     AppRoutingModule,
     HttpClientModule,

@@ -1,0 +1,126 @@
+<!--
+<div class="container" *ngIf="this.walletService.wallet">
+-->
+<div class="container">
+    <!-- Title -->
+    <div class="row bottom-separator">
+        <div class="col-lg-12">
+            <h1 class="page-header"> Bakers List </h1>
+        </div>
+    </div>
+
+    <!-- Subheading -->
+    <div class="row row-subheading">
+        <div class="col-lg-12">
+            <h4>
+                <p>Here, you can easily view the public bakers vote and participation</p>
+            </h4>
+        </div>
+    </div>
+
+    <br>
+
+    <button type="button" class="btn btn-outline-light btn-sm btn-balance show-more" aria-label="More" (click)="toggleShowAll()">
+        {{ showBtn }}
+    </button>
+
+    <br>
+
+    <div class="tableSection">
+        <div class="table-responsive">
+            <table class="table" matSort (matSortChange)="sortData($event)">
+                <thead>
+                    <tr>
+                        <th scope="col" mat-sort-header="name"> Name </th>
+                        <th scope="col" mat-sort-header="roll"> Rolls </th>
+                        <th scope="col"> Identity </th>
+                        <th scope="col" *ngIf="this.showColumn.Proposal"> Proposal Period </th>
+                        <th scope="col" *ngIf="this.showColumn.Exploration"> Exploration </th>
+                        <th scope="col" *ngIf="this.showColumn.Testing"> Testing </th>
+                        <th scope="col" *ngIf="this.showColumn.Promotion"> Promotion </th>
+                        <!-- <th scope="col">‰</th> --
+                        <th scope="col" mat-sort-header="identity"> Identity </th>
+                        <th scope="col" mat-sort-header="proposal" *ngIf="this.showColumn.Proposal"> Proposal Period </th>
+                        <th scope="col" mat-sort-header="exploration" *ngIf="this.showColumn.Exploration"> Exploration </th>
+                        <th scope="col" mat-sort-header="testing" *ngIf="this.showColumn.Testing"> Testing </th>
+                        <th scope="col" mat-sort-header="promotion" *ngIf="this.showColumn.Promotion"> Promotion </th>
+                        -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let baker of bakersList">
+                        <tr *ngIf="baker.baker_name || showAll">
+                            <td>
+                                <img *ngIf="baker.image" [src]="baker.image" alt="Baker image" height="21" width="21"> {{ baker.baker_name }}
+                            </td>
+                            <td> {{ baker.rolls }} </td>
+                            <!-- <td> {{ baker.rolls / currentParticipation.total_votes * 1000 | number:'1.0-2' }} ‰ </td> -->
+                            <td> {{ baker.identity }} </td>
+                            <td *ngIf="this.showColumn.Proposal"> {{ baker.vote }} </td>
+                            <td *ngIf="this.showColumn.Exploration"> {{ baker.vote2 }} </td>
+                            <td *ngIf="this.showColumn.Testing">  </td>
+                            <td *ngIf="this.showColumn.Promotion"> {{ baker.vote3 }} </td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <br>
+    
+    <!-- 
+    <input type="checkbox" (change)="toggleShowAll()"> Show all
+    <div class="tableSection" *ngIf="bakersList">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col" class="column-sort" (click)="sortName()">Name &#9660;</th>
+                        <th scope="col" class="column-sort" (click)="sortRolls()">Rolls &#9660;</th>
+                        <!-- <th scope="col">‰</th> --
+                        <th scope="col">Identity</th>
+                        <th scope="col" *ngIf="this.showColumn.Proposal">Proposal Period</th>
+                        <th scope="col" *ngIf="this.showColumn.Exploration">Exploration</th>
+                        <th scope="col" *ngIf="this.showColumn.Testing">Testing</th>
+                        <th scope="col" *ngIf="this.showColumn.Promotion">Promotion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let baker of bakersList">
+                        <tr *ngIf="baker.baker_name || showAll">
+                            <td>
+                                <img *ngIf="baker.image" [src]="baker.image" alt="Baker image" height="21" width="21"> {{ baker.baker_name }}
+                            </td>
+                            <td> {{ baker.rolls }} </td>
+                            <!-- <td> {{ baker.rolls / currentParticipation.total_votes * 1000 | number:'1.0-2' }} ‰ </td> --
+                            <td> {{ baker.identity }} </td>
+                            <td *ngIf="this.showColumn.Proposal"> {{ baker.vote }} </td>
+                            <td *ngIf="this.showColumn.Exploration"> {{ baker.vote2 }} </td>
+                            <td *ngIf="this.showColumn.Testing">  </td>
+                            <td *ngIf="this.showColumn.Promotion">  </td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    -->
+</div>
+
+<!-- Default message - No account created --
+<div class="container" *ngIf="!this.walletService.wallet">
+    <div class="row bottom-separator-no-account">
+        <div class="col-lg-12">
+            <h1 class="page-header-no-account"> Votes for Protocol amendments proposals </h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <p>
+                Connect to your wallet and inform your baker of your preferred choice via tezvote's smart-contract. 
+            </p>
+        </div>
+    </div>
+</div>
+-->
