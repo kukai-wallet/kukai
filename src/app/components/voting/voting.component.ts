@@ -66,7 +66,7 @@ export class VotingComponent implements OnInit {
         public walletService: WalletService,
         private tzscanService: TzscanService,
         private delegatorNamePipe: DelegatorNamePipe
-    ) {}
+    ) { }
 
     showDoughnutCharts(currentParticipation: any) {
         const votersCounted = currentParticipation.total_count - currentParticipation.unused_count;
@@ -74,15 +74,23 @@ export class VotingComponent implements OnInit {
 
         if (this.currentPeriod.period_kind === 'Proposal') {  // In proposal period, with multiple proposals
             // Vote Counts
+            const labels = [];
+            const data = [];
+            if (currentParticipation.proposal) {
+                for (const proposal of currentParticipation.proposal) {
+                    labels.push(proposal.alias);
+                    data.push(proposal.votes);
+                }
+            }
             this.doughnutVotes = new Chart(this.doughnutCanvasVotes.nativeElement, {
 
                 type: 'doughnut',
                 data: {
-                    labels: [currentParticipation.proposal[0].alias, currentParticipation.proposal[1].alias],
+                    labels: labels,
                     // 'Athens A: Increase gaz limits', 'Athens B: Increase gaz limits and decrease roll size'
                     datasets: [{
                         label: '# of Votes',
-                        data: [currentParticipation.proposal[0].votes, currentParticipation.proposal[1].votes],
+                        data: data,
                         backgroundColor: [
                             '#FF6384',
                             '#36A2EB',
@@ -226,8 +234,8 @@ export class VotingComponent implements OnInit {
                 this.currentPeriod.level = periodInfo.level;
                 this.currentPeriod.period = periodInfo.period;
                 this.currentPeriod.progress = Math.round((this.currentPeriod.level % 32768) / VOTINGPERIOD.blocks * 100);
-                this.currentPeriod.remaining = Math.round(((32768 - (this.currentPeriod.level % 32768) ) / 60 / 24 * 100)) / 100;
-                console.log('currentPeriod.period ',  this.currentPeriod.period);
+                this.currentPeriod.remaining = Math.round(((32768 - (this.currentPeriod.level % 32768)) / 60 / 24 * 100)) / 100;
+                console.log('currentPeriod.period ', this.currentPeriod.period);
 
                 this.tzscanService.getProposalsCurrentPeriod(this.currentPeriod.period).subscribe(
                     proposalsCurrentPeriod => {
@@ -249,7 +257,7 @@ export class VotingComponent implements OnInit {
 
                                     const proposal = {
                                         hash: hash,
-                                        alias: hash === PROPOSALS[0].hash ? PROPOSALS[0].alias : PROPOSALS[1].alias,  // /!\ This will break with 3 proposals /!\
+                                        alias: hash,  // /!\ FixMe /!\
                                         count: proposalNumbers.count,
                                         votes: proposalNumbers.votes
                                     };
@@ -295,19 +303,19 @@ export class VotingComponent implements OnInit {
 
                         //Getting the totalNumbers
                         if (this.currentPeriod.period_kind === 'Proposal') {
-                        this.tzscanService.getTotalVotes(this.currentPeriod.period).subscribe(
-                            result => {  //{"proposal_count":2,"total_count":458,"total_votes":51604,"used_count":107,"used_votes":15773,"unused_count":360,"unused_votes":36492}
-                                const totalVotes: any = result;
-                                this.currentParticipation.unused_count = totalVotes.unused_count;
-                                this.currentParticipation.unused_votes = totalVotes.unused_votes;
-                                this.currentParticipation.total_count = totalVotes.total_count;
-                                this.currentParticipation.total_votes = totalVotes.total_votes;
-                                console.log('currentParticipation ', this.currentParticipation);
+                            this.tzscanService.getTotalVotes(this.currentPeriod.period).subscribe(
+                                result => {
+                                    const totalVotes: any = result;
+                                    this.currentParticipation.unused_count = totalVotes.unused_count;
+                                    this.currentParticipation.unused_votes = totalVotes.unused_votes;
+                                    this.currentParticipation.total_count = totalVotes.total_count;
+                                    this.currentParticipation.total_votes = totalVotes.total_votes;
+                                    console.log('currentParticipation ', this.currentParticipation);
 
-                                //Display Doughnut Charts
-                                this.showDoughnutCharts(this.currentParticipation);
-                            }
-                        );
+                                    //Display Doughnut Charts
+                                    this.showDoughnutCharts(this.currentParticipation);
+                                }
+                            );
                         }
                     }
                 );

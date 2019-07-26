@@ -76,7 +76,7 @@
         <div class="col">
             <p class="title">
                 Amendments votes
-                <span class="sub-title" data-toggle="tooltip" title="Supermajority is achieved at 80%" [ngClass]="isSuperMajority ? 'text-success' : 'text-danger'">(Acceptance:
+                <span *ngIf="this.currentPeriod.period_kind === 'Exploration' || this.currentPeriod.period_kind === 'Promotion'" class="sub-title" data-toggle="tooltip" title="Supermajority is achieved at 80%" [ngClass]="isSuperMajority ? 'text-success' : 'text-danger'">(Acceptance:
                     {{ballot.vote_yay/(ballot.vote_yay+ballot.vote_nay)*100 | number:'1.0-2'}} %)</span>
             </p>
             <canvas #doughnutCanvasVotes></canvas>
