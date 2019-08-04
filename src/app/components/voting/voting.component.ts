@@ -78,7 +78,7 @@ export class VotingComponent implements OnInit {
             const data = [];
             if (currentParticipation.proposal) {
                 for (const proposal of currentParticipation.proposal) {
-                    labels.push(proposal.alias);
+                    labels.push(proposal.alias.slice(0, 9) + '... ');
                     data.push(proposal.votes);
                 }
             }

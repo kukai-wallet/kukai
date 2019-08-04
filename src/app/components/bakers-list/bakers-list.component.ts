@@ -182,7 +182,7 @@ export class BakersListComponent implements OnInit, OnDestroy {
                 for (const vote of votes) {
                     for (const baker of this.bakersList) {
                         if (baker.identity === vote.source.tz) {
-                            baker.vote += hash.slice(0, 6) + '... ';
+                            baker.vote += hash.slice(0, 9) + '... ';
                         }
                     }
                 }
