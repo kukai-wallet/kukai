@@ -75,11 +75,18 @@ storage(amount: string) {
   return this.gas(amount);
 }
 code(code: string): Boolean {
-  if (code && code.length === 40 && code.match(/^[a-f0-9]*$/)) { // 40 hex chars
+  if (code && code.length === 40 && code.match(/^[0-9]*$/)) { // 40 hex chars
     return true;
   } else {
     return false;
   }
+}
+derivationPath(path: string): Boolean {
+  const m = path.match(/^44\'\/1729\'\/([0-9]|\'\/)*\'$/g);
+  if (m) {
+    return true;
+  }
+  return false;
 }
 operationRaw(hex: string): Boolean {
   if (hex && hex.match(/^[a-f0-9]*$/)) {

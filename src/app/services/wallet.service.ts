@@ -67,7 +67,7 @@ export class WalletService {
       } else {
         return null;
       }
-    } else if (this.isViewOnlyWallet()) {
+    } else if (this.isViewOnlyWallet() || this.isLedgerWallet()) {
       return {
         pkh: this.wallet.accounts[0].pkh,
         pk: this.wallet.seed,
@@ -83,15 +83,16 @@ export class WalletService {
     localStorage.removeItem(this.storeKey);
   }
   emptyWallet(type: WalletType): Wallet {
-    return {
-      seed: null,
-      salt: null,
-      encryptionVersion: null,
-      type: type,
-      balance: this.emptyBalance(),
-      XTZrate: null,
-      accounts: []
+    const w: Wallet = {
+        seed: null,
+        salt: null,
+        encryptionVersion: null,
+        type: type,
+        balance: this.emptyBalance(),
+        XTZrate: null,
+        accounts: []
     };
+    return w;
   }
   emptyBalance(): Balance {
     return {
@@ -113,6 +114,9 @@ export class WalletService {
   isObserverWallet(): boolean {
     return (this.wallet && this.wallet.type === WalletType.ObserverWallet);
   }
+  isLedgerWallet(): boolean {
+    return (this.wallet && this.wallet.type === WalletType.LedgerWallet);
+  }
   walletTypePrint(): string {
     if (this.isFullWallet()) {
       return 'Full wallet';
@@ -120,6 +124,8 @@ export class WalletService {
       return 'View-only wallet';
     } else if (this.isObserverWallet()) {
       return 'Observer wallet';
+    } else if (this.isLedgerWallet()) {
+      return 'Ledger wallet';
     } else {
       return '';
     }
@@ -141,8 +147,11 @@ export class WalletService {
     }
     if (this.isFullWallet()) {
       data.encryptedSeed = this.wallet.seed;
-    } else if (this.isViewOnlyWallet()) {
+    } else if (this.isViewOnlyWallet() || this.isLedgerWallet()) {
       data.pk = this.wallet.seed;
+      if (this.isLedgerWallet()) {
+        data.derivationPath = this.wallet.derivationPath;
+      }
     }
     return data;
   }

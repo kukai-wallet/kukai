@@ -289,6 +289,7 @@ export class OperationService {
       fop.protocol = this.CHAIN_ID;
       fop.signature = edsig;
     } catch (e) {
+      console.log(JSON.stringify(sopbytes));
       return this.errHandler('Invalid bytes');
     }
     return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/preapply/operations', [fop])
@@ -478,6 +479,7 @@ export class OperationService {
       throw new Error('NullSeed');
     }
     const keyPair = libs.crypto_sign_seed_keypair(seed);
+    console.log(keyPair.publicKey);
     return {
       sk: this.b58cencode(keyPair.privateKey, this.prefix.edsk),
       pk: this.b58cencode(keyPair.publicKey, this.prefix.edpk),
@@ -507,6 +509,9 @@ export class OperationService {
   pk2pkh(pk: string): string {
     const pkDecoded = this.b58cdecode(pk, this.prefix.edpk);
     return this.b58cencode(libs.crypto_generichash(20, pkDecoded), this.prefix.tz1);
+  }
+  hex2pk(hex: string): string {
+    return this.b58cencode(this.hex2buf(hex.slice(2, 66)), this.prefix.edpk);
   }
   hex2buf(hex) {
     return new Uint8Array(hex.match(/[\da-f]{2}/gi).map(function (h) {

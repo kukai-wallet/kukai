@@ -73,8 +73,11 @@ export class ImportService {
             this.walletService.addAccount(keys.pkh);
           }
         }
-      } else if (walletData.walletType === 1) { // View
+      } else if (walletData.walletType === 1 || walletData.walletType === 3) { // View or Ledger
         this.walletService.wallet.seed = walletData.pk; // set pk
+        if (walletData.walletType === 3) {
+          this.walletService.wallet.derivationPath = walletData.derivationPath;
+        }
         this.walletService.addAccount(this.operationService.pk2pkh(walletData.pk));
       } else if (walletData.walletType === 2) {
         this.walletService.addAccount(walletData.pkh);
@@ -88,12 +91,18 @@ export class ImportService {
       return false;
     }
   }
-  importWalletFromPk(pk: string) {
+  importWalletFromPk(pk: string, ledger: string = null) {
     this.coordinatorService.stopAll();
     try {
       const pkh = this.operationService.pk2pkh(pk);
-      this.importWalletFromPkh(pkh, WalletType.ViewOnlyWallet);
+      if (ledger) {
+        this.importWalletFromPkh(pkh, WalletType.LedgerWallet);
+        this.walletService.wallet.derivationPath = ledger;
+      } else {
+        this.importWalletFromPkh(pkh, WalletType.ViewOnlyWallet);
+      }
       this.walletService.wallet.seed = pk;
+      this.walletService.wallet.encryptionVersion = 2.0;
     } catch (err) {
       this.walletService.clearWallet();
       throw (err);

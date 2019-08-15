@@ -12,6 +12,7 @@ import { CoordinatorService } from '../../services/coordinator.service';
 import { OperationService } from '../../services/operation.service';
 import { ExportService } from '../../services/export.service';
 import { InputValidationService } from '../../services/input-validation.service';
+import { LedgerService } from '../../services/ledger.service';
 import Big from 'big.js';
 
 interface SendData {
@@ -51,6 +52,7 @@ export class SendComponent implements OnInit {
     toPkh: string;
     amount: string;
     fee: string;
+    storedFee: string;
     gas = '';
     storage = '';
     password: string;
@@ -61,6 +63,7 @@ export class SendComponent implements OnInit {
     transactions: SendData[] = [];
     showTransactions: SendData[] = [];
     XTZrate = 0;
+    ledgerInstruction = '';
 
     showBtn = 'Show More';
 
@@ -75,7 +78,8 @@ export class SendComponent implements OnInit {
         private operationService: OperationService,
         private coordinatorService: CoordinatorService,
         private exportService: ExportService,
-        private inputValidationService: InputValidationService
+        private inputValidationService: InputValidationService,
+        private ledgerService: LedgerService
     ) { }
 
     ngOnInit() {
@@ -91,7 +95,6 @@ export class SendComponent implements OnInit {
         this.accounts = this.walletService.wallet.accounts;
         this.XTZrate = this.walletService.wallet.XTZrate;
     }
-
     setSendFormat() {
         switch (this.actionButtonString) {
             case 'btnOutline': {
@@ -167,6 +170,7 @@ export class SendComponent implements OnInit {
         if (!this.formInvalid) {
             if (!this.amount) { this.amount = '0'; }
             if (!this.fee) { this.fee = this.recommendedFee.toString(); }
+            this.storedFee = this.fee;
             if (!this.gas) { this.gas = this.defaultGasLimit.toString(); }
             if (!this.storage) { this.storage = this.defaultStorageLimit.toString(); }
             if (!this.toMultipleDestinationsString) { this.toMultipleDestinationsString = ''; }
@@ -180,11 +184,16 @@ export class SendComponent implements OnInit {
                     this.showTransactions.push(this.transactions[0]);
                 }
             } else {
-                this.transactions = [{to: this.toPkh, amount: Number(this.amount), burn: false}];
+                this.transactions = [{ to: this.toPkh, amount: Number(this.amount), burn: false }];
             }
             this.detectBurns();
             this.close1();
             this.modalRef2 = this.modalService.show(template, { class: 'second' });
+            if (this.walletService.isLedgerWallet()) {
+                this.ledgerInstruction = 'Preparing transaction data. Please wait...';
+                const keys = this.walletService.getKeys('');
+                this.sendTransaction(keys);
+            }
         }
     }
     detectBurns() {
@@ -208,21 +217,28 @@ export class SendComponent implements OnInit {
         }
     }
     async open3(template: TemplateRef<any>) {
-        const pwd = this.password;
-        this.password = '';
-        const keys = this.walletService.getKeys(pwd);
-        if (keys) {
-            this.pwdValid = '';
+        if (this.walletService.isLedgerWallet()) {
+            this.broadCastLedgerTransaction();
+            this.sendResponse = null;
             this.close2();
             this.modalRef3 = this.modalService.show(template, { class: 'third' });
-            this.sendTransaction(keys);
         } else {
-            let wrongPassword = '';
-            this.translate.get('SENDCOMPONENT.WRONGPASSWORD').subscribe(
-                (res: string) => wrongPassword = res
-            );
+            const pwd = this.password;
+            this.password = '';
+            const keys = this.walletService.getKeys(pwd);
+            if (keys) {
+                this.pwdValid = '';
+                this.close2();
+                this.modalRef3 = this.modalService.show(template, { class: 'third' });
+                this.sendTransaction(keys);
+            } else {
+                let wrongPassword = '';
+                this.translate.get('SENDCOMPONENT.WRONGPASSWORD').subscribe(
+                    (res: string) => wrongPassword = res
+                );
 
-            this.pwdValid = wrongPassword;  // 'Wrong password!';
+                this.pwdValid = wrongPassword;  // 'Wrong password!';
+            }
         }
     }
 
@@ -273,16 +289,43 @@ export class SendComponent implements OnInit {
                             for (let i = 0; i < this.transactions.length; i++) {
                                 this.coordinatorService.boost(this.transactions[i].to);
                             }
+                        } else if (this.walletService.isLedgerWallet) {
+                            this.ledgerInstruction = 'Please sign the transaction with your Ledger to proceed!';
+                            this.requestLedgerSignature();
                         }
                     } else {
                         console.log('Transaction error id ', ans.payload.msg);
+                        if (this.walletService.isLedgerWallet) {
+                            this.ledgerInstruction = 'Failed with: ' + ans.payload.msg;
+                        }
                     }
                 },
                 err => {
                     console.log('Error Message ', JSON.stringify(err));
+                    if (this.walletService.isLedgerWallet) {
+                        this.ledgerInstruction = 'Failed to create transaction';
+                    }
                 },
             );
         }, 100);
+    }
+    async requestLedgerSignature() {
+        const op = this.sendResponse.payload.unsignedOperation;
+        const signature = await this.ledgerService.signOperation(op, this.walletService.wallet.derivationPath);
+        const signedOp = op + signature;
+        this.sendResponse.payload.signedOperation = signedOp;
+        this.ledgerInstruction = 'Your transaction have been signed! Press confirm to broadcast it to the network.';
+    }
+    async broadCastLedgerTransaction() {
+        this.operationService.broadcast(this.sendResponse.payload.signedOperation).subscribe(
+            ((ans: any) => {
+                this.sendResponse = ans;
+                if (ans.success && this.activePkh) {
+                    this.coordinatorService.boost(this.activePkh);
+                }
+                console.log('ans: ' + JSON.stringify(ans));
+            })
+        );
     }
 
     // Function not used - transaction array is built in invalidInputMultiple()
@@ -292,7 +335,7 @@ export class SendComponent implements OnInit {
         for (let i = 0; i < splitted.length; i++) {
             if (splitted[i]) {
                 const splitted2 = splitted[i].trim().split(' ');
-                multipleTransactionsObject.push({to: splitted2[0], amount: Number(splitted2[1])});
+                multipleTransactionsObject.push({ to: splitted2[0], amount: Number(splitted2[1]) });
             }
         }
         console.log(JSON.stringify(multipleTransactionsObject));
@@ -316,6 +359,7 @@ export class SendComponent implements OnInit {
         this.pwdValid = '';
         this.formInvalid = '';
         this.sendResponse = null;
+        this.ledgerInstruction = '';
 
         this.showBtn = 'Show More';
     }
@@ -335,13 +379,13 @@ export class SendComponent implements OnInit {
     checkReveal() {
         console.log('check reveal');
         this.operationService.isRevealed(this.activePkh)
-                .subscribe((revealed: boolean) => {
-                    if (!revealed) {
-                        this.recommendedFee = transactionFee + revealFee;
-                    } else {
-                        this.recommendedFee = transactionFee;
-                    }
-                });
+            .subscribe((revealed: boolean) => {
+                if (!revealed) {
+                    this.recommendedFee = transactionFee + revealFee;
+                } else {
+                    this.recommendedFee = transactionFee;
+                }
+            });
     }
     invalidInputSingle(): string {
         if (!this.inputValidationService.address(this.activePkh)) {
@@ -411,16 +455,16 @@ export class SendComponent implements OnInit {
 
             if (toMultipleDestinationsArray[index] !== '') {
                 singleSendDataArray = toMultipleDestinationsArray[index].split(' ');
-                console.log('singleSendDataArray: ', singleSendDataArray );
+                console.log('singleSendDataArray: ', singleSendDataArray);
                 if (singleSendDataArray.length === 2) {
                     const singleSendDataCheckresult = this.checkReceiverAndAmount(singleSendDataArray[0], singleSendDataArray[1]);
-                    console.log('singleSendDataArray.length: ', singleSendDataArray.length );
+                    console.log('singleSendDataArray.length: ', singleSendDataArray.length);
                     console.log('singleSendDataCheckresult', singleSendDataCheckresult);
                     if (singleSendDataCheckresult === '') {
-                        this.toMultipleDestinations.push({to: singleSendDataArray[0], amount: Number(singleSendDataArray[1]), burn: false});
+                        this.toMultipleDestinations.push({ to: singleSendDataArray[0], amount: Number(singleSendDataArray[1]), burn: false });
                     } else {
                         this.toMultipleDestinations = [];
-                        const itemIndex =  index + 1;
+                        const itemIndex = index + 1;
                         result = singleSendDataCheckresult + '. ' + 'Error in item ' + itemIndex;
                         return result;
                     }
@@ -439,6 +483,12 @@ export class SendComponent implements OnInit {
             totalSent = totalSent + item.amount;
         }
         return totalSent;
+    }
+    getFee() {
+        if (this.fee) {
+            return this.fee;
+        }
+        return this.storedFee;
     }
     totalFee(): number {
         let fee = 0;
