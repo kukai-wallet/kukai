@@ -6,9 +6,8 @@ import { Chart } from 'chart.js';
 
 import { DelegatorNamePipe } from '../../pipes/delegator-name.pipe';
 
-import { VOTINGPERIOD, PROPOSALS } from '../../constants';
-import { VOTINGPERIODHEADS } from '../../../data/bakers-list';
-import { Period, Ballot, PeriodKind, ParticipationPerPeriod } from '../../interfaces';
+import { VOTINGPERIOD } from '../../constants';
+import { Period, Ballot } from '../../interfaces';
 
 @Component({
     selector: 'app-voting',
@@ -40,15 +39,14 @@ export class VotingComponent implements OnInit {
     doughnutVotes: any;
     doughnutParticipation: any;
 
-    votingPeriodHeads = VOTINGPERIODHEADS;
     currentPeriod: Period = {
         amendment: 'Athens',
         period: 10,
         period_kind: '',  //PeriodKind.Proposal
         proposal_hash: [],
         proposal_alias: [],
-        start_level: this.votingPeriodHeads[0].start_level,  // 327681
-        end_level: this.votingPeriodHeads[0].end_level,  // 360448 - not used
+        start_level: 0,  // 327681
+        end_level: 0,  // 360448 - not used
         level: -1,
         progress: -1,
         remaining: -1
@@ -64,8 +62,7 @@ export class VotingComponent implements OnInit {
 
     constructor(
         public walletService: WalletService,
-        private tzscanService: TzscanService,
-        private delegatorNamePipe: DelegatorNamePipe
+        private tzscanService: TzscanService
     ) { }
 
     showDoughnutCharts(currentParticipation: any) {
@@ -168,11 +165,6 @@ export class VotingComponent implements OnInit {
         this.isBakersParticipation = !this.isBakersParticipation;
         console.log(this.isBakersParticipation);
         if (this.isBakersParticipation) {
-            // Bakers Participation - docs: https://www.chartjs.org/docs/latest/developers/updates.html
-            /*this.doughnutParticipation.data.labels.pop();
-            this.doughnutParticipation.data.labels.pop();
-            this.doughnutParticipation.data.labels.push('Voted', 'To be decided');*/
-            //this.doughnutParticipation.data.labels = ['Voted', 'To be decided'];
             this.doughnutParticipation.data.datasets.forEach((dataset) => {
                 dataset.data.pop();
                 dataset.data.pop();
@@ -193,8 +185,6 @@ export class VotingComponent implements OnInit {
     }
 
     ngOnInit() {
-        console.log('votingPeriodHeads ', this.votingPeriodHeads);
-
         this.tzscanService.getPeriodInfo().subscribe(
             data => {
                 const periodInfo: any = data;

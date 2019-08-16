@@ -56,7 +56,7 @@
                             <td> {{ baker.rolls }} </td>
                             <!-- <td> {{ baker.rolls / currentParticipation.total_votes * 1000 | number:'1.0-2' }} ‰ </td> -->
                             <td> {{ baker.identity }} </td>
-                            <td *ngIf="this.showColumn.Proposal"> {{ baker.vote }} </td>
+                            <td *ngIf="this.showColumn.Proposal" style="white-space: pre-line;"> {{ baker.vote.join("\n") }} </td>
                             <td *ngIf="this.showColumn.Exploration"> {{ baker.vote2 }} </td>
                             <td *ngIf="this.showColumn.Testing">  </td>
                             <td *ngIf="this.showColumn.Promotion"> {{ baker.vote3 }} </td>

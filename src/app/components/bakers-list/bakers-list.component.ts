@@ -4,10 +4,6 @@ import { Sort } from '@angular/material';
 import { WalletService } from '../../services/wallet.service';
 import { TzscanService } from '../../services/tzscan.service';
 import { OperationService } from '../../services/operation.service';
-import { DelegatorNamePipe } from '../../pipes/delegator-name.pipe';
-
-import { Period, PeriodKind } from '../../interfaces';
-import { VOTINGPERIODHEADS } from '../../../data/bakers-list';
 import { BAKERSLIST } from '../../../data/bakers-list';
 
 @Component({
@@ -39,27 +35,17 @@ export class BakersListComponent implements OnInit, OnDestroy {
         total_votes: -1
     };
 
-    votingPeriodHeads = VOTINGPERIODHEADS;
-    currentPeriod: Period = {
-        amendment: 'Athens',
-        period: 10,
-        period_kind: 'Proposal', //PeriodKind.Proposal,
-        proposal_hash: [],
-        proposal_alias: [],
-        start_level: this.votingPeriodHeads[0].start_level,  // 327681
-        end_level: this.votingPeriodHeads[0].end_level,  // 360448
-        level: -1,
-        progress: -1,
-        remaining: -1
-    };
-
     constructor(
-        // Uncaught Error: Can't resolve all parameters for BakersListComponent: ([object Object], [object Object], [object Object], [object Object], ?).
         public walletService: WalletService,
         private tzscanService: TzscanService,
-        private delegatorNamePipe: DelegatorNamePipe,
         private operationService: OperationService
-    ) { }
+    ) {
+        this.bakersList.forEach(function (baker: any) {
+            baker.vote = [];
+            baker.vote2 = '';
+            baker.vote3 = '';
+        });
+    }
 
     sortData(sort: Sort) {
         const data = this.bakersList.slice();
@@ -67,7 +53,6 @@ export class BakersListComponent implements OnInit, OnDestroy {
             this.bakersList = data;
             return;
         }
-
         this.bakersList = data.sort((a, b) => {
             const isAsc = sort.direction === 'asc';
             switch (sort.active) {
@@ -141,15 +126,21 @@ export class BakersListComponent implements OnInit, OnDestroy {
                                     this.bakersList.push({
                                         baker_name: '',
                                         identity: voter.pkh,
-                                        vote: '',
+                                        vote: [],
                                         rolls: voter.rolls,
                                         vote2: '',
+                                        vote3: '',
                                         image: ''
                                     });
                                 }
                             }
+                            for (const baker of this.bakersList) {
+                                if (!baker.rolls) {
+                                    baker.rolls = '0';
+                                }
+                            }
                             //Getting the totalNumbers
-                            this.tzscanService.getTotalVotes(this.currentPeriod.period).subscribe(
+                            this.tzscanService.getTotalVotes(periodInfo.period).subscribe(
                                 result => {
                                     const totalVotes: any = result;
                                     this.currentParticipation.unused_count = totalVotes.unused_count;
@@ -182,7 +173,10 @@ export class BakersListComponent implements OnInit, OnDestroy {
                 for (const vote of votes) {
                     for (const baker of this.bakersList) {
                         if (baker.identity === vote.source.tz) {
-                            baker.vote += hash.slice(0, 9) + '... ';
+                            const proposalVote = hash.slice(0, 9) + '... ';
+                            if (baker.vote.indexOf(proposalVote) === -1) {
+                                baker.vote.push(proposalVote);
+                            }
                         }
                     }
                 }
