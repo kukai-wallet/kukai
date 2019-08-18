@@ -1,13 +1,11 @@
 <div id="content">
     <div class="center-content">
-        <div class="row">
-            <a routerLink="/connect-ledger/" class="active-link">
-                <button type="button" class="btn btn-primary btn-lg btn-block btn-generate">Connect Ledger</button>
-            </a>
-        </div>
-        <div class="row">
-            <a routerLink="/import/" class="active-link">
+        <div class="row justify-content-between">
+            <a routerLink="/import/" class="btn-import">
                 <button type="button" class="btn btn-primary btn-lg btn-block btn-generate">{{ 'STARTCOMPONENT.IMPORTWALLET' | translate }}</button>
+            </a>
+            <a routerLink="/connect-ledger/">
+                <button type="button" title="Connect Ledger" class="btn btn-primary btn-lg btn-block btn-generate btn-ledger"></button>
             </a>
         </div>
         <div class="row justify-content-between">
