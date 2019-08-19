@@ -20,11 +20,6 @@ export const BAKERSLIST: any = [
         image: 'assets/img/bakers/atjames.png'
      },
      {
-        baker_name: 'Attic Pool',
-        identity: 'tz1MXFrtZoaXckE41bjUCSjAjAap3AFDSr3N',
-        image: 'assets/img/bakers/atticpool.png'
-     },
-     {
         baker_name: 'Bake Tz',
         identity: 'tz1ei4WtWEMEJekSv8qDnu9PExG6Q8HgRGr3',
         image: 'assets/img/bakers/bake_tz.png'
