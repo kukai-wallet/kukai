@@ -9,6 +9,8 @@ import { MessageService } from './message.service';
 @Injectable()
 export class LedgerService {
   transport: any;
+  errorMessage = 'U2F browser support is needed for Ledger. Please use Chrome, Opera ' +
+  'or Firefox with a U2F extension. Also make sure you\'re on an HTTPS connection';
   constructor(
     private operationService: OperationService,
     private messageService: MessageService
@@ -36,7 +38,16 @@ export class LedgerService {
       }
     }
   }
+  async transportCheck() {
+    if (!this.transport) {
+      await this.setTransport();
+    }
+    if (!this.transport) {
+      this.messageService.addError(this.errorMessage);
+    }
+  }
   async getPublicAddress (path: string) {
+    await this.transportCheck();
     const xtz = new App(this.transport);
     const result = await xtz.getAddress(path, true)
       .catch(e => {
@@ -46,6 +57,7 @@ export class LedgerService {
     return pk;
   }
   async signOperation (op: string, path: string) {
+    await this.transportCheck();
     console.log('ledger op ' + op);
     const xtz = new App(this.transport);
     console.log(path);
