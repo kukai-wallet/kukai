@@ -245,25 +245,31 @@ export class OperationService {
         if (!this.validOpBytes(fop, opbytes)) {
           throw new Error('ValidationError');
         }
-        if (!keys.sk) { // If sk doesn't exist, return unsigned operation
-          return of(
-            {
-              success: true,
-              payload: {
-                unsignedOperation: opbytes
-              }
-            });
-        } else { // If sk exists, sign and broadcast operation
-          const signed = this.sign(opbytes, keys.sk);
-          const sopbytes = signed.sbytes;
-          const opHash = this.b58cencode(libs.crypto_generichash(32, this.hex2buf(sopbytes)), this.prefix.o);
-          fop.protocol = this.CHAIN_ID;
-          fop.signature = signed.edsig;
-          return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/preapply/operations', [fop])
+        if (!keys.sk) {
+          fop.signature = 'edsigtXomBKi5CTRf5cjATJWSyaRvhfYNHqSUGrn4SdbYRcGwQrUGjzEfQDTuqHhuA8b2d8NarZjz8TRf65WkpQmo423BtomS8Q';
+          return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/scripts/run_operation', fop)
             .flatMap((applied: any) => {
               console.log('applied: ' + JSON.stringify(applied));
-              this.checkApplied(applied);
-              console.log('sop: ' + sopbytes);
+              this.checkApplied([applied]);
+              return of(
+                {
+                  success: true,
+                  payload: {
+                    unsignedOperation: opbytes
+                  }
+                });
+            });
+        } else {
+          fop.protocol = this.CHAIN_ID;
+          const signed = this.sign(opbytes, keys.sk);
+          const sopbytes = signed.sbytes;
+          fop.signature = signed.edsig;
+        // const opHash = this.b58cencode(libs.crypto_generichash(32, this.hex2buf(sopbytes)), this.prefix.o);
+        console.log('fop: ' + fop);
+        return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/preapply/operations', [fop])
+          .flatMap((applied: any) => {
+            console.log('applied: ' + JSON.stringify(applied));
+            this.checkApplied(applied);
               return this.http.post(this.nodeURL + '/injection/operation', JSON.stringify(sopbytes), httpOptions)
                 .flatMap((final: any) => {
                   let newPkh = null;
@@ -273,7 +279,7 @@ export class OperationService {
                   }
                   return this.opCheck(final, newPkh);
                 });
-            });
+          });
         }
       });
   }
