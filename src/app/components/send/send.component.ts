@@ -289,20 +289,20 @@ export class SendComponent implements OnInit {
                             for (let i = 0; i < this.transactions.length; i++) {
                                 this.coordinatorService.boost(this.transactions[i].to);
                             }
-                        } else if (this.walletService.isLedgerWallet) {
+                        } else if (this.walletService.isLedgerWallet()) {
                             this.ledgerInstruction = 'Please sign the transaction with your Ledger to proceed!';
                             this.requestLedgerSignature();
                         }
                     } else {
                         console.log('Transaction error id ', ans.payload.msg);
-                        if (this.walletService.isLedgerWallet) {
+                        if (this.walletService.isLedgerWallet()) {
                             this.ledgerInstruction = 'Failed with: ' + ans.payload.msg;
                         }
                     }
                 },
                 err => {
                     console.log('Error Message ', JSON.stringify(err));
-                    if (this.walletService.isLedgerWallet) {
+                    if (this.walletService.isLedgerWallet()) {
                         this.ledgerInstruction = 'Failed to create transaction';
                     }
                 },

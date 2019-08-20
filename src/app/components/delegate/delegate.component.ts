@@ -132,13 +132,13 @@ export class DelegateComponent implements OnInit {
                     if (ans.success === true) {
                         if (ans.payload.opHash) {
                             this.coordinatorService.boost(this.activePkh);
-                        } else if (this.walletService.isLedgerWallet) {
+                        } else if (this.walletService.isLedgerWallet()) {
                             this.ledgerInstruction = 'Please sign the delegation with your Ledger to proceed!';
                             this.requestLedgerSignature();
                           }
                     } else {
                         console.log('Delegation error id ', ans.payload.msg);
-                        if (this.walletService.isLedgerWallet) {
+                        if (this.walletService.isLedgerWallet()) {
                             this.ledgerInstruction = 'Failed with: ' + ans.payload.msg;
                           }
                     }

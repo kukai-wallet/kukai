@@ -146,13 +146,13 @@ export class NewAccountComponent implements OnInit {
               this.walletService.addAccount(ans.payload.newPkh);
               this.coordinatorService.boost(this.activePkh);
               this.coordinatorService.start(ans.payload.newPkh);
-            } else if (this.walletService.isLedgerWallet) {
+            } else if (this.walletService.isLedgerWallet()) {
               this.ledgerInstruction = 'Please sign the origination with your Ledger to proceed!';
               this.requestLedgerSignature();
             }
           } else {
             console.log('Account creation failed ', JSON.stringify(ans.payload.msg));
-            if (this.walletService.isLedgerWallet) {
+            if (this.walletService.isLedgerWallet()) {
               this.ledgerInstruction = 'Failed with: ' + ans.payload.msg;
             }
           }

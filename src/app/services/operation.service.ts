@@ -435,12 +435,14 @@ export class OperationService {
       });
   }
   getVerifiedOpBytes(operationLevel, operationHash, pkh, pk): Observable<string> {
-    return this.http.get(this.nodeURL + '/chains/main/blocks/' + operationLevel + '/operation_hashes/3', {})
+    return this.http.get(this.nodeURL + '/chains/main/blocks/' + operationLevel + '/operation_hashes', {})
       .flatMap((opHashes: any) => {
-        const opIndex = opHashes.findIndex(a => a === operationHash);
-        return this.http.get(this.nodeURL + '/chains/main/blocks/' + operationLevel + '/operations/3/' + opIndex, {})
+        const opIndex = opHashes[3].findIndex(a => a === operationHash);
+        return this.http.get(this.nodeURL + '/chains/main/blocks/' + operationLevel + '/operations', {})
           .flatMap((op: any) => {
             let ans = '';
+            op = op[3][opIndex];
+            console.log(op);
             const sig = op.signature;
             delete op.chain_id;
             delete op.signature;
