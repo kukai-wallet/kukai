@@ -21,7 +21,7 @@
                 <a routerLink="/">
                   <button type="button" class="btn btn-primary btn-lg btn-float-left">Back</button>
                 </a>
-                <button type="button" class="btn btn-primary btn-lg" (click)="getPk()">Connect</button>
+                <button type="button" [disabled]="pendingLedgerConfirmation" class="btn btn-primary btn-lg" (click)="getPk()">Connect</button>
             </div>
         </div>
     </div>

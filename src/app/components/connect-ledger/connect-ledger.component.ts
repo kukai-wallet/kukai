@@ -16,6 +16,7 @@ export class ConnectLedgerComponent implements OnInit {
   activePanel = 0;
   CONSTANTS = new Constants();
   path = '44\'/1729\'/0\'/0\'';
+  pendingLedgerConfirmation = false;
 
   constructor(
     private router: Router,
@@ -32,9 +33,17 @@ export class ConnectLedgerComponent implements OnInit {
   }
   async getPk() {
     if (this.inputValidationService.derivationPath(this.path)) {
-      const pk = await this.ledgerService.getPublicAddress(this.path);
-      console.log('getPK => ' + pk);
-      this.importFromPk(pk, this.path);
+      this.messageService.add('Please verify the public key hash on your Ledger device to continue!');
+      this.pendingLedgerConfirmation = true;
+      try {
+        const pk = await this.ledgerService.getPublicAddress(this.path);
+        console.log('getPK => ' + pk);
+        this.importFromPk(pk, this.path);
+      } catch (e) {
+        throw(e);
+      } finally {
+        this.pendingLedgerConfirmation = false;
+      }
     } else {
       this.messageService.addWarning('Invalid derivation path');
     }
