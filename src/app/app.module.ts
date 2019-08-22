@@ -15,8 +15,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 
 // External libraries
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { ComponentLoaderFactory } from 'ngx-bootstrap/component-loader/component-loader.factory';
+import { ComponentLoaderFactory } from 'ngx-bootstrap/component-loader';
 import { ModalModule, AlertModule, ProgressbarModule, ButtonsModule, BsDropdownModule, TabsModule } from 'ngx-bootstrap';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 
@@ -112,7 +111,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     FormsModule,
     AppRoutingModule,
     HttpClientModule,
-    NgbModule.forRoot(),
     CollapseModule.forRoot(),
     ModalModule.forRoot(),
     AlertModule.forRoot(),

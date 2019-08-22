@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { saveAs } from 'file-saver/FileSaver';
+import { saveAs } from 'file-saver';
 
 import { WalletType } from './../interfaces';
 

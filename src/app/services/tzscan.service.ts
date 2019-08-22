@@ -2,12 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Constants } from '../constants';
-import { stringify } from '@angular/core/src/render3/util';
-import { of } from 'rxjs/observable/of';
-import { forkJoin } from 'rxjs/observable/forkJoin';
+import { of ,  forkJoin ,  Observable } from 'rxjs';
 import { timeout, catchError, flatMap, mergeMap } from 'rxjs/operators';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/mergeMap';
+
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -27,13 +24,13 @@ export class TzscanService {
   }
   operations(pkh: string, n: number, p: number = 0): Observable<any> {
     return this.http.get(this.apiUrl + 'v1/operations/' + pkh + '?type=Transaction&number=' + n + '&p=' + p)
-      .flatMap((p1: any) => {
+      .pipe(flatMap((p1: any) => {
         return this.http.get(this.apiUrl + 'v1/operations/' + pkh + '?type=Delegation&number=' + n + '&p=' + p)
-          .flatMap((p2: any) => {
+          .pipe(flatMap((p2: any) => {
             return this.http.get(this.apiUrl + 'v1/operations/' + pkh + '?type=Origination&number=' + n + '&p=' + p)
-              .flatMap((p3: any) => {
+              .pipe(flatMap((p3: any) => {
                 return this.http.get(this.apiUrl + 'v1/operations/' + pkh + '?type=Activation&number=1&p=0')
-                  .flatMap((p4: any) => {
+                  .pipe(flatMap((p4: any) => {
                     const part = [p1, p2, p3, p4];
                     const parts: any = [];
                     for (let i = 0; i < 4; i++) {
@@ -42,19 +39,19 @@ export class TzscanService {
                       }
                     }
                     return of(parts);
-                  });
-              });
-          });
-      });
+                  }));
+              }));
+          }));
+      }));
   }
   getCounter(op: any): number {
     return Number(op.type.operations[0].counter);
   }
   getManagerKey(pkh: any): Observable<any> {
     return this.http.get(this.apiUrl + 'v1/operations/' + pkh + '?type=Reveal&number=1&p=0')
-      .flatMap((res: any) => {
+      .pipe(flatMap((res: any) => {
         return of(res[0].type.operations[0].public_key);
-      });
+      }));
   }
   operationsOrigination(pkh: string, n: number) {
     return this.http.get(this.apiUrl + 'v1/operations/' + pkh + '?type=Origination&number=' + n + '&p=0');
@@ -64,9 +61,9 @@ export class TzscanService {
   }
   getPriceUSD(): Observable<any> {
     return this.http.get(this.apiUrl + 'v1/marketcap')
-      .flatMap((res: any) => {
+      .pipe(flatMap((res: any) => {
         return of(res[0].price_usd);
-      });
+      }));
   }
   getOp(data: any, pkh: string): any {
     const ops: any[] = [];
@@ -121,7 +118,7 @@ export class TzscanService {
 
   getProposals(latesProposalPeriod: string) {
     return this.http.get(this.apiUrl + 'v3/proposals')
-      .flatMap(
+      .pipe(flatMap(
         ((res: any) => {
           const ans = [];
           for (let i = 0; i < res.length; i++) {
@@ -131,7 +128,7 @@ export class TzscanService {
           }
           return of(ans);
         })
-      );
+      ));
   }
 
   getProposalsCurrentPeriod(period: number) {
@@ -141,7 +138,7 @@ export class TzscanService {
   //Needs improvement - Need to work with an array of hash strings
   getProposalVotes(proposalHash, p: number = 0, data?: any): Observable<any> {
     return this.http.get(this.apiUrl + 'v3/proposal_votes/' + proposalHash + '?p=' + p + '&number=50')
-      .flatMap(
+      .pipe(flatMap(
         ((res: any) => {
           if (res.length < 50) {
             if (data) {
@@ -155,7 +152,7 @@ export class TzscanService {
             return this.getProposalVotes(proposalHash, ++p, res);
           }
         })
-      );
+      ));
   }
 
   getPeriodInfo() {
@@ -177,7 +174,7 @@ export class TzscanService {
   }
   getBallotVotes(maxPeriod: number, p: number = 0, data?: any): Observable<any> {
     return this.http.get(this.apiUrl + 'v3/operations?type=Ballot&p=' + p + '&number=50')
-      .flatMap(
+      .pipe(flatMap(
         ((res: any) => {
           let inScope = [];
           for (let i = 0; i < res.length; i++) {
@@ -199,6 +196,6 @@ export class TzscanService {
             return this.getBallotVotes(maxPeriod, ++p, inScope); // Do more calls
           }
         })
-      );
+      ));
   }
 }

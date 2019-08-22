@@ -18,7 +18,7 @@ import { InputValidationService } from '../../services/input-validation.service'
 })
 export class NewAccountComponent implements OnInit {
   recommendedFee = 0.0013;
-  @ViewChild('modal1') modal1: TemplateRef<any>;
+  @ViewChild('modal1', {static: false}) modal1: TemplateRef<any>;
   @Input() activePkh: string;
   accounts = null;
   amount: string;

@@ -3,11 +3,9 @@ import { MessageService } from './message.service';
 import { WalletService } from './wallet.service';
 import { Activity } from '../interfaces';
 import { TzscanService } from './tzscan.service';
-import { of } from 'rxjs/observable/of';
-import { forkJoin } from 'rxjs/observable/forkJoin';
+import { of ,  forkJoin ,  Observable } from 'rxjs';
 import { timeout, catchError, flatMap, mergeMap } from 'rxjs/operators';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/mergeMap';
+
 
 @Injectable()
 export class ActivityService {
@@ -27,16 +25,16 @@ export class ActivityService {
   }
   updateTransactions(pkh: string): Observable<any> {
     return this.getTransactonsCounter(pkh)
-      .flatMap((ans: any) => {
+      .pipe(flatMap((ans: any) => {
         if (ans[0] && ans[0].save) {
           this.walletService.storeWallet();
         }
         return of(ans);
-      });
+      }));
   }
   getTransactonsCounter(pkh): Observable<any> {
     return this.tzscanService.numberOperations(pkh)
-      .flatMap((number_operations: any) => {
+      .pipe(flatMap((number_operations: any) => {
         const index = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
         if (index === -1 || this.walletService.wallet.accounts[index].numberOfActivites !== number_operations[0]) {
           // return this.getTransactions(pkh, number_operations[0]);
@@ -48,12 +46,13 @@ export class ActivityService {
             });
         }
       }
-      );
+      )
+    );
   }
   // Get latest transaction
   getTransactions(pkh: string, counter: number): Observable<any> {
     return this.tzscanService.operations(pkh, this.maxTransactions)
-      .flatMap((data: any) => {
+      .pipe(flatMap((data: any) => {
         const newTransactions: Activity[] = [];
         for (let i = 0; i < data.length; i++) {
           const ops: any = this.tzscanService.getOp(data[i], pkh);
@@ -83,7 +82,8 @@ export class ActivityService {
             });
           }
         }
-        return this.getTimestamps(pkh, payload).flatMap(
+        return this.getTimestamps(pkh, payload)
+          .pipe(flatMap(
           (res: any) => { // Sort
             const pkhIndex = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
             let cpy: any = this.walletService.wallet.accounts[pkhIndex].activities;
@@ -91,8 +91,8 @@ export class ActivityService {
             this.walletService.wallet.accounts[pkhIndex].activities = cpy;
             return of(res);
           }
-        );
-      }
+        ));
+      })
       );
   }
   getTimestamps(pkh: string, payloads: any[]): Observable<any> {
@@ -114,7 +114,7 @@ export class ActivityService {
 
   getTimestamp(pkh: string, block: string, hash: string): Observable<any> {
     return this.tzscanService.timestamp(block)
-      .flatMap((time: any) => {
+      .pipe(flatMap((time: any) => {
         if (time) { time = new Date(time); }
         const pkhIndex = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
         for (let ti = 0; ti < this.walletService.wallet.accounts[pkhIndex].activities.length; ti++) {
@@ -127,7 +127,7 @@ export class ActivityService {
           {
             save: true
           });
-      });
+      }));
   }
   getIndex(pkh: string): number {
     return this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);

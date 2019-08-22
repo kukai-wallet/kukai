@@ -28,7 +28,7 @@ const revealFee = 0.0013;
     styleUrls: ['./send.component.scss']
 })
 export class SendComponent implements OnInit {
-    @ViewChild('modal1') modal1: TemplateRef<any>;
+    @ViewChild('modal1', {static: false}) modal1: TemplateRef<any>;
     @Input() activePkh: string;
     @Input() actionButtonString: string;  // Possible values: btnOutline / dropdownItem / btnSidebar
     recommendedFee = transactionFee;

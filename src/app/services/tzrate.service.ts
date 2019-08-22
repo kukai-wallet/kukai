@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import 'rxjs/add/operator/map';
+
 
 import { WalletService } from './wallet.service';
 import { TzscanService } from './tzscan.service';

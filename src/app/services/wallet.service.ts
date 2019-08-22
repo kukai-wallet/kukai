@@ -26,12 +26,12 @@ export class WalletService {
     return bip39.generateMnemonic(160);
   }
   createEncryptedWallet(mnemonic: string, password: string, passphrase: string = ''): any {
-    let seed = this.operationService.mnemonic2seed(mnemonic, passphrase);
+    const  seed = this.operationService.mnemonic2seed(mnemonic, passphrase);
     const keyPair: KeyPair = this.operationService.seed2keyPair(seed);
     const encrypted = this.encryptionService.encrypt(seed, password, 2);
-    seed = encrypted.chiphertext;
+    const encryptedSeed = encrypted.chiphertext;
     const salt = encrypted.iv;
-    return { data: this.exportKeyStoreInit(WalletType.FullWallet, keyPair.pkh, seed, salt), pkh: keyPair.pkh };
+    return { data: this.exportKeyStoreInit(WalletType.FullWallet, keyPair.pkh, encryptedSeed, salt), pkh: keyPair.pkh };
   }
   getSalt(pkh: string = this.wallet.accounts[0].pkh) {
     return pkh.slice(3, 19);

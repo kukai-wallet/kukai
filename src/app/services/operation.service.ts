@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { of } from 'rxjs/observable/of';
-import { catchError } from 'rxjs/operators';
-import { Observable } from 'rxjs/Observable';
+import { of ,  Observable } from 'rxjs';
+import { catchError, flatMap } from 'rxjs/operators';
 import { Buffer } from 'buffer';
 import * as libs from 'libsodium-wrappers';
 import * as Bs58check from 'bs58check';
@@ -53,7 +52,7 @@ export class OperationService {
   */
   activate(pkh: string, secret: string): Observable<any> {
     return this.http.get(this.nodeURL + '/chains/main/blocks/head/hash', {})
-      .flatMap((hash: any) => {
+      .pipe(flatMap((hash: any) => {
         const fop: any = {
           branch: hash,
           contents: [{
@@ -63,21 +62,21 @@ export class OperationService {
           }]
         };
         return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/forge/operations', fop)
-          .flatMap((opbytes: any) => {
+          .pipe(flatMap((opbytes: any) => {
             this.decodeOpBytes(opbytes);
             const sopbytes: string = opbytes + Array(129).join('0');
             fop.protocol = this.CHAIN_ID;
             fop.signature = 'edsigtXomBKi5CTRf5cjATJWSyaRvhfYNHqSUGrn4SdbYRcGwQrUGjzEfQDTuqHhuA8b2d8NarZjz8TRf65WkpQmo423BtomS8Q';
             return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/preapply/operations', [fop])
-              .flatMap((parsed: any) => {
+              .pipe(flatMap((parsed: any) => {
                 return this.http.post(this.nodeURL + '/injection/operation',
                   JSON.stringify(sopbytes), httpOptions)
-                  .flatMap((final: any) => {
+                  .pipe(flatMap((final: any) => {
                     return this.opCheck(final);
-                  });
-              });
-          });
-      }).pipe(catchError(err => this.errHandler(err)));
+                  }));
+              }));
+          }));
+      })).pipe(catchError(err => this.errHandler(err)));
   }
   opCheck(final: any, newPkh: string = null): Observable<any> {
     if (typeof (final) === 'string' && final.length === 51) {
@@ -105,11 +104,11 @@ export class OperationService {
   */
   originate(pkh: string, amount: number, fee: number = 0, keys: KeyPair): Observable<any> {
     return this.http.get(this.nodeURL + '/chains/main/blocks/head/hash', {})
-      .flatMap((hash: string) => {
+      .pipe(flatMap((hash: string) => {
         return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + pkh + '/counter', {})
-          .flatMap((actions: number) => {
+          .pipe(flatMap((actions: number) => {
             return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + pkh + '/manager_key', {})
-              .flatMap((manager: any) => {
+              .pipe(flatMap((manager: any) => {
                 let counter: number = Number(actions);
                 const fop: any = {
                   branch: hash,
@@ -142,9 +141,9 @@ export class OperationService {
                   fop.contents[1].counter = (Number(fop.contents[1].counter) + 1).toString();
                 }
                 return this.operation(fop, keys, true);
-              });
-          });
-      }).pipe(catchError(err => this.errHandler(err)));
+              }));
+          }));
+      })).pipe(catchError(err => this.errHandler(err)));
   }
   /*
     Returns an observable for the transaction of tez.
@@ -152,11 +151,11 @@ export class OperationService {
   // transfer(from: string, to: string, amount: number, fee: number = 0, keys: KeyPair): Observable<any> {
   transfer(from: string, transactions: any, fee: number = 0, keys: KeyPair, gasLimit: number, storageLimit: number): Observable<any> {
     return this.http.get(this.nodeURL + '/chains/main/blocks/head/hash', {})
-      .flatMap((hash: any) => {
+      .pipe(flatMap((hash: any) => {
         return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + from + '/counter', {})
-          .flatMap((actions: any) => {
+          .pipe(flatMap((actions: any) => {
             return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + from + '/manager_key', {})
-              .flatMap((manager: any) => {
+              .pipe(flatMap((manager: any) => {
                 let counter: number = Number(actions);
                 const fop: any = {
                   branch: hash,
@@ -186,20 +185,20 @@ export class OperationService {
                   });
                 }
                 return this.operation(fop, keys);
-              });
-          });
-      }).pipe(catchError(err => this.errHandler(err)));
+              }));
+          }));
+      })).pipe(catchError(err => this.errHandler(err)));
   }
   /*
     Returns an observable for the delegation of baking rights.
   */
   delegate(from: string, to: string, fee: number = 0, keys: KeyPair): Observable<any> {
     return this.http.get(this.nodeURL + '/chains/main/blocks/head/hash', {})
-      .flatMap((hash: any) => {
+      .pipe(flatMap((hash: any) => {
         return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + from + '/counter', {})
-          .flatMap((actions: any) => {
+          .pipe(flatMap((actions: any) => {
             return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + from + '/manager_key', {})
-              .flatMap((manager: any) => {
+              .pipe(flatMap((manager: any) => {
                 let counter: number = Number(actions);
                 const fop: any = {
                   branch: hash,
@@ -231,9 +230,9 @@ export class OperationService {
                   fop.contents[1].counter = (Number(fop.contents[1].counter) + 1).toString();
                 }
                 return this.operation(fop, keys);
-              });
-          });
-      }).pipe(catchError(err => this.errHandler(err)));
+              }));
+          }));
+      })).pipe(catchError(err => this.errHandler(err)));
   }
   /*
   Help function for operations
@@ -241,7 +240,7 @@ export class OperationService {
   operation(fop: any, keys: KeyPair, origination: boolean = false): Observable<any> {
     console.log('fop to send: ' + JSON.stringify(fop));
     return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/forge/operations', fop)
-      .flatMap((opbytes: any) => {
+      .pipe(flatMap((opbytes: any) => {
         if (!this.validOpBytes(fop, opbytes)) {
           throw new Error('ValidationError');
         }
@@ -260,22 +259,22 @@ export class OperationService {
           fop.protocol = this.CHAIN_ID;
           fop.signature = signed.edsig;
           return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/preapply/operations', [fop])
-            .flatMap((applied: any) => {
+            .pipe(flatMap((applied: any) => {
               console.log('applied: ' + JSON.stringify(applied));
               this.checkApplied(applied);
               console.log('sop: ' + sopbytes);
               return this.http.post(this.nodeURL + '/injection/operation', JSON.stringify(sopbytes), httpOptions)
-                .flatMap((final: any) => {
+                .pipe(flatMap((final: any) => {
                   let newPkh = null;
                   if (origination) {
                     newPkh = applied[0].contents[fop.contents.length - 1].
                       metadata.operation_result.originated_contracts[0];
                   }
                   return this.opCheck(final, newPkh);
-                });
-            });
+                }));
+            }));
         }
-      });
+      }));
   }
   /*
     Broadcast a signed operation to the network
@@ -292,7 +291,7 @@ export class OperationService {
       return this.errHandler('Invalid bytes');
     }
     return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/preapply/operations', [fop])
-      .flatMap((parsed: any) => {
+      .pipe(flatMap((parsed: any) => {
         let newPkh = null;
         for (let i = 0; i < parsed[0].contents.length; i++) {
           if (parsed[0].contents[i].kind === 'origination') {
@@ -300,10 +299,10 @@ export class OperationService {
           }
         }
         return this.http.post(this.nodeURL + '/injection/operation', JSON.stringify(sopbytes), httpOptions)
-          .flatMap((final: any) => {
+          .pipe(flatMap((final: any) => {
             return this.opCheck(final, newPkh);
-          });
-      }).pipe(catchError(err => this.errHandler(err)));
+          }));
+      })).pipe(catchError(err => this.errHandler(err)));
   }
   checkApplied(applied: any) {
     for (let i = 0; i < applied[0].contents.length; i++) {
@@ -343,7 +342,7 @@ export class OperationService {
   }
   getBalance(pkh: string): Observable<any> {
     return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + pkh + '/balance')
-      .flatMap((balance: any) => {
+      .pipe(flatMap((balance: any) => {
         return of(
           {
             success: true,
@@ -352,12 +351,12 @@ export class OperationService {
             }
           }
         );
-      }).pipe(catchError(err => this.errHandler(err)));
+      })).pipe(catchError(err => this.errHandler(err)));
   }
   getDelegate(pkh: string): Observable<any> {
     console.log('<Looking for delegate>');
     return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + pkh)
-      .flatMap((contract: any) => {
+      .pipe(flatMap((contract: any) => {
         let delegate = '';
         if (contract.delegate.value) {
           delegate = contract.delegate.value;
@@ -370,36 +369,36 @@ export class OperationService {
             }
           }
         );
-      }).pipe(catchError(err => this.errHandler(err)));
+      })).pipe(catchError(err => this.errHandler(err)));
   }
   getVotingRights(): Observable<any> {
     console.log('<Looking for voting rights>');
     return this.http.get(this.nodeURL + '/chains/main/blocks/head/votes/listings')
-      .flatMap((listings: any) => {
+      .pipe(flatMap((listings: any) => {
         return of(
           {
             success: true,
             payload: listings
           }
         );
-      }).pipe(catchError(err => this.errHandler(err)));
+      })).pipe(catchError(err => this.errHandler(err)));
   }
   isRevealed(pkh: string): Observable<boolean> {
     return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + pkh + '/manager_key', {})
-      .flatMap((manager: any) => {
+      .pipe(flatMap((manager: any) => {
         if (manager.key === undefined) {
           return of(false);
         } else {
           return of(true);
         }
       }
-      ).pipe(catchError(err => {
+      )).pipe(catchError(err => {
         return of(true);
       })); // conservative action
   }
   getAccount(pkh: string): Observable<any> {
     return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + pkh)
-      .flatMap((contract: any) => {
+      .pipe(flatMap((contract: any) => {
         let delegate = '';
         if (contract.delegate.value) {
           delegate = contract.delegate.value;
@@ -415,24 +414,24 @@ export class OperationService {
             }
           }
         );
-      }).pipe(catchError(err => this.errHandler(err)));
+      })).pipe(catchError(err => this.errHandler(err)));
   }
   getManagerKey(pkh: string): Observable<string> {
     return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + pkh + '/manager_key', {})
-      .flatMap((manager: any) => {
+      .pipe(flatMap((manager: any) => {
         if (manager.key) {
           return of(manager.key);
         } else {
           return of('');
         }
-      });
+      }));
   }
   getVerifiedOpBytes(operationLevel, operationHash, pkh, pk): Observable<string> {
     return this.http.get(this.nodeURL + '/chains/main/blocks/' + operationLevel + '/operation_hashes/3', {})
-      .flatMap((opHashes: any) => {
+      .pipe(flatMap((opHashes: any) => {
         const opIndex = opHashes.findIndex(a => a === operationHash);
         return this.http.get(this.nodeURL + '/chains/main/blocks/' + operationLevel + '/operations/3/' + opIndex, {})
-          .flatMap((op: any) => {
+          .pipe(flatMap((op: any) => {
             let ans = '';
             const sig = op.signature;
             delete op.chain_id;
@@ -448,7 +447,7 @@ export class OperationService {
             }
             console.log('DUMP: ' + JSON.stringify(op));
             return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/forge/operations', op)
-              .flatMap((opBytes: any) => {
+              .pipe(flatMap((opBytes: any) => {
                 if (this.pk2pkh(pk) === pkh) {
                   if (this.verify(opBytes, sig, pk)) {
                     ans = opBytes + this.buf2hex(this.b58cdecode(sig, this.prefix.sig));
@@ -459,9 +458,9 @@ export class OperationService {
                   throw new Error('InvalidPublicKey');
                 }
                 return of(ans);
-              });
-          });
-      });
+              }));
+          }));
+      }));
   }
   createKTaddress(sopBytes: string): string {
     const hash = libs.crypto_generichash(32, this.hex2buf(sopBytes));
@@ -473,7 +472,7 @@ export class OperationService {
   getConstants(): Observable<any> {
     return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/constants');
   }
-  seed2keyPair(seed: string): KeyPair {
+  seed2keyPair(seed: Buffer): KeyPair {
     if (!seed) {
       throw new Error('NullSeed');
     }
@@ -488,7 +487,7 @@ export class OperationService {
     if (!this.validMnemonic(mnemonic)) {
       throw new Error('InvalidMnemonic');
     }
-    return bip39.mnemonicToSeed(mnemonic, passphrase).slice(0, 32);
+    return (bip39.mnemonicToSeedSync(mnemonic, passphrase)).slice(0, 32);
   }
   validMnemonic(mnemonic: string) {
     return bip39.validateMnemonic(mnemonic);
@@ -526,7 +525,7 @@ export class OperationService {
     const n = new Uint8Array(prefixx.length + payload.length);
     n.set(prefixx);
     n.set(payload, prefixx.length);
-    return Bs58check.encode(new Buffer(this.buf2hex(n), 'hex'));
+    return Bs58check.encode(Buffer.from(this.buf2hex(n), 'hex'));
   }
   b58cdecode(enc, prefixx) {
     let n = Bs58check.decode(enc);

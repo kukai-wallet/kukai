@@ -109,7 +109,9 @@ a:hover {
 
 // Large devices (desktops, 992px and up)
 @media (min-width: 992px) { 
-    min-width: 0vw
+    .container {
+        min-width: 0vw
+    }
  }
 
 // Extra large devices (large desktops, 1200px and up)

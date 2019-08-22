@@ -10,7 +10,7 @@ import { TranslateService } from '@ngx-translate/core';
     styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-
+    Buffer = Buffer || [];
     constructor(
         private walletService: WalletService,
         private coordinatorService: CoordinatorService

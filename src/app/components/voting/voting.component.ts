@@ -15,8 +15,8 @@ import { Period, Ballot } from '../../interfaces';
     styleUrls: ['./voting.component.scss']
 })
 export class VotingComponent implements OnInit {
-    @ViewChild('doughnutCanvasVotes') doughnutCanvasVotes;
-    @ViewChild('doughnutCanvasParticipation') doughnutCanvasParticipation;
+    @ViewChild('doughnutCanvasVotes', {static: false}) doughnutCanvasVotes;
+    @ViewChild('doughnutCanvasParticipation', {static: false}) doughnutCanvasParticipation;
 
     proposals = null;  //For proposal period
     proposalsHash: string[] = [];

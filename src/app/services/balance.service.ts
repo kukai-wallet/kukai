@@ -6,7 +6,7 @@ import { WalletService } from './wallet.service';
 import { MessageService } from './message.service';
 import { TzrateService } from './tzrate.service';
 import { OperationService } from './operation.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class BalanceService {
