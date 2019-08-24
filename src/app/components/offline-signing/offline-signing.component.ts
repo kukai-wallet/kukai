@@ -182,7 +182,7 @@ export class OfflineSigningComponent implements OnInit, AfterContentInit {
             reader.readAsText(fileToUpload);
             reader.onload = () => {
                 if (reader.result) {
-                    const data = JSON.parse(reader.result[0]);
+                    const data = JSON.parse(reader.result.toString());
                     if (data.signed === true && typeof data.hex === 'string') {
                         this.signed2 = data.hex;
                     } else {
@@ -225,7 +225,7 @@ export class OfflineSigningComponent implements OnInit, AfterContentInit {
         reader.readAsText(fileToUpload);
         reader.onload = () => {
             if (reader.result) {
-                const data = JSON.parse(reader.result[0]);
+                const data = JSON.parse(reader.result.toString());
                 if (data.signed === false && typeof data.hex === 'string') {
                     this.unsigned = data.hex;
                     this.decodeUnsignedOp();

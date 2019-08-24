@@ -42,6 +42,7 @@
     "angular-cli-ghpages": "^0.6.0-rc.2",
     "big.js": "^5.2.2",
     "bip39": "^3.0.2",
+    "bootstrap": "^4.3.1",
     "bs58": "^4.0.1",
     "bs58check": "^2.1.2",
     "buffer": "^5.4.0",
