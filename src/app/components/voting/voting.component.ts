@@ -6,7 +6,6 @@ import { Chart } from 'chart.js';
 
 import { DelegatorNamePipe } from '../../pipes/delegator-name.pipe';
 
-import { VOTINGPERIOD } from '../../constants';
 import { Period, Ballot } from '../../interfaces';
 
 @Component({
@@ -17,7 +16,10 @@ import { Period, Ballot } from '../../interfaces';
 export class VotingComponent implements OnInit {
     @ViewChild('doughnutCanvasVotes', {static: false}) doughnutCanvasVotes;
     @ViewChild('doughnutCanvasParticipation', {static: false}) doughnutCanvasParticipation;
-
+    readonly VOTINGPERIOD: any = {
+        cycles: 8,
+        blocks: 32768
+    };
     proposals = null;  //For proposal period
     proposalsHash: string[] = [];
     ballot: Ballot = {  //For the other 3 periods (Exploration, Testing, Promotion)
@@ -198,20 +200,20 @@ export class VotingComponent implements OnInit {
                     }
                     case 'testing_vote': {
                         this.currentPeriod.period_kind = 'Exploration';  //PeriodKind.Exploration
-                        this.currentPeriod.start_level = this.currentPeriod.start_level + VOTINGPERIOD.blocks;
-                        this.currentPeriod.end_level = this.currentPeriod.end_level + VOTINGPERIOD.blocks;
+                        this.currentPeriod.start_level = this.currentPeriod.start_level + this.VOTINGPERIOD.blocks;
+                        this.currentPeriod.end_level = this.currentPeriod.end_level + this.VOTINGPERIOD.blocks;
                         break;
                     }
                     case 'testing': {
                         this.currentPeriod.period_kind = 'Testing';  //PeriodKind.Testing
-                        this.currentPeriod.start_level = this.currentPeriod.start_level + VOTINGPERIOD.blocks * 2;
-                        this.currentPeriod.end_level = this.currentPeriod.end_level + VOTINGPERIOD.blocks * 2;
+                        this.currentPeriod.start_level = this.currentPeriod.start_level + this.VOTINGPERIOD.blocks * 2;
+                        this.currentPeriod.end_level = this.currentPeriod.end_level + this.VOTINGPERIOD.blocks * 2;
                         break;
                     }
                     case 'promotion_vote': {
                         this.currentPeriod.period_kind = 'Promotion';  //PeriodKind.Promotion
-                        this.currentPeriod.start_level = this.currentPeriod.start_level + VOTINGPERIOD.blocks * 3;
-                        this.currentPeriod.end_level = this.currentPeriod.end_level + VOTINGPERIOD.blocks * 3;
+                        this.currentPeriod.start_level = this.currentPeriod.start_level + this.VOTINGPERIOD.blocks * 3;
+                        this.currentPeriod.end_level = this.currentPeriod.end_level + this.VOTINGPERIOD.blocks * 3;
                         break;
                     }
                     default: {
@@ -223,7 +225,7 @@ export class VotingComponent implements OnInit {
                 // Progress bar
                 this.currentPeriod.level = periodInfo.level;
                 this.currentPeriod.period = periodInfo.period;
-                this.currentPeriod.progress = Math.round((this.currentPeriod.level % 32768) / VOTINGPERIOD.blocks * 100);
+                this.currentPeriod.progress = Math.round((this.currentPeriod.level % 32768) / this.VOTINGPERIOD.blocks * 100);
                 this.currentPeriod.remaining = Math.round(((32768 - (this.currentPeriod.level % 32768)) / 60 / 24 * 100)) / 100;
                 console.log('currentPeriod.period ', this.currentPeriod.period);
 

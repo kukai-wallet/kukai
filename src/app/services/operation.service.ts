@@ -244,19 +244,24 @@ export class OperationService {
         if (!this.validOpBytes(fop, opbytes)) {
           throw new Error('ValidationError');
         }
-        if (!keys.sk) { // If sk doesn't exist, return unsigned operation
-          return of(
-            {
-              success: true,
-              payload: {
-                unsignedOperation: opbytes
-              }
-            });
-        } else { // If sk exists, sign and broadcast operation
+        if (!keys.sk) {
+          fop.signature = 'edsigtXomBKi5CTRf5cjATJWSyaRvhfYNHqSUGrn4SdbYRcGwQrUGjzEfQDTuqHhuA8b2d8NarZjz8TRf65WkpQmo423BtomS8Q';
+          return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/scripts/run_operation', fop)
+            .pipe(flatMap((applied: any) => {
+              console.log('applied: ' + JSON.stringify(applied));
+              this.checkApplied([applied]);
+              return of(
+                {
+                  success: true,
+                  payload: {
+                    unsignedOperation: opbytes
+                  }
+                });
+            }));
+        } else {
+          fop.protocol = this.CHAIN_ID;
           const signed = this.sign(opbytes, keys.sk);
           const sopbytes = signed.sbytes;
-          const opHash = this.b58cencode(libs.crypto_generichash(32, this.hex2buf(sopbytes)), this.prefix.o);
-          fop.protocol = this.CHAIN_ID;
           fop.signature = signed.edsig;
           return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/preapply/operations', [fop])
             .pipe(flatMap((applied: any) => {
@@ -288,6 +293,7 @@ export class OperationService {
       fop.protocol = this.CHAIN_ID;
       fop.signature = edsig;
     } catch (e) {
+      console.log(JSON.stringify(sopbytes));
       return this.errHandler('Invalid bytes');
     }
     return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/preapply/operations', [fop])
@@ -427,12 +433,14 @@ export class OperationService {
       }));
   }
   getVerifiedOpBytes(operationLevel, operationHash, pkh, pk): Observable<string> {
-    return this.http.get(this.nodeURL + '/chains/main/blocks/' + operationLevel + '/operation_hashes/3', {})
+    return this.http.get(this.nodeURL + '/chains/main/blocks/' + operationLevel + '/operation_hashes', {})
       .pipe(flatMap((opHashes: any) => {
-        const opIndex = opHashes.findIndex(a => a === operationHash);
-        return this.http.get(this.nodeURL + '/chains/main/blocks/' + operationLevel + '/operations/3/' + opIndex, {})
+        const opIndex = opHashes[3].findIndex(a => a === operationHash);
+        return this.http.get(this.nodeURL + '/chains/main/blocks/' + operationLevel + '/operations', {})
           .pipe(flatMap((op: any) => {
             let ans = '';
+            op = op[3][opIndex];
+            console.log(op);
             const sig = op.signature;
             delete op.chain_id;
             delete op.signature;
@@ -477,6 +485,7 @@ export class OperationService {
       throw new Error('NullSeed');
     }
     const keyPair = libs.crypto_sign_seed_keypair(seed);
+    console.log(keyPair.publicKey);
     return {
       sk: this.b58cencode(keyPair.privateKey, this.prefix.edsk),
       pk: this.b58cencode(keyPair.publicKey, this.prefix.edpk),
@@ -506,6 +515,9 @@ export class OperationService {
   pk2pkh(pk: string): string {
     const pkDecoded = this.b58cdecode(pk, this.prefix.edpk);
     return this.b58cencode(libs.crypto_generichash(20, pkDecoded), this.prefix.tz1);
+  }
+  hex2pk(hex: string): string {
+    return this.b58cencode(this.hex2buf(hex.slice(2, 66)), this.prefix.edpk);
   }
   hex2buf(hex) {
     return new Uint8Array(hex.match(/[\da-f]{2}/gi).map(function (h) {

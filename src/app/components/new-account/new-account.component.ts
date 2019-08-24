@@ -10,6 +10,7 @@ import { OperationService } from '../../services/operation.service';
 import { CoordinatorService } from '../../services/coordinator.service';
 import { ExportService } from '../../services/export.service';
 import { InputValidationService } from '../../services/input-validation.service';
+import { LedgerService } from '../../services/ledger.service';
 
 @Component({
   selector: 'app-new-account',
@@ -22,7 +23,9 @@ export class NewAccountComponent implements OnInit {
   @Input() activePkh: string;
   accounts = null;
   amount: string;
+  storedAmount: string;
   fee: string;
+  storedFee: string;
   password: string;
   modalRef1: BsModalRef;
   modalRef2: BsModalRef;
@@ -31,6 +34,7 @@ export class NewAccountComponent implements OnInit {
   pwdValid: string;
   sendResponse: any;
   originationBurn;
+  ledgerInstruction = '';
   isValidModal2 = {
     password: false,
     neverConfirmed: true
@@ -43,7 +47,8 @@ export class NewAccountComponent implements OnInit {
     private operationService: OperationService,
     private coordinatorService: CoordinatorService,
     private exportService: ExportService,
-    private inputValidationService: InputValidationService
+    private inputValidationService: InputValidationService,
+    private ledgerService: LedgerService
   ) { }
 
   ngOnInit() {
@@ -68,9 +73,16 @@ export class NewAccountComponent implements OnInit {
     this.formInvalid = this.invalidInput();
     if (!this.formInvalid) {
       if (!this.amount) { this.amount = '0'; }
+      this.storedAmount = this.amount;
       if (!this.fee) { this.fee = this.recommendedFee.toString(); }
+      this.storedFee = this.fee;
       this.close1();
       this.modalRef2 = this.modalService.show(template, { class: 'second' });
+      if (this.walletService.isLedgerWallet()) {
+        this.ledgerInstruction = 'Preparing transaction data. Please wait...';
+        const keys = this.walletService.getKeys('');
+        this.newAccount(keys);
+      }
     }
   }
 
@@ -79,19 +91,26 @@ export class NewAccountComponent implements OnInit {
     this.password = '';
 
     const keys = this.walletService.getKeys(pwd);
-    if (keys) {
-      this.pwdValid = '';
+    if (this.walletService.isLedgerWallet()) {
+      this.broadCastLedgerTransaction();
+      this.sendResponse = null;
       this.close2();
       this.modalRef3 = this.modalService.show(template, { class: 'third' });
-      this.newAccount(keys);
     } else {
-      this.isValidModal2.neverConfirmed = false;
-      let passwordInvalid = '';
-      this.translate.get('SENDCOMPONENT.WRONGPASSWORD').subscribe(
-        (res: string) => passwordInvalid = res
-      );
-      this.pwdValid = passwordInvalid;
-      // this.pwdValid = 'Your Password is invalid';
+      if (keys) {
+        this.pwdValid = '';
+        this.close2();
+        this.modalRef3 = this.modalService.show(template, { class: 'third' });
+        this.newAccount(keys);
+      } else {
+        this.isValidModal2.neverConfirmed = false;
+        let passwordInvalid = '';
+        this.translate.get('SENDCOMPONENT.WRONGPASSWORD').subscribe(
+          (res: string) => passwordInvalid = res
+        );
+        this.pwdValid = passwordInvalid;
+        // this.pwdValid = 'Your Password is invalid';
+      }
     }
   }
 
@@ -127,28 +146,57 @@ export class NewAccountComponent implements OnInit {
               this.walletService.addAccount(ans.payload.newPkh);
               this.coordinatorService.boost(this.activePkh);
               this.coordinatorService.start(ans.payload.newPkh);
+            } else if (this.walletService.isLedgerWallet()) {
+              this.ledgerInstruction = 'Please sign the origination with your Ledger to proceed!';
+              this.requestLedgerSignature();
             }
           } else {
             console.log('Account creation failed ', JSON.stringify(ans.payload.msg));
+            if (this.walletService.isLedgerWallet()) {
+              this.ledgerInstruction = 'Failed with: ' + ans.payload.msg;
+            }
           }
         },
         err => {
           console.log('Error(newAccount): ' + JSON.stringify(err.payload.msg));
+          this.ledgerInstruction = 'Failed to create transaction';
         }
       );
     }, 100);
   }
+  async requestLedgerSignature() {
+    const op = this.sendResponse.payload.unsignedOperation;
+    const signature = await this.ledgerService.signOperation(op, this.walletService.wallet.derivationPath);
+    const signedOp = op + signature;
+    this.sendResponse.payload.signedOperation = signedOp;
+    this.ledgerInstruction = 'Your transaction have been signed! Press confirm to broadcast it to the network.';
+  }
+  async broadCastLedgerTransaction() {
+    this.operationService.broadcast(this.sendResponse.payload.signedOperation).subscribe(
+      ((ans: any) => {
+        this.sendResponse = ans;
+        if (ans.success && ans.payload.opHash && ans.payload.newPkh) {
+          this.walletService.addAccount(ans.payload.newPkh);
+          if (this.activePkh) {
+            this.coordinatorService.boost(this.activePkh);
+          }
+          this.coordinatorService.start(ans.payload.newPkh);
+        }
+        console.log('ans: ' + JSON.stringify(ans));
+      })
+    );
+  }
   checkReveal() {
     console.log('check reveal');
     this.operationService.isRevealed(this.activePkh)
-            .subscribe((revealed: boolean) => {
-                if (!revealed) {
-                    this.recommendedFee = 0.0026;
-                } else {
-                    this.recommendedFee = 0.0013;
-                }
-            });
-}
+      .subscribe((revealed: boolean) => {
+        if (!revealed) {
+          this.recommendedFee = 0.0026;
+        } else {
+          this.recommendedFee = 0.0013;
+        }
+      });
+  }
   invalidInput(): string {
     if (!this.inputValidationService.amount(this.amount)) {
       let invalidAmount = '';
@@ -168,7 +216,18 @@ export class NewAccountComponent implements OnInit {
       return '';
     }
   }
-
+  getFee() {
+    if (this.fee) {
+      return this.fee;
+    }
+    return this.storedFee;
+  }
+  getAmount() {
+    if (this.amount) {
+      return this.amount;
+    }
+    return this.storedAmount;
+  }
   clearForm() {
     this.amount = '';
     this.fee = '';
@@ -176,7 +235,7 @@ export class NewAccountComponent implements OnInit {
     this.pwdValid = '';
     this.formInvalid = '';
     this.sendResponse = null;
-
+    this.ledgerInstruction = '';
     this.isValidModal2.password = false;
     this.isValidModal2.neverConfirmed = true;
   }

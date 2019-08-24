@@ -1,0 +1,28 @@
+<div id="content" *ngIf="activePanel === 0">
+    <div class="center-content">
+        <div class="card text-center fix-size">
+            <div class="card-header"><img src="../../../assets/img/ledger-logo.svg" width="50%" height="50%"></div>
+            <div class="card-body">
+                <h1 class="card-title"> Connect with a Ledger device</h1>
+                <div class="card-text">
+                    <form class="form-group form-min-height">
+                        <!-- Derivation path -->
+                        <div class="form-group row">
+                            <div class="col-sm-12">
+                                <p>Keep the private keys safely on your Ledger device and use Kukai as an interface to the Tezos blockchain.</p>
+                                <input type="text" [(ngModel)]="path" value="'44\'/1729\'/0\'/0\''" [ngModelOptions]="{standalone: true}" class="form-control">
+                                <small class="form-text text-left">HD derivation path</small>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="card-footer text-right">
+                <a routerLink="/">
+                  <button type="button" class="btn btn-primary btn-lg btn-float-left">Back</button>
+                </a>
+                <button type="button" [disabled]="pendingLedgerConfirmation" class="btn btn-primary btn-lg" (click)="getPk()">Connect</button>
+            </div>
+        </div>
+    </div>
+</div>

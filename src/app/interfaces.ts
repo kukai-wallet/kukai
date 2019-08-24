@@ -11,6 +11,7 @@ export interface Wallet {
   balance: Balance;
   XTZrate: number | null;
   accounts: Account[];
+  derivationPath?: string;
 }
 export interface Account {
   pkh: string|null;
@@ -38,7 +39,8 @@ export interface Balance {
 export enum WalletType {
   FullWallet,
   ViewOnlyWallet,
-  ObserverWallet
+  ObserverWallet,
+  LedgerWallet
 }
 export interface Baker {
   baker_name: string;

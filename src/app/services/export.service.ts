@@ -19,6 +19,8 @@ export class ExportService {
       filename = 'view-only_wallet.tez';
     } else if (data.walletType === 2) {
       filename = 'observer_wallet.tez';
+    } else if (data.walletType === 3) {
+      filename = 'ledger_wallet.tez';
     }
     saveAs(blob, filename);
   }
@@ -26,6 +28,9 @@ export class ExportService {
     const keyStore = this.walletService.exportKeyStore();
     keyStore.pk = pk;
     keyStore.encryptedSeed = undefined;
+    if (keyStore.iv) {
+      keyStore.iv = undefined;
+    }
     keyStore.walletType = WalletType.ViewOnlyWallet;
     this.downloadWallet(keyStore);
   }
