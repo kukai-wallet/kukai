@@ -10,7 +10,7 @@ export class DelegatorNamePipe implements PipeTransform {
             return '';
         }
         const index = BAKERSLIST.findIndex(b => b.identity === pkh);
-        if (index) {
+        if (index !== -1) {
             return BAKERSLIST[index].baker_name;
         } else {
             return pkh;

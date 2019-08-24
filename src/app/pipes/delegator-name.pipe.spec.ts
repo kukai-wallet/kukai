@@ -3,6 +3,7 @@ import { TestBed, getTestBed } from '@angular/core/testing';
 
 // class under inspection
 import { DelegatorNamePipe } from './delegator-name.pipe';
+import { BAKERSLIST } from '../../data/bakers-list';
 
 /**
  * Suite: DelegatorNamePipe
@@ -21,21 +22,24 @@ describe('[ DelegatorNamePipe ]', () => {
 		expect(pipe).toBeTruthy();
 	});
 
-	describe('{ should build a map }', () => {
+	describe('{ should import bakers array }', () => {
 
-		it('create an instance, delegate map', () => {
-			expect(pipe.map).toBeTruthy();
+		it('create an instance, bakers array', () => {
+			expect(BAKERSLIST).toBeTruthy();
 		});
 
-		it('map size is greater than zero', () => {
-			expect(pipe.map.size).toBeGreaterThan(0);
+		it('array size is greater than zero', () => {
+			expect(BAKERSLIST.length).toBeGreaterThan(0);
 		});
 
-		it('map keys prefixed tz1 & length 36', () => {
+		it('identities prefixed tz1 & length 36', () => {
 			let result = true;
 
-			pipe.map.forEach((value: string, key: string) => {
-				if (!((new RegExp('^tz[1-3]{1}[a-zA-Z0-9]{33}$')).test(key))) { result = false; }
+			BAKERSLIST.forEach((baker: any) => {
+				if (!((new RegExp('^tz[1-3]{1}[a-zA-Z0-9]{33}$')).test(baker.identity))) {
+					console.log('Invalid identity: ' + baker.identity);
+					result = false;
+				}
 			});
 
 			expect(result).toBeTruthy();
@@ -53,7 +57,7 @@ describe('[ DelegatorNamePipe ]', () => {
 		});
 
 		it('match success, implicit arg returns name string', () => {
-			expect(pipe.transform('tz1fP9PoNWMpAaiPcBEb1gqQTskUAFNDiWD4')).toEqual('Tezocracy');
+			expect(pipe.transform('tz3e75hU4EhDU3ukyJueh5v6UvEHzGwkg3yC')).toEqual('At James');
 		});
 	});
 });
