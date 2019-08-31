@@ -10,7 +10,7 @@
     <div class="row row-subheading">
         <div class="col-lg-12">
             <h4>
-                <p>Athens amendments </p>
+                <p>Babylon amendments </p>
             </h4>
         </div>
     </div>
@@ -83,8 +83,22 @@
         </div>
 
         <div class="col">
-            <p *ngIf="isBakersParticipation" (click)="toggleParticipationCharts()" class="title">Bakers' Participation (rolls) <i class="fa fa-repeat"></i></p>
-            <p *ngIf="!isBakersParticipation" (click)="toggleParticipationCharts()" class="title">Bakers' Participation (nodes) <i class="fa fa-repeat"></i></p>
+            <p *ngIf="isBakersParticipation" (click)="toggleParticipationCharts()" class="title">
+                Bakers' Participation (rolls:
+                <span *ngIf="this.currentPeriod.period_kind === 'Exploration' || this.currentPeriod.period_kind === 'Promotion'" class="sub-title" data-toggle="tooltip" title="Quorum is at 72.91%" [ngClass]="isQuorum ? 'text-success' : 'text-danger'">
+                    {{(currentParticipation.total_votes - currentParticipation.unused_votes)/currentParticipation.total_votes * 100 | number:'1.0-2'}} %
+                </span>)
+                <i class="fa fa-repeat"></i>
+            </p>
+
+            <p *ngIf="!isBakersParticipation" (click)="toggleParticipationCharts()" class="title">
+                Bakers' Participation (nodes:
+                <span *ngIf="this.currentPeriod.period_kind === 'Exploration' || this.currentPeriod.period_kind === 'Promotion'" class="sub-title" data-toggle="tooltip" [ngClass]="isQuorum ? 'text-success' : 'text-danger'">
+                    {{(this.currentParticipation.total_count - this.currentParticipation.unused_count)/this.currentParticipation.total_count * 100 | number:'1.0-2'}} %
+                </span>)
+                <i class="fa fa-repeat"></i>
+            </p>
+
             <canvas #doughnutCanvasParticipation></canvas>
         </div>
     </div>
@@ -111,21 +125,24 @@
                 A protocol amendment goes through 4 voting periods. Each period lasts 8 cycles (~22.4 days). A quorum
                 and supermajority is required for the <b>Exploration Vote</b> and <b>Promotion period</b>.
                 You can check <a href="https://tezos.gitlab.io/master/whitedoc/voting.html" target="_blank">Tezos
-                    documentation</a>
+                    documentations</a>
                 and the <a href="https://medium.com/tezos/amending-tezos-b77949d97e1e" target="_blank">excellent guide</a>
                 by Jacob Arluck to learn more about the voting process.
             </p>
+            
             <p>
-                You can view and participate in the community debate on <a href="https://www.kialo.com/tezos-protocol-amendment-1-25295/25295.0/25295.0"
-                    target="_blank">Kialo</a>
+                You can view and participate in the community debate on <a href="https://www.tezosagora.org/"
+                    target="_blank">Tezos Agora</a>
                 and <a href="https://riot.im/app/#/room/#tezosgovernance:matrix.org" target="_blank">Riot</a>.
                 To learn more about the different amendments, you can check this <a href="https://medium.com/tezos/tezos-athens-379f6a0d5332"
-                    target="_blank">another great write-up</a> by Jacob Arluck,
-                the <a href="https://blog.nomadic-labs.com/athens-our-proposals-for-the-first-voted-amendment.html"
-                    target="_blank">technical post</a>.
+                    target="_blank">another great write-up</a> by Jacob Arluck and
+                the <a href="https://blog.nomadic-labs.com/category/in-depth.html"
+                    target="_blank">technical post</a> from Nomadic Labs.
             </p>
+            <!--
             <p>With <a href="https://tezvote.com/" target="_blank">Tezvote's smart-contract</a> you can also inform
                 your baker of your preferred choice.</p>
+            -->
             <!-- <p>Connect to your wallet and inform your baker of your preferred choice via tezvote's smart-contract. </p> -->
         </div>
     </div>

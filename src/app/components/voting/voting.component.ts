@@ -36,6 +36,7 @@ export class VotingComponent implements OnInit {
     athensBVotes = null;
 
     isSuperMajority = true;
+    isQuorum = true;
     isBakersParticipation = true;
 
     doughnutVotes: any;
@@ -138,6 +139,9 @@ export class VotingComponent implements OnInit {
     }
 
     showParticipationDoughnutCharts(currentParticipation: any) {
+
+        //CHECK QUORUM HERE
+
         const votersCounted = currentParticipation.total_count - currentParticipation.unused_count;
         const votersUndecided = currentParticipation.unused_count;
 
