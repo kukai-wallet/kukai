@@ -17,6 +17,7 @@ export class ConnectLedgerComponent implements OnInit {
   CONSTANTS = new Constants();
   path = '44\'/1729\'/0\'/0\'';
   pendingLedgerConfirmation = false;
+  isHDDerivationPathCustom = false;
 
   constructor(
     private router: Router,
@@ -54,6 +55,11 @@ export class ConnectLedgerComponent implements OnInit {
       this.router.navigate(['/overview']);
     } else {
       this.messageService.addError('Somthing went wrong with pk');
+    }
+  }
+  setDefaultPath() {
+    if (this.isHDDerivationPathCustom) {
+      this.path = '44\'/1729\'/0\'/0\'';
     }
   }
 }
