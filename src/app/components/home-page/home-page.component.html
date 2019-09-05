@@ -163,7 +163,7 @@
 
 
         <ul class="list-unstyled bottom-CTAs">
-            <li routerLinkActive="active">
+            <li routerLinkActive="active" *ngIf="!this.walletService.isLedgerWallet()">
                 <a routerLink="/offline-signing" class="btn-main-action">{{ 'HOMEPAGECOMPONENT.OFFLINESIGNING' | translate }}</a>
             </li>
             <li routerLinkActive="active">

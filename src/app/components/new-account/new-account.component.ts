@@ -169,7 +169,7 @@ export class NewAccountComponent implements OnInit {
     const signature = await this.ledgerService.signOperation(op, this.walletService.wallet.derivationPath);
     const signedOp = op + signature;
     this.sendResponse.payload.signedOperation = signedOp;
-    this.ledgerInstruction = 'Your transaction have been signed! Press confirm to broadcast it to the network.';
+    this.ledgerInstruction = 'Your transaction have been signed! \n Press confirm to broadcast it to the network.';  // \n not working!
   }
   async broadCastLedgerTransaction() {
     this.operationService.broadcast(this.sendResponse.payload.signedOperation).subscribe(
