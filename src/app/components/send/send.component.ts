@@ -20,8 +20,10 @@ interface SendData {
     amount: number;
     burn: boolean;
 }
+
 const transactionFee = 0.00135;
 const revealFee = 0.0013;
+
 @Component({
     selector: 'app-send',
     templateUrl: './send.component.html',
@@ -41,27 +43,29 @@ export class SendComponent implements OnInit {
         btnSidebar: false
     };
 
-    isMultipleDestinations = false;
-
-    toMultipleDestinationsString = '';
-    toMultipleDestinations: SendData[] = [];
-
-    dom: Document;
-    accounts = null;
-    activeAccount = null;
+    // Transaction variables
     toPkh: string;
     amount: string;
     fee: string;
     storedFee: string;
     gas = '';
     storage = '';
+
+    isMultipleDestinations = false;
+    toMultipleDestinationsString = '';
+    toMultipleDestinations: SendData[] = [];
+
+    showTransactions: SendData[] = [];
+
+    dom: Document;
+    accounts = null;
+    activeAccount = null;
     password: string;
     pwdValid: string;
     formInvalid = '';
     sendResponse: any;
     errorMessage = '';
     transactions: SendData[] = [];
-    showTransactions: SendData[] = [];
     XTZrate = 0;
     ledgerInstruction = '';
 
@@ -183,17 +187,18 @@ export class SendComponent implements OnInit {
                     // In case user picks isMultipleDestinations but inserts only one transaction
                     this.showTransactions.push(this.transactions[0]);
                 }
+                console.log('this.showTransactions, open second modal ', this.showTransactions);
             } else {
                 this.transactions = [{ to: this.toPkh, amount: Number(this.amount), burn: false }];
             }
             this.detectBurns();
             this.close1();
-            this.modalRef2 = this.modalService.show(template, { class: 'second' });
             if (this.walletService.isLedgerWallet()) {
                 this.ledgerInstruction = 'Preparing transaction data. Please wait...';
                 const keys = this.walletService.getKeys('');
                 this.sendTransaction(keys);
             }
+            this.modalRef2 = this.modalService.show(template, { class: 'second' });
         }
     }
     detectBurns() {
@@ -263,14 +268,17 @@ export class SendComponent implements OnInit {
         let gas = this.gas;
         let storage = this.storage;
 
-        this.toPkh = '';
-        this.amount = '';
-        this.fee = '';
-        this.gas = '';
-        this.storage = '';
-        this.toMultipleDestinationsString = '';
-        this.toMultipleDestinations = [];
-        this.showTransactions = [];
+        if (!this.walletService.isLedgerWallet()) {
+            this.toPkh = '';
+            this.amount = '';
+            this.fee = '';
+            this.storedFee = '';
+            this.gas = '';
+            this.storage = '';
+            this.toMultipleDestinationsString = '';
+            this.toMultipleDestinations = [];
+            this.showTransactions = [];
+        }
 
         if (!amount) { amount = '0'; }
         if (!fee) { fee = '0'; }
@@ -309,6 +317,7 @@ export class SendComponent implements OnInit {
             );
         }, 100);
     }
+
     async requestLedgerSignature() {
         const op = this.sendResponse.payload.unsignedOperation;
         const signature = await this.ledgerService.signOperation(op, this.walletService.wallet.derivationPath);
@@ -316,6 +325,7 @@ export class SendComponent implements OnInit {
         this.sendResponse.payload.signedOperation = signedOp;
         this.ledgerInstruction = 'Your transaction have been signed! Press confirm to broadcast it to the network.';
     }
+
     async broadCastLedgerTransaction() {
         this.operationService.broadcast(this.sendResponse.payload.signedOperation).subscribe(
             ((ans: any) => {
@@ -350,6 +360,7 @@ export class SendComponent implements OnInit {
         this.toPkh = '';
         this.amount = '';
         this.fee = '';
+        this.storedFee = '';
         this.gas = '';
         this.storage = '';
         this.toMultipleDestinationsString = '';
@@ -376,6 +387,7 @@ export class SendComponent implements OnInit {
 
         return result;
     }
+
     checkReveal() {
         console.log('check reveal');
         this.operationService.isRevealed(this.activePkh)
@@ -387,6 +399,7 @@ export class SendComponent implements OnInit {
                 }
             });
     }
+
     invalidInputSingle(): string {
         if (!this.inputValidationService.address(this.activePkh)) {
             let invalidSender = '';
@@ -479,6 +492,7 @@ export class SendComponent implements OnInit {
 
     totalAmount(): number {
         let totalSent = 0;
+        console.log('toMultipleDestinations ', this.toMultipleDestinations);
         for (const item of this.toMultipleDestinations) {
             totalSent = totalSent + item.amount;
         }
