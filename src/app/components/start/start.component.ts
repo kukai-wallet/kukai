@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 
 import { Router } from '@angular/router';
 
+import { TranslateService } from '@ngx-translate/core';
+
 import { WalletService } from '../../services/wallet.service';
 
 @Component({
@@ -13,6 +15,7 @@ export class StartComponent implements OnInit {
 
     constructor(
         private walletService: WalletService,
+        public translate: TranslateService,
         private router: Router
     ) {
     }

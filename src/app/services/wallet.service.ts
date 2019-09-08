@@ -14,6 +14,7 @@ import { OperationService } from './operation.service';
 export class WalletService {
   storeKey = `kukai-wallet`;
   wallet: Wallet;
+
   constructor(
     private translate: TranslateService,
     private encryptionService: EncryptionService,

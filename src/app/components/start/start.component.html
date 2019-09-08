@@ -5,7 +5,11 @@
                 <button type="button" class="btn btn-primary btn-lg btn-block btn-generate">{{ 'STARTCOMPONENT.IMPORTWALLET' | translate }}</button>
             </a>
             <a routerLink="/connect-ledger/">
-                <button type="button" title="Connect Ledger" class="btn btn-primary btn-lg btn-block btn-generate btn-ledger"></button>
+                <!--
+                <button *ngIf="walletService.getLanguage() == 'en'" type="button" title="Connect Ledger" class="btn btn-primary btn-lg btn-block btn-generate btn-ledger"></button>
+                -->
+                <button *ngIf="translate.currentLang != 'ru'" type="button" title="Connect Ledger" class="btn btn-primary btn-lg btn-block btn-generate btn-ledger"></button>
+                <button *ngIf="translate.currentLang == 'ru'" type="button" title="Connect Ledger" class="btn btn-primary btn-lg btn-block btn-generate btn-ledger2"></button>
             </a>
         </div>
         <div class="row justify-content-between">

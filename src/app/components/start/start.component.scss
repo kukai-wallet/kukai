@@ -9,8 +9,9 @@
     color: #333333;
 }
 .btn-import {
-    width: 195px;
-    min-width: 195px;
+    padding-right: 0.7vh;
+    width: 265px;
+    min-width: 265px;
 }
 .btn-second:hover {
     background-color: #cccccc;
@@ -22,6 +23,15 @@
 }
 .btn-ledger:hover, .btn-ledger:active:hover {
     background: url(../../../assets/img/ledger-button-hover.png);
+}
+//Bigger button for Russian language
+.btn-ledger2 {
+    background: url(../../../assets/img/ledger-button2.png);
+    height: 78px;
+    width: 78px;
+}
+.btn-ledger2:hover, .btn-ledger2:active:hover {
+    background: url(../../../assets/img/ledger-button-hover2.png);
 }
 /* Taking out underline link in router link */
 a.active-link {
