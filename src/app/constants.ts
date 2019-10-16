@@ -9,7 +9,8 @@ export class Constants {
     // Select Zeronet, Alphanet or Mainnet
     // readonly NET: Net = this.alphanet();
     // readonly NET: Net = this.zeronet();
-    readonly NET: Net = this.mainnet();
+    // readonly NET: Net = this.mainnet();
+    readonly NET: Net = this.babynet();
 
     zeronet(): Net {
         const ZERONET: Net = {
@@ -31,6 +32,16 @@ export class Constants {
             CHAIN_ID: 'Pt24m4xiPbLDhVgVfABUjirbmda3yohdN82Sp9FeuAXJ4eV9otd'
         };
         return ALPHANET;
+    }
+    babynet(): Net {
+        const BABYNET: Net = {
+            NAME: 'Alphanet',
+            API_URL: 'https://api.babylonnet.tzscan.io/',
+            NODE_URL: 'https://babylonnet-node.tzscan.io/',
+            BLOCK_EXPLORER_URL: 'https://babylonnet.tzscan.io/',
+            CHAIN_ID: 'PsBabyM1eUXZseaJdmXFApDSBqj8YBfwELoxZHHW77EMcAbbwAS'
+        };
+        return BABYNET;
     }
     mainnet(): Net {
         let n = Math.floor(Math.random() * 5) + 1;

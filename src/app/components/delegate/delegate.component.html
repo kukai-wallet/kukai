@@ -13,9 +13,9 @@
                 <div class="form-row">
                     <div class="form-group col-md-8">
                         <label for="fromAdress"> {{ 'DELEGATECOMPONENT.FROM' | translate }} </label>
-                        <select [(ngModel)]="activePkh" (change)="checkReveal()" id="fromAdress" class="form-control"
+                        <select [(ngModel)]="activePkh" (change)="checkSource()" id="fromAdress" class="form-control"
                             name="first">
-                            <option *ngFor="let account of accounts | slice:1" [ngValue]="account.pkh">{{ account.pkh
+                            <option *ngFor="let account of accounts" [ngValue]="account.pkh">{{ account.pkh
                                 }}</option>
                         </select>
                     </div>

@@ -87,7 +87,7 @@
         <div class="btn-group btn-group-sm">
             <app-send [activePkh]="selectedPkh" [actionButtonString]="'btnOutline'"></app-send>
             <app-receive [activePkh]="selectedPkh" [actionButtonString]="'btnOutline'"></app-receive>
-            <app-new-account [activePkh]="selectedPkh"></app-new-account>
+            <app-new-account [activePkh]="this.walletService.wallet.accounts[0].pkh"></app-new-account>
         </div>
     </div>
 </div>

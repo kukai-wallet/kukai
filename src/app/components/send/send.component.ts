@@ -20,8 +20,27 @@ interface SendData {
     amount: number;
     burn: boolean;
 }
+const pkh2pkh = {
+    gas: 10600,
+    storage: 277,
+    fee: 0.00135
+};
+const pkh2kt = {
+    gas: 15400,
+    storage: 0,
+    fee: 0.0016
+};
+const kt2pkh = {
+    gas: 26300,
+    storage: 0,
+    fee: 0.003
+};
+const kt2kt = {
+    gas: 44800,
+    storage: 0,
+    fee: 0.0052
+};
 
-const transactionFee = 0.00135;
 const revealFee = 0.0013;
 
 @Component({
@@ -34,9 +53,13 @@ export class SendComponent implements OnInit {
     @ViewChild('modal1', {static: false}) modal1: TemplateRef<any>;
     @Input() activePkh: string;
     @Input() actionButtonString: string;  // Possible values: btnOutline / dropdownItem / btnSidebar
-    recommendedFee = transactionFee;
-    defaultGasLimit = 10600;
-    defaultStorageLimit = 277;
+
+    extraFee = 0;
+    defaultFee = pkh2pkh.fee;
+    recommendedFee = this.defaultFee + this.extraFee;
+    defaultGasLimit = pkh2pkh.gas;
+    defaultStorageLimit = pkh2pkh.storage;
+
     showSendFormat = {
         btnOutline: false,
         dropdownItem: false,
@@ -390,16 +413,38 @@ export class SendComponent implements OnInit {
 
     checkReveal() {
         console.log('check reveal');
-        this.operationService.isRevealed(this.activePkh)
+        this.operationService.isRevealed(this.walletService.wallet.accounts[0].pkh)
             .subscribe((revealed: boolean) => {
                 if (!revealed) {
-                    this.recommendedFee = transactionFee + revealFee;
+                    this.extraFee = revealFee;
                 } else {
-                    this.recommendedFee = transactionFee;
+                    this.extraFee = 0;
                 }
+                this.recommendedFee = this.defaultFee + this.extraFee;
             });
     }
 
+    updateDefaultValues() {
+        if (this.activePkh.slice(0, 2) === 'tz') {
+            if (this.toPkh.length < 2 || this.toPkh.slice(0, 2) !== 'KT') {
+                this.setDefaultValues(pkh2pkh);
+            } else {
+                this.setDefaultValues(pkh2kt);
+            }
+        } else {
+            if (this.toPkh.length < 2 || this.toPkh.slice(0, 2) !== 'KT') {
+                this.setDefaultValues(kt2pkh);
+            } else {
+                this.setDefaultValues(kt2kt);
+            }
+        }
+    }
+    setDefaultValues(values: any) {
+        this.defaultGasLimit = values.gas;
+        this.defaultStorageLimit = values.storage;
+        this.defaultFee = values.fee;
+        this.recommendedFee = this.defaultFee + this.extraFee;
+    }
     invalidInputSingle(): string {
         if (!this.inputValidationService.address(this.activePkh)) {
             let invalidSender = '';

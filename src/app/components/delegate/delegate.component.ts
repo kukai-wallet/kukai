@@ -18,6 +18,9 @@ import { LedgerService } from '../../services/ledger.service';
 })
 export class DelegateComponent implements OnInit {
     recommendedFee = 0.0013;
+    revealFee = 0;
+    pkhFee = 0.0013;
+    ktFee = 0.003;
     @ViewChild('modal1', {static: false}) modal1: TemplateRef<any>;
 
     @Input() activePkh: string;
@@ -55,6 +58,7 @@ export class DelegateComponent implements OnInit {
 
     init() {
         this.accounts = this.walletService.wallet.accounts;
+        this.checkReveal();
     }
 
     open1(template1: TemplateRef<any>) {
@@ -170,14 +174,23 @@ export class DelegateComponent implements OnInit {
       }
     checkReveal() {
         console.log('check reveal');
-        this.operationService.isRevealed(this.activePkh)
+        this.operationService.isRevealed(this.walletService.wallet.accounts[0].pkh)
                 .subscribe((revealed: boolean) => {
                     if (!revealed) {
-                        this.recommendedFee = 0.0026;
+                        this.revealFee = 0.0013;
                     } else {
-                        this.recommendedFee = 0.0013;
+                        this.revealFee = 0;
                     }
+                    this.checkSource();
                 });
+    }
+    checkSource() {
+        console.log('check source');
+        if (this.activePkh.slice(0, 2) === 'tz') {
+            this.recommendedFee = this.revealFee + this.pkhFee;
+        } else if (this.activePkh.slice(0, 2) === 'KT') {
+            this.recommendedFee = this.revealFee + this.ktFee;
+        }
     }
     getFee() {
         if (this.fee) {

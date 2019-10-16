@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { of ,  Observable } from 'rxjs';
+import { of, Observable } from 'rxjs';
 import { catchError, flatMap } from 'rxjs/operators';
 import { Buffer } from 'buffer';
 import * as libs from 'libsodium-wrappers';
@@ -8,7 +8,7 @@ import * as Bs58check from 'bs58check';
 import * as bip39 from 'bip39';
 import Big from 'big.js';
 
-import { TranslateService } from '@ngx-translate/core';  // Multiple instances created ?
+import { TranslateService } from '@ngx-translate/core';
 
 import { Constants } from '../constants';
 
@@ -105,33 +105,32 @@ export class OperationService {
   originate(pkh: string, amount: number, fee: number = 0, keys: KeyPair): Observable<any> {
     return this.http.get(this.nodeURL + '/chains/main/blocks/head/hash', {})
       .pipe(flatMap((hash: string) => {
-        return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + pkh + '/counter', {})
+        return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + keys.pkh + '/counter', {})
           .pipe(flatMap((actions: number) => {
-            return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + pkh + '/manager_key', {})
+            return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + keys.pkh + '/manager_key', {})
               .pipe(flatMap((manager: any) => {
                 let counter: number = Number(actions);
+                const script = this.getManagerScript(keys.pkh);
                 const fop: any = {
                   branch: hash,
                   contents: [
                     {
                       kind: 'origination',
-                      source: pkh,
+                      source: keys.pkh,
                       fee: this.microTez.times(fee).toString(),
                       counter: (++counter).toString(),
-                      gas_limit: '10100',
-                      storage_limit: '277',
-                      manager_pubkey: keys.pkh,
+                      gas_limit: '15678',
+                      storage_limit: '509',
                       balance: this.microTez.times(amount).toString(),
-                      spendable: true,
-                      delegatable: true
+                      script: script
                     }
                   ]
                 };
-                if (manager.key === undefined) {
+                if (manager === null) {
                   fop.contents[1] = fop.contents[0];
                   fop.contents[0] = {
                     kind: 'reveal',
-                    source: pkh,
+                    source: keys.pkh,
                     fee: '0',
                     counter: (counter).toString(),
                     gas_limit: '10000',
@@ -152,16 +151,16 @@ export class OperationService {
   transfer(from: string, transactions: any, fee: number = 0, keys: KeyPair, gasLimit: number, storageLimit: number): Observable<any> {
     return this.http.get(this.nodeURL + '/chains/main/blocks/head/hash', {})
       .pipe(flatMap((hash: any) => {
-        return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + from + '/counter', {})
+        return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + keys.pkh + '/counter', {})
           .pipe(flatMap((actions: any) => {
-            return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + from + '/manager_key', {})
+            return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + keys.pkh + '/manager_key', {})
               .pipe(flatMap((manager: any) => {
                 let counter: number = Number(actions);
                 const fop: any = {
                   branch: hash,
                   contents: []
                 };
-                if (manager.key === undefined) { // Reveal
+                if (manager === null) { // Reveal
                   fop.contents.push({
                     kind: 'reveal',
                     source: from,
@@ -173,16 +172,46 @@ export class OperationService {
                   });
                 }
                 for (let i = 0; i < transactions.length; i++) { // Transfers
-                  fop.contents.push({
-                    kind: 'transaction',
-                    source: from,
-                    fee: this.microTez.times(fee).toString(),
-                    counter: (++counter).toString(),
-                    gas_limit: gasLimit.toString(),
-                    storage_limit: storageLimit.toString(),
-                    amount: this.microTez.times(transactions[i].amount).toString(),
-                    destination: transactions[i].to,
-                  });
+                  if (from.slice(0, 2) === 'tz') {
+                    fop.contents.push({
+                      kind: 'transaction',
+                      source: from,
+                      fee: this.microTez.times(fee).toString(),
+                      counter: (++counter).toString(),
+                      gas_limit: gasLimit.toString(),
+                      storage_limit: storageLimit.toString(),
+                      amount: this.microTez.times(transactions[i].amount).toString(),
+                      destination: transactions[i].to,
+                    });
+                  } else if (from.slice(0, 2) === 'KT') {
+                    if (transactions[i].to.slice(0, 2) === 'tz') {
+                      const managerTransaction = this.getContractPkhTransaction(transactions[i].to, this.microTez.times(transactions[i].amount).toString());
+                      fop.contents.push({
+                        kind: 'transaction',
+                        source: keys.pkh,
+                        fee: this.microTez.times(fee).toString(),
+                        counter: (++counter).toString(),
+                        gas_limit: gasLimit.toString(),
+                        storage_limit: storageLimit.toString(),
+                        amount: '0',
+                        destination: from,
+                        parameters: managerTransaction
+                      });
+                    } else if (transactions[i].to.slice(0, 2) === 'KT') {
+                      const managerTransaction = this.getContractKtTransaction(transactions[i].to, this.microTez.times(transactions[i].amount).toString());
+                      fop.contents.push({
+                        kind: 'transaction',
+                        source: keys.pkh,
+                        fee: this.microTez.times(fee).toString(),
+                        counter: (++counter).toString(),
+                        gas_limit: gasLimit.toString(),
+                        storage_limit: storageLimit.toString(),
+                        amount: '0',
+                        destination: from,
+                        parameters: managerTransaction
+                      });
+                    }
+                  }
                 }
                 return this.operation(fop, keys);
               }));
@@ -195,28 +224,44 @@ export class OperationService {
   delegate(from: string, to: string, fee: number = 0, keys: KeyPair): Observable<any> {
     return this.http.get(this.nodeURL + '/chains/main/blocks/head/hash', {})
       .pipe(flatMap((hash: any) => {
-        return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + from + '/counter', {})
+        return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + keys.pkh + '/counter', {})
           .pipe(flatMap((actions: any) => {
-            return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + from + '/manager_key', {})
+            return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + keys.pkh + '/manager_key', {})
               .pipe(flatMap((manager: any) => {
                 let counter: number = Number(actions);
+                let delegationOp: any;
+                if (from.slice(0, 2) === 'tz') {
+                  delegationOp = {
+                    kind: 'delegation',
+                    source: from,
+                    fee: this.microTez.times(fee).toString(),
+                    counter: (++counter).toString(),
+                    gas_limit: '10000',
+                    storage_limit: '0',
+                  };
+                  if (to !== '') {
+                    delegationOp.delegate = to;
+                  }
+                } else if (from.slice(0, 2) === 'KT') {
+                  delegationOp = {
+                    kind: 'transaction',
+                    source: keys.pkh, // from,
+                    fee: this.microTez.times(fee).toString(),
+                    counter: (++counter).toString(),
+                    gas_limit: '26283',
+                    storage_limit: '0',
+                    amount: '0', // this.microTez.times(transactions[i].amount).toString(),
+                    destination: from, // transactions[i].to,
+                    parameters: this.getContractDelegation(to)
+                  };
+                }
                 const fop: any = {
                   branch: hash,
                   contents: [
-                    {
-                      kind: 'delegation',
-                      source: from,
-                      fee: this.microTez.times(fee).toString(),
-                      counter: (++counter).toString(),
-                      gas_limit: '10000',
-                      storage_limit: '0',
-                    }
+                    delegationOp
                   ]
                 };
-                if (to !== '') {
-                  fop.contents[0].delegate = to;
-                }
-                if (manager.key === undefined) {
+                if (manager === null) {
                   fop.contents[1] = fop.contents[0];
                   fop.contents[0] = {
                     kind: 'reveal',
@@ -236,7 +281,7 @@ export class OperationService {
   }
   /*
   Help function for operations
-*/
+  */
   operation(fop: any, keys: KeyPair, origination: boolean = false): Observable<any> {
     console.log('fop to send: ' + JSON.stringify(fop));
     return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/forge/operations', fop)
@@ -293,7 +338,6 @@ export class OperationService {
       fop.protocol = this.CHAIN_ID;
       fop.signature = edsig;
     } catch (e) {
-      console.log(JSON.stringify(sopbytes));
       return this.errHandler('Invalid bytes');
     }
     return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/preapply/operations', [fop])
@@ -320,18 +364,14 @@ export class OperationService {
   }
   errHandler(error: any): Observable<any> {
     if (error.error && error.error[0] && error.error[0].id) {
-      console.log('found 2: ');
       const errorId = error.error[0].id;
       const errorMsg = this.errorHandlingPipe.transform(errorId);
       error = errorMsg;
     } else if (error.error && error.error[0] && error.error[0].error) {
-      console.log('found 3: ');
       error = error.error[0].error;
     } else if (error.statusText) {
-      console.log('found 4: ');
       error = error.statusText;
     } if (error.message) {
-      console.log('found: ' + error.message);
       error = this.errorHandlingPipe.transform(error.message);
     } else {
       console.log('Error not categorized');
@@ -360,12 +400,11 @@ export class OperationService {
       })).pipe(catchError(err => this.errHandler(err)));
   }
   getDelegate(pkh: string): Observable<any> {
-    console.log('<Looking for delegate>');
     return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + pkh)
       .pipe(flatMap((contract: any) => {
         let delegate = '';
-        if (contract.delegate.value) {
-          delegate = contract.delegate.value;
+        if (contract.delegate) {
+          delegate = contract.delegate;
         }
         return of(
           {
@@ -378,7 +417,6 @@ export class OperationService {
       })).pipe(catchError(err => this.errHandler(err)));
   }
   getVotingRights(): Observable<any> {
-    console.log('<Looking for voting rights>');
     return this.http.get(this.nodeURL + '/chains/main/blocks/head/votes/listings')
       .pipe(flatMap((listings: any) => {
         return of(
@@ -392,7 +430,7 @@ export class OperationService {
   isRevealed(pkh: string): Observable<boolean> {
     return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + pkh + '/manager_key', {})
       .pipe(flatMap((manager: any) => {
-        if (manager.key === undefined) {
+        if (manager === null) {
           return of(false);
         } else {
           return of(true);
@@ -406,7 +444,7 @@ export class OperationService {
     return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + pkh)
       .pipe(flatMap((contract: any) => {
         let delegate = '';
-        if (contract.delegate.value) {
+        if (contract.delegate && contract.delegate.value) {
           delegate = contract.delegate.value;
         }
         return of(
@@ -423,14 +461,7 @@ export class OperationService {
       })).pipe(catchError(err => this.errHandler(err)));
   }
   getManagerKey(pkh: string): Observable<string> {
-    return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + pkh + '/manager_key', {})
-      .pipe(flatMap((manager: any) => {
-        if (manager.key) {
-          return of(manager.key);
-        } else {
-          return of('');
-        }
-      }));
+    return of('');
   }
   getVerifiedOpBytes(operationLevel, operationHash, pkh, pk): Observable<string> {
     return this.http.get(this.nodeURL + '/chains/main/blocks/' + operationLevel + '/operation_hashes', {})
@@ -440,7 +471,6 @@ export class OperationService {
           .pipe(flatMap((op: any) => {
             let ans = '';
             op = op[3][opIndex];
-            console.log(op);
             const sig = op.signature;
             delete op.chain_id;
             delete op.signature;
@@ -453,7 +483,6 @@ export class OperationService {
                 delete op.contents[i].managerPubkey;
               }
             }
-            console.log('DUMP: ' + JSON.stringify(op));
             return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/forge/operations', op)
               .pipe(flatMap((opBytes: any) => {
                 if (this.pk2pkh(pk) === pkh) {
@@ -474,7 +503,6 @@ export class OperationService {
     const hash = libs.crypto_generichash(32, this.hex2buf(sopBytes));
     const index = new Uint8Array([0, 0, 0, 0]);
     const hash2 = libs.crypto_generichash(20, this.mergebuf(index, hash));
-    console.log('Calculated KT address ' + this.b58cencode(hash2, this.prefix.KT));
     return this.b58cencode(hash2, this.prefix.KT);
   }
   getConstants(): Observable<any> {
@@ -485,7 +513,6 @@ export class OperationService {
       throw new Error('NullSeed');
     }
     const keyPair = libs.crypto_sign_seed_keypair(seed);
-    console.log(keyPair.publicKey);
     return {
       sk: this.b58cencode(keyPair.privateKey, this.prefix.edsk),
       pk: this.b58cencode(keyPair.publicKey, this.prefix.edpk),
@@ -586,20 +613,18 @@ export class OperationService {
   decodeContents(content: string): any {
     // Check tag
     const tag = Number(this.hex2buf(content.slice(0, 2)));
-    console.log('tag: ' + tag);
     switch (tag) {
       case 4: {
         return this.decodeActivateAccount(content.slice(2));
-      } case 7: {
+      } case 107: {
         return this.decodeReveal(content.slice(2));
-      } case 8: {
+      } case 108: {
         return this.decodeTransaction(content.slice(2));
-      } case 9: {
+      } case 109: {
         return this.decodeOrigination(content.slice(2));
-      } case 10: {
+      } case 110: {
         return this.decodeDelegation(content.slice(2));
       } default: {
-        console.log('content: ' + content);
         throw new Error('Unknown tag');
       }
     }
@@ -630,8 +655,36 @@ export class OperationService {
     op.data.amount = amount.value.toString();
     op.data.destination = this.decodeContractId(op.rest.slice(index += amount.count * 2, index += 44));
     if (op.rest.slice(index, index += 2) === 'ff') { // parameters?
-      console.log('parameters ' + op.rest.slice(index - 2));
-      throw new Error('UnsupportedTagT1');
+      if (op.rest.slice(index, index += 8) !== '02000000') {
+        throw new Error('UnsupportedTagT1');
+      }
+      const size = Number('0x' + op.rest.slice(index, index += 2));
+      const argument = op.rest.slice(index, index += size * 2);
+      if (argument.slice(0, 40) === '02000000' + (size - 5).toString(16) + '0320053d036d0743035d0a00000015') {
+        const pkh = this.decodePkh(argument.slice(40, 82));
+        if (argument.slice(82, 94) === '0346034e031b') { // KT delegate
+          op.data.parameters = this.getContractDelegation(pkh);
+        } else if (argument.slice(82, 96) === '031e0743036a00') { // KT to tz transaction
+          const amount2 = this.zarithDecode(argument.slice(96, argument.length - 12));
+          if (argument.slice(argument.length - 12, argument.length) !== '034f034d031b') {
+            throw new Error('UnsupportedTagT4');
+          }
+          op.data.parameters = this.getContractPkhTransaction(pkh, (amount2.value / 2).toString());
+        } else {
+          throw new Error('UnsupportedTagT3');
+        }
+      } else if (argument.slice(0, 40) === '02000000' + (size - 5).toString(16) + '0320053d036d0743036e0a00000016') { // KT to KT transaction
+        const kt = argument.slice(40, 84);
+        if (argument.slice(84, 154) !== '0555036c0200000015072f02000000090200000004034f032702000000000743036a00') {
+        }
+        const amount2 = this.zarithDecode(argument.slice(154));
+        if (argument.slice(156 + amount2.count * 2, 166 + amount2.count * 2) !== '4f034d031b') {
+          throw new Error('UnsupportedTagT6');
+        }
+        op.data.parameters = this.getContractKtTransaction(kt, (amount2.value / 2).toString());
+      } else {
+        throw new Error('UnsupportedTagT2');
+      }
     }
     if (op.rest.length === index) {
       return [op.data];
@@ -642,20 +695,21 @@ export class OperationService {
   decodeOrigination(content: any): any { // Tag 9
     let index = 0;
     const op = this.decodeCommon({ kind: 'origination' }, content);
-    // op.data.managerPubkey = this.decodePkh(op.rest.slice(index, index += 42));  // mainnet
-    op.data.manager_pubkey = this.decodePkh(op.rest.slice(index, index += 42));  // zeronet
     const balance = this.zarithDecode(op.rest.slice(index));
     op.data.balance = balance.value.toString();
-    op.data.spendable = (op.rest.slice(index += balance.count * 2, index += 2) === 'ff');
-    op.data.delegatable = (op.rest.slice(index, index += 2) === 'ff');
-    if (op.rest.slice(index, index += 2) === 'ff') { // delegate?
-      console.log('delegate ' + op.rest.slice(index - 2));
+    index += balance.count * 2;
+    if (op.rest.slice(index, index += 2) !== '00') { // delegate?
       throw new Error('UnsupportedTagO1');
     }
-    if (op.rest.slice(index, index += 2) === 'ff') { // script?
-      console.log('script ' + op.rest.slice(index - 2));
-      throw new Error('UnsupportedTagO2');
+    const managerScript = '000000c602000000c105000764085e036c055f036d0000000325646f046c000000082564656661756c740501035d050202000000950200000012020000000d03210316051f02000000020317072e020000006a0743036a00000313020000001e020000000403190325072c020000000002000000090200000004034f0327020000000b051f02000000020321034c031e03540348020000001e020000000403190325072c020000000002000000090200000004034f0327034f0326034202000000080320053d036d0342'; // manager script
+    if (op.rest.slice(index, index += managerScript.length) !== managerScript) {
+      throw new Error('InvalidManagerScript');
     }
+    const storageDefinition = '0000001a0a00000015';
+    if (op.rest.slice(index, index += storageDefinition.length) !== storageDefinition) {
+      throw new Error('InvalidStorageDefinition');
+    }
+    op.data.script = this.getManagerScript(op.rest.slice(index, index += 42));
     if (op.rest.length === index) {
       return [op.data];
     } else {
@@ -665,13 +719,11 @@ export class OperationService {
   decodeDelegation(content: any): any { // Tag 10
     let index = 0;
     const op = this.decodeCommon({ kind: 'delegation' }, content);
-    console.log('hex: ' + op.rest + ' ' + op.rest.length);
     if (op.rest.slice(index, index += 2) === 'ff') {
       op.data.delegate = this.decodePkh(op.rest.slice(index, index += 42));
     } else if (op.rest.slice(index - 2, index) !== '00') {
       throw new Error('TagErrorD1');
     }
-    console.log('INDEX' + index);
     if (op.rest.length === index) {
       return [op.data];
     } else {
@@ -680,7 +732,8 @@ export class OperationService {
   }
   decodeCommon(data: any, content: any): any {
     let index = 0;
-    data.source = this.decodeContractId(content.slice(index, index += 44));
+    data.source = this.decodePkh(content.slice(index, index += 42));
+    // data.source = this.decodeContractId(content.slice(index, index += 44));
     const fee = this.zarithDecode(content.slice(index));
     data.fee = fee.value.toString();
     const counter = this.zarithDecode(content.slice(index += fee.count * 2));
@@ -696,7 +749,6 @@ export class OperationService {
     };
   }
   decodePkh(bytes: string): string {
-    console.log('Pkh tag: ' + bytes.slice(0, 2));
     if (bytes.slice(0, 2) === '00') {
       return this.b58cencode(this.hex2buf(bytes.slice(2, 42)), this.prefix.tz1);
     } else if (bytes.slice(0, 2) === '01') {
@@ -711,7 +763,6 @@ export class OperationService {
     return null;
   }
   zarithDecode(hex: string): any {
-    console.log('hex ' + hex);
     let count = 0;
     let value = 0;
     while (1) {
@@ -794,5 +845,310 @@ export class OperationService {
       }
     }
     return output;
+  }
+  getContractDelegation(pkh) {
+    let pkHex: string;
+    if (pkh.slice(0, 2) === 'tz') {
+      pkHex = '00' + this.buf2hex(this.b58cdecode(pkh, this.prefix.tz1));
+    } else {
+      pkHex = pkh;
+    }
+    return {
+      entrypoint: 'do',
+      value:
+        [{ prim: 'DROP' },
+        {
+          prim: 'NIL',
+          args: [{ prim: 'operation' }]
+        },
+        {
+          prim: 'PUSH',
+          args:
+            [{ prim: 'key_hash' },
+            {
+              bytes:
+                pkHex
+            }]
+        },
+        { prim: 'SOME' }, { prim: 'SET_DELEGATE' },
+        { prim: 'CONS' }]
+    };
+  }
+  getContractPkhTransaction(to, amount) {
+    return {
+      entrypoint: 'do',
+      value:
+        [{ prim: 'DROP' },
+        { prim: 'NIL', args: [{ prim: 'operation' }] },
+        {
+          prim: 'PUSH',
+          args:
+            [{ prim: 'key_hash' },
+            {
+              'bytes': this.tz2hex(to)
+            }]
+        },
+        { prim: 'IMPLICIT_ACCOUNT' },
+        {
+          prim: 'PUSH',
+          args:
+            [{ prim: 'mutez' }, { 'int': amount }]
+        },
+        { prim: 'UNIT' }, { prim: 'TRANSFER_TOKENS' },
+        { prim: 'CONS' }]
+    };
+  }
+  getContractKtTransaction(to, amount) {
+    return {
+      entrypoint: 'do',
+      value: [{ prim: 'DROP' },
+      { prim: 'NIL', args: [{ prim: 'operation' }] },
+      {
+        prim: 'PUSH',
+        args:
+          [{ prim: 'address' },
+          { 'bytes': this.kt2hex(to) }]
+      },
+      { prim: 'CONTRACT', args: [{ prim: 'unit' }] },
+      [{
+        prim: 'IF_NONE',
+        args:
+          [[[{ prim: 'UNIT' }, { prim: 'FAILWITH' }]],
+          []]
+      }],
+      {
+        prim: 'PUSH',
+        args: [{ prim: 'mutez' }, { 'int': amount }]
+      },
+      { prim: 'UNIT' }, { prim: 'TRANSFER_TOKENS' },
+      { prim: 'CONS' }]
+    };
+  }
+  kt2hex(kt) {
+    if (kt.slice(0, 2) === 'KT') {
+      return ('01' + this.buf2hex(this.b58cdecode(kt, this.prefix.KT)) + '00');
+    }
+    return kt;
+  }
+  tz2hex(tz: string) {
+    let pkHex;
+    if (tz.slice(0, 3) === 'tz1') {
+      pkHex = '00' + this.buf2hex(this.b58cdecode(tz, this.prefix.tz1));
+    } else if (tz.slice(0, 3) === 'tz2') {
+      pkHex = '01' + this.buf2hex(this.b58cdecode(tz, this.prefix.tz2));
+    } else if (tz.slice(0, 3) === 'tz3') {
+      pkHex = '02' + this.buf2hex(this.b58cdecode(tz, this.prefix.tz3));
+    }
+    return pkHex;
+  }
+  getManagerScript(pkh: string) {
+    let pkHex: string;
+    if (pkh.slice(0, 2) === 'tz') {
+      pkHex = '00' + this.buf2hex(this.b58cdecode(pkh, this.prefix.tz1));
+    } else {
+      pkHex = pkh;
+    }
+    return {
+      code: [
+        {
+          prim: 'parameter',
+          args: [
+            {
+              prim: 'or',
+              args: [
+                {
+                  prim: 'lambda',
+                  args: [
+                    {
+                      prim: 'unit'
+                    },
+                    {
+                      prim: 'list',
+                      args: [
+                        {
+                          prim: 'operation'
+                        }
+                      ]
+                    }
+                  ],
+                  annots: [
+                    '%do'
+                  ]
+                },
+                {
+                  prim: 'unit',
+                  annots: [
+                    '%default'
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          prim: 'storage',
+          args: [
+            {
+              prim: 'key_hash'
+            }
+          ]
+        },
+        {
+          prim: 'code',
+          args: [
+            [
+              [
+                [
+                  {
+                    prim: 'DUP'
+                  },
+                  {
+                    prim: 'CAR'
+                  },
+                  {
+                    prim: 'DIP',
+                    args: [
+                      [
+                        {
+                          prim: 'CDR'
+                        }
+                      ]
+                    ]
+                  }
+                ]
+              ],
+              {
+                prim: 'IF_LEFT',
+                args: [
+                  [
+                    {
+                      prim: 'PUSH',
+                      args: [
+                        {
+                          prim: 'mutez'
+                        },
+                        {
+                          'int': '0'
+                        }
+                      ]
+                    },
+                    {
+                      prim: 'AMOUNT'
+                    },
+                    [
+                      [
+                        {
+                          prim: 'COMPARE'
+                        },
+                        {
+                          prim: 'EQ'
+                        }
+                      ],
+                      {
+                        prim: 'IF',
+                        args: [
+                          [
+
+                          ],
+                          [
+                            [
+                              {
+                                prim: 'UNIT'
+                              },
+                              {
+                                prim: 'FAILWITH'
+                              }
+                            ]
+                          ]
+                        ]
+                      }
+                    ],
+                    [
+                      {
+                        prim: 'DIP',
+                        args: [
+                          [
+                            {
+                              prim: 'DUP'
+                            }
+                          ]
+                        ]
+                      },
+                      {
+                        prim: 'SWAP'
+                      }
+                    ],
+                    {
+                      prim: 'IMPLICIT_ACCOUNT'
+                    },
+                    {
+                      prim: 'ADDRESS'
+                    },
+                    {
+                      prim: 'SENDER'
+                    },
+                    [
+                      [
+                        {
+                          prim: 'COMPARE'
+                        },
+                        {
+                          prim: 'EQ'
+                        }
+                      ],
+                      {
+                        prim: 'IF',
+                        args: [
+                          [
+
+                          ],
+                          [
+                            [
+                              {
+                                prim: 'UNIT'
+                              },
+                              {
+                                prim: 'FAILWITH'
+                              }
+                            ]
+                          ]
+                        ]
+                      }
+                    ],
+                    {
+                      prim: 'UNIT'
+                    },
+                    {
+                      prim: 'EXEC'
+                    },
+                    {
+                      prim: 'PAIR'
+                    }
+                  ],
+                  [
+                    {
+                      prim: 'DROP'
+                    },
+                    {
+                      prim: 'NIL',
+                      args: [
+                        {
+                          prim: 'operation'
+                        }
+                      ]
+                    },
+                    {
+                      prim: 'PAIR'
+                    }
+                  ]
+                ]
+              }
+            ]
+          ]
+        }
+      ],
+      storage:
+        { bytes: pkHex }
+    };
   }
 }

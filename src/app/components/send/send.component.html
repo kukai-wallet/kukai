@@ -29,7 +29,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-12">
                             <label for="toAdress"> {{ 'SENDCOMPONENT.TOADDRESS' | translate }} </label>
-                            <input type="text" class="form-control mono" id="toAddress" placeholder="" [(ngModel)]="toPkh" name="second">
+                            <input type="text" (change)="updateDefaultValues()" class="form-control mono" id="toAddress" placeholder="" [(ngModel)]="toPkh" name="second">
                         </div>
                     </div>
 
