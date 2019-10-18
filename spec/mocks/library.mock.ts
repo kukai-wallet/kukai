@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
-import { p } from '@angular/core/src/render3';
+// import { p } from '@angular/core/src/render3';
 import { flatMap } from 'rxjs/operators';
 import { Account, Activity, Balance, Wallet, WalletType } from './interfaces.mock';
 

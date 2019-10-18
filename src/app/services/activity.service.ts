@@ -3,11 +3,10 @@ import { MessageService } from './message.service';
 import { WalletService } from './wallet.service';
 import { Activity } from '../interfaces';
 import { TzscanService } from './tzscan.service';
-import { of } from 'rxjs/observable/of';
-import { forkJoin } from 'rxjs/observable/forkJoin';
+import { ConseilService } from './conseil.service';
+import { of, forkJoin, Observable } from 'rxjs';
 import { timeout, catchError, flatMap, mergeMap } from 'rxjs/operators';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/mergeMap';
+
 
 @Injectable()
 export class ActivityService {
@@ -15,45 +14,59 @@ export class ActivityService {
   constructor(
     private walletService: WalletService,
     private messageService: MessageService,
-    private tzscanService: TzscanService
+    private tzscanService: TzscanService,
+    private conseilService: ConseilService
   ) { }
-  updateAllTransactions() {
-    for (let i = 0; i < this.walletService.wallet.accounts.length; i++) {
-      this.updateTransactions(this.walletService.wallet.accounts[i].pkh)
-        .subscribe((ans: any) => console.log(JSON.stringify(ans)),
-          err => console.log('updateAllTransactions Error'),
-          () => console.log('done update(' + i + '): ' + this.walletService.wallet.accounts[i].pkh));
+  updateTransactions(pkh): Observable<any> {
+    try {
+      return this.getTransactonsCounter(pkh)
+        .pipe(flatMap((ans: any) => {
+          return of(ans);
+        }));
+    } catch (e) {
+      console.log(e);
     }
   }
-  updateTransactions(pkh: string): Observable<any> {
-    return this.getTransactonsCounter(pkh)
-      .flatMap((ans: any) => {
-        if (ans[0] && ans[0].save) {
-          this.walletService.storeWallet();
-        }
-        return of(ans);
-      });
-  }
   getTransactonsCounter(pkh): Observable<any> {
-    return this.tzscanService.numberOperations(pkh)
-      .flatMap((number_operations: any) => {
-        const index = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
-        if (index === -1 || this.walletService.wallet.accounts[index].numberOfActivites !== number_operations[0]) {
-          // return this.getTransactions(pkh, number_operations[0]);
-          return this.getTransactions(pkh, number_operations[0]);
-        } else {
-          return of(
-            {
-              upToDate: true
-            });
+    return this.conseilService.accountInfo(pkh).pipe(flatMap((counter) => {
+      const index = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
+      if (index === -1 || this.walletService.wallet.accounts[index].numberOfActivites !== counter) {
+        return this.getAllTransactions(pkh, counter);
+      } else {
+        return of(
+          {
+            upToDate: true
+          });
+      }
+    }
+    ));
+  }
+
+  getAllTransactions(pkh, counter): Observable<any> {
+    return this.conseilService.getOperations(pkh).pipe(flatMap((ans) => {
+      const index = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
+      if ((this.walletService.wallet.accounts[index].activities.length === 0 && ans.length > 0) ||
+        (ans.length > 0 &&
+          this.walletService.wallet.accounts[index].activities[0].hash !== ans[0].hash)) {
+        this.walletService.wallet.accounts[index].activities = ans;
+        this.walletService.wallet.accounts[index].numberOfActivites = counter;
+        this.walletService.storeWallet();
+      } else {
+        if (this.walletService.wallet.accounts[index].numberOfActivites === 0) {
+          this.walletService.wallet.accounts[index].numberOfActivites = counter;
         }
       }
-      );
+      return of(
+        {
+          upToDate: false
+        });
+    }
+    ));
   }
   // Get latest transaction
   getTransactions(pkh: string, counter: number): Observable<any> {
     return this.tzscanService.operations(pkh, this.maxTransactions)
-      .flatMap((data: any) => {
+      .pipe(flatMap((data: any) => {
         const newTransactions: Activity[] = [];
         for (let i = 0; i < data.length; i++) {
           const ops: any = this.tzscanService.getOp(data[i], pkh);
@@ -83,16 +96,17 @@ export class ActivityService {
             });
           }
         }
-        return this.getTimestamps(pkh, payload).flatMap(
-          (res: any) => { // Sort
-            const pkhIndex = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
-            let cpy: any = this.walletService.wallet.accounts[pkhIndex].activities;
-            cpy = cpy.sort((a, b) => b.timestamp - a.timestamp);
-            this.walletService.wallet.accounts[pkhIndex].activities = cpy;
-            return of(res);
-          }
-        );
-      }
+        return this.getTimestamps(pkh, payload)
+          .pipe(flatMap(
+            (res: any) => { // Sort
+              const pkhIndex = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
+              let cpy: any = this.walletService.wallet.accounts[pkhIndex].activities;
+              cpy = cpy.sort((a, b) => b.timestamp - a.timestamp);
+              this.walletService.wallet.accounts[pkhIndex].activities = cpy;
+              return of(res);
+            }
+          ));
+      })
       );
   }
   getTimestamps(pkh: string, payloads: any[]): Observable<any> {
@@ -114,7 +128,7 @@ export class ActivityService {
 
   getTimestamp(pkh: string, block: string, hash: string): Observable<any> {
     return this.tzscanService.timestamp(block)
-      .flatMap((time: any) => {
+      .pipe(flatMap((time: any) => {
         if (time) { time = new Date(time); }
         const pkhIndex = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);
         for (let ti = 0; ti < this.walletService.wallet.accounts[pkhIndex].activities.length; ti++) {
@@ -127,7 +141,7 @@ export class ActivityService {
           {
             save: true
           });
-      });
+      }));
   }
   getIndex(pkh: string): number {
     return this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);

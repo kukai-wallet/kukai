@@ -128,7 +128,7 @@ describe('[ TzrateService ]', () => {
 		spyOn(walletservice, 'storeWallet');
 		spyOn(tzscanservice, 'getPriceUSD')
 			.and.returnValue(of(ticker[0]['price_usd']));
-		spyOn(walletservice, 'wallet');
+		// spyOn(walletservice, 'wallet');
 		spyOn(console, 'log');
 
 	});

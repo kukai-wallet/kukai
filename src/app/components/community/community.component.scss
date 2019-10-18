@@ -45,9 +45,9 @@ h4 {
 
 // Large devices (desktops, 992px and up)
 @media (min-width: 992px) { 
-    //.container {
+    .container {
         min-width: 0vw;
-    //} 
+    } 
  }
 
 // Extra large devices (large desktops, 1200px and up)

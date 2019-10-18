@@ -1,0 +1,35 @@
+<div id="content" *ngIf="activePanel === 0">
+    <div class="center-content">
+        <div class="card text-center fix-size">
+            <div class="card-header"><img src="../../../assets/img/ledger-logo.svg" width="50%" height="50%"></div>
+            <div class="card-body">
+                <h1 class="card-title"> Connect with your Ledger Nano S</h1>
+                <div class="card-text">
+                    <form class="form-group form-min-height">
+                        <!-- Derivation path -->
+                        <div class="form-group row">
+                            <div class="col-sm-12">
+                                <p>
+                                    Keep the private keys safely on your Ledger device and use Kukai to access the Tezos blockchain.
+                                    <br>
+                                    You need to open the Tezos Wallet app on your Ledger device and set the derivation path.
+                                </p>
+                                <input type="text" [disabled]="!isHDDerivationPathCustom" [(ngModel)]="path" value="'44\'/1729\'/0\'/0\''" [ngModelOptions]="{standalone: true}" class="form-control">
+                                <div class="form-check form-check-inline float-left">
+                                    <input class="form-check-input" type="checkbox" id="customDerivationPath" [(ngModel)]="isHDDerivationPathCustom" (click)="setDefaultPath()" [ngModelOptions]="{standalone: true}">
+                                    <label class="form-check-label" for="customDerivationPath">Use Custom HD derivation path</label>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="card-footer text-right">
+                <a routerLink="/">
+                  <button type="button" class="btn btn-primary btn-lg btn-float-left">Back</button>
+                </a>
+                <button type="button" [disabled]="pendingLedgerConfirmation" class="btn btn-primary btn-lg" (click)="getPk()">Connect</button>
+            </div>
+        </div>
+    </div>
+</div>

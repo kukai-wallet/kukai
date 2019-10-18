@@ -19,6 +19,7 @@ import { ActivateComponent } from './components/activate/activate.component';
 import { VotingComponent } from './components/voting/voting.component';
 import { CommunityComponent } from './components/community/community.component';
 import { BakersListComponent } from './components/bakers-list/bakers-list.component';
+import { ConnectLedgerComponent } from './components/connect-ledger/connect-ledger.component';
 
 const routes: Routes = [
   { path: '', component: StartComponent },  // Content Centre position
@@ -38,7 +39,8 @@ const routes: Routes = [
   { path: 'activate', component: ActivateComponent },
   { path: 'voting', component: VotingComponent },
   { path: 'community', component: CommunityComponent },
-  { path: 'bakers-list', component: BakersListComponent }
+  { path: 'bakers-list', component: BakersListComponent },
+  { path: 'connect-ledger', component: ConnectLedgerComponent }
 ];
 
 @NgModule({

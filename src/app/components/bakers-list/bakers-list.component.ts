@@ -4,10 +4,6 @@ import { Sort } from '@angular/material';
 import { WalletService } from '../../services/wallet.service';
 import { TzscanService } from '../../services/tzscan.service';
 import { OperationService } from '../../services/operation.service';
-import { DelegatorNamePipe } from '../../pipes/delegator-name.pipe';
-
-import { Period, PeriodKind } from '../../interfaces';
-import { VOTINGPERIODHEADS } from '../../../data/bakers-list';
 import { BAKERSLIST } from '../../../data/bakers-list';
 
 @Component({
@@ -19,10 +15,6 @@ export class BakersListComponent implements OnInit, OnDestroy {
 
     showAll = false;
     bakersList = BAKERSLIST;
-    athensAVotes = null;
-    athensBVotes = null;
-    athensAHash = 'Pt24m4xiPbLDhVgVfABUjirbmda3yohdN82Sp9FeuAXJ4eV9otd';
-    athensBHash = 'Psd1ynUBhMZAeajwcZJAeq5NrxorM6UCU4GJqxZ7Bx2e9vUWB6z';
     proposals = null;
     proposalsHash: string[] = [];
 
@@ -43,47 +35,34 @@ export class BakersListComponent implements OnInit, OnDestroy {
         total_votes: -1
     };
 
-    votingPeriodHeads = VOTINGPERIODHEADS;
-    currentPeriod: Period = {
-        amendment: 'Athens',
-        period: 10,
-        period_kind: 'Proposal', //PeriodKind.Proposal,
-        proposal_hash: [],
-        proposal_alias: [],
-        start_level: this.votingPeriodHeads[0].start_level,  // 327681
-        end_level: this.votingPeriodHeads[0].end_level,  // 360448
-        level: -1,
-        progress: -1,
-        remaining: -1
-    };
-
     constructor(
-        // Uncaught Error: Can't resolve all parameters for BakersListComponent: ([object Object], [object Object], [object Object], [object Object], ?).
         public walletService: WalletService,
         private tzscanService: TzscanService,
-        private delegatorNamePipe: DelegatorNamePipe,
         private operationService: OperationService
-    ) { }
+    ) {
+        this.bakersList.forEach(function (baker: any) {
+            baker.vote = [];
+            baker.vote2 = '';
+            baker.vote3 = '';
+        });
+    }
 
     sortData(sort: Sort) {
         const data = this.bakersList.slice();
         if (!sort.active || sort.direction === '') {
-          this.bakersList = data;
-          return;
+            this.bakersList = data;
+            return;
         }
-
         this.bakersList = data.sort((a, b) => {
-          const isAsc = sort.direction === 'asc';
-          switch (sort.active) {
-            case 'name': return compare(a.baker_name, b.baker_name, isAsc);
-            case 'roll': return compare(+a.rolls, +b.rolls, isAsc);
-            case 'identity': return compare(+a.identity, +b.identity, isAsc);
-            case 'proposal': return compare(+a.vote, +b.vote, isAsc);
-            case 'exploration': return compare(+a.vote2, +b.vote2, isAsc);
-            //case 'testing': return compare(+a.protein, +b.protein, isAsc);
-            //case 'promotion': return compare(+a.protein, +b.protein, isAsc);
-            default: return 0;
-          }
+            const isAsc = sort.direction === 'asc';
+            switch (sort.active) {
+                case 'name': return compare(a.baker_name, b.baker_name, isAsc);
+                case 'roll': return compare(+a.rolls, +b.rolls, isAsc);
+                case 'identity': return compare(+a.identity, +b.identity, isAsc);
+                case 'proposal': return compare(+a.vote, +b.vote, isAsc);
+                case 'exploration': return compare(+a.vote2, +b.vote2, isAsc);
+                default: return 0;
+            }
         });
 
         function compare(a, b, isAsc) {
@@ -91,15 +70,17 @@ export class BakersListComponent implements OnInit, OnDestroy {
         }
     }
 
-    ngOnInit() {  // or ngAfterViewInit  // ngOnInit
-        //this.athensAVotes = this.tzscanService.getProposalVotes(this.athensAHash);
-        //this.tzscanService.getProposalVotes(this.athensAHash).subscribe(
+    ngOnInit() {
+        this.init();
+    }
+    init() {
         this.sortName();
         this.tzscanService.getPeriodInfo().subscribe(
             period => {
                 const periodInfo: any = period;
                 console.log('getPeriodInfo ', period);
                 //Check Voting Period Type
+                let latestProposalPeriod = periodInfo.period;
                 switch (periodInfo.kind) {
                     case 'proposal': {
                         this.showColumn.Proposal = true;
@@ -108,17 +89,20 @@ export class BakersListComponent implements OnInit, OnDestroy {
                     case 'testing_vote': {
                         this.showColumn.Proposal = true;
                         this.showColumn.Exploration = true;
+                        latestProposalPeriod -= 1;
                         break;
                     }
                     case 'testing': {
                         this.showColumn.Proposal = true;
                         this.showColumn.Exploration = true;
+                        latestProposalPeriod -= 2;
                         break;
                     }
                     case 'promotion_vote': {
                         this.showColumn.Proposal = true;
                         this.showColumn.Exploration = true;
                         this.showColumn.Promotion = true;
+                        latestProposalPeriod -= 3;
                         break;
                     }
                     default: {
@@ -142,15 +126,21 @@ export class BakersListComponent implements OnInit, OnDestroy {
                                     this.bakersList.push({
                                         baker_name: '',
                                         identity: voter.pkh,
-                                        vote: '',
+                                        vote: [],
                                         rolls: voter.rolls,
                                         vote2: '',
+                                        vote3: '',
                                         image: ''
-                                   });
+                                    });
+                                }
+                            }
+                            for (const baker of this.bakersList) {
+                                if (!baker.rolls) {
+                                    baker.rolls = '0';
                                 }
                             }
                             //Getting the totalNumbers
-                            this.tzscanService.getTotalVotes(this.currentPeriod.period).subscribe(
+                            this.tzscanService.getTotalVotes(periodInfo.period).subscribe(
                                 result => {
                                     const totalVotes: any = result;
                                     this.currentParticipation.unused_count = totalVotes.unused_count;
@@ -159,116 +149,71 @@ export class BakersListComponent implements OnInit, OnDestroy {
                                     this.currentParticipation.total_votes = totalVotes.total_votes;
                                     console.log('currentParticipation ', this.currentParticipation);
                                 });
-                            this.tzscanService.getProposal().subscribe(
-                                data => {
-                                    this.proposals = data;
-                                    console.log('proposals ', this.proposals);
-
-                                    for (const proposal of this.proposals) {
+                            this.tzscanService.getProposals(latestProposalPeriod).subscribe(
+                                async proposals => {
+                                    for (const proposal of proposals) {
                                         this.proposalsHash.push(proposal.proposal_hash);
-                                        // console.log('proposal.proposal_hash ', proposal.proposal_hash);
                                     }
                                     console.log('proposalsHash ', this.proposalsHash);
-
-                                    /* To replace call made at l132 and l140
-                                    //For Proposal Period, to get proposal votes details for each proposal
-                                    for (const hash of this.proposalsHash) {
-                                        this.tzscanService.getProposalVotes(hash).subscribe(
-                                            votes => {
-                                                if (this.athensAHash === hash) {
-                                                    this.athensAVotes = votes;
-                                                } else {
-                                                    this.athensBVotes = votes;
-                                                }
-                                                console.log('athensAVotes ', this.athensAVotes);
-                                            }
-                                        );
+                                    for (let i = 0; i < this.proposalsHash.length; i++) {
+                                        await this.getProposalVotes(this.proposalsHash[i]);
                                     }
-                                    console.log('athensAVotes ', this.athensAVotes);  // null
-                                    console.log('athensBVotes ', this.athensBVotes);  // null
-                                    */
-                                    this.tzscanService.getProposalVotes(this.proposalsHash[0]).subscribe(
-                                        votesA => {
-                                            // console.log('votesA ', votesA);
-                                            if (this.athensAHash === this.proposalsHash[0]) {
-                                                this.athensAVotes = votesA;
-                                            } else {
-                                                this.athensBVotes = votesA;
-                                            }
-                                            this.tzscanService.getProposalVotes(this.proposalsHash[1]).subscribe(
-                                                votesB => {
-                                                    if (this.athensBHash === this.proposalsHash[1]) {
-                                                        this.athensBVotes = votesB;
-                                                    } else {
-                                                        this.athensAVotes = votesB;
-                                                    }
-                                                    this.athensBVotes = votesB;
-                                                    // console.log('athensAVotes ', this.athensAVotes);
-                                                    // console.log('athensBVotes ', this.athensBVotes);
-
-                                                    for (const athensAVote of this.athensAVotes) {
-                                                        // console.log('athensAVote.source.tz ', athensAVote.source.tz);
-                                                        for (const baker of this.bakersList) {
-                                                            if (baker.identity === athensAVote.source.tz) {
-                                                                baker.vote = 'Athens A';
-                                                            }
-                                                        }
-                                                    }
-                                                    for (const athensBVotes of this.athensBVotes) {
-                                                        for (const baker of this.bakersList) {
-                                                            if (baker.identity === athensBVotes.source.tz) {
-                                                                if (baker.vote !== 'Athens A') {
-                                                                    baker.vote = 'Athens B';
-                                                                } else {
-                                                                    baker.vote = baker.vote.concat('; Athens B');
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                    // Get number of votes
-                                                    if (this.showColumn.Exploration) {
-                                                        let maxPeriod = periodInfo.period;
-                                                        if (this.showColumn.Promotion) {
-                                                            maxPeriod -= 2;
-                                                        }
-                                                        this.tzscanService.getBallotVotes(maxPeriod).subscribe(
-                                                            (votes: any) => {
-                                                                for (const vote of votes) {
-                                                                    const index = this.bakersList.findIndex(b => b.identity === vote.type.source.tz);
-                                                                    if (index !== -1) {
-                                                                        // console.log(JSON.stringify(this.bakersList[index]));
-                                                                        if (!this.showColumn.Promotion) {
-                                                                            if (!this.bakersList[index].vote2) {
-                                                                                this.bakersList[index].vote2 = vote.type.ballot;
-                                                                            }
-                                                                        } else {
-                                                                            if (vote.type.period < periodInfo.period) {// exploration vote
-                                                                                if (!this.bakersList[index].vote2) {
-                                                                                    this.bakersList[index].vote2 = vote.type.ballot;
-                                                                                }
-                                                                            } else { // promotion vote
-                                                                                if (!this.bakersList[index].vote3) {
-                                                                                    this.bakersList[index].vote3 = vote.type.ballot;
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        );
-                                                    }
-                                                }
-                                            );
-                                        }
-                                    );
+                                    this.getBallotVotes(periodInfo);
                                 },
-                                err => console.log('Failed to get proposal: ' + 'this.athensAHash ' + JSON.stringify(err))
+                                err => console.log('error: ' + JSON.stringify(err))
                             );
                         }
                     })
                 );
             });
-        // console.log('athensAVotes ', this.athensAVotes);  // returning null
+    }
+    getProposalVotes(hash) {
+        this.tzscanService.getProposalVotes(hash).subscribe(
+            votes => {
+                for (const vote of votes) {
+                    for (const baker of this.bakersList) {
+                        if (baker.identity === vote.source.tz) {
+                            const proposalVote = hash.slice(0, 9) + '... ';
+                            if (baker.vote.indexOf(proposalVote) === -1) {
+                                baker.vote.push(proposalVote);
+                            }
+                        }
+                    }
+                }
+            }
+        );
+    }
+    getBallotVotes(periodInfo) {
+        if (this.showColumn.Exploration) {
+            let maxPeriod = periodInfo.period;
+            if (this.showColumn.Promotion) {
+                maxPeriod -= 2;
+            }
+            this.tzscanService.getBallotVotes(maxPeriod).subscribe(
+                (votes: any) => {
+                    for (const vote of votes) {
+                        const index = this.bakersList.findIndex(b => b.identity === vote.type.source.tz);
+                        if (index !== -1) {
+                            if (!this.showColumn.Promotion) {
+                                if (!this.bakersList[index].vote2) {
+                                    this.bakersList[index].vote2 = vote.type.ballot;
+                                }
+                            } else {
+                                if (vote.type.period < periodInfo.period) {// exploration vote
+                                    if (!this.bakersList[index].vote2) {
+                                        this.bakersList[index].vote2 = vote.type.ballot;
+                                    }
+                                } else { // promotion vote
+                                    if (!this.bakersList[index].vote3) {
+                                        this.bakersList[index].vote3 = vote.type.ballot;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            );
+        }
     }
     sortRolls() {
         console.log('Sorting on rolls');

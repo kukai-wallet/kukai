@@ -23,9 +23,11 @@
             <h3 *ngIf="walletService.isFullWallet()">{{ 'BACKUPCOMPONENT.EXPORTFULLWALLET' | translate }}</h3>
             <h3 *ngIf="walletService.isViewOnlyWallet()">{{ 'BACKUPCOMPONENT.EXPORTVIEWONLYWALLET' | translate }}</h3>
             <h3 *ngIf="walletService.isObserverWallet()">{{ 'BACKUPCOMPONENT.EXPORTOBSERVERWALLET' | translate }}</h3>
+            <h3 *ngIf="walletService.isLedgerWallet()">{{ 'BACKUPCOMPONENT.EXPORTLEDGERWALLET' | translate }}</h3>
             <p *ngIf="walletService.isFullWallet()">{{ 'BACKUPCOMPONENT.INFOFULLWALLET' | translate }}</p>
             <p *ngIf="walletService.isViewOnlyWallet()">{{ 'BACKUPCOMPONENT.INFOVIEWONLYWALLET' | translate }}</p>
             <p *ngIf="walletService.isObserverWallet()">{{ 'BACKUPCOMPONENT.INFOOBSERVERWALLET' | translate }}</p>
+            <p *ngIf="walletService.isLedgerWallet()">{{ 'BACKUPCOMPONENT.INFOLEDGERWALLET' | translate }}</p>
         </div>
     </div>
     <form class="form-inline">

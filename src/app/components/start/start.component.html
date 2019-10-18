@@ -1,8 +1,15 @@
 <div id="content">
     <div class="center-content">
-        <div class="row">
-            <a routerLink="/import/" class="active-link">
+        <div class="row justify-content-between">
+            <a routerLink="/import/" class="btn-import">
                 <button type="button" class="btn btn-primary btn-lg btn-block btn-generate">{{ 'STARTCOMPONENT.IMPORTWALLET' | translate }}</button>
+            </a>
+            <a routerLink="/connect-ledger/">
+                <!--
+                <button *ngIf="walletService.getLanguage() == 'en'" type="button" title="Connect Ledger" class="btn btn-primary btn-lg btn-block btn-generate btn-ledger"></button>
+                -->
+                <button *ngIf="translate.currentLang != 'ru'" type="button" title="Connect Ledger" class="btn btn-primary btn-lg btn-block btn-generate btn-ledger" disabled></button>
+                <button *ngIf="translate.currentLang == 'ru'" type="button" title="Connect Ledger" class="btn btn-primary btn-lg btn-block btn-generate btn-ledger2" disabled></button>
             </a>
         </div>
         <div class="row justify-content-between">

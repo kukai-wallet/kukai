@@ -146,9 +146,9 @@
             <li routerLinkActive="active">
                 <a routerLink="/bakery" class="btn-main-action">{{ 'HOMEPAGECOMPONENT.BAKERY' | translate }}</a>
             </li>
-            <li routerLinkActive="active">
+            <!--<li routerLinkActive="active">
                 <a routerLink="/voting" class="btn-main-action"> Voting </a>
-            </li>
+            </li>-->
         </ul>
 
         <!-- TEST LANGUAGE TRANSLATION --
@@ -163,7 +163,7 @@
 
 
         <ul class="list-unstyled bottom-CTAs">
-            <li routerLinkActive="active">
+            <li routerLinkActive="active" *ngIf="!this.walletService.isLedgerWallet()">
                 <a routerLink="/offline-signing" class="btn-main-action">{{ 'HOMEPAGECOMPONENT.OFFLINESIGNING' | translate }}</a>
             </li>
             <li routerLinkActive="active">
@@ -192,6 +192,7 @@
 
         </ul>
     </nav>
+
     <!-- Page Content Holder -->
     <div id="content">
         <div class="center-content">

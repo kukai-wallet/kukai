@@ -15,18 +15,15 @@ export class DelegateService {
     }
   }
   getDelegate(pkh: string) {
-    if (pkh.slice(0, 3) === 'KT1') {
-      this.operationService.getDelegate(pkh).subscribe(
-        (data: any) => {
-          if (data.success) {
-            this.handleDelegateResponse(pkh, data.payload.delegate);
-          } else {
-            console.log('getDelegate failed ', data.payload.msg);
-          }
-        },
-        err => console.log(JSON.stringify(err))
-      );
-    }
+    this.operationService.getDelegate(pkh).subscribe(
+      (data: any) => {
+        if (data.success) {
+          this.handleDelegateResponse(pkh, data.payload.delegate);
+        } else {
+        }
+      },
+      err => console.log(JSON.stringify(err))
+    );
   }
   handleDelegateResponse(pkh: string, data: any) {
     const index = this.walletService.wallet.accounts.findIndex(a => a.pkh === pkh);

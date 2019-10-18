@@ -15,8 +15,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 
 // External libraries
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { ComponentLoaderFactory } from 'ngx-bootstrap/component-loader/component-loader.factory';
+import { ComponentLoaderFactory } from 'ngx-bootstrap/component-loader';
 import { ModalModule, AlertModule, ProgressbarModule, ButtonsModule, BsDropdownModule, TabsModule } from 'ngx-bootstrap';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 
@@ -34,6 +33,7 @@ import { ExportService } from './services/export.service';
 import { DelegateService } from './services/delegate.service';
 import { TzscanService } from './services/tzscan.service';
 import { InputValidationService } from './services/input-validation.service';
+import { LedgerService } from './services/ledger.service';
 
 // View components
 import { OfflineSigningComponent } from './components/offline-signing/offline-signing.component';
@@ -65,6 +65,7 @@ import { ErrorHandlingPipe } from './pipes/error-handling.pipe';
 import { DelegatorNamePipe } from './pipes/delegator-name.pipe';
 import { TruncatePipe } from './pipes/truncate.pipe';
 import { TimeAgoPipe } from './pipes/time-ago.pipe';
+import { ConnectLedgerComponent } from './components/connect-ledger/connect-ledger.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -103,7 +104,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     ErrorHandlingPipe,
     DelegatorNamePipe,
     TruncatePipe,
-    TimeAgoPipe
+    TimeAgoPipe,
+    ConnectLedgerComponent
   ],
   imports: [
     BrowserModule,
@@ -112,7 +114,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     FormsModule,
     AppRoutingModule,
     HttpClientModule,
-    NgbModule.forRoot(),
     CollapseModule.forRoot(),
     ModalModule.forRoot(),
     AlertModule.forRoot(),
@@ -146,6 +147,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     DelegateService,
     TzscanService,
     InputValidationService,
+    LedgerService,
 
     // Pipes
     ErrorHandlingPipe,

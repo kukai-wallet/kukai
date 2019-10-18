@@ -11,12 +11,12 @@
         <div class="col-lg-12">
             <h4>
                 <p>{{ 'BAKERYCOMPONENT.HEADING' | translate }}</p>
-                <p *ngIf="!walletService.wallet.accounts[1]">{{ 'BAKERYCOMPONENT.INFO' | translate }}</p>
+                <p>{{ 'BAKERYCOMPONENT.INFO' | translate }}</p>
             </h4>
         </div>
     </div>
     <br>
-    <span *ngIf="walletService.wallet.accounts[1]">
+    <span>
 
         <!-- Accounts -->
         <div class="row row-header">
@@ -30,7 +30,7 @@
                 {{ 'BAKERYCOMPONENT.DELEGATEDTO' | translate }}
             </div>
         </div>
-        <div class="row" *ngFor="let account of walletService.wallet.accounts | slice:1">
+        <div class="row" *ngFor="let account of walletService.wallet.accounts">
             <div class="col-sm-auto col-border border border-warning text-truncate min-size-address-cell mono">
                 {{ account.pkh }}
             </div>

@@ -151,7 +151,6 @@ export class OfflineSigningComponent implements OnInit, AfterContentInit {
                             console.log('New pkh found: ' + ans.payload.newPkh);
                             if (this.walletService.wallet) {
                                 this.walletService.addAccount(ans.payload.newPkh);
-                                this.coordinatorService.start(ans.payload.newPkh);
                             }
                         }
                     } else {
@@ -182,7 +181,7 @@ export class OfflineSigningComponent implements OnInit, AfterContentInit {
             reader.readAsText(fileToUpload);
             reader.onload = () => {
                 if (reader.result) {
-                    const data = JSON.parse(reader.result);
+                    const data = JSON.parse(reader.result.toString());
                     if (data.signed === true && typeof data.hex === 'string') {
                         this.signed2 = data.hex;
                     } else {
@@ -225,7 +224,7 @@ export class OfflineSigningComponent implements OnInit, AfterContentInit {
         reader.readAsText(fileToUpload);
         reader.onload = () => {
             if (reader.result) {
-                const data = JSON.parse(reader.result);
+                const data = JSON.parse(reader.result.toString());
                 if (data.signed === false && typeof data.hex === 'string') {
                     this.unsigned = data.hex;
                     this.decodeUnsignedOp();

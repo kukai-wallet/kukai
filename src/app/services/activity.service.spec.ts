@@ -18,7 +18,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import 'rxjs/add/operator/mergeMap';
 import { of } from 'rxjs/observable/of';
-import { forEach } from '@angular/router/src/utils/collection';
+// import { forEach } from '@angular/router/src/utils/collection';
 import { Observable } from 'rxjs/Observable';
 import { HttpClient } from 'selenium-webdriver/http';
 import { RSA_X931_PADDING } from 'constants';
@@ -40,7 +40,7 @@ describe('[ ActivityService ]', () => {
 		//create new activity
 		TestBed.configureTestingModule({
 			imports: [HttpClientModule, HttpClientTestingModule, TranslateModule.forRoot(
-				{ loader: { provide: TranslateLoader, useClass: TranslateFakeLoader }})],
+				{ loader: { provide: TranslateLoader, useClass: TranslateFakeLoader } })],
 			providers: [ActivityService, WalletService, MessageService, TzscanService,
 				TranslateService, OperationService, EncryptionService, ErrorHandlingPipe]
 		});
@@ -70,18 +70,19 @@ describe('[ ActivityService ]', () => {
 		const blockhash = walletservice.wallet.accounts[0].activities[0].block;
 		const ophash = walletservice.wallet.accounts[0].activities[0].hash;
 
-		spyOn(tzscanservice, 'timestamp').and.returnValue(['2019-01-04T05:37:37Z']);
+		spyOn(tzscanservice, 'timestamp').and.returnValue(Observable.of('2019-01-04T05:37:37Z'));
 
-		service.getTimestamp(pkh, blockhash, ophash);
-
-		expect(walletservice.wallet.accounts[0].activities[0].timestamp).toEqual(new Date('2019-01-04T05:37:37Z'));
+		service.getTimestamp(pkh, blockhash, ophash).subscribe(
+			(ans) =>
+				expect(walletservice.wallet.accounts[0].activities[0].timestamp).toEqual(new Date('2019-01-04T05:37:37Z'))
+		);
 	});
 
 	it('should get the transaction counter for given pkh', () => {
 		const pkh = walletservice.wallet.accounts[0].pkh;
 		const number_operations = [walletservice.wallet.accounts[0].numberOfActivites];
 
-		spyOn(tzscanservice, 'numberOperations').and.returnValue([number_operations]);
+		spyOn(tzscanservice, 'numberOperations').and.returnValue(Observable.of([number_operations]));
 		spyOn(service, 'getTransactions');
 
 		service.getTransactonsCounter(pkh); // TODO still need to manage observables

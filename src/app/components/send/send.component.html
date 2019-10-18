@@ -29,7 +29,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-12">
                             <label for="toAdress"> {{ 'SENDCOMPONENT.TOADDRESS' | translate }} </label>
-                            <input type="text" class="form-control mono" id="toAddress" placeholder="" [(ngModel)]="toPkh" name="second">
+                            <input type="text" (change)="updateDefaultValues()" class="form-control mono" id="toAddress" placeholder="" [(ngModel)]="toPkh" name="second">
                         </div>
                     </div>
 
@@ -108,7 +108,7 @@
                 <span *ngIf="!isMultipleDestinations">
                     {{ 'SENDCOMPONENT.TO' | translate }}  {{ transactions[0].to }}
                     <BR> {{ 'SENDCOMPONENT.AMOUNT' | translate }} {{ transactions[0].amount | number:'1.0-6' }}&#42793;
-                        <BR> Fee: {{ fee | number:'1.0-6' }}&#42793;
+                        <BR> Fee: {{ getFee() | number:'1.0-6' }}&#42793;
                     <ng-container *ngIf="transactions[0].burn"><BR>Burn: 0.257&#42793;</ng-container>
                 </span>
                 <BR><BR>
@@ -144,6 +144,7 @@
                     </table>
                 </ng-container>
             </p>
+            <p *ngIf="ledgerInstruction">{{ ledgerInstruction }}</p>
             <div class="row">
                 <div *ngIf='walletService.isFullWallet()' class="col-md-6">
                     <form>
@@ -155,7 +156,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="sub" (click)="open3(modal3)"> {{ 'SENDCOMPONENT.CONFIRM' | translate }} </button>
+                <button type="button" [disabled]="walletService.isLedgerWallet() && (!sendResponse || !sendResponse.payload || !sendResponse.payload.signedOperation)" class="btn btn-primary" id="sub" (click)="open3(modal3)"> {{ 'SENDCOMPONENT.CONFIRM' | translate }} </button>
             </div>
             {{ pwdValid }}
         </div>
@@ -196,7 +197,7 @@
                     <p class="text-danger">{{ sendResponse.payload.msg }}</p>
                 </div>
                 <div class="modal-footer">
-                        <button *ngIf='sendResponse.payload.unsignedOperation' type="button" class="btn btn-primary" (click)="download()"> {{ 'SENDCOMPONENT.DOWNLOAD' | translate }} </button>
+                        <button *ngIf='sendResponse && sendResponse.payload.unsignedOperation && !walletService.isLedgerWallet()' type="button" class="btn btn-primary" (click)="download()"> {{ 'SENDCOMPONENT.DOWNLOAD' | translate }} </button>
                         <button type="button" class="btn btn-primary" id="sub" (click)="close3()"> {{ 'SENDCOMPONENT.CLOSE' | translate }} </button>
                     </div>
             </ng-container>

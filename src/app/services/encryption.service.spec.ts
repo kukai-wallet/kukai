@@ -97,7 +97,7 @@ describe('[ EncryptionService ]', () => {
 			};
 
 			const mnemonic = 'version general song belt roast random horror shop pitch fun earn badge drum submit output';
-			seed = bip39.mnemonicToSeed(mnemonic, '').slice(0, 32);
+			seed = bip39.mnemonicToSeedSync(mnemonic, '').slice(0, 32);
 
 			//seed, password & salt
 			salt = keypair.pkh.slice(3, 19);
@@ -131,7 +131,7 @@ describe('[ EncryptionService ]', () => {
 				pkh: 'tz1hyH4nZMnQcCbA8b2DmLE8Z9ctByhP54Fn'
 			};
 			const mnemonic = 'version general song belt roast random horror shop pitch fun earn badge drum submit output';
-			seed = bip39.mnemonicToSeed(mnemonic, '').slice(0, 32);
+			seed = bip39.mnemonicToSeedSync(mnemonic, '').slice(0, 32);
 			ciphertext = '1145141c7e2cdd3448b477a6e6e2f4de2ab893f74afddfb26875a2f055628c69==9fd30af5d097d24675e0418220f478cc';
 			password = 'Firebird87';
 			version = '2';

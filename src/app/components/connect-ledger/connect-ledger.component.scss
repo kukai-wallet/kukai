@@ -1,0 +1,49 @@
+.row {
+    padding-bottom: 0.7vh;
+    min-width: 250px; //20vw;
+}
+
+
+.btn-second {
+    min-width: 121px;
+    color: #333333;
+}
+
+.btn-second:hover {
+    background-color: #cccccc;
+}
+
+/* Taking out underline link in router link */
+a.active-link {
+    text-decoration: none;
+    min-width: 250px; //20vw;
+ }
+
+ .ico-wallet-link {
+    text-align: center
+ }
+
+/* ---------------------------------------------------
+    CONTENT STYLE
+----------------------------------------------------- */
+//Horizontal and Vertical Aligment of child div
+#content {
+    display: flex; 
+    min-height: 95vh;
+    min-width: 75vw;
+}
+.center-content {
+    margin: auto; 
+}
+.btn-float-left {
+    float: left;
+}
+
+//Different screens sizes
+//List of devices: https://css-tricks.com/snippets/css/media-queries-for-standard-devices/
+/*
+@media (max-width: 575.98px) 
+@media (max-width: 767.98px) - mobile phones
+@media (max-width: 991.98px)
+@media (max-width: 1199.98px)
+*/

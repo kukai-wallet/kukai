@@ -30,7 +30,17 @@ $blue:    #FAB915 !default;  //default value: #007bff, modified directly in node
   background-color: #af7e04;
   border-color: #af7e04;
 }
-  
+
+.btn-second {
+  color: #333333;
+  background-color: #dddddd;
+  border-color: #dddddd;
+}
+
+.btn-second:hover {
+  background-color: #cccccc;
+}
+
 .btn-primary:focus, .btn-primary.focus {
   box-shadow: 0 0 0 3px rgb(175, 126, 4); 
 }

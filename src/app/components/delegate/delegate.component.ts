@@ -9,6 +9,7 @@ import { OperationService } from '../../services/operation.service';
 import { ExportService } from '../../services/export.service';
 import { DelegatorNamePipe } from '../../pipes/delegator-name.pipe';
 import { InputValidationService } from '../../services/input-validation.service';
+import { LedgerService } from '../../services/ledger.service';
 
 @Component({
     selector: 'app-delegate',
@@ -17,19 +18,24 @@ import { InputValidationService } from '../../services/input-validation.service'
 })
 export class DelegateComponent implements OnInit {
     recommendedFee = 0.0013;
-    @ViewChild('modal1') modal1: TemplateRef<any>;
+    revealFee = 0;
+    pkhFee = 0.0013;
+    ktFee = 0.003;
+    @ViewChild('modal1', {static: false}) modal1: TemplateRef<any>;
 
     @Input() activePkh: string;
 
     accounts = null;
     activeAccount = null;
     toPkh: string;
+    storedDelegate: string;
     fee: string;
+    storedFee: string;
     password: string;
     pwdValid: string;
     formInvalid = '';
     sendResponse: any;
-
+    ledgerInstruction = '';
     modalRef1: BsModalRef;
     modalRef2: BsModalRef;
     modalRef3: BsModalRef;
@@ -40,7 +46,8 @@ export class DelegateComponent implements OnInit {
         private operationService: OperationService,
         private coordinatorService: CoordinatorService,
         private exportService: ExportService,
-        private inputValidationService: InputValidationService
+        private inputValidationService: InputValidationService,
+        private ledgerService: LedgerService
     ) { }
 
     ngOnInit() {
@@ -51,6 +58,7 @@ export class DelegateComponent implements OnInit {
 
     init() {
         this.accounts = this.walletService.wallet.accounts;
+        this.checkReveal();
     }
 
     open1(template1: TemplateRef<any>) {
@@ -64,21 +72,35 @@ export class DelegateComponent implements OnInit {
         this.formInvalid = this.invalidInput();
         if (!this.formInvalid) {
             if (!this.fee) { this.fee = this.recommendedFee.toString(); }
+            this.storedFee = this.fee;
+            this.storedDelegate = this.toPkh;
             this.close1();
             this.modalRef2 = this.modalService.show(template, { class: 'second' });
+            if (this.walletService.isLedgerWallet()) {
+                this.ledgerInstruction = 'Preparing transaction data. Please wait...';
+                const keys = this.walletService.getKeys('');
+                this.sendDelegation(keys);
+              }
         }
     }
     async open3(template: TemplateRef<any>) {
         const pwd = this.password;
         this.password = '';
         const keys = this.walletService.getKeys(pwd);
-        if (keys) {
-            this.pwdValid = '';
+        if (this.walletService.isLedgerWallet()) {
+            this.broadCastLedgerTransaction();
+            this.sendResponse = null;
             this.close2();
             this.modalRef3 = this.modalService.show(template, { class: 'third' });
-            this.sendDelegation(keys);
-        } else {
-            this.pwdValid = 'Wrong password!';
+          } else {
+            if (keys) {
+                this.pwdValid = '';
+                this.close2();
+                this.modalRef3 = this.modalService.show(template, { class: 'third' });
+                this.sendDelegation(keys);
+            } else {
+                this.pwdValid = 'Wrong password!';
+            }
         }
     }
 
@@ -114,28 +136,74 @@ export class DelegateComponent implements OnInit {
                     if (ans.success === true) {
                         if (ans.payload.opHash) {
                             this.coordinatorService.boost(this.activePkh);
-                        }
+                        } else if (this.walletService.isLedgerWallet()) {
+                            this.ledgerInstruction = 'Please sign the delegation with your Ledger to proceed!';
+                            this.requestLedgerSignature();
+                          }
                     } else {
                         console.log('Delegation error id ', ans.payload.msg);
+                        if (this.walletService.isLedgerWallet()) {
+                            this.ledgerInstruction = 'Failed with: ' + ans.payload.msg;
+                          }
                     }
                 },
                 err => {
                     console.log('Error Message ', JSON.stringify(err));
+                    this.ledgerInstruction = 'Failed to create transaction';
                 }
             );
         }, 100);
     }
+    async requestLedgerSignature() {
+        const op = this.sendResponse.payload.unsignedOperation;
+        const signature = await this.ledgerService.signOperation(op, this.walletService.wallet.derivationPath);
+        const signedOp = op + signature;
+        this.sendResponse.payload.signedOperation = signedOp;
+        this.ledgerInstruction = 'Your transaction have been signed! Press confirm to broadcast it to the network.';
+      }
+      async broadCastLedgerTransaction() {
+        this.operationService.broadcast(this.sendResponse.payload.signedOperation).subscribe(
+          ((ans: any) => {
+            this.sendResponse = ans;
+            if (ans.success && this.activePkh) {
+                this.coordinatorService.boost(this.activePkh);
+            }
+            console.log('ans: ' + JSON.stringify(ans));
+          })
+        );
+      }
     checkReveal() {
         console.log('check reveal');
-        this.operationService.isRevealed(this.activePkh)
+        this.operationService.isRevealed(this.walletService.wallet.accounts[0].pkh)
                 .subscribe((revealed: boolean) => {
                     if (!revealed) {
-                        this.recommendedFee = 0.0026;
+                        this.revealFee = 0.0013;
                     } else {
-                        this.recommendedFee = 0.0013;
+                        this.revealFee = 0;
                     }
+                    this.checkSource();
                 });
     }
+    checkSource() {
+        console.log('check source');
+        if (this.activePkh.slice(0, 2) === 'tz') {
+            this.recommendedFee = this.revealFee + this.pkhFee;
+        } else if (this.activePkh.slice(0, 2) === 'KT') {
+            this.recommendedFee = this.revealFee + this.ktFee;
+        }
+    }
+    getFee() {
+        if (this.fee) {
+          return this.fee;
+        }
+        return this.storedFee;
+      }
+      getDelegate() {
+        if (this.toPkh) {
+          return this.toPkh;
+        }
+        return this.storedDelegate;
+      }
     clearForm() {
         this.toPkh = '';
         this.fee = '';
@@ -143,6 +211,7 @@ export class DelegateComponent implements OnInit {
         this.pwdValid = '';
         this.formInvalid = '';
         this.sendResponse = '';
+        this.ledgerInstruction = '';
     }
     invalidInput(): string {
         if (!this.inputValidationService.address(this.toPkh) && this.toPkh !== '') {

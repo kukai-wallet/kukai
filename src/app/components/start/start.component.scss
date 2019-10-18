@@ -8,17 +8,39 @@
     min-width: 121px;
     color: #333333;
 }
-
+.btn-import {
+    padding-right: 0.7vh;
+    width: 265px;
+    min-width: 265px;
+}
 .btn-second:hover {
     background-color: #cccccc;
 }
-
+.btn-ledger {
+    background: url(../../../assets/img/ledger-button.png);
+    height: 48px;
+    width: 48px;
+}
+.btn-ledger:hover, .btn-ledger:active:hover {
+    background: url(../../../assets/img/ledger-button-hover.png);
+}
+//Bigger button for Russian language
+.btn-ledger2 {
+    background: url(../../../assets/img/ledger-button2.png);
+    height: 78px;
+    width: 78px;
+}
+.btn-ledger2:hover, .btn-ledger2:active:hover {
+    background: url(../../../assets/img/ledger-button-hover2.png);
+}
 /* Taking out underline link in router link */
 a.active-link {
     text-decoration: none;
     min-width: 250px; //20vw;
  }
-
+.btn-import:hover {
+    text-decoration: none;
+}
  .ico-wallet-link {
     text-align: center
  }

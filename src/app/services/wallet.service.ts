@@ -14,6 +14,7 @@ import { OperationService } from './operation.service';
 export class WalletService {
   storeKey = `kukai-wallet`;
   wallet: Wallet;
+
   constructor(
     private translate: TranslateService,
     private encryptionService: EncryptionService,
@@ -26,12 +27,12 @@ export class WalletService {
     return bip39.generateMnemonic(160);
   }
   createEncryptedWallet(mnemonic: string, password: string, passphrase: string = ''): any {
-    let seed = this.operationService.mnemonic2seed(mnemonic, passphrase);
+    const  seed = this.operationService.mnemonic2seed(mnemonic, passphrase);
     const keyPair: KeyPair = this.operationService.seed2keyPair(seed);
     const encrypted = this.encryptionService.encrypt(seed, password, 2);
-    seed = encrypted.chiphertext;
+    const encryptedSeed = encrypted.chiphertext;
     const salt = encrypted.iv;
-    return { data: this.exportKeyStoreInit(WalletType.FullWallet, keyPair.pkh, seed, salt), pkh: keyPair.pkh };
+    return { data: this.exportKeyStoreInit(WalletType.FullWallet, keyPair.pkh, encryptedSeed, salt), pkh: keyPair.pkh };
   }
   getSalt(pkh: string = this.wallet.accounts[0].pkh) {
     return pkh.slice(3, 19);
@@ -67,7 +68,7 @@ export class WalletService {
       } else {
         return null;
       }
-    } else if (this.isViewOnlyWallet()) {
+    } else if (this.isViewOnlyWallet() || this.isLedgerWallet()) {
       return {
         pkh: this.wallet.accounts[0].pkh,
         pk: this.wallet.seed,
@@ -83,15 +84,16 @@ export class WalletService {
     localStorage.removeItem(this.storeKey);
   }
   emptyWallet(type: WalletType): Wallet {
-    return {
-      seed: null,
-      salt: null,
-      encryptionVersion: null,
-      type: type,
-      balance: this.emptyBalance(),
-      XTZrate: null,
-      accounts: []
+    const w: Wallet = {
+        seed: null,
+        salt: null,
+        encryptionVersion: null,
+        type: type,
+        balance: this.emptyBalance(),
+        XTZrate: null,
+        accounts: []
     };
+    return w;
   }
   emptyBalance(): Balance {
     return {
@@ -113,6 +115,9 @@ export class WalletService {
   isObserverWallet(): boolean {
     return (this.wallet && this.wallet.type === WalletType.ObserverWallet);
   }
+  isLedgerWallet(): boolean {
+    return (this.wallet && this.wallet.type === WalletType.LedgerWallet);
+  }
   walletTypePrint(): string {
     if (this.isFullWallet()) {
       return 'Full wallet';
@@ -120,6 +125,8 @@ export class WalletService {
       return 'View-only wallet';
     } else if (this.isObserverWallet()) {
       return 'Observer wallet';
+    } else if (this.isLedgerWallet()) {
+      return 'Ledger wallet';
     } else {
       return '';
     }
@@ -141,8 +148,11 @@ export class WalletService {
     }
     if (this.isFullWallet()) {
       data.encryptedSeed = this.wallet.seed;
-    } else if (this.isViewOnlyWallet()) {
+    } else if (this.isViewOnlyWallet() || this.isLedgerWallet()) {
       data.pk = this.wallet.seed;
+      if (this.isLedgerWallet()) {
+        data.derivationPath = this.wallet.derivationPath;
+      }
     }
     return data;
   }

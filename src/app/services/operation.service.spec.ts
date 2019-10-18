@@ -119,9 +119,9 @@ describe('[ OperationService ]', () => {
 			expect(data instanceof Object).toBeTruthy();
 		});
 
-		it('return type is ScalarObservable', function() {
+		it('return type is not ScalarObservable', function() {
 			const data = service.opCheck(final, pkh);
-			expect(data._isScalar).toBeTruthy();
+			expect(data._isScalar).toBeFalsy();
 		});
 
 		it('return operation success for final type string and length 51', () => {

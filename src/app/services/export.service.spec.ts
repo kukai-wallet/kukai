@@ -2,7 +2,7 @@
 import { ExportService } from './export.service';
 
 // class dependencies
-import * as FileSaver from 'file-saver/FileSaver';
+import * as FileSaver from 'file-saver';
 import { WalletService } from './wallet.service';
 
 // unit-testing framework
