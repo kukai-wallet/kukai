@@ -8,6 +8,7 @@ import { OperationService } from './operation.service';
 import { ErrorHandlingPipe } from '../pipes/error-handling.pipe';
 
 export interface ScheduleData {
+  pkh: string;
   state: State;
   interval: any;
   stateCounter: number;
@@ -22,7 +23,7 @@ enum State {
 export class CoordinatorService {
   scheduler: Map<string, any> = new Map<string, any>(); // pkh + delay
   defaultDelayActivity = 60000; // 30s
-  shortDelayActivity = 2000; // 2s
+  shortDelayActivity = 5000; // 2s
   tzrateInterval: any;
   defaultDelayPrice = 300000; // 300s
   constructor(
@@ -51,6 +52,7 @@ export class CoordinatorService {
     if (pkh && !this.scheduler.get(pkh)) { // maybe add delay if !this.walletService.getIndexFromPkh(pkh) or prevent it
       console.log('Start scheduler ' + this.walletService.getIndexFromPkh(pkh) + ' ' + pkh);
       const scheduleData: ScheduleData = {
+        pkh: pkh,
         state: State.UpToDate,
         interval: setInterval(() => this.update(pkh), this.defaultDelayActivity),
         stateCounter: 0
@@ -61,6 +63,7 @@ export class CoordinatorService {
     }
   }
   async boost(pkh: string, changedDelegate?: boolean) { // Expect action
+    console.log('boost ' + pkh);
     if (this.walletService.getIndexFromPkh(pkh) !== -1) {
       if (!this.scheduler.get(pkh)) {
         await this.start(pkh);
@@ -119,8 +122,7 @@ export class CoordinatorService {
     const scheduleData: ScheduleData = this.scheduler.get(pkh);
     scheduleData.state = newState;
     if (newState === State.UpToDate) {
-      this.balanceService.getBalanceAll();
-      this.delegateService.getDelegate(pkh);
+      this.updateAccountDataAll();
     }
     if (newState === State.Wait || newState === State.Updating) {
       clearInterval(scheduleData.interval);
@@ -153,6 +155,11 @@ export class CoordinatorService {
     this.scheduler.get(pkh).interval = null;
     this.scheduler.delete(pkh);
   }
+  updateAccountDataAll() {
+    for (const acc of this.walletService.wallet.accounts) {
+      this.updateAccountData(acc.pkh);
+    }
+  }
   updateAccountData(pkh: string) { // Maybe also check for originations to account?
     this.operationService.getAccount(pkh).subscribe(
       (ans: any) => {
@@ -167,3 +174,5 @@ export class CoordinatorService {
     );
   }
 }
+
+

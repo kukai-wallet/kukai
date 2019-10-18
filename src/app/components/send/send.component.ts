@@ -317,9 +317,6 @@ export class SendComponent implements OnInit {
                         console.log('Transaction successful ', ans);
                         if (ans.payload.opHash) {
                             this.coordinatorService.boost(this.activePkh);
-                            for (let i = 0; i < this.transactions.length; i++) {
-                                this.coordinatorService.boost(this.transactions[i].to);
-                            }
                         } else if (this.walletService.isLedgerWallet()) {
                             this.ledgerInstruction = 'Please sign the transaction with your Ledger to proceed!';
                             this.requestLedgerSignature();

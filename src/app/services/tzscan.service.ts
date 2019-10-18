@@ -13,13 +13,13 @@ const httpOptions = {
 @Injectable()
 export class TzscanService {
   CONSTANTS = new Constants();
-  apiUrl = this.CONSTANTS.NET.API_URL;
+  apiUrl = '';
   constructor(private http: HttpClient) { }
 
-  numberOperations(pkh: string) {
+  numberOperationsDepricated(pkh: string) {
     return this.http.get(this.apiUrl + 'v1/number_operations/' + pkh);
   }
-  numberOperationsOrigination(pkh: string) {
+  numberOperationsOriginationDepricated(pkh: string) {
     return this.http.get(this.apiUrl + 'v1/number_operations/' + pkh + '?type=Origination');
   }
   operations(pkh: string, n: number, p: number = 0): Observable<any> {
@@ -53,17 +53,14 @@ export class TzscanService {
         return of(res[0].type.operations[0].public_key);
       }));
   }
-  operationsOrigination(pkh: string, n: number) {
+  operationsOriginationDepricated(pkh: string, n: number) {
     return this.http.get(this.apiUrl + 'v1/operations/' + pkh + '?type=Origination&number=' + n + '&p=0');
   }
   timestamp(block: string) {
     return this.http.get(this.apiUrl + 'v1/timestamp/' + block);
   }
   getPriceUSD(): Observable<any> {
-    return this.http.get(this.apiUrl + 'v1/marketcap')
-      .pipe(flatMap((res: any) => {
-        return of(res[0].price_usd);
-      }));
+        return of('-');
   }
   getOp(data: any, pkh: string): any {
     const ops: any[] = [];

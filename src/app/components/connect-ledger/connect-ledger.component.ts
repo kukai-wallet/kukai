@@ -15,7 +15,8 @@ import { InputValidationService } from '../../services/input-validation.service'
 export class ConnectLedgerComponent implements OnInit {
   activePanel = 0;
   CONSTANTS = new Constants();
-  path = '44\'/1729\'/0\'/0\'';
+  defaultPath = '44\'/1729\'/0\'/0\'';
+  path: string;
   pendingLedgerConfirmation = false;
   isHDDerivationPathCustom = false;
 
@@ -29,8 +30,9 @@ export class ConnectLedgerComponent implements OnInit {
 
   ngOnInit() {
     if (this.CONSTANTS.NET.NAME !== 'Mainnet') {
-      this.path = '44\'/1729\'/1\'/0\'';
+      this.defaultPath = '44\'/1729\'/1\'/0\'';
     }
+    this.path = this.defaultPath;
   }
   async getPk() {
     if (this.inputValidationService.derivationPath(this.path)) {
@@ -59,7 +61,7 @@ export class ConnectLedgerComponent implements OnInit {
   }
   setDefaultPath() {
     if (this.isHDDerivationPathCustom) {
-      this.path = '44\'/1729\'/0\'/0\'';
+      this.path = this.defaultPath;
     }
   }
 }

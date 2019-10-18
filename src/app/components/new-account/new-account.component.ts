@@ -144,8 +144,8 @@ export class NewAccountComponent implements OnInit {
           if (ans.success === true) {
             if (ans.payload.opHash && ans.payload.newPkh) {
               this.walletService.addAccount(ans.payload.newPkh);
+              this.coordinatorService.boost(ans.payload.newPkh);
               this.coordinatorService.boost(this.activePkh);
-              this.coordinatorService.start(ans.payload.newPkh);
             } else if (this.walletService.isLedgerWallet()) {
               this.ledgerInstruction = 'Please sign the origination with your Ledger to proceed!';
               this.requestLedgerSignature();
@@ -177,10 +177,11 @@ export class NewAccountComponent implements OnInit {
         this.sendResponse = ans;
         if (ans.success && ans.payload.opHash && ans.payload.newPkh) {
           this.walletService.addAccount(ans.payload.newPkh);
+          this.coordinatorService.start(ans.payload.newPkh);
+          this.coordinatorService.boost(ans.payload.newPkh);
           if (this.activePkh) {
             this.coordinatorService.boost(this.activePkh);
           }
-          this.coordinatorService.start(ans.payload.newPkh);
         }
         console.log('ans: ' + JSON.stringify(ans));
       })

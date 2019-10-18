@@ -8,8 +8,8 @@
                 <!--
                 <button *ngIf="walletService.getLanguage() == 'en'" type="button" title="Connect Ledger" class="btn btn-primary btn-lg btn-block btn-generate btn-ledger"></button>
                 -->
-                <button *ngIf="translate.currentLang != 'ru'" type="button" title="Connect Ledger" class="btn btn-primary btn-lg btn-block btn-generate btn-ledger"></button>
-                <button *ngIf="translate.currentLang == 'ru'" type="button" title="Connect Ledger" class="btn btn-primary btn-lg btn-block btn-generate btn-ledger2"></button>
+                <button *ngIf="translate.currentLang != 'ru'" type="button" title="Connect Ledger" class="btn btn-primary btn-lg btn-block btn-generate btn-ledger" disabled></button>
+                <button *ngIf="translate.currentLang == 'ru'" type="button" title="Connect Ledger" class="btn btn-primary btn-lg btn-block btn-generate btn-ledger2" disabled></button>
             </a>
         </div>
         <div class="row justify-content-between">

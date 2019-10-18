@@ -24,4 +24,4 @@ Run during development:
 2) Upgrade npm: `npm install -g npm`
 3) To have a global installation for Angular Cli use the following commands: `npm i -g @angular/cli@1.6.8`
 4) Rebuild node-sass: `npm rebuild node-sass`
-5) Modify `node` from `node: false` to `node: {crypto: true, stream: true}` in node_modules/@angular-devkit/build-angular/src/angular-cli-files/models/webpack-configs/browser.js - line 91
+5) Modify `node` from `node: false` to `node: {crypto: true, stream: true, fs: 'empty'}` in node_modules/@angular-devkit/build-angular/src/angular-cli-files/models/webpack-configs/browser.js - line 91

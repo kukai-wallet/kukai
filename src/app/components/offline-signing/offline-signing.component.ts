@@ -151,7 +151,6 @@ export class OfflineSigningComponent implements OnInit, AfterContentInit {
                             console.log('New pkh found: ' + ans.payload.newPkh);
                             if (this.walletService.wallet) {
                                 this.walletService.addAccount(ans.payload.newPkh);
-                                this.coordinatorService.start(ans.payload.newPkh);
                             }
                         }
                     } else {

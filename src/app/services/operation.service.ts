@@ -444,8 +444,8 @@ export class OperationService {
     return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + pkh)
       .pipe(flatMap((contract: any) => {
         let delegate = '';
-        if (contract.delegate && contract.delegate.value) {
-          delegate = contract.delegate.value;
+        if (contract.delegate) {
+          delegate = contract.delegate;
         }
         return of(
           {
@@ -665,11 +665,12 @@ export class OperationService {
         if (argument.slice(82, 94) === '0346034e031b') { // KT delegate
           op.data.parameters = this.getContractDelegation(pkh);
         } else if (argument.slice(82, 96) === '031e0743036a00') { // KT to tz transaction
-          const amount2 = this.zarithDecode(argument.slice(96, argument.length - 12));
+          const amount2 = this.zarithDecode(argument.slice(96, argument.length - 12), true);
           if (argument.slice(argument.length - 12, argument.length) !== '034f034d031b') {
             throw new Error('UnsupportedTagT4');
           }
-          op.data.parameters = this.getContractPkhTransaction(pkh, (amount2.value / 2).toString());
+          console.log(' Val: ' + amount2.value);
+          op.data.parameters = this.getContractPkhTransaction(pkh, amount2.value.toString());
         } else {
           throw new Error('UnsupportedTagT3');
         }
@@ -677,11 +678,11 @@ export class OperationService {
         const kt = argument.slice(40, 84);
         if (argument.slice(84, 154) !== '0555036c0200000015072f02000000090200000004034f032702000000000743036a00') {
         }
-        const amount2 = this.zarithDecode(argument.slice(154));
+        const amount2 = this.zarithDecode(argument.slice(154), true);
         if (argument.slice(156 + amount2.count * 2, 166 + amount2.count * 2) !== '4f034d031b') {
           throw new Error('UnsupportedTagT6');
         }
-        op.data.parameters = this.getContractKtTransaction(kt, (amount2.value / 2).toString());
+        op.data.parameters = this.getContractKtTransaction(kt, amount2.value.toString());
       } else {
         throw new Error('UnsupportedTagT2');
       }
@@ -762,16 +763,22 @@ export class OperationService {
   decodePk() {
     return null;
   }
-  zarithDecode(hex: string): any {
+  zarithDecode(hex: string, natural = false): any {
     let count = 0;
     let value = 0;
     while (1) {
       const byte = Number('0x' + hex.slice(0 + count * 2, 2 + count * 2));
+      if (natural && value === 0) {
+        value += ((byte & 63) * (128 ** count));
+      }
       value += ((byte & 127) * (128 ** count));
       count++;
       if ((byte & 128) !== 128) {
         break;
       }
+    }
+    if (natural) {
+      value = Number(Big(value).div(2).toString());
     }
     return {
       value: value,
@@ -792,6 +799,8 @@ export class OperationService {
   */
   validOpBytes(fop: any, opbytes: string): boolean {
     const fop2: any = this.decodeOpBytes(opbytes);
+    console.log(JSON.stringify(fop));
+    console.log(JSON.stringify(fop2));
     if (JSON.stringify(fop) === JSON.stringify(fop2)) {
       return true; // Client and node agree the opbytes are correct!
     }
