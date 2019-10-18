@@ -291,7 +291,7 @@ export class OperationService {
         }
         if (!keys.sk) {
           fop.signature = 'edsigtXomBKi5CTRf5cjATJWSyaRvhfYNHqSUGrn4SdbYRcGwQrUGjzEfQDTuqHhuA8b2d8NarZjz8TRf65WkpQmo423BtomS8Q';
-          return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/scripts/run_operation', fop)
+          return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/scripts/run_operation', {operation: fop, chain_id: 'NetXdQprcVkpaWU'})
             .pipe(flatMap((applied: any) => {
               console.log('applied: ' + JSON.stringify(applied));
               this.checkApplied([applied]);
