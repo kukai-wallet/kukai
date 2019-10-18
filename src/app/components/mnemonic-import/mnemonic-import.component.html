@@ -6,10 +6,16 @@
                 <div class="card-text">
                     <form class="form-group form-min-height">
                         <div>
+                            <!--
                             <tabset>
                                 <tab heading="ICO import" (select)="tge = true"></tab>
                                 <tab heading="Regular import" id="tab1" (select)="tge = false"></tab>
                             </tabset>
+                            -->
+                            <mat-tab-group [selectedIndex]="activeTab" (selectedIndexChange)="tabChanged($event)">
+                                <mat-tab label="ICO import" (select)="tge = true"></mat-tab>
+                                <mat-tab label="Regular import" (select)="tge = false"></mat-tab>
+                            </mat-tab-group>
                             <BR>
                         </div>
                         <div class="form-group row" *ngIf="tge">

@@ -177,4 +177,7 @@ export class MnemonicImportComponent implements OnInit {
       (res: string) => this.messageService.addSuccess(res)
     );
   }
+  tabChanged(event: Event) {
+      this.tge = !this.tge;
+  }
 }
