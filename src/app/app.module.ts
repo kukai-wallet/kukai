@@ -6,9 +6,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { BsModalService } from 'ngx-bootstrap/modal';
 
 // From Angular Material
-import { MatSortModule } from '@angular/material';
+import { MatSortModule, MatTabsModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
 
 // For translation
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
@@ -110,6 +109,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    MatTabsModule,
     MatSortModule,
     FormsModule,
     AppRoutingModule,
