@@ -28,7 +28,7 @@ const pkh2pkh = {
 const pkh2kt = {
     gas: 15400,
     storage: 0,
-    fee: 0.0016
+    fee: 0.0017
 };
 const kt2pkh = {
     gas: 26300,
@@ -374,6 +374,7 @@ export class SendComponent implements OnInit {
 
     toggleDestination() {
         this.isMultipleDestinations = !this.isMultipleDestinations;
+        this.updateDefaultValues();
     }
 
     clearForm() {
@@ -418,10 +419,12 @@ export class SendComponent implements OnInit {
                     this.extraFee = 0;
                 }
                 this.recommendedFee = this.defaultFee + this.extraFee;
+                this.updateDefaultValues();
             });
     }
 
     updateDefaultValues() {
+        if (!this.isMultipleDestinations) {
         if (this.activePkh.slice(0, 2) === 'tz') {
             if (this.toPkh.length < 2 || this.toPkh.slice(0, 2) !== 'KT') {
                 this.setDefaultValues(pkh2pkh);
@@ -435,6 +438,13 @@ export class SendComponent implements OnInit {
                 this.setDefaultValues(kt2kt);
             }
         }
+    } else {
+        if (this.activePkh.slice(0, 2) === 'tz') {
+            this.setDefaultValues(pkh2kt);
+        } else {
+            this.setDefaultValues(kt2kt);
+        }
+    }
     }
     setDefaultValues(values: any) {
         this.defaultGasLimit = values.gas;
