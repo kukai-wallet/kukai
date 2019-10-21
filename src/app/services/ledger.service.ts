@@ -23,7 +23,6 @@ export class LedgerService {
       try {
       this.transport = await TransportU2F.create();
       console.log('Transport is now set to use U2F!');
-      console.log('');
       } catch (e) {
         console.log('Couldn\'t use U2F for transport!');
       }
@@ -58,11 +57,14 @@ export class LedgerService {
   }
   async signOperation (op: string, path: string) {
     await this.transportCheck();
-    console.log('ledger op ' + op);
     const xtz = new App(this.transport);
     console.log(path);
-    console.log(op);
-    const result = await xtz.signOperation(path, '03' + op)
+    const toSign = '03' + op;
+    if (toSign.length > 512) {
+      this.messageService.addError('Operation is too big for Ledger to sign (' + toSign.length / 2 + ' > 256 bytes)');
+      throw new Error('LedgerSignError');
+    }
+    const result = await xtz.signOperation(path, toSign)
       .catch(e => {
         this.messageService.addError(e);
       });

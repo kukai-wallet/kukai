@@ -781,13 +781,13 @@ export class OperationService {
   }
   zarithDecodeInt(hex: string): any {
     let count = 0;
-    let value = 0;
+    let value = Big(0);
     while (1) {
       const byte = Number('0x' + hex.slice(0 + count * 2, 2 + count * 2));
       if (count === 0) {
-        value += ((byte & 63) * (128 ** count));
+        value = Big(((byte & 63) * (128 ** count))).add(value);
       } else {
-        value += (((byte & 127) * (128 ** count)) >> 1);
+        value = Big(((byte & 127) * 2) >> 1).times(64 * 128 ** (count - 1)).add(value);
       }
       count++;
       if ((byte & 128) !== 128) {

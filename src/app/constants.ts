@@ -18,7 +18,7 @@ export class Constants {
                 url: 'https://conseil-staging2.cryptonomic-infra.tech',
                 apiKey: 'klassare'
             },
-            NODE_URL: 'https://zeronet-node.tzscan.io/',
+            NODE_URL: 'https://tezos-zeronet.cryptonomic-infra.tech',
             BLOCK_EXPLORER_URL: 'https://zeronet.tzscan.io/',
             CHAIN_ID: 'PsBABY5HQTSkA4297zNHfsZNKtxULfL18y95qb3m53QJiXGmrbU'
         };
