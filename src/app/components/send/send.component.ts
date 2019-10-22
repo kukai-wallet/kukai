@@ -32,7 +32,7 @@ const pkh2kt = {
 };
 const kt2pkh = {
     gas: 26300,
-    storage: 0,
+    storage: 277,
     fee: 0.003
 };
 const kt2kt = {
@@ -50,7 +50,7 @@ const revealFee = 0.0013;
     styleUrls: ['./send.component.scss']
 })
 export class SendComponent implements OnInit {
-    @ViewChild('modal1', {static: false}) modal1: TemplateRef<any>;
+    @ViewChild('modal1', { static: false }) modal1: TemplateRef<any>;
     @Input() activePkh: string;
     @Input() actionButtonString: string;  // Possible values: btnOutline / dropdownItem / btnSidebar
 
@@ -424,27 +424,29 @@ export class SendComponent implements OnInit {
     }
 
     updateDefaultValues() {
-        if (!this.isMultipleDestinations) {
-        if (this.activePkh.slice(0, 2) === 'tz') {
-            if (this.toPkh.length < 2 || this.toPkh.slice(0, 2) !== 'KT') {
-                this.setDefaultValues(pkh2pkh);
+        if (this.activePkh && this.activePkh.length) {
+            if (!this.isMultipleDestinations) {
+                if (this.activePkh.slice(0, 2) === 'tz') {
+                    if (this.toPkh.length < 2 || this.toPkh.slice(0, 2) !== 'KT') {
+                        this.setDefaultValues(pkh2pkh);
+                    } else {
+                        this.setDefaultValues(pkh2kt);
+                    }
+                } else {
+                    if (this.toPkh.length < 2 || this.toPkh.slice(0, 2) !== 'KT') {
+                        this.setDefaultValues(kt2pkh);
+                    } else {
+                        this.setDefaultValues(kt2kt);
+                    }
+                }
             } else {
-                this.setDefaultValues(pkh2kt);
-            }
-        } else {
-            if (this.toPkh.length < 2 || this.toPkh.slice(0, 2) !== 'KT') {
-                this.setDefaultValues(kt2pkh);
-            } else {
-                this.setDefaultValues(kt2kt);
+                if (this.activePkh.slice(0, 2) === 'tz') {
+                    this.setDefaultValues(pkh2kt);
+                } else {
+                    this.setDefaultValues(kt2kt);
+                }
             }
         }
-    } else {
-        if (this.activePkh.slice(0, 2) === 'tz') {
-            this.setDefaultValues(pkh2kt);
-        } else {
-            this.setDefaultValues(kt2kt);
-        }
-    }
     }
     setDefaultValues(values: any) {
         this.defaultGasLimit = values.gas;
