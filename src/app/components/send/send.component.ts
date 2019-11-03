@@ -175,13 +175,17 @@ export class SendComponent implements OnInit {
     sendEntireBalance(accountPkh: string, event: Event) {
         event.stopPropagation();
         const index = this.accounts.findIndex(account => account.pkh === accountPkh);
-        let accountBalance = Big(this.accounts[index].balance.balanceXTZ).div(1000000);
-        if (!this.fee) {
-            accountBalance = accountBalance.minus(this.recommendedFee);
+        if (accountPkh && accountPkh.slice(0, 2) === 'tz') {
+            let accountBalance = Big(this.accounts[index].balance.balanceXTZ).div(1000000);
+            if (!this.fee) {
+                accountBalance = accountBalance.minus(this.recommendedFee);
+            } else {
+                accountBalance = accountBalance.minus(Number(this.fee));
+            }
+            this.amount = accountBalance.toString();
         } else {
-            accountBalance = accountBalance.minus(Number(this.fee));
+            this.amount = Big(this.accounts[index].balance.balanceXTZ).div(1000000).toString();
         }
-        this.amount = accountBalance.toString();
     }
 
     open1(template1: TemplateRef<any>) {
