@@ -20,7 +20,11 @@ export class ConseilService {
     this.CONSTANTS = new Constants();
     this.conseilServer = this.CONSTANTS.NET.CSI;
     this.platform = 'tezos';
-    this.network = 'mainnet';
+    if (this.CONSTANTS.NET.NAME === 'Mainnet') {
+      this.network = 'mainnet';
+    } else {
+      this.network = 'babylonnet';
+    }
   }
   async getContractAddresses(pkh: string): Promise<any> {
     const entity = 'operations';

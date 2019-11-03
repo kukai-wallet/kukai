@@ -80,14 +80,14 @@
         </span>
         -->
 
-        <span class="topbar-links">
+        <!--<span class="topbar-links">
             <div *ngIf="CONSTANTS.NET.NAME === 'Mainnet'" class="btn-topbar btn-topbar-alphanet">
                 <a href="https://alphanet.kukai.app/" target="_blank">Alphanet</a>
             </div>
             <div *ngIf="CONSTANTS.NET.NAME === 'Alphanet'" class="btn-topbar btn-topbar-mainnet">
                 <a href="https://kukai.app/" target="_blank">Mainnet</a>
             </div>
-        </span>
+        </span>-->
 
         <!-- Test 1
         <div>
@@ -131,7 +131,7 @@
             <p class="sub-heading" align="center">
                 {{ 'HOMEPAGECOMPONENT.MOTO' | translate }}
                 <BR> <span class="white">{{ this.walletService.walletTypePrint() }}</span>
-                <BR> <span [ngClass]="{'zeronet' : CONSTANTS.NET.NAME == 'Zeronet', 'mainnet' : CONSTANTS.NET.NAME == 'Mainnet', 'alphanet' : CONSTANTS.NET.NAME == 'Alphanet'}">[ {{ CONSTANTS.NET.NAME }} ]</span>
+                <BR> <span [ngClass]="{'testnet' : CONSTANTS.NET.NAME == 'Testnet', 'mainnet' : CONSTANTS.NET.NAME == 'Mainnet'}">[ {{ CONSTANTS.NET.NAME }} ]</span>
             </p>
         </div>
         <br>
