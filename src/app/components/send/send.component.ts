@@ -23,12 +23,12 @@ interface SendData {
 const pkh2pkh = {
     gas: 10600,
     storage: 277,
-    fee: 0.00135
+    fee: 0.0014
 };
 const pkh2kt = {
     gas: 15400,
     storage: 0,
-    fee: 0.0017
+    fee: 0.0019
 };
 const kt2pkh = {
     gas: 26300,
@@ -38,7 +38,7 @@ const kt2pkh = {
 const kt2kt = {
     gas: 44800,
     storage: 0,
-    fee: 0.0052
+    fee: 0.005
 };
 
 const revealFee = 0.0013;

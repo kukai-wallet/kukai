@@ -18,7 +18,7 @@ import { LedgerService } from '../../services/ledger.service';
   styleUrls: ['./new-account.component.scss']
 })
 export class NewAccountComponent implements OnInit {
-  recommendedFee = 0.0017;
+  recommendedFee = 0.0021;
   @ViewChild('modal1', {static: false}) modal1: TemplateRef<any>;
   @Input() activePkh: string;
   accounts = null;
@@ -192,9 +192,9 @@ export class NewAccountComponent implements OnInit {
     this.operationService.isRevealed(this.activePkh)
       .subscribe((revealed: boolean) => {
         if (!revealed) {
-          this.recommendedFee = 0.003;
+          this.recommendedFee = 0.0035;
         } else {
-          this.recommendedFee = 0.0017;
+          this.recommendedFee = 0.0021;
         }
       });
   }
