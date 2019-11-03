@@ -296,7 +296,7 @@
     },
     "RECEIVECOMPONENT": {
         "RECEIVETEZ" : "Получить тез",
-        "RECEIVE" : "Отправить",
+        "RECEIVE" : "Получить",
         "EMPTYINFO" : "Кошелек не настроен",
         "CLOSE" : "Закрыть"
     },
