@@ -26,7 +26,7 @@
             </button>
 
             <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-language">
-                <li role="menuitem" *ngFor="let lang of translate.getLangs()" [value]="lang" (click)="translate.use(lang)"> 
+                <li role="menuitem" *ngFor="let lang of translate.getLangs()" [value]="lang" (click)="setLanguage(lang)"> 
                     <span class="dropdown-item"> {{ returnLanguage (lang) }} </span>
                 </li>
             </ul>

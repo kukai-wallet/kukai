@@ -32,9 +32,13 @@ export class HomePageComponent implements OnInit {
         translate.setDefaultLang('en');
 
         // the lang to use, if the lang isn't available, it will use the current loader to get them
+        const languagePreference = window.localStorage.getItem('languagePreference');
         const browserLang = translate.getBrowserLang();
-        console.log('browserLang ', browserLang);
-        translate.use(browserLang.match(/en|fr|ru|jp|kor|por/) ? browserLang : 'en');
+        if (languagePreference) {
+          translate.use(languagePreference.match(/en|fr|ru|jp|kor|por/) ? languagePreference : 'en');
+        } else {
+          translate.use(browserLang.match(/en|fr|ru|jp|kor|por/) ? browserLang : 'en');
+        }
     }
 
   ngOnInit() {
@@ -64,6 +68,10 @@ export class HomePageComponent implements OnInit {
     const language = map.get(lang);
 
     return language;
+  }
+  setLanguage(lang) {
+    window.localStorage.setItem('languagePreference', lang);
+    this.translate.use(lang);
   }
 
   logout() {
