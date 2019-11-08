@@ -14,9 +14,7 @@ import { Constants } from '../constants';
 
 import { ErrorHandlingPipe } from '../pipes/error-handling.pipe';
 
-const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-};
+const httpOptions = {headers: { 'Content-Type': 'application/json' }};
 
 export interface KeyPair {
   sk: string | null;
@@ -363,6 +361,7 @@ export class OperationService {
     }
   }
   errHandler(error: any): Observable<any> {
+    console.log(JSON.stringify(error));
     if (error.error && error.error[0] && error.error[0].id) {
       const errorId = error.error[0].id;
       const errorMsg = this.errorHandlingPipe.transform(errorId);
@@ -375,7 +374,6 @@ export class OperationService {
       error = this.errorHandlingPipe.transform(error.message);
     } else {
       console.log('Error not categorized');
-      console.log(JSON.stringify(error));
     }
     return of(
       {

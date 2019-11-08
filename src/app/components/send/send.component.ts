@@ -182,6 +182,7 @@ export class SendComponent implements OnInit {
             } else {
                 accountBalance = accountBalance.minus(Number(this.fee));
             }
+            accountBalance = accountBalance.minus(0.000001); // dust
             this.amount = accountBalance.toString();
         } else {
             this.amount = Big(this.accounts[index].balance.balanceXTZ).div(1000000).toString();
