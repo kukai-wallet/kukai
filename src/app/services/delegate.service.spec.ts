@@ -143,10 +143,12 @@ describe('[ DelegateService ]', () => {
 		expect(service).toBeTruthy();
 	});
 
+	/** No longer true after Babylon
 	it('should ignore TZ1 accounts', () => {
 		service.getDelegate('tz1mockaccount');
 		expect(operationsrv.getDelegate).not.toHaveBeenCalled();
 	});
+	 */
 
 	/** Broken in 1.3.0 update
 	it('should get a single delegate', () => {

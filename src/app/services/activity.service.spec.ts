@@ -78,17 +78,17 @@ describe('[ ActivityService ]', () => {
 		);
 	});
 
-	it('should get the transaction counter for given pkh', () => {
+	/*it('should get the transaction counter for given pkh', () => {
 		const pkh = walletservice.wallet.accounts[0].pkh;
 		const number_operations = [walletservice.wallet.accounts[0].numberOfActivites];
 
-		spyOn(tzscanservice, 'numberOperations').and.returnValue(Observable.of([number_operations]));
-		spyOn(service, 'getTransactions');
+		// spyOn(tzscanservice, 'numberOperations').and.returnValue(Observable.of([number_operations]));
+		// spyOn(service, 'getTransactions');
 
-		service.getTransactonsCounter(pkh); // TODO still need to manage observables
+		// service.getTransactonsCounter(pkh); // TODO still need to manage observables
 
 		//expect(service.getTransactions).toHaveBeenCalledWith(pkh, number_operations[0]);
-	});
+	});*/
 
 	/** TODO
 	it('@TODO should get transactions', async() => {
