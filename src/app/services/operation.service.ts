@@ -161,7 +161,7 @@ export class OperationService {
                 if (manager === null) { // Reveal
                   fop.contents.push({
                     kind: 'reveal',
-                    source: from,
+                    source: keys.pkh,
                     fee: '0',
                     counter: (++counter).toString(),
                     gas_limit: '10000',
@@ -263,7 +263,7 @@ export class OperationService {
                   fop.contents[1] = fop.contents[0];
                   fop.contents[0] = {
                     kind: 'reveal',
-                    source: from,
+                    source: keys.pkh,
                     fee: '0',
                     counter: (counter).toString(),
                     gas_limit: '10000',
@@ -361,6 +361,9 @@ export class OperationService {
     }
   }
   errHandler(error: any): Observable<any> {
+    if (error.response) {
+      console.log(error.response);
+    }
     console.log(JSON.stringify(error));
     if (error.error && error.error[0] && error.error[0].id) {
       const errorId = error.error[0].id;
