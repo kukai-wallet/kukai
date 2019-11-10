@@ -136,7 +136,7 @@ export class ErrorHandlingPipe implements PipeTransform {
                 break;
             }
             case 'proto.005-PsBabyM1.contract.balance_too_low': {
-                errorMessage = 'An operation tried to spend more tokens than the contract has';
+                errorMessage = 'An operation tried to spend more tokens than the contract has. Make sure you have enough tez available on your tz1 address to pay the transaction fees.';
                 break;
             }
             case 'proto.005-PsBabyM1.contract.cannot_pay_storage_fee': {
