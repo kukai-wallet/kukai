@@ -30,7 +30,7 @@ export class Constants {
                 url: 'https://conseil-prod.cryptonomic-infra.tech',
                 apiKey: 'klassare'
             },
-            NODE_URL: 'https://rpc.tzbeta.net',
+            NODE_URL: 'https://mainnet.tezos.org.ua/',
             BLOCK_EXPLORER_URL: 'https://mvp.tezblock.io',
             CHAIN_ID: 'PsBabyM1eUXZseaJdmXFApDSBqj8YBfwELoxZHHW77EMcAbbwAS'
         };
