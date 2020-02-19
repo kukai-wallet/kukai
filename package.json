@@ -48,7 +48,7 @@
     "bs58check": "^2.1.1",
     "buffer": "^5.0.7",
     "chart.js": "^2.7.3",
-    "codecov": "^2.3.1",
+    "codecov": "^3.6.5",
     "copy-to-clipboard": "^3.0.8",
     "core-js": "^2.4.1",
     "crypto-browserify": "^3.12.0",
