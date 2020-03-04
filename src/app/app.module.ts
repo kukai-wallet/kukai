@@ -30,7 +30,6 @@ import { ImportService } from './services/import.service';
 import { TzrateService } from './services/tzrate.service';
 import { ExportService } from './services/export.service';
 import { DelegateService } from './services/delegate.service';
-import { TzscanService } from './services/tzscan.service';
 import { InputValidationService } from './services/input-validation.service';
 import { LedgerService } from './services/ledger.service';
 
@@ -54,10 +53,8 @@ import { CoordinatorService } from './services/coordinator.service';
 import { OperationService } from './services/operation.service';
 import { BakeryComponent } from './components/bakery/bakery.component';
 import { ActivateComponent } from './components/activate/activate.component';
-import { MessagesComponent } from './components/messages/messages.component';  // Empty
-import { VotingComponent } from './components/voting/voting.component';
+import { MessagesComponent } from './components/messages/messages.component';
 import { CommunityComponent } from './components/community/community.component';
-import { BakersListComponent } from './components/bakers-list/bakers-list.component';
 
 // Pipes
 import { ErrorHandlingPipe } from './pipes/error-handling.pipe';
@@ -94,10 +91,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     MnemonicImportComponent,
     BakeryComponent,
     ActivateComponent,
-    MessagesComponent,  // Empty
-    VotingComponent,
+    MessagesComponent,
     CommunityComponent,
-    BakersListComponent,
 
     // Pipes
     ErrorHandlingPipe,
@@ -145,7 +140,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     OperationService,
     ExportService,
     DelegateService,
-    TzscanService,
     InputValidationService,
     LedgerService,
 

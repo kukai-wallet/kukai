@@ -1,15 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import * as bip39 from 'bip39';
-
 import { WalletType } from './../interfaces';
-
 import { WalletService } from './wallet.service';
 import { MessageService } from './message.service';
-import { BalanceService } from './balance.service';
 import { CoordinatorService } from './coordinator.service';
 import { OperationService } from './operation.service';
-import { TzscanService } from './tzscan.service';
 import { ConseilService } from './conseil.service';
 
 @Injectable()
@@ -17,10 +11,8 @@ export class ImportService {
   constructor(
     private walletService: WalletService,
     private messageService: MessageService,
-    private balanceService: BalanceService,
     private coordinatorService: CoordinatorService,
     private operationService: OperationService,
-    private tzscanService: TzscanService,
     private conseilService: ConseilService
   ) { }
   pwdRequired(json: string) {

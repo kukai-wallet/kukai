@@ -131,7 +131,7 @@
             <p class="sub-heading" align="center">
                 {{ 'HOMEPAGECOMPONENT.MOTO' | translate }}
                 <BR> <span class="white">{{ this.walletService.walletTypePrint() }}</span>
-                <BR> <span [ngClass]="{'testnet' : CONSTANTS.NET.NAME == 'Testnet', 'mainnet' : CONSTANTS.NET.NAME == 'Mainnet'}">[ {{ CONSTANTS.NET.NAME }} ]</span>
+                <BR> <span [ngClass]="{'testnet' : CONSTANTS.NET.NAME != 'Mainnet', 'mainnet' : CONSTANTS.NET.NAME == 'Mainnet'}">[ {{ CONSTANTS.NET.NAME }} ]</span>
             </p>
         </div>
         <br>

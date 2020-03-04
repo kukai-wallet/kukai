@@ -16,9 +16,7 @@ import { AccountComponent } from './components/account/account.component';
 import { MnemonicImportComponent } from './components/mnemonic-import/mnemonic-import.component';
 import { BakeryComponent } from './components/bakery/bakery.component';
 import { ActivateComponent } from './components/activate/activate.component';
-import { VotingComponent } from './components/voting/voting.component';
 import { CommunityComponent } from './components/community/community.component';
-import { BakersListComponent } from './components/bakers-list/bakers-list.component';
 import { ConnectLedgerComponent } from './components/connect-ledger/connect-ledger.component';
 
 const routes: Routes = [
@@ -37,9 +35,7 @@ const routes: Routes = [
   { path: 'account', component: AccountComponent },
   { path: 'bakery', component: BakeryComponent },
   { path: 'activate', component: ActivateComponent },
-  { path: 'voting', component: VotingComponent },
   { path: 'community', component: CommunityComponent },
-  { path: 'bakers-list', component: BakersListComponent },
   { path: 'connect-ledger', component: ConnectLedgerComponent }
 ];
 

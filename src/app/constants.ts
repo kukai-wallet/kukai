@@ -1,39 +1,51 @@
 interface Net {
     NAME: string;
-    CSI?: any;
+    NETWORK: string;
+    CSI: { // Conseil Server Info
+        url: string;
+        apiKey: string;
+    };
     NODE_URL: string;
     BLOCK_EXPLORER_URL: string;
-    CHAIN_ID: string;
 }
 export class Constants {
     // Select Testnet or Mainnet
-    // readonly NET: Net = this.testnet();
     readonly NET: Net = this.mainnet();
 
-    testnet(): Net {
-        const TESTNET: Net = {
-            NAME: 'Testnet',
-            CSI: {
-                url: 'https://conseil-dev.cryptonomic-infra.tech',
-                apiKey: 'klassare'
-            },
-            NODE_URL: 'https://rpcalpha.tzbeta.net',
-            BLOCK_EXPLORER_URL: 'https://mvp.tezblock.io',
-            CHAIN_ID: 'PsBabyM1eUXZseaJdmXFApDSBqj8YBfwELoxZHHW77EMcAbbwAS'
-        };
-        return TESTNET;
-    }
-    mainnet(): Net {
-        const MAINNET: Net = {
+    private mainnet(): Net {
+        return {
             NAME: 'Mainnet',
+            NETWORK: 'mainnet',
             CSI: {
                 url: 'https://conseil-prod.cryptonomic-infra.tech',
                 apiKey: 'klassare'
             },
-            NODE_URL: 'https://mainnet.tezos.org.ua/',
-            BLOCK_EXPLORER_URL: 'https://mvp.tezblock.io',
-            CHAIN_ID: 'PsBabyM1eUXZseaJdmXFApDSBqj8YBfwELoxZHHW77EMcAbbwAS'
+            NODE_URL: 'https://mainnet.tezos.org.ua',
+            BLOCK_EXPLORER_URL: 'https://tezblock.io'
         };
-        return MAINNET;
+    }
+    private carthagenet(): Net {
+        return {
+            NAME: 'Testnet / Carthage',
+            NETWORK: 'carthagenet',
+            CSI: {
+                url: 'https://conseil-staging2.cryptonomic-infra.tech',
+                apiKey: 'klassare'
+            },
+            NODE_URL: 'https://carthagenet.tezos.org.ua',
+            BLOCK_EXPLORER_URL: 'https://carthagenet.tezblock.io'
+        };
+    }
+    private babylonnet(): Net {
+        return {
+            NAME: 'Testnet / Babylonnet',
+            NETWORK: 'babylonnet',
+            CSI: {
+                url: 'https://conseil-dev.cryptonomic-infra.tech',
+                apiKey: 'klassare'
+            },
+            NODE_URL: 'https://babylonnet.tezos.org.ua',
+            BLOCK_EXPLORER_URL: 'https://babylonnet.tezblock.io'
+        };
     }
 }

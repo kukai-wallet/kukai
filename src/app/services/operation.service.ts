@@ -9,12 +9,10 @@ import * as bip39 from 'bip39';
 import Big from 'big.js';
 
 import { TranslateService } from '@ngx-translate/core';
-
 import { Constants } from '../constants';
-
 import { ErrorHandlingPipe } from '../pipes/error-handling.pipe';
 
-const httpOptions = {headers: { 'Content-Type': 'application/json' }};
+const httpOptions = { headers: { 'Content-Type': 'application/json' } };
 
 export interface KeyPair {
   sk: string | null;
@@ -25,7 +23,6 @@ export interface KeyPair {
 export class OperationService {
   CONSTANTS = new Constants();
   nodeURL = this.CONSTANTS.NET.NODE_URL;
-  CHAIN_ID = this.CONSTANTS.NET.CHAIN_ID;
   prefix = {
     tz1: new Uint8Array([6, 161, 159]),
     tz2: new Uint8Array([6, 161, 161]),
@@ -49,10 +46,10 @@ export class OperationService {
     Returns an observable for the activation of an ICO identity
   */
   activate(pkh: string, secret: string): Observable<any> {
-    return this.http.get(this.nodeURL + '/chains/main/blocks/head/hash', {})
-      .pipe(flatMap((hash: any) => {
+    return this.getHeader()
+      .pipe(flatMap((header: any) => {
         const fop: any = {
-          branch: hash,
+          branch: header.hash,
           contents: [{
             kind: 'activate_account',
             pkh: pkh,
@@ -63,7 +60,7 @@ export class OperationService {
           .pipe(flatMap((opbytes: any) => {
             this.decodeOpBytes(opbytes);
             const sopbytes: string = opbytes + Array(129).join('0');
-            fop.protocol = this.CHAIN_ID;
+            fop.protocol = header.protocol;
             fop.signature = 'edsigtXomBKi5CTRf5cjATJWSyaRvhfYNHqSUGrn4SdbYRcGwQrUGjzEfQDTuqHhuA8b2d8NarZjz8TRf65WkpQmo423BtomS8Q';
             return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/preapply/operations', [fop])
               .pipe(flatMap((parsed: any) => {
@@ -101,8 +98,8 @@ export class OperationService {
     Returns an observable for the origination of new accounts.
   */
   originate(pkh: string, amount: number, fee: number = 0, keys: KeyPair): Observable<any> {
-    return this.http.get(this.nodeURL + '/chains/main/blocks/head/hash', {})
-      .pipe(flatMap((hash: string) => {
+    return this.getHeader()
+      .pipe(flatMap((header: any) => {
         return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + keys.pkh + '/counter', {})
           .pipe(flatMap((actions: number) => {
             return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + keys.pkh + '/manager_key', {})
@@ -110,7 +107,7 @@ export class OperationService {
                 let counter: number = Number(actions);
                 const script = this.getManagerScript(keys.pkh);
                 const fop: any = {
-                  branch: hash,
+                  branch: header.hash,
                   contents: [
                     {
                       kind: 'origination',
@@ -137,7 +134,7 @@ export class OperationService {
                   };
                   fop.contents[1].counter = (Number(fop.contents[1].counter) + 1).toString();
                 }
-                return this.operation(fop, keys, true);
+                return this.operation(fop, header, keys, true);
               }));
           }));
       })).pipe(catchError(err => this.errHandler(err)));
@@ -147,15 +144,15 @@ export class OperationService {
   */
   // transfer(from: string, to: string, amount: number, fee: number = 0, keys: KeyPair): Observable<any> {
   transfer(from: string, transactions: any, fee: number = 0, keys: KeyPair, gasLimit: number, storageLimit: number): Observable<any> {
-    return this.http.get(this.nodeURL + '/chains/main/blocks/head/hash', {})
-      .pipe(flatMap((hash: any) => {
+    return this.getHeader()
+      .pipe(flatMap((header: any) => {
         return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + keys.pkh + '/counter', {})
           .pipe(flatMap((actions: any) => {
             return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + keys.pkh + '/manager_key', {})
               .pipe(flatMap((manager: any) => {
                 let counter: number = Number(actions);
                 const fop: any = {
-                  branch: hash,
+                  branch: header.hash,
                   contents: []
                 };
                 if (manager === null) { // Reveal
@@ -211,7 +208,7 @@ export class OperationService {
                     }
                   }
                 }
-                return this.operation(fop, keys);
+                return this.operation(fop, header, keys);
               }));
           }));
       })).pipe(catchError(err => this.errHandler(err)));
@@ -220,8 +217,8 @@ export class OperationService {
     Returns an observable for the delegation of baking rights.
   */
   delegate(from: string, to: string, fee: number = 0, keys: KeyPair): Observable<any> {
-    return this.http.get(this.nodeURL + '/chains/main/blocks/head/hash', {})
-      .pipe(flatMap((hash: any) => {
+    return this.getHeader()
+      .pipe(flatMap((header: any) => {
         return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + keys.pkh + '/counter', {})
           .pipe(flatMap((actions: any) => {
             return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + keys.pkh + '/manager_key', {})
@@ -254,7 +251,7 @@ export class OperationService {
                   };
                 }
                 const fop: any = {
-                  branch: hash,
+                  branch: header.hash,
                   contents: [
                     delegationOp
                   ]
@@ -272,7 +269,7 @@ export class OperationService {
                   };
                   fop.contents[1].counter = (Number(fop.contents[1].counter) + 1).toString();
                 }
-                return this.operation(fop, keys);
+                return this.operation(fop, header, keys);
               }));
           }));
       })).pipe(catchError(err => this.errHandler(err)));
@@ -280,7 +277,7 @@ export class OperationService {
   /*
   Help function for operations
   */
-  operation(fop: any, keys: KeyPair, origination: boolean = false): Observable<any> {
+  operation(fop: any, header: any, keys: KeyPair, origination: boolean = false): Observable<any> {
     console.log('fop to send: ' + JSON.stringify(fop));
     return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/forge/operations', fop)
       .pipe(flatMap((opbytes: any) => {
@@ -289,7 +286,7 @@ export class OperationService {
         }
         if (!keys.sk) {
           fop.signature = 'edsigtXomBKi5CTRf5cjATJWSyaRvhfYNHqSUGrn4SdbYRcGwQrUGjzEfQDTuqHhuA8b2d8NarZjz8TRf65WkpQmo423BtomS8Q';
-          return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/scripts/run_operation', {operation: fop, chain_id: 'NetXdQprcVkpaWU'})
+          return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/scripts/run_operation', { operation: fop, chain_id: header.chain_id })
             .pipe(flatMap((applied: any) => {
               console.log('applied: ' + JSON.stringify(applied));
               this.checkApplied([applied]);
@@ -302,7 +299,7 @@ export class OperationService {
                 });
             }));
         } else {
-          fop.protocol = this.CHAIN_ID;
+          fop.protocol = header.protocol;
           const signed = this.sign(opbytes, keys.sk);
           const sopbytes = signed.sbytes;
           fop.signature = signed.edsig;
@@ -333,24 +330,26 @@ export class OperationService {
       const opbytes = sopbytes.slice(0, sopbytes.length - 128);
       const edsig = this.sig2edsig(sopbytes.slice(sopbytes.length - 128));
       fop = this.decodeOpBytes(opbytes);
-      fop.protocol = this.CHAIN_ID;
       fop.signature = edsig;
     } catch (e) {
       return this.errHandler('Invalid bytes');
     }
-    return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/preapply/operations', [fop])
-      .pipe(flatMap((parsed: any) => {
-        let newPkh = null;
-        for (let i = 0; i < parsed[0].contents.length; i++) {
-          if (parsed[0].contents[i].kind === 'origination') {
-            newPkh = parsed[0].contents[i].metadata.operation_result.originated_contracts[0];
+    return this.getHeader().pipe(flatMap((header: any) => {
+      fop.protocol = header.protocol;
+      return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/preapply/operations', [fop])
+        .pipe(flatMap((parsed: any) => {
+          let newPkh = null;
+          for (let i = 0; i < parsed[0].contents.length; i++) {
+            if (parsed[0].contents[i].kind === 'origination') {
+              newPkh = parsed[0].contents[i].metadata.operation_result.originated_contracts[0];
+            }
           }
-        }
-        return this.http.post(this.nodeURL + '/injection/operation', JSON.stringify(sopbytes), httpOptions)
-          .pipe(flatMap((final: any) => {
-            return this.opCheck(final, newPkh);
-          }));
-      })).pipe(catchError(err => this.errHandler(err)));
+          return this.http.post(this.nodeURL + '/injection/operation', JSON.stringify(sopbytes), httpOptions)
+            .pipe(flatMap((final: any) => {
+              return this.opCheck(final, newPkh);
+            }));
+        }));
+    })).pipe(catchError(err => this.errHandler(err)));
   }
   checkApplied(applied: any) {
     for (let i = 0; i < applied[0].contents.length; i++) {
@@ -386,6 +385,9 @@ export class OperationService {
         }
       }
     );
+  }
+  getHeader(): Observable<any> {
+    return this.http.get(this.nodeURL + '/chains/main/blocks/head/header');
   }
   getBalance(pkh: string): Observable<any> {
     return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + pkh + '/balance')

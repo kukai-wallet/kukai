@@ -1,11 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Constants } from '../constants';
-import { of, Observable, from as fromPromise, ArgumentOutOfRangeError } from 'rxjs';
+import { of, Observable, from as fromPromise } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 import { ConseilDataClient, ConseilQueryBuilder, ConseilSortDirection, ConseilOperator } from 'conseiljs';
-import * as util from 'util';
-import { Source } from 'webpack-sources';
-
 
 @Injectable({
   providedIn: 'root'
@@ -19,12 +16,8 @@ export class ConseilService {
   ) {
     this.CONSTANTS = new Constants();
     this.conseilServer = this.CONSTANTS.NET.CSI;
+    this.network = this.CONSTANTS.NET.NETWORK;
     this.platform = 'tezos';
-    if (this.CONSTANTS.NET.NAME === 'Mainnet') {
-      this.network = 'mainnet';
-    } else {
-      this.network = 'babylonnet';
-    }
   }
   async getContractAddresses(pkh: string): Promise<any> {
     const entity = 'operations';
@@ -52,7 +45,7 @@ export class ConseilService {
       return of(result[0].block_level);
     }));
   }
-  getOperations(pkh): Observable<any> {
+  getOperations(pkh: string): Observable<any> {
     const entity = 'operations';
     let sendQuery = ConseilQueryBuilder.blankQuery();
     sendQuery = ConseilQueryBuilder.addFields(sendQuery, 'kind', 'block_hash', 'operation_group_hash', 'timestamp', 'originated_contracts', 'source', 'destination', 'amount');

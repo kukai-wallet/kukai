@@ -1,6 +1,5 @@
 import { Component, Input, OnInit, AfterViewInit, SimpleChange } from '@angular/core';
 import { WalletService } from '../../services/wallet.service';
-import { TzscanService } from '../../services/tzscan.service';
 
 import { Constants } from '../../constants';
 import { TimeAgoPipe } from '../../pipes/time-ago.pipe';
@@ -17,8 +16,7 @@ export class ActivityComponent implements OnInit {
 
     @Input() activePkh: string;
     constructor(
-        private walletService: WalletService,
-        private tzscanService: TzscanService,
+        private walletService: WalletService
     ) {}
 
     ngOnInit() { if (this.walletService.wallet) { this.init(); } }
