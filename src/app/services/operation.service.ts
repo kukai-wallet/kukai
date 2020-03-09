@@ -355,7 +355,14 @@ export class OperationService {
     for (let i = 0; i < applied[0].contents.length; i++) {
       if (applied[0].contents[i].metadata.operation_result.status !== 'applied') {
         console.log('throw error ->');
-        throw new Error(applied[0].contents[i].metadata.operation_result.errors[0].id); // prevent failed operations
+        if (applied[0].contents[i].metadata.operation_result.errors) {
+          throw new Error(applied[0].contents[i].metadata.operation_result.errors[0].id); // prevent failed operations
+        } else if (applied[0].contents[i].metadata.internal_operation_results &&
+          applied[0].contents[i].metadata.internal_operation_results[0].result.errors) {
+            throw new Error(applied[0].contents[i].metadata.internal_operation_results[0].result.errors[0].id);
+          } else {
+            throw new Error('Uncatched error in preapply');
+          }
       }
     }
   }
@@ -462,9 +469,6 @@ export class OperationService {
           }
         );
       })).pipe(catchError(err => this.errHandler(err)));
-  }
-  getManagerKey(pkh: string): Observable<string> {
-    return of('');
   }
   getVerifiedOpBytes(operationLevel, operationHash, pkh, pk): Observable<string> {
     return this.http.get(this.nodeURL + '/chains/main/blocks/' + operationLevel + '/operation_hashes', {})

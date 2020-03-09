@@ -49,7 +49,7 @@ export class ConseilService {
     const entity = 'operations';
     let sendQuery = ConseilQueryBuilder.blankQuery();
     sendQuery = ConseilQueryBuilder.addFields(sendQuery, 'kind', 'block_hash', 'operation_group_hash', 'timestamp', 'originated_contracts', 'source', 'destination', 'amount');
-    sendQuery = ConseilQueryBuilder.addPredicate(sendQuery, 'kind', ConseilOperator.IN, ['transaction', 'origination'], false);
+    sendQuery = ConseilQueryBuilder.addPredicate(sendQuery, 'kind', ConseilOperator.IN, ['transaction', 'origination', 'delegation'], false);
     sendQuery = ConseilQueryBuilder.addPredicate(sendQuery, 'source', ConseilOperator.EQ, [pkh], false);
     sendQuery = ConseilQueryBuilder.addPredicate(sendQuery, 'status', ConseilOperator.EQ, ['applied'], false);
     sendQuery = ConseilQueryBuilder.addOrdering(sendQuery, 'block_level', ConseilSortDirection.DESC);
@@ -57,7 +57,7 @@ export class ConseilService {
 
     let receiveQuery = ConseilQueryBuilder.blankQuery();
     receiveQuery = ConseilQueryBuilder.addFields(receiveQuery, 'kind', 'block_hash', 'operation_group_hash', 'timestamp', 'source', 'destination', 'amount');
-    receiveQuery = ConseilQueryBuilder.addPredicate(receiveQuery, 'kind', ConseilOperator.IN, ['transaction', 'origination'], false);
+    receiveQuery = ConseilQueryBuilder.addPredicate(receiveQuery, 'kind', ConseilOperator.IN, ['transaction', 'origination', 'delegation'], false);
     receiveQuery = ConseilQueryBuilder.addPredicate(receiveQuery, 'destination', ConseilOperator.EQ, [pkh], false);
     receiveQuery = ConseilQueryBuilder.addPredicate(receiveQuery, 'status', ConseilOperator.EQ, ['applied'], false);
     receiveQuery = ConseilQueryBuilder.addOrdering(receiveQuery, 'block_level', ConseilSortDirection.DESC);
