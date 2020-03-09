@@ -10,473 +10,478 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class ErrorHandlingPipe implements PipeTransform {
 
-    transform(errorId: string, args?: any): any {
+    transform(errorId: string): any {
+        // ToDo: Make these error messages easier to update
+        if (errorId.slice(0, 6) === 'proto.') {
+            errorId = 'proto.protocolVersion' + errorId.slice(18);
+        }
         let errorMessage = '';
         switch (errorId) {
-            case 'proto.005-PsBabyM1.InconsistentTypesTypeError': {
+            // proto.005--PsBabyM1.InconsistentTypesTypeError
+            case 'proto.protocolVersion.InconsistentTypesTypeError': {
                 // tslint:disable-next-line:max-line-length
                 errorMessage = 'This is the basic type clash error, that appears in several places where the equality of two types have to be proven, it is always accompanied with another error that provides more context.';
                 break;
             }
-            case 'proto.005-PsBabyM1.badContractParameter': {
+            case 'proto.protocolVersion.badContractParameter': {
                 // tslint:disable-next-line:max-line-length
                 errorMessage = 'Either no parameter was supplied to a contract, a parameter was passed to an account, or a parameter was supplied of the wrong type';
                 break;
             }
-            case 'proto.005-PsBabyM1.badReturnTypeError': {
+            case 'proto.protocolVersion.badReturnTypeError': {
                 errorMessage = 'Unexpected stack at the end of a lambda or script.';
                 break;
             }
-            case 'proto.005-PsBabyM1.badStackItemTypeError': {
+            case 'proto.protocolVersion.badStackItemTypeError': {
                 errorMessage = 'The type of a stack item is unexpected (this error is always accompanied by a more precise one).';
                 break;
             }
-            case 'proto.005-PsBabyM1.badStackTypeError': {
+            case 'proto.protocolVersion.badStackTypeError': {
                 errorMessage = 'The stack has an unexpected length or contents.';
                 break;
             }
-            case 'proto.005-PsBabyM1.baking.cannot_freeze_baking_deposit': {
+            case 'proto.protocolVersion.baking.cannot_freeze_baking_deposit': {
                 errorMessage = 'Impossible to debit the required tokens on the baker\'s contract';
                 break;
             }
-            case 'proto.005-PsBabyM1.baking.cannot_freeze_endorsement_deposit': {
+            case 'proto.protocolVersion.baking.cannot_freeze_endorsement_deposit': {
                 errorMessage = 'Impossible to debit the required tokens on the endorser\'s contract';
                 break;
             }
-            case 'proto.005-PsBabyM1.baking.inconsisten_endorsement': {
+            case 'proto.protocolVersion.baking.inconsisten_endorsement': {
                 errorMessage = 'The operation tries to endorse slots with distinct delegates';
                 break;
             }
-            case 'proto.005-PsBabyM1.baking.insufficient_proof_of_work': {
+            case 'proto.protocolVersion.baking.insufficient_proof_of_work': {
                 errorMessage = 'The block\'s proof-of-work stamp is insufficient';
                 break;
             }
-            case 'proto.005-PsBabyM1.baking.invalid_block_signature': {
+            case 'proto.protocolVersion.baking.invalid_block_signature': {
                 errorMessage = 'A block was not signed with the expected private key.';
                 break;
             }
-            case 'proto.005-PsBabyM1.baking.invalid_fitness_gap': {
+            case 'proto.protocolVersion.baking.invalid_fitness_gap': {
                 errorMessage = 'The gap of fitness is out of bounds';
                 break;
             }
-            case 'proto.005-PsBabyM1.baking.invalid_signature': {
+            case 'proto.protocolVersion.baking.invalid_signature': {
                 errorMessage = 'The block\'s signature is invalid';
                 break;
             }
-            case 'proto.005-PsBabyM1.baking.invalid_slot': {
+            case 'proto.protocolVersion.baking.invalid_slot': {
                 errorMessage = 'The baking slot is out of bounds';
                 break;
             }
-            case 'proto.005-PsBabyM1.baking.timestamp_too_early': {
+            case 'proto.protocolVersion.baking.timestamp_too_early': {
                 errorMessage = 'The block timestamp is before the first slot for this baker at this level';
                 break;
             }
-            case 'proto.005-PsBabyM1.block.inconsistent_double_baking_evidence': {
+            case 'proto.protocolVersion.block.inconsistent_double_baking_evidence': {
                 errorMessage = 'A double-baking evidence is inconsistent (two distinct delegates)';
                 break;
             }
-            case 'proto.005-PsBabyM1.block.inconsistent_double_endorsement_evidence': {
+            case 'proto.protocolVersion.block.inconsistent_double_endorsement_evidence': {
                 errorMessage = 'A double-endorsement evidence is inconsistent (two distinct delegates)';
                 break;
             }
-            case 'proto.005-PsBabyM1.block.invalid_commitment': {
+            case 'proto.protocolVersion.block.invalid_commitment': {
                 errorMessage = 'The block header has invalid commitment.';
                 break;
             }
-            case 'proto.005-PsBabyM1.block.invalid_double_baking_evidence': {
+            case 'proto.protocolVersion.block.invalid_double_baking_evidence': {
                 errorMessage = 'A double-baking evidence is inconsistent (two distinct level)';
                 break;
             }
-            case 'proto.005-PsBabyM1.block.invalid_double_endorsement_evidence': {
+            case 'proto.protocolVersion.block.invalid_double_endorsement_evidence': {
                 errorMessage = 'A double-endorsement evidence is malformed';
                 break;
             }
-            case 'proto.005-PsBabyM1.block.multiple_revelation': {
+            case 'proto.protocolVersion.block.multiple_revelation': {
                 errorMessage = 'A manager operation should not contain more than one revelation';
                 break;
             }
-            case 'proto.005-PsBabyM1.block.outdated_double_baking_evidence': {
+            case 'proto.protocolVersion.block.outdated_double_baking_evidence': {
                 errorMessage = 'A double-baking evidence is outdated.';
                 break;
             }
-            case 'proto.005-PsBabyM1.block.outdated_double_endorsement_evidence': {
+            case 'proto.protocolVersion.block.outdated_double_endorsement_evidence': {
                 errorMessage = 'A double-endorsement evidence is outdated.';
                 break;
             }
-            case 'proto.005-PsBabyM1.block.too_early_double_baking_evidence': {
+            case 'proto.protocolVersion.block.too_early_double_baking_evidence': {
                 errorMessage = 'A double-baking evidence is in the future';
                 break;
             }
-            case 'proto.005-PsBabyM1.block.too_early_double_endorsement_evidence': {
+            case 'proto.protocolVersion.block.too_early_double_endorsement_evidence': {
                 errorMessage = 'A double-endorsement evidence is in the future';
                 break;
             }
-            case 'proto.005-PsBabyM1.block.unrequired_double_baking_evidence': {
+            case 'proto.protocolVersion.block.unrequired_double_baking_evidence': {
                 errorMessage = 'A double-baking evidence is unrequired';
                 break;
             }
-            case 'proto.005-PsBabyM1.block.unrequired_double_endorsement_evidence': {
+            case 'proto.protocolVersion.block.unrequired_double_endorsement_evidence': {
                 errorMessage = 'A double-endorsement evidence is unrequired';
                 break;
             }
-            case 'proto.005-PsBabyM1.comparableTypeExpectedTypeError': {
+            case 'proto.protocolVersion.comparableTypeExpectedTypeError': {
                 errorMessage = 'A non comparable type was used in a place where only comparable types are accepted.';
                 break;
             }
-            case 'proto.005-PsBabyM1.context.failed_to_decode_parameter': {
+            case 'proto.protocolVersion.context.failed_to_decode_parameter': {
                 errorMessage = 'Unexpected JSON object.';
                 break;
             }
-            case 'proto.005-PsBabyM1.context.failed_to_parse_parameter': {
+            case 'proto.protocolVersion.context.failed_to_parse_parameter': {
                 errorMessage = 'The protocol parameters are not valid JSON.';
                 break;
             }
-            case 'proto.005-PsBabyM1.context.storage_error': {
+            case 'proto.protocolVersion.context.storage_error': {
                 errorMessage = 'An error that should never happen unless something has been deleted or corrupted in the database.';
                 break;
             }
-            case 'proto.005-PsBabyM1.contract.balance_too_low': {
+            case 'proto.protocolVersion.contract.balance_too_low': {
                 errorMessage = 'An operation tried to spend more tokens than the contract has. Make sure you have enough tez available on your tz1 address to pay the transaction fees.';
                 break;
             }
-            case 'proto.005-PsBabyM1.contract.cannot_pay_storage_fee': {
+            case 'proto.protocolVersion.contract.cannot_pay_storage_fee': {
                 errorMessage = 'The storage fee is higher than the contract balance';
                 break;
             }
-            case 'proto.005-PsBabyM1.contract.counter_in_the_future': {
+            case 'proto.protocolVersion.contract.counter_in_the_future': {
                 errorMessage = 'An operation assumed a contract counter in the future';
                 break;
             }
-            case 'proto.005-PsBabyM1.contract.counter_in_the_past': {
+            case 'proto.protocolVersion.contract.counter_in_the_past': {
                 errorMessage = 'An operation assumed a contract counter in the past';
                 break;
             }
-            case 'proto.005-PsBabyM1.contract.empty_transaction': {
+            case 'proto.protocolVersion.contract.empty_transaction': {
                 errorMessage = 'Forbidden to credit 0&#42793; to a contract without code.';
                 break;
             }
-            case 'proto.005-PsBabyM1.contract.failure': {
+            case 'proto.protocolVersion.contract.failure': {
                 errorMessage = 'Unexpected contract storage error';
                 break;
             }
-            case 'proto.005-PsBabyM1.contract.invalid_contract_notation': {
+            case 'proto.protocolVersion.contract.invalid_contract_notation': {
                 errorMessage = 'A malformed contract notation was given to an RPC or in a script.';
                 break;
             }
-            case 'proto.005-PsBabyM1.contract.manager.inconsistent_hash': {
+            case 'proto.protocolVersion.contract.manager.inconsistent_hash': {
                 errorMessage = 'A revealed manager public key is inconsistent with the announced hash';
                 break;
             }
-            case 'proto.005-PsBabyM1.contract.manager.inconsistent_public_key': {
+            case 'proto.protocolVersion.contract.manager.inconsistent_public_key': {
                 errorMessage = 'A provided manager public key is different with the public key stored in the contract';
                 break;
             }
-            case 'proto.005-PsBabyM1.contract.manager.unregistered_delegate': {
+            case 'proto.protocolVersion.contract.manager.unregistered_delegate': {
                 errorMessage = 'A contract cannot be delegated to an unregistered delegate';
                 break;
             }
-            case 'proto.005-PsBabyM1.contract.non_existing_contract': {
+            case 'proto.protocolVersion.contract.non_existing_contract': {
                 errorMessage = 'A contract handle is not present in the context (either it never was or it has been destroyed)';
                 break;
             }
-            case 'proto.005-PsBabyM1.contract.previously_revealed_key': {
+            case 'proto.protocolVersion.contract.previously_revealed_key': {
                 errorMessage = 'One tried to revealed twice a manager public key';
                 break;
             }
-            case 'proto.005-PsBabyM1.contract.undelegatable_contract': {
+            case 'proto.protocolVersion.contract.undelegatable_contract': {
                 errorMessage = 'Tried to delegate an implicit contract or a non delegatable originated contract';
                 break;
             }
-            case 'proto.005-PsBabyM1.contract.unrevealed_key': {
+            case 'proto.protocolVersion.contract.unrevealed_key': {
                 errorMessage = 'One tried to apply a manager operation without revealing the manager public key';
                 break;
             }
-            case 'proto.005-PsBabyM1.contract.unspendable_contract': {
+            case 'proto.protocolVersion.contract.unspendable_contract': {
                 errorMessage = 'An operation tried to spend tokens from an unspendable contract';
                 break;
             }
-            case 'proto.005-PsBabyM1.delegate.already_active': {
+            case 'proto.protocolVersion.delegate.already_active': {
                 errorMessage = 'Useless delegate reactivation';
                 break;
             }
-            case 'proto.005-PsBabyM1.delegate.empty_delegate_account': {
+            case 'proto.protocolVersion.delegate.empty_delegate_account': {
                 errorMessage = 'Cannot register a delegate when its implicit account is empty';
                 break;
             }
-            case 'proto.005-PsBabyM1.delegate.no_deletion': {
+            case 'proto.protocolVersion.delegate.no_deletion': {
                 errorMessage = 'Tried to unregister a delegate';
                 break;
             }
-            case 'proto.005-PsBabyM1.delegate.unchanged': {
+            case 'proto.protocolVersion.delegate.unchanged': {
                 errorMessage = 'Contract already delegated to the given delegate';
                 break;
             }
-            case 'proto.005-PsBabyM1.duplicateMapKeys': {
+            case 'proto.protocolVersion.duplicateMapKeys': {
                 errorMessage = 'Map literals cannot contain duplicated keys';
                 break;
             }
-            case 'proto.005-PsBabyM1.duplicateScriptField': {
+            case 'proto.protocolVersion.duplicateScriptField': {
                 errorMessage = 'When parsing script, a field was found more than once';
                 break;
             }
-            case 'proto.005-PsBabyM1.duplicateSetValuesInLiteral': {
+            case 'proto.protocolVersion.duplicateSetValuesInLiteral': {
                 errorMessage = 'Set literals cannot contain duplicate elements, but a duplicae was found while parsing.';
                 break;
             }
-            case 'proto.005-PsBabyM1.failNotInTailPositionTypeError': {
+            case 'proto.protocolVersion.failNotInTailPositionTypeError': {
                 errorMessage = 'There is non trivial garbage code after a FAIL instruction.';
                 break;
             }
-            case 'proto.005-PsBabyM1.gas_exhausted.block': {
+            case 'proto.protocolVersion.gas_exhausted.block': {
                 errorMessage = 'The sum of gas consumed by all the operations in the block exceeds the hard gas limit per block';
                 break;
             }
-            case 'proto.005-PsBabyM1.gas_exhausted.operation': {
+            case 'proto.protocolVersion.gas_exhausted.operation': {
                 errorMessage = 'A script or one of its callee took more time than the operation said it would';
                 break;
             }
-            case 'proto.005-PsBabyM1.gas_limit_too_high': {
+            case 'proto.protocolVersion.gas_limit_too_high': {
                 errorMessage = 'A transaction tried to exceed the hard limit on gas';
                 break;
             }
-            case 'proto.005-PsBabyM1.illFormedTypeTypeError': {
+            case 'proto.protocolVersion.illFormedTypeTypeError': {
                 errorMessage = 'The toplevel error thrown when trying to parse a type expression (always followed by more precise errors).';
                 break;
             }
-            case 'proto.005-PsBabyM1.illTypedContractTypeError': {
+            case 'proto.protocolVersion.illTypedContractTypeError': {
                 // tslint:disable-next-line:max-line-length
                 errorMessage = 'The toplevel error thrown when trying to typecheck a contract code against given input, output and storage types (always followed by more precise errors).';
                 break;
             }
-            case 'proto.005-PsBabyM1.illTypedDataTypeError': {
+            case 'proto.protocolVersion.illTypedDataTypeError': {
                 // tslint:disable-next-line:max-line-length
                 errorMessage = 'The toplevel error thrown when trying to typecheck a data expression against a given type (always followed by more precise errors).';
                 break;
             }
-            case 'proto.005-PsBabyM1.implicit.empty_implicit_contract': {
+            case 'proto.protocolVersion.implicit.empty_implicit_contract': {
                 errorMessage = 'No manager operations are allowed on an empty implicit contract.';
                 break;
             }
-            case 'proto.005-PsBabyM1.inconsistentAnnotations': {
+            case 'proto.protocolVersion.inconsistentAnnotations': {
                 errorMessage = 'The annotations on two types could not be merged';
                 break;
             }
-            case 'proto.005-PsBabyM1.inconsistentStackLengthsTypeError': {
+            case 'proto.protocolVersion.inconsistentStackLengthsTypeError': {
                 errorMessage = 'A stack was of an unexpected length (this error is always in the context of a located error).';
                 break;
             }
-            case 'proto.005-PsBabyM1.inconsistentTypeAnnotations': {
+            case 'proto.protocolVersion.inconsistentTypeAnnotations': {
                 errorMessage = 'The two types contain annotations that do not match';
                 break;
             }
-            case 'proto.005-PsBabyM1.internal_operation_replay': {
+            case 'proto.protocolVersion.internal_operation_replay': {
                 errorMessage = 'An internal operation was emitted twice by a script';
                 break;
             }
-            case 'proto.005-PsBabyM1.invalidArityTypeError': {
+            case 'proto.protocolVersion.invalidArityTypeError': {
                 errorMessage = 'In a script or data expression, a primitive was applied to an unsupported number of arguments.';
                 break;
             }
-            case 'proto.005-PsBabyM1.invalidConstantTypeError': {
+            case 'proto.protocolVersion.invalidConstantTypeError': {
                 errorMessage = 'A data expression was invalid for its expected type.';
                 break;
             }
-            case 'proto.005-PsBabyM1.invalidContractTypeError': {
+            case 'proto.protocolVersion.invalidContractTypeError': {
                 // tslint:disable-next-line:max-line-length
                 errorMessage = 'A script or data expression references a contract that does not exist or assumes a wrong type for an existing contract.';
                 break;
             }
-            case 'proto.005-PsBabyM1.invalidExpressionKindTypeError': {
+            case 'proto.protocolVersion.invalidExpressionKindTypeError': {
                 // tslint:disable-next-line:max-line-length
                 errorMessage = 'In a script or data expression, an expression was of the wrong kind (for instance a string where only a primitive applications can appear).';
                 break;
             }
-            case 'proto.005-PsBabyM1.invalidIterBody': {
+            case 'proto.protocolVersion.invalidIterBody': {
                 errorMessage = 'The body of an ITER instruction must result in the same stack type as before the ITER.';
                 break;
             }
-            case 'proto.005-PsBabyM1.invalidMapBlockFail': {
+            case 'proto.protocolVersion.invalidMapBlockFail': {
                 errorMessage = 'FAIL cannot be the only instruction in the body. The propper type of the return list cannot be inferred.';
                 break;
             }
-            case 'proto.005-PsBabyM1.invalidMapBody': {
+            case 'proto.protocolVersion.invalidMapBody': {
                 errorMessage = 'The body of a map block did not match the expected type';
                 break;
             }
-            case 'proto.005-PsBabyM1.invalidPrimitiveNameCaseTypeError': {
+            case 'proto.protocolVersion.invalidPrimitiveNameCaseTypeError': {
                 errorMessage = 'In a script or data expression, a primitive name is neither uppercase, lowercase or capitalized.';
                 break;
             }
-            case 'proto.005-PsBabyM1.invalidPrimitiveNameTypeErro': {
+            case 'proto.protocolVersion.invalidPrimitiveNameTypeErro': {
                 errorMessage = 'In a script or data expression, a primitive name is unknown or has a wrong case.';
                 break;
             }
-            case 'proto.005-PsBabyM1.invalidPrimitiveNamespaceTypeError': {
+            case 'proto.protocolVersion.invalidPrimitiveNamespaceTypeError': {
                 errorMessage = 'In a script or data expression, a primitive was of the wrong namespace.';
                 break;
             }
-            case 'proto.005-PsBabyM1.invalidPrimitiveTypeError': {
+            case 'proto.protocolVersion.invalidPrimitiveTypeError': {
                 errorMessage = 'In a script or data expression, a primitive was unknown.';
                 break;
             }
-            case 'proto.005-PsBabyM1.invalid_binary_format': {
+            case 'proto.protocolVersion.invalid_binary_format': {
                 errorMessage = 'Could not deserialize some piece of data from its binary representation';
                 break;
             }
-            case 'proto.005-PsBabyM1.missingScriptField': {
+            case 'proto.protocolVersion.missingScriptField': {
                 errorMessage = 'When parsing script, a field was expected, but not provided';
                 break;
             }
-            case 'proto.005-PsBabyM1.nonce.previously_revealed': {
+            case 'proto.protocolVersion.nonce.previously_revealed': {
                 errorMessage = 'Duplicated revelation for a nonce.';
                 break;
             }
-            case 'proto.005-PsBabyM1.nonce.too_early_revelation': {
+            case 'proto.protocolVersion.nonce.too_early_revelation': {
                 errorMessage = 'Nonce revelation happens before cycle end';
                 break;
             }
-            case 'proto.005-PsBabyM1.nonce.too_late_revelation': {
+            case 'proto.protocolVersion.nonce.too_late_revelation': {
                 errorMessage = 'Nonce revelation happens too late';
                 break;
             }
-            case 'proto.005-PsBabyM1.nonce.unexpected': {
+            case 'proto.protocolVersion.nonce.unexpected': {
                 errorMessage = 'The provided nonce is inconsistent with the commit nonce hash.';
                 break;
             }
-            case 'proto.005-PsBabyM1.operation.cannot_parse': {
+            case 'proto.protocolVersion.operation.cannot_parse': {
                 errorMessage = 'The operation is ill-formed or for another protocol version';
                 break;
             }
-            case 'proto.005-PsBabyM1.operation.duplicate_endorsement': {
+            case 'proto.protocolVersion.operation.duplicate_endorsement': {
                 errorMessage = 'Two endorsements received for the same slot';
                 break;
             }
-            case 'proto.005-PsBabyM1.operation.invalid_activation': {
+            case 'proto.protocolVersion.operation.invalid_activation': {
                 errorMessage = 'The given key has already been activated or the given key does not correspond to any preallocated contract';
                 break;
             }
-            case 'proto.005-PsBabyM1.operation.invalid_endorsement_level': {
+            case 'proto.protocolVersion.operation.invalid_endorsement_level': {
                 errorMessage = 'The level of an endorsement is inconsistent with the provided block hash.';
                 break;
             }
-            case 'proto.005-PsBabyM1.operation.invalid_signature': {
+            case 'proto.protocolVersion.operation.invalid_signature': {
                 errorMessage = 'The operation signature is ill-formed or has been made with the wrong public key';
                 break;
             }
-            case 'proto.005-PsBabyM1.operation.missing_signature': {
+            case 'proto.protocolVersion.operation.missing_signature': {
                 errorMessage = 'The operation is of a kind that must be signed, but the signature is missing';
                 break;
             }
-            case 'proto.005-PsBabyM1.operation.wrong_activation_secret': {
+            case 'proto.protocolVersion.operation.wrong_activation_secret': {
                 errorMessage = 'The submitted activation key does not match the registered key.';
                 break;
             }
-            case 'proto.005-PsBabyM1.operation.wrong_endorsement_predecessor': {
+            case 'proto.protocolVersion.operation.wrong_endorsement_predecessor': {
                 errorMessage = 'Trying to include an endorsement in a block that is not the successor of the endorsed one';
                 break;
             }
-            case 'proto.005-PsBabyM1.operation.wrong_voting_period': {
+            case 'proto.protocolVersion.operation.wrong_voting_period': {
                 errorMessage = 'Trying to onclude a proposal or ballot meant for another voting period';
                 break;
             }
-            case 'proto.005-PsBabyM1.scriptOverflowRuntimeError': {
+            case 'proto.protocolVersion.scriptOverflowRuntimeError': {
                 errorMessage = 'A FAIL instruction was reached due to the detection of an overflow';
                 break;
             }
-            case 'proto.005-PsBabyM1.scriptRejectedRuntimeError': {
+            case 'proto.protocolVersion.scriptRejectedRuntimeError': {
                 errorMessage = 'A FAIL instruction was reached';
                 break;
             }
-            case 'proto.005-PsBabyM1.scriptRuntimeError': {
+            case 'proto.protocolVersion.scriptRuntimeError': {
                 errorMessage = 'Toplevel error for all runtime script errors';
                 break;
             }
-            case 'proto.005-PsBabyM1.seed.unknown_seed': {
+            case 'proto.protocolVersion.seed.unknown_seed': {
                 errorMessage = 'The requested seed is not available';
                 break;
             }
-            case 'proto.005-PsBabyM1.selfInLambda': {
+            case 'proto.protocolVersion.selfInLambda': {
                 errorMessage = 'A SELF instruction was encountered in a lambda expression.';
                 break;
             }
-            case 'proto.005-PsBabyM1.storage_exhausted.block': {
+            case 'proto.protocolVersion.storage_exhausted.block': {
                 errorMessage = 'The sum of storage consumed by all the operations in the block exceeds the hard storage limit per block';
                 break;
             }
-            case 'proto.005-PsBabyM1.storage_exhausted.operation': {
+            case 'proto.protocolVersion.storage_exhausted.operation': {
                 errorMessage = 'A script or one of its callee wrote more bytes than the operation said it would';
                 break;
             }
-            case 'proto.005-PsBabyM1.storage_limit_too_high': {
+            case 'proto.protocolVersion.storage_limit_too_high': {
                 errorMessage = 'A transaction tried to exceed the hard limit on storage';
                 break;
             }
-            case 'proto.005-PsBabyM1.tez.addition_overflow': {
+            case 'proto.protocolVersion.tez.addition_overflow': {
                 errorMessage = 'An addition of two tez amounts overflowed';
                 break;
             }
-            case 'proto.005-PsBabyM1.tez.invalid_divisor': {
+            case 'proto.protocolVersion.tez.invalid_divisor': {
                 errorMessage = 'Multiplication of a tez amount by a non positive integer';
                 break;
             }
-            case 'proto.005-PsBabyM1.tez.multiplication_overflow': {
+            case 'proto.protocolVersion.tez.multiplication_overflow': {
                 errorMessage = 'A multiplication of a tez amount by an integer overflowed';
                 break;
             }
-            case 'proto.005-PsBabyM1.tez.negative_multiplicator': {
+            case 'proto.protocolVersion.tez.negative_multiplicator': {
                 errorMessage = 'Multiplication of a tez amount by a negative integer';
                 break;
             }
-            case 'proto.005-PsBabyM1.tez.subtraction_underflow': {
+            case 'proto.protocolVersion.tez.subtraction_underflow': {
                 errorMessage = 'An subtraction of two tez amounts underflowed';
                 break;
             }
-            case 'proto.005-PsBabyM1.too_many_internal_operations': {
+            case 'proto.protocolVersion.too_many_internal_operations': {
                 errorMessage = 'A transaction exceeded the hard limit of internal operations it can emit';
                 break;
             }
-            case 'proto.005-PsBabyM1.typeTooLarge': {
+            case 'proto.protocolVersion.typeTooLarge': {
                 errorMessage = 'An instruction generated a type larger than the limit.';
                 break;
             }
-            case 'proto.005-PsBabyM1.undefinedBinopTypeError': {
+            case 'proto.protocolVersion.undefinedBinopTypeError': {
                 errorMessage = 'A binary operation is called on operands of types over which it is not defined.';
                 break;
             }
-            case 'proto.005-PsBabyM1.undefinedUnopTypeError': {
+            case 'proto.protocolVersion.undefinedUnopTypeError': {
                 errorMessage = 'A unary operation is called on an operand of type over which it is not defined.';
                 break;
             }
-            case 'proto.005-PsBabyM1.undefined_operation_nonce': {
+            case 'proto.protocolVersion.undefined_operation_nonce': {
                 errorMessage = 'An origination was attemped out of the scope of a manager operation';
                 break;
             }
-            case 'proto.005-PsBabyM1.unexpectedAnnotation': {
+            case 'proto.protocolVersion.unexpectedAnnotation': {
                 errorMessage = 'A node in the syntax tree was impropperly annotated';
                 break;
             }
-            case 'proto.005-PsBabyM1.unexpectedBigMap': {
+            case 'proto.protocolVersion.unexpectedBigMap': {
                 // tslint:disable-next-line:max-line-length
                 errorMessage = 'When parsing script, a big_map type was found somewhere else than in the left component of the toplevel storage pair.';
                 break;
             }
-            case 'proto.005-PsBabyM1.unexpectedOperation': {
+            case 'proto.protocolVersion.unexpectedOperation': {
                 errorMessage = 'When parsing script, a operation type was found in the storage or parameter field.';
                 break;
             }
-            case 'proto.005-PsBabyM1.unknownPrimitiveNameTypeError': {
+            case 'proto.protocolVersion.unknownPrimitiveNameTypeError': {
                 errorMessage = 'In a script or data expression, a primitive was unknown.';
                 break;
             }
-            case 'proto.005-PsBabyM1.unmatchedBranchesTypeError': {
+            case 'proto.protocolVersion.unmatchedBranchesTypeError': {
                 errorMessage = 'At the join point at the end of two code branches the stacks have inconsistent lengths or contents.';
                 break;
             }
-            case 'proto.005-PsBabyM1.unorderedMapLiteral': {
+            case 'proto.protocolVersion.unorderedMapLiteral': {
                 errorMessage = 'Map keys must be in strictly increasing order';
                 break;
             }
-            case 'proto.005-PsBabyM1.unorderedSetLiteral': {
+            case 'proto.protocolVersion.unorderedSetLiteral': {
                 errorMessage = 'Set values must be in strictly increasing order';
                 break;
             }
