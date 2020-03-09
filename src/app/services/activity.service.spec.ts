@@ -8,7 +8,6 @@ import { ActivityService } from './activity.service';
 // dependencies
 import { WalletService } from './wallet.service';
 import { MessageService } from './message.service';
-import { TzscanService } from './tzscan.service';
 import { TranslateService, TranslateModule, TranslateLoader, TranslateFakeLoader } from '@ngx-translate/core';
 import { OperationService } from './operation.service';
 import { EncryptionService } from './encryption.service';
@@ -29,7 +28,6 @@ import { RSA_X931_PADDING } from 'constants';
 describe('[ ActivityService ]', () => {
 	let service: ActivityService;
 	let walletservice: WalletService;
-	let tzscanservice: TzscanService;
 
 	const mockLib = new WalletTools();
 
@@ -41,14 +39,13 @@ describe('[ ActivityService ]', () => {
 		TestBed.configureTestingModule({
 			imports: [HttpClientModule, HttpClientTestingModule, TranslateModule.forRoot(
 				{ loader: { provide: TranslateLoader, useClass: TranslateFakeLoader } })],
-			providers: [ActivityService, WalletService, MessageService, TzscanService,
+			providers: [ActivityService, WalletService, MessageService,
 				TranslateService, OperationService, EncryptionService, ErrorHandlingPipe]
 		});
 
 		// configure injected services
 		service = TestBed.get(ActivityService);
 		walletservice = TestBed.get(WalletService);
-		tzscanservice = TestBed.get(TzscanService);
 
 		// generate random wallet
 		walletservice.wallet = mockLib.generateWallet('encryptedsecretseed', 0, ['tz1primary', 'KT1contract1', 'KT1contract2']);
@@ -65,18 +62,6 @@ describe('[ ActivityService ]', () => {
 
 	});
 
-	it('should get the timestamp ', () => {
-		const pkh = walletservice.wallet.accounts[0].pkh;
-		const blockhash = walletservice.wallet.accounts[0].activities[0].block;
-		const ophash = walletservice.wallet.accounts[0].activities[0].hash;
-
-		spyOn(tzscanservice, 'timestamp').and.returnValue(Observable.of('2019-01-04T05:37:37Z'));
-
-		service.getTimestamp(pkh, blockhash, ophash).subscribe(
-			(ans) =>
-				expect(walletservice.wallet.accounts[0].activities[0].timestamp).toEqual(new Date('2019-01-04T05:37:37Z'))
-		);
-	});
 
 	/*it('should get the transaction counter for given pkh', () => {
 		const pkh = walletservice.wallet.accounts[0].pkh;

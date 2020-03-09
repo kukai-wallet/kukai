@@ -7,7 +7,6 @@ import {Account, Balance, http_imports, translate_imports, balancesrv_providers,
 import { BalanceService, WalletService, OperationService } from '../../../spec/helpers/service.helper';
 
 // class dependencies
-import { TzscanService } from './tzscan.service';
 /**
  * Suite: BalanceService
  * @todo: remove console.log spy, mock operation service calls entirely. it should never be tested.
@@ -23,7 +22,6 @@ describe('[ BalanceService ]', () => {
 	let httpMock: HttpTestingController;
 
 	// testing variables
-	const nodeurl = 'https://rpc.tezrpc.me/';
 	let pkh: string;
 
 	let accounts: Account[];
@@ -33,7 +31,7 @@ describe('[ BalanceService ]', () => {
 		// WalletService mock
 		TestBed.configureTestingModule({
 			imports: [http_imports, translate_imports],
-			providers: [ balancesrv_providers, TzscanService ]
+			providers: [ balancesrv_providers ]
 		});
 
 		service = TestBed.get(BalanceService);

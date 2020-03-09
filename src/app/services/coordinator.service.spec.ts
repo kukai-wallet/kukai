@@ -18,11 +18,9 @@ import 'rxjs/add/operator/mergeMap';
 
 import { MessageService } from './message.service';
 import { TzrateService } from './tzrate.service';
-import { of } from 'rxjs/observable/of';
 import { AppModule } from '../app.module';
 import { AppComponent } from '../app.component';
 import { ActivityService } from './activity.service';
-import { TzscanService } from './tzscan.service';
 import { BalanceService } from './balance.service';
 import { DelegateService } from './delegate.service';
 
@@ -52,7 +50,7 @@ describe('[ Coordinator ]', () => {
 			imports: [HttpClientModule, HttpClientTestingModule, TranslateModule.forRoot(
 				{ loader: { provide: TranslateLoader, useClass: TranslateFakeLoader }})],
 			providers: [ ActivityService, WalletService, EncryptionService, ErrorHandlingPipe,
-				BalanceService, DelegateService, TzscanService, TzrateService, MessageService,
+				BalanceService, DelegateService, TzrateService, MessageService,
 				OperationService, CoordinatorService, AppModule, AppComponent ]
 		});
 

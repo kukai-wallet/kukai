@@ -14,9 +14,7 @@ import { EncryptionService } from './encryption.service';
 import { OperationService } from './operation.service';
 import { TestBed } from '@angular/core/testing';
 import { ErrorHandlingPipe } from '../pipes/error-handling.pipe';
-import { of } from 'rxjs/observable/of';
 import { Account, Wallet, Balance } from '../interfaces';
-import { TzscanService } from './tzscan.service';
 
 
 /**
@@ -29,7 +27,6 @@ describe('[ TzrateService ]', () => {
 
 	// class dependencies
 	let walletservice: WalletService;
-	let tzscanservice: TzscanService;
 	let httpMock: HttpTestingController;
 
 	// mock network data
@@ -90,14 +87,12 @@ describe('[ TzrateService ]', () => {
 				TranslateService,
 				OperationService,
 				EncryptionService,
-				ErrorHandlingPipe,
-				TzscanService
+				ErrorHandlingPipe
 			]
 		});
 
 		service = TestBed.get(TzrateService);
 		walletservice = TestBed.get(WalletService);
-		tzscanservice = TestBed.get(TzscanService);
 		httpMock  = TestBed.get(HttpTestingController);
 
 		const mockbalance: Balance = {
@@ -126,9 +121,6 @@ describe('[ TzrateService ]', () => {
 		spyOn(service, 'getTzrate').and.callThrough();
 		spyOn(service, 'updateFiatBalances').and.callThrough();
 		spyOn(walletservice, 'storeWallet');
-		spyOn(tzscanservice, 'getPriceUSD')
-			.and.returnValue(of(ticker[0]['price_usd']));
-		// spyOn(walletservice, 'wallet');
 		spyOn(console, 'log');
 
 	});

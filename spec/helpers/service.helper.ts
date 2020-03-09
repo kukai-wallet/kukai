@@ -36,8 +36,6 @@ export { ErrorHandlingPipe } from '../../src/app/pipes/error-handling.pipe';
 // tslint:disable-next-line:import-blacklist
 import * as Rx from 'rxjs/Rx';
 
-import { TzscanService } from '../../src/app/services/tzscan.service';
-
 //export { of } from "rxjs/observable/of";
 
 export const rx = Rx;
@@ -77,7 +75,6 @@ export const walletsrv_providers = [
 	MessageService,
 	OperationService,
 	TranslateService,
-	TzrateService,
-	TzscanService
+	TzrateService
 ];
 

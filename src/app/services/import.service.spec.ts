@@ -1,5 +1,5 @@
 // suite unit-test frameworks
-import { HttpTestingController, HttpClientTestingModule, TestRequest } from '@angular/common/http/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 // class under inspection
 import { ImportService } from './import.service';
@@ -14,15 +14,13 @@ import { EncryptionService } from './encryption.service';
 import { OperationService } from './operation.service';
 import { TestBed } from '@angular/core/testing';
 import { ErrorHandlingPipe } from '../pipes/error-handling.pipe';
-import { Account, Wallet, Balance, KeyPair } from '../interfaces';
+import { KeyPair } from '../interfaces';
 import { MessageService } from './message.service';
 import { BalanceService } from './balance.service';
 import { CoordinatorService } from './coordinator.service';
-import { TzscanService } from './tzscan.service';
 import { TzrateService } from './tzrate.service';
 import { ActivityService } from './activity.service';
 import { DelegateService } from './delegate.service';
-import { analyzeAndValidateNgModules } from '@angular/compiler';
 
 
 
@@ -76,7 +74,6 @@ describe('[ ImportService ]', () => {
 			BalanceService,
 			CoordinatorService,
 			OperationService,
-			TzscanService,
 			EncryptionService,
 			ErrorHandlingPipe,
 			TzrateService,
