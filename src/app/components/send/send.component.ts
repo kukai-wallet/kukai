@@ -61,7 +61,7 @@ export class SendComponent implements OnInit {
     errorMessage = '';
     latestSimError = '';
     transactions: SendData[] = [];
-    prevEquiClass: string = '';
+    prevEquiClass = '';
     XTZrate = 0;
     ledgerInstruction = '';
     showBtn = 'Show More';
@@ -336,8 +336,8 @@ export class SendComponent implements OnInit {
             if (this.activePkh && this.activePkh.slice(0, 2) === 'tz') {
                 const max = Big(this.maxToSend(this.activePkh)).plus(0.000001);
                 let amount = Big(0);
-                for (let i in this.transactions) {
-                    amount = amount.plus(Big(this.transactions[i].amount));
+                for (const tx of this.transactions) {
+                    amount = amount.plus(Big(tx.amount));
                 }
                 if (amount.gt(max)) {
                     return this.translate.instant('SENDCOMPONENT.TOOHIGHFEEORAMOUNT');
@@ -346,8 +346,8 @@ export class SendComponent implements OnInit {
                 const maxKt = Big(this.maxToSend(this.activePkh));
                 const maxTz = Big(this.maxToSend(this.walletService.wallet.accounts[0].pkh)).plus(0.000001);
                 let amount = Big(0);
-                for (let i in this.transactions) {
-                    amount = amount.plus(Big(this.transactions[i].amount));
+                for (const tx of this.transactions) {
+                    amount = amount.plus(Big(tx.amount));
                 }
                 const burnAndFee = Big(this.getTotalBurn()).plus(Big(this.getTotalFee()));
                 if (amount.gt(maxKt)) {
@@ -374,7 +374,7 @@ export class SendComponent implements OnInit {
                         this.defaultTransactionParams = res;
                     }
                     this.latestSimError = '';
-                } catch(e) {
+                } catch (e) {
                     this.formInvalid = e;
                     this.latestSimError = e;
                 } finally {
@@ -391,8 +391,8 @@ export class SendComponent implements OnInit {
     // prevent redundant estimations
     equiClass(sender: string, transactions: SendData[]): string {
         let data = sender;
-        for (let i in transactions) {
-            data += transactions[i].to;
+        for (const tx of transactions) {
+            data += tx.to;
         }
         return data;
     }
@@ -465,9 +465,11 @@ export class SendComponent implements OnInit {
                 if (singleSendDataArray.length === 2) {
                     const singleSendDataCheckresult = this.checkReceiverAndAmount(singleSendDataArray[0], singleSendDataArray[1]);
                     if (singleSendDataCheckresult === '') {
-                        const gasLimit = this.gas ? Number(this.gas) : this.defaultTransactionParams.customLimits && this.defaultTransactionParams.customLimits.length > index ?
+                        const gasLimit = this.gas ? Number(this.gas) : this.defaultTransactionParams.customLimits &&
+                            this.defaultTransactionParams.customLimits.length > index ?
                             this.defaultTransactionParams.customLimits[index].gasLimit : this.defaultTransactionParams.gas;
-                        const storageLimit = this.storage ? Number(this.storage) : this.defaultTransactionParams.customLimits && this.defaultTransactionParams.customLimits.length > index ?
+                        const storageLimit = this.storage ? Number(this.storage) : this.defaultTransactionParams.customLimits &&
+                            this.defaultTransactionParams.customLimits.length > index ?
                             this.defaultTransactionParams.customLimits[index].storageLimit : this.defaultTransactionParams.storage;
                         this.toMultipleDestinations.push({ to: singleSendDataArray[0], amount: Number(singleSendDataArray[1]), gasLimit, storageLimit });
                     } else {
@@ -482,7 +484,7 @@ export class SendComponent implements OnInit {
             }
         });
         if (!validationError && finalCheck && !this.batchSpace(this.toMultipleDestinations.length)) {
-            validationError = this.translate.instant('SENDCOMPONENT.GASOVERFLOW')
+            validationError = this.translate.instant('SENDCOMPONENT.GASOVERFLOW');
         }
         return validationError;
     }

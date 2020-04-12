@@ -104,7 +104,7 @@ export interface DefaultTransactionParams {
   storage: number;
   fee: number;
   burn: number;
-  reveal?: boolean
+  reveal?: boolean;
   customLimits?: {
     gasLimit: number;
     storageLimit: number;

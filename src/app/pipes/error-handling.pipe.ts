@@ -809,7 +809,7 @@ export class ErrorHandlingPipe implements PipeTransform {
                 break;
             }
             default: {
-                errorMessage = 'Unrecognized error: ' + errorId
+                errorMessage = 'Unrecognized error: ' + errorId;
                 break;
             }
         }

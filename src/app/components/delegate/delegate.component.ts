@@ -214,7 +214,7 @@ export class DelegateComponent implements OnInit {
         this.ledgerInstruction = '';
     }
     invalidInput(): string {
-        if ((!this.inputValidationService.address(this.toPkh) && 
+        if ((!this.inputValidationService.address(this.toPkh) &&
                 this.toPkh !== '') || (
                 this.toPkh.length > 1 && this.toPkh.slice(0, 2) !== 'tz') || (
                 this.toPkh === this.accounts[0].pkh)) {
