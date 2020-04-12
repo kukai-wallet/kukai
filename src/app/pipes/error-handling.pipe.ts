@@ -12,12 +12,13 @@ export class ErrorHandlingPipe implements PipeTransform {
 
     transform(errorId: string): any {
         // ToDo: Make these error messages easier to update
-        if (errorId.slice(0, 6) === 'proto.') {
-            errorId = 'proto.protocolVersion' + errorId.slice(18);
+        let rpcErrorId = errorId;
+        if (rpcErrorId.slice(0, 6) === 'proto.') {
+            rpcErrorId = 'proto.protocolVersion' + rpcErrorId.slice(18);
         }
         let errorMessage = '';
-        switch (errorId) {
-            // proto.005--PsBabyM1.InconsistentTypesTypeError
+        switch (rpcErrorId) {
+            // proto.005-PsBabyM1.InconsistentTypesTypeError
             case 'proto.protocolVersion.InconsistentTypesTypeError': {
                 // tslint:disable-next-line:max-line-length
                 errorMessage = 'This is the basic type clash error, that appears in several places where the equality of two types have to be proven, it is always accompanied with another error that provides more context.';
@@ -809,7 +810,11 @@ export class ErrorHandlingPipe implements PipeTransform {
                 break;
             }
             default: {
-                errorMessage = 'Unrecognized error: ' + errorId;
+                if (errorId.indexOf('branch refused (Error:') !== -1 && errorId.indexOf('already used for contract') !== -1) {
+                    errorMessage = 'Counter error: Another operation in mempool is blocking your operation. Wait for it to be included in a block or pruned from mempool (up to 60 minutes).';
+                } else {
+                    errorMessage = 'Unrecognized error: ' + errorId;
+                }
                 break;
             }
         }

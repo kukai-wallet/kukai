@@ -376,12 +376,12 @@ export class OperationService {
     }
   }
   errHandler(error: any): Observable<any> {
-    if (error.response) {
-      console.log(error.response);
-    }
     console.log(JSON.stringify(error));
     if (error.error && error.error[0] && error.error[0].id) {
-      const errorId = error.error[0].id;
+      let errorId = error.error[0].id;
+      if (errorId === 'failure' && error.error[0].msg) {
+        errorId = error.error[0].msg;
+      }
       const errorMsg = this.errorHandlingPipe.transform(errorId);
       error = errorMsg;
     } else if (error.error && error.error[0] && error.error[0].error) {

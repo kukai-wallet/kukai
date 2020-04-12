@@ -324,7 +324,7 @@ export class SendComponent implements OnInit {
         if (this.isMultipleDestinations) {
             result = this.invalidInputMultiple(finalCheck);
         } else {
-            result = this.invalidInputSingle();
+            result = this.invalidInputSingle(finalCheck);
         }
         if (!result && this.latestSimError) {
             result = this.latestSimError;
@@ -423,19 +423,21 @@ export class SendComponent implements OnInit {
     validateBatch() {
         this.formInvalid = this.checkInput();
     }
-    invalidInputSingle(): string {
+    invalidInputSingle(finalCheck: boolean): string {
         if (!this.inputValidationService.address(this.activePkh)) {
             return this.translate.instant('SENDCOMPONENT.INVALIDSENDERADDRESS');
         } else if (!this.inputValidationService.fee(this.fee)) {
             return this.translate.instant('SENDCOMPONENT.INVALIDFEE');
         } else {
-            return this.checkReceiverAndAmount(this.toPkh, this.amount);
+            return this.checkReceiverAndAmount(this.toPkh, this.amount, finalCheck);
         }
     }
-    checkReceiverAndAmount(toPkh: string, amount: string): string {
+    checkReceiverAndAmount(toPkh: string, amount: string, finalCheck: boolean): string {
+        console.log(toPkh + ' ' + amount);
         if (!this.inputValidationService.address(toPkh)) {
             return this.translate.instant('SENDCOMPONENT.INVALIDRECEIVERADDRESS');
-        } else if (!this.inputValidationService.amount(amount)) {
+        } else if (!this.inputValidationService.amount(amount) ||
+            (finalCheck && (amount === '0' || amount === ''))) {
             return this.translate.instant('SENDCOMPONENT.INVALIDAMOUNT');
         } else if (!this.inputValidationService.gas(this.gas)) {
             return this.translate.instant('SENDCOMPONENT.INVALIDGASLIMIT');
@@ -463,7 +465,7 @@ export class SendComponent implements OnInit {
             if (toMultipleDestinationsArray[index] !== '') {
                 const singleSendDataArray = toMultipleDestinationsArray[index].split(' ');
                 if (singleSendDataArray.length === 2) {
-                    const singleSendDataCheckresult = this.checkReceiverAndAmount(singleSendDataArray[0], singleSendDataArray[1]);
+                    const singleSendDataCheckresult = this.checkReceiverAndAmount(singleSendDataArray[0], singleSendDataArray[1], finalCheck);
                     if (singleSendDataCheckresult === '') {
                         const gasLimit = this.gas ? Number(this.gas) : this.defaultTransactionParams.customLimits &&
                             this.defaultTransactionParams.customLimits.length > index ?
