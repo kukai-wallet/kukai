@@ -7,14 +7,14 @@ import { DelegateService } from './delegate.service';
 
 // class dependencies
 import { HttpClientModule } from '@angular/common/http';
-import { WalletService } from './wallet.service';
-import { OperationService } from './operation.service';
+import { WalletService } from '../wallet/wallet.service';
+import { OperationService } from '../operation/operation.service';
 import { TranslateLoader, TranslateFakeLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
-import { ErrorHandlingPipe } from '../pipes/error-handling.pipe';
+import { ErrorHandlingPipe } from '../../pipes/error-handling.pipe';
 
 // class mocks
-import { Account, Activity, Balance, Wallet, WalletType } from '../../../spec/mocks/interfaces.mock';
-import { EncryptionService } from './encryption.service';
+import { Account, Activity, Balance, Wallet, WalletType } from '../../../../spec/mocks/interfaces.mock';
+import { EncryptionService } from '../encryption/encryption.service';
 import 'rxjs/add/operator/mergeMap';
 
 /**

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, AfterViewInit, SimpleChange } from '@angular/core';
-import { WalletService } from '../../services/wallet.service';
+import { WalletService } from '../../services/wallet/wallet.service';
 
 import { Constants } from '../../constants';
 import { TimeAgoPipe } from '../../pipes/time-ago.pipe';

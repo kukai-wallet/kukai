@@ -25,7 +25,7 @@ describe('[ ErrorHandlingPipe ]', () => {
 
 		it('match failure, returns [\'Id not known:\' + errorId]', () => {
 			const errorId = 'hi';
-			expect(pipe.transform(errorId)).toEqual('Id not known: ' + errorId);
+			expect(pipe.transform(errorId)).toEqual('Unrecognized error: ' + errorId);
 		});
 
 		it('match success, timeout errorID returns string', () => {

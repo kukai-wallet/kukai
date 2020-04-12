@@ -21,17 +21,18 @@ import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { AppComponent } from './app.component';
 
 // Services
-import { MessageService } from './services/message.service';
-import { WalletService } from './services/wallet.service';
-import { ActivityService } from './services/activity.service';
-import { BalanceService } from './services/balance.service';
-import { EncryptionService } from './services/encryption.service';
-import { ImportService } from './services/import.service';
-import { TzrateService } from './services/tzrate.service';
-import { ExportService } from './services/export.service';
-import { DelegateService } from './services/delegate.service';
-import { InputValidationService } from './services/input-validation.service';
-import { LedgerService } from './services/ledger.service';
+import { MessageService } from './services/message/message.service';
+import { WalletService } from './services/wallet/wallet.service';
+import { ActivityService } from './services/activity/activity.service';
+import { BalanceService } from './services/balance/balance.service';
+import { EncryptionService } from './services/encryption/encryption.service';
+import { ImportService } from './services/import/import.service';
+import { TzrateService } from './services/tzrate/tzrate.service';
+import { ExportService } from './services/export/export.service';
+import { DelegateService } from './services/delegate/delegate.service';
+import { InputValidationService } from './services/input-validation/input-validation.service';
+import { LedgerService } from './services/ledger/ledger.service';
+import { EstimateService } from './services/estimate/estimate.service';
 
 // View components
 import { OfflineSigningComponent } from './components/offline-signing/offline-signing.component';
@@ -49,8 +50,8 @@ import { DelegateComponent } from './components/delegate/delegate.component';
 import { PositioningService } from 'ngx-bootstrap/positioning';
 import { AccountComponent } from './components/account/account.component';
 import { MnemonicImportComponent } from './components/mnemonic-import/mnemonic-import.component';
-import { CoordinatorService } from './services/coordinator.service';
-import { OperationService } from './services/operation.service';
+import { CoordinatorService } from './services/coordinator/coordinator.service';
+import { OperationService } from './services/operation/operation.service';
 import { BakeryComponent } from './components/bakery/bakery.component';
 import { ActivateComponent } from './components/activate/activate.component';
 import { MessagesComponent } from './components/messages/messages.component';
@@ -142,6 +143,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     DelegateService,
     InputValidationService,
     LedgerService,
+    EstimateService,
 
     // Pipes
     ErrorHandlingPipe,

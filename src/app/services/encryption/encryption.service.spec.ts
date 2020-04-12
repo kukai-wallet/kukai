@@ -3,7 +3,7 @@ import { EncryptionService } from './encryption.service';
 
 // provider sub-dependencies
 import * as bip39 from 'bip39';
-import { KeyPair } from '../interfaces';
+import { KeyPair } from '../../interfaces';
 
 
 /**

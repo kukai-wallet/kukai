@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { of, Observable } from 'rxjs';
+import { of, Observable, from as fromPromise } from 'rxjs';
 import { catchError, flatMap } from 'rxjs/operators';
 import { Buffer } from 'buffer';
 import * as libs from 'libsodium-wrappers';
 import * as Bs58check from 'bs58check';
 import * as bip39 from 'bip39';
 import Big from 'big.js';
-
+import { localForger } from '@taquito/local-forging';
 import { TranslateService } from '@ngx-translate/core';
-import { Constants } from '../constants';
-import { ErrorHandlingPipe } from '../pipes/error-handling.pipe';
+import { Constants } from '../../constants';
+import { ErrorHandlingPipe } from '../../pipes/error-handling.pipe';
 
 const httpOptions = { headers: { 'Content-Type': 'application/json' } };
 
@@ -63,7 +63,8 @@ export class OperationService {
             fop.protocol = header.protocol;
             fop.signature = 'edsigtXomBKi5CTRf5cjATJWSyaRvhfYNHqSUGrn4SdbYRcGwQrUGjzEfQDTuqHhuA8b2d8NarZjz8TRf65WkpQmo423BtomS8Q';
             return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/preapply/operations', [fop])
-              .pipe(flatMap((parsed: any) => {
+              .pipe(flatMap((preApplyResult: any) => {
+                console.log(JSON.stringify(preApplyResult));
                 return this.http.post(this.nodeURL + '/injection/operation',
                   JSON.stringify(sopbytes), httpOptions)
                   .pipe(flatMap((final: any) => {
@@ -142,76 +143,84 @@ export class OperationService {
   /*
     Returns an observable for the transaction of tez.
   */
-  // transfer(from: string, to: string, amount: number, fee: number = 0, keys: KeyPair): Observable<any> {
-  transfer(from: string, transactions: any, fee: number = 0, keys: KeyPair, gasLimit: number, storageLimit: number): Observable<any> {
+  transfer(from: string, transactions: any, fee: number, keys: KeyPair): Observable<any> {
     return this.getHeader()
       .pipe(flatMap((header: any) => {
         return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + keys.pkh + '/counter', {})
           .pipe(flatMap((actions: any) => {
             return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + keys.pkh + '/manager_key', {})
               .pipe(flatMap((manager: any) => {
-                let counter: number = Number(actions);
-                const fop: any = {
-                  branch: header.hash,
-                  contents: []
-                };
-                if (manager === null) { // Reveal
-                  fop.contents.push({
-                    kind: 'reveal',
-                    source: keys.pkh,
-                    fee: '0',
-                    counter: (++counter).toString(),
-                    gas_limit: '10000',
-                    storage_limit: '0',
-                    public_key: keys.pk
-                  });
-                }
-                for (let i = 0; i < transactions.length; i++) { // Transfers
-                  if (from.slice(0, 2) === 'tz') {
-                    fop.contents.push({
-                      kind: 'transaction',
-                      source: from,
-                      fee: this.microTez.times(fee).toString(),
-                      counter: (++counter).toString(),
-                      gas_limit: gasLimit.toString(),
-                      storage_limit: storageLimit.toString(),
-                      amount: this.microTez.times(transactions[i].amount).toString(),
-                      destination: transactions[i].to,
-                    });
-                  } else if (from.slice(0, 2) === 'KT') {
-                    if (transactions[i].to.slice(0, 2) === 'tz') {
-                      const managerTransaction = this.getContractPkhTransaction(transactions[i].to, this.microTez.times(transactions[i].amount).toString());
-                      fop.contents.push({
-                        kind: 'transaction',
-                        source: keys.pkh,
-                        fee: this.microTez.times(fee).toString(),
-                        counter: (++counter).toString(),
-                        gas_limit: gasLimit.toString(),
-                        storage_limit: storageLimit.toString(),
-                        amount: '0',
-                        destination: from,
-                        parameters: managerTransaction
-                      });
-                    } else if (transactions[i].to.slice(0, 2) === 'KT') {
-                      const managerTransaction = this.getContractKtTransaction(transactions[i].to, this.microTez.times(transactions[i].amount).toString());
-                      fop.contents.push({
-                        kind: 'transaction',
-                        source: keys.pkh,
-                        fee: this.microTez.times(fee).toString(),
-                        counter: (++counter).toString(),
-                        gas_limit: gasLimit.toString(),
-                        storage_limit: storageLimit.toString(),
-                        amount: '0',
-                        destination: from,
-                        parameters: managerTransaction
-                      });
-                    }
-                  }
-                }
+                const counter: number = Number(actions);
+                const fop = this.createTransactionObject(header.hash, counter, manager, transactions, keys.pkh, keys.pk, from, fee);
                 return this.operation(fop, header, keys);
               }));
           }));
       })).pipe(catchError(err => this.errHandler(err)));
+  }
+  createTransactionObject(hash: string, counter: number, manager: string, transactions: any,
+    pkh: string, pk: string, from: string, fee: number): any {
+    const fop: any = {
+      branch: hash,
+      contents: []
+    };
+    if (manager === null) { // Reveal
+      fop.contents.push({
+        kind: 'reveal',
+        source: pkh,
+        fee: '0',
+        counter: (++counter).toString(),
+        gas_limit: '10000',
+        storage_limit: '0',
+        public_key: pk
+      });
+    }
+    for (let i = 0; i < transactions.length; i++) {
+      const currentFee = i === transactions.length - 1 ? this.microTez.times(fee).toString() : '0';
+      const gasLimit = transactions[i].gasLimit.toString();
+      const storageLimit = transactions[i].storageLimit.toString();
+      if (from.slice(0, 2) === 'tz') {
+        const transactionOp: any = {
+          kind: 'transaction',
+          source: from,
+          fee: currentFee,
+          counter: (++counter).toString(),
+          gas_limit: gasLimit,
+          storage_limit: storageLimit,
+          amount: this.microTez.times(transactions[i].amount).toString(),
+          destination: transactions[i].to,
+        };
+        fop.contents.push(transactionOp);
+      } else if (from.slice(0, 2) === 'KT') {
+        if (transactions[i].to.slice(0, 2) === 'tz') {
+          const managerTransaction = this.getContractPkhTransaction(transactions[i].to, this.microTez.times(transactions[i].amount).toString());
+          fop.contents.push({
+            kind: 'transaction',
+            source: pkh,
+            fee: currentFee,
+            counter: (++counter).toString(),
+            gas_limit: gasLimit,
+            storage_limit: storageLimit,
+            amount: '0',
+            destination: from,
+            parameters: managerTransaction
+          });
+        } else if (transactions[i].to.slice(0, 2) === 'KT') {
+          const managerTransaction = this.getContractKtTransaction(transactions[i].to, this.microTez.times(transactions[i].amount).toString());
+          fop.contents.push({
+            kind: 'transaction',
+            source: pkh,
+            fee: currentFee,
+            counter: (++counter).toString(),
+            gas_limit: gasLimit,
+            storage_limit: storageLimit,
+            amount: '0',
+            destination: from,
+            parameters: managerTransaction
+          });
+        }
+      }
+    }
+    return fop;
   }
   /*
     Returns an observable for the delegation of baking rights.
@@ -240,13 +249,13 @@ export class OperationService {
                 } else if (from.slice(0, 2) === 'KT') {
                   delegationOp = {
                     kind: 'transaction',
-                    source: keys.pkh, // from,
+                    source: keys.pkh,
                     fee: this.microTez.times(fee).toString(),
                     counter: (++counter).toString(),
                     gas_limit: '26283',
                     storage_limit: '0',
-                    amount: '0', // this.microTez.times(transactions[i].amount).toString(),
-                    destination: from, // transactions[i].to,
+                    amount: '0',
+                    destination: from,
                     parameters: this.getContractDelegation(to)
                   };
                 }
@@ -264,7 +273,7 @@ export class OperationService {
                     fee: '0',
                     counter: (counter).toString(),
                     gas_limit: '10000',
-                    storage_limit: '0', // '60000',
+                    storage_limit: '0',
                     public_key: keys.pk
                   };
                   fop.contents[1].counter = (Number(fop.contents[1].counter) + 1).toString();
@@ -392,6 +401,12 @@ export class OperationService {
         }
       }
     );
+  }
+  // Local forge with Taquito
+  localForge(operation: any): Observable<string> {
+    return fromPromise(localForger.forge(operation)).pipe(flatMap((localForgedBytes: string) => {
+      return of(localForgedBytes);
+    }));
   }
   getHeader(): Observable<any> {
     return this.http.get(this.nodeURL + '/chains/main/blocks/head/header');

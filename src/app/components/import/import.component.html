@@ -34,7 +34,7 @@
     <div class="row" *ngIf="walletJson">
         <div class="col-lg-12">
             <form class="form-inline">
-                <input type="password" class="form-control mb-2 mr-sm-2" id="pwd" [(ngModel)]="pwd" placeholder="Password"
+                <input type="password" class="form-control mb-2 mr-sm-2" (keydown.enter)='checkImportPwd()' id="pwd" [(ngModel)]="pwd" placeholder="Password"
                     [ngModelOptions]="{standalone: true}">
                 <button type="button" class="btn btn-clear btn-second mb-2 mr-sm-2" (click)='checkImportPwd()'>Authenticate</button>
                 <!-- HANDLE ERRORS - NEED USER MESSAGE-->
@@ -58,6 +58,7 @@
     <br>
 
     <!-- 3. Retrieve PKH wallet -->
+    <!--
     <div class="row">
         <div class="col-lg-12">
             <h3> {{ 'IMPORTCOMPONENT.IMPORTSUBTITLE3' | translate }} </h3>
@@ -71,10 +72,10 @@
                     placeholder="tz..." [ngModelOptions]="{standalone: true}">
                 <button type="button" class="btn btn-clear btn-second mb-2 mr-sm-2" (click)='importFromPkh()'>{{
                     'IMPORTCOMPONENT.IMPORT' | translate }}</button>
-                <!-- HANDLE ERRORS - NEED USER MESSAGE-->
             </form>
         </div>
     </div>
+    -->
 </div>
 
 <ng-template #modal1>

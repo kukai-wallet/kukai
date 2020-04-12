@@ -85,7 +85,7 @@
     <!-- Shared Action buttons -->
     <div class="row row-buttons padding-top-row" *ngIf="!this.walletService.isObserverWallet()">
         <div class="btn-group btn-group-sm">
-            <app-send [activePkh]="selectedPkh" [actionButtonString]="'btnOutline'"></app-send>
+            <app-send [activePkh]="selectedPkh"></app-send>
             <app-receive [activePkh]="selectedPkh" [actionButtonString]="'btnOutline'"></app-receive>
             <app-new-account [activePkh]="this.walletService.wallet.accounts[0].pkh"></app-new-account>
         </div>

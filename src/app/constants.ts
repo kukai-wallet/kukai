@@ -10,7 +10,7 @@ interface Net {
 }
 export class Constants {
     // Select Testnet or Mainnet
-    readonly NET: Net = this.mainnet();
+    readonly NET: Net = this.carthagenet();
 
     private mainnet(): Net {
         return {
@@ -21,7 +21,7 @@ export class Constants {
                 apiKey: 'klassare'
             },
             NODE_URL: 'https://mainnet.tezos.org.ua',
-            BLOCK_EXPLORER_URL: 'https://tezblock.io'
+            BLOCK_EXPLORER_URL: 'https://tzkt.io'
         };
     }
     private carthagenet(): Net {
@@ -29,23 +29,11 @@ export class Constants {
             NAME: 'Testnet / Carthage',
             NETWORK: 'carthagenet',
             CSI: {
-                url: 'https://conseil-staging2.cryptonomic-infra.tech',
-                apiKey: 'klassare'
-            },
-            NODE_URL: 'https://carthagenet.tezos.org.ua',
-            BLOCK_EXPLORER_URL: 'https://carthagenet.tezblock.io'
-        };
-    }
-    private babylonnet(): Net {
-        return {
-            NAME: 'Testnet / Babylonnet',
-            NETWORK: 'babylonnet',
-            CSI: {
                 url: 'https://conseil-dev.cryptonomic-infra.tech',
                 apiKey: 'klassare'
             },
-            NODE_URL: 'https://babylonnet.tezos.org.ua',
-            BLOCK_EXPLORER_URL: 'https://babylonnet.tezblock.io'
+            NODE_URL: 'https://carthagenet.tezos.org.ua',
+            BLOCK_EXPLORER_URL: 'https://carthage.tzkt.io'
         };
     }
 }

@@ -3,10 +3,10 @@ import { Router } from '@angular/router';
 
 import { TranslateService } from '@ngx-translate/core';  // Multiple instances created ?
 
-import { WalletService } from '../../services/wallet.service';
-import { MessageService } from '../../services/message.service';
-import { ImportService } from '../../services/import.service';
-import { InputValidationService } from '../../services/input-validation.service';
+import { WalletService } from '../../services/wallet/wallet.service';
+import { MessageService } from '../../services/message/message.service';
+import { ImportService } from '../../services/import/import.service';
+import { InputValidationService } from '../../services/input-validation/input-validation.service';
 
 
 @Component({
@@ -104,7 +104,6 @@ export class ImportComponent implements OnInit {
       this.import(this.walletJson, this.pwd);
       this.pwd = '';
     }
-    console.log(this.pwd);
   }
   import(keyFile: string, pwd: string = '') {
     this.typeCheckFile(keyFile);

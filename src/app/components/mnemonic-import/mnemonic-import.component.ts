@@ -3,13 +3,13 @@ import { Router } from '@angular/router';
 import { Constants } from '../../constants';
 import { TranslateService } from '@ngx-translate/core';  // Multiple instances created ?
 
-import { ImportService } from '../../services/import.service';
-import { MessageService } from '../../services/message.service';
-import { OperationService } from '../../services/operation.service';
-import { WalletService } from '../../services/wallet.service';
-import { CoordinatorService } from '../../services/coordinator.service';
-import { ExportService } from '../../services/export.service';
-import { InputValidationService } from '../../services/input-validation.service';
+import { ImportService } from '../../services/import/import.service';
+import { MessageService } from '../../services/message/message.service';
+import { OperationService } from '../../services/operation/operation.service';
+import { WalletService } from '../../services/wallet/wallet.service';
+import { CoordinatorService } from '../../services/coordinator/coordinator.service';
+import { ExportService } from '../../services/export/export.service';
+import { InputValidationService } from '../../services/input-validation/input-validation.service';
 
 @Component({
   selector: 'app-mnemonic-import-wallet',
@@ -25,7 +25,7 @@ export class MnemonicImportComponent implements OnInit {
   passphrase: string;
   pkh: string;
   activePanel = 0;
-  tge = true;
+  tge = false;
   wallet: any;
   pwd1: string;
   pwd2: string;
@@ -170,14 +170,14 @@ export class MnemonicImportComponent implements OnInit {
     this.Downloaded = true;
   }
   done() {
-    this.importService.importWalletData(this.wallet.data, false, this.wallet.pkh);
+    this.importService.importWalletData(this.wallet.data, false, this.wallet.pkh, this.wallet.pk);
     this.wallet = null;
     this.router.navigate(['/overview']);
     this.translate.get('MNEMONICIMPORTCOMPONENT.WALLETREADY').subscribe(
       (res: string) => this.messageService.addSuccess(res)
     );
   }
-  tabChanged(event: Event) {
+  tabChanged() {
       this.tge = !this.tge;
   }
 }

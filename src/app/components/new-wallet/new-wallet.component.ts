@@ -1,9 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { WalletService } from '../../services/wallet.service';
-import { MessageService } from '../../services/message.service';
-import { ExportService } from '../../services/export.service';
-import { ImportService } from '../../services/import.service';
-import { InputValidationService } from '../../services/input-validation.service';
+import { WalletService } from '../../services/wallet/wallet.service';
+import { MessageService } from '../../services/message/message.service';
+import { ExportService } from '../../services/export/export.service';
+import { ImportService } from '../../services/import/import.service';
+import { InputValidationService } from '../../services/input-validation/input-validation.service';
 import { TranslateService } from '@ngx-translate/core';
 
 
@@ -21,6 +21,7 @@ export class NewWalletComponent implements OnInit {
   activePanel = 1;
   data: any;
   pkh: string;
+  pk: string;
   MNEMONIC: string;
   mnemonicOut: string;
   constructor(
@@ -57,11 +58,10 @@ export class NewWalletComponent implements OnInit {
       this.pwd1 = '';
       this.pwd2 = '';
       setTimeout(() => { // Prevent UI from freeze
-        console.log('Wait...');
         const ans = this.walletService.createEncryptedWallet(this.MNEMONIC, pwd);
         this.data = ans.data;
-        console.log('pkh ' + ans.pkh);
         this.pkh = ans.pkh;
+        this.pk = ans.pk;
         this.MNEMONIC = '';
         this.mnemonicOut = '';
         this.activePanel++;
@@ -85,14 +85,13 @@ export class NewWalletComponent implements OnInit {
     }
   }
   calcStrength() {
-    console.log('calc');
     this.pwdStrength = this.inputValidationService.passwordStrengthDisplay(this.pwd1);
   }
   reset() {
     this.activePanel = 1;
   }
   done() {
-    this.importService.importWalletData(this.data, false, this.pkh);
+    this.importService.importWalletData(this.data, false, this.pk);
     this.data = null;
     this.messageService.addSuccess('Your new wallet is now set up and ready to use!');
   }

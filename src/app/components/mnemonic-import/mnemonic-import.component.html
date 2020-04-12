@@ -12,9 +12,9 @@
                                 <tab heading="Regular import" id="tab1" (select)="tge = false"></tab>
                             </tabset>
                             -->
-                            <mat-tab-group [selectedIndex]="activeTab" (selectedIndexChange)="tabChanged($event)">
-                                <mat-tab label="ICO import" (select)="tge = true"></mat-tab>
+                            <mat-tab-group [selectedIndex]="activeTab" (selectedIndexChange)="tabChanged()">
                                 <mat-tab label="Regular import" (select)="tge = false"></mat-tab>
+                                <mat-tab label="ICO import" (select)="tge = true"></mat-tab>
                             </mat-tab-group>
                             <BR>
                         </div>

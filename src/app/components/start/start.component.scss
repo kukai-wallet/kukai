@@ -1,42 +1,24 @@
 .row {
     padding-bottom: 0.7vh;
-    min-width: 250px; //20vw;
+    min-width: 175px; //20vw;
 }
-
-
 .btn-second {
-    min-width: 121px;
     color: #333333;
 }
-.btn-import {
-    padding-right: 0.7vh;
-    width: 200px;
-    min-width: 200px;
+.btn-top {
+    width: 250x;
+    min-width: 250px;
 }
 .btn-second:hover {
     background-color: #cccccc;
 }
-.btn-ledger {
-    background: url(../../../assets/img/ledger-button.png);
-    height: 48px;
-    width: 48px;
-}
-.btn-ledger:hover, .btn-ledger:active:hover {
-    background: url(../../../assets/img/ledger-button-hover.png);
-}
-//Bigger button for Russian language
-.btn-ledger2 {
-    background: url(../../../assets/img/ledger-button2.png);
-    height: 78px;
-    width: 78px;
-}
-.btn-ledger2:hover, .btn-ledger2:active:hover {
-    background: url(../../../assets/img/ledger-button-hover2.png);
+.btn-left {
+    margin-right: 5px !important; 
 }
 /* Taking out underline link in router link */
 a.active-link {
     text-decoration: none;
-    min-width: 250px; //20vw;
+    min-width: 175px; //20vw;
  }
 .btn-import:hover {
     text-decoration: none;

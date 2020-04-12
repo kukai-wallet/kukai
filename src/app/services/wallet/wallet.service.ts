@@ -4,10 +4,11 @@ import * as bip39 from 'bip39';
 
 import { TranslateService } from '@ngx-translate/core';  // Multiple instances created ?
 
-import { Wallet, Balance, KeyPair, WalletType } from './../interfaces';
+import { Wallet, Balance, KeyPair, WalletType } from './../../interfaces';
 
-import { EncryptionService } from './encryption.service';
-import { OperationService } from './operation.service';
+import { EncryptionService } from '../encryption/encryption.service';
+import { OperationService } from '../operation/operation.service';
+import { ThrowStmt } from '@angular/compiler';
 
 
 @Injectable()
@@ -32,7 +33,7 @@ export class WalletService {
     const encrypted = this.encryptionService.encrypt(seed, password, 2);
     const encryptedSeed = encrypted.chiphertext;
     const salt = encrypted.iv;
-    return { data: this.exportKeyStoreInit(WalletType.FullWallet, keyPair.pkh, encryptedSeed, salt), pkh: keyPair.pkh };
+    return { data: this.exportKeyStoreInit(WalletType.FullWallet, keyPair.pkh, encryptedSeed, salt), pkh: keyPair.pkh, pk: keyPair.pk };
   }
   getSalt(pkh: string = this.wallet.accounts[0].pkh) {
     return pkh.slice(3, 19);
@@ -75,6 +76,14 @@ export class WalletService {
         sk: null
       };
     }
+  }
+  getPk(): string {
+    if (this.isFullWallet()) {
+      return this.wallet.pk;
+    } else if (this.isViewOnlyWallet() || this.isLedgerWallet()) {
+      return this.wallet.seed;
+    }
+    return null;
   }
   /*
     Clear wallet data from browser
@@ -176,8 +185,10 @@ export class WalletService {
     const walletData = localStorage.getItem(this.storeKey);
     if (walletData && walletData !== 'undefined') {
       this.wallet = JSON.parse(walletData);
-      if (!this.wallet.encryptionVersion) { // Ensure backwards compability in the localStorage - only needed for a while
-        this.wallet.encryptionVersion = 1;
+      if (this.wallet.type === WalletType.FullWallet) { // Logout full wallet to get pk into context
+        if (!this.wallet.pk) {
+          this.clearWallet();
+        }
       }
     }
   }

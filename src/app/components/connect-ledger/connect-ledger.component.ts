@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Constants } from '../../constants';
 
-import { LedgerService } from '../../services/ledger.service';
-import { ImportService } from '../../services/import.service';
-import { MessageService } from '../../services/message.service';
-import { InputValidationService } from '../../services/input-validation.service';
+import { LedgerService } from '../../services/ledger/ledger.service';
+import { ImportService } from '../../services/import/import.service';
+import { MessageService } from '../../services/message/message.service';
+import { InputValidationService } from '../../services/input-validation/input-validation.service';
 
 @Component({
   selector: 'app-connect-ledger',
@@ -30,7 +30,7 @@ export class ConnectLedgerComponent implements OnInit {
 
   ngOnInit() {
     if (this.CONSTANTS.NET.NAME !== 'Mainnet') {
-      this.defaultPath = '44\'/1729\'/1\'/0\'';
+      this.defaultPath = '44\'/1\'/0\'/0\''; // Testnet
     }
     this.path = this.defaultPath;
   }

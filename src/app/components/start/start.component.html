@@ -1,23 +1,17 @@
 <div id="content">
     <div class="center-content">
         <div class="row justify-content-between">
-            <a routerLink="/import/" class="btn-import">
-                <button type="button" class="btn btn-primary btn-lg btn-block btn-generate">{{ 'STARTCOMPONENT.IMPORTWALLET' | translate }}</button>
+            <a routerLink="/import/" btn-left>
+                <button type="button" class="btn btn-primary btn-lg btn-block btn-generate btn-top">{{ 'STARTCOMPONENT.IMPORTWALLET' | translate }}</button>
             </a>
+        </div><div class="row justify-content-between">
             <a routerLink="/connect-ledger/">
-                <!--
-                <button *ngIf="walletService.getLanguage() == 'en'" type="button" title="Connect Ledger" class="btn btn-primary btn-lg btn-block btn-generate btn-ledger"></button>
-                -->
-                <button *ngIf="translate.currentLang != 'ru'" type="button" title="Connect Ledger" class="btn btn-primary btn-lg btn-block btn-generate btn-ledger"></button>
-                <button *ngIf="translate.currentLang == 'ru'" type="button" title="Connect Ledger" class="btn btn-primary btn-lg btn-block btn-generate btn-ledger2"></button>
+                <button type="button" class="btn btn-primary btn-lg btn-block btn-generate btn-top">Connect Ledger</button>
             </a>
         </div>
         <div class="row justify-content-between">
             <a routerLink="/new-wallet/">
-                <button type="button" class="btn btn-clear btn-second">{{ 'STARTCOMPONENT.NEWWALLET' | translate }}</button>
-            </a>
-            <a routerLink="/activate/">
-                <button type="button" class="btn btn-clear btn-second">{{ 'STARTCOMPONENT.ACTIVATE' | translate }}</button>
+                <button type="button" class="btn btn-clear btn-second btn-left btn-top">{{ 'STARTCOMPONENT.NEWWALLET' | translate }}</button>
             </a>
         </div>
     </div>

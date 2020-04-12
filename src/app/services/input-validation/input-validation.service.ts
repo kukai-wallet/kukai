@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { OperationService } from '../services/operation.service';
+import { OperationService } from '../operation/operation.service';
 import * as zxcvbn from 'zxcvbn';
 
 import { TranslateService } from '@ngx-translate/core';
@@ -62,7 +62,6 @@ fee(fee: string): Boolean {
   return this.amount(fee); // same as amount
 }
 gas(amount: string): Boolean {
-  console.log('amount: ' + amount);
   if (amount === '' || amount === '0') { // default value / zero
     return true;
   } else if (Number(amount) && 0 < Number(amount) && Number(amount) % 1 === 0) { // Positive integer
@@ -83,7 +82,7 @@ code(code: string): Boolean {
 }
 derivationPath(path: string): Boolean {
   const m = path.match(/^44\'\/1729\'\/([0-9]|\'\/)*\'$/g);
-  if (m) {
+  if (m || path === '44\'/1729\'') {
     return true;
   }
   return false;

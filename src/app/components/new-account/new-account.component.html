@@ -44,7 +44,7 @@
         <p> {{ 'NEWACCOUNTCOMPONENT.FROM' | translate }}  {{ activePkh }}
             <BR> {{ 'NEWACCOUNTCOMPONENT.AMOUNT' | translate }}  {{ getAmount() | number:'1.0-6' }}&#42793;
             <BR> {{ 'NEWACCOUNTCOMPONENT.FEE2' | translate }}  {{ getFee() | number:'1.0-6' }}&#42793;
-            <BR> {{ 'NEWACCOUNTCOMPONENT.ORIGINATIONBURN' | translate }} 0.267&#42793;
+            <BR> {{ 'NEWACCOUNTCOMPONENT.ORIGINATIONBURN' | translate }} 0.489&#42793;
             <BR>
         </p>
         <p *ngIf="ledgerInstruction">{{ ledgerInstruction }}</p>
@@ -84,6 +84,7 @@
                 <br>
                 <ng-container *ngIf='sendResponse.payload.opHash'>
                     <p> {{ 'NEWACCOUNTCOMPONENT.INFO' | translate }} </p>
+                    <p><a href="{{ CONSTANTS.NET.BLOCK_EXPLORER_URL + '/' + sendResponse.payload.opHash }}" target="_blank">{{ sendResponse.payload.opHash }}</a></p>
                 </ng-container>
                 <ng-container *ngIf='sendResponse.payload.unsignedOperation'>
                     <p> {{ 'NEWACCOUNTCOMPONENT.INFOUNSIGNED' | translate }} </p>

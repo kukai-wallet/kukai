@@ -6,6 +6,7 @@ export interface KeyPair {
 export interface Wallet {
   seed: null|string;
   salt: null|string;
+  pk?: string;
   encryptionVersion: number|null;
   type: WalletType;
   balance: Balance;
@@ -98,3 +99,15 @@ export enum PeriodKind {
   Testing,
   Promotion
 }
+export interface DefaultTransactionParams {
+  gas: number;
+  storage: number;
+  fee: number;
+  burn: number;
+  reveal?: boolean
+  customLimits?: {
+    gasLimit: number;
+    storageLimit: number;
+  }[];
+}
+

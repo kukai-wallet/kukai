@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 
-import { WalletService } from '../../services/wallet.service';
-import { ExportService } from '../../services/export.service';
-import { MessageService } from '../../services/message.service';
+import { WalletService } from '../../services/wallet/wallet.service';
+import { ExportService } from '../../services/export/export.service';
+import { MessageService } from '../../services/message/message.service';
 
 @Component({
     selector: 'app-backup',

@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 
 import { TranslateService } from '@ngx-translate/core';  // Multiple instances created ?
 
-import { WalletService } from './wallet.service';
-import { MessageService } from './message.service';
-import { TzrateService } from './tzrate.service';
-import { OperationService } from './operation.service';
+import { WalletService } from '../wallet/wallet.service';
+import { MessageService } from '../message/message.service';
+import { TzrateService } from '../tzrate/tzrate.service';
+import { OperationService } from '../operation/operation.service';
 import { Observable } from 'rxjs';
 
 @Injectable()

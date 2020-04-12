@@ -236,8 +236,8 @@ export class ErrorHandlingPipe implements PipeTransform {
                 errorMessage = 'The sum of gas consumed by all the operations in the block exceeds the hard gas limit per block';
                 break;
             }
-            case 'proto.protocolVersion.gas_exhausted.operation': {
-                errorMessage = 'A script or one of its callee took more time than the operation said it would';
+            case 'proto.005-PsBabyM1.gas_exhausted.operation': {
+                errorMessage = 'Too low gas limit';
                 break;
             }
             case 'proto.protocolVersion.gas_limit_too_high': {
@@ -809,7 +809,7 @@ export class ErrorHandlingPipe implements PipeTransform {
                 break;
             }
             default: {
-                errorMessage = 'Id not known: ' + errorId;
+                errorMessage = 'Unrecognized error: ' + errorId
                 break;
             }
         }

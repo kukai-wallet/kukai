@@ -161,14 +161,13 @@
         </select>
         -->
 
-
         <ul class="list-unstyled bottom-CTAs">
-            <li routerLinkActive="active" *ngIf="!this.walletService.isLedgerWallet()">
+            <!--<li routerLinkActive="active" *ngIf="!this.walletService.isLedgerWallet()">
                 <a routerLink="/offline-signing" class="btn-main-action">{{ 'HOMEPAGECOMPONENT.OFFLINESIGNING' | translate }}</a>
-            </li>
-            <li routerLinkActive="active">
+            </li>-->
+            <!--<li routerLinkActive="active">
                 <a routerLink="/backup" class="btn-main-action">{{ 'HOMEPAGECOMPONENT.BACKUP' | translate }}</a>
-            </li>
+            </li>-->
             <li class="bottom-category">
                 <a (click)="logout();" class="btn-main-action" data-toggle="tooltip" [title]="'HOMEPAGECOMPONENT.CLEARDATA' | translate">{{ 'HOMEPAGECOMPONENT.LOGOUT' | translate }}</a>
             </li>

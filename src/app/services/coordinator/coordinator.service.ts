@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { ActivityService } from './activity.service';
-import { TzrateService } from './tzrate.service';
-import { BalanceService } from './balance.service';
-import { WalletService } from './wallet.service';
-import { DelegateService } from './delegate.service';
-import { OperationService } from './operation.service';
-import { ErrorHandlingPipe } from '../pipes/error-handling.pipe';
+import { ActivityService } from '../activity/activity.service';
+import { TzrateService } from '../tzrate/tzrate.service';
+import { BalanceService } from '../balance/balance.service';
+import { WalletService } from '../wallet/wallet.service';
+import { DelegateService } from '../delegate/delegate.service';
+import { OperationService } from '../operation/operation.service';
+import { ErrorHandlingPipe } from '../../pipes/error-handling.pipe';
 
 export interface ScheduleData {
   pkh: string;

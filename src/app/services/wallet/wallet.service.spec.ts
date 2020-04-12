@@ -1,17 +1,17 @@
 // unit-testing framework
 import { TestBed } from '@angular/core/testing';
-import { WalletTools } from '../../../spec/mocks/library.mock';
+import { WalletTools } from '../../../../spec/mocks/library.mock';
 
 // class under inspection
 import { WalletService } from './wallet.service';
 
 // class dependencies
-import { OperationService } from './operation.service';
-import { EncryptionService } from './encryption.service';
+import { OperationService } from '../operation/operation.service';
+import { EncryptionService } from '../encryption/encryption.service';
 import * as bip39 from 'bip39';
 
 // mocking
-import { KeyPair, Balance, http_imports, translate_imports, rx, walletsrv_providers, Wallet} from '../../../spec/helpers/service.helper';
+import { KeyPair, Balance, http_imports, translate_imports, rx, walletsrv_providers, Wallet} from '../../../../spec/helpers/service.helper';
 
 /**
  * Suite: WalletService

@@ -6,15 +6,15 @@ import { TzrateService } from './tzrate.service';
 
 // class dependencies
 import { HttpClientModule } from '@angular/common/http';
-import { WalletService } from './wallet.service';
+import { WalletService } from '../wallet/wallet.service';
 
 // provider sub-dependencies
 import { TranslateService, TranslateLoader, TranslateFakeLoader, TranslateModule } from '@ngx-translate/core';
-import { EncryptionService } from './encryption.service';
-import { OperationService } from './operation.service';
+import { EncryptionService } from '../encryption/encryption.service';
+import { OperationService } from '../operation/operation.service';
 import { TestBed } from '@angular/core/testing';
-import { ErrorHandlingPipe } from '../pipes/error-handling.pipe';
-import { Account, Wallet, Balance } from '../interfaces';
+import { ErrorHandlingPipe } from '../../pipes/error-handling.pipe';
+import { Account, Wallet, Balance } from '../../interfaces';
 
 
 /**
@@ -30,57 +30,24 @@ describe('[ TzrateService ]', () => {
 	let httpMock: HttpTestingController;
 
 	// mock network data
-	const apiUrl = 'https://api.coinmarketcap.com/v1/ticker/tezos/';
-	const ticker = [
-		{
-			'id': 'tezos',
-			'name': 'Tezos',
-			'symbol': 'XTZ',
-			'rank': '22',
-			'price_usd': '0.4605297041',
-			'price_btc': '0.00012593',
-			'24h_volume_usd': '1043032.63613',
-			'market_cap_usd': '279766748.0',
-			'available_supply': '607489041.0',
-			'total_supply': '763306930.0',
-			'max_supply': null,
-			'percent_change_1h': '-1.68',
-			'percent_change_24h': '-11.17',
-			'percent_change_7d': '-2.77',
-			'last_updated': '1545964456'
+	const apiUrl = 'https://api.coingecko.com/api/v3/simple/price?ids=tezos&vs_currencies=usd';
+	const ticker = {
+		tezos: {
+			usd: 2.07
 		}
-	];
-	const mockhttpresponse = [
-		{
-		'id': 'tezos',
-		'name': 'Tezos',
-		'symbol': 'XTZ',
-		'rank': '22',
-		'price_usd': '0.4605297041',
-		'price_btc': '0.00012593',
-		'24h_volume_usd': '1043032.63613',
-		'market_cap_usd': '279766748.0',
-		'available_supply': '607489041.0',
-		'total_supply': '763306930.0',
-		'max_supply': null,
-		'percent_change_1h': '-1.68',
-		'percent_change_24h': '-11.17',
-		'percent_change_7d': '-2.77',
-		'last_updated': '1545964456'
+	};
+	const mockhttpresponse = {
+		'tezos': {
+			'usd': 2.07
 		}
-	];
-	const error = [
-		{
-		'error': 'id not found'
-		}
-	];
+	};
 
 	beforeEach(() => {
 
 		// WalletService mock
 		TestBed.configureTestingModule({
 			imports: [HttpClientModule, HttpClientTestingModule, TranslateModule.forRoot(
-				{ loader: { provide: TranslateLoader, useClass: TranslateFakeLoader }})],
+				{ loader: { provide: TranslateLoader, useClass: TranslateFakeLoader } })],
 			providers: [
 				TzrateService,
 				WalletService,
@@ -93,7 +60,7 @@ describe('[ TzrateService ]', () => {
 
 		service = TestBed.get(TzrateService);
 		walletservice = TestBed.get(WalletService);
-		httpMock  = TestBed.get(HttpTestingController);
+		httpMock = TestBed.get(HttpTestingController);
 
 		const mockbalance: Balance = {
 			balanceXTZ: 1000000,
@@ -111,18 +78,17 @@ describe('[ TzrateService ]', () => {
 		}];
 
 		walletservice.wallet = <Wallet>
-		{
-			XTZrate: 0,
-			seed: 'mockseed',
-			balance:  mockbalance,
-			accounts: mockaccount
-		};
+			{
+				XTZrate: 0,
+				seed: 'mockseed',
+				balance: mockbalance,
+				accounts: mockaccount
+			};
 		// spies
 		spyOn(service, 'getTzrate').and.callThrough();
 		spyOn(service, 'updateFiatBalances').and.callThrough();
 		spyOn(walletservice, 'storeWallet');
 		spyOn(console, 'log');
-
 	});
 
 	afterEach(() => {
@@ -137,23 +103,21 @@ describe('[ TzrateService ]', () => {
 
 		beforeEach(() => {
 			service.getTzrate();
+			const req = httpMock.expectOne(apiUrl);
+			req.flush(mockhttpresponse);
 		});
 
 		/*it('should perform a get request to apiUrl', () => {
 			expect(req.request.method).toBe('GET');
 		});*/
 
-		it('should update wallet xtzrate from 0 to 0.4605297041', () => {
-			expect(walletservice.wallet.XTZrate.toString()).toEqual(ticker[0]['price_usd']);
-		});
-
-		it('should log success message [ \'XTZ = $0.4605297041\' ]', () => {
-			expect(console.log).toHaveBeenCalledWith('XTZ = $' + ticker[0]['price_usd']);
+		it('should update wallet xtzrate from 0 to 2.07', () => {
+			expect(walletservice.wallet.XTZrate.toString()).toEqual(ticker.tezos.usd.toString());
 		});
 
 		describe('> Update Account Balance', () => {
-			it('should update wallet total balance from $0 to $0.4605297041', () => {
-				expect(walletservice.wallet.balance.balanceFiat.toString()).toEqual('0.4605297041');
+			it('should update wallet total balance from $0 to $2.07', () => {
+				expect(walletservice.wallet.balance.balanceFiat.toString()).toEqual('2.07');
 			});
 
 			it('should call wallet service storeWallet()', () => {

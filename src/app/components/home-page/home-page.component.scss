@@ -241,7 +241,8 @@ ul.CTAs a {
 }
 
 .bottom-CTAs {
-    padding-top: 9vh !important; // 22vh !important;  //This needs to change - creates vertical scroll bar
+    position: absolute;
+    bottom: 0;
 }
 .donation {
     font-size: 0.8em;
@@ -262,7 +263,6 @@ ul.CTAs a {
 .donation:hover {
     color: rgb(255, 0, 64) !important;
 }
-
 .bottom-CTAs .fa {
     font-size: 2em;
     left: 40px;

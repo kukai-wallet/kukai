@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Constants } from '../constants';
+import { Constants } from '../../constants';
 import { of, Observable, from as fromPromise } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 import { ConseilDataClient, ConseilQueryBuilder, ConseilSortDirection, ConseilOperator } from 'conseiljs';
@@ -48,7 +48,7 @@ export class ConseilService {
   getOperations(pkh: string): Observable<any> {
     const entity = 'operations';
     let sendQuery = ConseilQueryBuilder.blankQuery();
-    sendQuery = ConseilQueryBuilder.addFields(sendQuery, 'kind', 'block_hash', 'operation_group_hash', 'timestamp', 'originated_contracts', 'source', 'destination', 'amount');
+    sendQuery = ConseilQueryBuilder.addFields(sendQuery, 'kind', 'block_hash', 'operation_group_hash', 'timestamp', 'originated_contracts', 'source', 'destination', 'amount', 'delegate');
     sendQuery = ConseilQueryBuilder.addPredicate(sendQuery, 'kind', ConseilOperator.IN, ['transaction', 'origination', 'delegation'], false);
     sendQuery = ConseilQueryBuilder.addPredicate(sendQuery, 'source', ConseilOperator.EQ, [pkh], false);
     sendQuery = ConseilQueryBuilder.addPredicate(sendQuery, 'status', ConseilOperator.EQ, ['applied'], false);
@@ -57,7 +57,7 @@ export class ConseilService {
 
     let receiveQuery = ConseilQueryBuilder.blankQuery();
     receiveQuery = ConseilQueryBuilder.addFields(receiveQuery, 'kind', 'block_hash', 'operation_group_hash', 'timestamp', 'source', 'destination', 'amount');
-    receiveQuery = ConseilQueryBuilder.addPredicate(receiveQuery, 'kind', ConseilOperator.IN, ['transaction', 'origination', 'delegation'], false);
+    receiveQuery = ConseilQueryBuilder.addPredicate(receiveQuery, 'kind', ConseilOperator.IN, ['transaction', 'origination'], false);
     receiveQuery = ConseilQueryBuilder.addPredicate(receiveQuery, 'destination', ConseilOperator.EQ, [pkh], false);
     receiveQuery = ConseilQueryBuilder.addPredicate(receiveQuery, 'status', ConseilOperator.EQ, ['applied'], false);
     receiveQuery = ConseilQueryBuilder.addOrdering(receiveQuery, 'block_level', ConseilSortDirection.DESC);
@@ -76,18 +76,24 @@ export class ConseilService {
     const output = [];
     for (const tx of input) {
       if (tx.kind !== 'transaction' || tx.amount > 0) {
-      output.push(
-        {
-          type: tx.kind,
-          block: tx.block_hash,
-          failed: false,
-          amount: tx.amount,
-          source: tx.source,
-          destination: (tx.kind === 'origination') ? tx.originated_contracts : tx.destination,
-          hash: tx.operation_group_hash,
-          timestamp: tx.timestamp
+        let destination = tx.destination;
+        if (tx.kind === 'origination') {
+          destination = tx.originated_contracts;
+        } else if (tx.kind === 'delegation') {
+          destination = tx.delegate;
         }
-      );
+        output.push(
+          {
+            type: tx.kind,
+            block: tx.block_hash,
+            failed: false,
+            amount: tx.amount,
+            source: tx.source,
+            destination: destination,
+            hash: tx.operation_group_hash,
+            timestamp: tx.timestamp
+          }
+        );
       }
     }
     return output;

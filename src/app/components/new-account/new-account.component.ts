@@ -2,15 +2,16 @@ import { Component, OnInit, ViewChild, TemplateRef, Input } from '@angular/core'
 
 import { TranslateService } from '@ngx-translate/core';  // Multiple instances created ?
 
-import { WalletService } from '../../services/wallet.service';
+import { WalletService } from '../../services/wallet/wallet.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { KeyPair } from '../../interfaces';
-import { OperationService } from '../../services/operation.service';
-import { CoordinatorService } from '../../services/coordinator.service';
-import { ExportService } from '../../services/export.service';
-import { InputValidationService } from '../../services/input-validation.service';
-import { LedgerService } from '../../services/ledger.service';
+import { OperationService } from '../../services/operation/operation.service';
+import { CoordinatorService } from '../../services/coordinator/coordinator.service';
+import { ExportService } from '../../services/export/export.service';
+import { InputValidationService } from '../../services/input-validation/input-validation.service';
+import { LedgerService } from '../../services/ledger/ledger.service';
+import { Constants } from '../../constants';
 
 @Component({
   selector: 'app-new-account',
@@ -18,9 +19,11 @@ import { LedgerService } from '../../services/ledger.service';
   styleUrls: ['./new-account.component.scss']
 })
 export class NewAccountComponent implements OnInit {
-  recommendedFee = 0.0021;
   @ViewChild('modal1', {static: false}) modal1: TemplateRef<any>;
+  CONSTANTS = new Constants();
   @Input() activePkh: string;
+
+  recommendedFee = 0.0021;
   accounts = null;
   amount: string;
   storedAmount: string;

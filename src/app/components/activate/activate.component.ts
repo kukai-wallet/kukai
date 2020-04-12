@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
-import { MessageService } from '../../services/message.service';
-import { OperationService } from '../../services/operation.service';
-import { InputValidationService } from '../../services/input-validation.service';
+import { MessageService } from '../../services/message/message.service';
+import { OperationService } from '../../services/operation/operation.service';
+import { InputValidationService } from '../../services/input-validation/input-validation.service';
 
 import { TranslateService } from '@ngx-translate/core';
 

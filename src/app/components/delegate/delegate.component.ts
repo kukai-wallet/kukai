@@ -3,13 +3,14 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
 import { KeyPair } from '../../interfaces';
-import { WalletService } from '../../services/wallet.service';
-import { CoordinatorService } from '../../services/coordinator.service';
-import { OperationService } from '../../services/operation.service';
-import { ExportService } from '../../services/export.service';
+import { WalletService } from '../../services/wallet/wallet.service';
+import { CoordinatorService } from '../../services/coordinator/coordinator.service';
+import { OperationService } from '../../services/operation/operation.service';
+import { ExportService } from '../../services/export/export.service';
 import { DelegatorNamePipe } from '../../pipes/delegator-name.pipe';
-import { InputValidationService } from '../../services/input-validation.service';
-import { LedgerService } from '../../services/ledger.service';
+import { InputValidationService } from '../../services/input-validation/input-validation.service';
+import { LedgerService } from '../../services/ledger/ledger.service';
+import { Constants } from '../../constants';
 
 @Component({
     selector: 'app-delegate',
@@ -22,7 +23,7 @@ export class DelegateComponent implements OnInit {
     pkhFee = 0.0013;
     ktFee = 0.003;
     @ViewChild('modal1', {static: false}) modal1: TemplateRef<any>;
-
+    CONSTANTS = new Constants();
     @Input() activePkh: string;
 
     accounts = null;
@@ -58,7 +59,6 @@ export class DelegateComponent implements OnInit {
 
     init() {
         this.accounts = this.walletService.wallet.accounts;
-        this.checkReveal();
     }
 
     open1(template1: TemplateRef<any>) {
@@ -214,9 +214,11 @@ export class DelegateComponent implements OnInit {
         this.ledgerInstruction = '';
     }
     invalidInput(): string {
-        if (!this.inputValidationService.address(this.toPkh) && this.toPkh !== '' ||
-            this.toPkh === this.activePkh) {
-            return 'invalid receiver address';
+        if ((!this.inputValidationService.address(this.toPkh) && 
+                this.toPkh !== '') || (
+                this.toPkh.length > 1 && this.toPkh.slice(0, 2) !== 'tz') || (
+                this.toPkh === this.accounts[0].pkh)) {
+            return 'invalid delegate address';
         } else if (!this.inputValidationService.fee(this.fee)) {
             return 'invalid fee';
         } else {

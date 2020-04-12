@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { WalletService } from '../../services/wallet.service';
+import { WalletService } from '../../services/wallet/wallet.service';
 import { DelegatorNamePipe } from '../../pipes/delegator-name.pipe';
 
 

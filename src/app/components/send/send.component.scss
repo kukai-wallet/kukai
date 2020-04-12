@@ -18,10 +18,6 @@
   text-align: center;
 }
 
-.send-span {
-  height: 204px !important;
-}
-
 .modal-footer {
   padding-bottom: 0rem;
 }
@@ -29,9 +25,10 @@
 .first-modal {
   justify-content: space-between;
 }
-
 .text-color {
   color: #6c757d;
+}
+.align-right {
   text-align: right;
 }
 
@@ -50,8 +47,8 @@
 
 .btn-balance {
   color: #6c757d;
-  padding-right: 0rem; // original 0.5rem;
-  padding-left: 0rem; // original 0.5rem;
+  padding-right: 0.25rem; // original 0.5rem;
+  padding-left: 0.25rem; // original 0.5rem;
 }
 
 .dropdown-item {

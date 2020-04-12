@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { WalletType } from './../interfaces';
-import { WalletService } from './wallet.service';
-import { MessageService } from './message.service';
-import { CoordinatorService } from './coordinator.service';
-import { OperationService } from './operation.service';
-import { ConseilService } from './conseil.service';
+import { WalletType } from './../../interfaces';
+import { WalletService } from '../wallet/wallet.service';
+import { MessageService } from '../message/message.service';
+import { CoordinatorService } from '../coordinator/coordinator.service';
+import { OperationService } from '../operation/operation.service';
+import { ConseilService } from '../conseil/conseil.service';
 
 @Injectable()
 export class ImportService {
@@ -26,7 +26,7 @@ export class ImportService {
       return false;
     }
   }
-  async importWalletData(data: any, isJson: boolean = true, pkh: string = '', pwd: string = ''): Promise<boolean> {
+  async importWalletData(data: any, isJson: boolean = true, pk: string, pwd: string = ''): Promise<boolean> {
     this.coordinatorService.stopAll();
     try {
       let walletData;
@@ -52,8 +52,10 @@ export class ImportService {
         } else if (walletData.version === 2) {
           this.walletService.wallet.salt = walletData.iv;
         }
-        if (pkh) {
+        if (pk) {
+          const pkh = this.operationService.pk2pkh(pk);
           this.walletService.addAccount(pkh);
+          this.walletService.wallet.pk = pk;
         } else {
           if (walletData.version === 1) {
             this.walletService.addAccount(walletData.pkh);
@@ -66,6 +68,9 @@ export class ImportService {
           if (walletData.version === 2) {
             this.walletService.addAccount(keys.pkh);
           }
+          console.log(keys.pk);
+          this.walletService.wallet.pk = keys.pk;
+          console.log(this.walletService.wallet.pk);
         }
       } else if (walletData.walletType === 1 || walletData.walletType === 3) { // View or Ledger
         this.walletService.wallet.seed = walletData.pk; // set pk

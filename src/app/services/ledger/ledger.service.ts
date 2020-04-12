@@ -3,8 +3,8 @@ import 'babel-polyfill';
 import TransportU2F from '@ledgerhq/hw-transport-u2f';
 import TransportWebAuthn from '@ledgerhq/hw-transport-webauthn';
 import App from 'basil-tezos-ledger';
-import { OperationService } from './operation.service';
-import { MessageService } from './message.service';
+import { OperationService } from '../operation/operation.service';
+import { MessageService } from '../message/message.service';
 
 @Injectable()
 export class LedgerService {

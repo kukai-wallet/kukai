@@ -6,21 +6,21 @@ import { ImportService } from './import.service';
 
 // class dependencies
 import { HttpClientModule } from '@angular/common/http';
-import { WalletService } from './wallet.service';
+import { WalletService } from '../wallet/wallet.service';
 
 // provider sub-dependencies
 import { TranslateService, TranslateLoader, TranslateFakeLoader, TranslateModule } from '@ngx-translate/core';
-import { EncryptionService } from './encryption.service';
-import { OperationService } from './operation.service';
+import { EncryptionService } from '../encryption/encryption.service';
+import { OperationService } from '../operation/operation.service';
 import { TestBed } from '@angular/core/testing';
-import { ErrorHandlingPipe } from '../pipes/error-handling.pipe';
-import { KeyPair } from '../interfaces';
-import { MessageService } from './message.service';
-import { BalanceService } from './balance.service';
-import { CoordinatorService } from './coordinator.service';
-import { TzrateService } from './tzrate.service';
-import { ActivityService } from './activity.service';
-import { DelegateService } from './delegate.service';
+import { ErrorHandlingPipe } from '../../pipes/error-handling.pipe';
+import { KeyPair } from '../../interfaces';
+import { MessageService } from '../message/message.service';
+import { BalanceService } from '../balance/balance.service';
+import { CoordinatorService } from '../coordinator/coordinator.service';
+import { TzrateService } from '../tzrate/tzrate.service';
+import { ActivityService } from '../activity/activity.service';
+import { DelegateService } from '../delegate/delegate.service';
 
 
 

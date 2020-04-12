@@ -1,17 +1,17 @@
 // testing framework
 import { TestBed } from '@angular/core/testing';
-import { WalletTools } from '../../../spec/mocks/library.mock';
+import { WalletTools } from '../../../../spec/mocks/library.mock';
 
 // class under inspection
 import { ActivityService } from './activity.service';
 
 // dependencies
-import { WalletService } from './wallet.service';
-import { MessageService } from './message.service';
+import { WalletService } from '../wallet/wallet.service';
+import { MessageService } from '../message/message.service';
 import { TranslateService, TranslateModule, TranslateLoader, TranslateFakeLoader } from '@ngx-translate/core';
-import { OperationService } from './operation.service';
-import { EncryptionService } from './encryption.service';
-import { ErrorHandlingPipe } from '../pipes/error-handling.pipe';
+import { OperationService } from '../operation/operation.service';
+import { EncryptionService } from '../encryption/encryption.service';
+import { ErrorHandlingPipe } from '../../pipes/error-handling.pipe';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
@@ -61,7 +61,6 @@ describe('[ ActivityService ]', () => {
 		expect(index).toBe(1);
 
 	});
-
 
 	/*it('should get the transaction counter for given pkh', () => {
 		const pkh = walletservice.wallet.accounts[0].pkh;

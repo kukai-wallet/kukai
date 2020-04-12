@@ -3,8 +3,8 @@ import { TestBed } from '@angular/core/testing';
 import { HttpTestingController } from '@angular/common/http/testing';
 
 // class mocks
-import {Account, Balance, http_imports, translate_imports, balancesrv_providers, rx} from '../../../spec/helpers/service.helper';
-import { BalanceService, WalletService, OperationService } from '../../../spec/helpers/service.helper';
+import {Account, Balance, http_imports, translate_imports, balancesrv_providers, rx} from '../../../../spec/helpers/service.helper';
+import { BalanceService, WalletService, OperationService } from '../../../../spec/helpers/service.helper';
 
 // class dependencies
 /**

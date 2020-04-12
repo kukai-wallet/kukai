@@ -1,26 +1,24 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { WalletService } from './wallet.service';
-import { Constants } from '../constants';
+import { WalletService } from '../wallet/wallet.service';
+import { Constants } from '../../constants';
 
 @Injectable()
 export class TzrateService {
-    private apiUrl = 'https://api.coinmarketcap.com/v1/ticker/tezos/'; // returns a json object, key: price_usd
+    private apiUrl = 'https://api.coingecko.com/api/v3/simple/price?ids=tezos&vs_currencies=usd';
     private CONSTANTS = new Constants();
     constructor(private http: HttpClient,
         private walletService: WalletService) {
     }
 
     getTzrate() {
-        if (this.CONSTANTS.NET.NETWORK === 'mainnet') {
-            this.http.get(this.apiUrl).subscribe(
-                response => {
-                    this.walletService.wallet.XTZrate = response[0].price_usd;
-                    this.updateFiatBalances();
-                },
-                err => console.log('Failed to get xtz price: ' + JSON.stringify(err))
-            );
-        }
+        this.http.get(this.apiUrl).subscribe(
+            (price: any) => {
+                this.walletService.wallet.XTZrate = price.tezos.usd;
+                this.updateFiatBalances();
+            },
+            err => console.log('Failed to get xtz price: ' + JSON.stringify(err))
+        );
     }
     updateFiatBalances() {
         let tot = 0;

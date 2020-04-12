@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { MessageService } from './message.service';
-import { WalletService } from './wallet.service';
-import { Activity } from '../interfaces';
-import { ConseilService } from './conseil.service';
+import { MessageService } from '../message/message.service';
+import { WalletService } from '../wallet/wallet.service';
+import { Activity } from '../../interfaces';
+import { ConseilService } from '../conseil/conseil.service';
 import { of, forkJoin, Observable } from 'rxjs';
 import { timeout, catchError, flatMap, mergeMap } from 'rxjs/operators';
 

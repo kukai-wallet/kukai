@@ -5,7 +5,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
 import * as QRCode from 'qrcode';
 
-import { WalletService } from '../../services/wallet.service';
+import { WalletService } from '../../services/wallet/wallet.service';
 
 
 

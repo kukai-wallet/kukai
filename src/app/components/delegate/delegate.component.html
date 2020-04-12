@@ -89,6 +89,7 @@
                     <br>
                     <ng-container *ngIf='sendResponse.payload.opHash'>
                         <p> {{ 'DELEGATECOMPONENT.DELEGATIONSUCCESS' | translate }} </p>
+                        <p><a href="{{ CONSTANTS.NET.BLOCK_EXPLORER_URL + '/' + sendResponse.payload.opHash }}" target="_blank">{{ sendResponse.payload.opHash }}</a></p>
                     </ng-container>
                     <ng-container *ngIf='sendResponse.payload.unsignedOperation'>
                         <p> {{ 'DELEGATECOMPONENT.UNSIGNEDSUCCESS' | translate }} </p>

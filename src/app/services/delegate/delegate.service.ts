@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { WalletService } from './wallet.service';
-import { OperationService } from './operation.service';
+import { WalletService } from '../wallet/wallet.service';
+import { OperationService } from '../operation/operation.service';
 
 @Injectable()
 export class DelegateService {

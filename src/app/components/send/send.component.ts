@@ -1,48 +1,30 @@
 import { Component, TemplateRef, OnInit, ViewEncapsulation, Input, ViewChild } from '@angular/core';
-
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
-
-import { KeyPair } from '../../interfaces';
-
-import { TranslateService } from '@ngx-translate/core';  // Multiple instances created ?
-
-import { WalletService } from '../../services/wallet.service';
-import { CoordinatorService } from '../../services/coordinator.service';
-import { OperationService } from '../../services/operation.service';
-import { ExportService } from '../../services/export.service';
-import { InputValidationService } from '../../services/input-validation.service';
-import { LedgerService } from '../../services/ledger.service';
+import { KeyPair, DefaultTransactionParams } from '../../interfaces';
+import { TranslateService } from '@ngx-translate/core';
+import { WalletService } from '../../services/wallet/wallet.service';
+import { CoordinatorService } from '../../services/coordinator/coordinator.service';
+import { OperationService } from '../../services/operation/operation.service';
+import { ExportService } from '../../services/export/export.service';
+import { InputValidationService } from '../../services/input-validation/input-validation.service';
+import { LedgerService } from '../../services/ledger/ledger.service';
+import { EstimateService } from '../../services/estimate/estimate.service';
 import Big from 'big.js';
+import { Constants } from '../../constants';
 
 interface SendData {
     to: string;
     amount: number;
-    burn: boolean;
+    gasLimit: number;
+    storageLimit: number;
 }
-const pkh2pkh = {
-    gas: 10600,
-    storage: 277,
-    fee: 0.0014
-};
-const pkh2kt = {
-    gas: 15400,
+const zeroTxParams: DefaultTransactionParams = {
+    gas: 0,
     storage: 0,
-    fee: 0.0019
+    fee: 0,
+    burn: 0
 };
-const kt2pkh = {
-    gas: 26300,
-    storage: 277,
-    fee: 0.003
-};
-const kt2kt = {
-    gas: 44800,
-    storage: 0,
-    fee: 0.005
-};
-
-const revealFee = 0.0013;
-
 @Component({
     selector: 'app-send',
     templateUrl: './send.component.html',
@@ -52,34 +34,23 @@ const revealFee = 0.0013;
 export class SendComponent implements OnInit {
     @ViewChild('modal1', { static: false }) modal1: TemplateRef<any>;
     @Input() activePkh: string;
-    @Input() actionButtonString: string;  // Possible values: btnOutline / dropdownItem / btnSidebar
-
-    extraFee = 0;
-    defaultFee = pkh2pkh.fee;
-    recommendedFee = this.defaultFee + this.extraFee;
-    defaultGasLimit = pkh2pkh.gas;
-    defaultStorageLimit = pkh2pkh.storage;
-
-    showSendFormat = {
-        btnOutline: false,
-        dropdownItem: false,
-        btnSidebar: false
-    };
+    CONSTANTS = new Constants();
+    defaultTransactionParams: DefaultTransactionParams = zeroTxParams;
 
     // Transaction variables
     toPkh: string;
     amount: string;
     fee: string;
-    storedFee: string;
+    sendFee: string;
+    burnFee = 0;
     gas = '';
     storage = '';
-
     isMultipleDestinations = false;
     toMultipleDestinationsString = '';
     toMultipleDestinations: SendData[] = [];
 
     showTransactions: SendData[] = [];
-
+    simSemaphore = 0;
     dom: Document;
     accounts = null;
     activeAccount = null;
@@ -88,10 +59,11 @@ export class SendComponent implements OnInit {
     formInvalid = '';
     sendResponse: any;
     errorMessage = '';
+    latestSimError = '';
     transactions: SendData[] = [];
+    prevEquiClass: string = '';
     XTZrate = 0;
     ledgerInstruction = '';
-
     showBtn = 'Show More';
 
     modalRef1: BsModalRef;
@@ -106,7 +78,8 @@ export class SendComponent implements OnInit {
         private coordinatorService: CoordinatorService,
         private exportService: ExportService,
         private inputValidationService: InputValidationService,
-        private ledgerService: LedgerService
+        private ledgerService: LedgerService,
+        private estimateService: EstimateService
     ) { }
 
     ngOnInit() {
@@ -116,136 +89,40 @@ export class SendComponent implements OnInit {
     }
 
     init() {
-        if (this.actionButtonString) {
-            this.setSendFormat();
-        }
         this.accounts = this.walletService.wallet.accounts;
         this.XTZrate = this.walletService.wallet.XTZrate;
     }
-    setSendFormat() {
-        switch (this.actionButtonString) {
-            case 'btnOutline': {
-                this.showSendFormat.btnOutline = true;
-                this.showSendFormat.dropdownItem = false;
-                this.showSendFormat.btnSidebar = false;
-                break;
-            }
-            case 'dropdownItem': {
-                this.showSendFormat.btnOutline = false;
-                this.showSendFormat.dropdownItem = true;
-                this.showSendFormat.btnSidebar = false;
-                break;
-            }
-            case 'btnSidebar': {
-                this.showSendFormat.btnOutline = false;
-                this.showSendFormat.dropdownItem = false;
-                this.showSendFormat.btnSidebar = true;
-
-                this.activePkh = this.walletService.wallet.accounts[0].pkh;
-                break;
-            }
-            default: {
-                console.log('actionButtonString wrongly set ', this.actionButtonString);
-                break;
-            }
-        }
-    }
-
-    showAccountBalance(accountPkh: string = this.activePkh) {
-        let accountBalance: number;
-        let accountBalanceString: string;
-        let index;
-        index = this.accounts.findIndex(account => account.pkh === accountPkh);
-        if (index !== -1) {
-            accountBalance = this.accounts[index].balance.balanceXTZ / 1000000;
-            accountBalanceString = this.numberWithCommas(accountBalance) + ' XTZ';
-            return accountBalanceString;
-        } else {
-            return null;
-        }
-    }
-
-    numberWithCommas(x: number) {
-        let parts: Array<string> = [];
-        parts = x.toString().split('.');
-        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-        return parts.join('.');
-    }
-
-    sendEntireBalance(accountPkh: string, event: Event) {
-        event.stopPropagation();
-        const index = this.accounts.findIndex(account => account.pkh === accountPkh);
-        if (accountPkh && accountPkh.slice(0, 2) === 'tz') {
-            let accountBalance = Big(this.accounts[index].balance.balanceXTZ).div(1000000);
-            if (!this.fee) {
-                accountBalance = accountBalance.minus(this.recommendedFee);
-            } else {
-                accountBalance = accountBalance.minus(Number(this.fee));
-            }
-            accountBalance = accountBalance.minus(0.000001); // dust
-            this.amount = accountBalance.toString();
-        } else {
-            this.amount = Big(this.accounts[index].balance.balanceXTZ).div(1000000).toString();
-        }
-    }
-
     open1(template1: TemplateRef<any>) {
         if (this.walletService.wallet) {
+            if (!this.activePkh) {
+                this.activePkh = this.accounts[0].pkh;
+            }
             this.clearForm();
-            this.checkReveal();
             this.modalRef1 = this.modalService.show(template1, { class: 'first' });  // modal-sm / modal-lg
+            this.estimateService.preLoadData(this.accounts[0].pkh, this.walletService.getPk());
         }
     }
-
     open2(template: TemplateRef<any>) {
-        this.formInvalid = this.checkInput();
-        if (!this.formInvalid) {
+        this.formInvalid = this.checkInput(true);
+        if (!this.formInvalid && !this.simSemaphore) {
             if (!this.amount) { this.amount = '0'; }
-            if (!this.fee) { this.fee = this.recommendedFee.toString(); }
-            this.storedFee = this.fee;
-            if (!this.gas) { this.gas = this.defaultGasLimit.toString(); }
-            if (!this.storage) { this.storage = this.defaultStorageLimit.toString(); }
-            if (!this.toMultipleDestinationsString) { this.toMultipleDestinationsString = ''; }
-            if (this.isMultipleDestinations) {
-                // this.transactions = this.parseMultipleTransactions(this.toMultipleDestinationsString);
-                this.transactions = this.toMultipleDestinations;
-                if (this.transactions.length > 1) {
-                    this.showTransactions.push(this.transactions[0], this.transactions[1]);
-                } else {
-                    // In case user picks isMultipleDestinations but inserts only one transaction
-                    this.showTransactions.push(this.transactions[0]);
+            let clearFee = false;
+            if (!this.fee) {
+                this.fee = this.defaultTransactionParams.fee.toString();
+                clearFee = true;
+            }
+            this.prepTransactions();
+            this.formInvalid = this.checkBalance();
+            if (!this.formInvalid) {
+                this.close1();
+                if (this.walletService.isLedgerWallet()) {
+                    this.ledgerInstruction = 'Preparing transaction data. Please wait...';
+                    const keys = this.walletService.getKeys('');
+                    this.sendTransaction(keys);
                 }
-                console.log('this.showTransactions, open second modal ', this.showTransactions);
-            } else {
-                this.transactions = [{ to: this.toPkh, amount: Number(this.amount), burn: false }];
-            }
-            this.detectBurns();
-            this.close1();
-            if (this.walletService.isLedgerWallet()) {
-                this.ledgerInstruction = 'Preparing transaction data. Please wait...';
-                const keys = this.walletService.getKeys('');
-                this.sendTransaction(keys);
-            }
-            this.modalRef2 = this.modalService.show(template, { class: 'second' });
-        }
-    }
-    detectBurns() {
-        for (let i = 0; i < this.transactions.length; i++) {
-            if (this.transactions[i].to.slice(0, 2) === 'tz') {
-                this.operationService.getBalance(this.transactions[i].to).subscribe(
-                    (ans: any) => {
-                        if (ans.success && ans.payload.balance === '0') {
-                            console.log('Burn!');
-                            this.transactions[i].burn = true;
-                        } else {
-                            this.transactions[i].burn = false;
-                            console.log('No burn!');
-                        }
-                    }
-                );
-            } else {
-                console.log('Not tz...');
-                this.transactions[i].burn = false;
+                this.modalRef2 = this.modalService.show(template, { class: 'second' });
+            } else if (clearFee) {
+                this.fee = '';
             }
         }
     }
@@ -265,16 +142,10 @@ export class SendComponent implements OnInit {
                 this.modalRef3 = this.modalService.show(template, { class: 'third' });
                 this.sendTransaction(keys);
             } else {
-                let wrongPassword = '';
-                this.translate.get('SENDCOMPONENT.WRONGPASSWORD').subscribe(
-                    (res: string) => wrongPassword = res
-                );
-
-                this.pwdValid = wrongPassword;  // 'Wrong password!';
+                this.pwdValid = this.translate.instant('SENDCOMPONENT.WRONGPASSWORD');  // 'Wrong password!';
             }
         }
     }
-
     close1() {
         this.modalRef1.hide();
         this.modalRef1 = null;
@@ -289,33 +160,79 @@ export class SendComponent implements OnInit {
         this.modalRef3.hide();
         this.modalRef3 = null;
     }
-
+    showAccountBalance(accountPkh: string = this.activePkh) {
+        const index = this.accounts.findIndex(account => account.pkh === accountPkh);
+        if (index !== -1) {
+            const accountBalance = Big(this.accounts[index].balance.balanceXTZ).div(1000000).toString();
+            return this.numberWithCommas(accountBalance) + ' XTZ';
+        } else {
+            return null;
+        }
+    }
+    numberWithCommas(x: string) {
+        const parts: Array<string> = x.split('.');
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        return parts.join('.');
+    }
+    sendEntireBalance(accountPkh: string, event: Event) {
+        if (this.simSemaphore) { return; }
+        event.stopPropagation();
+        this.amount = this.maxToSend(accountPkh);
+    }
+    maxToSend(accountPkh: string): string {
+        const index = this.accounts.findIndex(account => account.pkh === accountPkh);
+        if (accountPkh && accountPkh.slice(0, 2) === 'tz') {
+            let accountBalance = Big(this.accounts[index].balance.balanceXTZ).div(1000000);
+            accountBalance = accountBalance.minus(this.fee ? Number(this.fee) : this.defaultTransactionParams.fee);
+            if (!this.isMultipleDestinations) {
+                accountBalance = accountBalance.minus(this.storage ? Number(this.storage) / 1000 : this.defaultTransactionParams.burn);
+            } else {
+                accountBalance = accountBalance.minus(this.defaultTransactionParams.burn);
+            }
+            accountBalance = accountBalance.minus(0.000001); // dust
+            return accountBalance.toString();
+        } else {
+            return Big(this.accounts[index].balance.balanceXTZ).div(1000000).toString();
+        }
+    }
+    prepTransactions(finalCheck = false): boolean {
+        if (!this.checkInput(finalCheck)) {
+            if (!this.toMultipleDestinationsString) { this.toMultipleDestinationsString = ''; }
+            if (this.isMultipleDestinations) {
+                this.transactions = this.toMultipleDestinations;
+                this.showTransactions = [];
+                if (this.transactions.length > 1) {
+                    this.showTransactions.push(this.transactions[0], this.transactions[1]);
+                } else {
+                    this.showTransactions.push(this.transactions[0]);
+                }
+            } else {
+                const gasLimit = this.gas ? Number(this.gas) : this.defaultTransactionParams.gas;
+                const storageLimit = this.storage ? Number(this.storage) : this.defaultTransactionParams.storage;
+                this.transactions = [{ to: this.toPkh, amount: Number(this.amount), gasLimit, storageLimit }];
+            }
+            return true;
+        }
+        return false;
+    }
     async sendTransaction(keys: KeyPair) {
         let amount = this.amount;
         let fee = this.fee;
-        let gas = this.gas;
-        let storage = this.storage;
-
         if (!this.walletService.isLedgerWallet()) {
             this.toPkh = '';
             this.amount = '';
             this.fee = '';
-            this.storedFee = '';
             this.gas = '';
             this.storage = '';
             this.toMultipleDestinationsString = '';
             this.toMultipleDestinations = [];
             this.showTransactions = [];
         }
-
         if (!amount) { amount = '0'; }
         if (!fee) { fee = '0'; }
-        if (!gas) { gas = '0'; }
-        if (!storage) { storage = '0'; }
-        // if (!toMultipleDestinationsString) { toMultipleDestinationsString = '0'; }
 
         setTimeout(async () => {
-            this.operationService.transfer(this.activePkh, this.transactions, Number(fee), keys, Number(gas), Number(storage)).subscribe(
+            this.operationService.transfer(this.activePkh, this.transactions, Number(fee), keys).subscribe(
                 (ans: any) => {
                     this.sendResponse = ans;
                     if (ans.success === true) {
@@ -342,7 +259,6 @@ export class SendComponent implements OnInit {
             );
         }, 100);
     }
-
     async requestLedgerSignature() {
         const op = this.sendResponse.payload.unsignedOperation;
         const signature = await this.ledgerService.signOperation(op, this.walletService.wallet.derivationPath);
@@ -362,216 +278,234 @@ export class SendComponent implements OnInit {
             })
         );
     }
-
-    // Function not used - transaction array is built in invalidInputMultiple()
-    parseMultipleTransactions(multipleTransactionsString: string): any {
-        const multipleTransactionsObject: any = [];
-        const splitted = multipleTransactionsString.split(';');
-        for (let i = 0; i < splitted.length; i++) {
-            if (splitted[i]) {
-                const splitted2 = splitted[i].trim().split(' ');
-                multipleTransactionsObject.push({ to: splitted2[0], amount: Number(splitted2[1]) });
-            }
-        }
-        console.log(JSON.stringify(multipleTransactionsObject));
-        return multipleTransactionsObject;
-    }
-
     toggleDestination() {
+        this.defaultTransactionParams = zeroTxParams;
+        this.prevEquiClass = '';
         this.isMultipleDestinations = !this.isMultipleDestinations;
+        this.toMultipleDestinationsString = '';
+        this.formInvalid = '';
+        this.toPkh = '';
+        this.amount = '';
+        this.fee = '';
+        this.gas = '';
+        this.storage = '';
         this.updateDefaultValues();
     }
-
+    burnAmount(): string {
+        const burn = this.storage ? Number(this.storage) / 1000 : this.defaultTransactionParams.storage / 1000;
+        if (burn) {
+            return 'Burn: ' + burn;
+        }
+        return '';
+    }
     clearForm() {
         this.toPkh = '';
         this.amount = '';
         this.fee = '';
-        this.storedFee = '';
         this.gas = '';
         this.storage = '';
         this.toMultipleDestinationsString = '';
         this.toMultipleDestinations = [];
+        this.isMultipleDestinations = false;
         this.showTransactions = [];
         this.password = '';
         this.pwdValid = '';
         this.formInvalid = '';
         this.sendResponse = null;
         this.ledgerInstruction = '';
-
         this.showBtn = 'Show More';
+        this.defaultTransactionParams = zeroTxParams;
+        this.prevEquiClass = '';
+        this.latestSimError = '';
     }
 
-    checkInput(): string {
-        let result;
-
+    checkInput(finalCheck = false): string {
+        let result: any;
         if (this.isMultipleDestinations) {
-            result = this.invalidInputMultiple();
-            console.log('result in checkInput()', result);
+            result = this.invalidInputMultiple(finalCheck);
         } else {
             result = this.invalidInputSingle();
         }
-
+        if (!result && this.latestSimError) {
+            result = this.latestSimError;
+        }
         return result;
     }
-
-    checkReveal() {
-        console.log('check reveal');
-        this.operationService.isRevealed(this.walletService.wallet.accounts[0].pkh)
-            .subscribe((revealed: boolean) => {
-                if (!revealed) {
-                    this.extraFee = revealFee;
-                } else {
-                    this.extraFee = 0;
+    checkBalance() {
+        if (this.transactions.length > 0) {
+            if (this.activePkh && this.activePkh.slice(0, 2) === 'tz') {
+                const max = Big(this.maxToSend(this.activePkh)).plus(0.000001);
+                let amount = Big(0);
+                for (let i in this.transactions) {
+                    amount = amount.plus(Big(this.transactions[i].amount));
                 }
-                this.recommendedFee = this.defaultFee + this.extraFee;
-                this.updateDefaultValues();
-            });
-    }
-
-    updateDefaultValues() {
-        if (this.activePkh && this.activePkh.length) {
-            if (!this.isMultipleDestinations) {
-                if (this.activePkh.slice(0, 2) === 'tz') {
-                    if (this.toPkh.length < 2 || this.toPkh.slice(0, 2) !== 'KT') {
-                        this.setDefaultValues(pkh2pkh);
-                    } else {
-                        this.setDefaultValues(pkh2kt);
-                    }
-                } else {
-                    if (this.toPkh.length < 2 || this.toPkh.slice(0, 2) !== 'KT') {
-                        this.setDefaultValues(kt2pkh);
-                    } else {
-                        this.setDefaultValues(kt2kt);
-                    }
+                if (amount.gt(max)) {
+                    return this.translate.instant('SENDCOMPONENT.TOOHIGHFEEORAMOUNT');
                 }
-            } else {
-                if (this.activePkh.slice(0, 2) === 'tz') {
-                    this.setDefaultValues(pkh2kt);
-                } else {
-                    this.setDefaultValues(kt2kt);
+            } else if (this.activePkh && this.activePkh.slice(0, 2) === 'KT') {
+                const maxKt = Big(this.maxToSend(this.activePkh));
+                const maxTz = Big(this.maxToSend(this.walletService.wallet.accounts[0].pkh)).plus(0.000001);
+                let amount = Big(0);
+                for (let i in this.transactions) {
+                    amount = amount.plus(Big(this.transactions[i].amount));
+                }
+                const burnAndFee = Big(this.getTotalBurn()).plus(Big(this.getTotalFee()));
+                if (amount.gt(maxKt)) {
+                    return this.translate.instant('SENDCOMPONENT.TOOHIGHAMOUNT');
+                } else if (burnAndFee.gt(maxTz)) {
+                    return this.translate.instant('SENDCOMPONENT.TOOHIGHFEE');
                 }
             }
         }
+        return '';
     }
-    setDefaultValues(values: any) {
-        this.defaultGasLimit = values.gas;
-        this.defaultStorageLimit = values.storage;
-        this.defaultFee = values.fee;
-        this.recommendedFee = this.defaultFee + this.extraFee;
+    updateDefaultValues() {
+        this.estimateFees();
+    }
+    async estimateFees() {
+        if (this.prepTransactions()) {
+            const equiClass = this.equiClass(this.activePkh, this.transactions);
+            if (this.prevEquiClass !== equiClass) {
+                this.prevEquiClass = equiClass;
+                this.simSemaphore++; // Put lock on 'Preview and 'Send max'
+                try {
+                    const res: DefaultTransactionParams | null = await this.estimateService.estimate(JSON.parse(JSON.stringify(this.transactions)), this.activePkh);
+                    if (res) {
+                        this.defaultTransactionParams = res;
+                    }
+                    this.latestSimError = '';
+                } catch(e) {
+                    this.formInvalid = e;
+                    this.latestSimError = e;
+                } finally {
+                    this.simSemaphore--;
+                }
+            }
+        } else {
+            if (this.isMultipleDestinations ? !this.toMultipleDestinationsString : !this.toPkh) {
+                this.defaultTransactionParams = zeroTxParams;
+                this.prevEquiClass = '';
+            }
+        }
+    }
+    // prevent redundant estimations
+    equiClass(sender: string, transactions: SendData[]): string {
+        let data = sender;
+        for (let i in transactions) {
+            data += transactions[i].to;
+        }
+        return data;
+    }
+    batchSpace(txs = 0) {
+        if (this.isMultipleDestinations && this.defaultTransactionParams.customLimits && this.defaultTransactionParams.customLimits.length) {
+            const numberOfTxs = txs ? txs : this.defaultTransactionParams.customLimits.length;
+            const gasUsage = (this.gas && this.inputValidationService.gas(this.gas) ? Number(this.gas) * numberOfTxs : this.defaultTransactionParams.gas * numberOfTxs)
+                + (this.defaultTransactionParams.reveal ? this.estimateService.revealGasLimit : 0);
+            const gasCap = 1040000;
+            return !txs ? this.numberWithCommas(gasUsage.toString()) + ' / ' + this.numberWithCommas(gasCap.toString()) : gasUsage < gasCap;
+
+        }
+        return !txs ? '' : true;
+    }
+    recieverIsKT() {
+        return (this.inputValidationService.address(this.toPkh) && this.toPkh.slice(0, 2) === 'KT');
+    }
+    senderIsKT() {
+        return (this.activePkh && this.activePkh.slice(0, 2) === 'KT');
+    }
+    validateReceiverAddress() {
+        if (!this.inputValidationService.address(this.toPkh) && this.toPkh !== '') {
+            this.formInvalid = this.translate.instant('SENDCOMPONENT.INVALIDRECEIVERADDRESS');
+        } else if (!this.latestSimError) {
+            this.formInvalid = '';
+        }
+    }
+    validateBatch() {
+        this.formInvalid = this.checkInput();
     }
     invalidInputSingle(): string {
         if (!this.inputValidationService.address(this.activePkh)) {
-            let invalidSender = '';
-            this.translate.get('SENDCOMPONENT.INVALIDSENDERADDRESS').subscribe(
-                (res: string) => invalidSender = res
-            );
-            return invalidSender;  // 'Invalid sender address';
-
+            return this.translate.instant('SENDCOMPONENT.INVALIDSENDERADDRESS');
         } else if (!this.inputValidationService.fee(this.fee)) {
-            let invalidFee = '';
-            this.translate.get('SENDCOMPONENT.INVALIDFEE').subscribe(
-                (res: string) => invalidFee = res
-            );
-            return invalidFee;  // 'Invalid fee';
+            return this.translate.instant('SENDCOMPONENT.INVALIDFEE');
         } else {
             return this.checkReceiverAndAmount(this.toPkh, this.amount);
         }
     }
     checkReceiverAndAmount(toPkh: string, amount: string): string {
-        let result = '';
-        console.log('In checkReceiverAndAmount toPkh: ', toPkh);
         if (!this.inputValidationService.address(toPkh)) {
-            let invalidReceiver = '';
-            this.translate.get('SENDCOMPONENT.INVALIDRECEIVERADDRESS').subscribe(
-                (res: string) => invalidReceiver = res
-            );
-            result = invalidReceiver;  // 'Invalid receiver address';
+            return this.translate.instant('SENDCOMPONENT.INVALIDRECEIVERADDRESS');
         } else if (!this.inputValidationService.amount(amount)) {
-            let invalidAmount = '';
-            this.translate.get('SENDCOMPONENT.INVALIDAMOUNT').subscribe(
-                (res: string) => invalidAmount = res
-            );
-            result = invalidAmount;  // 'Invalid amount';
+            return this.translate.instant('SENDCOMPONENT.INVALIDAMOUNT');
         } else if (!this.inputValidationService.gas(this.gas)) {
-            result = this.translate.instant('SENDCOMPONENT.INVALIDGASLIMIT');
-        } else if (!this.inputValidationService.gas(this.storage)) {
-            result = this.translate.instant('SENDCOMPONENT.INVALIDSTORAGELIMIT');
+            return this.translate.instant('SENDCOMPONENT.INVALIDGASLIMIT');
+        } else if (!this.inputValidationService.storage(this.storage)) {
+            return this.translate.instant('SENDCOMPONENT.INVALIDSTORAGELIMIT');
         }
-        return result;
+        return '';
     }
 
     // Checking toMultipleDestinationsString and building up toMultipleDestinations[to: string, amount: number]
-    invalidInputMultiple(): string {
+    invalidInputMultiple(finalCheck = false): string {
         if (!this.inputValidationService.address(this.activePkh)) {
-            let invalidSender = '';
-            this.translate.get('SENDCOMPONENT.INVALIDSENDERADDRESS').subscribe(
-                (res: string) => invalidSender = res
-            );
-            return invalidSender;  // 'Invalid sender address';
-
+            return this.translate.instant('SENDCOMPONENT.INVALIDSENDERADDRESS');
         } else if (!this.inputValidationService.fee(this.fee)) {
-            let invalidFee = '';
-            this.translate.get('SENDCOMPONENT.INVALIDFEE').subscribe(
-                (res: string) => invalidFee = res
-            );
-            return invalidFee;  // 'Invalid fee';
+            return this.translate.instant('SENDCOMPONENT.INVALIDFEE');
         }
-        let result = '';
-        let toMultipleDestinationsArray;
-        let singleSendDataArray;
-
-        toMultipleDestinationsArray = this.toMultipleDestinationsString.split(';');
+        this.toMultipleDestinations = [];
+        const toMultipleDestinationsArray = this.toMultipleDestinationsString.split(';');
+        if (toMultipleDestinationsArray.length === 1 && toMultipleDestinationsArray[0].trim() === '') {
+            return this.translate.instant('SENDCOMPONENT.INVALIDRECEIVERADDRESS');
+        }
+        let validationError = '';
         toMultipleDestinationsArray.forEach((item, index) => {
-            // Eliminate white spaces from both sides of a string
             toMultipleDestinationsArray[index] = item.trim();
-
             if (toMultipleDestinationsArray[index] !== '') {
-                singleSendDataArray = toMultipleDestinationsArray[index].split(' ');
-                console.log('singleSendDataArray: ', singleSendDataArray);
+                const singleSendDataArray = toMultipleDestinationsArray[index].split(' ');
                 if (singleSendDataArray.length === 2) {
                     const singleSendDataCheckresult = this.checkReceiverAndAmount(singleSendDataArray[0], singleSendDataArray[1]);
-                    console.log('singleSendDataArray.length: ', singleSendDataArray.length);
-                    console.log('singleSendDataCheckresult', singleSendDataCheckresult);
                     if (singleSendDataCheckresult === '') {
-                        this.toMultipleDestinations.push({ to: singleSendDataArray[0], amount: Number(singleSendDataArray[1]), burn: false });
+                        const gasLimit = this.gas ? Number(this.gas) : this.defaultTransactionParams.customLimits && this.defaultTransactionParams.customLimits.length > index ?
+                            this.defaultTransactionParams.customLimits[index].gasLimit : this.defaultTransactionParams.gas;
+                        const storageLimit = this.storage ? Number(this.storage) : this.defaultTransactionParams.customLimits && this.defaultTransactionParams.customLimits.length > index ?
+                            this.defaultTransactionParams.customLimits[index].storageLimit : this.defaultTransactionParams.storage;
+                        this.toMultipleDestinations.push({ to: singleSendDataArray[0], amount: Number(singleSendDataArray[1]), gasLimit, storageLimit });
                     } else {
                         this.toMultipleDestinations = [];
-                        const itemIndex = index + 1;
-                        result = singleSendDataCheckresult + '. ' + 'Error in item ' + itemIndex;
-                        return result;
+                        validationError = singleSendDataCheckresult + '. Transaction ' + (index + 1);
                     }
+                } else if (singleSendDataArray.length === 1) {
+                    validationError = this.translate.instant('SENDCOMPONENT.NOADDRESSORAMOUNT') + ' Transaction ' + (index + 1);
+                } else {
+                    validationError = 'Expected semicolon after transaction ' + (index + 1);
                 }
-            } else if (toMultipleDestinationsArray.length === 1) {
-                result = this.translate.instant('SENDCOMPONENT.NOADDRESSORAMOUNT'); // 'No address or amount provided!'
             }
         });
-        console.log('toMultipleDestinations: ', JSON.stringify(this.toMultipleDestinations));
-        return result;  // If this loops ends then everything has been verified and result will remain ''
+        if (!validationError && finalCheck && !this.batchSpace(this.toMultipleDestinations.length)) {
+            validationError = this.translate.instant('SENDCOMPONENT.GASOVERFLOW')
+        }
+        return validationError;
     }
 
     totalAmount(): number {
         let totalSent = 0;
-        console.log('toMultipleDestinations ', this.toMultipleDestinations);
-        for (const item of this.toMultipleDestinations) {
-            totalSent = totalSent + item.amount;
+        for (const tx of this.transactions) {
+            totalSent = totalSent + tx.amount;
         }
         return totalSent;
     }
-    getFee() {
+    getTotalFee(): number {
         if (this.fee) {
-            return this.fee;
+            return Number(this.fee);
         }
-        return this.storedFee;
+        return Number(this.defaultTransactionParams.fee);
     }
-    totalFee(): number {
-        let fee = 0;
-        if (this.fee) {
-            fee = Number(this.fee);
+    getTotalBurn() {
+        if (this.storage) {
+            return (Number(this.storage) * this.transactions.length) / 1000;
         }
-        const totalFee = fee * this.toMultipleDestinations.length;
-        return totalFee;
+        return this.defaultTransactionParams.burn;
     }
-
     toggleTransactions() {
         if (this.showTransactions.length === 2) {
             this.showTransactions = this.transactions;
@@ -582,7 +516,6 @@ export class SendComponent implements OnInit {
             this.showBtn = 'Show More';
         }
     }
-
     download() {
         this.exportService.downloadOperationData(this.sendResponse.payload.unsignedOperation, false);
     }

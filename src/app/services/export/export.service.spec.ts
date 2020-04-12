@@ -3,10 +3,10 @@ import { ExportService } from './export.service';
 
 // class dependencies
 import * as FileSaver from 'file-saver';
-import { WalletService } from './wallet.service';
+import { WalletService } from '../wallet/wallet.service';
 
 // unit-testing framework
-import { WalletServiceStub } from '../../../spec/mocks/wallet.mock';
+import { WalletServiceStub } from '../../../../spec/mocks/wallet.mock';
 import { TestBed } from '@angular/core/testing';
 
 

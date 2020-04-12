@@ -80,6 +80,13 @@ div.entropy {
     background-color: rgba(0, 0, 0, 0.125);
     white-space: pre-line;
     font-size: 120%;
+    // Prevent text selection
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .card-footer {

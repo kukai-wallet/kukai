@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 
 import { TranslateService } from '@ngx-translate/core';
 
-import { WalletService } from '../../services/wallet.service';
+import { WalletService } from '../../services/wallet/wallet.service';
 
 @Component({
     selector: 'app-start',

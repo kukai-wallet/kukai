@@ -149,7 +149,7 @@
     },
     "MNEMONICIMPORTCOMPONENT": {
         "TITLE" : "Retrieve your Wallet",
-        "INFO" : "Please make sure to first activate your ICO-wallet.",
+        "INFO" : "Please make sure to first activate your ICO-wallet, if you haven't yet",
         "INFOMNEMONIC" : "The mnemonic phrase (15 words)",
         "INFOPASSPHRASE" : "If your mnemonic phrase is protected with a passphrase, it needs to be entereds here",
         "INFOEMAIL" : "The email used during the ICO (e.g. example@email.com)",
@@ -309,10 +309,10 @@
         "RATE" : "Rate",
         "TOADDRESS" : "To Address",
         "AMOUNTTOSEND" : "Amount to Send",
-        "SENDBALANCE" : "Send Entire Balance",
+        "SENDBALANCE" : "Send max",
         "FEE" : "Fee",
         "PREVIEW" : "Preview",
-        "TITLE2" : "Authenticate transaction",
+        "TITLE2" : "Sign transaction",
         "FROM" : "From:",
         "TO" : "To:",
         "AMOUNT" : "Amount:",
@@ -339,7 +339,12 @@
         "INVALIDFEE" : "Invalid fee",
         "INVALIDGASLIMIT" : "Invalid gas limit",
         "INVALIDSTORAGELIMIT" : "Invalid storage limit",
-        "NOADDRESSORAMOUNT" : "No address or amount provided!"
+        "NOADDRESSORAMOUNT" : "No address or amount provided!",
+        "GASOVERFLOW" : "Hard gas limit overflow!",
+        "INVALIDPARAMETERS" : "Invalid parameters",
+        "TOOHIGHFEEORAMOUNT" : "Amount, fee and burn are higher than the current balance",
+        "TOOHIGHFEE" : "The fee and burn are higher than the balance for the implicit account (tz1)",
+        "TOOHIGHAMOUNT" : "The amount is higher than the balance for the originated contract (KT)"
     },
     "STARTCOMPONENT": {
         "IMPORTWALLET" : "Import wallet",

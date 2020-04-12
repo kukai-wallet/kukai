@@ -2,11 +2,11 @@ import { Component, OnInit, AfterContentInit } from '@angular/core';
 
 import { TranslateService } from '@ngx-translate/core';  // Multiple instances created ?
 
-import { WalletService } from '../../services/wallet.service';
-import { OperationService } from '../../services/operation.service';
-import { MessageService } from '../../services/message.service';
-import { ExportService } from '../../services/export.service';
-import { CoordinatorService } from '../../services/coordinator.service';
+import { WalletService } from '../../services/wallet/wallet.service';
+import { OperationService } from '../../services/operation/operation.service';
+import { MessageService } from '../../services/message/message.service';
+import { ExportService } from '../../services/export/export.service';
+import { CoordinatorService } from '../../services/coordinator/coordinator.service';
 
 @Component({
     selector: 'app-offline-signing',
