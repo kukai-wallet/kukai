@@ -15,7 +15,7 @@ import { WalletService } from '../../services/wallet/wallet.service';
     styleUrls: ['./receive.component.scss']
 })
 export class ReceiveComponent implements OnInit {
-    @ViewChild('modal1', {static: false}) modal1: TemplateRef<any>;
+    @ViewChild('modal1') modal1: TemplateRef<any>;
 
     @Input() activePkh: string;
     @Input() actionButtonString: string;  // Possible values: btnOutline / dropdownItem
