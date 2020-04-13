@@ -19,7 +19,7 @@ import { Constants } from '../../constants';
   styleUrls: ['./new-account.component.scss']
 })
 export class NewAccountComponent implements OnInit {
-  @ViewChild('modal1', {static: false}) modal1: TemplateRef<any>;
+  @ViewChild('modal1') modal1: TemplateRef<any>;
   CONSTANTS = new Constants();
   @Input() activePkh: string;
 
