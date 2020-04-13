@@ -6,7 +6,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { BsModalService } from 'ngx-bootstrap/modal';
 
 // From Angular Material
-import { MatSortModule, MatTabsModule } from '@angular/material';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTabsModule } from '@angular/material/tabs';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // For translation
