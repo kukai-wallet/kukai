@@ -363,9 +363,12 @@ export class SendComponent implements OnInit {
         this.estimateFees();
     }
     async estimateFees() {
+        const prevSimError = this.latestSimError;
+        this.latestSimError = '';
         if (this.prepTransactions()) {
             const equiClass = this.equiClass(this.activePkh, this.transactions);
             if (this.prevEquiClass !== equiClass) {
+                this.latestSimError = '';
                 this.prevEquiClass = equiClass;
                 this.simSemaphore++; // Put lock on 'Preview and 'Send max'
                 try {
@@ -374,14 +377,19 @@ export class SendComponent implements OnInit {
                         this.defaultTransactionParams = res;
                     }
                     this.latestSimError = '';
+                    this.formInvalid = '';
                 } catch (e) {
                     this.formInvalid = e;
                     this.latestSimError = e;
                 } finally {
                     this.simSemaphore--;
                 }
+            } else {
+                this.latestSimError = prevSimError;;
+                this.formInvalid = this.latestSimError;
             }
         } else {
+            this.latestSimError = prevSimError;
             if (this.isMultipleDestinations ? !this.toMultipleDestinationsString : !this.toPkh) {
                 this.defaultTransactionParams = zeroTxParams;
                 this.prevEquiClass = '';
