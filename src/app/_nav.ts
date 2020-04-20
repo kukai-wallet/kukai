@@ -17,20 +17,6 @@ export const sidebarNavItems: INavData[] = [
     icon: 'icon-pie-chart'
   },
   {
-    title: true,
-    name: 'Options'
-  },
-  {
-    name: 'Offline Signing',
-    url: '/offline-signing',
-    icon: 'icon-note',
-  },
-  {
-    name: 'Backup',
-    url: '/backup',
-    icon: 'icon-paper-clip',
-  },
-  {
     name: 'Github',
     url: 'https://github.com/kukai-wallet/kukai',
     icon: 'icon-social-github',
