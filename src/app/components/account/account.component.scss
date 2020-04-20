@@ -22,36 +22,5 @@
     font-family: "Courier New", Courier, monospace;
 }
 
-.min-width {
-    min-width: 825px !important;
-}
 
-/* Responsive breakpoints */
-// Extra small devices (portrait phones, less than 576px)
-// No media query since this is the default in Bootstrap
 
-// Small devices (landscape phones, 576px and up)
-@media (min-width: 576px) { 
-    .container {
-        padding-left: 2em;
-        min-width: 0vw
-    }
- }
-
-// Medium devices (tablets, 768px and up)
-//@media (min-width: 768px) { ... }
-
-// Large devices (desktops, 992px and up)
-@media (min-width: 992px) {
-    .container {
-        min-width: 0vw
-    }
- }
-
-// Extra large devices (large desktops, 1200px and up)
-@media (min-width: 1200px) { 
-    .container {
-        padding-left: 2em;
-        min-width: 0vw
-    } 
-}
