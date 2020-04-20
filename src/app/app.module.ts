@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { BsModalService } from 'ngx-bootstrap/modal';
@@ -18,8 +19,25 @@ import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import { ComponentLoaderFactory } from 'ngx-bootstrap/component-loader';
 import { ModalModule, AlertModule, ProgressbarModule, ButtonsModule, BsDropdownModule, TabsModule } from 'ngx-bootstrap';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
-
 import { AppComponent } from './app.component';
+
+import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
+import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
+import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
+
+import { ChartsModule } from 'ng2-charts';
+
+const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
+  suppressScrollX: true
+};
+
+import {
+  AppAsideModule,
+  AppBreadcrumbModule,
+  AppHeaderModule,
+  AppFooterModule,
+  AppSidebarModule,
+} from '@coreui/angular';
 
 // Services
 import { MessageService } from './services/message/message.service';
@@ -57,6 +75,8 @@ import { BakeryComponent } from './components/bakery/bakery.component';
 import { ActivateComponent } from './components/activate/activate.component';
 import { MessagesComponent } from './components/messages/messages.component';
 import { CommunityComponent } from './components/community/community.component';
+import { P404Component } from './views/error/404.component';
+import { P500Component } from './views/error/500.component';
 
 // Pipes
 import { ErrorHandlingPipe } from './pipes/error-handling.pipe';
@@ -95,6 +115,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     ActivateComponent,
     MessagesComponent,
     CommunityComponent,
+    P404Component,
+    P500Component,
 
     // Pipes
     ErrorHandlingPipe,
@@ -104,8 +126,14 @@ export function HttpLoaderFactory(http: HttpClient) {
     ConnectLedgerComponent
   ],
   imports: [
+    AppAsideModule,
+    AppBreadcrumbModule,
+    AppHeaderModule,
+    AppFooterModule,
+    AppSidebarModule,
     BrowserModule,
     BrowserAnimationsModule,
+    ChartsModule,
     MatTabsModule,
     MatSortModule,
     FormsModule,
@@ -114,6 +142,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     CollapseModule.forRoot(),
     ModalModule.forRoot(),
     AlertModule.forRoot(),
+    PerfectScrollbarModule,
     ProgressbarModule.forRoot(),
     ButtonsModule.forRoot(),
     BsDropdownModule.forRoot(),
@@ -123,7 +152,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         provide: TranslateLoader,
         useFactory: HttpLoaderFactory,
         deps: [HttpClient]
-    }
+      }
     })  // lazy loading will need TranslateModule.forChild() in the lazy loaded modules
   ],
   providers: [

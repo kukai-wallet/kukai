@@ -12,10 +12,14 @@
                                 <tab heading="Regular import" id="tab1" (select)="tge = false"></tab>
                             </tabset>
                             -->
-                            <mat-tab-group [selectedIndex]="activeTab" (selectedIndexChange)="tabChanged()">
-                                <mat-tab label="Regular import" (select)="tge = false"></mat-tab>
-                                <mat-tab label="ICO import" (select)="tge = true"></mat-tab>
-                            </mat-tab-group>
+                            <ul class="nav nav-pills" [selectedIndex]="activeTab" (selectedIndexChange)="tabChanged()">
+                                <li class="nav-item" label="Regular import">
+                                  <button class="btn btn-primary" (click)="tge = false">Regular Import</button>
+                                </li>
+                                <li label="ICO import" (select)="tge = true">
+                                  <button class="btn btn-success" (click)="tge = true">Fundraiser Import</button>
+                                </li>
+                            </ul>
                             <BR>
                         </div>
                         <div class="form-group row" *ngIf="tge">

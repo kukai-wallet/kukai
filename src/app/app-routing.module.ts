@@ -18,6 +18,8 @@ import { BakeryComponent } from './components/bakery/bakery.component';
 import { ActivateComponent } from './components/activate/activate.component';
 import { CommunityComponent } from './components/community/community.component';
 import { ConnectLedgerComponent } from './components/connect-ledger/connect-ledger.component';
+import { P404Component } from './views/error/404.component';
+import { P500Component } from './views/error/500.component';
 
 const routes: Routes = [
   { path: '', component: StartComponent },  // Content Centre position
@@ -36,7 +38,21 @@ const routes: Routes = [
   { path: 'bakery', component: BakeryComponent },
   { path: 'activate', component: ActivateComponent },
   { path: 'community', component: CommunityComponent },
-  { path: 'connect-ledger', component: ConnectLedgerComponent }
+  { path: 'connect-ledger', component: ConnectLedgerComponent },
+  {
+    path: '404',
+    component: P404Component,
+    data: {
+      title: 'Page 404'
+    }
+  },
+  {
+    path: '500',
+    component: P500Component,
+    data: {
+      title: 'Page 500'
+    }
+  },
 ];
 
 @NgModule({

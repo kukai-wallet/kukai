@@ -1,51 +1,65 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, Input } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { TranslateService } from '@ngx-translate/core';  // Init the TranslateService
+import { INavData } from '@coreui/angular';
 
 import { WalletService } from '../../services/wallet/wallet.service';
 import { CoordinatorService } from '../../services/coordinator/coordinator.service';
-
 import { Constants } from '../../constants';
+import { sidebarNavItems } from '../../_nav';
 
 @Component({
-    selector: 'app-home-page',
-    templateUrl: './home-page.component.html',
-    styleUrls: ['./home-page.component.scss']
+  selector: 'app-home-page',
+  templateUrl: './home-page.component.html',
+  styleUrls: ['./home-page.component.scss']
 })
 export class HomePageComponent implements OnInit {
-    isCollapsed = false;
+  public sidebarMinimized = false;
+  
+  sidebarNavItems = sidebarNavItems;
 
-    CONSTANTS = new Constants();
+  isCollapsed = false;
 
-    param = {value: 'world'};  // Test translation
+  CONSTANTS = new Constants();
 
-    constructor(
-        public translate: TranslateService,
-        private router: Router,
-        public walletService: WalletService,
-        private coordinatorService: CoordinatorService
-    ) {
-        translate.addLangs(['en', 'fr', 'ru', 'jp', 'kor', 'por']);
+  param = {value: 'world'};  // Test translation
 
-        // this language will be used as a fallback when a translation isn't found in the current language
-        translate.setDefaultLang('en');
+  constructor(
+      public translate: TranslateService,
+      private router: Router,
+      public walletService: WalletService,
+      private coordinatorService: CoordinatorService,
+      private cd: ChangeDetectorRef
+  ) {
+      translate.addLangs(['en', 'fr', 'ru', 'jp', 'kor', 'por']);
 
-        // the lang to use, if the lang isn't available, it will use the current loader to get them
-        const languagePreference = window.localStorage.getItem('languagePreference');
-        const browserLang = translate.getBrowserLang();
-        if (languagePreference) {
-          translate.use(languagePreference.match(/en|fr|ru|jp|kor|por/) ? languagePreference : 'en');
-        } else {
-          translate.use(browserLang.match(/en|fr|ru|jp|kor|por/) ? browserLang : 'en');
-        }
-    }
+      // this language will be used as a fallback when a translation isn't found in the current language
+      translate.setDefaultLang('en');
+
+      // the lang to use, if the lang isn't available, it will use the current loader to get them
+      const languagePreference = window.localStorage.getItem('languagePreference');
+      const browserLang = translate.getBrowserLang();
+      if (languagePreference) {
+        translate.use(languagePreference.match(/en|fr|ru|jp|kor|por/) ? languagePreference : 'en');
+      } else {
+        translate.use(browserLang.match(/en|fr|ru|jp|kor|por/) ? browserLang : 'en');
+      }
+
+      // translate.onLangChange.subscribe((event) => {
+      //   this.translateNavItems();
+      // });
+  }
 
   ngOnInit() {
   }
 
   testChange(lang: string) {
     console.log('lang in testChange() ', lang);
+  }
+
+  toggleMinimize(e) {
+    this.sidebarMinimized = e;
   }
 
   returnLanguage(lang: string) {
@@ -74,9 +88,17 @@ export class HomePageComponent implements OnInit {
     this.translate.use(lang);
   }
 
+  // translateNavItems() {
+  //   this.sidebarNavItems = this.sidebarNavItems.map((item) => {
+  //     item.name = this.translate.instant(item.name);
+  //     return item;
+  //   });
+  //   this.cd.markForCheck();
+  // }
+
   logout() {
-        this.coordinatorService.stopAll();
-        this.walletService.clearWallet();
-        this.router.navigate(['']);
+    this.coordinatorService.stopAll();
+    this.walletService.clearWallet();
+    this.router.navigate(['']);
   }
 }

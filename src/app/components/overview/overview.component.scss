@@ -91,6 +91,15 @@ a:hover {
     text-decoration: none !important;
 }
 
+td { 
+    width: 50px; 
+    overflow: hidden; 
+}
+
+table { 
+    width : 100%; 
+    table-layout: fixed; 
+}
 
 /* Responsive breakpoints */
 // Extra small devices (portrait phones, less than 576px)

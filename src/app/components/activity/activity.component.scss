@@ -13,6 +13,11 @@
     font-family: "Courier New", Courier, monospace;  
 }
 
+table { 
+    width : 100%; 
+    table-layout: fixed; 
+}
+
 .table-row {
     line-height: 1.2;  //original at 1.5
 }
@@ -37,7 +42,7 @@
 }
 
 .sent {
-    background-color: rgb(221, 21, 21);
+    background-color: #23a4fa;
 }
 
 .amount {
