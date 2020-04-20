@@ -1,9 +1,7 @@
-import { Component, Input, OnInit, AfterViewInit, SimpleChange } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { WalletService } from '../../services/wallet/wallet.service';
 
 import { Constants } from '../../constants';
-import { TimeAgoPipe } from '../../pipes/time-ago.pipe';
-import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-activity',
@@ -23,16 +21,6 @@ export class ActivityComponent implements OnInit {
     init() {
         this.accounts = this.walletService.wallet.accounts;
         console.log('activePkh: ', this.activePkh);
-    }
-
-    getStatus(transaction: any): string {
-        if (transaction.failed) {
-            return 'Failed';
-        } else if (transaction.block === 'prevalidation') {
-            return 'Unconfirmed';
-        } else {
-            return 'Confirmed';
-        }
     }
 
     getType(transaction: any): string {
@@ -62,7 +50,7 @@ export class ActivityComponent implements OnInit {
             if (transaction.destination) {
              return transaction.destination;
             } else {
-                return '';  // User has undelegate
+                return '';  // User has undelegated
             }
         } else if (transaction.type === 'transaction') {
         if (this.activePkh === transaction.source) {

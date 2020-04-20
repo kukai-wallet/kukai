@@ -385,7 +385,7 @@ export class SendComponent implements OnInit {
                     this.simSemaphore--;
                 }
             } else {
-                this.latestSimError = prevSimError;;
+                this.latestSimError = prevSimError;
                 this.formInvalid = this.latestSimError;
             }
         } else {
