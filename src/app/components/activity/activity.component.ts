@@ -23,6 +23,16 @@ export class ActivityComponent implements OnInit {
         console.log('activePkh: ', this.activePkh);
     }
 
+    getStatus(transaction: any): string {	
+        if (transaction.failed) {	
+            return 'Failed';	
+        } else if (transaction.block === 'prevalidation') {	
+            return 'Unconfirmed';	
+        } else {	
+            return 'Confirmed';	
+        }	
+    }
+    
     getType(transaction: any): string {
         if (transaction.type !== 'transaction') {
             if (transaction.type === 'delegation') {
