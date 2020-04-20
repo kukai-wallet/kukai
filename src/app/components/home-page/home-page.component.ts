@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, Input } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { TranslateService } from '@ngx-translate/core';  // Init the TranslateService
@@ -18,6 +18,7 @@ export class HomePageComponent implements OnInit {
   public sidebarMinimized = false;
   
   sidebarNavItems = sidebarNavItems;
+  navItems = this.translatedNavItems();
 
   isCollapsed = false;
 
@@ -29,8 +30,7 @@ export class HomePageComponent implements OnInit {
       public translate: TranslateService,
       private router: Router,
       public walletService: WalletService,
-      private coordinatorService: CoordinatorService,
-      private cd: ChangeDetectorRef
+      private coordinatorService: CoordinatorService
   ) {
       translate.addLangs(['en', 'fr', 'ru', 'jp', 'kor', 'por']);
 
@@ -46,9 +46,9 @@ export class HomePageComponent implements OnInit {
         translate.use(browserLang.match(/en|fr|ru|jp|kor|por/) ? browserLang : 'en');
       }
 
-      // translate.onLangChange.subscribe((event) => {
-      //   this.translateNavItems();
-      // });
+      translate.onLangChange.subscribe((event) => {
+        this.translateNavItems();
+      });
   }
 
   ngOnInit() {
@@ -86,15 +86,25 @@ export class HomePageComponent implements OnInit {
   setLanguage(lang) {
     window.localStorage.setItem('languagePreference', lang);
     this.translate.use(lang);
+    this.translateNavItems();
   }
 
-  // translateNavItems() {
-  //   this.sidebarNavItems = this.sidebarNavItems.map((item) => {
-  //     item.name = this.translate.instant(item.name);
-  //     return item;
-  //   });
-  //   this.cd.markForCheck();
-  // }
+  translateNavItems() {
+    this.navItems = JSON.parse(JSON.stringify(
+      this.translatedNavItems()
+    ));
+  }
+
+  translatedNavItems() {
+    return this.sidebarNavItems.map((item) => {
+      var itemCopy = {};
+      for (let [key, value] of Object.entries(item)) {
+        itemCopy[key] = value;
+      }
+      itemCopy['name'] = this.translate.instant(item.name)
+      return itemCopy;
+    });
+  }
 
   logout() {
     this.coordinatorService.stopAll();

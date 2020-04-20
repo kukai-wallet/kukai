@@ -2,17 +2,17 @@ import { INavData } from '@coreui/angular';
 
 export const sidebarNavItems: INavData[] = [
   {
-    name: 'Dashboard',
+    name: 'HOMEPAGECOMPONENT.OVERVIEW',
     url: '/overview',
     icon: 'icon-speedometer'
   },
   {
-    name: 'Account',
+    name: 'HOMEPAGECOMPONENT.ACCOUNT',
     url: '/account',
     icon: 'icon-calculator'
   },
   {
-    name: 'Bakery',
+    name: 'HOMEPAGECOMPONENT.BAKERY',
     url: '/bakery',
     icon: 'icon-pie-chart'
   },
