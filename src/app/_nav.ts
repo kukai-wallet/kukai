@@ -16,6 +16,20 @@ export const sidebarNavItems: INavData[] = [
     url: '/bakery',
     icon: 'icon-pie-chart'
   },
+  // {
+  //   title: true,
+  //   name: 'Options'
+  // },
+  // {
+  //   name: 'Offline Signing',
+  //   url: '/offline-signing',
+  //   icon: 'icon-note',
+  // },
+  // {
+  //   name: 'Backup',
+  //   url: '/backup',
+  //   icon: 'icon-paper-clip',
+  // },
   {
     name: 'Github',
     url: 'https://github.com/kukai-wallet/kukai',
@@ -25,10 +39,10 @@ export const sidebarNavItems: INavData[] = [
     attributes: { target: '_blank', rel: 'noopener' }
   },
   {
-    name: 'Chat',
-    url: 'https://riot.im/app/#/room/#kukai:matrix.org',
-    icon: 'icon-bubbles',
-    variant: 'success',
+    name: 'Telegram',
+    url: 'https://t.me/KukaiWallet',
+    icon: 'icon-cursor',
+    variant: 'info',
     attributes: { target: '_blank', rel: 'noopener' }
   },
   {
