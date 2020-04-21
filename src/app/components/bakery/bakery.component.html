@@ -13,22 +13,27 @@
               <table class="table">
                 <thead>
                   <tr>
-                    <th>{{ 'BAKERYCOMPONENT.ACCOUNTS' | translate }}</th>
-                    <th>{{ 'BAKERYCOMPONENT.BALANCE' | translate }} (&#42793;)</th>
-                    <th>{{ 'BAKERYCOMPONENT.DELEGATEDTO' | translate }}</th>
-                    <th>Actions</th>
+                    <th colspan="2">{{ 'BAKERYCOMPONENT.ACCOUNTS' | translate }}</th>
+                    <th colspan="1">{{ 'BAKERYCOMPONENT.BALANCE' | translate }} (&#42793;)</th>
+                    <th colspan="2">{{ 'BAKERYCOMPONENT.DELEGATEDTO' | translate }}</th>
+                    <th colspan="2">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   <ng-container *ngFor="let account of walletService.wallet.accounts">
                     <tr>
-                      <td>{{ account.pkh }}</td>
-                      <td>{{ account.balance.balanceXTZ / 1000000 | number:'1.00' }} &#42793;</td>
-                      <td>{{ account.delegate | delegatorName }}</td>
-                      <td>
-                        <div class="col-md-6 col-sm-12 col-12 col-border" *ngIf="!this.walletService.isObserverWallet()">
+                      <td colspan="2">{{ account.pkh }}</td>
+                      <td colspan="1">{{ account.balance.balanceXTZ / 1000000 | number:'1.00' }} &#42793;</td>
+                      <td colspan="2">{{ account.delegate | delegatorName }}</td>
+                      <td colspan="2">
+                        <div class="row">
+                        <div class="col-sm-6 col-border" *ngIf="!this.walletService.isObserverWallet()">
                           <app-delegate [activePkh]="account.pkh"></app-delegate>
                         </div>
+                        <div class="col-sm-6 col-border" *ngIf="!this.walletService.isObserverWallet()">
+                          <a href="{{ 'https://baking-bad.org/' + account.pkh }}" target="_blank"><button class="btn btn-sm btn-block btn-primary">Audit</button></a>
+                        </div>
+                      </div>
                       </td>
                     </tr>
                   </ng-container>
