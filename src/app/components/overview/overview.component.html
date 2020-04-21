@@ -10,7 +10,7 @@
               <table class="table">
                 <thead>
                   <tr>
-                    <th>{{ 'OVERVIEWCOMPONENT.IDENTITY' | translate }}</th>
+                    <th colspan="2">{{ 'OVERVIEWCOMPONENT.IDENTITY' | translate }}</th>
                     <th>{{ 'OVERVIEWCOMPONENT.BALANCETABLE' | translate }}</th>
                     <th>{{ 'OVERVIEWCOMPONENT.VALUE' | translate }}</th>
                   </tr>
@@ -18,7 +18,7 @@
                 <tbody>
                     <ng-container *ngIf="walletService.wallet.accounts[0]">
                         <tr class="pkh-row" [class.selectedPkh]="selectedPkh === walletService.wallet.accounts[0].pkh" (click)="click(walletService.wallet.accounts[0].pkh)">
-                            <td (dblclick)="dblclick(walletService.wallet.accounts[0].pkh)">
+                            <td colspan="2" (dblclick)="dblclick(walletService.wallet.accounts[0].pkh)">
                               {{ walletService.wallet.accounts[0].pkh }}
                             </td>
 
@@ -47,7 +47,7 @@
                         </tr>
 
                         <tr *ngFor="let account of walletService.wallet.accounts | slice:1" (click)="click(account.pkh)" [class.selectedPkh]="selectedPkh === account.pkh">
-                            <td (dblclick)="dblclick(account.pkh)">
+                            <td colspan="2" (dblclick)="dblclick(account.pkh)">
                               {{ account.pkh }}
                             </td>
                             <td>
@@ -64,7 +64,7 @@
 
                         <!-- Total - Last row -->
                         <tr>
-                            <td>
+                            <td colspan="2">
                               {{ 'OVERVIEWCOMPONENT.TOTAL' | translate }}
                             </td>
                             <td>

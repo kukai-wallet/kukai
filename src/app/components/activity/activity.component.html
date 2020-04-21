@@ -8,7 +8,7 @@
                         <th scope="col">{{ 'ACTIVITYCOMPONENT.BLOCK' | translate }}</th>
                         <th scope="col">{{ 'ACTIVITYCOMPONENT.DATE' | translate }}</th>
                         <th scope="col">{{ 'ACTIVITYCOMPONENT.TYPE' | translate }}</th>
-                        <th scope="col">{{ 'ACTIVITYCOMPONENT.COUNTERPARTY' | translate }}</th> <!-- To or From -->
+                        <th colspan="2" scope="col">{{ 'ACTIVITYCOMPONENT.COUNTERPARTY' | translate }}</th> <!-- To or From -->
                         <th scope="col">{{ 'ACTIVITYCOMPONENT.AMOUNT' | translate }} (&#42793;)</th>
                         <th scope="col">{{ 'ACTIVITYCOMPONENT.STATUS' | translate }}</th>
                     </tr>
@@ -43,7 +43,7 @@
                         </td>
 
                         <!-- Counterparty: `To` or `From` -->
-                        <td class="table-cell"> 
+                        <td colspan="2" class="table-cell"> 
                             <!-- {{ transaction.source.tz }} -->
                             <span *ngIf="transaction.type != 'activation' && !(transaction.type === 'delegation' && !transaction.destination)">
                             <!-- to and from only shown when it's not an origination (transaction.type != 'activation') and when it's not an undelegate operation: !(transaction.type === 'delegation' && !transaction.destination) -->
