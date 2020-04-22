@@ -1,18 +1,70 @@
 <div id="content">
-    <div class="center-content">
-        <div class="row justify-content-between">
-            <a routerLink="/import/" btn-left>
-                <button type="button" class="btn btn-primary btn-lg btn-block btn-generate btn-top">{{ 'STARTCOMPONENT.IMPORTWALLET' | translate }}</button>
-            </a>
-        </div><div class="row justify-content-between">
-            <a routerLink="/connect-ledger/">
-                <button type="button" class="btn btn-primary btn-lg btn-block btn-generate btn-top">Connect Ledger</button>
-            </a>
-        </div>
-        <div class="row justify-content-between">
-            <a routerLink="/new-wallet/">
-                <button type="button" class="btn btn-success btn-left btn-top">{{ 'STARTCOMPONENT.NEWWALLET' | translate }}</button>
-            </a>
-        </div>
+  <div class="center-content">
+    <div class="row justify-content-between">
+      <div class="col-sm-1 col-md-2"></div>
+      <div class="col-sm-5 col-md-4">
+        <a routerLink="/connect-ledger/">
+          <div class="card text-white bg-info start-card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-8 col-sm-8 col-6">
+                  <div class="h4 mb-0">Connect to Ledger</div>
+                </div>
+                <div class="col-md-4 col-sm-4 col-6">
+                  <div class="h1 text-muted text-right mb-4">
+                    <i class="icon-link"></i>
+                  </div>
+                </div>
+              </div> 
+              <div class="text-muted text-uppercase font-weight-bold pt-1">Keep your private keys safely on your Ledger device and use Kukai to access your wallet.</div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-sm-5 col-md-4">
+        <a routerLink="/import/">
+          <div class="card text-white bg-primary start-card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-8 col-sm-8 col-6">
+                  <div class="h4 mb-0">{{ 'STARTCOMPONENT.IMPORTWALLET' | translate }}</div>
+                </div>
+                <div class="col-md-4 col-sm-4 col-6">
+                  <div class="h1 text-muted text-right mb-4">
+                    <i class="icon-cloud-download"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="text-muted text-uppercase font-weight-bold pt-1">Import an existing wallet using your seed, encrypted file, or fundraiser credentials.</div>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="col-sm-1 col-md-2"></div>
     </div>
+    <div class="row justify-content-between">
+      <div class="col-sm-1 col-md-2"></div>
+      <div class="col-sm-9 col-md-8">
+        <a routerLink="/new-wallet/">
+          <div class="card text-white bg-success start-card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-8 col-sm-8 col-6">
+                  <div class="h4 mb-0">{{ 'STARTCOMPONENT.NEWWALLET' | translate }}</div>
+                </div>
+                <div class="col-md-4 col-sm-4 col-6">
+                  <div class="h1 text-muted text-right mb-4">
+                    <i class="icon-plus"></i>
+                  </div>
+                </div>
+              </div> 
+              <div class="text-muted text-uppercase font-weight-bold pt-1">Create a new unique wallet on the Tezos blockchain, receive your public address, and safely record your mnemonic key to backup your account.</div>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="col-sm-1 col-md-2"></div>
+    </div>
+  </div>
 </div>
