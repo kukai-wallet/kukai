@@ -1,10 +1,98 @@
 <div class="container pt-5" *ngIf="this.walletService.wallet">
     <div class="animated fadeIn">
+
+      <div class="row">
+        <div class="col-sm-12 col-lg-5">
+          <div class="card text-white bg-primary overview-card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-4 col-3">
+                  <canvas id="selected-pkh-jdenticon" width="80" height="80" [attr.data-jdenticon-value]="jdenticon" class="pt-1"></canvas>
+                </div>
+                <div class="col-md-8 col-9 text-right">
+                  <div class="text-value">Selected Account</div>
+                  <div class="row pt-4">
+                    <div class="col-md-2 col-4 pt-2" (click)="dblclick(selectedAccount.pkh)">
+                      <h4><i class="icon-docs"></i></h4>
+                    </div>
+                    <div class="col-md-10 col-8">
+                      <h5 class="pt-2">{{ selectedAccount.pkh }}</h5>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div><!--/.col-->
+        <div class="col-sm-12 col-lg-4">
+          <div class="card text-white bg-info overview-card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-4 col-3">
+                  <div class="h1 text-muted text-center pt-2">
+                    <i class="icon-chart" style="font-size: 50px;"></i>
+                  </div>
+                </div>
+                <div class="col-md-8 col-9 text-right">
+                  <div class="text-value">
+                    {{ 'OVERVIEWCOMPONENT.BALANCETABLE' | translate }}
+                  </div>
+                  <h5 class="pt-2" *ngIf="walletService.wallet.accounts[0].balance.balanceXTZ !== null">
+                    {{ selectedAccount.balance.balanceXTZ / 1000000 | number:'1.0-6' }} &#42793;
+                  </h5>
+                </div>
+              </div>
+              <div class="row row-buttons text-center" *ngIf="!this.walletService.isObserverWallet()">
+                  <div class="col-1 col-sm-none col-md-1"></div>
+                  <div class="col-5 text-right">
+                    <app-send [activePkh]="selectedAccount.pkh"></app-send>
+                  </div>
+                  <div class="col-5 text-left">
+                    <app-receive [activePkh]="selectedAccount.pkh" [actionButtonString]="'btnOutline'"></app-receive>
+                  </div>
+                  <div class="col-1 col-sm-none col-md-1"></div>
+              </div>
+            </div>
+          </div>
+        </div><!--/.col-->
+        <div class="col-sm-12 col-lg-3">
+          <div class="card text-white bg-success overview-card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-4 col-3">
+                  <div class="h1 text-muted text-right pt-2">
+                    <i class="icon-calculator" style="font-size: 50px;"></i>
+                  </div>
+                </div>
+                <div class="col-md-8 col-9 text-center">
+                  <div class="text-value">{{ 'OVERVIEWCOMPONENT.VALUE' | translate }}</div>
+                </div>
+              </div>
+              <div class="row text-right pt-2">
+                <div class="col-12">
+                  <h3 class="pt-2 balance" *ngIf="walletService.wallet.accounts[0].balance.balanceFiat !== null">
+                    ${{ selectedAccount.balance.balanceFiat | number:'1.0-0' }}
+                  </h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div><!--/.col-->
+      </div>
+
+
+
+
+
+
       <div class="row">
         <div class="col-lg-12">
-          <div class="card">
-            <div class="card-header">
-              <i class="fa fa-align-justify"></i> {{ 'OVERVIEWCOMPONENT.TITLE' | translate }}
+          <div class="card bg-gray-700 text-white">
+            <div class="card-header bg-dark">
+              <i class="fa fa-align-justify"></i> All Accounts (Click to select)
+            </div>
+            <div>
+              <app-new-account [activePkh]="this.walletService.wallet.accounts[0].pkh"></app-new-account>
             </div>
             <div class="card-body">
               <table class="table">
@@ -16,8 +104,8 @@
                   </tr>
                 </thead>
                 <tbody>
-                    <ng-container *ngIf="walletService.wallet.accounts[0]">
-                        <tr class="pkh-row" [class.selectedPkh]="selectedPkh === walletService.wallet.accounts[0].pkh" (click)="click(walletService.wallet.accounts[0].pkh)">
+                   <ng-container *ngIf="walletService.wallet.accounts[0]">
+                        <tr class="pkh-row" (click)="click(walletService.wallet.accounts[0])">
                             <td colspan="2" (dblclick)="dblclick(walletService.wallet.accounts[0].pkh)">
                               {{ walletService.wallet.accounts[0].pkh }}
                             </td>
@@ -35,18 +123,14 @@
                             </td>
                         </tr>
                     </ng-container>
-
-
-
                     <!-- Accounts + Total sections shown only if there are accounts -->
                     <ng-container *ngIf="walletService.wallet.accounts[1]">
-
                         <!-- Accounts -->
                         <tr>
                           <th>{{ 'OVERVIEWCOMPONENT.ACCOUNTS' | translate }}</th>
                         </tr>
 
-                        <tr *ngFor="let account of walletService.wallet.accounts | slice:1" (click)="click(account.pkh)" [class.selectedPkh]="selectedPkh === account.pkh">
+                        <tr class="pkh-row" *ngFor="let account of walletService.wallet.accounts | slice:1" (click)="click(account)">
                             <td colspan="2" (dblclick)="dblclick(account.pkh)">
                               {{ account.pkh }}
                             </td>
@@ -81,15 +165,6 @@
                     </ng-container>
                 </tbody>
               </table>
-
-              <!-- Shared Action buttons -->
-              <div class="row-buttons" *ngIf="!this.walletService.isObserverWallet()">
-                <div class="btn-group btn-group-sm">
-                  <app-send [activePkh]="selectedPkh"></app-send>
-                  <app-receive [activePkh]="selectedPkh" [actionButtonString]="'btnOutline'"></app-receive>
-                  <app-new-account [activePkh]="this.walletService.wallet.accounts[0].pkh"></app-new-account>
-                </div>
-              </div>
             </div>
           </div>
         </div>

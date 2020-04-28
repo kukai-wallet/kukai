@@ -21,8 +21,7 @@
     </li>
     <li class="nav-item dropdown" dropdown placement="bottom right">
       <a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" dropdownToggle (click)="false">
-        <img *ngIf="this.walletService.wallet" src="assets/img/default-profile-pic.png" class="img-avatar" alt="Default Profile Pic"/>
-        <img *ngIf="!this.walletService.wallet" src="assets/img/default-profile-pic.png" class="img-avatar" alt="Default Profile Pic"/>
+        <canvas id="jdenticon" width="45" height="45" [attr.data-jdenticon-value]="jdenticon" class="pt-1"></canvas>
       </a>
       <div class="dropdown-menu dropdown-menu-right" *dropdownMenu aria-labelledby="simple-dropdown">
         <a *ngIf="this.walletService.wallet" (click)="logout();" class="dropdown-item" [title]="'HOMEPAGECOMPONENT.CLEARDATA' | translate"><i class="fa fa-lock"></i>{{ 'HOMEPAGECOMPONENT.LOGOUT' | translate }}</a>

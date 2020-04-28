@@ -5,6 +5,8 @@ import { WalletService } from './services/wallet/wallet.service';
 import { CoordinatorService } from './services/coordinator/coordinator.service';
 import { TranslateService } from '@ngx-translate/core';
 
+import { toSvg } from "jdenticon";
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',

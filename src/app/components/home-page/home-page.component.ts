@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';  // Init the TranslateService
 import { INavData } from '@coreui/angular';
 
+import * as jdenticon from 'jdenticon';
+
 import { WalletService } from '../../services/wallet/wallet.service';
 import { CoordinatorService } from '../../services/coordinator/coordinator.service';
 import { Constants } from '../../constants';
@@ -14,13 +16,14 @@ import { sidebarNavItems } from '../../_nav';
   templateUrl: './home-page.component.html',
   styleUrls: ['./home-page.component.scss']
 })
+
 export class HomePageComponent implements OnInit {
   public sidebarMinimized = false;
   
   sidebarNavItems = sidebarNavItems;
   navItems = this.translatedNavItems();
-
   isCollapsed = false;
+  jdenticon: string = '';
 
   CONSTANTS = new Constants();
 
@@ -48,6 +51,11 @@ export class HomePageComponent implements OnInit {
 
       translate.onLangChange.subscribe((event) => {
         this.translateNavItems();
+      });
+
+      this.walletService.jdenticon.subscribe((value) => {
+        this.jdenticon = value;
+        jdenticon.update("#jdenticon", value);
       });
   }
 
@@ -109,6 +117,7 @@ export class HomePageComponent implements OnInit {
   logout() {
     this.coordinatorService.stopAll();
     this.walletService.clearWallet();
+    jdenticon.update("#jdenticon", this.walletService.jdenticon);
     this.router.navigate(['']);
   }
 }
