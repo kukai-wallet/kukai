@@ -1,20 +1,20 @@
 import { Injectable } from '@angular/core';
-
 import * as bip39 from 'bip39';
-
 import { TranslateService } from '@ngx-translate/core';  // Multiple instances created ?
-
+import { BehaviorSubject } from 'rxjs';
 import { Wallet, Balance, KeyPair, WalletType } from './../../interfaces';
 
 import { EncryptionService } from '../encryption/encryption.service';
 import { OperationService } from '../operation/operation.service';
 import { ThrowStmt } from '@angular/compiler';
+import { toSvg } from "jdenticon";
 
 
 @Injectable()
 export class WalletService {
   storeKey = `kukai-wallet`;
   wallet: Wallet;
+  jdenticon: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
   constructor(
     private translate: TranslateService,
@@ -49,6 +49,11 @@ export class WalletService {
       numberOfActivites: 0,
       activities: []
     });
+
+    if (this.wallet.accounts[0].pkh === pkh) {
+      this.updateJdenticon();
+    }
+
     this.storeWallet();
   }
   /*
@@ -90,6 +95,7 @@ export class WalletService {
   */
   clearWallet() {
     this.wallet = null;
+    this.jdenticon = new BehaviorSubject<string>('');
     localStorage.removeItem(this.storeKey);
   }
   emptyWallet(type: WalletType): Wallet {
@@ -181,15 +187,21 @@ export class WalletService {
   storeWallet() {
     localStorage.setItem(this.storeKey, JSON.stringify(this.wallet));
   }
+
   loadStoredWallet() {
     const walletData = localStorage.getItem(this.storeKey);
     if (walletData && walletData !== 'undefined') {
       this.wallet = JSON.parse(walletData);
+      this.updateJdenticon();
       if (this.wallet.type === WalletType.FullWallet) { // Logout full wallet to get pk into context
         if (!this.wallet.pk) {
           this.clearWallet();
         }
       }
     }
+  }
+
+  updateJdenticon() {
+    this.jdenticon.next(toSvg(this.wallet.accounts[0].pkh, 100));
   }
 }

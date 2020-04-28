@@ -210,9 +210,26 @@
     </ng-template>
 
 
-    <!-- Showing different Send Format according to actionButtonString -->
-    <button *ngIf='accounts' type="button" (click)="open1(modal1)" class="btn btn-sm btn-outline-primary btn-op"> {{ 'SENDCOMPONENT.SEND' | translate }} </button>
+<!--   <div *ngIf='accounts' (click)="open1(modal1)" class="card text-white bg-indigo send-card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-12 text-center">
+          <div class="text-value">{{ 'SENDCOMPONENT.SEND' | translate }}</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 text-center">
+          <div class="h1 text-muted pt-3">
+            <i class="fa fa-send" style="font-size: 35px;"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> -->
 </ng-container>
+
+    <!-- Showing different Send Format according to actionButtonString -->
+    <button *ngIf='accounts' type="button" (click)="open1(modal1)" class="btn btn-outline-primary btn-op"> {{ 'SENDCOMPONENT.SEND' | translate }} </button>
 
 <p class="no-accounts" *ngIf='!accounts'>
     Send
