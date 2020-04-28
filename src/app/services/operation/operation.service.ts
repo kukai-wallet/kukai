@@ -562,6 +562,9 @@ export class OperationService {
     return bip39.generateMnemonic(160);
   }
   pk2pkh(pk: string): string {
+    if (pk.length !== 54 || pk.slice(0, 4) !== 'edpk') {
+      throw new Error('Invalid public key');
+    }
     const pkDecoded = this.b58cdecode(pk, this.prefix.edpk);
     return this.b58cencode(libs.crypto_generichash(20, pkDecoded), this.prefix.tz1);
   }
