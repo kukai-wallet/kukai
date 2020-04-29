@@ -1,6 +1,6 @@
 <div id="content" *ngIf="activePanel === 0">
     <div class="center-content">
-        <div class="card text-center fix-size">
+        <div class="card text-center fix-size bg-gray-700 text-white">
             <div class="card-body">
                 <h1 class="card-title"> {{ 'MNEMONICIMPORTCOMPONENT.TITLE' | translate }} </h1>
                 <div class="card-text">
@@ -17,7 +17,7 @@
                                   <button class="btn btn-primary" (click)="tge = false">Regular Import</button>
                                 </li>
                                 <li label="ICO import" (select)="tge = true">
-                                  <button class="btn btn-success" (click)="tge = true">Fundraiser Import</button>
+                                  <button class="btn btn-success ml-2" (click)="tge = true">Fundraiser Import</button>
                                 </li>
                             </ul>
                             <BR>
