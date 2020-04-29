@@ -1,7 +1,7 @@
 <div *ngIf='accounts'>
     <ng-container *ngFor="let account of accounts">
         <ng-container *ngIf="account.pkh === activePkh && 'ACTIVITYCOMPONENT.TXNHASH' | translate">
-            <table class="table">
+            <table class="table text-white">
                 <thead>
                     <tr>
                         <th scope="col">{{ 'ACTIVITYCOMPONENT.TXNHASH' | translate }}</th>
