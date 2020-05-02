@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { WalletService } from '../../services/wallet/wallet.service';
-
-import { CoordinatorService } from '../../services/coordinator/coordinator.service';
+import { Account } from '../../services/wallet/wallet';
 
 @Component({
     selector: 'app-account',
@@ -9,13 +8,10 @@ import { CoordinatorService } from '../../services/coordinator/coordinator.servi
     styleUrls: ['./account.component.scss']
 })
 export class AccountComponent implements OnInit {
-    accounts = null;
-    balance = 0;
-    balanceUSD = 0;
-    activePkh: string;
+    activeAccount: Account;
+    implicitAccounts: Account[];
     constructor(
-        public walletService: WalletService,
-        private coordinatorService: CoordinatorService
+        public walletService: WalletService
     ) { }
 
     ngOnInit() {
@@ -24,18 +20,11 @@ export class AccountComponent implements OnInit {
         }
     }
     init() {
-        this.accounts = this.walletService.wallet.accounts;
-        this.activePkh = this.accounts[0].pkh;
-        this.balance = this.accounts[0].balance.balanceXTZ;
-        this.balanceUSD = this.accounts[0].balance.balanceFiat;
+        this.implicitAccounts = this.walletService.wallet.implicitAccounts;
+        this.activeAccount = this.implicitAccounts[0];
+        console.log(this.activeAccount.address);
     }
-    updateBalance() {
-        this.balance = this.accounts[this.walletService.getIndexFromPkh(this.activePkh)].balance.balanceXTZ;
-        this.balanceUSD = this.accounts[this.walletService.getIndexFromPkh(this.activePkh)].balance.balanceFiat;
-    }
-    triggerOperationReload() {
-        const index = this.walletService.getIndexFromPkh(this.activePkh);
-        this.walletService.wallet.accounts[index].numberOfActivites--;
-        this.coordinatorService.boost(this.activePkh);
+    updateActiveAccount() {
+        console.log(JSON.stringify(this.activeAccount));
     }
 }

@@ -20,18 +20,18 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <ng-container *ngFor="let account of walletService.wallet.accounts">
+                  <ng-container *ngFor="let account of accounts">
                     <tr>
-                      <td colspan="2">{{ account.pkh }}</td>
-                      <td colspan="1">{{ account.balance.balanceXTZ / 1000000 | number:'1.00' }} &#42793;</td>
+                      <td colspan="2">{{ account.address }}</td>
+                      <td colspan="1">{{ account.balanceXTZ / 1000000 | number:'1.00' }} &#42793;</td>
                       <td colspan="2">{{ account.delegate | delegatorName }}</td>
                       <td colspan="2">
                         <div class="row">
                         <div class="col-sm-6 col-border" *ngIf="!this.walletService.isObserverWallet()">
-                          <app-delegate [activePkh]="account.pkh"></app-delegate>
+                          <app-delegate [activePkh]="account.address"></app-delegate>
                         </div>
                         <div class="col-sm-6 col-border" *ngIf="!this.walletService.isObserverWallet()">
-                          <a href="{{ 'https://baking-bad.org/' + account.pkh }}" target="_blank"><button class="btn btn-sm btn-block btn-primary">Audit</button></a>
+                          <a href="{{ 'https://baking-bad.org/' + account.address }}" target="_blank"><button *ngIf="account.delegate" class="btn btn-sm btn-block btn-primary">Audit</button></a>
                         </div>
                       </div>
                       </td>

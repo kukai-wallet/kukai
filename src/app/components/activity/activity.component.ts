@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { WalletService } from '../../services/wallet/wallet.service';
-
+import { Account } from '../../services/wallet/wallet';
 import { Constants } from '../../constants';
 
 @Component({
@@ -9,25 +9,21 @@ import { Constants } from '../../constants';
     styleUrls: ['./activity.component.scss']
 })
 export class ActivityComponent implements OnInit {
-    accounts = null;
     CONSTANTS = new Constants();
 
-    @Input() activePkh: string;
+    @Input() activeAccount: Account;
     constructor(
         private walletService: WalletService
     ) {}
 
     ngOnInit() { if (this.walletService.wallet) { this.init(); } }
     init() {
-        this.accounts = this.walletService.wallet.accounts;
-        console.log('activePkh: ', this.activePkh);
+        console.log('activePkh: ', this.activeAccount.address);
     }
 
     getStatus(transaction: any): string {	
         if (transaction.failed) {	
-            return 'Failed';	
-        } else if (transaction.block === 'prevalidation') {	
-            return 'Unconfirmed';	
+            return 'Failed';
         } else {	
             return 'Confirmed';	
         }	
@@ -46,7 +42,7 @@ export class ActivityComponent implements OnInit {
             }
         } else {
             let operationType = '';
-            if (transaction.source === this.activePkh) {
+            if (transaction.source === this.activeAccount.address) {
                 operationType = 'sent';
             } else {
                 operationType = 'received';
@@ -63,13 +59,13 @@ export class ActivityComponent implements OnInit {
                 return '';  // User has undelegated
             }
         } else if (transaction.type === 'transaction') {
-        if (this.activePkh === transaction.source) {
+        if (this.activeAccount.address === transaction.source) {
             return transaction.destination;  // to
         } else {
             return transaction.source;  // from
         }
         } else if (transaction.type === 'origination') {
-            if (this.activePkh === transaction.source) {
+            if (this.activeAccount.address === transaction.source) {
                 return transaction.destination;
             } else {
                 return transaction.source;

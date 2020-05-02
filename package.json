@@ -36,6 +36,7 @@
     "@taquito/local-forging": "^6.0.0-beta.0",
     "@taquito/taquito": "^6.0.0-beta.0",
     "@taquito/utils": "^6.0.3-beta.0",
+    "@tezos-core-tools/crypto-utils": "0.0.4",
     "@types/crypto-js": "^3.1.39",
     "aes-js": "^3.1.2",
     "angular-cli-ghpages": "^0.6.0-rc.2",

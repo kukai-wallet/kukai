@@ -12,6 +12,8 @@ import { ExportService } from '../../services/export/export.service';
 import { InputValidationService } from '../../services/input-validation/input-validation.service';
 import { LedgerService } from '../../services/ledger/ledger.service';
 import { Constants } from '../../constants';
+import { LedgerWallet } from '../../services/wallet/wallet';
+import { Account, ImplicitAccount, OriginatedAccount } from '../../services/wallet/wallet';
 
 @Component({
   selector: 'app-new-account',
@@ -21,10 +23,10 @@ import { Constants } from '../../constants';
 export class NewAccountComponent implements OnInit {
   @ViewChild('modal1') modal1: TemplateRef<any>;
   CONSTANTS = new Constants();
-  @Input() activePkh: string;
+  @Input() activeAccount: ImplicitAccount;
 
   recommendedFee = 0.0021;
-  accounts = null;
+  accounts = [];
   amount: string;
   storedAmount: string;
   fee: string;
@@ -61,13 +63,14 @@ export class NewAccountComponent implements OnInit {
   }
 
   init() {
-    this.accounts = [this.walletService.wallet.accounts[0]];
+    this.accounts = this.walletService.wallet.getImplicitAccounts();
   }
 
   open1(template1: TemplateRef<any>) {
     if (this.walletService.wallet) {
       this.clearForm();
       this.checkReveal();
+      console.log(this.activeAccount);
       this.modalRef1 = this.modalService.show(template1, { class: 'first' });
     }
   }
@@ -140,15 +143,15 @@ export class NewAccountComponent implements OnInit {
     if (!fee) { fee = '0'; }
 
     setTimeout(async () => {
-      console.log('pkh: ' + this.activePkh);
-      this.operationService.originate(this.activePkh, Number(amount), Number(fee), keys).subscribe(
+      console.log('pkh: ' + this.activeAccount.address);
+      this.operationService.originate(this.activeAccount.address, Number(amount), Number(fee), keys).subscribe(
         (ans: any) => {
           this.sendResponse = ans;
           if (ans.success === true) {
             if (ans.payload.opHash && ans.payload.newPkh) {
-              this.walletService.addAccount(ans.payload.newPkh);
+              this.walletService.addOriginatedAccount(ans.payload.newPkh, this.activeAccount.address);
               this.coordinatorService.boost(ans.payload.newPkh);
-              this.coordinatorService.boost(this.activePkh);
+              this.coordinatorService.boost(this.activeAccount.address);
             } else if (this.walletService.isLedgerWallet()) {
               this.ledgerInstruction = 'Please sign the origination with your Ledger to proceed!';
               this.requestLedgerSignature();
@@ -168,22 +171,24 @@ export class NewAccountComponent implements OnInit {
     }, 100);
   }
   async requestLedgerSignature() {
+    if (this.walletService.wallet instanceof LedgerWallet) {
     const op = this.sendResponse.payload.unsignedOperation;
     const signature = await this.ledgerService.signOperation(op, this.walletService.wallet.derivationPath);
     const signedOp = op + signature;
     this.sendResponse.payload.signedOperation = signedOp;
     this.ledgerInstruction = 'Your transaction have been signed! \n Press confirm to broadcast it to the network.';  // \n not working!
+    }
   }
   async broadCastLedgerTransaction() {
     this.operationService.broadcast(this.sendResponse.payload.signedOperation).subscribe(
       ((ans: any) => {
         this.sendResponse = ans;
         if (ans.success && ans.payload.opHash && ans.payload.newPkh) {
-          this.walletService.addAccount(ans.payload.newPkh);
+          this.walletService.addOriginatedAccount(ans.payload.newPkh, this.activeAccount.address);
           this.coordinatorService.start(ans.payload.newPkh);
           this.coordinatorService.boost(ans.payload.newPkh);
-          if (this.activePkh) {
-            this.coordinatorService.boost(this.activePkh);
+          if (this.activeAccount.address) {
+            this.coordinatorService.boost(this.activeAccount.address);
           }
         }
         console.log('ans: ' + JSON.stringify(ans));
@@ -192,7 +197,7 @@ export class NewAccountComponent implements OnInit {
   }
   checkReveal() {
     console.log('check reveal');
-    this.operationService.isRevealed(this.activePkh)
+    this.operationService.isRevealed(this.activeAccount.address)
       .subscribe((revealed: boolean) => {
         if (!revealed) {
           this.recommendedFee = 0.0035;

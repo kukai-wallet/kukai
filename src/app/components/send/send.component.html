@@ -14,8 +14,8 @@
                 <div class="form-row">
                     <div class="form-group col-md-8">
                         <label for="fromAdress"> {{ 'SENDCOMPONENT.FROMADDRESS' | translate }} </label>
-                        <select [(ngModel)]="activePkh" (change)="updateDefaultValues()" id="fromAdress" class="form-control mono" name="first1">
-                            <option *ngFor="let account of accounts" [ngValue]="account.pkh">{{ account.pkh }}</option>
+                        <select [(ngModel)]="activeAccount" (change)="updateDefaultValues()" id="fromAdress" class="form-control mono" name="first1">
+                            <option *ngFor="let account of accounts" [ngValue]="account">{{ account.address }}</option>
                         </select>
                     </div>
                     <div class="form-group col-md-4 text-right">
@@ -40,7 +40,7 @@
                             </div>
                             <div class="form-group">
                                 <small id="smallSend" class="form-text text-muted">
-                                    <button type="button" class="btn btn-outline-light btn-sm btn-balance" (click)="sendEntireBalance(activePkh, $event)"> {{ 'SENDCOMPONENT.SENDBALANCE' | translate }} </button>
+                                    <button type="button" class="btn btn-outline-light btn-sm btn-balance" (click)="sendEntireBalance(activeAccount, $event)"> {{ 'SENDCOMPONENT.SENDBALANCE' | translate }} </button>
                                     <span class="align-middle" *ngIf="amount * XTZrate > 0">(${{amount * XTZrate | number:'1.0'}} USD)</span>
                                 </small>
                             </div>
@@ -104,7 +104,7 @@
         </div>
         <div class="modal-body">
             <p> 
-                {{ 'SENDCOMPONENT.FROM' | translate }}  {{ activePkh }}
+                {{ 'SENDCOMPONENT.FROM' | translate }}  {{ activeAccount.address }}
                 <BR> 
                 <span *ngIf="isMultipleDestinations"> Total Sent: {{ totalAmount() | number:'1.0-6' }}&#42793;
                     <BR> Total fee: {{ getTotalFee() | number:'1.0-6' }}&#42793;

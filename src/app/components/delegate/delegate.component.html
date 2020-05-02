@@ -15,7 +15,7 @@
                         <label for="fromAdress"> {{ 'DELEGATECOMPONENT.FROM' | translate }} </label>
                         <select [(ngModel)]="activePkh" (change)="checkSource()" id="fromAdress" class="form-control"
                             name="first">
-                            <option *ngFor="let account of accounts" [ngValue]="account.pkh">{{ account.pkh
+                            <option *ngFor="let account of accounts" [ngValue]="account.address">{{ account.address
                                 }}</option>
                         </select>
                     </div>

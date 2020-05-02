@@ -1,6 +1,5 @@
-<div *ngIf='accounts'>
-    <ng-container *ngFor="let account of accounts">
-        <ng-container *ngIf="account.pkh === activePkh && 'ACTIVITYCOMPONENT.TXNHASH' | translate">
+
+        <ng-container *ngIf="activeAccount && 'ACTIVITYCOMPONENT.TXNHASH' | translate">
             <table class="table">
                 <thead>
                     <tr>
@@ -14,7 +13,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="table-row" *ngFor="let transaction of account.activities | slice:0:10">
+                    <tr class="table-row" *ngFor="let transaction of activeAccount.activities | slice:0:10">
                         <!-- Txn Hash -->
                         <th scope="row" class="row-hash table-cell">
                             <span data-toggle="tooltip" [title]="transaction.hash">
@@ -47,7 +46,7 @@
                             <!-- {{ transaction.source.tz }} -->
                             <span *ngIf="transaction.type != 'activation' && !(transaction.type === 'delegation' && !transaction.destination)">
                             <!-- to and from only shown when it's not an origination (transaction.type != 'activation') and when it's not an undelegate operation: !(transaction.type === 'delegation' && !transaction.destination) -->
-                                <span *ngIf="activePkh === transaction.source;then to else from"> {{ 'ACTIVITYCOMPONENT.FROM' | translate }} </span>
+                                <span *ngIf="activeAccount.address === transaction.source;then to else from"> {{ 'ACTIVITYCOMPONENT.FROM' | translate }} </span>
                                 <ng-template #from><span class="smallText">{{ 'ACTIVITYCOMPONENT.FROM' | translate }}</span></ng-template>
                                 <ng-template #to><span class="smallText">{{ 'ACTIVITYCOMPONENT.TO' | translate }}</span></ng-template>
                             </span>
@@ -84,10 +83,8 @@
                 </tbody>
             </table>
         </ng-container>
-    </ng-container>
-</div>
 
-<p *ngIf='!accounts'>
+<p *ngIf='!activeAccount'>
     {{ 'ACTIVITYCOMPONENT.EMPTY' | translate }}
 </p>
 

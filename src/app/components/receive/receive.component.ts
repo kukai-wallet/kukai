@@ -2,10 +2,8 @@ import { Component, OnInit, ViewChild, TemplateRef, Input } from '@angular/core'
 
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
-
 import * as QRCode from 'qrcode';
-
-import { WalletService } from '../../services/wallet/wallet.service';
+import { MessageService } from '../../services/message/message.service';
 
 
 
@@ -16,67 +14,36 @@ import { WalletService } from '../../services/wallet/wallet.service';
 })
 export class ReceiveComponent implements OnInit {
     @ViewChild('modal1') modal1: TemplateRef<any>;
-
-    @Input() activePkh: string;
-    @Input() actionButtonString: string;  // Possible values: btnOutline / dropdownItem
-
+    @Input() activeAddress: String;
     showReceiveFormat = {
-        btnOutline: false,
+        btnOutline: true,
         dropdownItem: false,
     };
-
-    accounts = null;
     modalRef1: BsModalRef;
-
     constructor(
-        private walletService: WalletService,
-        private modalService: BsModalService
+        private modalService: BsModalService,
+        private messageService: MessageService
     ) { }
 
     ngOnInit() {
-        if (this.walletService.wallet) {
-            this.init();
-        }
-    }
-
-    init() {
-        if (this.actionButtonString) {
-            this.setReceiveFormat();
-        }
-        this.accounts = this.walletService.wallet.accounts;
-    }
-
-    setReceiveFormat() {
-        switch (this.actionButtonString) {
-            case 'btnOutline': {
-                this.showReceiveFormat.btnOutline = true;
-                this.showReceiveFormat.dropdownItem = false;
-                break;
-            }
-            case 'dropdownItem': {
-                this.showReceiveFormat.btnOutline = false;
-                this.showReceiveFormat.dropdownItem = true;
-                break;
-            }
-            default: {
-                console.log('actionButtonString wrongly set ', this.actionButtonString);
-                break;
-            }
-        }
+        console.log(this.activeAddress);
     }
 
     getQR() {
-        QRCode.toCanvas(document.getElementById('canvas'), this.activePkh, { errorCorrectionLevel: 'H' }, function (err, canvas) {
+        QRCode.toCanvas(document.getElementById('canvas'), this.activeAddress, { errorCorrectionLevel: 'H' }, function (err, canvas) {
             if (err) { throw err; }
         });
     }
 
     open1(template1: TemplateRef<any>) {
-        if (this.activePkh) {
+        if (this.activeAddress) {
+            console.log('true');
             this.modalRef1 = this.modalService.show(template1, { class: 'first' });  // modal-sm / modal-lg
             setTimeout(() => {
                 this.getQR();
             }, 100);
+        } else {
+            this.messageService.add('Select an address first by clicking on it!');
         }
     }
 

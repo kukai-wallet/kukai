@@ -290,6 +290,7 @@
         "IDENTITY" : "Identity",
         "BALANCETABLE" : "Balance",
         "VALUE" : "Value (USD)",
+        "ACCOUNT" : "Account",
         "ACCOUNTS" : "Accounts",
         "TOTAL" : "Total",
         "OVERVIEW" : "Overview",

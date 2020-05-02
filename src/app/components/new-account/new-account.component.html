@@ -10,7 +10,7 @@
     <div class="modal-body">
         <div class="form-group">
             <label for="fromAdress"> {{ 'NEWACCOUNTCOMPONENT.FUNDSFROM' | translate }} </label>
-            <select [(ngModel)]="activePkh" (change)="checkReveal()" id="fromAdress" class="form-control mono" name="first">
+            <select [(ngModel)]="activeAccount.address" (change)="checkReveal()" id="fromAdress" class="form-control mono" name="first">
                 <option *ngFor="let account of accounts" [ngValue]="account.pkh">{{ account.pkh }}</option>
             </select>
         </div>
@@ -41,7 +41,7 @@
         </button>
     </div>
     <div class="modal-body">
-        <p> {{ 'NEWACCOUNTCOMPONENT.FROM' | translate }}  {{ activePkh }}
+        <p> {{ 'NEWACCOUNTCOMPONENT.FROM' | translate }}  {{ activeAccount.address }}
             <BR> {{ 'NEWACCOUNTCOMPONENT.AMOUNT' | translate }}  {{ getAmount() | number:'1.0-6' }}&#42793;
             <BR> {{ 'NEWACCOUNTCOMPONENT.FEE2' | translate }}  {{ getFee() | number:'1.0-6' }}&#42793;
             <BR> {{ 'NEWACCOUNTCOMPONENT.ORIGINATIONBURN' | translate }} 0.489&#42793;

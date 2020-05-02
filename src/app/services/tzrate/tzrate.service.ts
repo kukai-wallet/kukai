@@ -21,18 +21,19 @@ export class TzrateService {
         );
     }
     updateFiatBalances() {
+        const accounts = this.walletService.wallet.getAccounts();
         let tot = 0;
         let change = false;
-        for (let i = 0; i < this.walletService.wallet.accounts.length; i++) {
-            if (this.walletService.wallet.accounts[i].balance.balanceXTZ !== null) {
-                this.walletService.wallet.accounts[i].balance.balanceFiat =
-                    Number(this.walletService.wallet.accounts[i].balance.balanceXTZ / 1000000 * this.walletService.wallet.XTZrate);
-                tot += this.walletService.wallet.accounts[i].balance.balanceFiat;
+        for (const account of accounts) {
+            if (account.balanceXTZ !== null) {
+                account.balanceUSD =
+                    Number(account.balanceXTZ / 1000000 * this.walletService.wallet.XTZrate);
+                tot += account.balanceUSD;
                 change = true;
             }
         }
         if (change) {
-            this.walletService.wallet.balance.balanceFiat = Number(tot);
+            this.walletService.wallet.totalBalanceUSD = Number(tot);
             this.walletService.storeWallet();
         }
     }

@@ -13,7 +13,7 @@ import { DelegatorNamePipe } from '../../pipes/delegator-name.pipe';
     styleUrls: ['./bakery.component.scss']
 })
 export class BakeryComponent implements OnInit {
-
+    accounts = [];
     constructor(
         public walletService: WalletService,
         private messageService: MessageService,
@@ -22,5 +22,8 @@ export class BakeryComponent implements OnInit {
     ) { }
 
     ngOnInit() {
+        if (this.walletService.wallet) {
+            this.accounts = this.walletService.wallet.getAccounts();
+        }
     }
 }

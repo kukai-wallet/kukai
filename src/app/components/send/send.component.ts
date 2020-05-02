@@ -12,6 +12,8 @@ import { LedgerService } from '../../services/ledger/ledger.service';
 import { EstimateService } from '../../services/estimate/estimate.service';
 import Big from 'big.js';
 import { Constants } from '../../constants';
+import { LedgerWallet } from '../../services/wallet/wallet';
+import { Account, ImplicitAccount, OriginatedAccount } from '../../services/wallet/wallet';
 
 interface SendData {
     to: string;
@@ -33,7 +35,7 @@ const zeroTxParams: DefaultTransactionParams = {
 })
 export class SendComponent implements OnInit {
     @ViewChild('modal1') modal1: TemplateRef<any>;
-    @Input() activePkh: string;
+    @Input() activeAccount: Account;
     CONSTANTS = new Constants();
     defaultTransactionParams: DefaultTransactionParams = zeroTxParams;
 
@@ -53,7 +55,6 @@ export class SendComponent implements OnInit {
     simSemaphore = 0;
     dom: Document;
     accounts = null;
-    activeAccount = null;
     password: string;
     pwdValid: string;
     formInvalid = '';
@@ -89,17 +90,21 @@ export class SendComponent implements OnInit {
     }
 
     init() {
-        this.accounts = this.walletService.wallet.accounts;
+        if (!this.activeAccount) {
+            this.activeAccount = this.walletService.wallet.implicitAccounts[0];
+        }
+        console.log(this.activeAccount.address);
+        this.accounts = this.walletService.wallet.getAccounts();
         this.XTZrate = this.walletService.wallet.XTZrate;
     }
     open1(template1: TemplateRef<any>) {
         if (this.walletService.wallet) {
-            if (!this.activePkh) {
-                this.activePkh = this.accounts[0].pkh;
+            if (!this.activeAccount) {
+                this.activeAccount = this.accounts[0];
             }
             this.clearForm();
             this.modalRef1 = this.modalService.show(template1, { class: 'first' });  // modal-sm / modal-lg
-            this.estimateService.preLoadData(this.accounts[0].pkh, this.walletService.getPk());
+            this.estimateService.preLoadData(this.accounts[0].pkh, this.accounts[0].pk);
         }
     }
     open2(template: TemplateRef<any>) {
@@ -160,29 +165,23 @@ export class SendComponent implements OnInit {
         this.modalRef3.hide();
         this.modalRef3 = null;
     }
-    showAccountBalance(accountPkh: string = this.activePkh) {
-        const index = this.accounts.findIndex(account => account.pkh === accountPkh);
-        if (index !== -1) {
-            const accountBalance = Big(this.accounts[index].balance.balanceXTZ).div(1000000).toString();
-            return this.numberWithCommas(accountBalance) + ' XTZ';
-        } else {
-            return null;
-        }
+    showAccountBalance(accountPkh: Account = this.activeAccount) {
+        const accountBalance = Big(this.activeAccount.balanceXTZ).div(1000000).toString();
+        return this.numberWithCommas(accountBalance) + ' XTZ';
     }
     numberWithCommas(x: string) {
         const parts: Array<string> = x.split('.');
         parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
         return parts.join('.');
     }
-    sendEntireBalance(accountPkh: string, event: Event) {
+    sendEntireBalance(account: Account, event: Event) {
         if (this.simSemaphore) { return; }
         event.stopPropagation();
-        this.amount = this.maxToSend(accountPkh);
+        this.amount = this.maxToSend(account);
     }
-    maxToSend(accountPkh: string): string {
-        const index = this.accounts.findIndex(account => account.pkh === accountPkh);
-        if (accountPkh && accountPkh.slice(0, 2) === 'tz') {
-            let accountBalance = Big(this.accounts[index].balance.balanceXTZ).div(1000000);
+    maxToSend(account: Account): string {
+        if (account && (account instanceof ImplicitAccount)) {
+            let accountBalance = Big(account.balanceXTZ).div(1000000);
             accountBalance = accountBalance.minus(this.fee ? Number(this.fee) : this.defaultTransactionParams.fee);
             if (!this.isMultipleDestinations) {
                 accountBalance = accountBalance.minus(this.storage ? Number(this.storage) / 1000 : this.defaultTransactionParams.burn);
@@ -192,7 +191,7 @@ export class SendComponent implements OnInit {
             accountBalance = accountBalance.minus(0.000001); // dust
             return accountBalance.toString();
         } else {
-            return Big(this.accounts[index].balance.balanceXTZ).div(1000000).toString();
+            return Big(account.balanceXTZ).div(1000000).toString();
         }
     }
     prepTransactions(finalCheck = false): boolean {
@@ -232,14 +231,14 @@ export class SendComponent implements OnInit {
         if (!fee) { fee = '0'; }
 
         setTimeout(async () => {
-            this.operationService.transfer(this.activePkh, this.transactions, Number(fee), keys).subscribe(
+            this.operationService.transfer(this.activeAccount.address, this.transactions, Number(fee), keys).subscribe(
                 (ans: any) => {
                     this.sendResponse = ans;
                     if (ans.success === true) {
                         console.log('Transaction successful ', ans);
                         if (ans.payload.opHash) {
-                            this.coordinatorService.boost(this.activePkh);
-                        } else if (this.walletService.isLedgerWallet()) {
+                            this.coordinatorService.boost(this.activeAccount.address);
+                        } else if (this.walletService.wallet instanceof LedgerWallet) {
                             this.ledgerInstruction = 'Please sign the transaction with your Ledger to proceed!';
                             this.requestLedgerSignature();
                         }
@@ -260,19 +259,21 @@ export class SendComponent implements OnInit {
         }, 100);
     }
     async requestLedgerSignature() {
-        const op = this.sendResponse.payload.unsignedOperation;
-        const signature = await this.ledgerService.signOperation(op, this.walletService.wallet.derivationPath);
-        const signedOp = op + signature;
-        this.sendResponse.payload.signedOperation = signedOp;
-        this.ledgerInstruction = 'Your transaction have been signed! Press confirm to broadcast it to the network.';
+        if (this.walletService.wallet instanceof LedgerWallet) {
+            const op = this.sendResponse.payload.unsignedOperation;
+            const signature = await this.ledgerService.signOperation(op, this.walletService.wallet.derivationPath);
+            const signedOp = op + signature;
+            this.sendResponse.payload.signedOperation = signedOp;
+            this.ledgerInstruction = 'Your transaction have been signed! Press confirm to broadcast it to the network.';
+        }
     }
 
     async broadCastLedgerTransaction() {
         this.operationService.broadcast(this.sendResponse.payload.signedOperation).subscribe(
             ((ans: any) => {
                 this.sendResponse = ans;
-                if (ans.success && this.activePkh) {
-                    this.coordinatorService.boost(this.activePkh);
+                if (ans.success && this.activeAccount) {
+                    this.coordinatorService.boost(this.activeAccount.address);
                 }
                 console.log('ans: ' + JSON.stringify(ans));
             })
@@ -333,8 +334,8 @@ export class SendComponent implements OnInit {
     }
     checkBalance() {
         if (this.transactions.length > 0) {
-            if (this.activePkh && this.activePkh.slice(0, 2) === 'tz') {
-                const max = Big(this.maxToSend(this.activePkh)).plus(0.000001);
+            if (this.activeAccount && (this.activeAccount instanceof ImplicitAccount)) {
+                const max = Big(this.maxToSend(this.activeAccount)).plus(0.000001);
                 let amount = Big(0);
                 for (const tx of this.transactions) {
                     amount = amount.plus(Big(tx.amount));
@@ -342,9 +343,9 @@ export class SendComponent implements OnInit {
                 if (amount.gt(max)) {
                     return this.translate.instant('SENDCOMPONENT.TOOHIGHFEEORAMOUNT');
                 }
-            } else if (this.activePkh && this.activePkh.slice(0, 2) === 'KT') {
-                const maxKt = Big(this.maxToSend(this.activePkh));
-                const maxTz = Big(this.maxToSend(this.walletService.wallet.accounts[0].pkh)).plus(0.000001);
+            } else if (this.activeAccount && (this.activeAccount instanceof OriginatedAccount)) {
+                const maxKt = Big(this.maxToSend(this.activeAccount));
+                const maxTz = Big(this.maxToSend(this.walletService.wallet.getImplicitAccount(this.activeAccount.pkh))).plus(0.000001);
                 let amount = Big(0);
                 for (const tx of this.transactions) {
                     amount = amount.plus(Big(tx.amount));
@@ -366,13 +367,13 @@ export class SendComponent implements OnInit {
         const prevSimError = this.latestSimError;
         this.latestSimError = '';
         if (this.prepTransactions()) {
-            const equiClass = this.equiClass(this.activePkh, this.transactions);
+            const equiClass = this.equiClass(this.activeAccount.address, this.transactions);
             if (this.prevEquiClass !== equiClass) {
                 this.latestSimError = '';
                 this.prevEquiClass = equiClass;
                 this.simSemaphore++; // Put lock on 'Preview and 'Send max'
                 try {
-                    const res: DefaultTransactionParams | null = await this.estimateService.estimate(JSON.parse(JSON.stringify(this.transactions)), this.activePkh);
+                    const res: DefaultTransactionParams | null = await this.estimateService.estimate(JSON.parse(JSON.stringify(this.transactions)), this.activeAccount.address);
                     if (res) {
                         this.defaultTransactionParams = res;
                     }
@@ -419,7 +420,7 @@ export class SendComponent implements OnInit {
         return (this.inputValidationService.address(this.toPkh) && this.toPkh.slice(0, 2) === 'KT');
     }
     senderIsKT() {
-        return (this.activePkh && this.activePkh.slice(0, 2) === 'KT');
+        return (this.activeAccount && (this.activeAccount instanceof OriginatedAccount));
     }
     validateReceiverAddress() {
         if (!this.inputValidationService.address(this.toPkh) && this.toPkh !== '') {
@@ -432,7 +433,7 @@ export class SendComponent implements OnInit {
         this.formInvalid = this.checkInput();
     }
     invalidInputSingle(finalCheck: boolean): string {
-        if (!this.inputValidationService.address(this.activePkh)) {
+        if (!this.inputValidationService.address(this.activeAccount.address)) {
             return this.translate.instant('SENDCOMPONENT.INVALIDSENDERADDRESS');
         } else if (!this.inputValidationService.fee(this.fee)) {
             return this.translate.instant('SENDCOMPONENT.INVALIDFEE');
@@ -457,7 +458,7 @@ export class SendComponent implements OnInit {
 
     // Checking toMultipleDestinationsString and building up toMultipleDestinations[to: string, amount: number]
     invalidInputMultiple(finalCheck = false): string {
-        if (!this.inputValidationService.address(this.activePkh)) {
+        if (!this.inputValidationService.address(this.activeAccount.address)) {
             return this.translate.instant('SENDCOMPONENT.INVALIDSENDERADDRESS');
         } else if (!this.inputValidationService.fee(this.fee)) {
             return this.translate.instant('SENDCOMPONENT.INVALIDFEE');

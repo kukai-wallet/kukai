@@ -11,10 +11,10 @@
         <div class="modal-body">
             <div class="form-row">
                 <div class="form-group col-md-12">
-                    <input [(ngModel)]="activePkh" type="text" id="toAddress" class="form-control" disabled>
+                    <input [(ngModel)]="activeAddress" type="text" id="toAddress" class="form-control" disabled>
                 </div>
             </div>
-            <div class="row" *ngIf='activePkh'>
+            <div class="row" *ngIf='activeAddress'>
                 <canvas id='canvas'></canvas>
             </div>
         </div>
@@ -24,10 +24,5 @@
     </ng-template>
 
     <!-- Showing different Receive Format according to actionButtonString -->
-    <button *ngIf='accounts && showReceiveFormat.btnOutline' type="button" (click)="open1(modal1)" class="btn btn-sm btn-outline-primary btn-op"> {{ 'RECEIVECOMPONENT.RECEIVE' | translate }} </button>
-    <span *ngIf='accounts && showReceiveFormat.dropdownItem' class="dropdown-item" (click)="open1(modal1)">{{ activePkh }}</span>
+    <button type="button" (click)="open1(modal1)" class="btn btn-sm btn-outline-primary btn-op">{{ 'RECEIVECOMPONENT.RECEIVE' | translate }}</button>
 </ng-container>
-
-<div *ngIf='!accounts'>
-    {{ 'RECEIVECOMPONENT.EMPTYINFO' | translate }} 
-</div>

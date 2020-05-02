@@ -11,6 +11,7 @@ import { DelegatorNamePipe } from '../../pipes/delegator-name.pipe';
 import { InputValidationService } from '../../services/input-validation/input-validation.service';
 import { LedgerService } from '../../services/ledger/ledger.service';
 import { Constants } from '../../constants';
+import { LedgerWallet } from '../../services/wallet/wallet';
 
 @Component({
     selector: 'app-delegate',
@@ -58,7 +59,7 @@ export class DelegateComponent implements OnInit {
     }
 
     init() {
-        this.accounts = this.walletService.wallet.accounts;
+        this.accounts = this.walletService.wallet.getAccounts();
     }
 
     open1(template1: TemplateRef<any>) {
@@ -155,11 +156,13 @@ export class DelegateComponent implements OnInit {
         }, 100);
     }
     async requestLedgerSignature() {
+        if (this.walletService.wallet instanceof LedgerWallet) {
         const op = this.sendResponse.payload.unsignedOperation;
         const signature = await this.ledgerService.signOperation(op, this.walletService.wallet.derivationPath);
         const signedOp = op + signature;
         this.sendResponse.payload.signedOperation = signedOp;
         this.ledgerInstruction = 'Your transaction have been signed! Press confirm to broadcast it to the network.';
+        }
       }
       async broadCastLedgerTransaction() {
         this.operationService.broadcast(this.sendResponse.payload.signedOperation).subscribe(
@@ -174,7 +177,7 @@ export class DelegateComponent implements OnInit {
       }
     checkReveal() {
         console.log('check reveal');
-        this.operationService.isRevealed(this.walletService.wallet.accounts[0].pkh)
+        this.operationService.isRevealed(this.walletService.wallet.implicitAccounts[0].pkh)
                 .subscribe((revealed: boolean) => {
                     if (!revealed) {
                         this.revealFee = 0.0013;

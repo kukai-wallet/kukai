@@ -12,19 +12,22 @@
               </div>
               <div class="row pt-2">
                   <div class="col-md-7">
-                      <select [(ngModel)]="activePkh" (change)="updateBalance()" id="fromAdress" class="form-control">
-                        <option *ngFor="let account of accounts" [value]="account.pkh">{{ account.pkh }}</option>
+                      <select [(ngModel)]="activeAccount" (change)="updateActiveAccount()" id="fromAdress" class="form-control">
+                        <ng-container *ngFor="let impAcc of implicitAccounts">
+                          <option [ngValue]="impAcc">{{ impAcc.address }}</option>
+                          <option *ngFor="let origAcc of impAcc.originatedAccounts" [ngValue]="origAcc">{{ origAcc.address }}</option>
+                        </ng-container>
                       </select>
                   </div>
                   <div class="col-md-5 pt-2">
-                    {{ 'ACCOUNTCOMPONENT.BALANCE' | translate }} {{ balance / 1000000 | number:'1.0' }} &#42793;
-                    <span *ngIf="balanceUSD > 0">(${{ balanceUSD | number:'1.00'}} USD)</span>
+                    {{ 'ACCOUNTCOMPONENT.BALANCE' | translate }} {{ activeAccount.balanceXTZ / 1000000 | number:'1.0' }} &#42793;
+                    <span *ngIf="activeAccount.balanceUSD > 0">(${{ activeAccount.balanceUSD | number:'1.00'}} USD)</span>
                   </div>
               </div>
             </div>
 
             <div class="card-body">
-              <app-activity [activePkh]="activePkh"></app-activity>
+              <app-activity [activeAccount]="activeAccount"></app-activity>
             </div>
           </div>
         </div>

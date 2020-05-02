@@ -54,12 +54,10 @@ import { LedgerService } from './services/ledger/ledger.service';
 import { EstimateService } from './services/estimate/estimate.service';
 
 // View components
-import { OfflineSigningComponent } from './components/offline-signing/offline-signing.component';
 import { ImportComponent } from './components/import/import.component';
 import { StartComponent } from './components/start/start.component';
 import { ActivityComponent } from './components/activity/activity.component';
 import { OverviewComponent } from './/components/overview/overview.component';
-import { BackupComponent } from './components/backup/backup.component';
 import { SendComponent } from './components/send/send.component';
 import { NewAccountComponent } from './components/new-account/new-account.component';
 import { HomePageComponent } from './components/home-page/home-page.component';
@@ -99,12 +97,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     // View components
     HomePageComponent,
     NewWalletComponent,
-    OfflineSigningComponent,
     ImportComponent,
     StartComponent,
     ActivityComponent,
     OverviewComponent,
-    BackupComponent,
     SendComponent,
     NewAccountComponent,
     ReceiveComponent,

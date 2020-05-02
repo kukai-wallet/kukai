@@ -42,6 +42,8 @@ export class ConseilService {
     query = ConseilQueryBuilder.addPredicate(query, 'account_id', ConseilOperator.EQ, [address], false);
     query = ConseilQueryBuilder.setLimit(query, 1);
     return fromPromise(ConseilDataClient.executeEntityQuery(this.conseilServer, this.platform, this.network, entity, query)).pipe(flatMap((result) => {
+      console.log('ADDRESS INFO ' + address);
+      console.log(result[0].block_level);
       return of(result[0].block_level);
     }));
   }
@@ -68,6 +70,8 @@ export class ConseilService {
       return fromPromise(ConseilDataClient.executeEntityQuery(this.conseilServer, this.platform, this.network, entity, receiveQuery)).pipe(flatMap((receiveResult) => {
         receiveResult = this.formatTx(receiveResult);
         const transactions = sendResult.concat(receiveResult).sort((a, b) => b['timestamp'] - a['timestamp']);
+        console.log('ADDRESS GET ' + pkh);
+        console.log(transactions);
         return of(transactions);
       }));
     }));
