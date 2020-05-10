@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { OperationService } from '../operation/operation.service';
+import { utils, hd } from "@tezos-core-tools/crypto-utils";
 import * as zxcvbn from 'zxcvbn';
 
 import { TranslateService } from '@ngx-translate/core';
@@ -81,7 +82,7 @@ code(code: string): Boolean {
   }
 }
 derivationPath(path: string): Boolean {
-  const m = path.match(/^44\'\/1729\'\/([0-9]|\'\/)*\'$/g);
+  const m = path.match(/^44\'\/1729(\'\/[0-9]+)+\'$/g);
   if (m || path === '44\'/1729\'') {
     return true;
   }

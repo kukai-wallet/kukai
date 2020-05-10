@@ -6,6 +6,7 @@ import { LedgerService } from '../../services/ledger/ledger.service';
 import { ImportService } from '../../services/import/import.service';
 import { MessageService } from '../../services/message/message.service';
 import { InputValidationService } from '../../services/input-validation/input-validation.service';
+import { utils } from "@tezos-core-tools/crypto-utils";
 
 @Component({
   selector: 'app-connect-ledger',
@@ -29,9 +30,6 @@ export class ConnectLedgerComponent implements OnInit {
     ) { }
 
   ngOnInit() {
-    if (this.CONSTANTS.NET.NAME !== 'Mainnet') {
-      this.defaultPath = '44\'/1\'/0\'/0\''; // Testnet
-    }
     this.path = this.defaultPath;
   }
   async getPk() {
@@ -41,7 +39,7 @@ export class ConnectLedgerComponent implements OnInit {
       try {
         const pk = await this.ledgerService.getPublicAddress(this.path);
         console.log('getPK => ' + pk);
-        this.importFromPk(pk, this.path);
+        await this.importFromPk(pk, this.path);
       } catch (e) {
         throw(e);
       } finally {
@@ -51,12 +49,15 @@ export class ConnectLedgerComponent implements OnInit {
       this.messageService.addWarning('Invalid derivation path');
     }
   }
-  importFromPk(pk: string, path: string) {
-    if (pk.slice(0, 4) === 'edpk') {
-      this.importService.importWalletFromPk(pk, path);
+  async importFromPk(pk: string, path: string) {
+    if (utils.validPublicKey(pk)) {
+      if (await this.importService.importWalletFromPk(pk, path)) {
       this.router.navigate(['/overview']);
+      } else {
+        this.messageService.addError('Failed to import Ledger wallet');
+      }
     } else {
-      this.messageService.addError('Somthing went wrong with pk');
+      this.messageService.addError('Not a valid public key');
     }
   }
   setDefaultPath() {

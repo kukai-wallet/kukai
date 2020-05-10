@@ -1,4 +1,4 @@
-<ng-container *ngIf="accounts">
+<ng-container *ngIf="activeAccount">
     <!-- SEND MODALS -->
     <!-- First Modal -->
     <ng-template #modal1>
@@ -13,10 +13,12 @@
                 <div class="form-row">
                     <div class="form-group col-md-8">
                         <label for="fromAdress"> {{ 'DELEGATECOMPONENT.FROM' | translate }} </label>
-                        <select [(ngModel)]="activePkh" (change)="checkSource()" id="fromAdress" class="form-control"
+                        <select [(ngModel)]="activeAccount" (change)="checkReveal()" id="fromAdress" class="form-control"
                             name="first">
-                            <option *ngFor="let account of accounts" [ngValue]="account.address">{{ account.address
-                                }}</option>
+                            <ng-container *ngFor="let impAcc of implicitAccounts">
+                            <option [ngValue]="impAcc">{{ impAcc.address }}</option>
+                            <option *ngFor="let origAcc of impAcc.originatedAccounts" [ngValue]="origAcc">{{ origAcc.address }}</option>
+                            </ng-container>
                         </select>
                     </div>
                 </div>
@@ -51,7 +53,7 @@
             </button>
         </div>
         <div class="modal-body">
-            <p> {{ 'DELEGATECOMPONENT.ACCOUNT' | translate }} {{ activePkh }}
+            <p> {{ 'DELEGATECOMPONENT.ACCOUNT' | translate }} {{ activeAccount.address }}
                 <BR> {{ 'DELEGATECOMPONENT.DELEGATE' | translate }} {{ getDelegate() | delegatorName }}
                 <BR> {{ 'DELEGATECOMPONENT.FEE' | translate }} {{ getFee() | number:'1.0-6' }}&#42793;
             </p>
@@ -115,6 +117,6 @@
     </ng-template>
 
     <!-- Showing different Send Format according to actionButtonString -->
-    <button *ngIf='accounts' type="button" (click)="open1(modal1)" class="btn btn-sm btn-block btn-primary"> {{
+    <button type="button" (click)="open1(modal1)" class="btn btn-sm btn-block btn-primary"> {{
         'DELEGATECOMPONENT.TITLE1' | translate }} </button>
 </ng-container>

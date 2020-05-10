@@ -73,6 +73,9 @@
     background-color: #e6ffe6;
     cursor: pointer !important;
 }
+.add-button:disabled {
+    cursor: default;
+  }
 
 /* Taking out underline link in router link (New Account btn) */
 a.active-link {

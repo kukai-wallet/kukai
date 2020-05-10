@@ -37,40 +37,13 @@ export class ImportComponent implements OnInit {
 
   ngOnInit() {
   }
-  importFromTextbox() {
-    this.import(this.encryptedWallet);
-  }
-  importFromPkh() {
-    console.log('Call import service');
-    if (this.inputValidationService.address(this.pkh)) {
-      this.importService.importWalletFromPkh(this.pkh);
-      this.router.navigate(['/overview']);
-    } else {
-      let invalidPKH = '';
-      this.translate.get('IMPORTCOMPONENT.INVALIDPKH').subscribe(
-        (res: string) => invalidPKH = res
-      );
-      this.messageService.addError(invalidPKH);
-    }
-  }
-  importFromPk() {
-    if (this.pkh.slice(0, 4) === 'edpk') {
-      this.importService.importWalletFromPk(this.pk);
-      this.router.navigate(['/overview']);
-    } else {
-      let invalidPrefix = '';
-      this.translate.get('IMPORTCOMPONENT.INVALIDPREFIX').subscribe(
-        (res: string) => invalidPrefix = res
-      );
-      this.messageService.addError(invalidPrefix);
-    }
-  }
+
   importPreCheck(keyFile: string) {
     this.typeCheckFile(keyFile);
     if (this.importService.pwdRequired(keyFile)) {
       this.walletJson = keyFile;
     } else {
-      this.import(keyFile);
+      throw new Error('Unsupported wallet file');
     }
   }
   typeCheckFile(keyFile: string) {
@@ -93,6 +66,8 @@ export class ImportComponent implements OnInit {
         throw new Error('iv not a string!');
       } if (obj.pk && typeof obj.pk !== 'string') {
         throw new Error('pk not a string!');
+      } if (obj.encryptedEntropy && typeof obj.encryptedEntropy !=='string') {
+        throw new Error('encryptedEntropy not a string!');
       }
     } catch (e) {
       this.messageService.addError(e);
@@ -105,9 +80,9 @@ export class ImportComponent implements OnInit {
       this.pwd = '';
     }
   }
-  import(keyFile: string, pwd: string = '') {
+  import(keyFile: string, pwd: string) {
     this.typeCheckFile(keyFile);
-    this.importService.importWalletData(keyFile, true, '', pwd).then(
+    this.importService.importWalletFromJson(keyFile, pwd).then(
       (success: boolean) => {
         if (success) {
           this.router.navigate(['/overview']);

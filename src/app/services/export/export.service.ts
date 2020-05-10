@@ -15,6 +15,8 @@ export class ExportService {
       filename = 'observer_wallet.tez';
     } else if (data.walletType === 3) {
       filename = 'ledger_wallet.tez';
+    } else if (data.walletType === 4) {
+      filename = 'hd-wallet.tez';
     }
     saveAs(blob, filename);
   }

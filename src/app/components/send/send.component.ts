@@ -54,7 +54,7 @@ export class SendComponent implements OnInit {
     showTransactions: SendData[] = [];
     simSemaphore = 0;
     dom: Document;
-    accounts = null;
+    implicitAccounts = null;
     password: string;
     pwdValid: string;
     formInvalid = '';
@@ -94,17 +94,17 @@ export class SendComponent implements OnInit {
             this.activeAccount = this.walletService.wallet.implicitAccounts[0];
         }
         console.log(this.activeAccount.address);
-        this.accounts = this.walletService.wallet.getAccounts();
+        this.implicitAccounts = this.walletService.wallet.implicitAccounts;
         this.XTZrate = this.walletService.wallet.XTZrate;
     }
     open1(template1: TemplateRef<any>) {
         if (this.walletService.wallet) {
             if (!this.activeAccount) {
-                this.activeAccount = this.accounts[0];
+                this.activeAccount = this.implicitAccounts[0];
             }
             this.clearForm();
             this.modalRef1 = this.modalService.show(template1, { class: 'first' });  // modal-sm / modal-lg
-            this.estimateService.preLoadData(this.accounts[0].pkh, this.accounts[0].pk);
+            this.estimateService.preLoadData(this.activeAccount.pkh, this.activeAccount.pk);
         }
     }
     open2(template: TemplateRef<any>) {
@@ -123,6 +123,7 @@ export class SendComponent implements OnInit {
                 if (this.walletService.isLedgerWallet()) {
                     this.ledgerInstruction = 'Preparing transaction data. Please wait...';
                     const keys = this.walletService.getKeys('');
+                    console.log(keys);
                     this.sendTransaction(keys);
                 }
                 this.modalRef2 = this.modalService.show(template, { class: 'second' });
@@ -140,7 +141,7 @@ export class SendComponent implements OnInit {
         } else {
             const pwd = this.password;
             this.password = '';
-            const keys = this.walletService.getKeys(pwd);
+            const keys = this.walletService.getKeys(pwd, this.activeAccount.address);
             if (keys) {
                 this.pwdValid = '';
                 this.close2();
@@ -261,10 +262,12 @@ export class SendComponent implements OnInit {
     async requestLedgerSignature() {
         if (this.walletService.wallet instanceof LedgerWallet) {
             const op = this.sendResponse.payload.unsignedOperation;
-            const signature = await this.ledgerService.signOperation(op, this.walletService.wallet.derivationPath);
-            const signedOp = op + signature;
-            this.sendResponse.payload.signedOperation = signedOp;
-            this.ledgerInstruction = 'Your transaction have been signed! Press confirm to broadcast it to the network.';
+            const signature = await this.ledgerService.signOperation(op, this.walletService.wallet.implicitAccounts[0].derivationPath);
+            if (signature) {
+                const signedOp = op + signature;
+                this.sendResponse.payload.signedOperation = signedOp;
+                this.ledgerInstruction = 'Your transaction have been signed! Press confirm to broadcast it to the network.';
+            }
         }
     }
 
@@ -359,6 +362,10 @@ export class SendComponent implements OnInit {
             }
         }
         return '';
+    }
+    async activeAccountChange() {
+        await this.estimateService.preLoadData(this.activeAccount.pkh, this.activeAccount.pk);
+        this.updateDefaultValues();
     }
     updateDefaultValues() {
         this.estimateFees();

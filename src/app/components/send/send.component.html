@@ -1,4 +1,4 @@
-<ng-container *ngIf="accounts">
+<ng-container *ngIf="implicitAccounts">
     <!-- SEND MODALS -->
 
     <!-- 1. Send tez -->
@@ -14,8 +14,11 @@
                 <div class="form-row">
                     <div class="form-group col-md-8">
                         <label for="fromAdress"> {{ 'SENDCOMPONENT.FROMADDRESS' | translate }} </label>
-                        <select [(ngModel)]="activeAccount" (change)="updateDefaultValues()" id="fromAdress" class="form-control mono" name="first1">
-                            <option *ngFor="let account of accounts" [ngValue]="account">{{ account.address }}</option>
+                        <select [(ngModel)]="activeAccount" (change)="activeAccountChange()" id="fromAdress" class="form-control mono" name="first1">
+                            <ng-container *ngFor="let account of implicitAccounts">
+                                <option [ngValue]="account">{{ account.address }}</option>
+                                <option *ngFor="let origAcc of account.originatedAccounts" [ngValue]="origAcc">{{ origAcc.address }}</option>
+                            </ng-container>
                         </select>
                     </div>
                     <div class="form-group col-md-4 text-right">
@@ -211,10 +214,10 @@
 
 
     <!-- Showing different Send Format according to actionButtonString -->
-    <button *ngIf='accounts' type="button" (click)="open1(modal1)" class="btn btn-sm btn-outline-primary btn-op"> {{ 'SENDCOMPONENT.SEND' | translate }} </button>
+    <button *ngIf='implicitAccounts' type="button" (click)="open1(modal1)" class="btn btn-sm btn-outline-primary btn-op"> {{ 'SENDCOMPONENT.SEND' | translate }} </button>
 </ng-container>
 
-<p class="no-accounts" *ngIf='!accounts'>
+<p class="no-accounts" *ngIf='!implicitAccounts'>
     Send
     <!-- Wallet not configured, just Send string shown on sidebar -->
 </p>

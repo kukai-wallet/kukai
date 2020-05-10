@@ -10,6 +10,7 @@ import { WalletService } from '../../services/wallet/wallet.service';
 import { CoordinatorService } from '../../services/coordinator/coordinator.service';
 import { ExportService } from '../../services/export/export.service';
 import { InputValidationService } from '../../services/input-validation/input-validation.service';
+import { utils, hd } from "@tezos-core-tools/crypto-utils";
 
 @Component({
   selector: 'app-mnemonic-import-wallet',
@@ -26,6 +27,7 @@ export class MnemonicImportComponent implements OnInit {
   pkh: string;
   activePanel = 0;
   tge = false;
+  hdImport = true;
   wallet: any;
   pwd1: string;
   pwd2: string;
@@ -74,7 +76,14 @@ export class MnemonicImportComponent implements OnInit {
         (res: string) => this.messageService.addWarning(res, 10)  // 'Invalid public key hash!'
       );
     } else {
-      const pkh = this.operationService.seed2keyPair(this.operationService.mnemonic2seed(this.mnemonic, this.passphrase)).pkh;
+      let pkh = '';
+      if (this.pkh) {
+        if (!this.tge && this.hdImport) {
+          pkh = hd.keyPairFromAccountIndex(utils.mnemonicToSeed(this.mnemonic, this.passphrase, true), 0).pkh;
+        } else {
+          pkh = utils.seedToKeyPair(utils.mnemonicToSeed(this.mnemonic, this.passphrase, false)).pkh;
+        }
+      }
       if (this.pkh && pkh !== this.pkh) {
         if (this.tge) {
           this.translate.get('MNEMONICIMPORTCOMPONENT.INVALIDEMAILPASSWORD').subscribe(
@@ -95,41 +104,12 @@ export class MnemonicImportComponent implements OnInit {
       const password = this.pwd1;
       this.pwd1 = '';
       this.pwd2 = '';
-      this.wallet = this.walletService.createEncryptedWallet(this.mnemonic, password, this.passphrase);
+      this.wallet = this.walletService.createEncryptedWallet(this.mnemonic, password, this.passphrase, (!this.tge && this.hdImport));
       this.mnemonic = '';
       this.passphrase = '';
       this.email = '';
       this.password = '';
       this.activePanel++;
-    }
-  }
-  handleFileInput(files: FileList) {
-    let fileToUpload = files.item(0);
-
-    if (!this.validateFile(fileToUpload.name)) {
-      this.translate.get('MNEMONICIMPORTCOMPONENT.FILENOTSUPPORTED').subscribe(
-        (res: string) => this.messageService.add(res)
-      );
-      console.log('Selected file format is not supported');
-      fileToUpload = null;
-      return false;
-    } else {
-      const reader = new FileReader();
-      reader.readAsText(fileToUpload);
-      reader.onload = () => {
-        const res = JSON.parse(reader.result[0]);
-        if (res.mnemonic) {
-          let mnemonic = res.mnemonic[0];
-          for (let i = 1; i < 15; i++) {
-            mnemonic = mnemonic + ' ' + res.mnemonic[i];
-          }
-          this.mnemonic = mnemonic;
-        } if (res.email) {
-          this.email = res.email;
-        } if (res.password) {
-          this.password = res.password;
-        }
-      };
     }
   }
 
@@ -169,8 +149,8 @@ export class MnemonicImportComponent implements OnInit {
     this.exportService.downloadWallet(this.wallet.data);
     this.Downloaded = true;
   }
-  done() {
-    this.importService.importWalletData(this.wallet.data, false, this.wallet.pk);
+  async done() {
+    await this.importService.importWalletFromObject(this.wallet.data, this.wallet.seed);
     this.wallet = null;
     this.router.navigate(['/overview']);
     this.translate.get('MNEMONICIMPORTCOMPONENT.WALLETREADY').subscribe(

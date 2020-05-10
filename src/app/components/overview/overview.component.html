@@ -1,119 +1,124 @@
 <div class="container pt-5" *ngIf="this.walletService.wallet">
-    <div class="animated fadeIn">
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="card">
-            <div class="card-header">
-              <i class="fa fa-align-justify"></i> {{ 'OVERVIEWCOMPONENT.TITLE' | translate }}
-            </div>
-            <div class="card-body">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th colspan="2">{{ 'OVERVIEWCOMPONENT.ACCOUNT' | translate }}</th>
-                    <th>{{ 'OVERVIEWCOMPONENT.BALANCETABLE' | translate }}</th>
-                    <th>{{ 'OVERVIEWCOMPONENT.VALUE' | translate }}</th>
+  <div class="animated fadeIn">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-header">
+            <i class="fa fa-align-justify"></i> {{ 'OVERVIEWCOMPONENT.TITLE' | translate }}
+          </div>
+          <div class="card-body">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th colspan="2">{{ 'OVERVIEWCOMPONENT.ACCOUNT' | translate }}</th>
+                  <th>{{ 'OVERVIEWCOMPONENT.BALANCETABLE' | translate }}</th>
+                  <th>{{ 'OVERVIEWCOMPONENT.VALUE' | translate }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngFor="let implicitAccount of implicitAccounts">
+                  <tr class="pkh-row"
+                    [class.selectedPkh]="activeAccount && activeAccount.address === implicitAccount.address"
+                    (click)="click(implicitAccount)">
+                    <td colspan="2" (dblclick)="dblclick(implicitAccount)">
+                      {{ implicitAccount.address }}
+                    </td>
+
+                    <td>
+                      <ng-container *ngIf="implicitAccount.balanceXTZ !== null">
+                        {{ implicitAccount.balanceXTZ / 1000000 | number:'1.0-6' }} &#42793;
+                      </ng-container>
+                    </td>
+
+                    <td>
+                      <ng-container *ngIf="implicitAccount.balanceUSD !== null">
+                        $ {{ implicitAccount.balanceUSD | number:'1.0-0' }} USD
+                      </ng-container>
+                    </td>
                   </tr>
-                </thead>
-                <tbody>
-                    <ng-container *ngFor="let implicitAccount of implicitAccounts">
-                        <tr class="pkh-row" [class.selectedPkh]="activeAccount && activeAccount.address === implicitAccount.address" (click)="click(implicitAccount)">
-                            <td colspan="2" (dblclick)="dblclick(implicitAccount)">
-                              {{ implicitAccount.address }}
-                            </td>
+                  <!-- Accounts + Total sections shown only if there are accounts -->
+                  <ng-container *ngIf="implicitAccount.originatedAccounts">
 
-                            <td>
-                              <ng-container *ngIf="implicitAccount.balanceXTZ !== null">
-                                {{ implicitAccount.balanceXTZ / 1000000 | number:'1.0-6' }} &#42793;
-                              </ng-container>
-                            </td>
-
-                            <td>
-                                <ng-container *ngIf="implicitAccount.balanceUSD !== null">
-                                  $ {{ implicitAccount.balanceUSD | number:'1.0-0' }} USD
-                                </ng-container>
-                            </td>
-                        </tr>
-                    <!-- Accounts + Total sections shown only if there are accounts -->
-                    <ng-container *ngIf="implicitAccount.originatedAccounts">
-
-                      <!-- Accounts -->
-                      <!--<tr>
+                    <!-- Accounts -->
+                    <!--<tr>
                         <th>{{ 'OVERVIEWCOMPONENT.ACCOUNTS' | translate }}</th>
                       </tr>-->
 
-                      <tr *ngFor="let account of implicitAccount.originatedAccounts" class="pkh-row" (click)="click(account)" 
-                        [class.selectedPkh]="activeAccount && activeAccount.address === account.address">
-                          <td colspan="2" (dblclick)="dblclick(account)">
-                            &nbsp; - &nbsp;{{ account.address }}
-                          </td>
-                          <td>
-                            <ng-container *ngIf="account.balanceXTZ !== null">
-                              {{ account.balanceXTZ / 1000000 | number:'1.0-6' }} &#42793;
-                            </ng-container>
-                          </td>
-                          <td>
-                            <ng-container *ngIf="account.balanceUSD !== null">
-                              $ {{ account.balanceUSD | number:'1.0-0' }} USD
-                            </ng-container>
-                          </td>
-                      </tr>
-
-                      <!-- Total - Last row -->
-                      <tr>
-                          <td colspan="2">
-                            {{ 'OVERVIEWCOMPONENT.TOTAL' | translate }}
-                          </td>
-                          <td>
-                            <ng-container *ngIf="walletService.wallet.totalBalanceXTZ !== null">
-                              {{ walletService.wallet.totalBalanceXTZ / 1000000 | number:'1.0-6' }} &#42793;
-                            </ng-container>
-                          </td>
-                          <td>
-                            <ng-container *ngIf="walletService.wallet.totalBalanceUSD !== null">
-                              $ {{ walletService.wallet.totalBalanceUSD | number:'1.0-0' }} USD
-                            </ng-container>
-                          </td>
-                      </tr>
+                    <tr *ngFor="let account of implicitAccount.originatedAccounts" class="pkh-row"
+                      (click)="click(account)"
+                      [class.selectedPkh]="activeAccount && activeAccount.address === account.address">
+                      <td colspan="2" (dblclick)="dblclick(account)">
+                        <span *ngIf="this.walletService.wallet && this.walletService.isHdWallet()">&nbsp; • &nbsp;</span>{{ account.address }}
+                      </td>
+                      <td>
+                        <ng-container *ngIf="account.balanceXTZ !== null">
+                          {{ account.balanceXTZ / 1000000 | number:'1.0-6' }} &#42793;
+                        </ng-container>
+                      </td>
+                      <td>
+                        <ng-container *ngIf="account.balanceUSD !== null">
+                          $ {{ account.balanceUSD | number:'1.0-0' }} USD
+                        </ng-container>
+                      </td>
+                    </tr>
                   </ng-container>
+                </ng-container>
+                <!-- Total - Last row -->
+                <tr>
+                  <td colspan="2">
+                    {{ 'OVERVIEWCOMPONENT.TOTAL' | translate }}
+                  </td>
+                  <td>
+                    <ng-container *ngIf="walletService.wallet.totalBalanceXTZ !== null">
+                      {{ walletService.wallet.totalBalanceXTZ / 1000000 | number:'1.0-6' }} &#42793;
                     </ng-container>
-                </tbody>
-              </table>
+                  </td>
+                  <td>
+                    <ng-container *ngIf="walletService.wallet.totalBalanceUSD !== null">
+                      $ {{ walletService.wallet.totalBalanceUSD | number:'1.0-0' }} USD
+                    </ng-container>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
 
-              <!-- Shared Action buttons -->
-              <div class="row-buttons" *ngIf="implicitAccounts">
-                <div class="btn-group btn-group-sm">
-                  <app-send [activeAccount]="activeAccount ? activeAccount : implicitAccounts[0]"></app-send>
-                  <app-receive [activeAddress]="activeAccount ? activeAccount.address : null"></app-receive>
-                  <app-new-account [activeAccount]="activeAccount && activeAccount.isImplicit() ? activeAccount : implicitAccounts[0]"></app-new-account>
-                </div>
+            <!-- Shared Action buttons -->
+            <div class="row-buttons" *ngIf="implicitAccounts">
+              <div class="btn-group btn-group-sm">
+                <app-send [activeAccount]="activeAccount ? activeAccount : implicitAccounts[0]"></app-send>
+                <app-receive [activeAddress]="activeAccount ? activeAccount.address : null"></app-receive>
+                <app-new-account *ngIf="this.walletService.wallet && !this.walletService.isHdWallet()"
+                    [activeAccount]="activeAccount && activeAccount.isImplicit() ? activeAccount : implicitAccounts[0]">
+                </app-new-account>
+                <button *ngIf="this.walletService.wallet && this.walletService.isHdWallet()" class="btn btn-sm btn-outline-primary btn-op add-button" (click)="addPkh()" [disabled]="!openPkhSpot()">{{ 'NEWACCOUNTCOMPONENT.NEWACCOUNT' | translate }}</button>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
 </div>
 
 <!-- Default message - No account created -->
 <div class="container" *ngIf="!this.walletService.wallet">
-    <!-- Title -->
-    <div class="row bottom-separator-no-account">
-        <div class="col-lg-12">
-            <h1 class="page-header-no-account"> {{ 'OVERVIEWCOMPONENT.OVERVIEW' | translate }} </h1>
-        </div>
+  <!-- Title -->
+  <div class="row bottom-separator-no-account">
+    <div class="col-lg-12">
+      <h1 class="page-header-no-account"> {{ 'OVERVIEWCOMPONENT.OVERVIEW' | translate }} </h1>
     </div>
+  </div>
 
 
-    <div class="row">
-        <div class="col-lg-12">
-            <!--
+  <div class="row">
+    <div class="col-lg-12">
+      <!--
             <p>You can get all your wallet details and create new accounts in here but before, you will need to
                 <a routerLink="">create or import</a> a wallet.</p>
             -->
-            <p>
-               {{ 'OVERVIEWCOMPONENT.EMPTYINFO' | translate }}
-            </p>
-        </div>
+      <p>
+        {{ 'OVERVIEWCOMPONENT.EMPTYINFO' | translate }}
+      </p>
     </div>
+  </div>
 </div>

@@ -9,12 +9,13 @@ declare const Buffer;
 @Injectable()
 export class EncryptionService {
   constructor() { }
-  encrypt(plaintext: any, password: string, version: number): any {
+  encrypt(plaintext: any, password: string, version: number, salt: string = null): any {
     if (version === 1) {
       throw new Error('Encryption version no longer supported');
-      // return this.encrypt_v1(plaintext, password, salt);
     } else if (version === 2) {
       return this.encrypt_v2(plaintext, password);
+    } else if (version === 3) {
+      return this.encrypt_v2(plaintext, password, salt);
     } else {
       throw new Error('Unrecognized encryption format');
     }
@@ -22,7 +23,7 @@ export class EncryptionService {
   decrypt(chiphertext: string, password: string, salt: string, version: number): any {
     if (version === 1) {
       return this.decrypt_v1(chiphertext, password, salt);
-    } else if (version === 2) {
+    } else if (version === 2 || version === 3) {
       return this.decrypt_v2(chiphertext, password, salt);
     } else {
       throw new Error('Unrecognized encryption format');
@@ -48,28 +49,29 @@ export class EncryptionService {
     }
   }
   // Version 2
-  encrypt_v2(plaintext: any, password: string): any {
-    const salty = cryptob.randomBytes(16);
-    // const key = scrypt(password, salty, 1048576, 8, 1, 32);
+  encrypt_v2(plaintext: Buffer, password: string, salt?: string): any {
+    let salty;
+    if (salt) {
+      salty = new Buffer(salt, 'hex');
+    } else {
+      salty = cryptob.randomBytes(16);
+    }
     const key = scrypt(password, salty, 65536, 8, 1, 32);
     const cipher: any = forge.cipher.createCipher('AES-GCM', key.toString('binary'));
     cipher.start({
       iv: salty,
     });
     const byteStringBuffer = forge.util.createBuffer(plaintext.toString('binary'), 'utf-8');
-    cipher.update(byteStringBuffer); // From buffer to special buffer
+    cipher.update(byteStringBuffer);
     cipher.finish();
     const chiphertext = cipher.output.toHex() + '==' + cipher.mode.tag.toHex();
     return { chiphertext: chiphertext, iv: salty.toString('hex') };
-    /*
-    */
   }
-  decrypt_v2(chipher: string, password: string, salt: string): any {
+  decrypt_v2(chipher: string, password: string, salt: string): Buffer {
     try {
       const parts = chipher.split('==');
       const chiphertext = parts[0];
       const tag = parts[1];
-      // const key = scrypt(password, salt, 1048576, 8, 1, 32);
       const key = scrypt(password, new Buffer(salt, 'hex'), 65536, 8, 1, 32);
       const decipher: any = forge.cipher.createDecipher('AES-GCM', key.toString('binary'));
       decipher.start({
@@ -82,12 +84,20 @@ export class EncryptionService {
         console.log('Correct tag!');
       } else {
         console.log('Wrong tag!');
-        return '';
+        return null;
       }
       return new Buffer(decipher.output.toHex(), 'hex');
     } catch (err) {
       console.log(err);
-      return '';
+      return null;
     }
+  }
+  bumpIV(salt: string, bumps: number) {
+    if (bumps > 255) {
+      throw new Error('Invalid incremention');
+    }
+    const buf = new Buffer(salt, 'hex');
+    buf[13] = (buf[13] + 1) % 256;
+    return buf.toString('hex');
   }
 }

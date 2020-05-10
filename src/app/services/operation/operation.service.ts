@@ -547,6 +547,12 @@ export class OperationService {
     }
     return (bip39.mnemonicToSeedSync(mnemonic, passphrase)).slice(0, 32);
   }
+  mnemonic2entropy(mnemonic: string, passphrase: string = '') {
+    if (!this.validMnemonic(mnemonic)) {
+      throw new Error('InvalidMnemonic');
+    }
+    return bip39.mnemonicToEntropy(mnemonic);
+  }
   validMnemonic(mnemonic: string) {
     return bip39.validateMnemonic(mnemonic);
   }

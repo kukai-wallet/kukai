@@ -23,9 +23,10 @@ enum State {
 @Injectable()
 export class CoordinatorService {
   scheduler: Map<string, any> = new Map<string, any>(); // pkh + delay
-  defaultDelayActivity = 60000; // 30s
-  shortDelayActivity = 5000; // 2s
+  defaultDelayActivity = 30000; // 30s
+  shortDelayActivity = 5000; // 5s
   tzrateInterval: any;
+  boostTimeout: any;
   defaultDelayPrice = 300000; // 300s
   accounts: Account[];
   constructor(
@@ -45,6 +46,8 @@ export class CoordinatorService {
         this.start(this.accounts[i].address);
       }
       this.startXTZ();
+    } else {
+      console.log('no wallet found');
     }
   }
   startXTZ() {
@@ -86,7 +89,7 @@ export class CoordinatorService {
         this.changeState(pkh, State.Wait);
         this.update(pkh);
         const counter = this.scheduler.get(pkh).stateCounter;
-        setTimeout(() => {
+        this.boostTimeout = setTimeout(() => {
           // Failsafe
           if (
             this.scheduler &&
@@ -147,7 +150,7 @@ export class CoordinatorService {
     const scheduleData: ScheduleData = this.scheduler.get(pkh);
     scheduleData.state = newState;
     if (newState === State.UpToDate) {
-      this.updateAccountDataAll();
+      this.updateAccountData(pkh);
     }
     if (newState === State.Wait || newState === State.Updating) {
       clearInterval(scheduleData.interval);
@@ -179,6 +182,8 @@ export class CoordinatorService {
       }
       clearInterval(this.tzrateInterval);
       this.tzrateInterval = null;
+      clearTimeout(this.boostTimeout);
+      this.boostTimeout = null;
     }
   }
   async stop(pkh) {
@@ -189,13 +194,9 @@ export class CoordinatorService {
     this.scheduler.get(pkh).interval = null;
     this.scheduler.delete(pkh);
   }
-  updateAccountDataAll() {
-    for (const acc of this.accounts) {
-      this.updateAccountData(acc.address);
-    }
-  }
   updateAccountData(pkh: string) {
     // Maybe also check for originations to account?
+    console.log('update account data for ' + pkh);
     this.operationService.getAccount(pkh).subscribe((ans: any) => {
       if (ans.success) {
         this.balanceService.updateAccountBalance(

@@ -26,7 +26,6 @@ export class ReceiveComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-        console.log(this.activeAddress);
     }
 
     getQR() {
@@ -37,7 +36,6 @@ export class ReceiveComponent implements OnInit {
 
     open1(template1: TemplateRef<any>) {
         if (this.activeAddress) {
-            console.log('true');
             this.modalRef1 = this.modalService.show(template1, { class: 'first' });  // modal-sm / modal-lg
             setTimeout(() => {
                 this.getQR();

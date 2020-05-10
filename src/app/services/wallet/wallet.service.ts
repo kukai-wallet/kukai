@@ -1,11 +1,20 @@
-import { Injectable } from '@angular/core';
-import { KeyPair, WalletType } from './../../interfaces';
-import { WalletObject, LegacyWallet, HdWallet, LegacyWalletV2, LegacyWalletV1, ImplicitAccount, LedgerWallet, OriginatedAccount } from './wallet';
-import { EncryptionService } from '../encryption/encryption.service';
-import { OperationService } from '../operation/operation.service';
-import { utils } from '@tezos-core-tools/crypto-utils';
+import { Injectable } from "@angular/core";
+import { KeyPair, WalletType } from "./../../interfaces";
+import {
+  WalletObject,
+  HdWallet,
+  FullWallet,
+  LegacyWalletV1,
+  LegacyWalletV2,
+  LegacyWalletV3,
+  ImplicitAccount,
+  LedgerWallet,
+  OriginatedAccount,
+} from "./wallet";
+import { EncryptionService } from "../encryption/encryption.service";
+import { OperationService } from "../operation/operation.service";
+import { utils, hd } from "@tezos-core-tools/crypto-utils";
 @Injectable()
-
 export class WalletService {
   storeKey = `kukai-wallet`;
   wallet: WalletObject;
@@ -13,90 +22,165 @@ export class WalletService {
   constructor(
     private encryptionService: EncryptionService,
     private operationService: OperationService
-  ) { }
+  ) {}
   /*
     Wallet creation
   */
   createNewWallet(): string {
-    return this.operationService.generateMnemonic();
+    return utils.generateMnemonic();
   }
-  createEncryptedWallet(mnemonic: string, password: string, passphrase: string = ''): any {
-    const  seed = this.operationService.mnemonic2seed(mnemonic, passphrase);
-    const keyPair: KeyPair = this.operationService.seed2keyPair(seed);
-    const encrypted = this.encryptionService.encrypt(seed, password, 2);
-    const encryptedSeed = encrypted.chiphertext;
-    const salt = encrypted.iv;
-    return { data: this.exportKeyStoreInit(WalletType.FullWallet, keyPair.pkh, encryptedSeed, salt), pkh: keyPair.pkh, pk: keyPair.pk };
+  createEncryptedWallet(
+    mnemonic: string,
+    password: string,
+    passphrase: string = "",
+    hdSeed: boolean
+  ): any {
+    const seed = utils.mnemonicToSeed(mnemonic, passphrase, hdSeed);
+    const entropy: Buffer = Buffer.from(utils.mnemonicToEntropy(mnemonic));
+    let keyPair: KeyPair;
+    if (!hdSeed) {
+      keyPair = this.operationService.seed2keyPair(seed);
+    } else {
+      keyPair = hd.keyPairFromAccountIndex(seed, 0);
+    }
+    const encrypted = this.encryptionService.encrypt(seed, password, 3);
+    const encryptedSeed: string = encrypted.chiphertext;
+    const iv: string = encrypted.iv;
+    const iv2: string = this.encryptionService.bumpIV(iv, 1);
+    const encryptedEntropy: string = this.encryptionService.encrypt(
+      entropy,
+      password,
+      3,
+      iv2
+    ).chiphertext;
+    return {
+      data: this.exportKeyStoreInit(
+        hdSeed ? WalletType.HdWallet : WalletType.FullWallet,
+        encryptedSeed,
+        encryptedEntropy,
+        iv
+      ),
+      pkh: keyPair.pkh,
+      pk: keyPair.pk,
+      seed: seed,
+    };
   }
-  getKeys(pwd: string): KeyPair {
+  getKeys(pwd: string, pkh?: string): KeyPair {
     let seed;
     if (this.wallet instanceof LegacyWalletV1) {
-      seed = this.encryptionService.decrypt(this.wallet.encryptedSeed, pwd, this.wallet.salt, 1);
+      seed = this.encryptionService.decrypt(
+        this.wallet.encryptedSeed,
+        pwd,
+        this.wallet.salt,
+        1
+      );
     } else if (this.wallet instanceof LegacyWalletV2) {
-      seed = this.encryptionService.decrypt(this.wallet.encryptedSeed, pwd, this.wallet.IV, 2);
+      seed = this.encryptionService.decrypt(
+        this.wallet.encryptedSeed,
+        pwd,
+        this.wallet.IV,
+        2
+      );
+    } else if (
+      this.wallet instanceof LegacyWalletV3 ||
+      this.wallet instanceof HdWallet
+    ) {
+      seed = this.encryptionService.decrypt(
+        this.wallet.encryptedSeed,
+        pwd,
+        this.wallet.IV,
+        3
+      );
+    } else if (this.wallet instanceof LedgerWallet) {
+      console.log(this.wallet);
+      const keyPair: KeyPair = {
+        sk: null,
+        pk: this.wallet.implicitAccounts[0].pk,
+        pkh: this.wallet.implicitAccounts[0].pkh,
+      };
+      return keyPair;
     } else {
       return null;
     }
-    const keys = this.operationService.seed2keyPair(seed);
-    return keys;
+    if (!seed) {
+      return null;
+    }
+    let keys: KeyPair;
+    if (this.wallet instanceof HdWallet) {
+      if (!pkh) {
+        throw new Error("No pkh provided");
+      }
+      const account = this.wallet.getImplicitAccount(pkh);
+      if (!account.derivationPath) {
+        throw new Error("No derivationPath found");
+      }
+      return hd.seedToKeyPair(seed, account.derivationPath);
+    } else {
+      return this.operationService.seed2keyPair(seed);
+    }
   }
-  // getSalt(pkh: string = this.wallet.accounts[0].pkh) {
-  //   return pkh.slice(3, 19);
-  // }
-  /*
-    Handle accounts
-  */
-  addImplicitAccount(pk: string) {
+  revealMnemonicPhrase(pwd: string = "cdwkgkn75KH"): string {
+    if (
+      this.wallet &&
+      (this.wallet instanceof HdWallet || this.wallet instanceof LegacyWalletV3)
+    ) {
+      const iv = this.encryptionService.bumpIV(this.wallet.IV, 1);
+      const entropy = this.encryptionService.decrypt(
+        this.wallet.encryptedEntropy,
+        pwd,
+        iv,
+        3
+      );
+      if (entropy) {
+        const mnemonic = utils.entropyToMnemonic(entropy);
+        console.log(mnemonic);
+      } else {
+        console.log("Invalid password");
+      }
+    }
+    return "";
+  }
+  addImplicitAccount(pk: string, derivationPath?: string) {
     const pkh = utils.pkToPkh(pk);
-    this.wallet.implicitAccounts.push(new ImplicitAccount(pkh, pk));
+    this.wallet.implicitAccounts.push(
+      new ImplicitAccount(pkh, pk, derivationPath)
+    );
+    console.log("Adding new implicit account...");
+    console.log(
+      this.wallet.implicitAccounts[this.wallet.implicitAccounts.length - 1]
+    );
     this.storeWallet();
   }
   addOriginatedAccount(kt: string, manager: string) {
     const implicitAccount = this.wallet.getImplicitAccount(manager);
     if (implicitAccount) {
-      const origAcc = new OriginatedAccount(kt, implicitAccount.pkh, implicitAccount.pk)
+      const origAcc = new OriginatedAccount(
+        kt,
+        implicitAccount.pkh,
+        implicitAccount.pk
+      );
       implicitAccount.originatedAccounts.push(origAcc);
     } else {
       console.warn(`Manager address $(manager) not found`);
     }
   }
-  addressExists(address: string): boolean {
-    return this.wallet.getAccounts().findIndex(a => a.address === address) !== -1;
+  addUnusedAccount(account: any) {
+    if (this.wallet instanceof HdWallet) {
+      this.wallet.unusedAccounts.push(account);
+    }
   }
-  /*
-    Help functions
-  */
-  // getIndexFromPkh(pkh: string): number {
-  //   return this.wallet.implicitAccounts.findIndex(a => a.pkh === pkh);
-  // }
-  // getKeys(pwd: string): KeyPair {
-  //   if (this.isFullWallet()) {
-  //     const seed = this.encryptionService.decrypt(this.wallet.seed, pwd, this.wallet.salt, this.wallet.encryptionVersion);
-  //     if (!seed) {
-  //       return null;
-  //     }
-  //     const keys = this.operationService.seed2keyPair(seed);
-  //     if (this.wallet.encryptionVersion === 2 || keys.pkh === this.wallet.accounts[0].pkh) {
-  //       return keys;
-  //     } else {
-  //       return null;
-  //     }
-  //   } else if (this.isViewOnlyWallet() || this.isLedgerWallet()) {
-  //     return {
-  //       pkh: this.wallet.accounts[0].pkh,
-  //       pk: this.wallet.seed,
-  //       sk: null
-  //     };
-  //   }
-  // }
-  // getPk(): string {
-  //   if (this.isFullWallet()) {
-  //     return this.wallet.pk;
-  //   } else if (this.isViewOnlyWallet() || this.isLedgerWallet()) {
-  //     return this.wallet.seed;
-  //   }
-  //   return null;
-  // }
+  addressExists(address: string): boolean {
+    return (
+      this.wallet.getAccounts().findIndex((a) => a.address === address) !== -1
+    );
+  }
+  incrementAccountIndex(): string {
+    if (this.wallet instanceof HdWallet) {
+      const newPublicKey = this.wallet.unusedAccounts.shift();
+      this.addImplicitAccount(newPublicKey.pk, newPublicKey.derivationPath);
+      return newPublicKey.pkh;
+    }
+  }
   /*
     Clear wallet data from browser
   */
@@ -104,31 +188,11 @@ export class WalletService {
     this.wallet = null;
     localStorage.removeItem(this.storeKey);
   }
-  // emptyWallet(type: WalletType): Wallet {
-  //   const w: Wallet = {
-  //       seed: null,
-  //       salt: null,
-  //       encryptionVersion: null,
-  //       type: type,
-  //       balance: this.emptyBalance(),
-  //       XTZrate: null,
-  //       accounts: []
-  //   };
-  //   return w;
-  // }
-  // emptyBalance(): Balance {
-  //   return {
-  //     balanceXTZ: null,
-  //     pendingXTZ: null,
-  //     balanceFiat: null,
-  //     pendingFiat: null
-  //   };
-  // }
   /*
   Used to decide wallet type
   */
   isFullWallet(): boolean {
-    return (this.wallet instanceof LegacyWallet);
+    return this.wallet instanceof FullWallet;
   }
   isViewOnlyWallet(): boolean {
     return false;
@@ -137,53 +201,24 @@ export class WalletService {
     return false;
   }
   isLedgerWallet(): boolean {
-    return (this.wallet instanceof LedgerWallet);
+    return this.wallet instanceof LedgerWallet;
   }
-  // walletTypePrint(): string {
-  //   if (this.isFullWallet()) {
-  //     return 'Full wallet';
-  //   } else if (this.isViewOnlyWallet()) {
-  //     return 'View-only wallet';
-  //   } else if (this.isObserverWallet()) {
-  //     return 'Observer wallet';
-  //   } else if (this.isLedgerWallet()) {
-  //     return 'Ledger wallet';
-  //   } else {
-  //     return '';
-  //   }
-  // }
-  /*
-    Export
-  */
-  // exportKeyStore() {
-  //   const data: any = {
-  //     provider: 'Kukai',
-  //     version: this.wallet.encryptionVersion,
-  //     walletType: this.wallet.type,
-  //     pkh: this.wallet.accounts[0].pkh
-  //   };
-  //   if (this.isFullWallet() && this.wallet.encryptionVersion === 2) {
-  //     data.iv = this.wallet.salt;
-  //   } else {
-  //     data.pkh = this.wallet.accounts[0].pkh;
-  //   }
-  //   if (this.isFullWallet()) {
-  //     data.encryptedSeed = this.wallet.seed;
-  //   } else if (this.isViewOnlyWallet() || this.isLedgerWallet()) {
-  //     data.pk = this.wallet.seed;
-  //     if (this.isLedgerWallet()) {
-  //       data.derivationPath = this.wallet.derivationPath;
-  //     }
-  //   }
-  //   return data;
-  // }
-  exportKeyStoreInit(type: WalletType, pkh: string, seed: string, salt: string) {
+  isHdWallet(): boolean {
+    return this.wallet instanceof HdWallet;
+  }
+  exportKeyStoreInit(
+    type: WalletType,
+    encryptedSeed: string,
+    encryptedEntropy: string,
+    iv: string
+  ) {
     const data: any = {
-      provider: 'Kukai',
-      version: 2.0,
+      provider: "Kukai",
+      version: 3.0,
       walletType: type,
-      encryptedSeed: seed,
-      iv: salt
+      encryptedSeed,
+      encryptedEntropy,
+      iv,
     };
     return data;
   }
@@ -191,47 +226,91 @@ export class WalletService {
     Read and write to localStorage
   */
   storeWallet() {
-    let type = 'unknown';
+    let type = "unknown";
     if (this.wallet instanceof HdWallet) {
-      type = 'HdWallet';
+      type = "HdWallet";
     } else if (this.wallet instanceof LegacyWalletV1) {
-      type = 'LegacyWalletV1';
+      type = "LegacyWalletV1";
     } else if (this.wallet instanceof LegacyWalletV2) {
-      type = 'LegacyWalletV2';
+      type = "LegacyWalletV2";
+    } else if (this.wallet instanceof LegacyWalletV3) {
+      type = "LegacyWalletV3";
+    } else if (this.wallet instanceof LedgerWallet) {
+      type = "LedgerWallet";
     }
-    console.log('Type is ' + type);
-    localStorage.setItem(this.storeKey, JSON.stringify({type, data: JSON.stringify(this.wallet)}));
+    console.log("Type is " + type);
+    localStorage.setItem(
+      this.storeKey,
+      JSON.stringify({ type, data: this.wallet })
+    );
   }
   loadStoredWallet() {
     const walletData = localStorage.getItem(this.storeKey);
-    if (walletData && walletData !== 'undefined') {
+    console.log(walletData);
+    if (walletData && walletData !== "undefined") {
       const parsedWalletData = JSON.parse(walletData);
-      if (parsedWalletData.type) {
-        const wd = JSON.parse(parsedWalletData.data);
-        this.recreateWallet(wd);
-        console.log('Load success!!!');
+      if (parsedWalletData.type && parsedWalletData.data) {
+        const wd = parsedWalletData.data;
+        this.deserializeStoredWallet(wd, parsedWalletData.type);
+        console.log("Load success!!!");
         console.log(typeof this.wallet);
       } else {
-        console.log('couldnt load');
+        console.log("couldnt load a wallet");
         this.clearWallet();
       }
+    } else {
+      console.log("couldnt load a wallet");
+      this.clearWallet();
     }
   }
-  recreateWallet(wd: any) {
-    this.wallet = new LegacyWalletV2(wd.IV, wd.encryptedSeed);
+  deserializeStoredWallet(wd: any, type: string) {
+    switch (type) {
+      case "HdWallet":
+        this.wallet = new HdWallet(
+          wd.IV,
+          wd.encryptedSeed,
+          wd.encryptedEntropy
+        );
+        if (this.wallet instanceof HdWallet)
+          this.wallet.unusedAccounts = wd.unusedAccounts;
+        break;
+      case "LegacyWalletV1":
+        this.wallet = new LegacyWalletV1(wd.salt, wd.encryptedSeed);
+        break;
+      case "LegacyWalletV2":
+        this.wallet = new LegacyWalletV2(wd.IV, wd.encryptedSeed);
+        break;
+      case "LegacyWalletV3":
+        this.wallet = new LegacyWalletV3(
+          wd.IV,
+          wd.encryptedSeed,
+          wd.encryptedEntropy
+        );
+        break;
+      case "LedgerWallet":
+        this.wallet = new LedgerWallet();
+      default:
+    }
     this.wallet.XTZrate = wd.XTZrate;
     this.wallet.totalBalanceUSD = wd.totalBalanceUSD;
     this.wallet.totalBalanceXTZ = wd.totalBalanceXTZ;
-    console.log(wd.implicitAccounts);
     for (const implicit of wd.implicitAccounts) {
-      const impAcc: ImplicitAccount = new ImplicitAccount(implicit.pkh, implicit.pk);
+      const impAcc: ImplicitAccount = new ImplicitAccount(
+        implicit.pkh,
+        implicit.pk,
+        implicit.derivationPath ? implicit.derivationPath : null
+      );
       impAcc.balanceUSD = implicit.balanceUSD;
       impAcc.balanceXTZ = implicit.balanceXTZ;
       impAcc.delegate = implicit.delegate;
       impAcc.activitiesCounter = implicit.activitiesCounter;
       impAcc.activities = implicit.activities;
       for (const originated of implicit.originatedAccounts) {
-        const origAcc = new OriginatedAccount(originated.address, impAcc.pkh, impAcc.pk);
+        const origAcc = new OriginatedAccount(
+          originated.address,
+          impAcc.pkh,
+          impAcc.pk
+        );
         origAcc.balanceUSD = originated.balanceUSD;
         origAcc.balanceXTZ = originated.balanceXTZ;
         origAcc.delegate = originated.delegate;

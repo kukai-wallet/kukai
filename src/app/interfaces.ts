@@ -41,7 +41,8 @@ export enum WalletType {
   FullWallet,
   ViewOnlyWallet,
   ObserverWallet,
-  LedgerWallet
+  LedgerWallet,
+  HdWallet
 }
 export interface Baker {
   baker_name: string;

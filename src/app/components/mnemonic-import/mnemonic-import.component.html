@@ -67,6 +67,18 @@
                                 <small class="form-text text-left" *ngIf="!tge"> {{ 'MNEMONICIMPORTCOMPONENT.INFOPKH' | translate }} </small>
                             </div>
                         </div>
+                        <div class="form-inline form-check row input-left">
+                            <input class="form-check-input" (change)="hdImport = !hdImport" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+                            <label class="form-check-label" for="exampleRadios1">
+                              HD wallet
+                            </label>
+                          </div>
+                          <div class="form-inline form-check row">
+                            <input class="form-check-input" (change)="hdImport = !hdImport" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
+                            <label class="form-check-label" for="exampleRadios2">
+                              Legacy wallet
+                            </label>
+                          </div>
                     </form>
                 </div>
             </div>

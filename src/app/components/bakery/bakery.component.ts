@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { WalletService } from '../../services/wallet/wallet.service';
 import { MessageService } from '../../services/message/message.service';
 import { ActivityService } from '../../services/activity/activity.service';
-
+import { ImplicitAccount } from '../../services/wallet/wallet';
 import { DelegatorNamePipe } from '../../pipes/delegator-name.pipe';
 
 
@@ -13,7 +13,7 @@ import { DelegatorNamePipe } from '../../pipes/delegator-name.pipe';
     styleUrls: ['./bakery.component.scss']
 })
 export class BakeryComponent implements OnInit {
-    accounts = [];
+    implicitAccounts: ImplicitAccount[];
     constructor(
         public walletService: WalletService,
         private messageService: MessageService,
@@ -23,7 +23,7 @@ export class BakeryComponent implements OnInit {
 
     ngOnInit() {
         if (this.walletService.wallet) {
-            this.accounts = this.walletService.wallet.getAccounts();
+            this.implicitAccounts = this.walletService.wallet.implicitAccounts;
         }
     }
 }

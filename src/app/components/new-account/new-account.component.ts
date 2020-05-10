@@ -13,7 +13,7 @@ import { InputValidationService } from '../../services/input-validation/input-va
 import { LedgerService } from '../../services/ledger/ledger.service';
 import { Constants } from '../../constants';
 import { LedgerWallet } from '../../services/wallet/wallet';
-import { Account, ImplicitAccount, OriginatedAccount } from '../../services/wallet/wallet';
+import { Account, OriginatedAccount, HdWallet } from '../../services/wallet/wallet';
 
 @Component({
   selector: 'app-new-account',
@@ -23,10 +23,10 @@ import { Account, ImplicitAccount, OriginatedAccount } from '../../services/wall
 export class NewAccountComponent implements OnInit {
   @ViewChild('modal1') modal1: TemplateRef<any>;
   CONSTANTS = new Constants();
-  @Input() activeAccount: ImplicitAccount;
+  @Input() activeAccount: Account;
 
   recommendedFee = 0.0021;
-  accounts = [];
+  implicitAccounts;
   amount: string;
   storedAmount: string;
   fee: string;
@@ -63,7 +63,10 @@ export class NewAccountComponent implements OnInit {
   }
 
   init() {
-    this.accounts = this.walletService.wallet.getImplicitAccounts();
+    this.implicitAccounts = this.walletService.wallet.implicitAccounts;
+    if (!this.activeAccount) {
+      this.activeAccount = this.walletService.wallet.implicitAccounts[0];
+  }
   }
 
   open1(template1: TemplateRef<any>) {
@@ -96,7 +99,7 @@ export class NewAccountComponent implements OnInit {
     const pwd = this.password;
     this.password = '';
 
-    const keys = this.walletService.getKeys(pwd);
+    const keys = this.walletService.wallet instanceof HdWallet ? this.walletService.getKeys(pwd, this.activeAccount.address) : this.walletService.getKeys(pwd);
     if (this.walletService.isLedgerWallet()) {
       this.broadCastLedgerTransaction();
       this.sendResponse = null;
@@ -172,11 +175,13 @@ export class NewAccountComponent implements OnInit {
   }
   async requestLedgerSignature() {
     if (this.walletService.wallet instanceof LedgerWallet) {
-    const op = this.sendResponse.payload.unsignedOperation;
-    const signature = await this.ledgerService.signOperation(op, this.walletService.wallet.derivationPath);
-    const signedOp = op + signature;
-    this.sendResponse.payload.signedOperation = signedOp;
-    this.ledgerInstruction = 'Your transaction have been signed! \n Press confirm to broadcast it to the network.';  // \n not working!
+      const op = this.sendResponse.payload.unsignedOperation;
+      const signature = await this.ledgerService.signOperation(op, this.walletService.wallet.implicitAccounts[0].derivationPath);
+      if (signature) {
+        const signedOp = op + signature;
+        this.sendResponse.payload.signedOperation = signedOp;
+        this.ledgerInstruction = 'Your transaction have been signed! \n Press confirm to broadcast it to the network.';
+      }
     }
   }
   async broadCastLedgerTransaction() {
@@ -196,7 +201,7 @@ export class NewAccountComponent implements OnInit {
     );
   }
   checkReveal() {
-    console.log('check reveal');
+    console.log('check reveal ' + this.activeAccount.address);
     this.operationService.isRevealed(this.activeAccount.address)
       .subscribe((revealed: boolean) => {
         if (!revealed) {

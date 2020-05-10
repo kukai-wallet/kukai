@@ -48,9 +48,11 @@ export class LedgerService {
   async getPublicAddress (path: string) {
     await this.transportCheck();
     const xtz = new App(this.transport);
+    console.log(path);
     const result = await xtz.getAddress(path, true)
       .catch(e => {
         this.messageService.addError(e);
+        throw e;
       });
     const pk = this.operationService.hex2pk(result.publicKey);
     return pk;
@@ -69,6 +71,9 @@ export class LedgerService {
         this.messageService.addError(e);
       });
     console.log(JSON.stringify(result));
-    return result.signature;
+    if (result && result.signature) {
+      return result.signature;
+    }
+    return null;
   }
 }

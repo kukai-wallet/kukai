@@ -5,6 +5,7 @@ import { ExportService } from '../../services/export/export.service';
 import { ImportService } from '../../services/import/import.service';
 import { InputValidationService } from '../../services/input-validation/input-validation.service';
 import { TranslateService } from '@ngx-translate/core';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -20,6 +21,7 @@ export class NewWalletComponent implements OnInit {
   ekfDownloaded = false;
   activePanel = 1;
   data: any;
+  seed: any;
   pkh: string;
   pk: string;
   MNEMONIC: string;
@@ -30,7 +32,8 @@ export class NewWalletComponent implements OnInit {
     private messageService: MessageService,
     private exportService: ExportService,
     private importService: ImportService,
-    private inputValidationService: InputValidationService
+    private inputValidationService: InputValidationService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -58,14 +61,14 @@ export class NewWalletComponent implements OnInit {
       this.pwd1 = '';
       this.pwd2 = '';
       setTimeout(() => { // Prevent UI from freeze
-        const ans = this.walletService.createEncryptedWallet(this.MNEMONIC, pwd);
+        const ans = this.walletService.createEncryptedWallet(this.MNEMONIC, pwd, '', true);
+        this.seed = ans.seed;
         this.data = ans.data;
         this.pkh = ans.pkh;
         this.pk = ans.pk;
         this.MNEMONIC = '';
         this.mnemonicOut = '';
         this.activePanel++;
-        this.walletService.storeWallet();
       }, 100);
     }
   }
@@ -90,10 +93,14 @@ export class NewWalletComponent implements OnInit {
   reset() {
     this.activePanel = 1;
   }
-  done() {
-    this.importService.importWalletData(this.data, false, this.pk);
+  async done() {
+    const seed = this.seed;
+    this.seed = null;
+    await this.importService.importWalletFromObject(this.data, seed);
+    this.walletService.storeWallet();
     this.data = null;
     this.messageService.addSuccess('Your new wallet is now set up and ready to use!');
+    this.router.navigate(['']);
   }
   export(): string {
     return JSON.stringify(this.data);

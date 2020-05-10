@@ -1,10 +1,9 @@
-import { splitAtPeriod } from '@angular/compiler/src/util';
-
-export type WalletObject = LegacyWalletV2;
-  // | LegacyWalletV1 
-  // |LegacyWalletV2
-  // | LedgerWallet
-  // | HdWallet;
+export type WalletObject =
+  LegacyWalletV1 
+  | LegacyWalletV2
+  | LegacyWalletV3
+  | LedgerWallet
+  | HdWallet;
 
 export class Wallet {
   totalBalanceXTZ: number | null;
@@ -63,7 +62,7 @@ export class Wallet {
   }
 }
 
-export class LegacyWallet extends Wallet {
+export class FullWallet extends Wallet {
   encryptedSeed: string;
   constructor(encryptedSeed: string) {
     super();
@@ -71,11 +70,15 @@ export class LegacyWallet extends Wallet {
   }
 }
 
-export class LegacyWalletV1 extends LegacyWallet {
+export class LegacyWalletV1 extends FullWallet {
   salt: string;
+  constructor(salt: string, encrypedSeed: string) {
+    super(encrypedSeed);
+    this.salt = salt;
+  }
 }
 
-export class LegacyWalletV2 extends LegacyWallet {
+export class LegacyWalletV2 extends FullWallet {
   IV: string;
   constructor(IV: string, encryptedSeed: string) {
     super(encryptedSeed);
@@ -83,15 +86,32 @@ export class LegacyWalletV2 extends LegacyWallet {
   }
 }
 
-export class HdWallet extends Wallet {
-  encryptedSeed: string;
-  encryptedMnemonic: string;
-  accountIndex: number;
-  unusedAddresses: [];
+export class LegacyWalletV3 extends FullWallet {
+  encryptedEntropy: string;
+  IV: string;
+  constructor(IV: string, encryptedSeed: string, encryptedEntropy: string) {
+    super(encryptedSeed);
+    this.IV = IV;
+    this.encryptedEntropy = encryptedEntropy;
+  }
+}
+
+export class HdWallet extends FullWallet {
+  encryptedEntropy: string;
+  IV: string;
+  unusedAccounts: any[];
+  constructor(IV: string, encryptedSeed: string, encryptedEntropy: string) {
+    super(encryptedSeed);
+    this.encryptedEntropy = encryptedEntropy;
+    this.IV = IV;
+    this.unusedAccounts = [];
+  }
 }
 
 export class LedgerWallet extends Wallet {
-  derivationPath: string;
+  constructor() {
+    super();
+  }
 }
 
 // Accounts
@@ -120,20 +140,16 @@ export abstract class Account {
 
 export class ImplicitAccount extends Account {
   originatedAccounts: OriginatedAccount[];
-  constructor(pkh: string, pk: string) {
+  derivationPath?: string;
+  constructor(pkh: string, pk: string, derivationPath?: string) {
     super(pkh, pk, pkh);
     this.originatedAccounts = [];
+    if (derivationPath) {
+      this.derivationPath = derivationPath;
+    }
   }
   isImplicit(): boolean {
     return true;
-  }
-}
-
-export class HdAccount extends ImplicitAccount {
-  derivationPath: string;
-  constructor(pkh: string, pk: string, derivationPath: string) {
-    super(pkh, pk);
-    this.derivationPath = derivationPath;
   }
 }
 
