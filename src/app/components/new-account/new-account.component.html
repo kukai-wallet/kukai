@@ -103,4 +103,4 @@
         </div>
     </div>
 </ng-template>
-<button *ngIf='implicitAccounts' type="button" href (click)="open1(modal1)" class="btn btn-sm btn-outline-primary btn-op" [disabled]="walletService.isLedgerWallet()"> {{ 'NEWACCOUNTCOMPONENT.NEWACCOUNT' | translate }} </button>
+<button *ngIf='implicitAccounts' type="button" href (click)="open1(modal1)" class="btn btn-primary btn-op mt-3 ml-3" [disabled]="walletService.isLedgerWallet()"> {{ 'NEWACCOUNTCOMPONENT.NEWACCOUNT' | translate }} </button>

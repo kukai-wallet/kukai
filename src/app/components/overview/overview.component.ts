@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 // import { DOCUMENT } from '@angular/platform-browser';
 
 import * as copy from "copy-to-clipboard";
@@ -24,6 +24,7 @@ export class OverviewComponent implements OnInit {
   dom: Document;
   implicitAccounts: ImplicitAccount[];
   originatedAccounts: OriginatedAccount[];
+  jdenticon: string = '';
 
   constructor(
     private translate: TranslateService,

@@ -14,10 +14,13 @@ import {
 import { EncryptionService } from "../encryption/encryption.service";
 import { OperationService } from "../operation/operation.service";
 import { utils, hd } from "@tezos-core-tools/crypto-utils";
+import { BehaviorSubject } from 'rxjs';
+import { toSvg } from "jdenticon";
 @Injectable()
 export class WalletService {
   storeKey = `kukai-wallet`;
   wallet: WalletObject;
+  jdenticon: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
   constructor(
     private encryptionService: EncryptionService,
@@ -149,6 +152,7 @@ export class WalletService {
     console.log(
       this.wallet.implicitAccounts[this.wallet.implicitAccounts.length - 1]
     );
+    this.updateJdenticon();
     this.storeWallet();
   }
   addOriginatedAccount(kt: string, manager: string) {
@@ -160,6 +164,8 @@ export class WalletService {
         implicitAccount.pk
       );
       implicitAccount.originatedAccounts.push(origAcc);
+      this.updateJdenticon();
+      this.storeWallet();
     } else {
       console.warn(`Manager address $(manager) not found`);
     }
@@ -186,6 +192,7 @@ export class WalletService {
   */
   clearWallet() {
     this.wallet = null;
+    this.jdenticon = new BehaviorSubject<string>('');
     localStorage.removeItem(this.storeKey);
   }
   /*
@@ -244,6 +251,7 @@ export class WalletService {
       JSON.stringify({ type, data: this.wallet })
     );
   }
+
   loadStoredWallet() {
     const walletData = localStorage.getItem(this.storeKey);
     console.log(walletData);
@@ -253,7 +261,7 @@ export class WalletService {
         const wd = parsedWalletData.data;
         this.deserializeStoredWallet(wd, parsedWalletData.type);
         console.log("Load success!!!");
-        console.log(typeof this.wallet);
+        this.updateJdenticon();
       } else {
         console.log("couldnt load a wallet");
         this.clearWallet();
@@ -320,5 +328,9 @@ export class WalletService {
       }
       this.wallet.implicitAccounts.push(impAcc);
     }
+  }
+
+  updateJdenticon() {
+    this.jdenticon.next(toSvg(this.wallet.implicitAccounts[0].pkh, 100));
   }
 }

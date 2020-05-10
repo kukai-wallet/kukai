@@ -1,6 +1,9 @@
 .mono {
     font-family: "Courier New", Courier, monospace;  
 }
+.balance {
+    text-shadow: 0.2px 0.2px #000000;
+}
 .btn-op {
     width: 120px;
     //margin-right: 5px;
@@ -43,7 +46,7 @@
 }
 
 .row-buttons {
-    padding-top: 5px;
+    padding-top: 10px;
 }
 
 .col-border {
@@ -70,7 +73,7 @@
     background-color: #b3ffb3 !important;
 }
 .pkh-row:hover { //#e6ffe6
-    background-color: #e6ffe6;
+    background-color: #c8ced3;
     cursor: pointer !important;
 }
 .add-button:disabled {
@@ -102,6 +105,12 @@ td {
 table { 
     width : 100%; 
     table-layout: fixed; 
+    color: white !important;
+}
+
+
+.overview-card {
+  height: 160px;
 }
 
 /* Responsive breakpoints */

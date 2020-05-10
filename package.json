@@ -57,6 +57,7 @@
     "file-saver": "^2.0.2",
     "flag-icon-css": "^3.4.6",
     "font-awesome": "^4.7.0",
+    "jdenticon": "^2.2.0",
     "jquery": "^3.4.1",
     "libsodium-wrappers": "^0.7.5",
     "moment": "^2.24.0",

@@ -23,6 +23,23 @@
         </div>
     </ng-template>
 
+<!--       <div *ngIf='accounts' (click)="open1(modal1)" class="card text-white bg-indigo receive-card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-12 text-center">
+              <div class="text-value">{{ 'RECEIVECOMPONENT.RECEIVE' | translate }}</div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12 text-center">
+              <div class="h1 text-muted pt-3">
+                <i class="fa fa-qrcode" style="font-size: 45px;"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> -->
+
     <!-- Showing different Receive Format according to actionButtonString -->
-    <button type="button" (click)="open1(modal1)" class="btn btn-sm btn-outline-primary btn-op">{{ 'RECEIVECOMPONENT.RECEIVE' | translate }}</button>
+    <button type="button" (click)="open1(modal1)" class="btn btn-outline-primary btn-op">{{ 'RECEIVECOMPONENT.RECEIVE' | translate }}</button>
 </ng-container>
