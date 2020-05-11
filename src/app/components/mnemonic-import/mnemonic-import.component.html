@@ -67,6 +67,7 @@
                                 <small class="form-text text-left" *ngIf="!tge"> {{ 'MNEMONICIMPORTCOMPONENT.INFOPKH' | translate }} </small>
                             </div>
                         </div>
+                        <ng-container *ngIf="!tge">
                         <div class="form-inline form-check row input-left">
                             <input class="form-check-input" (change)="hdImport = !hdImport" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
                             <label class="form-check-label" for="exampleRadios1">
@@ -79,6 +80,7 @@
                               Legacy wallet
                             </label>
                           </div>
+                        </ng-container>
                     </form>
                 </div>
             </div>
