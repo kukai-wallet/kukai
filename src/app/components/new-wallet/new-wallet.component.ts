@@ -41,7 +41,7 @@ export class NewWalletComponent implements OnInit {
   }
   generateSeed() {
     this.MNEMONIC = this.walletService.createNewWallet();
-    this.mnemonicOut = this.MNEMONIC.replace(/((?:.*?\s){4}.*?)\s/g, '$1\n'); // 5 words per line
+    this.mnemonicOut = this.MNEMONIC.replace(/((?:.*?\s){5}.*?)\s/g, '$1\n'); // 6 words per line
     this.activePanel++;
   }
   verifyView() {

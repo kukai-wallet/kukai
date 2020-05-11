@@ -30,7 +30,7 @@ export class WalletService {
     Wallet creation
   */
   createNewWallet(): string {
-    return utils.generateMnemonic();
+    return utils.generateMnemonic(24);
   }
   createEncryptedWallet(
     mnemonic: string,
