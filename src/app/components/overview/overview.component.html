@@ -10,9 +10,8 @@
                   id="selected-pkh-jdenticon"
                   width="80"
                   height="80"
-                  [attr.data-jdenticon-value]="jdenticon"
                   class="pt-1"
-                ></canvas>
+                [hidden]="!activeAccount"></canvas>
               </div>
               <div class="col-md-8 col-9 text-right">
                 <div class="text-value">Selected Account</div>
@@ -116,7 +115,7 @@
             <app-new-account *ngIf="this.walletService.wallet && !this.walletService.isHdWallet()"
               [activeAccount]="activeAccount && activeAccount.isImplicit() ? activeAccount : implicitAccounts[0]">
             </app-new-account>
-            <button *ngIf="this.walletService.wallet && this.walletService.isHdWallet()" class="btn btn-sm btn-outline-primary btn-op add-button" (click)="addPkh()" [disabled]="!openPkhSpot()">{{ 'NEWACCOUNTCOMPONENT.NEWACCOUNT' | translate }}</button>
+            <button *ngIf="this.walletService.wallet && this.walletService.isHdWallet()" class="btn btn-primary btn-op mt-3 ml-3" (click)="addPkh()" [disabled]="!openPkhSpot()">{{ 'NEWACCOUNTCOMPONENT.NEWACCOUNT' | translate }}</button>
           </div>
           <div class="card-body">
             <table class="table">

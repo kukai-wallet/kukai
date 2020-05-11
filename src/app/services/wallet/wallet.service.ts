@@ -152,7 +152,9 @@ export class WalletService {
     console.log(
       this.wallet.implicitAccounts[this.wallet.implicitAccounts.length - 1]
     );
-    this.updateJdenticon();
+    if (this.wallet.implicitAccounts.length === 1) {
+      this.updateJdenticon();
+    }
     this.storeWallet();
   }
   addOriginatedAccount(kt: string, manager: string) {
@@ -331,6 +333,6 @@ export class WalletService {
   }
 
   updateJdenticon() {
-    this.jdenticon.next(toSvg(this.wallet.implicitAccounts[0].pkh, 100));
+    this.jdenticon.next(toSvg(this.wallet.implicitAccounts[0].address, 100));
   }
 }

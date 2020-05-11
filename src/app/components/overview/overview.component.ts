@@ -2,6 +2,7 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 // import { DOCUMENT } from '@angular/platform-browser';
 
 import * as copy from "copy-to-clipboard";
+import * as jdenticon from 'jdenticon';
 
 import { TranslateService } from "@ngx-translate/core"; // Multiple instances created ?
 import { WalletService } from "../../services/wallet/wallet.service";
@@ -24,7 +25,6 @@ export class OverviewComponent implements OnInit {
   dom: Document;
   implicitAccounts: ImplicitAccount[];
   originatedAccounts: OriginatedAccount[];
-  jdenticon: string = '';
 
   constructor(
     private translate: TranslateService,
@@ -40,11 +40,15 @@ export class OverviewComponent implements OnInit {
       console.log(this.implicitAccounts);
     }
   }
+  ngAfterViewInit() {
+    jdenticon.update("#selected-pkh-jdenticon");
+  }
   click(account: Account) {
     if (this.activeAccount && this.activeAccount.address === account.address) {
       this.activeAccount = null;
     } else {
       this.activeAccount = account;
+      jdenticon.update("#selected-pkh-jdenticon", this.activeAccount.address);
     }
     console.log(this.activeAccount ? this.activeAccount.address : "none");
   }
