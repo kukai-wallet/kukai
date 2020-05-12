@@ -201,7 +201,7 @@ export class CoordinatorService {
       if (ans.success) {
         this.balanceService.updateAccountBalance(
           this.walletService.wallet.getAccount(pkh),
-          ans.payload.balance
+          Number(ans.payload.balance)
         );
         const acc = this.walletService.wallet.getAccount(pkh);
         this.delegateService.handleDelegateResponse(acc, ans.payload.delegate);

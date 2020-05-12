@@ -86,8 +86,6 @@ export class ImportService {
     }
   }
   async importWalletFromObject(data: any, seed: any): Promise<boolean> {
-    console.log(data);
-    console.log(seed);
     this.coordinatorService.stopAll();
     if (data.walletType === 4 && data.version === 3) {
       // HD

@@ -7,6 +7,7 @@ import { MessageService } from '../message/message.service';
 import { TzrateService } from '../tzrate/tzrate.service';
 import { OperationService } from '../operation/operation.service';
 import { Account } from '../wallet/wallet';
+import { isNullOrUndefined } from 'util';
 
 @Injectable()
 export class BalanceService {
@@ -28,7 +29,7 @@ export class BalanceService {
     this.operationService.getBalance(account.address)
       .subscribe((ans: any) => {
         if (ans.success) {
-          this.updateAccountBalance(account, ans.payload.balance);
+          this.updateAccountBalance(account, Number(ans.payload.balance));
         } else {
           console.log('Balance Error: ' + JSON.stringify(ans.payload.msg));
         }
@@ -36,13 +37,9 @@ export class BalanceService {
   }
   updateAccountBalance(account: Account, newBalance: number) {
     if (!account.balanceXTZ || newBalance !== account.balanceXTZ) {
-      if (account.balanceXTZ) {
-        let balanceUpdated = '';
-        this.translate.get('BALANCESERVICE.BALANCEUPDATE').subscribe(
-            (res: string) => balanceUpdated = res
-        );
+      if (!isNullOrUndefined(account.balanceXTZ)) {
+        const balanceUpdated = this.translate.instant('BALANCESERVICE.BALANCEUPDATE');
         this.messageService.add(balanceUpdated + ' ' + account.address);
-        // this.messageService.add('Balance updated for: ' + this.walletService.wallet.accounts[index].pkh);
       }
       account.balanceXTZ = newBalance;
       this.updateTotalBalance();
@@ -54,7 +51,7 @@ export class BalanceService {
     let balance = 0;
     let change = false;
     for (const account of this.walletService.wallet.getAccounts()) {
-      if (account.balanceXTZ) {
+      if (!isNullOrUndefined(account.balanceXTZ)) {
         balance = balance + Number(account.balanceXTZ);
         change = true;
       }

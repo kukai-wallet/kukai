@@ -256,7 +256,6 @@ export class WalletService {
 
   loadStoredWallet() {
     const walletData = localStorage.getItem(this.storeKey);
-    console.log(walletData);
     if (walletData && walletData !== "undefined") {
       const parsedWalletData = JSON.parse(walletData);
       if (parsedWalletData.type && parsedWalletData.data) {
