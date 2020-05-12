@@ -52,10 +52,12 @@ describe('[ ExportService ]', () => {
 		beforeEach(() => {
 
 			data = {
-				provider: 'Kukai',
-				version: 1.0,
-				pkh: 'public key hash',
-				walletType: 2
+				encryptedEntropy: "574bc1c9521bde63185dedc3a0a0ba7f8db98d57==13cc85f6fefaaa7e87bdcdd11c175707",
+				encryptedSeed: "5d88a97d5b4acf6fb9c3ee6b772a950899f7123564d9457a6670f0744f4a1bcd==dcb36d2ead10b455153cb1f73c20b87d",
+				iv: "0dfdc3ab773f499411696d1cb80500dd",
+				provider: "Kukai",
+				version: 3,
+				walletType: 0
 			};
 
 			/** filesaver.saveAs() arguments */
@@ -65,8 +67,6 @@ describe('[ ExportService ]', () => {
 			/** spy on downloadWallet() function */
 			spyOn(service, 'downloadWallet').and.callThrough();
 
-			/** spy on exportkeystore, return mock data */
-			spyOn(walletService, 'exportKeyStore').and.returnValue(data);
 
 			/** spy on saveAs call, return nothing. we don't want to actually download  */
 			spyOn(FileSaver, 'saveAs').and.callFake( function() {   } );
@@ -74,8 +74,8 @@ describe('[ ExportService ]', () => {
 		});
 
 		it('should export the keystore', () => {
-			service.downloadWallet();
-			expect(walletService.exportKeyStore).toHaveBeenCalled();
+			service.downloadWallet(data);
+			expect(service.downloadWallet).toHaveBeenCalled();
 		});
 
 		it('should save file wallet.tez', () => {
@@ -101,57 +101,6 @@ describe('[ ExportService ]', () => {
 			// download full wallet
 			service.downloadWallet(data);
 
-		});
-
-	});
-
-	describe ('> Download View-Only Wallet', () => {
-		let pk: string;
-
-		beforeEach(() => {
-			// set mock public key
-			pk = 'mockseed';
-
-			// set mock view-wallet export keystore
-			data = {
-				provider: 'Kukai',
-				version: 1.0,
-				walletType: 1,
-				pkh: 'mockpkh',
-				pk: 'mockseed'
-			};
-
-			/** filesaver.saveAs() arguments */
-			fileblob = new Blob( [JSON.stringify(data, null, 4)], { type: 'application/json' } );
-			filename = 'view-only_wallet.tez';
-
-			/** spy on downloadvowallet */
-			spyOn(service, 'downloadViewOnlyWallet').and.callThrough();
-
-			/** spy on downloadWallet() function */
-			spyOn(service, 'downloadWallet').and.callThrough();
-
-			/** spy on saveAs call, fake return to do nothing.
-			 * we don't want to actually download anything just know properties of  */
-			spyOn(FileSaver, 'saveAs').and.callFake( function() {   } );
-
-			/** spy on exportkeystore, return mock data */
-			spyOn(walletService, 'exportKeyStore').and.returnValue(data);
-
-			service.downloadViewOnlyWallet(pk);
-
-		});
-
-		it('should export the keystore', () => {
-				expect(walletService.exportKeyStore).toHaveBeenCalled();
-		});
-
-		it('should pass keystore data downloadWallet', () => {
-			expect(service.downloadWallet).toHaveBeenCalledWith(data);
-		});
-
-		it('should save file view-only_wallet.tez', () => {
-			expect(FileSaver.saveAs).toHaveBeenCalledWith(fileblob, filename);
 		});
 
 	});

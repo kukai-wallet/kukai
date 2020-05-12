@@ -23,7 +23,7 @@ import { ErrorHandlingPipe } from '../../src/app/pipes/error-handling.pipe';
 import { WalletServiceStub } from '../mocks/wallet.mock';
 
 //-----------Interface Exports-------------
-export { Account, Activity, Balance, KeyPair, Wallet, WalletType } from '../../spec/mocks/interfaces.mock';
+export { KeyPair } from '../../spec/mocks/interfaces.mock';
 
 //-----------Service Exports-------------
 export { WalletService } from '../../src/app/services/wallet/wallet.service';

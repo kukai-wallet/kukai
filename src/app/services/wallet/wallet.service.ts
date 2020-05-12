@@ -264,6 +264,7 @@ export class WalletService {
         this.deserializeStoredWallet(wd, parsedWalletData.type);
         console.log("Load success!!!");
         this.updateJdenticon();
+        console.log(this.wallet);
       } else {
         console.log("couldnt load a wallet");
         this.clearWallet();

@@ -11,11 +11,12 @@ import { WalletService } from '../wallet/wallet.service';
 import { OperationService } from '../operation/operation.service';
 import { TranslateLoader, TranslateFakeLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ErrorHandlingPipe } from '../../pipes/error-handling.pipe';
+import { WalletServiceStub } from '../../../../spec/mocks/wallet.mock';
 
 // class mocks
-import { Account, Activity, Balance, Wallet, WalletType } from '../../../../spec/mocks/interfaces.mock';
 import { EncryptionService } from '../encryption/encryption.service';
 import 'rxjs/add/operator/mergeMap';
+import { ImplicitAccount } from '../wallet/wallet';
 
 /**
  * Suite: DelegateService
@@ -33,9 +34,9 @@ describe('[ DelegateService ]', () => {
 	// testing variables
 	const nodeurl = 'https://rpc.tezrpc.me/';
 	let delegate: string;
-	let pkh: string;
+	let account: ImplicitAccount;
 
-	let accounts: Account[];
+	let accounts: ImplicitAccount[];
 	let networkresponses: any[];
 
 	beforeEach(() => {
@@ -59,37 +60,10 @@ describe('[ DelegateService ]', () => {
 		httpMock  = TestBed.get(HttpTestingController);
 
 		// create mock empty full wallet
-		walletsrv.wallet = walletsrv.emptyWallet(0);
+		walletsrv.wallet = new WalletServiceStub().emptyWallet(1);
 
-		const emptybalance: Balance = <Balance>{
-			balanceXTZ: null,
-			pendingXTZ: null,
-			balanceFiat: null,
-			pendingFiat: null
-		  };
 
-		accounts = [
-			{
-				pkh: 'tz1primary',
-				delegate: '',
-				balance: emptybalance,
-				numberOfActivites: 0,
-				activities: []
-			},
-			{
-				pkh: 'KT1contract1',
-				delegate: '',
-				balance: emptybalance,
-				numberOfActivites: 0,
-				activities: []
-			},
-			{
-				pkh: 'KT1contract2',
-				delegate: 'tz1tacocity',
-				balance: emptybalance,
-				numberOfActivites: 0,
-				activities: []
-			}];
+		accounts = walletsrv.wallet.implicitAccounts;
 
 		networkresponses = [
 			{
@@ -125,7 +99,7 @@ describe('[ DelegateService ]', () => {
 				'counter': '10'
 			}];
 
-		pkh = accounts[1].pkh;
+		account = accounts[0];
 		delegate = networkresponses[1].delegate.value;
 
 		// configure spies
@@ -159,8 +133,8 @@ describe('[ DelegateService ]', () => {
 	 */
 
 	it('should add account if accounts[] is empty', () => {
-		service.handleDelegateResponse(pkh, delegate);
-		expect(walletsrv.wallet.accounts[0].delegate).toEqual(delegate);
+		service.handleDelegateResponse(account, delegate);
+		expect(walletsrv.wallet.implicitAccounts[0].delegate).toEqual(delegate);
 		expect(walletsrv.storeWallet).toHaveBeenCalled();
 	});
 

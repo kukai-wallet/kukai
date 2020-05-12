@@ -7,6 +7,7 @@ import { TzrateService } from './tzrate.service';
 // class dependencies
 import { HttpClientModule } from '@angular/common/http';
 import { WalletService } from '../wallet/wallet.service';
+import { WalletTools } from '../../../../spec/mocks/library.mock';
 
 // provider sub-dependencies
 import { TranslateService, TranslateLoader, TranslateFakeLoader, TranslateModule } from '@ngx-translate/core';
@@ -15,6 +16,7 @@ import { OperationService } from '../operation/operation.service';
 import { TestBed } from '@angular/core/testing';
 import { ErrorHandlingPipe } from '../../pipes/error-handling.pipe';
 import { Account, Wallet, Balance } from '../../interfaces';
+import { WalletObject } from '../wallet/wallet';
 
 
 /**
@@ -28,6 +30,7 @@ describe('[ TzrateService ]', () => {
 	// class dependencies
 	let walletservice: WalletService;
 	let httpMock: HttpTestingController;
+	let walletTols = new WalletTools();
 
 	// mock network data
 	const apiUrl = 'https://api.coingecko.com/api/v3/simple/price?ids=tezos&vs_currencies=usd';
@@ -62,28 +65,7 @@ describe('[ TzrateService ]', () => {
 		walletservice = TestBed.get(WalletService);
 		httpMock = TestBed.get(HttpTestingController);
 
-		const mockbalance: Balance = {
-			balanceXTZ: 1000000,
-			pendingXTZ: null,
-			balanceFiat: 0,
-			pendingFiat: null
-		};
-
-		const mockaccount: Account[] = [{
-			pkh: 'mockpkh',
-			delegate: '',
-			balance: mockbalance,
-			numberOfActivites: 0,
-			activities: null
-		}];
-
-		walletservice.wallet = <Wallet>
-			{
-				XTZrate: 0,
-				seed: 'mockseed',
-				balance: mockbalance,
-				accounts: mockaccount
-			};
+		walletservice.wallet = walletTols.generateWalletV2();
 		// spies
 		spyOn(service, 'getTzrate').and.callThrough();
 		spyOn(service, 'updateFiatBalances').and.callThrough();
@@ -117,7 +99,7 @@ describe('[ TzrateService ]', () => {
 
 		describe('> Update Account Balance', () => {
 			it('should update wallet total balance from $0 to $2.07', () => {
-				expect(walletservice.wallet.balance.balanceFiat.toString()).toEqual('2.07');
+				expect(walletservice.wallet.totalBalanceUSD.toString()).toEqual('0.000621');
 			});
 
 			it('should call wallet service storeWallet()', () => {

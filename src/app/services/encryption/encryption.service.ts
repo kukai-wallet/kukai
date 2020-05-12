@@ -67,7 +67,7 @@ export class EncryptionService {
     const chiphertext = cipher.output.toHex() + '==' + cipher.mode.tag.toHex();
     return { chiphertext: chiphertext, iv: salty.toString('hex') };
   }
-  decrypt_v2(chipher: string, password: string, salt: string): Buffer {
+  decrypt_v2(chipher: string, password: string, salt: string): string {
     try {
       const parts = chipher.split('==');
       const chiphertext = parts[0];

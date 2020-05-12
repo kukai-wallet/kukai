@@ -21,6 +21,7 @@ import { CoordinatorService } from '../coordinator/coordinator.service';
 import { TzrateService } from '../tzrate/tzrate.service';
 import { ActivityService } from '../activity/activity.service';
 import { DelegateService } from '../delegate/delegate.service';
+import { FullWallet, LegacyWalletV2 } from '../wallet/wallet';
 
 
 
@@ -134,31 +135,30 @@ describe('[ ImportService ]', () => {
 			});
 
 			it('should import full wallet v2', () => {
-				service.importWalletData(walletdata2, true, '', password2);
+				service.importWalletFromJson(walletdata2, password2);
 				console.log(wallet.wallet);
 
 				// expect a full wallet
-				expect(wallet.wallet.type).toBe(0);
+				expect(wallet.wallet instanceof LegacyWalletV2).toBeTruthy();
 
 				// expect encryption version 2
-				expect(wallet.wallet.encryptionVersion).toBe(2);
+				if (wallet.wallet instanceof LegacyWalletV2) {
+					expect(wallet.wallet.IV).toBe("b838931b9b7507fb8d5be5ecef08c2f5");
 
-				// expect salt to be 'b838931b9b7507fb8d5be5ecef08c2f5'
-				expect(wallet.wallet.salt).toBe('b838931b9b7507fb8d5be5ecef08c2f5');
-
-				// expect seed to be '64324eedf2604c5af143f32ceb6a1beb9e717f745b209504718ec8cc42211e44==fc09b629d9ee0aeefac57d2e066914c2'
-				expect(wallet.wallet.seed).toBe('64324eedf2604c5af143f32ceb6a1beb9e717f745b209504718ec8cc42211e44==fc09b629d9ee0aeefac57d2e066914c2');
+					// expect seed to be '64324eedf2604c5af143f32ceb6a1beb9e717f745b209504718ec8cc42211e44==fc09b629d9ee0aeefac57d2e066914c2'
+					expect(wallet.wallet.encryptedSeed).toBe('64324eedf2604c5af143f32ceb6a1beb9e717f745b209504718ec8cc42211e44==fc09b629d9ee0aeefac57d2e066914c2');
+				}
 
 				// expect pkh to be 'tz1NPLZjpov8oFBT3qfdWBedktALQZjs5Hkt'
-				expect(wallet.wallet.accounts[0].pkh).toBe('tz1NPLZjpov8oFBT3qfdWBedktALQZjs5Hkt');
+				expect(wallet.wallet.implicitAccounts[0].pkh).toBe('tz1NPLZjpov8oFBT3qfdWBedktALQZjs5Hkt');
 
 			});
 		});
 
 		describe('> Handle Importing Bad Data', () => {
 			it('should throw an error', () => {
-				service.importWalletData('baddata', true, '', password);
-				expect(wallet.wallet).toBeNull();
+				service.importWalletFromJson('baddata', password);
+				expect(wallet.wallet).toBeFalsy();
 			});
 		});
 

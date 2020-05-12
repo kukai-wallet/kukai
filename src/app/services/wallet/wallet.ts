@@ -168,6 +168,7 @@ export class Activity {
   failed: boolean;
   amount: number;
   source: string;
+  fee: number;
   destination: string;
   hash: string;
   timestamp: string;

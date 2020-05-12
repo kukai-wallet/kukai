@@ -48,7 +48,7 @@ describe('[ ActivityService ]', () => {
 		walletservice = TestBed.get(WalletService);
 
 		// generate random wallet
-		walletservice.wallet = mockLib.generateWallet('encryptedsecretseed', 0, ['tz1primary', 'KT1contract1', 'KT1contract2']);
+		walletservice.wallet = mockLib.generateWalletV1();
 
 	});
 
@@ -56,11 +56,6 @@ describe('[ ActivityService ]', () => {
 		expect(service).toBeTruthy();
 	});
 
-	it('should get the index of account pkh', () => {
-		const index = service.getIndex('KT1contract1');
-		expect(index).toBe(1);
-
-	});
 
 	/*it('should get the transaction counter for given pkh', () => {
 		const pkh = walletservice.wallet.accounts[0].pkh;

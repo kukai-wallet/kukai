@@ -50,7 +50,7 @@ describe('[ EncryptionService ]', () => {
 
 		it('should throw error for unrecognized encryption version', () => {
 			expect(function() {
-				service.encrypt('plaintext', 'password', 3);
+				service.encrypt('plaintext', 'password', 5);
 			}).toThrowError('Unrecognized encryption format');
 		});
 
@@ -82,7 +82,7 @@ describe('[ EncryptionService ]', () => {
 
 		it('should throw error for unrecognized encryption version', () => {
 			expect(function() {
-				service.decrypt('ciphertext', 'password', 'salt', 3);
+				service.decrypt('ciphertext', 'password', 'salt', 5);
 			}).toThrowError('Unrecognized encryption format');
 		});
 

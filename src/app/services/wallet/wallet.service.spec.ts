@@ -9,9 +9,11 @@ import { WalletService } from './wallet.service';
 import { OperationService } from '../operation/operation.service';
 import { EncryptionService } from '../encryption/encryption.service';
 import * as bip39 from 'bip39';
+import { utils, hd } from "@tezos-core-tools/crypto-utils";
 
 // mocking
-import { KeyPair, Balance, http_imports, translate_imports, rx, walletsrv_providers, Wallet} from '../../../../spec/helpers/service.helper';
+import { KeyPair, http_imports, translate_imports, rx, walletsrv_providers} from '../../../../spec/helpers/service.helper';
+import { WalletObject, LegacyWalletV1, LegacyWalletV2 } from './wallet';
 
 /**
  * Suite: WalletService
@@ -23,8 +25,7 @@ describe('[ WalletService ]', () => {
 
 	// mocking tools
 	const walletgen: WalletTools = new WalletTools();
-	const mockwallet: Wallet = walletgen.generateWallet('encryptedsecretseed', 0,
-		['tz1UtdtjoFuTVgPjG6cXY5JZnZv1yieJj3Fe', 'KT1contract1', 'KT1contract2']);
+	const mockwallet: WalletObject = walletgen.generateWalletV1();
 
   	beforeEach(() => {
 		TestBed.configureTestingModule({
@@ -52,12 +53,11 @@ describe('[ WalletService ]', () => {
 	});
 
 	it('should get primary pkh salt', () => {
-		const salt = service.getSalt(service.wallet.accounts[0].pkh);
-		expect(salt).toEqual('UtdtjoFuTVgPjG6c');
-	});
-	it('should get index of pkh', () => {
-		const index = service.getIndexFromPkh(service.wallet.accounts[0].pkh);
-		expect(index).toEqual(0);
+		let salt;
+		if (service.wallet instanceof LegacyWalletV1) {
+			salt = service.wallet.salt;
+		}
+		expect(salt).toEqual('U2R9zKaKW6EjngeL');
 	});
 
 	describe('> Create Wallet(s)', () => {
@@ -68,7 +68,7 @@ describe('[ WalletService ]', () => {
 		});
 
 		it('should create wallet', () => {
-			spyOn(bip39, 'generateMnemonic').and.returnValue(mnemonic);
+			spyOn(utils, 'generateMnemonic').and.returnValue(mnemonic);
 			const x = service.createNewWallet();
 			expect(x).toBe(mnemonic);
 		});
