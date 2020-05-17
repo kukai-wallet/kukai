@@ -58,7 +58,6 @@ export class OperationService {
         };
         return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/forge/operations', fop)
           .pipe(flatMap((opbytes: any) => {
-            this.decodeOpBytes(opbytes);
             const sopbytes: string = opbytes + Array(129).join('0');
             fop.protocol = header.protocol;
             fop.signature = 'edsigtXomBKi5CTRf5cjATJWSyaRvhfYNHqSUGrn4SdbYRcGwQrUGjzEfQDTuqHhuA8b2d8NarZjz8TRf65WkpQmo423BtomS8Q';
@@ -290,44 +289,47 @@ export class OperationService {
     console.log('fop to send: ' + JSON.stringify(fop));
     return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/forge/operations', fop)
       .pipe(flatMap((opbytes: any) => {
-        if (!this.validOpBytes(fop, opbytes)) {
-          throw new Error('ValidationError');
-        }
-        if (!keys.sk) {
-          fop.signature = 'edsigtXomBKi5CTRf5cjATJWSyaRvhfYNHqSUGrn4SdbYRcGwQrUGjzEfQDTuqHhuA8b2d8NarZjz8TRf65WkpQmo423BtomS8Q';
-          return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/scripts/run_operation', { operation: fop, chain_id: header.chain_id })
-            .pipe(flatMap((applied: any) => {
-              console.log('applied: ' + JSON.stringify(applied));
-              this.checkApplied([applied]);
-              return of(
-                {
-                  success: true,
-                  payload: {
-                    unsignedOperation: opbytes
-                  }
-                });
-            }));
-        } else {
-          fop.protocol = header.protocol;
-          const signed = this.sign(opbytes, keys.sk);
-          const sopbytes = signed.sbytes;
-          fop.signature = signed.edsig;
-          return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/preapply/operations', [fop])
-            .pipe(flatMap((applied: any) => {
-              console.log('applied: ' + JSON.stringify(applied));
-              this.checkApplied(applied);
-              console.log('sop: ' + sopbytes);
-              return this.http.post(this.nodeURL + '/injection/operation', JSON.stringify(sopbytes), httpOptions)
-                .pipe(flatMap((final: any) => {
-                  let newPkh = null;
-                  if (origination) {
-                    newPkh = applied[0].contents[fop.contents.length - 1].
-                      metadata.operation_result.originated_contracts[0];
-                  }
-                  return this.opCheck(final, newPkh);
+        return this.localForge(fop)
+          .pipe(flatMap((localOpbytes: string) => {
+            if (opbytes !== localOpbytes) {
+              throw new Error('ValidationError');
+            }
+            if (!keys.sk) {
+              fop.signature = 'edsigtXomBKi5CTRf5cjATJWSyaRvhfYNHqSUGrn4SdbYRcGwQrUGjzEfQDTuqHhuA8b2d8NarZjz8TRf65WkpQmo423BtomS8Q';
+              return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/scripts/run_operation', { operation: fop, chain_id: header.chain_id })
+                .pipe(flatMap((applied: any) => {
+                  console.log('applied: ' + JSON.stringify(applied));
+                  this.checkApplied([applied]);
+                  return of(
+                    {
+                      success: true,
+                      payload: {
+                        unsignedOperation: opbytes
+                      }
+                    });
                 }));
-            }));
-        }
+            } else {
+              fop.protocol = header.protocol;
+              const signed = this.sign(opbytes, keys.sk);
+              const sopbytes = signed.sbytes;
+              fop.signature = signed.edsig;
+              return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/preapply/operations', [fop])
+                .pipe(flatMap((applied: any) => {
+                  console.log('applied: ' + JSON.stringify(applied));
+                  this.checkApplied(applied);
+                  console.log('sop: ' + sopbytes);
+                  return this.http.post(this.nodeURL + '/injection/operation', JSON.stringify(sopbytes), httpOptions)
+                    .pipe(flatMap((final: any) => {
+                      let newPkh = null;
+                      if (origination) {
+                        newPkh = applied[0].contents[fop.contents.length - 1].
+                          metadata.operation_result.originated_contracts[0];
+                      }
+                      return this.opCheck(final, newPkh);
+                    }));
+                }));
+            }
+          }));
       }));
   }
   /*
@@ -368,10 +370,10 @@ export class OperationService {
           throw new Error(applied[0].contents[i].metadata.operation_result.errors[0].id); // prevent failed operations
         } else if (applied[0].contents[i].metadata.internal_operation_results &&
           applied[0].contents[i].metadata.internal_operation_results[0].result.errors) {
-            throw new Error(applied[0].contents[i].metadata.internal_operation_results[0].result.errors[0].id);
-          } else {
-            throw new Error('Uncatched error in preapply');
-          }
+          throw new Error(applied[0].contents[i].metadata.internal_operation_results[0].result.errors[0].id);
+        } else {
+          throw new Error('Uncatched error in preapply');
+        }
       }
     }
   }
@@ -563,9 +565,6 @@ export class OperationService {
     } catch (e) {
       return false;
     }
-  }
-  generateMnemonic(): string {
-    return bip39.generateMnemonic(160);
   }
   pk2pkh(pk: string): string {
     if (pk.length !== 54 || pk.slice(0, 4) !== 'edpk') {
@@ -838,18 +837,6 @@ export class OperationService {
     } else {
       throw new Error('TagError');
     }
-  }
-  /*
-    Validate operation bytes
-  */
-  validOpBytes(fop: any, opbytes: string): boolean {
-    const fop2: any = this.decodeOpBytes(opbytes);
-    console.log(JSON.stringify(fop));
-    console.log(JSON.stringify(fop2));
-    if (JSON.stringify(fop) === JSON.stringify(fop2)) {
-      return true; // Client and node agree the opbytes are correct!
-    }
-    return false;
   }
   /*
     Output
