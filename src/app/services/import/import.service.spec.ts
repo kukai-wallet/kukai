@@ -252,6 +252,7 @@ describe('[ ImportService ]', () => {
 					expect(wallet.wallet.IV).toBe(hd.keyStore.iv);
 					expect(wallet.wallet.encryptedSeed).toBe(hd.keyStore.encryptedSeed);
 					expect(wallet.wallet.encryptedEntropy).toBe(hd.keyStore.encryptedEntropy);
+					expect(wallet.revealMnemonicPhrase(hd.password)).toEqual(hd.mnemonic);
 				}
 				expect(wallet.wallet.implicitAccounts[0].activitiesCounter).toBe(0);
 				expect(wallet.wallet.implicitAccounts[0].pkh).toBe('tz1TogVQurVUhTFY1d62QJGmkMdEadM9MNpu');
@@ -264,6 +265,7 @@ describe('[ ImportService ]', () => {
 				expect(wallet.wallet.implicitAccounts[1].pk).toBe('edpkvaNoKcTrQ8jBVHkVUzwZnLAaZT98ALxucqcfmkPAWGXuRVM9Db');
 				expect(wallet.wallet.implicitAccounts[1].derivationPath).toBe("44'/1729'/1'/0'");
 				expect(wallet.wallet.implicitAccounts[2]).not.toBeDefined();
+
 			});
 		});
 	});

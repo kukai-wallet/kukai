@@ -122,7 +122,7 @@ export class WalletService {
       return this.operationService.seed2keyPair(seed);
     }
   }
-  revealMnemonicPhrase(pwd: string = "cdwkgkn75KH"): string {
+  revealMnemonicPhrase(pwd: string): string {
     if (
       this.wallet &&
       (this.wallet instanceof HdWallet || this.wallet instanceof LegacyWalletV3)
@@ -135,8 +135,7 @@ export class WalletService {
         3
       );
       if (entropy) {
-        const mnemonic = utils.entropyToMnemonic(entropy);
-        console.log(mnemonic);
+        return utils.entropyToMnemonic(entropy);
       } else {
         console.log("Invalid password");
       }
