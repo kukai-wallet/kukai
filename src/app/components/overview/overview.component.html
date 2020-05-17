@@ -112,9 +112,6 @@
             <i class="fa fa-align-justify"></i> All Accounts (Click to select)
           </div>
           <div>
-            <app-new-account *ngIf="this.walletService.wallet && !this.walletService.isHdWallet()"
-              [activeAccount]="activeAccount && activeAccount.isImplicit() ? activeAccount : implicitAccounts[0]">
-            </app-new-account>
             <button *ngIf="this.walletService.wallet && this.walletService.isHdWallet()" class="btn btn-primary btn-op mt-3 ml-3" (click)="addPkh()" [disabled]="!openPkhSpot()">{{ 'NEWACCOUNTCOMPONENT.NEWACCOUNT' | translate }}</button>
           </div>
           <div class="card-body">
