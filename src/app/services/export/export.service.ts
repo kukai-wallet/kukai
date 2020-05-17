@@ -21,7 +21,7 @@ export class ExportService {
     }
     saveAs(blob, filename);
   }
-  
+
   downloadOperationData(hex: string, signed: boolean) {
     const data = {
       hex: hex,

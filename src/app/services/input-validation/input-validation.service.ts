@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { OperationService } from '../operation/operation.service';
-import { utils, hd } from "@tezos-core-tools/crypto-utils";
+import { utils, hd } from '@tezos-core-tools/crypto-utils';
 import * as zxcvbn from 'zxcvbn';
 
 import { TranslateService } from '@ngx-translate/core';

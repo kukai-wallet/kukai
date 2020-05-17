@@ -1,5 +1,5 @@
-import { Injectable } from "@angular/core";
-import { KeyPair, WalletType } from "./../../interfaces";
+import { Injectable } from '@angular/core';
+import { KeyPair, WalletType } from './../../interfaces';
 import {
   WalletObject,
   HdWallet,
@@ -10,12 +10,12 @@ import {
   ImplicitAccount,
   LedgerWallet,
   OriginatedAccount,
-} from "./wallet";
-import { EncryptionService } from "../encryption/encryption.service";
-import { OperationService } from "../operation/operation.service";
-import { utils, hd } from "@tezos-core-tools/crypto-utils";
+} from './wallet';
+import { EncryptionService } from '../encryption/encryption.service';
+import { OperationService } from '../operation/operation.service';
+import { utils, hd } from '@tezos-core-tools/crypto-utils';
 import { BehaviorSubject } from 'rxjs';
-import { toSvg } from "jdenticon";
+import { toSvg } from 'jdenticon';
 @Injectable()
 export class WalletService {
   storeKey = `kukai-wallet`;
@@ -35,7 +35,7 @@ export class WalletService {
   createEncryptedWallet(
     mnemonic: string,
     password: string,
-    passphrase: string = "",
+    passphrase: string = '',
     hdSeed: boolean
   ): any {
     const seed = utils.mnemonicToSeed(mnemonic, passphrase, hdSeed);
@@ -108,14 +108,13 @@ export class WalletService {
     if (!seed) {
       return null;
     }
-    let keys: KeyPair;
     if (this.wallet instanceof HdWallet) {
       if (!pkh) {
-        throw new Error("No pkh provided");
+        throw new Error('No pkh provided');
       }
       const account = this.wallet.getImplicitAccount(pkh);
       if (!account.derivationPath) {
-        throw new Error("No derivationPath found");
+        throw new Error('No derivationPath found');
       }
       return hd.seedToKeyPair(seed, account.derivationPath);
     } else {
@@ -137,17 +136,17 @@ export class WalletService {
       if (entropy) {
         return utils.entropyToMnemonic(entropy);
       } else {
-        console.log("Invalid password");
+        console.log('Invalid password');
       }
     }
-    return "";
+    return '';
   }
   addImplicitAccount(pk: string, derivationPath?: string) {
     const pkh = utils.pkToPkh(pk);
     this.wallet.implicitAccounts.push(
       new ImplicitAccount(pkh, pk, derivationPath)
     );
-    console.log("Adding new implicit account...");
+    console.log('Adding new implicit account...');
     console.log(
       this.wallet.implicitAccounts[this.wallet.implicitAccounts.length - 1]
     );
@@ -221,7 +220,7 @@ export class WalletService {
     iv: string
   ) {
     const data: any = {
-      provider: "Kukai",
+      provider: 'Kukai',
       version: 3.0,
       walletType: type,
       encryptedSeed,
@@ -234,19 +233,19 @@ export class WalletService {
     Read and write to localStorage
   */
   storeWallet() {
-    let type = "unknown";
+    let type = 'unknown';
     if (this.wallet instanceof HdWallet) {
-      type = "HdWallet";
+      type = 'HdWallet';
     } else if (this.wallet instanceof LegacyWalletV1) {
-      type = "LegacyWalletV1";
+      type = 'LegacyWalletV1';
     } else if (this.wallet instanceof LegacyWalletV2) {
-      type = "LegacyWalletV2";
+      type = 'LegacyWalletV2';
     } else if (this.wallet instanceof LegacyWalletV3) {
-      type = "LegacyWalletV3";
+      type = 'LegacyWalletV3';
     } else if (this.wallet instanceof LedgerWallet) {
-      type = "LedgerWallet";
+      type = 'LedgerWallet';
     }
-    console.log("Type is " + type);
+    console.log('Type is ' + type);
     localStorage.setItem(
       this.storeKey,
       JSON.stringify({ type, data: this.wallet })
@@ -255,49 +254,51 @@ export class WalletService {
 
   loadStoredWallet() {
     const walletData = localStorage.getItem(this.storeKey);
-    if (walletData && walletData !== "undefined") {
+    if (walletData && walletData !== 'undefined') {
       const parsedWalletData = JSON.parse(walletData);
       if (parsedWalletData.type && parsedWalletData.data) {
         const wd = parsedWalletData.data;
         this.deserializeStoredWallet(wd, parsedWalletData.type);
-        console.log("Load success!!!");
+        console.log('Load success!!!');
         this.updateJdenticon();
         console.log(this.wallet);
       } else {
-        console.log("couldnt load a wallet");
+        console.log('couldnt load a wallet');
         this.clearWallet();
       }
     } else {
-      console.log("couldnt load a wallet");
+      console.log('couldnt load a wallet');
       this.clearWallet();
     }
   }
   deserializeStoredWallet(wd: any, type: string) {
     switch (type) {
-      case "HdWallet":
+      case 'HdWallet':
         this.wallet = new HdWallet(
           wd.IV,
           wd.encryptedSeed,
           wd.encryptedEntropy
         );
-        if (this.wallet instanceof HdWallet)
+        if (this.wallet instanceof HdWallet) {
           this.wallet.unusedAccounts = wd.unusedAccounts;
+        }
         break;
-      case "LegacyWalletV1":
+      case 'LegacyWalletV1':
         this.wallet = new LegacyWalletV1(wd.salt, wd.encryptedSeed);
         break;
-      case "LegacyWalletV2":
+      case 'LegacyWalletV2':
         this.wallet = new LegacyWalletV2(wd.IV, wd.encryptedSeed);
         break;
-      case "LegacyWalletV3":
+      case 'LegacyWalletV3':
         this.wallet = new LegacyWalletV3(
           wd.IV,
           wd.encryptedSeed,
           wd.encryptedEntropy
         );
         break;
-      case "LedgerWallet":
+      case 'LedgerWallet':
         this.wallet = new LedgerWallet();
+        break;
       default:
     }
     this.wallet.XTZrate = wd.XTZrate;

@@ -10,7 +10,7 @@ import { WalletService } from '../../services/wallet/wallet.service';
 import { CoordinatorService } from '../../services/coordinator/coordinator.service';
 import { ExportService } from '../../services/export/export.service';
 import { InputValidationService } from '../../services/input-validation/input-validation.service';
-import { utils, hd } from "@tezos-core-tools/crypto-utils";
+import { utils, hd } from '@tezos-core-tools/crypto-utils';
 
 @Component({
   selector: 'app-mnemonic-import-wallet',

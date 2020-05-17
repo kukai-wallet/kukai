@@ -52,33 +52,33 @@ describe('[ ImportService ]', () => {
 	const publickeyhash = 'tz1WzGiA46TxyZdUHGJgUYHaR5HyUyH8Rssn';
 	const salt = 'WzGiA46TxyZdUHGJ';
 	const hd = {
-		mnemonic: "icon salute dinner depend radio announce urge hello danger join long toe ridge clever toast opera spot rib outside explain mixture eyebrow brother share",
-		pkh: "tz1TogVQurVUhTFY1d62QJGmkMdEadM9MNpu",
-		pk: "edpkvXyJHwuFRkngpcPyYWndZhAqf72owWrMnkkNsBoBkS54V4GJrM",
-		password: "KukaiTestWallet",
+		mnemonic: 'icon salute dinner depend radio announce urge hello danger join long toe ridge clever toast opera spot rib outside explain mixture eyebrow brother share',
+		pkh: 'tz1TogVQurVUhTFY1d62QJGmkMdEadM9MNpu',
+		pk: 'edpkvXyJHwuFRkngpcPyYWndZhAqf72owWrMnkkNsBoBkS54V4GJrM',
+		password: 'KukaiTestWallet',
 		keyStore: {
-			provider: "Kukai",
+			provider: 'Kukai',
     		version: 3,
 			walletType: 4,
-			encryptedSeed: "90f57ef8f82e9acfa11a44e02aefaa8444596c3a8d2aa2aeaecfbb51187484a0354bf8a6c009bb4836716dc030d790978948044454dd85e6e2f2fb6284ac2c50==a533b34b90fcf71742a0d6abc9eaed15",
-			encryptedEntropy: "8178b31d4c23c4e07f2fdc024966a76ca7630c4607018847a3aec315a765e17b==5d0c16c5f2207409f67f259110b9ca93",
-			iv: "aff0bfd4ccdab8ae3e35eeab9e7af782"
+			encryptedSeed: '90f57ef8f82e9acfa11a44e02aefaa8444596c3a8d2aa2aeaecfbb51187484a0354bf8a6c009bb4836716dc030d790978948044454dd85e6e2f2fb6284ac2c50==a533b34b90fcf71742a0d6abc9eaed15',
+			encryptedEntropy: '8178b31d4c23c4e07f2fdc024966a76ca7630c4607018847a3aec315a765e17b==5d0c16c5f2207409f67f259110b9ca93',
+			iv: 'aff0bfd4ccdab8ae3e35eeab9e7af782'
 		}
-	}
+	};
 	const legacyV3 = {
-		mnemonic: "icon salute dinner depend radio announce urge hello danger join long toe ridge clever toast opera spot rib outside explain mixture eyebrow brother share",
-		pkh: "tz1UTA4f3Hx7udXeqqu3N2EfdpiHrKuXpWdi",
-		pk: "edpktxWNPfnvZpa9vLDDpoudNNCYWmWWpnUsWkwQitUfMkgZgC4SuN",
-		password: "KukaiTestWallet",
+		mnemonic: 'icon salute dinner depend radio announce urge hello danger join long toe ridge clever toast opera spot rib outside explain mixture eyebrow brother share',
+		pkh: 'tz1UTA4f3Hx7udXeqqu3N2EfdpiHrKuXpWdi',
+		pk: 'edpktxWNPfnvZpa9vLDDpoudNNCYWmWWpnUsWkwQitUfMkgZgC4SuN',
+		password: 'KukaiTestWallet',
 		keyStore: {
-			provider: "Kukai",
+			provider: 'Kukai',
 			version: 3,
 			walletType: 0,
-			encryptedSeed: "27588fe17f8905122f46878b77a62fdbf648e43c538367edff10634dd103d02e==d42fb4c1cd622241e27c1f12fe71871a",
-			encryptedEntropy: "0896d126f7e51d17d04099a17e03adf034bf555c71c82bd23981375dc3572057==b6664bd3f0ef927acf72d80ef70f651e",
-			iv: "66d7cd21e79cea95079200bd89e6ed03"
+			encryptedSeed: '27588fe17f8905122f46878b77a62fdbf648e43c538367edff10634dd103d02e==d42fb4c1cd622241e27c1f12fe71871a',
+			encryptedEntropy: '0896d126f7e51d17d04099a17e03adf034bf555c71c82bd23981375dc3572057==b6664bd3f0ef927acf72d80ef70f651e',
+			iv: '66d7cd21e79cea95079200bd89e6ed03'
 		}
-	}
+	};
 //	let isJson: boolean = true;
 // tslint:disable-next-line:max-line-length
 //	let walletJson: string = JSON.stringify({"provider": "Kukai","version": 1,"walletType": 0,"pkh": "tz1WzGiA46TxyZdUHGJgUYHaR5HyUyH8Rssn","encryptedSeed": "66746740b4b925d2a336744339b31bf4850357a01a7d309e79604fe95fc11dd6", iv:});
@@ -118,7 +118,7 @@ describe('[ ImportService ]', () => {
 		service = TestBed.get(ImportService);
 		wallet = TestBed.get(WalletService);
 		operation = TestBed.get(OperationService);
-		conseil = TestBed.get(ConseilService)
+		conseil = TestBed.get(ConseilService);
 
 		//spyOn(service, 'importWalletData');
 		//spyOn(service, 'importWalletFromPkh')
@@ -175,7 +175,7 @@ describe('[ ImportService ]', () => {
 
 				// expect encryption version 2
 				if (wallet.wallet instanceof LegacyWalletV2) {
-					expect(wallet.wallet.IV).toBe("b838931b9b7507fb8d5be5ecef08c2f5");
+					expect(wallet.wallet.IV).toBe('b838931b9b7507fb8d5be5ecef08c2f5');
 
 					// expect seed to be '64324eedf2604c5af143f32ceb6a1beb9e717f745b209504718ec8cc42211e44==fc09b629d9ee0aeefac57d2e066914c2'
 					expect(wallet.wallet.encryptedSeed).toBe('64324eedf2604c5af143f32ceb6a1beb9e717f745b209504718ec8cc42211e44==fc09b629d9ee0aeefac57d2e066914c2');
@@ -238,7 +238,7 @@ describe('[ ImportService ]', () => {
 		describe('> HD', async () => {
 			let numberOfAccounts = 2;
 			beforeAll(() => {
-			})
+			});
 			beforeEach(() => {
 				spyOn(conseil, 'getContractAddresses').and.callFake(async function() { return []; });
 				spyOn(conseil, 'accountInfo').and.callFake(function() { return rx.Observable.of(numberOfAccounts--); });
@@ -258,12 +258,12 @@ describe('[ ImportService ]', () => {
 				expect(wallet.wallet.implicitAccounts[0].pkh).toBe('tz1TogVQurVUhTFY1d62QJGmkMdEadM9MNpu');
 				expect(wallet.wallet.implicitAccounts[0].address).toBe('tz1TogVQurVUhTFY1d62QJGmkMdEadM9MNpu');
 				expect(wallet.wallet.implicitAccounts[0].pk).toBe('edpkvXyJHwuFRkngpcPyYWndZhAqf72owWrMnkkNsBoBkS54V4GJrM');
-				expect(wallet.wallet.implicitAccounts[0].derivationPath).toBe("44'/1729'/0'/0'");
+				expect(wallet.wallet.implicitAccounts[0].derivationPath).toBe('44\'/1729\'/0\'/0\'');
 				expect(wallet.wallet.implicitAccounts[1]).toBeDefined();
 				expect(wallet.wallet.implicitAccounts[1].pkh).toBe('tz1dXCZTs4pRTVvoXJXNRUmrYqtCde4fdP8N');
 				expect(wallet.wallet.implicitAccounts[1].address).toBe('tz1dXCZTs4pRTVvoXJXNRUmrYqtCde4fdP8N');
 				expect(wallet.wallet.implicitAccounts[1].pk).toBe('edpkvaNoKcTrQ8jBVHkVUzwZnLAaZT98ALxucqcfmkPAWGXuRVM9Db');
-				expect(wallet.wallet.implicitAccounts[1].derivationPath).toBe("44'/1729'/1'/0'");
+				expect(wallet.wallet.implicitAccounts[1].derivationPath).toBe('44\'/1729\'/1\'/0\'');
 				expect(wallet.wallet.implicitAccounts[2]).not.toBeDefined();
 
 			});

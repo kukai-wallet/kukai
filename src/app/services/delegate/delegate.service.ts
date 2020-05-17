@@ -1,7 +1,7 @@
-import { Injectable } from "@angular/core";
-import { WalletService } from "../wallet/wallet.service";
-import { OperationService } from "../operation/operation.service";
-import { Account } from "../wallet/wallet";
+import { Injectable } from '@angular/core';
+import { WalletService } from '../wallet/wallet.service';
+import { OperationService } from '../operation/operation.service';
+import { Account } from '../wallet/wallet';
 
 @Injectable()
 export class DelegateService {
@@ -39,9 +39,9 @@ export class DelegateService {
         console.log('delegate for ' + account.address + ' up to date');
       }
     } else {
-      if (account.delegate !== "") {
+      if (account.delegate !== '') {
         account.activitiesCounter = 0;
-        account.delegate = "";
+        account.delegate = '';
         this.walletService.storeWallet();
       }
     }

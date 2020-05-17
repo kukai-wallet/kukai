@@ -66,7 +66,7 @@ export class ImportComponent implements OnInit {
         throw new Error('iv not a string!');
       } if (obj.pk && typeof obj.pk !== 'string') {
         throw new Error('pk not a string!');
-      } if (obj.encryptedEntropy && typeof obj.encryptedEntropy !=='string') {
+      } if (obj.encryptedEntropy && typeof obj.encryptedEntropy !== 'string') {
         throw new Error('encryptedEntropy not a string!');
       }
     } catch (e) {

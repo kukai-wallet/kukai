@@ -1,8 +1,8 @@
-import { Injectable } from "@angular/core";
-import { WalletService } from "../wallet/wallet.service";
-import { ConseilService } from "../conseil/conseil.service";
-import { of, Observable } from "rxjs";
-import { flatMap } from "rxjs/operators";
+import { Injectable } from '@angular/core';
+import { WalletService } from '../wallet/wallet.service';
+import { ConseilService } from '../conseil/conseil.service';
+import { of, Observable } from 'rxjs';
+import { flatMap } from 'rxjs/operators';
 
 @Injectable()
 export class ActivityService {

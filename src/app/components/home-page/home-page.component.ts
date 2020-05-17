@@ -19,11 +19,11 @@ import { sidebarNavItems } from '../../_nav';
 
 export class HomePageComponent implements OnInit {
   public sidebarMinimized = false;
-  
+
   sidebarNavItems = sidebarNavItems;
   navItems = this.translatedNavItems();
   isCollapsed = false;
-  jdenticon: string = '';
+  jdenticon = '';
 
   CONSTANTS = new Constants();
 
@@ -55,7 +55,7 @@ export class HomePageComponent implements OnInit {
 
       this.walletService.jdenticon.subscribe((value) => {
         this.jdenticon = value;
-        jdenticon.update("#jdenticon", value);
+        jdenticon.update('#jdenticon', value);
       });
   }
 
@@ -105,11 +105,11 @@ export class HomePageComponent implements OnInit {
 
   translatedNavItems() {
     return this.sidebarNavItems.map((item) => {
-      var itemCopy = {};
-      for (let [key, value] of Object.entries(item)) {
+      const itemCopy = {};
+      for (const [key, value] of Object.entries(item)) {
         itemCopy[key] = value;
       }
-      itemCopy['name'] = this.translate.instant(item.name)
+      itemCopy['name'] = this.translate.instant(item.name);
       return itemCopy;
     });
   }
@@ -117,7 +117,7 @@ export class HomePageComponent implements OnInit {
   logout() {
     this.coordinatorService.stopAll();
     this.walletService.clearWallet();
-    jdenticon.update("#jdenticon", this.walletService.jdenticon);
+    jdenticon.update('#jdenticon', this.walletService.jdenticon);
     this.router.navigate(['']);
   }
 }

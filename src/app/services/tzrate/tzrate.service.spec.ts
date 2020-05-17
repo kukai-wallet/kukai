@@ -30,7 +30,7 @@ describe('[ TzrateService ]', () => {
 	// class dependencies
 	let walletservice: WalletService;
 	let httpMock: HttpTestingController;
-	let walletTols = new WalletTools();
+	const walletTols = new WalletTools();
 
 	// mock network data
 	const apiUrl = 'https://api.coingecko.com/api/v3/simple/price?ids=tezos&vs_currencies=usd';

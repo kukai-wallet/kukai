@@ -1,5 +1,5 @@
 export type WalletObject =
-  LegacyWalletV1 
+  LegacyWalletV1
   | LegacyWalletV2
   | LegacyWalletV3
   | LedgerWallet
@@ -128,7 +128,7 @@ export abstract class Account {
   constructor(pkh: string, pk: string, address: string) {
     this.balanceXTZ = null;
     this.balanceUSD = null;
-    this.delegate = "";
+    this.delegate = '';
     this.activitiesCounter = 0;
     this.activities = [];
     this.pkh = pkh;

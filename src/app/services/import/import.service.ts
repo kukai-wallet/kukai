@@ -1,17 +1,17 @@
-import { Injectable } from "@angular/core";
-import { WalletType, KeyPair } from "./../../interfaces";
-import { WalletService } from "../wallet/wallet.service";
-import { CoordinatorService } from "../coordinator/coordinator.service";
-import { ConseilService } from "../conseil/conseil.service";
+import { Injectable } from '@angular/core';
+import { WalletType, KeyPair } from './../../interfaces';
+import { WalletService } from '../wallet/wallet.service';
+import { CoordinatorService } from '../coordinator/coordinator.service';
+import { ConseilService } from '../conseil/conseil.service';
 import {
   LegacyWalletV1,
   LegacyWalletV2,
   LegacyWalletV3,
   HdWallet,
   LedgerWallet,
-} from "../wallet/wallet";
-import { hd, utils } from "@tezos-core-tools/crypto-utils";
-import { EncryptionService } from "../encryption/encryption.service";
+} from '../wallet/wallet';
+import { hd, utils } from '@tezos-core-tools/crypto-utils';
+import { EncryptionService } from '../encryption/encryption.service';
 import { OperationService } from '../../services/operation/operation.service';
 
 @Injectable()
@@ -25,7 +25,7 @@ export class ImportService {
   ) {}
   pwdRequired(json: string) {
     const walletData = JSON.parse(json);
-    if (walletData.provider !== "Kukai") {
+    if (walletData.provider !== 'Kukai') {
       throw new Error(`Unsupported wallet format`);
     }
     if (walletData.walletType === 0 || walletData.walletType === 4) {
@@ -57,7 +57,7 @@ export class ImportService {
             1
           );
           if (utils.seedToKeyPair(seed).pkh !== walletData.pkh) {
-            seed = "";
+            seed = '';
           }
         } else if (walletData.version === 2 || walletData.version === 3) {
           seed = this.encryptionService.decrypt(
@@ -112,10 +112,10 @@ export class ImportService {
           data.encryptedSeed
         );
       } else {
-        throw new Error("Unsupported wallet file");
+        throw new Error('Unsupported wallet file');
       }
     } else {
-      throw new Error("Unsupported wallet file");
+      throw new Error('Unsupported wallet file');
     }
     let keys: KeyPair;
     if (seed.length === 32) {
@@ -123,7 +123,7 @@ export class ImportService {
     } else if (seed.length === 64) {
       keys = hd.keyPairFromAccountIndex(seed, 0);
     } else {
-      throw new Error("Invalid seed length");
+      throw new Error('Invalid seed length');
     }
     if (this.walletService.wallet instanceof HdWallet) {
       let index = 0;
@@ -173,7 +173,7 @@ export class ImportService {
   async findContracts(pkh: string) {
     const addresses = await this.conseilService.getContractAddresses(pkh);
     for (const KT of addresses) {
-      console.log("Found KT: " + KT);
+      console.log('Found KT: ' + KT);
       this.walletService.addOriginatedAccount(KT, pkh);
     }
     this.walletService.storeWallet();

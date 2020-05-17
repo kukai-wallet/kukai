@@ -1,16 +1,16 @@
-import { Component, OnInit } from "@angular/core";
-import { Router, NavigationEnd } from "@angular/router";
+import { Component, OnInit } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
 
-import { WalletService } from "./services/wallet/wallet.service";
-import { CoordinatorService } from "./services/coordinator/coordinator.service";
-import { TranslateService } from "@ngx-translate/core";
+import { WalletService } from './services/wallet/wallet.service';
+import { CoordinatorService } from './services/coordinator/coordinator.service';
+import { TranslateService } from '@ngx-translate/core';
 
-import { toSvg } from "jdenticon";
+import { toSvg } from 'jdenticon';
 
 @Component({
-  selector: "app-root",
-  templateUrl: "./app.component.html",
-  styleUrls: ["./app.component.scss"],
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss'],
   // // tslint:disable-next-line
   // selector: 'body',
   // template: '<router-outlet></router-outlet>'

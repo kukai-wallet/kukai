@@ -24,12 +24,6 @@ describe('[ BalanceService ]', () => {
 	let operationsrv: OperationService;
 	let httpMock: HttpTestingController;
 
-	// testing variables
-	let pkh: string;
-
-	let accounts: Account[];
-	// let networkresponses: any[];
-
 	beforeEach(() => {
 		// WalletService mock
 		TestBed.configureTestingModule({

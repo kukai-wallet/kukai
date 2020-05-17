@@ -1,11 +1,11 @@
-import { Injectable } from "@angular/core";
-import { ActivityService } from "../activity/activity.service";
-import { TzrateService } from "../tzrate/tzrate.service";
-import { BalanceService } from "../balance/balance.service";
-import { WalletService } from "../wallet/wallet.service";
-import { DelegateService } from "../delegate/delegate.service";
-import { OperationService } from "../operation/operation.service";
-import { ErrorHandlingPipe } from "../../pipes/error-handling.pipe";
+import { Injectable } from '@angular/core';
+import { ActivityService } from '../activity/activity.service';
+import { TzrateService } from '../tzrate/tzrate.service';
+import { BalanceService } from '../balance/balance.service';
+import { WalletService } from '../wallet/wallet.service';
+import { DelegateService } from '../delegate/delegate.service';
+import { OperationService } from '../operation/operation.service';
+import { ErrorHandlingPipe } from '../../pipes/error-handling.pipe';
 import { Account } from '../wallet/wallet';
 
 export interface ScheduleData {
@@ -42,7 +42,7 @@ export class CoordinatorService {
     if (this.walletService.wallet) {
       this.accounts = this.walletService.wallet.getAccounts();
       for (let i = 0; i < this.accounts.length; i++) {
-        console.log("Start account " + i + " " + this.accounts[i].address);
+        console.log('Start account ' + i + ' ' + this.accounts[i].address);
         this.start(this.accounts[i].address);
       }
       this.startXTZ();
@@ -52,7 +52,7 @@ export class CoordinatorService {
   }
   startXTZ() {
     if (!this.tzrateInterval) {
-      console.log("Start scheduler XTZ");
+      console.log('Start scheduler XTZ');
       this.tzrateService.getTzrate();
       this.tzrateInterval = setInterval(
         () => this.tzrateService.getTzrate(),
@@ -63,7 +63,7 @@ export class CoordinatorService {
   async start(pkh: string) {
     if (pkh && !this.scheduler.get(pkh)) {
       this.accounts = this.walletService.wallet.getAccounts();
-      console.log("Start scheduler " + this.scheduler.size + " " + pkh);
+      console.log('Start scheduler ' + this.scheduler.size + ' ' + pkh);
       const scheduleData: ScheduleData = {
         pkh: pkh,
         state: State.UpToDate,
@@ -80,7 +80,7 @@ export class CoordinatorService {
   }
   async boost(pkh: string, changedDelegate?: boolean) {
     // Expect action
-    console.log("boost " + pkh);
+    console.log('boost ' + pkh);
     if (this.walletService.addressExists(pkh)) {
       if (!this.scheduler.get(pkh)) {
         await this.start(pkh);
@@ -95,7 +95,7 @@ export class CoordinatorService {
             this.scheduler &&
             this.scheduler.get(pkh).stateCounter === counter
           ) {
-            console.log("Timeout from wait state");
+            console.log('Timeout from wait state');
             this.changeState(pkh, State.UpToDate);
           }
         }, 150000);
@@ -130,19 +130,19 @@ export class CoordinatorService {
             break;
           }
           default: {
-            console.log("No state found!");
+            console.log('No state found!');
             break;
           }
         }
       },
-      err => console.log("Error in update(): " + JSON.stringify(err)),
+      err => console.log('Error in update(): ' + JSON.stringify(err)),
       () =>
         console.log(
-          "account[" +
+          'account[' +
             this.accounts.findIndex((a) => a.address === pkh) +
-            "][" +
+            '][' +
             this.scheduler.get(pkh).state +
-            "]: <<"
+            ']: <<'
         )
     );
   }
@@ -172,7 +172,7 @@ export class CoordinatorService {
   }
   stopAll() {
     if (this.walletService.wallet) {
-      console.log("Stop all schedulers");
+      console.log('Stop all schedulers');
       for (
         let i = 0;
         i < this.accounts.length;
@@ -188,7 +188,7 @@ export class CoordinatorService {
   }
   async stop(pkh) {
     console.log(
-      "Stop scheduler " + this.accounts.findIndex((a) => a.address === pkh)
+      'Stop scheduler ' + this.accounts.findIndex((a) => a.address === pkh)
     );
     clearInterval(this.scheduler.get(pkh).interval);
     this.scheduler.get(pkh).interval = null;
@@ -206,7 +206,7 @@ export class CoordinatorService {
         const acc = this.walletService.wallet.getAccount(pkh);
         this.delegateService.handleDelegateResponse(acc, ans.payload.delegate);
       } else {
-        console.log("updateAccountData -> getAccount failed ", ans.payload.msg);
+        console.log('updateAccountData -> getAccount failed ', ans.payload.msg);
       }
     });
   }

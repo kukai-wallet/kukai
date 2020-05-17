@@ -52,10 +52,10 @@ describe('[ ExportService ]', () => {
 		beforeEach(() => {
 
 			data = {
-				encryptedEntropy: "574bc1c9521bde63185dedc3a0a0ba7f8db98d57==13cc85f6fefaaa7e87bdcdd11c175707",
-				encryptedSeed: "5d88a97d5b4acf6fb9c3ee6b772a950899f7123564d9457a6670f0744f4a1bcd==dcb36d2ead10b455153cb1f73c20b87d",
-				iv: "0dfdc3ab773f499411696d1cb80500dd",
-				provider: "Kukai",
+				encryptedEntropy: '574bc1c9521bde63185dedc3a0a0ba7f8db98d57==13cc85f6fefaaa7e87bdcdd11c175707',
+				encryptedSeed: '5d88a97d5b4acf6fb9c3ee6b772a950899f7123564d9457a6670f0744f4a1bcd==dcb36d2ead10b455153cb1f73c20b87d',
+				iv: '0dfdc3ab773f499411696d1cb80500dd',
+				provider: 'Kukai',
 				version: 3,
 				walletType: 0
 			};
