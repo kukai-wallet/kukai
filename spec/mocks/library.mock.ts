@@ -8,6 +8,8 @@ import {
   OriginatedAccount,
   LegacyWalletV2,
   Activity,
+  LegacyWalletV3,
+  HdWallet,
 } from "./../../src/app/services/wallet/wallet";
 import { viewClassName } from "@angular/compiler";
 
@@ -676,5 +678,37 @@ export class WalletTools extends AccountTools {
     v2wallet.totalBalanceXTZ = balanceXTZ;
     v2wallet.totalBalanceUSD = balanceUSD;
     return v2wallet;
+  }
+  // icon salute dinner depend radio announce urge hello danger join long toe ridge clever toast opera spot rib outside explain mixture eyebrow brother share
+  generateHdWallet(
+    iv: string = "aff0bfd4ccdab8ae3e35eeab9e7af782",
+    encryptedSeed: string = "90f57ef8f82e9acfa11a44e02aefaa8444596c3a8d2aa2aeaecfbb51187484a0354bf8a6c009bb4836716dc030d790978948044454dd85e6e2f2fb6284ac2c50==a533b34b90fcf71742a0d6abc9eaed15",
+    encryptedEntropy: string = "8178b31d4c23c4e07f2fdc024966a76ca7630c4607018847a3aec315a765e17b==5d0c16c5f2207409f67f259110b9ca93",
+    implicitAccounts: any = [{
+      pk: "edpkvXyJHwuFRkngpcPyYWndZhAqf72owWrMnkkNsBoBkS54V4GJrM", pkh: "tz1TogVQurVUhTFY1d62QJGmkMdEadM9MNpu",
+    },{
+      pk: "edpkvaNoKcTrQ8jBVHkVUzwZnLAaZT98ALxucqcfmkPAWGXuRVM9Db", pkh: "tz1dXCZTs4pRTVvoXJXNRUmrYqtCde4fdP8N"
+    }],
+    xtzrate: number = 0.510272,
+    balance: number = 100
+  ): HdWallet {
+    const hdWallet = new HdWallet(
+      iv,
+      encryptedSeed,
+      encryptedEntropy
+    );
+    hdWallet.XTZrate = xtzrate;
+    for (let impAcc of implicitAccounts) {
+    hdWallet.implicitAccounts.push(
+      new ImplicitAccount(impAcc.pkh, impAcc.pk)
+    );
+    hdWallet.implicitAccounts[hdWallet.implicitAccounts.length - 1].balanceXTZ = balance;
+  }
+    const { balanceXTZ, balanceUSD } = this.getWalletBalance(
+      hdWallet.implicitAccounts
+    );
+    hdWallet.totalBalanceXTZ = balanceXTZ;
+    hdWallet.totalBalanceUSD = balanceUSD;
+    return hdWallet;
   }
 }

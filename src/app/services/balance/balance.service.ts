@@ -36,7 +36,7 @@ export class BalanceService {
       });
   }
   updateAccountBalance(account: Account, newBalance: number) {
-    if (!account.balanceXTZ || newBalance !== account.balanceXTZ) {
+    if (isNullOrUndefined(account.balanceXTZ) || newBalance !== account.balanceXTZ) {
       if (!isNullOrUndefined(account.balanceXTZ)) {
         const balanceUpdated = this.translate.instant('BALANCESERVICE.BALANCEUPDATE');
         this.messageService.add(balanceUpdated + ' ' + account.address);
