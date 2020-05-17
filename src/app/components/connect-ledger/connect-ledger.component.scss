@@ -29,7 +29,7 @@ a.active-link {
 //Horizontal and Vertical Aligment of child div
 #content {
     display: flex; 
-    min-height: 95vh;
+    min-height: calc(100vh - 55px);
     min-width: 75vw;
 }
 .center-content {
