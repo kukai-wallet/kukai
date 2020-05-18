@@ -128,7 +128,7 @@
               <tbody *ngIf="implicitAccounts">
                 <ng-container *ngFor="let impAcc of implicitAccounts">
                   <tr class="pkh-row" [class.selectedPkh]="activeAccount.address === impAcc.address" (click)="click(impAcc)">
-                    <td colspan="2" (dblclick)="dblclick(impAcc)">
+                    <td class="text-monospace" colspan="2" (dblclick)="dblclick(impAcc)">
                       {{ impAcc.address }}
                     </td>
 
@@ -159,7 +159,7 @@
                         *ngFor="let origAcc of impAcc.originatedAccounts"
                         (click)="click(origAcc)"
                       >
-                        <td colspan="2" (dblclick)="dblclick(origAcc)">
+                        <td class="text-monospace" colspan="2" (dblclick)="dblclick(origAcc)">
                           <span
                             *ngIf="
                               this.walletService.wallet &&

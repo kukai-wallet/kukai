@@ -5,9 +5,9 @@
                     <tr>
                         <th scope="col">{{ 'ACTIVITYCOMPONENT.TXNHASH' | translate }}</th>
                         <th scope="col">{{ 'ACTIVITYCOMPONENT.BLOCK' | translate }}</th>
-                        <th scope="col">{{ 'ACTIVITYCOMPONENT.DATE' | translate }}</th>
+                        <th colspan="2" scope="col">{{ 'ACTIVITYCOMPONENT.DATE' | translate }}</th>
                         <th scope="col">{{ 'ACTIVITYCOMPONENT.TYPE' | translate }}</th>
-                        <th colspan="2" scope="col">{{ 'ACTIVITYCOMPONENT.COUNTERPARTY' | translate }}</th> <!-- To or From -->
+                        <th colspan="3" scope="col">{{ 'ACTIVITYCOMPONENT.COUNTERPARTY' | translate }}</th> <!-- To or From -->
                         <th scope="col">{{ 'ACTIVITYCOMPONENT.AMOUNT' | translate }} (&#42793;)</th>
                         <th scope="col">{{ 'ACTIVITYCOMPONENT.STATUS' | translate }}</th>
                     </tr>
@@ -15,21 +15,21 @@
                 <tbody>
                     <tr class="table-row" *ngFor="let transaction of activeAccount.activities | slice:0:10">
                         <!-- Txn Hash -->
-                        <th scope="row" class="row-hash table-cell">
+                        <th scope="row" class="row-hash table-cell text-monospace">
                             <span data-toggle="tooltip" [title]="transaction.hash">
                                 <a href="{{ CONSTANTS.NET.BLOCK_EXPLORER_URL + '/' + transaction.hash }}" target="_blank"> {{ transaction.hash | truncate: '4':'true'}} </a>
                             </span>
                         </th>
 
                         <!-- Block -->
-                        <td class="table-cell"> 
+                        <td class="table-cell text-monospace"> 
                             <span data-toggle="tooltip" [title]="transaction.block">
                                 <a href="{{ CONSTANTS.NET.BLOCK_EXPLORER_URL + '/' + transaction.block }}" target="_blank"> {{ transaction.block | truncate: '4':'true'}} </a>
                             </span>
                         </td>
 
                         <!-- Date -->
-                        <td class="table-cell"> 
+                        <td colspan="2" class="table-cell"> 
                             <!-- {{ transaction.timestamp | date:'yyyy-MM-dd HH:mm:ss' }} -->
                             <span data-toggle="tooltip" [title]="transaction.timestamp | date:'yyyy-MM-dd HH:mm:ss'">
                                 {{ transaction.timestamp | timeAgo }}
@@ -42,7 +42,7 @@
                         </td>
 
                         <!-- Counterparty: `To` or `From` -->
-                        <td colspan="2" class="table-cell"> 
+                        <td colspan="3" class="table-cell"> 
                             <!-- {{ transaction.source.tz }} -->
                             <span *ngIf="transaction.type != 'activation' && !(transaction.type === 'delegation' && !transaction.destination)">
                             <!-- to and from only shown when it's not an origination (transaction.type != 'activation') and when it's not an undelegate operation: !(transaction.type === 'delegation' && !transaction.destination) -->
@@ -51,7 +51,7 @@
                                 <ng-template #to><span class="smallText">{{ 'ACTIVITYCOMPONENT.TO' | translate }}</span></ng-template>
                             </span>
                             <br>
-                            <span class="counterparty">
+                            <span class="counterparty text-monospace">
                                 {{ getCounterparty(transaction) }}
                             </span>
                         </td>

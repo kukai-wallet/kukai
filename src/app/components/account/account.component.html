@@ -11,11 +11,11 @@
                   </div>
               </div>
               <div class="row pt-2">
-                  <div class="col-md-7">
+                  <div class="col-md-7 text-monospace">
                       <select [(ngModel)]="activeAccount" (change)="updateActiveAccount()" id="fromAdress" class="form-control">
                         <ng-container *ngFor="let impAcc of implicitAccounts">
-                          <option [ngValue]="impAcc">{{ impAcc.address }}</option>
-                          <option *ngFor="let origAcc of impAcc.originatedAccounts" [ngValue]="origAcc">{{ origAcc.address }}</option>
+                          <option class="text-monospace" [ngValue]="impAcc">{{ impAcc.address }}</option>
+                          <option class="text-monospace" *ngFor="let origAcc of impAcc.originatedAccounts" [ngValue]="origAcc">{{ origAcc.address }}</option>
                         </ng-container>
                       </select>
                   </div>

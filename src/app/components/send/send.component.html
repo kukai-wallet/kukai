@@ -12,16 +12,18 @@
         <div class="modal-body">
             <form>
                 <div class="form-row">
-                    <div class="form-group col-md-8">
+                    <div class="form-group col-md-9">
                         <label for="fromAdress"> {{ 'SENDCOMPONENT.FROMADDRESS' | translate }} </label>
-                        <select [(ngModel)]="activeAccount" (change)="activeAccountChange()" id="fromAdress" class="form-control mono" name="first1">
-                            <ng-container *ngFor="let account of implicitAccounts">
-                                <option [ngValue]="account">{{ account.address }}</option>
-                                <option *ngFor="let origAcc of account.originatedAccounts" [ngValue]="origAcc">{{ origAcc.address }}</option>
-                            </ng-container>
-                        </select>
+                        <div class="text-monospace">
+                            <select [(ngModel)]="activeAccount" (change)="activeAccountChange()" id="fromAdress" class="form-control mono" name="first1">
+                                <ng-container *ngFor="let account of implicitAccounts">
+                                    <option [ngValue]="account">{{ account.address }}</option>
+                                    <option *ngFor="let origAcc of account.originatedAccounts" [ngValue]="origAcc">{{ origAcc.address }}</option>
+                                </ng-container>
+                            </select>
+                        </div>
                     </div>
-                    <div class="form-group col-md-4 text-right">
+                    <div class="form-group col-md-3 text-right">
                         <label for="staticBalance" class="text-right"> {{ 'SENDCOMPONENT.BALANCE' | translate }} </label>
                         <input type="text" readonly class="form-control-plaintext text-color align-right" id="staticBalance" [value]="showAccountBalance(activePkh)">
                         <small id="rateXTZ" class="form-text text-muted text-color align-right" *ngIf="XTZrate > 0"> {{ 'SENDCOMPONENT.RATE' | translate }} (&#42793;) ${{ XTZrate | number:'1.00' }} USD</small>

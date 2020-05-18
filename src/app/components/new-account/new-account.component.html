@@ -10,9 +10,11 @@
     <div class="modal-body">
         <div class="form-group" *ngIf="implicitAccounts">
             <label for="fromAdress"> {{ 'NEWACCOUNTCOMPONENT.FUNDSFROM' | translate }} </label>
-            <select [(ngModel)]="activeAccount" (change)="checkReveal()" id="fromAdress" class="form-control mono" name="first">
-                <option *ngFor="let impAcc of implicitAccounts" [ngValue]="impAcc">{{ impAcc.address }}</option>
-            </select>
+            <div class="text-monospace">
+                <select [(ngModel)]="activeAccount" (change)="checkReveal()" id="fromAdress" class="form-control mono" name="first">
+                    <option *ngFor="let impAcc of implicitAccounts" [ngValue]="impAcc">{{ impAcc.address }}</option>
+                </select>
+            </div>
         </div>
         <div class="row">
             <div class="form-group col-md-6">
