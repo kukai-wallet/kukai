@@ -4,3 +4,7 @@
     min-height: 80vh;
     width: 100%;
 }
+a.disabled {
+    pointer-events: none;
+    cursor: default;
+}

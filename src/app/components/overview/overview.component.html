@@ -127,7 +127,7 @@
               </thead>
               <tbody *ngIf="implicitAccounts">
                 <ng-container *ngFor="let impAcc of implicitAccounts">
-                  <tr class="pkh-row" (click)="click(impAcc)">
+                  <tr class="pkh-row" [class.selectedPkh]="activeAccount.address === impAcc.address" (click)="click(impAcc)">
                     <td colspan="2" (dblclick)="dblclick(impAcc)">
                       {{ impAcc.address }}
                     </td>

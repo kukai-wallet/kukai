@@ -19,7 +19,7 @@
       </ul>
     </li>
     <li class="nav-item dropdown" dropdown placement="bottom right">
-      <a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" dropdownToggle (click)="false">
+      <a class="nav-link" [class.disabled]="!this.walletService.wallet" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" dropdownToggle (click)="false">
         <canvas id="jdenticon" width="45" height="45" [attr.data-jdenticon-value]="jdenticon" class="pt-1"></canvas>
       </a>
       <ng-container *ngIf="this.walletService.wallet">

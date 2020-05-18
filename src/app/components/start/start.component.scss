@@ -44,6 +44,9 @@ a.active-link {
 .center-content {
     margin: auto; 
 }
+a:hover {
+    text-decoration: none;
+}
 
 //Different screens sizes
 //List of devices: https://css-tricks.com/snippets/css/media-queries-for-standard-devices/

@@ -15,7 +15,6 @@ import { EncryptionService } from '../encryption/encryption.service';
 import { OperationService } from '../operation/operation.service';
 import { utils, hd } from '@tezos-core-tools/crypto-utils';
 import { BehaviorSubject } from 'rxjs';
-import { toSvg } from 'jdenticon';
 @Injectable()
 export class WalletService {
   storeKey = `kukai-wallet`;
@@ -164,7 +163,6 @@ export class WalletService {
         implicitAccount.pk
       );
       implicitAccount.originatedAccounts.push(origAcc);
-      this.updateJdenticon();
       this.storeWallet();
     } else {
       console.warn(`Manager address $(manager) not found`);
@@ -192,7 +190,7 @@ export class WalletService {
   */
   clearWallet() {
     this.wallet = null;
-    this.jdenticon = new BehaviorSubject<string>('');
+    this.jdenticon.next('default16');
     localStorage.removeItem(this.storeKey);
   }
   /*
@@ -333,6 +331,7 @@ export class WalletService {
   }
 
   updateJdenticon() {
-    this.jdenticon.next(toSvg(this.wallet.implicitAccounts[0].address, 100));
+    console.log(this.wallet.implicitAccounts[0].address);
+    this.jdenticon.next(this.wallet.implicitAccounts[0].address);
   }
 }

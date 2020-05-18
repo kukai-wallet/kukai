@@ -117,7 +117,6 @@ export class HomePageComponent implements OnInit {
   logout() {
     this.coordinatorService.stopAll();
     this.walletService.clearWallet();
-    jdenticon.update('#jdenticon', this.walletService.jdenticon);
     this.router.navigate(['']);
   }
 }

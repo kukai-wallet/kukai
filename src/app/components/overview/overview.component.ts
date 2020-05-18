@@ -37,16 +37,16 @@ export class OverviewComponent implements OnInit, AfterViewInit {
     if (this.walletService.wallet) {
       this.coordinatorService.startAll();
       this.implicitAccounts = this.walletService.wallet.implicitAccounts;
-      console.log(this.implicitAccounts);
+      this.activeAccount = this.implicitAccounts[0];
     }
   }
   ngAfterViewInit() {
-    jdenticon.update('#selected-pkh-jdenticon');
+    if (this.activeAccount) {
+      jdenticon.update('#selected-pkh-jdenticon', this.activeAccount.address);
+    }
   }
   click(account: Account) {
-    if (this.activeAccount && this.activeAccount.address === account.address) {
-      this.activeAccount = null;
-    } else {
+    if (this.activeAccount.address !== account.address) {
       this.activeAccount = account;
       jdenticon.update('#selected-pkh-jdenticon', this.activeAccount.address);
     }
