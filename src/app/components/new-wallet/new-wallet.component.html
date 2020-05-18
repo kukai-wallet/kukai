@@ -14,6 +14,9 @@
         </div>
       </div>
       <div class="card-footer text-right">
+        <a routerLink="/">
+          <button type="button" class="btn btn-primary btn-lg btn-float-left">Back</button>
+        </a>
         <button type="button" class="btn btn-primary btn-lg" (click)="verifyView()"> {{ 'NEWWALLETCOMPONENT.NEXT' | translate }} </button>
       </div>
     </div>
@@ -34,6 +37,9 @@
         </div>
       </div>
       <div class="card-footer text-right">
+        <a routerLink="/">
+          <button type="button" class="btn btn-primary btn-lg btn-float-left">Abort</button>
+        </a>
         <button type="button" class="btn btn-primary btn-lg" [disabled]="!mnemonicMatch()" (click)="pwdView()"> {{ 'NEWWALLETCOMPONENT.NEXT' | translate }} </button>
       </div>
     </div>
@@ -61,6 +67,9 @@
         </div>
       </div>
       <div class="card-footer text-right">
+        <a routerLink="/">
+          <button type="button" class="btn btn-primary btn-lg btn-float-left">Abort</button>
+        </a>
         <button type="button" class="btn btn-primary btn-lg" [disabled]="!pwd1" (click)="encryptWallet()"> {{ 'NEWWALLETCOMPONENT.ENCRYPT' | translate }} </button>
       </div>
     </div>
@@ -78,6 +87,9 @@
         </div>
       </div>
       <div class="card-footer text-right">
+        <a routerLink="/">
+          <button type="button" class="btn btn-primary btn-lg btn-float-left" [disabled]="ekfDownloaded">Abort</button>
+        </a>
         <button type="button" class="btn btn-primary btn-lg" [disabled]="!ekfDownloaded" (click)="done()"> {{ 'NEWWALLETCOMPONENT.FINISH' | translate }} </button>
       </div>
     </div>
