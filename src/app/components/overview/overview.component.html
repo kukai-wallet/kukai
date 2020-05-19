@@ -15,19 +15,17 @@
               </div>
               <div class="col-md-8 col-9 text-right">
                 <div class="text-value">Selected Account</div>
-                <div class="row pt-4" *ngIf="activeAccount">
-                  <div
-                    class="col-md-2 col-4 pt-2"
+                <div
+                    class="pt-4"
                     (click)="dblclick(activeAccount)"
                   >
-                    <h4><i class="icon-docs"></i></h4>
+                  <h4><i class="icon-docs"></i></h4>
                   </div>
-                  <div class="col-md-10 col-8">
-                    <h5 class="pt-2">{{ activeAccount.address }}</h5>
-                  </div>
-                </div>
               </div>
             </div>
+            <div class="row" *ngIf="activeAccount">
+              <h5 class="col-md-12 col-12 text-monospace pt-2 text-center">{{ activeAccount.address }}</h5>
+          </div>
           </div>
         </div>
       </div>

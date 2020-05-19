@@ -8,7 +8,9 @@
     width: 120px;
     border-radius: 0.4rem;
 }
-
+.icon-docs:hover {
+    cursor: pointer !important;
+}
 .padding-top-row {
     padding-top: 0.8rem !important; //default at 5px;
 }
