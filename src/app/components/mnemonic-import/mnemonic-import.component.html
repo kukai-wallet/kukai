@@ -1,6 +1,6 @@
 <div id="content" *ngIf="activePanel === 0">
     <div class="center-content">
-        <div class="card text-center fix-size bg-gray-700 text-white">
+        <div class="card text-center bg-gray-700 text-white">
             <div class="card-body">
                 <h1 class="card-title"> {{ 'MNEMONICIMPORTCOMPONENT.TITLE' | translate }} </h1>
                 <div class="card-text">
@@ -85,6 +85,9 @@
                 </div>
             </div>
             <div class="card-footer text-right">
+                <a routerLink="/">
+                    <button type="button" class="btn btn-primary btn-lg btn-float-left">Cancel</button>
+                  </a>
                 <button type="button" class="btn btn-primary btn-lg" (click)="retrieve()"> {{ 'MNEMONICIMPORTCOMPONENT.RETRIEVE' | translate }} </button>
             </div>
         </div>
@@ -93,7 +96,7 @@
 <!-- Password -->
 <div id="content" *ngIf="activePanel === 1">
     <div class="center-content">
-        <div class="card text-center fix-size">
+        <div class="card text-center">
             <div class="card-body">
                 <h1 class="card-title"> {{ 'MNEMONICIMPORTCOMPONENT.TITLE2' | translate }} </h1>
                 <div class="card-text">
@@ -126,7 +129,7 @@
 <!-- Finish -->
 <div id="content" *ngIf="activePanel === 2">
     <div class="center-content">
-        <div class="card text-center fix-size">
+        <div class="card text-center">
             <div class="card-body">
                 <h1 class="card-title"> {{ 'MNEMONICIMPORTCOMPONENT.TITLE3' | translate }} </h1>
                 <div class="card-text">

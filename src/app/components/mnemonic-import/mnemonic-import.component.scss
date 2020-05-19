@@ -2,11 +2,6 @@
     padding-bottom: 0.7vh;
 }
 
-.fix-size {
-    width: 40rem;
-    //height: 40rem;
-}
-
 /* ---------------------------------------------------
     CONTENT STYLE
 ----------------------------------------------------- */
@@ -31,6 +26,10 @@
 
 .card-footer {
     background-color: rgba(0, 0, 0, 0);
+}
+
+.btn-float-left {
+    float: left;
 }
 
 .form-row-margin-top {
