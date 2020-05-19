@@ -52,21 +52,19 @@
                 </h5>
               </div>
             </div>
-            <div class="row row-buttons text-center">
-              <div class="col-1 col-sm-none col-md-1"></div>
-              <div class="col-5 text-right">
+            <div class="row row-buttons text-center justify-content-around">
+
                 <app-send
                   [activeAccount]="
                     activeAccount ? activeAccount : implicitAccounts[0]
                   "
                 ></app-send>
-              </div>
-              <div class="col-5 text-left">
+
+
                 <app-receive
                   [activeAddress]="activeAccount ? activeAccount.address : null"
                 ></app-receive>
-              </div>
-              <div class="col-1 col-sm-none col-md-1"></div>
+
             </div>
           </div>
         </div>
