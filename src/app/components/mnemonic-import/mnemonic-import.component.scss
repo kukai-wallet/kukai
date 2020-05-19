@@ -27,13 +27,17 @@
 .card-footer {
     background-color: rgba(0, 0, 0, 0);
 }
-
+.nav-item > .active {
+    background-color: #5c6873;
+    border-bottom-color: #5c6873;
+    color: white;
+}
 .btn-float-left {
     float: left;
 }
 
 .form-row-margin-top {
-    margin-top: 75px;
+    margin-top: 4rem;
 }
 
 .form-min-height {

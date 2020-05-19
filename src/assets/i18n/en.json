@@ -136,7 +136,7 @@
         "IMPORTTITLE" : "Import Your Wallet",
         "IMPORTHEADING" : "Import your previous wallet through your seed or your encrypted file. You can also import wallets with your ICO credentials.",
         "IMPORTSUBTITLE1" : "1. Import wallet from File",
-        "IMPORTINFO1" : "Import your wallet from file (.tez). Both encrypted keystore files for full-wallet (with seed) or view-only wallets (with public key) can be imported here.",
+        "IMPORTINFO1" : "Import your wallet from an encrypted keystore file (.tez).",
         "IMPORTSUBTITLE2" : "2. Import wallet from Seed or ICO credentials",
         "IMPORTINFO2" : "Retrieve wallet from your mnemonic words",
         "IMPORTSUBTITLE3" : "3. Observer wallet",

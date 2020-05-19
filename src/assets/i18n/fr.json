@@ -134,7 +134,7 @@
         "IMPORTTITLE" : "Importer votre portefeuille.",
         "IMPORTHEADING" : "Importer le portefeuille avec votre germe ou fichier crypté. Vous pouvez aussi importer le portefeuilles avec vos références de l'ICO.",
         "IMPORTSUBTITLE1" : "1. Importer le portefeuille",
-        "IMPORTINFO1" : "Importer le portefeuille à partir du fichier (*.tez). Les deux types de portefeuilles (complet ou en lecture seule) peuvent être importés ici.",
+        "IMPORTINFO1" : "Importer le portefeuille à partir du fichier (*.tez).",
         "IMPORTSUBTITLE2" : "2. Importer votre portefeuille du Germe ou références ICO.",
         "IMPORTINFO2" : "Récupérer le portefeuilles grâce à la phrase mnémonique",
         "IMPORTSUBTITLE3" : "3. Portefeuille observable",

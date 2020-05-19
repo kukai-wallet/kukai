@@ -12,17 +12,17 @@
                                 <tab heading="Regular import" id="tab1" (select)="tge = false"></tab>
                             </tabset>
                             -->
-                            <ul class="nav nav-pills" [selectedIndex]="activeTab" (selectedIndexChange)="tabChanged()">
-                                <li class="nav-item" label="Regular import">
-                                  <button class="btn btn-primary" (click)="tge = false">Regular Import</button>
+                            <ul class="nav nav-tabs">
+                                <li class="nav-item">
+                                  <a class="nav-link" [class.active]="!tge" (click)="tge = false">Regular Import</a>
                                 </li>
-                                <li label="ICO import" (select)="tge = true">
-                                  <button class="btn btn-success ml-2" (click)="tge = true">Fundraiser Import</button>
+                                <li class="nav-item">
+                                  <a class="nav-link" [class.active]="tge" (click)="tge = true">Fundraiser Import</a>
                                 </li>
                             </ul>
                             <BR>
                         </div>
-                        <div class="form-group row" *ngIf="tge">
+                        <div *ngIf="tge" class="form-group row">
                             <div class="col-sm-12">
                                     <p *ngIf="this.CONSTANTS.NET.NAME !== 'Mainnet'">Need a <a href="https://faucet.tzalpha.net/" target="_blank">faucet</a> for the testnet?</p>
                                 <p>

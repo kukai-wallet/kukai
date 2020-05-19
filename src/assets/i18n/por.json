@@ -134,7 +134,7 @@
         "IMPORTTITLE" : "Importe sua carteira",
         "IMPORTHEADING" : "Importe sua carteira anterior através da sua seed ou arquivo criptografado. Você também pode importar carteiras com as credencias da ICO.",
         "IMPORTSUBTITLE1" : "1. Importar carteira do Arquivo",
-        "IMPORTINFO1" : "Importar sua carteira do Arquivo (.tez). Ambos arquivos criptografados para carteira completa (com seed) ou carteiras somente leitura (com chave pública) podem ser importados aqui.",
+        "IMPORTINFO1" : "Importar sua carteira do Arquivo (.tez).",
         "IMPORTSUBTITLE2" : "2. Importar carteira da Seed ou das credenciais da ICO",
         "IMPORTINFO2" : "Recuperar carteira das suas palavras mnemônicas",
         "IMPORTSUBTITLE3" : "3. Carteira visível",
