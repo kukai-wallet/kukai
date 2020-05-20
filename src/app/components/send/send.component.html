@@ -39,23 +39,20 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-8">
-                            <label for="sendAmount"> {{ 'SENDCOMPONENT.AMOUNTTOSEND' | translate }} (&#42793;)</label>
-                            <div>
-                                <input type="text" class="form-control" id="sendAmount" placeholder="0.00" [(ngModel)]="amount" name="three">
+                            <label for="amountGroup"> {{ 'SENDCOMPONENT.AMOUNTTOSEND' | translate }} (&#42793;)</label>
+                        <div class="input-group col-md-12 pl-0 pr-0" id="amountGroup">
+                            <div class="input-group-prepend">
+                                <button class="btn btn-outline-secondary" type="button" (click)="sendEntireBalance(activeAccount, $event)">{{ 'SENDCOMPONENT.SENDBALANCE' | translate }}</button>
                             </div>
-                            <div class="form-group">
-                                <small id="smallSend" class="form-text text-muted">
-                                    <button type="button" class="btn btn-outline-light btn-sm btn-balance" (click)="sendEntireBalance(activeAccount, $event)"> {{ 'SENDCOMPONENT.SENDBALANCE' | translate }} </button>
-                                    <span class="align-middle" *ngIf="amount * XTZrate > 0">(${{amount * XTZrate | number:'1.0'}} USD)</span>
-                                </small>
-                            </div>
+                            <input type="text" class="form-control col-md-12" id="sendAmount" placeholder="0.00" [(ngModel)]="amount" name="three">
+                        </div>
                         </div>
                         <div class="form-group col-md-4">
                             <label for="transactionFee"> {{ 'SENDCOMPONENT.FEE' | translate }} (&#42793;)</label>
                             <input type="text" class="form-control" id="transactionFee" placeholder={{this.defaultTransactionParams.fee.toString()}} [(ngModel)]="fee" name="four">
-                            <input type="text" readonly class="form-control-plaintext text-color" [value]="burnAmount()">
                         </div>
                     </div>
+                    
                 </div>
 
                 <!-- Multiple destinations -->
@@ -77,7 +74,19 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-row">
+                <!-- Limits -->
+                <div class="form-row align-items-center">
+                    <div class="form-group col-md-8">
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="customSwitch" (change)="showLimits = !showLimits">
+                            <label class="custom-control-label" for="customSwitch">Gas & Storage Limit (Advanced)</label>
+                        </div>
+                    </div>
+                    <div *ngIf="burnAmount()" class="form-group col-md-4">
+                        <input type="text" readonly class="form-control-plaintext text-color" [value]="burnAmount()">
+                    </div>
+                </div>
+                <div class="form-row" *ngIf="showLimits">
                     <div class="form-group col-md-6">
                         <label for="gasLimit">{{ 'SENDCOMPONENT.GASLIMIT' | translate }}</label>
                         <input type="text" class="form-control" id="gasLimit" placeholder={{this.defaultTransactionParams.gas.toString()}} [(ngModel)]="gas" name="five">

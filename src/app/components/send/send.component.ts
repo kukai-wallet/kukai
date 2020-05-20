@@ -52,6 +52,7 @@ export class SendComponent implements OnInit {
     toMultipleDestinations: SendData[] = [];
 
     showTransactions: SendData[] = [];
+    showLimits = false;
     simSemaphore = 0;
     dom: Document;
     implicitAccounts = null;

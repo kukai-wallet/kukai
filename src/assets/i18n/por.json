@@ -305,7 +305,7 @@
         "RATE" : "Taxa",
         "TOADDRESS" : "Para endereço",
         "AMOUNTTOSEND" : "Quantidade a enviar",
-        "SENDBALANCE" : "Enviar todo saldo",
+        "SENDBALANCE" : "Todo saldo",
         "FEE" : "Taxa",
         "PREVIEW" : "Prévia",
         "TITLE2" : "Autenticar transação",

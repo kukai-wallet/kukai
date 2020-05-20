@@ -310,7 +310,7 @@
         "RATE" : "Rate",
         "TOADDRESS" : "To Address",
         "AMOUNTTOSEND" : "Amount to Send",
-        "SENDBALANCE" : "Send max",
+        "SENDBALANCE" : "Max",
         "FEE" : "Fee",
         "PREVIEW" : "Preview",
         "TITLE2" : "Sign transaction",

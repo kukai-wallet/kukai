@@ -53,14 +53,11 @@
               </div>
             </div>
             <div class="row row-buttons text-center justify-content-around">
-
                 <app-send
                   [activeAccount]="
                     activeAccount ? activeAccount : implicitAccounts[0]
                   "
                 ></app-send>
-
-
                 <app-receive
                   [activeAddress]="activeAccount ? activeAccount.address : null"
                 ></app-receive>
@@ -89,8 +86,7 @@
               <div class="col-12">
                 <h3
                   class="pt-2 balance"
-                  *ngIf="activeAccount && activeAccount.balanceUSD !== null"
-                >
+                  *ngIf="activeAccount && activeAccount.balanceUSD !== null">
                   ${{ activeAccount.balanceUSD | number: "1.0-0" }}
                 </h3>
               </div>
@@ -153,6 +149,7 @@
                       <tr
                         class="pkh-row"
                         *ngFor="let origAcc of impAcc.originatedAccounts"
+                        [class.selectedPkh]="activeAccount.address === origAcc.address"
                         (click)="click(origAcc)"
                       >
                         <td class="text-monospace" colspan="2" (dblclick)="dblclick(origAcc)">
