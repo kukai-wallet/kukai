@@ -89,6 +89,16 @@ div.entropy {
     user-select: none;
 }
 
+.summary-done {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    padding-right: 0.75rem;
+    padding-left: 0.75rem;
+    background-color: rgba(0, 0, 0, 0.125);
+    white-space: pre-line;
+    font-size: 120%;
+}
+
 .card-footer {
     background-color: rgba(0, 0, 0, 0);
 }
