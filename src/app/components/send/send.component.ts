@@ -240,6 +240,9 @@ export class SendComponent implements OnInit {
                         console.log('Transaction successful ', ans);
                         if (ans.payload.opHash) {
                             this.coordinatorService.boost(this.activeAccount.address);
+                            if (this.walletService.addressExists(this.transactions[0].to)) {
+                                this.coordinatorService.boost(this.transactions[0].to);
+                            }
                         } else if (this.walletService.wallet instanceof LedgerWallet) {
                             this.ledgerInstruction = 'Please sign the transaction with your Ledger to proceed!';
                             this.requestLedgerSignature();
@@ -278,6 +281,9 @@ export class SendComponent implements OnInit {
                 this.sendResponse = ans;
                 if (ans.success && this.activeAccount) {
                     this.coordinatorService.boost(this.activeAccount.address);
+                    if (this.walletService.addressExists(this.transactions[0].to)) {
+                        this.coordinatorService.boost(this.transactions[0].to);
+                    }
                 }
                 console.log('ans: ' + JSON.stringify(ans));
             })

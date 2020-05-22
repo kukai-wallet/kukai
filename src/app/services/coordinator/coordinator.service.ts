@@ -78,7 +78,7 @@ export class CoordinatorService {
       this.updateAccountData(pkh);
     }
   }
-  async boost(pkh: string, changedDelegate?: boolean) {
+  async boost(pkh: string) {
     // Expect action
     console.log('boost ' + pkh);
     if (this.walletService.addressExists(pkh)) {
@@ -149,7 +149,7 @@ export class CoordinatorService {
   changeState(pkh: string, newState: State) {
     const scheduleData: ScheduleData = this.scheduler.get(pkh);
     scheduleData.state = newState;
-    if (newState === State.UpToDate) {
+    if (newState === State.UpToDate || newState === State.Updating) {
       this.updateAccountData(pkh);
     }
     if (newState === State.Wait || newState === State.Updating) {
