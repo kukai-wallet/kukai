@@ -225,6 +225,7 @@
         "NEXT" : "Next",
         "TITLE3" : "Verify your Seed",
         "INFOVERIFYSEED" : "Please submit your seed words to verify you written down the words correctly.",
+        "INFOVERIFYSEED2" : "Please select the seed words in correct order to verify you written down the words correctly.",
         "TITLE4" : "Choose your Password",
         "INFOMINIMUMCHARACTERS" : "Minimum 9 characters",
         "ALERTMINIMUMCHARACTERS" : "There must be a minimum of 9 characters",

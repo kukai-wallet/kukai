@@ -24,8 +24,11 @@ export class NewWalletComponent implements OnInit {
   seed: any;
   pkh: string;
   pk: string;
-  MNEMONIC: string;
-  mnemonicOut: string;
+  MNEMONIC: {
+    string: string,
+    array: string[],
+    order: number[]
+  };
   constructor(
     private translate: TranslateService,
     private walletService: WalletService,
@@ -40,20 +43,49 @@ export class NewWalletComponent implements OnInit {
     this.generateSeed();
   }
   generateSeed() {
-    this.MNEMONIC = this.walletService.createNewWallet();
-    this.mnemonicOut = this.MNEMONIC.replace(/((?:.*?\s){5}.*?)\s/g, '$1\n'); // 6 words per line
+    const mnemonic = this.walletService.createNewWallet();
+    this.MNEMONIC = {
+      string: mnemonic,
+      array: mnemonic.split(' '),
+      order: []
+    }
+    // shuffle
+    for (let i = this.MNEMONIC.array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [this.MNEMONIC.array[i], this.MNEMONIC.array[j]] = [this.MNEMONIC.array[j], this.MNEMONIC.array[i]];
+    }
     this.activePanel++;
   }
+
   verifyView() {
     this.activePanel++;
-    this.mnemonicOut = this.mnemonicOut.replace(/(\r\n\t|\n|\r\t| )/gm, ''); // remove white-spaces and linebreaks
   }
   pwdView() {
     this.activePanel++;
     this.userMnemonic = '';
   }
+  wordClick(id: number) {
+    const index = this.MNEMONIC.order.indexOf(id);
+    if (index < 0) {
+      this.MNEMONIC.order.push(id);
+    } else {
+      this.MNEMONIC.order.splice(index, 1);
+    }
+    console.log(this.MNEMONIC.order);
+    this.orderToText();
+  }
+  orderToText() {
+    let out = '';
+    if (this.MNEMONIC.order.length) {
+      for (let n of this.MNEMONIC.order) {
+        out += this.MNEMONIC.array[n] + ' ';
+      }
+      out = out.slice(0, -1)
+    }
+    this.userMnemonic = out;
+  }
   mnemonicMatch(): boolean {
-    return (this.mnemonicOut === this.userMnemonic.replace(/(\r\n\t|\n|\r\t| )/gm, ''));
+    return (this.MNEMONIC.string === this.userMnemonic);
   }
   encryptWallet() {
     if (this.validPwd()) {
@@ -61,13 +93,14 @@ export class NewWalletComponent implements OnInit {
       this.pwd1 = '';
       this.pwd2 = '';
       setTimeout(() => { // Prevent UI from freeze
-        const ans = this.walletService.createEncryptedWallet(this.MNEMONIC, pwd, '', true);
+        const ans = this.walletService.createEncryptedWallet(this.MNEMONIC.string, pwd, '', true);
         this.seed = ans.seed;
         this.data = ans.data;
         this.pkh = ans.pkh;
         this.pk = ans.pk;
-        this.MNEMONIC = '';
-        this.mnemonicOut = '';
+        this.MNEMONIC.string = '';
+        this.MNEMONIC.array = [];
+        this.MNEMONIC.order = [];
         this.activePanel++;
       }, 100);
     }
