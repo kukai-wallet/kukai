@@ -35,7 +35,7 @@
           <div class="row">
             <ng-container *ngFor="let word of MNEMONIC.array ; index as i">
               <div class="col-6 col-sm-4 col-md-3 p-0 pl-1 pr-1 pt-2">
-                <button type="button" class="btn btn-primary btn-lg col-12" [class.btn-secondary]="MNEMONIC.order.includes(i)" [class.btn-primary]="!MNEMONIC.order.includes(i)" (click)="wordClick(i)">{{ word }}</button>
+                <button type="button" class="btn btn-primary btn-lg col-12" [class.btn-secondary]="!MNEMONIC.order.includes(i)" [class.btn-primary]="MNEMONIC.order.includes(i)" (click)="wordClick(i)">{{ word }}</button>
               </div>
             </ng-container>
           </div>

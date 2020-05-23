@@ -3,14 +3,16 @@ import { WalletService } from '../wallet/wallet.service';
 import { ConseilService } from '../conseil/conseil.service';
 import { of, Observable } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
-import { Activity } from '../wallet/wallet';
+import { Activity, Account } from '../wallet/wallet';
+import { MessageService } from '../message/message.service';
 
 @Injectable()
 export class ActivityService {
   maxTransactions = 10;
   constructor(
     private walletService: WalletService,
-    private conseilService: ConseilService
+    private conseilService: ConseilService,
+    private messageService: MessageService
   ) {}
   updateTransactions(pkh): Observable<any> {
     try {
@@ -40,22 +42,46 @@ export class ActivityService {
   getAllTransactions(account, counter): Observable<any> {
     return this.conseilService.getOperations(account.address).pipe(
       flatMap((ans) => {
-        if (
-          (account.activities.length === 0 && ans.length > 0) ||
-          (ans.length > 0 && account.activities[0].hash !== ans[0].hash)
-        ) {
+        if (Array.isArray(ans)) {
           const oldActivities = account.activities;
           account.activities = ans;
+          const oldActivitiesCounter = account.activitiesCounter;
           account.activitiesCounter = counter;
+          console.log(oldActivitiesCounter + ' # ' + counter);
           this.walletService.storeWallet();
-        } else if (account.activitiesCounter === 0) {
-          account.activitiesCounter = counter;
-          this.walletService.storeWallet();
+          if (oldActivitiesCounter !== -1) { // Exclude inital loading
+            this.promptNewActivities(account, oldActivities, ans);
+          } else {
+            console.log('# Excluded ' + counter);
+          }
+        } else {
+          console.log('#');
+          console.log(ans);
         }
         return of({
           upToDate: false
         });
       })
     );
+  }
+  promptNewActivities(account: Account, oldActivities: Activity[], newActivities: Activity[]) {
+    for (let activity of newActivities) {
+      if (oldActivities.findIndex((a) => a.hash === activity.hash) === -1) {
+        if (activity.type === 'transaction') {
+          if (account.address === activity.source) {
+            this.messageService.addSuccess(account.shortAddress() + ': Sent ' + activity.amount / 1000000 + ' tez');
+          }
+          if (account.address === activity.destination) {
+            this.messageService.addSuccess(account.shortAddress() + ': Received ' + activity.amount / 1000000 + ' tez');
+          }
+        } else if (activity.type === 'delegation') {
+          this.messageService.addSuccess(account.shortAddress() + ': Delegate updated');
+        } else if (activity.type === 'origination') {
+          this.messageService.addSuccess(account.shortAddress() + ': Account originated');
+        } else if (activity.type === 'activation') {
+          this.messageService.addSuccess(account.shortAddress() + ': Account activated');
+        }
+      }
+    }
   }
 }

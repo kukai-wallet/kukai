@@ -37,10 +37,6 @@ export class BalanceService {
   }
   updateAccountBalance(account: Account, newBalance: number) {
     if (isNullOrUndefined(account.balanceXTZ) || newBalance !== account.balanceXTZ) {
-      if (!isNullOrUndefined(account.balanceXTZ)) {
-        const balanceUpdated = this.translate.instant('BALANCESERVICE.BALANCEUPDATE');
-        this.messageService.add(balanceUpdated + ' ' + account.address);
-      }
       account.balanceXTZ = newBalance;
       this.updateTotalBalance();
       this.tzrateService.updateFiatBalances();

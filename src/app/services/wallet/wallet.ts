@@ -129,13 +129,16 @@ export abstract class Account {
     this.balanceXTZ = null;
     this.balanceUSD = null;
     this.delegate = '';
-    this.activitiesCounter = 0;
+    this.activitiesCounter = -1;
     this.activities = [];
     this.pkh = pkh;
     this.pk = pk;
     this.address = address;
   }
   public abstract isImplicit(): boolean;
+  shortAddress(): string {
+    return this.address.slice(0, 7) + '..' + this.address.slice(-4);
+  }
 }
 
 export class ImplicitAccount extends Account {

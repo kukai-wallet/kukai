@@ -32,7 +32,6 @@ export class DelegateService {
   handleDelegateResponse(account: Account, data: any) {
     if (data) {
       if (account.delegate !== data) {
-        account.activitiesCounter = 0;
         account.delegate = data;
         this.walletService.storeWallet();
       } else {
@@ -40,7 +39,6 @@ export class DelegateService {
       }
     } else {
       if (account.delegate !== '') {
-        account.activitiesCounter = 0;
         account.delegate = '';
         this.walletService.storeWallet();
       }

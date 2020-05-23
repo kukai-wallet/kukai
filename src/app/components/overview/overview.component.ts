@@ -67,9 +67,6 @@ export class OverviewComponent implements OnInit, AfterViewInit {
       console.log('blocked!');
     }
   }
-  removePkh() {
-
-  }
   openPkhSpot(): boolean {
     const counter = this.implicitAccounts[this.implicitAccounts.length - 1]
       .activitiesCounter;
