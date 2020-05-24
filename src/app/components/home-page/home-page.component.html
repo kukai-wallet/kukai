@@ -1,4 +1,4 @@
-<app-header
+<!--<app-header
   [navbarBrandRouterLink]="['/']"
   [fixed]="true"
   [navbarBrandFull]="{src: 'assets/img/new_logo.png', width: 140, height: 45, alt: 'Kukai Logo'}"
@@ -6,9 +6,9 @@
   [sidebarToggler]="'lg'"
   [asideMenuToggler]="false"
   [mobileAsideMenuToggler]="false">
-  <ul class="nav navbar-nav ml-auto">
+  <ul class="nav navbar-nav ml-auto">-->
     <!-- Language Button -->
-    <li class="btn-group dropdown-padding language-btn pr-2" dropdown>
+    <!--<li class="btn-group dropdown-padding language-btn pr-2" dropdown>
       <button id="button-language" dropdownToggle type="button" class="btn btn-light dropdown-toggle btn-sm" aria-controls="dropdown-basic">
         {{ returnLanguage (translate.currentLang) }} <span class="caret"></span>
       </button>
@@ -32,12 +32,13 @@
   <app-sidebar #appSidebar [fixed]="true" [display]="'lg'" [minimized]="sidebarMinimized" (minimizedChange)="toggleMinimize($event)">
     <app-sidebar-nav [navItems]="navItems" [perfectScrollbar] [disabled]="appSidebar.minimized" ng-change="translateNavItems()"></app-sidebar-nav>
     <app-sidebar-minimizer></app-sidebar-minimizer>
-  </app-sidebar>
+  </app-sidebar>-->
   <!-- Main content -->
-  <main class="main">
+  <!--<main class="main">
     <div class="container-fluid">
         <router-outlet></router-outlet>
         <app-messages></app-messages>
     </div>
   </main>
 </div>
+-->

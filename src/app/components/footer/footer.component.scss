@@ -1,0 +1,31 @@
+#bottom-container {
+    position: absolute;
+    bottom: 0;
+    height: 8rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#follow {
+    height: 3rem;
+    width: 9rem;
+    text-align: center;
+    font-family: "Helvetica Now Text";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #2C323A;
+    opacity: 0.4;
+}
+img {
+    opacity: 0.4;
+    margin-top: 1rem;
+}
+#tg {
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
+}

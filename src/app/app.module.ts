@@ -34,7 +34,6 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 import {
   AppAsideModule,
   AppBreadcrumbModule,
-  AppFooterModule,
   AppSidebarModule,
 } from '@coreui/angular';
 
@@ -82,6 +81,7 @@ import { DelegatorNamePipe } from './pipes/delegator-name.pipe';
 import { TruncatePipe } from './pipes/truncate.pipe';
 import { TimeAgoPipe } from './pipes/time-ago.pipe';
 import { ConnectLedgerComponent } from './components/connect-ledger/connect-ledger.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -121,11 +121,11 @@ export function HttpLoaderFactory(http: HttpClient) {
     TruncatePipe,
     TimeAgoPipe,
     ConnectLedgerComponent,
+    FooterComponent,
   ],
   imports: [
     AppAsideModule,
     AppBreadcrumbModule,
-    AppFooterModule,
     AppSidebarModule,
     BrowserModule,
     BrowserAnimationsModule,
