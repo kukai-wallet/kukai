@@ -34,7 +34,6 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 import {
   AppAsideModule,
   AppBreadcrumbModule,
-  AppHeaderModule,
   AppFooterModule,
   AppSidebarModule,
 } from '@coreui/angular';
@@ -73,6 +72,7 @@ import { BakeryComponent } from './components/bakery/bakery.component';
 import { ActivateComponent } from './components/activate/activate.component';
 import { MessagesComponent } from './components/messages/messages.component';
 import { CommunityComponent } from './components/community/community.component';
+import { HeaderComponent } from './components/header/header.component';
 import { P404Component } from './views/error/404.component';
 import { P500Component } from './views/error/500.component';
 
@@ -111,6 +111,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ActivateComponent,
     MessagesComponent,
     CommunityComponent,
+    HeaderComponent,
     P404Component,
     P500Component,
 
@@ -119,12 +120,11 @@ export function HttpLoaderFactory(http: HttpClient) {
     DelegatorNamePipe,
     TruncatePipe,
     TimeAgoPipe,
-    ConnectLedgerComponent
+    ConnectLedgerComponent,
   ],
   imports: [
     AppAsideModule,
     AppBreadcrumbModule,
-    AppHeaderModule,
     AppFooterModule,
     AppSidebarModule,
     BrowserModule,

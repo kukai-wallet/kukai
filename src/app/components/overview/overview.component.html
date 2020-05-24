@@ -1,4 +1,4 @@
-<div class="container pt-5" *ngIf="this.walletService.wallet">
+<!-- <div class="container pt-5" *ngIf="this.walletService.wallet">
   <div class="animated fadeIn" *ngIf="implicitAccounts">
     <div class="row">
       <div class="col-sm-12 col-lg-5">
@@ -28,9 +28,11 @@
           </div>
           </div>
         </div>
-      </div>
+      </div> -->
+
       <!--/.col-->
-      <div class="col-sm-12 col-lg-4">
+
+<!--       <div class="col-sm-12 col-lg-4">
         <div class="card text-white bg-info overview-card">
           <div class="card-body">
             <div class="row">
@@ -65,9 +67,11 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
+
       <!--/.col-->
-      <div class="col-sm-12 col-lg-3">
+
+<!--       <div class="col-sm-12 col-lg-3">
         <div class="card text-white bg-success overview-card">
           <div class="card-body">
             <div class="row">
@@ -94,10 +98,9 @@
           </div>
         </div>
       </div>
-      <!--/.col-->
-    </div>
+    </div> -->
 
-    <div class="row">
+<!--     <div class="row">
       <div class="col-lg-12">
         <div class="card bg-gray-700 text-white">
           <div class="card-header bg-dark">
@@ -136,16 +139,16 @@
                         $ {{ impAcc.balanceUSD | number: "1.0-0" }} USD
                       </ng-container>
                     </td>
-                  </tr>
+                  </tr> -->
                   <!-- Accounts + Total sections shown only if there are accounts -->
-                  <ng-container
+                  <!-- <ng-container
                     *ngIf="
                       implicitAccounts[1] ||
                       implicitAccounts[0].originatedAccounts[0]
                     "
-                  >
+                  > -->
                     <!-- Accounts -->
-                    <ng-container *ngIf="impAcc.originatedAccounts">
+<!--                     <ng-container *ngIf="impAcc.originatedAccounts">
                       <tr
                         class="pkh-row"
                         *ngFor="let origAcc of impAcc.originatedAccounts"
@@ -173,12 +176,12 @@
                           </ng-container>
                         </td>
                       </tr>
-                    </ng-container>
+                    </ng-container> -->
 
                     <!-- Default message - No account created -->
-                    <div class="container" *ngIf="!this.walletService.wallet">
+                    <!-- <div class="container" *ngIf="!this.walletService.wallet"> -->
                       <!-- Title -->
-                      <div class="row bottom-separator-no-account">
+                      <!-- <div class="row bottom-separator-no-account">
                         <div class="col-lg-12">
                           <h1 class="page-header-no-account">
                             {{ "OVERVIEWCOMPONENT.OVERVIEW" | translate }}
@@ -187,12 +190,12 @@
                       </div>
 
                       <div class="row">
-                        <div class="col-lg-12">
+                        <div class="col-lg-12"> -->
                           <!--
             <p>You can get all your wallet details and create new accounts in here but before, you will need to
                 <a routerLink="">create or import</a> a wallet.</p>
             -->
-                          <p>
+                          <!-- <p>
                             {{ "OVERVIEWCOMPONENT.EMPTYINFO" | translate }}
                           </p>
                         </div>
@@ -236,9 +239,9 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
 <!-- Default message - No account created -->
-<div class="container" *ngIf="!this.walletService.wallet">
+<!-- <div class="container" *ngIf="!this.walletService.wallet">
   <div class="row bottom-separator-no-account">
       <div class="col-lg-12">
           <h1 class="page-header-no-account"> {{ 'OVERVIEWCOMPONENT.OVERVIEW' | translate }} </h1>
@@ -255,3 +258,4 @@
       </div>
   </div>
 </div>
+ -->
