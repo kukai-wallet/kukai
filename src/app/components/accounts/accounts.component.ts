@@ -35,5 +35,11 @@ export class AccountsComponent implements OnInit {
       this.implicitAccounts = this.walletService.wallet.implicitAccounts;
     }
   }
-
+  copy(account: Account) {
+    copy(account.address);
+    const copyToClipboard = this.translate.instant(
+      'OVERVIEWCOMPONENT.COPIEDTOCLIPBOARD'
+    );
+    this.messageService.add(account.address + ' ' + copyToClipboard, 5);
+  }
 }

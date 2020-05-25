@@ -1,6 +1,10 @@
-.container {
+:host {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.msg-container {
     position: absolute;
     bottom: 0px;
     z-index: 1;
-    width: 80vw;
 }

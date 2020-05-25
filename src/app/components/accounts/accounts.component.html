@@ -9,7 +9,7 @@
                 <div>
                     <img class="account-icon" src="../../../assets/img/account-icon.svg">
                     <span class="account-address">{{ impAcc.shortAddress() }}</span>
-                    <img class="copy-icon" src="../../../assets/img/copy-icon.svg">
+                    <img class="copy-icon" src="../../../assets/img/copy-icon.svg" (click)="copy(impAcc)">
                 </div>
                 <div class="value-container">
                     <div class="values">
@@ -27,7 +27,7 @@
                     <div>
                         <img class="account-icon" src="../../../assets/img/account-icon.svg">
                         <span class="account-address">{{ origAcc.shortAddress() }}</span>
-                        <img class="copy-icon" src="../../../assets/img/copy-icon.svg">
+                        <img class="copy-icon" src="../../../assets/img/copy-icon.svg" (click)="copy(origAcc)">
                     </div>
                     <div class="value-container">
                         <div class="values">

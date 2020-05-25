@@ -8,7 +8,7 @@ import { CoordinatorService } from '../../services/coordinator/coordinator.servi
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
-
+  activeMenu = false;
   constructor(
     private router: Router,
     public walletService: WalletService,
@@ -18,9 +18,14 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
   }
   logout() {
+    this.activeMenu = false;
     this.coordinatorService.stopAll();
     this.walletService.clearWallet();
     this.router.navigate(['']);
   }
-
+  click() {
+    if (this.walletService.wallet) {
+      this.activeMenu =! this.activeMenu;
+    }
+  }
 }
