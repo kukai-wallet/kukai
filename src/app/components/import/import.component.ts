@@ -85,7 +85,7 @@ export class ImportComponent implements OnInit {
     this.importService.importWalletFromJson(keyFile, pwd).then(
       (success: boolean) => {
         if (success) {
-          this.router.navigate(['/overview']);
+          this.router.navigate(['/accounts']);
         } else {
           let importFailed = '';
           this.translate.get('IMPORTCOMPONENT.IMPORTFAILED').subscribe(

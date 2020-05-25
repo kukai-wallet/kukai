@@ -52,7 +52,7 @@ export class ConnectLedgerComponent implements OnInit {
   async importFromPk(pk: string, path: string) {
     if (utils.validPublicKey(pk)) {
       if (await this.importService.importWalletFromPk(pk, path)) {
-      this.router.navigate(['/overview']);
+      this.router.navigate(['/accounts']);
       } else {
         this.messageService.addError('Failed to import Ledger wallet');
       }

@@ -137,7 +137,7 @@ export abstract class Account {
   }
   public abstract isImplicit(): boolean;
   shortAddress(): string {
-    return this.address.slice(0, 7) + '..' + this.address.slice(-4);
+    return this.address.slice(0, 7) + '...' + this.address.slice(-4);
   }
 }
 

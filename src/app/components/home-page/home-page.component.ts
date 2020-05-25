@@ -1,10 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { TranslateService } from '@ngx-translate/core';  // Init the TranslateService
-import { INavData } from '@coreui/angular';
-
-import * as jdenticon from 'jdenticon';
 
 import { WalletService } from '../../services/wallet/wallet.service';
 import { CoordinatorService } from '../../services/coordinator/coordinator.service';
@@ -51,11 +48,6 @@ export class HomePageComponent implements OnInit {
 
       translate.onLangChange.subscribe((event) => {
         this.translateNavItems();
-      });
-
-      this.walletService.jdenticon.subscribe((value) => {
-        this.jdenticon = value;
-        jdenticon.update('#jdenticon', value);
       });
   }
 

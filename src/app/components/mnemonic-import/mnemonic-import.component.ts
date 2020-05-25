@@ -152,7 +152,7 @@ export class MnemonicImportComponent implements OnInit {
   async done() {
     await this.importService.importWalletFromObject(this.wallet.data, this.wallet.seed);
     this.wallet = null;
-    this.router.navigate(['/overview']);
+    this.router.navigate(['/accounts']);
     this.translate.get('MNEMONICIMPORTCOMPONENT.WALLETREADY').subscribe(
       (res: string) => this.messageService.addSuccess(res)
     );

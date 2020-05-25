@@ -16,6 +16,7 @@ import { BakeryComponent } from './components/bakery/bakery.component';
 import { ActivateComponent } from './components/activate/activate.component';
 import { CommunityComponent } from './components/community/community.component';
 import { ConnectLedgerComponent } from './components/connect-ledger/connect-ledger.component';
+import { AccountsComponent } from './components/accounts/accounts.component';
 import { P404Component } from './views/error/404.component';
 import { P500Component } from './views/error/500.component';
 
@@ -35,6 +36,7 @@ const routes: Routes = [
   { path: 'activate', component: ActivateComponent },
   { path: 'community', component: CommunityComponent },
   { path: 'connect-ledger', component: ConnectLedgerComponent },
+  { path: 'accounts', component: AccountsComponent },
   {
     path: '404',
     component: P404Component,

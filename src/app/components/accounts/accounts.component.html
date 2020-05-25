@@ -1,0 +1,54 @@
+<div id="main-container">
+    <div id="top-container">
+        <span id="title">Accounts</span>
+        <img src="../../../assets/img/add.svg">
+    </div>
+    <div id="accounts-container">
+        <ng-container *ngFor="let impAcc of implicitAccounts">
+            <div class="account-container">
+                <div>
+                    <img class="account-icon" src="../../../assets/img/account-icon.svg">
+                    <span class="account-address">{{ impAcc.shortAddress() }}</span>
+                    <img class="copy-icon" src="../../../assets/img/copy-icon.svg">
+                </div>
+                <div class="value-container">
+                    <div class="values">
+                        <span class="account-xtz">{{ impAcc.balanceXTZ / 1000000 | number: "1.0-6"}} tez</span>
+                        <span *ngIf="impAcc.balanceXTZ" class="account-usd">{{ impAcc.balanceUSD | number: "1.0-0" }} USD</span>
+                    </div>
+                    <div>
+                    <img class="menu-icon" src="../../../assets/img/menu-icon.svg">  
+                    </div>
+                </div>
+            </div>
+            <div class="seperator"></div>
+            <ng-container *ngFor="let origAcc of impAcc.originatedAccounts">
+                <div class="account-container">
+                    <div>
+                        <img class="account-icon" src="../../../assets/img/account-icon.svg">
+                        <span class="account-address">{{ origAcc.shortAddress() }}</span>
+                        <img class="copy-icon" src="../../../assets/img/copy-icon.svg">
+                    </div>
+                    <div class="value-container">
+                        <div class="values">
+                            <span class="account-xtz">{{ origAcc.balanceXTZ / 1000000 | number: "1.0-6"}} tez</span>
+                            <span *ngIf="origAcc.balanceXTZ" class="account-usd">{{ origAcc.balanceUSD | number: "1.0-0" }} USD</span>
+                        </div>
+                        <div>
+                        <img class="menu-icon" src="../../../assets/img/menu-icon.svg">  
+                        </div>
+                    </div>
+                </div>
+                <div class="seperator"></div>
+            </ng-container>
+        </ng-container>
+        <div class="account-container">
+            <div class="value-container value-total">
+                <div class="values">
+                    <span class="account-xtz">{{ walletService.wallet.totalBalanceXTZ / 1000000 | number: "1.0-6"}} tez</span>
+                    <span class="account-usd">{{ walletService.wallet.totalBalanceUSD | number: "1.0-0" }} USD</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

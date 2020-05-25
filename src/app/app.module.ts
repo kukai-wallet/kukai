@@ -82,6 +82,7 @@ import { TruncatePipe } from './pipes/truncate.pipe';
 import { TimeAgoPipe } from './pipes/time-ago.pipe';
 import { ConnectLedgerComponent } from './components/connect-ledger/connect-ledger.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { AccountsComponent } from './components/accounts/accounts.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -122,6 +123,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     TimeAgoPipe,
     ConnectLedgerComponent,
     FooterComponent,
+    AccountsComponent,
   ],
   imports: [
     AppAsideModule,
