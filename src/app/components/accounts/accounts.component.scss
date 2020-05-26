@@ -1,3 +1,6 @@
+img {
+    vertical-align: baseline;
+}
 #main-container {
     width: 40rem;
     background: #FCFCFC;
@@ -31,9 +34,13 @@
 }
 .account-icon {
     margin-left: 1rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
 }
 .copy-icon {
     padding-left: 0.5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
 }
 span {
     font-family: "Helvetica Now Text" ;
@@ -45,8 +52,10 @@ span {
 }
 .account-address {
     padding-left: 0.5rem;
-    align-items: center;
-    line-height: 2rem;
+    margin-top: 0.5rem;
+}
+.account-row > div {
+    display: flex;
 }
 .account-xtz {
     display: flex;
@@ -108,11 +117,16 @@ span {
     margin-left: 0.625rem;
 }
 @media screen and (max-width: 40rem) {
-    #main-container, #top-container {
+    #main-container {
         width: 22rem;
     }
     #accounts-container {
-        margin-left: 0.5rem;
-        width: 20.725rem;
+        width: 22rem;
+    }
+    .account-container {
+        width: 22rem;
+    }
+    .seperator {
+        width: 20rem;
     }
   }

@@ -1,11 +1,12 @@
 @import url("../assets/fonts/HelveticaNow/stylesheet.css");
-:host {
-    background-color: #E5E5E5;
-}
 .main-container {
     width: 100%;
     margin-top: 1.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
+    padding-bottom: 8rem;
+}
+#top-main-container {
+    min-height: 100%;
 }
