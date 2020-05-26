@@ -1,6 +1,6 @@
 <div id="top-container" (mouseleave)="activeMenu = false">
     <a routerLink=""><img id="logo" src="../../../assets/img/kukai-logo.svg"></a>
-        <div id="user-button" (click)="click()">
+        <div id="user-button" (click)="click()" [class.loggedin]="walletService.wallet">
             <img id="user-icon" src="../../../assets/img/user.svg">
         </div>
         <div *ngIf="activeMenu" id="menu" (click)="logout()">

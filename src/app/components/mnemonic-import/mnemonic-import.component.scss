@@ -1,3 +1,4 @@
+@import "~@coreui/coreui/scss/coreui";
 .row {
     padding-bottom: 0.7vh;
 }
@@ -7,8 +8,7 @@
 ----------------------------------------------------- */
 //Horizontal and Vertical Aligment of child div
 #content {
-    display: flex; 
-    min-height: calc(100vh - 55px);
+    display: flex;
     min-width: 75vw;
 }
 .center-content {
@@ -30,7 +30,10 @@
 .nav-item > .active {
     background-color: #5c6873;
     border-bottom-color: #5c6873;
-    color: white;
+    color: black !important;
+}
+.nav-link {
+    color: white !important;
 }
 .btn-float-left {
     float: left;

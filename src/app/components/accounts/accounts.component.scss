@@ -1,3 +1,9 @@
+:host {
+    width: 100%;
+    min-height: calc(100vh - 15.5rem);
+    display: flex;
+    justify-content: center;
+}
 img {
     vertical-align: baseline;
 }
@@ -7,7 +13,6 @@ img {
     border: 0.0625rem solid #FFFFFF;
     box-shadow: 0rem 0rem 0.0625rem rgba(0, 0, 0, 0.04), 0rem 0.125rem 0.375rem rgba(0, 0, 0, 0.04), 0rem 1rem 1.5rem rgba(0, 0, 0, 0.06);
     border-radius: 0.75rem;
-    // height: 16rem; // To be removed
 }
 #top-container {
     width: 39.875rem;

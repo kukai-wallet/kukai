@@ -96,7 +96,7 @@
 <!-- Password -->
 <div id="content" *ngIf="activePanel === 1">
     <div class="center-content">
-        <div class="card text-center">
+        <div class="card text-center bg-gray-700 text-white">
             <div class="card-body">
                 <h1 class="card-title"> {{ 'MNEMONICIMPORTCOMPONENT.TITLE2' | translate }} </h1>
                 <div class="card-text">
@@ -121,6 +121,9 @@
                 </div>
             </div>
             <div class="card-footer text-right">
+                <a routerLink="/">
+                    <button type="button" class="btn btn-primary btn-lg btn-float-left">Cancel</button>
+                  </a>
                 <button type="button" class="btn btn-primary btn-lg" (click)="setPwd()"> {{ 'MNEMONICIMPORTCOMPONENT.ENCRYPT' | translate }} </button>
             </div>
         </div>
@@ -129,7 +132,7 @@
 <!-- Finish -->
 <div id="content" *ngIf="activePanel === 2">
     <div class="center-content">
-        <div class="card text-center">
+        <div class="card text-center bg-gray-700 text-white">
             <div class="card-body">
                 <h1 class="card-title"> {{ 'MNEMONICIMPORTCOMPONENT.TITLE3' | translate }} </h1>
                 <div class="card-text">
@@ -147,6 +150,9 @@
                 </div>
             </div>
             <div class="card-footer text-right">
+                <a routerLink="/">
+                    <button type="button" class="btn btn-primary btn-lg btn-float-left">Cancel</button>
+                  </a>
                 <button type="button" class="btn btn-primary btn-lg" [disabled]="!Downloaded" (click)="done()"> {{ 'MNEMONICIMPORTCOMPONENT.FINISH' | translate }} </button>
             </div>
         </div>

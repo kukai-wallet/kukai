@@ -1,3 +1,4 @@
+@import "~@coreui/coreui/scss/coreui";
 .row {
     padding-bottom: 0.7vh;
     min-width: 250px; //20vw;
@@ -29,7 +30,6 @@ a.active-link {
 //Horizontal and Vertical Aligment of child div
 #content {
     display: flex; 
-    min-height: calc(100vh - 55px);
     min-width: 75vw;
 }
 .center-content {

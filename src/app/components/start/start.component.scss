@@ -1,6 +1,9 @@
+@import "~@coreui/coreui/scss/coreui";
 .row {
     padding-bottom: 0.7vh;
     min-width: 175px; //20vw;
+    margin-left: 0;
+    margin-right: 0;
 }
 .btn-second {
     color: #333333;
@@ -38,8 +41,7 @@ a.active-link {
 //Horizontal and Vertical Aligment of child div
 #content {
     display: flex; 
-    min-height: calc(100vh - 55px);
-    min-width: 75vw;
+    //height: calc(100vh - 20rem);
 }
 .center-content {
     margin: auto; 
