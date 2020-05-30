@@ -19,6 +19,7 @@ import { ConnectLedgerComponent } from './components/connect-ledger/connect-ledg
 import { AccountsComponent } from './components/accounts/accounts.component';
 import { P404Component } from './views/error/404.component';
 import { P500Component } from './views/error/500.component';
+import { AccountViewComponent } from './components/account-view/account-view.component';
 
 const routes: Routes = [
   { path: '', component: StartComponent },  // Content Centre position
@@ -31,12 +32,13 @@ const routes: Routes = [
   { path: 'new-account', component: NewAccountComponent },
   { path: 'receive', component: ReceiveComponent },
   { path: 'delegate', component: DelegateComponent },
-  { path: 'account', component: AccountComponent },
+  { path: 'account-legacy', component: AccountComponent },
   { path: 'bakery', component: BakeryComponent },
   { path: 'activate', component: ActivateComponent },
   { path: 'community', component: CommunityComponent },
   { path: 'connect-ledger', component: ConnectLedgerComponent },
   { path: 'accounts', component: AccountsComponent },
+  { path: 'account/:address', component: AccountViewComponent },
   {
     path: '404',
     component: P404Component,

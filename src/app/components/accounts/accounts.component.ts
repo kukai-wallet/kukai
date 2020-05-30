@@ -44,5 +44,25 @@ export class AccountsComponent implements OnInit {
   }
   select(account: Account) {
     console.log('Selected: ' + account.address);
+    this.router.navigate(['account', account.address]);
+  }
+  addPkh() {
+    if (this.openPkhSpot()) {
+      const pkh = this.walletService.incrementAccountIndex();
+      this.coordinatorService.start(pkh);
+    } else {
+      console.log('blocked!');
+    }
+  }
+  openPkhSpot(): boolean {
+    const counter = this.implicitAccounts[this.implicitAccounts.length - 1]
+      .activitiesCounter;
+    const balance: number = this.implicitAccounts[
+      this.implicitAccounts.length - 1
+    ].balanceXTZ;
+    return (
+      this.walletService.wallet instanceof HdWallet &&
+      ((counter && counter > 0) || (balance !== null && balance > 0))
+    );
   }
 }

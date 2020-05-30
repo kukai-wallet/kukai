@@ -1,4 +1,12 @@
 @import "~@coreui/coreui/scss/coreui";
+:host {
+    width: 100%;
+    min-height: 100%;
+    padding-bottom: 8rem;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+}
 .page-header {
     margin: 40px 0px 10px 0px; //top right bottom left
 

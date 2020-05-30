@@ -1,13 +1,21 @@
 :host {
     width: 100%;
-    min-height: calc(100vh - 15.5rem);
+    min-height: 100%;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+}
+#wrapper {
+    width: 100%;
+    min-height: calc(100% - 8rem);
+    padding-bottom: 8rem;
     display: flex;
     justify-content: center;
 }
 img {
     vertical-align: baseline;
 }
-#main-container {
+.main-container {
     width: 40rem;
     background: #FCFCFC;
     border: 0.0625rem solid #FFFFFF;
@@ -16,8 +24,8 @@ img {
 }
 #top-container {
     width: 39.875rem;
-    margin-top: 0.75rem;
-    height: 2.75rem;
+    margin-top: 1rem;
+    height: 2.5em;
     width: auto;
     border-bottom: 1px solid #EAEBF9;
 }
@@ -87,7 +95,6 @@ span {
 }
 #top-container > img {
     float: right;
-    margin-top: 0.25rem;
     margin-right: 1rem;
     cursor: pointer;
 }
@@ -122,7 +129,7 @@ span {
     margin-left: 0.625rem;
 }
 @media screen and (max-width: 40rem) {
-    #main-container {
+    .main-container {
         width: 22rem;
     }
     #accounts-container {

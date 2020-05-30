@@ -14,14 +14,7 @@
                 <div class="form-row">
                     <div class="form-group col-md-9">
                         <label for="fromAdress"> {{ 'SENDCOMPONENT.FROMADDRESS' | translate }} </label>
-                        <div class="text-monospace">
-                            <select [(ngModel)]="activeAccount" (change)="activeAccountChange()" id="fromAdress" class="form-control mono" name="first1">
-                                <ng-container *ngFor="let account of implicitAccounts">
-                                    <option [ngValue]="account">{{ account.address }}</option>
-                                    <option *ngFor="let origAcc of account.originatedAccounts" [ngValue]="origAcc">{{ origAcc.address }}</option>
-                                </ng-container>
-                            </select>
-                        </div>
+                        <input type="text" readonly class="form-control-plaintext text-color" [value]="activeAccount.address">
                     </div>
                     <div class="form-group col-md-3 text-right">
                         <label for="staticBalance" class="text-right"> {{ 'SENDCOMPONENT.BALANCE' | translate }} </label>
@@ -225,7 +218,7 @@
 
 
     <!-- Showing different Send Format according to actionButtonString -->
-    <button *ngIf='implicitAccounts' type="button" (click)="open1(modal1)" class="btn btn-outline-primary btn-op"> {{ 'SENDCOMPONENT.SEND' | translate }} </button>
+    <div *ngIf='implicitAccounts' type="button" (click)="open1(modal1)" class="button red"> {{ 'SENDCOMPONENT.SEND' | translate }} </div>
 </ng-container>
 
 <p class="no-accounts" *ngIf='!implicitAccounts'>

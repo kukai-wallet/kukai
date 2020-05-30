@@ -1,0 +1,73 @@
+<app-header [activeAccount]="account"></app-header>
+<div id="wrapper" *ngIf="account">
+    <div class="left-container">
+        <div class="main-container small">
+            <div class="top-container">
+                <H1>Account Information</H1>
+            </div>
+            <div id="account-container">
+                <H2>Address</H2>
+                <span style="width: auto;">{{ account.address }}<img class="copy-icon" src="../../../assets/img/copy-icon.svg" (click)="copy(account)"></span>
+                <H2>Balance</H2>
+                <div><span>{{ account.balanceXTZ / 1000000 | number: "1.0-6" }} tez</span><span class="mark">—</span><span class="grey">{{ account.balanceUSD | number: "1.0-0" }} USD</span></div>
+                <H2>Delegate</H2>
+                <span>{{ account.delegate }}</span>
+            </div>
+        </div>
+        <div id="buttons">
+            <app-send [activeAccount]="account"></app-send>
+            <app-receive [activeAddress]="account.address"></app-receive>
+            <app-delegate [activeAccount]="account"></app-delegate>
+            <!-- <div class="button red">Send</div>
+            <div class="button green">Receive</div>
+            <div class="button blue">Delegate</div> -->
+        </div>
+    </div>
+    <div class="main-container large">
+        <div class="top-container">
+            <H1>Recent Activity</H1>
+        </div>
+        <div id="operations-container" *ngIf="this.translate.store.translations.en">
+            <ng-container *ngFor="let activity of account.activities | slice:0:5">
+                <ng-container [ngSwitch]="getType(activity)">
+                
+                    <div *ngSwitchCase="'sent'" class="sent">
+                        <img src="../../../assets/img/sent.svg">
+                        <div>
+                        <div><span class="red">Sent {{ activity.amount / 1000000 | number:'1.0-6' }} tez</span><span class="right">{{ activity.timestamp | timeAgo:trigger }}</span></div>
+                        <div><span class="left grey">To —</span><span class="right grey">{{ getCounterparty(activity) }}</span></div>
+                        </div>
+                    </div>
+                    <div *ngSwitchCase="'received'" class="received">
+                        <img src="../../../assets/img/received.svg">
+                        <div>
+                        <div><span class="green">Received {{ activity.amount / 1000000 | number:'1.0-6' }} tez</span><span class="right">{{ activity.timestamp | timeAgo:trigger }}</span></div>
+                        <div><span class="left grey">From —</span><span class="right grey">{{ getCounterparty(activity) }}</span></div>
+                        </div>
+                    </div>
+                    <div *ngSwitchCase="'delegated'" class="delegated">
+                        <img src="../../../assets/img/delegated.svg">
+                        <div>
+                        <div><span class="blue">Delegated</span><span class="right">{{ activity.timestamp | timeAgo:trigger }}</span></div>
+                        <div><span class="left grey">To —</span><span class="right grey">{{ getCounterparty(activity) }}</span></div>
+                        </div>
+                    </div>
+                    <div *ngSwitchCase="'undelegated'" class="delegated">
+                        <img src="../../../assets/img/delegated.svg">
+                        <div>
+                        <div><span class="blue">Undelegated</span><span class="right">{{ activity.timestamp | timeAgo:trigger }}</span></div>
+                        <div><span class="left grey">To —</span><span class="right grey">-</span></div>
+                        </div>
+                    </div>
+                    <div *ngSwitchDefault>
+                        <div style="padding-left: 0.75rem">
+                        <div><span class="">{{ getType(activity) | titlecase }}</span><span class="right">{{ activity.timestamp | timeAgo:trigger }}</span></div>
+                        <div><span class="left grey">Counterparty —</span><span class="right grey">{{ getCounterparty(activity) }}</span></div>
+                        </div>
+                    </div>
+                  
+                </ng-container>
+            </ng-container>
+        </div>
+    </div>
+</div>

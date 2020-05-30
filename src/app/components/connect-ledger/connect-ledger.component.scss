@@ -1,4 +1,12 @@
 @import "~@coreui/coreui/scss/coreui";
+:host {
+    width: 100%;
+    min-height: 100%;
+    padding-bottom: 8rem;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+}
 .row {
     padding-bottom: 0.7vh;
     min-width: 250px; //20vw;

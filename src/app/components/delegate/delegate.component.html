@@ -13,15 +13,7 @@
                 <div class="form-row">
                     <div class="form-group col-md-9">
                         <label for="fromAdress"> {{ 'DELEGATECOMPONENT.FROM' | translate }} </label>
-                        <div class="text-monospace">
-                            <select [(ngModel)]="activeAccount" (change)="checkReveal()" id="fromAdress" class="form-control"
-                                name="first">
-                                <ng-container *ngFor="let impAcc of implicitAccounts">
-                                <option [ngValue]="impAcc">{{ impAcc.address }}</option>
-                                <option *ngFor="let origAcc of impAcc.originatedAccounts" [ngValue]="origAcc">{{ origAcc.address }}</option>
-                                </ng-container>
-                            </select>
-                        </div>
+                        <input type="text" readonly class="form-control-plaintext text-color" [value]="activeAccount.address">
                     </div>
                 </div>
                 <div class="form-row">
@@ -119,6 +111,6 @@
     </ng-template>
 
     <!-- Showing different Send Format according to actionButtonString -->
-    <button type="button" (click)="open1(modal1)" class="btn btn-sm btn-block btn-primary"> {{
-        'DELEGATECOMPONENT.TITLE1' | translate }} </button>
+    <div type="button" (click)="open1(modal1)" class="button blue"> {{
+        'DELEGATECOMPONENT.TITLE1' | translate }} </div>
 </ng-container>

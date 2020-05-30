@@ -61,7 +61,7 @@ export class TimeAgoPipe implements PipeTransform {
         if (delta < 60) {  // Sent in last minute
             // result = Math.floor(delta) + ' sec ';
             result = Math.floor(delta) + ' ' + secTmp + ' ';
-        } else if (delta < 3600) {  // Sent in last hour: 1h = 3600 sec -> displays seconds
+        } else if (delta < 120) {  // Sent in last hour: 1h = 3600 sec -> displays seconds
             // result = Math.floor(delta / 60) + ' mn ';
             result = Math.floor(delta / 60) + ' ' + mnTmp + ' ';
 

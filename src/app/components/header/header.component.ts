@@ -1,31 +1,30 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
 import { WalletService } from '../../services/wallet/wallet.service';
 import { CoordinatorService } from '../../services/coordinator/coordinator.service';
+import { Account } from '../../services/wallet/wallet';
+import { filter } from 'rxjs/operators';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
-  activeMenu = false;
+  @Input() activeAccount: Account;
+  impAccs: Account[] = this.walletService.wallet.implicitAccounts;
   constructor(
     private router: Router,
     public walletService: WalletService,
-    private coordinatorService: CoordinatorService
+    private coordinatorService: CoordinatorService,
   ) { }
 
   ngOnInit(): void {
   }
   logout() {
-    this.activeMenu = false;
     this.coordinatorService.stopAll();
     this.walletService.clearWallet();
     this.router.navigate(['']);
   }
   click() {
-    if (this.walletService.wallet) {
-      this.activeMenu =! this.activeMenu;
-    }
   }
 }

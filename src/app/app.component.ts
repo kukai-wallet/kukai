@@ -40,11 +40,12 @@ export class AppComponent implements OnInit {
       // the lang to use, if the lang isn't available, it will use the current loader to get them
       const languagePreference = window.localStorage.getItem('languagePreference');
       const browserLang = translate.getBrowserLang();
-      if (languagePreference) {
+      translate.use('en');
+      /*if (languagePreference) {
         translate.use(languagePreference.match(/en|fr|ru|jp|kor|por/) ? languagePreference : 'en');
       } else {
         translate.use(browserLang.match(/en|fr|ru|jp|kor|por/) ? browserLang : 'en');
-      }
+      }*/
 
       translate.onLangChange.subscribe((event) => {
         this.translateNavItems();
@@ -55,7 +56,7 @@ export class AppComponent implements OnInit {
     this.walletService.loadStoredWallet();
     if (this.walletService.wallet) {
       this.coordinatorService.startAll();
-      this.router.navigate(['/accounts']);
+      //this.router.navigate(['/accounts']);
     }
     this.router.events.subscribe((evt) => {
       if (!(evt instanceof NavigationEnd)) {

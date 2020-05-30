@@ -1,4 +1,27 @@
 @import "~@coreui/coreui/scss/coreui";
+div.button {
+    height: 3rem;
+    width: 8rem;
+    border-radius: 0.75rem;
+    font-family: "Helvetica Now Text";
+    font-style: normal;
+    font-weight: bold;
+    font-size: 0.875rem;
+    line-height: 1rem;;
+    display: flex;
+    flex-direction:column;
+    align-items: center;
+    justify-content:center;
+    cursor: pointer;
+}
+div.button:hover {
+    margin-top: -0.125rem;
+  }
+div.button.green {
+    color: #1FD347;
+    background: rgba(155, 227, 171, 0.6);
+    box-shadow: 0px 0px 1px rgba(155, 227, 171, 0.04), 0px 2px 6px rgba(155, 227, 171, 0.04), 0px 16px 24px rgba(155, 227, 171, 0.24);
+}
 #canvas {
     margin: auto;
 }

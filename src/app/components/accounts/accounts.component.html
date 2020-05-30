@@ -1,8 +1,9 @@
+<app-header></app-header>
 <div id="wrapper">
-    <div id="main-container">
+    <div class="main-container">
         <div id="top-container">
             <span id="title">Accounts</span>
-            <img src="../../../assets/img/add.svg">
+            <img src="../../../assets/img/add.svg" (click)="addPkh()">
         </div>
         <div id="accounts-container">
             <ng-container *ngFor="let impAcc of implicitAccounts">

@@ -1,9 +1,31 @@
-<div id="top-container" (mouseleave)="activeMenu = false">
-    <a routerLink=""><img id="logo" src="../../../assets/img/kukai-logo.svg"></a>
-        <div id="user-button" (click)="click()" [class.loggedin]="walletService.wallet">
-            <img id="user-icon" src="../../../assets/img/user.svg">
-        </div>
-        <div *ngIf="activeMenu" id="menu" (click)="logout()">
-            <span>Logout</span>
-        </div>
+<div id="top-container">
+    <img id="logo" src="../../../assets/img/kukai-logo.svg">
+    <ng-container *ngIf="activeAccount">
+    <div class="middle">
+        <a id="accounts" routerLink="/accounts">
+            Accounts
+        </a>
+        <img src="../../../assets/img/slash.svg">
+        <div class="dropdown">
+            <div class="dropbtn"><span>{{ activeAccount.shortAddress() }}</span><img src="../../../assets/img/dropdown.svg"></div>
+            <div class="dropdown-content">
+                <div class="sep">
+                <ng-container *ngFor="let impAcc of impAccs">
+                    <a routerLink="/account/{{impAcc.address}}" [class.selected]="impAcc.address === activeAccount.address">
+                        {{ impAcc.shortAddress() }}
+                    </a>
+                    <ng-container *ngFor="let origAcc of impAcc.originatedAccounts">
+                        <a routerLink="/account/{{origAcc.address}}" [class.selected]="origAcc.address === activeAccount.address">
+                            {{ impAcc.shortAddress() }}
+                        </a>
+                    </ng-container>
+                </ng-container>
+                </div>
+            </div>
+          </div>
+    </div>
+    </ng-container>
+    <div id="menu" (click)="logout()">
+        <span>Logout</span>
+    </div>
 </div>
