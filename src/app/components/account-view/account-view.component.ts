@@ -1,17 +1,17 @@
-import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute, Router, NavigationEnd } from "@angular/router";
-import { Account } from "../../services/wallet/wallet";
-import { WalletService } from "../../services/wallet/wallet.service";
-import { TimeAgoPipe } from "../../pipes/time-ago.pipe";
-import { TranslateService } from "@ngx-translate/core";
-import { MessageService } from "../../services/message/message.service";
-import * as copy from "copy-to-clipboard";
-import { filter } from "rxjs/internal/operators/filter";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { Account } from '../../services/wallet/wallet';
+import { WalletService } from '../../services/wallet/wallet.service';
+import { TimeAgoPipe } from '../../pipes/time-ago.pipe';
+import { TranslateService } from '@ngx-translate/core';
+import { MessageService } from '../../services/message/message.service';
+import * as copy from 'copy-to-clipboard';
+import { filter } from 'rxjs/internal/operators/filter';
 
 @Component({
-  selector: "app-account-view",
-  templateUrl: "./account-view.component.html",
-  styleUrls: ["./account-view.component.scss"],
+  selector: 'app-account-view',
+  templateUrl: './account-view.component.html',
+  styleUrls: ['./account-view.component.scss'],
 })
 export class AccountViewComponent implements OnInit {
   account: Account;
@@ -23,79 +23,79 @@ export class AccountViewComponent implements OnInit {
     public timeAgoPipe: TimeAgoPipe,
     private router: Router
   ) {}
-    trigger: boolean = true;
+    trigger = true;
   ngOnInit(): void {
-    const address = this.route.snapshot.paramMap.get("address");
+    let address = this.route.snapshot.paramMap.get('address');
     if (this.walletService.addressExists(address)) {
       this.account = this.walletService.wallet.getAccount(address);
     }
     this.router.events
       .pipe(filter((evt) => evt instanceof NavigationEnd))
       .subscribe(() => {
-        const address = this.route.snapshot.paramMap.get("address");
+        address = this.route.snapshot.paramMap.get('address');
         if (this.walletService.addressExists(address)) {
           this.account = this.walletService.wallet.getAccount(address);
         }
       });
-      setInterval(() => this.trigger = !this.trigger, 10 * 1000)
+      setInterval(() => this.trigger = !this.trigger, 10 * 1000);
   }
   getStatus(transaction: any): string {
     if (transaction.failed) {
-      return "Failed";
+      return 'Failed';
     } else {
-      return "Confirmed";
+      return 'Confirmed';
     }
   }
 
   getType(transaction: any): string {
-    if (transaction.type !== "transaction") {
-      if (transaction.type === "delegation") {
+    if (transaction.type !== 'transaction') {
+      if (transaction.type === 'delegation') {
         if (transaction.destination) {
-          return "delegated";
+          return 'delegated';
         } else {
-          return "undelegated";
+          return 'undelegated';
         }
       } else {
         return transaction.type;
       }
     } else {
-      let operationType = "";
+      let operationType = '';
       if (transaction.source === this.account.address) {
-        operationType = "sent";
+        operationType = 'sent';
       } else {
-        operationType = "received";
+        operationType = 'received';
       }
       return operationType;
     }
   }
 
   getCounterparty(transaction: any): string {
-    if (transaction.type === "delegation") {
+    if (transaction.type === 'delegation') {
       if (transaction.destination) {
         return transaction.destination;
       } else {
-        return ""; // User has undelegated
+        return ''; // User has undelegated
       }
-    } else if (transaction.type === "transaction") {
+    } else if (transaction.type === 'transaction') {
       if (this.account.address === transaction.source) {
         return transaction.destination; // to
       } else {
         return transaction.source; // from
       }
-    } else if (transaction.type === "origination") {
+    } else if (transaction.type === 'origination') {
       if (this.account.address === transaction.source) {
         return transaction.destination;
       } else {
         return transaction.source;
       }
     }
-    return "";
+    return '';
   }
   copy(account: Account) {
     copy(account.address);
     const copyToClipboard = this.translate.instant(
-      "OVERVIEWCOMPONENT.COPIEDTOCLIPBOARD"
+      'OVERVIEWCOMPONENT.COPIEDTOCLIPBOARD'
     );
-    this.messageService.add(account.address + " " + copyToClipboard, 5);
+    this.messageService.add(account.address + ' ' + copyToClipboard, 5);
   }
 }

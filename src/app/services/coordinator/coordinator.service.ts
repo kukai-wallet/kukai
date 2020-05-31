@@ -42,7 +42,6 @@ export class CoordinatorService {
     if (this.walletService.wallet) {
       this.accounts = this.walletService.wallet.getAccounts();
       for (let i = 0; i < this.accounts.length; i++) {
-        console.log('Start account ' + i + ' ' + this.accounts[i].address);
         this.start(this.accounts[i].address);
       }
       this.startXTZ();

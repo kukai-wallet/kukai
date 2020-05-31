@@ -1,3 +1,102 @@
+:host {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+}
+#wrapper {
+    min-height: 100vh;
+    padding-bottom: 8rem;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+#wrapper > div {
+    display: flex;
+    flex-direction: column;
+}
+img.logo {
+    margin-top: 2.5rem;
+}
+#menu-container {
+    margin-top: 120px;
+    display: flex;
+    justify-content: space-between;
+    width: 58rem;
+}
+a.menu-item {
+    height: 100%;
+    width: 18rem;
+    cursor: pointer;
+    text-decoration: none;
+}
+a.menu-item:hover {
+    margin-top: -0.25rem;
+}
+#menu-container > a > div.icon {
+    position: relative;
+    height: 2.5rem;
+    width: 2.5rem;
+    margin-left: 7.75rem;
+    background: #FCFCFC;
+    border: 1px solid #FFFFFF;
+    border-radius: 12px;
+    box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.04), 0px 2px 6px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.06);
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+#menu-container > a > div.content {
+    height: 12.5rem;
+    width: 18rem;
+    margin-top: -1.25rem;
+    background: #FCFCFC;
+    border: 1px solid #FFFFFF;
+    border-radius: 12px;
+    box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.04), 0px 2px 6px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.06);
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+#menu-container > a > div.content > H1 {
+    font-family: "Helvetica Now Text";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 16px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #5963FF;
+    margin-top: 3.25rem;
+}
+#menu-container > a > div.content > p {
+    font-family: Helvetica Now Text ;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 20px;
+    text-align: center;
+    color: #000000;
+    opacity: 0.4;
+    margin-top: 0.75rem;
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
+}
+img.top-left {
+    position: absolute;
+    left: 0;
+    z-index: -1;
+}
+img.bottom-right {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+}
+/*
 @import "~@coreui/coreui/scss/coreui";
 :host {
     width: 100%;
@@ -26,7 +125,6 @@
 .btn-left {
     margin-right: 5px !important; 
 }
-/* Taking out underline link in router link */
 a.active-link {
     text-decoration: none;
     min-width: 175px; //20vw;
@@ -42,11 +140,6 @@ a.active-link {
 .start-card {
     height: 220px;
 }
-
-/* ---------------------------------------------------
-    CONTENT STYLE
------------------------------------------------------ */
-//Horizontal and Vertical Aligment of child div
 #content {
     display: flex; 
     //height: calc(100vh - 20rem);

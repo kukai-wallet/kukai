@@ -48,7 +48,7 @@ export class NewWalletComponent implements OnInit {
       string: mnemonic,
       array: mnemonic.split(' '),
       order: []
-    }
+    };
     // shuffle
     for (let i = this.MNEMONIC.array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -77,10 +77,10 @@ export class NewWalletComponent implements OnInit {
   orderToText() {
     let out = '';
     if (this.MNEMONIC.order.length) {
-      for (let n of this.MNEMONIC.order) {
+      for (const n of this.MNEMONIC.order) {
         out += this.MNEMONIC.array[n] + ' ';
       }
-      out = out.slice(0, -1)
+      out = out.slice(0, -1);
     }
     this.userMnemonic = out;
   }

@@ -65,7 +65,7 @@ export class ActivityService {
     );
   }
   promptNewActivities(account: Account, oldActivities: Activity[], newActivities: Activity[]) {
-    for (let activity of newActivities) {
+    for (const activity of newActivities) {
       if (oldActivities.findIndex((a) => a.hash === activity.hash) === -1) {
         if (activity.type === 'transaction') {
           if (account.address === activity.source) {
