@@ -99,12 +99,12 @@ export class LegacyWalletV3 extends FullWallet {
 export class HdWallet extends FullWallet {
   encryptedEntropy: string;
   IV: string;
-  unusedAccounts: any[];
+  index: number;
   constructor(IV: string, encryptedSeed: string, encryptedEntropy: string) {
     super(encryptedSeed);
     this.encryptedEntropy = encryptedEntropy;
     this.IV = IV;
-    this.unusedAccounts = [];
+    this.index = 0;
   }
 }
 

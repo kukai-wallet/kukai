@@ -33,11 +33,11 @@ a.menu-item {
   width: 18rem;
   cursor: pointer;
   text-decoration: none;
-  margin: 0rem 2rem;
+  margin: 1rem 2rem;
 }
 a.menu-item:hover {
-  margin-top: -0.25rem;
-  margin-bottom: 0.25rem;
+  margin-top: 0.75rem;
+  margin-bottom: 1.25rem;
 }
 #menu-container > a > div.icon {
   position: relative;
@@ -103,6 +103,11 @@ img.bottom-right {
   bottom: 0;
   z-index: -1;
 }
+@media screen and (max-width: 65.9375rem) {
+  #menu-container {
+    margin-top: 10vh;
+  }
+}
 @media screen and (max-width: 46rem) {
   img.bottom-right {
     display: none;
@@ -111,13 +116,6 @@ img.bottom-right {
 @media screen and (max-width: 44rem) {
   #menu-container {
     margin-top: 1rem;
-  }
-  a.menu-item {
-    margin-top: 1rem;
-  }
-  a.menu-item:hover {
-    margin-top: 0.75rem;
-    margin-bottom: 0.25rem;
   }
 }
 @media screen and (max-width: 37rem) {

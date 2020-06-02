@@ -33,7 +33,7 @@ export class AccountViewComponent implements OnInit {
       .pipe(filter((evt) => evt instanceof NavigationEnd))
       .subscribe(() => {
         address = this.route.snapshot.paramMap.get('address');
-        if (this.walletService.addressExists(address)) {
+        if (this.walletService.wallet && this.walletService.addressExists(address)) {
           this.account = this.walletService.wallet.getAccount(address);
         }
       });

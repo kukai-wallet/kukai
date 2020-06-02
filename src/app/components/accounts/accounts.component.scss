@@ -69,6 +69,7 @@ span {
 }
 .account-row > div {
     display: flex;
+    margin-right: 2rem;
 }
 .account-xtz {
     display: flex;
@@ -92,11 +93,6 @@ span {
     font-size: 20px;
     line-height: 24px;
     color: #2C323A;
-}
-#top-container > img {
-    float: right;
-    margin-right: 1rem;
-    cursor: pointer;
 }
 .value-container {
     display: flex;

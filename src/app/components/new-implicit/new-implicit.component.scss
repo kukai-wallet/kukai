@@ -1,0 +1,12 @@
+@import "~@coreui/coreui/scss/coreui";
+img {
+    float: right;
+    margin-right: 1rem;
+    cursor: pointer;
+}
+.modal-footer {
+    justify-content: space-between;
+}
+.wait {
+    cursor: wait !important;
+}

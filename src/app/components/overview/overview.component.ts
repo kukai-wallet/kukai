@@ -61,8 +61,6 @@ export class OverviewComponent implements OnInit, AfterViewInit {
   }
   addPkh() {
     if (this.openPkhSpot()) {
-      const pkh = this.walletService.incrementAccountIndex();
-      this.coordinatorService.start(pkh);
     } else {
       console.log('blocked!');
     }

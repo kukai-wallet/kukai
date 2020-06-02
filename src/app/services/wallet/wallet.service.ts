@@ -14,12 +14,10 @@ import {
 import { EncryptionService } from '../encryption/encryption.service';
 import { OperationService } from '../operation/operation.service';
 import { utils, hd } from '@tezos-core-tools/crypto-utils';
-import { BehaviorSubject } from 'rxjs';
 @Injectable()
 export class WalletService {
   storeKey = `kukai-wallet`;
   wallet: WalletObject;
-  jdenticon: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
   constructor(
     private encryptionService: EncryptionService,
@@ -140,18 +138,15 @@ export class WalletService {
     }
     return '';
   }
-  addImplicitAccount(pk: string, derivationPath?: string) {
+  addImplicitAccount(pk: string, derivationPath?: string | number) {
     const pkh = utils.pkToPkh(pk);
     this.wallet.implicitAccounts.push(
-      new ImplicitAccount(pkh, pk, derivationPath)
+      new ImplicitAccount(pkh, pk, typeof derivationPath === 'number' ? `44'/1729'/${derivationPath}'/0'` : derivationPath)
     );
     console.log('Adding new implicit account...');
     console.log(
       this.wallet.implicitAccounts[this.wallet.implicitAccounts.length - 1]
     );
-    if (this.wallet.implicitAccounts.length === 1) {
-      this.updateJdenticon();
-    }
     this.storeWallet();
   }
   addOriginatedAccount(kt: string, manager: string) {
@@ -168,21 +163,33 @@ export class WalletService {
       console.warn(`Manager address $(manager) not found`);
     }
   }
-  addUnusedAccount(account: any) {
+  /*addUnusedAccount(account: any) {
     if (this.wallet instanceof HdWallet) {
       this.wallet.unusedAccounts.push(account);
     }
-  }
+  }*/
   addressExists(address: string): boolean {
     return (
       this.wallet.getAccounts().findIndex((a) => a.address === address) !== -1
     );
   }
-  incrementAccountIndex(): string {
+  incrementAccountIndex(password: string): string {
     if (this.wallet instanceof HdWallet) {
-      const newPublicKey = this.wallet.unusedAccounts.shift();
-      this.addImplicitAccount(newPublicKey.pk, newPublicKey.derivationPath);
-      return newPublicKey.pkh;
+      const seed = this.encryptionService.decrypt(
+        this.wallet.encryptedSeed,
+        password,
+        this.wallet.IV,
+        3
+      );
+      if (seed) {
+        const keyPair: KeyPair = hd.seedToKeyPair(seed, `44'/1729'/${this.wallet.index}'/0'`);
+        this.addImplicitAccount(keyPair.pk, this.wallet.index);
+        this.wallet.index++;
+        this.storeWallet();
+        return keyPair.pkh;
+      } else {
+        return ''; // Wrong pwd
+      }
     }
   }
   /*
@@ -190,7 +197,6 @@ export class WalletService {
   */
   clearWallet() {
     this.wallet = null;
-    this.jdenticon.next('default16');
     localStorage.removeItem(this.storeKey);
   }
   /*
@@ -258,7 +264,6 @@ export class WalletService {
         const wd = parsedWalletData.data;
         this.deserializeStoredWallet(wd, parsedWalletData.type);
         console.log('Load success!!!');
-        this.updateJdenticon();
         console.log(this.wallet);
       } else {
         console.log('couldnt load a wallet');
@@ -278,7 +283,7 @@ export class WalletService {
           wd.encryptedEntropy
         );
         if (this.wallet instanceof HdWallet) {
-          this.wallet.unusedAccounts = wd.unusedAccounts;
+          this.wallet.index = wd.index;
         }
         break;
       case 'LegacyWalletV1':
@@ -328,10 +333,5 @@ export class WalletService {
       }
       this.wallet.implicitAccounts.push(impAcc);
     }
-  }
-
-  updateJdenticon() {
-    console.log(this.wallet.implicitAccounts[0].address);
-    this.jdenticon.next(this.wallet.implicitAccounts[0].address);
   }
 }

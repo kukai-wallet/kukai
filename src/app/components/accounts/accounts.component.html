@@ -3,7 +3,7 @@
     <div class="main-container">
         <div id="top-container">
             <span id="title">Accounts</span>
-            <img src="../../../assets/img/add.svg" (click)="addPkh()">
+            <app-new-implicit></app-new-implicit>
         </div>
         <div id="accounts-container">
             <ng-container *ngFor="let impAcc of implicitAccounts">
@@ -19,7 +19,9 @@
                             <span *ngIf="impAcc.balanceXTZ" class="account-usd">{{ impAcc.balanceUSD | number: "1.0-0" }} USD</span>
                         </div>
                         <div>
-                        <img class="menu-icon" src="../../../assets/img/menu-icon.svg" (click)="$event.stopPropagation()">  
+                        <!-- Todo: Add menu
+                            <img class="menu-icon" src="../../../assets/img/menu-icon.svg" (click)="$event.stopPropagation()">
+                        -->
                         </div>
                     </div>
                 </div>

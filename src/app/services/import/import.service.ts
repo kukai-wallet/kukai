@@ -136,19 +136,13 @@ export class ImportService {
         if (counter || index === 0) {
           this.walletService.addImplicitAccount(
             keys.pk,
-            `44'/1729'/${index++}'/0'`
+            index++
           );
           await this.findContracts(keys.pkh);
         }
       }
-      for (let i = index; i <= index + 25; i++) {
-        const unusedKeyPair = hd.keyPairFromAccountIndex(seed, i);
-        this.walletService.addUnusedAccount({
-          pkh: unusedKeyPair.pkh,
-          pk: unusedKeyPair.pk,
-          derivationPath: `44'/1729'/${i}'/0'`,
-        });
-      }
+      this.walletService.wallet.index = index;
+      console.log(this.walletService.wallet.index);
     } else {
       this.walletService.addImplicitAccount(keys.pk);
       await this.findContracts(keys.pkh);

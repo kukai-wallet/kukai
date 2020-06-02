@@ -84,6 +84,7 @@ import { ConnectLedgerComponent } from './components/connect-ledger/connect-ledg
 import { FooterComponent } from './components/footer/footer.component';
 import { AccountsComponent } from './components/accounts/accounts.component';
 import { AccountViewComponent } from './components/account-view/account-view.component';
+import { NewImplicitComponent } from './components/new-implicit/new-implicit.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -125,7 +126,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     ConnectLedgerComponent,
     FooterComponent,
     AccountsComponent,
-    AccountViewComponent
+    AccountViewComponent,
+    NewImplicitComponent
   ],
   imports: [
     AppAsideModule,
