@@ -5,7 +5,6 @@ import { WalletService } from './services/wallet/wallet.service';
 import { CoordinatorService } from './services/coordinator/coordinator.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Constants } from './constants';
-import { sidebarNavItems } from './_nav';
 
 @Component({
   selector: 'app-root',
@@ -16,17 +15,8 @@ import { sidebarNavItems } from './_nav';
   // template: '<router-outlet></router-outlet>'
 })
 export class AppComponent implements OnInit {
-  public sidebarMinimized = false;
-
-  sidebarNavItems = sidebarNavItems;
-  navItems = this.translatedNavItems();
-  isCollapsed = false;
-  jdenticon = '';
 
   CONSTANTS = new Constants();
-
-  param = {value: 'world'};  // Test translation
-  Buffer = Buffer || [];
   constructor(
     private walletService: WalletService,
     private coordinatorService: CoordinatorService,
@@ -46,10 +36,6 @@ export class AppComponent implements OnInit {
       } else {
         translate.use(browserLang.match(/en|fr|ru|jp|kor|por/) ? browserLang : 'en');
       }*/
-
-      translate.onLangChange.subscribe((event) => {
-        this.translateNavItems();
-      });
   }
 
   ngOnInit() {
@@ -64,13 +50,6 @@ export class AppComponent implements OnInit {
       }
       window.scrollTo(0, 0);
     });
-  }
-  testChange(lang: string) {
-    console.log('lang in testChange() ', lang);
-  }
-
-  toggleMinimize(e) {
-    this.sidebarMinimized = e;
   }
 
   returnLanguage(lang: string) {
@@ -97,24 +76,6 @@ export class AppComponent implements OnInit {
   setLanguage(lang) {
     window.localStorage.setItem('languagePreference', lang);
     this.translate.use(lang);
-    this.translateNavItems();
-  }
-
-  translateNavItems() {
-    this.navItems = JSON.parse(JSON.stringify(
-      this.translatedNavItems()
-    ));
-  }
-
-  translatedNavItems() {
-    return this.sidebarNavItems.map((item) => {
-      const itemCopy = {};
-      for (const [key, value] of Object.entries(item)) {
-        itemCopy[key] = value;
-      }
-      itemCopy['name'] = this.translate.instant(item.name);
-      return itemCopy;
-    });
   }
 
   logout() {

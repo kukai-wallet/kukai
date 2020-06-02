@@ -1,6 +1,27 @@
-<div id="content">
-  <div class="center-content">
-    <!-- Seed card -->
+<div *ngIf="activePanel==2" (click)="hideBlur = false">
+  <span class="step-counter">
+    —1/4—
+  </span>
+  <H1>Save your seed</H1>
+  <p class="description">When you create a new wallet, a new Tezos seed is generated. Your Tezos seed is the master key of all your wallet and any value inside it.</p>
+  <p class="description red">Make sure to back it up, write it down, and keep it incredibly safe.</p>
+  <div class="seed" (mouseout)="hideBlur = false" (click)="$event.stopPropagation()">{{ MNEMONIC.string }}</div>
+  <div *ngIf="!hideBlur" class="seed-blur" (click)="hideBlur = true ; $event.stopPropagation()">
+    <span class="black">Click here to reveal your seed</span>
+  </div>
+  <div class="buttons"><a routerLink="/"><div class="button back">Back</div></a><div class="button next" (click)="verifyView()">Next</div></div>
+</div>
+<div *ngIf="activePanel==3">
+  <span class="step-counter">
+    —2/4—
+  </span>
+  <H1>Verify your seed</H1>
+  <p class="description">...</p>
+  <div class="buttons"><a routerLink="/"><div class="button back">Cancel</div></a><div class="button next">Next</div></div>
+</div>
+<!--<div id="content">
+  <div class="center-content">-->
+    <!-- Seed card --><!--
     <div class="card text-center bg-gray-700 text-white" *ngIf="activePanel==2">
       <div class="card-body">
         <h1 class="card-title"> {{ 'NEWWALLETCOMPONENT.TITLE2' | translate }} (1/4)</h1>
@@ -19,8 +40,8 @@
         </a>
         <button type="button" class="btn btn-primary btn-lg" (click)="verifyView()"> {{ 'NEWWALLETCOMPONENT.NEXT' | translate }} </button>
       </div>
-    </div>
-    <!-- Verify Seed card -->
+    </div>-->
+    <!-- Verify Seed card --><!--
     <div class="card text-center bg-gray-700 text-white" *ngIf="activePanel==3">
       <div class="card-body">
         <h1 class="card-title"> {{ 'NEWWALLETCOMPONENT.TITLE3' | translate }} (2/4)</h1>
@@ -49,9 +70,9 @@
         </a>
         <button type="button" class="btn btn-primary btn-lg" [disabled]="!mnemonicMatch()" (click)="pwdView()"> {{ 'NEWWALLETCOMPONENT.NEXT' | translate }} </button>
       </div>
-    </div>
+    </div>-->
 
-    <!-- Password card -->
+    <!-- Password card --><!--
     <div class="card text-center bg-gray-700 text-white" *ngIf="activePanel==4">
       <div class="card-body">
         <h1 class="card-title"> {{ 'NEWWALLETCOMPONENT.TITLE4' | translate }} (3/4)</h1>
@@ -79,9 +100,9 @@
         </a>
         <button type="button" class="btn btn-primary btn-lg" [disabled]="!pwd1" (click)="encryptWallet()"> {{ 'NEWWALLETCOMPONENT.ENCRYPT' | translate }} </button>
       </div>
-    </div>
+    </div>-->
 
-    <!-- Seed card -->
+    <!-- Seed card --><!--
     <div class="card text-center bg-gray-700 text-white" *ngIf="activePanel==5">
       <div class="card-body">
         <h1 class="card-title"> {{ 'NEWWALLETCOMPONENT.TITLE5' | translate }} (4/4)</h1>
@@ -101,4 +122,4 @@
       </div>
     </div>
   </div>
-</div>
+</div>-->

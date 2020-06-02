@@ -1,116 +1,115 @@
-@import "~@coreui/coreui/scss/coreui";
 :host {
     width: 100%;
-    min-height: 100%;
     padding-bottom: 8rem;
     display: flex;
     justify-content: center;
+    align-items: flex-start;
     flex-direction: row;
+    margin-block-start: 0;
+    margin-block-end: 0;
 }
-.row {
-    padding-bottom: 0.7vh;
+:host > div {
+    width: 100%;
+    min-height: calc(100vh - 8rem);
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
 }
-
-.btn-generate {
-    font-size: 24px;
+H1, span, p, div.seed {
+    font-family: "Helvetica Now Text";
+    font-style: normal;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #303030;
+    margin-bottom: 0;
+    max-width: 33rem;
 }
-
-.btn-second {
-    min-width: 90px;
+p.description {
+    margin-top: 1.375rem;
 }
-
-.btn-primary:focus {
-    background-color: #63a6d3 !important;
-    color: white;
+p.description.red {
+    color: #FF0000;
 }
-
-.btn-secondary:focus {
-    background-color: #cacdd2 !important;
+H1 {
+    margin-bottom: 2.5rem;
+    font-weight: bold;
+    font-size: 4rem;
+    line-height: 4rem;
+    letter-spacing: -1.4px;
+}
+span, p, div.seed {
+    font-weight: normal;
+    font-size: 1rem;
+    line-height: 1.5rem;
+}
+div.seed {
+    margin-top: 4rem;
+    width: 27.5rem;
+    height: 6rem;
+    z-index: 1;
+    background: #FCFCFC;
+    padding: 1.25rem;
+    border: 1px solid #FFFFFF;
+    box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.04), 0px 2px 6px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.06);
+    border-radius: 0.75rem;
+    font-weight: bold;
+}
+div.seed-blur {
+    margin-top: -8.5625rem;
+    height: 8.5rem;
+    width: 30rem;
+    z-index: 2;
+    backdrop-filter: blur(8px);
+    border-radius: 0.75rem;
+    background: rgba(238, 238, 238, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+span.black {
     color: black;
 }
-
-.btn-second:hover {
-    background-color: #cccccc;
+span.step-counter {
+    margin-top: 1.5rem;
 }
-.btn-float-left {
-    float: left;
-}
-
-/* Fix the buttons */
-.btn-fix {
-    color: red !important;
-    position: absolute;
-    left: 60vw;
-    top: 48vh;
-}
-.mono {
-    font-family: "Courier New", Courier, monospace;
-}
-.rndp {
-    width: 390px;
-    margin: auto;
-}
-.tmp {
-    background-color: lightblue;
-}
-
-div.entropy {
-    border-style: solid;
-    border-width: 5px;
-}
-/* ---------------------------------------------------
-    CONTENT STYLE
------------------------------------------------------ */
-//Horizontal and Vertical Aligment of child div
-#content {
+div.buttons {
+    margin-top: 5rem;
     display: flex;
 }
-.center-content {
-    margin: auto; 
-    max-width: 35rem;
+div.button {
+    box-shadow: 0px 0px 1px rgba(155, 227, 171, 0.04), 0px 2px 6px rgba(155, 227, 171, 0.04), 0px 16px 24px rgba(155, 227, 171, 0.24);
+    border-radius: 0.75rem;
+    width: 8rem;
+    height: 3rem;
+    border-radius: 0.75rem;
+    font-family: "Helvetica Now Text";
+    font-style: normal;
+    font-weight: bold;
+    font-size: 0.875rem;
+    line-height: 1rem;;
+    display: flex;
+    flex-direction:column;
+    align-items: center;
+    justify-content:center;
+    cursor: pointer;
 }
-
-.card-title {
-    padding-bottom: 0.75rem;
-    border-bottom: 2px solid rgba(0, 0, 0, 0.125);
+div.button:hover {
+    margin-top: -0.125rem;
 }
-
-.card-text{
-    padding-top: 2rem;
+div.button:first-child {
+    margin-right: 1.5rem;
 }
-
-.seed {
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-    padding-right: 2rem;
-    padding-left: 2rem;
-    background-color: rgba(0, 0, 0, 0.125);
-    white-space: pre-line;
-    font-size: 120%;
-    // Prevent text selection
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+div.button.back {
+    border: 1px solid #000000;
+    box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.02), 0px 2px 6px rgba(0, 0, 0, 0.02), 0px 16px 24px rgba(0, 0, 0, 0.12);
 }
-
-.summary-done {
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-    padding-right: 0.75rem;
-    padding-left: 0.75rem;
-    background-color: rgba(0, 0, 0, 0.125);
-    white-space: pre-line;
-    font-size: 120%;
+div.button.next {
+    background: #9BE3AB;
 }
-
-.card-footer {
-    background-color: rgba(0, 0, 0, 0);
-}
-
-//For password inputs
-.form-control {
-    line-height: 2;  //Default at 1.5
+a {
+    color: inherit;
+    text-decoration: inherit;
 }

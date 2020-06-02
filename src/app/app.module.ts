@@ -31,12 +31,6 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
 };
 
-import {
-  AppAsideModule,
-  AppBreadcrumbModule,
-  AppSidebarModule,
-} from '@coreui/angular';
-
 // Services
 import { MessageService } from './services/message/message.service';
 import { WalletService } from './services/wallet/wallet.service';
@@ -58,7 +52,6 @@ import { ActivityComponent } from './components/activity/activity.component';
 import { OverviewComponent } from './/components/overview/overview.component';
 import { SendComponent } from './components/send/send.component';
 import { NewAccountComponent } from './components/new-account/new-account.component';
-import { HomePageComponent } from './components/home-page/home-page.component';
 import { NewWalletComponent } from './components/new-wallet/new-wallet.component';
 import { ReceiveComponent } from './components/receive/receive.component';
 import { DelegateComponent } from './components/delegate/delegate.component';
@@ -98,7 +91,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     AppComponent,
 
     // View components
-    HomePageComponent,
     NewWalletComponent,
     ImportComponent,
     StartComponent,
@@ -130,9 +122,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     NewImplicitComponent
   ],
   imports: [
-    AppAsideModule,
-    AppBreadcrumbModule,
-    AppSidebarModule,
     BrowserModule,
     BrowserAnimationsModule,
     ChartsModule,

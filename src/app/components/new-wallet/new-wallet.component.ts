@@ -17,6 +17,7 @@ export class NewWalletComponent implements OnInit {
   @Input() pwd1 = '';
   @Input() pwd2 = '';
   @Input() userMnemonic = '';
+  hideBlur = false;
   pwdStrength = '';
   ekfDownloaded = false;
   activePanel = 1;

@@ -1,19 +1,19 @@
-import { Component, OnInit, ViewChild, TemplateRef, ChangeDetectorRef } from "@angular/core";
-import { WalletService } from "../../services/wallet/wallet.service";
-import { HdWallet } from "../../services/wallet/wallet";
-import { CoordinatorService } from "../../services/coordinator/coordinator.service";
-import { BsModalService, BsModalRef } from "ngx-bootstrap/modal";
-import { MessageService } from "../../services/message/message.service";
+import { Component, OnInit, ViewChild, TemplateRef, ChangeDetectorRef } from '@angular/core';
+import { WalletService } from '../../services/wallet/wallet.service';
+import { HdWallet } from '../../services/wallet/wallet';
+import { CoordinatorService } from '../../services/coordinator/coordinator.service';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { MessageService } from '../../services/message/message.service';
 
 @Component({
-  selector: "app-new-implicit",
-  templateUrl: "./new-implicit.component.html",
-  styleUrls: ["./new-implicit.component.scss"],
+  selector: 'app-new-implicit',
+  templateUrl: './new-implicit.component.html',
+  styleUrls: ['./new-implicit.component.scss'],
 })
 export class NewImplicitComponent implements OnInit {
-  @ViewChild("modal1") modal1: TemplateRef<any>;
-  password: string = "";
-  errorMsg = "";
+  @ViewChild('modal1') modal1: TemplateRef<any>;
+  password = '';
+  errorMsg = '';
   wait = false;
   modalRef1: BsModalRef;
   constructor(
@@ -28,21 +28,21 @@ export class NewImplicitComponent implements OnInit {
   async addPkh() {
     if (this.openPkhSpot()) {
       this.wait = true;
-      document.body.style.cursor='wait';
+      document.body.style.cursor = 'wait';
       setTimeout(async () => {
         const pkh = this.walletService.incrementAccountIndex(this.password);
         if (pkh) {
           this.coordinatorService.start(pkh);
           this.close1();
         } else {
-          this.errorMsg = "Wrong password!";
+          this.errorMsg = 'Wrong password!';
         }
         this.wait = false;
-        document.body.style.cursor='default';
+        document.body.style.cursor = 'default';
       }, 1000);
         //document.body.style.cursor='default';
     } else {
-      console.log("blocked!");
+      console.log('blocked!');
     }
   }
   openPkhSpot(): boolean {
@@ -60,9 +60,9 @@ export class NewImplicitComponent implements OnInit {
   open1(template1: TemplateRef<any>) {
     if (this.openPkhSpot()) {
       this.clear();
-      this.modalRef1 = this.modalService.show(template1, { class: "first" }); // modal-sm / modal-lg
+      this.modalRef1 = this.modalService.show(template1, { class: 'first' }); // modal-sm / modal-lg
     } else {
-      this.messageService.addWarning("Unused account already exists");
+      this.messageService.addWarning('Unused account already exists');
     }
   }
 
@@ -71,8 +71,8 @@ export class NewImplicitComponent implements OnInit {
     this.modalRef1 = null;
   }
   clear() {
-    this.password = "";
-    this.errorMsg = "";
+    this.password = '';
+    this.errorMsg = '';
     this.wait = false;
   }
 }
