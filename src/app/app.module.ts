@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
-import { BsModalService } from 'ngx-bootstrap/modal';
 
 // From Angular Material
 import { MatSortModule } from '@angular/material/sort';
@@ -154,7 +153,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     EncryptionService,
     BalanceService,
     ImportService,
-    BsModalService,
     ComponentLoaderFactory,
     PositioningService,
     TzrateService,

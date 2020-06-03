@@ -3,11 +3,10 @@
   display: flex;
   justify-content: flex-start;
   flex-direction: column;
-  min-height: calc(100% - 8rem);
+  padding-bottom: 8rem;
 }
 #wrapper {
-  min-height: 100vh;
-  padding-bottom: 8rem;
+  min-height: calc(100vh - 8rem);
   display: flex;
   justify-content: center;
   align-items: flex-start;

@@ -2,7 +2,7 @@
   <span class="step-counter">
     —1/4—
   </span>
-  <H1>Save your seed</H1>
+  <H1>Backup your seed</H1>
   <p class="description">When you create a new wallet, a new Tezos seed is generated. Your Tezos seed is the master key of all your wallet and any value inside it.</p>
   <p class="description red">Make sure to back it up, write it down, and keep it incredibly safe.</p>
   <div class="seed" (mouseout)="hideBlur = false" (click)="$event.stopPropagation()">{{ MNEMONIC.string }}</div>
@@ -16,7 +16,20 @@
     —2/4—
   </span>
   <H1>Verify your seed</H1>
-  <p class="description">...</p>
+  <p class="description">Fill in the 13th word to verify your seed backup</p>
+  <div class="word-verify">
+    <div class="word-hint">
+      <span class="word-index">Word 12</span>
+      <span class="word-value">Banana</span>
+    </div>
+    <div class="word-input">
+      <input type="text" placeholder="Word 13">
+    </div>
+    <div class="word-hint">
+      <span class="word-index">Word 14</span>
+      <span class="word-value">Zoom</span>
+    </div>
+  </div>
   <div class="buttons"><a routerLink="/"><div class="button back">Cancel</div></a><div class="button next">Next</div></div>
 </div>
 <!--<div id="content">
