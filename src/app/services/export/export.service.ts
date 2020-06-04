@@ -7,7 +7,6 @@ export class ExportService {
   constructor(
   ) { }
   downloadWallet(data: any) {
-    console.log(data);
     const blob = new Blob([JSON.stringify(data, null, 4)], { type: 'application/json' });
     let filename = 'wallet.tez';
     if (data.walletType === 1) {

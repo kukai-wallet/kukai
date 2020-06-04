@@ -14,13 +14,14 @@ import { Router } from '@angular/router';
   styleUrls: ['./new-wallet.component.scss']
 })
 export class NewWalletComponent implements OnInit {
+  wordInput: string;
   @Input() pwd1 = '';
   @Input() pwd2 = '';
   @Input() userMnemonic = '';
   hideBlur = false;
   pwdStrength = '';
   ekfDownloaded = false;
-  activePanel = 1;
+  activePanel = 0;
   data: any;
   seed: any;
   pkh: string;
@@ -28,7 +29,8 @@ export class NewWalletComponent implements OnInit {
   MNEMONIC: {
     string: string,
     array: string[],
-    order: number[]
+    verify: number[],
+    wordsToVerify: number
   };
   constructor(
     private translate: TranslateService,
@@ -48,43 +50,70 @@ export class NewWalletComponent implements OnInit {
     this.MNEMONIC = {
       string: mnemonic,
       array: mnemonic.split(' '),
-      order: []
+      verify: [],
+      wordsToVerify: 5
     };
     // shuffle
-    for (let i = this.MNEMONIC.array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [this.MNEMONIC.array[i], this.MNEMONIC.array[j]] = [this.MNEMONIC.array[j], this.MNEMONIC.array[i]];
+    const mnemonicLength = this.MNEMONIC.array.length;
+    while (this.MNEMONIC.verify.length < this.MNEMONIC.wordsToVerify) {
+      const index = Math.floor(Math.random() * Math.floor(mnemonicLength));
+      if (!this.MNEMONIC.verify.includes(index)) {
+        this.MNEMONIC.verify.push(index);
+      }
     }
+    this.MNEMONIC.verify.sort((a,b) => a-b)
     this.activePanel++;
   }
+  checkWord() {
+    if(this.wordInput === this.MNEMONIC.array[this.MNEMONIC.verify[0]]) {
+      this.MNEMONIC.verify.shift();
+      this.wordInput = '';
+    }
+  }
+  formatVerifyDescription(index: number): string {
 
+    if (this.MNEMONIC.verify.length === 0) {
+      return 'Seed backup have been verified!';
+    }
+    switch (index) {
+      case 1:
+        return 'Fill in the 1st word to verify your seed backup';
+      case 3:
+        return 'Fill in the 3rd word to verify your seed backup';
+      default:
+        return `Fill in the ${index}th word to verify your seed backup`;
+    }
+  }
+  indexFormat(index: number): string {
+    if (this.MNEMONIC.verify.length === 0) {
+      return '';
+    } else if (index < 0 || index >= this.MNEMONIC.array.length) {
+      return '';
+    } else {
+      return 'Word ' + (index + 1);
+    }
+  }
+  valueFormat(index: number): string {
+    if (this.MNEMONIC.verify.length === 0) {
+      return '';
+    } else if (index < 0 || index > this.MNEMONIC.array.length) {
+      return '';
+    } else {
+      return this.MNEMONIC.array[index];
+    }
+  }
   verifyView() {
-    this.activePanel++;
+    if (this.MNEMONIC.verify.length) {
+      this.activePanel++;
+    } else {
+      throw new Error('Unexpected verify array');
+    }
   }
   pwdView() {
     this.activePanel++;
     this.userMnemonic = '';
   }
-  wordClick(id: number) {
-    const index = this.MNEMONIC.order.indexOf(id);
-    if (index < 0) {
-      this.MNEMONIC.order.push(id);
-    } else {
-      this.MNEMONIC.order.splice(index, 1);
-    }
-    console.log(this.MNEMONIC.order);
-    this.orderToText();
-  }
-  orderToText() {
-    let out = '';
-    if (this.MNEMONIC.order.length) {
-      for (const n of this.MNEMONIC.order) {
-        out += this.MNEMONIC.array[n] + ' ';
-      }
-      out = out.slice(0, -1);
-    }
-    this.userMnemonic = out;
-  }
+
   mnemonicMatch(): boolean {
     return (this.MNEMONIC.string === this.userMnemonic);
   }
@@ -101,21 +130,17 @@ export class NewWalletComponent implements OnInit {
         this.pk = ans.pk;
         this.MNEMONIC.string = '';
         this.MNEMONIC.array = [];
-        this.MNEMONIC.order = [];
+        this.MNEMONIC.verify = [];
         this.activePanel++;
       }, 100);
     }
   }
   validPwd(): boolean {
     if (!this.inputValidationService.password(this.pwd1)) {
-      this.translate.get('MNEMONICIMPORTCOMPONENT.PASSWORDWEAK').subscribe(
-        (res: string) => this.messageService.addWarning(res, 10)  // 'Password is too weak!'
-      );
+      this.messageService.addWarning(this.translate.instant('MNEMONICIMPORTCOMPONENT.PASSWORDWEAK'), 5);
       return false;
     } else if (this.pwd1 !== this.pwd2) {
-      this.translate.get('MNEMONICIMPORTCOMPONENT.NOMATCHPASSWORDS').subscribe(
-        (res: string) => this.messageService.addWarning(res, 10)  // Passwords don't match!
-      );
+      this.messageService.addWarning(this.translate.instant('MNEMONICIMPORTCOMPONENT.NOMATCHPASSWORDS'), 5);
       return false;
     } else {
       return true;
@@ -123,9 +148,6 @@ export class NewWalletComponent implements OnInit {
   }
   calcStrength() {
     this.pwdStrength = this.inputValidationService.passwordStrengthDisplay(this.pwd1);
-  }
-  reset() {
-    this.activePanel = 1;
   }
   async done() {
     const seed = this.seed;

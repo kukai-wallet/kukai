@@ -1,138 +1,60 @@
-<div *ngIf="activePanel==2" (click)="hideBlur = false">
-  <span class="step-counter">
-    —1/4—
-  </span>
+<span class="step-counter">
+  —{{ activePanel }}/4—
+</span>
+<div *ngIf="activePanel==1" (click)="hideBlur = false">
   <H1>Backup your seed</H1>
   <p class="description">When you create a new wallet, a new Tezos seed is generated. Your Tezos seed is the master key of all your wallet and any value inside it.</p>
   <p class="description red">Make sure to back it up, write it down, and keep it incredibly safe.</p>
-  <div class="seed" (mouseout)="hideBlur = false" (click)="$event.stopPropagation()">{{ MNEMONIC.string }}</div>
+  <div class="whitebox" (mouseout)="hideBlur = false" (click)="$event.stopPropagation()">{{ MNEMONIC.string }}</div>
   <div *ngIf="!hideBlur" class="seed-blur" (click)="hideBlur = true ; $event.stopPropagation()">
     <span class="black">Click here to reveal your seed</span>
   </div>
   <div class="buttons"><a routerLink="/"><div class="button back">Back</div></a><div class="button next" (click)="verifyView()">Next</div></div>
 </div>
-<div *ngIf="activePanel==3">
-  <span class="step-counter">
-    —2/4—
-  </span>
+<div *ngIf="activePanel==2">
   <H1>Verify your seed</H1>
-  <p class="description">Fill in the 13th word to verify your seed backup</p>
+  <p class="description">{{ formatVerifyDescription(MNEMONIC.verify[0] + 1) }}</p>
+  <progress max="{{ MNEMONIC.wordsToVerify }}" value="{{ MNEMONIC.wordsToVerify - MNEMONIC.verify.length }}"></progress>
   <div class="word-verify">
     <div class="word-hint">
-      <span class="word-index">Word 12</span>
-      <span class="word-value">Banana</span>
+      <span class="word-index">{{ indexFormat(MNEMONIC.verify[0] - 1) }}</span>
+      <span class="word-value">{{ valueFormat(MNEMONIC.verify[0] - 1) }}</span>
     </div>
     <div class="word-input">
-      <input type="text" placeholder="Word 13">
+      <span class="word-index"><ng-container *ngIf="MNEMONIC.verify.length">Word {{ MNEMONIC.verify[0] + 1 }}</ng-container></span>
+      <input type="text" (input)="checkWord()" (change)="checkWord()" [(ngModel)]="wordInput" [disabled]="!MNEMONIC.verify.length" autofocus>
     </div>
     <div class="word-hint">
-      <span class="word-index">Word 14</span>
-      <span class="word-value">Zoom</span>
+      <span class="word-index">{{ indexFormat(MNEMONIC.verify[0] + 1) }}</span>
+      <span class="word-value">{{ valueFormat(MNEMONIC.verify[0] + 1) }}</span>
     </div>
   </div>
-  <div class="buttons"><a routerLink="/"><div class="button back">Cancel</div></a><div class="button next">Next</div></div>
+  <div class="buttons"><a routerLink="/"><div class="button back">Cancel</div></a><div class="button next" [class.disabled]="MNEMONIC.verify.length" (click)="pwdView()">Next</div></div>
 </div>
-<!--<div id="content">
-  <div class="center-content">-->
-    <!-- Seed card --><!--
-    <div class="card text-center bg-gray-700 text-white" *ngIf="activePanel==2">
-      <div class="card-body">
-        <h1 class="card-title"> {{ 'NEWWALLETCOMPONENT.TITLE2' | translate }} (1/4)</h1>
-        <div class="card-text">
-          <p class="seed"><b>{{ MNEMONIC.string }}</b></p>
-          <p> {{ 'NEWWALLETCOMPONENT.INFOCREATENEWWALLET' | translate }} </p>
-          <p> {{ 'NEWWALLETCOMPONENT.INFOBACKUP' | translate }} </p>
-          <p class="text-danger"> {{ 'NEWWALLETCOMPONENT.INFOBACKUP1' | translate }} </p>
-          <p class="text-danger"> {{ 'NEWWALLETCOMPONENT.INFOBACKUP2' | translate }} </p>
-          <p class="text-danger"><b> {{ 'NEWWALLETCOMPONENT.INFOBACKUP3' | translate }} </b></p>
-        </div>
-      </div>
-      <div class="card-footer text-right">
-        <a routerLink="/">
-          <button type="button" class="btn btn-primary btn-lg btn-float-left">Back</button>
-        </a>
-        <button type="button" class="btn btn-primary btn-lg" (click)="verifyView()"> {{ 'NEWWALLETCOMPONENT.NEXT' | translate }} </button>
-      </div>
-    </div>-->
-    <!-- Verify Seed card --><!--
-    <div class="card text-center bg-gray-700 text-white" *ngIf="activePanel==3">
-      <div class="card-body">
-        <h1 class="card-title"> {{ 'NEWWALLETCOMPONENT.TITLE3' | translate }} (2/4)</h1>
-        <div class="card-text">
-          <form class="form-group">
-            <div class="form-group row">
-              <div class="col-sm-12">
-                <textarea [(ngModel)]="userMnemonic" [ngModelOptions]="{standalone: true}" rows="4" class="form-control" [placeholder]="'NEWWALLETCOMPONENT.WORD1WORD2' | translate" readonly></textarea>
-              </div>
-            </div>
-          </form>
-          <div class="row">
-            <ng-container *ngFor="let word of MNEMONIC.array ; index as i">
-              <div class="col-6 col-sm-4 col-md-3 p-0 pl-1 pr-1 pt-2">
-                <button type="button" class="btn btn-primary btn-lg col-12" [class.btn-secondary]="!MNEMONIC.order.includes(i)" [class.btn-primary]="MNEMONIC.order.includes(i)" (click)="wordClick(i)">{{ word }}</button>
-              </div>
-            </ng-container>
-          </div>
-          <BR>
-          <p> {{ 'NEWWALLETCOMPONENT.INFOVERIFYSEED2' | translate }} </p>
-        </div>
-      </div>
-      <div class="card-footer text-right">
-        <a routerLink="/">
-          <button type="button" class="btn btn-primary btn-lg btn-float-left">Cancel</button>
-        </a>
-        <button type="button" class="btn btn-primary btn-lg" [disabled]="!mnemonicMatch()" (click)="pwdView()"> {{ 'NEWWALLETCOMPONENT.NEXT' | translate }} </button>
-      </div>
-    </div>-->
-
-    <!-- Password card --><!--
-    <div class="card text-center bg-gray-700 text-white" *ngIf="activePanel==4">
-      <div class="card-body">
-        <h1 class="card-title"> {{ 'NEWWALLETCOMPONENT.TITLE4' | translate }} (3/4)</h1>
-        <div class="card-text">
-          <form>
-            <div class="form-group row">
-              <div class="col-sm-12">
-                <input type="password" [(ngModel)]="pwd1" (keyup)="calcStrength()" [ngModelOptions]="{standalone: true}" class="form-control" [placeholder]="'NEWWALLETCOMPONENT.PASSWORD' | translate">
-                <small id="emailHelp1" class="form-text text-muted text-left"> {{ 'NEWWALLETCOMPONENT.PASSWORDSTRENGTH' | translate }} {{ pwdStrength }}</small>
-              </div>
-            </div>
-            <div class="form-group row">
-              <div class="col-sm-12">
-                <input type="password" [(ngModel)]="pwd2" [ngModelOptions]="{standalone: true}" class="form-control" [placeholder]="'NEWWALLETCOMPONENT.CONFIRMPASSWORD' | translate">
-              </div>
-            </div>
-          </form>
-          <p> {{ 'NEWWALLETCOMPONENT.INFOPASSWORDENCRYPT' | translate }} </p>
-          <p> {{ 'NEWWALLETCOMPONENT.INFOPASSWORD' | translate }} </p>
-        </div>
-      </div>
-      <div class="card-footer text-right">
-        <a routerLink="/">
-          <button type="button" class="btn btn-primary btn-lg btn-float-left">Cancel</button>
-        </a>
-        <button type="button" class="btn btn-primary btn-lg" [disabled]="!pwd1" (click)="encryptWallet()"> {{ 'NEWWALLETCOMPONENT.ENCRYPT' | translate }} </button>
-      </div>
-    </div>-->
-
-    <!-- Seed card --><!--
-    <div class="card text-center bg-gray-700 text-white" *ngIf="activePanel==5">
-      <div class="card-body">
-        <h1 class="card-title"> {{ 'NEWWALLETCOMPONENT.TITLE5' | translate }} (4/4)</h1>
-        <div class="card-text">
-          <p class="summary-done text-break"><b> {{ 'NEWWALLETCOMPONENT.YOURPUBLICKEYHASH' | translate }} {{ getPkh() }}</b></p>
-          <br>
-          <p> {{ 'NEWWALLETCOMPONENT.INFOWALLETREADY' | translate }} </p>
-          <p> {{ 'NEWWALLETCOMPONENT.INFODOWNLOAD' | translate }} .</p>
-          <button type="button" class="btn btn-primary btn-lg" (click)="download()"> {{ 'NEWWALLETCOMPONENT.DOWNLOAD' | translate }} </button>
-        </div>
-      </div>
-      <div class="card-footer text-right">
-        <a routerLink="/">
-          <button type="button" class="btn btn-primary btn-lg btn-float-left" [disabled]="ekfDownloaded">Cancel</button>
-        </a>
-        <button type="button" class="btn btn-primary btn-lg" [disabled]="!ekfDownloaded" (click)="done()"> {{ 'NEWWALLETCOMPONENT.FINISH' | translate }} </button>
-      </div>
+<div *ngIf="activePanel==3">
+  <H1>Set a password</H1>
+  <p class="description bold">This password will be used to create an encrypted keystore file.</p>
+  <p class="description">When performning operations that need to be signed with your secret key this password will be required</p>
+  <small>{{ 'NEWWALLETCOMPONENT.PASSWORD' | translate }}</small>
+  <input type="password" class="pwd" [(ngModel)]="pwd1" (keyup)="calcStrength()">
+  <small class="grey"> {{ 'NEWWALLETCOMPONENT.PASSWORDSTRENGTH' | translate }} — {{ pwdStrength }}</small>
+  <small>{{ 'NEWWALLETCOMPONENT.CONFIRMPASSWORD' | translate }}</small>
+  <input type="password" class="pwd" [(ngModel)]="pwd2">
+  <div class="buttons"><a routerLink="/"><div class="button back">Cancel</div></a><div class="button next" [class.disabled]="!pwd1" (click)="encryptWallet()">Next</div></div>
+</div>
+<div *ngIf="activePanel==4">
+  <H1>Wallet created! 🎉</H1>
+  <p class="description bold">Your wallet is now set up and ready to be used.</p>
+  <p class="description">Download your encrypted keystore file and import it when you want to access your wallet.</p>
+  <div class="whitebox final">
+    <p class="description bold pkh">Your first derived address:&#10;&#13;{{ getPkh() }}</p>
+    <div class="buttons single">
+      <div class="button next" (click)="download()">Download</div>
     </div>
+    
   </div>
-</div>-->
+  <div class="buttons single">
+    <div class="button back" [class.disabled]="!ekfDownloaded" (click)="done()">Finish</div>
+  </div>
+  
+</div>

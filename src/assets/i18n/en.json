@@ -178,7 +178,7 @@
         "EMAIL" : "Email",
         "PASSWORD" : "Password",
         "TZ1" : "tz1... (optional)",
-        "PASSWORDSTRENGHT" : "Password strength:",
+        "PASSWORDSTRENGTH" : "Password strength",
         "PASSWORDCONFIRM" : "Confirm Password",
         "INVALIDEMAIL" : "Invalid email!",
         "INVALIDPASSWORD" : "Invalid password!",
@@ -243,7 +243,7 @@
         "WORD1WORD2" : "word1 word2 word3 word4 word5 word6 word7 word8 word9 word10 word11 word12 word13 word14 word15 word16 word17 word18 word19 word20 word21 word22 word23 word24",
         "PASSWORD" : "Password",
         "CONFIRMPASSWORD" : "Confirm Password",
-        "PASSWORDSTRENGTH" : "Password strength:",
+        "PASSWORDSTRENGTH" : "Password strength",
         "WEAKPASSWORD" : "Password is too weak!"
     },
     "OFFLINESIGNINGCOMPONENT": {
