@@ -14,7 +14,6 @@ import { AccountComponent } from './components/account/account.component';
 import { MnemonicImportComponent } from './components/mnemonic-import/mnemonic-import.component';
 import { BakeryComponent } from './components/bakery/bakery.component';
 import { ActivateComponent } from './components/activate/activate.component';
-import { CommunityComponent } from './components/community/community.component';
 import { ConnectLedgerComponent } from './components/connect-ledger/connect-ledger.component';
 import { AccountsComponent } from './components/accounts/accounts.component';
 import { P404Component } from './views/error/404.component';
@@ -24,18 +23,17 @@ import { AccountViewComponent } from './components/account-view/account-view.com
 const routes: Routes = [
   { path: '', component: StartComponent },  // Content Centre position
   { path: 'new-wallet', component: NewWalletComponent },  // Content Centre position
-  { path: 'import', component: ImportComponent },  // Content Centre position
-  { path: 'mnemonic-import', component: MnemonicImportComponent },
-  { path: 'activity', component: ActivityComponent },
-  { path: 'overview', component: OverviewComponent },
-  { path: 'send', component: SendComponent },
-  { path: 'new-account', component: NewAccountComponent },
-  { path: 'receive', component: ReceiveComponent },
-  { path: 'delegate', component: DelegateComponent },
-  { path: 'account-legacy', component: AccountComponent },
-  { path: 'bakery', component: BakeryComponent },
+  //{ path: 'import', component: ImportComponent },  // Content Centre position
+  { path: 'import', component: MnemonicImportComponent },
+  //{ path: 'activity', component: ActivityComponent },
+  //{ path: 'overview', component: OverviewComponent },
+  //{ path: 'send', component: SendComponent },
+  //{ path: 'new-account', component: NewAccountComponent },
+  //{ path: 'receive', component: ReceiveComponent },
+  //{ path: 'delegate', component: DelegateComponent },
+  //{ path: 'account-legacy', component: AccountComponent },
+  //{ path: 'bakery', component: BakeryComponent },
   { path: 'activate', component: ActivateComponent },
-  { path: 'community', component: CommunityComponent },
   { path: 'connect-ledger', component: ConnectLedgerComponent },
   { path: 'accounts', component: AccountsComponent },
   { path: 'account/:address', component: AccountViewComponent },

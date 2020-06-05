@@ -62,7 +62,6 @@ import { OperationService } from './services/operation/operation.service';
 import { BakeryComponent } from './components/bakery/bakery.component';
 import { ActivateComponent } from './components/activate/activate.component';
 import { MessagesComponent } from './components/messages/messages.component';
-import { CommunityComponent } from './components/community/community.component';
 import { HeaderComponent } from './components/header/header.component';
 import { P404Component } from './views/error/404.component';
 import { P500Component } from './views/error/500.component';
@@ -104,7 +103,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     BakeryComponent,
     ActivateComponent,
     MessagesComponent,
-    CommunityComponent,
     HeaderComponent,
     P404Component,
     P500Component,
