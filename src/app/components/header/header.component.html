@@ -16,7 +16,7 @@
                     </a>
                     <ng-container *ngFor="let origAcc of impAcc.originatedAccounts">
                         <a routerLink="/account/{{origAcc.address}}" [class.selected]="origAcc.address === activeAccount.address">
-                            {{ impAcc.shortAddress() }}
+                            {{ origAcc.shortAddress() }}
                         </a>
                     </ng-container>
                 </ng-container>

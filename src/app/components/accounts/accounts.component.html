@@ -27,7 +27,7 @@
                 </div>
                 <div class="seperator"></div>
                 <ng-container *ngFor="let origAcc of impAcc.originatedAccounts">
-                    <div class="account-container account-row">
+                    <div class="account-container account-row" (click)="select(origAcc)">
                         <div>
                             <img class="account-icon" src="../../../assets/img/account-icon.svg">
                             <span class="account-address">{{ origAcc.shortAddress() }}</span>
@@ -39,7 +39,9 @@
                                 <span *ngIf="origAcc.balanceXTZ" class="account-usd">{{ origAcc.balanceUSD | number: "1.0-0" }} USD</span>
                             </div>
                             <div>
-                            <img class="menu-icon" src="../../../assets/img/menu-icon.svg" (click)="$event.stopPropagation()">  
+                            <!--
+                                <img class="menu-icon" src="../../../assets/img/menu-icon.svg" (click)="$event.stopPropagation()">  
+                            -->
                             </div>
                         </div>
                     </div>

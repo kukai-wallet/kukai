@@ -61,11 +61,11 @@ export class NewWalletComponent implements OnInit {
         this.MNEMONIC.verify.push(index);
       }
     }
-    this.MNEMONIC.verify.sort((a,b) => a-b)
+    this.MNEMONIC.verify.sort((a, b) => a - b);
     this.activePanel++;
   }
   checkWord() {
-    if(this.wordInput === this.MNEMONIC.array[this.MNEMONIC.verify[0]]) {
+    if (this.wordInput === this.MNEMONIC.array[this.MNEMONIC.verify[0]]) {
       this.MNEMONIC.verify.shift();
       this.wordInput = '';
     }
