@@ -1,160 +1,95 @@
-<div id="content" *ngIf="activePanel === 0">
-    <div class="center-content">
-        <div class="card text-center bg-gray-700 text-white">
-            <div class="card-body">
-                <h1 class="card-title"> {{ 'MNEMONICIMPORTCOMPONENT.TITLE' | translate }} </h1>
-                <div class="card-text">
-                    <form class="form-group form-min-height">
-                        <div>
-                            <!--
-                            <tabset>
-                                <tab heading="ICO import" (select)="tge = true"></tab>
-                                <tab heading="Regular import" id="tab1" (select)="tge = false"></tab>
-                            </tabset>
-                            -->
-                            <ul class="nav nav-tabs">
-                                <li class="nav-item">
-                                  <a class="nav-link" [class.active]="!tge" (click)="tge = false">Regular Import</a>
-                                </li>
-                                <li class="nav-item">
-                                  <a class="nav-link" [class.active]="tge" (click)="tge = true">Fundraiser Import</a>
-                                </li>
-                            </ul>
-                            <BR>
-                        </div>
-                        <div *ngIf="tge" class="form-group row">
-                            <div class="col-sm-12">
-                                    <p *ngIf="this.CONSTANTS.NET.NAME !== 'Mainnet'">Need a <a href="https://faucet.tzalpha.net/" target="_blank">faucet</a> for the testnet?</p>
-                                <p>
-                                    <a routerLink="/activate"> {{ 'MNEMONICIMPORTCOMPONENT.INFO' | translate }} </a>
-                                </p>
-                            </div>
-                        </div>
-                        <!-- mnemonic -->
-                        <div class="form-group row" [ngClass]="{ 'form-row-margin-top': !tge }">
-                            <!-- ngClass => margin-top: 75px only for tab1 -->
-                            <div class="col-sm-12">
-                                <textarea rows="2" [(ngModel)]="mnemonic" [ngModelOptions]="{standalone: true}" class="form-control" [placeholder]="'MNEMONICIMPORTCOMPONENT.MNEMONIC' | translate"></textarea>
-                                <small class="form-text text-left"> {{ 'MNEMONICIMPORTCOMPONENT.INFOMNEMONIC' | translate }} </small>
-                            </div>
-                        </div>
-                        <!-- passphrase -->
-                        <div class="form-group row" *ngIf="!tge">
-                            <div class="col-sm-12">
-                                <input type="password" [(ngModel)]="passphrase" [ngModelOptions]="{standalone: true}" class="form-control" [placeholder]="'MNEMONICIMPORTCOMPONENT.PASSPHRASE' | translate">
-                                <small class="form-text text-left"> {{ 'MNEMONICIMPORTCOMPONENT.INFOPASSPHRASE' | translate }} </small>
-                            </div>
-                        </div>
-                        <!-- email -->
-                        <div class="form-group row" *ngIf="tge">
-                            <div class="col-sm-12">
-                                <input type="text" [(ngModel)]="email" [ngModelOptions]="{standalone: true}" class="form-control" [placeholder]="'MNEMONICIMPORTCOMPONENT.EMAIL' | translate">
-                                <small class="form-text text-left"> {{ 'MNEMONICIMPORTCOMPONENT.INFOEMAIL' | translate }} </small>
-                            </div>
-                        </div>
-                        <!-- password -->
-                        <div class="form-group row" *ngIf="tge">
-                            <div class="col-sm-12">
-                                <input type="password" [(ngModel)]="password" [ngModelOptions]="{standalone: true}" class="form-control" [placeholder]="'MNEMONICIMPORTCOMPONENT.PASSWORD' | translate">
-                                <small class="form-text text-left"> {{ 'MNEMONICIMPORTCOMPONENT.INFOPASSWORD' | translate }} </small>
-                            </div>
-                        </div>
-                        <!-- Pkh -->
-                        <div class="form-group row">
-                            <div class="col-sm-12">
-                                <input type="text" [(ngModel)]="pkh" [ngModelOptions]="{standalone: true}" class="form-control" [placeholder]="'MNEMONICIMPORTCOMPONENT.TZ1' | translate">
-                                <small class="form-text text-left" *ngIf="tge"> {{ 'MNEMONICIMPORTCOMPONENT.INFOPKHICO' | translate }} </small>
-                                <small class="form-text text-left" *ngIf="!tge"> {{ 'MNEMONICIMPORTCOMPONENT.INFOPKH' | translate }} </small>
-                            </div>
-                        </div>
-                        <ng-container *ngIf="!tge">
-                        <div class="form-inline form-check row input-left">
-                            <input class="form-check-input" (change)="hdImport = !hdImport" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-                            <label class="form-check-label" for="exampleRadios1">
-                              HD wallet
-                            </label>
-                          </div>
-                          <div class="form-inline form-check row">
-                            <input class="form-check-input" (change)="hdImport = !hdImport" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
-                            <label class="form-check-label" for="exampleRadios2">
-                              Legacy wallet
-                            </label>
-                          </div>
-                        </ng-container>
-                    </form>
-                </div>
-            </div>
-            <div class="card-footer text-right">
-                <a routerLink="/">
-                    <button type="button" class="btn btn-primary btn-lg btn-float-left">Cancel</button>
-                  </a>
-                <button type="button" class="btn btn-primary btn-lg" (click)="retrieve()"> {{ 'MNEMONICIMPORTCOMPONENT.RETRIEVE' | translate }} </button>
+<div *ngIf="activePanel === 0">
+    <H1>Import wallet</H1>
+    <div class="import-options">
+        <span [class.selected]="importOption===0" (click)="importOption = 0">Keystore file</span>
+        <span [class.selected]="importOption===1" (click)="importOption = 1">Mnemonic</span>
+        <span [class.selected]="importOption===2" (click)="importOption = 2">Fundraiser</span>
+    </div>
+    <ng-container *ngIf="importOption === 0">
+        <p class="description bold">
+            Import your wallet from an encrypted keystore file (.tez).
+        </p>
+        <input type="file" (change)="handleFileInput($event.target.files)" accept=".tez" id="file" name="file"
+            class="input-file">
+        <label for="file" class="input-file" [class.loaded]="walletJson"><span
+                *ngIf="walletJson">{{ fileName }}</span><span>Browse</span></label>
+        <div class="authenticate" *ngIf="walletJson">
+            <input type="password" class="text" (keydown.enter)='checkImportPwd()' id="pwd" [(ngModel)]="pwd"
+                placeholder="Password">
+            <div class="buttons single">
+                <div class="button next" (click)='checkImportPwd()'>Authenticate</div>
             </div>
         </div>
+    </ng-container>
+    <ng-container *ngIf="importOption > 0">
+        <p class="description faucet" *ngIf="importOption === 2">Please make sure to first&nbsp;<a
+                routerLink="/activate">activate</a>&nbsp;your ICO-wallet.</p>
+        <ng-container>
+            <small>{{ 'MNEMONICIMPORTCOMPONENT.INFOMNEMONIC' | translate }}</small>
+            <textarea class="text" [(ngModel)]="mnemonic" [placeholder]="'Mnemonic (required)'"></textarea>
+        </ng-container>
+        <ng-container *ngIf="importOption === 1">
+            <small>{{ 'MNEMONICIMPORTCOMPONENT.INFOPASSPHRASE' | translate }}</small>
+            <input class="text" type="password" [(ngModel)]="passphrase" [placeholder]="'Passphrase (optional)'">
+        </ng-container>
+        <ng-container *ngIf="importOption === 2">
+            <small>{{ 'MNEMONICIMPORTCOMPONENT.INFOEMAIL' | translate }}</small>
+            <input class="text" type="text" [(ngModel)]="email" [placeholder]="'Email (required)'">
+            <small>{{ 'MNEMONICIMPORTCOMPONENT.INFOPASSWORD' | translate }}</small>
+            <input class="text" type="password" [(ngModel)]="password" [placeholder]="'Password (required)'">
+        </ng-container>
+        <ng-container>
+            <small *ngIf="importOption === 1">{{ 'MNEMONICIMPORTCOMPONENT.INFOPKH' | translate }}</small>
+            <small *ngIf="importOption === 2">{{ 'MNEMONICIMPORTCOMPONENT.INFOPKHICO' | translate }}</small>
+            <input type="text" class="text" [(ngModel)]="pkh" [placeholder]="'tz1... (recomended)'">
+        </ng-container>
+        <div class="radios" *ngIf="importOption === 1">
+            <div>
+                <input (change)="hdImport = !hdImport" type="radio" name="walletType" value="legacy" checked>
+                <small>Legacy wallet</small>
+            </div>
+            <div>
+                <input (change)="hdImport = !hdImport" type="radio" name="walletType" value="hd">
+                <small>HD wallet</small>
+            </div>
+        </div>
+        <div class="buttons">
+            <a routerLink="/">
+                <div class="button back">Back</div>
+            </a>
+            <div class="button next" (click)="retrieve()">Retrive</div>
+        </div>
+    </ng-container>
+</div>
+<!-- Step 2 -->
+<div *ngIf="activePanel==1">
+    <H1>Set a password</H1>
+    <p class="description bold">This password will be used to create an encrypted keystore file.</p>
+    <p class="description">When performning operations that need to be signed with your secret key this password will be
+        required</p>
+    <small>{{ 'NEWWALLETCOMPONENT.PASSWORD' | translate }}</small>
+    <input type="password" class="text" [(ngModel)]="pwd1" (keyup)="calcStrength()">
+    <small class="grey"> {{ 'NEWWALLETCOMPONENT.PASSWORDSTRENGTH' | translate }} — {{ pwdStrength }}</small>
+    <small class="extra-top-margin">{{ 'NEWWALLETCOMPONENT.CONFIRMPASSWORD' | translate }}</small>
+    <input type="password" class="text" [(ngModel)]="pwd2">
+    <div class="buttons"><a routerLink="/">
+            <div class="button back">Cancel</div>
+        </a>
+        <div class="button next" [class.disabled]="!pwd1" (click)="setPwd()">Next</div>
     </div>
 </div>
-<!-- Password -->
-<div id="content" *ngIf="activePanel === 1">
-    <div class="center-content">
-        <div class="card text-center bg-gray-700 text-white">
-            <div class="card-body">
-                <h1 class="card-title"> {{ 'MNEMONICIMPORTCOMPONENT.TITLE2' | translate }} </h1>
-                <div class="card-text">
-                    <form class="form-group">
-                        <!-- password 1 -->
-                        <div class="form-group row">
-                            <div class="col-sm-12">
-                                <input type="password" [(ngModel)]="pwd1" (keyup)="calcStrength()" [ngModelOptions]="{standalone: true}" class="form-control" [placeholder]="'MNEMONICIMPORTCOMPONENT.PASSWORD' | translate">
-                                <small id="emailHelp1" class="form-text text-muted text-left"> {{ 'MNEMONICIMPORTCOMPONENT.PASSWORDSTRENGTH' | translate }} {{ pwdStrength }}</small>
-                                <small class="form-text text-left"></small>
-                            </div>
-                        </div>
-                        <!-- password 2 -->
-                        <div class="form-group row">
-                            <div class="col-sm-12">
-                                <input type="password" [(ngModel)]="pwd2" [ngModelOptions]="{standalone: true}" class="form-control" [placeholder]="'MNEMONICIMPORTCOMPONENT.PASSWORDCONFIRM' | translate">
-                                <small class="form-text text-left"></small>
-                            </div>
-                        </div>
-                    </form>
-                    <p> {{ 'MNEMONICIMPORTCOMPONENT.INFOPASSWORD2' | translate }} </p>
-                </div>
-            </div>
-            <div class="card-footer text-right">
-                <a routerLink="/">
-                    <button type="button" class="btn btn-primary btn-lg btn-float-left">Cancel</button>
-                  </a>
-                <button type="button" class="btn btn-primary btn-lg" (click)="setPwd()"> {{ 'MNEMONICIMPORTCOMPONENT.ENCRYPT' | translate }} </button>
-            </div>
+<!-- Step 3 -->
+<div *ngIf="activePanel==2">
+    <H1>Wallet created! 🎉</H1>
+    <p class="description bold">Your wallet is now set up and ready to be used.</p>
+    <p class="description">Download your encrypted keystore file and import it when you want to access your wallet.</p>
+    <div class="whitebox final">
+        <p class="description bold pkh">Your first derived address:&#10;&#13;{{ showPkh() }}</p>
+        <div class="buttons single">
+            <div class="button next" (click)="download()">Download</div>
         </div>
     </div>
-</div>
-<!-- Finish -->
-<div id="content" *ngIf="activePanel === 2">
-    <div class="center-content">
-        <div class="card text-center bg-gray-700 text-white">
-            <div class="card-body">
-                <h1 class="card-title"> {{ 'MNEMONICIMPORTCOMPONENT.TITLE3' | translate }} </h1>
-                <div class="card-text">
-                    <form class="form-group">
-                        <p class="seed">
-                            <b> {{ 'MNEMONICIMPORTCOMPONENT.PKH' | translate }}
-                                {{ showPkh() }}
-                            </b>
-                        </p>
-                        <br>
-                        <p> {{ 'MNEMONICIMPORTCOMPONENT.INFOCONFIRMATION' | translate }} </p>
-                        <p> {{ 'MNEMONICIMPORTCOMPONENT.INFODOWNLOAD' | translate }} </p>
-                        <button type="button" class="btn btn-primary btn-lg" (click)="download()"> {{ 'MNEMONICIMPORTCOMPONENT.DOWNLOAD' | translate }} </button>
-                    </form>
-                </div>
-            </div>
-            <div class="card-footer text-right">
-                <a routerLink="/">
-                    <button type="button" class="btn btn-primary btn-lg btn-float-left">Cancel</button>
-                  </a>
-                <button type="button" class="btn btn-primary btn-lg" [disabled]="!Downloaded" (click)="done()"> {{ 'MNEMONICIMPORTCOMPONENT.FINISH' | translate }} </button>
-            </div>
-        </div>
+    <div class="buttons single finish">
+        <div class="button back" [class.disabled]="!Downloaded" (click)="done()">Finish</div>
     </div>
 </div>

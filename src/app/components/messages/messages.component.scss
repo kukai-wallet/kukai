@@ -1,10 +1,11 @@
 :host {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
 }
 .msg-container {
     position: absolute;
+    margin-left: 1rem;
     bottom: 0px;
     z-index: 1;
 }

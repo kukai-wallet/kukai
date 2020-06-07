@@ -149,8 +149,8 @@
     },
     "MNEMONICIMPORTCOMPONENT": {
         "TITLE" : "Retrieve your Wallet",
-        "INFO" : "Please make sure to first activate your ICO-wallet, if you haven't yet",
-        "INFOMNEMONIC" : "The mnemonic phrase (15 words)",
+        "INFO" : "Please make sure to first activate your ICO-wallet.",
+        "INFOMNEMONIC" : "The mnemonic phrase (12-24 words)",
         "INFOPASSPHRASE" : "If your mnemonic phrase is protected with a passphrase, it needs to be entereds here",
         "INFOEMAIL" : "The email used during the ICO (e.g. example@email.com)",
         "INFOPASSWORD" : "The password you choose during the ICO.",

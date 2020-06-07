@@ -1,3 +1,4 @@
+@import "../../../scss/common.css";
 :host {
     width: 100%;
     min-height: 100%;
@@ -6,65 +7,141 @@
     justify-content: center;
     flex-direction: row;
 }
-.row {
-    padding-bottom: 0.7vh;
-}
-
-/* ---------------------------------------------------
-    CONTENT STYLE
------------------------------------------------------ */
-//Horizontal and Vertical Aligment of child div
-#content {
+:host > div {
+    margin-top: 5rem;
     display: flex;
-    min-width: 75vw;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
 }
-.center-content {
-    margin: auto; 
+div.import-options {
+    margin-top: 1.375rem;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    width: 21rem;
+    margin-bottom: 1rem;
 }
-
-.card-title {
-    padding-bottom: 0.75rem;
-    border-bottom: 2px solid rgba(0, 0, 0, 0.125);
+div.import-options span {
+    line-height: 1.5rem;
+    cursor: pointer;
 }
-
-.card-text{
-    padding-top: 2rem;
+div.import-options span.selected {
+    line-height: 1.5rem;
+    color: #5963FF;
+    border-bottom: 1px solid;
 }
-
-.card-footer {
-    background-color: rgba(0, 0, 0, 0);
+p.faucet > a {
+    color: #5963FF !important;
 }
-.nav-item > .active {
-    background-color: #5c6873;
-    border-bottom-color: #5c6873;
-    color: black !important;
+p.faucet > a:hover {
+    border-bottom: 1px solid;
+    margin-bottom: -1px;
 }
-.nav-link {
-    color: white !important;
+small {
+    margin-top: 1.25rem;
 }
-.btn-float-left {
-    float: left;
+div.radios {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+    width: 28rem;
+    margin-top: 1.5rem;
 }
-
-.form-row-margin-top {
-    margin-top: 4rem;
+input[type='radio']:checked {
+    background-color: #161616;
+  }
+  input[type="radio"] {
+    /* remove standard background appearance */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    /* create custom radiobutton appearance */
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    padding: 4px;
+    /* background-color only for content */
+    background-clip: content-box;
+    border: 1px solid #161616;
+    border-radius: 50%;
+    outline-style: none;
+  }
+div.buttons {
+    margin-top: 2.5rem;
 }
-
-.form-min-height {
-    min-height: 442px;
+div.radios small {
+    font-size: 0.875rem;
+    line-height: 1.125rem;
+    margin-left: 0.5rem;
+    margin-top: 0;
+    margin-bottom: 0;
 }
-
-//For inputs
-.form-control {
-    line-height: 2;  //Default at 1.5
+div.radios > div {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: row;
 }
-
-.seed {
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-    padding-right: 0.75rem;
-    padding-left: 0.75rem;
-    background-color: rgba(0, 0, 0, 0.125);
-    white-space: pre-line;
-    font-size: 120%;
+div.radios > div:last-child {
+    margin-top: 0.5rem;
 }
+input.input-file {
+    width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+label.input-file {
+    margin-top: 2rem;
+    width: 30rem;
+    height: 3rem;
+    border: 1px dashed #5963FF;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+}
+label.input-file.loaded {
+    justify-content: space-between;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    background: rgba(89, 99, 255, 0.2);
+    border: none;
+}
+label.input-file > span {
+    color: #5963FF;
+    font-family: "Helvetica Now Text";
+    font-style: normal;
+    font-weight: bold;
+    line-height: 1.5rem;
+    font-size: 0.75rem;
+}
+label.input-file > span:last-child {
+    text-decoration-line: underline;
+}
+label.input-file:hover {
+    cursor: pointer;
+}
+div.authenticate > input {
+    width: 18rem;
+}
+div.authenticate {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: row;
+    margin-top: 1rem;
+}
+div.authenticate div.buttons.single, div.authenticate div.buttons.single > div.button {
+    margin-top: 0;
+    height: 2.5rem;
+    margin-left: 1rem;
+  }
+  small.extra-top-margin {
+      margin-top: 2.25rem;
+  }
