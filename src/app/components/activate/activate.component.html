@@ -1,38 +1,14 @@
-<div id="content">
-    <div class="center-content">
-        <div class="card text-center fix-size">
-            <div class="card-body">
-                <h1 class="card-title">{{ 'ACTIVATECOMPONENT.TITLE' | translate }}</h1>
-                <div class="card-text">
-                    <form class="form-group">
-                        <!-- pkh -->
-                        <div class="form-group row">
-                            <div class="col-sm-12">
-                                <input type="text" [(ngModel)]="pkh" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="tz1...">
-                                <small class="form-text text-left">{{ 'ACTIVATECOMPONENT.PKH' | translate }}</small>
-                            </div>
-                        </div>
-                        <!-- secret -->
-                        <div class="form-group row">
-                            <div class="col-sm-12">
-                                <input type="text" [(ngModel)]="secret" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="code">
-                                <small class="form-text text-left">{{ 'ACTIVATECOMPONENT.CODE' | translate }}</small>
-                            </div>
-                        </div>
-                    </form>
-                    <p class="p-margin-botton">{{ 'ACTIVATECOMPONENT.INFO1' | translate }}</p>
-                    <p>{{ 'ACTIVATECOMPONENT.INFO2' | translate }}</p>
-                    <span *ngIf="formInvalid" class="text-danger">
-                        {{ formInvalid }}
-                    </span>
-                </div>
-            </div>
-            <div class="card-footer text-right">
-                <a routerLink="/import">
-                    <button type="button" class="btn btn-primary btn-lg btn-float-left">{{ 'ACTIVATECOMPONENT.BACK' | translate }}</button>
-                </a>
-                <button type="button" class="btn btn-primary btn-lg" (click)="activate()">{{ 'ACTIVATECOMPONENT.ACTIVATE' | translate }}</button>
-            </div>
-        </div>
-    </div>
+<div>
+    <H1>
+        Activate your ICO wallet
+    </H1>
+    <p class="description">Wallets created during the ICO need to be activated. No private key is required for the activation process.</p>
+    <input type="text" class="text" [(ngModel)]="pkh" [placeholder]="'tz1...'">
+    <small class="grey">Your public key hash</small>
+    <input type="text" class="text" [(ngModel)]="secret" [placeholder]="'Code'">
+    <small class="grey">Your activation code</small>
+    <div class="buttons"><a routerLink="/import"><div class="button back">Back</div></a><div class="button next" (click)="activate()">Activate</div></div>
+    <span *ngIf="formInvalid" class="text-danger">
+        {{ formInvalid }}
+    </span>
 </div>

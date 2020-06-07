@@ -1,44 +1,29 @@
-.row {
-    padding-bottom: 0.7vh;
+@import "../../../scss/common.css";
+:host {
+    width: 100%;
+    min-height: 100%;
+    padding-bottom: 8rem;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
 }
-
-.fix-size {
-    width: 40rem;
+:host > div {
+    margin-top: 5rem;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
 }
-
-.p-margin-botton {
-    margin-bottom: 0.5rem;  //default at 1rem
+div > H1 {
+    max-width: 100vw;
 }
-.btn-float-left {
-    float: left;
+p {
+    font-size: 1rem;
+    line-height: 1.5rem;
 }
-
-/* ---------------------------------------------------
-    CONTENT STYLE
------------------------------------------------------ */
-//Horizontal and Vertical Aligment of child div
-#content {
-    display: flex; 
-    min-width: 75vw;
+input.text {
+    margin-top: 3rem;
 }
-.center-content {
-    margin: auto; 
-}
-
-.card-title {
-    padding-bottom: 0.75rem;
-    border-bottom: 2px solid rgba(0, 0, 0, 0.125);
-}
-
-.card-text{
-    padding-top: 2rem;
-}
-
-.card-footer {
-    background-color: rgba(0, 0, 0, 0);
-}
-
-//For inputs
-.form-control {
-    line-height: 2;  //Default at 1.5
+span.text-danger {
+    margin-top: 1rem;
 }
