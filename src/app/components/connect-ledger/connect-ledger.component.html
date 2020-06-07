@@ -1,37 +1,22 @@
-<div id="content" *ngIf="activePanel === 0">
-    <div class="center-content">
-        <div class="card text-center fix-size bg-gray-700 text-white">
-            <div class="card-header bg-gray-700"><img src="../../../assets/img/ledger-logo.svg" class="pt-2" width="50%" height="50%"></div>
-            <div class="card-body">
-                <h1 class="card-title"> Connect with your Ledger Nano S</h1>
-                <div class="card-text">
-                    <form class="form-group form-min-height">
-                        <!-- Derivation path -->
-                        <div class="form-group row">
-                            <div class="col-sm-12">
-                                <p>
-                                    Keep the private keys safely on your Ledger device and use Kukai to access the Tezos blockchain.
-                                    <br>
-                                    You need to open the Tezos Wallet app on your Ledger device and set the derivation path.
-                                </p>
-                                <input type="text" [disabled]="!isHDDerivationPathCustom" [(ngModel)]="path" value="'44\'/1729\'/0\'/0\''" [ngModelOptions]="{standalone: true}" class="form-control">
-                                <div class="form-check form-check-inline float-left">
-                                    <input class="form-check-input" type="checkbox" id="customDerivationPath" [(ngModel)]="isHDDerivationPathCustom" (click)="setDefaultPath()" [ngModelOptions]="{standalone: true}">
-                                    <label class="form-check-label" for="customDerivationPath">Use Custom HD derivation path</label>
-                                    
-                                </div>
-                            </div>
-                        </div>
-                        <label *ngIf="path === '44\'/1729\''" class="form-check-label"><b>Warning! You are advised to not use the root derivation path.</b></label>
-                    </form>
-                </div>
-            </div>
-            <div class="card-footer text-right bg-gray-700">
-                <a routerLink="/">
-                  <button type="button" class="btn btn-primary btn-lg btn-float-left">Back</button>
-                </a>
-                <button type="button" [disabled]="pendingLedgerConfirmation" class="btn btn-primary btn-lg" (click)="getPk()">Connect</button>
-            </div>
-        </div>
+<div>
+    <H1>Connect with your Ledger Nano S</H1>
+    <p class="description bold">Keep the private keys safely on your Ledger device and use Kukai to access the Tezos
+        blockchain.</p>
+    <p class="description">You need to open the Tezos Wallet app on your Ledger device and set the derivation path.</p>
+    <input type="text" class="text" [disabled]="!isHDDerivationPathCustom" [(ngModel)]="path"
+        value="'44\'/1729\'/0\'/0\''">
+    <small>Use custom HD derivation path</small>
+    <div class="switch-container">
+        <label class="switch">
+            <input type="checkbox" [(ngModel)]="isHDDerivationPathCustom" (click)="setDefaultPath()">
+            <span class="slider round"></span>
+        </label><span class="switch-desc">
+            <ng-container *ngIf="!isHDDerivationPathCustom">Off</ng-container>
+            <ng-container *ngIf="isHDDerivationPathCustom">On</ng-container>
+        </span>
+    </div>
+    <div class="buttons">
+        <a routerLink="/"><div class="button back">Back</div></a>
+        <div class="button next" (click)="getPk()">Connect</div>
     </div>
 </div>
