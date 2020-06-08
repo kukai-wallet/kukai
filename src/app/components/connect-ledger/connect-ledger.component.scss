@@ -95,3 +95,8 @@ small {
     flex-direction: row;
     width: 28rem;
   }
+  @media screen and (max-width: 29rem) {
+    div.switch-container {
+        width: 20rem;
+    }
+  }

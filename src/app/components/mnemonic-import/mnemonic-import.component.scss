@@ -137,11 +137,17 @@ div.authenticate {
     flex-direction: row;
     margin-top: 1rem;
 }
-div.authenticate div.buttons.single, div.authenticate div.buttons.single > div.button {
+div.authenticate div.buttons.single {
     margin-top: 0;
     height: 2.5rem;
-    margin-left: 1rem;
+    margin-left: 1.5rem;
+  }
+  div.authenticate div.buttons.single div.button.next {
+    height: 2.5rem;
   }
   small.extra-top-margin {
       margin-top: 2.25rem;
+  }
+  input#pwd.text {
+    width: 20.5rem;
   }

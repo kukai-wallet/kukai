@@ -20,6 +20,11 @@
                 <div class="button next" (click)='checkImportPwd()'>Authenticate</div>
             </div>
         </div>
+        <div class="buttons single">
+            <a routerLink="/">
+                <div class="button back">Back</div>
+            </a>
+        </div>
     </ng-container>
     <ng-container *ngIf="importOption > 0">
         <p class="description faucet" *ngIf="importOption === 2">Please make sure to first&nbsp;<a

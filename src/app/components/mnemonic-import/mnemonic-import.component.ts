@@ -231,7 +231,9 @@ export class MnemonicImportComponent implements OnInit {
   }
   handleFileInput(files: FileList) {
     let fileToUpload = files.item(0);
-    if (!this.validateFile(fileToUpload.name)) {
+    if (!fileToUpload) {
+      return false;
+    } else if (!this.validateFile(fileToUpload.name)) {
       let fileNotSupported = '';
       this.translate
         .get('IMPORTCOMPONENT.FILENOTSUPPORTED')

@@ -2,9 +2,10 @@
 
 :host {
   width: 100%;
+  min-height: 100vh;
   padding-bottom: 8rem;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   flex-direction: column;
   margin-block-start: 0;
@@ -12,9 +13,9 @@
 }
 :host > div {
   width: 100%;
-  min-height: calc(100vh - 11rem);
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   flex-direction: column;
+  margin-top: 2rem;
 }
