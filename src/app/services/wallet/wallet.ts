@@ -168,7 +168,7 @@ export class OriginatedAccount extends Account {
 export class Activity {
   type: string;
   block: string;
-  failed: boolean;
+  status: number; // 0: unconfirmed, 1: confirmed, -1: failed
   amount: number;
   source: string;
   fee: number;

@@ -21,13 +21,14 @@ export class ActivityComponent implements OnInit {
         console.log('activePkh: ', this.activeAccount.address);
     }
 
+    /*
     getStatus(transaction: any): string {
         if (transaction.failed) {
             return 'Failed';
         } else {
             return 'Confirmed';
         }
-    }
+    }*/
 
     getType(transaction: any): string {
         if (transaction.type !== 'transaction') {

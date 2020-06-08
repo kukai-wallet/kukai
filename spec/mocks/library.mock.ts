@@ -197,7 +197,6 @@ export class OperationTools extends Tools {
       let type = 'Unknown';
       if (data.type.operations[index].kind !== 'reveal') {
         type = data.type.operations[index].kind;
-        const failed = data.type.operations[index].failed;
         let destination = '';
         let source = '';
         let amount = 0;
@@ -234,7 +233,6 @@ export class OperationTools extends Tools {
           fee: fee,
           timestamp: null,
           type: type,
-          failed: failed,
         };
         ops.push(op);
       }
@@ -257,7 +255,6 @@ export class OperationTools extends Tools {
               src: { tz: 'tz1Yju7jmmsaUiG9qQLoYv35v5pHgnWoLWbt' },
               amount: '889162032500',
               destination: { tz: 'KT1VyvPxmo7GpSozfzen8UQLWBRwKjiF9JNa' },
-              failed: false,
               internal: false,
               burn: 0,
               counter: 1389,
@@ -283,7 +280,6 @@ export class OperationTools extends Tools {
               src: { tz: 'tz1Yju7jmmsaUiG9qQLoYv35v5pHgnWoLWbt' },
               amount: '26478863095',
               destination: { tz: 'KT1HmGvNKp8GXgVk6YckUL1LY9h9itDTNXuA' },
-              failed: false,
               internal: false,
               burn: 0,
               counter: 1388,
@@ -309,7 +305,6 @@ export class OperationTools extends Tools {
               src: { tz: 'tz1Yju7jmmsaUiG9qQLoYv35v5pHgnWoLWbt' },
               amount: '15991842036',
               destination: { tz: 'KT1AcH3YscoUcJKqvqdcYCBeZwAennd2NEeN' },
-              failed: false,
               internal: false,
               burn: 0,
               counter: 1387,
@@ -412,12 +407,12 @@ export class ActivityTools extends OperationTools {
       hash: operationhash,
       block: blockhash,
       source: source,
+      status: 1,
       destination: this.generateDestination(),
       amount: this.generateAmount(),
       fee: this.generateFee(),
       timestamp: this.generateDate().toString(),
       type: type,
-      failed: false
     };
 
     return activity;

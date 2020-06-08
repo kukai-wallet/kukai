@@ -92,7 +92,7 @@ export class ConseilService {
           {
             type: tx.kind,
             block: tx.block_hash,
-            failed: false,
+            status: 1,
             amount: tx.amount,
             source: tx.source,
             destination: destination,

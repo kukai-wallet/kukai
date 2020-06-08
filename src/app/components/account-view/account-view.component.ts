@@ -39,6 +39,7 @@ export class AccountViewComponent implements OnInit {
       });
       setInterval(() => this.trigger = !this.trigger, 10 * 1000);
   }
+  /*
   getStatus(transaction: any): string {
     if (transaction.failed) {
       return 'Failed';
@@ -46,7 +47,7 @@ export class AccountViewComponent implements OnInit {
       return 'Confirmed';
     }
   }
-
+  */
   getType(transaction: any): string {
     if (transaction.type !== 'transaction') {
       if (transaction.type === 'delegation') {

@@ -125,6 +125,7 @@ export class ImportService {
     } else {
       throw new Error('Invalid seed length');
     }
+    this.walletService.initStorage();
     if (this.walletService.wallet instanceof HdWallet) {
       let index = 0;
       let counter = 1;
@@ -153,6 +154,7 @@ export class ImportService {
   async importWalletFromPk(pk: string, derivationPath: string): Promise<boolean> {
     this.coordinatorService.stopAll();
     try {
+      this.walletService.initStorage();
       this.walletService.wallet = new LedgerWallet();
       this.walletService.addImplicitAccount(pk, derivationPath);
       await this.findContracts(this.walletService.wallet.implicitAccounts[0].pkh);

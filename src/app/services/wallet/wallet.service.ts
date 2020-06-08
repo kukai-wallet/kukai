@@ -17,6 +17,7 @@ import { utils, hd } from '@tezos-core-tools/crypto-utils';
 @Injectable()
 export class WalletService {
   storeKey = `kukai-wallet`;
+  storageId = 0;
   wallet: WalletObject;
 
   constructor(
@@ -197,6 +198,7 @@ export class WalletService {
   */
   clearWallet() {
     this.wallet = null;
+    this.storageId = 0;
     localStorage.removeItem(this.storeKey);
   }
   /*
@@ -236,34 +238,57 @@ export class WalletService {
   /*
     Read and write to localStorage
   */
-  storeWallet() {
-    let type = 'unknown';
-    if (this.wallet instanceof HdWallet) {
-      type = 'HdWallet';
-    } else if (this.wallet instanceof LegacyWalletV1) {
-      type = 'LegacyWalletV1';
-    } else if (this.wallet instanceof LegacyWalletV2) {
-      type = 'LegacyWalletV2';
-    } else if (this.wallet instanceof LegacyWalletV3) {
-      type = 'LegacyWalletV3';
-    } else if (this.wallet instanceof LedgerWallet) {
-      type = 'LedgerWallet';
-    }
-    console.log('Type is ' + type);
+  initStorage() {
+    this.storageId = Date.now();
     localStorage.setItem(
       this.storeKey,
-      JSON.stringify({ type, data: this.wallet })
+      JSON.stringify({ localStorageId: this.storageId })
     );
+  }
+  storeWallet() {
+    const localStorageId = this.getLocalStorageId();
+    if (this.storageId && localStorageId && this.storageId === localStorageId) {
+      let type = 'unknown';
+      if (this.wallet instanceof HdWallet) {
+        type = 'HdWallet';
+      } else if (this.wallet instanceof LegacyWalletV1) {
+        type = 'LegacyWalletV1';
+      } else if (this.wallet instanceof LegacyWalletV2) {
+        type = 'LegacyWalletV2';
+      } else if (this.wallet instanceof LegacyWalletV3) {
+        type = 'LegacyWalletV3';
+      } else if (this.wallet instanceof LedgerWallet) {
+        type = 'LedgerWallet';
+      }
+      console.log('Type is ' + type);
+      localStorage.setItem(
+        this.storeKey,
+        JSON.stringify({ type, localStorageId: this.storageId, data: this.wallet })
+      );
+    } else {
+      console.log('Outdated storage id');
+    }
+  }
+  getLocalStorageId() {
+    const walletData = localStorage.getItem(this.storeKey);
+    if (walletData) {
+      const parsed = JSON.parse(walletData);
+      if (parsed && parsed.localStorageId) {
+        return parsed.localStorageId;
+      }
+    }
+    return 0;
   }
 
   loadStoredWallet() {
     const walletData = localStorage.getItem(this.storeKey);
+    console.log(walletData);
     if (walletData && walletData !== 'undefined') {
       const parsedWalletData = JSON.parse(walletData);
-      if (parsedWalletData.type && parsedWalletData.data) {
+      if (parsedWalletData.type && parsedWalletData.data && parsedWalletData.localStorageId) {
+        this.storageId = parsedWalletData.localStorageId;
         const wd = parsedWalletData.data;
         this.deserializeStoredWallet(wd, parsedWalletData.type);
-        console.log('Load success!!!');
         console.log(this.wallet);
       } else {
         console.log('couldnt load a wallet');
