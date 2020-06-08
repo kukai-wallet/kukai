@@ -3,9 +3,10 @@
     width: 100vw;
     min-height: 100vh;
     padding-bottom: 8rem;
+    display: flex;
 }
 :host > div {
-    padding-top: 5rem;
+    margin-top: 5rem;
     width: 100%;
     min-height: 100%;
     display: flex;

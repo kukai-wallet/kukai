@@ -151,3 +151,16 @@ div.authenticate div.buttons.single {
   input#pwd.text {
     width: 20.5rem;
   }
+  @media screen and (max-width: 30rem) {
+    label.input-file {
+        width: 20rem;
+    }
+    div.authenticate > input#pwd {
+        width: 10.5rem;
+    }
+  }
+  @media screen and (max-width: 29rem) {
+    div.radios {
+        width: 20rem;
+    }
+  }
