@@ -14,9 +14,12 @@
 #wrapper > div {
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
-img.logo {
-  margin-top: 2.5rem;
+object.logo {
+  margin-top: 1.5rem;
+  width: 11.25rem;
+  height: 4rem;
 }
 #menu-container {
   margin-top: 20vh;
