@@ -95,7 +95,7 @@
             </span>
             <div class="modal-footer first-modal">
                 <button *ngIf="isMultipleDestinations" type="button" class="btn btn-outline-light btn-sm btn-balance" (click)="toggleDestination()"> Single destination </button>
-                <button *ngIf="!isMultipleDestinations" type="button" class="btn btn-outline-light btn-sm btn-balance" (click)="toggleDestination()"> Multiple destinations </button>
+                <button *ngIf="!isMultipleDestinations" [style.visibility]="this.walletService.isLedgerWallet()? 'hidden': 'visible'" type="button" class="btn btn-outline-light btn-sm btn-balance" (click)="toggleDestination()"> Multiple destinations </button>
                 <button type="button" class="btn btn-primary" id="sub" (click)="open2(modal2)"> {{ 'SENDCOMPONENT.PREVIEW' | translate }} </button>
             </div>
         </div>

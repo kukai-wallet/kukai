@@ -23,4 +23,4 @@
     </div>
 </ng-template>
 
-<img src="../../../assets/img/add.svg" (click)="open1(modal1)">
+<img *ngIf="walletService.isHdWallet()" src="../../../assets/img/add.svg" (click)="open1(modal1)">
