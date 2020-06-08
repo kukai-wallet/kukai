@@ -222,7 +222,7 @@ describe('[ ImportService ]', () => {
 					expect(wallet.wallet.encryptedSeed).toBe(legacyV3.keyStore.encryptedSeed);
 					expect(wallet.wallet.encryptedEntropy).toBe(legacyV3.keyStore.encryptedEntropy);
 				}
-				expect(wallet.wallet.implicitAccounts[0].activitiesCounter).toBe(0);
+				expect(wallet.wallet.implicitAccounts[0].activitiesCounter).toBe(-1);
 				expect(wallet.wallet.implicitAccounts[0].pkh).toBe('tz1UTA4f3Hx7udXeqqu3N2EfdpiHrKuXpWdi');
 				expect(wallet.wallet.implicitAccounts[0].address).toBe('tz1UTA4f3Hx7udXeqqu3N2EfdpiHrKuXpWdi');
 				expect(wallet.wallet.implicitAccounts[0].pk).toBe('edpktxWNPfnvZpa9vLDDpoudNNCYWmWWpnUsWkwQitUfMkgZgC4SuN');
@@ -254,7 +254,7 @@ describe('[ ImportService ]', () => {
 					expect(wallet.wallet.encryptedEntropy).toBe(hd.keyStore.encryptedEntropy);
 					expect(wallet.revealMnemonicPhrase(hd.password)).toEqual(hd.mnemonic);
 				}
-				expect(wallet.wallet.implicitAccounts[0].activitiesCounter).toBe(0);
+				expect(wallet.wallet.implicitAccounts[0].activitiesCounter).toBe(-1);
 				expect(wallet.wallet.implicitAccounts[0].pkh).toBe('tz1TogVQurVUhTFY1d62QJGmkMdEadM9MNpu');
 				expect(wallet.wallet.implicitAccounts[0].address).toBe('tz1TogVQurVUhTFY1d62QJGmkMdEadM9MNpu');
 				expect(wallet.wallet.implicitAccounts[0].pk).toBe('edpkvXyJHwuFRkngpcPyYWndZhAqf72owWrMnkkNsBoBkS54V4GJrM');
