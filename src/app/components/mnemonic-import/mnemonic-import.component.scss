@@ -93,7 +93,9 @@ div.radios > div:last-child {
 input.input-file {
     width: 0.1px;
 	height: 0.1px;
-	opacity: 0;
+    opacity: 0;
+    -webkit-opacity: 0;
+    -khtml-opacity: 0;
 	overflow: hidden;
 	position: absolute;
 	z-index: -1;

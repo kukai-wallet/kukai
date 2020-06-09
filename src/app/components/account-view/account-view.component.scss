@@ -85,6 +85,8 @@ span {
     align-items: center;
     color: #2C323A;
     opacity: 0.4;
+    -webkit-opacity: 0.4;
+    -khtml-opacity: 0.4;
 }
 .main-container span {
     margin-left: 1rem;
@@ -110,11 +112,15 @@ span {
     align-items: center;
     color: #000000;
     opacity: 0.2;
+    -webkit-opacity: 0.2;
+    -khtml-opacity: 0.2;
 }
 .grey {
     align-items: center;
     color: #000000;
     opacity: 0.4;
+    -webkit-opacity: 0.4;
+    -khtml-opacity: 0.4;
 }
 #buttons {
     margin-top: 40px;

@@ -21,12 +21,16 @@ span {
     text-transform: uppercase;
     color: #2C323A;
     opacity: 0.4;
+    -webkit-opacity: 0.4;
+    -khtml-opacity: 0.4;
     vertical-align: top;
 }
 a {
     position: relative;
     top: 0.24rem;
     opacity: 0.4;
+    -webkit-opacity: 0.4;
+    -khtml-opacity: 0.4;
     font-size: 0.75rem;
 
 }

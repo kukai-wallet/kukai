@@ -30,6 +30,8 @@ small {
   
   .switch input { 
     opacity: 0;
+    -webkit-opacity: 0;
+    -khtml-opacity: 0;
     width: 0;
     height: 0;
   }
@@ -42,6 +44,8 @@ small {
     right: 0;
     bottom: 0;
     opacity: 0.4;
+    -webkit-opacity: 0.4;
+    -khtml-opacity: 0.4;
     background-color: #9BE3AB;
     -webkit-transition: .4s;
     transition: .4s;
@@ -77,6 +81,8 @@ small {
   }
   input:checked + .slider {
     opacity: 1;
+    -webkit-opacity: 1;
+    -khtml-opacity: 1;
     background-color: #9BE3AB;
   }
   span.switch-desc {
