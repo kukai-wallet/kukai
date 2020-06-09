@@ -65,9 +65,14 @@ export class NewWalletComponent implements OnInit {
     this.activePanel++;
   }
   checkWord() {
+    this.wordInput = this.wordInput.toLowerCase().trim();
     if (this.wordInput === this.MNEMONIC.array[this.MNEMONIC.verify[0]]) {
       this.MNEMONIC.verify.shift();
       this.wordInput = '';
+    }
+    if (!this.MNEMONIC.verify) {
+      // Remove focus from input box
+      document.getElementById('wordInput').blur();
     }
   }
   formatVerifyDescription(index: number): string {

@@ -31,6 +31,9 @@ div.import-options span.selected {
     color: #5963FF;
     border-bottom: 1px solid;
 }
+p.faucet {
+    display: inline;
+}
 p.faucet > a {
     color: #5963FF !important;
 }
@@ -59,12 +62,12 @@ input[type='radio']:checked {
     appearance: none;
     /* create custom radiobutton appearance */
     display: inline-block;
-    width: 20px;
-    height: 20px;
-    padding: 4px;
+    width: 1.25rem;
+    height: 1.25rem;
+    padding: 0.25rem;
     /* background-color only for content */
     background-clip: content-box;
-    border: 1px solid #161616;
+    border: 0.125rem solid #161616;
     border-radius: 50%;
     outline-style: none;
   }

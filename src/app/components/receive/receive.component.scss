@@ -1,7 +1,7 @@
 div.button {
+    border-radius: 0.75rem;
     height: 3rem;
     width: 8rem;
-    border-radius: 0.75rem;
     font-family: "Helvetica Now Text";
     font-style: normal;
     font-weight: bold;
@@ -12,6 +12,7 @@ div.button {
     align-items: center;
     justify-content:center;
     cursor: pointer;
+    transition: margin-top 0.1s ease-in, margin-bottom 0.1s ease-in;
 }
 div.button:hover {
     margin-top: -0.125rem;
@@ -39,3 +40,8 @@ div.button.green {
     color: white !important;
     border-color: white !important;
 }
+@media screen and (max-width: 27rem) {
+    div.button {
+        width: 6.75rem;
+    }
+  }

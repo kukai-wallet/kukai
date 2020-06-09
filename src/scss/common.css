@@ -10,6 +10,7 @@
     color: #303030;
     margin-bottom: 0;
     max-width: 34rem;
+    padding: 0 0.5rem;
   }
   p.description {
     margin-top: 1.375rem;
@@ -90,7 +91,6 @@
     border-radius: 0.75rem;
     width: 8rem;
     height: 3rem;
-    border-radius: 0.75rem;
     font-family: "Helvetica Now Text";
     font-style: normal;
     font-weight: bold;
@@ -101,6 +101,7 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    transition: margin-top 0.1s ease-in, margin-bottom 0.1s ease-in;
   }
   div.button:hover {
     margin-top: -0.125rem;
@@ -115,12 +116,12 @@
       0px 16px 24px rgba(155, 227, 171, 0.24);
   }
   div.button.back {
-    border: 1px solid #000000;
+    background: rgba(0, 0, 0, 0.08);
   }
   div.button.next {
     background: #9BE3AB;
   }
-  div.button.disabled {
+  div.button.disabled-button {
     pointer-events: none;
     opacity: 40%;
   }

@@ -68,6 +68,8 @@ span {
 }
 .account-row > div {
     display: flex;
+}
+.account-row > div.value-container {
     margin-right: 2rem;
 }
 .account-xtz {
@@ -135,5 +137,14 @@ span {
     }
     .seperator {
         width: 20rem;
+    }
+    img.account-icon {
+        margin-left: 1rem;
+    }
+    div.account-row > div.value-container {
+        margin-right: 1rem;
+    }
+    div.seperator {
+        width: 21rem;
     }
   }

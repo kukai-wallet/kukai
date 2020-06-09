@@ -27,8 +27,7 @@
         </div>
     </ng-container>
     <ng-container *ngIf="importOption > 0">
-        <p class="description faucet" *ngIf="importOption === 2">Please make sure to first&nbsp;<a
-                routerLink="/activate">activate</a>&nbsp;your ICO-wallet.</p>
+        <p class="description faucet" *ngIf="importOption === 2">Please make sure to first <a routerLink="/activate">activate</a> your ICO-wallet.</p>
         <ng-container>
             <small>{{ 'MNEMONICIMPORTCOMPONENT.INFOMNEMONIC' | translate }}</small>
             <textarea class="text" [(ngModel)]="mnemonic" [placeholder]="'Mnemonic (required)'"></textarea>
@@ -80,7 +79,7 @@
     <div class="buttons"><a routerLink="/">
             <div class="button back">Cancel</div>
         </a>
-        <div class="button next" [class.disabled]="!pwd1" (click)="setPwd()">Next</div>
+        <div class="button next" [class.disabled-button]="!pwd1" (click)="setPwd()">Next</div>
     </div>
 </div>
 <!-- Step 3 -->
@@ -95,6 +94,6 @@
         </div>
     </div>
     <div class="buttons single finish">
-        <div class="button back" [class.disabled]="!Downloaded" (click)="done()">Finish</div>
+        <div class="button back" [class.disabled-button]="!Downloaded" (click)="done()">Finish</div>
     </div>
 </div>

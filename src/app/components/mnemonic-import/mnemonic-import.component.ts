@@ -211,6 +211,8 @@ export class MnemonicImportComponent implements OnInit {
     if (this.pwd) {
       this.import(this.walletJson, this.pwd);
       this.pwd = '';
+    } else {
+      this.messageService.addWarning('No password provided', 5);
     }
   }
   import(keyFile: string, pwd: string) {
@@ -269,7 +271,7 @@ export class MnemonicImportComponent implements OnInit {
   }
   validateFile(name: String) {
     const ext = name.substring(name.lastIndexOf('.') + 1);
-    if (ext.toLowerCase() === 'tez') {
+    if (ext.toLowerCase() === 'tez' || ext.toLowerCase() === 'json') {
       return true;
     } else {
       return false;

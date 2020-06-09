@@ -28,44 +28,46 @@
             <H1>Recent Activity</H1>
         </div>
         <div id="operations-container" *ngIf="this.translate.store.translations.en">
+            <ng-container *ngIf="!account.activities.length">
+                <div class="line"><span>No transactions yet</span></div>
+            </ng-container>
             <ng-container *ngFor="let activity of account.activities | slice:0:5">
                 <ng-container [ngSwitch]="getType(activity)">
                 
                     <div *ngSwitchCase="'sent'" class="sent">
                         <img src="../../../assets/img/sent.svg">
                         <div>
-                        <div><span class="red">Sent {{ activity.amount / 1000000 | number:'1.0-6' }} tez</span><span class="right">{{ activity.timestamp | timeAgo:trigger }}</span></div>
-                        <div><span class="left grey">To —</span><span class="right grey">{{ getCounterparty(activity) }}</span></div>
+                        <div class="line"><span class="red">Sent {{ activity.amount / 1000000 | number:'1.0-6' }} tez</span><span>{{ activity.timestamp | timeAgo:trigger }}</span></div>
+                        <div class="line"><span class="grey">To —</span><span class="grey truncate-overflow">{{ getCounterparty(activity) }}</span></div>
                         </div>
                     </div>
                     <div *ngSwitchCase="'received'" class="received">
                         <img src="../../../assets/img/received.svg">
                         <div>
-                        <div><span class="green">Received {{ activity.amount / 1000000 | number:'1.0-6' }} tez</span><span class="right">{{ activity.timestamp | timeAgo:trigger }}</span></div>
-                        <div><span class="left grey">From —</span><span class="right grey">{{ getCounterparty(activity) }}</span></div>
+                        <div class="line"><span class="green">Received {{ activity.amount / 1000000 | number:'1.0-6' }} tez</span><span>{{ activity.timestamp | timeAgo:trigger }}</span></div>
+                        <div class="line"><span class="grey">From —</span><span class="truncate-overflow grey">{{ getCounterparty(activity) }}</span></div>
                         </div>
                     </div>
                     <div *ngSwitchCase="'delegated'" class="delegated">
                         <img src="../../../assets/img/delegated.svg">
                         <div>
-                        <div><span class="blue">Delegated</span><span class="right">{{ activity.timestamp | timeAgo:trigger }}</span></div>
-                        <div><span class="left grey">To —</span><span class="right grey">{{ getCounterparty(activity) }}</span></div>
+                        <div class="line"><span class="blue">Delegated</span><span>{{ activity.timestamp | timeAgo:trigger }}</span></div>
+                        <div class="line"><span class="grey">To —</span><span class="truncate-overflow grey">{{ getCounterparty(activity) }}</span></div>
                         </div>
                     </div>
                     <div *ngSwitchCase="'undelegated'" class="delegated">
                         <img src="../../../assets/img/delegated.svg">
                         <div>
-                        <div><span class="blue">Undelegated</span><span class="right">{{ activity.timestamp | timeAgo:trigger }}</span></div>
-                        <div><span class="left grey">To —</span><span class="right grey">-</span></div>
+                        <div class="line"><span class="blue">Undelegated</span><span>{{ activity.timestamp | timeAgo:trigger }}</span></div>
+                        <div class="line"><span class="grey">To —</span><span class="truncate-overflow grey">-</span></div>
                         </div>
                     </div>
                     <div *ngSwitchDefault>
                         <div style="padding-left: 0.75rem">
-                        <div><span class="">{{ getType(activity) | titlecase }}</span><span class="right">{{ activity.timestamp | timeAgo:trigger }}</span></div>
-                        <div><span class="left grey">Counterparty —</span><span class="right grey">{{ getCounterparty(activity) }}</span></div>
+                        <div class="line"><span class="black">{{ getType(activity) | titlecase }}</span><span>{{ activity.timestamp | timeAgo:trigger }}</span></div>
+                        <div class="line"><span class="grey">Counterparty —</span><span class="truncate-overflow grey">{{ getCounterparty(activity) }}</span></div>
                         </div>
                     </div>
-                  
                 </ng-container>
             </ng-container>
         </div>

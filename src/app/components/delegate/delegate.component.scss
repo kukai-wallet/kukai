@@ -7,9 +7,9 @@
     font-size: 96px;
 }
 div.button {
+    border-radius: 0.75rem;
     height: 3rem;
     width: 8rem;
-    border-radius: 0.75rem;
     font-family: "Helvetica Now Text";
     font-style: normal;
     font-weight: bold;
@@ -20,6 +20,7 @@ div.button {
     align-items: center;
     justify-content:center;
     cursor: pointer;
+    transition: margin-top 0.1s ease-in, margin-bottom 0.1s ease-in;
 }
 div.button:hover {
     margin-top: -0.125rem;
@@ -30,3 +31,8 @@ div.button.blue {
     background: #A4A8EC;
     box-shadow: 0px 0px 1px rgba(164, 168, 236, 0.04), 0px 2px 6px rgba(164, 168, 236, 0.04), 0px 16px 24px rgba(164, 168, 236, 0.24);
 }
+@media screen and (max-width: 27rem) {
+    div.button {
+        width: 6.75rem;
+    }
+  }

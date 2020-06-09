@@ -36,10 +36,11 @@ a.menu-item {
   cursor: pointer;
   text-decoration: none;
   margin: 1rem 2rem;
+  transition: margin-top 0.1s ease-in, margin-bottom 0.1s ease-in;
 }
 a.menu-item:hover {
-  margin-top: 0.75rem;
-  margin-bottom: 1.25rem;
+    margin-top: 0.75rem;
+    margin-bottom: 1.25rem;
 }
 #menu-container > a > div.icon {
   position: relative;
