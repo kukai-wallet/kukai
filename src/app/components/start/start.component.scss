@@ -83,7 +83,7 @@ a.menu-item:hover {
   margin-top: 3.25rem;
 }
 #menu-container > a > div.content > p {
-  font-family: Helvetica Now Text;
+  font-family: "Helvetica Now Text";
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
@@ -97,6 +97,11 @@ a.menu-item:hover {
   margin-left: 1.5rem;
   margin-right: 1.5rem;
 }
+div.bottom-container {
+  position: relative;
+  width: 100%;
+  height: auto;
+}
 img.top-left {
   position: absolute;
   left: 0;
@@ -104,8 +109,8 @@ img.top-left {
 }
 img.bottom-right {
   position: absolute;
+  bottom: -8rem;
   right: 0;
-  bottom: 0;
   z-index: -1;
 }
 @media screen and (max-width: 65.9375rem) {

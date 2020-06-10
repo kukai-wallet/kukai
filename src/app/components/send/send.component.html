@@ -218,7 +218,7 @@
 
 
     <!-- Showing different Send Format according to actionButtonString -->
-    <div *ngIf='implicitAccounts' type="button" (click)="open1(modal1)" class="button red"> {{ 'SENDCOMPONENT.SEND' | translate }} </div>
+    <div *ngIf='implicitAccounts' (click)="open1(modal1)" class="button red"> {{ 'SENDCOMPONENT.SEND' | translate }} </div>
 </ng-container>
 
 <p class="no-accounts" *ngIf='!implicitAccounts'>
