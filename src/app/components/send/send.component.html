@@ -12,14 +12,9 @@
         <div class="modal-body">
             <form>
                 <div class="form-row">
-                    <div class="form-group col-md-9">
+                    <div class="form-group col-md-12">
                         <label for="fromAdress"> {{ 'SENDCOMPONENT.FROMADDRESS' | translate }} </label>
-                        <input type="text" readonly class="form-control-plaintext text-color" [value]="activeAccount.address">
-                    </div>
-                    <div class="form-group col-md-3 text-right">
-                        <label for="staticBalance" class="text-right"> {{ 'SENDCOMPONENT.BALANCE' | translate }} </label>
-                        <input type="text" readonly class="form-control-plaintext text-color align-right" id="staticBalance" [value]="showAccountBalance(activePkh)">
-                        <small id="rateXTZ" class="form-text text-muted text-color align-right" *ngIf="XTZrate > 0"> {{ 'SENDCOMPONENT.RATE' | translate }} (&#42793;) ${{ XTZrate | number:'1.00' }} USD</small>
+                        <input type="text" readonly class="form-control-plaintext text-color custom-textbox" [value]="activeAccount.address">
                     </div>
                 </div>
                 <!-- Single destination -->

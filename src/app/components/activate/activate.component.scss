@@ -1,13 +1,13 @@
 @import "../../../scss/common.css";
 :host {
     width: 100%;
-    min-height: 100%;
     padding-bottom: 8rem;
     display: flex;
     justify-content: center;
     flex-direction: row;
 }
 :host > div {
+    min-height: calc(100vh - 13rem);
     margin-top: 5rem;
     display: flex;
     justify-content: flex-start;

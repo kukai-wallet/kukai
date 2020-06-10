@@ -31,6 +31,24 @@ div.button.blue {
     background: #A4A8EC;
     box-shadow: 0px 0px 1px rgba(164, 168, 236, 0.04), 0px 2px 6px rgba(164, 168, 236, 0.04), 0px 16px 24px rgba(164, 168, 236, 0.24);
 }
+input.custom-textbox {
+    padding-left: 0.75rem;
+  }
+  @media screen and (max-width: 27rem) {
+    div.button {
+        width: 6.75rem;
+    }
+  }
+  @media screen and (max-width: 25rem) {
+    input#toAddress, input.custom-textbox {
+      font-size: 0.8125rem;
+    }
+  }
+  @media screen and (max-width: 22rem) {
+    input#toAddress, input.custom-textbox {
+      font-size: 0.75rem;
+    }
+  }
 @media screen and (max-width: 27rem) {
     div.button {
         width: 6.75rem;

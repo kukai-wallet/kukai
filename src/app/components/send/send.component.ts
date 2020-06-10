@@ -179,7 +179,10 @@ export class SendComponent implements OnInit {
     sendEntireBalance(account: Account, event: Event) {
         if (this.simSemaphore) { return; }
         event.stopPropagation();
-        this.amount = this.maxToSend(account);
+        const max = this.maxToSend(account);
+        if (max.length && max.slice(0, 1) !== '-') {
+            this.amount = max;
+        }
     }
     maxToSend(account: Account): string {
         if (account && (account instanceof ImplicitAccount)) {

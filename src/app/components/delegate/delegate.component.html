@@ -11,13 +11,13 @@
         <div class="modal-body">
             <form>
                 <div class="form-row">
-                    <div class="form-group col-md-9">
+                    <div class="form-group col-md-12">
                         <label for="fromAdress"> {{ 'DELEGATECOMPONENT.FROM' | translate }} </label>
-                        <input type="text" readonly class="form-control-plaintext text-color" [value]="activeAccount.address">
+                        <input type="text" readonly class="form-control-plaintext text-color custom-textbox" [value]="activeAccount.address">
                     </div>
                 </div>
                 <div class="form-row">
-                    <div class="form-group col-md-9">
+                    <div class="form-group col-md-12">
                         <label for="toAdress"> {{ 'DELEGATECOMPONENT.TO' | translate }} </label>
                         <input type="text" class="form-control" id="toAdress" placeholder="" [(ngModel)]="toPkh" name="second">
                     </div>

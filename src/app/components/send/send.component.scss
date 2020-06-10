@@ -115,8 +115,21 @@ div.button.red {
   color: black;
   font-size: 20px;
 }
+input.custom-textbox {
+  padding-left: 0.75rem;
+}
 @media screen and (max-width: 27rem) {
   div.button {
       width: 6.75rem;
+  }
+}
+@media screen and (max-width: 25rem) {
+  input#toAddress, input.custom-textbox {
+    font-size: 0.8125rem;
+  }
+}
+@media screen and (max-width: 22rem) {
+  input#toAddress, input.custom-textbox {
+    font-size: 0.75rem;
   }
 }
