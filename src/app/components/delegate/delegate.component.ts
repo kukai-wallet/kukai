@@ -12,6 +12,7 @@ import { InputValidationService } from '../../services/input-validation/input-va
 import { LedgerService } from '../../services/ledger/ledger.service';
 import { Constants } from '../../constants';
 import { LedgerWallet, Account, ImplicitAccount, OriginatedAccount } from '../../services/wallet/wallet';
+import { MessageService } from '../../services/message/message.service';
 
 @Component({
     selector: 'app-delegate',
@@ -47,7 +48,8 @@ export class DelegateComponent implements OnInit {
         private coordinatorService: CoordinatorService,
         private exportService: ExportService,
         private inputValidationService: InputValidationService,
-        private ledgerService: LedgerService
+        private ledgerService: LedgerService,
+        private messageService: MessageService
     ) { }
 
     ngOnInit() {
@@ -67,7 +69,7 @@ export class DelegateComponent implements OnInit {
             this.modalRef1 = this.modalService.show(template1, { class: 'first' });
         }
     }
-    open2(template: TemplateRef<any>) {
+    async open2(template: TemplateRef<any>) {
         this.formInvalid = this.invalidInput();
         if (!this.formInvalid) {
             if (!this.fee) { this.fee = this.recommendedFee.toString(); }
@@ -77,21 +79,27 @@ export class DelegateComponent implements OnInit {
             this.modalRef2 = this.modalService.show(template, { class: 'second' });
             if (this.walletService.isLedgerWallet()) {
                 this.ledgerInstruction = 'Preparing transaction data. Please wait...';
-                const keys = this.walletService.getKeys('');
+                const keys = await this.walletService.getKeys('');
                 this.sendDelegation(keys);
-              }
+            }
         }
     }
     async open3(template: TemplateRef<any>) {
         const pwd = this.password;
         this.password = '';
-        const keys = this.walletService.getKeys(pwd, this.activeAccount.pkh);
+        this.messageService.startSpinner('Signing operation...');
+        let keys;
+        try {
+            keys = await this.walletService.getKeys(pwd, this.activeAccount.pkh);
+        } finally {
+            this.messageService.stopSpinner();
+        }
         if (this.walletService.isLedgerWallet()) {
             this.broadCastLedgerTransaction();
             this.sendResponse = null;
             this.close2();
             this.modalRef3 = this.modalService.show(template, { class: 'third' });
-          } else {
+        } else {
             if (keys) {
                 this.pwdValid = '';
                 this.close2();
@@ -126,32 +134,29 @@ export class DelegateComponent implements OnInit {
         if (!fee) {
             fee = '0';
         }
-
-        setTimeout(async () => {
-            this.operationService.delegate(this.activeAccount.address, toPkh, Number(fee), keys).subscribe(
-                (ans: any) => {
-                    this.sendResponse = ans;
-                    console.log(JSON.stringify(ans));
-                    if (ans.success === true) {
-                        if (ans.payload.opHash) {
-                            this.coordinatorService.boost(this.activeAccount.address);
-                        } else if (this.walletService.isLedgerWallet()) {
-                            this.ledgerInstruction = 'Please sign the delegation with your Ledger to proceed!';
-                            this.requestLedgerSignature();
-                          }
-                    } else {
-                        console.log('Delegation error id ', ans.payload.msg);
-                        if (this.walletService.isLedgerWallet()) {
-                            this.ledgerInstruction = 'Failed with: ' + ans.payload.msg;
-                          }
+        this.operationService.delegate(this.activeAccount.address, toPkh, Number(fee), keys).subscribe(
+            async (ans: any) => {
+                this.sendResponse = ans;
+                console.log(JSON.stringify(ans));
+                if (ans.success === true) {
+                    if (ans.payload.opHash) {
+                        this.coordinatorService.boost(this.activeAccount.address);
+                    } else if (this.walletService.isLedgerWallet()) {
+                        this.ledgerInstruction = 'Please sign the delegation with your Ledger to proceed!';
+                        this.requestLedgerSignature();
                     }
-                },
-                err => {
-                    console.log('Error Message ', JSON.stringify(err));
-                    this.ledgerInstruction = 'Failed to create transaction';
+                } else {
+                    console.log('Delegation error id ', ans.payload.msg);
+                    if (this.walletService.isLedgerWallet()) {
+                        this.ledgerInstruction = 'Failed with: ' + ans.payload.msg;
+                    }
                 }
-            );
-        }, 100);
+            },
+            err => {
+                console.log('Error Message ', JSON.stringify(err));
+                this.ledgerInstruction = 'Failed to create operation';
+            }
+        );
     }
     async requestLedgerSignature() {
         if (this.walletService.wallet instanceof LedgerWallet) {
@@ -160,32 +165,34 @@ export class DelegateComponent implements OnInit {
             if (signature) {
                 const signedOp = op + signature;
                 this.sendResponse.payload.signedOperation = signedOp;
-                this.ledgerInstruction = 'Your transaction have been signed! Press confirm to broadcast it to the network.';
+                this.ledgerInstruction = 'Your operation have been signed! Press confirm to broadcast it to the network.';
+            } else {
+                this.ledgerInstruction = 'Failed to sign operation';
             }
         }
-      }
-      async broadCastLedgerTransaction() {
+    }
+    async broadCastLedgerTransaction() {
         this.operationService.broadcast(this.sendResponse.payload.signedOperation).subscribe(
-          ((ans: any) => {
-            this.sendResponse = ans;
-            if (ans.success && this.activeAccount.address) {
-                this.coordinatorService.boost(this.activeAccount.address);
-            }
-            console.log('ans: ' + JSON.stringify(ans));
-          })
+            ((ans: any) => {
+                this.sendResponse = ans;
+                if (ans.success && this.activeAccount.address) {
+                    this.coordinatorService.boost(this.activeAccount.address);
+                }
+                console.log('ans: ' + JSON.stringify(ans));
+            })
         );
-      }
+    }
     checkReveal() {
         console.log('check reveal ' + this.activeAccount.pkh);
         this.operationService.isRevealed(this.activeAccount.pkh)
-                .subscribe((revealed: boolean) => {
-                    if (!revealed) {
-                        this.revealFee = 0.0013;
-                    } else {
-                        this.revealFee = 0;
-                    }
-                    this.checkSource();
-                });
+            .subscribe((revealed: boolean) => {
+                if (!revealed) {
+                    this.revealFee = 0.0013;
+                } else {
+                    this.revealFee = 0;
+                }
+                this.checkSource();
+            });
     }
     checkSource() {
         if (this.activeAccount instanceof ImplicitAccount) {
@@ -196,16 +203,16 @@ export class DelegateComponent implements OnInit {
     }
     getFee() {
         if (this.fee) {
-          return this.fee;
+            return this.fee;
         }
         return this.storedFee;
-      }
-      getDelegate() {
+    }
+    getDelegate() {
         if (this.toPkh) {
-          return this.toPkh;
+            return this.toPkh;
         }
         return this.storedDelegate;
-      }
+    }
     clearForm() {
         this.toPkh = '';
         this.fee = '';
@@ -217,7 +224,7 @@ export class DelegateComponent implements OnInit {
     }
     invalidInput(): string {
         if ((!this.inputValidationService.address(this.toPkh) &&
-                this.toPkh !== '') || (
+            this.toPkh !== '') || (
                 this.activeAccount.address.slice(0, 2) !== 'tz' && this.toPkh === '') || (
                 this.toPkh.length > 1 && this.toPkh.slice(0, 2) !== 'tz') || (
                 this.walletService.wallet.getImplicitAccount(this.toPkh))) {
@@ -230,5 +237,5 @@ export class DelegateComponent implements OnInit {
     }
     download() {
         this.exportService.downloadOperationData(this.sendResponse.payload.unsignedOperation, false);
-      }
+    }
 }

@@ -14,6 +14,7 @@ import Big from 'big.js';
 import { Constants } from '../../constants';
 import { LedgerWallet } from '../../services/wallet/wallet';
 import { Account, ImplicitAccount, OriginatedAccount } from '../../services/wallet/wallet';
+import { MessageService } from '../../services/message/message.service';
 
 interface SendData {
     to: string;
@@ -81,7 +82,8 @@ export class SendComponent implements OnInit {
         private exportService: ExportService,
         private inputValidationService: InputValidationService,
         private ledgerService: LedgerService,
-        private estimateService: EstimateService
+        private estimateService: EstimateService,
+        private messageService: MessageService
     ) { }
 
     ngOnInit() {
@@ -108,7 +110,7 @@ export class SendComponent implements OnInit {
             this.estimateService.preLoadData(this.activeAccount.pkh, this.activeAccount.pk);
         }
     }
-    open2(template: TemplateRef<any>) {
+    async open2(template: TemplateRef<any>) {
         this.formInvalid = this.checkInput(true);
         if (!this.formInvalid && !this.simSemaphore) {
             if (!this.amount) { this.amount = '0'; }
@@ -123,8 +125,7 @@ export class SendComponent implements OnInit {
                 this.close1();
                 if (this.walletService.isLedgerWallet()) {
                     this.ledgerInstruction = 'Preparing transaction data. Please wait...';
-                    const keys = this.walletService.getKeys('');
-                    console.log(keys);
+                    const keys = await this.walletService.getKeys('');
                     this.sendTransaction(keys);
                 }
                 this.modalRef2 = this.modalService.show(template, { class: 'second' });
@@ -142,7 +143,13 @@ export class SendComponent implements OnInit {
         } else {
             const pwd = this.password;
             this.password = '';
-            const keys = this.walletService.getKeys(pwd, this.activeAccount.address);
+            this.messageService.startSpinner('Signing transaction...');
+            let keys;
+            try {
+                keys = await this.walletService.getKeys(pwd, this.activeAccount.address);
+            } finally {
+                this.messageService.stopSpinner();
+            }
             if (keys) {
                 this.pwdValid = '';
                 this.close2();
@@ -235,45 +242,50 @@ export class SendComponent implements OnInit {
         if (!amount) { amount = '0'; }
         if (!fee) { fee = '0'; }
 
-        setTimeout(async () => {
-            this.operationService.transfer(this.activeAccount.address, this.transactions, Number(fee), keys).subscribe(
-                (ans: any) => {
-                    this.sendResponse = ans;
-                    if (ans.success === true) {
-                        console.log('Transaction successful ', ans);
-                        if (ans.payload.opHash) {
-                            this.coordinatorService.boost(this.activeAccount.address);
-                            if (this.walletService.addressExists(this.transactions[0].to)) {
-                                this.coordinatorService.boost(this.transactions[0].to);
-                            }
-                        } else if (this.walletService.wallet instanceof LedgerWallet) {
-                            this.ledgerInstruction = 'Please sign the transaction with your Ledger to proceed!';
-                            this.requestLedgerSignature();
+        this.operationService.transfer(this.activeAccount.address, this.transactions, Number(fee), keys).subscribe(
+            async (ans: any) => {
+                this.sendResponse = ans;
+                if (ans.success === true) {
+                    console.log('Transaction successful ', ans);
+                    if (ans.payload.opHash) {
+                        this.coordinatorService.boost(this.activeAccount.address);
+                        if (this.walletService.addressExists(this.transactions[0].to)) {
+                            this.coordinatorService.boost(this.transactions[0].to);
                         }
-                    } else {
-                        console.log('Transaction error id ', ans.payload.msg);
-                        if (this.walletService.isLedgerWallet()) {
-                            this.ledgerInstruction = 'Failed with: ' + ans.payload.msg;
-                        }
+                    } else if (this.walletService.wallet instanceof LedgerWallet) {
+                        this.ledgerInstruction = 'Please sign the transaction with your Ledger to proceed!';
+                        await this.requestLedgerSignature();
                     }
-                },
-                err => {
-                    console.log('Error Message ', JSON.stringify(err));
+                } else {
+                    console.log('Transaction error id ', ans.payload.msg);
                     if (this.walletService.isLedgerWallet()) {
-                        this.ledgerInstruction = 'Failed to create transaction';
+                        this.ledgerInstruction = 'Failed with: ' + ans.payload.msg;
                     }
-                },
-            );
-        }, 100);
+                }
+            },
+            err => {
+                console.log('Error Message ', JSON.stringify(err));
+                if (this.walletService.isLedgerWallet()) {
+                    this.ledgerInstruction = 'Failed to create transaction';
+                }
+            },
+        );
     }
     async requestLedgerSignature() {
         if (this.walletService.wallet instanceof LedgerWallet) {
-            const op = this.sendResponse.payload.unsignedOperation;
-            const signature = await this.ledgerService.signOperation(op, this.walletService.wallet.implicitAccounts[0].derivationPath);
-            if (signature) {
-                const signedOp = op + signature;
-                this.sendResponse.payload.signedOperation = signedOp;
-                this.ledgerInstruction = 'Your transaction have been signed! Press confirm to broadcast it to the network.';
+            await this.messageService.startSpinner('Waiting for Ledger signature...');
+            try {
+                const op = this.sendResponse.payload.unsignedOperation;
+                const signature = await this.ledgerService.signOperation(op, this.walletService.wallet.implicitAccounts[0].derivationPath);
+                if (signature) {
+                    const signedOp = op + signature;
+                    this.sendResponse.payload.signedOperation = signedOp;
+                    this.ledgerInstruction = 'Your transaction have been signed! Press confirm to broadcast it to the network.';
+                } else {
+                    this.ledgerInstruction = 'Failed to sign transaction';
+                }
+            } finally {
+                this.messageService.stopSpinner();
             }
         }
     }

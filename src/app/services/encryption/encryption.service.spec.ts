@@ -32,58 +32,58 @@ describe('[ EncryptionService ]', () => {
 	describe('> Encrypt', () => {
 
 		it('should throw error version 1 encryption', () => {
-			expect(function() {
-				service.encrypt('plaintext', 'password', 1);
-			}).toThrowError('Encryption version no longer supported');
+			expect(async function() {
+				await expectAsync(service.encrypt('plaintext', 'password', 1)).toBeRejectedWith('Encryption version no longer supported');
+			});
 		});
 
-		it('should call encrypt_v2 for version 2 encryption', () => {
+		it('should call encrypt_v2 for version 2 encryption', async () => {
 			// spy on method it will call based on version 2
-			spyOn(service, 'encrypt_v2').and.returnValue('success');
+			spyOn(service, 'encrypt_v2').and.returnValue(new Promise((resolve) => { resolve('success') }));
 
 			// expect spy to return 'success' in place of normal encrypt_v2 result
-			expect( service.encrypt('plaintext', 'password', 2) ).toBe('success');
+			expect( await service.encrypt('plaintext', 'password', 2) ).toBe('success');
 
 			// encrypt_v2 should have been called with plaintext, password params
 			expect(service.encrypt_v2).toHaveBeenCalledWith('plaintext', 'password');
 		});
 
 		it('should throw error for unrecognized encryption version', () => {
-			expect(function() {
-				service.encrypt('plaintext', 'password', 5);
-			}).toThrowError('Unrecognized encryption format');
+			expect(async function() {
+				await expectAsync(service.encrypt('plaintext', 'password', 5)).toBeRejectedWith(new Error('Unrecognized encryption format'));
+			});
 		});
 
 	});
 
 	describe('> Decrypt', () => {
 
-		it('should call decrypt_v1 for version 1 encryption', () => {
+		it('should call decrypt_v1 for version 1 encryption', async () => {
 			// spy on method it will call based on version 1
-			spyOn(service, 'decrypt_v1').and.returnValue('success');
+			spyOn(service, 'decrypt_v1').and.returnValue(new Promise((resolve) => { resolve('success') }));
 
 			// expect spy to return 'success' in place of normal decrypt_v1 result
-			expect( service.decrypt('ciphertext', 'password', 'salt', 1) ).toBe('success');
+			expect( await service.decrypt('ciphertext', 'password', 'salt', 1) ).toBe('success');
 
 			// decrypt_v1 should have been called with plaintext, password, salt params
 			expect(service.decrypt_v1).toHaveBeenCalledWith('ciphertext', 'password', 'salt');
 		});
 
-		it('should call decrypt_v2 for version 2 encryption', () => {
+		it('should call decrypt_v2 for version 2 encryption', async () => {
 			// spy on method it will call based on version 2
-			spyOn(service, 'decrypt_v2').and.returnValue('success');
+			spyOn(service, 'decrypt_v2').and.returnValue(new Promise((resolve) => { resolve('success') }));
 
 			// expect spy to return 'success' in place of normal decrypt_v2 result
-			expect( service.decrypt('ciphertext', 'password', 'salt', 2) ).toBe('success');
+			expect( await service.decrypt('ciphertext', 'password', 'salt', 2) ).toBe('success');
 
 			// decrypt_v1 should have been called with plaintext, password, salt params
 			expect(service.decrypt_v2).toHaveBeenCalledWith('ciphertext', 'password', 'salt');
 		});
 
 		it('should throw error for unrecognized encryption version', () => {
-			expect(function() {
-				service.decrypt('ciphertext', 'password', 'salt', 5);
-			}).toThrowError('Unrecognized encryption format');
+			expect(async function() {
+				await expectAsync(service.decrypt('ciphertext', 'password', 'salt', 5)).toBeRejectedWith(new Error('Unrecognized encryption format'));
+			});
 		});
 
 	});
@@ -107,19 +107,18 @@ describe('[ EncryptionService ]', () => {
 			password = 'Firebird87';
 			version = '1.0';
 		});
-		it('should encrypt_v1 a private key w/password', () => {
-			const encryptedseed = service.encrypt_v1(seed, password, salt);
+		it('should encrypt_v1 a private key w/password', async () => {
+			const encryptedseed = await service.encrypt_v1(seed, password, salt);
 			expect(encryptedseed).toEqual(ciphertext);
 		});
 
-		it('should decrypt_v1 the same private key w/password', () => {
-			decryptedseed = Buffer.from(service.decrypt_v1(ciphertext, password, salt));
+		it('should decrypt_v1 the same private key w/password', async () => {
+			decryptedseed = Buffer.from( await service.decrypt_v1(ciphertext, password, salt));
 			expect(decryptedseed).toEqual(seed);
 		});
 
-		it('should fail to decrypt_v1 and return empty string', () => {
-			const errorstring = service.decrypt_v1('seed', '', '');
-			expect(errorstring).toEqual('');
+		it('should fail to decrypt_v1 and return empty string', async () => {
+			expect(await service.decrypt_v1('seed', '', '')).toEqual('');
 		});
 
 	});
@@ -136,9 +135,9 @@ describe('[ EncryptionService ]', () => {
 			password = 'Firebird87';
 			version = '2';
 		});
-		it('should encrypt and decrypt a seed successfully', () => {
-			const encryptedseed = service.encrypt_v2(seed, password);
-			decryptedseed = Buffer.from(service.decrypt_v2(encryptedseed.chiphertext, password, encryptedseed.iv));
+		it('should encrypt and decrypt a seed successfully', async () => {
+			const encryptedseed = await service.encrypt_v2(seed, password);
+			decryptedseed = Buffer.from( await service.decrypt_v2(encryptedseed.chiphertext, password, encryptedseed.iv));
 			expect(decryptedseed).toEqual(seed);
 		});
 

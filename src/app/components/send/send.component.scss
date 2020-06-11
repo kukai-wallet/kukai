@@ -12,6 +12,7 @@ div.button {
   align-items: center;
   justify-content:center;
   cursor: pointer;
+  -webkit-appearance: none !important;
   transition: margin-top 0.1s ease-in, margin-bottom 0.1s ease-in;
 }
 div.button:hover {

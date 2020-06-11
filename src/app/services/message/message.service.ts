@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class MessageService {
+  spinnerOn = false;
+  spinnerText = '';
   messages: any[] = [];
   defaultTime = 10;
   add(message: string, seconds = this.defaultTime) {
@@ -42,5 +44,13 @@ export class MessageService {
   }
   clear() {
     this.messages = [];
+  }
+  async startSpinner(text: string = '') {
+    this.spinnerText = text;
+    this.spinnerOn = true;
+  }
+  async stopSpinner() {
+    this.spinnerText = '';
+    this.spinnerOn = false;
   }
 }

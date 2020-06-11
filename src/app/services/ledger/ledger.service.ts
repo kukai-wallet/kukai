@@ -10,19 +10,19 @@ import { MessageService } from '../message/message.service';
 export class LedgerService {
   transport: any;
   errorMessage = 'U2F browser support is needed for Ledger. Please use Chrome, Opera ' +
-  'or Firefox with a U2F extension. Also make sure you\'re on an HTTPS connection';
+    'or Firefox with a U2F extension. Also make sure you\'re on an HTTPS connection';
   constructor(
     private operationService: OperationService,
     private messageService: MessageService
   ) {
     this.setTransport();
-   }
+  }
   async setTransport() {
     if (!this.transport) {
       console.log('Trying to use U2F for transport...');
       try {
-      this.transport = await TransportU2F.create();
-      console.log('Transport is now set to use U2F!');
+        this.transport = await TransportU2F.create();
+        console.log('Transport is now set to use U2F!');
       } catch (e) {
         console.log('Couldn\'t use U2F for transport!');
       }
@@ -30,8 +30,8 @@ export class LedgerService {
     if (!this.transport) {
       console.log('Trying to use WebAuthn for transport...');
       try {
-      this.transport = await TransportWebAuthn.create();
-      console.log('Transport is now set to use WebAuthn!');
+        this.transport = await TransportWebAuthn.create();
+        console.log('Transport is now set to use WebAuthn!');
       } catch (e) {
         console.log('Couldn\'t use WebAuthn for transport!');
       }
@@ -45,19 +45,23 @@ export class LedgerService {
       this.messageService.addError(this.errorMessage);
     }
   }
-  async getPublicAddress (path: string) {
+  async getPublicAddress(path: string) {
     await this.transportCheck();
     const xtz = new App(this.transport);
     console.log(path);
     const result = await xtz.getAddress(path, true)
       .catch(e => {
-        this.messageService.addError(e);
+        if (e.message) {
+          this.messageService.addError(e.message);
+        } else {
+          this.messageService.addError(e);
+        }
         throw e;
       });
     const pk = this.operationService.hex2pk(result.publicKey);
     return pk;
   }
-  async signOperation (op: string, path: string) {
+  async signOperation(op: string, path: string) {
     await this.transportCheck();
     const xtz = new App(this.transport);
     console.log(path);

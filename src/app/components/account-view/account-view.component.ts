@@ -7,6 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from '../../services/message/message.service';
 import * as copy from 'copy-to-clipboard';
 import { filter } from 'rxjs/internal/operators/filter';
+import { CoordinatorService } from '../../services/coordinator/coordinator.service';
 
 @Component({
   selector: 'app-account-view',
@@ -21,10 +22,16 @@ export class AccountViewComponent implements OnInit {
     public translate: TranslateService,
     public messageService: MessageService,
     public timeAgoPipe: TimeAgoPipe,
-    private router: Router
+    private router: Router,
+    private coordinatorService: CoordinatorService
   ) {}
     trigger = true;
   ngOnInit(): void {
+    if (!this.walletService.wallet) {
+      this.router.navigate(['']);
+    } else {
+      this.coordinatorService.startAll();
+    }
     let address = this.route.snapshot.paramMap.get('address');
     if (this.walletService.addressExists(address)) {
       this.account = this.walletService.wallet.getAccount(address);
@@ -39,15 +46,6 @@ export class AccountViewComponent implements OnInit {
       });
       setInterval(() => this.trigger = !this.trigger, 10 * 1000);
   }
-  /*
-  getStatus(transaction: any): string {
-    if (transaction.failed) {
-      return 'Failed';
-    } else {
-      return 'Confirmed';
-    }
-  }
-  */
   getType(transaction: any): string {
     if (transaction.type !== 'transaction') {
       if (transaction.type === 'delegation') {

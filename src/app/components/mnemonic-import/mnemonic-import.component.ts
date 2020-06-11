@@ -44,11 +44,13 @@ export class MnemonicImportComponent implements OnInit {
     private walletService: WalletService,
     private exportService: ExportService,
     private inputValidationService: InputValidationService
-  ) {}
+  ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   retrieve() {
+    this.mnemonic = this.mnemonic.toLowerCase().replace(/(\r\n|\n|\r)/gm, ' ').trim();
     if (this.importOption === 2) {
       this.passphrase = this.email + this.password;
     }
@@ -104,12 +106,12 @@ export class MnemonicImportComponent implements OnInit {
       }
     }
   }
-  setPwd() {
+  async setPwd() {
     if (this.validPwd()) {
       const password = this.pwd1;
       this.pwd1 = '';
       this.pwd2 = '';
-      this.wallet = this.walletService.createEncryptedWallet(
+      this.wallet = await this.walletService.createEncryptedWallet(
         this.mnemonic,
         password,
         this.passphrase,
@@ -159,7 +161,11 @@ export class MnemonicImportComponent implements OnInit {
       this.wallet.seed
     );
     this.wallet = null;
-    this.router.navigate(['/accounts']);
+    if (this.walletService.wallet.implicitAccounts.length === 1 && this.walletService.wallet.implicitAccounts[0].originatedAccounts.length === 0) {
+      this.router.navigate([`/account/${this.walletService.wallet.implicitAccounts[0].address}`]);
+    } else {
+      this.router.navigate(['/accounts']);
+    }
     this.translate
       .get('MNEMONICIMPORTCOMPONENT.WALLETREADY')
       .subscribe((res: string) => this.messageService.addSuccess(res));
@@ -207,27 +213,30 @@ export class MnemonicImportComponent implements OnInit {
       throw e;
     }
   }
-  checkImportPwd() {
+  async checkImportPwd() {
     if (this.pwd) {
-      this.import(this.walletJson, this.pwd);
+      this.messageService.startSpinner('Importing wallet...');
+      await this.import(this.walletJson, this.pwd);
       this.pwd = '';
+      this.messageService.stopSpinner();
     } else {
       this.messageService.addWarning('No password provided', 5);
     }
   }
-  import(keyFile: string, pwd: string) {
+  async import(keyFile: string, pwd: string) {
     this.typeCheckFile(keyFile);
-    this.importService
+    await this.importService
       .importWalletFromJson(keyFile, pwd)
       .then((success: boolean) => {
         if (success) {
-          this.router.navigate(['/accounts']);
+          if (this.walletService.wallet.implicitAccounts.length === 1 && this.walletService.wallet.implicitAccounts[0].originatedAccounts.length === 0) {
+            this.router.navigate([`/account/${this.walletService.wallet.implicitAccounts[0].address}`]);
+          } else {
+            this.router.navigate(['/accounts']);
+          }
         } else {
-          let importFailed = '';
-          this.translate
-            .get('IMPORTCOMPONENT.IMPORTFAILED')
-            .subscribe((res: string) => (importFailed = res));
-          this.messageService.add(importFailed);
+          console.log(success);
+          this.messageService.addError('Wrong password');
         }
       });
   }
@@ -252,7 +261,6 @@ export class MnemonicImportComponent implements OnInit {
       reader.readAsText(fileToUpload);
       reader.onload = () => {
         if (typeof reader.result === 'string') {
-          console.log(reader.result);
           try {
             this.importPreCheck(reader.result);
           } catch (e) {

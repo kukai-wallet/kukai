@@ -29,18 +29,15 @@ export class NewImplicitComponent implements OnInit {
     if (this.openPkhSpot()) {
       this.wait = true;
       document.body.style.cursor = 'wait';
-      setTimeout(async () => {
-        const pkh = this.walletService.incrementAccountIndex(this.password);
-        if (pkh) {
-          this.coordinatorService.start(pkh);
-          this.close1();
-        } else {
-          this.errorMsg = 'Wrong password!';
-        }
-        this.wait = false;
-        document.body.style.cursor = 'default';
-      }, 1000);
-        //document.body.style.cursor='default';
+      const pkh = await this.walletService.incrementAccountIndex(this.password);
+      if (pkh) {
+        this.coordinatorService.start(pkh);
+        this.close1();
+      } else {
+        this.errorMsg = 'Wrong password!';
+      }
+      this.wait = false;
+      document.body.style.cursor = 'default';
     } else {
       console.log('blocked!');
     }

@@ -105,7 +105,7 @@ export class CoordinatorService {
     this.setDelay(pkh, this.defaultDelayActivity);
     this.activityService.updateTransactions(pkh).subscribe(
       (ans: any) => {
-        switch (this.scheduler.get(pkh).state) {
+        switch (this.scheduler.get(pkh) ? this.scheduler.get(pkh).state : -1) {
           case State.UpToDate: {
             if (!ans.upToDate) {
               this.changeState(pkh, State.Updating);
@@ -135,14 +135,15 @@ export class CoordinatorService {
         }
       },
       err => console.log('Error in update(): ' + JSON.stringify(err)),
-      () =>
+      () => {
         console.log(
           'account[' +
             this.accounts.findIndex((a) => a.address === pkh) +
             '][' +
-            this.scheduler.get(pkh).state +
+            this.scheduler.get(pkh).state ? this.scheduler.get(pkh).state : '*' +
             ']: <<'
-        )
+        );
+      }
     );
   }
   changeState(pkh: string, newState: State) {

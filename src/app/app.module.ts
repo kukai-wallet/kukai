@@ -50,7 +50,6 @@ import { StartComponent } from './components/start/start.component';
 import { ActivityComponent } from './components/activity/activity.component';
 import { OverviewComponent } from './/components/overview/overview.component';
 import { SendComponent } from './components/send/send.component';
-import { NewAccountComponent } from './components/new-account/new-account.component';
 import { NewWalletComponent } from './components/new-wallet/new-wallet.component';
 import { ReceiveComponent } from './components/receive/receive.component';
 import { DelegateComponent } from './components/delegate/delegate.component';
@@ -76,6 +75,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { AccountsComponent } from './components/accounts/accounts.component';
 import { AccountViewComponent } from './components/account-view/account-view.component';
 import { NewImplicitComponent } from './components/new-implicit/new-implicit.component';
+import { SpinnerComponent } from './components/spinner/spinner.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -95,7 +95,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     ActivityComponent,
     OverviewComponent,
     SendComponent,
-    NewAccountComponent,
     ReceiveComponent,
     DelegateComponent,
     AccountComponent,
@@ -116,7 +115,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     FooterComponent,
     AccountsComponent,
     AccountViewComponent,
-    NewImplicitComponent
+    NewImplicitComponent,
+    SpinnerComponent
   ],
   imports: [
     BrowserModule,

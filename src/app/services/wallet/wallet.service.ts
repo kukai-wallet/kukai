@@ -30,12 +30,12 @@ export class WalletService {
   createNewWallet(): string {
     return utils.generateMnemonic(24);
   }
-  createEncryptedWallet(
+  async createEncryptedWallet(
     mnemonic: string,
     password: string,
     passphrase: string = '',
     hdSeed: boolean
-  ): any {
+  ): Promise<any> {
     const seed = utils.mnemonicToSeed(mnemonic, passphrase, hdSeed);
     const entropy: Buffer = Buffer.from(utils.mnemonicToEntropy(mnemonic));
     let keyPair: KeyPair;
@@ -44,16 +44,16 @@ export class WalletService {
     } else {
       keyPair = hd.keyPairFromAccountIndex(seed, 0);
     }
-    const encrypted = this.encryptionService.encrypt(seed, password, 3);
+    const encrypted = await this.encryptionService.encrypt(seed, password, 3);
     const encryptedSeed: string = encrypted.chiphertext;
     const iv: string = encrypted.iv;
     const iv2: string = this.encryptionService.bumpIV(iv, 1);
-    const encryptedEntropy: string = this.encryptionService.encrypt(
+    const encryptedEntropy: string = (await this.encryptionService.encrypt(
       entropy,
       password,
       3,
       iv2
-    ).chiphertext;
+    )).chiphertext;
     return {
       data: this.exportKeyStoreInit(
         hdSeed ? WalletType.HdWallet : WalletType.FullWallet,
@@ -66,17 +66,19 @@ export class WalletService {
       seed: seed,
     };
   }
-  getKeys(pwd: string, pkh?: string): KeyPair {
+  async getKeys(pwd: string, pkh?: string): Promise<KeyPair> {
     let seed;
     if (this.wallet instanceof LegacyWalletV1) {
-      seed = this.encryptionService.decrypt(
+      console.log('v1');
+      seed = await this.encryptionService.decrypt(
         this.wallet.encryptedSeed,
         pwd,
         this.wallet.salt,
         1
       );
+      console.log('done');
     } else if (this.wallet instanceof LegacyWalletV2) {
-      seed = this.encryptionService.decrypt(
+      seed = await this.encryptionService.decrypt(
         this.wallet.encryptedSeed,
         pwd,
         this.wallet.IV,
@@ -86,7 +88,7 @@ export class WalletService {
       this.wallet instanceof LegacyWalletV3 ||
       this.wallet instanceof HdWallet
     ) {
-      seed = this.encryptionService.decrypt(
+      seed = await this.encryptionService.decrypt(
         this.wallet.encryptedSeed,
         pwd,
         this.wallet.IV,
@@ -119,13 +121,13 @@ export class WalletService {
       return this.operationService.seed2keyPair(seed);
     }
   }
-  revealMnemonicPhrase(pwd: string): string {
+  async revealMnemonicPhrase(pwd: string): Promise<string> {
     if (
       this.wallet &&
       (this.wallet instanceof HdWallet || this.wallet instanceof LegacyWalletV3)
     ) {
       const iv = this.encryptionService.bumpIV(this.wallet.IV, 1);
-      const entropy = this.encryptionService.decrypt(
+      const entropy = await this.encryptionService.decrypt(
         this.wallet.encryptedEntropy,
         pwd,
         iv,
@@ -174,9 +176,9 @@ export class WalletService {
       this.wallet.getAccounts().findIndex((a) => a.address === address) !== -1
     );
   }
-  incrementAccountIndex(password: string): string {
+  async incrementAccountIndex(password: string): Promise<string> {
     if (this.wallet instanceof HdWallet) {
-      const seed = this.encryptionService.decrypt(
+      const seed = await this.encryptionService.decrypt(
         this.wallet.encryptedSeed,
         password,
         this.wallet.IV,

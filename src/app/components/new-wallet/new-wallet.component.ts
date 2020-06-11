@@ -122,22 +122,22 @@ export class NewWalletComponent implements OnInit {
   mnemonicMatch(): boolean {
     return (this.MNEMONIC.string === this.userMnemonic);
   }
-  encryptWallet() {
+  async encryptWallet() {
     if (this.validPwd()) {
+      this.messageService.startSpinner('Encrypting wallet...');
       const pwd = this.pwd1;
       this.pwd1 = '';
       this.pwd2 = '';
-      setTimeout(() => { // Prevent UI from freeze
-        const ans = this.walletService.createEncryptedWallet(this.MNEMONIC.string, pwd, '', true);
-        this.seed = ans.seed;
-        this.data = ans.data;
-        this.pkh = ans.pkh;
-        this.pk = ans.pk;
-        this.MNEMONIC.string = '';
-        this.MNEMONIC.array = [];
-        this.MNEMONIC.verify = [];
-        this.activePanel++;
-      }, 100);
+      const ans = await this.walletService.createEncryptedWallet(this.MNEMONIC.string, pwd, '', true);
+      this.seed = ans.seed;
+      this.data = ans.data;
+      this.pkh = ans.pkh;
+      this.pk = ans.pk;
+      this.MNEMONIC.string = '';
+      this.MNEMONIC.array = [];
+      this.MNEMONIC.verify = [];
+      this.activePanel++;
+      this.messageService.stopSpinner();
     }
   }
   validPwd(): boolean {
@@ -161,7 +161,7 @@ export class NewWalletComponent implements OnInit {
     this.walletService.storeWallet();
     this.data = null;
     this.messageService.addSuccess('Your new wallet is now set up and ready to use!');
-    this.router.navigate(['']);
+    this.router.navigate([`/account/${this.walletService.wallet.implicitAccounts[0].address}`]);
   }
   export(): string {
     return JSON.stringify(this.data);

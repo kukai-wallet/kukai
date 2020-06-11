@@ -166,8 +166,8 @@ describe('[ ImportService ]', () => {
 
 			});
 
-			it('should import full wallet v2', () => {
-				service.importWalletFromJson(walletdata2, password2);
+			it('should import full wallet v2', async () => {
+				await service.importWalletFromJson(walletdata2, password2);
 				console.log(wallet.wallet);
 
 				// expect a full wallet
@@ -252,7 +252,7 @@ describe('[ ImportService ]', () => {
 					expect(wallet.wallet.IV).toBe(hd.keyStore.iv);
 					expect(wallet.wallet.encryptedSeed).toBe(hd.keyStore.encryptedSeed);
 					expect(wallet.wallet.encryptedEntropy).toBe(hd.keyStore.encryptedEntropy);
-					expect(wallet.revealMnemonicPhrase(hd.password)).toEqual(hd.mnemonic);
+					expect(await wallet.revealMnemonicPhrase(hd.password)).toEqual(hd.mnemonic);
 				}
 				expect(wallet.wallet.implicitAccounts[0].activitiesCounter).toBe(-1);
 				expect(wallet.wallet.implicitAccounts[0].pkh).toBe('tz1TogVQurVUhTFY1d62QJGmkMdEadM9MNpu');

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Constants } from '../../constants';
-
+import { WalletService } from '../../services/wallet/wallet.service';
 import { LedgerService } from '../../services/ledger/ledger.service';
 import { ImportService } from '../../services/import/import.service';
 import { MessageService } from '../../services/message/message.service';
@@ -26,7 +26,8 @@ export class ConnectLedgerComponent implements OnInit {
     private ledgerService: LedgerService,
     private importService: ImportService,
     private messageService: MessageService,
-    private inputValidationService: InputValidationService
+    private inputValidationService: InputValidationService,
+    private walletService: WalletService
     ) { }
 
   ngOnInit() {
@@ -34,9 +35,9 @@ export class ConnectLedgerComponent implements OnInit {
   }
   async getPk() {
     if (this.inputValidationService.derivationPath(this.path)) {
-      this.messageService.add('Please verify the public key hash on your Ledger device to continue!');
       this.pendingLedgerConfirmation = true;
       try {
+        this.messageService.startSpinner('Waiting for Ledger confirmation...');
         const pk = await this.ledgerService.getPublicAddress(this.path);
         console.log('getPK => ' + pk);
         await this.importFromPk(pk, this.path);
@@ -44,6 +45,7 @@ export class ConnectLedgerComponent implements OnInit {
         throw(e);
       } finally {
         this.pendingLedgerConfirmation = false;
+        this.messageService.stopSpinner();
       }
     } else {
       this.messageService.addWarning('Invalid derivation path');
@@ -52,7 +54,11 @@ export class ConnectLedgerComponent implements OnInit {
   async importFromPk(pk: string, path: string) {
     if (utils.validPublicKey(pk)) {
       if (await this.importService.importWalletFromPk(pk, path)) {
-      this.router.navigate(['/accounts']);
+        if (this.walletService.wallet.implicitAccounts.length === 1 && this.walletService.wallet.implicitAccounts[0].originatedAccounts.length === 0) {
+          this.router.navigate([`/account/${this.walletService.wallet.implicitAccounts[0].address}`]);
+        } else {
+          this.router.navigate(['/accounts']);
+        }
       } else {
         this.messageService.addError('Failed to import Ledger wallet');
       }

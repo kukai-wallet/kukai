@@ -42,7 +42,7 @@ export class ImportService {
       walletData = JSON.parse(json);
       if (walletData.walletType === 4 && walletData.version === 3) {
         //hd
-        seed = this.encryptionService.decrypt(
+        seed = await this.encryptionService.decrypt(
           walletData.encryptedSeed,
           pwd,
           walletData.iv,
@@ -50,17 +50,19 @@ export class ImportService {
         );
       } else if (walletData.walletType === 0) {
         if (walletData.version === 1) {
-          seed = this.encryptionService.decrypt(
+          console.log('v1');
+          seed = await this.encryptionService.decrypt(
             walletData.encryptedSeed,
             pwd,
             walletData.pkh.slice(3, 19),
             1
           );
+          console.log('done');
           if (utils.seedToKeyPair(seed).pkh !== walletData.pkh) {
             seed = '';
           }
         } else if (walletData.version === 2 || walletData.version === 3) {
-          seed = this.encryptionService.decrypt(
+          seed = await this.encryptionService.decrypt(
             walletData.encryptedSeed,
             pwd,
             walletData.iv,
@@ -143,7 +145,6 @@ export class ImportService {
         }
       }
       this.walletService.wallet.index = index;
-      console.log(this.walletService.wallet.index);
     } else {
       this.walletService.addImplicitAccount(keys.pk);
       await this.findContracts(keys.pkh);
