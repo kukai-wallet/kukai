@@ -111,12 +111,17 @@ export class MnemonicImportComponent implements OnInit {
       const password = this.pwd1;
       this.pwd1 = '';
       this.pwd2 = '';
-      this.wallet = await this.walletService.createEncryptedWallet(
-        this.mnemonic,
-        password,
-        this.passphrase,
-        this.importOption === 1 && this.hdImport
-      );
+      await this.messageService.startSpinner('Encrypting wallet...');
+      try {
+        this.wallet = await this.walletService.createEncryptedWallet(
+          this.mnemonic,
+          password,
+          this.passphrase,
+          this.importOption === 1 && this.hdImport
+        );
+      } finally {
+        this.messageService.stopSpinner();
+      }
       this.mnemonic = '';
       this.passphrase = '';
       this.email = '';
@@ -156,10 +161,15 @@ export class MnemonicImportComponent implements OnInit {
     this.Downloaded = true;
   }
   async done() {
-    await this.importService.importWalletFromObject(
-      this.wallet.data,
-      this.wallet.seed
-    );
+    await this.messageService.startSpinner('Loading wallet...');
+    try {
+      await this.importService.importWalletFromObject(
+        this.wallet.data,
+        this.wallet.seed
+      );
+    } finally {
+      this.messageService.stopSpinner();
+    }
     this.wallet = null;
     if (this.walletService.wallet.implicitAccounts.length === 1 && this.walletService.wallet.implicitAccounts[0].originatedAccounts.length === 0) {
       this.router.navigate([`/account/${this.walletService.wallet.implicitAccounts[0].address}`]);
@@ -215,10 +225,13 @@ export class MnemonicImportComponent implements OnInit {
   }
   async checkImportPwd() {
     if (this.pwd) {
-      this.messageService.startSpinner('Importing wallet...');
-      await this.import(this.walletJson, this.pwd);
-      this.pwd = '';
-      this.messageService.stopSpinner();
+      await this.messageService.startSpinner('Importing wallet...');
+      try {
+        await this.import(this.walletJson, this.pwd);
+        this.pwd = '';
+      } finally {
+        this.messageService.stopSpinner();
+      }
     } else {
       this.messageService.addWarning('No password provided', 5);
     }

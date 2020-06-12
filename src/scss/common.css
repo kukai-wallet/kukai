@@ -159,28 +159,9 @@
     margin-top: 0.5rem;
     height: 2.5rem;
     width: 17.5rem;
-    background: #e1e1e1;
     border-radius: 4px;
     text-align: center;
-    font-family: "IBM Plex Sans";
-    font-style: normal;
-    font-weight: normal;
-    font-size: 0.875rem;
-    line-height: 1.125rem;
-    letter-spacing: 0.16px;
-    color: #393939;
     border-width: 0;
-  }
-  div.word-input > input::placeholder,
-  input::-webkit-input-placeholder,
-  input:-ms-input-placeholder {
-    font-family: "IBM Plex Sans";
-    font-style: normal;
-    font-weight: normal;
-    font-size: 0.875rem;
-    line-height: 1.125rem;
-    letter-spacing: 0.16px;
-    color: #a8a8a8;
   }
   span.word-index {
     display: block;
@@ -282,12 +263,33 @@
     border: 0px solid;
     height: 2.5rem;
     padding-left: 1rem;
+    font-family: "IBM Plex Sans";
+    font-style: normal;
+    font-weight: normal;
+    font-size: 0.875rem;
+    line-height: 1.125rem;
+    letter-spacing: 0.16px;
+    color: #393939;
   }
   textarea.text {
       height: 7rem;
       padding-top: 0.5rem;
       padding-bottom: 0.5rem;
       resize: none;
+  }
+  input::placeholder,
+  input::-webkit-input-placeholder,
+  input:-ms-input-placeholder,
+  textarea::placeholder,
+  textarea::-webkit-input-placeholder,
+  textarea:-ms-input-placeholder {
+    color: #a8a8a8;
+    font-family: "IBM Plex Sans";
+    font-style: normal;
+    font-weight: normal;
+    font-size: 0.875rem;
+    line-height: 1.125rem;
+    letter-spacing: 0.16px;
   }
   @media screen and (max-width: 29rem) {
     input.text, textarea.text {
