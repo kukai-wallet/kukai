@@ -24,7 +24,6 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 
-import { ChartsModule } from 'ng2-charts';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -47,18 +46,14 @@ import { EstimateService } from './services/estimate/estimate.service';
 // View components
 import { ImportComponent } from './components/import/import.component';
 import { StartComponent } from './components/start/start.component';
-import { ActivityComponent } from './components/activity/activity.component';
-import { OverviewComponent } from './/components/overview/overview.component';
 import { SendComponent } from './components/send/send.component';
 import { NewWalletComponent } from './components/new-wallet/new-wallet.component';
 import { ReceiveComponent } from './components/receive/receive.component';
 import { DelegateComponent } from './components/delegate/delegate.component';
 import { PositioningService } from 'ngx-bootstrap/positioning';
-import { AccountComponent } from './components/account/account.component';
 import { MnemonicImportComponent } from './components/mnemonic-import/mnemonic-import.component';
 import { CoordinatorService } from './services/coordinator/coordinator.service';
 import { OperationService } from './services/operation/operation.service';
-import { BakeryComponent } from './components/bakery/bakery.component';
 import { ActivateComponent } from './components/activate/activate.component';
 import { MessagesComponent } from './components/messages/messages.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -92,14 +87,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     NewWalletComponent,
     ImportComponent,
     StartComponent,
-    ActivityComponent,
-    OverviewComponent,
     SendComponent,
     ReceiveComponent,
     DelegateComponent,
-    AccountComponent,
     MnemonicImportComponent,
-    BakeryComponent,
     ActivateComponent,
     MessagesComponent,
     HeaderComponent,
@@ -121,7 +112,6 @@ export function HttpLoaderFactory(http: HttpClient) {
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    ChartsModule,
     MatTabsModule,
     MatSortModule,
     FormsModule,

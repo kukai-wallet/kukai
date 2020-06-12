@@ -136,13 +136,8 @@ export class CoordinatorService {
       },
       err => console.log('Error in update(): ' + JSON.stringify(err)),
       () => {
-        console.log(
-          'account[' +
-            this.accounts.findIndex((a) => a.address === pkh) +
-            '][' +
-            this.scheduler.get(pkh).state ? this.scheduler.get(pkh).state : '*' +
-            ']: <<'
-        );
+        console.log(`account[${this.accounts.findIndex((a) => a.address === pkh)}][${
+          typeof this.scheduler.get(pkh).state !== 'undefined' ? this.scheduler.get(pkh).state : '*'}]: <<`);
       }
     );
   }
