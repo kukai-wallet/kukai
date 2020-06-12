@@ -39,7 +39,7 @@ describe('[ EncryptionService ]', () => {
 
 		it('should call encrypt_v2 for version 2 encryption', async () => {
 			// spy on method it will call based on version 2
-			spyOn(service, 'encrypt_v2').and.returnValue(new Promise((resolve) => { resolve('success') }));
+			spyOn(service, 'encrypt_v2').and.returnValue(new Promise((resolve) => { resolve('success'); }));
 
 			// expect spy to return 'success' in place of normal encrypt_v2 result
 			expect( await service.encrypt('plaintext', 'password', 2) ).toBe('success');
@@ -60,7 +60,7 @@ describe('[ EncryptionService ]', () => {
 
 		it('should call decrypt_v1 for version 1 encryption', async () => {
 			// spy on method it will call based on version 1
-			spyOn(service, 'decrypt_v1').and.returnValue(new Promise((resolve) => { resolve('success') }));
+			spyOn(service, 'decrypt_v1').and.returnValue(new Promise((resolve) => { resolve('success'); }));
 
 			// expect spy to return 'success' in place of normal decrypt_v1 result
 			expect( await service.decrypt('ciphertext', 'password', 'salt', 1) ).toBe('success');
@@ -71,7 +71,7 @@ describe('[ EncryptionService ]', () => {
 
 		it('should call decrypt_v2 for version 2 encryption', async () => {
 			// spy on method it will call based on version 2
-			spyOn(service, 'decrypt_v2').and.returnValue(new Promise((resolve) => { resolve('success') }));
+			spyOn(service, 'decrypt_v2').and.returnValue(new Promise((resolve) => { resolve('success'); }));
 
 			// expect spy to return 'success' in place of normal decrypt_v2 result
 			expect( await service.decrypt('ciphertext', 'password', 'salt', 2) ).toBe('success');

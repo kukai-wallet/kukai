@@ -70,7 +70,7 @@ export class EncryptionService {
         console.warn(e);
         resolve('');
       }
-    })
+    });
   }
   // Version 2
   async encrypt_v2(plaintext: Buffer, password: string, salt?: string): Promise<any> {
