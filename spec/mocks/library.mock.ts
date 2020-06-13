@@ -411,7 +411,7 @@ export class ActivityTools extends OperationTools {
       destination: this.generateDestination(),
       amount: this.generateAmount(),
       fee: this.generateFee(),
-      timestamp: this.generateDate().toString(),
+      timestamp: this.generateDate(),
       type: type,
     };
 

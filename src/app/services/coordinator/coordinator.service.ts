@@ -7,6 +7,7 @@ import { DelegateService } from '../delegate/delegate.service';
 import { OperationService } from '../operation/operation.service';
 import { ErrorHandlingPipe } from '../../pipes/error-handling.pipe';
 import { Account } from '../wallet/wallet';
+import Big from 'big.js';
 
 export interface ScheduleData {
   pkh: string;
@@ -26,7 +27,6 @@ export class CoordinatorService {
   defaultDelayActivity = 30000; // 30s
   shortDelayActivity = 5000; // 5s
   tzrateInterval: any;
-  boostTimeout: any;
   defaultDelayPrice = 300000; // 300s
   accounts: Account[];
   constructor(
@@ -77,10 +77,13 @@ export class CoordinatorService {
       this.updateAccountData(pkh);
     }
   }
-  async boost(pkh: string) {
+  async boost(pkh: string, metadata: any = null) {
     // Expect action
     console.log('boost ' + pkh);
     if (this.walletService.addressExists(pkh)) {
+      if (metadata) {
+        this.addUnconfirmedOperations(pkh, metadata);
+      }
       if (!this.scheduler.get(pkh)) {
         await this.start(pkh);
       }
@@ -88,7 +91,7 @@ export class CoordinatorService {
         this.changeState(pkh, State.Wait);
         this.update(pkh);
         const counter = this.scheduler.get(pkh).stateCounter;
-        this.boostTimeout = setTimeout(() => {
+        setTimeout(() => {
           // Failsafe
           if (
             this.scheduler &&
@@ -131,6 +134,16 @@ export class CoordinatorService {
           default: {
             console.log('No state found!');
             break;
+          }
+        }
+        const acc = this.walletService.wallet.getAccount(pkh);
+        if (acc && acc.activities.length) {
+          const latestActivity = acc.activities[0];
+          if (latestActivity.status === 0) {
+            const age = new Date().getTime() - new Date(latestActivity.timestamp).getTime();
+            if (age > 360000) {
+              acc.activities.shift();
+            }
           }
         }
       },
@@ -177,8 +190,6 @@ export class CoordinatorService {
       }
       clearInterval(this.tzrateInterval);
       this.tzrateInterval = null;
-      clearTimeout(this.boostTimeout);
-      this.boostTimeout = null;
     }
   }
   async stop(pkh) {
@@ -204,5 +215,47 @@ export class CoordinatorService {
         console.log('updateAccountData -> getAccount failed ', ans.payload.msg);
       }
     });
+  }
+  addUnconfirmedOperations(from: string, metadata: any) {
+    if (metadata.transactions) {
+      console.log('Unconfirmed transactions:');
+      console.log(metadata.transactions);
+      for (let op of metadata.transactions) {
+        const transaction = {
+          type: 'transaction',
+          status: 0,
+          amount: Big(op.amount).times(1000000).toString(),
+          fee: null,
+          source: from,
+          destination: op.to,
+          hash: metadata.opHash,
+          block: null,
+          timestamp: new Date()
+        }
+        let account = this.walletService.wallet.getAccount(from);
+        account.activities.unshift(transaction);
+        account = this.walletService.wallet.getAccount(op.to);
+        if (account) {
+          account.activities.unshift(transaction);
+        }
+      }
+    } else if (metadata.delegate !== undefined) {
+      const delegation = {
+        type: 'delegation',
+        status: 0,
+        amount: null,
+        fee: null,
+        source: from,
+        destination: metadata.delegate,
+        hash: metadata.opHash,
+        block: null,
+        timestamp: new Date()
+      }
+      let account = this.walletService.wallet.getAccount(from);
+      account.activities.unshift(delegation);
+    } else {
+      console.log('Unknown metadata');
+      console.log(metadata);
+    }
   }
 }

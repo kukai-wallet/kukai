@@ -127,20 +127,19 @@ export class DelegateComponent implements OnInit {
     }
 
     async sendDelegation(keys: KeyPair) {
-        const toPkh = this.toPkh;
         let fee = this.fee;
-        this.toPkh = '';
         this.fee = '';
         if (!fee) {
             fee = '0';
         }
-        this.operationService.delegate(this.activeAccount.address, toPkh, Number(fee), keys).subscribe(
+        this.operationService.delegate(this.activeAccount.address, this.toPkh, Number(fee), keys).subscribe(
             async (ans: any) => {
                 this.sendResponse = ans;
                 console.log(JSON.stringify(ans));
                 if (ans.success === true) {
                     if (ans.payload.opHash) {
-                        this.coordinatorService.boost(this.activeAccount.address);
+                        const metadata = { delegate: this.toPkh, opHash: ans.payload.opHash };
+                        this.coordinatorService.boost(this.activeAccount.address, metadata);
                     } else if (this.walletService.isLedgerWallet()) {
                         this.ledgerInstruction = 'Please sign the delegation with your Ledger to proceed!';
                         this.requestLedgerSignature();
@@ -165,6 +164,7 @@ export class DelegateComponent implements OnInit {
             if (signature) {
                 const signedOp = op + signature;
                 this.sendResponse.payload.signedOperation = signedOp;
+                console.log(this.sendResponse);
                 this.ledgerInstruction = 'Your operation have been signed! Press confirm to broadcast it to the network.';
             } else {
                 this.ledgerInstruction = 'Failed to sign operation';
@@ -176,7 +176,8 @@ export class DelegateComponent implements OnInit {
             ((ans: any) => {
                 this.sendResponse = ans;
                 if (ans.success && this.activeAccount.address) {
-                    this.coordinatorService.boost(this.activeAccount.address);
+                    const metadata = { delegate: this.toPkh, opHash: ans.payload.opHash };
+                    this.coordinatorService.boost(this.activeAccount.address, metadata);
                 }
                 console.log('ans: ' + JSON.stringify(ans));
             })

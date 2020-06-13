@@ -54,18 +54,14 @@ describe('[ TimeAgoPipe ]', () => {
 			expect(pipe.transform).toHaveBeenCalled();
 		});
 
-		it('should return timeago.justnow for null arg', () => {
-			const result = pipe.transform(null);
-			expect(result).toEqual('TIMEAGOPIPE.JUSTNOW');
-		});
-
 		it('should return a string ', () => {
-			expect(pipe.transform(date.toDateString())).toEqual(jasmine.any(String));
+			expect(pipe.transform(date)).toEqual(jasmine.any(String));
 		});
-
+		
 		it('should return timeago data given offset date', () => {
 			const expectedResult = date.getHours() + ' TIMEAGOPIPE.HOURS ' + date.getMinutes() + ' TIMEAGOPIPE.MINUTE TIMEAGOPIPE.AGO';
-			expect(pipe.transform(date.toDateString())).toEqual(expectedResult);
+			console.log(date.getTime());
+			expect(pipe.transform(new Date(date.toDateString()))).toEqual(expectedResult);
 		});
 	});
 });

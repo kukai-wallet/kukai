@@ -31,20 +31,20 @@ export class AccountViewComponent implements OnInit {
       this.router.navigate(['']);
     } else {
       this.coordinatorService.startAll();
+      let address = this.route.snapshot.paramMap.get('address');
+      if (this.walletService.addressExists(address)) {
+        this.account = this.walletService.wallet.getAccount(address);
+      }
+      this.router.events
+        .pipe(filter((evt) => evt instanceof NavigationEnd))
+        .subscribe(() => {
+          address = this.route.snapshot.paramMap.get('address');
+          if (this.walletService.wallet && this.walletService.addressExists(address)) {
+            this.account = this.walletService.wallet.getAccount(address);
+          }
+        });
+        setInterval(() => this.trigger = !this.trigger, 10 * 1000);
     }
-    let address = this.route.snapshot.paramMap.get('address');
-    if (this.walletService.addressExists(address)) {
-      this.account = this.walletService.wallet.getAccount(address);
-    }
-    this.router.events
-      .pipe(filter((evt) => evt instanceof NavigationEnd))
-      .subscribe(() => {
-        address = this.route.snapshot.paramMap.get('address');
-        if (this.walletService.wallet && this.walletService.addressExists(address)) {
-          this.account = this.walletService.wallet.getAccount(address);
-        }
-      });
-      setInterval(() => this.trigger = !this.trigger, 10 * 1000);
   }
   getType(transaction: any): string {
     if (transaction.type !== 'transaction') {

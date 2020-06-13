@@ -11,8 +11,7 @@ export class TimeAgoPipe implements PipeTransform {
     constructor(
         private translate: TranslateService
     ) {}
-    transform(dateString: string | null): string {
-
+    transform(timestamp: Date): string {
         let result: string;
 
         let secTmp = '';
@@ -41,18 +40,16 @@ export class TimeAgoPipe implements PipeTransform {
         monthsTmp = this.translate.instant('TIMEAGOPIPE.MONTHS');
         yearTmp = this.translate.instant('TIMEAGOPIPE.YEAR');
         yearsTmp = this.translate.instant('TIMEAGOPIPE.YEARS');
-
         // Tranforming from String to Date format
-        const dateValue: Date = new Date(dateString);
 
         // current time
         const now = new Date().getTime();
 
         // time since transaction was made in seconds
-        const delta = (now - dateValue.getTime()) / 1000;
+        const delta = (now - timestamp.getTime()) / 1000;
 
         // If transaction has just been broadcasted then dateString will be null in the first few seconds (prevalidation stage)
-        if (delta < 20 || (dateString === null)) {
+        if (delta < 20 ) {
             return this.translate.instant('TIMEAGOPIPE.JUSTNOW');
             // 'just now';
         }
@@ -60,7 +57,7 @@ export class TimeAgoPipe implements PipeTransform {
         // Return interval format in seconds, hours or days
         if (delta < 60) {  // Sent in last minute
             // result = Math.floor(delta) + ' sec ';
-            result = Math.floor(delta) + ' ' + secTmp + ' ';
+            result = Math.round(Math.floor(delta) / 10) * 10 + ' ' + secTmp + ' ';
         } else if (delta < 120) {  // Sent in last hour: 1h = 3600 sec -> displays seconds
             // result = Math.floor(delta / 60) + ' mn ';
             result = Math.floor(delta / 60) + ' ' + mnTmp + ' ';
@@ -68,7 +65,7 @@ export class TimeAgoPipe implements PipeTransform {
             // Adds seconds details if there's a remainder in 'delta % 60'
             if (Math.floor(delta % 60) !== 0) {
                 // result = result + Math.floor(delta % 60) + ' sec ';
-                result = result + Math.floor(delta % 60) + ' ' + secTmp + ' ';
+                result = result + Math.round(Math.floor(delta % 60) / 10) * 10 + ' ' + secTmp + ' ';
             }
         } else if (delta < 86400) {  // Sent on last day: 1d = 86400 sec -> displays hours and seconds
             result = String(Math.floor(delta / 3600));

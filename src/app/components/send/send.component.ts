@@ -248,9 +248,12 @@ export class SendComponent implements OnInit {
                 if (ans.success === true) {
                     console.log('Transaction successful ', ans);
                     if (ans.payload.opHash) {
-                        this.coordinatorService.boost(this.activeAccount.address);
-                        if (this.walletService.addressExists(this.transactions[0].to)) {
-                            this.coordinatorService.boost(this.transactions[0].to);
+                        const metadata = { transactions: this.transactions, opHash: ans.payload.opHash };
+                        this.coordinatorService.boost(this.activeAccount.address, metadata);
+                        for (let transaction of this.transactions) {
+                            if (this.walletService.addressExists(transaction.to)) {
+                                this.coordinatorService.boost(transaction.to);
+                            }
                         }
                     } else if (this.walletService.wallet instanceof LedgerWallet) {
                         this.ledgerInstruction = 'Please sign the transaction with your Ledger to proceed!';
@@ -295,7 +298,8 @@ export class SendComponent implements OnInit {
             ((ans: any) => {
                 this.sendResponse = ans;
                 if (ans.success && this.activeAccount) {
-                    this.coordinatorService.boost(this.activeAccount.address);
+                    const metadata = { transactions: this.transactions, opHash: ans.payload.opHash };
+                    this.coordinatorService.boost(this.activeAccount.address, metadata );
                     if (this.walletService.addressExists(this.transactions[0].to)) {
                         this.coordinatorService.boost(this.transactions[0].to);
                     }
