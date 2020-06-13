@@ -66,7 +66,8 @@ export class ActivityService {
   }
   promptNewActivities(account: Account, oldActivities: Activity[], newActivities: Activity[]) {
     for (const activity of newActivities) {
-      if (oldActivities.findIndex((a) => a.hash === activity.hash) === -1) {
+      const index = oldActivities.findIndex((a) => a.hash === activity.hash);
+      if (index === -1 || (index !== -1 && oldActivities[index].status === 0)) {
         if (activity.type === 'transaction') {
           if (account.address === activity.source) {
             this.messageService.addSuccess(account.shortAddress() + ': Sent ' + activity.amount / 1000000 + ' tez');

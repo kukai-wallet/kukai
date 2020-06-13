@@ -64,13 +64,12 @@ export class Tools {
    * @returns new Date()
    * Example: generateRandomDate('1999-01-01', '2017-12-07')
    */
-  generateRandomDate(start, end): Date {
+  generateRandomDate(start, end): number {
     //new Date('2011-04-11T10:20:30Z')
     start = new Date(start);
     end = new Date(end);
-    return new Date(
-      start.getTime() + Math.random() * (end.getTime() - start.getTime())
-    );
+    return start.getTime() + Math.random() * (end.getTime() - start.getTime());
+
   }
 
   /**
@@ -487,7 +486,7 @@ export class ActivityTools extends OperationTools {
    * @summary Returns random datetime between two dates
    * @retuns Date
    */
-  generateDate(): Date {
+  generateDate(): number {
     return this.generateRandomDate(
       '2018-07-01T00:00:00Z',
       '2019-01-04T00:00:00Z'

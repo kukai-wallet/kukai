@@ -174,5 +174,5 @@ export class Activity {
   fee: number;
   destination: string;
   hash: string;
-  timestamp: Date | null;
+  timestamp: number | null;
 }

@@ -11,7 +11,7 @@ export class TimeAgoPipe implements PipeTransform {
     constructor(
         private translate: TranslateService
     ) {}
-    transform(timestamp: Date): string {
+    transform(timestamp: number): string {
         let result: string;
 
         let secTmp = '';
@@ -46,7 +46,7 @@ export class TimeAgoPipe implements PipeTransform {
         const now = new Date().getTime();
 
         // time since transaction was made in seconds
-        const delta = (now - timestamp.getTime()) / 1000;
+        const delta = (now - timestamp) / 1000;
 
         // If transaction has just been broadcasted then dateString will be null in the first few seconds (prevalidation stage)
         if (delta < 20 ) {

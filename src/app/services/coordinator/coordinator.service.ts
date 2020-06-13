@@ -230,7 +230,7 @@ export class CoordinatorService {
           destination: op.to,
           hash: metadata.opHash,
           block: null,
-          timestamp: new Date()
+          timestamp: new Date().getTime()
         };
         let account = this.walletService.wallet.getAccount(from);
         account.activities.unshift(transaction);
@@ -249,7 +249,7 @@ export class CoordinatorService {
         destination: metadata.delegate,
         hash: metadata.opHash,
         block: null,
-        timestamp: new Date()
+        timestamp: new Date().getTime()
       };
       const account = this.walletService.wallet.getAccount(from);
       account.activities.unshift(delegation);

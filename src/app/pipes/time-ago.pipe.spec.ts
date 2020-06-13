@@ -55,13 +55,13 @@ describe('[ TimeAgoPipe ]', () => {
 		});
 
 		it('should return a string ', () => {
-			expect(pipe.transform(date)).toEqual(jasmine.any(String));
+			expect(pipe.transform(date.getTime())).toEqual(jasmine.any(String));
 		});
 
 		it('should return timeago data given offset date', () => {
 			const expectedResult = date.getHours() + ' TIMEAGOPIPE.HOURS ' + date.getMinutes() + ' TIMEAGOPIPE.MINUTE TIMEAGOPIPE.AGO';
 			console.log(date.getTime());
-			expect(pipe.transform(new Date(date.toDateString()))).toEqual(expectedResult);
+			expect(pipe.transform(Number(new Date(date.toDateString())))).toEqual(expectedResult);
 		});
 	});
 });
