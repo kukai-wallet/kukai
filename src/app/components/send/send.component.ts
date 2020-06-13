@@ -250,7 +250,7 @@ export class SendComponent implements OnInit {
                     if (ans.payload.opHash) {
                         const metadata = { transactions: this.transactions, opHash: ans.payload.opHash };
                         this.coordinatorService.boost(this.activeAccount.address, metadata);
-                        for (let transaction of this.transactions) {
+                        for (const transaction of this.transactions) {
                             if (this.walletService.addressExists(transaction.to)) {
                                 this.coordinatorService.boost(transaction.to);
                             }

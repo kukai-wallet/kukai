@@ -220,7 +220,7 @@ export class CoordinatorService {
     if (metadata.transactions) {
       console.log('Unconfirmed transactions:');
       console.log(metadata.transactions);
-      for (let op of metadata.transactions) {
+      for (const op of metadata.transactions) {
         const transaction = {
           type: 'transaction',
           status: 0,
@@ -231,7 +231,7 @@ export class CoordinatorService {
           hash: metadata.opHash,
           block: null,
           timestamp: new Date()
-        }
+        };
         let account = this.walletService.wallet.getAccount(from);
         account.activities.unshift(transaction);
         account = this.walletService.wallet.getAccount(op.to);
@@ -250,8 +250,8 @@ export class CoordinatorService {
         hash: metadata.opHash,
         block: null,
         timestamp: new Date()
-      }
-      let account = this.walletService.wallet.getAccount(from);
+      };
+      const account = this.walletService.wallet.getAccount(from);
       account.activities.unshift(delegation);
     } else {
       console.log('Unknown metadata');

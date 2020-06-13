@@ -97,7 +97,7 @@ export class ConseilService {
             source: tx.source,
             destination: destination,
             hash: tx.operation_group_hash,
-            timestamp: tx.timestamp
+            timestamp: new Date(tx.timestamp)
           }
         );
       }
