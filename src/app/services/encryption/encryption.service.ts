@@ -67,7 +67,6 @@ export class EncryptionService {
           resolve(plaintext);
         });
       } catch (e) {
-        console.warn(e);
         resolve('');
       }
     });
@@ -116,7 +115,6 @@ export class EncryptionService {
         return null;
       }
     } catch (err) {
-      console.warn(err);
       return null;
     }
   }

@@ -12,5 +12,7 @@ export class MessagesComponent implements OnInit {
 
   ngOnInit() {
   }
-
+  removeMessage(index: number) {
+    this.messageService.messages.splice(index, 1);
+  }
 }

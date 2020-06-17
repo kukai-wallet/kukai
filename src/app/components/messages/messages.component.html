@@ -1,5 +1,10 @@
 <div class='msg-container'>
-  <div *ngFor="let message of messageService.messages">
-    <alert [type]="message.type" [dismissOnTimeout]="message.timeout">{{ message.msg }}</alert>
+  <div *ngFor="let message of messageService.messages ; let i = index">
+    <alert *ngIf="!message.timeout" [type]="message.type">
+      <button type="button" class="close" aria-label="Close" (click)="removeMessage(i)">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <span>{{ message.msg }}</span></alert>
+    <alert *ngIf="message.timeout" [type]="message.type" [dismissOnTimeout]="message.timeout"><span>{{ message.msg }}</span></alert>
   </div>
 </div>

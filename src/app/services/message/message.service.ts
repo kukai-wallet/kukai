@@ -6,7 +6,7 @@ export class MessageService {
   spinnerText = '';
   messages: any[] = [];
   defaultTime = 10;
-  add(message: string, seconds = this.defaultTime) {
+  add(message: string, seconds: number = this.defaultTime) {
     const type = 'info';
     console.log(type + ': ' + message);
     this.messages.push({
@@ -15,7 +15,7 @@ export class MessageService {
       timeout: seconds * 1000
     });
   }
-  addError(message: string, seconds = this.defaultTime) {
+  addError(message: string, seconds: number = this.defaultTime) {
     const type = 'danger';
     console.log(type + ': ' + message);
     this.messages.push({
@@ -24,7 +24,7 @@ export class MessageService {
       timeout: seconds * 1000
     });
   }
-  addWarning(message: string, seconds = this.defaultTime) {
+  addWarning(message: string, seconds: number = this.defaultTime) {
     const type = 'warning';
     console.log(type + ': ' + message);
     this.messages.push({
@@ -33,7 +33,7 @@ export class MessageService {
       timeout: seconds * 1000
     });
   }
-  addSuccess(message: string, seconds = this.defaultTime) {
+  addSuccess(message: string, seconds: number = this.defaultTime) {
     const type = 'success';
     console.log(type + ': ' + message);
     this.messages.push({

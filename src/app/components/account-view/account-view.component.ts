@@ -8,6 +8,7 @@ import { MessageService } from '../../services/message/message.service';
 import * as copy from 'copy-to-clipboard';
 import { filter } from 'rxjs/internal/operators/filter';
 import { CoordinatorService } from '../../services/coordinator/coordinator.service';
+import { Constants } from '../../constants';
 
 @Component({
   selector: 'app-account-view',
@@ -16,6 +17,7 @@ import { CoordinatorService } from '../../services/coordinator/coordinator.servi
 })
 export class AccountViewComponent implements OnInit {
   account: Account;
+  CONSTANTS = new Constants();
   constructor(
     private route: ActivatedRoute,
     private walletService: WalletService,
@@ -97,4 +99,9 @@ export class AccountViewComponent implements OnInit {
     );
     this.messageService.add(account.address + ' ' + copyToClipboard, 5);
   }
+  explorerURL(hash: string) {
+    const baseURL = this.CONSTANTS.NET.NETWORK === 'carthagenet' ? 'https://carthage.tzkt.io/' : 'https://tzkt.io/'
+    return baseURL + hash;
+  }
 }
+

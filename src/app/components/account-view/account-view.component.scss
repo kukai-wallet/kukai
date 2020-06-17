@@ -160,14 +160,15 @@ span {
     height: 100%;
 }
 
-#operations-container div span {
+#operations-container div span,
+#operations-container div a {
     margin-left: 0.5rem;
     margin-top: 0.25rem;
     font-family: "Helvetica Now Text";
     font-style: normal;
     font-weight: 500;
-    font-size: 14px;
-    line-height: 16px;
+    font-size: 0.875rem;
+    line-height: 1rem;
     display: flex;
     align-items: center;
     float: left;
@@ -179,7 +180,8 @@ span {
     margin-bottom: 0rem;
     cursor: pointer;
 }
-#operations-container div.line span {
+#operations-container div.line span,
+#operations-container div.line a {
     font-weight: normal;
     color: #2C323A;
 

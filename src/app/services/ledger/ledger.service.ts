@@ -67,12 +67,12 @@ export class LedgerService {
     console.log(path);
     const toSign = '03' + op;
     if (toSign.length > 512) {
-      this.messageService.addError('Operation is too big for Ledger to sign (' + toSign.length / 2 + ' > 256 bytes)');
+      this.messageService.addError('Operation is too big for Ledger to sign (' + toSign.length / 2 + ' > 256 bytes)', 0);
       throw new Error('LedgerSignError');
     }
     const result = await xtz.signOperation(path, toSign)
       .catch(e => {
-        this.messageService.addError(e);
+        this.messageService.addError(e, 0);
       });
     console.log(JSON.stringify(result));
     if (result && result.signature) {
