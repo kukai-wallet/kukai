@@ -23,4 +23,24 @@
     </div>
 </ng-template>
 
-<img *ngIf="walletService.isHdWallet()" src="../../../assets/img/add.svg" (click)="open1(modal1)">
+<img class="add" *ngIf="walletService.isHdWallet()" src="../../../assets/img/add.svg" (click)="openModal()">
+
+<!-- The Modal -->
+<div *ngIf="modalOpen" id="myModal" class="kukai-modal">
+  <!-- Modal content -->
+  <div class="km-content">
+    <div class="x" (click)="closeModal()"><img src="../../../assets/img/x.svg"></div>
+    <div class="km-header">
+      <H1>Delegate</H1>
+    </div>
+    <!-- Prepare delegation -->
+    <div class="km-body">
+      <p>Derive a new account for your HD wallet. Enter your password to confirm.</p>
+      <div class="row-group" style="margin: 1.25rem 0 1.5rem;">
+        <input [(ngModel)]="password" class="text password" placeholder="Password" type="password" (input)="this.errorMsg = ''" (change)="this.errorMsg = ''">
+        <button  class="green confirm" (click)="addPkh()">Confirm</button>
+      </div>
+      <span *ngIf="this.errorMsg" class="danger margin">{{ this.errorMsg }}</span>
+    </div>
+  </div>
+</div>

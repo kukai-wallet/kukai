@@ -12,9 +12,9 @@ import { MessageService } from '../../services/message/message.service';
 })
 export class NewImplicitComponent implements OnInit {
   @ViewChild('modal1') modal1: TemplateRef<any>;
+  modalOpen = false;
   password = '';
   errorMsg = '';
-  wait = false;
   modalRef1: BsModalRef;
   constructor(
     public walletService: WalletService,
@@ -23,21 +23,30 @@ export class NewImplicitComponent implements OnInit {
     private messageService: MessageService,
     private cdRef: ChangeDetectorRef
   ) {}
-
+  openModal() {
+    if (this.openPkhSpot()) {
+      this.clear();
+      this.modalOpen = true;
+    } else {
+      this.messageService.addWarning('Can\'t create additional accounts when an unused account already exists');
+    }
+  }
+  closeModal() {
+    this.clear();
+    this.modalOpen = false;
+  }
   ngOnInit(): void {}
   async addPkh() {
     if (this.openPkhSpot()) {
-      this.wait = true;
-      document.body.style.cursor = 'wait';
+      this.messageService.startSpinner('Creating new account');
       const pkh = await this.walletService.incrementAccountIndex(this.password);
       if (pkh) {
         this.coordinatorService.start(pkh);
-        this.close1();
+        this.closeModal();
       } else {
         this.errorMsg = 'Wrong password!';
       }
-      this.wait = false;
-      document.body.style.cursor = 'default';
+      this.messageService.stopSpinner();
     } else {
       console.log('blocked!');
     }
@@ -54,22 +63,8 @@ export class NewImplicitComponent implements OnInit {
       ((counter && counter > 0) || (balance !== null && balance > 0))
     );
   }
-  open1(template1: TemplateRef<any>) {
-    if (this.openPkhSpot()) {
-      this.clear();
-      this.modalRef1 = this.modalService.show(template1, { class: 'first' }); // modal-sm / modal-lg
-    } else {
-      this.messageService.addWarning('Unused account already exists');
-    }
-  }
-
-  close1() {
-    this.modalRef1.hide();
-    this.modalRef1 = null;
-  }
   clear() {
     this.password = '';
     this.errorMsg = '';
-    this.wait = false;
   }
 }
