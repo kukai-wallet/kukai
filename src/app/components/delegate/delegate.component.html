@@ -1,4 +1,4 @@
-<button class="blue" (click)="openModal()">Delegate</button>
+<button class="blue" (click)="openModal()">Delegate (Choose a baker)</button>
 <!-- The Modal -->
 <div *ngIf="modalOpen" id="myModal" class="kukai-modal">
   <!-- Modal content -->
@@ -10,11 +10,11 @@
     <!-- Prepare delegation -->
     <div class="km-body" *ngIf="activeView === 0">
       <div class="group">
-        <label>From address</label>
+        <label>Current Account Address</label>
         <p>{{ activeAccount.address }}</p>
       </div>
       <div class="group">
-        <label>Delegate address</label>
+        <label>Delegate to Baker Address</label>
         <input type="text" class="text" [(ngModel)]="toPkh">
       </div>
       <div class="group">

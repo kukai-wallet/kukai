@@ -1,8 +1,8 @@
 <div *ngIf="activePanel === 0">
     <H1>Import wallet</H1>
     <div class="import-options">
-        <span [class.selected]="importOption===0" (click)="importOption = 0">Keystore file</span>
-        <span [class.selected]="importOption===1" (click)="importOption = 1">Mnemonic</span>
+        <span [class.selected]="importOption===0" (click)="importOption = 0">Keystore File</span>
+        <span [class.selected]="importOption===1" (click)="importOption = 1">Seed Words</span>
         <span [class.selected]="importOption===2" (click)="importOption = 2">Fundraiser</span>
     </div>
     <ng-container *ngIf="importOption === 0">
@@ -27,19 +27,19 @@
         </div>
     </ng-container>
     <ng-container *ngIf="importOption > 0">
-        <p class="description faucet" *ngIf="importOption === 2">Please make sure to first <a routerLink="/activate">activate</a> your ICO-wallet.</p>
+        <p class="description faucet" *ngIf="importOption === 2">Please make sure to first <a routerLink="/activate">activate</a> your fundraiser wallet.</p>
         <ng-container>
-            <small>{{ 'MNEMONICIMPORTCOMPONENT.INFOMNEMONIC' | translate }}</small>
-            <textarea class="text" [(ngModel)]="mnemonic" [placeholder]="'Mnemonic (required)'"></textarea>
+            <small>The seed (12-24 words)</small>
+            <textarea class="text" [(ngModel)]="mnemonic" [placeholder]="'Seed Words (required)'"></textarea>
         </ng-container>
         <ng-container *ngIf="importOption === 1">
-            <small>{{ 'MNEMONICIMPORTCOMPONENT.INFOPASSPHRASE' | translate }}</small>
+            <small>If your seed words are protected by a passphrase, it needs to be entered here</small>
             <input class="text" type="password" [(ngModel)]="passphrase" [placeholder]="'Passphrase (optional)'">
         </ng-container>
         <ng-container *ngIf="importOption === 2">
-            <small>{{ 'MNEMONICIMPORTCOMPONENT.INFOEMAIL' | translate }}</small>
+            <small>The email used during the fundraiser</small>
             <input class="text" type="text" [(ngModel)]="email" [placeholder]="'Email (required)'">
-            <small>{{ 'MNEMONICIMPORTCOMPONENT.INFOPASSWORD' | translate }}</small>
+            <small>The password you chose during the fundraiser</small>
             <input class="text" type="password" [(ngModel)]="password" [placeholder]="'Password (required)'">
         </ng-container>
         <ng-container>
@@ -61,7 +61,7 @@
             <a routerLink="/">
                 <div class="button back">Back</div>
             </a>
-            <div class="button next" (click)="retrieve()">Retrive</div>
+            <div class="button next" (click)="retrieve()">Import</div>
         </div>
     </ng-container>
 </div>
@@ -84,7 +84,7 @@
 </div>
 <!-- Step 3 -->
 <div *ngIf="activePanel==2">
-    <H1>Wallet created! 🎉</H1>
+    <H1>Wallet imported! 🎉</H1>
     <p class="description bold">Your wallet is now set up and ready to be used.</p>
     <p class="description">Download your encrypted keystore file and import it when you want to access your wallet.</p>
     <div class="whitebox final">

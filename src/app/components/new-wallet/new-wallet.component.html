@@ -2,12 +2,12 @@
   —{{ activePanel }}/4—
 </span>
 <div *ngIf="activePanel==1" (click)="hideBlur = false">
-  <H1>Backup your seed</H1>
-  <p class="description">When you create a new wallet, a new Tezos seed is generated. Your Tezos seed is the master key of all your wallet and any value inside it.</p>
+  <H1>Back up your seed</H1>
+  <p class="description">When you create a new wallet, new Tezos seed words are generated. Your seed words are the master key of your wallet accounts and any value you hold.</p>
   <p class="description red">Make sure to back it up, write it down, and keep it incredibly safe.</p>
   <div class="whitebox" (mouseout)="hideBlur = false" (click)="$event.stopPropagation()">{{ MNEMONIC.string }}</div>
   <div *ngIf="!hideBlur" class="seed-blur" (click)="hideBlur = true ; $event.stopPropagation()">
-    <span class="black">Click here to reveal your seed</span>
+    <span class="black">Click here to reveal your seed words</span>
   </div>
   <div class="buttons"><a routerLink="/"><div class="button back">Back</div></a><div class="button next" (click)="verifyView()">Next</div></div>
 </div>
@@ -34,7 +34,7 @@
 <div *ngIf="activePanel==3">
   <H1>Set a password</H1>
   <p class="description bold">This password will be used to create an encrypted keystore file.</p>
-  <p class="description">When performning operations that need to be signed with your secret key this password will be required</p>
+  <p class="description">When performing operations that need to be signed with your secret key, this password will be required</p>
   <small>{{ 'NEWWALLETCOMPONENT.PASSWORD' | translate }}</small>
   <input type="password" class="text" [(ngModel)]="pwd1" (keyup)="calcStrength()">
   <small class="grey"> {{ 'NEWWALLETCOMPONENT.PASSWORDSTRENGTH' | translate }} — {{ pwdStrength }}</small>
@@ -47,7 +47,7 @@
   <p class="description bold">Your wallet is now set up and ready to be used.</p>
   <p class="description">Download your encrypted keystore file and import it when you want to access your wallet.</p>
   <div class="whitebox final">
-    <p class="description bold pkh">Your first derived address:&#10;&#13;{{ getPkh() }}</p>
+    <p class="description bold pkh">Your public account address:&#10;&#13;{{ getPkh() }}</p>
     <div class="buttons single">
       <div class="button next" (click)="download()">Download</div>
     </div>

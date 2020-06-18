@@ -78,7 +78,7 @@ export class NewWalletComponent implements OnInit {
   formatVerifyDescription(index: number): string {
 
     if (this.MNEMONIC.verify.length === 0) {
-      return 'Seed backup have been verified!';
+      return 'Seed backup has been verified!';
     }
     switch (index) {
       case 1:

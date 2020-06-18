@@ -9,14 +9,16 @@
             </button>
         </div>
         <div class="modal-body">
-            <div class="form-row">
-                <div class="form-group col-md-12">
-                    <input [(ngModel)]="activeAddress" type="text" id="toAddress" class="form-control-plaintext text-color text-center" readonly>
-                </div>
-            </div>
+          <center>Your account QR code</center>
+          
             <div class="row" *ngIf='activeAddress'>
                 <canvas id='canvas'></canvas>
             </div>
+            <div class="form-row">
+              <div class="form-group col-md-12">
+                  <input [(ngModel)]="activeAddress" type="text" id="toAddress" class="form-control-plaintext text-color text-center" readonly>
+              </div>
+          </div>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-primary" id="sub" (click)="close1()"> {{ 'RECEIVECOMPONENT.CLOSE' | translate }} </button>
