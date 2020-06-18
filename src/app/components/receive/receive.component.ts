@@ -20,6 +20,7 @@ export class ReceiveComponent implements OnInit {
         dropdownItem: false,
     };
     modalRef1: BsModalRef;
+    modalOpen = false;
     constructor(
         private modalService: BsModalService,
         private messageService: MessageService
@@ -27,7 +28,15 @@ export class ReceiveComponent implements OnInit {
 
     ngOnInit() {
     }
-
+    openModal() {
+      this.modalOpen = true;
+      setTimeout(() => {
+        this.getQR();
+      }, 100);
+    }
+    closeModal() {
+      this.modalOpen = false;
+    }
     getQR() {
         QRCode.toCanvas(document.getElementById('canvas'), this.activeAddress, { errorCorrectionLevel: 'H' , scaleFactor: 2}, function (err, canvas) {
             if (err) { throw err; }
@@ -45,8 +54,4 @@ export class ReceiveComponent implements OnInit {
         }
     }
 
-    close1() {
-        this.modalRef1.hide();
-        this.modalRef1 = null;
-    }
 }

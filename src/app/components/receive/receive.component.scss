@@ -1,3 +1,4 @@
+@import "../../../scss/modal.scss";
 div.button {
     border-radius: 0.75rem;
     height: 3rem;
@@ -23,23 +24,13 @@ div.button.green {
     background: rgba(155, 227, 171, 0.6);
     box-shadow: 0px 0px 1px rgba(155, 227, 171, 0.04), 0px 2px 6px rgba(155, 227, 171, 0.04), 0px 16px 24px rgba(155, 227, 171, 0.24);
 }
-#canvas {
-    margin: auto;
-}
-
-.modal-header {
-    text-align: center;
-}
-
-.modal-footer {
-    padding-bottom: 1rem;
-}
-
-.btn-op {
-    width: 120px;
-    border-radius: 0.4rem;
-    color: white !important;
-    border-color: white !important;
+div.km-body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-left: 0;
+  margin-right: 0;
 }
 @media screen and (max-width: 27rem) {
     div.button {

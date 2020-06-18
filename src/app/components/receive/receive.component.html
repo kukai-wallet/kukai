@@ -1,4 +1,4 @@
-<ng-container>
+<ng-container *ngIf="false">
 
     <!-- Receive Modal -->
     <ng-template #modal1 class="receive-modal">
@@ -45,3 +45,23 @@
     <!-- Showing different Receive Format according to actionButtonString -->
     <div (click)="open1(modal1)" class="button green">{{ 'RECEIVECOMPONENT.RECEIVE' | translate }}</div>
 </ng-container>
+
+<button class="green" (click)="openModal()">Receive</button>
+<!-- The Modal -->
+<div *ngIf="modalOpen" id="myModal" class="kukai-modal">
+  <!-- Modal content -->
+  <div class="km-content">
+    <div class="x" (click)="closeModal()"><img src="../../../assets/img/x.svg"></div>
+    <div class="km-header">
+      <H1>{{ 'RECEIVECOMPONENT.RECEIVETEZ' | translate }}</H1>
+    </div>
+    <!-- Prepare delegation -->
+    <div class="km-body">
+      <label>Your account QR code</label>
+      <center>
+        <canvas id='canvas'></canvas>
+      </center>
+      <span>{{ activeAddress }}</span>
+    </div>
+  </div>
+</div>
