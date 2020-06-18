@@ -1,11 +1,11 @@
-<button class="blue" (click)="openModal()">Delegate (Choose a baker)</button>
+<button class="blue" (click)="openModal()">Delegate</button>
 <!-- The Modal -->
 <div *ngIf="modalOpen" id="myModal" class="kukai-modal">
   <!-- Modal content -->
   <div class="km-content">
     <div class="x" (click)="closeModal()"><img src="../../../assets/img/x.svg"></div>
     <div class="km-header">
-      <H1>Delegate</H1>
+      <H1>Delegate (Choose a baker)</H1>
     </div>
     <!-- Prepare delegation -->
     <div class="km-body" *ngIf="activeView === 0">
