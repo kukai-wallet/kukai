@@ -100,7 +100,7 @@ export class AccountViewComponent implements OnInit {
     this.messageService.add(account.address + ' ' + copyToClipboard, 5);
   }
   explorerURL(hash: string) {
-    const baseURL = this.CONSTANTS.NET.NETWORK === 'carthagenet' ? 'https://carthage.tzkt.io/' : 'https://tzkt.io/'
+    const baseURL = this.CONSTANTS.NET.NETWORK === 'carthagenet' ? 'https://carthage.tzkt.io/' : 'https://tzkt.io/';
     return baseURL + hash;
   }
 }

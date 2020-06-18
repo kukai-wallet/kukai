@@ -179,7 +179,7 @@ export class SendComponent implements OnInit {
   }
   closeModal() {
     this.activeView = 0;
-    this.modalOpen = false
+    this.modalOpen = false;
     this.clearForm();
   }
   showAccountBalance() {
@@ -578,7 +578,12 @@ export class SendComponent implements OnInit {
     this.exportService.downloadOperationData(this.sendResponse.payload.unsignedOperation, false);
   }
   dynSize(): string {
-    const size = this.amount ? this.amount.length : 0;
+    const width = document.getElementById("myModal").offsetWidth;
+    console.log(width);
+    let size = this.amount ? this.amount.length : 0;
+    if (width < 400) {
+      size++;
+    }
     if (size < 8) {
       return '5';
     } else if (size < 10) {
