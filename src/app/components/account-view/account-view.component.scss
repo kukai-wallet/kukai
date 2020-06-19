@@ -21,7 +21,7 @@ img {
 }
 .main-container {
     width: 25rem;
-    height: 16rem;
+    height: 100%;
     background: #FCFCFC;
     border: 0.0625rem solid #FFFFFF;
     box-shadow: 0rem 0rem 0.0625rem rgba(0, 0, 0, 0.04), 0rem 0.125rem 0.375rem rgba(0, 0, 0, 0.04), 0rem 1rem 1.5rem rgba(0, 0, 0, 0.06);
@@ -31,12 +31,22 @@ img {
     width: 40rem;
     height: 100%;
 }
+.main-container.small {
+  position: relative;
+  min-height: 23rem;
+}
 .top-container {
     width: 39.875rem;
     margin-top: 1rem;
     height: 2.5rem;
     width: auto;
     border-bottom: 1px solid #EAEBF9;
+}
+div.bottom-container {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 1rem;
 }
 #account-container div {
     margin-top: 0.5rem;
@@ -227,6 +237,7 @@ div.line:last-child {
     }
     div.left-container {
         margin-right: 0rem;
+        margin-bottom: 2rem;
     }
   }
   @media screen and (max-width: 42rem) {

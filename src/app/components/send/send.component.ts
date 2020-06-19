@@ -579,7 +579,6 @@ export class SendComponent implements OnInit {
   }
   dynSize(): string {
     const width = document.getElementById("myModal").offsetWidth;
-    console.log(width);
     let size = this.amount ? this.amount.length : 0;
     if (width < 400) {
       size++;

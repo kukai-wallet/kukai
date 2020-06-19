@@ -2,7 +2,21 @@
 .modal-footer {
   padding-bottom: 0rem;
 }
-
+div.outside-container {
+  padding: 0 1rem;
+}
+div.outside-container > span {
+  font-family: "Helvetica Now Text" ;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: #2C323A;
+}
+div.outside-container > span > span {
+  color: blue;
+  cursor: pointer;
+}
 .fa-check-circle {
   color: #28a745; //#5cb85c;
   font-size: 96px;

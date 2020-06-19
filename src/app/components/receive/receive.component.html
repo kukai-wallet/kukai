@@ -1,52 +1,5 @@
-<ng-container *ngIf="false">
 
-    <!-- Receive Modal -->
-    <ng-template #modal1 class="receive-modal">
-        <div class="modal-header">
-            <h4 class="modal-title pull-left"> {{ 'RECEIVECOMPONENT.RECEIVETEZ' | translate }} </h4>
-            <button type="button" class="close pull-right" aria-label="Close" (click)="close1()">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body">
-          <center>Your account QR code</center>
-          
-            <div class="row" *ngIf='activeAddress'>
-                <canvas id='canvas'></canvas>
-            </div>
-            <div class="form-row">
-              <div class="form-group col-md-12">
-                  <input [(ngModel)]="activeAddress" type="text" id="toAddress" class="form-control-plaintext text-color text-center" readonly>
-              </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-primary" id="sub" (click)="close1()"> {{ 'RECEIVECOMPONENT.CLOSE' | translate }} </button>
-        </div>
-    </ng-template>
-
-<!--       <div *ngIf='accounts' (click)="open1(modal1)" class="card text-white bg-indigo receive-card">
-        <div class="card-body">
-          <div class="row">
-            <div class="col-md-12 text-center">
-              <div class="text-value">{{ 'RECEIVECOMPONENT.RECEIVE' | translate }}</div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12 text-center">
-              <div class="h1 text-muted pt-3">
-                <i class="fa fa-qrcode" style="font-size: 45px;"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> -->
-
-    <!-- Showing different Receive Format according to actionButtonString -->
-    <div (click)="open1(modal1)" class="button green">{{ 'RECEIVECOMPONENT.RECEIVE' | translate }}</div>
-</ng-container>
-
-<button class="green" (click)="openModal()">Receive</button>
+<img class="qr-icon" src="../../../assets/img/qr.svg" (click)="openModal()">
 <!-- The Modal -->
 <div *ngIf="modalOpen" id="myModal" class="kukai-modal">
   <!-- Modal content -->

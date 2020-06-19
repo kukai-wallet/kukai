@@ -1,4 +1,7 @@
-<button class="blue" (click)="openModal()">Delegate</button>
+<div class="outside-container">
+  <span *ngIf="!activeAccount.delegate">No delegate set <span (click)="openModal()">(Choose a baker)</span></span>
+  <span *ngIf="activeAccount.delegate">{{ activeAccount.delegate }} <span (click)="openModal()">(Change baker)</span></span>
+</div>
 <!-- The Modal -->
 <div *ngIf="modalOpen" id="myModal" class="kukai-modal">
   <!-- Modal content -->

@@ -7,18 +7,20 @@
             </div>
             <div id="account-container">
                 <H2>Address</H2>
-                <span style="width: auto;">{{ account.address }}<img class="copy-icon" src="../../../assets/img/copy-icon.svg" (click)="copy(account)"></span>
+                <span style="width: auto;">{{ account.address }}<img class="copy-icon" src="../../../assets/img/copy-icon.svg" (click)="copy(account)"><app-receive [activeAddress]="account.address"></app-receive></span>
                 <H2>Balance</H2>
                 <div><span>{{ account.balanceXTZ / 1000000 | number: "1.0-6" }} tez</span><span class="mark">—</span><span class="grey">{{ account.balanceUSD | number: "1.0-0" }} USD</span></div>
                 <H2>Delegate</H2>
-                <span>{{ account.delegate }} </span>
+                <app-delegate [activeAccount]="account"></app-delegate>
+            </div>
+            <div class="bottom-container">
+              <app-send [activeAccount]="account"></app-send>
             </div>
         </div>
-        <div id="buttons">
-            <app-send [activeAccount]="account"></app-send>
-            <app-receive [activeAddress]="account.address"></app-receive>
-            <app-delegate [activeAccount]="account"></app-delegate>
-        </div>
+            <!--
+              <app-receive [activeAddress]="account.address"></app-receive>
+              <app-delegate [activeAccount]="account"></app-delegate>
+            -->
     </div>
     <div class="main-container large">
         <div class="top-container">
