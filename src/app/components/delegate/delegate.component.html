@@ -32,10 +32,10 @@
     <!-- Confirm transaction -->
     <div class="km-body" *ngIf="activeView === 1">
       <p class="preview">
-        From — {{ activeAccount.address }}
+        Current Account Address — {{ activeAccount.address }}
       </p>
       <p *ngIf="getDelegate()" class="preview">
-        To — {{ getDelegate() | delegatorName }}
+        Delegate to Baker Address — {{ getDelegate() | delegatorName }}
       </p>
       <p *ngIf="!getDelegate()" class="preview">
         Withdraw delegation

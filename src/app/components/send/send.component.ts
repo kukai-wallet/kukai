@@ -161,18 +161,20 @@ export class SendComponent implements OnInit {
     } else {
       const pwd = this.password;
       this.password = '';
-      this.messageService.startSpinner('Sending transaction...');
+      this.messageService.startSpinner('Signing transaction...');
       let keys;
       try {
         keys = await this.walletService.getKeys(pwd, this.activeAccount.address);
-      } finally {
+      } catch {
         this.messageService.stopSpinner();
       }
       if (keys) {
         this.pwdValid = '';
+        this.messageService.startSpinner('Sending transaction...');
         this.sendTransaction(keys);
         this.closeModal();
       } else {
+        this.messageService.stopSpinner();
         this.pwdValid = this.translate.instant('SENDCOMPONENT.WRONGPASSWORD');  // 'Wrong password!';
       }
     }
@@ -255,6 +257,7 @@ export class SendComponent implements OnInit {
         if (ans.success === true) {
           console.log('Transaction successful ', ans);
           if (ans.payload.opHash) {
+            this.messageService.stopSpinner()
             const metadata = { transactions: this.transactions, opHash: ans.payload.opHash };
             this.coordinatorService.boost(this.activeAccount.address, metadata);
             for (const transaction of this.transactions) {
@@ -266,11 +269,13 @@ export class SendComponent implements OnInit {
             await this.requestLedgerSignature();
           }
         } else {
+          this.messageService.stopSpinner()
           console.log('Transaction error id ', ans.payload.msg);
           this.messageService.addError(ans.payload.msg, 0);
         }
       },
       err => {
+        this.messageService.stopSpinner()
         console.log('Error Message ', JSON.stringify(err));
         if (this.walletService.isLedgerWallet()) {
           this.messageService.addError('Failed to create transaction', 0);
@@ -578,7 +583,7 @@ export class SendComponent implements OnInit {
     this.exportService.downloadOperationData(this.sendResponse.payload.unsignedOperation, false);
   }
   dynSize(): string {
-    const width = document.getElementById("myModal").offsetWidth;
+    const width = document.getElementById('myModal').offsetWidth;
     let size = this.amount ? this.amount.length : 0;
     if (width < 400) {
       size++;

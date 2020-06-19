@@ -1,28 +1,3 @@
-<!-- Confirm Modal -->
-<ng-template #modal1 class="confirm-modal">
-    <div class="modal-header">
-        <h4 class="modal-title pull-left">Add a new account</h4>
-        <button type="button" class="close pull-right" aria-label="Close" (click)="close1()">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    <div class="modal-body">
-        <p>Add a new account to your HD wallet. Enter your password to confirm.</p>
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                <label for="user-pwd">Password</label>
-                <input [(ngModel)]="password" (input)="errorMsg = ''" (change)="errorMsg = ''" type="password" id="user-pwd" class="form-control">
-            </div>
-        </div>
-    </div>
-    <div class="modal-footer first-modal">
-        <div class="panel-footer text-center">
-            <span class="pull-left">{{ errorMsg }}</span>
-        </div>
-        <button type="button" class="btn btn-primary" id="sub" (click)="addPkh()" [class.wait]="wait">Confirm</button>
-    </div>
-</ng-template>
-
 <img class="add" *ngIf="walletService.isHdWallet()" src="../../../assets/img/add.svg" (click)="openModal()">
 
 <!-- The Modal -->
@@ -31,11 +6,11 @@
   <div class="km-content">
     <div class="x" (click)="closeModal()"><img src="../../../assets/img/x.svg"></div>
     <div class="km-header">
-      <H1>Delegate</H1>
+      <H1>Add a new account</H1>
     </div>
     <!-- Prepare delegation -->
     <div class="km-body">
-      <p>Derive a new account for your HD wallet. Enter your password to confirm.</p>
+      <p>Add a new account to your HD wallet. Enter your password to confirm.</p>
       <div class="row-group" style="margin: 1.25rem 0 1.5rem;">
         <input [(ngModel)]="password" class="text password" placeholder="Password" type="password" (input)="this.errorMsg = ''" (change)="this.errorMsg = ''">
         <button  class="green confirm" (click)="addPkh()">Confirm</button>
