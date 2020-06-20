@@ -343,7 +343,6 @@ export class SendComponent implements OnInit {
     this.fee = '';
     this.gas = '';
     this.storage = '';
-    this.transactions = [];
     this.toMultipleDestinationsString = '';
     this.toMultipleDestinations = [];
     this.isMultipleDestinations = false;
