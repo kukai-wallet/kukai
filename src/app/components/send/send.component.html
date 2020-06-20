@@ -21,7 +21,8 @@
         <span class="tez">tez</span>
       </div>
       <div class="row-group">
-        <button class="small" (click)="sendEntireBalance(activeAccount, $event)">Send Max</button>
+        <button *ngIf="!this.isMultipleDestinations" class="small" (click)="sendEntireBalance(activeAccount, $event)">Send Max</button>
+        <p *ngIf="this.isMultipleDestinations"></p>
         <p class="fee"><ng-container *ngIf="!getTotalBurn() ; else burn">Fee: </ng-container>
           <ng-template #burn>Fee & storage cost: </ng-template>
           {{ getTotalCost() }}</p>

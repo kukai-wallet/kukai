@@ -257,7 +257,7 @@ export class SendComponent implements OnInit {
         if (ans.success === true) {
           console.log('Transaction successful ', ans);
           if (ans.payload.opHash) {
-            this.messageService.stopSpinner()
+            this.messageService.stopSpinner();
             const metadata = { transactions: this.transactions, opHash: ans.payload.opHash };
             this.coordinatorService.boost(this.activeAccount.address, metadata);
             for (const transaction of this.transactions) {
@@ -269,13 +269,13 @@ export class SendComponent implements OnInit {
             await this.requestLedgerSignature();
           }
         } else {
-          this.messageService.stopSpinner()
+          this.messageService.stopSpinner();
           console.log('Transaction error id ', ans.payload.msg);
           this.messageService.addError(ans.payload.msg, 0);
         }
       },
       err => {
-        this.messageService.stopSpinner()
+        this.messageService.stopSpinner();
         console.log('Error Message ', JSON.stringify(err));
         if (this.walletService.isLedgerWallet()) {
           this.messageService.addError('Failed to create transaction', 0);
@@ -320,6 +320,7 @@ export class SendComponent implements OnInit {
     this.defaultTransactionParams = zeroTxParams;
     this.prevEquiClass = '';
     this.isMultipleDestinations = !this.isMultipleDestinations;
+    this.transactions = [];
     this.toMultipleDestinationsString = '';
     this.formInvalid = '';
     this.toPkh = '';
@@ -327,7 +328,6 @@ export class SendComponent implements OnInit {
     this.fee = '';
     this.gas = '';
     this.storage = '';
-    this.advancedForm = false;
     this.updateDefaultValues();
   }
   burnAmount(): string {
@@ -343,6 +343,7 @@ export class SendComponent implements OnInit {
     this.fee = '';
     this.gas = '';
     this.storage = '';
+    this.transactions = [];
     this.toMultipleDestinationsString = '';
     this.toMultipleDestinations = [];
     this.isMultipleDestinations = false;
