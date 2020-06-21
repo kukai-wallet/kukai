@@ -25,6 +25,10 @@ export class NewImplicitComponent implements OnInit {
   ) {}
   openModal() {
     if (this.openPkhSpot()) {
+      // hide body scrollbar
+      const scrollBarWidth = window.innerWidth - document.body.offsetWidth;
+      document.body.style.marginRight = scrollBarWidth.toString();
+      document.body.style.overflow = 'hidden';
       this.clear();
       this.modalOpen = true;
     } else {
@@ -32,6 +36,9 @@ export class NewImplicitComponent implements OnInit {
     }
   }
   closeModal() {
+    // restore body scrollbar
+    document.body.style.marginRight = '';
+    document.body.style.overflow = '';
     this.clear();
     this.modalOpen = false;
   }

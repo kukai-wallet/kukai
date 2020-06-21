@@ -29,12 +29,19 @@ export class ReceiveComponent implements OnInit {
     ngOnInit() {
     }
     openModal() {
+      // hide body scrollbar
+      const scrollBarWidth = window.innerWidth - document.body.offsetWidth;
+      document.body.style.marginRight = scrollBarWidth.toString();
+      document.body.style.overflow = 'hidden';
       this.modalOpen = true;
       setTimeout(() => {
         this.getQR();
       }, 100);
     }
     closeModal() {
+      // restore body scrollbar
+      document.body.style.marginRight = '';
+      document.body.style.overflow = '';
       this.modalOpen = false;
     }
     getQR() {

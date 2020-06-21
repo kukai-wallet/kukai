@@ -65,12 +65,19 @@ export class DelegateComponent implements OnInit {
   }
   openModal() {
     if (this.walletService.wallet) {
+      // hide body scrollbar
+      const scrollBarWidth = window.innerWidth - document.body.offsetWidth;
+      document.body.style.marginRight = scrollBarWidth.toString();
+      document.body.style.overflow = 'hidden';
       this.clearForm();
       this.checkReveal();
       this.modalOpen = true;
     }
   }
   closeModal() {
+    // restore body scrollbar
+    document.body.style.marginRight = '';
+    document.body.style.overflow = '';
     this.modalOpen = false;
     this.activeView = 0;
     this.clearForm();

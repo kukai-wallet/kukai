@@ -106,6 +106,10 @@ export class SendComponent implements OnInit {
   }
   /* Modal 2 */
   openModal() {
+    // hide body scrollbar
+    const scrollBarWidth = window.innerWidth - document.body.offsetWidth;
+    document.body.style.marginRight = scrollBarWidth.toString();
+    document.body.style.overflow = 'hidden';
     console.log('open modal');
     this.modalOpen = true;
     if (this.walletService.wallet) {
@@ -180,6 +184,9 @@ export class SendComponent implements OnInit {
     }
   }
   closeModal() {
+    // restore body scrollbar
+    document.body.style.marginRight = '';
+    document.body.style.overflow = '';
     this.activeView = 0;
     this.modalOpen = false;
     this.clearForm();
