@@ -16,12 +16,12 @@
     <!-- Prepare transaction -->
     <div class="km-body" *ngIf="activeView === 0">
       <div class="amount">
-        <input class="input" class="custom-large" placeholder="0.00" [(ngModel)]="amount"
-          [style.font-size.rem]="dynSize()" [style.width.ch]="amount ? amount.length : 3.6" [disabled]="isMultipleDestinations">
+        <input #amountInput class="input" class="custom-large" placeholder="0.00" [(ngModel)]="amount"
+          [style.font-size.rem]="dynSize()" [style.width.ch]="amount ? amount.length : 3.6" [disabled]="isMultipleDestinations" (focus)="$event.target.select()">
         <span class="tez">tez</span>
       </div>
       <div class="row-group">
-        <button *ngIf="!this.isMultipleDestinations" class="small" (click)="sendEntireBalance(activeAccount, $event)">Send Max</button>
+        <button *ngIf="!this.isMultipleDestinations" tabindex=-1 class="small" (click)="sendEntireBalance(activeAccount, $event)">Send Max</button>
         <p *ngIf="this.isMultipleDestinations"></p>
         <p class="fee"><ng-container *ngIf="!getTotalBurn() ; else burn">Fee: </ng-container>
           <ng-template #burn>Fee & storage cost: </ng-template>
@@ -44,7 +44,7 @@
         <div class="row-group">
           <div class="switch-container">
             <label class="switch">
-              <input type="checkbox" [(ngModel)]="advancedForm">
+              <input type="checkbox" [(ngModel)]="advancedForm" tabindex=-1>
               <span class="slider round"></span>
             </label><span class="switch-desc">
               <ng-container *ngIf="!advancedForm">Off</ng-container>
@@ -71,7 +71,7 @@
           </div>
           <div class="group">
             <label>Max storage cost</label>
-            <input type="text" class="text" [value]="burnAmount()" readonly>
+            <input type="text" class="text" [value]="burnAmount()" tabindex=-1 readonly>
           </div>
         </div>
       </div>

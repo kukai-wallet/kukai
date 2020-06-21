@@ -1,4 +1,4 @@
-import { Component, TemplateRef, OnInit, ViewEncapsulation, Input, ViewChild } from '@angular/core';
+import { Component, TemplateRef, OnInit, ViewEncapsulation, Input, ViewChild, ElementRef } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { KeyPair, DefaultTransactionParams } from '../../interfaces';
@@ -47,7 +47,7 @@ export class SendComponent implements OnInit {
 
   // Transaction variables
   toPkh: string;
-  amount: string;
+  amount: string = '0.00';
   fee: string;
   sendFee: string;
   burnFee = 0;
@@ -77,6 +77,7 @@ export class SendComponent implements OnInit {
   modalRef1: BsModalRef;
   modalRef2: BsModalRef;
   modalRef3: BsModalRef;
+  @ViewChild('amountInput') amountInput2: ElementRef;
 
   constructor(
     private translate: TranslateService,
@@ -112,6 +113,10 @@ export class SendComponent implements OnInit {
     document.body.style.overflow = 'hidden';
     console.log('open modal');
     this.modalOpen = true;
+    setTimeout(()=>{
+      const inputElem = <HTMLInputElement>this.amountInput2.nativeElement;
+      inputElem.focus();
+    },100);  
     if (this.walletService.wallet) {
       if (!this.activeAccount) {
         this.activeAccount = this.implicitAccounts[0];
@@ -346,10 +351,11 @@ export class SendComponent implements OnInit {
   }
   clearForm() {
     this.toPkh = '';
-    this.amount = '';
+    this.amount = '0.00';
     this.fee = '';
     this.gas = '';
     this.storage = '';
+    this.advancedForm = false;
     this.toMultipleDestinationsString = '';
     this.toMultipleDestinations = [];
     this.isMultipleDestinations = false;
