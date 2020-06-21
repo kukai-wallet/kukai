@@ -17,11 +17,11 @@
     <div class="km-body" *ngIf="activeView === 0">
       <div class="amount">
         <input #amountInput class="input" class="custom-large" placeholder="0.00" [(ngModel)]="amount"
-          [style.font-size.rem]="dynSize()" [style.width.ch]="amount ? amount.length : 3.6" [disabled]="isMultipleDestinations" (focus)="$event.target.select()">
+          [style.font-size.rem]="dynSize()" [style.width.ch]="amount ? amount.length : 3.6" [disabled]="isMultipleDestinations" (click)="sendMax=false" (focus)="$event.target.select()">
         <span class="tez">tez</span>
       </div>
       <div class="row-group">
-        <button *ngIf="!this.isMultipleDestinations" tabindex=-1 class="small" (click)="sendEntireBalance(activeAccount, $event)">Send Max</button>
+        <button *ngIf="!this.isMultipleDestinations" tabindex=-1 class="small" [class.max]="sendMax" (click)="sendEntireBalance($event)">Send Max</button>
         <p *ngIf="this.isMultipleDestinations"></p>
         <p class="fee"><ng-container *ngIf="!getTotalBurn() ; else burn">Fee: </ng-container>
           <ng-template #burn>Fee & storage cost: </ng-template>

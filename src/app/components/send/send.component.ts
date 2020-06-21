@@ -1,6 +1,5 @@
 import { Component, TemplateRef, OnInit, ViewEncapsulation, Input, ViewChild, ElementRef } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap/modal';
-import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { KeyPair, DefaultTransactionParams } from '../../interfaces';
 import { TranslateService } from '@ngx-translate/core';
 import { WalletService } from '../../services/wallet/wallet.service';
@@ -15,7 +14,6 @@ import { Constants } from '../../constants';
 import { LedgerWallet } from '../../services/wallet/wallet';
 import { Account, ImplicitAccount, OriginatedAccount } from '../../services/wallet/wallet';
 import { MessageService } from '../../services/message/message.service';
-import { ThrowStmt } from '@angular/compiler';
 
 interface SendData {
   to: string;
@@ -39,15 +37,15 @@ export class SendComponent implements OnInit {
   /* New variables */
   modalOpen = false;
   advancedForm = false;
+  sendMax = false;
   /* old variables */
-  @ViewChild('modal1') modal1: TemplateRef<any>;
   @Input() activeAccount: Account;
   CONSTANTS = new Constants();
   defaultTransactionParams: DefaultTransactionParams = zeroTxParams;
 
   // Transaction variables
   toPkh: string;
-  amount: string = '0.00';
+  amount = '0.00';
   fee: string;
   sendFee: string;
   burnFee = 0;
@@ -58,7 +56,6 @@ export class SendComponent implements OnInit {
   toMultipleDestinations: SendData[] = [];
   activeView = 0;
   showTransactions: SendData[] = [];
-  showLimits = false;
   simSemaphore = 0;
   dom: Document;
   implicitAccounts = null;
@@ -74,9 +71,6 @@ export class SendComponent implements OnInit {
   ledgerError = '';
   showBtn = 'Show More';
 
-  modalRef1: BsModalRef;
-  modalRef2: BsModalRef;
-  modalRef3: BsModalRef;
   @ViewChild('amountInput') amountInput2: ElementRef;
 
   constructor(
@@ -113,10 +107,10 @@ export class SendComponent implements OnInit {
     document.body.style.overflow = 'hidden';
     console.log('open modal');
     this.modalOpen = true;
-    setTimeout(()=>{
+    setTimeout(() => {
       const inputElem = <HTMLInputElement>this.amountInput2.nativeElement;
       inputElem.focus();
-    },100);  
+    }, 100);
     if (this.walletService.wallet) {
       if (!this.activeAccount) {
         this.activeAccount = this.implicitAccounts[0];
@@ -205,12 +199,29 @@ export class SendComponent implements OnInit {
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     return parts.join('.');
   }
-  sendEntireBalance(account: Account, event: Event) {
-    if (this.simSemaphore) { return; }
+  sendEntireBalance(event: Event) {
     event.stopPropagation();
-    const max = this.maxToSend(account);
-    if (max.length && max.slice(0, 1) !== '-') {
-      this.amount = max;
+    this.sendMax = true;
+    this.checkMaxAmount();
+  }
+  checkMaxAmount() {
+    if (this.sendMax) {
+      const max = this.maxToSend(this.activeAccount);
+      if (max.length && max.slice(0, 1) !== '-') {
+        this.amount = max;
+      } else {
+        this.amount = '0';
+      }
+    }
+  }
+  updateMaxAmount() {
+    if (this.sendMax) {
+      const max = this.maxToSend(this.activeAccount);
+      if (max.length && max.slice(0, 1) !== '-') {
+        this.amount = max;
+      } else {
+        this.amount = '0';
+      }
     }
   }
   maxToSend(account: Account): string {
@@ -330,6 +341,7 @@ export class SendComponent implements OnInit {
   }
   toggleDestination() {
     this.defaultTransactionParams = zeroTxParams;
+    this.sendMax = false;
     this.prevEquiClass = '';
     this.isMultipleDestinations = !this.isMultipleDestinations;
     this.transactions = [];
@@ -356,6 +368,7 @@ export class SendComponent implements OnInit {
     this.gas = '';
     this.storage = '';
     this.advancedForm = false;
+    this.sendMax = false;
     this.toMultipleDestinationsString = '';
     this.toMultipleDestinations = [];
     this.isMultipleDestinations = false;
@@ -568,7 +581,11 @@ export class SendComponent implements OnInit {
     return totalSent.toString();
   }
   getTotalCost(): string {
-    return Big(this.getTotalFee()).plus(Big(this.getTotalBurn())).toString();
+    const totalFee = Big(this.getTotalFee()).plus(Big(this.getTotalBurn())).toString();
+    setTimeout(() => {
+      this.updateMaxAmount();
+    }, 100);
+    return totalFee;
   }
   getTotalFee(): number {
     if (this.fee) {
