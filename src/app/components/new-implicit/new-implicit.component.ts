@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, TemplateRef, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef, ChangeDetectorRef, ElementRef } from '@angular/core';
 import { WalletService } from '../../services/wallet/wallet.service';
 import { HdWallet } from '../../services/wallet/wallet';
 import { CoordinatorService } from '../../services/coordinator/coordinator.service';
@@ -11,7 +11,7 @@ import { MessageService } from '../../services/message/message.service';
   styleUrls: ['./new-implicit.component.scss'],
 })
 export class NewImplicitComponent implements OnInit {
-  @ViewChild('modal1') modal1: TemplateRef<any>;
+  @ViewChild('pwdInput') pwdView: ElementRef;
   modalOpen = false;
   password = '';
   errorMsg = '';
@@ -31,6 +31,10 @@ export class NewImplicitComponent implements OnInit {
       document.body.style.overflow = 'hidden';
       this.clear();
       this.modalOpen = true;
+      setTimeout(() => {
+        const inputElem = <HTMLInputElement>this.pwdView.nativeElement;
+        inputElem.focus();
+      }, 100);
     } else {
       this.messageService.addWarning('Can\'t create additional accounts when an unused account already exists');
     }

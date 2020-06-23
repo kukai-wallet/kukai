@@ -70,11 +70,6 @@ div#account-container {
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
 }
-.copy-icon {
-    padding-left: 0.5rem;
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
-}
 span {
     font-family: "Helvetica Now Text" ;
     font-style: normal;
@@ -110,7 +105,6 @@ div.address-container {
   padding-top: 0.5rem;
   display: flex;
   justify-content: space-between;
-  align-items: center;
 }
 .main-container span {
     margin-top: 0.5rem;
@@ -202,10 +196,8 @@ div.address-container {
     float: left;
     display: flex;
 }
-.copy-icon {
-    padding-left: 0.5rem;
-    margin-top: 0rem;
-    margin-bottom: 0rem;
+img.copy-icon {
+    margin-right: 0.5rem;
     cursor: pointer;
 }
 #operations-container div.line span,
@@ -296,6 +288,10 @@ div.line:last-child {
         width: 21rem;
     }
     #account-container div.icons {
+      width: 3rem;
       top: 0;
+    }
+    img.copy-icon {
+      margin-right: 1rem;
     }
   }

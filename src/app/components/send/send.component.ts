@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, Input } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, Input, ViewChild, ElementRef } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { KeyPair, DefaultTransactionParams } from '../../interfaces';
 import { TranslateService } from '@ngx-translate/core';
@@ -40,6 +40,7 @@ export class SendComponent implements OnInit {
   sendMax = false;
   /* old variables */
   @Input() activeAccount: Account;
+  @ViewChild('amountInput') amountInputView: ElementRef;
   CONSTANTS = new Constants();
   defaultTransactionParams: DefaultTransactionParams = zeroTxParams;
 
@@ -110,6 +111,12 @@ export class SendComponent implements OnInit {
         this.activeAccount = this.implicitAccounts[0];
       }
       this.clearForm();
+      if (window.innerWidth > 1300) {
+        setTimeout(() => {
+          const inputElem = <HTMLInputElement>this.amountInputView.nativeElement;
+          inputElem.focus();
+        }, 100);
+      }
       this.estimateService.preLoadData(this.activeAccount.pkh, this.activeAccount.pk);
     }
   }

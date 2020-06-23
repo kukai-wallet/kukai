@@ -1,4 +1,4 @@
-import { Component, TemplateRef, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, TemplateRef, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
@@ -26,7 +26,7 @@ export class DelegateComponent implements OnInit {
   revealFee = 0;
   pkhFee = 0.0013;
   ktFee = 0.003;
-  @ViewChild('modal1') modal1: TemplateRef<any>;
+  @ViewChild('toPkhInput') toPkhView: ElementRef;
   CONSTANTS = new Constants();
   @Input() activeAccount: Account;
   implicitAccounts;
@@ -72,6 +72,12 @@ export class DelegateComponent implements OnInit {
       this.clearForm();
       this.checkReveal();
       this.modalOpen = true;
+      if (window.innerWidth > 1300) {
+        setTimeout(() => {
+          const inputElem = <HTMLInputElement>this.toPkhView.nativeElement;
+          inputElem.focus();
+        }, 100);
+      }
     }
   }
   closeModal() {
