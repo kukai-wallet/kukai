@@ -19,6 +19,16 @@
 img {
     vertical-align: baseline;
 }
+a.view-all {
+  float: right;
+  margin: 0.125rem 1.25rem 0 0;
+  font-family: "Helvetica Now Text";
+  font-style: normal;
+  font-weight: normal;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: #5963FF;
+}
 .main-container {
     width: 25rem;
     height: 100%;
