@@ -43,7 +43,6 @@ a.view-all {
 }
 .main-container.small {
   position: relative;
-  min-height: 21rem;
 }
 .top-container {
     width: 39.875rem;
@@ -53,13 +52,17 @@ a.view-all {
     border-bottom: 1px solid #EAEBF9;
 }
 div.bottom-container {
-  position: absolute;
-  bottom: 0;
   width: 100%;
-  padding: 1rem;
+  padding: 2rem 0 1rem;
 }
 div#account-container {
     padding: 0 1rem;
+    height: calc(100% - 3.4375rem);
+    display: flex;
+    justify-content: space-between;
+    align-items: space-between;
+    flex-direction: column;
+
 }
 .account-row:hover { //#e6ffe6
     background-color: #EAEBF9 !important;
@@ -117,12 +120,12 @@ div.address-container {
     align-items: flex-end;
     color: #000000;
 }
-#account-container div {
+#account-container > div.mid-container div {
   display: flex;
-    width: 100%;
-    margin-top: 0.5rem;
+  width: 100%;
+  margin-top: 0.5rem;
 }
-#account-container div.icons {
+#account-container > div.mid-container div.icons {
   position: relative;
   top: 1.5rem;
   width: 3rem;
@@ -287,7 +290,7 @@ div.line:last-child {
     div.left-container {
         width: 21rem;
     }
-    #account-container div.icons {
+    #account-container > div.mid-container div.icons {
       width: 3rem;
       top: 0;
     }

@@ -6,22 +6,24 @@
         <H1>Account Information</H1>
       </div>
       <div id="account-container">
-        <div class="address-container">
-          <H2 style="margin-top: 0">Address</H2>
-          <div class="icons">
-            <img class="copy-icon" src="../../../assets/img/copy-icon.svg" (click)="copy(account)">
-            <app-receive [activeAddress]="account.address"></app-receive>
+        <div class="mid-container">
+          <div class="address-container">
+            <H2 style="margin-top: 0">Address</H2>
+            <div class="icons">
+              <img class="copy-icon" src="../../../assets/img/copy-icon.svg" (click)="copy(account)">
+              <app-receive [activeAddress]="account.address"></app-receive>
+            </div>
           </div>
+          <span style="width: auto">{{ account.address }}</span>
+          <H2>Balance</H2>
+          <div style="margin-top: 0"><span>{{ account.balanceXTZ / 1000000 | number: "1.0-6" }} tez</span><span
+              class="mark">—</span><span class="grey">{{ account.balanceUSD | number: "1.0-0" }} USD</span></div>
+          <H2>Delegate</H2>
+          <app-delegate [activeAccount]="account"></app-delegate>
         </div>
-        <span style="width: auto">{{ account.address }}</span>
-        <H2>Balance</H2>
-        <div style="margin-top: 0"><span>{{ account.balanceXTZ / 1000000 | number: "1.0-6" }} tez</span><span class="mark">—</span><span
-            class="grey">{{ account.balanceUSD | number: "1.0-0" }} USD</span></div>
-        <H2>Delegate</H2>
-        <app-delegate [activeAccount]="account"></app-delegate>
-      </div>
-      <div class="bottom-container">
-        <app-send [activeAccount]="account"></app-send>
+        <div class="bottom-container">
+          <app-send [activeAccount]="account"></app-send>
+        </div>
       </div>
     </div>
   </div>
