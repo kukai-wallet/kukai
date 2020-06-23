@@ -7,3 +7,6 @@ html, body {
     height: auto;
     margin: 0;
 }
+button, input, textarea {
+  -webkit-appearance: none !important;
+}

@@ -1,4 +1,4 @@
-import { Component, TemplateRef, OnInit, ViewEncapsulation, Input, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, Input } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { KeyPair, DefaultTransactionParams } from '../../interfaces';
 import { TranslateService } from '@ngx-translate/core';
@@ -45,7 +45,7 @@ export class SendComponent implements OnInit {
 
   // Transaction variables
   toPkh: string;
-  amount = '0.00';
+  amount = '';
   fee: string;
   sendFee: string;
   burnFee = 0;
@@ -70,8 +70,6 @@ export class SendComponent implements OnInit {
   XTZrate = 0;
   ledgerError = '';
   showBtn = 'Show More';
-
-  @ViewChild('amountInput') amountInput2: ElementRef;
 
   constructor(
     private translate: TranslateService,
@@ -107,10 +105,6 @@ export class SendComponent implements OnInit {
     document.body.style.overflow = 'hidden';
     console.log('open modal');
     this.modalOpen = true;
-    setTimeout(() => {
-      const inputElem = <HTMLInputElement>this.amountInput2.nativeElement;
-      inputElem.focus();
-    }, 100);
     if (this.walletService.wallet) {
       if (!this.activeAccount) {
         this.activeAccount = this.implicitAccounts[0];
@@ -120,29 +114,31 @@ export class SendComponent implements OnInit {
     }
   }
   async openModal2() {
-    this.formInvalid = this.checkInput(true);
-    if (!this.formInvalid && !this.simSemaphore) {
-      if (!this.amount) { this.amount = '0'; }
-      let clearFee = false;
-      if (!this.fee) {
-        this.fee = this.defaultTransactionParams.fee.toString();
-        clearFee = true;
-      }
-      this.prepTransactions();
-      this.formInvalid = this.checkBalance();
+    if (!this.simSemaphore) {
+      this.formInvalid = this.checkInput(true);
       if (!this.formInvalid) {
-        this.activeView++;
-        if (this.walletService.isLedgerWallet()) {
-          this.messageService.startSpinner('Preparing transaction...');
-          const keys = await this.walletService.getKeys('');
-          if (keys) {
-            await this.sendTransaction(keys);
-          } else {
-            this.messageService.stopSpinner();
-          }
+        if (!this.amount) { this.amount = '0'; }
+        let clearFee = false;
+        if (!this.fee) {
+          this.fee = this.defaultTransactionParams.fee.toString();
+          clearFee = true;
         }
-      } else if (clearFee) {
-        this.fee = '';
+        this.prepTransactions();
+        this.formInvalid = this.checkBalance();
+        if (!this.formInvalid) {
+          this.activeView++;
+          if (this.walletService.isLedgerWallet()) {
+            this.messageService.startSpinner('Preparing transaction...');
+            const keys = await this.walletService.getKeys('');
+            if (keys) {
+              await this.sendTransaction(keys);
+            } else {
+              this.messageService.stopSpinner();
+            }
+          }
+        } else if (clearFee) {
+          this.fee = '';
+        }
       }
     }
   }
@@ -363,7 +359,7 @@ export class SendComponent implements OnInit {
   }
   clearForm() {
     this.toPkh = '';
-    this.amount = '0.00';
+    this.amount = '';
     this.fee = '';
     this.gas = '';
     this.storage = '';
@@ -588,7 +584,7 @@ export class SendComponent implements OnInit {
     return totalFee;
   }
   getTotalFee(): number {
-    if (this.fee) {
+    if (this.fee !== '') {
       return Number(this.fee);
     }
     return Number(this.defaultTransactionParams.fee);
@@ -613,18 +609,14 @@ export class SendComponent implements OnInit {
     this.exportService.downloadOperationData(this.sendResponse.payload.unsignedOperation, false);
   }
   dynSize(): string {
-    const width = document.getElementById('myModal').offsetWidth;
-    let size = this.amount ? this.amount.length : 0;
-    if (width < 400) {
-      size++;
-    }
-    if (size < 8) {
+    const size = this.amount ? this.amount.length : 0;
+    if (size < 7) {
       return '5';
-    } else if (size < 10) {
+    } else if (size < 9) {
       return '4';
-    } else if (size < 13) {
+    } else if (size < 12) {
       return '3';
-    } else if (size < 18) {
+    } else if (size < 17) {
       return '2';
     }
     return '1.5';

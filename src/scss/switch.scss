@@ -80,6 +80,17 @@ div.switch-container {
   flex-direction: row;
   width: 28rem;
 }
+small {
+  font-family: "IBM Plex Sans";
+  font-style: normal;
+  font-weight: normal;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  letter-spacing: 0.32px;
+  color: #393939;
+  margin-top: 2.5rem;
+  margin-bottom: 0.5rem;
+}
 @media screen and (max-width: 29rem) {
   div.switch-container {
       width: 20rem;

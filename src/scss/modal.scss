@@ -87,13 +87,14 @@ div.amount {
 }
 input.custom-large {
   width: auto;
-  font-family: "Helvetica Now Text";
+  font-family: Arial, Helvetica, sans-serif;
   font-style: normal;
   font-weight: normal;
   font-size: 5rem;
   line-height: 5rem;
   color: #2C323A;
   opacity: 0.4;
+  padding: 0;
   text-align: center;
   border: 0;
 }

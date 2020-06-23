@@ -31,7 +31,15 @@ button.purple {
     0px 16px 24px rgba(164, 168, 236, 0.24);
   transition: margin-top 0.1s ease-in, margin-bottom 0.1s ease-in;
 }
-
+small {
+  margin-bottom: 0;
+}
+div.switch-container {
+  margin-top: 0.5rem;
+}
+input.text.no-bg {
+  background: #fcfcfc;
+}
 .mono {
   font-family: "Courier New", Courier, monospace;
 }
