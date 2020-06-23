@@ -17,7 +17,7 @@
             <input type="password" class="text" (keydown.enter)='checkImportPwd()' id="pwd" [(ngModel)]="pwd"
                 placeholder="Password">
             <div class="buttons single">
-                <div class="button next" (click)='checkImportPwd()'>Authenticate</div>
+                <div class="button next" (click)='checkImportPwd()'>Import</div>
             </div>
         </div>
         <div class="buttons single">
@@ -88,7 +88,7 @@
     <p class="description bold">Your wallet is now set up and ready to be used.</p>
     <p class="description">Download your encrypted keystore file and import it when you want to access your wallet.</p>
     <div class="whitebox final">
-        <p class="description bold pkh">Your first derived address:&#10;&#13;{{ showPkh() }}</p>
+        <p class="description bold pkh">Your public account address:&#10;&#13;{{ showPkh() }}</p>
         <div class="buttons single">
             <div class="button next" (click)="download()">Download</div>
         </div>
