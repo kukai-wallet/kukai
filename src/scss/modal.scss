@@ -98,6 +98,9 @@ input.custom-large {
   text-align: center;
   border: 0;
 }
+input.custom-large:disabled {
+  background-color: rgba(0, 0, 0, 0);
+}
 input:focus, textarea:focus {
   outline: none;
 }
