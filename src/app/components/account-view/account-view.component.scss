@@ -58,8 +58,8 @@ div.bottom-container {
   width: 100%;
   padding: 1rem;
 }
-#account-container div {
-    margin-top: 0.5rem;
+div#account-container {
+    padding: 0 1rem;
 }
 .account-row:hover { //#e6ffe6
     background-color: #EAEBF9 !important;
@@ -93,9 +93,7 @@ span {
     color: #2C323A;
 }
 .main-container H2 {
-    margin-left: 1rem;
-    margin-top: 1rem;
-    margin-bottom: 0;
+    margin: 1rem 0 0;
     font-family: "Helvetica Now Text";
     font-style: normal;
     font-weight: 500;
@@ -108,8 +106,13 @@ span {
     -webkit-opacity: 0.4;
     -khtml-opacity: 0.4;
 }
+div.address-container {
+  padding-top: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 .main-container span {
-    margin-left: 1rem;
     margin-top: 0.5rem;
     font-family: "Helvetica Now Text";
     font-style: normal;
@@ -121,14 +124,19 @@ span {
     color: #000000;
 }
 #account-container div {
+  display: flex;
     width: 100%;
-    margin-left: 0.5rem;
+    margin-top: 0.5rem;
 }
-#account-container div span {
-    display: inline;
-    margin-left: 0.5rem;
+#account-container div.icons {
+  position: relative;
+  top: 1.5rem;
+  width: 3rem;
+  line-height: 1rem;
+  height: 1rem;
 }
 .mark {
+  margin: 0 0.25rem;
     align-items: center;
     color: #000000;
     opacity: 0.2;
@@ -286,5 +294,8 @@ div.line:last-child {
     }
     div.left-container {
         width: 21rem;
+    }
+    #account-container div.icons {
+      top: 0;
     }
   }

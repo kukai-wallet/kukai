@@ -1,75 +1,106 @@
 <app-header [activeAccount]="account"></app-header>
 <div id="wrapper" *ngIf="account">
-    <div class="left-container">
-        <div class="main-container small">
-            <div class="top-container">
-                <H1>Account Information</H1>
-            </div>
-            <div id="account-container">
-                <H2>Address</H2>
-                <span style="width: auto;">{{ account.address }}<img class="copy-icon" src="../../../assets/img/copy-icon.svg" (click)="copy(account)"><app-receive [activeAddress]="account.address"></app-receive></span>
-                <H2>Balance</H2>
-                <div><span>{{ account.balanceXTZ / 1000000 | number: "1.0-6" }} tez</span><span class="mark">—</span><span class="grey">{{ account.balanceUSD | number: "1.0-0" }} USD</span></div>
-                <H2>Delegate</H2>
-                <app-delegate [activeAccount]="account"></app-delegate>
-            </div>
-            <div class="bottom-container">
-              <app-send [activeAccount]="account"></app-send>
-            </div>
+  <div class="left-container">
+    <div class="main-container small">
+      <div class="top-container">
+        <H1>Account Information</H1>
+      </div>
+      <div id="account-container">
+        <div class="address-container">
+          <H2 style="margin-top: 0">Address</H2>
+          <div class="icons">
+            <img class="copy-icon" src="../../../assets/img/copy-icon.svg" (click)="copy(account)">
+            <app-receive [activeAddress]="account.address"></app-receive>
+          </div>
         </div>
-            <!--
+        <span style="width: auto">{{ account.address }}</span>
+        <H2>Balance</H2>
+        <div style="margin-top: 0"><span>{{ account.balanceXTZ / 1000000 | number: "1.0-6" }} tez</span><span class="mark">—</span><span
+            class="grey">{{ account.balanceUSD | number: "1.0-0" }} USD</span></div>
+        <H2>Delegate</H2>
+        <app-delegate [activeAccount]="account"></app-delegate>
+      </div>
+      <div class="bottom-container">
+        <app-send [activeAccount]="account"></app-send>
+      </div>
+    </div>
+    <!--
               <app-receive [activeAddress]="account.address"></app-receive>
               <app-delegate [activeAccount]="account"></app-delegate>
             -->
+  </div>
+  <div class="main-container large">
+    <div class="top-container">
+      <H1 style="float:left">Recent Activity</H1>
+      <a class="view-all" href="{{ explorerURL(account.address) }}" target="_blank">(View all)</a>
     </div>
-    <div class="main-container large">
-        <div class="top-container">
-            <H1 style="float:left">Recent Activity</H1>
-            <a class="view-all" href="{{ explorerURL(account.address) }}" target="_blank">(View all)</a>
-        </div>
-        <div id="operations-container" *ngIf="this.translate.store.translations.en">
-            <ng-container *ngIf="!account.activities.length">
-                <div class="line"><span>No transactions yet</span></div>
-            </ng-container>
-            <ng-container *ngFor="let activity of account.activities | slice:0:5">
-                <ng-container [ngSwitch]="getType(activity)">
-                
-                    <div *ngSwitchCase="'sent'" class="sent">
-                        <img src="../../../assets/img/sent.svg">
-                        <div>
-                        <div class="line"><span class="red">Sent {{ activity.amount / 1000000 | number:'1.0-6' }} tez</span><a href="{{ explorerURL(activity.hash) }}" target="_blank"><ng-container *ngIf="activity.status > 0">{{ activity.timestamp | timeAgo:trigger }}</ng-container><ng-container *ngIf="activity.status === 0">Unconfirmed</ng-container></a></div>
-                        <div class="line"><span class="grey">To —</span><span class="grey truncate-overflow">{{ getCounterparty(activity) }}</span></div>
-                        </div>
-                    </div>
-                    <div *ngSwitchCase="'received'" class="received">
-                        <img src="../../../assets/img/received.svg">
-                        <div>
-                        <div class="line"><span class="green">Received {{ activity.amount / 1000000 | number:'1.0-6' }} tez</span><a href="{{ explorerURL(activity.hash) }}" target="_blank"><ng-container *ngIf="activity.status > 0">{{ activity.timestamp | timeAgo:trigger }}</ng-container><ng-container *ngIf="activity.status === 0">Unconfirmed</ng-container></a></div>
-                        <div class="line"><span class="grey">From —</span><span class="truncate-overflow grey">{{ getCounterparty(activity) }}</span></div>
-                        </div>
-                    </div>
-                    <div *ngSwitchCase="'delegated'" class="delegated">
-                        <img src="../../../assets/img/delegated.svg">
-                        <div>
-                        <div class="line"><span class="blue">Delegated</span><a href="{{ explorerURL(activity.hash) }}" target="_blank"><ng-container *ngIf="activity.status > 0">{{ activity.timestamp | timeAgo:trigger }}</ng-container><ng-container *ngIf="activity.status === 0">Unconfirmed</ng-container></a></div>
-                        <div class="line"><span class="grey">To —</span><span class="truncate-overflow grey">{{ getCounterparty(activity) }}</span></div>
-                        </div>
-                    </div>
-                    <div *ngSwitchCase="'undelegated'" class="delegated">
-                        <img src="../../../assets/img/delegated.svg">
-                        <div>
-                        <div class="line"><span class="blue">Undelegated</span><a href="{{ explorerURL(activity.hash) }}" target="_blank"><ng-container *ngIf="activity.status > 0">{{ activity.timestamp | timeAgo:trigger }}</ng-container><ng-container *ngIf="activity.status === 0">Unconfirmed</ng-container></a></div>
-                        <div class="line"><span class="grey">To —</span><span class="truncate-overflow grey">-</span></div>
-                        </div>
-                    </div>
-                    <div *ngSwitchDefault>
-                        <div style="padding-left: 0.75rem">
-                        <div class="line"><span class="black">{{ getType(activity) | titlecase }}</span><a href="{{ explorerURL(activity.hash) }}" target="_blank"><ng-container *ngIf="activity.status > 0">{{ activity.timestamp | timeAgo:trigger }}</ng-container><ng-container *ngIf="activity.status === 0">Unconfirmed</ng-container></a></div>
-                        <div class="line"><span class="grey">Counterparty —</span><span class="truncate-overflow grey">{{ getCounterparty(activity) }}</span></div>
-                        </div>
-                    </div>
-                </ng-container>
-            </ng-container>
-        </div>
+    <div id="operations-container" *ngIf="this.translate.store.translations.en">
+      <ng-container *ngIf="!account.activities.length">
+        <div class="line"><span>No transactions yet</span></div>
+      </ng-container>
+      <ng-container *ngFor="let activity of account.activities | slice:0:5">
+        <ng-container [ngSwitch]="getType(activity)">
+
+          <div *ngSwitchCase="'sent'" class="sent">
+            <img src="../../../assets/img/sent.svg">
+            <div>
+              <div class="line"><span class="red">Sent {{ activity.amount / 1000000 | number:'1.0-6' }} tez</span><a
+                  href="{{ explorerURL(activity.hash) }}" target="_blank">
+                  <ng-container *ngIf="activity.status > 0">{{ activity.timestamp | timeAgo:trigger }}</ng-container>
+                  <ng-container *ngIf="activity.status === 0">Unconfirmed</ng-container>
+                </a></div>
+              <div class="line"><span class="grey">To —</span><span
+                  class="grey truncate-overflow">{{ getCounterparty(activity) }}</span></div>
+            </div>
+          </div>
+          <div *ngSwitchCase="'received'" class="received">
+            <img src="../../../assets/img/received.svg">
+            <div>
+              <div class="line"><span class="green">Received {{ activity.amount / 1000000 | number:'1.0-6' }}
+                  tez</span><a href="{{ explorerURL(activity.hash) }}" target="_blank">
+                  <ng-container *ngIf="activity.status > 0">{{ activity.timestamp | timeAgo:trigger }}</ng-container>
+                  <ng-container *ngIf="activity.status === 0">Unconfirmed</ng-container>
+                </a></div>
+              <div class="line"><span class="grey">From —</span><span
+                  class="truncate-overflow grey">{{ getCounterparty(activity) }}</span></div>
+            </div>
+          </div>
+          <div *ngSwitchCase="'delegated'" class="delegated">
+            <img src="../../../assets/img/delegated.svg">
+            <div>
+              <div class="line"><span class="blue">Delegated</span><a href="{{ explorerURL(activity.hash) }}"
+                  target="_blank">
+                  <ng-container *ngIf="activity.status > 0">{{ activity.timestamp | timeAgo:trigger }}</ng-container>
+                  <ng-container *ngIf="activity.status === 0">Unconfirmed</ng-container>
+                </a></div>
+              <div class="line"><span class="grey">To —</span><span
+                  class="truncate-overflow grey">{{ getCounterparty(activity) }}</span></div>
+            </div>
+          </div>
+          <div *ngSwitchCase="'undelegated'" class="delegated">
+            <img src="../../../assets/img/delegated.svg">
+            <div>
+              <div class="line"><span class="blue">Undelegated</span><a href="{{ explorerURL(activity.hash) }}"
+                  target="_blank">
+                  <ng-container *ngIf="activity.status > 0">{{ activity.timestamp | timeAgo:trigger }}</ng-container>
+                  <ng-container *ngIf="activity.status === 0">Unconfirmed</ng-container>
+                </a></div>
+              <div class="line"><span class="grey">To —</span><span class="truncate-overflow grey">-</span></div>
+            </div>
+          </div>
+          <div *ngSwitchDefault>
+            <div style="padding-left: 0.75rem">
+              <div class="line"><span class="black">{{ getType(activity) | titlecase }}</span><a
+                  href="{{ explorerURL(activity.hash) }}" target="_blank">
+                  <ng-container *ngIf="activity.status > 0">{{ activity.timestamp | timeAgo:trigger }}</ng-container>
+                  <ng-container *ngIf="activity.status === 0">Unconfirmed</ng-container>
+                </a></div>
+              <div class="line"><span class="grey">Counterparty —</span><span
+                  class="truncate-overflow grey">{{ getCounterparty(activity) }}</span></div>
+            </div>
+          </div>
+        </ng-container>
+      </ng-container>
     </div>
+  </div>
 </div>
