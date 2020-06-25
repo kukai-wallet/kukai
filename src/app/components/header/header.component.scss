@@ -37,7 +37,7 @@ div.middle img {
     flex-direction: row;
     justify-content: space-between;
 }
-#logo {
+a.logo {
     margin: 2.25rem 2rem;
 }
 #menu {
@@ -139,7 +139,7 @@ div.middle img {
     .middle > img {
         display: none;
     }
-    img#logo {
+    a.logo {
       margin: 2.25rem 0 2.25rem 1.25rem;
     }
     div#menu {
