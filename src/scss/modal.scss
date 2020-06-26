@@ -79,13 +79,13 @@ div.km-header > span.close:focus {
 div.km-body {
   margin: 1rem;
 }
-div.amount {
+div.kukai-modal div.amount {
   display: flex;
   justify-content: center;
   flex-direction: row;
   height: 5rem;
 }
-input.custom-large {
+div.kukai-modal input.custom-large {
   width: auto;
   font-family: Arial, Helvetica, sans-serif;
   font-style: normal;
@@ -93,18 +93,19 @@ input.custom-large {
   font-size: 5rem;
   line-height: 5rem;
   color: #2C323A;
+  background: #fcfcfc;
   opacity: 0.4;
   padding: 0;
   text-align: center;
   border: 0;
 }
-input.custom-large:disabled {
+div.kukai-modal input.custom-large:disabled {
   background-color: rgba(0, 0, 0, 0);
 }
-input:focus, textarea:focus {
+div.kukai-modal input:focus, textarea:focus {
   outline: none;
 }
-span.tez {
+div.kukai-modal span.tez {
   font-family: "Helvetica Now Text" ;
   font-style: normal;
   font-weight: 500;
@@ -113,7 +114,7 @@ span.tez {
   color: #2C323A;
   opacity: 0.4;
 }
-p.fee {
+div.kukai-modal p.fee {
   margin-top: 0.375rem;
   font-family: "Helvetica Now Text";
   font-style: normal;
@@ -123,7 +124,7 @@ p.fee {
   color: #2C323A;
   opacity: 0.4;
 }
-p.preview {
+div.kukai-modal p.preview {
   font-family: "Helvetica Now Text";
   font-style: normal;
   font-weight: normal;
@@ -135,7 +136,7 @@ p.preview {
   opacity: 0.6;
   margin-bottom: 0.5rem;
 }
-td, th {
+div.kukai-modal td, th {
   font-family: "Helvetica Now Text";
   font-style: normal;
   font-weight: normal;
@@ -144,10 +145,10 @@ td, th {
   color: #000000;
   opacity: 0.6;
 }
-th {
+div.kukai-modal th {
   font-weight: bold;
 }
-label {
+div.km-content label {
   margin-bottom: 0.5rem;
   font-family: "Helvetica Now Text";
   font-style: normal;
@@ -159,7 +160,7 @@ label {
   color: #2C323A;
   opacity: 0.4;
 }
-p, span.danger {
+div.kukai-modal p, span.danger {
   font-family: "Helvetica Now Text";
   font-style: normal;
   font-weight: normal;
@@ -169,20 +170,20 @@ p, span.danger {
   align-items: flex-end;
   color: #000000;
 }
-span.no-margin,
-span.margin {
+div.kukai-modal span.no-margin,
+div.kukai-modal span.margin {
   color: #FF0000;
 }
-span.no-margin {
+div.kukai-modal span.no-margin {
   margin-top: 0.75rem;
   margin-bottom: -1.75rem;
   color: #FF0000;
 }
-div.group {
+div.kukai-modal div.group {
   margin-top: 1.5rem;
 }
-input.text,
-textarea.text {
+div.kukai-modal input.text,
+div.kukai-modal textarea.text {
   width: 100%;
   background: #E1E1E1;
   border-radius: 0.5rem;
@@ -197,43 +198,43 @@ textarea.text {
   padding-left: 1rem;
   border: 0;
 }
-input.text.password {
+div.kukai-modal input.text.password {
   width: 14rem;
 }
-textarea.text {
+div.kukai-modal textarea.text {
   padding-top: 0.5rem;
   height: 7rem;
   line-height: 1.25rem;
   resize: none;
 }
-input.text::placeholder,
-textarea.text::placeholder {
+div.kukai-modal input.text::placeholder,
+div.kukai-modal textarea.text::placeholder {
   color: #A8A8A8;
   opacity: 1;
 }
-input.text::-webkit-input-placeholder,
-input.text:-ms-input-placeholder,
-textarea.text::-webkit-input-placeholder,
-textarea.text:-ms-input-placeholder {
+div.kukai-modal input.text::-webkit-input-placeholder,
+div.kukai-modal input.text:-ms-input-placeholder,
+div.kukai-modal textarea.text::-webkit-input-placeholder,
+div.kukai-modal textarea.text:-ms-input-placeholder {
   color: #A8A8A8;
 }
-textarea.text::placeholder,
-textarea.text::-webkit-input-placeholder,
-textarea.text:-ms-input-placeholder {
+div.kukai-modal textarea.text::placeholder,
+div.kukai-modal textarea.text::-webkit-input-placeholder,
+div.kukai-modal textarea.text:-ms-input-placeholder {
   padding-top: 0.5rem;
   line-height: 1.25rem;
 }
-div.row-group {
+div.kukai-modal div.row-group {
   display: flex;
   justify-content: space-between;
 }
-div.row-group > div.group:first-child {
+div.kukai-modal div.row-group > div.group:first-child {
   margin-right: 1rem;
 }
-div.advanced {
+div.kukai-modal div.advanced {
   margin-top: 1.5rem;
 }
-button.green {
+div.kukai-modal button.green {
   font-family: "Helvetica Now Text";
   font-style: normal;
   font-weight: bold;
@@ -253,18 +254,18 @@ button.green {
   margin-top: 2.5rem;
   margin-bottom: 1.5rem;
 }
-button.green.confirm {
+div.kukai-modal button.green.confirm {
   height: 2.5rem;
   width: 8rem;
   margin: 0;
 }
-button:focus {
+div.kukai-modal button:focus {
   outline: none;
 }
-div.switch-container {
+div.kukai-modal div.switch-container {
   width: auto !important;
 }
-button.small {
+div.kukai-modal button.small {
   font-family: "Helvetica Now Text";
   font-style: normal;
   font-weight: 500;
@@ -282,18 +283,18 @@ button.small {
   border-radius: 0.3125rem;
   border: 0;
 }
-button.small.max {
+div.kukai-modal button.small.max {
   background: #d5f2dc;
 }
-button.small.multiple-destinations {
+div.kukai-modal button.small.multiple-destinations {
   color: #5963FF;
   opacity: 1;
   margin: 1rem 1.5rem;
 }
-div.advanced > div.row-group {
+div.kukai-modal div.advanced > div.row-group {
   height: 1.5rem;
 }
-div.x {
+div.kukai-modal div.x {
   position: absolute;
   top: -1rem;
   right: -1rem;
@@ -309,11 +310,11 @@ div.x {
   cursor: pointer;
 }
 @media screen and (max-width: 27rem) {
-  div.x {
+  div.kukai-modal div.x {
     right: -1px;
     border-bottom-right-radius: 0;
   }
-  button.small.multiple-destinations {
+  div.kukai-modal button.small.multiple-destinations {
     margin-right: 2.5rem;
   }
 }
@@ -321,7 +322,7 @@ div.x {
   div.kukai-modal > div.km-content {
     width: 23rem;
   }
-  input.text.password {
+  div.kukai-modal input.text.password {
     width: 12rem;
   }
 }
