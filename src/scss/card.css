@@ -1,7 +1,7 @@
-H1,
-span,
-p,
-div.whitebox {
+.kukai-card H1,
+.kukai-card span,
+.kukai-card p,
+.kukai-card div.whitebox {
   font-family: "Helvetica Now Text";
   font-style: normal;
   display: flex;
@@ -12,16 +12,16 @@ div.whitebox {
   max-width: 34rem;
   padding: 0 0.5rem;
 }
-p.description {
+.kukai-card p.description {
   margin-top: 1.375rem;
 }
-p.description.bold {
+.kukai-card p.description.bold {
   font-weight: bold;
 }
-p.description.red {
+.kukai-card p.description.red {
   color: #ff0000;
 }
-H1 {
+.kukai-card H1 {
   padding-bottom: 1.125rem;
   margin-block-end: 0;
   font-weight: bold;
@@ -29,13 +29,13 @@ H1 {
   line-height: 4rem;
   letter-spacing: -1.4px;
 }
-span,
-p {
+.kukai-card span,
+.kukai-card p {
   font-weight: normal;
   font-size: 1rem;
   line-height: 1.5rem;
 }
-div.whitebox {
+.kukai-card div.whitebox {
   font-size: 1rem;
   line-height: 1.5rem;
   margin-top: 4rem;
@@ -50,7 +50,7 @@ div.whitebox {
   border-radius: 0.75rem;
   font-weight: bold;
 }
-div.seed-blur {
+.kukai-card div.seed-blur {
   margin-top: -8.5625rem;
   margin-bottom: 0.0625rem;
   height: 8.5rem;
@@ -65,30 +65,30 @@ div.seed-blur {
   align-items: center;
   flex-direction: column;
 }
-span.black {
+.kukai-card span.black {
   color: black;
 }
-span.step-counter {
+.kukai-card span.step-counter {
   display: block;
   margin-top: 1.5rem;
   width: 100%;
   text-align: center;
   max-width: 100%;
 }
-div.buttons {
+.kukai-card div.buttons {
   margin-top: 4.5rem;
   width: 17.5rem;
   display: flex;
   justify-content: space-between;
 }
-div.buttons.single {
+.kukai-card div.buttons.single {
   justify-content: center;
   width: auto;
 }
-div.buttons.single.finish {
+.kukai-card div.buttons.single.finish {
   margin-top: 2.5rem;
 }
-div.button {
+.kukai-card div.button {
   border-radius: 0.75rem;
   width: 8rem;
   height: 3rem;
@@ -104,62 +104,62 @@ div.button {
   cursor: pointer;
   transition: margin-top 0.1s ease-in, margin-bottom 0.1s ease-in;
 }
-div.button:hover {
+.kukai-card div.button:hover {
   margin-top: -0.125rem;
 }
-div.buttons.single div.button:hover {
+.kukai-card div.buttons.single div.button:hover {
   margin-bottom: 0.125rem;
 }
-div.button.next {
+.kukai-card div.button.next {
   color: #098424;
   box-shadow: 0px 0px 1px rgba(155, 227, 171, 0.04),
     0px 2px 6px rgba(155, 227, 171, 0.04),
     0px 16px 24px rgba(155, 227, 171, 0.24);
 }
-div.button.back {
+.kukai-card div.button.back {
   background: rgba(0, 0, 0, 0.08);
 }
-div.button.next {
+.kukai-card div.button.next {
   background: #9be3ab;
 }
-div.button.disabled-button {
+.kukai-card div.button.disabled-button {
   pointer-events: none;
   opacity: 0.4;
   -webkit-opacity: 0.4;
   -khtml-opacity: 0.4;
 }
-a {
+.kukai-card a {
   color: inherit;
   text-decoration: inherit;
 }
-input:focus {
+.kukai-card input:focus {
   outline: none;
 }
 @media screen and (max-width: 30rem) {
-  div.whitebox {
+  .kukai-card div.whitebox {
     margin-top: 4rem;
     width: 22rem;
     height: 11.5rem;
   }
-  div.seed-blur {
+  .kukai-card div.seed-blur {
     width: 22rem;
     height: 11.5rem;
     margin-top: -11.5625rem;
   }
 }
 /* Step 2 */
-div.word-verify {
+.kukai-card div.word-verify {
   margin-top: 2.75rem;
   display: flex;
   justify-content: center;
   align-items: flex-start;
   flex-direction: row;
 }
-div.word-input {
+.kukai-card div.word-input {
   margin-left: 5rem;
   margin-right: 5rem;
 }
-div.word-input > input {
+.kukai-card div.word-input > input {
   margin-top: 0.5rem;
   height: 2.5rem;
   width: 17.5rem;
@@ -167,7 +167,7 @@ div.word-input > input {
   text-align: center;
   border-width: 0;
 }
-span.word-index {
+.kukai-card span.word-index {
   display: block;
   font-family: "IBM Plex Sans";
   font-style: normal;
@@ -178,10 +178,10 @@ span.word-index {
   letter-spacing: 0.32px;
   color: #393939;
 }
-div.word-hint {
+.kukai-card div.word-hint {
   width: 6rem;
 }
-div.word-hint > span.word-value {
+.kukai-card div.word-hint > span.word-value {
   display: block;
   margin-top: 1.25rem;
   font-family: "IBM Plex Sans";
@@ -193,7 +193,7 @@ div.word-hint > span.word-value {
   letter-spacing: 0.16px;
   color: #737373;
 }
-progress[value] {
+.kukai-card progress[value] {
   -webkit-appearance: none;
   appearance: none;
   border: none;
@@ -202,45 +202,45 @@ progress[value] {
   margin-top: 2.5rem;
   border-radius: 4px;
 }
-progress::-webkit-progress-bar,
-progress {
+.kukai-card progress::-webkit-progress-bar,
+.kukai-card progress {
   background-color: #e1e1e1;
   border-radius: 4px;
   width: 100%;
 }
-progress::-webkit-progress-value {
+.kukai-card progress::-webkit-progress-value {
   background-color: #5963ff !important;
   border-radius: 20px;
 }
-progress::-moz-progress-bar {
+.kukai-card progress::-moz-progress-bar {
   background-color: #5963ff !important;
   border-radius: 20px;
 }
 
-progress {
+.kukai-card progress {
   color: #5963ff;
   border-radius: 20px;
 }
 @media screen and (max-width: 36rem) {
-  div.word-input {
+  .kukai-card div.word-input {
     margin-left: 1rem;
     margin-right: 1rem;
   }
 }
 @media screen and (max-width: 32rem) {
-  div.word-input {
+  .kukai-card div.word-input {
     margin-left: 0.5rem;
     margin-right: 0.5rem;
   }
-  div.word-input > input {
+  .kukai-card div.word-input > input {
     width: 10rem;
   }
-  progress[value] {
+  .kukai-card progress[value] {
     width: 20rem;
   }
 }
 /* Step 3 */
-small {
+.kukai-card small {
   font-family: "IBM Plex Sans";
   font-style: normal;
   font-weight: normal;
@@ -252,7 +252,7 @@ small {
   margin-bottom: 0.5rem;
   width: 28rem;
 }
-small.grey {
+.kukai-card small.grey {
   margin-top: 0.25rem;
   margin-bottom: -1.25rem;
   color: #393939;
@@ -260,8 +260,8 @@ small.grey {
   -webkit-opacity: 0.4;
   -khtml-opacity: 0.4;
 }
-input.text,
-textarea.text {
+.kukai-card input.text,
+.kukai-card textarea.text {
   width: 28rem;
   background: #e1e1e1;
   border-radius: 4px;
@@ -276,41 +276,41 @@ textarea.text {
   letter-spacing: 0.16px;
   color: #393939;
 }
-textarea.text {
+.kukai-card textarea.text {
   height: 7rem;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   resize: none;
 }
-::-webkit-input-placeholder {
+.kukai-card ::-webkit-input-placeholder {
   color: #737373;
 }
-::-moz-input-placeholder {
+.kukai-card ::-moz-input-placeholder {
   color: #737373;
 }
-:-ms-input-placeholder {
+.kukai-card :-ms-input-placeholder {
   color: #737373;
 }
 @media screen and (max-width: 29rem) {
-  input.text,
-  textarea.text {
+  .kukai-card input.text,
+  .kukai-card textarea.text {
     width: 20rem;
   }
-  small {
+  .kukai-card small {
     width: 20rem;
   }
 }
 
 /* Step 4 */
-p.pkh {
+.kukai-card p.pkh {
   margin-top: 0;
 }
-div.whitebox.final {
+.kukai-card div.whitebox.final {
   justify-content: center;
   align-items: center;
   flex-direction: column;
   height: 10rem;
 }
-div.whitebox .buttons {
+.kukai-card div.whitebox .buttons {
   margin-top: 1rem;
 }

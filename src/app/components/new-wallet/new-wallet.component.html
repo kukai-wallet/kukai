@@ -1,58 +1,60 @@
-<span class="step-counter">
-  —{{ activePanel }}/4—
-</span>
-<div *ngIf="activePanel==1" (click)="hideBlur = false">
-  <H1>Back up your seed</H1>
-  <p class="description">When you create a new wallet, new Tezos seed words are generated. Your seed words are the master key of your wallet accounts and any value you hold.</p>
-  <p class="description red">Make sure to back it up, write it down, and keep it incredibly safe.</p>
-  <div class="whitebox" (mouseout)="hideBlur = false" (click)="$event.stopPropagation()">{{ MNEMONIC.string }}</div>
-  <div *ngIf="!hideBlur" class="seed-blur" (click)="hideBlur = true ; $event.stopPropagation()">
-    <span class="black">Click here to reveal your seed words</span>
+<div class="kukai-card">
+  <span class="step-counter">
+    —{{ activePanel }}/4—
+  </span>
+  <div *ngIf="activePanel==1" (click)="hideBlur = false">
+    <H1>Back up your seed</H1>
+    <p class="description">When you create a new wallet, new Tezos seed words are generated. Your seed words are the master key of your wallet accounts and any value you hold.</p>
+    <p class="description red">Make sure to back it up, write it down, and keep it incredibly safe.</p>
+    <div class="whitebox" (mouseout)="hideBlur = false" (click)="$event.stopPropagation()">{{ MNEMONIC.string }}</div>
+    <div *ngIf="!hideBlur" class="seed-blur" (click)="hideBlur = true ; $event.stopPropagation()">
+      <span class="black">Click here to reveal your seed words</span>
+    </div>
+    <div class="buttons"><a routerLink="/"><div class="button back">Back</div></a><div class="button next" (click)="verifyView()">Next</div></div>
   </div>
-  <div class="buttons"><a routerLink="/"><div class="button back">Back</div></a><div class="button next" (click)="verifyView()">Next</div></div>
-</div>
-<div *ngIf="activePanel==2">
-  <H1>Verify your seed</H1>
-  <p class="description">{{ formatVerifyDescription(MNEMONIC.verify[0] + 1) }}</p>
-  <progress max="{{ MNEMONIC.wordsToVerify }}" value="{{ MNEMONIC.wordsToVerify - MNEMONIC.verify.length }}"></progress>
-  <div *ngIf="MNEMONIC.verify.length" class="word-verify">
-    <div class="word-hint">
-      <span class="word-index">{{ indexFormat(MNEMONIC.verify[0] - 1) }}</span>
-      <span class="word-value">{{ valueFormat(MNEMONIC.verify[0] - 1) }}</span>
+  <div *ngIf="activePanel==2">
+    <H1>Verify your seed</H1>
+    <p class="description">{{ formatVerifyDescription(MNEMONIC.verify[0] + 1) }}</p>
+    <progress max="{{ MNEMONIC.wordsToVerify }}" value="{{ MNEMONIC.wordsToVerify - MNEMONIC.verify.length }}"></progress>
+    <div *ngIf="MNEMONIC.verify.length" class="word-verify">
+      <div class="word-hint">
+        <span class="word-index">{{ indexFormat(MNEMONIC.verify[0] - 1) }}</span>
+        <span class="word-value">{{ valueFormat(MNEMONIC.verify[0] - 1) }}</span>
+      </div>
+      <div class="word-input">
+        <span class="word-index"><ng-container *ngIf="MNEMONIC.verify.length">Word {{ MNEMONIC.verify[0] + 1 }}</ng-container></span>
+        <input id="wordInput" class="text" type="text" (input)="checkWord()" (change)="checkWord()" [(ngModel)]="wordInput" [disabled]="!MNEMONIC.verify.length" autofocus>
+      </div>
+      <div class="word-hint">
+        <span class="word-index">{{ indexFormat(MNEMONIC.verify[0] + 1) }}</span>
+        <span class="word-value">{{ valueFormat(MNEMONIC.verify[0] + 1) }}</span>
+      </div>
     </div>
-    <div class="word-input">
-      <span class="word-index"><ng-container *ngIf="MNEMONIC.verify.length">Word {{ MNEMONIC.verify[0] + 1 }}</ng-container></span>
-      <input id="wordInput" class="text" type="text" (input)="checkWord()" (change)="checkWord()" [(ngModel)]="wordInput" [disabled]="!MNEMONIC.verify.length" autofocus>
-    </div>
-    <div class="word-hint">
-      <span class="word-index">{{ indexFormat(MNEMONIC.verify[0] + 1) }}</span>
-      <span class="word-value">{{ valueFormat(MNEMONIC.verify[0] + 1) }}</span>
-    </div>
+    <div class="buttons"><a routerLink="/"><div class="button back">Cancel</div></a><div class="button next" [class.disabled-button]="MNEMONIC.verify.length" (click)="pwdView()">Next</div></div>
   </div>
-  <div class="buttons"><a routerLink="/"><div class="button back">Cancel</div></a><div class="button next" [class.disabled-button]="MNEMONIC.verify.length" (click)="pwdView()">Next</div></div>
-</div>
-<div *ngIf="activePanel==3">
-  <H1>Set a password</H1>
-  <p class="description bold">This password will be used to create an encrypted keystore file.</p>
-  <p class="description">When performing operations that need to be signed with your secret key, this password will be required</p>
-  <small>{{ 'NEWWALLETCOMPONENT.PASSWORD' | translate }}</small>
-  <input type="password" class="text" [(ngModel)]="pwd1" (keyup)="calcStrength()">
-  <small class="grey"> {{ 'NEWWALLETCOMPONENT.PASSWORDSTRENGTH' | translate }} — {{ pwdStrength }}</small>
-  <small>{{ 'NEWWALLETCOMPONENT.CONFIRMPASSWORD' | translate }}</small>
-  <input type="password" class="text" [(ngModel)]="pwd2">
-  <div class="buttons"><a routerLink="/"><div class="button back">Cancel</div></a><div class="button next" [class.disabled-button]="!pwd1" (click)="encryptWallet()">Next</div></div>
-</div>
-<div *ngIf="activePanel==4">
-  <H1>Wallet created! 🎉</H1>
-  <p class="description bold">Your wallet is now set up and ready to be used.</p>
-  <p class="description">Download your encrypted keystore file and import it when you want to access your wallet.</p>
-  <div class="whitebox final">
-    <p class="description bold pkh">Your public account address:&#10;&#13;{{ getPkh() }}</p>
-    <div class="buttons single">
-      <div class="button next" (click)="download()">Download</div>
-    </div>
+  <div *ngIf="activePanel==3">
+    <H1>Set a password</H1>
+    <p class="description bold">This password will be used to create an encrypted keystore file.</p>
+    <p class="description">When performing operations that need to be signed with your secret key, this password will be required</p>
+    <small>{{ 'NEWWALLETCOMPONENT.PASSWORD' | translate }}</small>
+    <input type="password" class="text" [(ngModel)]="pwd1" (keyup)="calcStrength()">
+    <small class="grey"> {{ 'NEWWALLETCOMPONENT.PASSWORDSTRENGTH' | translate }} — {{ pwdStrength }}</small>
+    <small>{{ 'NEWWALLETCOMPONENT.CONFIRMPASSWORD' | translate }}</small>
+    <input type="password" class="text" [(ngModel)]="pwd2">
+    <div class="buttons"><a routerLink="/"><div class="button back">Cancel</div></a><div class="button next" [class.disabled-button]="!pwd1" (click)="encryptWallet()">Next</div></div>
   </div>
-  <div class="buttons single finish">
-    <div class="button back" [class.disabled-button]="!ekfDownloaded" (click)="done()">Finish</div>
+  <div *ngIf="activePanel==4">
+    <H1>Wallet created! 🎉</H1>
+    <p class="description bold">Your wallet is now set up and ready to be used.</p>
+    <p class="description">Download your encrypted keystore file and import it when you want to access your wallet.</p>
+    <div class="whitebox final">
+      <p class="description bold pkh">Your public account address:&#10;&#13;{{ getPkh() }}</p>
+      <div class="buttons single">
+        <div class="button next" (click)="download()">Download</div>
+      </div>
+    </div>
+    <div class="buttons single finish">
+      <div class="button back" [class.disabled-button]="!ekfDownloaded" (click)="done()">Finish</div>
+    </div>
   </div>
 </div>

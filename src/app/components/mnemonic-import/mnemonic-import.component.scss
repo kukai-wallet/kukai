@@ -1,171 +1,171 @@
-@import "../../../scss/common.css";
+@import "../../../scss/card.css";
 :host {
-    width: 100%;
-    min-height: calc(100vh);
-    padding-bottom: 8rem;
-    display: flex;
-    justify-content: center;
-    flex-direction: row;
+  width: 100%;
+  min-height: calc(100vh);
+  padding-bottom: 8rem;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
 }
-:host > div {
-    margin-top: 5rem;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    flex-direction: column;
+:host > div.kukai-card > div {
+  margin-top: 5rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
 }
-div.import-options {
-    margin-top: 1.375rem;
-    display: flex;
-    justify-content: space-between;
-    flex-direction: row;
-    width: 21rem;
-    margin-bottom: 1rem;
+:host > div.kukai-card div.import-options {
+  margin-top: 1.375rem;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  width: 21rem;
+  margin-bottom: 1rem;
 }
-div.import-options span {
-    line-height: 1.5rem;
-    cursor: pointer;
+:host > div.kukai-card div.import-options span {
+  line-height: 1.5rem;
+  cursor: pointer;
 }
-div.import-options span.selected {
-    line-height: 1.5rem;
-    color: #5963FF;
-    border-bottom: 1px solid;
+:host > div.kukai-card div.import-options span.selected {
+  line-height: 1.5rem;
+  color: #5963ff;
+  border-bottom: 1px solid;
 }
-p.faucet {
-    display: inline;
+:host > div.kukai-card p.faucet {
+  display: inline;
 }
-p.faucet > a {
-    color: #5963FF !important;
+:host > div.kukai-card p.faucet > a {
+  color: #5963ff !important;
 }
-p.faucet > a:hover {
-    border-bottom: 1px solid;
-    margin-bottom: -1px;
+:host > div.kukai-card p.faucet > a:hover {
+  border-bottom: 1px solid;
+  margin-bottom: -1px;
 }
-small {
-    margin-top: 1.25rem;
+:host > div.kukai-card small {
+  margin-top: 1.25rem;
 }
-div.radios {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    flex-direction: column;
-    width: 28rem;
-    margin-top: 1.5rem;
+:host > div.kukai-card div.radios {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+  width: 28rem;
+  margin-top: 1.5rem;
 }
-input[type='radio']:checked {
-    background-color: #161616;
+:host > div.kukai-card input[type="radio"]:checked {
+  background-color: #161616;
+}
+:host > div.kukai-card input[type="radio"] {
+  /* remove standard background appearance */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  /* create custom radiobutton appearance */
+  display: inline-block;
+  width: 1.25rem;
+  height: 1.25rem;
+  padding: 0.25rem;
+  /* background-color only for content */
+  background-clip: content-box;
+  border: 0.125rem solid #161616;
+  border-radius: 50%;
+  outline-style: none;
+}
+:host > div.kukai-card div.buttons {
+  margin-top: 2.5rem;
+}
+:host > div.kukai-card div.radios small {
+  font-size: 0.875rem;
+  line-height: 1.125rem;
+  margin-left: 0.5rem;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+:host > div.kukai-card div.radios > div {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: row;
+}
+:host > div.kukai-card div.radios > div:last-child {
+  margin-top: 0.5rem;
+}
+:host > div.kukai-card input.input-file {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  -webkit-opacity: 0;
+  -khtml-opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+:host > div.kukai-card label.input-file {
+  margin-top: 2rem;
+  width: 30rem;
+  height: 3rem;
+  border: 1px dashed #5963ff;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+}
+:host > div.kukai-card label.input-file.loaded {
+  justify-content: space-between;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  background: rgba(89, 99, 255, 0.2);
+  border: none;
+}
+:host > div.kukai-card label.input-file > span {
+  color: #5963ff;
+  font-family: "Helvetica Now Text";
+  font-style: normal;
+  font-weight: bold;
+  line-height: 1.5rem;
+  font-size: 0.75rem;
+}
+:host > div.kukai-card label.input-file > span:last-child {
+  text-decoration-line: underline;
+}
+:host > div.kukai-card label.input-file:hover {
+  cursor: pointer;
+}
+:host > div.kukai-card div.authenticate > input {
+  width: 18rem;
+}
+:host > div.kukai-card div.authenticate {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: row;
+  margin-top: 1rem;
+}
+:host > div.kukai-card div.authenticate div.buttons.single {
+  margin-top: 0;
+  height: 2.5rem;
+  margin-left: 1.5rem;
+}
+:host > div.kukai-card div.authenticate div.buttons.single div.button.next {
+  height: 2.5rem;
+}
+:host > div.kukai-card small.extra-top-margin {
+  margin-top: 2.25rem;
+}
+:host > div.kukai-card input#pwd.text {
+  width: 20.5rem;
+}
+@media screen and (max-width: 30rem) {
+  :host > div.kukai-card label.input-file {
+    width: 20rem;
   }
-  input[type="radio"] {
-    /* remove standard background appearance */
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    /* create custom radiobutton appearance */
-    display: inline-block;
-    width: 1.25rem;
-    height: 1.25rem;
-    padding: 0.25rem;
-    /* background-color only for content */
-    background-clip: content-box;
-    border: 0.125rem solid #161616;
-    border-radius: 50%;
-    outline-style: none;
+  :host > div.kukai-card div.authenticate > input#pwd {
+    width: 10.5rem;
   }
-div.buttons {
-    margin-top: 2.5rem;
 }
-div.radios small {
-    font-size: 0.875rem;
-    line-height: 1.125rem;
-    margin-left: 0.5rem;
-    margin-top: 0;
-    margin-bottom: 0;
-}
-div.radios > div {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    flex-direction: row;
-}
-div.radios > div:last-child {
-    margin-top: 0.5rem;
-}
-input.input-file {
-    width: 0.1px;
-	height: 0.1px;
-    opacity: 0;
-    -webkit-opacity: 0;
-    -khtml-opacity: 0;
-	overflow: hidden;
-	position: absolute;
-	z-index: -1;
-}
-label.input-file {
-    margin-top: 2rem;
-    width: 30rem;
-    height: 3rem;
-    border: 1px dashed #5963FF;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: row;
-}
-label.input-file.loaded {
-    justify-content: space-between;
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-    background: rgba(89, 99, 255, 0.2);
-    border: none;
-}
-label.input-file > span {
-    color: #5963FF;
-    font-family: "Helvetica Now Text";
-    font-style: normal;
-    font-weight: bold;
-    line-height: 1.5rem;
-    font-size: 0.75rem;
-}
-label.input-file > span:last-child {
-    text-decoration-line: underline;
-}
-label.input-file:hover {
-    cursor: pointer;
-}
-div.authenticate > input {
-    width: 18rem;
-}
-div.authenticate {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    flex-direction: row;
-    margin-top: 1rem;
-}
-div.authenticate div.buttons.single {
-    margin-top: 0;
-    height: 2.5rem;
-    margin-left: 1.5rem;
+@media screen and (max-width: 29rem) {
+  :host > div.kukai-card div.radios {
+    width: 20rem;
   }
-  div.authenticate div.buttons.single div.button.next {
-    height: 2.5rem;
-  }
-  small.extra-top-margin {
-      margin-top: 2.25rem;
-  }
-  input#pwd.text {
-    width: 20.5rem;
-  }
-  @media screen and (max-width: 30rem) {
-    label.input-file {
-        width: 20rem;
-    }
-    div.authenticate > input#pwd {
-        width: 10.5rem;
-    }
-  }
-  @media screen and (max-width: 29rem) {
-    div.radios {
-        width: 20rem;
-    }
-  }
+}

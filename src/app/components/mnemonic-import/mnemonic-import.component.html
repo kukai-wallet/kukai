@@ -1,99 +1,101 @@
-<div *ngIf="activePanel === 0">
-    <H1>Import wallet</H1>
-    <div class="import-options">
-        <span [class.selected]="importOption===0" (click)="importOption = 0">Keystore File</span>
-        <span [class.selected]="importOption===1" (click)="importOption = 1">Seed Words</span>
-        <span [class.selected]="importOption===2" (click)="importOption = 2">Fundraiser</span>
-    </div>
-    <ng-container *ngIf="importOption === 0">
-        <p class="description bold">
-            Import your wallet from an encrypted keystore file (.tez).
-        </p>
-        <input type="file" (change)="handleFileInput($event.target.files)" accept=".tez" id="file" name="file"
-            class="input-file">
-        <label for="file" class="input-file" [class.loaded]="walletJson"><span
-                *ngIf="walletJson">{{ fileName }}</span><span>Browse</span></label>
-        <div class="authenticate" *ngIf="walletJson">
-            <input type="password" class="text" (keydown.enter)='checkImportPwd()' id="pwd" [(ngModel)]="pwd"
-                placeholder="Password">
-            <div class="buttons single">
-                <div class="button next" (click)='checkImportPwd()'>Import</div>
-            </div>
-        </div>
-        <div class="buttons single">
-            <a routerLink="/">
-                <div class="button back">Back</div>
-            </a>
-        </div>
-    </ng-container>
-    <ng-container *ngIf="importOption > 0">
-        <p class="description faucet" *ngIf="importOption === 2">Please make sure to first <a routerLink="/activate">activate</a> your fundraiser wallet.</p>
-        <ng-container>
-            <small>The seed (12-24 words)</small>
-            <textarea class="text" [(ngModel)]="mnemonic" [placeholder]="'Seed Words (required)'"></textarea>
-        </ng-container>
-        <ng-container *ngIf="importOption === 1">
-            <small>If your seed words are protected by a passphrase, it needs to be entered here</small>
-            <input class="text" type="password" [(ngModel)]="passphrase" [placeholder]="'Passphrase (optional)'">
-        </ng-container>
-        <ng-container *ngIf="importOption === 2">
-            <small>The email used during the fundraiser</small>
-            <input class="text" type="text" [(ngModel)]="email" [placeholder]="'Email (required)'">
-            <small>The password you chose during the fundraiser</small>
-            <input class="text" type="password" [(ngModel)]="password" [placeholder]="'Password (required)'">
-        </ng-container>
-        <ng-container>
-            <small *ngIf="importOption === 1">{{ 'MNEMONICIMPORTCOMPONENT.INFOPKH' | translate }}</small>
-            <small *ngIf="importOption === 2">{{ 'MNEMONICIMPORTCOMPONENT.INFOPKHICO' | translate }}</small>
-            <input type="text" class="text" [(ngModel)]="pkh" [placeholder]="'tz1... (recomended)'">
-        </ng-container>
-        <div class="radios" *ngIf="importOption === 1">
-            <div>
-                <input (change)="hdImport = !hdImport" type="radio" name="walletType" value="legacy" checked>
-                <small>Legacy wallet</small>
-            </div>
-            <div>
-                <input (change)="hdImport = !hdImport" type="radio" name="walletType" value="hd">
-                <small>HD wallet</small>
-            </div>
-        </div>
-        <div class="buttons">
-            <a routerLink="/">
-                <div class="button back">Back</div>
-            </a>
-            <div class="button next" (click)="retrieve()">Import</div>
-        </div>
-    </ng-container>
-</div>
-<!-- Step 2 -->
-<div *ngIf="activePanel==1">
-    <H1>Set a password</H1>
-    <p class="description bold">This password will be used to create an encrypted keystore file.</p>
-    <p class="description">When performning operations that need to be signed with your secret key this password will be
-        required</p>
-    <small>{{ 'NEWWALLETCOMPONENT.PASSWORD' | translate }}</small>
-    <input type="password" class="text" [(ngModel)]="pwd1" (keyup)="calcStrength()">
-    <small class="grey"> {{ 'NEWWALLETCOMPONENT.PASSWORDSTRENGTH' | translate }} — {{ pwdStrength }}</small>
-    <small class="extra-top-margin">{{ 'NEWWALLETCOMPONENT.CONFIRMPASSWORD' | translate }}</small>
-    <input type="password" class="text" [(ngModel)]="pwd2">
-    <div class="buttons"><a routerLink="/">
-            <div class="button back">Cancel</div>
-        </a>
-        <div class="button next" [class.disabled-button]="!pwd1" (click)="setPwd()">Next</div>
-    </div>
-</div>
-<!-- Step 3 -->
-<div *ngIf="activePanel==2">
-    <H1>Wallet imported! 🎉</H1>
-    <p class="description bold">Your wallet is now set up and ready to be used.</p>
-    <p class="description">Download your encrypted keystore file and import it when you want to access your wallet.</p>
-    <div class="whitebox final">
-        <p class="description bold pkh">Your public account address:&#10;&#13;{{ showPkh() }}</p>
-        <div class="buttons single">
-            <div class="button next" (click)="download()">Download</div>
-        </div>
-    </div>
-    <div class="buttons single finish">
-        <div class="button back" [class.disabled-button]="!Downloaded" (click)="done()">Finish</div>
-    </div>
+<div class="kukai-card">
+  <div *ngIf="activePanel === 0">
+      <H1>Import wallet</H1>
+      <div class="import-options">
+          <span [class.selected]="importOption===0" (click)="importOption = 0">Keystore File</span>
+          <span [class.selected]="importOption===1" (click)="importOption = 1">Seed Words</span>
+          <span [class.selected]="importOption===2" (click)="importOption = 2">Fundraiser</span>
+      </div>
+      <ng-container *ngIf="importOption === 0">
+          <p class="description bold">
+              Import your wallet from an encrypted keystore file (.tez).
+          </p>
+          <input type="file" (change)="handleFileInput($event.target.files)" accept=".tez" id="file" name="file"
+              class="input-file">
+          <label for="file" class="input-file" [class.loaded]="walletJson"><span
+                  *ngIf="walletJson">{{ fileName }}</span><span>Browse</span></label>
+          <div class="authenticate" *ngIf="walletJson">
+              <input type="password" class="text" (keydown.enter)='checkImportPwd()' id="pwd" [(ngModel)]="pwd"
+                  placeholder="Password">
+              <div class="buttons single">
+                  <div class="button next" (click)='checkImportPwd()'>Import</div>
+              </div>
+          </div>
+          <div class="buttons single">
+              <a routerLink="/">
+                  <div class="button back">Back</div>
+              </a>
+          </div>
+      </ng-container>
+      <ng-container *ngIf="importOption > 0">
+          <p class="description faucet" *ngIf="importOption === 2">Please make sure to first <a routerLink="/activate">activate</a> your fundraiser wallet.</p>
+          <ng-container>
+              <small>The seed (12-24 words)</small>
+              <textarea class="text" [(ngModel)]="mnemonic" [placeholder]="'Seed Words (required)'"></textarea>
+          </ng-container>
+          <ng-container *ngIf="importOption === 1">
+              <small>If your seed words are protected by a passphrase, it needs to be entered here</small>
+              <input class="text" type="password" [(ngModel)]="passphrase" [placeholder]="'Passphrase (optional)'">
+          </ng-container>
+          <ng-container *ngIf="importOption === 2">
+              <small>The email used during the fundraiser</small>
+              <input class="text" type="text" [(ngModel)]="email" [placeholder]="'Email (required)'">
+              <small>The password you chose during the fundraiser</small>
+              <input class="text" type="password" [(ngModel)]="password" [placeholder]="'Password (required)'">
+          </ng-container>
+          <ng-container>
+              <small *ngIf="importOption === 1">{{ 'MNEMONICIMPORTCOMPONENT.INFOPKH' | translate }}</small>
+              <small *ngIf="importOption === 2">{{ 'MNEMONICIMPORTCOMPONENT.INFOPKHICO' | translate }}</small>
+              <input type="text" class="text" [(ngModel)]="pkh" [placeholder]="'tz1... (recomended)'">
+          </ng-container>
+          <div class="radios" *ngIf="importOption === 1">
+              <div>
+                  <input (change)="hdImport = !hdImport" type="radio" name="walletType" value="legacy" checked>
+                  <small>Legacy wallet</small>
+              </div>
+              <div>
+                  <input (change)="hdImport = !hdImport" type="radio" name="walletType" value="hd">
+                  <small>HD wallet</small>
+              </div>
+          </div>
+          <div class="buttons">
+              <a routerLink="/">
+                  <div class="button back">Back</div>
+              </a>
+              <div class="button next" (click)="retrieve()">Import</div>
+          </div>
+      </ng-container>
+  </div>
+  <!-- Step 2 -->
+  <div *ngIf="activePanel==1">
+      <H1>Set a password</H1>
+      <p class="description bold">This password will be used to create an encrypted keystore file.</p>
+      <p class="description">When performning operations that need to be signed with your secret key this password will be
+          required</p>
+      <small>{{ 'NEWWALLETCOMPONENT.PASSWORD' | translate }}</small>
+      <input type="password" class="text" [(ngModel)]="pwd1" (keyup)="calcStrength()">
+      <small class="grey"> {{ 'NEWWALLETCOMPONENT.PASSWORDSTRENGTH' | translate }} — {{ pwdStrength }}</small>
+      <small class="extra-top-margin">{{ 'NEWWALLETCOMPONENT.CONFIRMPASSWORD' | translate }}</small>
+      <input type="password" class="text" [(ngModel)]="pwd2">
+      <div class="buttons"><a routerLink="/">
+              <div class="button back">Cancel</div>
+          </a>
+          <div class="button next" [class.disabled-button]="!pwd1" (click)="setPwd()">Next</div>
+      </div>
+  </div>
+  <!-- Step 3 -->
+  <div *ngIf="activePanel==2">
+      <H1>Wallet imported! 🎉</H1>
+      <p class="description bold">Your wallet is now set up and ready to be used.</p>
+      <p class="description">Download your encrypted keystore file and import it when you want to access your wallet.</p>
+      <div class="whitebox final">
+          <p class="description bold pkh">Your public account address:&#10;&#13;{{ showPkh() }}</p>
+          <div class="buttons single">
+              <div class="button next" (click)="download()">Download</div>
+          </div>
+      </div>
+      <div class="buttons single finish">
+          <div class="button back" [class.disabled-button]="!Downloaded" (click)="done()">Finish</div>
+      </div>
+  </div>
 </div>

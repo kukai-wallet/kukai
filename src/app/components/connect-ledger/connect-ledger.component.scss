@@ -1,4 +1,4 @@
-@import "../../../scss/common.css";
+@import "../../../scss/card.css";
 :host {
     width: 100vw;
     min-height: 100vh;
@@ -14,10 +14,10 @@
     align-items: center;
     flex-direction: column;
 }
-input.text {
+:host input.text {
     margin-top: 2.5rem;
 }
-small {
+:host small {
     margin-top: 1rem;
 }
 @import '../../../scss/switch.scss'
