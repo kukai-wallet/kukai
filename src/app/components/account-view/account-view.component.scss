@@ -183,6 +183,9 @@ div.address-container {
   padding-bottom: 1rem;
   border-bottom: 1px solid rgba(0, 0, 0, 0.04);
 }
+#operations-container > div:last-child {
+  border-bottom: 0;
+}
 #operations-container > div > div {
   width: 100%;
   height: 100%;

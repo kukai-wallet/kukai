@@ -191,7 +191,7 @@ div.word-hint > span.word-value {
   line-height: 1.125rem;
   text-align: center;
   letter-spacing: 0.16px;
-  color: #a8a8a8;
+  color: #737373;
 }
 progress[value] {
   -webkit-appearance: none;
@@ -282,19 +282,14 @@ textarea.text {
   padding-bottom: 0.5rem;
   resize: none;
 }
-input::placeholder,
-input::-webkit-input-placeholder,
-input:-ms-input-placeholder,
-textarea::placeholder,
-textarea::-webkit-input-placeholder,
-textarea:-ms-input-placeholder {
-  color: #a8a8a8;
-  font-family: "IBM Plex Sans";
-  font-style: normal;
-  font-weight: normal;
-  font-size: 0.875rem;
-  line-height: 1.125rem;
-  letter-spacing: 0.16px;
+::-webkit-input-placeholder {
+  color: #737373;
+}
+::-moz-input-placeholder {
+  color: #737373;
+}
+:-ms-input-placeholder {
+  color: #737373;
 }
 @media screen and (max-width: 29rem) {
   input.text,
