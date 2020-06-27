@@ -10,7 +10,7 @@
                 <div class="account-container account-row" (click)="select(impAcc)">
                     <div>
                         <img class="account-icon" src="../../../assets/img/account-icon.svg">
-                        <span class="account-address">{{ impAcc.shortAddress() }}</span>
+                        <span class="account-address">{{ formatAddress(impAcc) }}</span>
                         <img class="copy-icon" src="../../../assets/img/copy-icon.svg" (click)="$event.stopPropagation() ; copy(impAcc)">
                     </div>
                     <div class="value-container">
@@ -30,7 +30,7 @@
                     <div class="account-container account-row" (click)="select(origAcc)">
                         <div>
                             <img class="account-icon" src="../../../assets/img/account-icon.svg">
-                            <span class="account-address">{{ origAcc.shortAddress() }}</span>
+                            <span class="account-address">{{ formatAddress(origAcc) }}</span>
                             <img class="copy-icon" src="../../../assets/img/copy-icon.svg" (click)="$event.stopPropagation() ; copy(origAcc)">
                         </div>
                         <div class="value-container">

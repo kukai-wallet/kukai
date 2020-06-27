@@ -16,12 +16,14 @@ span,
 H1,
 H2,
 small,
-input,
-textarea,
 button,
 div,
 th,
 td,
 label {
   font-family: "Helvetica Now Text";
+}
+input,
+textarea {
+  font-family: Arial, Helvetica, sans-serif;
 }

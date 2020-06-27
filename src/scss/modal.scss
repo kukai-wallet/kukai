@@ -86,7 +86,6 @@ div.kukai-modal div.amount {
 }
 div.kukai-modal input.custom-large {
   width: auto;
-  font-family: Arial, Helvetica, sans-serif;
   font-style: normal;
   font-weight: normal;
   font-size: 5rem;
@@ -191,6 +190,10 @@ div.kukai-modal textarea.text {
   padding-left: 1rem;
   padding-right: 1rem;
   border: 0;
+}
+div.kukai-modal input.text.smaller-font-size,
+div.kukai-modal textarea.text.smaller-font-size {
+  font-size: 0.875rem;
 }
 div.kukai-modal input.text.password {
   width: 14rem;

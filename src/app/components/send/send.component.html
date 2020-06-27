@@ -33,11 +33,11 @@
       </div>
       <div *ngIf="!this.isMultipleDestinations" class="group">
         <label>To address</label>
-        <input type="text" class="text" (input)="updateDefaultValues()" (change)="validateReceiverAddress()" [(ngModel)]="toPkh">
+        <input type="text" class="text smaller-font-size" (input)="updateDefaultValues()" (change)="validateReceiverAddress()" [(ngModel)]="toPkh">
       </div>
       <div *ngIf="this.isMultipleDestinations" class="group">
         <label>Addresses and amounts <span class="batchInfo">{{ batchSpace() }}</span></label>
-        <textarea type="text" class="text" (input)="updateDefaultValues()" (change)="validateBatch()" rows="3" [(ngModel)]="toMultipleDestinationsString" placeholder="address1 amount1 ; &#10;address2 amount2 ; &#10;address3 ..."></textarea>
+        <textarea type="text" class="text smaller-font-size" (input)="updateDefaultValues()" (change)="validateBatch()" rows="3" [(ngModel)]="toMultipleDestinationsString" placeholder="address1 amount1 ; &#10;address2 amount2 ; &#10;address3 ..."></textarea>
       </div>
       <div class="advanced">
         <small>Advanced</small>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { WalletService } from '../../services/wallet/wallet.service';
 import * as copy from 'copy-to-clipboard';
@@ -18,6 +18,7 @@ import {
   styleUrls: ['./accounts.component.scss']
 })
 export class AccountsComponent implements OnInit {
+  wideAccounts = false;
   implicitAccounts: ImplicitAccount[];
   constructor(
     public walletService: WalletService,
@@ -31,6 +32,7 @@ export class AccountsComponent implements OnInit {
     if (!this.walletService.wallet) {
       this.router.navigate(['']);
     } else {
+      this.onResize()
       this.coordinatorService.startAll();
       this.implicitAccounts = this.walletService.wallet.implicitAccounts;
     }
@@ -45,5 +47,16 @@ export class AccountsComponent implements OnInit {
   select(account: Account) {
     console.log('Selected: ' + account.address);
     this.router.navigate(['account', account.address]);
+  }
+  @HostListener('window:resize')
+  onResize() {
+    this.wideAccounts = (window.innerWidth > 640)
+  }
+  formatAddress(account: Account) {
+    if (this.wideAccounts) {
+      return account.address;
+    } else {
+      return account.shortAddress();
+    }
   }
 }
