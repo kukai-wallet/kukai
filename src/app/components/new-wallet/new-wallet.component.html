@@ -4,7 +4,7 @@
   </span>
   <div *ngIf="activePanel==1" (click)="hideBlur = false">
     <H1>Back up your seed</H1>
-    <p class="description">When you create a new wallet, new Tezos seed words are generated. Your seed words are the master key of your wallet accounts and any value you hold.</p>
+    <p class="description">When you create a new wallet, new Tezos seed words are generated. Your seed words are the master key of your wallet accounts and any value they hold.</p>
     <p class="description red">Make sure to back it up, write it down, and keep it incredibly safe.</p>
     <div class="whitebox" (mouseout)="hideBlur = false" (click)="$event.stopPropagation()">{{ MNEMONIC.string }}</div>
     <div *ngIf="!hideBlur" class="seed-blur" (click)="hideBlur = true ; $event.stopPropagation()">

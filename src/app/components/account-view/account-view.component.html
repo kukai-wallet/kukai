@@ -30,7 +30,7 @@
   <div class="main-container large">
     <div class="top-container">
       <H1 style="float:left">Recent Activity</H1>
-      <a class="view-all" href="{{ explorerURL(account.address) }}" target="_blank">View all</a>
+      <a class="view-all" href="{{ explorerURL(account.address) }}" target="_blank">View in explorer</a>
     </div>
     <div id="operations-container" *ngIf="this.translate.store.translations.en">
       <ng-container *ngIf="!account.activities.length">

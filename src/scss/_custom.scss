@@ -1,5 +1,6 @@
 // Here you can add other styles
 @import '../assets/fonts/HelveticaNow/stylesheet.css';
+@import '../assets/fonts/Rubik/style.css';
 body {
     background-color: #E5E5E5;
 }
@@ -9,4 +10,19 @@ html, body {
 }
 button, input, textarea {
   -webkit-appearance: none !important;
+}
+p,
+span,
+H1,
+H2,
+small,
+input,
+textarea,
+button,
+div,
+th,
+td,
+label {
+  //font-family: "Helvetica Now Text";
+  font-family: "Rubik Regular";
 }
