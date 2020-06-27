@@ -69,7 +69,7 @@
           </div>
           <div class="group">
             <label>Max storage cost</label>
-            <input type="text" class="text no-bg" [value]="burnAmount()" tabindex=-1 readonly>
+            <input type="text" class="text read-only" [value]="burnAmount() ? burnAmount() : '0 tez'" tabindex=-1 readonly>
           </div>
         </div>
       </div>

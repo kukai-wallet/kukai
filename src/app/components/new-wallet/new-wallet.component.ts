@@ -84,7 +84,7 @@ export class NewWalletComponent implements OnInit {
       case 1:
         return 'Fill in the 1st word to verify your seed backup';
       case 2:
-        return 'Fill in the 2nd word to verify your seed backup'
+        return 'Fill in the 2nd word to verify your seed backup';
       case 3:
         return 'Fill in the 3rd word to verify your seed backup';
       default:

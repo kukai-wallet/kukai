@@ -101,7 +101,8 @@ div.kukai-modal input.custom-large {
 div.kukai-modal input.custom-large:disabled {
   background-color: rgba(0, 0, 0, 0);
 }
-div.kukai-modal input:focus, textarea:focus {
+div.kukai-modal input:focus,
+div.kukai-modal textarea:focus {
   outline: none;
 }
 div.kukai-modal span.tez {
@@ -188,6 +189,7 @@ div.kukai-modal textarea.text {
   letter-spacing: 0.16px;
   color: #000000;
   padding-left: 1rem;
+  padding-right: 1rem;
   border: 0;
 }
 div.kukai-modal input.text.password {
