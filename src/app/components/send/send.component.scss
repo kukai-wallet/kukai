@@ -44,6 +44,17 @@ div.kukai-modal input.text.read-only {
 input.custom-textbox {
   padding-left: 0.75rem;
 }
+div.kukai-modal div.advanced-form input.text::placeholder {
+  color: black;
+  opacity: 1;
+}
+div.kukai-modal div.advanced-form input.text::-webkit-input-placeholder,
+div.kukai-modal div.advanced-form input.text:-ms-input-placeholder {
+  color: black;
+}
+div.kukai-modal div.advanced-form input.text.read-only {
+  color: #808080;
+}
 @media screen and (max-width: 25rem) {
   input#toAddress, input.custom-textbox {
     font-size: 0.8125rem;

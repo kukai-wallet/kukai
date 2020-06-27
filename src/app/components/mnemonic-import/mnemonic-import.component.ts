@@ -50,7 +50,9 @@ export class MnemonicImportComponent implements OnInit {
   }
 
   retrieve() {
-    this.mnemonic = this.mnemonic.toLowerCase().replace(/(\r\n|\n|\r)/gm, ' ').trim();
+    if (this.mnemonic) {
+      this.mnemonic = this.mnemonic.toLowerCase().replace(/(\r\n|\n|\r)/gm, ' ').trim();
+    }
     if (this.importOption === 2) {
       this.passphrase = this.email + this.password;
     }

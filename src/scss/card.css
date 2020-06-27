@@ -188,7 +188,7 @@
   line-height: 1.125rem;
   text-align: center;
   letter-spacing: 0.16px;
-  color: #737373;
+  color: #808080;
 }
 .kukai-card progress[value] {
   -webkit-appearance: none;
@@ -272,6 +272,9 @@
   letter-spacing: 0.16px;
   color: #393939;
 }
+.kukai-card input.text[disabled] {
+  color: #808080;
+}
 .kukai-card textarea.text {
   height: 7rem;
   padding-top: 0.5rem;
@@ -279,13 +282,13 @@
   resize: none;
 }
 .kukai-card ::-webkit-input-placeholder {
-  color: #737373;
+  color: #808080;
 }
 .kukai-card ::-moz-input-placeholder {
-  color: #737373;
+  color: #808080;
 }
 .kukai-card :-ms-input-placeholder {
-  color: #737373;
+  color: #808080;
 }
 @media screen and (max-width: 29rem) {
   .kukai-card input.text,
