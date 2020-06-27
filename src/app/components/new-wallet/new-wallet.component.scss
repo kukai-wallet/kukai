@@ -11,7 +11,7 @@
   margin-block-start: 0;
   margin-block-end: 0;
 }
-:host > div {
+:host > div.kukai-card > div {
   width: 100%;
   display: flex;
   justify-content: flex-start;

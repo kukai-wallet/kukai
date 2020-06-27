@@ -1,6 +1,6 @@
 // Here you can add other styles
 @import '../assets/fonts/HelveticaNow/stylesheet.css';
-@import '../assets/fonts/Rubik/style.css';
+//@import '../assets/fonts/Rubik/style.css';
 body {
     background-color: #E5E5E5;
 }
@@ -23,6 +23,5 @@ div,
 th,
 td,
 label {
-  //font-family: "Helvetica Now Text";
-  font-family: "Rubik Regular";
+  font-family: "Helvetica Now Text";
 }

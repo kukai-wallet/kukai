@@ -17,6 +17,9 @@
 :host input.text {
     margin-top: 2.5rem;
 }
+:host input.text[disabled] {
+  background: #d9d9d9;
+}
 :host small {
     margin-top: 1rem;
 }
