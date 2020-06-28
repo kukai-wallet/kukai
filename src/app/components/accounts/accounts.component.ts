@@ -32,7 +32,7 @@ export class AccountsComponent implements OnInit {
     if (!this.walletService.wallet) {
       this.router.navigate(['']);
     } else {
-      this.onResize()
+      this.onResize();
       this.coordinatorService.startAll();
       this.implicitAccounts = this.walletService.wallet.implicitAccounts;
     }
@@ -50,7 +50,7 @@ export class AccountsComponent implements OnInit {
   }
   @HostListener('window:resize')
   onResize() {
-    this.wideAccounts = (window.innerWidth > 640)
+    this.wideAccounts = (window.innerWidth > 640);
   }
   formatAddress(account: Account) {
     if (this.wideAccounts) {

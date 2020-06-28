@@ -18,11 +18,11 @@
       </div>
       <div class="group">
         <label>Delegate to Baker Address</label>
-        <input #toPkhInput type="text" class="text smaller-font-size" [(ngModel)]="toPkh">
+        <input #toPkhInput type="text" class="text" [(ngModel)]="toPkh">
       </div>
       <div class="group">
         <label>Fee (tez)</label>
-        <input type="number" class="text" [(ngModel)]="fee" placeholder={{this.recommendedFee.toString()}}>
+        <input type="text" class="text" [(ngModel)]="fee" placeholder={{this.recommendedFee.toString()}}>
       </div>
       <span *ngIf="formInvalid" class="danger no-margin">
         {{ formInvalid }}

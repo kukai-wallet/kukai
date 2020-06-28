@@ -16,7 +16,7 @@
     <!-- Prepare transaction -->
     <div class="km-body" *ngIf="activeView === 0">
       <div class="amount">
-        <input #amountInput type="number" class="input" class="custom-large" placeholder="0.00" [(ngModel)]="amount" (click)="sendMax = false;"
+        <input #amountInput class="input" class="custom-large" placeholder="0.00" [(ngModel)]="amount" (click)="sendMax = false;"
           [style.font-size.rem]="dynSize()" [style.width.ch]="amount ? amount.length + 1 : 3.6" [disabled]="isMultipleDestinations">
         <span class="tez">tez</span>
       </div>
@@ -33,11 +33,11 @@
       </div>
       <div *ngIf="!this.isMultipleDestinations" class="group">
         <label>To address</label>
-        <input type="text" class="text smaller-font-size" (input)="updateDefaultValues()" (change)="validateReceiverAddress()" [(ngModel)]="toPkh">
+        <input type="text" class="text" (input)="updateDefaultValues()" (change)="validateReceiverAddress()" [(ngModel)]="toPkh">
       </div>
       <div *ngIf="this.isMultipleDestinations" class="group">
         <label>Addresses and amounts <span class="batchInfo">{{ batchSpace() }}</span></label>
-        <textarea type="text" class="text smaller-font-size" (input)="updateDefaultValues()" (change)="validateBatch()" rows="3" [(ngModel)]="toMultipleDestinationsString" placeholder="address1 amount1 ; &#10;address2 amount2 ; &#10;address3 ..."></textarea>
+        <textarea type="text" class="text" (input)="updateDefaultValues()" (change)="validateBatch()" rows="3" [(ngModel)]="toMultipleDestinationsString" placeholder="address1 amount1 ; &#10;address2 amount2 ; &#10;address3 ..."></textarea>
       </div>
       <div class="advanced">
         <small>Advanced</small>
@@ -55,17 +55,17 @@
         <div class="row-group">
           <div class="group">
             <label>Gas limit</label>
-            <input type="number" class="text" placeholder={{this.defaultTransactionParams.gas.toString()}} [(ngModel)]="gas">
+            <input type="text" class="text" placeholder={{this.defaultTransactionParams.gas.toString()}} [(ngModel)]="gas">
           </div>
           <div class="group">
             <label>Fee</label>
-            <input type="number" class="text" placeholder={{this.defaultTransactionParams.fee.toString()}} [(ngModel)]="fee">
+            <input type="text" class="text" placeholder={{this.defaultTransactionParams.fee.toString()}} [(ngModel)]="fee">
           </div>
         </div>
         <div class="row-group">
           <div class="group">
             <label>Storage limit</label>
-            <input type="number" class="text" placeholder={{this.defaultTransactionParams.storage.toString()}} [(ngModel)]="storage">
+            <input type="text" class="text" placeholder={{this.defaultTransactionParams.storage.toString()}} [(ngModel)]="storage">
           </div>
           <div class="group">
             <label>Max storage cost</label>
