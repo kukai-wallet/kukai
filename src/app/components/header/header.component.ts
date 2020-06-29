@@ -3,7 +3,6 @@ import { Router, NavigationEnd } from '@angular/router';
 import { WalletService } from '../../services/wallet/wallet.service';
 import { CoordinatorService } from '../../services/coordinator/coordinator.service';
 import { Account } from '../../services/wallet/wallet';
-import { filter } from 'rxjs/operators';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -11,7 +10,7 @@ import { filter } from 'rxjs/operators';
 })
 export class HeaderComponent implements OnInit {
   @Input() activeAccount: Account;
-  impAccs: Account[] = this.walletService.wallet.implicitAccounts;
+  impAccs: Account[];
   constructor(
     private router: Router,
     public walletService: WalletService,
@@ -19,6 +18,9 @@ export class HeaderComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    if (this.walletService.wallet) {
+      this.impAccs = this.walletService.wallet.implicitAccounts;
+    }
   }
   logout() {
     this.coordinatorService.stopAll();

@@ -21,10 +21,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  opacity: 0.4;
-  -webkit-opacity: 0.4;
-  -khtml-opacity: 0.4;
-  background-color: #9BE3AB;
+  background-color: #d9d9d9;
   -webkit-transition: .4s;
   transition: .4s;
 }
@@ -36,7 +33,7 @@
   width: 1.125rem;
   left: 0.1875rem;
   bottom: 0.1875rem;
-  background-color: #098424;
+  background-color: #7B7B7B;
   -webkit-transition: .4s;
   transition: .4s;
 }
@@ -46,6 +43,7 @@ input:checked + .slider, input:focus + .slider {
 }
 
 input:checked + .slider:before {
+  background-color: #098424;
   -webkit-transform: translateX(1.5rem);
   -ms-transform: translateX(1.5rem);
   transform: translateX(1.5rem);
@@ -58,9 +56,6 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 input:checked + .slider {
-  opacity: 1;
-  -webkit-opacity: 1;
-  -khtml-opacity: 1;
   background-color: #9BE3AB;
 }
 span.switch-desc {
