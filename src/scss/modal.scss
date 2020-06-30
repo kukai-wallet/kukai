@@ -144,7 +144,7 @@ div.kukai-modal td, th {
 div.kukai-modal th {
   font-weight: bold;
 }
-div.km-content label {
+div.km-content label:not(.switch) {
   margin-bottom: 0.5rem;
   font-style: normal;
   font-weight: 500;
