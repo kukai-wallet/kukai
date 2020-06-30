@@ -16,12 +16,15 @@ div.middle span {
     font-size: 0.75rem;
     line-height: 1rem;
 }
-div.middle #accounts {
+div.middle .accounts {
     font-weight: normal;
     font-style: normal;
     font-size: 0.75rem;
     line-height: 1rem;
     color: rgba(0, 0, 0, 0.4);
+}
+div.middle > span.accounts {
+  color: #2C323A
 }
 div.middle img {
     padding-top: 0rem;

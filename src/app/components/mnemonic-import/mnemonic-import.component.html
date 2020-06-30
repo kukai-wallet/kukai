@@ -70,8 +70,7 @@
   <div *ngIf="activePanel==1">
       <H1>Set a password</H1>
       <p class="description bold">This password will be used to create an encrypted keystore file.</p>
-      <p class="description">When performning operations that need to be signed with your secret key this password will be
-          required</p>
+      <p class="description">When performing operations that need to be signed with your secret key, this password will be required</p>
       <small>{{ 'NEWWALLETCOMPONENT.PASSWORD' | translate }}</small>
       <input type="password" class="text" [(ngModel)]="pwd1" (keyup)="calcStrength()">
       <small class="grey"> {{ 'NEWWALLETCOMPONENT.PASSWORDSTRENGTH' | translate }} — {{ pwdStrength }}</small>

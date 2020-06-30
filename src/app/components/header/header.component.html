@@ -1,8 +1,11 @@
 <div id="top-container">
     <a routerLink="/accounts" class="logo"><img id="logo" src="../../../assets/img/kukai-logo.svg"></a>
-    <ng-container *ngIf="activeAccount">
     <div class="middle">
-        <a id="accounts" routerLink="/accounts">
+      <ng-container *ngIf="!activeAccount">
+        <span>Accounts</span>
+      </ng-container>
+      <ng-container *ngIf="activeAccount">
+        <a class="accounts" routerLink="/accounts">
             Accounts
         </a>
         <img src="../../../assets/img/slash.svg">
@@ -23,8 +26,8 @@
                 </div>
             </div>
           </div>
+        </ng-container>
     </div>
-    </ng-container>
     <div id="menu" (click)="logout()">
         <span>Logout</span>
     </div>

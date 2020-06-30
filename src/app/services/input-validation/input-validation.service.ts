@@ -33,7 +33,7 @@ export class InputValidationService {
       } case 2: {
         return this.translate.instant('INPUTVALIDATIONCOMPONENT.WEAK');  // 'Weak!'
        } case 3: {
-        return this.translate.instant('INPUTVALIDATIONCOMPONENT.MODERATE');  // 'Moderate!'
+        return this.translate.instant('INPUTVALIDATIONCOMPONENT.WEAK');  // 'Weak!'
       } case 4: {
         return this.translate.instant('INPUTVALIDATIONCOMPONENT.STRONG');  // 'Strong!'
       } default: {
