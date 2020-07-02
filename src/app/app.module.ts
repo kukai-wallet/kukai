@@ -71,6 +71,7 @@ import { AccountsComponent } from './components/accounts/accounts.component';
 import { AccountViewComponent } from './components/account-view/account-view.component';
 import { NewImplicitComponent } from './components/new-implicit/new-implicit.component';
 import { SpinnerComponent } from './components/spinner/spinner.component';
+import { AgreementComponent } from './components/agreement/agreement.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -107,7 +108,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     AccountsComponent,
     AccountViewComponent,
     NewImplicitComponent,
-    SpinnerComponent
+    SpinnerComponent,
+    AgreementComponent
   ],
   imports: [
     BrowserModule,
