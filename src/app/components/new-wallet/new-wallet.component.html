@@ -37,10 +37,10 @@
     <p class="description bold">This password will be used to create an encrypted keystore file.</p>
     <p class="description">When performing operations that need to be signed with your secret key, this password will be required</p>
     <small>{{ 'NEWWALLETCOMPONENT.PASSWORD' | translate }}</small>
-    <input type="password" class="text" [(ngModel)]="pwd1" (keyup)="calcStrength()">
+    <input type="password" class="text" autocomplete="new-password" [(ngModel)]="pwd1" (keyup)="calcStrength()">
     <small class="grey"> {{ 'NEWWALLETCOMPONENT.PASSWORDSTRENGTH' | translate }} — {{ pwdStrength }}</small>
     <small>{{ 'NEWWALLETCOMPONENT.CONFIRMPASSWORD' | translate }}</small>
-    <input type="password" class="text" [(ngModel)]="pwd2">
+    <input type="password" class="text" autocomplete="new-password" [(ngModel)]="pwd2">
     <div class="buttons"><a routerLink="/"><button class="button back">Cancel</button></a><button class="button next" [class.disabled-button]="!pwd1" (click)="encryptWallet()">Next</button></div>
   </div>
   <div *ngIf="activePanel==4">
