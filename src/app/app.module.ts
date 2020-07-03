@@ -44,7 +44,6 @@ import { LedgerService } from './services/ledger/ledger.service';
 import { EstimateService } from './services/estimate/estimate.service';
 
 // View components
-import { ImportComponent } from './components/import/import.component';
 import { StartComponent } from './components/start/start.component';
 import { SendComponent } from './components/send/send.component';
 import { NewWalletComponent } from './components/new-wallet/new-wallet.component';
@@ -86,7 +85,6 @@ export function HttpLoaderFactory(http: HttpClient) {
 
     // View components
     NewWalletComponent,
-    ImportComponent,
     StartComponent,
     SendComponent,
     ReceiveComponent,
