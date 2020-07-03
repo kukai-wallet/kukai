@@ -18,12 +18,12 @@
               <input type="password" class="text" (keydown.enter)='checkImportPwd()' id="pwd" [(ngModel)]="pwd"
                   placeholder="Password">
               <div class="buttons single">
-                  <div class="button next" (click)='checkImportPwd()'>Import</div>
+                  <button class="button next" (click)='checkImportPwd()'>Import</button>
               </div>
           </div>
           <div class="buttons single">
               <a routerLink="/">
-                  <div class="button back">Back</div>
+                  <button class="button back">Back</button>
               </a>
           </div>
       </ng-container>
@@ -60,9 +60,9 @@
           </div>
           <div class="buttons">
               <a routerLink="/">
-                  <div class="button back">Back</div>
+                  <button class="button back">Back</button>
               </a>
-              <div class="button next" (click)="retrieve()">Import</div>
+              <button class="button next" (click)="retrieve()">Import</button>
           </div>
       </ng-container>
   </div>
@@ -77,9 +77,9 @@
       <small class="extra-top-margin">{{ 'NEWWALLETCOMPONENT.CONFIRMPASSWORD' | translate }}</small>
       <input type="password" class="text" [(ngModel)]="pwd2">
       <div class="buttons"><a routerLink="/">
-              <div class="button back">Cancel</div>
+              <button class="button back">Cancel</button>
           </a>
-          <div class="button next" [class.disabled-button]="!pwd1" (click)="setPwd()">Next</div>
+          <button class="button next" [class.disabled-button]="!pwd1" (click)="setPwd()">Next</button>
       </div>
   </div>
   <!-- Step 3 -->
@@ -90,11 +90,11 @@
       <div class="whitebox final">
           <p class="description bold pkh">Your public account address:&#10;&#13;{{ showPkh() }}</p>
           <div class="buttons single">
-              <div class="button next" (click)="download()">Download</div>
+              <button class="button next" (click)="download()">Download</button>
           </div>
       </div>
       <div class="buttons single finish">
-          <div class="button back" [class.disabled-button]="!Downloaded" (click)="done()">Finish</div>
+          <button class="button back" [class.disabled-button]="!Downloaded" (click)="done()">Finish</button>
       </div>
   </div>
 </div>

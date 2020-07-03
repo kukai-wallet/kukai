@@ -87,7 +87,7 @@
 .kukai-card div.buttons.single.finish {
   margin-top: 2.5rem;
 }
-.kukai-card div.button {
+.kukai-card button {
   border-radius: 0.75rem;
   width: 8rem;
   height: 3rem;
@@ -95,6 +95,8 @@
   font-weight: bold;
   font-size: 0.875rem;
   line-height: 1rem;
+  border: none;
+  padding: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -102,25 +104,23 @@
   cursor: pointer;
   transition: margin-top 0.1s ease-in, margin-bottom 0.1s ease-in;
 }
-.kukai-card div.button:hover {
+.kukai-card button:hover {
   margin-top: -0.125rem;
 }
-.kukai-card div.buttons.single div.button:hover {
+.kukai-card div.buttons.single button:hover {
   margin-bottom: 0.125rem;
 }
-.kukai-card div.button.next {
+.kukai-card button.next {
   color: #098424;
+  background: #9be3ab;
   box-shadow: 0px 0px 1px rgba(155, 227, 171, 0.04),
     0px 2px 6px rgba(155, 227, 171, 0.04),
     0px 16px 24px rgba(155, 227, 171, 0.24);
 }
-.kukai-card div.button.back {
+.kukai-card button.back {
   background: rgba(0, 0, 0, 0.08);
 }
-.kukai-card div.button.next {
-  background: #9be3ab;
-}
-.kukai-card div.button.disabled-button {
+.kukai-card button.disabled-button {
   pointer-events: none;
   opacity: 0.4;
   -webkit-opacity: 0.4;

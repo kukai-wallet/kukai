@@ -10,7 +10,7 @@
     <div *ngIf="!hideBlur" class="seed-blur" (click)="hideBlur = true ; $event.stopPropagation()">
       <span class="black">Click here to reveal your seed words</span>
     </div>
-    <div class="buttons"><a routerLink="/"><div class="button back">Back</div></a><div class="button next" (click)="verifyView()">Next</div></div>
+    <div class="buttons"><a routerLink="/"><button class="button back">Back</button></a><button class="button next" (click)="verifyView()">Next</button></div>
   </div>
   <div *ngIf="activePanel==2">
     <H1>Verify your seed</H1>
@@ -30,7 +30,7 @@
         <span class="word-value">{{ valueFormat(MNEMONIC.verify[0] + 1) }}</span>
       </div>
     </div>
-    <div class="buttons"><a routerLink="/"><div class="button back">Cancel</div></a><div class="button next" [class.disabled-button]="MNEMONIC.verify.length" (click)="pwdView()">Next</div></div>
+    <div class="buttons"><a routerLink="/"><button class="button back">Cancel</button></a><button class="button next" [class.disabled-button]="MNEMONIC.verify.length" (click)="pwdView()">Next</button></div>
   </div>
   <div *ngIf="activePanel==3">
     <H1>Set a password</H1>
@@ -41,7 +41,7 @@
     <small class="grey"> {{ 'NEWWALLETCOMPONENT.PASSWORDSTRENGTH' | translate }} — {{ pwdStrength }}</small>
     <small>{{ 'NEWWALLETCOMPONENT.CONFIRMPASSWORD' | translate }}</small>
     <input type="password" class="text" [(ngModel)]="pwd2">
-    <div class="buttons"><a routerLink="/"><div class="button back">Cancel</div></a><div class="button next" [class.disabled-button]="!pwd1" (click)="encryptWallet()">Next</div></div>
+    <div class="buttons"><a routerLink="/"><button class="button back">Cancel</button></a><button class="button next" [class.disabled-button]="!pwd1" (click)="encryptWallet()">Next</button></div>
   </div>
   <div *ngIf="activePanel==4">
     <H1>Wallet created! 🎉</H1>
@@ -50,11 +50,11 @@
     <div class="whitebox final">
       <p class="description bold pkh">Your public account address:&#10;&#13;{{ getPkh() }}</p>
       <div class="buttons single">
-        <div class="button next" (click)="download()">Download</div>
+        <button class="button next" (click)="download()">Download</button>
       </div>
     </div>
     <div class="buttons single finish">
-      <div class="button back" [class.disabled-button]="!ekfDownloaded" (click)="done()">Finish</div>
+      <button class="button back" [class.disabled-button]="!ekfDownloaded" (click)="done()">Finish</button>
     </div>
   </div>
 </div>

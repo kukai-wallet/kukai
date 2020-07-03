@@ -10,6 +10,10 @@ html, body {
 }
 button, input, textarea {
   -webkit-appearance: none !important;
+  outline: none;
+}
+button:focus, input:focus, textarea:focus {
+  outline: none;
 }
 p,
 span,
