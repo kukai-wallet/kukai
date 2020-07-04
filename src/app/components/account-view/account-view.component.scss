@@ -145,15 +145,6 @@ div.address-container {
   -webkit-opacity: 0.4;
   -khtml-opacity: 0.4;
 }
-#buttons {
-  margin-top: 40px;
-  margin-bottom: 40px;
-  width: 400px;
-  height: 48px;
-  display: flex;
-  justify-content: space-between;
-}
-
 .top-container > img {
   float: right;
   margin-top: 0.25rem;
@@ -280,12 +271,6 @@ div.line:last-child {
   }
   .truncate-overflow {
     width: 13rem;
-  }
-  #buttons {
-    width: 21rem;
-  }
-  div#buttons div.button {
-    width: 6rem;
   }
   .main-container.small {
     width: 21rem;
