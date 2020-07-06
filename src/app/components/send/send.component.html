@@ -131,7 +131,7 @@
       </ng-container>
       <div class="row-group" style="margin: 1.25rem 0 1.5rem;">
         <input *ngIf="!walletService.isLedgerWallet()" [(ngModel)]="password" autocomplete="current-password" placeholder="Password" class="text password" type="password" (input)="this.pwdValid = ''" (change)="this.pwdValid = ''">
-        <button style="height: 2.5rem;" [style.display]="(walletService.isLedgerWallet() && ledgerError) ? 'flex' : 'none'" (click)="ledgerRetry()">Retry</button>
+        <button class="retry" [style.display]="(walletService.isLedgerWallet() && ledgerError) ? 'flex' : 'none'" (click)="ledgerRetry()">Retry</button>
         <button [style.margin-left]="(walletService.isLedgerWallet() && ledgerError) ? '0' : 'auto'" class="green confirm" (click)="inject()" [disabled]="walletService.isLedgerWallet() && (!sendResponse || !sendResponse.payload || !sendResponse.payload.signedOperation)">
           {{ walletService.isLedgerWallet() ? 'Broadcast' : 'Confirm'}}</button>
       </div>
