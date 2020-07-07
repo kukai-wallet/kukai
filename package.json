@@ -58,7 +58,7 @@
     "libsodium-wrappers": "^0.5.4",
     "ngx-bootstrap": "^2.0.2",
     "node-forge": "^0.7.6",
-    "npm": "^5.10.0",
+    "npm": "^6.14.6",
     "pbkdf2": "^3.0.14",
     "qrcode": "^1.2.0",
     "randomatic": "^3.0.0",
