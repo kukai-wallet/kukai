@@ -1,6 +1,14 @@
 <div *ngIf="displayAgreement" class="agreement-wrapper fade-in">
   <div class="agreement-footer fade-in">
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur ac pulvinar ante. Sed sed ultrices sapien, vel fringilla sapien. Nulla malesuada ligula erat, vel dignissim ligula pharetra congue. Nam sed bibendum arcu. Vestibulum in cursus mi, in vestibulum mauris. Aliquam consectetur sapien ac velit ornare, nec pulvinar leo fermentum. Curabitur interdum eros sapien, a volutpat nisl mattis eu. Proin sagittis.</p>
-    <button (click)="accept()">I accept</button>
+    <p>By Accessing, Continuing to Use & Browse this Website including its Services provided therein (“Kukai Wallet”), you agree that you have read and reviewed our <a href="./terms-of-use" target="_blank">Terms of Use</a> and <a href="./privacy-policy" target="_blank">Privacy Policy</a>.</p>
+    <div><div class="accept">
+      <button (click)="accept()">Accept</button>
+      <p>I have reviewed the Terms of Use and Privacy Policy, I hereby Accept and Agree to the Terms of Use and Privacy Policy.</p>
+    </div>
+    <div>
+      <a href="about:blank"><button>Decline</button></a>
+      <p>I have reviewed the Terms of Use and Privacy Policy, I hereby DO NOT Accept and Agree to the Terms of Use and Privacy Policy.</p>
+    </div>
+    </div>
   </div>
 </div>

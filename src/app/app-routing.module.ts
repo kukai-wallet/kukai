@@ -9,6 +9,8 @@ import { AccountsComponent } from './components/accounts/accounts.component';
 import { P404Component } from './views/error/404.component';
 import { P500Component } from './views/error/500.component';
 import { AccountViewComponent } from './components/account-view/account-view.component';
+import { PrivacyPolicyComponent } from './components/agreement/privacy-policy/privacy-policy.component';
+import { TermsOfUseComponent } from './components/agreement/terms-of-use/terms-of-use.component';
 
 const routes: Routes = [
   { path: '', component: StartComponent },  // Content Centre position
@@ -18,6 +20,8 @@ const routes: Routes = [
   { path: 'connect-ledger', component: ConnectLedgerComponent },
   { path: 'accounts', component: AccountsComponent },
   { path: 'account/:address', component: AccountViewComponent },
+  { path: 'privacy-policy', component: PrivacyPolicyComponent },
+  { path: 'terms-of-use', component: TermsOfUseComponent },
   {
     path: '404',
     component: P404Component,

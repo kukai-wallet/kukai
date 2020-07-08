@@ -6,12 +6,20 @@
     align-items: center;
     justify-content: center;
 }
+:host div.container {
+  display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    flex-direction: column;
+}
 #follow {
     height: 3rem;
     width: 8rem;
     text-align: center;
+    margin-top: 2.5rem;
 }
-span {
+#follow span {
     font-style: normal;
     font-weight: 500;
     font-size: 0.75rem;
@@ -24,7 +32,7 @@ span {
     -khtml-opacity: 0.4;
     vertical-align: top;
 }
-a {
+#follow a {
     position: relative;
     top: 0.24rem;
     opacity: 0.4;
@@ -33,10 +41,17 @@ a {
     font-size: 0.75rem;
 
 }
+div.container > div.links > a {
+  font-size: 0.5rem;
+  color: #898989;
+}
+div.container > div.links > a:last-child {
+  margin-left: 1rem;
+}
 #tg {
     margin-left: 1.5rem;
     margin-right: 1.5rem;
 }
-img:hover {
+#follow img:hover {
     filter: invert(25%) sepia(800%) saturate(2878%) hue-rotate(180deg);
 }
