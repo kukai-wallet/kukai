@@ -690,12 +690,12 @@ export class OperationService {
       }
       const size = Number('0x' + op.rest.slice(index, index += 2));
       const argument = op.rest.slice(index, index += size * 2);
-      if (argument.slice(0, 40) === '02000000' + (size - 5).toString(16) + '0320053d036d0743035d0a00000015') {
-        const pkh = this.decodePkh(argument.slice(40, 82));
-        if (argument.slice(82, 94) === '0346034e031b') { // KT delegate
+      if (argument.slice(0, 40) === '02000000' + (size - 5).toString(16) + '0320053d036d0743035d0100000024') {
+        const pkh = this.decodeString(argument.slice(40, 112));
+        if (argument.slice(112, 124) === '0346034e031b') { // KT delegate
           op.data.parameters = this.getContractDelegation(pkh);
-        } else if (argument.slice(82, 96) === '031e0743036a00') { // KT to tz transaction
-          const amount2 = this.zarithDecodeInt(argument.slice(96, argument.length - 12));
+        } else if (argument.slice(112, 126) === '031e0743036a00') { // KT to tz transaction
+          const amount2 = this.zarithDecodeInt(argument.slice(126, argument.length - 12));
           if (argument.slice(argument.length - 12, argument.length) !== '034f034d031b') {
             throw new Error('UnsupportedTagT4');
           }
@@ -704,12 +704,12 @@ export class OperationService {
         } else {
           throw new Error('UnsupportedTagT3');
         }
-      } else if (argument.slice(0, 40) === '02000000' + (size - 5).toString(16) + '0320053d036d0743036e0a00000016') { // KT to KT transaction
-        const kt = argument.slice(40, 84);
-        if (argument.slice(84, 154) !== '0555036c0200000015072f02000000090200000004034f032702000000000743036a00') {
+      } else if (argument.slice(0, 40) === '02000000' + (size - 5).toString(16) + '0320053d036d0743036e0100000024') { // KT to KT transaction
+        const kt = this.decodeString(argument.slice(40, 112));
+        if (argument.slice(112, 182) !== '0555036c0200000015072f02000000090200000004034f032702000000000743036a00') {
         }
-        const amount2 = this.zarithDecodeInt(argument.slice(154));
-        if (argument.slice(156 + amount2.count * 2, 166 + amount2.count * 2) !== '4f034d031b') {
+        const amount2 = this.zarithDecodeInt(argument.slice(182));
+        if (argument.slice(184 + amount2.count * 2, 194 + amount2.count * 2) !== '4f034d031b') {
           throw new Error('UnsupportedTagT6');
         }
         op.data.parameters = this.getContractKtTransaction(kt, amount2.value.toString());
@@ -792,6 +792,9 @@ export class OperationService {
   }
   decodePk() {
     return null;
+  }
+  decodeString(bytes: string): string {
+    return Buffer.from(this.hex2buf(bytes)).toString('utf-8');
   }
   zarithDecode(hex: string): any {
     let count = 0;
@@ -887,13 +890,7 @@ export class OperationService {
     }
     return output;
   }
-  getContractDelegation(pkh) {
-    let pkHex: string;
-    if (pkh.slice(0, 2) === 'tz') {
-      pkHex = '00' + this.buf2hex(this.b58cdecode(pkh, this.prefix.tz1));
-    } else {
-      pkHex = pkh;
-    }
+  getContractDelegation(pkh: string) {
     return {
       entrypoint: 'do',
       value:
@@ -907,15 +904,14 @@ export class OperationService {
           args:
             [{ prim: 'key_hash' },
             {
-              bytes:
-                pkHex
+              string: pkh
             }]
         },
         { prim: 'SOME' }, { prim: 'SET_DELEGATE' },
         { prim: 'CONS' }]
     };
   }
-  getContractPkhTransaction(to, amount) {
+  getContractPkhTransaction(to: string, amount: string) {
     return {
       entrypoint: 'do',
       value:
@@ -926,7 +922,7 @@ export class OperationService {
           args:
             [{ prim: 'key_hash' },
             {
-              'bytes': this.tz2hex(to)
+              string: to
             }]
         },
         { prim: 'IMPLICIT_ACCOUNT' },
@@ -939,7 +935,7 @@ export class OperationService {
         { prim: 'CONS' }]
     };
   }
-  getContractKtTransaction(to, amount) {
+  getContractKtTransaction(to: string, amount: string) {
     return {
       entrypoint: 'do',
       value: [{ prim: 'DROP' },
@@ -948,7 +944,7 @@ export class OperationService {
         prim: 'PUSH',
         args:
           [{ prim: 'address' },
-          { 'bytes': this.kt2hex(to) }]
+          { string: to }]
       },
       { prim: 'CONTRACT', args: [{ prim: 'unit' }] },
       [{
@@ -964,23 +960,6 @@ export class OperationService {
       { prim: 'UNIT' }, { prim: 'TRANSFER_TOKENS' },
       { prim: 'CONS' }]
     };
-  }
-  kt2hex(kt) {
-    if (kt.slice(0, 2) === 'KT') {
-      return ('01' + this.buf2hex(this.b58cdecode(kt, this.prefix.KT)) + '00');
-    }
-    return kt;
-  }
-  tz2hex(tz: string) {
-    let pkHex;
-    if (tz.slice(0, 3) === 'tz1') {
-      pkHex = '00' + this.buf2hex(this.b58cdecode(tz, this.prefix.tz1));
-    } else if (tz.slice(0, 3) === 'tz2') {
-      pkHex = '01' + this.buf2hex(this.b58cdecode(tz, this.prefix.tz2));
-    } else if (tz.slice(0, 3) === 'tz3') {
-      pkHex = '02' + this.buf2hex(this.b58cdecode(tz, this.prefix.tz3));
-    }
-    return pkHex;
   }
   getManagerScript(pkh: string) {
     let pkHex: string;

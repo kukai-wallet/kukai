@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import 'babel-polyfill';
 import TransportU2F from '@ledgerhq/hw-transport-u2f';
 import TransportWebAuthn from '@ledgerhq/hw-transport-webauthn';
-import App from 'basil-tezos-ledger';
+import Tezos from '@obsidiansystems/hw-app-xtz';
 import { OperationService } from '../operation/operation.service';
 import { MessageService } from '../message/message.service';
 
@@ -47,7 +47,7 @@ export class LedgerService {
   }
   async getPublicAddress(path: string) {
     await this.transportCheck();
-    const xtz = new App(this.transport);
+    const xtz = new Tezos(this.transport);
     console.log(path);
     const result = await xtz.getAddress(path, true)
       .catch(e => {
@@ -63,7 +63,7 @@ export class LedgerService {
   }
   async signOperation(op: string, path: string) {
     await this.transportCheck();
-    const xtz = new App(this.transport);
+    const xtz = new Tezos(this.transport);
     console.log(path);
     const toSign = '03' + op;
     if (toSign.length > 512) {
