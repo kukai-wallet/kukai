@@ -2,14 +2,16 @@
     height: 8rem;
     margin-top: -8rem;
     width: 100%;
+    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
 }
-:host div.container {
+:host div.foot-container {
   display: flex;
     align-items: center;
     justify-content: space-between;
+    width: 100%;
     height: 100%;
     flex-direction: column;
 }
@@ -27,9 +29,9 @@
     letter-spacing: 1px;
     text-transform: uppercase;
     color: #2C323A;
-    opacity: 0.4;
-    -webkit-opacity: 0.4;
-    -khtml-opacity: 0.4;
+    opacity: 0.6;
+    -webkit-opacity: 0.6;
+    -khtml-opacity: 0.6;
     vertical-align: top;
 }
 #follow a {
@@ -41,12 +43,17 @@
     font-size: 0.75rem;
 
 }
-div.container > div.links > a {
-  font-size: 0.5rem;
-  color: #898989;
+div.foot-container > div.links {
+  width: 100vw;
 }
-div.container > div.links > a:last-child {
+div.foot-container > div.links > a {
+  font-size: 0.5rem;
+  color: #2C323A;
   margin-left: 1rem;
+}
+div.foot-container > div.links > a:hover {
+  color: white;
+  background-color: #5963FF;
 }
 #tg {
     margin-left: 1.5rem;

@@ -1,13 +1,14 @@
 @import "../../../scss/card.css";
 :host {
-    width: 100vw;
+    width: 100%;
     min-height: 100vh;
     padding-bottom: 8rem;
+    overflow: hidden;
     display: flex;
 }
 :host > div {
     margin-top: 5rem;
-    width: 100%;
+    width: 100vw;
     min-height: 100%;
     display: flex;
     justify-content: flex-start;
