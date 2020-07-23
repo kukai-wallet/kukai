@@ -12,13 +12,13 @@ import { WalletService } from '../../services/wallet/wallet.service';
     styleUrls: ['./start.component.scss']
 })
 export class StartComponent implements OnInit {
-
     constructor(
         private walletService: WalletService,
         public translate: TranslateService,
         private router: Router
     ) {
     }
+    animationActive = true;
 
     ngOnInit() {
         if (this.walletService.wallet) {

@@ -1,22 +1,24 @@
 <div class="kukai-card">
     <H1>Connect with your Ledger Nano S</H1>
-    <p class="description bold">Keep the private keys safely on your Ledger device and use Kukai to access the Tezos
-        blockchain.</p>
-    <p class="description">You need to open the Tezos Wallet app on your Ledger device and set the derivation path.</p>
-    <input type="text" class="text" [disabled]="!isHDDerivationPathCustom" [(ngModel)]="path"
-        value="'44\'/1729\'/0\'/0\''">
-    <small>Use custom HD derivation path</small>
-    <div class="switch-container">
-        <label class="switch">
-            <input type="checkbox" [(ngModel)]="isHDDerivationPathCustom" (click)="setDefaultPath()">
-            <span class="slider round"></span>
-        </label><span class="switch-desc">
-            <ng-container *ngIf="!isHDDerivationPathCustom">Off</ng-container>
-            <ng-container *ngIf="isHDDerivationPathCustom">On</ng-container>
-        </span>
-    </div>
-    <div class="buttons">
-        <a routerLink="/"><button class="button back">Back</button></a>
-        <button class="button next" (click)="getPk()">Connect</button>
+    <div class="grey-card">
+      <p class="description bold">Keep the private keys safely on your Ledger device and use Kukai to access the Tezos
+          blockchain.</p>
+      <p class="description">You need to open the Tezos Wallet app on your Ledger device and set the derivation path.</p>
+      <input type="text" class="text" [disabled]="!isHDDerivationPathCustom" [(ngModel)]="path"
+          value="'44\'/1729\'/0\'/0\''">
+      <small>Use custom HD derivation path</small>
+      <div class="switch-container">
+          <label class="switch">
+              <input type="checkbox" [(ngModel)]="isHDDerivationPathCustom" (click)="setDefaultPath()">
+              <span class="slider round"></span>
+          </label><span class="switch-desc">
+              <ng-container *ngIf="!isHDDerivationPathCustom">Off</ng-container>
+              <ng-container *ngIf="isHDDerivationPathCustom">On</ng-container>
+          </span>
+      </div>
+      <div class="buttons">
+          <a routerLink="/"><button class="button back">Back</button></a>
+          <button class="button next" (click)="getPk()">Connect</button>
+      </div>
     </div>
 </div>

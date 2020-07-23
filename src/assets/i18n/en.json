@@ -166,7 +166,7 @@
         "INFODOWNLOAD" : "Please download your Encrypted Keystore File.",
         "DOWNLOAD" : "Download",
         "FINISH" : "Finish",
-        "INVALIDMNEMONIC" : "Invalid mnemonic!",
+        "INVALIDMNEMONIC" : "Invalid seed words!",
         "INVALIDEMAILPASSWORD" : "Invalid email or password!",
         "INVALIDPASSPHRASE" : "Invalid passphrase!",
         "FILENOTSUPPORTED" : "Selected file format is not supported",

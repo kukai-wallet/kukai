@@ -38,12 +38,12 @@
   transition: .4s;
 }
 
-input:checked + .slider, input:focus + .slider {
-  box-shadow: 0px 0px 1px rgba(155, 227, 171, 0.04), 0px 2px 6px rgba(155, 227, 171, 0.04), 0px 16px 24px rgba(155, 227, 171, 0.24);
+input:checked + .slider {
+  box-shadow: 0px 0px 1px rgba(89, 99, 255, 0.04), 0px 2px 6px rgba(89, 99, 255, 0.04), 0px 16px 24px rgba(89, 99, 255, 0.24);
 }
 
 input:checked + .slider:before {
-  background-color: #098424;
+  background-color: #5963FF;
   -webkit-transform: translateX(1.5rem);
   -ms-transform: translateX(1.5rem);
   transform: translateX(1.5rem);
@@ -56,8 +56,9 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 input:checked + .slider {
-  background-color: #9BE3AB;
+  background-color: rgba(89, 99, 255, 0.4);;
 }
+div.kukai-card > div.grey-card > div.switch-container > span.switch-desc,
 span.switch-desc {
   font-style: normal;
   font-weight: normal;

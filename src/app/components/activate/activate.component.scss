@@ -5,6 +5,7 @@
     display: flex;
     justify-content: center;
     flex-direction: row;
+    background: #5963FF;
 }
 :host > div {
     min-height: calc(100vh - 13rem);
@@ -21,9 +22,7 @@
     font-size: 1rem;
     line-height: 1.5rem;
 }
-:host input.text {
-    margin-top: 3rem;
-}
 :host span.text-danger {
-    margin-top: 1rem;
+  font-size: 1rem;
+  margin-top: 1rem;
 }

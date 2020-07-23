@@ -10,6 +10,7 @@
   display: flex;
   justify-content: center;
   align-items: flex-start;
+  z-index: 1
 }
 #wrapper > div {
   display: flex;
@@ -34,30 +35,66 @@
   justify-content: center;
 }
 #wrapper > div > div.top-container > div.monk-holder {
+  margin-top: 2.25rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
+#wrapper > div > div.top-container > div.logo-holder > object.logo {
+  margin-left: -1.5rem;
+  margin-top: -1rem;
+  width: 28.125rem;
+  height: 10rem;
+}
 #wrapper > div > div.top-container > div.monk-holder > object.monk {
   width: 18rem;
   height: 23rem;
-  //width: 12rem;
-  //height: 15rem;
+}
+/* Animation */
+#wrapper > div > div.top-container > div.animationActive > object.monk {
+  will-change: transform;
+  animation: MoveUpDown 5s ease-in-out infinite;
+}
+#wrapper > div > div.top-container > div.animationActive > object.monk-shadow {
+  will-change: transform;
+  animation: MoveUpDown2 5s ease-in-out infinite;
+}
+@keyframes MoveUpDown {
+  0%, 100% {
+    will-change: transform;
+    -webkit-transform: translateY(-1.5rem);
+            transform: translateY(-1.5rem);
+  }
+  50% {
+    will-change: transform;
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+  }
+}
+@keyframes MoveUpDown2 {
+  0%, 100% {
+    will-change: transform;
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+  }
+  50% {
+    will-change: transform;
+    -webkit-transform: translateY(-0.5rem);
+            transform: translateY(-0.5rem);
+  }
 }
 #wrapper > div > div.top-container > div.monk-holder > object.monk-shadow {
   margin-top: 2rem;
-  width: 18rem;
-  height: 1.5rem;
-  //margin-top: 1rem;
-  //width: 12rem;
-  //height: 1rem;
+  width: 17.625rem;
+  height: 5rem;
 }
 #wrapper > div > div.top-container > div.logo-holder > p {
-  margin-top: 2rem;
+  padding-top: 2.25rem;
   font-size: 1.25rem;
   line-height: 2rem;
 }
+/* Menu desktop */
 #menu-container {
   //margin-top: 120px;
   display: flex;
@@ -67,14 +104,14 @@
   flex-wrap: wrap;
   height: 50%;
 }
-a.menu-item {
+#menu-container a.menu-item {
   width: 18rem;
   cursor: pointer;
   text-decoration: none;
   margin: 1rem 2rem 0;
   transition: margin-top 0.1s ease-in, margin-bottom 0.1s ease-in;
 }
-a.menu-item:hover {
+#menu-container a.menu-item:hover {
     margin-top: 0.75rem;
     margin-bottom: 0.25rem;
 }
@@ -109,8 +146,8 @@ a.menu-item:hover {
 #menu-container > a > div.content > H1 {
   font-style: normal;
   font-weight: 500;
-  font-size: 20px;
-  line-height: 16px;
+  font-size: 1.5rem;
+  line-height: 1.5rem;
   display: flex;
   align-items: center;
   text-align: center;
@@ -131,6 +168,46 @@ a.menu-item:hover {
   margin-left: 1.5rem;
   margin-right: 1.5rem;
 }
+/* Menu mobile */
+#mobile-menu-container {
+  display: none;
+  flex-grow: 0.25;
+  margin-top: 0.5rem;
+  align-items: flex-start;
+  justify-content: center;
+  flex-wrap: wrap;
+  height: auto;
+}
+#mobile-menu-container a.menu-item {
+  width: 21.875rem;
+  cursor: pointer;
+  text-decoration: none;
+}
+#mobile-menu-container a.menu-item {
+  margin-bottom: 1rem;
+}
+#mobile-menu-container a.menu-item:first-child {
+  margin-top: 0.5rem;
+}
+#mobile-menu-container > a > div.content {
+  padding: 0 1.125rem;
+  height: 3.5rem;
+  width: 21.875rem;
+  background: #fcfcfc;
+  border: 1px solid #ffffff;
+  border-radius: 12px;
+  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.04), 0px 2px 6px rgba(0, 0, 0, 0.04),
+    0px 16px 24px rgba(0, 0, 0, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+}
+#mobile-menu-container > a H1 {
+  font-size: 1rem;
+  margin-bottom: 0;
+  color: #5963FF;
+}
 div.bottom-container {
   position: fixed;
   width: 100%;
@@ -143,11 +220,10 @@ div.bottom-container {
   flex-direction: column;
   bottom: 0;
   left: 0;
-  z-index: -1;
+  z-index: 0;
 }
 img.blue-wave {
   min-width: 100%;
-  z-index: -1;
 }
 div.bottom-container > div {
   background-color: #5963FF;
@@ -169,23 +245,62 @@ div.bottom-container > div {
     margin-top: 10vh;
   }
 }
-@media screen and (max-width: 46rem) {
-  img.bottom-right {
-    display: none;
-  }
-}
 @media screen and (max-width: 44rem) {
   #menu-container {
     margin-top: 1rem;
   }
 }
-@media screen and (max-width: 37rem) {
-  img.top-left {
-    display: none;
-  }
+@media screen and (max-width: 47rem) {
   #wrapper > div > div.top-container {
     flex-direction: column;
     margin-top: 1rem;
+  }
+}
+@media screen and (max-width: 28.5rem) {
+  #wrapper > div > div.top-container > div.logo-holder > object.logo {
+    margin-left: 0rem;
+    width: 21rem;
+    height: 7.5rem;
+  }
+}
+@media screen and (max-width: 29.9375rem) {
+  /* start of phone styles */
+  #wrapper > div > div.top-container > div.monk-holder {
+    margin-right: 0;
+  }
+  #wrapper > div > div.top-container > div.monk-holder > object.monk {
+    width: 8rem;
+    height: 10.1875rem;
+  }
+  #wrapper > div > div.top-container > div.monk-holder > object.monk-shadow {
+    margin-top: 1rem;
+    width: 8rem;
+    height: 2rem;
+  }
+  #wrapper > div > div.top-container > div.logo-holder {
+    align-items: center;
+    margin-right: 1rem;
+  }
+  #wrapper > div > div.top-container > div.logo-holder > object.logo {
+    margin-top: 0.5rem;
+    width: 8.4375rem;
+    height: 3rem;
+  }
+  #wrapper > div > div.top-container > div.logo-holder > p {
+    width: 21.875rem;
+    font-size: 1rem;
+    text-align: center;
+    line-height: 1.5rem;
+    padding-top: 1rem;
+  }
+  #wrapper > div > div#menu-container {
+    display: none;
+  }
+  #wrapper > div > div.top-container > div#mobile-menu-container {
+    display: flex;
+  }
+  :host > div.bottom-container {
+    height: 25%;
   }
 }
 @media screen and (max-width: 25rem) {
@@ -199,29 +314,37 @@ div.bottom-container > div {
     margin-bottom: 0;
   }
 }
-@media screen and (max-height: 50rem) {
+@media screen and (max-height: 55rem) and (min-width: 30rem) {
   #wrapper > div > div.top-container > div.monk-holder {
     justify-content: flex-end;
   }
   #wrapper > div > div.top-container > div.monk-holder > object.monk {
-    width: 18rem;
-    height: 15rem;
+    width: 15rem;
+    height: 19rem;
   }
   #wrapper > div > div.top-container > div.monk-holder > object.monk-shadow {
     margin-top: 1.5rem;
-    width: 12rem;
-    height: 1.25rem;
+    width: 15rem;
+    height: 3.75rem;
+  }
+  #wrapper > div > div.top-container > div.logo-holder > object.logo {
+    width: 25.3125rem;
+    height: 9rem;
   }
 }
-@media screen and (max-height: 41rem) {
+@media screen and (max-height: 49.375rem) and (min-width: 30rem) {
   #wrapper > div > div.top-container > div.monk-holder > object.monk {
     width: 12rem;
-    height: 15rem;
+    height: 15.25rem;
   }
   #wrapper > div > div.top-container > div.monk-holder > object.monk-shadow {
     margin-top: 1rem;
-    width: 10rem;
-    height: 1rem;
+    width: 12rem;
+    height: 3rem;
+  }
+  #wrapper > div > div.top-container > div.logo-holder > object.logo {
+    width: 22.5rem;
+    height: 8rem;
   }
 }
 /*

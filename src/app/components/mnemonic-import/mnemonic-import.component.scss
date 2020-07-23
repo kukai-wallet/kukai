@@ -6,6 +6,7 @@
   display: flex;
   justify-content: center;
   flex-direction: row;
+  background: #5963FF;
 }
 :host > div.kukai-card > div {
   margin-top: 5rem;
@@ -15,26 +16,33 @@
   flex-direction: column;
 }
 :host > div.kukai-card div.import-options {
-  margin-top: 1.375rem;
+  margin-top: 2.75rem;
   display: flex;
   justify-content: space-between;
   flex-direction: row;
-  width: 21rem;
+  width: 25rem;
   margin-bottom: 1rem;
 }
 :host > div.kukai-card div.import-options span {
+  padding: 0;
+  font-size: 1rem;
   line-height: 1.5rem;
   cursor: pointer;
 }
+:host > div.kukai-card > div > div.grey-card.menu {
+  margin-top: 0.5rem;
+}
 :host > div.kukai-card div.import-options span.selected {
   line-height: 1.5rem;
-  color: #5963ff;
+  margin-bottom: -1px;
   border-bottom: 1px solid;
 }
-:host > div.kukai-card p.faucet {
+:host > div.kukai-card p.faucet > span {
   display: inline;
+  font-size: 1rem;
+  line-height: 1.5rem;
 }
-:host > div.kukai-card p.faucet > a {
+:host > div.kukai-card p.faucet a {
   color: #5963ff !important;
 }
 :host > div.kukai-card p.faucet > a:hover {
@@ -50,6 +58,7 @@
   align-items: flex-start;
   flex-direction: column;
   width: 28rem;
+  margin-left: 2rem;
   margin-top: 1.5rem;
 }
 :host > div.kukai-card input[type="radio"]:checked {
@@ -102,8 +111,10 @@
 }
 :host > div.kukai-card label.input-file {
   margin-top: 2rem;
-  width: 30rem;
-  height: 3rem;
+  margin-left: 2rem;
+  margin-bottom: 0;
+  width: 28rem;
+  height: 3.125rem;
   border: 1px dashed #5963ff;
   border-radius: 12px;
   display: flex;
@@ -132,39 +143,26 @@
   cursor: pointer;
 }
 :host > div.kukai-card div.authenticate > input {
-  width: 18rem;
+  margin-top: 1.5rem;
 }
-:host > div.kukai-card div.authenticate {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  flex-direction: row;
-  margin-top: 1rem;
-}
-:host > div.kukai-card div.authenticate div.buttons.single {
-  margin-top: 0;
-  height: 2.5rem;
-  margin-left: 1.5rem;
-}
-:host > div.kukai-card div.authenticate div.buttons.single button.next {
-  height: 2.5rem;
-}
-:host > div.kukai-card small.extra-top-margin {
-  margin-top: 2.25rem;
-}
-:host > div.kukai-card input#pwd.text {
-  width: 20.5rem;
-}
-@media screen and (max-width: 30rem) {
+@media screen and (max-width: 32.5rem) {
   :host > div.kukai-card label.input-file {
-    width: 20rem;
+    width: 19.875rem;
+    margin-left: 1rem;
   }
   :host > div.kukai-card div.authenticate > input#pwd {
-    width: 10.5rem;
+    width: 19.875rem;
+    margin-left: 1rem;
   }
-}
-@media screen and (max-width: 29rem) {
   :host > div.kukai-card div.radios {
+    margin-left: 1rem;
     width: 20rem;
+  }
+  :host > div.kukai-card div.radios small {
+    width: 17rem;
+  }
+  :host > div.kukai-card div.import-options {
+    width: 21.875rem;
+    justify-content: space-around;
   }
 }

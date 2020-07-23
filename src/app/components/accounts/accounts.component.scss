@@ -106,7 +106,7 @@ span {
 .value-total > .value-container{
     width: 100%;
     margin-bottom: 1.5rem;
-    margin-right: 0.625rem;
+    margin-right: 2rem;
 }
 .value-total > .value-container> .values > .account-xtz {
     font-size: 1rem;
@@ -144,5 +144,8 @@ span {
     }
     div.seperator {
         width: 21rem;
+    }
+    .value-total > .value-container{
+        margin-right: 1rem;
     }
   }
