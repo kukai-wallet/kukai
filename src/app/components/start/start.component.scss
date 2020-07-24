@@ -214,10 +214,7 @@ div.bottom-container {
   padding: 0;
   overflow: hidden;
   height: 60%;
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
-  flex-direction: column;
+  display: block;
   bottom: 0;
   left: 0;
   z-index: 0;
@@ -279,7 +276,8 @@ div.bottom-container > div {
   }
   #wrapper > div > div.top-container > div.logo-holder {
     align-items: center;
-    margin-right: 1rem;
+    margin-right: 0rem;
+    margin-left: 0;
   }
   #wrapper > div > div.top-container > div.logo-holder > object.logo {
     margin-top: 0.5rem;

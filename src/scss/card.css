@@ -69,8 +69,8 @@
   z-index: 2;
   backdrop-filter: blur(8px);
   border-radius: 0.75rem;
-  background: rgba(238, 238, 238);
-  background: rgba(238, 238, 238, 0.4);
+  background-color: rgb(238, 238, 238);
+  background-color: rgba(238, 238, 238, 0.4);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -78,6 +78,12 @@
   border-radius: 0;
   border-top-left-radius: 0.75rem;
   border-top-right-radius: 0.75rem;
+}
+@-moz-document url-prefix() {
+  .kukai-card div.seed-blur {
+    position: relative;
+    background-color: rgb(238, 238, 238) !important;
+  }
 }
 .kukai-card span.black {
   color: black;
