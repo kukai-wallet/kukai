@@ -14,10 +14,10 @@
               <app-receive [activeAddress]="account.address"></app-receive>
             </div>
           </div>
-          <span style="width: auto">{{ account.address }}</span>
+          <span style="width: auto; font-size: 0.8125rem">{{ account.address }}</span>
           <H2>Balance</H2>
           <div style="margin-top: 0"><span>{{ account.balanceXTZ / 1000000 | number: "1.0-6" }} tez</span><span
-              class="mark">—</span><span class="grey">{{ account.balanceUSD | number: "1.0-0" }} USD</span></div>
+              class="mark">—</span><span class="grey" style="font-size: 0.75rem">{{ account.balanceUSD | number: "1.0-0" }} USD</span></div>
           <H2>Delegate</H2>
           <app-delegate [activeAccount]="account"></app-delegate>
         </div>

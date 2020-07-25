@@ -13,7 +13,7 @@
       <p>Add a new account to your HD wallet. Enter your password to confirm.</p>
       <div class="row-group" style="margin: 1.25rem 0 1.5rem;">
         <input #pwdInput [(ngModel)]="password" class="text password" autocomplete="current-password" placeholder="Password" type="password" (input)="this.errorMsg = ''" (change)="this.errorMsg = ''">
-        <button  class="green confirm" (click)="addPkh()">Confirm</button>
+        <button  class="blue confirm" (click)="addPkh()">Confirm</button>
       </div>
       <span *ngIf="this.errorMsg" class="danger margin">{{ this.errorMsg }}</span>
     </div>

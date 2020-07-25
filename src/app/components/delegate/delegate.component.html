@@ -1,6 +1,6 @@
 <div class="outside-container">
   <span *ngIf="!activeAccount.delegate">No delegate set <span (click)="openModal()">(Choose a baker)</span></span>
-  <span *ngIf="activeAccount.delegate">{{ activeAccount.delegate }} <span (click)="openModal()">(Change baker)</span></span>
+  <span *ngIf="activeAccount.delegate">{{ activeAccount.delegate }} <span (click)="openModal()">(Change&nbsp;baker)</span></span>
 </div>
 <!-- The Modal -->
 <div *ngIf="modalOpen" id="myModal" class="kukai-modal">
@@ -27,7 +27,7 @@
       <span *ngIf="formInvalid" class="danger no-margin">
         {{ formInvalid }}
       </span>
-      <button class="green" (click)="openModal2()">Preview</button>
+      <button class="blue" (click)="openModal2()">Preview</button>
     </div>
     <!-- Confirm transaction -->
     <div class="km-body" *ngIf="activeView === 1">
@@ -46,7 +46,7 @@
       <div class="row-group" style="margin: 1.25rem 0 1.5rem;">
         <input *ngIf="!walletService.isLedgerWallet()" [(ngModel)]="password" placeholder="Password" autocomplete="current-password" class="text password" type="password" (input)="this.pwdValid = ''" (change)="this.pwdValid = ''">
         <button class="retry" [style.display]="(walletService.isLedgerWallet() && ledgerError) ? 'flex' : 'none'" (click)="ledgerSign()">Retry</button>
-        <button [style.margin-left]="(walletService.isLedgerWallet() && ledgerError) ? '0' : 'auto'" class="green confirm" (click)="inject()" [disabled]="walletService.isLedgerWallet() && (!sendResponse || !sendResponse.payload || !sendResponse.payload.signedOperation)">
+        <button [style.margin-left]="(walletService.isLedgerWallet() && ledgerError) ? '0' : 'auto'" class="blue confirm" (click)="inject()" [disabled]="walletService.isLedgerWallet() && (!sendResponse || !sendResponse.payload || !sendResponse.payload.signedOperation)">
           {{ walletService.isLedgerWallet() ? 'Broadcast' : 'Confirm'}}</button>
       </div>
       <span *ngIf="this.pwdValid" class="danger margin">{{ this.pwdValid }}</span>

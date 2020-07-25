@@ -6,7 +6,7 @@ button {
   width: 100%;
   font-style: normal;
   font-weight: bold;
-  font-size: 0.875rem;
+  font-size: 1rem;
   line-height: 1rem;
   display: flex;
   flex-direction:column;
@@ -24,11 +24,9 @@ button:focus {
   outline: none;
 }
 button.purple {
-  color: #5963ff;
-  background: #a4a8ec;
-  box-shadow: 0px 0px 1px rgba(164, 168, 236, 0.04),
-    0px 2px 6px rgba(164, 168, 236, 0.04),
-    0px 16px 24px rgba(164, 168, 236, 0.24);
+  color: white;
+  background: #5963FF;
+  box-shadow: 0px 0px 1px rgba(89, 99, 255, 0.04), 0px 2px 6px rgba(89, 99, 255, 0.04), 0px 16px 24px rgba(89, 99, 255, 0.24);
   transition: margin-top 0.1s ease-in, margin-bottom 0.1s ease-in;
 }
 small {

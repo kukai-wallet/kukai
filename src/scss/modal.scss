@@ -148,8 +148,8 @@ div.km-content label:not(.switch) {
   margin-bottom: 0.5rem;
   font-style: normal;
   font-weight: 500;
-  font-size: 0.875rem;
-  line-height: 1rem;
+  font-size: 1rem;
+  line-height: 1.125rem;
   display: flex;
   align-items: center;
   color: #2C323A;
@@ -158,7 +158,7 @@ div.km-content label:not(.switch) {
 div.kukai-modal p, span.danger {
   font-style: normal;
   font-weight: normal;
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   line-height: 1rem;
   display: flex;
   align-items: flex-end;
@@ -180,12 +180,12 @@ div.kukai-modal input.text,
 div.kukai-modal textarea.text {
   width: 100%;
   background: #E1E1E1;
-  border-radius: 0.5rem;
-  height: 2.5rem;
+  border-radius: 0.75rem;
+  height: 3rem;
   font-style: normal;
   font-weight: normal;
   font-size: 1rem;
-  line-height: 2.5rem;
+  line-height: 3rem;
   letter-spacing: 0.16px;
   color: #000000;
   padding-left: 1rem;
@@ -194,6 +194,7 @@ div.kukai-modal textarea.text {
 }
 div.kukai-modal input.text.password {
   width: 14rem;
+  margin-right: 1rem;
 }
 div.kukai-modal textarea.text {
   padding-top: 0.5rem;
@@ -228,7 +229,7 @@ div.kukai-modal div.row-group > div.group:first-child {
 div.kukai-modal div.advanced {
   margin-top: 1.5rem;
 }
-div.kukai-modal button.green {
+div.kukai-modal button.blue {
   font-style: normal;
   font-weight: bold;
   font-size: 0.875rem;
@@ -237,19 +238,19 @@ div.kukai-modal button.green {
   align-items: center;
   justify-content: center;
   text-align: center;
-  color: #098424;
+  color: white;
+  background: #5963FF;
+  box-shadow: 0px 0px 1px rgba(89, 99, 255, 0.04), 0px 2px 6px rgba(89, 99, 255, 0.04), 0px 16px 24px rgba(89, 99, 255, 0.24);
   width: 100%;
   height: 3rem;
-  background: #9BE3AB;
-  box-shadow: 0px 0px 1px rgba(155, 227, 171, 0.04), 0px 2px 6px rgba(155, 227, 171, 0.04), 0px 16px 24px rgba(155, 227, 171, 0.24);
   border-radius: 0.75rem;
   border: 0;
   margin-top: 2.5rem;
   margin-bottom: 1.5rem;
 }
-div.kukai-modal button.green.confirm,
+div.kukai-modal button.blue.confirm,
 div.kukai-modal button.retry {
-  height: 2.5rem;
+  height: 3rem;
   width: 8rem;
   margin: 0;
 }
@@ -320,6 +321,6 @@ div.kukai-modal div.x {
     width: 23rem;
   }
   div.kukai-modal input.text.password {
-    width: 12rem;
+    width: 11rem;
   }
 }
