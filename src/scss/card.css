@@ -143,13 +143,8 @@
   box-shadow: 0px 0px 1px rgba(89, 99, 255, 0.04), 0px 2px 6px rgba(89, 99, 255, 0.04), 0px 16px 24px rgba(89, 99, 255, 0.24);
 }
 .kukai-card button.back {
-  color: black;
-  border: 1px solid rgba(0, 0, 0, 0.16);
-  background: rgba(0, 0, 0, 0);
-}
-.kukai-card button.back.invert {
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #727AFD;
+  background: rgba(114, 122, 253, 0.16)
 }
 .kukai-card button.disabled-button {
   pointer-events: none;

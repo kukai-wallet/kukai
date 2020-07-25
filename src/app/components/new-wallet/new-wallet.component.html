@@ -56,8 +56,8 @@
         <p class="description bold pkh">Your public account address:&#10;&#13;{{ getPkh() }}</p>
       </div>
       <div class="buttons">
-        <button class="button back" [class.disabled-button]="!ekfDownloaded" (click)="done()">Enter Wallet</button>
         <button class="button next" (click)="download()">Download</button>
+        <button class="button next" [class.disabled-button]="!ekfDownloaded" (click)="done()">Goto Wallet</button>
       </div>
     </div>
   </div>

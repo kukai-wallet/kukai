@@ -28,18 +28,18 @@
     line-height: 1rem;
     letter-spacing: 1px;
     text-transform: uppercase;
-    color: #2C323A;
-    opacity: 0.6;
-    -webkit-opacity: 0.6;
-    -khtml-opacity: 0.6;
+    color: white;
+    opacity: 0.8;
+    -webkit-opacity: 0.8;
+    -khtml-opacity: 0.8;
     vertical-align: top;
 }
 #follow a {
     position: relative;
     top: 0.24rem;
-    opacity: 0.4;
-    -webkit-opacity: 0.4;
-    -khtml-opacity: 0.4;
+    opacity: 0.8;
+    -webkit-opacity: 0.8;
+    -khtml-opacity: 0.8;
     font-size: 0.75rem;
 
 }
@@ -49,7 +49,7 @@ div.foot-container > div.links {
 }
 div.foot-container > div.links > a {
   font-size: 0.5rem;
-  color: #2C323A;
+  color: rgba(256, 256, 256, 0.6);
   margin-left: 1rem;
 }
 div.foot-container > div.links > a:hover {

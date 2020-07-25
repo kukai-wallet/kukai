@@ -11,6 +11,7 @@ div.middle {
     align-items: center;
 }
 div.middle span {
+  color: white;
     font-style: normal;
     font-weight: 500;
     font-size: 0.75rem;
@@ -21,10 +22,10 @@ div.middle .accounts {
     font-style: normal;
     font-size: 0.75rem;
     line-height: 1rem;
-    color: rgba(0, 0, 0, 0.4);
+    color: rgba(255, 255, 255, 0.8);
 }
 div.middle > span.accounts {
-  color: #2C323A
+  color: white;
 }
 div.middle img {
     padding-top: 0rem;
@@ -88,7 +89,7 @@ a.logo {
     font-weight: 500;
     font-size: 1rem;
     line-height: 1rem;
-    color: #2C323A;
+    color: white;
     display: flex;
     align-items: center;
 }
