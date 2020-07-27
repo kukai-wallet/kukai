@@ -53,6 +53,14 @@ button.blue {
 input.custom-textbox {
   padding-left: 0.75rem;
 }
+div.kukai-modal > div.km-content > div.km-body > div.group > input.text {
+  font-size: 0.8125rem;
+}
+@supports (-webkit-touch-callout: none) {
+  div.kukai-modal > div.km-content > div.km-body > div.group > input.text {
+    font-size: 1rem;
+  }
+}
 @media screen and (max-width: 25rem) {
   input#toAddress,
   input.custom-textbox {
