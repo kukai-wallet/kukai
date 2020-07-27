@@ -17,6 +17,7 @@ export class ConnectLedgerComponent implements OnInit {
   activePanel = 0;
   CONSTANTS = new Constants();
   defaultPath = '44\'/1729\'/0\'/0\'';
+  defaultText = 'Default derivation path';
   path: string;
   pendingLedgerConfirmation = false;
   isHDDerivationPathCustom = false;
@@ -31,16 +32,17 @@ export class ConnectLedgerComponent implements OnInit {
     ) { }
 
   ngOnInit() {
-    this.path = this.defaultPath;
+    this.path = this.defaultText;
   }
   async getPk() {
-    if (this.inputValidationService.derivationPath(this.path)) {
+    const path: string = this.path.replace(this.defaultText, this.defaultPath);
+    if (this.inputValidationService.derivationPath(path)) {
       this.pendingLedgerConfirmation = true;
       try {
         this.messageService.startSpinner('Waiting for Ledger confirmation...');
-        const pk = await this.ledgerService.getPublicAddress(this.path);
+        const pk = await this.ledgerService.getPublicAddress(path);
         console.log('getPK => ' + pk);
-        await this.importFromPk(pk, this.path);
+        await this.importFromPk(pk, path);
       } catch (e) {
         throw(e);
       } finally {
@@ -68,6 +70,8 @@ export class ConnectLedgerComponent implements OnInit {
   }
   setDefaultPath() {
     if (this.isHDDerivationPathCustom) {
+      this.path = this.defaultText;
+    } else {
       this.path = this.defaultPath;
     }
   }
