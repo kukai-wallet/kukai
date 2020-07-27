@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, HostBinding } from '@angular/core';
 import { WalletService } from '../../services/wallet/wallet.service';
 import { MessageService } from '../../services/message/message.service';
 import { ExportService } from '../../services/export/export.service';
@@ -15,6 +15,7 @@ import { Router } from '@angular/router';
 })
 export class NewWalletComponent implements OnInit {
   wordInput: string;
+  @HostBinding('class.tacos') showTacos = false;
   @Input() pwd1 = '';
   @Input() pwd2 = '';
   @Input() userMnemonic = '';
@@ -140,6 +141,7 @@ export class NewWalletComponent implements OnInit {
       this.MNEMONIC.verify = [];
       this.activePanel++;
       this.messageService.stopSpinner();
+      this.showTacos = true;
     }
   }
   validPwd(): boolean {
