@@ -121,6 +121,7 @@ export class DelegateComponent implements OnInit {
         this.pwdValid = '';
         this.messageService.startSpinner('Sending operation...');
         this.sendDelegation(keys);
+        this.closeModal();
       } else {
         this.messageService.stopSpinner();
         this.pwdValid = 'Wrong password!';
@@ -150,33 +151,6 @@ export class DelegateComponent implements OnInit {
     const keys = await this.walletService.getKeys('');
     if (keys) {
       this.sendDelegation(keys);
-    }
-  }
-  async open3(template: TemplateRef<any>) {
-    const pwd = this.password;
-    this.password = '';
-    this.messageService.startSpinner('Signing operation...');
-    let keys;
-    try {
-      keys = await this.walletService.getKeys(pwd, this.activeAccount.pkh);
-    } finally {
-      this.messageService.stopSpinner();
-    }
-    if (this.walletService.isLedgerWallet()) {
-      this.messageService.startSpinner('Broadcasting operation...');
-      this.broadCastLedgerTransaction();
-      this.sendResponse = null;
-      this.close2();
-      this.modalRef3 = this.modalService.show(template, { class: 'third' });
-    } else {
-      if (keys) {
-        this.pwdValid = '';
-        this.close2();
-        this.modalRef3 = this.modalService.show(template, { class: 'third' });
-        this.sendDelegation(keys);
-      } else {
-        this.pwdValid = 'Wrong password!';
-      }
     }
   }
 
@@ -209,7 +183,6 @@ export class DelegateComponent implements OnInit {
           if (ans.payload.opHash) {
             const metadata = { delegate: this.toPkh, opHash: ans.payload.opHash };
             this.coordinatorService.boost(this.activeAccount.address, metadata);
-            this.closeModal();
           } else if (this.walletService.isLedgerWallet()) {
             this.requestLedgerSignature();
           }

@@ -37,6 +37,7 @@ export class OperationService {
     KT: new Uint8Array([2, 90, 121])
   };
   microTez = new Big(1000000);
+  feeHardCap = 10; //tez
   constructor(
     private http: HttpClient,
     private translate: TranslateService,
@@ -104,6 +105,9 @@ export class OperationService {
           .pipe(flatMap((actions: number) => {
             return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + keys.pkh + '/manager_key', {})
               .pipe(flatMap((manager: any) => {
+                if (fee >= this.feeHardCap) {
+                  throw new Error('TooHighFee');
+                }
                 let counter: number = Number(actions);
                 const script = this.getManagerScript(keys.pkh);
                 const fop: any = {
@@ -149,6 +153,9 @@ export class OperationService {
           .pipe(flatMap((actions: any) => {
             return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + keys.pkh + '/manager_key', {})
               .pipe(flatMap((manager: any) => {
+                if (fee >= this.feeHardCap) {
+                  throw new Error('TooHighFee');
+                }
                 const counter: number = Number(actions);
                 const fop = this.createTransactionObject(header.hash, counter, manager, transactions, keys.pkh, keys.pk, from, fee);
                 return this.operation(fop, header, keys);
@@ -231,6 +238,9 @@ export class OperationService {
           .pipe(flatMap((actions: any) => {
             return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + keys.pkh + '/manager_key', {})
               .pipe(flatMap((manager: any) => {
+                if (fee >= this.feeHardCap) {
+                  throw new Error('TooHighFee');
+                }
                 let counter: number = Number(actions);
                 let delegationOp: any;
                 if (from.slice(0, 2) === 'tz') {

@@ -1236,6 +1236,10 @@ export class ErrorHandlingPipe implements PipeTransform {
       msg: 'Timeout',
       id: 'utils.Timeout',
     },
+    {
+      msg: 'Fee exceeded hard cap!',
+      id: 'TooHighFee'
+    }
   ];
   transform(errorId: string): any {
     errorId = errorId.replace('006-PsCARTHA', 'alpha');
