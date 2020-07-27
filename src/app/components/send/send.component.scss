@@ -53,11 +53,13 @@ div.kukai-modal div.advanced-form input.text:-ms-input-placeholder {
 div.kukai-modal div.advanced-form input.text.read-only {
   color: #808080;
 }
-div.kukai-modal > div.km-content > div.km-body > div.group > input.text {
+div.kukai-modal > div.km-content > div.km-body > div.group > input.text,
+div.kukai-modal > div.km-content > div.km-body > div.group > textarea {
   font-size: 0.8125rem;
 }
 @supports (-webkit-touch-callout: none) {
-  div.kukai-modal > div.km-content > div.km-body > div.group > input.text {
+  div.kukai-modal > div.km-content > div.km-body > div.group > input.text,
+  div.kukai-modal > div.km-content > div.km-body > div.group > textarea {
     font-size: 1rem;
   }
 }
