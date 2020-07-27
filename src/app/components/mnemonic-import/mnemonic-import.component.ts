@@ -130,7 +130,9 @@ export class MnemonicImportComponent implements OnInit {
       this.email = '';
       this.password = '';
       this.activePanel++;
-      this.showTacos = true;
+      if (document.body.offsetWidth >= 480) {
+        this.showTacos = true;
+      }
     }
   }
 

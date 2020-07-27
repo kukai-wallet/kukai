@@ -141,7 +141,9 @@ export class NewWalletComponent implements OnInit {
       this.MNEMONIC.verify = [];
       this.activePanel++;
       this.messageService.stopSpinner();
-      this.showTacos = true;
+      if (document.body.offsetWidth >= 480) {
+        this.showTacos = true;
+      }
     }
   }
   validPwd(): boolean {
