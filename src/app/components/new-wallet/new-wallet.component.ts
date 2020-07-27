@@ -77,17 +77,19 @@ export class NewWalletComponent implements OnInit {
     }
   }
   formatVerifyDescription(index: number): string {
-
     if (this.MNEMONIC.verify.length === 0) {
       return 'Seed backup has been verified!';
     }
     switch (index) {
       case 1:
-        return 'Fill in the 1st word to verify your seed backup';
+      case 21:
+        return `Fill in the ${index}st word to verify your seed backup`;
       case 2:
-        return 'Fill in the 2nd word to verify your seed backup';
+      case 22:
+        return `Fill in the ${index}nd word to verify your seed backup`;
       case 3:
-        return 'Fill in the 3rd word to verify your seed backup';
+      case 23:
+        return `Fill in the ${index}rd word to verify your seed backup`;
       default:
         return `Fill in the ${index}th word to verify your seed backup`;
     }
