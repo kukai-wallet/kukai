@@ -170,7 +170,7 @@ export class DelegateComponent implements OnInit {
   }
 
   async sendDelegation(keys: KeyPair) {
-    let fee = this.fee;
+    let fee = this.storedFee;
     this.fee = '';
     if (!fee) {
       fee = '0';

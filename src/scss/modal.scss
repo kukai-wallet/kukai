@@ -125,7 +125,7 @@ div.kukai-modal p.fee {
 div.kukai-modal p.preview {
   font-style: normal;
   font-weight: normal;
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   line-height: 1rem;
   display: flex;
   align-items: flex-end;
@@ -232,7 +232,7 @@ div.kukai-modal div.advanced {
 div.kukai-modal button.blue {
   font-style: normal;
   font-weight: bold;
-  font-size: 0.875rem;
+  font-size: 1rem;
   line-height: 1rem;
   display: flex;
   align-items: center;
@@ -251,10 +251,11 @@ div.kukai-modal button.blue {
 div.kukai-modal button.blue.confirm,
 div.kukai-modal button.retry {
   height: 3rem;
-  width: 8rem;
   margin: 0;
 }
 div.kukai-modal button.retry {
+  width: 100%;
+  font-size: 1rem;
   background-color: #d3d3d3;
   color: rgb(33, 37, 41);
 }
