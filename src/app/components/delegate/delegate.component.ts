@@ -190,6 +190,9 @@ export class DelegateComponent implements OnInit {
           this.messageService.stopSpinner();
           console.log('Delegation error id ', ans.payload.msg);
           this.messageService.addError(ans.payload.msg, 0);
+          if (this.walletService.isLedgerWallet) {
+            this.closeModal();
+          }
         }
       },
       err => {

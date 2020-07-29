@@ -337,6 +337,8 @@ export class SendComponent implements OnInit {
           if (this.walletService.addressExists(this.transactions[0].to)) {
             this.coordinatorService.boost(this.transactions[0].to);
           }
+        } else {
+          this.messageService.addError(this.sendResponse.payload.msg, 0);
         }
         console.log('ans: ' + JSON.stringify(ans));
       })
