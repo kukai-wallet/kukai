@@ -44,15 +44,17 @@
 
 }
 div.foot-container > div.links {
+  display: flex;
   width: 100vw;
   z-index: 0;
 }
-div.foot-container > div.links > a {
+div.foot-container > div.links > a:not(:last-child) {
+  padding-top: 1rem;
   font-size: 0.5rem;
   color: rgba(256, 256, 256, 0.6);
   margin-left: 1rem;
 }
-div.foot-container > div.links > a:hover {
+div.foot-container > div.links > a:hover:not(:last-child) {
   color: white;
   background-color: #5963FF;
 }
@@ -60,6 +62,7 @@ div.foot-container > div.links > a:hover {
     margin-left: 1.5rem;
     margin-right: 1.5rem;
 }
-#follow img:hover {
+#follow img:hover,
+div.foot-container > div.links > a:hover:last-child {
     filter: invert(25%) sepia(800%) saturate(2878%) hue-rotate(180deg);
 }
