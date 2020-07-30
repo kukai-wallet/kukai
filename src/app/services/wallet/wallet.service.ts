@@ -117,6 +117,13 @@ export class WalletService {
         throw new Error('No derivationPath found');
       }
       return hd.seedToKeyPair(seed, account.derivationPath);
+    } else if (this.wallet instanceof LegacyWalletV1) {
+      const keyPair = this.operationService.seed2keyPair(seed);
+      if (!keyPair.pkh || !pkh || keyPair.pkh !== pkh) {
+        return null;
+      } else {
+        return keyPair;
+      }
     } else {
       return this.operationService.seed2keyPair(seed);
     }
