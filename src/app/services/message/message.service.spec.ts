@@ -28,7 +28,7 @@ describe('[ MessageService ]', () => {
       		providers: [MessageService]
     	});
 
-		service = TestBed.get(MessageService);
+		service = TestBed.inject(MessageService);
 
 		// reset message queue
 		service.messages = [];

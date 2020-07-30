@@ -35,9 +35,9 @@ describe('[ WalletService ]', () => {
 		});
 
 		// inject services
-		  service = TestBed.get(WalletService);
-		  encrypt = TestBed.get(EncryptionService);
-		  ops = TestBed.get(OperationService);
+		  service = TestBed.inject(WalletService);
+		  encrypt = TestBed.inject(EncryptionService);
+		  ops = TestBed.inject(OperationService);
 
 		// create mock wallet data
 		  service.wallet = mockwallet;

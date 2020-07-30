@@ -44,8 +44,8 @@ describe('[ ActivityService ]', () => {
 		});
 
 		// configure injected services
-		service = TestBed.get(ActivityService);
-		walletservice = TestBed.get(WalletService);
+		service = TestBed.inject(ActivityService);
+		walletservice = TestBed.inject(WalletService);
 
 		// generate random wallet
 		walletservice.wallet = mockLib.generateWalletV1();

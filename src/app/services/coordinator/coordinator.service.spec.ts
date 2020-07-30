@@ -54,9 +54,8 @@ describe('[ Coordinator ]', () => {
 				OperationService, CoordinatorService, AppModule, AppComponent ]
 		});
 
-		service = TestBed.get(CoordinatorService);
-
-		httpMock  = TestBed.get(HttpTestingController);
+		service = TestBed.inject(CoordinatorService);
+		httpMock  = TestBed.inject(HttpTestingController);
 	});
 
 	afterEach(() => {

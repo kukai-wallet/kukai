@@ -26,8 +26,8 @@ describe('EstimateService', () => {
     });
 
     // service dependencies
-    service = TestBed.get(EstimateService);
-    httpMock = TestBed.get(HttpTestingController);
+    service = TestBed.inject(EstimateService);
+    httpMock = TestBed.inject(HttpTestingController);
   });
 
   it('should be created', () => {

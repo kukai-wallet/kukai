@@ -39,8 +39,8 @@ describe('[ ExportService ]', () => {
 			providers: [ ExportService, {provide: WalletService, useClass: WalletServiceStub} ]
 			});
 
-		service = TestBed.get(ExportService);
-		walletService = TestBed.get(WalletService);
+		service = TestBed.inject(ExportService);
+		walletService = TestBed.inject(WalletService);
   });
 
 	it('should be created', () => {

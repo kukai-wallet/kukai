@@ -29,8 +29,8 @@ describe('[ OperationService ]', () => {
 		});
 
 		// service dependencies
-		service = TestBed.get(OperationService);
-		httpMock = TestBed.get(HttpTestingController);
+		service = TestBed.inject(OperationService);
+		httpMock = TestBed.inject(HttpTestingController);
 
 	});
 

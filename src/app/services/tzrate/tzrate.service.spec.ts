@@ -61,9 +61,9 @@ describe('[ TzrateService ]', () => {
 			]
 		});
 
-		service = TestBed.get(TzrateService);
-		walletservice = TestBed.get(WalletService);
-		httpMock = TestBed.get(HttpTestingController);
+		service = TestBed.inject(TzrateService);
+		walletservice = TestBed.inject(WalletService);
+		httpMock = TestBed.inject(HttpTestingController);
 
 		walletservice.wallet = walletTols.generateWalletV2();
 		// spies

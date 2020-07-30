@@ -54,10 +54,10 @@ describe('[ DelegateService ]', () => {
 			]
 		});
 
-		service = TestBed.get(DelegateService);
-		walletsrv = TestBed.get(WalletService);
-		operationsrv = TestBed.get(OperationService);
-		httpMock  = TestBed.get(HttpTestingController);
+		service = TestBed.inject(DelegateService);
+		walletsrv = TestBed.inject(WalletService);
+		operationsrv = TestBed.inject(OperationService);
+		httpMock  = TestBed.inject(HttpTestingController);
 
 		// create mock empty full wallet
 		walletsrv.wallet = new WalletServiceStub().emptyWallet(1);

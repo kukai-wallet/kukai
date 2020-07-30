@@ -31,10 +31,10 @@ describe('[ BalanceService ]', () => {
 			providers: [ balancesrv_providers ]
 		});
 
-		service = TestBed.get(BalanceService);
-		walletsrv = TestBed.get(WalletService);
-		operationsrv = TestBed.get(OperationService);
-		httpMock  = TestBed.get(HttpTestingController);
+		service = TestBed.inject(BalanceService);
+		walletsrv = TestBed.inject(WalletService);
+		operationsrv = TestBed.inject(OperationService);
+		httpMock  = TestBed.inject(HttpTestingController);
 
 		// create mock empty full wallet
 		walletsrv.wallet = new WalletServiceStub().emptyWallet(1);

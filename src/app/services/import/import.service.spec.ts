@@ -115,10 +115,10 @@ describe('[ ImportService ]', () => {
 		});
 
 		// inject services
-		service = TestBed.get(ImportService);
-		wallet = TestBed.get(WalletService);
-		operation = TestBed.get(OperationService);
-		conseil = TestBed.get(ConseilService);
+		service = TestBed.inject(ImportService);
+		wallet = TestBed.inject(WalletService);
+		operation = TestBed.inject(OperationService);
+		conseil = TestBed.inject(ConseilService);
 
 		//spyOn(service, 'importWalletData');
 		//spyOn(service, 'importWalletFromPkh')

@@ -22,7 +22,7 @@ describe('[ TimeAgoPipe ]', () => {
 
 		// store injectors to call during tests
 		injector = getTestBed();
-		translate = injector.get(TranslateService);
+		translate = injector.inject(TranslateService);
 		pipe = new TimeAgoPipe(translate);
 		date = new Date();
 	});

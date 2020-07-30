@@ -36,7 +36,7 @@ export class BalanceService {
       });
   }
   updateAccountBalance(account: Account, newBalance: number) {
-    if (isNullOrUndefined(account.balanceXTZ) || newBalance !== account.balanceXTZ) {
+    if (account.balanceXTZ === null || account.balanceXTZ === undefined || newBalance !== account.balanceXTZ) {
       account.balanceXTZ = newBalance;
       this.updateTotalBalance();
       this.tzrateService.updateFiatBalances();
@@ -47,7 +47,7 @@ export class BalanceService {
     let balance = 0;
     let change = false;
     for (const account of this.walletService.wallet.getAccounts()) {
-      if (!isNullOrUndefined(account.balanceXTZ)) {
+      if (!(account.balanceXTZ === null || account.balanceXTZ === undefined)) {
         balance = balance + Number(account.balanceXTZ);
         change = true;
       }
