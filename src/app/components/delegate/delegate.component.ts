@@ -175,13 +175,13 @@ export class DelegateComponent implements OnInit {
     if (!fee) {
       fee = '0';
     }
-    this.operationService.delegate(this.activeAccount.address, this.toPkh, Number(fee), keys).subscribe(
+    this.operationService.delegate(this.activeAccount.address, this.getDelegate(), Number(fee), keys).subscribe(
       async (ans: any) => {
         this.sendResponse = ans;
         console.log(JSON.stringify(ans));
         if (ans.success === true) {
           if (ans.payload.opHash) {
-            const metadata = { delegate: this.toPkh, opHash: ans.payload.opHash };
+            const metadata = { delegate: this.getDelegate(), opHash: ans.payload.opHash };
             this.coordinatorService.boost(this.activeAccount.address, metadata);
           } else if (this.walletService.isLedgerWallet()) {
             this.requestLedgerSignature();
@@ -226,7 +226,7 @@ export class DelegateComponent implements OnInit {
       ((ans: any) => {
         this.sendResponse = ans;
         if (ans.success && this.activeAccount.address) {
-          const metadata = { delegate: this.toPkh, opHash: ans.payload.opHash };
+          const metadata = { delegate: this.getDelegate(), opHash: ans.payload.opHash };
           this.coordinatorService.boost(this.activeAccount.address, metadata);
         } else {
           this.messageService.addError(this.sendResponse.payload.msg, 0);
