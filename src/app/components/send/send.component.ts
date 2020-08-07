@@ -486,10 +486,8 @@ export class SendComponent implements OnInit {
   batchSpace(txs = 0) {
     if (this.isMultipleDestinations && this.defaultTransactionParams.customLimits && this.defaultTransactionParams.customLimits.length) {
       const numberOfTxs = txs ? txs : this.defaultTransactionParams.customLimits.length;
-      const gasUsage = (this.gas && this.inputValidationService.gas(this.gas) ? Number(this.gas) * numberOfTxs : this.defaultTransactionParams.gas * numberOfTxs)
-        + (this.defaultTransactionParams.reveal ? this.estimateService.revealGasLimit : 0);
-      const gasCap = 1040000;
-      return !txs ? this.numberWithCommas(gasUsage.toString()) + ' / ' + this.numberWithCommas(gasCap.toString()) : gasUsage < gasCap;
+      const txsLimit = 294 + (this.defaultTransactionParams.reveal ? 0 : 2); // Max transactions in a batch is 296 (294 with a reveal)
+      return !txs ? this.numberWithCommas(numberOfTxs + ' / ' + txsLimit) : numberOfTxs <= txsLimit;
 
     }
     return !txs ? '' : true;
@@ -573,7 +571,7 @@ export class SendComponent implements OnInit {
       }
     });
     if (!validationError && finalCheck && !this.batchSpace(this.toMultipleDestinations.length)) {
-      validationError = this.translate.instant('SENDCOMPONENT.GASOVERFLOW');
+      validationError = this.translate.instant('SENDCOMPONENT.TRANSACTIONSOVERFLOW');
     }
     return validationError;
   }
