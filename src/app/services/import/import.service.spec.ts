@@ -208,7 +208,12 @@ describe('[ ImportService ]', () => {
 		});
 		describe('> Legacy v3', async () => {
 			beforeEach(() => {
-				spyOn(conseil, 'getContractAddresses').and.callFake(async function() { return ['KT1KwPDCVmkrXQ2ZKWhVAiiFzYxiXCEyhE7U']; });
+				spyOn(conseil, 'getContractAddresses').and.callFake(async function(address: string) {
+          if (address.slice(0,2) === 'tz') {
+          return ['KT1KwPDCVmkrXQ2ZKWhVAiiFzYxiXCEyhE7U'];
+        } else {
+          return [];
+        }});
 				spyOn(conseil, 'accountInfo').and.callFake(function() { return rx.Observable.of(0);	});
 				wallet.wallet = null;
 			});

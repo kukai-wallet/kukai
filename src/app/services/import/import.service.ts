@@ -12,7 +12,6 @@ import {
 } from '../wallet/wallet';
 import { hd, utils } from '@tezos-core-tools/crypto-utils';
 import { EncryptionService } from '../encryption/encryption.service';
-import { OperationService } from '../../services/operation/operation.service';
 
 @Injectable()
 export class ImportService {
@@ -20,8 +19,7 @@ export class ImportService {
     private walletService: WalletService,
     private coordinatorService: CoordinatorService,
     private conseilService: ConseilService,
-    private encryptionService: EncryptionService,
-    private operationService: OperationService
+    private encryptionService: EncryptionService
   ) {}
   pwdRequired(json: string) {
     const walletData = JSON.parse(json);
@@ -147,7 +145,7 @@ export class ImportService {
       this.walletService.wallet.index = index;
     } else {
       this.walletService.addImplicitAccount(keys.pk);
-      await this.findContracts(keys.pkh);
+      await this.findContracts(keys.pkh, true);
     }
     return true;
   }
@@ -167,12 +165,17 @@ export class ImportService {
     }
   }
 
-  async findContracts(pkh: string) {
-    const addresses = await this.conseilService.getContractAddresses(pkh);
+  async findContracts(pkh: string, recursiveScan = false, address: string = pkh) {
+    const addresses = await this.conseilService.getContractAddresses(address);
     for (const KT of addresses) {
       console.log('Found KT: ' + KT);
       this.walletService.addOriginatedAccount(KT, pkh);
     }
     this.walletService.storeWallet();
+    if (recursiveScan && addresses.length) {
+      for (const KT of addresses) {
+        await this.findContracts(pkh, true, KT);
+      }
+    }
   }
 }

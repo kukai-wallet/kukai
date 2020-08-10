@@ -108,7 +108,7 @@
           Total Fee — {{ getTotalFee() | number:'1.0-6' }} tez
         </p>
         <p *ngIf="getTotalBurn()" class="preview">
-          Total Storage cost — {{ getTotalBurn() | number:'1.0-6' }} tez
+          Total Storage cost — {{ getTotalBurn() | number:'1.0-6' }} tez (*)
         </p>
         <table>
           <thead>
@@ -119,13 +119,12 @@
           </thead>
           <tbody>
               <tr *ngFor="let transaction of showTransactions">
-                  <td>{{ transaction.to }}</td>
-                  <td>{{ transaction.amount | number:'1.0-6' }}</td>
-                  <td *ngIf="transaction.burn">Burn: 0.257</td>
+                  <td><span *ngIf="transaction.storageLimit">*</span>{{ transaction.to }}</td>
+                  <td class="txAmount">{{ transaction.amount | number:'1.0-6' }}</td>
               </tr>
           </tbody>
       </table>
-      <button style="margin-left: auto;" *ngIf='transactions.length > 2' type="button" class="show-more" aria-label="More" (click)="toggleTransactions()">
+      <button style="margin-left: auto; margin-top: 1rem" *ngIf='transactions.length > 2' type="button" class="show-more" aria-label="More" (click)="toggleTransactions()">
           <span aria-hidden="true"> {{ showBtn }} </span>
       </button>
       </ng-container>
