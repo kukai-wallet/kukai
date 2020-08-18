@@ -170,7 +170,7 @@ export class SendComponent implements OnInit {
       this.messageService.startSpinner('Signing transaction...');
       let keys;
       try {
-        keys = await this.walletService.getKeys(pwd, this.activeAccount.address);
+        keys = await this.walletService.getKeys(pwd, this.activeAccount.pkh);
       } catch {
         this.messageService.stopSpinner();
       }
