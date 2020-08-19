@@ -220,19 +220,21 @@ export class SendComponent implements OnInit {
   updateMaxAmount() {
     if (this.sendMax) {
       const max = this.maxToSend(this.activeAccount);
+      let maxAmount = '0';
       if (max.length && max.slice(0, 1) !== '-') {
-        this.amount = max;
-      } else {
-        this.amount = '0';
+        maxAmount = max;
+      }
+      if (this.amount !== maxAmount) {
+        this.amount = maxAmount;
       }
     }
   }
   maxToSend(account: Account): string {
     if (account && (account instanceof ImplicitAccount)) {
       let accountBalance = Big(account.balanceXTZ).div(1000000);
-      accountBalance = accountBalance.minus(this.fee ? Number(this.fee) : this.defaultTransactionParams.fee);
+      accountBalance = accountBalance.minus(this.fee && Number(this.fee) ? Number(this.fee) : this.defaultTransactionParams.fee);
       if (!this.isMultipleDestinations) {
-        accountBalance = accountBalance.minus(this.storage ? Number(this.storage) / 1000 : this.defaultTransactionParams.burn);
+        accountBalance = accountBalance.minus(this.storage && Number(this.storage) ? Number(this.storage) / 1000 : this.defaultTransactionParams.burn);
       } else {
         accountBalance = accountBalance.minus(this.defaultTransactionParams.burn);
       }
@@ -454,6 +456,7 @@ export class SendComponent implements OnInit {
           if (res) {
             console.log(res);
             this.defaultTransactionParams = res;
+            this.updateMaxAmount();
           }
           this.latestSimError = '';
           this.formInvalid = '';
@@ -471,6 +474,7 @@ export class SendComponent implements OnInit {
       this.latestSimError = prevSimError;
       if (this.isMultipleDestinations ? !this.toMultipleDestinationsString : !this.toPkh) {
         this.defaultTransactionParams = zeroTxParams;
+        this.updateMaxAmount();
         this.prevEquiClass = '';
       }
     }
@@ -583,22 +587,22 @@ export class SendComponent implements OnInit {
     }
     return totalSent.toString();
   }
-  getTotalCost(): string {
+  getTotalCost(display: boolean = false): string {
     const totalFee = Big(this.getTotalFee()).plus(Big(this.getTotalBurn())).toString();
-    setTimeout(() => {
-      this.updateMaxAmount();
-    }, 100);
+    if (display && totalFee === '0') {
+      return '-';
+    }
     return totalFee;
   }
   getTotalFee(): number {
-    if (this.fee !== '') {
+    if (this.fee !== '' && Number(this.fee)) {
       return Number(this.fee);
     }
     return Number(this.defaultTransactionParams.fee);
   }
   getTotalBurn(): number {
-    if (this.storage) {
-      return (Number(this.storage) * this.transactions.length) / 1000;
+    if (this.storage !== '' && Number(this.storage)) {
+      return Number(Big(this.storage).mul(this.transactions.length).div('1000').toString());
     }
     return Number(this.defaultTransactionParams.burn);
   }
