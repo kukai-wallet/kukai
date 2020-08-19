@@ -522,7 +522,7 @@ export class SendComponent implements OnInit {
     if (!this.inputValidationService.address(toPkh) || toPkh === this.activeAccount.address) {
       return this.translate.instant('SENDCOMPONENT.INVALIDRECEIVERADDRESS');
     } else if (!this.inputValidationService.amount(amount) ||
-      (finalCheck && (amount === '0' || amount === ''))) {
+      (finalCheck && (((amount === '0') || amount === '') && (toPkh.slice(0, 3) !== 'KT1')))) {
       return this.translate.instant('SENDCOMPONENT.INVALIDAMOUNT');
     } else if (!this.inputValidationService.gas(this.gas)) {
       return this.translate.instant('SENDCOMPONENT.INVALIDGASLIMIT');
