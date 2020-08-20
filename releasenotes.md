@@ -1,4 +1,7 @@
 # Release notes
+## 1.8.2
+* Various bug fixes and improvements in the send modal
+* Remove webauthn due to incompatability with Safari
 ## 1.8.1
 * Add support for manager.tz undelegation
 * Add error pages and fix routing
