@@ -2,7 +2,18 @@
     <a routerLink="/accounts" class="logo"><img id="logo" src="../../../assets/img/kukai-logo.svg"></a>
     <div class="middle">
       <ng-container *ngIf="!activeAccount">
-        <span>Accounts</span>
+        <ng-container *ngIf="settings">
+          <a class="accounts" routerLink="/accounts">
+            Accounts
+        </a>
+        <img src="../../../assets/img/slash.svg">
+        <span>Settings</span>
+        </ng-container>
+        <ng-container *ngIf="!settings">
+          <a class="accounts solo" routerLink="/accounts">
+            Accounts
+        </a>
+        </ng-container>
       </ng-container>
       <ng-container *ngIf="activeAccount">
         <a class="accounts" routerLink="/accounts">
@@ -12,7 +23,6 @@
         <div class="dropdown">
             <div class="dropbtn"><span>{{ activeAccount.shortAddress() }}</span><img src="../../../assets/img/chevron-down.svg"></div>
             <div class="dropdown-content">
-                <div class="sep">
                 <ng-container *ngFor="let impAcc of impAccs">
                     <a routerLink="/account/{{impAcc.address}}" [class.selected]="impAcc.address === activeAccount.address">
                         {{ impAcc.shortAddress() }}
@@ -23,12 +33,17 @@
                         </a>
                     </ng-container>
                 </ng-container>
-                </div>
             </div>
           </div>
         </ng-container>
     </div>
-    <div id="menu" (click)="logout()">
-        <span>Logout</span>
+    <div class="dropdown">
+      <div id="menu" class="dropbtn">
+        <img src="../../../assets/img/user.svg">
+      </div>
+      <div class="dropdown-content right">
+          <a routerLink="/settings">Settings</a>
+          <a (click)="logout()">Logout</a>
+      </div>
     </div>
 </div>

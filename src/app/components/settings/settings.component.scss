@@ -1,0 +1,22 @@
+:host {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  background: #5963FF;
+}
+:host H1,
+:host H4 {
+  color: white;
+}
+#wrapper {
+  width: 100%;
+  min-height: calc(100% - 8rem);
+  padding-bottom: 8rem;
+  display: flex;
+  justify-content: center;
+}
+:host button {
+  width: 16rem;
+}

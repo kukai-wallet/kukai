@@ -10,6 +10,7 @@ import { Account } from '../../services/wallet/wallet';
 })
 export class HeaderComponent implements OnInit {
   @Input() activeAccount: Account;
+  @Input() settings = false;
   impAccs: Account[];
   constructor(
     private router: Router,

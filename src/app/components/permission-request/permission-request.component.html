@@ -1,0 +1,22 @@
+<div *ngIf="permissionRequest" id="myModal" class="kukai-modal top">
+  <!-- Modal content -->
+  <div class="km-content">
+    <div class="x" (click)="rejectPermissions()"><img src="../../../assets/img/x.svg"></div>
+    <div class="km-header">
+      <H1>Permission Request</H1>
+    </div>
+    <!-- Request -->
+    <div class="km-body">
+      <p>{{ permissionRequest.appMetadata.name }} wants permission to request signing of operations.</p>
+      <p>Select an account the permission should be applied to:</p>
+      <select class="select-css" [(ngModel)]="selectedAccount">
+        <ng-container *ngFor="let acc of walletService.wallet.implicitAccounts">
+          <option value="{{ acc.address }}">{{ shortAddress(acc.pkh) }}</option>
+        </ng-container>
+      </select>
+      <div class="row-group" style="margin: 1.25rem 0 1.5rem;">
+        <button  class="blue confirm" (click)="grantPermissions()">Approve</button>
+      </div>
+    </div>
+  </div>
+</div>

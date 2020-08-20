@@ -48,7 +48,7 @@ export class EstimateService {
       storageLimit: 60000
     };
     for (const tx of transactions) {
-      if (!invoke) {
+      if (!tx.parameters) {
         tx.amount = 0.000001;
       }
       tx.gasLimit = simulation.gasLimit;
@@ -95,28 +95,32 @@ export class EstimateService {
   }
   getOpUsage(content: any): { gasUsage: number, storageUsage: number } {
     let gasUsage = 0;
-    let burn = 0;
+    let burn = Big(0);
     if (content.source && content.source === this.pkh) {
-      burn -= content.amount ? content.amount : 0;
-      burn -= content.fee ? content.fee : 0;
+      burn = burn.minus(content.amount ? content.amount : '0');
+      burn = burn.minus(content.fee ? content.fee : '0');
     }
+    console.log(burn);
     if (content.destination && content.destination === this.pkh) {
-      burn += content.amount ? content.amount : 0;
+      burn = burn.plus(content.amount ? content.amount : '0');
     }
+    console.log(burn);
     if (content.metadata.operation_result.balance_updates) {
       for (const balanceUpdate of content.metadata.operation_result.balance_updates) {
         if (balanceUpdate.contract === this.pkh) {
-          burn -= balanceUpdate.change;
+          burn = burn.minus(balanceUpdate.change);
         }
       }
     }
+    console.log(burn);
     if (content.metadata.balance_updates) {
       for (const balanceUpdate of content.metadata.balance_updates) {
         if (balanceUpdate.contract === this.pkh) {
-          burn -= balanceUpdate.change;
+          burn = burn.minus(balanceUpdate.change);
         }
       }
     }
+    console.log(burn);
     gasUsage += content.metadata.operation_result.consumed_gas ? Number(content.metadata.operation_result.consumed_gas) : 0;
     if (content.metadata.internal_operation_results) {
       for (const internalResult of content.metadata.internal_operation_results) {
@@ -126,13 +130,14 @@ export class EstimateService {
           } if (internalResult.result.balance_updates) {
             for (const balanceUpdate of internalResult.result.balance_updates) {
               if (balanceUpdate.contract === this.pkh) {
-                burn -= balanceUpdate.change;
+                burn = burn.minus(balanceUpdate.change);
               }
             }
           }
         }
       }
     }
+    console.log('Burn!!! ', burn);
     const storageUsage = Math.round(burn / 1000);
     if (gasUsage < 0 || storageUsage < 0) {
       throw new Error('InvalidUsageCalculation');
@@ -142,7 +147,7 @@ export class EstimateService {
   /*
     Need to be updated when fee market appear or default behavior for bakers changes
   */
-  recommendFee(limits: any, reveal: boolean, bytes: number): number {
+  recommendFee(limits: any, reveal: boolean, bytes: number): string {
     const minimalFee = 100;
     const feePerByte = 1;
     const feePerGasUnit = 0.1;
@@ -157,28 +162,28 @@ export class EstimateService {
       numberOfOperations++;
     }
     bytes += 10 * numberOfOperations; // add 10 extra bytes for variation in amount & fee
-    return Number(Big(Math.ceil(minimalFee + (feePerByte * bytes) + (feePerGasUnit * gasUnits))).div(1000000));
+    return Big(Math.ceil(minimalFee + (feePerByte * bytes) + (feePerGasUnit * gasUnits))).div(1000000);
   }
-  averageGasLimit(limits: any) {
-    let totalGasLimit = 0;
+  averageGasLimit(limits: any): string {
+    let totalGasLimit = Big(0);
     for (const data of limits) {
-      totalGasLimit += data.gasLimit;
+      totalGasLimit = totalGasLimit.plus(data.gasLimit);
     }
-    return Math.ceil(totalGasLimit / limits.length);
+    return Math.ceil(totalGasLimit.div(limits.length)).toString();
   }
-  averageStorageLimit(limits: any) {
-    let totalStorageLimit = 0;
+  averageStorageLimit(limits: any): string {
+    let totalStorageLimit = Big(0);
     for (const data of limits) {
-      totalStorageLimit += data.storageLimit;
+      totalStorageLimit = totalStorageLimit.plus(data.storageLimit);
     }
-    return Math.ceil(totalStorageLimit / limits.length);
+    return Math.ceil(Number(totalStorageLimit.div(limits.length))).toString();
   }
-  burnFee(limits: any) {
-    let totalStorageLimit = 0;
+  burnFee(limits: any): string {
+    let totalStorageLimit = Big(0);
     for (const data of limits) {
-      totalStorageLimit += data.storageLimit;
+      totalStorageLimit = totalStorageLimit.plus(data.storageLimit);
     }
-    return totalStorageLimit * 0.001;
+    return totalStorageLimit.div(1000);
   }
   simulate(op: any): Observable<any> {
     op.signature = 'edsigtXomBKi5CTRf5cjATJWSyaRvhfYNHqSUGrn4SdbYRcGwQrUGjzEfQDTuqHhuA8b2d8NarZjz8TRf65WkpQmo423BtomS8Q';

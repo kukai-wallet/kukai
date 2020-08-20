@@ -10,6 +10,9 @@ div.kukai-modal {
   background-color: rgb(0, 0, 0); //fallback
   background-color: rgba(0, 0, 0, 0.4);
 }
+div.kukai-modal.top {
+  z-index: 101;
+}
 /* Modal Content/Box */
 div.kukai-modal > div.km-content {
   position: relative;

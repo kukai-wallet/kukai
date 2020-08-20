@@ -1,0 +1,45 @@
+<app-header [settings]=true></app-header>
+<div id="wrapper">
+  <div>
+  <H1>Settings</H1>
+<H4>Beacon</H4>
+<BR>
+  <button (click)="registerURIhandler()">Register Kukai as URI handler</button><BR><BR>
+  <table *ngIf="peers.length">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Relay server</th>
+        <th>Remove</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let peer of peers; index as i">
+        <td>{{ peer.name }}</td>
+        <td>{{ peer.relayServer }}</td>
+        <td (click)="removePeer(i)">X</td>
+      </tr>
+    </tbody>
+  </table>
+  <button (click)="removePeers()">Remove All Peers</button><BR><BR>
+    <table *ngIf="permissions.length">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Address</th>
+          <th>Permission</th>
+          <th>Remove</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let permission of permissions; index as i">
+          <td>{{ permission.appMetadata.name }}</td>
+          <td>{{ permission.address }}</td>
+          <td>Operation Requests</td>
+          <td (click)="removePermission(i)">X</td>
+        </tr>
+      </tbody>
+    </table>
+  <button (click)="removePermissions()">Remove All Permissions</button><BR>
+  </div>
+</div>

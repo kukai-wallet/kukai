@@ -1,6 +1,13 @@
 @import '../../../scss/modal.scss';
 @import '../../../scss/switch.scss';
-button {
+button.purple:hover {
+  margin-top: -0.125rem;
+  margin-bottom: 0.125rem;
+}
+button:focus {
+  outline: none;
+}
+button.purple {
   border-radius: 0.75rem;
   height: 3rem;
   width: 100%;
@@ -15,15 +22,6 @@ button {
   cursor: pointer;
   -webkit-appearance: none !important;
   border-width: 0;
-}
-button.purple:hover {
-  margin-top: -0.125rem;
-  margin-bottom: 0.125rem;
-}
-button:focus {
-  outline: none;
-}
-button.purple {
   color: white;
   background: #5963FF;
   box-shadow: 0px 0px 1px rgba(89, 99, 255, 0.04), 0px 2px 6px rgba(89, 99, 255, 0.04), 0px 16px 24px rgba(89, 99, 255, 0.24);

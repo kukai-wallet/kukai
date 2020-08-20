@@ -24,7 +24,7 @@ div.middle .accounts {
     line-height: 1rem;
     color: rgba(255, 255, 255, 0.8);
 }
-div.middle > span.accounts {
+div.middle > .accounts.solo {
   color: white;
 }
 div.middle img {
@@ -46,11 +46,11 @@ a.logo {
 }
 #menu {
     cursor: pointer;
-    width: 6rem;
+    width: 3rem;
     height: 3rem;
     background-color: #FCFCFC;
     border: 0.0625rem solid #FFFFFF;
-    box-shadow: 0rem 0rem 0.0625rem rgba(0, 0, 0, 0.04), 0rem 0.125rem 0.375rem rgba(0, 0, 0, 0.04), 0rem 1rem 1.5rem rgba(0, 0, 0, 0.06);
+    box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.04), 0px 2px 6px rgba(0, 0, 0, 0.14), 0px 16px 24px rgba(0, 0, 0, 0.16);
     border-radius: 0.75rem;
     margin: 1.5rem 2rem 1.5rem 0.25rem;
     display: flex;
@@ -111,6 +111,10 @@ a.logo {
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;*/
   }
+  .dropdown-content.right {
+    margin-left: -2.75rem;
+    margin-top: -1rem
+  }
   .dropdown-content .sep {
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
@@ -122,15 +126,23 @@ a.logo {
     padding: 0.75rem 1rem;
     text-decoration: none;
     display: block;
+    cursor: pointer;
   }
   .dropdown-content a.selected {
     text-decoration: underline;
   }
   
   .dropdown-content a:hover {
-    background: rgba(107, 115, 222, 0.08);
+    background: #EAEBF9;
     }
-  
+    .dropdown-content a:first-child:hover {
+      border-top-left-radius: 0.75rem;
+      border-top-right-radius: 0.75rem;
+    }
+    .dropdown-content a:last-child:hover {
+      border-bottom-left-radius: 0.75rem;
+      border-bottom-right-radius: 0.75rem;
+    }
   .dropdown:hover .dropdown-content {
     display: block;
   }

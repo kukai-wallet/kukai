@@ -11,11 +11,12 @@
     "e2e": "ng e2e",
     "stage-ghpages-mainnet": "ng lint --fix && ng build --prod && angular-cli-ghpages --repo \"git@github.com:kukai-wallet/kukai-wallet.github.io.git\" --branch staging",
     "stage-ghpages-testnet": "ng lint --fix && ng build --prod && angular-cli-ghpages --repo \"git@github.com:kukai-wallet/testnet.git\" --branch staging",
-    "deploy-preview-version": "ng lint --fix && ng build --prod && angular-cli-ghpages --repo \"git@github.com:kukai-wallet/preview.git\" --branch master",
+    "deploy-experimental-version": "ng lint --fix && ng build --prod && angular-cli-ghpages --repo \"git@github.com:kukai-wallet/experimental.git\" --branch master",
     "deploy-beta-version": "ng lint --fix && ng build --prod && angular-cli-ghpages --repo \"git@github.com:kukai-wallet/beta.git\" --branch master"
   },
   "private": true,
   "dependencies": {
+    "@airgap/beacon-sdk": "^1.1.0",
     "@angular/animations": "^9.1.1",
     "@angular/cdk": "^9.2.0",
     "@angular/common": "^9.1.1",

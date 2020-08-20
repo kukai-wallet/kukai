@@ -11,15 +11,23 @@ import { P500Component } from './views/error/500.component';
 import { AccountViewComponent } from './components/account-view/account-view.component';
 import { PrivacyPolicyComponent } from './components/agreement/privacy-policy/privacy-policy.component';
 import { TermsOfUseComponent } from './components/agreement/terms-of-use/terms-of-use.component';
+import { UriHandlerComponent } from './components/uri-handler/uri-handler.component';
+import { LoggedInComponent } from './components/logged-in/logged-in.component';
+import { SettingsComponent } from './components/settings/settings.component';
 
 const routes: Routes = [
-  { path: '', component: StartComponent },  // Content Centre position
-  { path: 'new-wallet', component: NewWalletComponent },  // Content Centre position
+  { path: '', component: StartComponent },
+  { path: 'new-wallet', component: NewWalletComponent },
   { path: 'import', component: MnemonicImportComponent },
   { path: 'activate', component: ActivateComponent },
+  { path: '', component: LoggedInComponent,
+    children: [
+      { path: 'accounts/:uri', component: AccountsComponent },
+      { path: 'accounts', component: AccountsComponent },
+      { path: 'account/:address', component: AccountViewComponent },
+      { path: 'settings', component: SettingsComponent },
+    ] },
   { path: 'connect-ledger', component: ConnectLedgerComponent },
-  { path: 'accounts', component: AccountsComponent },
-  { path: 'account/:address', component: AccountViewComponent },
   { path: 'privacy-policy', component: PrivacyPolicyComponent },
   { path: 'terms-of-use', component: TermsOfUseComponent },
   {
