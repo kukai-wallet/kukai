@@ -1241,13 +1241,23 @@ export class ErrorHandlingPipe implements PipeTransform {
       id: 'TooHighFee'
     }
   ];
-  transform(errorId: string): any {
-    errorId = errorId.replace('006-PsCARTHA', 'alpha');
+  transform(errorId: string, withObj?: any): any {
+    const protocol = errorId.match(/[0-9]{3}-P\w{7}/g);
+    if (protocol && protocol[0]) {
+      errorId = errorId.replace(protocol[0], 'alpha');
+    }
     let errorMessage = '';
     const index = this.ERROR_LIST.findIndex((s) => s.id === errorId);
-    console.log(index);
-    if (index !== -1) {
-      return this.ERROR_LIST[index].msg;
+    console.log('##### ' + index);
+    if (errorId === 'proto.alpha.michelson_v1.script_rejected' && withObj && (withObj.string !== undefined || withObj.args)) {
+      if (withObj.string) {
+        errorMessage = this.ERROR_LIST[index].msg + ' > ' + withObj.string;
+      } else {
+        errorMessage = this.ERROR_LIST[index].msg + ' ' + JSON.stringify(withObj);
+      }
+      console.log(withObj);
+    } else if (index !== -1) {
+      errorMessage = this.ERROR_LIST[index].msg;
     } else {
       if (
         errorId.indexOf('branch refused (Error:') !== -1 &&
