@@ -52,7 +52,7 @@ describe('EstimateService', () => {
           gasLimit: 10287,
           storageLimit: 257
         }],
-        fee: 0.003988,
+        fee: 0.003991,
         burn: 0.257,
         gas: 11980,
         storage: 86,

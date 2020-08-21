@@ -209,7 +209,7 @@ describe('[ ImportService ]', () => {
 		describe('> Legacy v3', async () => {
 			beforeEach(() => {
 				spyOn(conseil, 'getContractAddresses').and.callFake(async function(address: string) {
-          if (address.slice(0,2) === 'tz') {
+          if (address.slice(0, 2) === 'tz') {
           return ['KT1KwPDCVmkrXQ2ZKWhVAiiFzYxiXCEyhE7U'];
         } else {
           return [];

@@ -48,7 +48,7 @@ export class EstimateService {
       storageLimit: 60000
     };
     for (const tx of transactions) {
-      if (!invoke) {
+      if (tx.to.slice(0, 3) !== 'KT1') {
         tx.amount = 0.000001;
       }
       tx.gasLimit = simulation.gasLimit;
