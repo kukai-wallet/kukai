@@ -76,19 +76,18 @@ export class UriHandlerComponent implements OnInit, OnDestroy {
 
         // Let's assume it's a permission request, but we obviously need to handle all request types
         if (message.network.type !== this.CONSTANTS.NET.NETWORK && false) { // Todo: remove false
-          console.warn(`Rejecting Beacon message because of network. Expected ${this.CONSTANTS.NET.NETWORK} but got ${message.network.type}`);
-          const response = {
-            id: message.id,
-            type: this.beaconService.correspondingResponseType[message.type],
-            errorType: BeaconErrorType.NETWORK_NOT_SUPPORTED
-          } as any;
-          await this.beaconService.client.respond(response);
+          console.warn(`Rejecting Beacon message because of network. Expected ${this.CONSTANTS.NET.NETWORK} instead of ${message.network.type}`);
+          await this.beaconService.rejectOnNetwork(message);
         } else if (!this.permissionRequest && !this.operationRequest) {
           if (message.type === BeaconMessageType.PermissionRequest) {
             console.log('## permission request');
             if (message.scopes.includes(PermissionScope.OPERATION_REQUEST)) {
-              this.permissionRequest = message;
-              console.log('Prompt permission request!', this.permissionRequest);
+              if (this.walletService.wallet) {
+                this.permissionRequest = message;
+              } else {
+                console.warn('No wallet found');
+                await this.beaconService.rejectOnSourceAddress(message);
+              }
             }
           } else if (message.type === BeaconMessageType.OperationRequest) {
             if (await this.isSupportedOperationRequest(message)) {
@@ -104,23 +103,32 @@ export class UriHandlerComponent implements OnInit, OnDestroy {
       .catch((error) => console.error('connect error', error));
   }
   async isSupportedOperationRequest(message: any): Promise<boolean> {
-    if (!this.walletService.wallet.getImplicitAccount(message.sourceAddress)) {
+    if (!this.walletService.wallet || !this.walletService.wallet.getImplicitAccount(message.sourceAddress)) {
       console.warn('Source address not recogized');
-      await this.rejectOperationRequestOnSourceAddress(message);
+      await this.beaconService.rejectOnSourceAddress(message);
       return false;
     } else if (message.operationDetails.length > 1) {
       console.warn('Multiple operations currently not supported in requests');
-      await this.rejectOperationRequestOnPermission(message);
+      await this.beaconService.rejectOnToManyOps(message);
       return false;
-    } else if (message.operationDetails[0].kind !== 'transaction') {
-      console.warn('Only transactions supported currently');
-      await this.rejectOperationRequestOnPermission(message);
-      return false;
-    } else if (message.operationDetails[0].destination &&
-      message.operationDetails[0].parameters &&
-      this.walletService.wallet.getAccount(message.operationDetails[0].destination)) {
-      console.warn('Invocation of user controlled contract is disabled');
-      await this.rejectOperationRequestOnPermission(message);
+    }
+
+    if (message.operationDetails[0].kind === 'transaction') {
+      if (message.operationDetails[0].destination &&
+        message.operationDetails[0].parameters &&
+        this.walletService.wallet.getAccount(message.operationDetails[0].destination)) {
+        console.warn('Invocation of user controlled contract is disabled');
+        await this.beaconService.rejectOnPermission(message);
+        return false;
+      }
+    } else if (message.operationDetails[0].kind === 'delegation') {
+      if (!message.operationDetails[0].delegate) {
+        console.warn('Invalid delegate');
+        await this.beaconService.rejectOnUnknown(message);
+      }
+    } else {
+      console.warn('Unsupported operation kind');
+      await this.beaconService.rejectOnUnknown(message);
       return false;
     }
     this.activeAccount = this.walletService.wallet.getImplicitAccount(message.sourceAddress);
@@ -129,7 +137,7 @@ export class UriHandlerComponent implements OnInit, OnDestroy {
   /* operation request handling */
   async operationResponse(opHash: any) {
     if (!opHash) {
-      await this.rejectOperationRequestOnPermission();
+      await this.beaconService.rejectOnPermission(this.operationRequest);
     } else {
       const response: OperationResponseInput = {
         type: BeaconMessageType.OperationResponse,
@@ -141,12 +149,6 @@ export class UriHandlerComponent implements OnInit, OnDestroy {
     }
     console.log(this.operationRequest);
     this.operationRequest = null;
-  }
-  async rejectOperationRequestOnPermission(message: any = null) {
-    await this.beaconService.respondWithError(BeaconErrorType.NOT_GRANTED_ERROR, message ? message : this.operationRequest);
-  }
-  async rejectOperationRequestOnSourceAddress(message: any = null) {
-    await this.beaconService.respondWithError(BeaconErrorType.NO_PRIVATE_KEY_FOUND_ERROR, message ? message : this.operationRequest);
   }
   /* permission handling */
   async permissionResponse(publicKey: string) {

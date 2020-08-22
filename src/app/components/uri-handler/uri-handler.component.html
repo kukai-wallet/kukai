@@ -1,6 +1,7 @@
 
 <div>
   <app-send (operationResponse)="operationResponse($event)" [beaconMode]=true [operationRequest]=operationRequest [activeAccount]=activeAccount></app-send>
+  <app-delegate (operationResponse)="operationResponse($event)" [beaconMode]=true [operationRequest]=operationRequest [activeAccount]=activeAccount></app-delegate>
   <app-permission-request (permissionResponse)="permissionResponse($event)" [permissionRequest]="permissionRequest"></app-permission-request>
   <div *ngIf="false">
 <button (click)="registerURIhandler()">Register</button>

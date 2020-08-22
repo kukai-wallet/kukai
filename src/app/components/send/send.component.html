@@ -17,12 +17,12 @@
     <div class="km-body" *ngIf="activeView === 0">
       <div class="amount">
         <input #amountInput class="input" class="custom-large" placeholder="0.00" [(ngModel)]="amount" (click)="sendMax = false;"
-          [style.font-size.rem]="dynSize()" [style.width.ch]="amount ? amount.length + 1 : 3.6" [disabled]="isMultipleDestinations || (beaconMode && operationRequest.operationDetails[0].amount)">
+          [style.font-size.rem]="dynSize()" [style.width.ch]="amount ? amount.length + 1 : 3.6" [disabled]="isMultipleDestinations || beaconMode">
         <span class="tez">tez</span>
       </div>
       <div class="row-group">
-        <button *ngIf="!(this.isMultipleDestinations || (beaconMode && operationRequest.operationDetails[0].amount))" tabindex=-1 class="small" [class.max]="sendMax" (click)="sendEntireBalance($event)">Send Max</button>
-        <p *ngIf="this.isMultipleDestinations || (beaconMode && operationRequest.operationDetails[0].amount)"></p>
+        <button *ngIf="!(this.isMultipleDestinations || beaconMode)" tabindex=-1 class="small" [class.max]="sendMax" (click)="sendEntireBalance($event)">Send Max</button>
+        <p *ngIf="this.isMultipleDestinations || beaconMode"></p>
         <p class="fee"><ng-container *ngIf="!getTotalBurn() ; else burn">Fee: </ng-container>
           <ng-template #burn>Fee & storage cost: </ng-template>
           {{ getTotalCost() }}</p>

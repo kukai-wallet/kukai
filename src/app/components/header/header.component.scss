@@ -26,6 +26,7 @@ div.middle .accounts {
 }
 div.middle > .accounts.solo {
   color: white;
+  font-weight: 500;
 }
 div.middle img {
     padding-top: 0rem;
@@ -52,7 +53,7 @@ a.logo {
     border: 0.0625rem solid #FFFFFF;
     box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.04), 0px 2px 6px rgba(0, 0, 0, 0.14), 0px 16px 24px rgba(0, 0, 0, 0.16);
     border-radius: 0.75rem;
-    margin: 1.5rem 2rem 1.5rem 0.25rem;
+    margin: 1.5rem 2rem 1.5rem 2rem;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -112,7 +113,7 @@ a.logo {
     z-index: 1;*/
   }
   .dropdown-content.right {
-    margin-left: -2.75rem;
+    //margin-left: -2.75rem;
     margin-top: -1rem
   }
   .dropdown-content .sep {
@@ -150,7 +151,11 @@ a.logo {
     div.dropdown {
         display: none;
     }
-    .middle > img {
+    div.dropdown.right {
+      display: block;
+    }
+    .middle > img,
+    .middle > span {
         display: none;
     }
     a.logo {

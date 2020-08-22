@@ -25,6 +25,7 @@ const routes: Routes = [
       { path: 'accounts/:uri', component: AccountsComponent },
       { path: 'accounts', component: AccountsComponent },
       { path: 'account/:address', component: AccountViewComponent },
+      { path: 'account', redirectTo: 'accounts'},
       { path: 'settings', component: SettingsComponent },
     ] },
   { path: 'connect-ledger', component: ConnectLedgerComponent },

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MessageService } from '../../services/message/message.service';
 import { BeaconService } from '../../services/beacon/beacon.service';
+import { WalletService } from '../../services/wallet/wallet.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-settings',
@@ -12,10 +14,17 @@ export class SettingsComponent implements OnInit {
   permissions = [];
   constructor(
     public beaconService: BeaconService,
-    private messageService: MessageService) { }
+    private messageService: MessageService,
+    private walletService: WalletService,
+    private router: Router) { }
 
   ngOnInit(): void {
-    this.updateBeaconState();
+    if (this.walletService.wallet) {
+      this.updateBeaconState();
+    } else {
+      this.router.navigate(['']);
+    }
+    
   }
   registerURIhandler() {
     navigator.registerProtocolHandler('web+tezos', `${window.location.origin}/accounts/%s`, 'Kukai Wallet');

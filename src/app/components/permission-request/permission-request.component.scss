@@ -5,7 +5,7 @@
   border-radius: 0.75rem;
   font-style: normal;
   font-weight: normal;
-  font-size: 1rem;
+  font-size: 0.875rem;
   letter-spacing: 0.16px;
   color: #000000;
   padding-left: 1rem;
@@ -64,4 +64,9 @@
 
 .select-css:disabled:hover, .select-css[aria-disabled=true] {
 	border-color: #aaa;
+}
+@media screen and (max-width: 25rem) {
+  .select-css {
+    font-size: 0.75rem;
+  }
 }

@@ -41,8 +41,4 @@ export class PermissionRequestComponent implements OnInit, OnChanges {
     document.body.style.overflow = '';
     this.permissionRequest = null;
   }
-  shortAddress(address: string): string {
-    console.log(address.length);
-    return address.slice(0, 12) + '...' + address.slice(24);
-  }
 }

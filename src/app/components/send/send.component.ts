@@ -99,20 +99,26 @@ export class SendComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     console.log(changes);
     if (this.operationRequest && !this.walletService.isLedgerWallet()) {
-      this.openModal();
-      if (this.operationRequest.operationDetails[0].destination) {
-        this.toPkh = this.operationRequest.operationDetails[0].destination;
+      if (this.operationRequest.operationDetails[0].kind === 'transaction') {
+        this.openModal();
+        if (this.operationRequest.operationDetails[0].destination) {
+          this.toPkh = this.operationRequest.operationDetails[0].destination;
+        } else {
+          console.warn('No destination');
+        }
+        if (this.operationRequest.operationDetails[0].amount) {
+          this.amount = Big(this.operationRequest.operationDetails[0].amount).div(1000000).toString();
+        } else {
+          this.amount = '0';
+        }
+        if (this.operationRequest.operationDetails[0].parameters) {
+          this.parameters = this.operationRequest.operationDetails[0].parameters;
+          console.log(this.parameters);
+        }
+        this.activeAccountChange(); // Todo: replace this
       } else {
-        console.log('No destination');
+        console.log('Not a transaction');
       }
-      if (this.operationRequest.operationDetails[0].amount) {
-        this.amount = Big(this.operationRequest.operationDetails[0].amount).div(1000000).toString();
-      }
-      if (this.operationRequest.operationDetails[0].parameters) {
-        this.parameters = this.operationRequest.operationDetails[0].parameters;
-        console.log(this.parameters);
-      }
-      this.activeAccountChange(); // Todo: replace this
     } else {
       this.operationResponse.emit(null);
     }

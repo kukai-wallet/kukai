@@ -1,12 +1,12 @@
-<div class="outside-container">
+<div class="outside-container" *ngIf="!beaconMode">
   <span *ngIf="!activeAccount.delegate">No delegate set <span (click)="openModal()">(Choose a baker)</span></span>
   <span *ngIf="activeAccount.delegate">{{ activeAccount.delegate }} <span (click)="openModal()">(Change&nbsp;baker)</span></span>
 </div>
 <!-- The Modal -->
-<div *ngIf="modalOpen" id="myModal" class="kukai-modal">
+<div *ngIf="modalOpen" id="myModal" class="kukai-modal" [class.top]="beaconMode">
   <!-- Modal content -->
   <div class="km-content">
-    <div class="x" (click)="closeModal()"><img src="../../../assets/img/x.svg"></div>
+    <div class="x" (click)="closeModalAction()"><img src="../../../assets/img/x.svg"></div>
     <div class="km-header">
       <H1>Delegate (Choose a baker)</H1>
     </div>
@@ -18,7 +18,7 @@
       </div>
       <div class="group">
         <label>Delegate to Baker Address</label>
-        <input #toPkhInput type="text" class="text" [(ngModel)]="toPkh">
+        <input #toPkhInput type="text" class="text" [(ngModel)]="toPkh" [disabled]="beaconMode">
       </div>
       <div class="group">
         <label>Fee (tez)</label>

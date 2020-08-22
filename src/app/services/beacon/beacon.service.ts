@@ -38,12 +38,27 @@ export class BeaconService {
   async getPermissions(): Promise<any> {
     return await this.client.getPermissions();
   }
-  async respondWithError(errorType: string, requestMessage: any) {
+  async rejectOnPermission(message: any) {
+    await this.respondWithError(BeaconErrorType.NOT_GRANTED_ERROR, message);
+  }
+  async rejectOnNetwork(message: any) {
+    await this.respondWithError(BeaconErrorType.NETWORK_NOT_SUPPORTED, message);
+  }
+  async rejectOnSourceAddress(message: any) {
+    await this.respondWithError(BeaconErrorType.NO_PRIVATE_KEY_FOUND_ERROR, message);
+  }
+  async rejectOnToManyOps(message: any) {
+    await this.respondWithError(BeaconErrorType.TOO_MANY_OPERATIONS, message);
+  }
+  async rejectOnUnknown(message: any) {
+    await this.respondWithError(BeaconErrorType.UNKNOWN_ERROR , message);
+  }
+  async respondWithError(errorType: BeaconErrorType, requestMessage: any) {
     if (requestMessage) {
       const error: any = {
         id: requestMessage.id,
-        type: errorType,
-        errorType: BeaconErrorType.NOT_GRANTED_ERROR
+        type: this.correspondingResponseType[requestMessage.type],
+        errorType
       };
       const response: BeaconResponseInputMessage = {
         beaconId: await this.client.beaconId,

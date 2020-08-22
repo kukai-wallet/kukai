@@ -1,4 +1,4 @@
-import { Component, TemplateRef, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
+import { Component, TemplateRef, OnInit, Input, ViewChild, ElementRef, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
@@ -19,7 +19,7 @@ import { MessageService } from '../../services/message/message.service';
   templateUrl: './delegate.component.html',
   styleUrls: ['./delegate.component.scss']
 })
-export class DelegateComponent implements OnInit {
+export class DelegateComponent implements OnInit, OnChanges {
   modalOpen = false;
   activeView = 0;
   recommendedFee = 0.0013;
@@ -27,6 +27,9 @@ export class DelegateComponent implements OnInit {
   pkhFee = 0.0013;
   ktFee = 0.003;
   @ViewChild('toPkhInput') toPkhView: ElementRef;
+  @Input() beaconMode = false;
+  @Input() operationRequest: any;
+  @Output() operationResponse = new EventEmitter();
   CONSTANTS = new Constants();
   @Input() activeAccount: Account;
   implicitAccounts;
@@ -59,7 +62,23 @@ export class DelegateComponent implements OnInit {
       this.init();
     }
   }
-
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes);
+    if (this.operationRequest && !this.walletService.isLedgerWallet()) {
+      if (this.operationRequest.operationDetails[0].kind === 'delegation') {
+        this.openModal();
+        if (this.operationRequest.operationDetails[0].delegate) {
+          this.toPkh = this.operationRequest.operationDetails[0].delegate;
+        } else {
+          console.warn('No delegate');
+        }
+      } else {
+        console.log('Not a delegation');
+      }
+    } else {
+      this.operationResponse.emit(null);
+    }
+  }
   init() {
     this.implicitAccounts = this.walletService.wallet.implicitAccounts;
   }
@@ -79,6 +98,10 @@ export class DelegateComponent implements OnInit {
         }, 100);
       }
     }
+  }
+  closeModalAction() {
+    this.operationResponse.emit(null);
+    this.closeModal();
   }
   closeModal() {
     // restore body scrollbar
@@ -181,6 +204,7 @@ export class DelegateComponent implements OnInit {
         console.log(JSON.stringify(ans));
         if (ans.success === true) {
           if (ans.payload.opHash) {
+            this.operationResponse.emit(ans.payload.opHash);
             const metadata = { delegate: this.getDelegate(), opHash: ans.payload.opHash };
             this.coordinatorService.boost(this.activeAccount.address, metadata);
           } else if (this.walletService.isLedgerWallet()) {
