@@ -8,6 +8,8 @@ import { WalletClient, BeaconMessageType, PermissionScope, PermissionResponseInp
 })
 export class BeaconService {
   client = null;
+  peers = [];
+  permissions = [];
   constructor(
     private messageService: MessageService
   ) {
@@ -20,17 +22,33 @@ export class BeaconService {
     'broadcast_request': 'broadcast_response'
   };
   async addPeer(pairInfoJson: string) {
-    // await this.client.removeAllPeers();
     const pairInfo: P2PPairInfo = JSON.parse(pairInfoJson);
     console.log('PairInfo', pairInfo);
-    this.client.addPeer(pairInfo);
+    await this.client.addPeer(pairInfo);
     this.messageService.addSuccess(`Pairing with ${pairInfo.name}...`);
+  }
+  async syncBeaconState() {
+    this.peers = await this.getPeers();
+    this.permissions = await this.getPermissions();
   }
   async removePeers() {
     await this.client.removeAllPeers();
+    await this.client.removeAllAppMetadata();
+    this.syncBeaconState();
+  }
+  async removePeer(index: number) {
+    const pairInfo: P2PPairInfo = this.peers[index];
+    await this.client.removePeer(pairInfo);
+    await this.client.removeAppMetadata(pairInfo.publicKey);
+    this.syncBeaconState();
   }
   async removePermissions() {
     await this.client.removeAllPermissions();
+    this.syncBeaconState();
+  }
+  async removePermission(index: number) {
+    await this.removePermission(this.permissions[index].accountIdentifier);
+    this.syncBeaconState();
   }
   async getPeers(): Promise<any> {
     return await this.client.getPeers();
@@ -51,7 +69,7 @@ export class BeaconService {
     await this.respondWithError(BeaconErrorType.TOO_MANY_OPERATIONS, message);
   }
   async rejectOnUnknown(message: any) {
-    await this.respondWithError(BeaconErrorType.UNKNOWN_ERROR , message);
+    await this.respondWithError(BeaconErrorType.UNKNOWN_ERROR, message);
   }
   async respondWithError(errorType: BeaconErrorType, requestMessage: any) {
     if (requestMessage) {
@@ -67,6 +85,19 @@ export class BeaconService {
       };
       await this.client.respond(response);
     }
+  }
+  async approvePermissionRequest(message: any, publicKey: string) {
+    const response: PermissionResponseInput = {
+      type: BeaconMessageType.PermissionResponse,
+      network: message.network, // Use the same network that the user requested
+      scopes: [PermissionScope.OPERATION_REQUEST], //NOT_GRANTED_ERROR
+      id: message.id,
+      publicKey: publicKey
+    };
+    await this.client.respond(response);
+  }
+  async rejectPermissionRequest(message: any) {
+    await this.respondWithError(BeaconErrorType.NOT_GRANTED_ERROR, message);
   }
   registerURIhandler() {
     navigator.registerProtocolHandler('web+tezos', `${window.location.origin}/accounts/%s`, 'Kukai'); // web+tezos://?type=tzip10&data=<data>

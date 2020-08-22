@@ -153,24 +153,11 @@ export class UriHandlerComponent implements OnInit, OnDestroy {
   /* permission handling */
   async permissionResponse(publicKey: string) {
     if (!publicKey) {
-      await this.rejectPermissionRequest(this.permissionRequest);
+      await this.beaconService.rejectPermissionRequest(this.permissionRequest);
     } else {
-      await this.approvePermissionRequest(this.permissionRequest, publicKey);
+      await this.beaconService.approvePermissionRequest(this.permissionRequest, publicKey);
+      this.beaconService.syncBeaconState();
     }
     this.permissionRequest = null;
-  }
-  async approvePermissionRequest(message: any, publicKey: string) {
-    const response: PermissionResponseInput = {
-      type: BeaconMessageType.PermissionResponse,
-      network: message.network, // Use the same network that the user requested
-      scopes: [PermissionScope.OPERATION_REQUEST], //NOT_GRANTED_ERROR
-      id: message.id,
-      publicKey: publicKey
-    };
-    await this.beaconService.client.respond(response);
-    console.log('# approve');
-  }
-  async rejectPermissionRequest(message: any) {
-    await this.beaconService.respondWithError(BeaconErrorType.NOT_GRANTED_ERROR, message);
   }
 }

@@ -4,11 +4,20 @@
   display: flex;
   justify-content: flex-start;
   flex-direction: column;
-  background: #5963FF;
+  background: #5963ff;
 }
 :host H1,
 :host H4 {
   color: white;
+}
+:host table > tbody > tr > td:last-child:hover {
+  cursor: pointer;
+  color: #6d0000;
+  font-weight: bold;
+}
+:host .inactive {
+  color: #212529;
+  opacity: 0.5;
 }
 #wrapper {
   width: 100%;
