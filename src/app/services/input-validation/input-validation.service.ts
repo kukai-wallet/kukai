@@ -32,7 +32,7 @@ export class InputValidationService {
         return this.translate.instant('INPUTVALIDATIONCOMPONENT.VERYWEAK');  // 'Very weak!'
       } case 2: {
         return this.translate.instant('INPUTVALIDATIONCOMPONENT.WEAK');  // 'Weak!'
-       } case 3: {
+      } case 3: {
         return this.translate.instant('INPUTVALIDATIONCOMPONENT.WEAK');  // 'Weak!'
       } case 4: {
         return this.translate.instant('INPUTVALIDATIONCOMPONENT.STRONG');  // 'Strong!'
@@ -41,58 +41,59 @@ export class InputValidationService {
       }
     }
   }
-address(address: string): Boolean {
-  return this.operationService.validAddress(address);
-}
-email(email: string): Boolean {
-  return (email && email.includes('@'));
-}
-passphrase(passphrase: string): Boolean {
-  return true;
-}
-amount(amount: string): Boolean {
-  if (amount === '' || amount === '0') { // default value / zero
+  address(address: string): Boolean {
+    return this.operationService.validAddress(address);
+  }
+  email(email: string): Boolean {
+    return (email && email.includes('@'));
+  }
+  passphrase(passphrase: string): Boolean {
     return true;
-  } else if (Number(amount) && 0 < Number(amount)) { // Positive number
-    return true;
-  } else {
+  }
+  amount(amount: string): Boolean {
+    console.log(amount);
+    if (amount === '' || amount === '0') { // default value / zero
+      return true;
+    } else if (Number(amount) && amount.match(/^(0|[1-9][0-9]{0,8})(\.[0-9]{1,6}){0,1}$/g)) { // Positive number  
+      return true;
+    }
     return false;
   }
-}
-fee(fee: string): Boolean {
-  return this.amount(fee); // same as amount
-}
-gas(amount: string): Boolean {
-  if (amount === '' || amount === '0') { // default value / zero
-    return true;
-  } else if (Number(amount) && 0 < Number(amount) && Number(amount) % 1 === 0) { // Positive integer
-    return true;
-  } else {
+  fee(fee: string): Boolean {
+    console.log('# fee');
+    return this.amount(fee); // same as amount
+  }
+  gas(amount: string): Boolean {
+    if (amount === '' || amount === '0') { // default value / zero
+      return true;
+    } else if (Number(amount) && 0 < Number(amount) && Number(amount) % 1 === 0) { // Positive integer
+      return true;
+    } else {
+      return false;
+    }
+  }
+  storage(amount: string) {
+    return this.gas(amount);
+  }
+  code(code: string): Boolean {
+    if (code && code.length === 40 && code.match(/^[0-9a-f]*$/g)) { // 40 hex chars
+      return true;
+    } else {
+      return false;
+    }
+  }
+  derivationPath(path: string): Boolean {
+    const m = path.match(/^44\'\/1729(\'\/[0-9]+)+\'$/g);
+    if (m || path === '44\'/1729\'') {
+      return true;
+    }
     return false;
   }
-}
-storage(amount: string) {
-  return this.gas(amount);
-}
-code(code: string): Boolean {
-  if (code && code.length === 40 && code.match(/^[0-9a-f]*$/g)) { // 40 hex chars
-    return true;
-  } else {
-    return false;
+  operationRaw(hex: string): Boolean {
+    if (hex && hex.match(/^[a-f0-9]*$/)) {
+      return true;
+    } else {
+      return false;
+    }
   }
-}
-derivationPath(path: string): Boolean {
-  const m = path.match(/^44\'\/1729(\'\/[0-9]+)+\'$/g);
-  if (m || path === '44\'/1729\'') {
-    return true;
-  }
-  return false;
-}
-operationRaw(hex: string): Boolean {
-  if (hex && hex.match(/^[a-f0-9]*$/)) {
-    return true;
-  } else {
-    return false;
-  }
-}
 }

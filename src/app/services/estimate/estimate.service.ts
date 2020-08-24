@@ -7,8 +7,11 @@ import { DefaultTransactionParams } from '../../interfaces';
 import Big from 'big.js';
 
 const httpOptions = { headers: { 'Content-Type': 'application/json' } };
+const hardGasLimit = 800000;
+const hardStorageLimit = 60000;
 @Injectable()
 export class EstimateService {
+  queue = [];
   CONSTANTS = this.operationService.CONSTANTS;
   revealGasLimit = 10000;
   nodeURL = this.CONSTANTS.NET.NODE_URL;
@@ -38,17 +41,39 @@ export class EstimateService {
         this.init(req[0].hash, req[0].chain_id, req[1], req[2], pk, pkh);
       }
     });
+    console.log('Ready for estimate!');
   }
-  async estimate(transactions: any, from: string, invoke = false): Promise<any> {
+  async estimate(transactions: any, from: string, callback) {
+    this.queue.push({ transactions, from, callback })
+    if (this.queue.length === 1) {
+      while (this.queue.length > 0) {
+        while (this.queue.length > 1) {
+          this.queue[0].callback(null);
+          this.queue.shift();
+        }
+        await this._estimate(this.queue[0].transactions, this.queue[0].from).then((res) => {
+          this.queue[0].callback(res);
+        }).catch((error) => {
+          console.warn(error);
+          this.queue[0].callback({ error });
+        });
+        this.queue.shift();
+      }
+    }
+  }
+  private async _estimate(transactions: any, from: string): Promise<any> {
     const extraGas = 80;
     if (!this.hash) { return null; }
     const simulation = {
       fee: 0,
-      gasLimit: 800000,
-      storageLimit: 60000
+      gasLimit: hardGasLimit,
+      storageLimit: hardStorageLimit
     };
     for (const tx of transactions) {
-      if (!tx.parameters) {
+      if (!tx.amount) {
+        tx.amount = 0;
+      }
+      if (tx.to.slice(0, 3) !== 'KT1') {
         tx.amount = 0.000001;
       }
       tx.gasLimit = simulation.gasLimit;
@@ -87,8 +112,7 @@ export class EstimateService {
           return of(dtp);
         })).toPromise();
       } else if (typeof result.success === 'boolean' && result.success === false) {
-          console.log(result);
-          throw new Error(result.payload.msg);
+        throw new Error(result.payload.msg);
       }
     }
     return null;
@@ -100,11 +124,9 @@ export class EstimateService {
       burn = burn.minus(content.amount ? content.amount : '0');
       burn = burn.minus(content.fee ? content.fee : '0');
     }
-    console.log(burn);
     if (content.destination && content.destination === this.pkh) {
       burn = burn.plus(content.amount ? content.amount : '0');
     }
-    console.log(burn);
     if (content.metadata.operation_result.balance_updates) {
       for (const balanceUpdate of content.metadata.operation_result.balance_updates) {
         if (balanceUpdate.contract === this.pkh) {
@@ -112,7 +134,6 @@ export class EstimateService {
         }
       }
     }
-    console.log(burn);
     if (content.metadata.balance_updates) {
       for (const balanceUpdate of content.metadata.balance_updates) {
         if (balanceUpdate.contract === this.pkh) {
@@ -120,16 +141,16 @@ export class EstimateService {
         }
       }
     }
-    console.log(burn);
     gasUsage += content.metadata.operation_result.consumed_gas ? Number(content.metadata.operation_result.consumed_gas) : 0;
     if (content.metadata.internal_operation_results) {
       for (const internalResult of content.metadata.internal_operation_results) {
         if (internalResult.result) {
           if (internalResult.result.consumed_gas) {
             gasUsage += internalResult.result && internalResult.result.consumed_gas ? Number(internalResult.result.consumed_gas) : 0;
-          } if (internalResult.result.balance_updates) {
+          }
+          if (internalResult.result.balance_updates) {
             for (const balanceUpdate of internalResult.result.balance_updates) {
-              if (balanceUpdate.contract === this.pkh) {
+              if (balanceUpdate.contract === this.pkh && balanceUpdate.change.slice(0, 1) === '-') {
                 burn = burn.minus(balanceUpdate.change);
               }
             }
@@ -137,9 +158,9 @@ export class EstimateService {
         }
       }
     }
-    console.log('Burn!!! ', burn);
     const storageUsage = Math.round(burn / 1000);
-    if (gasUsage < 0 || storageUsage < 0) {
+    console.log(JSON.stringify(storageUsage));
+    if (gasUsage < 0 || gasUsage > hardGasLimit || storageUsage < 0 || storageUsage > hardStorageLimit) {
       throw new Error('InvalidUsageCalculation');
     }
     return { gasUsage, storageUsage };
@@ -189,7 +210,6 @@ export class EstimateService {
     op.signature = 'edsigtXomBKi5CTRf5cjATJWSyaRvhfYNHqSUGrn4SdbYRcGwQrUGjzEfQDTuqHhuA8b2d8NarZjz8TRf65WkpQmo423BtomS8Q';
     return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/scripts/run_operation',
       { operation: op, chain_id: this.chainId }, httpOptions).pipe(flatMap(res => {
-        console.log(JSON.stringify(res));
         this.operationService.checkApplied([res]);
         return of(res);
       })).pipe(catchError(err => this.operationService.errHandler(err)));

@@ -108,16 +108,12 @@ export class SendComponent implements OnInit, OnChanges {
         }
         if (this.operationRequest.operationDetails[0].amount) {
           this.amount = Big(this.operationRequest.operationDetails[0].amount).div(1000000).toString();
-        } else {
-          this.amount = '0';
         }
         if (this.operationRequest.operationDetails[0].parameters) {
           this.parameters = this.operationRequest.operationDetails[0].parameters;
           console.log(this.parameters);
         }
-        this.activeAccountChange(); // Todo: replace this
-      } else {
-        console.log('Not a transaction');
+        this.activeAccountChange();
       }
     } else {
       this.operationResponse.emit(null);
@@ -473,6 +469,11 @@ export class SendComponent implements OnInit, OnChanges {
     }
     return '';
   }
+  amountInputChange() {
+    if (this.beaconMode) {
+      this.updateDefaultValues();
+    }
+  }
   async activeAccountChange() {
     await this.estimateService.preLoadData(this.activeAccount.pkh, this.activeAccount.pk);
     this.updateDefaultValues();
@@ -484,29 +485,29 @@ export class SendComponent implements OnInit, OnChanges {
     }
   }
   async estimateFees() {
-    console.log('estimate...');
     const prevSimError = this.latestSimError;
     this.latestSimError = '';
     if (this.prepTransactions()) {
       const equiClass = this.equiClass(this.activeAccount.address, this.transactions);
-      if (this.prevEquiClass !== equiClass || this.parameters) {
+      if (this.prevEquiClass !== equiClass || this.parameters || this.beaconMode) {
+        console.log('simulate');
         this.latestSimError = '';
         this.prevEquiClass = equiClass;
-        this.simSemaphore++; // Put lock on 'Preview and 'Send max'
-        try {
-          const res: DefaultTransactionParams | null = await this.estimateService.estimate(JSON.parse(JSON.stringify(this.transactions)), this.activeAccount.address);
+        this.simSemaphore++; // Put lock on Preview
+        const callback = (res) => {
           if (res) {
-            console.log(res);
-            this.defaultTransactionParams = res;
+            if (res.error) {
+              this.formInvalid = res.error;
+              this.latestSimError = res.error;
+            } else {
+              this.defaultTransactionParams = res;
+              this.formInvalid = '';
+              this.latestSimError = '';
+            }
           }
-          this.latestSimError = '';
-          this.formInvalid = '';
-        } catch (e) {
-          this.formInvalid = e;
-          this.latestSimError = e;
-        } finally {
           this.simSemaphore--;
         }
+        this.estimateService.estimate(JSON.parse(JSON.stringify(this.transactions)), this.activeAccount.address, callback);
       } else {
         this.latestSimError = prevSimError;
         this.formInvalid = this.latestSimError;
@@ -564,11 +565,10 @@ export class SendComponent implements OnInit, OnChanges {
     }
   }
   checkReceiverAndAmount(toPkh: string, amount: string, finalCheck: boolean): string {
-    console.log(toPkh + ' ' + amount);
     if (!this.inputValidationService.address(toPkh) || toPkh === this.activeAccount.address) {
       return this.translate.instant('SENDCOMPONENT.INVALIDRECEIVERADDRESS');
     } else if (!this.inputValidationService.amount(amount) ||
-      (finalCheck && ((amount === '0' && !this.parameters) || amount === ''))) {
+      (finalCheck && ((amount === '0' || amount === '') && toPkh.slice(0, 3) !== 'KT1'))) {
       return this.translate.instant('SENDCOMPONENT.INVALIDAMOUNT');
     } else if (!this.inputValidationService.gas(this.gas)) {
       return this.translate.instant('SENDCOMPONENT.INVALIDGASLIMIT');
