@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import 'babel-polyfill';
 import TransportU2F from '@ledgerhq/hw-transport-u2f';
-import TransportWebAuthn from '@ledgerhq/hw-transport-webauthn';
 import Tezos from '@obsidiansystems/hw-app-xtz';
 import { OperationService } from '../operation/operation.service';
 import { MessageService } from '../message/message.service';
@@ -14,9 +13,7 @@ export class LedgerService {
   constructor(
     private operationService: OperationService,
     private messageService: MessageService
-  ) {
-    this.setTransport();
-  }
+  ) {}
   async setTransport() {
     if (!this.transport) {
       console.log('Trying to use U2F for transport...');
@@ -25,15 +22,6 @@ export class LedgerService {
         console.log('Transport is now set to use U2F!');
       } catch (e) {
         console.log('Couldn\'t use U2F for transport!');
-      }
-    }
-    if (!this.transport) {
-      console.log('Trying to use WebAuthn for transport...');
-      try {
-        this.transport = await TransportWebAuthn.create();
-        console.log('Transport is now set to use WebAuthn!');
-      } catch (e) {
-        console.log('Couldn\'t use WebAuthn for transport!');
       }
     }
   }

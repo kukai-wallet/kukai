@@ -307,7 +307,6 @@ export class DelegateComponent implements OnInit, OnChanges {
   invalidInput(): string {
     if ((!this.inputValidationService.address(this.toPkh) &&
       this.toPkh !== '') || (
-        this.activeAccount.address.slice(0, 2) !== 'tz' && this.toPkh === '') || (
         this.toPkh.length > 1 && this.toPkh.slice(0, 2) !== 'tz') || (
         this.walletService.wallet.getImplicitAccount(this.toPkh))) {
       return 'invalid delegate address';

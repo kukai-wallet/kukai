@@ -342,7 +342,7 @@
         "INVALIDGASLIMIT" : "Invalid gas limit",
         "INVALIDSTORAGELIMIT" : "Invalid storage limit",
         "NOADDRESSORAMOUNT" : "No address or amount provided!",
-        "GASOVERFLOW" : "Hard gas limit overflow!",
+        "TRANSACTIONSOVERFLOW" : "Too many transactions in the batch!",
         "INVALIDPARAMETERS" : "Invalid parameters",
         "TOOHIGHFEEORAMOUNT" : "Amount, fee and burn are higher than the current balance",
         "TOOHIGHFEE" : "The fee and burn are higher than the balance for the implicit account (tz1)",

@@ -25,7 +25,7 @@
         <p *ngIf="this.isMultipleDestinations || beaconMode"></p>
         <p class="fee"><ng-container *ngIf="!getTotalBurn() ; else burn">Fee: </ng-container>
           <ng-template #burn>Fee & storage cost: </ng-template>
-          {{ getTotalCost() }}</p>
+          {{ getTotalCost(true) }}</p>
       </div>
       <div class="group">
         <label>From address</label>
@@ -62,13 +62,13 @@
           </div>
           <div class="group">
             <label>Fee</label>
-            <input type="text" class="text" placeholder={{this.defaultTransactionParams.fee.toString()}} [(ngModel)]="fee">
+            <input type="text" (input)="updateMaxAmount()" (paste)="updateMaxAmount()" class="text" placeholder={{this.defaultTransactionParams.fee.toString()}} [(ngModel)]="fee">
           </div>
         </div>
         <div class="row-group">
           <div class="group">
             <label>Storage limit</label>
-            <input type="text" class="text" placeholder={{this.defaultTransactionParams.storage.toString()}} [(ngModel)]="storage">
+            <input type="text" (input)="updateMaxAmount()" (paste)="updateMaxAmount()" class="text" placeholder={{this.defaultTransactionParams.storage.toString()}} [(ngModel)]="storage">
           </div>
           <div class="group">
             <label>Max storage cost</label>
@@ -112,7 +112,7 @@
           Total Fee — {{ getTotalFee() | number:'1.0-6' }} tez
         </p>
         <p *ngIf="getTotalBurn()" class="preview">
-          Total Storage cost — {{ getTotalBurn() | number:'1.0-6' }} tez
+          Total Storage cost — {{ getTotalBurn() | number:'1.0-6' }} tez (*)
         </p>
         <table>
           <thead>
@@ -123,13 +123,12 @@
           </thead>
           <tbody>
               <tr *ngFor="let transaction of showTransactions">
-                  <td>{{ transaction.to }}</td>
-                  <td>{{ transaction.amount | number:'1.0-6' }}</td>
-                  <td *ngIf="transaction.burn">Burn: 0.257</td>
+                  <td><span *ngIf="transaction.storageLimit">*</span>{{ transaction.to }}</td>
+                  <td class="txAmount">{{ transaction.amount | number:'1.0-6' }}</td>
               </tr>
           </tbody>
       </table>
-      <button style="margin-left: auto;" *ngIf='transactions.length > 2' type="button" class="show-more" aria-label="More" (click)="toggleTransactions()">
+      <button style="margin-left: auto; margin-top: 1rem" *ngIf='transactions.length > 2' type="button" class="show-more" aria-label="More" (click)="toggleTransactions()">
           <span aria-hidden="true"> {{ showBtn }} </span>
       </button>
       </ng-container>

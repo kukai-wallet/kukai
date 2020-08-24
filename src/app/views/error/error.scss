@@ -1,0 +1,21 @@
+div#error {
+  height: 100vh;
+  background: #5963FF;
+}
+div#error h1,
+div#error h4 {
+  color: white;
+}
+div#error p {
+  color: rgba(256, 256, 256, 0.6);
+}
+div#error div.logo-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
+}
+div#error img {
+  padding: 0 auto;
+  width: 22.75rem;
+  height: 5.75rem;
+}

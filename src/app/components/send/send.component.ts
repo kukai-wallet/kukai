@@ -198,7 +198,7 @@ export class SendComponent implements OnInit, OnChanges {
       this.messageService.startSpinner('Signing transaction...');
       let keys;
       try {
-        keys = await this.walletService.getKeys(pwd, this.activeAccount.address);
+        keys = await this.walletService.getKeys(pwd, this.activeAccount.pkh);
       } catch {
         this.messageService.stopSpinner();
       }
@@ -252,19 +252,21 @@ export class SendComponent implements OnInit, OnChanges {
   updateMaxAmount() {
     if (this.sendMax) {
       const max = this.maxToSend(this.activeAccount);
+      let maxAmount = '0';
       if (max.length && max.slice(0, 1) !== '-') {
-        this.amount = max;
-      } else {
-        this.amount = '0';
+        maxAmount = max;
+      }
+      if (this.amount !== maxAmount) {
+        this.amount = maxAmount;
       }
     }
   }
   maxToSend(account: Account): string {
     if (account && (account instanceof ImplicitAccount)) {
       let accountBalance = Big(account.balanceXTZ).div(1000000);
-      accountBalance = accountBalance.minus(this.fee ? Number(this.fee) : this.defaultTransactionParams.fee);
+      accountBalance = accountBalance.minus(this.fee && Number(this.fee) ? Number(this.fee) : this.defaultTransactionParams.fee);
       if (!this.isMultipleDestinations) {
-        accountBalance = accountBalance.minus(this.storage ? Big(this.storage).div(1000) : this.defaultTransactionParams.burn);
+        accountBalance = accountBalance.minus(this.storage && Number(this.storage) ? Big(this.storage).div(1000) : this.defaultTransactionParams.burn);
       } else {
         accountBalance = accountBalance.minus(this.defaultTransactionParams.burn);
       }
@@ -503,6 +505,7 @@ export class SendComponent implements OnInit, OnChanges {
               this.defaultTransactionParams = res;
               this.formInvalid = '';
               this.latestSimError = '';
+              this.updateMaxAmount();
             }
           }
           this.simSemaphore--;
@@ -516,6 +519,7 @@ export class SendComponent implements OnInit, OnChanges {
       this.latestSimError = prevSimError;
       if (this.isMultipleDestinations ? !this.toMultipleDestinationsString : !this.toPkh) {
         this.defaultTransactionParams = zeroTxParams;
+        this.updateMaxAmount();
         this.prevEquiClass = '';
       }
     }
@@ -531,10 +535,8 @@ export class SendComponent implements OnInit, OnChanges {
   batchSpace(txs = 0) {
     if (this.isMultipleDestinations && this.defaultTransactionParams.customLimits && this.defaultTransactionParams.customLimits.length) {
       const numberOfTxs = txs ? txs : this.defaultTransactionParams.customLimits.length;
-      const gasUsage: string = (this.gas && this.inputValidationService.gas(this.gas) ? Big(this.gas).times(numberOfTxs) : Big(this.defaultTransactionParams.gas).times(numberOfTxs))
-        + (this.defaultTransactionParams.reveal ? this.estimateService.revealGasLimit : 0);
-      const gasCap = '1040000';
-      return !txs ? this.numberWithCommas(gasUsage.toString()) + ' / ' + this.numberWithCommas(gasCap.toString()) : gasUsage < gasCap;
+      const txsLimit = 294 + (this.defaultTransactionParams.reveal ? 0 : 2); // Max transactions in a batch is 296 (294 with a reveal)
+      return !txs ? this.numberWithCommas(numberOfTxs + ' / ' + txsLimit) : numberOfTxs <= txsLimit;
 
     }
     return !txs ? '' : true;
@@ -617,7 +619,7 @@ export class SendComponent implements OnInit, OnChanges {
       }
     });
     if (!validationError && finalCheck && !this.batchSpace(this.toMultipleDestinations.length)) {
-      validationError = this.translate.instant('SENDCOMPONENT.GASOVERFLOW');
+      validationError = this.translate.instant('SENDCOMPONENT.TRANSACTIONSOVERFLOW');
     }
     return validationError;
   }
@@ -629,12 +631,12 @@ export class SendComponent implements OnInit, OnChanges {
     }
     return Number(totalSent);
   }
-  getTotalCost(): number {
+  getTotalCost(display: boolean = false): string {
     const totalFee = Big(this.getTotalFee()).plus(Big(this.getTotalBurn())).toString();
-    setTimeout(() => {
-      this.updateMaxAmount();
-    }, 100);
-    return Number(totalFee);
+    if (display && totalFee === '0') {
+      return '-';
+    }
+    return totalFee;
   }
   getTotalFee(): number {
     if (this.fee !== '' && Number(this.fee)) {
@@ -644,7 +646,7 @@ export class SendComponent implements OnInit, OnChanges {
   }
   getTotalBurn(): number {
     if (this.storage !== '' && Number(this.storage)) {
-      return Number(Big(this.storage).times(this.transactions.length).div(1000));
+      return Number(Big(this.storage).times(this.transactions.length).div('1000'));
     }
     return Number(Big(this.defaultTransactionParams.burn));
   }

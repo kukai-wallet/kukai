@@ -268,7 +268,7 @@ export class OperationService {
                     storage_limit: '0',
                     amount: '0',
                     destination: from,
-                    parameters: this.getContractDelegation(to)
+                    parameters: (to !== '') ? this.getContractDelegation(to) : this.getContractUnDelegation()
                   };
                 }
                 const fop: any = {
@@ -930,6 +930,22 @@ export class OperationService {
             }]
         },
         { prim: 'SOME' }, { prim: 'SET_DELEGATE' },
+        { prim: 'CONS' }]
+    };
+  }
+  getContractUnDelegation() {
+    return {
+      entrypoint: 'do',
+      value:
+        [{ prim: 'DROP' },
+        {
+          prim: 'NIL',
+          args: [{ prim: 'operation' }],
+        }, {
+          prim: 'NONE',
+          args: [{ prim: 'key_hash' }],
+        },
+        { prim: 'SET_DELEGATE' },
         { prim: 'CONS' }]
     };
   }
