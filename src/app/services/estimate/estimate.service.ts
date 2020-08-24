@@ -44,19 +44,27 @@ export class EstimateService {
     console.log('Ready for estimate!');
   }
   async estimate(transactions: any, from: string, callback) {
-    this.queue.push({ transactions, from, callback })
+    this.queue.push({ transactions, from, callback });
     if (this.queue.length === 1) {
       while (this.queue.length > 0) {
         while (this.queue.length > 1) {
           this.queue[0].callback(null);
           this.queue.shift();
         }
-        await this._estimate(this.queue[0].transactions, this.queue[0].from).then((res) => {
-          this.queue[0].callback(res);
-        }).catch((error) => {
-          console.warn(error);
-          this.queue[0].callback({ error });
-        });
+        let retry = false;
+        for (let i = 0; i < 1 || retry && i < 2; i++) {
+          await this._estimate(this.queue[0].transactions, this.queue[0].from).then((res) => {
+            this.queue[0].callback(res);
+          }).catch(async (error) => {
+            if (error.message && error.message === 'An operation assumed a contract counter in the past' && !retry) {
+              console.log('Update counter');
+              await this.preLoadData(this.pkh, this.pk);
+              retry = true;
+            } else {
+              this.queue[0].callback({ error });
+            }
+          });
+        }
         this.queue.shift();
       }
     }

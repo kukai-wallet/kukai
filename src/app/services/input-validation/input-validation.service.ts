@@ -51,16 +51,14 @@ export class InputValidationService {
     return true;
   }
   amount(amount: string): Boolean {
-    console.log(amount);
     if (amount === '' || amount === '0') { // default value / zero
       return true;
-    } else if (Number(amount) && amount.match(/^(0|[1-9][0-9]{0,8})(\.[0-9]{1,6}){0,1}$/g)) { // Positive number  
+    } else if (Number(amount) && amount.match(/^(0|[1-9][0-9]{0,8})(\.[0-9]{1,6}){0,1}$/g)) { // Positive number
       return true;
     }
     return false;
   }
   fee(fee: string): Boolean {
-    console.log('# fee');
     return this.amount(fee); // same as amount
   }
   gas(amount: string): Boolean {

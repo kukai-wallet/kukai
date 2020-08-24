@@ -506,7 +506,7 @@ export class SendComponent implements OnInit, OnChanges {
             }
           }
           this.simSemaphore--;
-        }
+        };
         this.estimateService.estimate(JSON.parse(JSON.stringify(this.transactions)), this.activeAccount.address, callback);
       } else {
         this.latestSimError = prevSimError;
