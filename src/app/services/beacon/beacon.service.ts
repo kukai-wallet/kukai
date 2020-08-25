@@ -47,7 +47,7 @@ export class BeaconService {
     this.syncBeaconState();
   }
   async removePermission(index: number) {
-    await this.removePermission(this.permissions[index].accountIdentifier);
+    await this.client.removePermission(this.permissions[index].accountIdentifier);
     this.syncBeaconState();
   }
   async getPeers(): Promise<any> {

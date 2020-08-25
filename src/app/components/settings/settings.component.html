@@ -1,46 +1,49 @@
 <app-header [settings]=true></app-header>
-<div id="wrapper">
-  <div>
-    <H1>Settings</H1>
-    <H4>Beacon</H4>
-    <BR>
-    <button (click)="registerURIhandler()">Register Kukai as URI handler</button><BR><BR>
-    <table *ngIf="beaconService.peers.length">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Relay server</th>
-          <th>Remove</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let peer of beaconService.peers; index as i">
-          <td>{{ peer.name }}</td>
-          <td>{{ peer.relayServer }}</td>
-          <td (click)="beaconService.removePeer(i)">X</td>
-        </tr>
-      </tbody>
-    </table>
-    <button (click)="beaconService.removePeers()">Remove All Peers</button><BR><BR>
-    <table *ngIf="beaconService.permissions.length">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Address</th>
-          <th>Permission</th>
-          <th>Remove</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let permission of beaconService.permissions; index as i"
-          [class.inactive]="!accountAvailable(permission.address)">
-          <td>{{ permission.appMetadata.name }}</td>
-          <td>{{ permission.address }}</td>
-          <td>Operation Requests</td>
-          <td (click)="beaconService.removePermission(i)">X</td>
-        </tr>
-      </tbody>
-    </table>
-    <button (click)="beaconService.removePermissions()">Remove All Permissions</button><BR>
+<div class="settings">
+  <H3>URI handler</H3>
+  <div class="seperator"></div>
+  <div class="handler">
+    <div>
+      <h4>Register Kukai as default URI handler</h4>
+      <p>For Kukai to connect with dApps over Beacon it need to be registered as URI handler.</p>
+    </div>
+    <div>
+      <button (click)="registerURIhandler()">Register handler</button>
+    </div>
   </div>
+  <H3>Peers</H3>
+  <table *ngIf="beaconService.peers.length">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Relay server</th>
+        <th><span (click)="beaconService.removePeers()">Remove&nbsp;all</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let peer of beaconService.peers; index as i">
+        <td>{{ peer.name }}</td>
+        <td>{{ peer.relayServer }}</td>
+        <td (click)="beaconService.removePeer(i)"><img (click)="beaconService.removePeer(i)" src="../../../assets/img/cross.svg"></td>
+      </tr>
+    </tbody>
+  </table>
+  <H3>Permissions to request operations</H3>
+  <table *ngIf="beaconService.permissions.length">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Address</th>
+        <th><span (click)="beaconService.removePermissions()">Remove&nbsp;all</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let permission of beaconService.permissions; index as i"
+        [class.inactive]="!accountAvailable(permission.address)">
+        <td>{{ permission.appMetadata.name }}</td>
+        <td>{{ formatAddress(permission.address) }}</td>
+        <td><img (click)="beaconService.removePermission(i)" src="../../../assets/img/cross.svg"></td>
+      </tr>
+    </tbody>
+  </table>
 </div>

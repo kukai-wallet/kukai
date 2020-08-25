@@ -28,6 +28,4 @@ export class HeaderComponent implements OnInit {
     this.walletService.clearWallet();
     this.router.navigate(['']);
   }
-  click() {
-  }
 }

@@ -1,12 +1,15 @@
 <div id="top-container">
-    <a routerLink="/accounts" class="logo"><img id="logo" src="../../../assets/img/kukai-logo.svg"></a>
+    <a routerLink="/accounts" class="logo">
+      <img *ngIf="!settings" id="logo" src="../../../assets/img/kukai-logo.svg">
+      <img *ngIf="settings" id="logo" src="../../../assets/img/kukai-logo2.svg">
+  </a>
     <div class="middle">
       <ng-container *ngIf="!activeAccount">
         <ng-container *ngIf="settings">
-          <a class="accounts" routerLink="/accounts">
+          <a class="accounts light" routerLink="/accounts">
             Accounts
         </a>
-        <img src="../../../assets/img/slash.svg">
+        <img src="../../../assets/img/slash2.svg">
         <span>Settings</span>
         </ng-container>
         <ng-container *ngIf="!settings">

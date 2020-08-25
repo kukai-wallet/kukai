@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { MessageService } from '../../services/message/message.service';
 import { BeaconService } from '../../services/beacon/beacon.service';
 import { WalletService } from '../../services/wallet/wallet.service';
 import { Router } from '@angular/router';
+import { SlicePipe } from '@angular/common';
 
 @Component({
   selector: 'app-settings',
@@ -11,6 +12,7 @@ import { Router } from '@angular/router';
 })
 export class SettingsComponent implements OnInit {
   implicitAccounts = [];
+  wideAccounts = false;
   constructor(
     public beaconService: BeaconService,
     private messageService: MessageService,
@@ -35,5 +37,16 @@ export class SettingsComponent implements OnInit {
       return false;
     }
     return true;
+  }
+  @HostListener('window:resize')
+  onResize() {
+    this.wideAccounts = (window.innerWidth > 600);
+  }
+  formatAddress(address: string) {
+    if (this.wideAccounts) {
+      return address;
+    } else {
+      return address.slice(0, 6) + '...' + address.slice(-4);
+    }
   }
 }
