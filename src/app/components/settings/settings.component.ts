@@ -23,6 +23,7 @@ export class SettingsComponent implements OnInit {
     if (this.walletService.wallet) {
       this.implicitAccounts = this.walletService.wallet.getImplicitAccounts();
       this.beaconService.syncBeaconState();
+      this.onResize()
     } else {
       this.router.navigate(['']);
     }
