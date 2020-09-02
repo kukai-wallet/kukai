@@ -1,0 +1,13 @@
+<div class="kukai-card">
+  <H1>DirectAuth</H1>
+  <div class="grey-card">
+    <p class="description bold">Access your Tezos wallet with a simple click</p>
+    <p class="description">DirectAuth creates a unique Tezos wallet for each of your OAuth accounts. It is powered by an open-source and non-custodial key management system.</p>
+    <p class="buttons-desc">Sign up / in with</p>
+    <div class="login-buttons">
+      <button class="login" (click)="torusLogin('google')"><img class="login-logo" height="16" src="../../../assets/img/google-logo.svg">Google Account</button>
+      <button class="login" (click)="torusLogin('reddit')"><img class="login-logo" height="16" src="../../../assets/img/reddit-logo.svg">Reddit Account</button>
+    </div>
+    <div class="bottom-container"><div class="buttons single"><a routerLink="/"><button class="button back">Back</button></a></div><img width="200px" src="../../../assets/img/direct-auth.png"></div>
+  </div>
+</div>

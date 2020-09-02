@@ -30,6 +30,14 @@
             </div>
           </div>
         </a>
+        <a routerLink="/direct-auth/" class="menu-item">
+          <div class="content">
+            <H1>DirectAuth</H1>
+            <div class="icon">
+              <img src="../../../assets/img/circle.svg">
+            </div>
+          </div>
+        </a>
       </div>
       <div class="monk-holder" [class.animationActive]="animationActive">
         <object class="monk" data="../../../assets/img/monk2.svg" type="image/svg+xml"></object>
@@ -62,6 +70,15 @@
         <div class="content">
           <H1>Connect Ledger</H1>
           <p>Keep your private keys safely on your Ledger device and use Kukai to access your wallet</p>
+        </div>
+      </a>
+      <a routerLink="/direct-auth/" class="menu-item">
+        <div class="icon">
+          <img src="../../../assets/img/circle.svg">
+        </div>
+        <div class="content">
+          <H1>DirectAuth</H1>
+          <p>One-Click login with your Google or Reddit account</p>
         </div>
       </a>
     </div>

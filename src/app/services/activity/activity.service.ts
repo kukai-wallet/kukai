@@ -5,6 +5,7 @@ import { of, Observable } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 import { Activity, Account } from '../wallet/wallet';
 import { MessageService } from '../message/message.service';
+import { LookupService } from '../lookup/lookup.service';
 
 @Injectable()
 export class ActivityService {
@@ -12,7 +13,8 @@ export class ActivityService {
   constructor(
     private walletService: WalletService,
     private conseilService: ConseilService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private lookupService: LookupService
   ) {}
   updateTransactions(pkh): Observable<any> {
     try {
@@ -54,6 +56,10 @@ export class ActivityService {
           } else {
             console.log('# Excluded ' + counter);
           }
+          for (let activity of ans) {
+            const counterParty = this.getCounterparty(activity, account, false);
+            this.lookupService.check(counterParty);
+          }
         } else {
           console.log('#');
           console.log(ans);
@@ -84,5 +90,34 @@ export class ActivityService {
         }
       }
     }
+  }
+  getCounterparty(transaction: any, account: Account, withLookup = true): string {
+    let counterParty = '';
+    if (transaction.type === 'delegation') {
+      if (transaction.destination) {
+        counterParty = transaction.destination;
+      } else {
+        counterParty =  ''; // User has undelegated
+      }
+    } else if (transaction.type === 'transaction') {
+      if (account.address === transaction.source) {
+        counterParty =  transaction.destination; // to
+      } else {
+        counterParty =  transaction.source; // from
+      }
+    } else if (transaction.type === 'origination') {
+      if (account.address === transaction.source) {
+        counterParty =  transaction.destination;
+      } else {
+        counterParty =  transaction.source;
+      }
+    } else {
+      counterParty =  '';
+    }
+    if (withLookup) {
+      counterParty = this.lookupService.resolve(counterParty);
+      console.log('resolved', counterParty);
+    }
+    return counterParty;
   }
 }

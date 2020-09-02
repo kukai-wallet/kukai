@@ -9,6 +9,7 @@ import {
   LegacyWalletV3,
   HdWallet,
   LedgerWallet,
+  TorusWallet
 } from '../wallet/wallet';
 import { hd, utils } from '@tezos-core-tools/crypto-utils';
 import { EncryptionService } from '../encryption/encryption.service';
@@ -20,7 +21,7 @@ export class ImportService {
     private coordinatorService: CoordinatorService,
     private conseilService: ConseilService,
     private encryptionService: EncryptionService
-  ) {}
+  ) { }
   pwdRequired(json: string) {
     const walletData = JSON.parse(json);
     if (walletData.provider !== 'Kukai') {
@@ -150,13 +151,32 @@ export class ImportService {
     return true;
   }
 
-  async importWalletFromPk(pk: string, derivationPath: string): Promise<boolean> {
+  async importWalletFromPk(pk: string, derivationPath: string, verifierDetails: any = null): Promise<boolean> {
     this.coordinatorService.stopAll();
+    if (derivationPath) {
+      return this.ledgerImport(pk, derivationPath);
+    } else if (verifierDetails) {
+      return this.torusImport(pk, verifierDetails);
+    }
+  }
+  async ledgerImport(pk: string, derivationPath: string) {
     try {
       this.walletService.initStorage();
       this.walletService.wallet = new LedgerWallet();
       this.walletService.addImplicitAccount(pk, derivationPath);
       await this.findContracts(this.walletService.wallet.implicitAccounts[0].pkh);
+      return true;
+    } catch (err) {
+      console.warn(err);
+      this.walletService.clearWallet();
+      return false;
+    }
+  }
+  async torusImport(pk: string, verifierDetails: any) {
+    try {
+      this.walletService.initStorage();
+      this.walletService.wallet = new TorusWallet(verifierDetails.verifier, verifierDetails.id, verifierDetails.name);
+      this.walletService.addImplicitAccount(pk);
       return true;
     } catch (err) {
       console.warn(err);

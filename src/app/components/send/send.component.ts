@@ -11,15 +11,17 @@ import { LedgerService } from '../../services/ledger/ledger.service';
 import { EstimateService } from '../../services/estimate/estimate.service';
 import Big from 'big.js';
 import { Constants } from '../../constants';
-import { LedgerWallet } from '../../services/wallet/wallet';
+import { LedgerWallet, TorusWallet } from '../../services/wallet/wallet';
 import { Account, ImplicitAccount, OriginatedAccount } from '../../services/wallet/wallet';
 import { MessageService } from '../../services/message/message.service';
+import { TorusService } from '../../services/torus/torus.service';
 
 interface SendData {
   to: string;
   amount: number;
   gasLimit: number;
   storageLimit: number;
+  alias?: string;
 }
 const zeroTxParams: DefaultTransactionParams = {
   gas: 0,
@@ -30,10 +32,14 @@ const zeroTxParams: DefaultTransactionParams = {
 @Component({
   selector: 'app-send',
   templateUrl: './send.component.html',
-  encapsulation: ViewEncapsulation.None,
   styleUrls: ['./send.component.scss']
 })
 export class SendComponent implements OnInit {
+  // torus
+  torusVerifier = '';
+  torusPendingLookup = false;
+  torusLookupAddress = '';
+  torusLookupId = '';
   /* New variables */
   modalOpen = false;
   advancedForm = false;
@@ -82,7 +88,8 @@ export class SendComponent implements OnInit {
     private inputValidationService: InputValidationService,
     private ledgerService: LedgerService,
     private estimateService: EstimateService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private torusService: TorusService
   ) { }
 
   ngOnInit() {
@@ -121,7 +128,7 @@ export class SendComponent implements OnInit {
     }
   }
   async openModal2() {
-    if (!this.simSemaphore) {
+    if (!this.simSemaphore && !this.torusPendingLookup) {
       this.formInvalid = this.checkInput(true);
       if (!this.formInvalid) {
         if (!this.amount) { this.amount = '0'; }
@@ -181,7 +188,11 @@ export class SendComponent implements OnInit {
         this.closeModal();
       } else {
         this.messageService.stopSpinner();
-        this.pwdValid = this.translate.instant('SENDCOMPONENT.WRONGPASSWORD');  // 'Wrong password!';
+        if (this.walletService.wallet instanceof TorusWallet) {
+          this.pwdValid = `Authorization failed`;
+        } else {
+          this.pwdValid = this.translate.instant('SENDCOMPONENT.WRONGPASSWORD');  // 'Wrong password!';
+        }
       }
     }
   }
@@ -258,7 +269,11 @@ export class SendComponent implements OnInit {
       } else {
         const gasLimit = this.gas ? Number(this.gas) : this.defaultTransactionParams.gas;
         const storageLimit = this.storage ? Number(this.storage) : this.defaultTransactionParams.storage;
-        this.transactions = [{ to: this.toPkh, amount: Number(this.amount), gasLimit, storageLimit }];
+        const toAddress = !this.torusVerifier ? this.toPkh : this.torusLookupAddress;
+        this.transactions = [{ to: toAddress, amount: Number(this.amount), gasLimit, storageLimit }];
+        if (this.torusLookupId) {
+          this.transactions[0].alias = this.torusLookupId;
+        }
       }
       return true;
     }
@@ -288,6 +303,9 @@ export class SendComponent implements OnInit {
             this.messageService.stopSpinner();
             const metadata = { transactions: this.transactions, opHash: ans.payload.opHash };
             this.coordinatorService.boost(this.activeAccount.address, metadata);
+            if (this.transactions[0].alias) {
+              this.torusNotification(this.transactions[0]);
+            }
             for (const transaction of this.transactions) {
               if (this.walletService.addressExists(transaction.to)) {
                 this.coordinatorService.boost(transaction.to);
@@ -335,6 +353,9 @@ export class SendComponent implements OnInit {
         this.sendResponse = ans;
         if (ans.success && this.activeAccount) {
           const metadata = { transactions: this.transactions, opHash: ans.payload.opHash };
+          if (this.transactions[0].alias) {
+            this.torusNotification(this.transactions[0]);
+          }
           this.coordinatorService.boost(this.activeAccount.address, metadata);
           if (this.walletService.addressExists(this.transactions[0].to)) {
             this.coordinatorService.boost(this.transactions[0].to);
@@ -359,6 +380,7 @@ export class SendComponent implements OnInit {
     this.fee = '';
     this.gas = '';
     this.storage = '';
+    this.clearTorus();
     this.updateDefaultValues();
   }
   burnAmount(): string {
@@ -389,6 +411,7 @@ export class SendComponent implements OnInit {
     this.defaultTransactionParams = zeroTxParams;
     this.prevEquiClass = '';
     this.latestSimError = '';
+    this.clearTorus();
   }
 
   checkInput(finalCheck = false): string {
@@ -436,9 +459,11 @@ export class SendComponent implements OnInit {
     this.updateDefaultValues();
   }
   updateDefaultValues() {
-    this.estimateFees();
-    if (this.isMultipleDestinations) {
-      this.amount = this.totalAmount().toString();
+    if (!this.torusVerifier) {
+      this.estimateFees();
+      if (this.isMultipleDestinations) {
+        this.amount = this.totalAmount().toString();
+      }
     }
   }
   async estimateFees() {
@@ -503,10 +528,23 @@ export class SendComponent implements OnInit {
     return (this.activeAccount && (this.activeAccount instanceof OriginatedAccount));
   }
   validateReceiverAddress() {
-    if (!this.inputValidationService.address(this.toPkh) && this.toPkh !== '') {
-      this.formInvalid = this.translate.instant('SENDCOMPONENT.INVALIDRECEIVERADDRESS');
-    } else if (!this.latestSimError) {
-      this.formInvalid = '';
+    if (!this.torusVerifier) {
+      if (!this.inputValidationService.address(this.toPkh) && this.toPkh !== '') {
+        this.formInvalid = this.translate.instant('SENDCOMPONENT.INVALIDRECEIVERADDRESS');
+      } else if (!this.latestSimError) {
+        this.formInvalid = ''; // clear error
+      }
+    } else { // Torus
+      if (this.torusVerifier === 'google' && !this.inputValidationService.email(this.toPkh) && this.toPkh !== '') {
+        this.formInvalid = 'Invalid Google account';
+      } else if (this.torusVerifier === 'reddit' && !this.inputValidationService.redditAccount(this.toPkh) && this.toPkh !== '') {
+        this.formInvalid = 'Invalid Reddit account';
+      } else {
+        if (!this.latestSimError) {
+          this.formInvalid = ''; // clear error
+        }
+        this.torusLookup();
+      }
     }
   }
   validateBatch() {
@@ -523,8 +561,12 @@ export class SendComponent implements OnInit {
   }
   checkReceiverAndAmount(toPkh: string, amount: string, finalCheck: boolean): string {
     console.log(toPkh + ' ' + amount);
-    if (!this.inputValidationService.address(toPkh) || toPkh === this.activeAccount.address) {
+    if (!this.torusVerifier && (!this.inputValidationService.address(toPkh) || toPkh === this.activeAccount.address)) {
       return this.translate.instant('SENDCOMPONENT.INVALIDRECEIVERADDRESS');
+    } else if (this.torusVerifier && this.torusVerifier === 'google' && ( !this.inputValidationService.email(this.toPkh) || this.torusLookupAddress === this.activeAccount.address)) {
+      return 'Invalid email';
+    } else if (this.torusVerifier && this.torusVerifier === 'reddit' && (!this.inputValidationService.redditAccount(this.toPkh) || this.torusLookupAddress === this.activeAccount.address)) {
+      return 'Invalid Reddit account';
     } else if (!this.inputValidationService.amount(amount) ||
       (finalCheck && (((amount === '0') || amount === '') && (toPkh.slice(0, 3) !== 'KT1')))) {
       return this.translate.instant('SENDCOMPONENT.INVALIDAMOUNT');
@@ -631,5 +673,45 @@ export class SendComponent implements OnInit {
       return '2';
     }
     return '1.5';
+  }
+  async verifierChange() {
+    this.torusLookupAddress = '';
+    console.log('Verifier: ' + this.torusVerifier);
+    this.validateReceiverAddress();
+    // resimulate?
+  }
+  async torusLookup() {
+    if (this.torusVerifier !== 'google' && this.torusVerifier !== 'reddit') {
+      this.formInvalid = 'Invalid verifier';
+    } else if (this.toPkh) {
+      this.torusPendingLookup = true;
+      this.torusLookupId = this.toPkh;
+      const pkh: string = await this.torusService.lookupPkh(this.torusVerifier, this.toPkh).catch(e => {
+        console.error(e);
+        return '';
+      });
+      if (pkh) {
+        this.torusLookupAddress = pkh;
+        this.torusPendingLookup = false;
+        this.estimateFees();
+        console.log('Torus address', pkh);
+      }
+    }
+  }
+  torusReady(): boolean {
+    return (!this.torusPendingLookup && this.torusLookupAddress !== '');
+  }
+  clearTorus() {
+    this.torusVerifier = '';
+    this.torusPendingLookup = false;
+    this.torusLookupAddress = '';
+    this.torusLookupId = '';
+  }
+  async torusNotification(transaction: any) {
+    console.log(transaction);
+    console.log('Notify ' + transaction.alias);
+    if (transaction.alias && this.inputValidationService.email(transaction.alias)) {
+      this.messageService.emailNotify(transaction.alias, transaction.amount);
+    }
   }
 }

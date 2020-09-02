@@ -1,0 +1,78 @@
+@import "../../../scss/card.css";
+:host {
+    width: 100%;
+    min-height: 100vh;
+    padding-bottom: 8rem;
+    overflow: hidden;
+    display: flex;
+    background: #5963FF;
+}
+:host > div {
+    margin-top: 5rem;
+    width: 100vw;
+    min-height: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+}
+:host > div.kukai-card > div.grey-card {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+:host > div.kukai-card > div.grey-card > p.buttons-desc {
+  width: 100%;
+  text-align: left;
+  justify-content: start;
+  padding: 1rem 2rem 0.5rem;
+  color: rgba(48, 48, 48, 0.6);
+}
+:host > div.kukai-card > div.grey-card > p {
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+:host button.login {
+  height: 40px;
+  background: rgba(114, 122, 253, 0.16);
+  border-radius: 0.75rem;
+  transition: none;
+  color: #727AFD;
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 0.5rem;
+  box-shadow: 0px 4px 8px rgba(89, 99, 255, 0.04);
+}
+:host button.login {
+  width: 100%;
+}
+:host div.login-buttons {
+  width: 100%;
+  padding: 0 2rem;
+}
+:host button.login:hover {
+  background: rgba(89, 99, 255, 0.4);
+  color: #5963FF;;
+  margin-top: 0;
+}
+:host img.login-logo {
+  margin-right: 0.5rem;
+}
+:host div.bottom-container {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+@media screen and (max-width: 32.5rem) {
+  :host > div.kukai-card > div.grey-card > p {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  :host div.login-buttons {
+    padding: 0 1rem;
+  }
+  :host > div.kukai-card > div.grey-card > p.buttons-desc {
+    padding: 1rem 1rem 0.5rem;
+  }
+}

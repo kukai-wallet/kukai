@@ -9,10 +9,12 @@ import {
   LegacyWalletV3,
   ImplicitAccount,
   LedgerWallet,
+  TorusWallet,
   OriginatedAccount,
 } from './wallet';
 import { EncryptionService } from '../encryption/encryption.service';
 import { OperationService } from '../operation/operation.service';
+import { TorusService } from '../torus/torus.service';
 import { utils, hd } from '@tezos-core-tools/crypto-utils';
 @Injectable()
 export class WalletService {
@@ -22,7 +24,8 @@ export class WalletService {
 
   constructor(
     private encryptionService: EncryptionService,
-    private operationService: OperationService
+    private operationService: OperationService,
+    private torusService: TorusService
   ) {}
   /*
     Wallet creation
@@ -102,7 +105,17 @@ export class WalletService {
         pkh: this.wallet.implicitAccounts[0].pkh,
       };
       return keyPair;
-    } else {
+    } else if (this.wallet instanceof TorusWallet) {
+      console.log('torus id ' + this.wallet.id);
+      const keyPair = await this.torusService.getTorusKeyPair(this.wallet.verifier, this.wallet.id);
+      console.log(keyPair);
+      if (this.wallet.getImplicitAccount(keyPair.pkh)) {
+        return keyPair;
+      } else {
+        throw new Error('Signed with wrong account');
+      }
+      return null;
+    }  else {
       return null;
     }
     if (!seed) {
@@ -149,15 +162,23 @@ export class WalletService {
     return '';
   }
   addImplicitAccount(pk: string, derivationPath?: string | number) {
-    const pkh = utils.pkToPkh(pk);
-    this.wallet.implicitAccounts.push(
-      new ImplicitAccount(pkh, pk, typeof derivationPath === 'number' ? `44'/1729'/${derivationPath}'/0'` : derivationPath)
-    );
-    console.log('Adding new implicit account...');
-    console.log(
-      this.wallet.implicitAccounts[this.wallet.implicitAccounts.length - 1]
-    );
-    this.storeWallet();
+    let pkh;
+    console.log(pk);
+    if (pk && pk.slice(0, 4) === 'sppk') {
+      pkh = this.operationService.pk2pkh(pk);
+    } else {
+      pkh = utils.pkToPkh(pk);
+    }
+    if (pkh) {
+      this.wallet.implicitAccounts.push(
+        new ImplicitAccount(pkh, pk, typeof derivationPath === 'number' ? `44'/1729'/${derivationPath}'/0'` : derivationPath)
+      );
+      console.log('Adding new implicit account...');
+      console.log(
+        this.wallet.implicitAccounts[this.wallet.implicitAccounts.length - 1]
+      );
+      this.storeWallet();
+    }
   }
   addOriginatedAccount(kt: string, manager: string) {
     const implicitAccount = this.wallet.getImplicitAccount(manager);
@@ -228,6 +249,9 @@ export class WalletService {
   isHdWallet(): boolean {
     return this.wallet instanceof HdWallet;
   }
+  isTorusWallet(): boolean {
+    return this.wallet instanceof TorusWallet;
+  }
   exportKeyStoreInit(
     type: WalletType,
     encryptedSeed: string,
@@ -268,6 +292,8 @@ export class WalletService {
         type = 'LegacyWalletV3';
       } else if (this.wallet instanceof LedgerWallet) {
         type = 'LedgerWallet';
+      } else if (this.wallet instanceof TorusWallet) {
+        type = 'TorusWallet';
       }
       console.log('Type is ' + type);
       localStorage.setItem(
@@ -291,9 +317,9 @@ export class WalletService {
 
   loadStoredWallet() {
     const walletData = localStorage.getItem(this.storeKey);
-    console.log(walletData);
     if (walletData && walletData !== 'undefined') {
       const parsedWalletData = JSON.parse(walletData);
+      console.log(parsedWalletData);
       if (parsedWalletData.type && parsedWalletData.data && parsedWalletData.localStorageId) {
         this.storageId = parsedWalletData.localStorageId;
         const wd = parsedWalletData.data;
@@ -336,11 +362,19 @@ export class WalletService {
       case 'LedgerWallet':
         this.wallet = new LedgerWallet();
         break;
+      case 'TorusWallet':
+        this.wallet = new TorusWallet(wd.verifier, wd.id, wd.name);
+        this.torusService.initTorus();
+        break;
       default:
     }
     this.wallet.XTZrate = wd.XTZrate;
     this.wallet.totalBalanceUSD = wd.totalBalanceUSD;
     this.wallet.totalBalanceXTZ = wd.totalBalanceXTZ;
+    if (wd.lookups) {
+      console.log('found', wd.lookups);
+      this.wallet.lookups = wd.lookups;
+    }
     for (const implicit of wd.implicitAccounts) {
       const impAcc: ImplicitAccount = new ImplicitAccount(
         implicit.pkh,

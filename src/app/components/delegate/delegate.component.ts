@@ -11,7 +11,7 @@ import { DelegatorNamePipe } from '../../pipes/delegator-name.pipe';
 import { InputValidationService } from '../../services/input-validation/input-validation.service';
 import { LedgerService } from '../../services/ledger/ledger.service';
 import { Constants } from '../../constants';
-import { LedgerWallet, Account, ImplicitAccount, OriginatedAccount } from '../../services/wallet/wallet';
+import { LedgerWallet, Account, ImplicitAccount, OriginatedAccount, TorusWallet } from '../../services/wallet/wallet';
 import { MessageService } from '../../services/message/message.service';
 
 @Component({
@@ -124,7 +124,11 @@ export class DelegateComponent implements OnInit {
         this.closeModal();
       } else {
         this.messageService.stopSpinner();
-        this.pwdValid = 'Wrong password!';
+        if (this.walletService.wallet instanceof TorusWallet) {
+          this.pwdValid = `Authorization failed`;
+        } else {
+          this.pwdValid = 'Wrong password!';
+        }
       }
     }
   }

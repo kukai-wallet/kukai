@@ -32,9 +32,18 @@
         <p>{{ activeAccount.address }}</p>
       </div>
       <div *ngIf="!this.isMultipleDestinations" class="group">
-        <label>To address</label>
+        <label style="justify-content: space-between; opacity: 1; color: rgba(44, 50, 58, 0.4)"><span>Send to</span>
+          <select class="select-css" [(ngModel)]="torusVerifier" (ngModelChange)="verifierChange()">
+          <option value="" selected>Tezos Address</option>
+          <option value="google">Google Account</option>
+          <option value="reddit">Reddit Account</option>
+        </select></label>
         <input type="text" class="text" (input)="updateDefaultValues()" (change)="validateReceiverAddress()" [(ngModel)]="toPkh">
       </div>
+      <ng-container *ngIf="torusVerifier">
+        <p class="torus-details" *ngIf="torusPendingLookup">Loading address...</p>
+        <p class="torus-details" *ngIf="!torusPendingLookup && torusLookupAddress">{{ torusLookupAddress }}</p>
+      </ng-container>
       <div *ngIf="this.isMultipleDestinations" class="group">
         <label>Addresses and amounts <span class="batchInfo">{{ batchSpace() }}</span></label>
         <textarea type="text" class="text" (input)="updateDefaultValues()" (change)="validateBatch()" rows="3" [(ngModel)]="toMultipleDestinationsString" placeholder="address1 amount1 ; &#10;address2 amount2 ; &#10;address3 ..."></textarea>
@@ -85,7 +94,7 @@
           From — {{ activeAccount.address }}
         </p>
         <p class="preview">
-          To — {{ transactions[0].to }}
+          To — {{ transactions[0].to }} {{ torusLookupId }}
         </p>
         <p class="preview">
           Amount — {{ transactions[0].amount | number:'1.0-6' }} tez
@@ -129,7 +138,7 @@
       </button>
       </ng-container>
       <div class="row-group" style="margin: 1.25rem 0 1.5rem;">
-        <input *ngIf="!walletService.isLedgerWallet()" [(ngModel)]="password" autocomplete="current-password" placeholder="Password" class="text password" type="password" (input)="this.pwdValid = ''" (change)="this.pwdValid = ''">
+        <input *ngIf="!walletService.isLedgerWallet() && !walletService.isTorusWallet()" [(ngModel)]="password" autocomplete="current-password" placeholder="Password" class="text password" type="password" (input)="this.pwdValid = ''" (change)="this.pwdValid = ''">
         <button class="retry" *ngIf="walletService.isLedgerWallet() && ledgerError; else elseBlock" (click)="ledgerRetry()">Sign with Ledger</button>
         <ng-template #elseBlock>
           <button  class="purple confirm" (click)="inject()" [disabled]="walletService.isLedgerWallet() && (!sendResponse || !sendResponse.payload || !sendResponse.payload.signedOperation)">

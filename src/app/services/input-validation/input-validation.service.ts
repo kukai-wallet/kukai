@@ -44,8 +44,15 @@ export class InputValidationService {
 address(address: string): Boolean {
   return this.operationService.validAddress(address);
 }
+redditAccount(username: string) {
+  // Letters, numbers, dashes, and underscores only
+  // Username must be between 3 and 20 characters
+  const re = /^[0-9a-zA-Z\-\_]{3,20}$/;
+  return re.test(username);
+}
 email(email: string): Boolean {
-  return (email && email.includes('@'));
+  const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(email);
 }
 passphrase(passphrase: string): Boolean {
   return true;

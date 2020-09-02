@@ -2,7 +2,7 @@ import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { WalletService } from '../../services/wallet/wallet.service';
 import { CoordinatorService } from '../../services/coordinator/coordinator.service';
-import { Account } from '../../services/wallet/wallet';
+import { Account, TorusWallet } from '../../services/wallet/wallet';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -28,5 +28,11 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['']);
   }
   click() {
+  }
+  getUsername() {
+    if (this.walletService.wallet instanceof TorusWallet) {
+      return this.walletService.wallet.name;
+    }
+    return '';
   }
 }

@@ -1,6 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
     "downlevelIteration": true,
     "importHelpers": true,
     "outDir": "./dist/out-tsc",

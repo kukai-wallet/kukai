@@ -73,6 +73,7 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
 import { AgreementComponent } from './components/agreement/agreement.component';
 import { TermsOfUseComponent } from './components/agreement/terms-of-use/terms-of-use.component';
 import { PrivacyPolicyComponent } from './components/agreement/privacy-policy/privacy-policy.component';
+import { TorusComponent } from './components/torus/torus.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -111,7 +112,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     SpinnerComponent,
     AgreementComponent,
     TermsOfUseComponent,
-    PrivacyPolicyComponent
+    PrivacyPolicyComponent,
+    TorusComponent
   ],
   imports: [
     BrowserModule,
