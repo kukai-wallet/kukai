@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MessageService } from '../../services/message/message.service';
 import { WalletClient, BeaconMessageType, PermissionScope, PermissionResponseInput, P2PPairInfo, BeaconErrorType, BeaconResponseInputMessage, BeaconMessage, OperationResponseInput } from '@airgap/beacon-sdk';
@@ -14,7 +14,7 @@ import { BeaconService } from '../../services/beacon/beacon.service';
   templateUrl: './uri-handler.component.html',
   styleUrls: ['./uri-handler.component.scss']
 })
-export class UriHandlerComponent implements OnInit, OnDestroy {
+export class UriHandlerComponent implements OnInit {
   CONSTANTS = new Constants();
   permissionRequest: PermissionResponseInput = null;
   operationRequest: any = null;
@@ -60,9 +60,6 @@ export class UriHandlerComponent implements OnInit, OnDestroy {
         console.log(`${uri}`);
       }
     }
-  }
-  ngOnDestroy() {
-    // Figure out how to disconnect from the p2p network
   }
   /* https://docs.walletbeacon.io/beacon/03.getting-started-wallet.html#setup */
   connectApp = async (): Promise<void> => {

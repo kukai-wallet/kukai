@@ -12,6 +12,7 @@
     "stage-ghpages-mainnet": "ng lint --fix && ng build --prod && angular-cli-ghpages --repo \"git@github.com:kukai-wallet/wallet.git\" --branch staging",
     "stage-ghpages-testnet": "ng lint --fix && ng build --prod && angular-cli-ghpages --repo \"git@github.com:kukai-wallet/testnet.git\" --branch staging",
     "deploy-experimental-version": "ng lint --fix && ng build --prod && angular-cli-ghpages --repo \"git@github.com:kukai-wallet/experimental.git\" --branch master",
+    "deploy-preview-version": "ng lint --fix && ng build && angular-cli-ghpages --repo \"git@github.com:kukai-wallet/preview.git\" --branch master",
     "deploy-beta-version": "ng lint --fix && ng build --prod && angular-cli-ghpages --repo \"git@github.com:kukai-wallet/beta.git\" --branch master"
   },
   "private": true,
