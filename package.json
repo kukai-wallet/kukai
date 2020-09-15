@@ -55,7 +55,7 @@
     "mutationobserver-shim": "^0.3.5",
     "ngx-bootstrap": "^5.1.1",
     "ngx-perfect-scrollbar": "^9.0.0",
-    "node-forge": "^0.8.5",
+    "node-forge": "^0.10.0",
     "pbkdf2": "^3.0.17",
     "qrcode": "^1.4.1",
     "rxjs": "^6.5.5",
