@@ -56,7 +56,7 @@ export class ActivityService {
           } else {
             console.log('# Excluded ' + counter);
           }
-          for (let activity of ans) {
+          for (const activity of ans) {
             const counterParty = this.getCounterparty(activity, account, false);
             this.lookupService.check(counterParty);
           }
@@ -116,7 +116,6 @@ export class ActivityService {
     }
     if (withLookup) {
       counterParty = this.lookupService.resolve(counterParty);
-      console.log('resolved', counterParty);
     }
     return counterParty;
   }

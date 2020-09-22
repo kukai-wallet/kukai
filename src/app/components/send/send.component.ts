@@ -535,6 +535,7 @@ export class SendComponent implements OnInit {
         this.formInvalid = ''; // clear error
       }
     } else { // Torus
+      this.torusLookupAddress = '';
       if (this.torusVerifier === 'google' && !this.inputValidationService.email(this.toPkh) && this.toPkh !== '') {
         this.formInvalid = 'Invalid Google account';
       } else if (this.torusVerifier === 'reddit' && !this.inputValidationService.redditAccount(this.toPkh) && this.toPkh !== '') {

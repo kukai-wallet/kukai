@@ -27,6 +27,7 @@ export class LookupService {
     if (!this.records.length &&
       this.walletService.wallet &&
       this.walletService.wallet.lookups.length) {
+        console.log('### Loading lookups from mempory');
         this.records = this.walletService.wallet.lookups;
       }
   }
@@ -34,7 +35,7 @@ export class LookupService {
     console.log('#name', name);
     const { x, y } = this.index(address, lookupType);
     if (x !== -1) {
-      if (y !== -1) {
+      if (y === -1) {
         this.records[x].data.push({ name, lookupType });
       }
     } else {
@@ -42,6 +43,10 @@ export class LookupService {
     }
     this.walletService.wallet.lookups = this.records;
     this.walletService.storeWallet();
+  }
+  clear() {
+    this.records = [];
+    this.pendingLookups = {};
   }
   mark(address: string) {
     const { x, y } = this.indexTop(address);
@@ -68,8 +73,10 @@ export class LookupService {
             for (const key of keys) {
               if (key === verifierMap['google'].verifier) {
                 this.add(address, ans.result.Verifiers[verifierMap['google'].verifier][0], LookupType.Google);
+                this.add(address, ans.result.Verifiers[verifierMap['google'].verifier][0], LookupType.Reddit);
               } else if (key === verifierMap['reddit'].verifier) {
                 this.add(address, ans.result.Verifiers[verifierMap['reddit'].verifier][0], LookupType.Reddit);
+                this.add(address, ans.result.Verifiers[verifierMap['reddit'].verifier][0], LookupType.Google);
               }
             }
             this.pendingLookups[address] = false;
