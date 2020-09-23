@@ -1,14 +1,23 @@
 <app-header [settings]=true></app-header>
 <div class="settings">
-  <H3>URI handler</H3>
+  <H3>Connect with dApps</H3>
   <div class="seperator"></div>
   <div class="handler">
     <div>
-      <h4>Register Kukai as default URI handler</h4>
-      <p>For Kukai to connect with dApps over Beacon it need to be registered as URI handler.</p>
+      <h4>Register Kukai as URI handler</h4>
+      <p>For Kukai to connect with dApps on the <u>same device</u> it need to be registered as default TZIP-10 URI handler.</p>
     </div>
     <div>
       <button (click)="registerURIhandler()">Register handler</button>
+    </div>
+  </div>
+  <div class="handler">
+    <div>
+      <h4>Scan a QR code</h4>
+      <p>Connect to dApps on <u>another device</u> by scanning a QR code.</p>
+    </div>
+    <div>
+      <app-qr-scanner>Hello</app-qr-scanner>
     </div>
   </div>
   <H3>Peers</H3>

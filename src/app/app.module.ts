@@ -78,6 +78,7 @@ import { UriHandlerComponent } from './components/uri-handler/uri-handler.compon
 import { PermissionRequestComponent } from './components/permission-request/permission-request.component';
 import { LoggedInComponent } from './components/logged-in/logged-in.component';
 import { SettingsComponent } from './components/settings/settings.component';
+import { QrScannerComponent } from './components/qr-scanner/qr-scanner.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -120,7 +121,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     UriHandlerComponent,
     PermissionRequestComponent,
     LoggedInComponent,
-    SettingsComponent
+    SettingsComponent,
+    QrScannerComponent
   ],
   imports: [
     BrowserModule,

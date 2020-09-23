@@ -59,6 +59,7 @@
     "ngx-perfect-scrollbar": "^9.0.0",
     "node-forge": "^0.8.5",
     "pbkdf2": "^3.0.17",
+    "qr-scanner": "^1.2.0",
     "qrcode": "^1.4.1",
     "rxjs": "^6.5.5",
     "rxjs-compat": "^6.5.2",
