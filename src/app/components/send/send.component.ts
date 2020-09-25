@@ -14,6 +14,8 @@ import { Constants } from '../../constants';
 import { LedgerWallet } from '../../services/wallet/wallet';
 import { Account, ImplicitAccount, OriginatedAccount } from '../../services/wallet/wallet';
 import { MessageService } from '../../services/message/message.service';
+import { emitMicheline } from '@taquito/michel-codec';
+import { assertMichelsonData } from '@taquito/michel-codec';
 
 interface SendData {
   to: string;
@@ -53,6 +55,8 @@ export class SendComponent implements OnInit, OnChanges {
   amount = '';
   fee: string;
   parameters: any;
+  micheline: { entrypoint: string, value: string };
+  parametersFormat = 0;
   sendFee: string;
   burnFee = 0;
   gas = '';
@@ -99,6 +103,7 @@ export class SendComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     console.log(changes);
     if (this.operationRequest && !this.walletService.isLedgerWallet()) {
+      console.log('Beacon payload to send', this.operationRequest);
       if (this.operationRequest.operationDetails[0].kind === 'transaction') {
         this.openModal();
         if (this.operationRequest.operationDetails[0].destination) {
@@ -111,7 +116,6 @@ export class SendComponent implements OnInit, OnChanges {
         }
         if (this.operationRequest.operationDetails[0].parameters) {
           this.parameters = this.operationRequest.operationDetails[0].parameters;
-          console.log(this.parameters);
         }
         this.activeAccountChange();
       }
@@ -429,6 +433,8 @@ export class SendComponent implements OnInit, OnChanges {
     this.prevEquiClass = '';
     this.latestSimError = '';
     this.parameters = null;
+    this.micheline = null;
+    this.parametersFormat = 0;
   }
 
   checkInput(finalCheck = false): string {
@@ -562,9 +568,25 @@ export class SendComponent implements OnInit, OnChanges {
       return this.translate.instant('SENDCOMPONENT.INVALIDSENDERADDRESS');
     } else if (!this.inputValidationService.fee(this.fee)) {
       return this.translate.instant('SENDCOMPONENT.INVALIDFEE');
-    } else {
-      return this.checkReceiverAndAmount(this.toPkh, this.amount, finalCheck);
+    } else if (this.parameters) {
+      console.log('parameters', this.parameters);
+      try {
+        if (!this.parameters.value ||
+          !this.parameters.entrypoint) {
+          throw new Error('entrypoint and value expected');
+        }
+        assertMichelsonData(this.parameters.value);
+        const res = emitMicheline(this.parameters.value, { indent: '  ', newline: '\n' });
+        this.micheline = { entrypoint: this.parameters.entrypoint, value: res };
+      } catch (e) {
+        console.log(e);
+        if (this.beaconMode) {
+          this.formInvalid = e;
+        }
+        return e;
+      }
     }
+    return this.checkReceiverAndAmount(this.toPkh, this.amount, finalCheck);
   }
   checkReceiverAndAmount(toPkh: string, amount: string, finalCheck: boolean): string {
     if (!this.inputValidationService.address(toPkh) || toPkh === this.activeAccount.address) {
@@ -676,7 +698,10 @@ export class SendComponent implements OnInit, OnChanges {
     }
     return '1.5';
   }
-  formatParameters() {
-    return JSON.stringify(this.parameters, null, 2);
+  parametersTextboxDisplay(): string {
+    return !this.parametersFormat ? this.micheline.value : JSON.stringify(this.parameters.value, null, 2);
+  }
+  setParametersFormat(id: number) {
+    this.parametersFormat = id;
   }
 }

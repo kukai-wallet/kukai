@@ -99,7 +99,18 @@
         <p *ngIf="getTotalBurn()" class="preview">
           Storage cost — {{ getTotalBurn() | number:'1.0-6' }} tez
         </p>
-        <textarea *ngIf="parameters" style="width: 100%" rows="10" readonly>{{ formatParameters() }}</textarea>
+        <ng-container *ngIf="parameters">
+          <p *ngIf="parameters?.entrypoint" class="preview">
+            Entrypoint — {{ parameters.entrypoint }}
+          </p>
+          <div class="tabs-container">
+            <ul class="tabs">
+              <li class="tab" [class.active]="parametersFormat === 0" (click)="setParametersFormat(0)">Micheline</li>
+              <li class="tab" [class.active]="parametersFormat === 1" (click)="setParametersFormat(1)">JSON</li>
+            </ul>
+          </div>
+          <textarea *ngIf="parameters" style="width: 100%; font-size: 0.875rem" rows="10" readonly>{{ parametersTextboxDisplay() }}</textarea>
+        </ng-container>
       </ng-container>
       <ng-container *ngIf="isMultipleDestinations"> <!-- Multiple transactions -->
         <p class="preview">

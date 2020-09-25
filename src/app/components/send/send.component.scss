@@ -89,3 +89,31 @@ span.batchInfo {
   margin-left: auto;
   font-size: 0.75rem;
 }
+div.tabs-container > ul.tabs {
+  display: flex;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+div.tabs-container > ul.tabs > li.tab {
+  width: 100%;
+  color: #787878;
+  text-align: center;
+  cursor: pointer;
+  padding: 1rem auto;
+  background-color: rgb(246, 246, 246);
+}
+div.tabs-container > ul.tabs > li.tab:first-child {
+  border-top-left-radius: 0.75rem;
+}
+div.tabs-container > ul.tabs > li.tab:last-child {
+  border-top-right-radius: 0.75rem;
+}
+div.tabs-container > ul.tabs > li.tab.active {
+  background-color: #d9d9d9;
+  color: #484848;
+}
+div.tabs-container > ul.tabs > li.tab:hover {
+  background-color: #C0C0C0;
+  color: #484848;
+}
