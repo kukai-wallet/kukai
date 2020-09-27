@@ -5,7 +5,7 @@ import { Constants } from '../../constants';
 
 @Injectable()
 export class TzrateService {
-  private apiUrl = 'https://api.coingecko.com/api/v3/simple/price?ids=tezos&vs_currencies=usd';
+  public apiUrl = 'https://api.coingecko.com/api/v3/simple/price?ids=tezos&vs_currencies=usd';
   private CONSTANTS = new Constants();
   constructor(private http: HttpClient,
     private walletService: WalletService) {

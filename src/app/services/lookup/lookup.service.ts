@@ -57,7 +57,6 @@ export class LookupService {
   }
   async check(address: string) {
     this.initCheck();
-    console.log('checking > ' + address);
     if (address && address.slice(0, 3) === 'tz2') {
       const { x } = this.index(address, 0);
       if (!this.pendingLookups[address] && x === -1) {
@@ -81,7 +80,6 @@ export class LookupService {
             }
             this.pendingLookups[address] = false;
           } else if (!ans.noReveal) {
-            console.log('mark');
             this.mark(address);
           }
           // Do nothing if tz2 haven't revealed pk

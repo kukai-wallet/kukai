@@ -662,7 +662,6 @@ export class OperationService {
     return { sk, pk, pkh };
   }
   spPointsToPkh(pubX: string, pubY: string): string {
-    console.log('xy', pubX + pubY);
     const key = (new elliptic.ec('secp256k1')).keyFromPublic({ x: pubX, y: pubY });
     const prefixVal = key.getPublic().getY().toArray()[31] % 2 ? 3 : 2;
     const pad = new Array(32).fill(0);
@@ -670,7 +669,6 @@ export class OperationService {
       [prefixVal].concat(pad.concat(key.getPublic().getX().toArray()).slice(-32)
       ));
     const pk = this.b58cencode(publicKey, this.prefix.sppk);
-    console.log('pk', publicKey);
     const pkh = this.pk2pkh(pk);
     return pkh;
   }
