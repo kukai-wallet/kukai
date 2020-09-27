@@ -191,7 +191,7 @@ export class EstimateService {
       numberOfOperations++;
     }
     bytes += 10 * numberOfOperations; // add 10 extra bytes for variation in amount & fee
-    return Big(Math.ceil(minimalFee + (feePerByte * bytes) + (feePerGasUnit * gasUnits))).div(1000000);
+    return Big(Math.ceil(minimalFee + (feePerByte * bytes) + (feePerGasUnit * gasUnits))).div(1000000).toString();
   }
   averageGasLimit(limits: any): string {
     let totalGasLimit = Big(0);
@@ -212,7 +212,7 @@ export class EstimateService {
     for (const data of limits) {
       totalStorageLimit = totalStorageLimit.plus(data.storageLimit);
     }
-    return totalStorageLimit.div(1000);
+    return totalStorageLimit.div(1000).toString();
   }
   simulate(op: any): Observable<any> {
     op.signature = 'edsigtXomBKi5CTRf5cjATJWSyaRvhfYNHqSUGrn4SdbYRcGwQrUGjzEfQDTuqHhuA8b2d8NarZjz8TRf65WkpQmo423BtomS8Q';
