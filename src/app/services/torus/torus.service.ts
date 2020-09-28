@@ -70,22 +70,6 @@ export class TorusService {
     return pkh;
   }
   async loginTorus(selectedVerifier: string, verifierId = ''): Promise<any> {
-    const userInfo = {
-      accessToken: "ya29.a0AfH6SMDNU4S_5ovtARVSj-N6P5PvgEKGeqekB0gXT1-biKQujFAO1DMxHxeVCuH5ZrB5OBB0hb8mcAxeGd5zdCDm7WWPKZb_-GGIeCYeN63J6Qb1bFT9u8jeYjh7Ufg91X9kSGR5pFnBndzMnF9soqQ-9EMJPJnbvJQ",
-      email: "klassare@gmail.com",
-      idToken: "eyJhbGciOiJSUzI1NiIsImtpZCI6IjJjNmZhNmY1OTUwYTdjZTQ2NWZjZjI0N2FhMGIwOTQ4MjhhYzk1MmMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiI5NTI4NzI5ODI1NTEtb2Q0NzVqZmUzYWNoN2RnaGFjaW42MzRyYmtjcWhwbGwuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiI5NTI4NzI5ODI1NTEtb2Q0NzVqZmUzYWNoN2RnaGFjaW42MzRyYmtjcWhwbGwuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMDA4MjIxOTQzMTE4MTY2NDg1MjkiLCJlbWFpbCI6ImtsYXNzYXJlQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJhdF9oYXNoIjoibHVpVHZUMnZTX3Z1and4ZjF5dlpFUSIsIm5vbmNlIjoiQjhEUGVtMnlQdnV0dVRzRGdHR0ZvRFIzaUZCbUdNIiwibmFtZSI6IktsYXNzYXJlIiwicGljdHVyZSI6Imh0dHBzOi8vbGg1Lmdvb2dsZXVzZXJjb250ZW50LmNvbS8tNDVZZWlFQ0dCdGcvQUFBQUFBQUFBQUkvQUFBQUFBQUFBQUEvQU1adXVja24wc0ozd0QtN0U3QVM5TFBJLWtxNGtUUG5KUS9zOTYtYy9waG90by5qcGciLCJnaXZlbl9uYW1lIjoiS2xhc3NhcmUiLCJsb2NhbGUiOiJzdiIsImlhdCI6MTYwMDcyMDI3NywiZXhwIjoxNjAwNzIzODc3LCJqdGkiOiI4NmY5YjFkODI2MjE3ODQ3MWU4OWFlNWYwMzhlYjEwYTYyZmRkNDRiIn0.htvw9t-vakJjqjAGVnnZmLSVeOmfQ8fmVgIREg73_kfRAMQUMfQMUam3jMM5Pt00DsJSIGu4-gw92MhvWWssu395ejaNQztB49-p0frQpOyWo2DhvAqr83M3mlGsKSGyVSFGyo9neb3tO1LOCmTACQ97b1r_scuw7Zodc4_lHschDOszjAQzDlgIaoweWCYz2zO0AtfUndVmuUFcwoQjsHPWH7CCcKcPqtu6k1Z5lWumFnZMkZONJbH8iiyCrN5_s8bndnBwHJNVCKaDtV6FJNRDpP7lbMly6geJeqOQsLJm_KdSaxIvnnXb73Zl3Exmy0gVVHqqbrLYGEKzDJowbg",
-      name: "Klassare",
-      profileImage: "https://lh5.googleusercontent.com/-45YeiECGBtg/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuckn0sJ3wD-7E7AS9LPI-kq4kTPnJQ/photo.jpg",
-      typeOfLogin: "google",
-      verifier: "kukai-google",
-      verifierId: "klassare@gmail.com"
-    }
-    const keyPair = {
-      pk: "sppk7bgVcij98mArGbEpEcMTCnsidhmbRoyjMampgFGpV2Bqep5yEDS",
-      pkh: "tz2Wid7AJyjT9Y2L6L8MLEtuEdUBDeAUrJ94",
-      sk: "spsk1sbF5tru1ejtbvcEH8kNAB4B7c7HrxN4H6V6JPySEquixNAUBN"
-    };
-    return { keyPair, userInfo };
     try {
       const jwtParams = this._loginToConnectionMap()[selectedVerifier] || {};
       const { typeOfLogin, clientId, verifier } = this.verifierMap[selectedVerifier];

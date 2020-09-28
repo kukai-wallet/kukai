@@ -50,6 +50,14 @@ div.kukai-modal table > thead,
 div.kukai-modal table > thead {
   width: 100%;
 }
+div.kukai-modal table > thead > tr > th {
+  padding-bottom: 0.25rem;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 1rem;
+  color: #A8A8A8;
+}
 div.kukai-modal table > tbody > tr > td.txAmount,
 div.kukai-modal table > thead > tr > th:last-child {
   text-align: right;
@@ -83,11 +91,21 @@ div.kukai-modal > div.km-content > div.km-body > div.group > input.text,
 div.kukai-modal > div.km-content > div.km-body > div.group > textarea {
   font-size: 0.8125rem;
 }
+div.kukai-modal > div.km-content {
+  width: 30rem;
+}
 @supports (-webkit-touch-callout: none) {
   div.kukai-modal > div.km-content > div.km-body > div.group > input.text,
   div.kukai-modal > div.km-content > div.km-body > div.group > textarea {
     font-size: 1rem;
   }
+}
+
+@media screen and (max-width: 32.25rem) {
+  div.kukai-modal > div.km-content {
+    width: 25rem;
+  }
+  
 }
 @media screen and (max-width: 25rem) {
   input#toAddress, input.custom-textbox {
@@ -103,4 +121,80 @@ span.batchInfo {
   margin-left: auto;
   font-size: 0.75rem;
 }
+div.kukai-modal div.preview-amount {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0.5rem;
+}
+div.kukai-modal div.preview-amount > span {
+}
+div.kukai-modal div.preview-amount > span.amount {
 
+}
+div.kukai-modal div.preview-amount > span.amount-tez {
+  margin: 0.5rem 0 0.25rem;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 1.5rem;
+  line-height: 1.5rem;
+  color: #161616;
+}
+div.kukai-modal div.preview-amount > span.amount-usd {
+  margin-bottom: 0.75rem;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 0.875rem;
+  line-height: 1rem;
+  color: #525252;
+}
+div.kukai-modal div.km-body span.single-to {
+  display: flex;
+  margin: 0rem 0 1.5rem;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 1rem;
+  line-height: 1rem;
+  color: #161616;
+}
+div.kukai-modal div.km-body span.torus-to {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 0.875rem;
+  line-height: 1rem;
+  color: #161616;
+}
+div.kukai-modal div.seperator {
+  border-bottom: 1px solid rgba($color: #000000, $alpha: 0.08);
+  margin: 0.5rem 0;
+}
+div.kukai-modal div.preview-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+div.kukai-modal div.preview-row > span {
+  margin: 0.25rem 0;
+  font-weight: normal;
+  font-size: 0.875rem;
+  line-height: 1rem;
+  color: #525252;
+}
+div.kukai-modal div.km-body span.section,
+div.kukai-modal div.preview-row > span:first-child {
+  font-weight: 500;
+  font-weight: normal;
+  font-size: 0.875rem;
+  line-height: 1rem;
+  color: #A8A8A8;
+}
+div.kukai-modal div.preview-row > span:last-child {
+  word-break: break-all;
+  padding-left: 0.5rem;
+}
+div.kukai-modal div.preview-row img,
+div.kukai-modal div.km-body span.torus-to img{
+  height: 0.75rem;
+  margin-bottom: 0.0625rem;
+}

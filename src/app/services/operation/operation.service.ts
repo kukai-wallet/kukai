@@ -385,7 +385,6 @@ export class OperationService {
     }
     return this.http.get(this.nodeURL + `/chains/main/blocks/head/context/contracts/${tz2address}/manager_key`, {})
       .pipe(flatMap((manager: any) => {
-        console.log('Woot?');
         if (manager === null) {
           return of({noReveal: true});
         } else {
