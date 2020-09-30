@@ -6,7 +6,8 @@
   <div class="km-content">
     <div class="x" (click)="closeModal()"><img src="../../../assets/img/x.svg"></div>
     <div class="km-header">
-      <H1>Send tez</H1>
+      <H1 *ngIf="activeView === 0">Send tez</H1>
+      <H1 *ngIf="activeView === 1">Confirmation</H1>
       <!--<span class="close" (click)="modalOpen = false" class="close">&times;</span>-->
       <button *ngIf="activeView === 0 && !walletService.isLedgerWallet()" class="small multiple-destinations"
         (click)="toggleDestination()">
@@ -102,11 +103,14 @@
     <!-- Confirm transaction -->
     <div class="km-body" *ngIf="activeView === 1">
       <!-- Single transaction -->
+      <div class="preview-top">
       <div class="preview-amount">
         <span class="section">Send</span>
         <span class="amount-tez">{{ totalAmount() | number:'1.0-6' }} tez</span>
         <span class="amount-usd">{{ totalAmount() * walletService.wallet.XTZrate | number:'1.0-2' }} USD</span>
         <span *ngIf="!isMultipleDestinations" class="section">To</span>
+      </div>
+      <img src="../../../assets/img/tezos-xtz-logo.svg" style="height: 4.5rem; margin-right: 1rem">
       </div>
       <ng-container *ngIf="!isMultipleDestinations">
         <span *ngIf="torusLookupId" class="torus-to"><img src="../../../assets/img/{{ torusVerifier }}-logo.svg">

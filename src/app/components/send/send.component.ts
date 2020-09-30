@@ -15,13 +15,17 @@ import { LedgerWallet, TorusWallet } from '../../services/wallet/wallet';
 import { Account, ImplicitAccount, OriginatedAccount } from '../../services/wallet/wallet';
 import { MessageService } from '../../services/message/message.service';
 import { TorusService } from '../../services/torus/torus.service';
+import { LookupService } from '../../services/lookup/lookup.service';
 
 interface SendData {
   to: string;
   amount: number;
   gasLimit: number;
   storageLimit: number;
-  alias?: string;
+  meta?: {
+    alias: string;
+    verifier: string;
+  };
 }
 const zeroTxParams: DefaultTransactionParams = {
   gas: 0,
@@ -89,7 +93,8 @@ export class SendComponent implements OnInit {
     private ledgerService: LedgerService,
     private estimateService: EstimateService,
     private messageService: MessageService,
-    private torusService: TorusService
+    private torusService: TorusService,
+    private lookupService: LookupService
   ) { }
 
   ngOnInit() {
@@ -272,7 +277,7 @@ export class SendComponent implements OnInit {
         const toAddress = !this.torusVerifier ? this.toPkh : this.torusLookupAddress;
         this.transactions = [{ to: toAddress, amount: Number(this.amount), gasLimit, storageLimit }];
         if (this.torusLookupId) {
-          this.transactions[0].alias = this.torusLookupId;
+          this.transactions[0].meta = { alias: this.torusLookupId, verifier: this.torusVerifier };
         }
       }
       return true;
@@ -303,7 +308,7 @@ export class SendComponent implements OnInit {
             this.messageService.stopSpinner();
             const metadata = { transactions: this.transactions, opHash: ans.payload.opHash };
             this.coordinatorService.boost(this.activeAccount.address, metadata);
-            if (this.transactions[0].alias) {
+            if (this.transactions[0].meta) {
               this.torusNotification(this.transactions[0]);
             }
             for (const transaction of this.transactions) {
@@ -353,7 +358,7 @@ export class SendComponent implements OnInit {
         this.sendResponse = ans;
         if (ans.success && this.activeAccount) {
           const metadata = { transactions: this.transactions, opHash: ans.payload.opHash };
-          if (this.transactions[0].alias) {
+          if (this.transactions[0].meta) {
             this.torusNotification(this.transactions[0]);
           }
           this.coordinatorService.boost(this.activeAccount.address, metadata);
@@ -708,11 +713,15 @@ export class SendComponent implements OnInit {
     this.torusLookupAddress = '';
     this.torusLookupId = '';
   }
-  async torusNotification(transaction: any) {
-    console.log(transaction);
-    console.log('Notify ' + transaction.alias);
-    if (transaction.alias && this.inputValidationService.email(transaction.alias)) {
-      this.messageService.emailNotify(transaction.alias, transaction.amount);
+  async torusNotification(transaction: SendData) {
+    if (transaction.meta) {
+      if (transaction.meta.verifier === 'google') {
+        this.messageService.emailNotify(transaction.meta.alias, transaction.amount.toString());
+        this.lookupService.add(transaction.to, transaction.meta.alias, 2);
+      } else if (transaction.meta.verifier === 'reddit') {
+        this.messageService.redditNotify(transaction.meta.alias, transaction.amount.toString());
+        this.lookupService.add(transaction.to, transaction.meta.alias, 3);
+      }
     }
   }
 }

@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import DirectWebSdk from '@toruslabs/torus-direct-web-sdk';
 import FetchNodeDetails from '@toruslabs/fetch-node-details';
+import { post } from '@toruslabs/http-helpers';
 import TorusUtils from '@toruslabs/torus.js';
 import { OperationService } from '../../services/operation/operation.service';
+import { MessageService } from '../message/message.service';
 
 const GOOGLE = 'google';
 const REDDIT = 'reddit';
@@ -16,6 +18,7 @@ const AUTH_DOMAIN = 'https://torus-test.auth0.com';
 
 export class TorusService {
   torus: any = null;
+  nodeDetails: { torusNodeEndpoints: String[], torusNodePub: any[]} = null;
   public readonly verifierMap = {
     [GOOGLE]: {
       name: 'Google',
@@ -35,7 +38,8 @@ export class TorusService {
   };
   verifierMapKeys = Object.keys(this.verifierMap);
   constructor(
-    private operationService: OperationService
+    private operationService: OperationService,
+    private messageService: MessageService
   ) {
   }
   async initTorus() {
@@ -60,8 +64,12 @@ export class TorusService {
     const fetchNodeDetails = new FetchNodeDetails({ network: 'ropsten', proxyAddress: '0x4023d2a0D330bF11426B12C6144Cfb96B7fa6183' });
     const torus = new TorusUtils();
     const verifier = this.verifierMap[selectedVerifier].verifier;
-    const { torusNodeEndpoints, torusNodePub, torusIndexes } = await fetchNodeDetails.getNodeDetails();
-    const pk: any = await torus.getPublicAddress(torusNodeEndpoints, torusNodePub, { verifier, verifierId: verifierId.toLowerCase() }, true);
+    if (!this.nodeDetails) {
+      console.log('Get node details');
+      const { torusNodeEndpoints, torusNodePub, torusIndexes } = await fetchNodeDetails.getNodeDetails();
+      this.nodeDetails = { torusNodeEndpoints, torusNodePub }; // Cache node details
+    }
+    const pk: any = await torus.getPublicAddress(this.nodeDetails.torusNodeEndpoints, this.nodeDetails.torusNodePub, { verifier, verifierId: verifierId.toLowerCase() }, true);
     const pkh = this.operationService.spPointsToPkh(pk.X, pk.Y);
     console.log(pkh);
     this.operationService.torusKeyLookup(pkh).subscribe((ans) => {
@@ -72,16 +80,16 @@ export class TorusService {
   async loginTorus(selectedVerifier: string, verifierId = ''): Promise<any> {
     try {
       const jwtParams = this._loginToConnectionMap()[selectedVerifier] || {};
-      const { typeOfLogin, clientId, verifier } = this.verifierMap[selectedVerifier];
       if (verifierId) {
-        console.log('Trigger with: ' + verifierId);
+        jwtParams.login_hint = verifierId;
+        console.log('login_hint: ' + verifierId);
       }
+      const { typeOfLogin, clientId, verifier } = this.verifierMap[selectedVerifier];
       const loginDetails = await this.torus.triggerLogin({
         verifier,
         typeOfLogin,
         clientId,
-        jwtParams,
-        verifierId
+        jwtParams
       });
       console.log(loginDetails);
       const keyPair = this.operationService.spPrivKeyToKeyPair(loginDetails.privateKey);

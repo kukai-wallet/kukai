@@ -41,7 +41,7 @@
     "@taquito/utils": "^6.3.5-beta.0",
     "@tezos-core-tools/crypto-utils": "0.0.6",
     "@toruslabs/fetch-node-details": "^2.3.0",
-    "@toruslabs/torus-direct-web-sdk": "file:../torus-direct-web-sdk",
+    "@toruslabs/torus-direct-web-sdk": "^3.4.1",
     "@toruslabs/torus.js": "^2.2.5",
     "aes-js": "^3.1.2",
     "babel-polyfill": "^6.26.0",

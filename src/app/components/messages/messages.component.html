@@ -4,8 +4,8 @@
       <button type="button" class="close" aria-label="Close" (click)="removeMessage(i)">
         <span aria-hidden="true">&times;</span>
       </button>
-      <span *ngIf="!message.email && message.msg">{{ message.msg }}</span>
-      <span *ngIf="message.email">Click <a target="_blank" href="mailto:{{ message.email }}?subject=Tezos%20Transaction&body=Hi%2C%0AI%20just%20sent%20you%20{{ message.amount }}%20tez.%20You%20can%20access%20your%20Tezos%20wallet%20with%20your%20Google%20account%20at%3A%0A{{ getHostName() }}%0A%0A">here to notify</a> recipient</span>
+      <span *ngIf="!message.email && !message.username && message.msg">{{ message.msg }}</span>
+      <span *ngIf="message.email || message.username">Click <a target="_blank" href="{{ notifyFormat(message) }}">here to notify</a> recipient</span>
     </alert>
     <alert *ngIf="message.timeout" [type]="message.type" [dismissOnTimeout]="message.timeout">
       <span *ngIf="message.msg">{{ message.msg }}</span></alert>

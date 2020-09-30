@@ -53,6 +53,17 @@ export class MessageService {
       amount
     });
   }
+  redditNotify(username: string, amount: string) {
+    console.log(username);
+    const type = 'success';
+    this.messages.push({
+      type: type,
+      timeout: 0,
+      msg: '',
+      username,
+      amount
+    });
+  }
   clear() {
     this.messages = [];
   }

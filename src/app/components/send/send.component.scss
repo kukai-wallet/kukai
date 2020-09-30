@@ -126,10 +126,10 @@ div.kukai-modal div.preview-amount {
   flex-direction: column;
   margin-bottom: 0.5rem;
 }
-div.kukai-modal div.preview-amount > span {
-}
-div.kukai-modal div.preview-amount > span.amount {
-
+div.kukai-modal div.preview-top {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 div.kukai-modal div.preview-amount > span.amount-tez {
   margin: 0.5rem 0 0.25rem;
