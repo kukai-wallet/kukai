@@ -1,7 +1,6 @@
 // suite unit-test frameworks
 import { TestBed } from '@angular/core/testing';
 import { HttpTestingController, HttpClientTestingModule, TestRequest } from '@angular/common/http/testing';
-
 // class under inspection
 import { DelegateService } from './delegate.service';
 
@@ -50,7 +49,7 @@ describe('[ DelegateService ]', () => {
 				TranslateService,
 				OperationService,
 				EncryptionService,
-				ErrorHandlingPipe
+        ErrorHandlingPipe
 			]
 		});
 

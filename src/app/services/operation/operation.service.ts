@@ -629,7 +629,6 @@ export class OperationService {
     }
   }
   pk2pkh(pk: string): string {
-    console.log(pk);
     if (pk.length === 54 && pk.slice(0, 4) === 'edpk') {
       const pkDecoded = this.b58cdecode(pk, this.prefix.edpk);
       return this.b58cencode(libs.crypto_generichash(20, pkDecoded), this.prefix.tz1);

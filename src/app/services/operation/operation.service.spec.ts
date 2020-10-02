@@ -100,6 +100,15 @@ describe('[ OperationService ]', () => {
       expect(pkh).toBeDefined();
       expect(pkh).toEqual('tz2Wid7AJyjT9Y2L6L8MLEtuEdUBDeAUrJ94');
     });
+    it('should work with or without zero padding', function () {
+      const pkh = service.spPointsToPkh('905f9de2b7c0f62ce7604036538e81f366976135171013896a74154f24b16ec',
+      'f0ab34c783bdfb6e9e7a578846f8dbf3fe26861fe14fc6483eff06352d4c0c7');
+      const pkh2 = service.spPointsToPkh('0905f9de2b7c0f62ce7604036538e81f366976135171013896a74154f24b16ec',
+      'f0ab34c783bdfb6e9e7a578846f8dbf3fe26861fe14fc6483eff06352d4c0c7');
+      expect(pkh).toBeDefined();
+      expect(pkh).toEqual('tz2FTZsTCoq1KVk1C5pGsgjhq2rkbWCeSXty');
+      expect(pkh2).toEqual('tz2FTZsTCoq1KVk1C5pGsgjhq2rkbWCeSXty');
+    });
   });
 	describe('> Operation Check', () => {
 		// initialize parameters
