@@ -13,6 +13,7 @@ import {
 } from '../wallet/wallet';
 import { hd, utils } from '@tezos-core-tools/crypto-utils';
 import { EncryptionService } from '../encryption/encryption.service';
+import { TorusService } from '../torus/torus.service';
 
 @Injectable()
 export class ImportService {
@@ -20,7 +21,8 @@ export class ImportService {
     private walletService: WalletService,
     private coordinatorService: CoordinatorService,
     private conseilService: ConseilService,
-    private encryptionService: EncryptionService
+    private encryptionService: EncryptionService,
+    private torusService: TorusService
   ) { }
   pwdRequired(json: string) {
     const walletData = JSON.parse(json);
@@ -176,6 +178,9 @@ export class ImportService {
     try {
       this.walletService.initStorage();
       this.walletService.wallet = new TorusWallet(verifierDetails.verifier, verifierDetails.id, verifierDetails.name);
+      if (verifierDetails.verifier === 'twitter') {
+        this.updateTwitterName(verifierDetails.id);
+      }
       this.walletService.addImplicitAccount(pk);
       return true;
     } catch (err) {
@@ -184,7 +189,13 @@ export class ImportService {
       return false;
     }
   }
-
+  async updateTwitterName(verifierId: string) {
+    const twitterId = verifierId.split('|')[1];
+    const { username } = await this.torusService.twitterLookup(undefined, twitterId);
+    if (username && this.walletService.wallet instanceof TorusWallet) {
+      this.walletService.wallet.name = '@' + username;
+    }
+  }
   async findContracts(pkh: string, recursiveScan = false, address: string = pkh) {
     const addresses = await this.conseilService.getContractAddresses(address);
     for (const KT of addresses) {

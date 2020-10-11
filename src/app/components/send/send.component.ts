@@ -25,6 +25,7 @@ interface SendData {
   meta?: {
     alias: string;
     verifier: string;
+    twitterId?: string;
   };
 }
 const zeroTxParams: DefaultTransactionParams = {
@@ -44,6 +45,7 @@ export class SendComponent implements OnInit {
   torusPendingLookup = false;
   torusLookupAddress = '';
   torusLookupId = '';
+  torusTwitterId = '';
   /* New variables */
   modalOpen = false;
   advancedForm = false;
@@ -93,7 +95,7 @@ export class SendComponent implements OnInit {
     private ledgerService: LedgerService,
     private estimateService: EstimateService,
     private messageService: MessageService,
-    private torusService: TorusService,
+    public torusService: TorusService,
     private lookupService: LookupService
   ) { }
 
@@ -277,7 +279,11 @@ export class SendComponent implements OnInit {
         const toAddress = !this.torusVerifier ? this.toPkh : this.torusLookupAddress;
         this.transactions = [{ to: toAddress, amount: Number(this.amount), gasLimit, storageLimit }];
         if (this.torusLookupId) {
-          this.transactions[0].meta = { alias: this.torusLookupId, verifier: this.torusVerifier };
+          if (this.torusVerifier === 'twitter') {
+            this.transactions[0].meta = { alias: this.torusLookupId, verifier: this.torusVerifier, twitterId: this.torusTwitterId };
+          } else {
+            this.transactions[0].meta = { alias: this.torusLookupId, verifier: this.torusVerifier };
+          }
         }
       }
       return true;
@@ -541,15 +547,33 @@ export class SendComponent implements OnInit {
       }
     } else { // Torus
       this.torusLookupAddress = '';
-      if (this.torusVerifier === 'google' && !this.inputValidationService.email(this.toPkh) && this.toPkh !== '') {
+      /*if (this.torusVerifier === 'google' && !this.inputValidationService.email(this.toPkh) && this.toPkh !== '') {
         this.formInvalid = 'Invalid Google account';
       } else if (this.torusVerifier === 'reddit' && !this.inputValidationService.redditAccount(this.toPkh) && this.toPkh !== '') {
-        this.formInvalid = 'Invalid Reddit account';
-      } else {
-        if (!this.latestSimError) {
-          this.formInvalid = ''; // clear error
+        this.formInvalid = 'Invalid Reddit account';*/
+      if (this.torusService.verifierMapKeys.includes(this.torusVerifier)) {
+        if (!this.inputValidationService.torusAccount(this.toPkh, this.torusVerifier) && this.toPkh !== '') {
+          switch (this.torusVerifier) {
+            case 'google':
+              this.formInvalid = 'Invalid Google email address';
+              break;
+            case 'reddit':
+              this.formInvalid = 'Invalid Reddit username';
+              break;
+            case 'twitter':
+              this.formInvalid = 'Twitter username begins with "@"';
+              break;
+            default:
+              this.formInvalid = 'Unhandled verifier';
+          }
+        } else {
+          if (!this.latestSimError) {
+            this.formInvalid = ''; // clear error
+          }
+          this.torusLookup();
         }
-        this.torusLookup();
+      } else {
+        this.formInvalid = 'Unrecognized verifier';
       }
     }
   }
@@ -569,10 +593,13 @@ export class SendComponent implements OnInit {
     console.log(toPkh + ' ' + amount);
     if (!this.torusVerifier && (!this.inputValidationService.address(toPkh) || toPkh === this.activeAccount.address)) {
       return this.translate.instant('SENDCOMPONENT.INVALIDRECEIVERADDRESS');
-    } else if (this.torusVerifier && this.torusVerifier === 'google' && ( !this.inputValidationService.email(this.toPkh) || this.torusLookupAddress === this.activeAccount.address)) {
+    } else if (this.torusVerifier
+      && (!this.inputValidationService.torusAccount(this.toPkh, this.torusVerifier) || this.torusLookupAddress === this.activeAccount.address)) {
+        return 'Invalid recipient';
+    /*} else if (this.torusVerifier && this.torusVerifier === 'google' && (!this.inputValidationService.email(this.toPkh) || this.torusLookupAddress === this.activeAccount.address)) {
       return 'Invalid email';
     } else if (this.torusVerifier && this.torusVerifier === 'reddit' && (!this.inputValidationService.redditAccount(this.toPkh) || this.torusLookupAddress === this.activeAccount.address)) {
-      return 'Invalid Reddit account';
+      return 'Invalid Reddit account';*/
     } else if (!this.inputValidationService.amount(amount) ||
       (finalCheck && (((amount === '0') || amount === '') && (toPkh.slice(0, 3) !== 'KT1')))) {
       return this.translate.instant('SENDCOMPONENT.INVALIDAMOUNT');
@@ -687,18 +714,21 @@ export class SendComponent implements OnInit {
     // resimulate?
   }
   async torusLookup() {
-    if (this.torusVerifier !== 'google' && this.torusVerifier !== 'reddit') {
+    if (!this.torusService.verifierMapKeys.includes(this.torusVerifier)) {
       this.formInvalid = 'Invalid verifier';
+      console.log(this.torusService.verifierMapKeys);
+      console.log(this.torusVerifier);
     } else if (this.toPkh) {
       this.torusPendingLookup = true;
       this.torusLookupId = this.toPkh;
-      const pkh: string = await this.torusService.lookupPkh(this.torusVerifier, this.toPkh).catch(e => {
+      const { pkh, twitterId } = await this.torusService.lookupPkh(this.torusVerifier, this.toPkh).catch(e => {
         console.error(e);
         return '';
       });
       if (pkh) {
         this.torusLookupAddress = pkh;
         this.torusPendingLookup = false;
+        this.torusTwitterId = twitterId;
         this.estimateFees();
         console.log('Torus address', pkh);
       }
@@ -712,6 +742,7 @@ export class SendComponent implements OnInit {
     this.torusPendingLookup = false;
     this.torusLookupAddress = '';
     this.torusLookupId = '';
+    this.torusTwitterId = '';
   }
   async torusNotification(transaction: SendData) {
     if (transaction.meta) {
@@ -721,6 +752,9 @@ export class SendComponent implements OnInit {
       } else if (transaction.meta.verifier === 'reddit') {
         this.messageService.redditNotify(transaction.meta.alias, transaction.amount.toString());
         this.lookupService.add(transaction.to, transaction.meta.alias, 3);
+      } else if (transaction.meta.verifier === 'twitter') {
+        this.messageService.twitterNotify(transaction.meta.twitterId, transaction.amount.toString());
+        this.lookupService.add(transaction.to, transaction.meta.alias, 4);
       }
     }
   }

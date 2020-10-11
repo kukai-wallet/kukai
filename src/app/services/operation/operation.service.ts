@@ -388,9 +388,7 @@ export class OperationService {
         if (manager === null) {
           return of({noReveal: true});
         } else {
-          console.log(manager);
           return fromPromise(this.decompress(manager)).pipe(flatMap((pk: any) => {
-            console.log(pk);
             const torusReq = {
               jsonrpc: '2.0',
               method: 'KeyLookupRequest',
@@ -404,14 +402,8 @@ export class OperationService {
             return this.http.post(url, JSON.stringify(torusReq), httpOptions)
             .pipe(flatMap((ans: any) => {
               try {
-                console.log(ans);
-                console.log(pk.X);
-                console.log(ans.result.PublicKey.X);
-                console.log(pk.Y);
-                console.log(ans.result.PublicKey.Y);
                 if (ans.result.PublicKey.X === pk.X &&
                     ans.result.PublicKey.Y === pk.Y) {
-                      console.log('yay');
                     return of(ans);
                   } else {
                     return of(null);
@@ -670,17 +662,14 @@ export class OperationService {
     const pkh = this.pk2pkh(pk);
     return pkh;
   }
-  async decompress(pk: string) {
+  async decompress(pk: string): Promise<any> {
     const decodedPk = this.b58cdecode(pk, this.prefix.sppk);
-    console.log('decoded', decodedPk);
     const hexPk = this.buf2hex(decodedPk);
     const secp256k1 = await instantiateSecp256k1();
     const compressed = hexToBin(hexPk);
     const uncompressed = secp256k1.uncompressPublicKey(compressed);
     const xy = binToHex(uncompressed).slice(2);
-    console.log(xy.length);
     return {X: xy.slice(0, 64), Y: xy.slice(64, 128)};
-
   }
   hex2pk(hex: string): string {
     return this.b58cencode(this.hex2buf(hex.slice(2, 66)), this.prefix.edpk);

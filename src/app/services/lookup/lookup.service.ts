@@ -2,12 +2,14 @@ import { Injectable } from '@angular/core';
 import { OperationService } from '../../services/operation/operation.service';
 import { TorusService } from '../../services/torus/torus.service';
 import { WalletService } from '../../services/wallet/wallet.service';
+import { InputValidationService } from '../../services/input-validation/input-validation.service';
 
 enum LookupType { // ordered in priority
   AddressBook,
   TezosDomains,
   Google,
-  Reddit
+  Reddit,
+  Twitter
 }
 
 @Injectable({
@@ -20,6 +22,7 @@ export class LookupService {
     private operationService: OperationService,
     private torusService: TorusService,
     private walletService: WalletService,
+    private inputValidationService: InputValidationService
   ) {
     this.initCheck();
   }
@@ -27,7 +30,7 @@ export class LookupService {
     if (!this.records.length &&
       this.walletService.wallet &&
       this.walletService.wallet.lookups.length) {
-        console.log('### Loading lookups from mempory');
+        console.log('### Loading lookups from memory');
         this.records = this.walletService.wallet.lookups;
       }
   }
@@ -61,7 +64,7 @@ export class LookupService {
       const { x } = this.index(address, 0);
       if (!this.pendingLookups[address] && x === -1) {
         this.pendingLookups[address] = true;
-        this.operationService.torusKeyLookup(address).subscribe((ans: any) => {
+        this.operationService.torusKeyLookup(address).subscribe(async (ans: any) => {
           if (ans) {
           if (
             ans.result &&
@@ -72,10 +75,20 @@ export class LookupService {
             for (const key of keys) {
               if (key === verifierMap['google'].verifier) {
                 this.add(address, ans.result.Verifiers[verifierMap['google'].verifier][0], LookupType.Google);
-                this.add(address, ans.result.Verifiers[verifierMap['google'].verifier][0], LookupType.Reddit);
               } else if (key === verifierMap['reddit'].verifier) {
                 this.add(address, ans.result.Verifiers[verifierMap['reddit'].verifier][0], LookupType.Reddit);
-                this.add(address, ans.result.Verifiers[verifierMap['reddit'].verifier][0], LookupType.Google);
+              } else if (key === verifierMap['twitter'].verifier) {
+                const verifierId = ans.result.Verifiers[verifierMap['twitter'].verifier][0];
+                const verifierArray = verifierId.split('|');
+                if (verifierArray[0] === 'twitter' && this.inputValidationService.twitterId(verifierArray[1])) {
+                  const twitterId = verifierArray[1];
+                  const { username } = await this.torusService.twitterLookup(undefined, twitterId);
+                  if (username) {
+                    this.add(address, '@' + username, LookupType.Twitter);
+                  }
+                }
+              } else {
+                console.log('Unhandled verifier result', ans);
               }
             }
             this.pendingLookups[address] = false;

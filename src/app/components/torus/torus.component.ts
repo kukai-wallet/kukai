@@ -15,7 +15,7 @@ export class TorusComponent implements OnInit {
 
   constructor(
     private walletService: WalletService,
-    private torusService: TorusService,
+    public torusService: TorusService,
     private importService: ImportService,
     private messageService: MessageService,
     private router: Router

@@ -41,8 +41,7 @@
         <label style="justify-content: space-between; opacity: 1; color: rgba(44, 50, 58, 0.4)"><span>Send to</span>
           <select class="select-css" [(ngModel)]="torusVerifier" (ngModelChange)="verifierChange()">
             <option value="" selected>Tezos Address</option>
-            <option value="google">Google Account</option>
-            <option value="reddit">Reddit Account</option>
+            <option *ngFor="let key of torusService.verifierMapKeys" value="{{key}}">{{ torusService.verifierMap[key].name }} Account</option>
           </select></label>
         <input type="text" class="text" (input)="updateDefaultValues()" (change)="validateReceiverAddress()"
           [(ngModel)]="toPkh">
@@ -146,7 +145,9 @@
         <!-- Torus -->
         <div class="preview-row">
           <span>From</span><span><img src="../../../assets/img/{{ this.walletService.wallet.verifier }}-logo.svg">
-            {{ this.walletService.wallet.id }}</span>
+            <ng-container *ngIf="walletService.wallet.verifier !== 'twitter'"> {{ this.walletService.wallet.id }}</ng-container>
+            <ng-container *ngIf="walletService.wallet.verifier === 'twitter'"> {{ this.walletService.wallet.name }}</ng-container>
+          </span>
         </div>
         <div class="preview-row">
           <span>Address</span><span>{{ activeAccount.address }}</span>

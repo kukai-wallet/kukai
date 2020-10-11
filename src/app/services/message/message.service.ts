@@ -64,6 +64,17 @@ export class MessageService {
       amount
     });
   }
+  twitterNotify(twitterId: string, amount: string) {
+    console.log(twitterId);
+    const type = 'success';
+    this.messages.push({
+      type: type,
+      timeout: 0,
+      msg: '',
+      twitterId,
+      amount
+    });
+  }
   clear() {
     this.messages = [];
   }

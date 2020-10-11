@@ -28,6 +28,8 @@ export class MessagesComponent implements OnInit {
       return this.mailtoFormat(message);
     } else if (message.username) {
       return this.redditPmFormat(message);
+    } else if (message.twitterId) {
+      return this.twitterPmFormat(message);
     } else {
       throw new Error('Invalid message');
     }
@@ -42,5 +44,10 @@ export class MessagesComponent implements OnInit {
     const subject = encodeURI('Tezos Transaction');
     const body = encodeURI(`Hi,\nI just sent you ${message.amount} tez. You can access your Tezos wallet with your Reddit account at: [kukai.app](https://${this.getHostName()}/direct-auth)`);
     return `https://www.reddit.com/message/compose?to=${message.username}&subject=${subject}&message=${body}`;
+  }
+  twitterPmFormat(message: any) {
+    // https://twitter.com/messages/compose?recipient_id=USER_ID&text=MESSAGE
+    const body = encodeURI(`Hi,\nI just sent you ${message.amount} tez. You can access your Tezos wallet with your Twitter account at: https://${this.getHostName()}/direct-auth`);
+    return `https://twitter.com/messages/compose?recipient_id=${message.twitterId}&text=${body}`;
   }
 }

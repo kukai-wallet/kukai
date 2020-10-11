@@ -4,8 +4,8 @@
       <button type="button" class="close" aria-label="Close" (click)="removeMessage(i)">
         <span aria-hidden="true">&times;</span>
       </button>
-      <span *ngIf="!message.email && !message.username && message.msg">{{ message.msg }}</span>
-      <span *ngIf="message.email || message.username">Click <a target="_blank" href="{{ notifyFormat(message) }}">here to notify</a> recipient</span>
+      <span *ngIf="!message.email && !message.username && !message.twitterId && message.msg">{{ message.msg }}</span>
+      <span *ngIf="message.email || message.username || message.twitterId">Click <a target="_blank" href="{{ notifyFormat(message) }}">here to notify</a> recipient</span>
     </alert>
     <alert *ngIf="message.timeout" [type]="message.type" [dismissOnTimeout]="message.timeout">
       <span *ngIf="message.msg">{{ message.msg }}</span></alert>
