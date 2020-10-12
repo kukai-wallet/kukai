@@ -4,6 +4,7 @@ import { WalletService } from '../../services/wallet/wallet.service';
 import { CoordinatorService } from '../../services/coordinator/coordinator.service';
 import { Account, TorusWallet } from '../../services/wallet/wallet';
 import { LookupService } from '../../services/lookup/lookup.service';
+import { MessageService } from '../../services/message/message.service';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -17,6 +18,7 @@ export class HeaderComponent implements OnInit {
     public walletService: WalletService,
     public lookupService: LookupService,
     private coordinatorService: CoordinatorService,
+    private messageService: MessageService
   ) { }
 
   ngOnInit(): void {
@@ -26,6 +28,7 @@ export class HeaderComponent implements OnInit {
   }
   logout() {
     this.coordinatorService.stopAll();
+    this.messageService.clear();
     this.walletService.clearWallet();
     this.lookupService.clear();
     this.router.navigate(['']);
