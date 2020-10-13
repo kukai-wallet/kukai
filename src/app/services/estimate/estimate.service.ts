@@ -7,8 +7,11 @@ import { DefaultTransactionParams } from '../../interfaces';
 import Big from 'big.js';
 
 const httpOptions = { headers: { 'Content-Type': 'application/json' } };
+const hardGasLimit = 800000;
+const hardStorageLimit = 60000;
 @Injectable()
 export class EstimateService {
+  queue = [];
   CONSTANTS = this.operationService.CONSTANTS;
   revealGasLimit = 10000;
   nodeURL = this.CONSTANTS.NET.NODE_URL;
@@ -39,15 +42,44 @@ export class EstimateService {
       }
     });
   }
-  async estimate(transactions: any, from: string, invoke = false): Promise<any> {
+  async estimate(transactions: any, from: string, callback) {
+    this.queue.push({ transactions, from, callback });
+    if (this.queue.length === 1) {
+      while (this.queue.length > 0) {
+        while (this.queue.length > 1) {
+          this.queue[0].callback(null);
+          this.queue.shift();
+        }
+        let retry = false;
+        for (let i = 0; i < 1 || retry && i < 2; i++) {
+          await this._estimate(this.queue[0].transactions, this.queue[0].from).then((res) => {
+            this.queue[0].callback(res);
+          }).catch(async (error) => {
+            if (error.message && error.message === 'An operation assumed a contract counter in the past' && !retry) {
+              console.log('Update counter');
+              await this.preLoadData(this.pkh, this.pk);
+              retry = true;
+            } else {
+              this.queue[0].callback({ error });
+            }
+          });
+        }
+        this.queue.shift();
+      }
+    }
+  }
+  async _estimate(transactions: any, from: string): Promise<any> {
     const extraGas = 80;
     if (!this.hash) { return null; }
     const simulation = {
       fee: 0,
-      gasLimit: 800000,
-      storageLimit: 60000
+      gasLimit: hardGasLimit,
+      storageLimit: hardStorageLimit
     };
     for (const tx of transactions) {
+      if (!tx.amount) {
+        tx.amount = 0;
+      }
       if (tx.to.slice(0, 3) !== 'KT1') {
         tx.amount = 0.000001;
       }
@@ -87,33 +119,33 @@ export class EstimateService {
           return of(dtp);
         })).toPromise();
       } else if (typeof result.success === 'boolean' && result.success === false) {
-          console.log(result);
-          throw new Error(result.payload.msg);
+        console.log(result);
+        throw new Error(result.payload.msg);
       }
     }
     return null;
   }
   getOpUsage(content: any): { gasUsage: number, storageUsage: number } {
     let gasUsage = 0;
-    let burn = 0;
+    let burn = Big(0);
     if (content.source && content.source === this.pkh) {
-      burn -= content.amount ? content.amount : 0;
-      burn -= content.fee ? content.fee : 0;
+      burn = burn.minus(content.amount ? content.amount : '0');
+      burn = burn.minus(content.fee ? content.fee : '0');
     }
     if (content.destination && content.destination === this.pkh) {
-      burn += content.amount ? content.amount : 0;
+      burn = burn.plus(content.amount ? content.amount : '0');
     }
     if (content.metadata.operation_result.balance_updates) {
       for (const balanceUpdate of content.metadata.operation_result.balance_updates) {
         if (balanceUpdate.contract === this.pkh) {
-          burn -= balanceUpdate.change;
+          burn = burn.minus(balanceUpdate.change);
         }
       }
     }
     if (content.metadata.balance_updates) {
       for (const balanceUpdate of content.metadata.balance_updates) {
         if (balanceUpdate.contract === this.pkh) {
-          burn -= balanceUpdate.change;
+          burn = burn.minus(balanceUpdate.change);
         }
       }
     }
@@ -125,8 +157,8 @@ export class EstimateService {
             gasUsage += internalResult.result && internalResult.result.consumed_gas ? Number(internalResult.result.consumed_gas) : 0;
           } if (internalResult.result.balance_updates) {
             for (const balanceUpdate of internalResult.result.balance_updates) {
-              if (balanceUpdate.contract === this.pkh) {
-                burn -= balanceUpdate.change;
+              if (balanceUpdate.contract === this.pkh && balanceUpdate.change.slice(0, 1) === '-') {
+                burn = burn.minus(balanceUpdate.change);
               }
             }
           }
@@ -134,7 +166,7 @@ export class EstimateService {
       }
     }
     const storageUsage = Math.round(burn / 1000);
-    if (gasUsage < 0 || storageUsage < 0) {
+    if (gasUsage < 0 || gasUsage > hardGasLimit || storageUsage < 0 || storageUsage > hardStorageLimit) {
       throw new Error('InvalidUsageCalculation');
     }
     return { gasUsage, storageUsage };

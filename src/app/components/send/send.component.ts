@@ -477,7 +477,6 @@ export class SendComponent implements OnInit {
     }
   }
   async estimateFees() {
-    console.log('estimate...');
     const prevSimError = this.latestSimError;
     this.latestSimError = '';
     if (this.prepTransactions()) {
@@ -486,21 +485,22 @@ export class SendComponent implements OnInit {
         this.latestSimError = '';
         this.prevEquiClass = equiClass;
         this.simSemaphore++; // Put lock on 'Preview and 'Send max'
-        try {
-          const res: DefaultTransactionParams | null = await this.estimateService.estimate(JSON.parse(JSON.stringify(this.transactions)), this.activeAccount.address);
+        const callback = (res) => {
           if (res) {
-            console.log(res);
-            this.defaultTransactionParams = res;
-            this.updateMaxAmount();
+            if (res.error) {
+              this.formInvalid = res.error;
+              this.latestSimError = res.error;
+            } else {
+              this.defaultTransactionParams = res;
+              this.formInvalid = '';
+              this.latestSimError = '';
+              this.updateMaxAmount();
+            }
           }
-          this.latestSimError = '';
-          this.formInvalid = '';
-        } catch (e) {
-          this.formInvalid = e;
-          this.latestSimError = e;
-        } finally {
           this.simSemaphore--;
-        }
+        };
+        console.log('simulate...');
+        this.estimateService.estimate(JSON.parse(JSON.stringify(this.transactions)), this.activeAccount.address, callback);
       } else {
         this.latestSimError = prevSimError;
         this.formInvalid = this.latestSimError;
@@ -594,11 +594,11 @@ export class SendComponent implements OnInit {
       return this.translate.instant('SENDCOMPONENT.INVALIDRECEIVERADDRESS');
     } else if (this.torusVerifier
       && (!this.inputValidationService.torusAccount(this.toPkh, this.torusVerifier) || this.torusLookupAddress === this.activeAccount.address)) {
-        return 'Invalid recipient';
-    /*} else if (this.torusVerifier && this.torusVerifier === 'google' && (!this.inputValidationService.email(this.toPkh) || this.torusLookupAddress === this.activeAccount.address)) {
-      return 'Invalid email';
-    } else if (this.torusVerifier && this.torusVerifier === 'reddit' && (!this.inputValidationService.redditAccount(this.toPkh) || this.torusLookupAddress === this.activeAccount.address)) {
-      return 'Invalid Reddit account';*/
+      return 'Invalid recipient';
+      /*} else if (this.torusVerifier && this.torusVerifier === 'google' && (!this.inputValidationService.email(this.toPkh) || this.torusLookupAddress === this.activeAccount.address)) {
+        return 'Invalid email';
+      } else if (this.torusVerifier && this.torusVerifier === 'reddit' && (!this.inputValidationService.redditAccount(this.toPkh) || this.torusLookupAddress === this.activeAccount.address)) {
+        return 'Invalid Reddit account';*/
     } else if (!this.inputValidationService.amount(amount) ||
       (finalCheck && (((amount === '0') || amount === '') && (toPkh.slice(0, 3) !== 'KT1')))) {
       return this.translate.instant('SENDCOMPONENT.INVALIDAMOUNT');
