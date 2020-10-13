@@ -12,7 +12,7 @@ import { WalletService } from '../../services/wallet/wallet.service';
   styleUrls: ['./torus.component.scss']
 })
 export class TorusComponent implements OnInit {
-
+  activeLogin = 'google';
   constructor(
     private walletService: WalletService,
     public torusService: TorusService,

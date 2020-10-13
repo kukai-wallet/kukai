@@ -1,4 +1,29 @@
-<div class="kukai-card">
+<div>
+  <div class="top">
+    <a routerLink="/" class="logo"><img id="logo" src="../../../assets/img/kukai-logo.svg"></a>
+  </div>
+  <div class="main">
+    <div class="main-top">
+      <h1>DirectAuth</h1>
+      <p>DirectAuth creates a unique Tezos wallet for each of your OAuth accounts. It is powered by an open-source and non-custodial key management system.</p>
+    </div>
+    <div class="main-mid">
+      <p class="signup">Sign up / in with</p>
+      <div class="login-options">
+        <div *ngFor="let key of torusService.verifierMapKeys" (click)="torusLogin(key)" class="login-option" (mouseover)="activeLogin = key">
+          <ng-container *ngIf="key === activeLogin; then color else grey"></ng-container>
+          <ng-template #color><img class="login-logo color" src="../../../assets/img/torus-login/{{ key }}-color.svg"></ng-template>
+          <ng-template #grey><img class="login-logo grey" src="../../../assets/img/torus-login/{{ key }}-grey.svg"></ng-template>
+        </div>
+      </div>
+    </div>
+    <div class="main-bottom">
+      <p>The following sign-ins involve a third party authenticator:<BR>Twitter</p>
+    </div>
+  </div>
+</div>
+<div class="torus-bg"><img src="../../../assets/img/torus-bg.svg"></div>
+<!--<div class="kukai-card">
   <H1>DirectAuth</H1>
   <div class="grey-card">
     <p class="description bold">Access your Tezos wallet with a simple click</p>
@@ -9,4 +34,4 @@
     </div>
     <div class="bottom-container"><div class="buttons single"><a routerLink="/"><button class="button back">Back</button></a></div><img width="200px" src="../../../assets/img/direct-auth.png"></div>
   </div>
-</div>
+</div>-->

@@ -2,13 +2,12 @@
 :host {
     width: 100%;
     min-height: 100vh;
-    padding-bottom: 8rem;
+    padding-bottom: 7rem;
     overflow: hidden;
     display: flex;
     background: #5963FF;
 }
 :host > div {
-    margin-top: 5rem;
     width: 100vw;
     min-height: 100%;
     display: flex;
@@ -16,63 +15,97 @@
     align-items: center;
     flex-direction: column;
 }
-:host > div.kukai-card > div.grey-card {
-  align-items: center;
+a.logo {
+  margin: 2.25rem 2rem;
+  width: 5.6875rem;
+  height: 1.4375rem;
+}
+:host > div > div.top {
+  width: 100vw;
   display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  z-index: 3;
+}
+:host > div > div.main {
+  flex-grow: 1;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
   flex-direction: column;
+  z-index: 3;
 }
-:host > div.kukai-card > div.grey-card > p.buttons-desc {
-  width: 100%;
-  text-align: left;
-  justify-content: start;
-  padding: 1rem 2rem 0.5rem;
-  color: rgba(48, 48, 48, 0.6);
+:host > div > div.main > div.main-top {
+  display: flex;
+  flex-direction: column;;
+  justify-content: center;
+  align-items: center;
+  max-width: 27.5rem;
 }
-:host > div.kukai-card > div.grey-card > p {
-  padding-left: 2rem;
-  padding-right: 2rem;
+:host > div > div.main > div.main-mid {
+  margin-top: 8rem;
+  margin-bottom: 1rem;
 }
-:host button.login {
-  height: 40px;
-  background: rgba(114, 122, 253, 0.16);
-  border-radius: 0.75rem;
-  transition: none;
-  color: #727AFD;
+:host > div > div.main > div.main-bottom {
+  flex-grow: 1;
+  display: flex;
+  align-items: flex-end;
+}
+:host > div > div.main H1 {
+  color: white;
+  margin: 0.5rem 0 1rem;
+}
+:host > div > div.main p {
+  text-align: center;
+  color: white;
+  padding: 0 1rem;
+  font-size: 1rem;
+  line-height: 1.25rem;
+}
+:host div.torus-bg {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  opacity: 0.2;
+  mix-blend-mode: multiply;
+}
+:host div.torus-bg > img {
+  width: 80%;
+  height: 100vh;
+}
+:host div.login-options {
   display: flex;
   flex-direction: row;
-  margin-bottom: 0.5rem;
-  box-shadow: 0px 4px 8px rgba(89, 99, 255, 0.04);
 }
-:host button.login {
-  width: 100%;
-}
-:host div.login-buttons {
-  width: 100%;
-  padding: 0 2rem;
-}
-:host button.login:hover {
-  background: rgba(89, 99, 255, 0.4);
-  color: #5963FF;;
-  margin-top: 0;
-}
-:host img.login-logo {
-  margin-right: 0.5rem;
-}
-:host div.bottom-container {
+:host div.login-option {
+  margin: 0 0.25rem;
+  width: 3.5rem;
+  height: 3.5rem;
+  background-color: white;
+  box-shadow: 0px 0.5rem 1rem rgba(17, 17, 17, 0.08);
+  border-radius: 0.5rem;
   display: flex;
-  width: 100%;
-  justify-content: space-between;
   align-items: center;
+  justify-content: center;
 }
-@media screen and (max-width: 32.5rem) {
-  :host > div.kukai-card > div.grey-card > p {
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-  :host div.login-buttons {
-    padding: 0 1rem;
-  }
-  :host > div.kukai-card > div.grey-card > p.buttons-desc {
-    padding: 1rem 1rem 0.5rem;
+:host div.login-option:hover {
+  cursor: pointer;
+}
+:host div.login-option:hover {
+  background-color: #f3f3f3;
+}
+:host img.login-logo.grey {
+  opacity: 0.2;
+  height: 1.75rem;
+}
+:host img.login-logo.color {
+  height: 1.875rem;
+}
+
+
+@media screen and (max-height: 41.5rem) {
+  :host > div > div.main > div.main-mid {
+    margin-top: 4rem;
   }
 }
