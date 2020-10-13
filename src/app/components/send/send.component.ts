@@ -455,10 +455,9 @@ export class SendComponent implements OnInit {
         for (const tx of this.transactions) {
           amount = amount.plus(Big(tx.amount));
         }
-        const burnAndFee = Big(this.getTotalBurn()).plus(Big(this.getTotalFee()));
         if (amount.gt(maxKt)) {
           return this.translate.instant('SENDCOMPONENT.TOOHIGHAMOUNT');
-        } else if (burnAndFee.gt(maxTz)) {
+        } else if ((new Big('0')).gt(maxTz)) {
           return this.translate.instant('SENDCOMPONENT.TOOHIGHFEE');
         }
       }
