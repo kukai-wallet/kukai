@@ -58,7 +58,6 @@ export class ImportService {
             walletData.pkh.slice(3, 19),
             1
           );
-          console.log('done');
           if (utils.seedToKeyPair(seed).pkh !== walletData.pkh) {
             seed = '';
           }
@@ -72,8 +71,8 @@ export class ImportService {
         }
       }
     } catch (e) {
-      console.log(e);
-      return false;
+      console.error(e);
+      throw new Error('Failed to decrypt keystore file');
     }
     if (seed) {
       return this.importWalletFromObject(walletData, seed).then(
@@ -81,11 +80,12 @@ export class ImportService {
           return ans;
         },
         (e) => {
-          return false;
+          console.error(e);
+          throw new Error('Failed to fetch account(s). Please check your connection.');
         }
       );
     } else {
-      return false;
+      throw new Error('Wrong password');
     }
   }
   async importWalletFromObject(data: any, seed: any): Promise<boolean> {

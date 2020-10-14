@@ -255,8 +255,10 @@ export class MnemonicImportComponent implements OnInit {
           }
         } else {
           console.log(success);
-          this.messageService.addError('Wrong password');
+          this.messageService.addError('Something went wrong');
         }
+      }).catch((e) => {
+        this.messageService.addError(e);
       });
   }
   handleFileInput(files: FileList) {
