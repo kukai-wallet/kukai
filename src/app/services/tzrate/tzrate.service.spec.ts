@@ -18,6 +18,7 @@ import { ErrorHandlingPipe } from '../../pipes/error-handling.pipe';
 import { Account, Wallet, Balance } from '../../interfaces';
 import { WalletObject } from '../wallet/wallet';
 import { Constants } from '../../constants';
+import { InputValidationService } from '../input-validation/input-validation.service';
 
 /**
  * Suite: TzrateService
@@ -57,7 +58,8 @@ describe('[ TzrateService ]', () => {
 				TranslateService,
 				OperationService,
 				EncryptionService,
-				ErrorHandlingPipe
+        ErrorHandlingPipe,
+        InputValidationService
 			]
 		});
 

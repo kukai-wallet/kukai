@@ -16,6 +16,7 @@ import { WalletServiceStub } from '../../../../spec/mocks/wallet.mock';
 import { EncryptionService } from '../encryption/encryption.service';
 import 'rxjs/add/operator/mergeMap';
 import { ImplicitAccount } from '../wallet/wallet';
+import { InputValidationService } from '../input-validation/input-validation.service';
 
 /**
  * Suite: DelegateService
@@ -49,7 +50,8 @@ describe('[ DelegateService ]', () => {
 				TranslateService,
 				OperationService,
 				EncryptionService,
-        ErrorHandlingPipe
+        ErrorHandlingPipe,
+        InputValidationService
 			]
 		});
 

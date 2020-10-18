@@ -15,6 +15,8 @@ import { MessageService } from '../../src/app/services/message/message.service';
 import { OperationService } from '../../src/app/services/operation/operation.service';
 import { TzrateService } from '../../src/app/services/tzrate/tzrate.service';
 import { WalletService } from '../../src/app/services/wallet/wallet.service';
+import { TorusService } from '../../src/app/services/torus/torus.service';
+import { InputValidationService } from '../../src/app/services/input-validation/input-validation.service';
 
 //-----------Pipe Imports-------------
 import { ErrorHandlingPipe } from '../../src/app/pipes/error-handling.pipe';
@@ -31,6 +33,8 @@ export { OperationService } from '../../src/app/services/operation/operation.ser
 export { BalanceService } from '../../src/app/services/balance/balance.service';
 export { TranslateService } from '@ngx-translate/core';
 export { ErrorHandlingPipe } from '../../src/app/pipes/error-handling.pipe';
+export { TorusService } from '../../src/app/services/torus/torus.service';
+export { InputValidationService } from '../../src/app/services/input-validation/input-validation.service';
 
 
 // tslint:disable-next-line:import-blacklist
@@ -60,7 +64,9 @@ export const balancesrv_providers = [
 	OperationService,
 	ErrorHandlingPipe,
 	MessageService,
-	TzrateService
+  TzrateService,
+  TorusService,
+  InputValidationService
 ];
 
 export const walletsrv_providers = [
@@ -75,6 +81,8 @@ export const walletsrv_providers = [
 	MessageService,
 	OperationService,
 	TranslateService,
-	TzrateService
+  TzrateService,
+  TorusService,
+  InputValidationService
 ];
 

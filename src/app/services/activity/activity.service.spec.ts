@@ -14,6 +14,7 @@ import { EncryptionService } from '../encryption/encryption.service';
 import { ErrorHandlingPipe } from '../../pipes/error-handling.pipe';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { InputValidationService } from '../../services/input-validation/input-validation.service';
 
 import 'rxjs/add/operator/mergeMap';
 import { of } from 'rxjs/observable/of';
@@ -40,7 +41,7 @@ describe('[ ActivityService ]', () => {
 			imports: [HttpClientModule, HttpClientTestingModule, TranslateModule.forRoot(
 				{ loader: { provide: TranslateLoader, useClass: TranslateFakeLoader } })],
 			providers: [ActivityService, WalletService, MessageService,
-				TranslateService, OperationService, EncryptionService, ErrorHandlingPipe]
+				TranslateService, OperationService, EncryptionService, ErrorHandlingPipe, InputValidationService]
 		});
 
 		// configure injected services
