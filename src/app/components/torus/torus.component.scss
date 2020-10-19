@@ -102,6 +102,9 @@ a.logo {
 :host img.login-logo.color {
   height: 1.875rem;
 }
+:host a.learn-more {
+  color: white;
+}
 
 
 @media screen and (max-height: 41.5rem) {
