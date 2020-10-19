@@ -2,9 +2,11 @@
     height: 6rem;
     margin-bottom: 1.5rem;
     width: 100%;
-    ;
+    display: flex;
+    flex-direction: column;
 }
 div.middle {
+  margin-top: 1rem;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -33,16 +35,16 @@ div.middle img {
     margin-right: 0.25rem;
 }
 #top-container {
-    height: 100%;
+    height: 5rem;
     width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
 a.logo {
-    margin: 2.25rem 2rem;
+    margin: 2.25rem 2rem 1rem;
     width: 5.6875rem;
-    height: 1.4375rem;
+    height: 1.75rem;
 }
 #menu {
     cursor: pointer;
@@ -63,13 +65,20 @@ a.logo {
     border: 0.0625rem solid #EAEBF9 !important;
 
 }
-#nameHolder {
+:host .verifier-logo {
+  height: 0.75rem;
+  margin-bottom: 0.125rem;
+}
+#header-list {
+  width: 100%;
   font-size: 0.875rem;
   color: rgba(255, 255, 255, 0.8);
   vertical-align: bottom;
-  text-align: center;
-  line-height: 1.5rem;
-  padding-top: 0.625rem;
+  text-align: right;
+  line-height: 1rem;
+  padding-right: 2rem;
+
+  //style="height: 1.5rem; margin-right: 0.5rem"
 }
 #menu > span {
     font-style: normal;

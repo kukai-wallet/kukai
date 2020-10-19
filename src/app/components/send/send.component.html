@@ -145,8 +145,7 @@
         <!-- Torus -->
         <div class="preview-row">
           <span>From</span><span><img src="../../../assets/img/{{ this.walletService.wallet.verifier }}-logo.svg">
-            <ng-container *ngIf="walletService.wallet.verifier !== 'twitter'"> {{ this.walletService.wallet.id }}</ng-container>
-            <ng-container *ngIf="walletService.wallet.verifier === 'twitter'"> {{ this.walletService.wallet.name }}</ng-container>
+            {{ this.walletService.wallet.displayName() }}
           </span>
         </div>
         <div class="preview-row">

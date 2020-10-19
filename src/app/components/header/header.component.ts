@@ -37,7 +37,13 @@ export class HeaderComponent implements OnInit {
   }
   getUsername() {
     if (this.walletService.wallet instanceof TorusWallet) {
-      return this.walletService.wallet.name;
+      return this.walletService.wallet.displayName();
+    }
+    return '';
+  }
+  getVerifier() {
+    if (this.walletService.wallet instanceof TorusWallet) {
+      return this.walletService.wallet.verifier;
     }
     return '';
   }

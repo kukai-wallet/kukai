@@ -121,6 +121,12 @@ export class TorusWallet extends Wallet {
     this.id = id;
     this.name = name;
   }
+  displayName() {
+    if (this.verifier === 'twitter') {
+      return this.name;
+    }
+    return this.id;
+  }
 }
 export class LedgerWallet extends Wallet {
   constructor() {
