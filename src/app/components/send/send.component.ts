@@ -760,4 +760,26 @@ export class SendComponent implements OnInit {
       }
     }
   }
+  previewAttention(): string {
+    if (this.torusLookupId) {
+      if (new Big(this.totalAmount()).gt('50')) {
+        let recipientKind = ''
+        switch (this.torusVerifier) {
+          case 'google':
+            recipientKind = 'email address (Google)';
+            break;
+          case 'reddit':
+            recipientKind = 'Reddit username';
+            break;
+          case 'twitter':
+            recipientKind = 'Twitter handle';
+            break;
+          default:
+            recipientKind = 'information';
+        }
+        return `Please double check the recipient's ${recipientKind}! Spelling mistakes can lead to permanent loss of the transfered funds.`;
+      }
+    }
+    return '';
+  }
 }
