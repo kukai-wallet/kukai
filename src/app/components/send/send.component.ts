@@ -766,7 +766,7 @@ export class SendComponent implements OnInit {
         let recipientKind = ''
         switch (this.torusVerifier) {
           case 'google':
-            recipientKind = 'email address (Google)';
+            recipientKind = 'Google account email address';
             break;
           case 'reddit':
             recipientKind = 'Reddit username';
@@ -777,7 +777,7 @@ export class SendComponent implements OnInit {
           default:
             recipientKind = 'information';
         }
-        return `Please double check the recipient's ${recipientKind}! Spelling mistakes can lead to permanent loss of the transfered funds.`;
+        return `Carefully review the recipient's ${recipientKind}! Spelling mistakes can lead to permanent loss of the transferred funds.`;
       }
     }
     return '';

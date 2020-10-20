@@ -48,7 +48,7 @@ export class MessageService {
     this.messages.push({
       type: type,
       timeout: 0,
-      msg: '',
+      msg: 'email',
       email,
       amount
     });
@@ -59,7 +59,7 @@ export class MessageService {
     this.messages.push({
       type: type,
       timeout: 0,
-      msg: '',
+      msg: 'Reddit',
       username,
       amount
     });
@@ -70,7 +70,7 @@ export class MessageService {
     this.messages.push({
       type: type,
       timeout: 0,
-      msg: '',
+      msg: 'Twitter',
       twitterId,
       amount
     });
