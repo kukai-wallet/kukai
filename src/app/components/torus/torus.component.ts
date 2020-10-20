@@ -53,4 +53,7 @@ export class TorusComponent implements OnInit {
       await this.messageService.stopSpinner();
     }
   }
+  mobile(): boolean {
+    return (window.innerWidth < 480);
+  }
 }

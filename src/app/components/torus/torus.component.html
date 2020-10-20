@@ -11,7 +11,7 @@
       <p class="signup">Sign up / in with</p>
       <div class="login-options">
         <div *ngFor="let key of torusService.verifierMapKeys" (click)="torusLogin(key)" class="login-option" (mouseover)="activeLogin = key">
-          <ng-container *ngIf="key === activeLogin; then color else grey"></ng-container>
+          <ng-container *ngIf="key === activeLogin || mobile(); then color else grey"></ng-container>
           <ng-template #color><img class="login-logo color" src="../../../assets/img/torus-login/{{ key }}-color.svg"></ng-template>
           <ng-template #grey><img class="login-logo grey" src="../../../assets/img/torus-login/{{ key }}-grey.svg"></ng-template>
         </div>

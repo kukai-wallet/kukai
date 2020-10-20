@@ -36,7 +36,7 @@ export class MessagesComponent implements OnInit {
   }
   mailtoFormat(message: any): string {
     const subject = encodeURI(this.subject);
-    const body = this.encodedBody(message.amount, 'Google', `${this.getHostName()}\n\n`);
+    const body = this.encodedBody(message.amount, 'Google', `https://${this.getHostName()}/direct-auth\n\n`);
     return `mailto:${message.email}?subject=${subject}&body=${body}`;
   }
   redditPmFormat(message: any) {
