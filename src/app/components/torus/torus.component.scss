@@ -52,6 +52,10 @@ a.logo {
   display: flex;
   align-items: flex-end;
 }
+:host > div > div.main > div.main-bottom p {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.75rem;
+}
 :host > div > div.main H1 {
   color: white;
   margin: 0.5rem 0 1rem;
@@ -102,10 +106,22 @@ a.logo {
 :host img.login-logo.color {
   height: 1.875rem;
 }
-:host a.learn-more {
-  color: white;
+:host div.learn-more {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
 }
-
+:host a.learn-more {
+  font-size: 0.875rem;
+}
+:host a.learn-more:link,
+:host a.learn-more:visited {
+  color: rgba(255, 255, 255, 0.7);
+}
+:host a.learn-more:hover,
+:host a.learn-more:active {
+  color: rgba(255, 255, 255, 1);
+}
 
 @media screen and (max-height: 41.5rem) {
   :host > div > div.main > div.main-mid {
