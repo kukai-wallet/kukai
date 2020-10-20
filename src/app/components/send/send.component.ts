@@ -763,7 +763,7 @@ export class SendComponent implements OnInit {
   previewAttention(): string {
     if (this.torusLookupId) {
       if (new Big(this.totalAmount()).gt('50')) {
-        let recipientKind = ''
+        let recipientKind = '';
         switch (this.torusVerifier) {
           case 'google':
             recipientKind = 'Google account email address';
