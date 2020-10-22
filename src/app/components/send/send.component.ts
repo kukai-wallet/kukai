@@ -755,7 +755,7 @@ export class SendComponent implements OnInit {
         this.messageService.redditNotify(transaction.meta.alias, transaction.amount.toString());
         this.lookupService.add(transaction.to, transaction.meta.alias, 3);
       } else if (transaction.meta.verifier === 'twitter') {
-        this.messageService.twitterNotify(transaction.meta.twitterId, transaction.amount.toString());
+        this.messageService.twitterNotify(transaction.meta.twitterId, transaction.meta.alias, transaction.amount.toString());
         this.lookupService.add(transaction.to, transaction.meta.alias, 4);
       }
     }

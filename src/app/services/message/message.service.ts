@@ -64,7 +64,7 @@ export class MessageService {
       amount
     });
   }
-  twitterNotify(twitterId: string, amount: string) {
+  twitterNotify(twitterId: string, handler: string, amount: string) {
     console.log(twitterId);
     const type = 'success';
     this.messages.push({
@@ -72,6 +72,7 @@ export class MessageService {
       timeout: 0,
       msg: 'Twitter',
       twitterId,
+      handler,
       amount
     });
   }
