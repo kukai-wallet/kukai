@@ -31,7 +31,6 @@ export class TorusComponent implements OnInit {
     );
     console.log('login done');
     if (keyPair) {
-      console.log(keyPair);
       await this.importService
         .importWalletFromPk(keyPair.pk, '', { verifier: userInfo.typeOfLogin, id: userInfo.verifierId, name: userInfo.name })
         .then((success: boolean) => {

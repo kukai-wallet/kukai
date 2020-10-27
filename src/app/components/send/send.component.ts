@@ -1,11 +1,9 @@
-import { Component, OnInit, ViewEncapsulation, Input, ViewChild, ElementRef } from '@angular/core';
-import { BsModalService } from 'ngx-bootstrap/modal';
+import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { KeyPair, DefaultTransactionParams } from '../../interfaces';
 import { TranslateService } from '@ngx-translate/core';
 import { WalletService } from '../../services/wallet/wallet.service';
 import { CoordinatorService } from '../../services/coordinator/coordinator.service';
 import { OperationService } from '../../services/operation/operation.service';
-import { ExportService } from '../../services/export/export.service';
 import { InputValidationService } from '../../services/input-validation/input-validation.service';
 import { LedgerService } from '../../services/ledger/ledger.service';
 import { EstimateService } from '../../services/estimate/estimate.service';
@@ -86,11 +84,9 @@ export class SendComponent implements OnInit {
 
   constructor(
     private translate: TranslateService,
-    private modalService: BsModalService,
     private walletService: WalletService,
     private operationService: OperationService,
     private coordinatorService: CoordinatorService,
-    private exportService: ExportService,
     private inputValidationService: InputValidationService,
     private ledgerService: LedgerService,
     private estimateService: EstimateService,
@@ -689,9 +685,6 @@ export class SendComponent implements OnInit {
       this.showTransactions.push(this.transactions[0], this.transactions[1]);
       this.showBtn = 'Show More';
     }
-  }
-  download() {
-    this.exportService.downloadOperationData(this.sendResponse.payload.unsignedOperation, false);
   }
   dynSize(): string {
     const size = this.amount ? this.amount.length : 0;
