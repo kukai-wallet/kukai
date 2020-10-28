@@ -1,4 +1,7 @@
 # Release notes
+## 1.9
+* DirectAuth integration (Google, Reddit, Twitter) with lookup and reverse-lookup support
+* Several bug fixes
 ## 1.8.2
 * Various bug fixes and improvements in the send modal
 * Remove webauthn due to incompatability with Safari
