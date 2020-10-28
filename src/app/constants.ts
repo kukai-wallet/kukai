@@ -10,7 +10,7 @@ interface Net {
 }
 export class Constants {
     // Select Testnet or Mainnet
-    readonly NET: Net = this.carthagenet();
+    readonly NET: Net = this.mainnet();
 
     private mainnet(): Net {
         return {
