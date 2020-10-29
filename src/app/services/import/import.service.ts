@@ -9,9 +9,11 @@ import {
   LegacyWalletV3,
   HdWallet,
   LedgerWallet,
+  TorusWallet
 } from '../wallet/wallet';
 import { hd, utils } from '@tezos-core-tools/crypto-utils';
 import { EncryptionService } from '../encryption/encryption.service';
+import { TorusService } from '../torus/torus.service';
 
 @Injectable()
 export class ImportService {
@@ -19,8 +21,9 @@ export class ImportService {
     private walletService: WalletService,
     private coordinatorService: CoordinatorService,
     private conseilService: ConseilService,
-    private encryptionService: EncryptionService
-  ) {}
+    private encryptionService: EncryptionService,
+    private torusService: TorusService
+  ) { }
   pwdRequired(json: string) {
     const walletData = JSON.parse(json);
     if (walletData.provider !== 'Kukai') {
@@ -55,7 +58,6 @@ export class ImportService {
             walletData.pkh.slice(3, 19),
             1
           );
-          console.log('done');
           if (utils.seedToKeyPair(seed).pkh !== walletData.pkh) {
             seed = '';
           }
@@ -69,8 +71,8 @@ export class ImportService {
         }
       }
     } catch (e) {
-      console.log(e);
-      return false;
+      console.error(e);
+      throw new Error('Failed to decrypt keystore file');
     }
     if (seed) {
       return this.importWalletFromObject(walletData, seed).then(
@@ -78,11 +80,12 @@ export class ImportService {
           return ans;
         },
         (e) => {
-          return false;
+          console.error(e);
+          throw new Error('Failed to fetch account(s). Please check your connection.');
         }
       );
     } else {
-      return false;
+      throw new Error('Wrong password');
     }
   }
   async importWalletFromObject(data: any, seed: any): Promise<boolean> {
@@ -150,8 +153,15 @@ export class ImportService {
     return true;
   }
 
-  async importWalletFromPk(pk: string, derivationPath: string): Promise<boolean> {
+  async importWalletFromPk(pk: string, derivationPath: string, verifierDetails: any = null): Promise<boolean> {
     this.coordinatorService.stopAll();
+    if (derivationPath) {
+      return this.ledgerImport(pk, derivationPath);
+    } else if (verifierDetails) {
+      return this.torusImport(pk, verifierDetails);
+    }
+  }
+  async ledgerImport(pk: string, derivationPath: string) {
     try {
       this.walletService.initStorage();
       this.walletService.wallet = new LedgerWallet();
@@ -164,7 +174,28 @@ export class ImportService {
       return false;
     }
   }
-
+  async torusImport(pk: string, verifierDetails: any) {
+    try {
+      this.walletService.initStorage();
+      this.walletService.wallet = new TorusWallet(verifierDetails.verifier, verifierDetails.id, verifierDetails.name);
+      if (verifierDetails.verifier === 'twitter') {
+        this.updateTwitterName(verifierDetails.id);
+      }
+      this.walletService.addImplicitAccount(pk);
+      return true;
+    } catch (err) {
+      console.warn(err);
+      this.walletService.clearWallet();
+      return false;
+    }
+  }
+  async updateTwitterName(verifierId: string) {
+    const twitterId = verifierId.split('|')[1];
+    const { username } = await this.torusService.twitterLookup(undefined, twitterId);
+    if (username && this.walletService.wallet instanceof TorusWallet) {
+      this.walletService.wallet.name = '@' + username;
+    }
+  }
   async findContracts(pkh: string, recursiveScan = false, address: string = pkh) {
     const addresses = await this.conseilService.getContractAddresses(address);
     for (const KT of addresses) {

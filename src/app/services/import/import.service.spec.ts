@@ -7,7 +7,7 @@ import { ImportService } from './import.service';
 // class dependencies
 import { HttpClientModule } from '@angular/common/http';
 import { WalletService } from '../wallet/wallet.service';
-import { http_imports, translate_imports, balancesrv_providers, rx} from '../../../../spec/helpers/service.helper';
+import { http_imports, translate_imports, balancesrv_providers, rx } from '../../../../spec/helpers/service.helper';
 
 // provider sub-dependencies
 import { TranslateService, TranslateLoader, TranslateFakeLoader, TranslateModule } from '@ngx-translate/core';
@@ -24,6 +24,8 @@ import { ActivityService } from '../activity/activity.service';
 import { DelegateService } from '../delegate/delegate.service';
 import { FullWallet, LegacyWalletV2, HdWallet, LegacyWalletV3 } from '../wallet/wallet';
 import { ConseilService } from '../conseil/conseil.service';
+import { TorusService } from '../torus/torus.service';
+import { InputValidationService } from '../input-validation/input-validation.service';
 
 
 
@@ -110,7 +112,9 @@ describe('[ ImportService ]', () => {
 			ErrorHandlingPipe,
 			TzrateService,
 			ActivityService,
-			DelegateService
+      DelegateService,
+      TorusService,
+      InputValidationService
 		]
 		});
 
@@ -191,18 +195,30 @@ describe('[ ImportService ]', () => {
 			beforeEach(() => {
 				wallet.wallet = null;
 			});
-			it('should throw an error', async () => {
-				await service.importWalletFromJson('baddata', password);
+			it('should throw an error 1', async () => {
+				await service.importWalletFromJson('baddata', password).catch((e) => {
+          expect(e).toEqual(new Error('Failed to decrypt keystore file'));
+        });
 				expect(wallet.wallet).toBeFalsy();
 			});
-			it('should throw an error', async () => {
-				const ans = await service.importWalletFromJson(JSON.stringify(hd.keyStore), 'wrong pwd');
-				expect(ans).toBeFalsy();
+			it('should throw an error 2', async () => {
+        let ans;
+        try {
+          ans = await service.importWalletFromJson(JSON.stringify(hd.keyStore), 'wrong pwd');
+        } catch (e) {
+          ans = e;
+        }
+				expect(ans).toEqual(new Error('Wrong password'));
 				expect(wallet.wallet).toBeFalsy();
 			});
-			it('should throw an error', async () => {
-				const ans = await service.importWalletFromJson(JSON.stringify(legacyV3.keyStore), 'wrong pwd');
-				expect(ans).toBeFalsy();
+			it('should throw an error 3', async () => {
+        let ans;
+        try {
+          ans = await service.importWalletFromJson(JSON.stringify(legacyV3.keyStore), 'wrong pwd');
+        } catch (e) {
+          ans = e;
+        }
+				expect(ans).toEqual(new Error('Wrong password'));
 				expect(wallet.wallet).toBeFalsy();
 			});
 		});

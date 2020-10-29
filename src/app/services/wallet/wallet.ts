@@ -3,18 +3,21 @@ export type WalletObject =
   | LegacyWalletV2
   | LegacyWalletV3
   | LedgerWallet
-  | HdWallet;
+  | HdWallet
+  | TorusWallet;
 
 export class Wallet {
   totalBalanceXTZ: number | null;
   totalBalanceUSD: number | null;
   XTZrate: number | null;
   implicitAccounts: ImplicitAccount[];
+  lookups: any[];
   constructor() {
     this.totalBalanceXTZ = null;
     this.totalBalanceUSD = null;
     this.XTZrate = null;
     this.implicitAccounts = [];
+    this.lookups = [];
   }
   getAccounts(): Account[] {
     const accounts: Account[] = [];
@@ -108,6 +111,23 @@ export class HdWallet extends FullWallet {
   }
 }
 
+export class TorusWallet extends Wallet {
+  verifier: string;
+  id: string;
+  name: string;
+  constructor(verifier: string, id: string, name: string) {
+    super();
+    this.verifier = verifier;
+    this.id = id;
+    this.name = name;
+  }
+  displayName() {
+    if (this.verifier === 'twitter') {
+      return this.name;
+    }
+    return this.id;
+  }
+}
 export class LedgerWallet extends Wallet {
   constructor() {
     super();

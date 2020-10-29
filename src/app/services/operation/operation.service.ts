@@ -11,6 +11,8 @@ import { localForger } from '@taquito/local-forging';
 import { TranslateService } from '@ngx-translate/core';
 import { Constants } from '../../constants';
 import { ErrorHandlingPipe } from '../../pipes/error-handling.pipe';
+import * as elliptic from 'elliptic';
+import {instantiateSecp256k1, hexToBin, binToHex} from '@bitauth/libauth';
 
 const httpOptions = { headers: { 'Content-Type': 'application/json' } };
 
@@ -28,8 +30,11 @@ export class OperationService {
     tz2: new Uint8Array([6, 161, 161]),
     tz3: new Uint8Array([6, 161, 164]),
     edpk: new Uint8Array([13, 15, 37, 217]),
+    sppk: new Uint8Array([3, 254, 226, 86]),
     edsk: new Uint8Array([43, 246, 78, 7]),
+    spsk: new Uint8Array([17, 162, 224, 201]),
     edsig: new Uint8Array([9, 245, 205, 134, 18]),
+    spsig: new Uint8Array([13, 115, 101, 19, 63]),
     sig: new Uint8Array([4, 130, 43]),
     o: new Uint8Array([5, 116]),
     B: new Uint8Array([1, 52]),
@@ -372,6 +377,45 @@ export class OperationService {
         }));
     })).pipe(catchError(err => this.errHandler(err)));
   }
+  torusKeyLookup(tz2address: string): Observable<any> {
+    // Make it into Promise
+    // Zero padding
+    if (tz2address.length !== 36 || tz2address.slice(0, 3) !== 'tz2') {
+      throw new Error('InvalidTorusAddress');
+    }
+    return this.http.get(this.nodeURL + `/chains/main/blocks/head/context/contracts/${tz2address}/manager_key`, {})
+      .pipe(flatMap((manager: any) => {
+        if (manager === null) {
+          return of({noReveal: true});
+        } else {
+          return fromPromise(this.decompress(manager)).pipe(flatMap((pk: any) => {
+            const torusReq = {
+              jsonrpc: '2.0',
+              method: 'KeyLookupRequest',
+              id: 10,
+              params: {
+                pub_key_X: pk.X,
+                pub_key_Y: pk.Y
+              }
+            };
+            const url = this.CONSTANTS.NET.NETWORK === 'mainnet' ? 'https://torus-19.torusnode.com/jrpc' : 'https://teal-15-1.torusnode.com/jrpc';
+            return this.http.post(url, JSON.stringify(torusReq), httpOptions)
+            .pipe(flatMap((ans: any) => {
+              try {
+                if (ans.result.PublicKey.X === pk.X &&
+                    ans.result.PublicKey.Y === pk.Y) {
+                    return of(ans);
+                  } else {
+                    return of(null);
+                  }
+              } catch {
+                return of(null);
+              }
+            }));
+          }));
+        }
+      }));
+  }
   checkApplied(applied: any) {
     for (let i = 0; i < applied[0].contents.length; i++) {
       if (applied[0].contents[i].metadata.operation_result.status !== 'applied') {
@@ -577,11 +621,55 @@ export class OperationService {
     }
   }
   pk2pkh(pk: string): string {
-    if (pk.length !== 54 || pk.slice(0, 4) !== 'edpk') {
-      throw new Error('Invalid public key');
+    if (pk.length === 54 && pk.slice(0, 4) === 'edpk') {
+      const pkDecoded = this.b58cdecode(pk, this.prefix.edpk);
+      return this.b58cencode(libs.crypto_generichash(20, pkDecoded), this.prefix.tz1);
+    } else if (pk.length === 55 && pk.slice(0, 4) === 'sppk') {
+      const pkDecoded = this.b58cdecode(pk, this.prefix.edpk);
+      return this.b58cencode(libs.crypto_generichash(20, pkDecoded), this.prefix.tz2);
     }
-    const pkDecoded = this.b58cdecode(pk, this.prefix.edpk);
-    return this.b58cencode(libs.crypto_generichash(20, pkDecoded), this.prefix.tz1);
+    throw new Error('Invalid public key');
+  }
+  spPrivKeyToKeyPair(secretKey: string) {
+    let sk;
+    if (secretKey.match(/^[0-9a-f]{64}$/g)) {
+      sk = this.b58cencode(this.hex2buf(secretKey), this.prefix.spsk);
+    } else if (secretKey.match(/^spsk[1-9a-km-zA-HJ-NP-Z]{50}$/g)) {
+      sk = secretKey;
+    } else {
+      throw new Error('Invalid private key');
+    }
+    const keyPair = (new elliptic.ec('secp256k1')).keyFromPrivate(
+      new Uint8Array(this.b58cdecode(sk, this.prefix.spsk))
+    );
+    const prefixVal = keyPair.getPublic().getY().toArray()[31] % 2 ? 3 : 2; // Y odd / even
+    const pad = new Array(32).fill(0); // Zero-padding
+    const publicKey = new Uint8Array(
+      [prefixVal].concat(pad.concat(keyPair.getPublic().getX().toArray()).slice(-32)
+      ));
+    const pk = this.b58cencode(publicKey, this.prefix.sppk);
+    const pkh = this.pk2pkh(pk);
+    return { sk, pk, pkh };
+  }
+  spPointsToPkh(pubX: string, pubY: string): string {
+    const key = (new elliptic.ec('secp256k1')).keyFromPublic({ x: pubX, y: pubY });
+    const prefixVal = key.getPublic().getY().toArray()[31] % 2 ? 3 : 2;
+    const pad = new Array(32).fill(0);
+    const publicKey = new Uint8Array(
+      [prefixVal].concat(pad.concat(key.getPublic().getX().toArray()).slice(-32)
+      ));
+    const pk = this.b58cencode(publicKey, this.prefix.sppk);
+    const pkh = this.pk2pkh(pk);
+    return pkh;
+  }
+  async decompress(pk: string): Promise<any> {
+    const decodedPk = this.b58cdecode(pk, this.prefix.sppk);
+    const hexPk = this.buf2hex(decodedPk);
+    const secp256k1 = await instantiateSecp256k1();
+    const compressed = hexToBin(hexPk);
+    const uncompressed = secp256k1.uncompressPublicKey(compressed);
+    const xy = binToHex(uncompressed).slice(2);
+    return {X: xy.slice(0, 64), Y: xy.slice(64, 128)};
   }
   hex2pk(hex: string): string {
     return this.b58cencode(this.hex2buf(hex.slice(2, 66)), this.prefix.edpk);
@@ -618,16 +706,32 @@ export class OperationService {
     return r;
   }
   sign(bytes, sk): any {
-    const hash = libs.crypto_generichash(32, this.mergebuf(this.hex2buf(bytes)));
-    const sig = libs.crypto_sign_detached(hash, this.b58cdecode(sk, this.prefix.edsk), 'uint8array');
-    const edsig = this.b58cencode(sig, this.prefix.edsig);
-    const sbytes = bytes + this.buf2hex(sig);
-    return {
-      bytes: bytes,
-      sig: sig,
-      edsig: edsig,
-      sbytes: sbytes,
-    };
+    console.log(sk);
+    if (sk.slice(0, 4) === 'spsk') {
+      const hash = libs.crypto_generichash(32, this.mergebuf(this.hex2buf(bytes)));
+      const key = (new elliptic.ec('secp256k1')).keyFromPrivate(new Uint8Array(this.b58cdecode(sk, this.prefix.spsk)));
+      let sig = key.sign(hash, {canonical: true});
+      sig = new Uint8Array(sig.r.toArray().concat(sig.s.toArray()));
+      const spsig = this.b58cencode(sig, this.prefix.spsig);
+      const sbytes = bytes + this.buf2hex(sig);
+      return {
+        bytes: bytes,
+        sig: sig,
+        edsig: spsig,
+        sbytes: sbytes,
+      };
+    } else {
+      const hash = libs.crypto_generichash(32, this.mergebuf(this.hex2buf(bytes)));
+      const sig = libs.crypto_sign_detached(hash, this.b58cdecode(sk, this.prefix.edsk), 'uint8array');
+      const edsig = this.b58cencode(sig, this.prefix.edsig);
+      const sbytes = bytes + this.buf2hex(sig);
+      return {
+        bytes: bytes,
+        sig: sig,
+        edsig: edsig,
+        sbytes: sbytes,
+      };
+    }
   }
   verify(bytes: string, sig: string, pk: string): Boolean {
     const hash = libs.crypto_generichash(32, this.mergebuf(this.hex2buf(bytes)));

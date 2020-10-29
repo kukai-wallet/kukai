@@ -1,0 +1,130 @@
+@import "../../../scss/card.css";
+:host {
+    width: 100%;
+    min-height: 100vh;
+    padding-bottom: 7rem;
+    overflow: hidden;
+    display: flex;
+    background: #5963FF;
+}
+:host > div {
+    width: 100vw;
+    min-height: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+}
+a.logo {
+  margin: 2.25rem 2rem;
+  width: 5.6875rem;
+  height: 1.4375rem;
+}
+:host > div > div.top {
+  width: 100vw;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  z-index: 3;
+}
+:host > div > div.main {
+  flex-grow: 1;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  z-index: 3;
+}
+:host > div > div.main > div.main-top {
+  display: flex;
+  flex-direction: column;;
+  justify-content: center;
+  align-items: center;
+  max-width: 27.5rem;
+}
+:host > div > div.main > div.main-mid {
+  margin-top: 8rem;
+  margin-bottom: 1rem;
+}
+:host > div > div.main > div.main-bottom {
+  flex-grow: 1;
+  display: flex;
+  align-items: flex-end;
+}
+:host > div > div.main > div.main-bottom p {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.75rem;
+}
+:host > div > div.main H1 {
+  color: white;
+  margin: 0.5rem 0 1rem;
+}
+:host > div > div.main p {
+  text-align: center;
+  color: white;
+  padding: 0 1rem;
+  font-size: 1rem;
+  line-height: 1.25rem;
+}
+:host div.torus-bg {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  opacity: 0.2;
+  mix-blend-mode: multiply;
+}
+:host div.torus-bg > img {
+  width: 80%;
+  height: 100vh;
+}
+:host div.login-options {
+  display: flex;
+  flex-direction: row;
+}
+:host div.login-option {
+  margin: 0 0.25rem;
+  width: 3.5rem;
+  height: 3.5rem;
+  background-color: white;
+  box-shadow: 0px 0.5rem 1rem rgba(17, 17, 17, 0.08);
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+:host div.login-option:hover {
+  cursor: pointer;
+}
+:host div.login-option:hover {
+  background-color: #f3f3f3;
+}
+:host img.login-logo.grey {
+  opacity: 0.2;
+  height: 1.75rem;
+}
+:host img.login-logo.color {
+  height: 1.875rem;
+}
+:host div.learn-more {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+}
+:host a.learn-more {
+  font-size: 0.875rem;
+}
+:host a.learn-more:link,
+:host a.learn-more:visited {
+  color: rgba(255, 255, 255, 0.7);
+}
+:host a.learn-more:hover,
+:host a.learn-more:active {
+  color: rgba(255, 255, 255, 1);
+}
+
+@media screen and (max-height: 41.5rem) {
+  :host > div > div.main > div.main-mid {
+    margin-top: 4rem;
+  }
+}

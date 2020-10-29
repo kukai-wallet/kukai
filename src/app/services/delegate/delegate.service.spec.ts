@@ -1,7 +1,6 @@
 // suite unit-test frameworks
 import { TestBed } from '@angular/core/testing';
 import { HttpTestingController, HttpClientTestingModule, TestRequest } from '@angular/common/http/testing';
-
 // class under inspection
 import { DelegateService } from './delegate.service';
 
@@ -17,6 +16,7 @@ import { WalletServiceStub } from '../../../../spec/mocks/wallet.mock';
 import { EncryptionService } from '../encryption/encryption.service';
 import 'rxjs/add/operator/mergeMap';
 import { ImplicitAccount } from '../wallet/wallet';
+import { InputValidationService } from '../input-validation/input-validation.service';
 
 /**
  * Suite: DelegateService
@@ -50,7 +50,8 @@ describe('[ DelegateService ]', () => {
 				TranslateService,
 				OperationService,
 				EncryptionService,
-				ErrorHandlingPipe
+        ErrorHandlingPipe,
+        InputValidationService
 			]
 		});
 

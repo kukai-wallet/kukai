@@ -11,6 +11,7 @@ import { P500Component } from './views/error/500.component';
 import { AccountViewComponent } from './components/account-view/account-view.component';
 import { PrivacyPolicyComponent } from './components/agreement/privacy-policy/privacy-policy.component';
 import { TermsOfUseComponent } from './components/agreement/terms-of-use/terms-of-use.component';
+import { TorusComponent } from './components/torus/torus.component';
 
 const routes: Routes = [
   { path: '', component: StartComponent },  // Content Centre position
@@ -18,10 +19,12 @@ const routes: Routes = [
   { path: 'import', component: MnemonicImportComponent },
   { path: 'activate', component: ActivateComponent },
   { path: 'connect-ledger', component: ConnectLedgerComponent },
+  { path: 'direct-auth', component: TorusComponent },
   { path: 'accounts', component: AccountsComponent },
   { path: 'account/:address', component: AccountViewComponent },
   { path: 'privacy-policy', component: PrivacyPolicyComponent },
   { path: 'terms-of-use', component: TermsOfUseComponent },
+  { path: 'serviceworker', component: TermsOfUseComponent },
   { path: '404', component: P404Component, data: { title: 'Page 404' } },
   { path: '500', component: P500Component, data: { title: 'Page 500' } },
   { path: '**', redirectTo: '404'},

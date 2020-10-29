@@ -42,6 +42,40 @@ export class MessageService {
       timeout: seconds * 1000
     });
   }
+  emailNotify(email: string, amount: string) {
+    console.log(email);
+    const type = 'success';
+    this.messages.push({
+      type: type,
+      timeout: 0,
+      msg: 'email',
+      email,
+      amount
+    });
+  }
+  redditNotify(username: string, amount: string) {
+    console.log(username);
+    const type = 'success';
+    this.messages.push({
+      type: type,
+      timeout: 0,
+      msg: 'Reddit',
+      username,
+      amount
+    });
+  }
+  twitterNotify(twitterId: string, handler: string, amount: string) {
+    console.log(twitterId);
+    const type = 'success';
+    this.messages.push({
+      type: type,
+      timeout: 0,
+      msg: 'Twitter',
+      twitterId,
+      handler,
+      amount
+    });
+  }
   clear() {
     this.messages = [];
   }

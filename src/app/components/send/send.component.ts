@@ -1,25 +1,30 @@
-import { Component, OnInit, ViewEncapsulation, Input, ViewChild, ElementRef } from '@angular/core';
-import { BsModalService } from 'ngx-bootstrap/modal';
+import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { KeyPair, DefaultTransactionParams } from '../../interfaces';
 import { TranslateService } from '@ngx-translate/core';
 import { WalletService } from '../../services/wallet/wallet.service';
 import { CoordinatorService } from '../../services/coordinator/coordinator.service';
 import { OperationService } from '../../services/operation/operation.service';
-import { ExportService } from '../../services/export/export.service';
 import { InputValidationService } from '../../services/input-validation/input-validation.service';
 import { LedgerService } from '../../services/ledger/ledger.service';
 import { EstimateService } from '../../services/estimate/estimate.service';
 import Big from 'big.js';
 import { Constants } from '../../constants';
-import { LedgerWallet } from '../../services/wallet/wallet';
+import { LedgerWallet, TorusWallet } from '../../services/wallet/wallet';
 import { Account, ImplicitAccount, OriginatedAccount } from '../../services/wallet/wallet';
 import { MessageService } from '../../services/message/message.service';
+import { TorusService } from '../../services/torus/torus.service';
+import { LookupService } from '../../services/lookup/lookup.service';
 
 interface SendData {
   to: string;
   amount: number;
   gasLimit: number;
   storageLimit: number;
+  meta?: {
+    alias: string;
+    verifier: string;
+    twitterId?: string;
+  };
 }
 const zeroTxParams: DefaultTransactionParams = {
   gas: 0,
@@ -30,10 +35,15 @@ const zeroTxParams: DefaultTransactionParams = {
 @Component({
   selector: 'app-send',
   templateUrl: './send.component.html',
-  encapsulation: ViewEncapsulation.None,
   styleUrls: ['./send.component.scss']
 })
 export class SendComponent implements OnInit {
+  // torus
+  torusVerifier = '';
+  torusPendingLookup = false;
+  torusLookupAddress = '';
+  torusLookupId = '';
+  torusTwitterId = '';
   /* New variables */
   modalOpen = false;
   advancedForm = false;
@@ -74,15 +84,15 @@ export class SendComponent implements OnInit {
 
   constructor(
     private translate: TranslateService,
-    private modalService: BsModalService,
     private walletService: WalletService,
     private operationService: OperationService,
     private coordinatorService: CoordinatorService,
-    private exportService: ExportService,
     private inputValidationService: InputValidationService,
     private ledgerService: LedgerService,
     private estimateService: EstimateService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    public torusService: TorusService,
+    private lookupService: LookupService
   ) { }
 
   ngOnInit() {
@@ -121,7 +131,7 @@ export class SendComponent implements OnInit {
     }
   }
   async openModal2() {
-    if (!this.simSemaphore) {
+    if (!this.simSemaphore && !this.torusPendingLookup) {
       this.formInvalid = this.checkInput(true);
       if (!this.formInvalid) {
         if (!this.amount) { this.amount = '0'; }
@@ -181,7 +191,11 @@ export class SendComponent implements OnInit {
         this.closeModal();
       } else {
         this.messageService.stopSpinner();
-        this.pwdValid = this.translate.instant('SENDCOMPONENT.WRONGPASSWORD');  // 'Wrong password!';
+        if (this.walletService.wallet instanceof TorusWallet) {
+          this.pwdValid = `Authorization failed`;
+        } else {
+          this.pwdValid = this.translate.instant('SENDCOMPONENT.WRONGPASSWORD');  // 'Wrong password!';
+        }
       }
     }
   }
@@ -258,7 +272,15 @@ export class SendComponent implements OnInit {
       } else {
         const gasLimit = this.gas ? Number(this.gas) : this.defaultTransactionParams.gas;
         const storageLimit = this.storage ? Number(this.storage) : this.defaultTransactionParams.storage;
-        this.transactions = [{ to: this.toPkh, amount: Number(this.amount), gasLimit, storageLimit }];
+        const toAddress = !this.torusVerifier ? this.toPkh : this.torusLookupAddress;
+        this.transactions = [{ to: toAddress, amount: Number(this.amount), gasLimit, storageLimit }];
+        if (this.torusLookupId) {
+          if (this.torusVerifier === 'twitter') {
+            this.transactions[0].meta = { alias: this.torusLookupId, verifier: this.torusVerifier, twitterId: this.torusTwitterId };
+          } else {
+            this.transactions[0].meta = { alias: this.torusLookupId, verifier: this.torusVerifier };
+          }
+        }
       }
       return true;
     }
@@ -288,6 +310,9 @@ export class SendComponent implements OnInit {
             this.messageService.stopSpinner();
             const metadata = { transactions: this.transactions, opHash: ans.payload.opHash };
             this.coordinatorService.boost(this.activeAccount.address, metadata);
+            if (this.transactions[0].meta) {
+              this.torusNotification(this.transactions[0]);
+            }
             for (const transaction of this.transactions) {
               if (this.walletService.addressExists(transaction.to)) {
                 this.coordinatorService.boost(transaction.to);
@@ -335,6 +360,9 @@ export class SendComponent implements OnInit {
         this.sendResponse = ans;
         if (ans.success && this.activeAccount) {
           const metadata = { transactions: this.transactions, opHash: ans.payload.opHash };
+          if (this.transactions[0].meta) {
+            this.torusNotification(this.transactions[0]);
+          }
           this.coordinatorService.boost(this.activeAccount.address, metadata);
           if (this.walletService.addressExists(this.transactions[0].to)) {
             this.coordinatorService.boost(this.transactions[0].to);
@@ -359,6 +387,7 @@ export class SendComponent implements OnInit {
     this.fee = '';
     this.gas = '';
     this.storage = '';
+    this.clearTorus();
     this.updateDefaultValues();
   }
   burnAmount(): string {
@@ -389,6 +418,7 @@ export class SendComponent implements OnInit {
     this.defaultTransactionParams = zeroTxParams;
     this.prevEquiClass = '';
     this.latestSimError = '';
+    this.clearTorus();
   }
 
   checkInput(finalCheck = false): string {
@@ -421,10 +451,9 @@ export class SendComponent implements OnInit {
         for (const tx of this.transactions) {
           amount = amount.plus(Big(tx.amount));
         }
-        const burnAndFee = Big(this.getTotalBurn()).plus(Big(this.getTotalFee()));
         if (amount.gt(maxKt)) {
           return this.translate.instant('SENDCOMPONENT.TOOHIGHAMOUNT');
-        } else if (burnAndFee.gt(maxTz)) {
+        } else if ((new Big('0')).gt(maxTz)) {
           return this.translate.instant('SENDCOMPONENT.TOOHIGHFEE');
         }
       }
@@ -436,13 +465,14 @@ export class SendComponent implements OnInit {
     this.updateDefaultValues();
   }
   updateDefaultValues() {
-    this.estimateFees();
-    if (this.isMultipleDestinations) {
-      this.amount = this.totalAmount().toString();
+    if (!this.torusVerifier) {
+      this.estimateFees();
+      if (this.isMultipleDestinations) {
+        this.amount = this.totalAmount().toString();
+      }
     }
   }
   async estimateFees() {
-    console.log('estimate...');
     const prevSimError = this.latestSimError;
     this.latestSimError = '';
     if (this.prepTransactions()) {
@@ -451,21 +481,22 @@ export class SendComponent implements OnInit {
         this.latestSimError = '';
         this.prevEquiClass = equiClass;
         this.simSemaphore++; // Put lock on 'Preview and 'Send max'
-        try {
-          const res: DefaultTransactionParams | null = await this.estimateService.estimate(JSON.parse(JSON.stringify(this.transactions)), this.activeAccount.address);
+        const callback = (res) => {
           if (res) {
-            console.log(res);
-            this.defaultTransactionParams = res;
-            this.updateMaxAmount();
+            if (res.error) {
+              this.formInvalid = res.error;
+              this.latestSimError = res.error;
+            } else {
+              this.defaultTransactionParams = res;
+              this.formInvalid = '';
+              this.latestSimError = '';
+              this.updateMaxAmount();
+            }
           }
-          this.latestSimError = '';
-          this.formInvalid = '';
-        } catch (e) {
-          this.formInvalid = e;
-          this.latestSimError = e;
-        } finally {
           this.simSemaphore--;
-        }
+        };
+        console.log('simulate...');
+        this.estimateService.estimate(JSON.parse(JSON.stringify(this.transactions)), this.activeAccount.address, callback);
       } else {
         this.latestSimError = prevSimError;
         this.formInvalid = this.latestSimError;
@@ -503,10 +534,42 @@ export class SendComponent implements OnInit {
     return (this.activeAccount && (this.activeAccount instanceof OriginatedAccount));
   }
   validateReceiverAddress() {
-    if (!this.inputValidationService.address(this.toPkh) && this.toPkh !== '') {
-      this.formInvalid = this.translate.instant('SENDCOMPONENT.INVALIDRECEIVERADDRESS');
-    } else if (!this.latestSimError) {
-      this.formInvalid = '';
+    if (!this.torusVerifier) {
+      if (!this.inputValidationService.address(this.toPkh) && this.toPkh !== '') {
+        this.formInvalid = this.translate.instant('SENDCOMPONENT.INVALIDRECEIVERADDRESS');
+      } else if (!this.latestSimError) {
+        this.formInvalid = ''; // clear error
+      }
+    } else { // Torus
+      this.torusLookupAddress = '';
+      /*if (this.torusVerifier === 'google' && !this.inputValidationService.email(this.toPkh) && this.toPkh !== '') {
+        this.formInvalid = 'Invalid Google account';
+      } else if (this.torusVerifier === 'reddit' && !this.inputValidationService.redditAccount(this.toPkh) && this.toPkh !== '') {
+        this.formInvalid = 'Invalid Reddit account';*/
+      if (this.torusService.verifierMapKeys.includes(this.torusVerifier)) {
+        if (!this.inputValidationService.torusAccount(this.toPkh, this.torusVerifier) && this.toPkh !== '') {
+          switch (this.torusVerifier) {
+            case 'google':
+              this.formInvalid = 'Invalid Google email address';
+              break;
+            case 'reddit':
+              this.formInvalid = 'Invalid Reddit username';
+              break;
+            case 'twitter':
+              this.formInvalid = 'Twitter username begins with "@"';
+              break;
+            default:
+              this.formInvalid = 'Unhandled verifier';
+          }
+        } else {
+          if (!this.latestSimError) {
+            this.formInvalid = ''; // clear error
+          }
+          this.torusLookup();
+        }
+      } else {
+        this.formInvalid = 'Unrecognized verifier';
+      }
     }
   }
   validateBatch() {
@@ -523,8 +586,15 @@ export class SendComponent implements OnInit {
   }
   checkReceiverAndAmount(toPkh: string, amount: string, finalCheck: boolean): string {
     console.log(toPkh + ' ' + amount);
-    if (!this.inputValidationService.address(toPkh) || toPkh === this.activeAccount.address) {
+    if (!this.torusVerifier && (!this.inputValidationService.address(toPkh) || toPkh === this.activeAccount.address)) {
       return this.translate.instant('SENDCOMPONENT.INVALIDRECEIVERADDRESS');
+    } else if (this.torusVerifier
+      && (!this.inputValidationService.torusAccount(this.toPkh, this.torusVerifier) || this.torusLookupAddress === this.activeAccount.address)) {
+      return 'Invalid recipient';
+      /*} else if (this.torusVerifier && this.torusVerifier === 'google' && (!this.inputValidationService.email(this.toPkh) || this.torusLookupAddress === this.activeAccount.address)) {
+        return 'Invalid email';
+      } else if (this.torusVerifier && this.torusVerifier === 'reddit' && (!this.inputValidationService.redditAccount(this.toPkh) || this.torusLookupAddress === this.activeAccount.address)) {
+        return 'Invalid Reddit account';*/
     } else if (!this.inputValidationService.amount(amount) ||
       (finalCheck && (((amount === '0') || amount === '') && (toPkh.slice(0, 3) !== 'KT1')))) {
       return this.translate.instant('SENDCOMPONENT.INVALIDAMOUNT');
@@ -616,9 +686,6 @@ export class SendComponent implements OnInit {
       this.showBtn = 'Show More';
     }
   }
-  download() {
-    this.exportService.downloadOperationData(this.sendResponse.payload.unsignedOperation, false);
-  }
   dynSize(): string {
     const size = this.amount ? this.amount.length : 0;
     if (size < 7) {
@@ -631,5 +698,81 @@ export class SendComponent implements OnInit {
       return '2';
     }
     return '1.5';
+  }
+  async verifierChange() {
+    this.torusLookupAddress = '';
+    console.log('Verifier: ' + this.torusVerifier);
+    this.validateReceiverAddress();
+    // resimulate?
+  }
+  async torusLookup() {
+    if (!this.torusService.verifierMapKeys.includes(this.torusVerifier)) {
+      this.formInvalid = 'Invalid verifier';
+      console.log(this.torusService.verifierMapKeys);
+      console.log(this.torusVerifier);
+    } else if (this.toPkh) {
+      this.torusPendingLookup = true;
+      this.torusLookupId = this.toPkh;
+      const { pkh, twitterId } = await this.torusService.lookupPkh(this.torusVerifier, this.toPkh).catch(e => {
+        console.error(e);
+        this.formInvalid = e;
+        return '';
+      });
+      this.torusPendingLookup = false;
+      if (pkh) {
+        this.torusLookupAddress = pkh;
+        this.torusTwitterId = twitterId ? twitterId : '';
+        this.estimateFees();
+        console.log('Torus address', pkh);
+      } else {
+        this.torusLookupAddress = '';
+      }
+    }
+  }
+  torusReady(): boolean {
+    return (!this.torusPendingLookup && this.torusLookupAddress !== '');
+  }
+  clearTorus() {
+    this.torusVerifier = '';
+    this.torusPendingLookup = false;
+    this.torusLookupAddress = '';
+    this.torusLookupId = '';
+    this.torusTwitterId = '';
+  }
+  async torusNotification(transaction: SendData) {
+    if (transaction.meta) {
+      if (transaction.meta.verifier === 'google') {
+        this.messageService.emailNotify(transaction.meta.alias, transaction.amount.toString());
+        this.lookupService.add(transaction.to, transaction.meta.alias, 2);
+      } else if (transaction.meta.verifier === 'reddit') {
+        this.messageService.redditNotify(transaction.meta.alias, transaction.amount.toString());
+        this.lookupService.add(transaction.to, transaction.meta.alias, 3);
+      } else if (transaction.meta.verifier === 'twitter') {
+        this.messageService.twitterNotify(transaction.meta.twitterId, transaction.meta.alias, transaction.amount.toString());
+        this.lookupService.add(transaction.to, transaction.meta.alias, 4);
+      }
+    }
+  }
+  previewAttention(): string {
+    if (this.torusLookupId) {
+      if (new Big(this.totalAmount()).gt('50')) {
+        let recipientKind = '';
+        switch (this.torusVerifier) {
+          case 'google':
+            recipientKind = 'Google account email address';
+            break;
+          case 'reddit':
+            recipientKind = 'Reddit username';
+            break;
+          case 'twitter':
+            recipientKind = 'Twitter handle';
+            break;
+          default:
+            recipientKind = 'information';
+        }
+        return `Carefully review the recipient's ${recipientKind}! Spelling mistakes can lead to permanent loss of the transferred funds.`;
+      }
+    }
+    return '';
   }
 }

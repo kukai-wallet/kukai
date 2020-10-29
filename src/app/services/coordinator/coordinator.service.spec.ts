@@ -23,6 +23,7 @@ import { AppComponent } from '../../app.component';
 import { ActivityService } from '../activity/activity.service';
 import { BalanceService } from '../balance/balance.service';
 import { DelegateService } from '../delegate/delegate.service';
+import { InputValidationService } from '../input-validation/input-validation.service';
 
 
 /**
@@ -51,7 +52,7 @@ describe('[ Coordinator ]', () => {
 				{ loader: { provide: TranslateLoader, useClass: TranslateFakeLoader }})],
 			providers: [ ActivityService, WalletService, EncryptionService, ErrorHandlingPipe,
 				BalanceService, DelegateService, TzrateService, MessageService,
-				OperationService, CoordinatorService, AppModule, AppComponent ]
+				OperationService, CoordinatorService, AppModule, AppComponent, InputValidationService]
 		});
 
 		service = TestBed.inject(CoordinatorService);

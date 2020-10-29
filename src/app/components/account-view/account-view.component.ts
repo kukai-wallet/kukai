@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { Account } from '../../services/wallet/wallet';
 import { WalletService } from '../../services/wallet/wallet.service';
@@ -9,6 +9,8 @@ import * as copy from 'copy-to-clipboard';
 import { filter } from 'rxjs/internal/operators/filter';
 import { CoordinatorService } from '../../services/coordinator/coordinator.service';
 import { Constants } from '../../constants';
+import { LookupService } from '../../services/lookup/lookup.service';
+import { ActivityService } from '../../services/activity/activity.service';
 
 @Component({
   selector: 'app-account-view',
@@ -25,9 +27,12 @@ export class AccountViewComponent implements OnInit {
     public messageService: MessageService,
     public timeAgoPipe: TimeAgoPipe,
     private router: Router,
-    private coordinatorService: CoordinatorService
+    private coordinatorService: CoordinatorService,
+    private lookupService: LookupService,
+    private activityService: ActivityService
   ) {}
     trigger = true;
+    @Input() activity: any;
   ngOnInit(): void {
     if (!this.walletService.wallet) {
       this.router.navigate(['']);
@@ -71,26 +76,7 @@ export class AccountViewComponent implements OnInit {
   }
 
   getCounterparty(transaction: any): string {
-    if (transaction.type === 'delegation') {
-      if (transaction.destination) {
-        return transaction.destination;
-      } else {
-        return ''; // User has undelegated
-      }
-    } else if (transaction.type === 'transaction') {
-      if (this.account.address === transaction.source) {
-        return transaction.destination; // to
-      } else {
-        return transaction.source; // from
-      }
-    } else if (transaction.type === 'origination') {
-      if (this.account.address === transaction.source) {
-        return transaction.destination;
-      } else {
-        return transaction.source;
-      }
-    }
-    return '';
+    return this.activityService.getCounterparty(transaction, this.account);
   }
   copy(account: Account) {
     copy(account.address);
@@ -100,7 +86,7 @@ export class AccountViewComponent implements OnInit {
     this.messageService.add(account.address + ' ' + copyToClipboard, 5);
   }
   explorerURL(hash: string) {
-    const baseURL = this.CONSTANTS.NET.NETWORK === 'carthagenet' ? 'https://carthage.tzkt.io/' : 'https://tzkt.io/';
+    const baseURL = this.CONSTANTS.NET.NETWORK === 'mainnet' ? 'https://tzkt.io/' : 'https://carthage.tzkt.io/';
     return baseURL + hash;
   }
 }

@@ -20,11 +20,11 @@
             "assets": [
               "src/assets",
               "src/favicon.ico",
-              "src/CNAME"
+              "src/CNAME",
+              "src/serviceworker"
             ],
             "styles": [
               "./node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "./node_modules/flag-icon-css/css/flag-icon.css",
               "./node_modules/font-awesome/css/font-awesome.css",
               "./node_modules/simple-line-icons/css/simple-line-icons.css",
               "src/scss/style.scss"
@@ -43,7 +43,7 @@
               "budgets": [
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
+                  "maximumWarning": "10kb"
                 }
               ],
               "optimization": true,
@@ -93,7 +93,6 @@
             ],
             "styles": [
               "./node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "node_modules/flag-icon-css/css/flag-icon.css",
               "node_modules/font-awesome/css/font-awesome.css",
               "node_modules/simple-line-icons/css/simple-line-icons.css",
               "src/scss/style.scss"
@@ -106,7 +105,8 @@
             "assets": [
               "src/assets",
               "src/favicon.ico",
-              "src/CNAME"
+              "src/CNAME",
+              "src/serviceworker"
             ]
           }
         },

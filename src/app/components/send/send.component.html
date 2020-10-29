@@ -6,9 +6,11 @@
   <div class="km-content">
     <div class="x" (click)="closeModal()"><img src="../../../assets/img/x.svg"></div>
     <div class="km-header">
-      <H1>Send tez</H1>
+      <H1 *ngIf="activeView === 0">Send tez</H1>
+      <H1 *ngIf="activeView === 1">Confirmation</H1>
       <!--<span class="close" (click)="modalOpen = false" class="close">&times;</span>-->
-      <button *ngIf="activeView === 0 && !walletService.isLedgerWallet()" class="small multiple-destinations" (click)="toggleDestination()">
+      <button *ngIf="activeView === 0 && !walletService.isLedgerWallet()" class="small multiple-destinations"
+        (click)="toggleDestination()">
         <ng-container *ngIf="!this.isMultipleDestinations">Multiple transactions</ng-container>
         <ng-container *ngIf="this.isMultipleDestinations">Single transaction</ng-container>
       </button>
@@ -16,28 +18,43 @@
     <!-- Prepare transaction -->
     <div class="km-body" *ngIf="activeView === 0">
       <div class="amount">
-        <input #amountInput class="input" class="custom-large" placeholder="0.00" [(ngModel)]="amount" (click)="sendMax = false;"
-          [style.font-size.rem]="dynSize()" [style.width.ch]="amount ? amount.length + 1 : 3.6" [disabled]="isMultipleDestinations">
+        <input #amountInput class="input" class="custom-large" placeholder="0.00" [(ngModel)]="amount"
+          (click)="sendMax = false;" [style.font-size.rem]="dynSize()"
+          [style.width.ch]="amount ? amount.length + 1 : 3.6" [disabled]="isMultipleDestinations">
         <span class="tez">tez</span>
       </div>
       <div class="row-group">
-        <button *ngIf="!this.isMultipleDestinations" tabindex=-1 class="small" [class.max]="sendMax" (click)="sendEntireBalance($event)">Send Max</button>
+        <button *ngIf="!this.isMultipleDestinations" tabindex=-1 class="small" [class.max]="sendMax"
+          (click)="sendEntireBalance($event)">Send Max</button>
         <p *ngIf="this.isMultipleDestinations"></p>
-        <p class="fee"><ng-container *ngIf="!getTotalBurn() ; else burn">Fee: </ng-container>
+        <p class="fee">
+          <ng-container *ngIf="!getTotalBurn() ; else burn">Fee: </ng-container>
           <ng-template #burn>Fee & storage cost: </ng-template>
-          {{ getTotalCost(true) }}</p>
+          {{ getTotalCost(true) }}
+        </p>
       </div>
       <div class="group">
         <label>From address</label>
         <p>{{ activeAccount.address }}</p>
       </div>
       <div *ngIf="!this.isMultipleDestinations" class="group">
-        <label>To address</label>
-        <input type="text" class="text" (input)="updateDefaultValues()" (change)="validateReceiverAddress()" [(ngModel)]="toPkh">
+        <label style="justify-content: space-between; opacity: 1; color: rgba(44, 50, 58, 0.4)"><span>Send to</span>
+          <select class="select-css" [(ngModel)]="torusVerifier" (ngModelChange)="verifierChange()">
+            <option value="" selected>Tezos Address</option>
+            <option *ngFor="let key of torusService.verifierMapKeys" value="{{key}}">{{ torusService.verifierMap[key].name }} Account</option>
+          </select></label>
+        <input type="text" class="text" (input)="updateDefaultValues()" (change)="validateReceiverAddress()"
+          [(ngModel)]="toPkh">
       </div>
+      <ng-container *ngIf="torusVerifier">
+        <p class="torus-details" *ngIf="torusPendingLookup">Loading address...</p>
+        <p class="torus-details" *ngIf="!torusPendingLookup && torusLookupAddress">{{ torusLookupAddress }}</p>
+      </ng-container>
       <div *ngIf="this.isMultipleDestinations" class="group">
         <label>Addresses and amounts <span class="batchInfo">{{ batchSpace() }}</span></label>
-        <textarea type="text" class="text" (input)="updateDefaultValues()" (change)="validateBatch()" rows="3" [(ngModel)]="toMultipleDestinationsString" placeholder="address1 amount1 ; &#10;address2 amount2 ; &#10;address3 ..."></textarea>
+        <textarea type="text" class="text" (input)="updateDefaultValues()" (change)="validateBatch()" rows="3"
+          [(ngModel)]="toMultipleDestinationsString"
+          placeholder="address1 amount1 ; &#10;address2 amount2 ; &#10;address3 ..."></textarea>
       </div>
       <div class="advanced">
         <small>Advanced</small>
@@ -55,21 +72,25 @@
         <div class="row-group">
           <div class="group">
             <label>Gas limit</label>
-            <input type="text" class="text" placeholder={{this.defaultTransactionParams.gas.toString()}} [(ngModel)]="gas">
+            <input type="text" class="text" placeholder={{this.defaultTransactionParams.gas.toString()}}
+              [(ngModel)]="gas">
           </div>
           <div class="group">
             <label>Fee</label>
-            <input type="text" (input)="updateMaxAmount()" (paste)="updateMaxAmount()" class="text" placeholder={{this.defaultTransactionParams.fee.toString()}} [(ngModel)]="fee">
+            <input type="text" (input)="updateMaxAmount()" (paste)="updateMaxAmount()" class="text"
+              placeholder={{this.defaultTransactionParams.fee.toString()}} [(ngModel)]="fee">
           </div>
         </div>
         <div class="row-group">
           <div class="group">
             <label>Storage limit</label>
-            <input type="text" (input)="updateMaxAmount()" (paste)="updateMaxAmount()" class="text" placeholder={{this.defaultTransactionParams.storage.toString()}} [(ngModel)]="storage">
+            <input type="text" (input)="updateMaxAmount()" (paste)="updateMaxAmount()" class="text"
+              placeholder={{this.defaultTransactionParams.storage.toString()}} [(ngModel)]="storage">
           </div>
           <div class="group">
             <label>Max storage cost</label>
-            <input type="text" class="text read-only" [value]="burnAmount() ? burnAmount() : '0 tez'" tabindex=-1 readonly>
+            <input type="text" class="text read-only" [value]="burnAmount() ? burnAmount() : '0 tez'" tabindex=-1
+              readonly>
           </div>
         </div>
       </div>
@@ -80,60 +101,82 @@
     </div>
     <!-- Confirm transaction -->
     <div class="km-body" *ngIf="activeView === 1">
-      <ng-container *ngIf="!isMultipleDestinations"> <!-- Single transaction -->
-        <p class="preview">
-          From — {{ activeAccount.address }}
-        </p>
-        <p class="preview">
-          To — {{ transactions[0].to }}
-        </p>
-        <p class="preview">
-          Amount — {{ transactions[0].amount | number:'1.0-6' }} tez
-        </p>
-        <p class="preview">
-          Fee — {{ getTotalFee() | number:'1.0-6' }} tez
-        </p>
-        <p *ngIf="getTotalBurn()" class="preview">
-          Storage cost — {{ getTotalBurn() | number:'1.0-6' }} tez
-        </p>
+      <!-- Single transaction -->
+      <div class="preview-top">
+      <div class="preview-amount">
+        <span class="section">Send</span>
+        <span class="amount-tez">{{ totalAmount() | number:'1.0-6' }} tez</span>
+        <span class="amount-usd">{{ totalAmount() * walletService.wallet.XTZrate | number:'1.0-2' }} USD</span>
+        <span *ngIf="!isMultipleDestinations" class="section">To</span>
+      </div>
+      <img src="../../../assets/img/tezos-xtz-logo.svg" style="height: 4.5rem; margin-right: 1rem">
+      </div>
+      <ng-container *ngIf="!isMultipleDestinations">
+        <span *ngIf="torusLookupId" class="torus-to"><img src="../../../assets/img/{{ torusVerifier }}-logo.svg">
+          {{ torusLookupId }}</span>
+        <span class="single-to">{{ transactions[0].to }}</span>
+        <p id="previewAttention" *ngIf="torusLookupId">{{ previewAttention() }}</p>
+        <div class="seperator"></div>
       </ng-container>
-      <ng-container *ngIf="isMultipleDestinations"> <!-- Multiple transactions -->
-        <p class="preview">
-          From — {{ activeAccount.address }}
-        </p>
-        <p class="preview">
-          Total Amount — {{ totalAmount() | number:'1.0-6' }} tez
-        </p>
-        <p class="preview">
-          Total Fee — {{ getTotalFee() | number:'1.0-6' }} tez
-        </p>
-        <p *ngIf="getTotalBurn()" class="preview">
-          Total Storage cost — {{ getTotalBurn() | number:'1.0-6' }} tez (*)
-        </p>
+      <ng-container *ngIf="isMultipleDestinations">
+        <!-- Multiple transactions -->
+        <div class="seperator"></div>
         <table>
           <thead>
-              <tr>
-                  <th scope="col">{{ 'SENDCOMPONENT.TO' | translate }}</th>
-                  <th scope="col">{{ 'SENDCOMPONENT.AMOUNT' | translate }}</th>
-              </tr>
+            <tr>
+              <th scope="col">{{ 'SENDCOMPONENT.TO' | translate }}</th>
+              <th scope="col">{{ 'SENDCOMPONENT.AMOUNT' | translate }}</th>
+            </tr>
           </thead>
           <tbody>
-              <tr *ngFor="let transaction of showTransactions">
-                  <td><span *ngIf="transaction.storageLimit">*</span>{{ transaction.to }}</td>
-                  <td class="txAmount">{{ transaction.amount | number:'1.0-6' }}</td>
-              </tr>
+            <tr *ngFor="let transaction of showTransactions">
+              <td><span *ngIf="transaction.storageLimit">*</span>{{ transaction.to }}</td>
+              <td class="txAmount">{{ transaction.amount | number:'1.0-6' }}</td>
+            </tr>
           </tbody>
-      </table>
-      <button style="margin-left: auto; margin-top: 1rem" *ngIf='transactions.length > 2' type="button" class="show-more" aria-label="More" (click)="toggleTransactions()">
+        </table>
+        <button style="margin-left: auto; margin: 0.5rem 0 1rem; height: 2rem;" *ngIf='transactions.length > 2' type="button"
+          class="show-more" aria-label="More" (click)="toggleTransactions()">
           <span aria-hidden="true"> {{ showBtn }} </span>
-      </button>
+        </button>
+        <div class="seperator"></div>
       </ng-container>
+      <!-- Sender -->
+      <ng-container *ngIf="this.walletService.wallet.verifier">
+        <!-- Torus -->
+        <div class="preview-row">
+          <span>From</span><span><img src="../../../assets/img/{{ this.walletService.wallet.verifier }}-logo.svg">
+            {{ this.walletService.wallet.displayName() }}
+          </span>
+        </div>
+        <div class="preview-row">
+          <span>Address</span><span>{{ activeAccount.address }}</span>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="!this.walletService.wallet.name">
+        <!-- Other -->
+        <div class="preview-row">
+          <span>From</span><span>{{ activeAccount.address }}</span>
+        </div>
+      </ng-container>
+      <div class="seperator"></div>
+      <div class="preview-row">
+        <span>Fee</span><span>{{ getTotalFee() | number:'1.0-6' }} tez</span>
+      </div>
+      <div *ngIf="getTotalBurn()" class="preview-row">
+        <span>Max storage cost</span><span>{{ getTotalBurn() | number:'1.0-6' }} tez</span>
+      </div>
+      <div class="seperator"></div>
       <div class="row-group" style="margin: 1.25rem 0 1.5rem;">
-        <input *ngIf="!walletService.isLedgerWallet()" [(ngModel)]="password" autocomplete="current-password" placeholder="Password" class="text password" type="password" (input)="this.pwdValid = ''" (change)="this.pwdValid = ''">
-        <button class="retry" *ngIf="walletService.isLedgerWallet() && ledgerError; else elseBlock" (click)="ledgerRetry()">Sign with Ledger</button>
+        <input *ngIf="!walletService.isLedgerWallet() && !walletService.isTorusWallet()" [(ngModel)]="password"
+          autocomplete="current-password" placeholder="Password" class="text password" type="password"
+          (input)="this.pwdValid = ''" (change)="this.pwdValid = ''">
+        <button class="retry" *ngIf="walletService.isLedgerWallet() && ledgerError; else elseBlock"
+          (click)="ledgerRetry()">Sign with Ledger</button>
         <ng-template #elseBlock>
-          <button  class="purple confirm" (click)="inject()" [disabled]="walletService.isLedgerWallet() && (!sendResponse || !sendResponse.payload || !sendResponse.payload.signedOperation)">
-          {{ walletService.isLedgerWallet() ? 'Broadcast' : 'Confirm'}}</button>
+          <button class="purple confirm" (click)="inject()"
+            [disabled]="walletService.isLedgerWallet() && (!sendResponse || !sendResponse.payload || !sendResponse.payload.signedOperation)">
+            {{ walletService.isLedgerWallet() ? 'Broadcast' : 'Confirm'}}</button>
         </ng-template>
       </div>
       <span *ngIf="this.pwdValid" class="danger margin">{{ this.pwdValid }}</span>
