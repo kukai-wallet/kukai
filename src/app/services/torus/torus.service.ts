@@ -160,7 +160,7 @@ export class TorusService {
         jwtParams
       });
       const keyPair = this.operationService.spPrivKeyToKeyPair(loginDetails.privateKey);
-      // console.log('Torus details', { keyPair, userInfo: loginDetails.userInfo });
+      console.log('DirectAuth KeyPair', keyPair);
       return { keyPair, userInfo: loginDetails.userInfo };
     } catch (e) {
       console.error(e, 'login caught');
