@@ -42,6 +42,7 @@ import { DelegateService } from './services/delegate/delegate.service';
 import { InputValidationService } from './services/input-validation/input-validation.service';
 import { LedgerService } from './services/ledger/ledger.service';
 import { EstimateService } from './services/estimate/estimate.service';
+import { BeaconService } from './services/beacon/beacon.service';
 
 // View components
 import { StartComponent } from './components/start/start.component';
@@ -75,6 +76,11 @@ import { TermsOfUseComponent } from './components/agreement/terms-of-use/terms-o
 import { PrivacyPolicyComponent } from './components/agreement/privacy-policy/privacy-policy.component';
 import { TorusComponent } from './components/torus/torus.component';
 import { TorusService } from './services/torus/torus.service';
+import { UriHandlerComponent } from './components/uri-handler/uri-handler.component';
+import { PermissionRequestComponent } from './components/permission-request/permission-request.component';
+import { LoggedInComponent } from './components/logged-in/logged-in.component';
+import { SettingsComponent } from './components/settings/settings.component';
+import { QrScannerComponent } from './components/qr-scanner/qr-scanner.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -114,7 +120,12 @@ export function HttpLoaderFactory(http: HttpClient) {
     AgreementComponent,
     TermsOfUseComponent,
     PrivacyPolicyComponent,
-    TorusComponent
+    TorusComponent,
+    UriHandlerComponent,
+    PermissionRequestComponent,
+    LoggedInComponent,
+    SettingsComponent,
+    QrScannerComponent
   ],
   imports: [
     BrowserModule,
@@ -158,6 +169,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     InputValidationService,
     LedgerService,
     EstimateService,
+    BeaconService,
 
     // Pipes
     ErrorHandlingPipe,

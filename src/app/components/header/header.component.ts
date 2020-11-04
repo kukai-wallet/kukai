@@ -12,6 +12,7 @@ import { MessageService } from '../../services/message/message.service';
 })
 export class HeaderComponent implements OnInit {
   @Input() activeAccount: Account;
+  @Input() settings = false;
   impAccs: Account[];
   constructor(
     private router: Router,
@@ -32,8 +33,6 @@ export class HeaderComponent implements OnInit {
     this.walletService.clearWallet();
     this.lookupService.clear();
     this.router.navigate(['']);
-  }
-  click() {
   }
   getUsername() {
     if (this.walletService.wallet instanceof TorusWallet) {

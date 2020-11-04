@@ -1,8 +1,22 @@
 <div id="top-container">
-  <a routerLink="/accounts" class="logo"><img id="logo" src="../../../assets/img/kukai-logo.svg"></a>
+  <a routerLink="/accounts" class="logo">
+    <img *ngIf="!settings" id="logo" src="../../../assets/img/kukai-logo.svg">
+    <img *ngIf="settings" id="logo" src="../../../assets/img/kukai-logo2.svg">
+  </a>
   <div class="middle">
     <ng-container *ngIf="!activeAccount">
-      <span>Accounts</span>
+      <ng-container *ngIf="settings">
+        <a class="accounts light" routerLink="/accounts">
+          Accounts
+        </a>
+        <img src="../../../assets/img/slash2.svg">
+        <span>Settings</span>
+      </ng-container>
+      <ng-container *ngIf="!settings">
+        <a class="accounts solo" routerLink="/accounts">
+          Accounts
+        </a>
+      </ng-container>
     </ng-container>
     <ng-container *ngIf="activeAccount">
       <a class="accounts" routerLink="/accounts">
@@ -13,30 +27,31 @@
         <div class="dropbtn"><span>{{ activeAccount.shortAddress() }}</span><img
             src="../../../assets/img/chevron-down.svg"></div>
         <div class="dropdown-content">
-          <div class="sep">
-            <ng-container *ngFor="let impAcc of impAccs">
-              <a routerLink="/account/{{impAcc.address}}" [class.selected]="impAcc.address === activeAccount.address">
-                {{ impAcc.shortAddress() }}
+          <ng-container *ngFor="let impAcc of impAccs">
+            <a routerLink="/account/{{impAcc.address}}" [class.selected]="impAcc.address === activeAccount.address">
+              {{ impAcc.shortAddress() }}
+            </a>
+            <ng-container *ngFor="let origAcc of impAcc.originatedAccounts">
+              <a routerLink="/account/{{origAcc.address}}" [class.selected]="origAcc.address === activeAccount.address">
+                {{ origAcc.shortAddress() }}
               </a>
-              <ng-container *ngFor="let origAcc of impAcc.originatedAccounts">
-                <a routerLink="/account/{{origAcc.address}}"
-                  [class.selected]="origAcc.address === activeAccount.address">
-                  {{ origAcc.shortAddress() }}
-                </a>
-              </ng-container>
             </ng-container>
-          </div>
+          </ng-container>
         </div>
       </div>
     </ng-container>
   </div>
-  <div>
-    <div id="menu" (click)="logout()">
-      <span>Logout</span><BR>
+  <div class="dropdown right">
+    <div id="menu" class="dropbtn">
+      <img src="../../../assets/img/user.svg">
+    </div>
+    <div class="dropdown-content right">
+      <a routerLink="/settings">Settings</a>
+      <a (click)="logout()">Logout</a>
     </div>
   </div>
 </div>
-<div id="header-list">
+<div id="header-list" [class.invert]="settings">
   <ng-container *ngIf="getVerifier()"><img class="verifier-logo"
       src="../../../assets/img/{{ getVerifier() }}-logo.svg">&nbsp;</ng-container>{{ getUsername() }}
 </div>

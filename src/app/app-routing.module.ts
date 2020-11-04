@@ -12,12 +12,23 @@ import { AccountViewComponent } from './components/account-view/account-view.com
 import { PrivacyPolicyComponent } from './components/agreement/privacy-policy/privacy-policy.component';
 import { TermsOfUseComponent } from './components/agreement/terms-of-use/terms-of-use.component';
 import { TorusComponent } from './components/torus/torus.component';
+import { UriHandlerComponent } from './components/uri-handler/uri-handler.component';
+import { LoggedInComponent } from './components/logged-in/logged-in.component';
+import { SettingsComponent } from './components/settings/settings.component';
 
 const routes: Routes = [
-  { path: '', component: StartComponent },  // Content Centre position
-  { path: 'new-wallet', component: NewWalletComponent },  // Content Centre position
+  { path: '', component: StartComponent },
+  { path: 'new-wallet', component: NewWalletComponent },
   { path: 'import', component: MnemonicImportComponent },
   { path: 'activate', component: ActivateComponent },
+  { path: '', component: LoggedInComponent,
+    children: [
+      { path: 'accounts/:uri', component: AccountsComponent },
+      { path: 'accounts', component: AccountsComponent },
+      { path: 'account/:address', component: AccountViewComponent },
+      { path: 'account', redirectTo: 'accounts'},
+      { path: 'settings', component: SettingsComponent },
+    ] },
   { path: 'connect-ledger', component: ConnectLedgerComponent },
   { path: 'direct-auth', component: TorusComponent },
   { path: 'accounts', component: AccountsComponent },

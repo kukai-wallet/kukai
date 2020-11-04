@@ -1,0 +1,25 @@
+@import "../../../scss/modal.scss";
+:host video {
+  width: 100%;
+}
+:host div.video-container {
+  margin: 1rem -1rem -0.5rem;
+}
+:host p.no-cam {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+:host button {
+  display: flex;
+  white-space: nowrap;
+  flex-direction: row;
+  margin: 1.5rem 0rem 1.5rem 1rem;
+  padding: 0.75rem 1.5rem;
+  border: 1px solid #5963FF;
+  color: #5963FF;
+  background: #FCFCFC;
+  font-weight: 500;
+  box-sizing: border-box;
+  border-radius: 0.5rem;
+}

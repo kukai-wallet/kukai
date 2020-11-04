@@ -80,7 +80,6 @@ export class InputValidationService {
     return true;
   }
   amount(amount: string): Boolean {
-    console.log(amount);
     if (amount === '' || amount === '0') { // default value / zero
       return true;
     } else if (Number(amount) && amount.match(/^(0|[1-9][0-9]{0,8})(\.[0-9]{1,6}){0,1}$/g)) { // Positive number

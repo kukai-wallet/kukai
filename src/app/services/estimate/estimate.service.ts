@@ -41,6 +41,7 @@ export class EstimateService {
         this.init(req[0].hash, req[0].chain_id, req[1], req[2], pk, pkh);
       }
     });
+    console.log('Ready for estimate!');
   }
   async estimate(transactions: any, from: string, callback) {
     this.queue.push({ transactions, from, callback });
@@ -68,7 +69,7 @@ export class EstimateService {
       }
     }
   }
-  async _estimate(transactions: any, from: string): Promise<any> {
+  private async _estimate(transactions: any, from: string): Promise<any> {
     const extraGas = 80;
     if (!this.hash) { return null; }
     const simulation = {
@@ -155,7 +156,8 @@ export class EstimateService {
         if (internalResult.result) {
           if (internalResult.result.consumed_gas) {
             gasUsage += internalResult.result && internalResult.result.consumed_gas ? Number(internalResult.result.consumed_gas) : 0;
-          } if (internalResult.result.balance_updates) {
+          }
+          if (internalResult.result.balance_updates) {
             for (const balanceUpdate of internalResult.result.balance_updates) {
               if (balanceUpdate.contract === this.pkh && balanceUpdate.change.slice(0, 1) === '-') {
                 burn = burn.minus(balanceUpdate.change);
@@ -174,7 +176,7 @@ export class EstimateService {
   /*
     Need to be updated when fee market appear or default behavior for bakers changes
   */
-  recommendFee(limits: any, reveal: boolean, bytes: number): number {
+  recommendFee(limits: any, reveal: boolean, bytes: number): string {
     const minimalFee = 100;
     const feePerByte = 1;
     const feePerGasUnit = 0.1;
@@ -189,34 +191,33 @@ export class EstimateService {
       numberOfOperations++;
     }
     bytes += 10 * numberOfOperations; // add 10 extra bytes for variation in amount & fee
-    return Number(Big(Math.ceil(minimalFee + (feePerByte * bytes) + (feePerGasUnit * gasUnits))).div(1000000));
+    return Big(Math.ceil(minimalFee + (feePerByte * bytes) + (feePerGasUnit * gasUnits))).div(1000000).toString();
   }
-  averageGasLimit(limits: any) {
-    let totalGasLimit = 0;
+  averageGasLimit(limits: any): string {
+    let totalGasLimit = Big(0);
     for (const data of limits) {
-      totalGasLimit += data.gasLimit;
+      totalGasLimit = totalGasLimit.plus(data.gasLimit);
     }
-    return Math.ceil(totalGasLimit / limits.length);
+    return Math.ceil(totalGasLimit.div(limits.length)).toString();
   }
-  averageStorageLimit(limits: any) {
-    let totalStorageLimit = 0;
+  averageStorageLimit(limits: any): string {
+    let totalStorageLimit = Big(0);
     for (const data of limits) {
-      totalStorageLimit += data.storageLimit;
+      totalStorageLimit = totalStorageLimit.plus(data.storageLimit);
     }
-    return Math.ceil(totalStorageLimit / limits.length);
+    return Math.ceil(Number(totalStorageLimit.div(limits.length))).toString();
   }
-  burnFee(limits: any) {
-    let totalStorageLimit = 0;
+  burnFee(limits: any): string {
+    let totalStorageLimit = Big(0);
     for (const data of limits) {
-      totalStorageLimit += data.storageLimit;
+      totalStorageLimit = totalStorageLimit.plus(data.storageLimit);
     }
-    return totalStorageLimit * 0.001;
+    return totalStorageLimit.div(1000).toString();
   }
   simulate(op: any): Observable<any> {
     op.signature = 'edsigtXomBKi5CTRf5cjATJWSyaRvhfYNHqSUGrn4SdbYRcGwQrUGjzEfQDTuqHhuA8b2d8NarZjz8TRf65WkpQmo423BtomS8Q';
     return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/scripts/run_operation',
       { operation: op, chain_id: this.chainId }, httpOptions).pipe(flatMap(res => {
-        console.log(JSON.stringify(res));
         this.operationService.checkApplied([res]);
         return of(res);
       })).pipe(catchError(err => this.operationService.errHandler(err)));

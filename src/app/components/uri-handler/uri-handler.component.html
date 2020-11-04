@@ -1,0 +1,13 @@
+
+<div>
+  <app-send (operationResponse)="operationResponse($event)" [beaconMode]=true [operationRequest]=operationRequest [activeAccount]=activeAccount></app-send>
+  <app-delegate (operationResponse)="operationResponse($event)" [beaconMode]=true [operationRequest]=operationRequest [activeAccount]=activeAccount></app-delegate>
+  <app-permission-request (permissionResponse)="permissionResponse($event)" [permissionRequest]="permissionRequest"></app-permission-request>
+  <div *ngIf="false">
+<button (click)="registerURIhandler()">Register</button>
+<a href="web+tezos://?type=tzip10&data=test"><button>Test</button></a><!--web+tezos://?type=tzip10&data=<data>-->
+  <button (click)="removePeers()">Remove peers</button>
+<input [(ngModel)]="pkDapp" type="text" placeholder="Public Key">
+<button (click)="addPeer()">Submit</button>
+</div>
+</div>
