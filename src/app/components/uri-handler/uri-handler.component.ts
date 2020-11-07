@@ -6,8 +6,8 @@ import { WalletService } from '../../services/wallet/wallet.service';
 import { Constants } from '../../constants';
 import { Account, ImplicitAccount, OriginatedAccount } from '../../services/wallet/wallet';
 import { Location } from '@angular/common';
-import * as Bs58check from 'bs58check';
 import { BeaconService } from '../../services/beacon/beacon.service';
+import { DeeplinkService } from '../../services/deeplink/deeplink.service';
 
 @Component({
   selector: 'app-uri-handler',
@@ -24,7 +24,8 @@ export class UriHandlerComponent implements OnInit {
     public messageService: MessageService,
     public walletService: WalletService,
     private location: Location,
-    private beaconService: BeaconService
+    private beaconService: BeaconService,
+    private deeplinkService: DeeplinkService
   ) { }
   ngOnInit(): void {
     if (this.walletService.wallet) {
@@ -32,33 +33,15 @@ export class UriHandlerComponent implements OnInit {
     }
   }
   async init() {
+    const pairingString = this.deeplinkService.popPairingJson();
+    if (pairingString) {
+      console.log(pairingString);
+      this.beaconService.preNotifyPairing(pairingString);
+    }
     await this.connectApp().catch((error) => console.error('connect error', error));
-    const path = this.location.path();
-    console.log(path);
-    console.log(window.location.origin);
-    if (path && path.length > 10 && path.slice(0, 10) === '/accounts/') {
-      let uri = path.slice(10);
-      uri = decodeURI(uri).replace(/%2F|%3F/g, '');
-      console.log(uri.slice(0, 12));
-      if (uri.length > 12 && uri.slice(0, 12) === 'web%2Btezos:') {// Correct prefix
-        const rest = uri.slice(12).split(/\&|%3D/g);
-        console.log(rest);
-        if (rest.length === 4 && (rest[0] + rest[1] + rest[2]) === 'typetzip10data') { // Tzip-10
-          console.log(rest[3]);
-          const base58encoded = rest[3];
-          const base58decoded = Bs58check.decode(base58encoded);
-          console.log(base58decoded.toString());
-          console.log('Connected?');
-          await this.beaconService.client.isConnected;
-          console.log('Connected!!!');
-          this.beaconService.addPeer(base58decoded.toString());
-          this.location.replaceState('/accounts');
-        } else {
-          console.warn('Unsupported URI format');
-        }
-      } else {
-        console.log(`${uri}`);
-      }
+    if (pairingString) {
+      await this.beaconService.client.isConnected;
+      this.beaconService.addPeer(pairingString);
     }
   }
   /* https://docs.walletbeacon.io/beacon/03.getting-started-wallet.html#setup */
@@ -70,9 +53,7 @@ export class UriHandlerComponent implements OnInit {
     this.beaconService.client
       .connect(async (message: any) => {
         console.log('### beacon message', message);
-
-        // Let's assume it's a permission request, but we obviously need to handle all request types
-        if (message.network.type !== this.CONSTANTS.NET.NETWORK && false) { // Todo: remove false
+        if (message.network.type !== this.CONSTANTS.NET.NETWORK) {
           console.warn(`Rejecting Beacon message because of network. Expected ${this.CONSTANTS.NET.NETWORK} instead of ${message.network.type}`);
           await this.beaconService.rejectOnNetwork(message);
         } else if (!this.permissionRequest && !this.operationRequest) {

@@ -30,7 +30,6 @@ export class AccountsComponent implements OnInit {
 
   ngOnInit(): void {
     if (!this.walletService.wallet) {
-      this.messageService.addWarning('Failed to load the requested page. You need to login first!');
       this.router.navigate(['']);
     } else {
       this.onResize();

@@ -27,10 +27,6 @@ export class SettingsComponent implements OnInit {
     } else {
       this.router.navigate(['']);
     }
-
-  }
-  registerURIhandler() {
-    navigator.registerProtocolHandler('web+tezos', `${window.location.origin}/accounts/%s`, 'Kukai Wallet');
   }
   accountAvailable(pkh: string): boolean {
     const index = this.implicitAccounts.findIndex((impAcc: any) => impAcc.pkh === pkh);

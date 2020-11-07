@@ -21,11 +21,30 @@ export class BeaconService {
     'sign_payload_request': 'sign_payload_response',
     'broadcast_request': 'broadcast_response'
   };
+  preNotifyPairing(pairInfoJson: string) {
+    const pairInfo: P2PPairInfo = JSON.parse(pairInfoJson);
+    const peersJson = localStorage.getItem('beacon:communication-peers');
+    let newPublicKey = true;
+    if (peersJson) {
+      const peers = JSON.parse(peersJson);
+      if (peers && peers.length > 0 && pairInfo.publicKey) {
+        for (const peer of peers) {
+          if (peer.publicKey && peer.publicKey === pairInfo.publicKey) {
+            newPublicKey = false;
+            console.log('Existing public key found!');
+            break;
+          }
+        }
+      }
+    }
+    if (newPublicKey) {
+      this.messageService.add(`Pairing with ${pairInfo.name}...`);
+    }
+  }
   async addPeer(pairInfoJson: string) {
     const pairInfo: P2PPairInfo = JSON.parse(pairInfoJson);
     console.log('PairInfo', pairInfo);
     await this.client.addPeer(pairInfo);
-    this.messageService.addSuccess(`Pairing with ${pairInfo.name}...`);
   }
   async syncBeaconState() {
     this.peers = await this.getPeers();
