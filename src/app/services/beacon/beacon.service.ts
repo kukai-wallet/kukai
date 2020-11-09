@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MessageService } from '../../services/message/message.service';
-import { BEACON_VERSION } from '@airgap/beacon-sdk/dist/constants';
-import { WalletClient, BeaconMessageType, PermissionScope, PermissionResponseInput, P2PPairInfo, BeaconErrorType, BeaconResponseInputMessage, BeaconMessage, OperationResponseInput } from '@airgap/beacon-sdk';
+import { WalletClient, BeaconMessageType, PermissionScope, PermissionResponseInput, P2PPairingRequest, BeaconErrorType, BeaconResponseInputMessage, BeaconMessage, OperationResponseInput, BEACON_VERSION } from '@airgap/beacon-sdk';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +21,7 @@ export class BeaconService {
     'broadcast_request': 'broadcast_response'
   };
   preNotifyPairing(pairInfoJson: string) {
-    const pairInfo: P2PPairInfo = JSON.parse(pairInfoJson);
+    const pairInfo: P2PPairingRequest = JSON.parse(pairInfoJson);
     const peersJson = localStorage.getItem('beacon:communication-peers');
     let newPublicKey = true;
     if (peersJson) {
@@ -42,7 +41,7 @@ export class BeaconService {
     }
   }
   async addPeer(pairInfoJson: string) {
-    const pairInfo: P2PPairInfo = JSON.parse(pairInfoJson);
+    const pairInfo: P2PPairingRequest = JSON.parse(pairInfoJson);
     console.log('PairInfo', pairInfo);
     await this.client.addPeer(pairInfo);
   }
@@ -56,7 +55,7 @@ export class BeaconService {
     this.syncBeaconState();
   }
   async removePeer(index: number) {
-    const pairInfo: P2PPairInfo = this.peers[index];
+    const pairInfo: P2PPairingRequest = this.peers[index];
     await this.client.removePeer(pairInfo);
     await this.client.removeAppMetadata(pairInfo.publicKey);
     this.syncBeaconState();
@@ -84,7 +83,7 @@ export class BeaconService {
   async rejectOnSourceAddress(message: any) {
     await this.respondWithError(BeaconErrorType.NO_PRIVATE_KEY_FOUND_ERROR, message);
   }
-  async rejectOnToManyOps(message: any) {
+  async rejectOnTooManyOps(message: any) {
     await this.respondWithError(BeaconErrorType.TOO_MANY_OPERATIONS, message);
   }
   async rejectOnUnknown(message: any) {
@@ -117,9 +116,5 @@ export class BeaconService {
   }
   async rejectPermissionRequest(message: any) {
     await this.respondWithError(BeaconErrorType.NOT_GRANTED_ERROR, message);
-  }
-  registerURIhandler() {
-    navigator.registerProtocolHandler('web+tezos', `${window.location.origin}/accounts/%s`, 'Kukai'); // web+tezos://?type=tzip10&data=<data>
-    console.log(`${window.location.origin}/accounts/<payload>`);
   }
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MessageService } from '../../services/message/message.service';
-import { WalletClient, BeaconMessageType, PermissionScope, PermissionResponseInput, P2PPairInfo, BeaconErrorType, BeaconResponseInputMessage, BeaconMessage, OperationResponseInput } from '@airgap/beacon-sdk';
+import { WalletClient, BeaconMessageType, PermissionScope, PermissionResponseInput, P2PPairingRequest, BeaconErrorType, BeaconResponseInputMessage, BeaconMessage, OperationResponseInput } from '@airgap/beacon-sdk';
 import { WalletService } from '../../services/wallet/wallet.service';
 import { Constants } from '../../constants';
 import { Account, ImplicitAccount, OriginatedAccount } from '../../services/wallet/wallet';
@@ -87,7 +87,7 @@ export class UriHandlerComponent implements OnInit {
       return false;
     } else if (message.operationDetails.length > 1) {
       console.warn('Multiple operations currently not supported in requests');
-      await this.beaconService.rejectOnToManyOps(message);
+      await this.beaconService.rejectOnTooManyOps(message);
       return false;
     }
 
