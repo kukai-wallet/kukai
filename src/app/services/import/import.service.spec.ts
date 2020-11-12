@@ -23,7 +23,7 @@ import { TzrateService } from '../tzrate/tzrate.service';
 import { ActivityService } from '../activity/activity.service';
 import { DelegateService } from '../delegate/delegate.service';
 import { FullWallet, LegacyWalletV2, HdWallet, LegacyWalletV3 } from '../wallet/wallet';
-import { ConseilService } from '../conseil/conseil.service';
+import { IndexerService } from '../indexer/indexer.service';
 import { TorusService } from '../torus/torus.service';
 import { InputValidationService } from '../input-validation/input-validation.service';
 
@@ -44,7 +44,7 @@ describe('[ ImportService ]', () => {
 
 	let wallet: WalletService;
 	let operation: OperationService;
-	let conseil: ConseilService;
+	let indexer: IndexerService;
 
 
 	// testing data
@@ -122,7 +122,7 @@ describe('[ ImportService ]', () => {
 		service = TestBed.inject(ImportService);
 		wallet = TestBed.inject(WalletService);
 		operation = TestBed.inject(OperationService);
-		conseil = TestBed.inject(ConseilService);
+		indexer = TestBed.inject(IndexerService);
 
 		//spyOn(service, 'importWalletData');
 		//spyOn(service, 'importWalletFromPkh')
@@ -224,13 +224,13 @@ describe('[ ImportService ]', () => {
 		});
 		describe('> Legacy v3', async () => {
 			beforeEach(() => {
-				spyOn(conseil, 'getContractAddresses').and.callFake(async function(address: string) {
+				spyOn(indexer, 'getContractAddresses').and.callFake(async function(address: string) {
           if (address.slice(0, 2) === 'tz') {
           return ['KT1KwPDCVmkrXQ2ZKWhVAiiFzYxiXCEyhE7U'];
         } else {
           return [];
         }});
-				spyOn(conseil, 'accountInfo').and.callFake(function() { return rx.Observable.of(0);	});
+				spyOn(indexer, 'accountInfo').and.callFake(async function() { return 0;	});
 				wallet.wallet = null;
 			});
 			it('should import Legacy v3 wallet', async () => {
@@ -261,8 +261,8 @@ describe('[ ImportService ]', () => {
 			beforeAll(() => {
 			});
 			beforeEach(() => {
-				spyOn(conseil, 'getContractAddresses').and.callFake(async function() { return []; });
-				spyOn(conseil, 'accountInfo').and.callFake(function() { return rx.Observable.of(numberOfAccounts--); });
+				spyOn(indexer, 'getContractAddresses').and.callFake(async function() { return []; });
+				spyOn(indexer, 'accountInfo').and.callFake(async function() { return numberOfAccounts--; });
 			});
 			it('should import HD wallet', async () => {
 				const success = await service.importWalletFromJson(JSON.stringify(hd.keyStore), hd.password);

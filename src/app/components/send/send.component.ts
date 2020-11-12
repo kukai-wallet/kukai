@@ -37,7 +37,9 @@ const zeroTxParams: DefaultTransactionParams = {
   templateUrl: './send.component.html',
   styleUrls: ['./send.component.scss']
 })
+
 export class SendComponent implements OnInit {
+  costPerByte: string = this.estimateService.costPerByte;
   // torus
   torusVerifier = '';
   torusPendingLookup = false;
@@ -248,7 +250,7 @@ export class SendComponent implements OnInit {
       let accountBalance = Big(account.balanceXTZ).div(1000000);
       accountBalance = accountBalance.minus(this.fee && Number(this.fee) ? Number(this.fee) : this.defaultTransactionParams.fee);
       if (!this.isMultipleDestinations) {
-        accountBalance = accountBalance.minus(this.storage && Number(this.storage) ? Number(this.storage) / 1000 : this.defaultTransactionParams.burn);
+        accountBalance = accountBalance.minus(this.storage && Number(this.storage) ? Number(Big(this.storage).times(this.costPerByte).div('1000000')) : this.defaultTransactionParams.burn);
       } else {
         accountBalance = accountBalance.minus(this.defaultTransactionParams.burn);
       }
@@ -391,7 +393,7 @@ export class SendComponent implements OnInit {
     this.updateDefaultValues();
   }
   burnAmount(): string {
-    const burn = this.storage ? Number(this.storage) / 1000 : this.defaultTransactionParams.storage / 1000;
+    const burn = this.storage ? Number(Big(this.storage).times(this.costPerByte).div(1000000)) : this.defaultTransactionParams.burn;
     if (burn) {
       return burn + ' tez';
     }
@@ -672,7 +674,7 @@ export class SendComponent implements OnInit {
   }
   getTotalBurn(): number {
     if (this.storage !== '' && Number(this.storage)) {
-      return Number(Big(this.storage).mul(this.transactions.length).div('1000').toString());
+      return Number(Big(this.storage).mul(this.transactions.length).times(this.costPerByte).div(1000000).toString());
     }
     return Number(this.defaultTransactionParams.burn);
   }

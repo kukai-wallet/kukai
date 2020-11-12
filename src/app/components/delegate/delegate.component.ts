@@ -13,6 +13,7 @@ import { LedgerService } from '../../services/ledger/ledger.service';
 import { Constants } from '../../constants';
 import { LedgerWallet, Account, ImplicitAccount, OriginatedAccount, TorusWallet } from '../../services/wallet/wallet';
 import { MessageService } from '../../services/message/message.service';
+import Big from 'big.js';
 
 @Component({
   selector: 'app-delegate',
@@ -22,10 +23,10 @@ import { MessageService } from '../../services/message/message.service';
 export class DelegateComponent implements OnInit {
   modalOpen = false;
   activeView = 0;
-  recommendedFee = 0.0013;
+  recommendedFee = 0.0004;
   revealFee = 0;
-  pkhFee = 0.0013;
-  ktFee = 0.003;
+  pkhFee = 0.0004;
+  ktFee = 0.0008;
   @ViewChild('toPkhInput') toPkhView: ElementRef;
   CONSTANTS = new Constants();
   @Input() activeAccount: Account;
@@ -249,7 +250,7 @@ export class DelegateComponent implements OnInit {
     this.operationService.isRevealed(this.activeAccount.pkh)
       .subscribe((revealed: boolean) => {
         if (!revealed) {
-          this.revealFee = 0.0013;
+          this.revealFee = 0.0002;
         } else {
           this.revealFee = 0;
         }
@@ -258,9 +259,9 @@ export class DelegateComponent implements OnInit {
   }
   checkSource() {
     if (this.activeAccount instanceof ImplicitAccount) {
-      this.recommendedFee = this.revealFee + this.pkhFee;
+      this.recommendedFee = Number(new Big(this.revealFee).plus(this.pkhFee));
     } else if (this.activeAccount instanceof OriginatedAccount) {
-      this.recommendedFee = this.revealFee + this.ktFee;
+      this.recommendedFee = Number(new Big(this.revealFee).plus(this.ktFee));
     }
   }
   getFee() {

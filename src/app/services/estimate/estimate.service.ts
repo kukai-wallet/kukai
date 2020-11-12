@@ -7,13 +7,14 @@ import { DefaultTransactionParams } from '../../interfaces';
 import Big from 'big.js';
 
 const httpOptions = { headers: { 'Content-Type': 'application/json' } };
-const hardGasLimit = 800000;
+const hardGasLimit = 1040000;
 const hardStorageLimit = 60000;
 @Injectable()
 export class EstimateService {
+  readonly costPerByte = '250';
+  readonly revealGasLimit = 1000;
   queue = [];
   CONSTANTS = this.operationService.CONSTANTS;
-  revealGasLimit = 10000;
   nodeURL = this.CONSTANTS.NET.NODE_URL;
   pkh: string;
   pk: string;
@@ -165,7 +166,7 @@ export class EstimateService {
         }
       }
     }
-    const storageUsage = Math.round(burn / 1000);
+    const storageUsage = Math.round(burn / Number(this.costPerByte));
     if (gasUsage < 0 || gasUsage > hardGasLimit || storageUsage < 0 || storageUsage > hardStorageLimit) {
       throw new Error('InvalidUsageCalculation');
     }
@@ -210,7 +211,7 @@ export class EstimateService {
     for (const data of limits) {
       totalStorageLimit += data.storageLimit;
     }
-    return totalStorageLimit * 0.001;
+    return Number(Big(totalStorageLimit).times(this.costPerByte).div('1000000'));
   }
   simulate(op: any): Observable<any> {
     op.signature = 'edsigtXomBKi5CTRf5cjATJWSyaRvhfYNHqSUGrn4SdbYRcGwQrUGjzEfQDTuqHhuA8b2d8NarZjz8TRf65WkpQmo423BtomS8Q';
