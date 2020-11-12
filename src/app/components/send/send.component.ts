@@ -674,7 +674,7 @@ export class SendComponent implements OnInit {
   }
   getTotalBurn(): number {
     if (this.storage !== '' && Number(this.storage)) {
-      return Number(Big(this.storage).mul(this.transactions.length).div(this.costPerByte).toString());
+      return Number(Big(this.storage).mul(this.transactions.length).times(this.costPerByte).div(1000000).toString());
     }
     return Number(this.defaultTransactionParams.burn);
   }
