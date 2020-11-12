@@ -1,20 +1,20 @@
 import { Injectable } from '@angular/core';
 import { WalletService } from '../wallet/wallet.service';
-import { ConseilService } from '../conseil/conseil.service';
-import { of, Observable } from 'rxjs';
+import { of, Observable, from as fromPromise } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 import { Activity, Account } from '../wallet/wallet';
 import { MessageService } from '../message/message.service';
 import { LookupService } from '../lookup/lookup.service';
+import { IndexerService } from '../indexer/indexer.service';
 
 @Injectable()
 export class ActivityService {
   maxTransactions = 10;
   constructor(
     private walletService: WalletService,
-    private conseilService: ConseilService,
     private messageService: MessageService,
-    private lookupService: LookupService
+    private lookupService: LookupService,
+    private indexerService: IndexerService
   ) {}
   updateTransactions(pkh): Observable<any> {
     try {
@@ -29,7 +29,7 @@ export class ActivityService {
     }
   }
   getTransactonsCounter(account): Observable<any> {
-    return this.conseilService.accountInfo(account.address).pipe(
+    return fromPromise(this.indexerService.accountInfo(account.address)).pipe(
       flatMap((counter) => {
         if (account.activitiesCounter !== counter) {
           return this.getAllTransactions(account, counter);
@@ -42,7 +42,7 @@ export class ActivityService {
     );
   }
   getAllTransactions(account, counter): Observable<any> {
-    return this.conseilService.getOperations(account.address).pipe(
+    return fromPromise(this.indexerService.getOperations(account.address)).pipe(
       flatMap((ans) => {
         if (Array.isArray(ans)) {
           const oldActivities = account.activities;

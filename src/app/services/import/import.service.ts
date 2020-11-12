@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { WalletType, KeyPair } from './../../interfaces';
 import { WalletService } from '../wallet/wallet.service';
 import { CoordinatorService } from '../coordinator/coordinator.service';
-import { ConseilService } from '../conseil/conseil.service';
 import {
   LegacyWalletV1,
   LegacyWalletV2,
@@ -14,15 +13,16 @@ import {
 import { hd, utils } from '@tezos-core-tools/crypto-utils';
 import { EncryptionService } from '../encryption/encryption.service';
 import { TorusService } from '../torus/torus.service';
+import { IndexerService } from '../indexer/indexer.service';
 
 @Injectable()
 export class ImportService {
   constructor(
     private walletService: WalletService,
     private coordinatorService: CoordinatorService,
-    private conseilService: ConseilService,
+    private indexerService: IndexerService,
     private encryptionService: EncryptionService,
-    private torusService: TorusService
+    private torusService: TorusService,
   ) { }
   pwdRequired(json: string) {
     const walletData = JSON.parse(json);
@@ -134,9 +134,8 @@ export class ImportService {
       let counter = 1;
       while (counter) {
         keys = hd.keyPairFromAccountIndex(seed, index);
-        counter = await this.conseilService
-          .accountInfo(keys.pkh)
-          .toPromise();
+        counter = await this.indexerService
+          .accountInfo(keys.pkh);
         if (counter || index === 0) {
           this.walletService.addImplicitAccount(
             keys.pk,
@@ -148,7 +147,7 @@ export class ImportService {
       this.walletService.wallet.index = index;
     } else {
       this.walletService.addImplicitAccount(keys.pk);
-      await this.findContracts(keys.pkh, true);
+      await this.findContracts(keys.pkh);
     }
     return true;
   }
@@ -196,17 +195,12 @@ export class ImportService {
       this.walletService.wallet.name = '@' + username;
     }
   }
-  async findContracts(pkh: string, recursiveScan = false, address: string = pkh) {
-    const addresses = await this.conseilService.getContractAddresses(address);
+  async findContracts(pkh: string) {
+    const addresses = await this.indexerService.getContractAddresses(pkh);
     for (const KT of addresses) {
       console.log('Found KT: ' + KT);
       this.walletService.addOriginatedAccount(KT, pkh);
     }
     this.walletService.storeWallet();
-    if (recursiveScan && addresses.length) {
-      for (const KT of addresses) {
-        await this.findContracts(pkh, true, KT);
-      }
-    }
   }
 }

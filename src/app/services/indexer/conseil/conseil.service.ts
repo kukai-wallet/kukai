@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Constants } from '../../constants';
+import { Constants } from '../../../constants';
 import { of, Observable, from as fromPromise } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 import { ConseilDataClient, ConseilQueryBuilder, ConseilSortDirection, ConseilOperator } from 'conseiljs';
+import { Indexer } from '../indexer.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ConseilService {
+export class ConseilService implements Indexer {
   CONSTANTS: any;
   conseilServer: any;
   platform: string;
@@ -19,23 +20,27 @@ export class ConseilService {
     this.network = this.CONSTANTS.NET.NETWORK;
     this.platform = 'tezos';
   }
-  async getContractAddresses(pkh: string): Promise<any> {
+  async getContractAddresses(pkh: string, currentAddress: string = pkh): Promise<any> {
     const entity = 'operations';
     let query = ConseilQueryBuilder.blankQuery();
     query = ConseilQueryBuilder.addFields(query, 'originated_contracts');
     query = ConseilQueryBuilder.addPredicate(query, 'kind', ConseilOperator.EQ, ['origination'], false);
-    query = ConseilQueryBuilder.addPredicate(query, 'source', ConseilOperator.EQ, [pkh], false);
+    query = ConseilQueryBuilder.addPredicate(query, 'source', ConseilOperator.EQ, [currentAddress], false);
     query = ConseilQueryBuilder.addPredicate(query, 'status', ConseilOperator.EQ, ['applied'], false);
     query = ConseilQueryBuilder.addOrdering(query, 'block_level', ConseilSortDirection.DESC);
     query = ConseilQueryBuilder.setLimit(query, 100);
     const results = await ConseilDataClient.executeEntityQuery(this.conseilServer, this.platform, this.network, entity, query);
-    const addresses = [];
+    let addresses = [];
     for (const result of results) {
       addresses.push(result.originated_contracts);
     }
+    for (const address of addresses) { // Needed to find accounts originated from other originated accounts
+      const childAddresses = await this.getContractAddresses(pkh, address);
+      addresses = addresses.concat(childAddresses);
+    }
     return addresses;
   }
-  accountInfo(address: string): Observable<any> {
+  accountInfo(address: string): Promise<any> {
     const entity = 'accounts';
     let query = ConseilQueryBuilder.blankQuery();
     query = ConseilQueryBuilder.addFields(query, 'block_level');
@@ -47,9 +52,9 @@ export class ConseilService {
       } else {
         return of(0);
       }
-    }));
+    })).toPromise();
   }
-  getOperations(pkh: string): Observable<any> {
+  getOperations(pkh: string): Promise<any> {
     const entity = 'operations';
     let sendQuery = ConseilQueryBuilder.blankQuery();
     sendQuery = ConseilQueryBuilder.addFields(sendQuery, 'kind', 'block_hash', 'operation_group_hash', 'timestamp', 'originated_contracts', 'source', 'destination', 'amount', 'delegate');
@@ -76,9 +81,9 @@ export class ConseilService {
         console.log(transactions);
         return of(transactions);
       }));
-    }));
+    })).toPromise();
   }
-  formatTx(input: any): any {
+  private formatTx(input: any): any {
     const output = [];
     for (const tx of input) {
       if (tx.kind !== 'transaction' || tx.amount > 0) {
