@@ -1,7 +1,7 @@
 interface Net {
     NAME: string;
     NETWORK: string;
-    CSI: { // Conseil Server Info
+    CSI?: { // Conseil Server Info
         url: string;
         apiKey: string;
     };
@@ -36,4 +36,12 @@ export class Constants {
             BLOCK_EXPLORER_URL: 'https://carthage.tzkt.io'
         };
     }
+    private delphinet(): Net {
+      return {
+          NAME: 'Testnet / Delphi',
+          NETWORK: 'delphinet',
+          NODE_URL: 'https://delphinet-tezos.giganode.io/',
+          BLOCK_EXPLORER_URL: 'https://delphi.tzkt.io'
+      };
+  }
 }

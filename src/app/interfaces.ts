@@ -101,13 +101,13 @@ export enum PeriodKind {
   Promotion
 }
 export interface DefaultTransactionParams {
-  gas: string;
-  storage: string;
-  fee: string;
-  burn: string;
+  gas: number;
+  storage: number;
+  fee: number;
+  burn: number;
   reveal?: boolean;
   customLimits?: {
-    gasLimit: string;
-    storageLimit: string;
+    gasLimit: number;
+    storageLimit: number;
   }[];
 }

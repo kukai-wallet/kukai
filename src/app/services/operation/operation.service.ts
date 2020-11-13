@@ -137,7 +137,7 @@ export class OperationService {
                     source: keys.pkh,
                     fee: '0',
                     counter: (counter).toString(),
-                    gas_limit: '10000',
+                    gas_limit: '1000',
                     storage_limit: '0',
                     public_key: keys.pk
                   };
@@ -180,7 +180,7 @@ export class OperationService {
         source: pkh,
         fee: '0',
         counter: (++counter).toString(),
-        gas_limit: '10000',
+        gas_limit: '1000',
         storage_limit: '0',
         public_key: pk
       });
@@ -257,7 +257,7 @@ export class OperationService {
                     source: from,
                     fee: this.microTez.times(fee).toString(),
                     counter: (++counter).toString(),
-                    gas_limit: '10000',
+                    gas_limit: '1000',
                     storage_limit: '0',
                   };
                   if (to !== '') {
@@ -269,7 +269,7 @@ export class OperationService {
                     source: keys.pkh,
                     fee: this.microTez.times(fee).toString(),
                     counter: (++counter).toString(),
-                    gas_limit: '26283',
+                    gas_limit: '4380',
                     storage_limit: '0',
                     amount: '0',
                     destination: from,
@@ -289,7 +289,7 @@ export class OperationService {
                     source: keys.pkh,
                     fee: '0',
                     counter: (counter).toString(),
-                    gas_limit: '10000',
+                    gas_limit: '1000',
                     storage_limit: '0',
                     public_key: keys.pk
                   };

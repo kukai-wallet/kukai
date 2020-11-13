@@ -20,9 +20,9 @@ import { assertMichelsonData } from '@taquito/michel-codec';
 
 interface SendData {
   to: string;
-  amount: string;
-  gasLimit: string;
-  storageLimit: string;
+  amount: number;
+  gasLimit: number;
+  storageLimit: number;
   parameters?: any;
   meta?: {
     alias: string;
@@ -31,10 +31,10 @@ interface SendData {
   };
 }
 const zeroTxParams: DefaultTransactionParams = {
-  gas: '0',
-  storage: '0',
-  fee: '0',
-  burn: '0'
+  gas: 0,
+  storage: 0,
+  fee: 0,
+  burn: 0
 };
 @Component({
   selector: 'app-send',
@@ -42,6 +42,7 @@ const zeroTxParams: DefaultTransactionParams = {
   styleUrls: ['./send.component.scss']
 })
 export class SendComponent implements OnInit, OnChanges {
+  costPerByte: string = this.estimateService.costPerByte;
   // torus
   torusVerifier = '';
   torusPendingLookup = false;
@@ -285,7 +286,7 @@ export class SendComponent implements OnInit, OnChanges {
       let accountBalance = Big(account.balanceXTZ).div(1000000);
       accountBalance = accountBalance.minus(this.fee && Number(this.fee) ? Number(this.fee) : this.defaultTransactionParams.fee);
       if (!this.isMultipleDestinations) {
-        accountBalance = accountBalance.minus(this.storage && Number(this.storage) ? Big(this.storage).div(1000) : this.defaultTransactionParams.burn);
+        accountBalance = accountBalance.minus(this.storage && Number(this.storage) ? Number(Big(this.storage).times(this.costPerByte).div('1000000')) : this.defaultTransactionParams.burn);
       } else {
         accountBalance = accountBalance.minus(this.defaultTransactionParams.burn);
       }
@@ -307,11 +308,11 @@ export class SendComponent implements OnInit, OnChanges {
           this.showTransactions.push(this.transactions[0]);
         }
       } else {
-        const gasLimit: string = this.gas ? this.gas : this.defaultTransactionParams.gas;
-        const storageLimit: string = this.storage ? this.storage : this.defaultTransactionParams.storage;
+        const gasLimit: number = this.gas ? Number(this.gas) : this.defaultTransactionParams.gas;
+        const storageLimit: number = this.storage ? Number(this.storage) : this.defaultTransactionParams.storage;
         const toAddress = !this.torusVerifier ? this.toPkh : this.torusLookupAddress;
         const parameters = this.parameters ? this.parameters : undefined;
-        this.transactions = [{ to: toAddress, amount: this.amount, gasLimit, storageLimit, parameters }];
+        this.transactions = [{ to: toAddress, amount: Number(this.amount), gasLimit, storageLimit, parameters }];
         if (this.torusLookupId) {
           this.transactions[0].meta = { alias: this.torusLookupId, verifier: this.torusVerifier, twitterId: (this.torusVerifier === 'twitter') ? this.torusTwitterId : undefined };
         }
@@ -426,9 +427,7 @@ export class SendComponent implements OnInit, OnChanges {
     this.updateDefaultValues();
   }
   burnAmount(): string {
-    const burn: string = (this.storage && Number(this.storage))
-      ? Big(this.storage).div(1000)
-      : Big(this.defaultTransactionParams.storage).div(1000);
+    const burn = this.storage ? Number(Big(this.storage).times(this.costPerByte).div(1000000)) : this.defaultTransactionParams.burn;
     if (burn) {
       return burn + ' tez';
     }
@@ -683,13 +682,13 @@ export class SendComponent implements OnInit, OnChanges {
         if (singleSendDataArray.length === 2) {
           const singleSendDataCheckresult = this.checkReceiverAndAmount(singleSendDataArray[0], singleSendDataArray[1], finalCheck);
           if (singleSendDataCheckresult === '') {
-            const gasLimit = this.gas ? this.gas : this.defaultTransactionParams.customLimits &&
+            const gasLimit = this.gas ? Number(this.gas) : this.defaultTransactionParams.customLimits &&
               this.defaultTransactionParams.customLimits.length > index ?
               this.defaultTransactionParams.customLimits[index].gasLimit : this.defaultTransactionParams.gas;
-            const storageLimit = this.storage ? this.storage : this.defaultTransactionParams.customLimits &&
+            const storageLimit = this.storage ? Number(this.storage) : this.defaultTransactionParams.customLimits &&
               this.defaultTransactionParams.customLimits.length > index ?
               this.defaultTransactionParams.customLimits[index].storageLimit : this.defaultTransactionParams.storage;
-            this.toMultipleDestinations.push({ to: singleSendDataArray[0], amount: singleSendDataArray[1], gasLimit, storageLimit });
+            this.toMultipleDestinations.push({ to: singleSendDataArray[0], amount: Number(singleSendDataArray[1]), gasLimit, storageLimit });
           } else {
             this.toMultipleDestinations = [];
             validationError = singleSendDataCheckresult + '. Transaction ' + (index + 1);
@@ -729,7 +728,7 @@ export class SendComponent implements OnInit, OnChanges {
   }
   getTotalBurn(): number {
     if (this.storage !== '' && Number(this.storage)) {
-      return Number(Big(this.storage).times(this.transactions.length).div('1000'));
+      return Number(Big(this.storage).mul(this.transactions.length).times(this.costPerByte).div(1000000).toString());
     }
     return Number(Big(this.defaultTransactionParams.burn));
   }

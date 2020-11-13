@@ -7,13 +7,14 @@ import { DefaultTransactionParams } from '../../interfaces';
 import Big from 'big.js';
 
 const httpOptions = { headers: { 'Content-Type': 'application/json' } };
-const hardGasLimit = 800000;
+const hardGasLimit = 1040000;
 const hardStorageLimit = 60000;
 @Injectable()
 export class EstimateService {
+  readonly costPerByte = '250';
+  readonly revealGasLimit = 1000;
   queue = [];
   CONSTANTS = this.operationService.CONSTANTS;
-  revealGasLimit = 10000;
   nodeURL = this.CONSTANTS.NET.NODE_URL;
   pkh: string;
   pk: string;
@@ -167,7 +168,7 @@ export class EstimateService {
         }
       }
     }
-    const storageUsage = Math.round(burn / 1000);
+    const storageUsage = Math.round(burn / Number(this.costPerByte));
     if (gasUsage < 0 || gasUsage > hardGasLimit || storageUsage < 0 || storageUsage > hardStorageLimit) {
       throw new Error('InvalidUsageCalculation');
     }
@@ -176,7 +177,7 @@ export class EstimateService {
   /*
     Need to be updated when fee market appear or default behavior for bakers changes
   */
-  recommendFee(limits: any, reveal: boolean, bytes: number): string {
+  recommendFee(limits: any, reveal: boolean, bytes: number): number {
     const minimalFee = 100;
     const feePerByte = 1;
     const feePerGasUnit = 0.1;
@@ -191,28 +192,28 @@ export class EstimateService {
       numberOfOperations++;
     }
     bytes += 10 * numberOfOperations; // add 10 extra bytes for variation in amount & fee
-    return Big(Math.ceil(minimalFee + (feePerByte * bytes) + (feePerGasUnit * gasUnits))).div(1000000).toString();
+    return Number(Big(Math.ceil(minimalFee + (feePerByte * bytes) + (feePerGasUnit * gasUnits))).div(1000000).toString());
   }
-  averageGasLimit(limits: any): string {
-    let totalGasLimit = Big(0);
+  averageGasLimit(limits: any): number {
+    let totalGasLimit = 0;
     for (const data of limits) {
-      totalGasLimit = totalGasLimit.plus(data.gasLimit);
+      totalGasLimit += data.gasLimit;
     }
-    return Math.ceil(totalGasLimit.div(limits.length)).toString();
+    return Math.ceil(totalGasLimit / limits.length);
   }
-  averageStorageLimit(limits: any): string {
+  averageStorageLimit(limits: any): number {
+    let totalStorageLimit = 0;
+    for (const data of limits) {
+      totalStorageLimit += data.storageLimit;
+    }
+    return Math.ceil(totalStorageLimit / limits.length);
+  }
+  burnFee(limits: any): number {
     let totalStorageLimit = Big(0);
     for (const data of limits) {
       totalStorageLimit = totalStorageLimit.plus(data.storageLimit);
     }
-    return Math.ceil(Number(totalStorageLimit.div(limits.length))).toString();
-  }
-  burnFee(limits: any): string {
-    let totalStorageLimit = Big(0);
-    for (const data of limits) {
-      totalStorageLimit = totalStorageLimit.plus(data.storageLimit);
-    }
-    return totalStorageLimit.div(1000).toString();
+    return Number(Big(totalStorageLimit).times(this.costPerByte).div('1000000').toString());
   }
   simulate(op: any): Observable<any> {
     op.signature = 'edsigtXomBKi5CTRf5cjATJWSyaRvhfYNHqSUGrn4SdbYRcGwQrUGjzEfQDTuqHhuA8b2d8NarZjz8TRf65WkpQmo423BtomS8Q';

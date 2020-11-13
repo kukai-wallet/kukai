@@ -1,4 +1,7 @@
 # Release notes
+## 1.9.1
+* Support for the Delphi protocol
+* Add tzkt service
 ## 1.9
 * DirectAuth integration (Google, Reddit, Twitter) with lookup and reverse-lookup support
 * Several bug fixes
