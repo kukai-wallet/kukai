@@ -8,6 +8,7 @@ import { Account, ImplicitAccount, OriginatedAccount } from '../../services/wall
 import { Location } from '@angular/common';
 import { BeaconService } from '../../services/beacon/beacon.service';
 import { DeeplinkService } from '../../services/deeplink/deeplink.service';
+import { emitMicheline, assertMichelsonData } from '@taquito/michel-codec';
 
 @Component({
   selector: 'app-uri-handler',
@@ -98,6 +99,9 @@ export class UriHandlerComponent implements OnInit {
         console.warn('Invocation of user controlled contract is disabled');
         await this.beaconService.rejectOnPermission(message);
         return false;
+      } else if (this.invalidParameters(message.operationDetails[0].parameters)) {
+        await this.beaconService.rejectOnParameters(message);
+        return false;
       }
     } else if (message.operationDetails[0].kind === 'delegation') {
       if (!message.operationDetails[0].delegate) {
@@ -112,10 +116,24 @@ export class UriHandlerComponent implements OnInit {
     this.activeAccount = this.walletService.wallet.getImplicitAccount(message.sourceAddress);
     return true;
   }
+  invalidParameters(parameters: any): boolean {
+    try {
+      if (parameters) {
+        if (!parameters.value ||
+          !parameters.entrypoint) {
+          throw new Error('entrypoint and value expected');
+        }
+        assertMichelsonData(parameters.value);
+      }
+      return false;
+    } catch (e) {
+      return true;
+    }
+  }
   /* operation request handling */
   async operationResponse(opHash: any) {
     if (!opHash) {
-      await this.beaconService.rejectOnPermission(this.operationRequest);
+      await this.beaconService.rejectOnUserAbort(this.operationRequest);
     } else {
       const response: OperationResponseInput = {
         type: BeaconMessageType.OperationResponse,
@@ -131,7 +149,7 @@ export class UriHandlerComponent implements OnInit {
   /* permission handling */
   async permissionResponse(publicKey: string) {
     if (!publicKey) {
-      await this.beaconService.rejectPermissionRequest(this.permissionRequest);
+      await this.beaconService.rejectOnUserAbort(this.permissionRequest);
     } else {
       await this.beaconService.approvePermissionRequest(this.permissionRequest, publicKey);
       this.beaconService.syncBeaconState();

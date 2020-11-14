@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MessageService } from '../../services/message/message.service';
-import { WalletClient, BeaconMessageType, PermissionScope, PermissionResponseInput, P2PPairingRequest, BeaconErrorType, BeaconResponseInputMessage, BeaconMessage, OperationResponseInput, BEACON_VERSION } from '@airgap/beacon-sdk';
+import { WalletClient, BeaconMessageType, PermissionScope, PermissionResponseInput, P2PPairingRequest, BeaconErrorType, BeaconResponseInputMessage, BeaconMessage, OperationResponseInput, BEACON_VERSION, ErrorResponse } from '@airgap/beacon-sdk';
 
 @Injectable({
   providedIn: 'root'
@@ -80,6 +80,9 @@ export class BeaconService {
   async rejectOnNetwork(message: any) {
     await this.respondWithError(BeaconErrorType.NETWORK_NOT_SUPPORTED, message);
   }
+  async rejectOnUserAbort(message: any) {
+    await this.respondWithError(BeaconErrorType.ABORTED_ERROR, message);
+  }
   async rejectOnSourceAddress(message: any) {
     await this.respondWithError(BeaconErrorType.NO_PRIVATE_KEY_FOUND_ERROR, message);
   }
@@ -89,17 +92,17 @@ export class BeaconService {
   async rejectOnUnknown(message: any) {
     await this.respondWithError(BeaconErrorType.UNKNOWN_ERROR, message);
   }
+  async rejectOnParameters(message: any) {
+    await this.respondWithError(BeaconErrorType.PARAMETERS_INVALID_ERROR, message);
+  }
   async respondWithError(errorType: BeaconErrorType, requestMessage: any) {
     if (requestMessage) {
-      const error: any = {
-        id: requestMessage.id,
-        type: this.correspondingResponseType[requestMessage.type],
-        errorType
-      };
-      const response: BeaconResponseInputMessage = {
-        beaconId: await this.client.beaconId,
+      const response: ErrorResponse = {
+        type: BeaconMessageType.Error,
+        errorType,
         version: BEACON_VERSION,
-        ...error
+        id: requestMessage.id,
+        senderId: await this.client.beaconId
       };
       await this.client.respond(response);
     }
@@ -113,8 +116,5 @@ export class BeaconService {
       publicKey: publicKey
     };
     await this.client.respond(response);
-  }
-  async rejectPermissionRequest(message: any) {
-    await this.respondWithError(BeaconErrorType.NOT_GRANTED_ERROR, message);
   }
 }
