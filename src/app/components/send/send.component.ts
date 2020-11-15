@@ -15,8 +15,7 @@ import { Account, ImplicitAccount, OriginatedAccount } from '../../services/wall
 import { MessageService } from '../../services/message/message.service';
 import { TorusService } from '../../services/torus/torus.service';
 import { LookupService } from '../../services/lookup/lookup.service';
-import { emitMicheline } from '@taquito/michel-codec';
-import { assertMichelsonData } from '@taquito/michel-codec';
+import { emitMicheline, assertMichelsonData } from '@taquito/michel-codec';
 
 interface SendData {
   to: string;

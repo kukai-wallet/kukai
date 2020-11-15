@@ -7,8 +7,11 @@
     </div>
     <!-- Request -->
     <div class="km-body">
-      <p>{{ permissionRequest.appMetadata.name }} wants permission to request signing of operations.</p>
-      <p>Select an account the permission should be applied to:</p>
+      <p>{{ permissionRequest.appMetadata.name }} wants the following permissions:</p>
+      <ul>
+        <li *ngFor="let scope of permissionRequest.scopes">{{ scopeToText(scope) }}</li>
+      </ul>
+      <p>Select an account the permissions should be applied to:</p>
       <select class="select-css" [(ngModel)]="selectedAccount">
         <ng-container *ngFor="let acc of walletService.wallet.implicitAccounts">
           <option value="{{ acc.address }}">{{ acc.pkh }}</option>

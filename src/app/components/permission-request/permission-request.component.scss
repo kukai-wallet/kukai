@@ -1,5 +1,12 @@
 @import '../../../scss/modal.scss';
 
+:host ul {
+  padding-left: 1rem;
+}
+:host ul > li {
+  font-size: 0.875rem;
+}
+
 /* class applies to select element itself, not a wrapper element */
 .select-css {
   border-radius: 0.75rem;

@@ -20,7 +20,7 @@ export class PermissionRequestComponent implements OnInit, OnChanges {
   }
   ngOnChanges(changes: SimpleChanges): void {
     console.log(changes);
-    if (this.permissionRequest && !this.walletService.isLedgerWallet()) {
+    if (this.permissionRequest) {
       const scrollBarWidth = window.innerWidth - document.body.offsetWidth;
       document.body.style.marginRight = scrollBarWidth.toString();
       document.body.style.overflow = 'hidden';
@@ -40,5 +40,13 @@ export class PermissionRequestComponent implements OnInit, OnChanges {
     document.body.style.marginRight = '';
     document.body.style.overflow = '';
     this.permissionRequest = null;
+  }
+  scopeToText(scope: string) {
+    if (scope === 'sign') {
+      return 'Request arbitrary signing';
+    } else if (scope === 'operation_request') {
+      return 'Request operation signing';
+    }
+    return scope;
   }
 }

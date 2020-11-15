@@ -110,8 +110,8 @@ export class BeaconService {
   async approvePermissionRequest(message: any, publicKey: string) {
     const response: PermissionResponseInput = {
       type: BeaconMessageType.PermissionResponse,
-      network: message.network, // Use the same network that the user requested
-      scopes: [PermissionScope.OPERATION_REQUEST], //NOT_GRANTED_ERROR
+      network: message.network,
+      scopes: message.scopes,
       id: message.id,
       publicKey: publicKey
     };

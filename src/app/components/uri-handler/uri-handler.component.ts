@@ -60,13 +60,16 @@ export class UriHandlerComponent implements OnInit {
         } else if (!this.permissionRequest && !this.operationRequest) {
           if (message.type === BeaconMessageType.PermissionRequest) {
             console.log('## permission request');
-            if (message.scopes.includes(PermissionScope.OPERATION_REQUEST)) {
+            message.scopes = message.scopes.filter((scope: PermissionScope) => [PermissionScope.OPERATION_REQUEST, PermissionScope.SIGN].includes(scope));
+            if (message.scopes.length) {
               if (this.walletService.wallet) {
                 this.permissionRequest = message;
               } else {
                 console.warn('No wallet found');
                 await this.beaconService.rejectOnSourceAddress(message);
               }
+            } else {
+              console.warn('No valid scope');
             }
           } else if (message.type === BeaconMessageType.OperationRequest) {
             if (await this.isSupportedOperationRequest(message)) {
