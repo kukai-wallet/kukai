@@ -1,7 +1,6 @@
 import { Component, TemplateRef, OnInit, Input, ViewChild, ElementRef, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
-
 import { KeyPair } from '../../interfaces';
 import { WalletService } from '../../services/wallet/wallet.service';
 import { CoordinatorService } from '../../services/coordinator/coordinator.service';
@@ -10,7 +9,6 @@ import { ExportService } from '../../services/export/export.service';
 import { DelegatorNamePipe } from '../../pipes/delegator-name.pipe';
 import { InputValidationService } from '../../services/input-validation/input-validation.service';
 import { LedgerService } from '../../services/ledger/ledger.service';
-import { Constants } from '../../constants';
 import { LedgerWallet, Account, ImplicitAccount, OriginatedAccount, TorusWallet } from '../../services/wallet/wallet';
 import { MessageService } from '../../services/message/message.service';
 import Big from 'big.js';
@@ -31,7 +29,6 @@ export class DelegateComponent implements OnInit, OnChanges {
   @Input() beaconMode = false;
   @Input() operationRequest: any;
   @Output() operationResponse = new EventEmitter();
-  CONSTANTS = new Constants();
   @Input() activeAccount: Account;
   implicitAccounts;
   toPkh: string;

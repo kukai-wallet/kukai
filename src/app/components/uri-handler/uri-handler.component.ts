@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { MessageService } from '../../services/message/message.service';
 import { WalletClient, BeaconMessageType, PermissionScope, PermissionResponseInput, P2PPairingRequest, BeaconErrorType, BeaconResponseInputMessage, BeaconMessage, OperationResponseInput } from '@airgap/beacon-sdk';
 import { WalletService } from '../../services/wallet/wallet.service';
-import { Constants } from '../../constants';
+import { CONSTANTS } from '../../../environments/environment';
 import { Account, ImplicitAccount, OriginatedAccount } from '../../services/wallet/wallet';
 import { Location } from '@angular/common';
 import { BeaconService } from '../../services/beacon/beacon.service';
@@ -16,7 +16,6 @@ import { emitMicheline, assertMichelsonData } from '@taquito/michel-codec';
   styleUrls: ['./uri-handler.component.scss']
 })
 export class UriHandlerComponent implements OnInit {
-  CONSTANTS = new Constants();
   permissionRequest: PermissionResponseInput = null;
   operationRequest: any = null;
   activeAccount: Account;
@@ -54,8 +53,8 @@ export class UriHandlerComponent implements OnInit {
     this.beaconService.client
       .connect(async (message: any) => {
         console.log('### beacon message', message);
-        if (message.network.type !== this.CONSTANTS.NET.NETWORK) {
-          console.warn(`Rejecting Beacon message because of network. Expected ${this.CONSTANTS.NET.NETWORK} instead of ${message.network.type}`);
+        if (message.network.type !== CONSTANTS.NETWORK) {
+          console.warn(`Rejecting Beacon message because of network. Expected ${CONSTANTS.NETWORK} instead of ${message.network.type}`);
           await this.beaconService.rejectOnNetwork(message);
         } else if (!this.permissionRequest && !this.operationRequest) {
           if (message.type === BeaconMessageType.PermissionRequest) {

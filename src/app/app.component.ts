@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-
 import { WalletService } from './services/wallet/wallet.service';
 import { CoordinatorService } from './services/coordinator/coordinator.service';
 import { TranslateService } from '@ngx-translate/core';
-import { Constants } from './constants';
 
 @Component({
   selector: 'app-root',
@@ -15,8 +13,6 @@ import { Constants } from './constants';
   // template: '<router-outlet></router-outlet>'
 })
 export class AppComponent implements OnInit {
-
-  CONSTANTS = new Constants();
   constructor(
     private walletService: WalletService,
     private coordinatorService: CoordinatorService,

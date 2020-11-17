@@ -52,6 +52,11 @@
   </div>
 </div>
 <div id="header-list" [class.invert]="settings">
-  <ng-container *ngIf="getVerifier()"><img class="verifier-logo"
-      src="../../../assets/img/{{ getVerifier() }}-logo.svg">&nbsp;</ng-container>{{ getUsername() }}
+  <div class="left">
+    <ng-container *ngIf="!CONSTANTS.MAINNET">TESTNET VERSION</ng-container>
+  </div>
+  <div class="main">
+    <ng-container *ngIf="getVerifier()"><img class="verifier-logo"
+        src="../../../assets/img/{{ getVerifier() }}-logo.svg">&nbsp;</ng-container>{{ getUsername() }}
+  </div>
 </div>

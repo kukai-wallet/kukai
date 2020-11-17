@@ -9,7 +9,7 @@ import * as bip39 from 'bip39';
 import Big from 'big.js';
 import { localForger } from '@taquito/local-forging';
 import { TranslateService } from '@ngx-translate/core';
-import { Constants } from '../../constants';
+import { CONSTANTS } from '../../../environments/environment';
 import { ErrorHandlingPipe } from '../../pipes/error-handling.pipe';
 import * as elliptic from 'elliptic';
 import {instantiateSecp256k1, hexToBin, binToHex} from '@bitauth/libauth';
@@ -23,8 +23,7 @@ export interface KeyPair {
 }
 @Injectable()
 export class OperationService {
-  CONSTANTS = new Constants();
-  nodeURL = this.CONSTANTS.NET.NODE_URL;
+  nodeURL = CONSTANTS.NODE_URL;
   prefix = {
     tz1: new Uint8Array([6, 161, 159]),
     tz2: new Uint8Array([6, 161, 161]),
@@ -401,7 +400,7 @@ export class OperationService {
                 pub_key_Y: pk.Y
               }
             };
-            const url = this.CONSTANTS.NET.NETWORK === 'mainnet' ? 'https://torus-19.torusnode.com/jrpc' : 'https://teal-15-1.torusnode.com/jrpc';
+            const url = CONSTANTS.NETWORK === 'mainnet' ? 'https://torus-19.torusnode.com/jrpc' : 'https://teal-15-1.torusnode.com/jrpc';
             return this.http.post(url, JSON.stringify(torusReq), httpOptions)
             .pipe(flatMap((ans: any) => {
               try {

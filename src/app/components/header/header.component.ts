@@ -5,6 +5,8 @@ import { CoordinatorService } from '../../services/coordinator/coordinator.servi
 import { Account, TorusWallet } from '../../services/wallet/wallet';
 import { LookupService } from '../../services/lookup/lookup.service';
 import { MessageService } from '../../services/message/message.service';
+import { CONSTANTS as _CONSTANTS } from '../../../environments/environment';
+
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -14,12 +16,13 @@ export class HeaderComponent implements OnInit {
   @Input() activeAccount: Account;
   @Input() settings = false;
   impAccs: Account[];
+  readonly CONSTANTS = _CONSTANTS;
   constructor(
     private router: Router,
     public walletService: WalletService,
     public lookupService: LookupService,
     private coordinatorService: CoordinatorService,
-    private messageService: MessageService
+    private messageService: MessageService,
   ) { }
 
   ngOnInit(): void {

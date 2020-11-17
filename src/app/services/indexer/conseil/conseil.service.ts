@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Constants } from '../../../constants';
+import { CONSTANTS } from '../../../../environments/environment';
 import { of, Observable, from as fromPromise } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 import { ConseilDataClient, ConseilQueryBuilder, ConseilSortDirection, ConseilOperator } from 'conseiljs';
@@ -9,15 +9,13 @@ import { Indexer } from '../indexer.service';
   providedIn: 'root'
 })
 export class ConseilService implements Indexer {
-  CONSTANTS: any;
   conseilServer: any;
   platform: string;
   network: string;
   constructor(
   ) {
-    this.CONSTANTS = new Constants();
-    this.conseilServer = this.CONSTANTS.NET.CSI;
-    this.network = this.CONSTANTS.NET.NETWORK;
+    this.conseilServer = CONSTANTS.CSI;
+    this.network = CONSTANTS.NETWORK;
     this.platform = 'tezos';
   }
   async getContractAddresses(pkh: string, currentAddress: string = pkh): Promise<any> {

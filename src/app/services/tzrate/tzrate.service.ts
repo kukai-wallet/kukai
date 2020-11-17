@@ -1,18 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { WalletService } from '../wallet/wallet.service';
-import { Constants } from '../../constants';
+import { CONSTANTS } from '../../../environments/environment';
 
 @Injectable()
 export class TzrateService {
   public apiUrl = 'https://api.coingecko.com/api/v3/simple/price?ids=tezos&vs_currencies=usd';
-  private CONSTANTS = new Constants();
   constructor(private http: HttpClient,
     private walletService: WalletService) {
   }
 
   getTzrate() {
-    if (this.CONSTANTS.NET.NETWORK === 'mainnet') {
+    if (CONSTANTS.MAINNET) {
       this.http.get(this.apiUrl).subscribe(
         (price: any) => {
           this.walletService.wallet.XTZrate = price.tezos.usd;

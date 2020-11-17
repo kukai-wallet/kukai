@@ -1,15 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Constants } from '../../../constants';
+import { CONSTANTS } from '../../../../environments/environment';
 import { Indexer } from '../indexer.service';
 @Injectable({
   providedIn: 'root'
 })
 export class TzktService implements Indexer {
-  CONSTANTS: any;
   network = '';
   constructor() {
-    this.CONSTANTS = new Constants();
-    this.network = this.CONSTANTS.NET.network !== 'mainnet' ? '.' + this.CONSTANTS.NET.NETWORK.slice(0, -3) : '';
+    this.network = !CONSTANTS.MAINNET ? '.' + CONSTANTS.NETWORK.slice(0, -3) : '';
   }
   async getContractAddresses(pkh: string): Promise<any> {
     return fetch(`https://api${this.network}.tzkt.io/v1/operations/originations?contractManager=${pkh}`)

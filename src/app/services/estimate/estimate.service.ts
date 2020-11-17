@@ -5,6 +5,7 @@ import { flatMap, catchError } from 'rxjs/operators';
 import { of, Observable } from 'rxjs';
 import { DefaultTransactionParams } from '../../interfaces';
 import Big from 'big.js';
+import { CONSTANTS } from '../../../environments/environment';
 
 const httpOptions = { headers: { 'Content-Type': 'application/json' } };
 const hardGasLimit = 1040000;
@@ -14,8 +15,7 @@ export class EstimateService {
   readonly costPerByte = '250';
   readonly revealGasLimit = 1000;
   queue = [];
-  CONSTANTS = this.operationService.CONSTANTS;
-  nodeURL = this.CONSTANTS.NET.NODE_URL;
+  nodeURL = CONSTANTS.NODE_URL;
   pkh: string;
   pk: string;
   hash: string;

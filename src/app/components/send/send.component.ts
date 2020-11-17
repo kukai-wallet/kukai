@@ -9,7 +9,6 @@ import { InputValidationService } from '../../services/input-validation/input-va
 import { LedgerService } from '../../services/ledger/ledger.service';
 import { EstimateService } from '../../services/estimate/estimate.service';
 import Big from 'big.js';
-import { Constants } from '../../constants';
 import { LedgerWallet, TorusWallet } from '../../services/wallet/wallet';
 import { Account, ImplicitAccount, OriginatedAccount } from '../../services/wallet/wallet';
 import { MessageService } from '../../services/message/message.service';
@@ -58,7 +57,6 @@ export class SendComponent implements OnInit, OnChanges {
   @Input() activeAccount: Account;
   @Output() operationResponse = new EventEmitter();
   @ViewChild('amountInput') amountInputView: ElementRef;
-  CONSTANTS = new Constants();
   defaultTransactionParams: DefaultTransactionParams = zeroTxParams;
 
   // Transaction variables
