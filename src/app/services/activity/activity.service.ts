@@ -6,10 +6,8 @@ import { Activity, Account, ImplicitAccount } from '../wallet/wallet';
 import { MessageService } from '../message/message.service';
 import { LookupService } from '../lookup/lookup.service';
 import { IndexerService } from '../indexer/indexer.service';
-import { JsonPipe } from '@angular/common';
 import Big from 'big.js';
 import { Constants } from '../../constants';
-import { initOffset } from 'ngx-bootstrap/chronos/units/offset';
 
 @Injectable()
 export class ActivityService {

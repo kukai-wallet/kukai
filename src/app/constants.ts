@@ -66,6 +66,10 @@ export class Constants {
       return {
           NAME: 'Testnet / Delphi',
           NETWORK: 'delphinet',
+          CSI: {
+              url: 'https://conseil-dev.cryptonomic-infra.tech',
+              apiKey: 'klassare'
+          },
           NODE_URL: 'https://delphinet-tezos.giganode.io/',
           BLOCK_EXPLORER_URL: 'https://delphi.tzkt.io',
           ASSETS: {}
