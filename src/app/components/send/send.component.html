@@ -1,5 +1,5 @@
-<button class="purple" (click)="openModal()">Send</button>
-
+<button *ngIf="!tokenTransfer" class="purple" (click)="openModal()">Send</button>
+<span *ngIf="tokenTransfer" (click)="openModal()">⇨</span>
 <!-- The Modal -->
 <div *ngIf="modalOpen" id="myModal" class="kukai-modal">
   <!-- Modal content -->
@@ -9,7 +9,7 @@
       <H1 *ngIf="activeView === 0">Send tez</H1>
       <H1 *ngIf="activeView === 1">Confirmation</H1>
       <!--<span class="close" (click)="modalOpen = false" class="close">&times;</span>-->
-      <button *ngIf="activeView === 0 && !walletService.isLedgerWallet()" class="small multiple-destinations"
+      <button *ngIf="activeView === 0 && !walletService.isLedgerWallet() && !tokenTransfer" class="small multiple-destinations"
         (click)="toggleDestination()">
         <ng-container *ngIf="!this.isMultipleDestinations">Multiple transactions</ng-container>
         <ng-container *ngIf="this.isMultipleDestinations">Single transaction</ng-container>
@@ -21,7 +21,7 @@
         <input #amountInput class="input" class="custom-large" placeholder="0.00" [(ngModel)]="amount"
           (click)="sendMax = false;" [style.font-size.rem]="dynSize()"
           [style.width.ch]="amount ? amount.length + 1 : 3.6" [disabled]="isMultipleDestinations">
-        <span class="tez">tez</span>
+        <span class="tez">{{ getAssetName() }}</span>
       </div>
       <div class="row-group">
         <button *ngIf="!this.isMultipleDestinations" tabindex=-1 class="small" [class.max]="sendMax"
@@ -105,7 +105,7 @@
       <div class="preview-top">
       <div class="preview-amount">
         <span class="section">Send</span>
-        <span class="amount-tez">{{ totalAmount() | number:'1.0-6' }} tez</span>
+        <span class="amount-tez">{{ totalAmount() | number:'1.0-6' }} {{ getAssetName() }}</span>
         <span class="amount-usd">{{ totalAmount() * walletService.wallet.XTZrate | number:'1.0-2' }} USD</span>
         <span *ngIf="!isMultipleDestinations" class="section">To</span>
       </div>

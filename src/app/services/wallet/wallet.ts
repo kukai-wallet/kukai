@@ -1,3 +1,5 @@
+import { assertNotNull } from '@angular/compiler/src/output/output_ast';
+
 export type WalletObject =
   LegacyWalletV1
   | LegacyWalletV2
@@ -164,6 +166,7 @@ export abstract class Account {
 export class ImplicitAccount extends Account {
   originatedAccounts: OriginatedAccount[];
   derivationPath?: string;
+  tokens: Token[] = [];
   constructor(pkh: string, pk: string, derivationPath?: string) {
     super(pkh, pk, pkh);
     this.originatedAccounts = [];
@@ -173,6 +176,30 @@ export class ImplicitAccount extends Account {
   }
   isImplicit(): boolean {
     return true;
+  }
+  getTokenBalance(contractAddress: string): string {
+    if (this.tokens.length) {
+      for (const token of this.tokens) {
+        if (contractAddress === token.contractAddress) {
+          return token.balance;
+        }
+      }
+    }
+    return '';
+  }
+  updateTokenBalance(contractAddress: string, balance: string) {
+    if (this.tokens.length) {
+      for (let token of this.tokens) {
+        if (contractAddress === token.contractAddress) {
+          if (token.balance !== balance) {
+            token.balance = balance;
+          }
+          return;
+        }
+      }
+    }
+    console.log('Add token');
+    this.tokens.push({ contractAddress, balance});
   }
 }
 
@@ -195,4 +222,8 @@ export class Activity {
   destination: string;
   hash: string;
   timestamp: number | null;
+}
+export class Token {
+  contractAddress: string;
+  balance: string;
 }

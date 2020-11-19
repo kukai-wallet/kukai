@@ -2,13 +2,18 @@ import { Injectable } from '@angular/core';
 import { WalletService } from '../wallet/wallet.service';
 import { of, Observable, from as fromPromise } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
-import { Activity, Account } from '../wallet/wallet';
+import { Activity, Account, ImplicitAccount } from '../wallet/wallet';
 import { MessageService } from '../message/message.service';
 import { LookupService } from '../lookup/lookup.service';
 import { IndexerService } from '../indexer/indexer.service';
+import { JsonPipe } from '@angular/common';
+import Big from 'big.js';
+import { Constants } from '../../constants';
+import { initOffset } from 'ngx-bootstrap/chronos/units/offset';
 
 @Injectable()
 export class ActivityService {
+  constants = new Constants();
   maxTransactions = 10;
   constructor(
     private walletService: WalletService,
@@ -31,6 +36,7 @@ export class ActivityService {
   getTransactonsCounter(account): Observable<any> {
     return fromPromise(this.indexerService.accountInfo(account.address)).pipe(
       flatMap((counter) => {
+        this.updateTokenBalances(account);
         if (account.activitiesCounter !== counter) {
           return this.getAllTransactions(account, counter);
         } else {
@@ -40,6 +46,23 @@ export class ActivityService {
         }
       })
     );
+  }
+  async updateTokenBalances(account: Account) {
+    if (account instanceof ImplicitAccount) {
+      console.log('TOKENS');
+      fetch(`https://api.better-call.dev/v1/account/${this.constants.NET.NETWORK}/${account.pkh}`)
+        .then(res => res.json())
+        .then( data => {
+          console.log('account info', data);
+          if(data?.tokens?.length) {
+            for (const token of data.tokens) {
+              if (this.constants.NET.ASSETS[token.contract]) {
+                account.updateTokenBalance(token.contract, Big(token.balance).div(10**token.decimals).toString());
+              }
+            }
+          }
+        })
+    }
   }
   getAllTransactions(account, counter): Observable<any> {
     return fromPromise(this.indexerService.getOperations(account.address)).pipe(

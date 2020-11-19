@@ -43,7 +43,7 @@ export class EstimateService {
       }
     });
   }
-  async estimate(transactions: any, from: string, callback) {
+  async estimate(transactions: any, from: string, tokenTransfer: string = '', callback) {
     this.queue.push({ transactions, from, callback });
     if (this.queue.length === 1) {
       while (this.queue.length > 0) {
@@ -53,7 +53,7 @@ export class EstimateService {
         }
         let retry = false;
         for (let i = 0; i < 1 || retry && i < 2; i++) {
-          await this._estimate(this.queue[0].transactions, this.queue[0].from).then((res) => {
+          await this._estimate(this.queue[0].transactions, this.queue[0].from, tokenTransfer).then((res) => {
             this.queue[0].callback(res);
           }).catch(async (error) => {
             if (error.message && error.message === 'An operation assumed a contract counter in the past' && !retry) {
@@ -69,7 +69,7 @@ export class EstimateService {
       }
     }
   }
-  async _estimate(transactions: any, from: string): Promise<any> {
+  async _estimate(transactions: any, from: string, tokenTransfer: string): Promise<any> {
     const extraGas = 80;
     if (!this.hash) { return null; }
     const simulation = {
@@ -81,7 +81,7 @@ export class EstimateService {
       if (!tx.amount) {
         tx.amount = 0;
       }
-      if (tx.to.slice(0, 3) !== 'KT1') {
+      if (tx.to.slice(0, 3) !== 'KT1' && !tokenTransfer) {
         tx.amount = 0.000001;
       }
       tx.gasLimit = simulation.gasLimit;
@@ -89,7 +89,7 @@ export class EstimateService {
     }
     if (this.hash && this.counter && (this.manager || this.manager === null)) {
       const op = this.operationService.createTransactionObject(this.hash, this.counter, this.manager, transactions,
-        this.pkh, this.pk, from, simulation.fee);
+        this.pkh, this.pk, from, simulation.fee, tokenTransfer);
       const result = await this.simulate(op).toPromise().catch(
         e => {
           console.warn(e);

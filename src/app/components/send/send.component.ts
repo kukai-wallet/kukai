@@ -52,6 +52,7 @@ export class SendComponent implements OnInit {
   sendMax = false;
   /* old variables */
   @Input() activeAccount: Account;
+  @Input() tokenTransfer: string;
   @ViewChild('amountInput') amountInputView: ElementRef;
   CONSTANTS = new Constants();
   defaultTransactionParams: DefaultTransactionParams = zeroTxParams;
@@ -246,7 +247,7 @@ export class SendComponent implements OnInit {
     }
   }
   maxToSend(account: Account): string {
-    if (account && (account instanceof ImplicitAccount)) {
+    if (account && (account instanceof ImplicitAccount) && !this.tokenTransfer) {
       let accountBalance = Big(account.balanceXTZ).div(1000000);
       accountBalance = accountBalance.minus(this.fee && Number(this.fee) ? Number(this.fee) : this.defaultTransactionParams.fee);
       if (!this.isMultipleDestinations) {
@@ -257,7 +258,13 @@ export class SendComponent implements OnInit {
       accountBalance = accountBalance.minus(0.000001); // dust
       return accountBalance.toString();
     } else {
-      return Big(account.balanceXTZ).div(1000000).toString();
+      if (this.tokenTransfer) {
+        if (account instanceof ImplicitAccount) {
+          return Big(account.getTokenBalance(this.tokenTransfer)).div(1000000).toString(); 
+        }
+      } else {
+        return Big(account.balanceXTZ).div(1000000).toString();
+      }
     }
   }
   prepTransactions(finalCheck = false): boolean {
@@ -303,7 +310,7 @@ export class SendComponent implements OnInit {
     }
     if (!amount) { amount = '0'; }
     if (!fee) { fee = '0'; }
-    this.operationService.transfer(this.activeAccount.address, this.transactions, Number(fee), keys).subscribe(
+    this.operationService.transfer(this.activeAccount.address, this.transactions, Number(fee), keys, this.tokenTransfer).subscribe(
       async (ans: any) => {
         this.sendResponse = ans;
         if (ans.success === true) {
@@ -498,7 +505,7 @@ export class SendComponent implements OnInit {
           this.simSemaphore--;
         };
         console.log('simulate...');
-        this.estimateService.estimate(JSON.parse(JSON.stringify(this.transactions)), this.activeAccount.address, callback);
+        this.estimateService.estimate(JSON.parse(JSON.stringify(this.transactions)), this.activeAccount.address, this.tokenTransfer, callback);
       } else {
         this.latestSimError = prevSimError;
         this.formInvalid = this.latestSimError;
@@ -515,8 +522,12 @@ export class SendComponent implements OnInit {
   // prevent redundant estimations
   equiClass(sender: string, transactions: SendData[]): string {
     let data = sender;
-    for (const tx of transactions) {
-      data += tx.to;
+    if (this.tokenTransfer) {
+      data += transactions[0].to + transactions[0].amount.toString();
+    } else {
+      for (const tx of transactions) {
+        data += tx.to;
+      }
     }
     return data;
   }
@@ -776,5 +787,12 @@ export class SendComponent implements OnInit {
       }
     }
     return '';
+  }
+  getAssetName(): string {
+    if (this.tokenTransfer) {
+      return this.CONSTANTS.NET.ASSETS[this.tokenTransfer].name;
+    } else {
+      return 'tez';
+    }
   }
 }

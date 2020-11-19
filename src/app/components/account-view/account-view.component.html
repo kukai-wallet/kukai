@@ -21,6 +21,12 @@
               style="font-size: 0.75rem">{{ account.balanceUSD | number: "1.0-0" }} USD</span></div>
           <H2>Delegate</H2>
           <app-delegate [activeAccount]="account"></app-delegate>
+          <!-- Temporary placeholder -->
+          <ng-container *ngIf="account.otherAssets && account.otherAssets.length > 0">
+            <ng-container *ngFor="let asset of account.otherAssets">
+              {{ CONSTANTS.NET.ASSETS[asset.contractAddress].name }} = {{ asset.balance }} <app-send [activeAccount]="account" [customSend]="asset.contractAddress"></app-send> 
+            </ng-container>
+          </ng-container>
         </div>
         <div class="bottom-container">
           <app-send [activeAccount]="account"></app-send>
