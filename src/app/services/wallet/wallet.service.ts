@@ -384,8 +384,15 @@ export class WalletService {
       impAcc.balanceUSD = implicit.balanceUSD;
       impAcc.balanceXTZ = implicit.balanceXTZ;
       impAcc.delegate = implicit.delegate;
-      impAcc.activitiesCounter = implicit.activitiesCounter;
+      if (implicit.activitiesCounter) { // prevent storage from breaking (1.11)
+        impAcc.state = implicit.activitiesCounter.toString();
+      } else {
+        impAcc.state = implicit.state;
+      }
       impAcc.activities = implicit.activities;
+      if (implicit.tokens) {
+        impAcc.tokens = implicit.tokens;
+      }
       for (const originated of implicit.originatedAccounts) {
         const origAcc = new OriginatedAccount(
           originated.address,
@@ -395,7 +402,11 @@ export class WalletService {
         origAcc.balanceUSD = originated.balanceUSD;
         origAcc.balanceXTZ = originated.balanceXTZ;
         origAcc.delegate = originated.delegate;
-        origAcc.activitiesCounter = originated.activitiesCounter;
+        if (originated.activitiesCounter) { // prevent storage from breaking (1.11)
+          impAcc.state = originated.activitiesCounter.toString();
+        } else {
+          impAcc.state = originated.state;
+        }
         origAcc.activities = originated.activities;
         impAcc.originatedAccounts.push(origAcc);
       }

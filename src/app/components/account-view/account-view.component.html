@@ -22,9 +22,9 @@
           <H2>Delegate</H2>
           <app-delegate [activeAccount]="account"></app-delegate>
           <!-- Temporary placeholder -->
-          <ng-container *ngIf="account.otherAssets && account.otherAssets.length > 0">
-            <ng-container *ngFor="let asset of account.otherAssets">
-              {{ CONSTANTS.NET.ASSETS[asset.contractAddress].name }} = {{ asset.balance }} <app-send [activeAccount]="account" [customSend]="asset.contractAddress"></app-send> 
+          <ng-container *ngIf="account.tokens && account.tokens.length > 0">
+            <ng-container *ngFor="let token of account.tokens">
+              {{ CONSTANTS.NET.ASSETS[token.contractAddress].name }} = {{ token.balance }} <app-send [activeAccount]="account" [tokenTransfer]="token.contractAddress"></app-send> 
             </ng-container>
           </ng-container>
         </div>
@@ -60,7 +60,8 @@
           <div *ngSwitchCase="'sent'" class="sent">
             <img src="../../../assets/img/sent.svg">
             <div>
-              <div class="line"><span class="red">Sent {{ activity.amount / 1000000 | number:'1.0-6' }} tez</span><a
+              <div class="line"><span class="red">Sent {{ activity.amount / 1000000 | number:'1.0-6' }} 
+                <ng-container *ngIf="activity.asset">{{ activity.asset }}</ng-container><ng-container *ngIf="!activity.asset">tez</ng-container></span><a
                   href="{{ explorerURL(activity.hash) }}" target="_blank">
                   <ng-container *ngIf="activity.status > 0">{{ activity.timestamp | timeAgo:trigger }}</ng-container>
                   <ng-container *ngIf="activity.status === 0">Unconfirmed</ng-container>
@@ -73,8 +74,8 @@
           <div *ngSwitchCase="'received'" class="received">
             <img src="../../../assets/img/received.svg">
             <div>
-              <div class="line"><span class="green">Received {{ activity.amount / 1000000 | number:'1.0-6' }}
-                  tez</span><a href="{{ explorerURL(activity.hash) }}" target="_blank">
+              <div class="line"><span class="green">Received {{ activity.amount / 1000000 | number:'1.0-6' }} 
+                <ng-container *ngIf="activity.asset">{{ activity.asset }}</ng-container><ng-container *ngIf="!activity.asset">tez</ng-container></span><a href="{{ explorerURL(activity.hash) }}" target="_blank">
                   <ng-container *ngIf="activity.status > 0">{{ activity.timestamp | timeAgo:trigger }}</ng-container>
                   <ng-container *ngIf="activity.status === 0">Unconfirmed</ng-container>
                 </a></div>

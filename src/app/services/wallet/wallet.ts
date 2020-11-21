@@ -1,5 +1,5 @@
 import { assertNotNull } from '@angular/compiler/src/output/output_ast';
-
+import { Constants } from '../../constants';
 export type WalletObject =
   LegacyWalletV1
   | LegacyWalletV2
@@ -142,7 +142,7 @@ export abstract class Account {
   balanceXTZ: number | null;
   balanceUSD: number | null;
   delegate: string;
-  activitiesCounter: number;
+  state: string;
   activities: Activity[];
   pkh: string;
   pk: string;
@@ -151,7 +151,7 @@ export abstract class Account {
     this.balanceXTZ = null;
     this.balanceUSD = null;
     this.delegate = '';
-    this.activitiesCounter = -1;
+    this.state = '';
     this.activities = [];
     this.pkh = pkh;
     this.pk = pk;
@@ -199,7 +199,10 @@ export class ImplicitAccount extends Account {
       }
     }
     console.log('Add token');
-    this.tokens.push({ contractAddress, balance});
+    const assets = new Constants().NET.ASSETS;
+    if (assets[contractAddress]) {
+      this.tokens.push({ contractAddress, balance});
+    }
   }
 }
 
@@ -222,6 +225,7 @@ export class Activity {
   destination: string;
   hash: string;
   timestamp: number | null;
+  asset?: string
 }
 export class Token {
   contractAddress: string;

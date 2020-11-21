@@ -317,7 +317,7 @@ export class SendComponent implements OnInit {
           console.log('Transaction successful ', ans);
           if (ans.payload.opHash) {
             this.messageService.stopSpinner();
-            const metadata = { transactions: this.transactions, opHash: ans.payload.opHash };
+            const metadata = { transactions: this.transactions, opHash: ans.payload.opHash, tokenTransfer: this.tokenTransfer };
             this.coordinatorService.boost(this.activeAccount.address, metadata);
             if (this.transactions[0].meta) {
               this.torusNotification(this.transactions[0]);
@@ -368,7 +368,7 @@ export class SendComponent implements OnInit {
       ((ans: any) => {
         this.sendResponse = ans;
         if (ans.success && this.activeAccount) {
-          const metadata = { transactions: this.transactions, opHash: ans.payload.opHash };
+          const metadata = { transactions: this.transactions, opHash: ans.payload.opHash, tokenTransfer: this.tokenTransfer };
           if (this.transactions[0].meta) {
             this.torusNotification(this.transactions[0]);
           }

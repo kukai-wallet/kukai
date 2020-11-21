@@ -31,11 +31,11 @@ export class ActivityService {
       console.log(e);
     }
   }
-  getTransactonsCounter(account): Observable<any> {
+  getTransactonsCounter(account: Account): Observable<any> {
     return fromPromise(this.indexerService.accountInfo(account.address)).pipe(
       flatMap((counter) => {
-        this.updateTokenBalances(account);
-        if (account.activitiesCounter !== counter) {
+        if (account.state !== counter) {
+          this.updateTokenBalances(account);
           return this.getAllTransactions(account, counter);
         } else {
           return of({
@@ -59,20 +59,20 @@ export class ActivityService {
               }
             }
           }
+          this.walletService.storeWallet();
         })
     }
   }
-  getAllTransactions(account, counter): Observable<any> {
+  getAllTransactions(account: Account, counter: string): Observable<any> {
     return fromPromise(this.indexerService.getOperations(account.address)).pipe(
       flatMap((ans) => {
         if (Array.isArray(ans)) {
           const oldActivities = account.activities;
           account.activities = ans;
-          const oldActivitiesCounter = account.activitiesCounter;
-          account.activitiesCounter = counter;
-          console.log(oldActivitiesCounter + ' # ' + counter);
+          const oldState = account.state;
+          account.state = counter;
           this.walletService.storeWallet();
-          if (oldActivitiesCounter !== -1) { // Exclude inital loading
+          if (oldState !== '') { // Exclude inital loading
             this.promptNewActivities(account, oldActivities, ans);
           } else {
             console.log('# Excluded ' + counter);
@@ -96,11 +96,12 @@ export class ActivityService {
       const index = oldActivities.findIndex((a) => a.hash === activity.hash);
       if (index === -1 || (index !== -1 && oldActivities[index].status === 0)) {
         if (activity.type === 'transaction') {
+          const subfix = activity.asset ? activity.asset : 'tez';
           if (account.address === activity.source) {
-            this.messageService.addSuccess(account.shortAddress() + ': Sent ' + activity.amount / 1000000 + ' tez');
+            this.messageService.addSuccess(account.shortAddress() + ': Sent ' + activity.amount / 1000000 + ` ${subfix}`);
           }
           if (account.address === activity.destination) {
-            this.messageService.addSuccess(account.shortAddress() + ': Received ' + activity.amount / 1000000 + ' tez');
+            this.messageService.addSuccess(account.shortAddress() + ': Received ' + activity.amount / 1000000 + ` ${subfix}`);
           }
         } else if (activity.type === 'delegation') {
           this.messageService.addSuccess(account.shortAddress() + ': Delegate updated');

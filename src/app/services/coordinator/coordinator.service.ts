@@ -8,6 +8,7 @@ import { OperationService } from '../operation/operation.service';
 import { ErrorHandlingPipe } from '../../pipes/error-handling.pipe';
 import { Account } from '../wallet/wallet';
 import Big from 'big.js';
+import { Constants } from '../../constants';
 
 export interface ScheduleData {
   pkh: string;
@@ -29,6 +30,7 @@ export class CoordinatorService {
   tzrateInterval: any;
   defaultDelayPrice = 300000; // 300s
   accounts: Account[];
+  CONSTANTS = new Constants();
   constructor(
     private activityService: ActivityService,
     private tzrateService: TzrateService,
@@ -230,7 +232,8 @@ export class CoordinatorService {
           destination: op.to,
           hash: metadata.opHash,
           block: null,
-          timestamp: new Date().getTime()
+          timestamp: new Date().getTime(),
+          asset: metadata.tokenTransfer ? this.CONSTANTS.NET.ASSETS[metadata.tokenTransfer].name : 'tez'
         };
         let account = this.walletService.wallet.getAccount(from);
         account.activities.unshift(transaction);
