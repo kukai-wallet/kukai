@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import { Account, Activity } from '../../services/wallet/wallet';
+import { Account, Activity, ImplicitAccount } from '../../services/wallet/wallet';
 import { WalletService } from '../../services/wallet/wallet.service';
 import { TimeAgoPipe } from '../../pipes/time-ago.pipe';
 import { TranslateService } from '@ngx-translate/core';
@@ -104,6 +104,12 @@ export class AccountViewComponent implements OnInit {
     } else {
       return `${Big(activity.amount).div(10 ** 6).toString()} tez`;
     }
+  }
+  hasTokens(): boolean {
+    return (this.account instanceof ImplicitAccount && this.account.tokens.length > 0);
+  }
+  printTokenBalance(token: any) {
+    return Big(token.balance).div(10 ** this.CONSTANTS.NET.ASSETS[token.contractAddress].decimals).toString() + ' ' + this.CONSTANTS.NET.ASSETS[token.contractAddress].symbol;
   }
 }
 

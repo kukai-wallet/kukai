@@ -94,6 +94,10 @@ div.kukai-modal > div.km-content > div.km-body > div.group > textarea {
 div.kukai-modal > div.km-content {
   width: 30rem;
 }
+:host span.token-send {
+  cursor: pointer;
+  color: #5963FF;
+}
 @supports (-webkit-touch-callout: none) {
   div.kukai-modal > div.km-content > div.km-body > div.group > input.text,
   div.kukai-modal > div.km-content > div.km-body > div.group > textarea {

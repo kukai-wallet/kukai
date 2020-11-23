@@ -1,5 +1,5 @@
 <button *ngIf="!tokenTransfer" class="purple" (click)="openModal()">Send</button>
-<span *ngIf="tokenTransfer" (click)="openModal()">⇨</span>
+<span class="token-send" *ngIf="tokenTransfer" (click)="openModal()">Send</span>
 <!-- The Modal -->
 <div *ngIf="modalOpen" id="myModal" class="kukai-modal">
   <!-- Modal content -->

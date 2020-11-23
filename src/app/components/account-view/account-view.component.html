@@ -1,7 +1,7 @@
 <app-header [activeAccount]="account"></app-header>
 <div id="wrapper" *ngIf="account">
   <div class="left-container">
-    <div class="main-container small">
+    <div class="main-container small" [class.expanded]="!hasTokens()">
       <div class="top-container">
         <H1>Account Information</H1>
       </div>
@@ -21,16 +21,25 @@
               style="font-size: 0.75rem">{{ account.balanceUSD | number: "1.0-0" }} USD</span></div>
           <H2>Delegate</H2>
           <app-delegate [activeAccount]="account"></app-delegate>
-          <!-- Temporary placeholder -->
-          <ng-container *ngIf="account.tokens && account.tokens.length > 0">
-            <ng-container *ngFor="let token of account.tokens">
-              {{ CONSTANTS.NET.ASSETS[token.contractAddress].name }} = {{ token.balance }} <app-send [activeAccount]="account" [tokenTransfer]="token.contractAddress"></app-send> 
-            </ng-container>
-          </ng-container>
         </div>
         <div class="bottom-container">
           <app-send [activeAccount]="account"></app-send>
         </div>
+      </div>
+    </div>
+    <div class="main-container small" style="margin-top: 2rem" *ngIf="hasTokens()">
+      <div class="top-container">
+        <H1>Tokens</H1>
+      </div>
+      <div class="token-container">
+        <ng-container *ngFor="let token of account.tokens">
+          <div class="token-row">
+            <span><img height="16" src="../../../assets/img/tokens/{{ CONSTANTS.NET.ASSETS[token.contractAddress].imageFileName }}">&nbsp;&nbsp;{{ printTokenBalance(token) }}</span>
+            <app-send [activeAccount]="account" [tokenTransfer]="token.contractAddress"></app-send>
+          </div>
+          <!--{{ CONSTANTS.NET.ASSETS[token.contractAddress].name }} = {{ token.balance }} <app-send
+            [activeAccount]="account" [tokenTransfer]="token.contractAddress"></app-send>-->
+        </ng-container>
       </div>
     </div>
   </div>
@@ -53,7 +62,8 @@
                   <img *ngSwitchCase="3" height="12" src="../../../assets/img/reddit-logo.svg">
                   <img *ngSwitchCase="4" height="12" src="../../../assets/img/twitter-logo.svg">
                 </ng-container>
-                &nbsp;{{ myactivity.name }}</ng-container>
+                &nbsp;{{ myactivity.name }}
+              </ng-container>
               <ng-template #elseBlock>{{ myactivity.address }}</ng-template>
             </span>
           </ng-template>
@@ -66,19 +76,22 @@
                   <ng-container *ngIf="activity.status === 0">Unconfirmed</ng-container>
                 </a></div>
               <div class="line"><span class="grey">To —</span>
-              <ng-template [ngTemplateOutlet]="CounterpartyRef" [ngTemplateOutletContext]="{ $implicit: getCounterparty(activity) }"></ng-template>
+                <ng-template [ngTemplateOutlet]="CounterpartyRef"
+                  [ngTemplateOutletContext]="{ $implicit: getCounterparty(activity) }"></ng-template>
               </div>
             </div>
           </div>
           <div *ngSwitchCase="'received'" class="received">
             <img src="../../../assets/img/received.svg">
             <div>
-              <div class="line"><span class="green">Received {{ printAmount(activity) }}</span><a href="{{ explorerURL(activity.hash) }}" target="_blank">
+              <div class="line"><span class="green">Received {{ printAmount(activity) }}</span><a
+                  href="{{ explorerURL(activity.hash) }}" target="_blank">
                   <ng-container *ngIf="activity.status > 0">{{ activity.timestamp | timeAgo:trigger }}</ng-container>
                   <ng-container *ngIf="activity.status === 0">Unconfirmed</ng-container>
                 </a></div>
               <div class="line"><span class="grey">From —</span>
-                <ng-template [ngTemplateOutlet]="CounterpartyRef" [ngTemplateOutletContext]="{ $implicit: getCounterparty(activity) }"></ng-template>
+                <ng-template [ngTemplateOutlet]="CounterpartyRef"
+                  [ngTemplateOutletContext]="{ $implicit: getCounterparty(activity) }"></ng-template>
               </div>
             </div>
           </div>
@@ -91,7 +104,8 @@
                   <ng-container *ngIf="activity.status === 0">Unconfirmed</ng-container>
                 </a></div>
               <div class="line"><span class="grey">To —</span>
-                <ng-template [ngTemplateOutlet]="CounterpartyRef" [ngTemplateOutletContext]="{ $implicit: getCounterparty(activity) }"></ng-template>
+                <ng-template [ngTemplateOutlet]="CounterpartyRef"
+                  [ngTemplateOutletContext]="{ $implicit: getCounterparty(activity) }"></ng-template>
               </div>
             </div>
           </div>
@@ -104,7 +118,8 @@
                   <ng-container *ngIf="activity.status === 0">Unconfirmed</ng-container>
                 </a></div>
               <div class="line"><span class="grey">To —</span>
-                <ng-template [ngTemplateOutlet]="CounterpartyRef" [ngTemplateOutletContext]="{ $implicit: getCounterparty(activity) }"></ng-template>
+                <ng-template [ngTemplateOutlet]="CounterpartyRef"
+                  [ngTemplateOutletContext]="{ $implicit: getCounterparty(activity) }"></ng-template>
               </div>
             </div>
           </div>
@@ -116,7 +131,8 @@
                   <ng-container *ngIf="activity.status === 0">Unconfirmed</ng-container>
                 </a></div>
               <div class="line"><span class="grey">Counterparty —</span>
-                <ng-template [ngTemplateOutlet]="CounterpartyRef" [ngTemplateOutletContext]="{ $implicit: getCounterparty(activity) }"></ng-template>
+                <ng-template [ngTemplateOutlet]="CounterpartyRef"
+                  [ngTemplateOutletContext]="{ $implicit: getCounterparty(activity) }"></ng-template>
               </div>
             </div>
           </div>

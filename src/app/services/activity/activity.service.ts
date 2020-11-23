@@ -97,7 +97,7 @@ export class ActivityService {
       if (index === -1 || (index !== -1 && oldActivities[index].status === 0)) {
         if (activity.type === 'transaction') {
           const subfix: string = activity.asset ? activity.asset : 'tez';
-          let decimals: number = 6;
+          let decimals = 6;
           if (activity.asset) {
             const keys = Object.keys(this.constants.NET.ASSETS);
             for (const key of keys) {

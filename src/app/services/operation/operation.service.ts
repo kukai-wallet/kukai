@@ -1348,29 +1348,29 @@ export class OperationService {
   }
   getFA2Transaction(from: string, to: string, amount: string, index: string = '1') {
     return {
-      entrypoint: "transfer",
+      entrypoint: 'transfer',
       value: [
         {
-          prim: "Pair",
+          prim: 'Pair',
           args: [
             {
               string: from
             },
             [
               {
-                prim: "Pair",
+                prim: 'Pair',
                 args: [
                   {
                     string: to
                   },
                   {
-                    prim: "Pair",
+                    prim: 'Pair',
                     args: [
                       {
-                        "int": index
+                        'int': index
                       },
                       {
-                        "int": amount
+                        'int': amount
                       }
                     ]
                   }
@@ -1380,6 +1380,6 @@ export class OperationService {
           ]
         }
       ]
-    }
+    };
   }
 }
