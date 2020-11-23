@@ -233,7 +233,7 @@ export class CoordinatorService {
           hash: metadata.opHash,
           block: null,
           timestamp: new Date().getTime(),
-          asset: metadata.tokenTransfer ? this.CONSTANTS.NET.ASSETS[metadata.tokenTransfer].name : 'tez'
+          asset: metadata.tokenTransfer ? this.CONSTANTS.NET.ASSETS[metadata.tokenTransfer].symbol : 'tez'
         };
         let account = this.walletService.wallet.getAccount(from);
         account.activities.unshift(transaction);

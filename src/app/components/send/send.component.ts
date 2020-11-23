@@ -260,7 +260,7 @@ export class SendComponent implements OnInit {
     } else {
       if (this.tokenTransfer) {
         if (account instanceof ImplicitAccount) {
-          return Big(account.getTokenBalance(this.tokenTransfer)).div(1000000).toString(); 
+          return Big(account.getTokenBalance(this.tokenTransfer)).div(10 ** this.CONSTANTS.NET.ASSETS[this.tokenTransfer].decimals).toString();
         }
       } else {
         return Big(account.balanceXTZ).div(1000000).toString();
@@ -442,10 +442,10 @@ export class SendComponent implements OnInit {
     }
     return result;
   }
-  checkBalance() {
+  checkBalance(): string {
     if (this.transactions.length > 0) {
       if (this.activeAccount && (this.activeAccount instanceof ImplicitAccount)) {
-        const max = Big(this.maxToSend(this.activeAccount)).plus(0.000001);
+        const max = Big(this.maxToSend(this.activeAccount)).plus(this.tokenTransfer ? 0 : 0.000001);
         let amount = Big(0);
         for (const tx of this.transactions) {
           amount = amount.plus(Big(tx.amount));
@@ -481,12 +481,18 @@ export class SendComponent implements OnInit {
       }
     }
   }
+  amountChange() {
+    if (this.tokenTransfer) {
+      this.estimateFees();
+    }
+  }
   async estimateFees() {
+    console.log('estimate..');
     const prevSimError = this.latestSimError;
     this.latestSimError = '';
     if (this.prepTransactions()) {
       const equiClass = this.equiClass(this.activeAccount.address, this.transactions);
-      if (this.prevEquiClass !== equiClass) {
+      if (this.prevEquiClass !== equiClass && (!this.tokenTransfer || !this.checkBalance())) {
         this.latestSimError = '';
         this.prevEquiClass = equiClass;
         this.simSemaphore++; // Put lock on 'Preview and 'Send max'
@@ -555,10 +561,6 @@ export class SendComponent implements OnInit {
       }
     } else { // Torus
       this.torusLookupAddress = '';
-      /*if (this.torusVerifier === 'google' && !this.inputValidationService.email(this.toPkh) && this.toPkh !== '') {
-        this.formInvalid = 'Invalid Google account';
-      } else if (this.torusVerifier === 'reddit' && !this.inputValidationService.redditAccount(this.toPkh) && this.toPkh !== '') {
-        this.formInvalid = 'Invalid Reddit account';*/
       if (this.torusService.verifierMapKeys.includes(this.torusVerifier)) {
         if (!this.inputValidationService.torusAccount(this.toPkh, this.torusVerifier) && this.toPkh !== '') {
           switch (this.torusVerifier) {
@@ -604,11 +606,7 @@ export class SendComponent implements OnInit {
     } else if (this.torusVerifier
       && (!this.inputValidationService.torusAccount(this.toPkh, this.torusVerifier) || this.torusLookupAddress === this.activeAccount.address)) {
       return 'Invalid recipient';
-      /*} else if (this.torusVerifier && this.torusVerifier === 'google' && (!this.inputValidationService.email(this.toPkh) || this.torusLookupAddress === this.activeAccount.address)) {
-        return 'Invalid email';
-      } else if (this.torusVerifier && this.torusVerifier === 'reddit' && (!this.inputValidationService.redditAccount(this.toPkh) || this.torusLookupAddress === this.activeAccount.address)) {
-        return 'Invalid Reddit account';*/
-    } else if (!this.inputValidationService.amount(amount) ||
+    } else if (!this.inputValidationService.amount(amount, this.tokenTransfer ? true : false) ||
       (finalCheck && (((amount === '0') || amount === '') && (toPkh.slice(0, 3) !== 'KT1')))) {
       return this.translate.instant('SENDCOMPONENT.INVALIDAMOUNT');
     } else if (!this.inputValidationService.gas(this.gas)) {
@@ -790,7 +788,7 @@ export class SendComponent implements OnInit {
   }
   getAssetName(): string {
     if (this.tokenTransfer) {
-      return this.CONSTANTS.NET.ASSETS[this.tokenTransfer].name;
+      return this.CONSTANTS.NET.ASSETS[this.tokenTransfer].symbol;
     } else {
       return 'tez';
     }

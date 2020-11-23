@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import { Account } from '../../services/wallet/wallet';
+import { Account, Activity } from '../../services/wallet/wallet';
 import { WalletService } from '../../services/wallet/wallet.service';
 import { TimeAgoPipe } from '../../pipes/time-ago.pipe';
 import { TranslateService } from '@ngx-translate/core';
@@ -11,6 +11,7 @@ import { CoordinatorService } from '../../services/coordinator/coordinator.servi
 import { Constants } from '../../constants';
 import { LookupService } from '../../services/lookup/lookup.service';
 import { ActivityService } from '../../services/activity/activity.service';
+import Big from 'big.js';
 
 @Component({
   selector: 'app-account-view',
@@ -88,6 +89,21 @@ export class AccountViewComponent implements OnInit {
   explorerURL(hash: string) {
     const baseURL = this.CONSTANTS.NET.BLOCK_EXPLORER_URL;
     return `${baseURL}/${hash}`;
+  }
+  printAmount(activity: Activity): string {
+    if (activity.asset) {
+      const keys = Object.keys(this.CONSTANTS.NET.ASSETS);
+      let decimals = 6;
+      for (const key of keys) {
+        if (this.CONSTANTS.NET.ASSETS[key].name === activity.asset) {
+          decimals = this.CONSTANTS.NET.ASSETS[key].decimals;
+          break;
+        }
+      }
+      return `${Big(activity.amount).div(10 ** decimals).toString()} ${activity.asset}`;
+    } else {
+      return `${Big(activity.amount).div(10 ** 6).toString()} tez`;
+    }
   }
 }
 

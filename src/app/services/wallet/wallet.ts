@@ -189,10 +189,14 @@ export class ImplicitAccount extends Account {
   }
   updateTokenBalance(contractAddress: string, balance: string) {
     if (this.tokens.length) {
-      for (let token of this.tokens) {
-        if (contractAddress === token.contractAddress) {
-          if (token.balance !== balance) {
-            token.balance = balance;
+      for (let i = 0; i < this.tokens.length; i++) {
+        if (contractAddress === this.tokens[i].contractAddress) {
+          if (this.tokens[i].balance !== balance) {
+            if (balance === '0') {
+              this.tokens.splice(i, 1);
+            } else {
+              this.tokens[i].balance = balance;
+            }
           }
           return;
         }
@@ -225,7 +229,7 @@ export class Activity {
   destination: string;
   hash: string;
   timestamp: number | null;
-  asset?: string
+  asset?: string;
 }
 export class Token {
   contractAddress: string;

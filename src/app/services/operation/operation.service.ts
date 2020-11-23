@@ -12,7 +12,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Constants } from '../../constants';
 import { ErrorHandlingPipe } from '../../pipes/error-handling.pipe';
 import * as elliptic from 'elliptic';
-import {instantiateSecp256k1, hexToBin, binToHex} from '@bitauth/libauth';
+import { instantiateSecp256k1, hexToBin, binToHex } from '@bitauth/libauth';
 
 const httpOptions = { headers: { 'Content-Type': 'application/json' } };
 
@@ -191,7 +191,16 @@ export class OperationService {
       const storageLimit = transactions[i].storageLimit.toString();
       if (tokenTransfer) {
         console.log('Invoke contract: ' + tokenTransfer);
-        const fa12transfer = this.getFA12Transaction(pkh, transactions[i].to, this.microTez.times(transactions[i].amount).toString());
+        let invocation: any;
+        const tokenKind = this.CONSTANTS.NET.ASSETS[tokenTransfer].kind;
+        const decimals = this.CONSTANTS.NET.ASSETS[tokenTransfer].decimals;
+        if (tokenKind === 'FA1.2') {
+          invocation = this.getFA12Transaction(pkh, transactions[i].to, Big(10 ** decimals).times(transactions[i].amount).toString());
+        } else if (tokenKind === 'FA2') {
+          invocation = this.getFA2Transaction(pkh, transactions[i].to, Big(10 ** decimals).times(transactions[i].amount).toString());
+        } else {
+          throw new Error('Unrecognized token kind');
+        }
         fop.contents.push({
           kind: 'transaction',
           source: pkh,
@@ -201,7 +210,7 @@ export class OperationService {
           storage_limit: storageLimit,
           amount: '0',
           destination: tokenTransfer,
-          parameters: fa12transfer
+          parameters: invocation
         });
       } else if (from.slice(0, 2) === 'tz') {
         const transactionOp: any = {
@@ -400,7 +409,7 @@ export class OperationService {
     return this.http.get(this.nodeURL + `/chains/main/blocks/head/context/contracts/${tz2address}/manager_key`, {})
       .pipe(flatMap((manager: any) => {
         if (manager === null) {
-          return of({noReveal: true});
+          return of({ noReveal: true });
         } else {
           return fromPromise(this.decompress(manager)).pipe(flatMap((pk: any) => {
             const torusReq = {
@@ -414,18 +423,18 @@ export class OperationService {
             };
             const url = this.CONSTANTS.NET.NETWORK === 'mainnet' ? 'https://torus-19.torusnode.com/jrpc' : 'https://teal-15-1.torusnode.com/jrpc';
             return this.http.post(url, JSON.stringify(torusReq), httpOptions)
-            .pipe(flatMap((ans: any) => {
-              try {
-                if (ans.result.PublicKey.X === pk.X &&
+              .pipe(flatMap((ans: any) => {
+                try {
+                  if (ans.result.PublicKey.X === pk.X &&
                     ans.result.PublicKey.Y === pk.Y) {
                     return of(ans);
                   } else {
                     return of(null);
                   }
-              } catch {
-                return of(null);
-              }
-            }));
+                } catch {
+                  return of(null);
+                }
+              }));
           }));
         }
       }));
@@ -683,7 +692,7 @@ export class OperationService {
     const compressed = hexToBin(hexPk);
     const uncompressed = secp256k1.uncompressPublicKey(compressed);
     const xy = binToHex(uncompressed).slice(2);
-    return {X: xy.slice(0, 64), Y: xy.slice(64, 128)};
+    return { X: xy.slice(0, 64), Y: xy.slice(64, 128) };
   }
   hex2pk(hex: string): string {
     return this.b58cencode(this.hex2buf(hex.slice(2, 66)), this.prefix.edpk);
@@ -724,7 +733,7 @@ export class OperationService {
     if (sk.slice(0, 4) === 'spsk') {
       const hash = libs.crypto_generichash(32, this.mergebuf(this.hex2buf(bytes)));
       const key = (new elliptic.ec('secp256k1')).keyFromPrivate(new Uint8Array(this.b58cdecode(sk, this.prefix.spsk)));
-      let sig = key.sign(hash, {canonical: true});
+      let sig = key.sign(hash, { canonical: true });
       sig = new Uint8Array(sig.r.toArray().concat(sig.s.toArray()));
       const spsig = this.b58cencode(sig, this.prefix.spsig);
       const sbytes = bytes + this.buf2hex(sig);
@@ -1322,11 +1331,11 @@ export class OperationService {
         args: [
           {
             string: from
-          },{
+          }, {
             args: [
               {
                 string: to
-              },{
+              }, {
                 int: amount
               }
             ],
@@ -1335,6 +1344,42 @@ export class OperationService {
         ],
         prim: 'Pair'
       }
+    };
+  }
+  getFA2Transaction(from: string, to: string, amount: string, index: string = '1') {
+    return {
+      entrypoint: "transfer",
+      value: [
+        {
+          prim: "Pair",
+          args: [
+            {
+              string: from
+            },
+            [
+              {
+                prim: "Pair",
+                args: [
+                  {
+                    string: to
+                  },
+                  {
+                    prim: "Pair",
+                    args: [
+                      {
+                        "int": index
+                      },
+                      {
+                        "int": amount
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          ]
+        }
+      ]
     }
   }
 }

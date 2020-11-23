@@ -12,10 +12,12 @@ interface Net {
 type Assets = Record<string, AssetData>;
 interface AssetData {
   name: string;
+  symbol: string;
   kind: string;
+  decimals: number;
   assetCategory: string;
   description: string;
-  imageUri: string;
+  imageFileName: string;
 }
 export class Constants {
     // Select Testnet or Mainnet
@@ -41,19 +43,32 @@ export class Constants {
             NODE_URL: 'https://testnet-tezos.giganode.io',
             BLOCK_EXPLORER_URL: 'https://carthage.tzkt.io',
             ASSETS: {
-              "KT1TjdF4H8H2qzxichtEbiCwHxCRM1SVx6B7" : {
-                name: "tzBTC",
-                kind: "FA1.2",
-                assetCategory: "finance",
-                description: "tzBtc delivers the power of Bitcoin as a token on the Tezos blockchain.",
-                imageUri: "https://x-tz.com/testtokens/finance/tzbtc/tzbtc_logo_single.png"
+              'KT1TjdF4H8H2qzxichtEbiCwHxCRM1SVx6B7' : {
+                name: 'tzBTC',
+                symbol: 'tzBTC',
+                kind: 'FA1.2',
+                decimals: 6,
+                assetCategory: 'finance',
+                description: 'tzBtc delivers the power of Bitcoin as a token on the Tezos blockchain.',
+                imageFileName: 'tzbtc.png'
               },
-              "KT1HzQofKBxzfiKoMzGbkxBgjis2mWnCtbC2" : {
-                name: "USDtz",
-                kind: "FA1.2",
-                assetCategory: "finance",
-                description: "USD Tez (Symbol USDtz ) is a Tezos on-chain stablecoin pegged to the value of the United States Dollar.",
-                imageUri: "https://x-tz.com/testtokens/finance/usdtz/usdtz.png"
+              'KT1HzQofKBxzfiKoMzGbkxBgjis2mWnCtbC2' : {
+                name: 'USD tez',
+                symbol: 'USDtz',
+                kind: 'FA1.2',
+                decimals: 6,
+                assetCategory: 'finance',
+                description: 'USD Tez (Symbol USDtz ) is a Tezos on-chain stablecoin pegged to the value of the United States Dollar.',
+                imageFileName: 'usdtz.png'
+              },
+              'KT1C1UcCzh5B7iTWpG2o4pPM3dTZDAc6WrNB' : {
+                name: 'Kukai Monk Token',
+                symbol: 'kktm',
+                kind: 'FA2',
+                decimals: 6,
+                assetCategory: 'finance',
+                description: '',
+                imageFileName: 'kktm.png'
               }
             }
         };

@@ -26,22 +26,21 @@ export class TzktService implements Indexer {
       .then(response => response.json())
       .then(data => {
         if (data) {
-          console.log('data', data)
           const payload: string =
+            (data.balance ? data.balance : '') +
             (data.last_action ? data.last_action : '') +
             (data.tokens ? JSON.stringify(data.tokens.sort(
               function (a: any, b: any) {
                 if (a.contract < b.contract) {
-                  return -1
+                  return -1;
                 } else {
                   return 1;
-                };
+                }
               }
             )) : '');
           const input = new Buffer(JSON.stringify(payload), 'base64');
           console.log('payload', payload);
           const hash = cryptob.createHash('md5').update(input, 'base64').digest('hex');
-          console.warn(hash + '');
           if (hash === 'edc66a88461120f2ea9132d64be0d8b9') { // empty account
             return '';
           }
@@ -65,7 +64,6 @@ export class TzktService implements Indexer {
               if ((address !== op.target.address &&
                 address !== op.sender.address) ||
                 op.amount.toString() === '0') {
-                console.warn('Ignore ', op)
                 return null;
               }
               destination = op.target.address;
@@ -111,7 +109,7 @@ export class TzktService implements Indexer {
             block: '',
             status: 1,
             amount: tx.amount,
-            asset: this.CONSTANTS.NET.ASSETS[tx.contract].name,
+            asset: this.CONSTANTS.NET.ASSETS[tx.contract].symbol,
             source: tx.from,
             destination: tx.to,
             hash: tx.hash,

@@ -79,11 +79,12 @@ export class InputValidationService {
   passphrase(passphrase: string): Boolean {
     return true;
   }
-  amount(amount: string): Boolean {
+  amount(amount: string, tokenAmount: boolean = false): Boolean {
+    const expr = tokenAmount ? new RegExp(/^(0|[1-9][0-9]{0,8})(\.[0-9]{1,}){0,1}$/g) : new RegExp(/^(0|[1-9][0-9]{0,8})(\.[0-9]{1,6}){0,1}$/g);
     console.log(amount);
     if (amount === '' || amount === '0') { // default value / zero
       return true;
-    } else if (Number(amount) && amount.match(/^(0|[1-9][0-9]{0,8})(\.[0-9]{1,6}){0,1}$/g)) { // Positive number
+    } else if (Number(amount) && amount.match(expr)) { // Positive number
       return true;
     }
     return false;

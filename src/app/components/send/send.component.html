@@ -19,7 +19,7 @@
     <div class="km-body" *ngIf="activeView === 0">
       <div class="amount">
         <input #amountInput class="input" class="custom-large" placeholder="0.00" [(ngModel)]="amount"
-          (click)="sendMax = false;" [style.font-size.rem]="dynSize()"
+          (click)="sendMax = false;" [style.font-size.rem]="dynSize()" (input)="amountChange()" (change)="amountChange()"
           [style.width.ch]="amount ? amount.length + 1 : 3.6" [disabled]="isMultipleDestinations">
         <span class="tez">{{ getAssetName() }}</span>
       </div>
@@ -27,7 +27,7 @@
         <button *ngIf="!this.isMultipleDestinations" tabindex=-1 class="small" [class.max]="sendMax"
           (click)="sendEntireBalance($event)">Send Max</button>
         <p *ngIf="this.isMultipleDestinations"></p>
-        <p class="fee">
+        <p class="fee"><ng-container *ngIf="simSemaphore"><img src="../../../assets/img/feeLoader.gif">&nbsp;</ng-container>
           <ng-container *ngIf="!getTotalBurn() ; else burn">Fee: </ng-container>
           <ng-template #burn>Fee & storage cost: </ng-template>
           {{ getTotalCost(true) }}
@@ -106,10 +106,13 @@
       <div class="preview-amount">
         <span class="section">Send</span>
         <span class="amount-tez">{{ totalAmount() | number:'1.0-6' }} {{ getAssetName() }}</span>
-        <span class="amount-usd">{{ totalAmount() * walletService.wallet.XTZrate | number:'1.0-2' }} USD</span>
+        <span class="amount-usd">
+          <ng-container *ngIf="!tokenTransfer">{{ totalAmount() * walletService.wallet.XTZrate | number:'1.0-2' }}</ng-container>
+          <ng-container *ngIf="tokenTransfer">—</ng-container> USD</span>
         <span *ngIf="!isMultipleDestinations" class="section">To</span>
       </div>
-      <img src="../../../assets/img/tezos-xtz-logo.svg" style="height: 4.5rem; margin-right: 1rem">
+      <img *ngIf="!tokenTransfer" src="../../../assets/img/tezos-xtz-logo.svg" style="height: 4.5rem; margin-right: 1rem">
+      <img *ngIf="tokenTransfer" src="../../../assets/img/tokens/{{ CONSTANTS.NET.ASSETS[tokenTransfer].imageFileName }}" style="height: 4.5rem; margin-right: 1rem">
       </div>
       <ng-container *ngIf="!isMultipleDestinations">
         <span *ngIf="torusLookupId" class="torus-to"><img src="../../../assets/img/{{ torusVerifier }}-logo.svg">

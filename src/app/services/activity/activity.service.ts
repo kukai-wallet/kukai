@@ -52,15 +52,15 @@ export class ActivityService {
         .then(res => res.json())
         .then( data => {
           console.log('account info', data);
-          if(data?.tokens?.length) {
+          if (data?.tokens?.length) {
             for (const token of data.tokens) {
               if (this.constants.NET.ASSETS[token.contract]) {
-                account.updateTokenBalance(token.contract, Big(token.balance).div(10**token.decimals).toString());
+                account.updateTokenBalance(token.contract, Big(token.balance).div(10 ** token.decimals).toString());
               }
             }
           }
           this.walletService.storeWallet();
-        })
+        });
     }
   }
   getAllTransactions(account: Account, counter: string): Observable<any> {
@@ -96,12 +96,22 @@ export class ActivityService {
       const index = oldActivities.findIndex((a) => a.hash === activity.hash);
       if (index === -1 || (index !== -1 && oldActivities[index].status === 0)) {
         if (activity.type === 'transaction') {
-          const subfix = activity.asset ? activity.asset : 'tez';
+          const subfix: string = activity.asset ? activity.asset : 'tez';
+          let decimals: number = 6;
+          if (activity.asset) {
+            const keys = Object.keys(this.constants.NET.ASSETS);
+            for (const key of keys) {
+              if (this.constants.NET.ASSETS[key].name === activity.asset) {
+                decimals = this.constants.NET.ASSETS[key].decimals;
+                break;
+              }
+            }
+          }
           if (account.address === activity.source) {
-            this.messageService.addSuccess(account.shortAddress() + ': Sent ' + activity.amount / 1000000 + ` ${subfix}`);
+            this.messageService.addSuccess(account.shortAddress() + ': Sent ' + Big(activity.amount).div(10 ** decimals) + ` ${subfix}`);
           }
           if (account.address === activity.destination) {
-            this.messageService.addSuccess(account.shortAddress() + ': Received ' + activity.amount / 1000000 + ` ${subfix}`);
+            this.messageService.addSuccess(account.shortAddress() + ': Received ' + Big(activity.amount).div(10 ** decimals) + ` ${subfix}`);
           }
         } else if (activity.type === 'delegation') {
           this.messageService.addSuccess(account.shortAddress() + ': Delegate updated');
