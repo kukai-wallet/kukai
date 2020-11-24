@@ -6,7 +6,7 @@ import { WalletClient, BeaconMessageType, PermissionScope, PermissionResponseInp
   providedIn: 'root'
 })
 export class BeaconService {
-  client = null;
+  client: WalletClient = null;
   peers = [];
   permissions = [];
   constructor(

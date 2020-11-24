@@ -53,7 +53,7 @@
 </div>
 <div id="header-list" [class.invert]="settings">
   <div class="left">
-    <ng-container *ngIf="!CONSTANTS.MAINNET">TESTNET VERSION</ng-container>
+    <ng-container *ngIf="!CONSTANTS.MAINNET">{{ CONSTANTS.NETWORK.toUpperCase() }} VERSION</ng-container>
   </div>
   <div class="main">
     <ng-container *ngIf="getVerifier()"><img class="verifier-logo"
