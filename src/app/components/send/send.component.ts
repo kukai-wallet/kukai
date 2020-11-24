@@ -223,6 +223,7 @@ export class SendComponent implements OnInit {
     event.stopPropagation();
     this.sendMax = true;
     this.checkMaxAmount();
+    this.amountChange();
   }
   checkMaxAmount() {
     if (this.sendMax) {
