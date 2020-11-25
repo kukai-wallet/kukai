@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ConseilService } from './conseil/conseil.service';
 import { TzktService } from './tzkt/tzkt.service';
 import { Constants } from '../../constants';
+import { TokenService } from '../token/token.service';
 
 export interface Indexer {
   getContractAddresses(pkh: string): Promise<any>;
@@ -13,9 +14,11 @@ export interface Indexer {
 })
 export class IndexerService {
   private selectedIndexerService: Indexer;
-  constructor() {
+  constructor(
+    tokenService: TokenService
+  ) {
     const constants = new Constants();
-    this.selectedIndexerService = constants.NET.CSI ? new ConseilService : new TzktService;
+    this.selectedIndexerService = constants.NET.CSI ? new ConseilService : new TzktService(tokenService);
   }
   async getContractAddresses(address: string): Promise<any> {
     return this.selectedIndexerService.getContractAddresses(address);

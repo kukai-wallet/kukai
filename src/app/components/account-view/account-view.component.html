@@ -34,11 +34,9 @@
       <div class="token-container">
         <ng-container *ngFor="let token of account.tokens">
           <div class="token-row">
-            <span><img height="16" src="../../../assets/img/tokens/{{ CONSTANTS.NET.ASSETS[token.contractAddress].imageFileName }}">&nbsp;&nbsp;{{ printTokenBalance(token) }}</span>
-            <app-send [activeAccount]="account" [tokenTransfer]="token.contractAddress"></app-send>
+            <span><img height="16" src="../../../assets/img/tokens/{{ tokenService.getAsset(token.tokenId).imageFileName }}">&nbsp;&nbsp;{{ printTokenBalance(token) }}</span>
+            <app-send [activeAccount]="account" [tokenTransfer]="token.tokenId"></app-send>
           </div>
-          <!--{{ CONSTANTS.NET.ASSETS[token.contractAddress].name }} = {{ token.balance }} <app-send
-            [activeAccount]="account" [tokenTransfer]="token.contractAddress"></app-send>-->
         </ng-container>
       </div>
     </div>

@@ -112,7 +112,7 @@
         <span *ngIf="!isMultipleDestinations" class="section">To</span>
       </div>
       <img *ngIf="!tokenTransfer" src="../../../assets/img/tezos-xtz-logo.svg" style="height: 4.5rem; margin-right: 1rem">
-      <img *ngIf="tokenTransfer" src="../../../assets/img/tokens/{{ CONSTANTS.NET.ASSETS[tokenTransfer].imageFileName }}" style="height: 4.5rem; margin-right: 1rem">
+      <img *ngIf="tokenTransfer" src="../../../assets/img/tokens/{{ tokenService.getAsset(tokenTransfer).imageFileName }}" style="height: 4.5rem; margin-right: 1rem">
       </div>
       <ng-container *ngIf="!isMultipleDestinations">
         <span *ngIf="torusLookupId" class="torus-to"><img src="../../../assets/img/{{ torusVerifier }}-logo.svg">

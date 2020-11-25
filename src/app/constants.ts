@@ -7,25 +7,24 @@ interface Net {
   };
   NODE_URL: string;
   BLOCK_EXPLORER_URL: string;
-  _ASSETS: Tokens;
+  _ASSETS: Contracts;
   //TOKEN: Token;
 }
-export type Tokens = Record<string, TokenContract>;
-export type TokenContract = FA12 | FA2;
+export type Contracts = Record<string, Contract>;
+export type Contract = FA12 | FA2;
+export interface FA {
+  kind: string,
+  category: string
+}
 export interface FA12 extends FA {
   kind: 'FA1.2',
   category: string,
-  asset: AssetData
-}
-export interface FA {
-  kind: string,
-  category: string,
-  asset: AssetData | Record<number, AssetData>
+  assets: Record<number, AssetData>
 }
 export interface FA2 extends FA {
   kind: 'FA2',
   category: string,
-  asset: Record<number, AssetData>
+  assets: Record<number, AssetData>
 }
 export interface AssetData {
   name: string;
@@ -61,29 +60,33 @@ export class Constants {
         'KT1TjdF4H8H2qzxichtEbiCwHxCRM1SVx6B7': {
           kind: 'FA1.2',
           category: 'finance',
-          asset: {
-            name: 'tzBTC',
-            symbol: 'tzBTC',
-            decimals: 6,
-            description: 'tzBtc delivers the power of Bitcoin as a token on the Tezos blockchain.',
-            imageFileName: 'tzbtc.png'
+          assets: {
+            0: {
+              name: 'tzBTC',
+              symbol: 'tzBTC',
+              decimals: 6,
+              description: 'tzBtc delivers the power of Bitcoin as a token on the Tezos blockchain.',
+              imageFileName: 'tzbtc.png'
+            }
           }
         },
         'KT1HzQofKBxzfiKoMzGbkxBgjis2mWnCtbC2': {
           kind: 'FA1.2',
           category: 'finance',
-          asset: {
-            name: 'USD tez',
-            symbol: 'USDtz',
-            decimals: 6,
-            description: 'USD Tez (Symbol USDtz ) is a Tezos on-chain stablecoin pegged to the value of the United States Dollar.',
-            imageFileName: 'usdtz.png'
+          assets: {
+            0: {
+              name: 'USD tez',
+              symbol: 'USDtz',
+              decimals: 6,
+              description: 'USD Tez (Symbol USDtz ) is a Tezos on-chain stablecoin pegged to the value of the United States Dollar.',
+              imageFileName: 'usdtz.png'
+            }
           }
         },
         'KT1C1UcCzh5B7iTWpG2o4pPM3dTZDAc6WrNB': {
           kind: 'FA2',
           category: 'finance',
-          asset: {
+          assets: {
             1: {
               name: 'Kukai Monk Token',
               symbol: 'kktm',

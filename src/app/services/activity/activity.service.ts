@@ -8,6 +8,7 @@ import { LookupService } from '../lookup/lookup.service';
 import { IndexerService } from '../indexer/indexer.service';
 import Big from 'big.js';
 import { Constants } from '../../constants';
+import { TokenService } from '../token/token.service';
 
 @Injectable()
 export class ActivityService {
@@ -17,7 +18,8 @@ export class ActivityService {
     private walletService: WalletService,
     private messageService: MessageService,
     private lookupService: LookupService,
-    private indexerService: IndexerService
+    private indexerService: IndexerService,
+    private tokenService: TokenService
   ) {}
   updateTransactions(pkh): Observable<any> {
     try {
@@ -54,8 +56,9 @@ export class ActivityService {
           console.log('account info', data);
           if (data?.tokens?.length) {
             for (const token of data.tokens) {
-              if (this.constants.NET.ASSETS[token.contract]) {
-                account.updateTokenBalance(token.contract, Big(token.balance).div(10 ** token.decimals).toString());
+              const tokenId = this.tokenService.getTokenId(token.contract, token.token_id);
+              if (tokenId) {
+                account.updateTokenBalance(tokenId, token.balance.toString());
               }
             }
           }
@@ -96,16 +99,12 @@ export class ActivityService {
       const index = oldActivities.findIndex((a) => a.hash === activity.hash);
       if (index === -1 || (index !== -1 && oldActivities[index].status === 0)) {
         if (activity.type === 'transaction') {
-          const subfix: string = activity.asset ? activity.asset : 'tez';
           let decimals = 6;
-          if (activity.asset) {
-            const keys = Object.keys(this.constants.NET.ASSETS);
-            for (const key of keys) {
-              if (this.constants.NET.ASSETS[key].name === activity.asset) {
-                decimals = this.constants.NET.ASSETS[key].decimals;
-                break;
-              }
-            }
+          let subfix = 'tez'
+          if (activity.tokenId) {
+            const token = this.tokenService.getAsset(activity.tokenId);
+            decimals = token.decimals;
+            subfix = token.symbol;
           }
           if (account.address === activity.source) {
             this.messageService.addSuccess(account.shortAddress() + ': Sent ' + Big(activity.amount).div(10 ** decimals) + ` ${subfix}`);

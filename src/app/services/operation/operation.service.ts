@@ -13,6 +13,7 @@ import { Constants } from '../../constants';
 import { ErrorHandlingPipe } from '../../pipes/error-handling.pipe';
 import * as elliptic from 'elliptic';
 import { instantiateSecp256k1, hexToBin, binToHex } from '@bitauth/libauth';
+import { TokenService } from '../token/token.service';
 
 const httpOptions = { headers: { 'Content-Type': 'application/json' } };
 
@@ -46,7 +47,8 @@ export class OperationService {
   constructor(
     private http: HttpClient,
     private translate: TranslateService,
-    private errorHandlingPipe: ErrorHandlingPipe
+    private errorHandlingPipe: ErrorHandlingPipe,
+    private tokenService: TokenService
   ) { }
   /*
     Returns an observable for the activation of an ICO identity
@@ -192,11 +194,10 @@ export class OperationService {
       if (tokenTransfer) {
         console.log('Invoke contract: ' + tokenTransfer);
         let invocation: any;
-        const tokenKind = this.CONSTANTS.NET.ASSETS[tokenTransfer].kind;
-        const decimals = this.CONSTANTS.NET.ASSETS[tokenTransfer].decimals;
-        if (tokenKind === 'FA1.2') {
+        const { kind, decimals, contractAddress } = this.tokenService.getAsset(tokenTransfer);
+        if (kind === 'FA1.2') {
           invocation = this.getFA12Transaction(pkh, transactions[i].to, Big(10 ** decimals).times(transactions[i].amount).toString());
-        } else if (tokenKind === 'FA2') {
+        } else if (kind === 'FA2') {
           invocation = this.getFA2Transaction(pkh, transactions[i].to, Big(10 ** decimals).times(transactions[i].amount).toString());
         } else {
           throw new Error('Unrecognized token kind');
@@ -209,7 +210,7 @@ export class OperationService {
           gas_limit: gasLimit,
           storage_limit: storageLimit,
           amount: '0',
-          destination: tokenTransfer,
+          destination: contractAddress,
           parameters: invocation
         });
       } else if (from.slice(0, 2) === 'tz') {

@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Constants, AssetData, Tokens } from '../../constants';
+import { Constants, Contract, Contracts } from '../../constants';
 
 export interface TokenResponseType {
   contractAddress: string;
   decimals: number;
-  image: string;
+  imageFileName: string;
   name: string;
   symbol: string;
   kind: string;
@@ -16,16 +16,32 @@ export interface TokenResponseType {
 
 export class TokenService {
   readonly AUTO_DISCOVER: boolean = false;
-  assets: Tokens;
+  contracts: Contracts;
   constructor() {
-    this.assets = new Constants().NET._ASSETS;
+    this.contracts = new Constants().NET._ASSETS;
   }
-  getAsset(tokenId: string): any {
-    // FA1.2: tokenId = KT1TjdF4H8H2qzxichtEbiCwHxCRM1SVx6B7
-    // FA2: tokenId = KT1C1UcCzh5B7iTWpG2o4pPM3dTZDAc6WrNB:1
+  getAsset(tokenId: string): TokenResponseType {
     const tokenIdArray = tokenId.split(':');
     const contractAddress: string = tokenIdArray[0];
-    const id: number = tokenIdArray[1] ? Number(tokenIdArray[1]) : -1
+    const id: number = tokenIdArray[1] ? Number(tokenIdArray[1]) : -1;
+    const contract: Contract = this.contracts[contractAddress];
+    if (contract && id > -1) {
+      return {
+        contractAddress,
+        decimals: contract.assets[id].decimals,
+        imageFileName: contract.assets[id].imageFileName,
+        name: contract.assets[id].name,
+        symbol: contract.assets[id].symbol,
+        kind: contract.kind,
+      }
+    }
   }
-  findTokenId
+  getTokenId(contractAddress: string, id: number): string {
+    const contract: Contract = this.contracts[contractAddress];
+    if (!contract || (contract.kind === 'FA1.2' && id !== 0)) {
+      return '';
+    } else {
+      return `${contractAddress}:${id}`;
+    }
+  }
 }

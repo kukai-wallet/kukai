@@ -2,13 +2,16 @@ import { Injectable } from '@angular/core';
 import { Constants } from '../../../constants';
 import { Indexer } from '../indexer.service';
 import * as cryptob from 'crypto-browserify';
+import { TokenService, TokenResponseType } from '../../token/token.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TzktService implements Indexer {
   CONSTANTS: any;
-  constructor() {
+  constructor(
+    private contractService: TokenService
+  ) {
     this.CONSTANTS = new Constants();
   }
   async getContractAddresses(pkh: string): Promise<any> {
@@ -39,7 +42,6 @@ export class TzktService implements Indexer {
               }
             )) : '');
           const input = new Buffer(JSON.stringify(payload), 'base64');
-          console.log('payload', payload);
           const hash = cryptob.createHash('md5').update(input, 'base64').digest('hex');
           if (hash === 'edc66a88461120f2ea9132d64be0d8b9') { // empty account
             return '';
@@ -91,7 +93,6 @@ export class TzktService implements Indexer {
             block: op.block,
             status: 1,
             amount,
-            asset: 'tez',
             source: op.sender.address,
             destination,
             hash: op.hash,
@@ -99,17 +100,17 @@ export class TzktService implements Indexer {
           };
         }
       }).filter(obj => obj));
-    console.warn(ops);
     const tokenTxs = await fetch(`https://api.better-call.dev/v1/tokens/${this.CONSTANTS.NET.NETWORK}/transfers/${address}?size=20`)
       .then(response => response.json())
       .then(data => data.transfers.map(tx => {
-        if (tx.contract && this.CONSTANTS.NET.ASSETS[tx.contract] && tx.status === 'applied') {
+        const tokenId = this.contractService.getTokenId(tx.contract, tx.token_id);
+        if (tx.contract && tokenId && tx.status === 'applied') {
           return {
             type: 'transaction',
             block: '',
             status: 1,
             amount: tx.amount,
-            asset: this.CONSTANTS.NET.ASSETS[tx.contract].symbol,
+            tokenId,
             source: tx.from,
             destination: tx.to,
             hash: tx.hash,
@@ -119,7 +120,6 @@ export class TzktService implements Indexer {
           return null;
         }
       }).filter(obj => obj));
-    console.log(tokenTxs);
     return ops.concat(tokenTxs).sort(
       function (a: any, b: any) {
         return b.timestamp - a.timestamp;

@@ -177,20 +177,20 @@ export class ImplicitAccount extends Account {
   isImplicit(): boolean {
     return true;
   }
-  getTokenBalance(contractAddress: string): string {
+  getTokenBalance(tokenId: string): string {
     if (this.tokens.length) {
       for (const token of this.tokens) {
-        if (contractAddress === token.contractAddress) {
+        if (tokenId === token.tokenId) {
           return token.balance;
         }
       }
     }
     return '';
   }
-  updateTokenBalance(contractAddress: string, balance: string) {
+  updateTokenBalance(tokenId: string, balance: string) {
     if (this.tokens.length) {
       for (let i = 0; i < this.tokens.length; i++) {
-        if (contractAddress === this.tokens[i].contractAddress) {
+        if (tokenId === this.tokens[i].tokenId) {
           if (this.tokens[i].balance !== balance) {
             if (balance === '0') {
               this.tokens.splice(i, 1);
@@ -202,11 +202,9 @@ export class ImplicitAccount extends Account {
         }
       }
     }
+    if (tokenId.length > 37)
     console.log('Add token');
-    const assets = new Constants().NET.ASSETS;
-    if (assets[contractAddress]) {
-      this.tokens.push({ contractAddress, balance});
-    }
+    this.tokens.push({ tokenId, balance});
   }
 }
 
@@ -229,9 +227,9 @@ export class Activity {
   destination: string;
   hash: string;
   timestamp: number | null;
-  asset?: string;
+  tokenId?: string;
 }
 export class Token {
-  contractAddress: string;
+  tokenId: string;
   balance: string;
 }

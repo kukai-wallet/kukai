@@ -12,6 +12,7 @@ import { Constants } from '../../constants';
 import { LookupService } from '../../services/lookup/lookup.service';
 import { ActivityService } from '../../services/activity/activity.service';
 import Big from 'big.js';
+import { TokenService } from '../../services/token/token.service';
 
 @Component({
   selector: 'app-account-view',
@@ -30,7 +31,8 @@ export class AccountViewComponent implements OnInit {
     private router: Router,
     private coordinatorService: CoordinatorService,
     private lookupService: LookupService,
-    private activityService: ActivityService
+    private activityService: ActivityService,
+    public tokenService: TokenService
   ) {}
     trigger = true;
     @Input() activity: any;
@@ -91,25 +93,21 @@ export class AccountViewComponent implements OnInit {
     return `${baseURL}/${hash}`;
   }
   printAmount(activity: Activity): string {
-    if (activity.asset) {
-      const keys = Object.keys(this.CONSTANTS.NET.ASSETS);
-      let decimals = 6;
-      for (const key of keys) {
-        if (this.CONSTANTS.NET.ASSETS[key].name === activity.asset) {
-          decimals = this.CONSTANTS.NET.ASSETS[key].decimals;
-          break;
-        }
-      }
-      return `${Big(activity.amount).div(10 ** decimals).toString()} ${activity.asset}`;
-    } else {
-      return `${Big(activity.amount).div(10 ** 6).toString()} tez`;
+    let decimals = 6;
+    let subfix = 'tez';
+    if (activity.tokenId !== undefined) {
+      const token = this.tokenService.getAsset(activity.tokenId);
+      decimals = token.decimals;
+      subfix = token.symbol;
     }
+    return `${Big(activity.amount).div(10 ** 6).toString()} ${subfix}`;
   }
   hasTokens(): boolean {
     return (this.account instanceof ImplicitAccount && this.account.tokens.length > 0);
   }
   printTokenBalance(token: any) {
-    return Big(token.balance).div(10 ** this.CONSTANTS.NET.ASSETS[token.contractAddress].decimals).toString() + ' ' + this.CONSTANTS.NET.ASSETS[token.contractAddress].symbol;
+    const { decimals, symbol } = this.tokenService.getAsset(token.tokenId);
+    return Big(token.balance).div(10 ** decimals).toString() + ' ' + symbol;
   }
 }
 

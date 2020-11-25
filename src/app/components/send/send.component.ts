@@ -14,6 +14,7 @@ import { Account, ImplicitAccount, OriginatedAccount } from '../../services/wall
 import { MessageService } from '../../services/message/message.service';
 import { TorusService } from '../../services/torus/torus.service';
 import { LookupService } from '../../services/lookup/lookup.service';
+import { TokenService } from '../../services/token/token.service';
 
 interface SendData {
   to: string;
@@ -95,7 +96,8 @@ export class SendComponent implements OnInit {
     private estimateService: EstimateService,
     private messageService: MessageService,
     public torusService: TorusService,
-    private lookupService: LookupService
+    private lookupService: LookupService,
+    public tokenService: TokenService
   ) { }
 
   ngOnInit() {
@@ -261,7 +263,7 @@ export class SendComponent implements OnInit {
     } else {
       if (this.tokenTransfer) {
         if (account instanceof ImplicitAccount) {
-          return Big(account.getTokenBalance(this.tokenTransfer)).div(10 ** this.CONSTANTS.NET.ASSETS[this.tokenTransfer].decimals).toString();
+          return Big(account.getTokenBalance(this.tokenTransfer)).div(10 ** this.tokenService.getAsset(this.tokenTransfer).decimals).toString();
         }
       } else {
         return Big(account.balanceXTZ).div(1000000).toString();
@@ -789,7 +791,7 @@ export class SendComponent implements OnInit {
   }
   getAssetName(): string {
     if (this.tokenTransfer) {
-      return this.CONSTANTS.NET.ASSETS[this.tokenTransfer].symbol;
+      return this.tokenService.getAsset(this.tokenTransfer).symbol;
     } else {
       return 'tez';
     }
