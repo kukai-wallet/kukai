@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MessageService } from '../../services/message/message.service';
-import { WalletClient, BeaconMessageType, PermissionScope, PermissionResponseInput, P2PPairingRequest, BeaconErrorType, BeaconResponseInputMessage, BeaconMessage, OperationResponseInput, BEACON_VERSION, ErrorResponse } from '@airgap/beacon-sdk';
+import { WalletClient, BeaconMessageType, PermissionResponseInput, P2PPairingRequest, BeaconErrorType, BEACON_VERSION, ErrorResponse, getSenderId } from '@airgap/beacon-sdk';
+import { ExtendedP2PPairingResponse } from '@airgap/beacon-sdk/dist/cjs/types/P2PPairingResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -56,8 +57,14 @@ export class BeaconService {
   }
   async removePeer(index: number) {
     const pairInfo: P2PPairingRequest = this.peers[index];
-    await this.client.removePeer(pairInfo);
-    await this.client.removeAppMetadata(pairInfo.publicKey);
+    const senderId = await getSenderId(pairInfo.publicKey);
+    const peerResponse: ExtendedP2PPairingResponse = {
+      ...pairInfo,
+      type: 'p2p-pairing-response',
+      senderId
+    }
+    await this.client.removePeer(peerResponse);
+    await this.client.removeAppMetadata(senderId);
     this.syncBeaconState();
   }
   async removePermissions() {

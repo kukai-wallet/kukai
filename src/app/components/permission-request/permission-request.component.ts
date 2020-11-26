@@ -43,7 +43,7 @@ export class PermissionRequestComponent implements OnInit, OnChanges {
   }
   scopeToText(scope: string) {
     if (scope === 'sign') {
-      return 'Request arbitrary signing';
+      return 'Request other signing';
     } else if (scope === 'operation_request') {
       return 'Request operation signing';
     }
