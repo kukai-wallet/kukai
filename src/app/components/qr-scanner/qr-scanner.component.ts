@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild, TemplateRef, Input, ElementRef } from '@a
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { BeaconService } from '../../services/beacon/beacon.service';
 import QrScanner from 'qr-scanner';
+import { DeeplinkService } from '../../services/deeplink/deeplink.service';
+
 @Component({
   selector: 'app-qr-scanner',
   templateUrl: './qr-scanner.component.html',
@@ -10,7 +12,8 @@ import QrScanner from 'qr-scanner';
 export class QrScannerComponent implements OnInit {
 
   constructor(
-    private beaconService: BeaconService
+    private beaconService: BeaconService,
+    private deeplinkService: DeeplinkService
   ) { }
   @ViewChild('videoPlayer') videoplayer: ElementRef;
   modalRef1: BsModalRef;
@@ -28,7 +31,6 @@ export class QrScannerComponent implements OnInit {
     this.scan();
   }
   async scan() {
-    console.log('1');
     const hasCamera = await QrScanner.hasCamera();
     if (hasCamera) {
       QrScanner.WORKER_PATH = './assets/js/qr-scanner-worker.min.js';
@@ -40,7 +42,10 @@ export class QrScannerComponent implements OnInit {
   }
   handleQrCode(pairInfo: string) {
     console.log('Pairing Info', pairInfo);
-    this.beaconService.addPeer(pairInfo);
+    const pairingInfo = this.deeplinkService.QRtoPairingJson(pairInfo);
+    if (pairingInfo) {
+      this.beaconService.addPeer(pairingInfo);
+    }
     this.closeModal();
   }
   closeModal() {

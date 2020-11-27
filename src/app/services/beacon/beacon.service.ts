@@ -42,9 +42,10 @@ export class BeaconService {
     }
   }
   async addPeer(pairInfoJson: string) {
-    const pairInfo: P2PPairingRequest = JSON.parse(pairInfoJson);
+    const pairInfo = JSON.parse(pairInfoJson);
     console.log('PairInfo', pairInfo);
     await this.client.addPeer(pairInfo);
+    this.syncBeaconState();
   }
   async syncBeaconState() {
     this.peers = await this.getPeers();
@@ -62,7 +63,7 @@ export class BeaconService {
       ...pairInfo,
       type: 'p2p-pairing-response',
       senderId
-    }
+    };
     await this.client.removePeer(peerResponse);
     await this.client.removeAppMetadata(senderId);
     this.syncBeaconState();
