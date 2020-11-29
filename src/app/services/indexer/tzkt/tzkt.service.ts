@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Constants } from '../../../constants';
 import { Indexer } from '../indexer.service';
 import * as cryptob from 'crypto-browserify';
-import { TokenService, TokenResponseType } from '../../token/token.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +9,6 @@ import { TokenService, TokenResponseType } from '../../token/token.service';
 export class TzktService implements Indexer {
   CONSTANTS: any;
   constructor(
-    private contractService: TokenService
   ) {
     this.CONSTANTS = new Constants();
   }
@@ -22,7 +20,6 @@ export class TzktService implements Indexer {
         return op.originatedContract.kind === 'delegator_contract' ? op.originatedContract.address : '';
       }).filter((address: string) => address.length));
   }
-  // Todo: Replace lastActivity with data hash, this will make us detect token balance changes.
   async accountInfo(address: string): Promise<string> {
     const network = this.CONSTANTS.NET.NETWORK;
     return fetch(`https://api.better-call.dev/v1/account/${network}/${address}`)
@@ -103,7 +100,7 @@ export class TzktService implements Indexer {
     const tokenTxs = await fetch(`https://api.better-call.dev/v1/tokens/${this.CONSTANTS.NET.NETWORK}/transfers/${address}?size=20`)
       .then(response => response.json())
       .then(data => data.transfers.map(tx => {
-        const tokenId = this.contractService.getTokenId(tx.contract, tx.token_id);
+        const tokenId = `${tx.contract}:${tx.token_id}`;
         if (tx.contract && tokenId && tx.status === 'applied') {
           return {
             type: 'transaction',
@@ -125,5 +122,80 @@ export class TzktService implements Indexer {
         return b.timestamp - a.timestamp;
       }
     );
+  }
+  async getTokenMetadata(contractAddress: string, id: number): Promise<any> {
+    const storage = await fetch(`https://api.better-call.dev/v1/contract/carthagenet/${contractAddress}/storage`)
+      .then(response => response.json())
+      .then(data => data);
+    let bigMapId = 0;
+    try {
+      for (const child of storage.children) {
+        if (child?.name === 'assets') {
+          for (const asset of child.children) {
+            if (asset?.name === 'token_metadata') {
+              bigMapId = asset.value;
+            }
+          }
+        }
+      }
+    } catch (e) {
+      console.log('error', e);
+    }
+    if (bigMapId && typeof bigMapId === 'number') {
+      const bigMap = await fetch(`https://api.better-call.dev/v1/bigmap/carthagenet/${bigMapId}/keys`)
+        .then(response => response.json())
+        .then(data => data);
+      const fields = ['token_id', 'symbol', 'name', 'decimals', 'extras'];
+      const obj: any = {};
+      try {
+        for (const child of bigMap) {
+          if (child.data.key.value === id.toString()) {
+            for (const entry of child.data.value.children) {
+              if (fields.includes(entry.name)) {
+                if (entry.name === 'extras') {
+                  for (const extra of entry.children) {
+                    if (extra.name === 'uri') {
+                      obj['uri'] = entry.children[0].value;
+                      // https://cloudflare-ipfs.com/ipfs/QmTMHwTQhttR5e3R7Kbt2JyqRjrNxE61ENtHGzkp4h6MJD
+                    }
+                  }
+                } else {
+                  obj[entry.name] = entry.value;
+                }
+              }
+            }
+            break;
+          }
+        }
+      } catch (e) {
+        return null;
+      }
+      if (obj.uri) {
+        obj.uriMetadata = await this.getUriMetadata(obj.uri);
+      }
+      return obj;
+    }
+    return null;
+  }
+  private async getUriMetadata(uri: string): Promise<any> {
+    try {
+      if (uri.length > 7 && 'ipfs://') {
+        const uriMetadata: any = {};
+        const url = `https://cloudflare-ipfs.com/ipfs/${uri.slice(7)}`;
+        const uriData = await fetch(url)
+          .then(response => response.json())
+          .then(data => data);
+        console.log('uriData', uriData);
+        const fields = ['imageUri', 'isNft'];
+        for (const key of fields) {
+          if (uriData[key]) {
+            uriMetadata[key] = uriData[key];
+          }
+        }
+        console.log('URImetadata', uriMetadata);
+        return uriMetadata;
+      }
+    } catch (e) { console.log('Uri fetch failed with', e)}
+    return null;
   }
 }

@@ -33,9 +33,9 @@ export class AccountViewComponent implements OnInit {
     private lookupService: LookupService,
     private activityService: ActivityService,
     public tokenService: TokenService
-  ) {}
-    trigger = true;
-    @Input() activity: any;
+  ) { }
+  trigger = true;
+  @Input() activity: any;
   ngOnInit(): void {
     if (!this.walletService.wallet) {
       this.router.navigate(['']);
@@ -53,7 +53,7 @@ export class AccountViewComponent implements OnInit {
             this.account = this.walletService.wallet.getAccount(address);
           }
         });
-        setInterval(() => this.trigger = !this.trigger, 10 * 1000);
+      setInterval(() => this.trigger = !this.trigger, 10 * 1000);
     }
   }
   getType(transaction: any): string {
@@ -100,7 +100,7 @@ export class AccountViewComponent implements OnInit {
       decimals = token.decimals;
       subfix = token.symbol;
     }
-    return `${Big(activity.amount).div(10 ** 6).toString()} ${subfix}`;
+    return `${Big(activity.amount).div(10 ** decimals).toString()} ${subfix}`;
   }
   hasTokens(): boolean {
     return (this.account instanceof ImplicitAccount && this.account.tokens.length > 0);
@@ -108,6 +108,15 @@ export class AccountViewComponent implements OnInit {
   printTokenBalance(token: any) {
     const { decimals, symbol } = this.tokenService.getAsset(token.tokenId);
     return Big(token.balance).div(10 ** decimals).toString() + ' ' + symbol;
+  }
+  knownActivities(): Activity[] {
+    const activities: Activity[] = [];
+    for (const activity of this.account.activities) {
+      if (activity.tokenId && this.tokenService.getAsset(activity.tokenId)) {
+        activities.push(activity);
+      }
+    }
+    return activities;
   }
 }
 

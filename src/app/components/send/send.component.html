@@ -107,12 +107,14 @@
         <span class="section">Send</span>
         <span class="amount-tez">{{ totalAmount() | number:'1.0-6' }} {{ getAssetName() }}</span>
         <span class="amount-usd">
-          <ng-container *ngIf="!tokenTransfer">{{ totalAmount() * walletService.wallet.XTZrate | number:'1.0-2' }}</ng-container>
-          <ng-container *ngIf="tokenTransfer">—</ng-container> USD</span>
+          <ng-container *ngIf="!tokenTransfer">{{ totalAmount() * walletService.wallet.XTZrate | number:'1.0-2' }} USD</ng-container>
+        </span>
         <span *ngIf="!isMultipleDestinations" class="section">To</span>
       </div>
-      <img *ngIf="!tokenTransfer" src="../../../assets/img/tezos-xtz-logo.svg" style="height: 4.5rem; margin-right: 1rem">
-      <img *ngIf="tokenTransfer" src="../../../assets/img/tokens/{{ tokenService.getAsset(tokenTransfer).imageFileName }}" style="height: 4.5rem; margin-right: 1rem">
+      <img *ngIf="!tokenTransfer; else imgElseBlock" src="../../../assets/img/tezos-xtz-logo.svg" style="height: 4.5rem; margin-right: 1rem">
+      <ng-template #imgElseBlock>
+        <img src="{{ tokenService.getAsset(tokenTransfer).imageSrc }}" style="height: 4.5rem; margin-right: 1rem">
+      </ng-template>
       </div>
       <ng-container *ngIf="!isMultipleDestinations">
         <span *ngIf="torusLookupId" class="torus-to"><img src="../../../assets/img/{{ torusVerifier }}-logo.svg">

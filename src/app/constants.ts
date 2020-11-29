@@ -1,3 +1,4 @@
+import { ContractType } from './services/token/token.service';
 interface Net {
   NAME: string;
   NETWORK: string;
@@ -7,31 +8,7 @@ interface Net {
   };
   NODE_URL: string;
   BLOCK_EXPLORER_URL: string;
-  _ASSETS: Contracts;
-  //TOKEN: Token;
-}
-export type Contracts = Record<string, Contract>;
-export type Contract = FA12 | FA2;
-export interface FA {
-  kind: string,
-  category: string
-}
-export interface FA12 extends FA {
-  kind: 'FA1.2',
-  category: string,
-  assets: Record<number, AssetData>
-}
-export interface FA2 extends FA {
-  kind: 'FA2',
-  category: string,
-  assets: Record<number, AssetData>
-}
-export interface AssetData {
-  name: string;
-  symbol: string;
-  decimals: number;
-  description: string;
-  imageFileName: string;
+  _ASSETS: Record<string, ContractType>;
 }
 export class Constants {
   // Select Testnet or Mainnet
@@ -57,47 +34,47 @@ export class Constants {
       NODE_URL: 'https://testnet-tezos.giganode.io',
       BLOCK_EXPLORER_URL: 'https://carthage.tzkt.io',
       _ASSETS: {
-        'KT1TjdF4H8H2qzxichtEbiCwHxCRM1SVx6B7': {
-          kind: 'FA1.2',
-          category: 'finance',
-          assets: {
-            0: {
-              name: 'tzBTC',
-              symbol: 'tzBTC',
-              decimals: 6,
-              description: 'tzBtc delivers the power of Bitcoin as a token on the Tezos blockchain.',
-              imageFileName: 'tzbtc.png'
-            }
-          }
-        },
         'KT1HzQofKBxzfiKoMzGbkxBgjis2mWnCtbC2': {
           kind: 'FA1.2',
           category: 'finance',
-          assets: {
+          tokens: {
             0: {
               name: 'USD tez',
               symbol: 'USDtz',
               decimals: 6,
               description: 'USD Tez (Symbol USDtz ) is a Tezos on-chain stablecoin pegged to the value of the United States Dollar.',
-              imageFileName: 'usdtz.png'
+              imageSrc: '../../../assets/img/tokens/usdtz.png'
             }
           }
         },
         'KT1C1UcCzh5B7iTWpG2o4pPM3dTZDAc6WrNB': {
           kind: 'FA2',
           category: 'finance',
-          assets: {
+          tokens: {
             1: {
               name: 'Kukai Monk Token',
               symbol: 'kktm',
               decimals: 6,
               description: '',
-              imageFileName: 'kktm.png'
+              imageSrc: '../../../assets/img/tokens/kktm.png'
+            }
+          }
+        },
+        'KT1TjdF4H8H2qzxichtEbiCwHxCRM1SVx6B7': {
+          kind: 'FA1.2',
+          category: 'finance',
+          tokens: {
+            0: {
+              name: 'tzBTC',
+              symbol: 'tzBTC',
+              decimals: 6,
+              description: 'tzBtc delivers the power of Bitcoin as a token on the Tezos blockchain.',
+              imageSrc: '../../../assets/img/tokens/tzbtc.png'
             }
           }
         }
       }
-    }
+    };
   }
   private delphinet(): Net {
     return {

@@ -33,8 +33,13 @@
       </div>
       <div class="token-container">
         <ng-container *ngFor="let token of account.tokens">
-          <div class="token-row">
-            <span><img height="16" src="../../../assets/img/tokens/{{ tokenService.getAsset(token.tokenId).imageFileName }}">&nbsp;&nbsp;{{ printTokenBalance(token) }}</span>
+          <div class="token-row" *ngIf="tokenService.getAsset(token.tokenId); let tokenData">
+            <ng-container *ngIf="!tokenData.isNFT; else elseBlock">
+              <span><img height="16" src="{{ tokenData.imageSrc }}">&nbsp;&nbsp;{{ printTokenBalance(token) }}</span>
+            </ng-container>
+            <ng-template #elseBlock>
+              <span><img height="16" src="{{ tokenData.imageSrc }}">&nbsp;&nbsp;{{ tokenData.name }}</span>
+            </ng-template>
             <app-send [activeAccount]="account" [tokenTransfer]="token.tokenId"></app-send>
           </div>
         </ng-container>
@@ -50,7 +55,7 @@
       <ng-container *ngIf="!account.activities.length">
         <div class="line"><span>No transactions yet</span></div>
       </ng-container>
-      <ng-container *ngFor="let activity of account.activities | slice:0:5">
+      <ng-container *ngFor="let activity of knownActivities() | slice:0:5">
         <ng-container [ngSwitch]="getType(activity)">
           <ng-template #CounterpartyRef let-myactivity>
             <span class="grey truncate-overflow">

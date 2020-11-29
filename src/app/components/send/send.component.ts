@@ -110,7 +110,6 @@ export class SendComponent implements OnInit {
     if (!this.activeAccount) {
       this.activeAccount = this.walletService.wallet.implicitAccounts[0];
     }
-    console.log(this.activeAccount.address);
     this.implicitAccounts = this.walletService.wallet.implicitAccounts;
   }
   /* Modal 2 */

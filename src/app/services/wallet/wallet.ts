@@ -1,5 +1,3 @@
-import { assertNotNull } from '@angular/compiler/src/output/output_ast';
-import { Constants } from '../../constants';
 export type WalletObject =
   LegacyWalletV1
   | LegacyWalletV2
@@ -202,9 +200,9 @@ export class ImplicitAccount extends Account {
         }
       }
     }
-    if (tokenId.length > 37)
-    console.log('Add token');
-    this.tokens.push({ tokenId, balance});
+    if (tokenId.length > 37 && balance !== '0') {
+      this.tokens.push({ tokenId, balance});
+    }
   }
 }
 

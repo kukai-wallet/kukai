@@ -56,7 +56,7 @@ export class ActivityService {
           console.log('account info', data);
           if (data?.tokens?.length) {
             for (const token of data.tokens) {
-              const tokenId = this.tokenService.getTokenId(token.contract, token.token_id);
+              const tokenId = `${token.contract}:${token.token_id}`;
               if (tokenId) {
                 account.updateTokenBalance(tokenId, token.balance.toString());
               }
@@ -100,7 +100,7 @@ export class ActivityService {
       if (index === -1 || (index !== -1 && oldActivities[index].status === 0)) {
         if (activity.type === 'transaction') {
           let decimals = 6;
-          let subfix = 'tez'
+          let subfix = 'tez';
           if (activity.tokenId) {
             const token = this.tokenService.getAsset(activity.tokenId);
             decimals = token.decimals;

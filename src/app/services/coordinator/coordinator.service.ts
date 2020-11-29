@@ -9,6 +9,7 @@ import { ErrorHandlingPipe } from '../../pipes/error-handling.pipe';
 import { Account } from '../wallet/wallet';
 import Big from 'big.js';
 import { Constants } from '../../constants';
+import { TokenService } from '../token/token.service';
 
 export interface ScheduleData {
   pkh: string;
@@ -38,7 +39,8 @@ export class CoordinatorService {
     private balanceService: BalanceService,
     private delegateService: DelegateService,
     private operationService: OperationService,
-    private errorHandlingPipe: ErrorHandlingPipe
+    private errorHandlingPipe: ErrorHandlingPipe,
+    private tokenService: TokenService
   ) {}
   startAll() {
     if (this.walletService.wallet) {
@@ -222,11 +224,12 @@ export class CoordinatorService {
     if (metadata.transactions) {
       console.log('Unconfirmed transactions:');
       console.log(metadata.transactions);
+      const decimals = metadata.tokenTransfer && this.tokenService.getAsset(metadata.tokenTransfer) ? this.tokenService.getAsset(metadata.tokenTransfer).decimals : 6;
       for (const op of metadata.transactions) {
         const transaction = {
           type: 'transaction',
           status: 0,
-          amount: Big(op.amount).times(1000000).toString(),
+          amount: Big(op.amount).times(10 ** decimals).toString(),
           fee: null,
           source: from,
           destination: op.to,
