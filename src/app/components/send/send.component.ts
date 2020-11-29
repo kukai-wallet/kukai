@@ -608,7 +608,7 @@ export class SendComponent implements OnInit {
     } else if (this.torusVerifier
       && (!this.inputValidationService.torusAccount(this.toPkh, this.torusVerifier) || this.torusLookupAddress === this.activeAccount.address)) {
       return 'Invalid recipient';
-    } else if (!this.inputValidationService.amount(amount, this.tokenTransfer ? true : false) ||
+    } else if (!this.inputValidationService.amount(amount, this.tokenTransfer ? this.tokenService.getAsset(this.tokenTransfer).decimals : undefined) ||
       (finalCheck && (((amount === '0') || amount === '') && (toPkh.slice(0, 3) !== 'KT1')))) {
       return this.translate.instant('SENDCOMPONENT.INVALIDAMOUNT');
     } else if (!this.inputValidationService.gas(this.gas)) {

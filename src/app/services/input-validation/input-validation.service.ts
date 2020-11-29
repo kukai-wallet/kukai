@@ -79,8 +79,9 @@ export class InputValidationService {
   passphrase(passphrase: string): Boolean {
     return true;
   }
-  amount(amount: string, tokenAmount: boolean = false): Boolean {
-    const expr = tokenAmount ? new RegExp(/^(0|[1-9][0-9]{0,8})(\.[0-9]{1,}){0,1}$/g) : new RegExp(/^(0|[1-9][0-9]{0,8})(\.[0-9]{1,6}){0,1}$/g);
+  amount(amount: string, decimals: number = 6): Boolean {
+    const decimalsPart = decimals ? `(\.[0-9]{1,${decimals}}){0,1}` : '';
+    const expr = new RegExp(`^(0|[1-9][0-9]{0,8})${decimalsPart}$`, 'g');
     console.log(amount);
     if (amount === '' || amount === '0') { // default value / zero
       return true;
