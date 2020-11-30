@@ -38,7 +38,7 @@ export class TzktService implements Indexer {
                 }
               }
             )) : '');
-          const input = new Buffer(JSON.stringify(payload), 'base64');
+          const input = Buffer.from(JSON.stringify(payload), 'base64');
           const hash = cryptob.createHash('md5').update(input, 'base64').digest('hex');
           if (hash === 'edc66a88461120f2ea9132d64be0d8b9') { // empty account
             return '';
@@ -179,8 +179,8 @@ export class TzktService implements Indexer {
   }
   async getBigMapIds(contractAddress: string): Promise<{ contract: number, token: number }> {
     const storage: any = await this.fetchApi(`https://api.better-call.dev/v1/contract/carthagenet/${contractAddress}/storage`);
-    let token: number = -1;
-    let contract: number = -1;
+    let token = -1;
+    let contract = -1;
     try {
       for (const child of storage.children) {
         if (child?.name === 'admin') {
@@ -214,8 +214,9 @@ export class TzktService implements Indexer {
         for (const extra of extras) {
           switch (extra.name) {
             case 'uri':
-              if (typeof extra.value === 'string')
+              if (typeof extra.value === 'string') {
               url = this.uriToUrl(extra.value);
+              }
               break;
             case 'description':
               if (typeof extra.value === 'string') {

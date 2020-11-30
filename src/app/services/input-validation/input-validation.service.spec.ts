@@ -17,9 +17,9 @@ describe('[ InputValidationService ]', () => {
     service = TestBed.inject(InputValidationService);
   });
 
-  it('should be created', inject([InputValidationService], (service: InputValidationService) => {
+  it('should be created', () => {
     expect(service).toBeTruthy();
-  }));
+  });
   describe('> Amount', () => {
     it('should be true', () => {
       expect(service.amount('0')).toBeTruthy();

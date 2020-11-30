@@ -22,12 +22,12 @@ describe('TokenService', () => {
       response = {
         decimals: 0,
         tokenType: 'FA2',
-        name: "Test NFT",
-        symbol: "tzTe",
-        uri: "ipfs://QmTMHwTQhttR5e3R7Kbt2JyqRjrNxE61ENtHGzkp4h6MJD",
-        imageUri: "https://gateway.pinata.cloud/ipfs/QmNYkGR7wb4XLHqTwF8NZKAMpsMUQGqBwfQXr5VcZy75ki",
+        name: 'Test NFT',
+        symbol: 'tzTe',
+        uri: 'ipfs://QmTMHwTQhttR5e3R7Kbt2JyqRjrNxE61ENtHGzkp4h6MJD',
+        imageUri: 'https://gateway.pinata.cloud/ipfs/QmNYkGR7wb4XLHqTwF8NZKAMpsMUQGqBwfQXr5VcZy75ki',
         isNft: true
-      }
+      };
     });
     it('Valid metadata => inclusion', async () => {
       spyOn(indexerService, 'getTokenMetadata').and.callFake(async function() { return response; });
@@ -43,7 +43,7 @@ describe('TokenService', () => {
         contractAddress: 'KT1XXCz59vAzfbvDsNrrmKKuqSFrzQgpUqGM',
         imageSrc: 'https://gateway.pinata.cloud/ipfs/QmNYkGR7wb4XLHqTwF8NZKAMpsMUQGqBwfQXr5VcZy75ki',
         isNft: true
-      }
+      };
       expect(service.getAsset('KT1XXCz59vAzfbvDsNrrmKKuqSFrzQgpUqGM:0')).toEqual(expectedTokenResponse);
     });
     it('Metadata with undefined decimals => exclusion', async () => {

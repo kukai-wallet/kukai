@@ -1,4 +1,4 @@
-export const storageMock: string = `{
+export const storageMock = `{
   "prim": "pair",
   "type": "namedtuple",
   "children": [
@@ -91,7 +91,7 @@ export const storageMock: string = `{
     }
   ]
 }`;
-export const bigMapMock: string = `[
+export const bigMapMock = `[
   {
     "data": {
       "key": {
@@ -264,7 +264,7 @@ export const bigMapMock: string = `[
     "count": 1
   }
 ]`;
-export const bigMapMock2: string = `[
+export const bigMapMock2 = `[
   {
     "data": {
       "key": {
@@ -285,7 +285,7 @@ export const bigMapMock2: string = `[
     "count": 1
   }
 ]`;
-export const ipfsMock: string = `{
+export const ipfsMock = `{
   "name": "BlueStar",
   "symbol": "TBBST",
   "description": "A fantastic blue star for you.",
@@ -294,7 +294,7 @@ export const ipfsMock: string = `{
   "defaultPresentation": "large",
   "actionLabel": "Send"
 }`;
-export const ipfsMock2: string = `{
+export const ipfsMock2 = `{
   "name": "Tezible NFT",
   "description": "Multi NFT Asset with mint using latest metadata standard.",
   "version": "0.1.0",
@@ -753,7 +753,7 @@ export const expectedResult: any = {
   name: 'BlueStar',
   description: 'A fantastic blue star for you.',
   decimals: 0,
-  tokenType: 'FA2',// tzip-12
+  tokenType: 'FA2', // tzip-12
   imageUri: 'https://gateway.pinata.cloud/ipfs/QmNrZ8uHokqjtkD2EXBLwzPZkvpK4ireaHoDTEykeVFZgu',
   isNft: true
-}
+};
