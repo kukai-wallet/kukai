@@ -22,6 +22,7 @@ export interface TokensInterface {
 export interface Token {
   name: string;
   symbol: string;
+  protected?: boolean; // Reserve name and symbol
   decimals: number;
   description: string;
   imageSrc: string;
@@ -73,7 +74,6 @@ export class TokenService {
           };
         }
       } else if (this.AUTO_DISCOVER) {
-        console.log(`Searching for tokenId: ${contractAddress}:${id}`);
         this.searchMetadata(contractAddress, id);
       }
     }
@@ -95,14 +95,16 @@ export class TokenService {
   async searchMetadata(contractAddress: string, id: number) {
     const tokenId = `${contractAddress}:${id}`;
     if (!this.exploredTokenIds.includes(tokenId)) {
+      console.log(`Searching for tokenId: ${tokenId}`);
       this.exploredTokenIds.push(tokenId);
       const metadata = await this.indexerService.getTokenMetadata(contractAddress, id);
       if (metadata &&
-        metadata.name && typeof metadata.name === 'string' &&
-        metadata.symbol && typeof metadata.symbol === 'string' &&
-        !isNaN(Number(metadata.decimals)) && Number(metadata.decimals >= 0)) {
-        const contract: FA2 = {
-          kind: 'FA2',
+        metadata.name &&
+        metadata.symbol &&
+        !isNaN(metadata.decimals) &&
+        metadata.decimals >= 0) {
+        const contract: ContractType = {
+          kind: metadata.tokenType ? metadata.tokenType : 'FA2',
           category: '',
           tokens: {}
         };
@@ -110,9 +112,9 @@ export class TokenService {
           name: metadata.name,
           symbol: metadata.symbol,
           decimals: Number(metadata.decimals),
-          description: '',
-          imageSrc: metadata.uriMetadata?.imageUri ? metadata.uriMetadata.imageUri : '../../../assets/img/tokens/default.png',
-          isNft: metadata.uriMetadata?.isNft ? metadata.uriMetadata.isNft : false
+          description: metadata.description ? metadata.description : '',
+          imageSrc: metadata.imageUri ? metadata.imageUri : '../../../assets/img/tokens/default.png',
+          isNft: metadata?.isNft ? metadata.isNft : false
         };
         contract.tokens[id] = token;
         this.addAsset(contractAddress, contract);

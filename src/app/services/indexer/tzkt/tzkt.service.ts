@@ -124,78 +124,148 @@ export class TzktService implements Indexer {
     );
   }
   async getTokenMetadata(contractAddress: string, id: number): Promise<any> {
-    const storage = await fetch(`https://api.better-call.dev/v1/contract/carthagenet/${contractAddress}/storage`)
-      .then(response => response.json())
-      .then(data => data);
-    let bigMapId = 0;
-    try {
-      for (const child of storage.children) {
-        if (child?.name === 'assets') {
-          for (const asset of child.children) {
-            if (asset?.name === 'token_metadata') {
-              bigMapId = asset.value;
-            }
-          }
-        }
-      }
-    } catch (e) {
-      console.log('error', e);
-    }
-    if (bigMapId && typeof bigMapId === 'number') {
-      const bigMap = await fetch(`https://api.better-call.dev/v1/bigmap/carthagenet/${bigMapId}/keys`)
-        .then(response => response.json())
-        .then(data => data);
-      const fields = ['token_id', 'symbol', 'name', 'decimals', 'extras'];
-      const obj: any = {};
+    const bigMapId = await this.getBigMapIds(contractAddress);
+    if (bigMapId.token) {
+      const tokenBigMap = await this.fetchApi(`https://api.better-call.dev/v1/bigmap/carthagenet/${bigMapId.token}/keys`);
+      const contractBigMap = await this.fetchApi(`https://api.better-call.dev/v1/bigmap/carthagenet/${bigMapId.contract}/keys`);
+      let metadata: any = {};
+      let extras: any = null;
       try {
-        for (const child of bigMap) {
+        for (const child of tokenBigMap) {
           if (child.data.key.value === id.toString()) {
             for (const entry of child.data.value.children) {
-              if (fields.includes(entry.name)) {
-                if (entry.name === 'extras') {
-                  for (const extra of entry.children) {
-                    if (extra.name === 'uri') {
-                      obj['uri'] = entry.children[0].value;
-                      // https://cloudflare-ipfs.com/ipfs/QmTMHwTQhttR5e3R7Kbt2JyqRjrNxE61ENtHGzkp4h6MJD
-                    }
+              switch (entry.name) {
+                case 'extras':
+                  extras = entry.children;
+                  break;
+                case 'name':
+                case 'symbol':
+                  if (typeof entry.value === 'string') {
+                    metadata[entry.name] = entry.value;
                   }
-                } else {
-                  obj[entry.name] = entry.value;
-                }
+                  break;
+                case 'decimals':
+                  if (!isNaN(Number(entry.value)) && Number(entry.value >= 0)) {
+                    metadata[entry.name] = Number(entry.value);
+                  }
+                  break;
               }
             }
             break;
           }
         }
       } catch (e) {
+        console.log(e);
         return null;
       }
-      if (obj.uri) {
-        obj.uriMetadata = await this.getUriMetadata(obj.uri);
+      try {
+        const url = this.uriToUrl(contractBigMap[0].data.value.value);
+        if (url) {
+          const { interfaces } = await this.fetchApi(url);
+          if (interfaces.includes('TZIP-12')) {
+            metadata['tokenType'] = 'FA2';
+          } else if (interfaces.includes('TZIP-7')) {
+            metadata['tokenType'] = 'FA1.2';
+          }
+        }
+      } catch {}
+      if (extras) { // append extra metadata
+        extras = await this.getUriExtras(extras);
+        metadata = { ...metadata, ...extras };
       }
-      return obj;
+      return metadata;
     }
     return null;
   }
-  private async getUriMetadata(uri: string): Promise<any> {
+  async getBigMapIds(contractAddress: string): Promise<{ contract: number, token: number }> {
+    const storage: any = await this.fetchApi(`https://api.better-call.dev/v1/contract/carthagenet/${contractAddress}/storage`);
+    let token: number = -1;
+    let contract: number = -1;
     try {
-      if (uri.length > 7 && 'ipfs://') {
-        const uriMetadata: any = {};
-        const url = `https://cloudflare-ipfs.com/ipfs/${uri.slice(7)}`;
-        const uriData = await fetch(url)
-          .then(response => response.json())
-          .then(data => data);
-        console.log('uriData', uriData);
-        const fields = ['imageUri', 'isNft'];
-        for (const key of fields) {
-          if (uriData[key]) {
-            uriMetadata[key] = uriData[key];
+      for (const child of storage.children) {
+        if (child?.name === 'admin') {
+          if (child.children) {
+            for (const admin of child.children) {
+              if (admin?.name === 'metadata') {
+                contract = admin.value;
+              }
+            }
+          }
+        } else if (child?.name === 'assets') {
+          if (child.children) {
+            for (const asset of child.children) {
+              if (asset?.name === 'token_metadata') {
+                token = asset.value;
+              }
+            }
           }
         }
-        console.log('URImetadata', uriMetadata);
-        return uriMetadata;
       }
-    } catch (e) { console.log('Uri fetch failed with', e)}
-    return null;
+    } catch (e) {
+      console.log(e);
+    }
+    return { contract, token };
+  }
+  private async getUriExtras(extras: any): Promise<any> {
+    const extraMetadata: any = {};
+    let url: string;
+    try {
+      if (extras && extras.length) {
+        for (const extra of extras) {
+          switch (extra.name) {
+            case 'uri':
+              if (typeof extra.value === 'string')
+              url = this.uriToUrl(extra.value);
+              break;
+            case 'description':
+              if (typeof extra.value === 'string') {
+                extraMetadata[extra.name] = extra.value;
+              }
+              break;
+            case 'imageUri':
+              if (typeof extra.value === 'string') {
+                extraMetadata[extra.name] = this.uriToUrl(extra.value);
+              }
+              break;
+            case 'isNft':
+              if (typeof extra.value === 'boolean') {
+                extraMetadata[extra.name] = extra.value;
+              }
+              break;
+          }
+        }
+      }
+    } catch (e) {
+      console.log(e);
+      return {};
+    }
+    if (url) {
+      const extraOff = await this.fetchApi(url);
+      if (extraOff.description && typeof extraOff.description === 'string') {
+        extraMetadata['description'] = extraOff.description;
+      }
+      if (extraOff.imageUri && typeof extraOff.imageUri === 'string') {
+        extraMetadata['imageUri'] = this.uriToUrl(extraOff.imageUri);
+      }
+      if (extraOff.isNft && typeof extraOff.isNft === 'boolean') {
+        extraMetadata['isNft'] = extraOff.isNft;
+      }
+    }
+    return extraMetadata;
+  }
+  uriToUrl(uri: string): string {
+    if (uri && uri.length > 7) {
+      if (uri.slice(0, 7) === 'ipfs://') {
+        return `https://cloudflare-ipfs.com/ipfs/${uri.slice(7)}`;
+      } else if (uri.slice(0, 8) === 'https://') {
+        return uri;
+      }
+    }
+    return '';
+  }
+  async fetchApi(url: string): Promise<any> {
+    return fetch(url)
+      .then(response => response.json())
+      .then(data => data);
   }
 }

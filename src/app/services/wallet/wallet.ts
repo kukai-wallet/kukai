@@ -190,7 +190,7 @@ export class ImplicitAccount extends Account {
       for (let i = 0; i < this.tokens.length; i++) {
         if (tokenId === this.tokens[i].tokenId) {
           if (this.tokens[i].balance !== balance) {
-            if (balance === '0') {
+            if (balance === '0' || (balance && balance.slice(0, 1) === '-')) {
               this.tokens.splice(i, 1);
             } else {
               this.tokens[i].balance = balance;
@@ -200,7 +200,7 @@ export class ImplicitAccount extends Account {
         }
       }
     }
-    if (tokenId.length > 37 && balance !== '0') {
+    if (tokenId.length > 37 && balance && balance !== '0' && balance.slice(0, 1) !== '-') {
       this.tokens.push({ tokenId, balance});
     }
   }

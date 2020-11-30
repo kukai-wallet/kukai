@@ -21,14 +21,12 @@ describe('TokenService', () => {
     beforeEach(() => {
       response = {
         decimals: 0,
+        tokenType: 'FA2',
         name: "Test NFT",
         symbol: "tzTe",
-        token_id: "0",
         uri: "ipfs://QmTMHwTQhttR5e3R7Kbt2JyqRjrNxE61ENtHGzkp4h6MJD",
-        uriMetadata: {
-          imageUri: "https://gateway.pinata.cloud/ipfs/QmNYkGR7wb4XLHqTwF8NZKAMpsMUQGqBwfQXr5VcZy75ki",
-          isNft: true
-        }
+        imageUri: "https://gateway.pinata.cloud/ipfs/QmNYkGR7wb4XLHqTwF8NZKAMpsMUQGqBwfQXr5VcZy75ki",
+        isNft: true
       }
     });
     it('Valid metadata => inclusion', async () => {

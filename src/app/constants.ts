@@ -67,7 +67,7 @@ export class Constants {
             0: {
               name: 'tzBTC',
               symbol: 'tzBTC',
-              decimals: 6,
+              decimals: 8,
               description: 'tzBtc delivers the power of Bitcoin as a token on the Tezos blockchain.',
               imageSrc: '../../../assets/img/tokens/tzbtc.png'
             }

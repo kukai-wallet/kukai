@@ -105,7 +105,7 @@ export class AccountViewComponent implements OnInit {
   hasTokens(): boolean {
     return (this.account instanceof ImplicitAccount && this.account.tokens.length > 0);
   }
-  printTokenBalance(token: any) {
+  printTokenBalance(token: any): string {
     const { decimals, symbol } = this.tokenService.getAsset(token.tokenId);
     return Big(token.balance).div(10 ** decimals).toString() + ' ' + symbol;
   }
