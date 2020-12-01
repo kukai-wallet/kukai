@@ -12,7 +12,7 @@ import { Constants } from '../../constants';
 import { LookupService } from '../../services/lookup/lookup.service';
 import { ActivityService } from '../../services/activity/activity.service';
 import Big from 'big.js';
-import { TokenService } from '../../services/token/token.service';
+import { TokenService, TokenResponseType } from '../../services/token/token.service';
 
 @Component({
   selector: 'app-account-view',
@@ -104,10 +104,6 @@ export class AccountViewComponent implements OnInit {
   }
   hasTokens(): boolean {
     return (this.account instanceof ImplicitAccount && this.account.tokens.length > 0);
-  }
-  printTokenBalance(token: any): string {
-    const { decimals, symbol } = this.tokenService.getAsset(token.tokenId);
-    return Big(token.balance).div(10 ** decimals).toString() + ' ' + symbol;
   }
   knownActivities(): Activity[] {
     const activities: Activity[] = [];

@@ -75,6 +75,7 @@ import { TermsOfUseComponent } from './components/agreement/terms-of-use/terms-o
 import { PrivacyPolicyComponent } from './components/agreement/privacy-policy/privacy-policy.component';
 import { TorusComponent } from './components/torus/torus.component';
 import { TorusService } from './services/torus/torus.service';
+import { TokenComponent } from './components/token/token.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -114,7 +115,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     AgreementComponent,
     TermsOfUseComponent,
     PrivacyPolicyComponent,
-    TorusComponent
+    TorusComponent,
+    TokenComponent
   ],
   imports: [
     BrowserModule,

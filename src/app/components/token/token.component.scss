@@ -1,0 +1,40 @@
+@import '../../../scss/modal.scss';
+:host {
+  flex-grow: 1;
+  cursor: pointer;
+}
+:host > div.list-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 100%;
+  flex-grow: 1;
+}
+:host > div.list-item span {
+  color: #2C323A;
+  font-size: 0.875rem;
+  font-weight: 400;
+  margin: 0;
+  align-items: center;
+  margin-left: 0.625rem;
+}
+:host > div.list-item div.imgWrapper {
+  width: 2.5rem;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+:host > div.list-item img {
+  height: 1.5rem;
+}
+:host > div.kukai-modal img {
+  height: 6.5rem;
+}
+:host > div.kukai-modal div.top-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+:host > div.kukai-modal div.top-wrapper div.basics > div:first-child {
+  margin-top: 0;
+}

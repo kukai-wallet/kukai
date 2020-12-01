@@ -1,0 +1,33 @@
+<div class="list-item" (click)="openModal()">
+  <div class="imgWrapper"><img src="{{ token.imageSrc }}"></div>
+    <span>{{ listDisplayText() }}</span>
+</div>
+
+<!-- Modal -->
+<div *ngIf="modalOpen" id="myModal" class="kukai-modal">
+  <div class="km-content">
+    <div class="x" (click)="closeModal()"><img src="../../../assets/img/x.svg"></div>
+    <div class="km-header">
+      <H1>Token Info</H1>
+    </div>
+    <div class="km-body">
+      <div class="top-wrapper">
+        <div class="basics">
+          <div class="group">
+            <label>Name</label>
+            <p>{{ token.name }}</p>
+          </div>
+          <div class="group">
+            <label>Symbol</label>
+            <p style="margin-bottom: 0">{{ token.symbol }}</p>
+          </div>
+        </div>
+        <img src="{{ token.imageSrc }}">
+      </div>
+      <div class="group">
+        <label>Description</label>
+        <p>{{ getDescription() }}</p>
+      </div>
+    </div>
+  </div>
+</div>

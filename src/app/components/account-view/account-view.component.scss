@@ -232,25 +232,38 @@ div.line:last-child {
   position: relative;
 }
 :host .token-container {
-  margin: 0 1rem;
+  margin: 0rem;
 }
 :host .token-container .token-row {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 0.75rem 0;
+  height: 2.8125rem;
+  margin: 0 -1px;
+}
+:host .token-container > div.seperator {
+  width: calc(100% - 2rem);
+  margin: 0 1rem;
   border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+}
+:host .token-container div.seperator:first-child {
+  border-bottom-width: 0;
+}
+:host .token-container .token-row:hover {
+  background-color: #EAEBF9 !important;
+  cursor: pointer !important;
+}
+:host .token-container .token-row:last-child {
+  margin-bottom: -1px;
+}
+:host .token-container .token-row:last-child:hover {
+  border-bottom-left-radius: 0.75rem;
+  border-bottom-right-radius: 0.75rem;
 }
 :host .token-container .token-row:last-child {
   border-bottom: none;
 }
-:host .token-container .token-row > div:first-child {
-  display: flex;
-}
-:host .token-container span {
-  color: #2C323A;
-  margin: 0;
-}
+
 @media screen and (max-width: 65rem) {
 }
 @media screen and (max-width: 42rem) {

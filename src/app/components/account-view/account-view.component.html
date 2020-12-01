@@ -33,15 +33,13 @@
       </div>
       <div class="token-container">
         <ng-container *ngFor="let token of account.tokens">
-          <div class="token-row" *ngIf="tokenService.getAsset(token.tokenId); let tokenData">
-            <ng-container *ngIf="!tokenData.isNft; else elseBlock">
-              <span><img height="16" src="{{ tokenData.imageSrc }}">&nbsp;&nbsp;{{ printTokenBalance(token) }}</span>
-            </ng-container>
-            <ng-template #elseBlock>
-              <span><img height="16" src="{{ tokenData.imageSrc }}">&nbsp;&nbsp;{{ tokenData.name }}</span>
-            </ng-template>
-            <app-send [activeAccount]="account" [tokenTransfer]="token.tokenId"></app-send>
-          </div>
+          <ng-container *ngIf="tokenService.getAsset(token.tokenId); let tokenData">
+            <div class="seperator"></div>
+            <div class="token-row">
+              <app-token [account]="account" [token]="tokenData"></app-token>
+              <app-send [activeAccount]="account" [tokenTransfer]="token.tokenId"></app-send>
+            </div>
+          </ng-container>
         </ng-container>
       </div>
     </div>

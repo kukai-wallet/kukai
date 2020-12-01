@@ -97,6 +97,12 @@ div.kukai-modal > div.km-content {
 :host span.token-send {
   cursor: pointer;
   color: #5963FF;
+  line-height: 2.75rem;
+  padding: 0.9375rem 1rem;
+  font-size: 0.875rem;
+}
+:host span.token-send:hover {
+  text-decoration: underline;
 }
 @supports (-webkit-touch-callout: none) {
   div.kukai-modal > div.km-content > div.km-body > div.group > input.text,
