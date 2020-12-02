@@ -9,6 +9,9 @@
   height: 100%;
   flex-grow: 1;
 }
+:host > div.list-item:hover {
+  cursor: pointer;
+}
 :host > div.list-item span {
   color: #2C323A;
   font-size: 0.875rem;

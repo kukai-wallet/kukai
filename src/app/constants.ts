@@ -39,10 +39,10 @@ export class Constants {
           category: 'finance',
           tokens: {
             0: {
-              name: 'USD tez',
-              symbol: 'USDtz',
+              name: 'USDtz',
+              symbol: 'USDTZ',
               decimals: 6,
-              description: 'USD Tez (Symbol USDtz ) is a Tezos on-chain stablecoin pegged to the value of the United States Dollar.',
+              description: 'USDtz is a Tezos on-chain stablecoin pegged to the value of the United States Dollar.',
               imageSrc: '../../../assets/img/tokens/usdtz.png'
             }
           }
@@ -53,7 +53,7 @@ export class Constants {
           tokens: {
             1: {
               name: 'Kukai Monk Token',
-              symbol: 'kktm',
+              symbol: 'KKTM',
               decimals: 6,
               description: '',
               imageSrc: '../../../assets/img/tokens/kktm.png'
@@ -66,9 +66,9 @@ export class Constants {
           tokens: {
             0: {
               name: 'tzBTC',
-              symbol: 'tzBTC',
+              symbol: 'TZBTC',
               decimals: 8,
-              description: 'tzBtc delivers the power of Bitcoin as a token on the Tezos blockchain.',
+              description: 'tzBTC delivers the power of Bitcoin as a token on the Tezos blockchain.',
               imageSrc: '../../../assets/img/tokens/tzbtc.png'
             }
           }

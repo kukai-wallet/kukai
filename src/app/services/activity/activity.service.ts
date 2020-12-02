@@ -50,7 +50,7 @@ export class ActivityService {
   async updateTokenBalances(account: Account) {
     if (account instanceof ImplicitAccount) {
       console.log('TOKENS');
-      fetch(`https://api.better-call.dev/v1/account/${this.constants.NET.NETWORK}/${account.pkh}`)
+      fetch(`https://you.better-call.dev/v1/account/${this.constants.NET.NETWORK}/${account.pkh}`)
         .then(res => res.json())
         .then( data => {
           console.log('account info', data);

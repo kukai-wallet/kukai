@@ -8,6 +8,7 @@ import * as cryptob from 'crypto-browserify';
 })
 export class TzktService implements Indexer {
   CONSTANTS: any;
+  readonly bcd = 'https://you.better-call.dev/v1';
   constructor(
   ) {
     this.CONSTANTS = new Constants();
@@ -22,7 +23,7 @@ export class TzktService implements Indexer {
   }
   async accountInfo(address: string): Promise<string> {
     const network = this.CONSTANTS.NET.NETWORK;
-    return fetch(`https://api.better-call.dev/v1/account/${network}/${address}`)
+    return fetch(`${this.bcd}/account/${network}/${address}`)
       .then(response => response.json())
       .then(data => {
         if (data) {
@@ -97,7 +98,7 @@ export class TzktService implements Indexer {
           };
         }
       }).filter(obj => obj));
-    const tokenTxs = await fetch(`https://api.better-call.dev/v1/tokens/${this.CONSTANTS.NET.NETWORK}/transfers/${address}?size=20`)
+    const tokenTxs = await fetch(`${this.bcd}/tokens/${this.CONSTANTS.NET.NETWORK}/transfers/${address}?size=20`)
       .then(response => response.json())
       .then(data => data.transfers.map(tx => {
         const tokenId = `${tx.contract}:${tx.token_id}`;
@@ -126,8 +127,8 @@ export class TzktService implements Indexer {
   async getTokenMetadata(contractAddress: string, id: number): Promise<any> {
     const bigMapId = await this.getBigMapIds(contractAddress);
     if (bigMapId.token) {
-      const tokenBigMap = await this.fetchApi(`https://api.better-call.dev/v1/bigmap/carthagenet/${bigMapId.token}/keys`);
-      const contractBigMap = await this.fetchApi(`https://api.better-call.dev/v1/bigmap/carthagenet/${bigMapId.contract}/keys`);
+      const tokenBigMap = await this.fetchApi(`${this.bcd}/bigmap/carthagenet/${bigMapId.token}/keys`);
+      const contractBigMap = await this.fetchApi(`${this.bcd}/bigmap/carthagenet/${bigMapId.contract}/keys`);
       let metadata: any = {};
       let extras: any = null;
       try {
@@ -178,7 +179,7 @@ export class TzktService implements Indexer {
     return null;
   }
   async getBigMapIds(contractAddress: string): Promise<{ contract: number, token: number }> {
-    const storage: any = await this.fetchApi(`https://api.better-call.dev/v1/contract/carthagenet/${contractAddress}/storage`);
+    const storage: any = await this.fetchApi(`${this.bcd}/contract/carthagenet/${contractAddress}/storage`);
     let token = -1;
     let contract = -1;
     try {
