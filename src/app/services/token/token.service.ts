@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Constants } from '../../constants';
 import { IndexerService } from '../indexer/indexer.service';
+import Big from 'big.js';
 
 export interface TokenResponseType {
   contractAddress: string;
@@ -118,6 +119,18 @@ export class TokenService {
         };
         contract.tokens[id] = token;
         this.addAsset(contractAddress, contract);
+      }
+    }
+  }
+  formatAmount(tokenKey: string, amount: string, baseUnit = true) {
+    if (!tokenKey) {
+      return `${Big(amount).div(10 ** (baseUnit ? 6 : 0)).toFixed()} tez`;
+    } else {
+      const token = this.getAsset(tokenKey);
+      if (token.isNft) {
+        return `${token.name}`;
+      } else {
+        return `${Big(amount).div(10 ** (baseUnit ? token.decimals : 0)).toFixed()} ${token.symbol}`;
       }
     }
   }

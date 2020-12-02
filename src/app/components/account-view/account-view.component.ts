@@ -94,14 +94,7 @@ export class AccountViewComponent implements OnInit {
     return `${baseURL}/${hash}`;
   }
   printAmount(activity: Activity): string {
-    let decimals = 6;
-    let subfix = 'tez';
-    if (activity.tokenId !== undefined) {
-      const token = this.tokenService.getAsset(activity.tokenId);
-      decimals = token.decimals;
-      subfix = token.symbol;
-    }
-    return `${Big(activity.amount).div(10 ** decimals).toString()} ${subfix}`;
+    return this.tokenService.formatAmount(activity.tokenId, activity.amount.toString());
   }
   hasTokens(): boolean {
     return (this.account instanceof ImplicitAccount && this.account.tokens.length > 0);
@@ -109,7 +102,7 @@ export class AccountViewComponent implements OnInit {
   knownActivities(): Activity[] {
     const activities: Activity[] = [];
     for (const activity of this.account.activities) {
-      if (activity.tokenId && this.tokenService.getAsset(activity.tokenId)) {
+      if (!activity.tokenId || (activity.tokenId && this.tokenService.getAsset(activity.tokenId))) {
         activities.push(activity);
       }
     }

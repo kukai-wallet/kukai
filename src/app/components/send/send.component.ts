@@ -262,7 +262,7 @@ export class SendComponent implements OnInit {
     } else {
       if (this.tokenTransfer) {
         if (account instanceof ImplicitAccount) {
-          return Big(account.getTokenBalance(this.tokenTransfer)).div(10 ** this.tokenService.getAsset(this.tokenTransfer).decimals).toString();
+          return Big(account.getTokenBalance(this.tokenTransfer)).div(10 ** this.tokenService.getAsset(this.tokenTransfer).decimals).toFixed();
         }
       } else {
         return Big(account.balanceXTZ).div(1000000).toString();
@@ -479,7 +479,7 @@ export class SendComponent implements OnInit {
     if (!this.torusVerifier) {
       this.estimateFees();
       if (this.isMultipleDestinations) {
-        this.amount = this.totalAmount().toString();
+        this.amount = this.totalAmount();
       }
     }
   }
@@ -668,7 +668,7 @@ export class SendComponent implements OnInit {
     for (const tx of this.transactions) {
       totalSent = totalSent.add(tx.amount);
     }
-    return totalSent.toString();
+    return totalSent.toFixed();
   }
   getTotalCost(display: boolean = false): string {
     const totalFee = Big(this.getTotalFee()).plus(Big(this.getTotalBurn())).toString();
@@ -754,21 +754,22 @@ export class SendComponent implements OnInit {
   }
   async torusNotification(transaction: SendData) {
     if (transaction.meta) {
+      const amount = this.tokenService.formatAmount(this.tokenTransfer, transaction.amount.toString(), false);
       if (transaction.meta.verifier === 'google') {
-        this.messageService.emailNotify(transaction.meta.alias, transaction.amount.toString());
+        this.messageService.emailNotify(transaction.meta.alias, amount);
         this.lookupService.add(transaction.to, transaction.meta.alias, 2);
       } else if (transaction.meta.verifier === 'reddit') {
-        this.messageService.redditNotify(transaction.meta.alias, transaction.amount.toString());
+        this.messageService.redditNotify(transaction.meta.alias, amount);
         this.lookupService.add(transaction.to, transaction.meta.alias, 3);
       } else if (transaction.meta.verifier === 'twitter') {
-        this.messageService.twitterNotify(transaction.meta.twitterId, transaction.meta.alias, transaction.amount.toString());
+        this.messageService.twitterNotify(transaction.meta.twitterId, transaction.meta.alias, amount);
         this.lookupService.add(transaction.to, transaction.meta.alias, 4);
       }
     }
   }
   previewAttention(): string {
     if (this.torusLookupId) {
-      if (new Big(this.totalAmount()).gt('50')) {
+      if (!this.tokenTransfer && new Big(this.totalAmount()).gt('50')) {
         let recipientKind = '';
         switch (this.torusVerifier) {
           case 'google':
@@ -788,9 +789,10 @@ export class SendComponent implements OnInit {
     }
     return '';
   }
-  getAssetName(): string {
+  getAssetName(short = true): string {
     if (this.tokenTransfer) {
-      return this.tokenService.getAsset(this.tokenTransfer).symbol;
+      const token = this.tokenService.getAsset(this.tokenTransfer);
+      return short ? token.symbol : token.name;
     } else {
       return 'tez';
     }

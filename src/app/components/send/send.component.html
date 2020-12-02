@@ -6,7 +6,7 @@
   <div class="km-content">
     <div class="x" (click)="closeModal()"><img src="../../../assets/img/x.svg"></div>
     <div class="km-header">
-      <H1 *ngIf="activeView === 0">Send tez</H1>
+      <H1 *ngIf="activeView === 0">Send {{ getAssetName(false) }}</H1>
       <H1 *ngIf="activeView === 1">Confirmation</H1>
       <!--<span class="close" (click)="modalOpen = false" class="close">&times;</span>-->
       <button *ngIf="activeView === 0 && !walletService.isLedgerWallet() && !tokenTransfer" class="small multiple-destinations"
@@ -105,7 +105,7 @@
       <div class="preview-top">
       <div class="preview-amount">
         <span class="section">Send</span>
-        <span class="amount-tez">{{ totalAmount() | number:'1.0-6' }} {{ getAssetName() }}</span>
+        <span class="amount-tez">{{ tokenService.formatAmount(tokenTransfer, totalAmount(), false) }}</span>
         <span class="amount-usd">
           <ng-container *ngIf="!tokenTransfer">{{ totalAmount() * walletService.wallet.XTZrate | number:'1.0-2' }} USD</ng-container>
         </span>

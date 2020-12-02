@@ -99,18 +99,11 @@ export class ActivityService {
       const index = oldActivities.findIndex((a) => a.hash === activity.hash);
       if (index === -1 || (index !== -1 && oldActivities[index].status === 0)) {
         if (activity.type === 'transaction') {
-          let decimals = 6;
-          let subfix = 'tez';
-          if (activity.tokenId) {
-            const token = this.tokenService.getAsset(activity.tokenId);
-            decimals = token.decimals;
-            subfix = token.symbol;
-          }
           if (account.address === activity.source) {
-            this.messageService.addSuccess(account.shortAddress() + ': Sent ' + Big(activity.amount).div(10 ** decimals) + ` ${subfix}`);
+            this.messageService.addSuccess(account.shortAddress() + ': Sent ' + this.tokenService.formatAmount(activity.tokenId, activity.amount.toString()));
           }
           if (account.address === activity.destination) {
-            this.messageService.addSuccess(account.shortAddress() + ': Received ' + Big(activity.amount).div(10 ** decimals) + ` ${subfix}`);
+            this.messageService.addSuccess(account.shortAddress() + ': Received ' + this.tokenService.formatAmount(activity.tokenId, activity.amount.toString()));
           }
         } else if (activity.type === 'delegation') {
           this.messageService.addSuccess(account.shortAddress() + ': Delegate updated');

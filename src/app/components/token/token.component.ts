@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import Big from 'big.js';
-import { TokenResponseType } from '../..//services/token/token.service';
+import { TokenService, TokenResponseType } from '../../services/token/token.service';
 import { ImplicitAccount } from '../../services/wallet/wallet';
 
 @Component({
@@ -13,17 +13,16 @@ export class TokenComponent implements OnInit {
   @Input() token: TokenResponseType;
   balance = '';
   modalOpen = false;
-  constructor() {
+  constructor(
+    private tokenService: TokenService
+  ) {
   }
   ngOnInit(): void {
   }
   listDisplayText(): string {
-    if (this.token.isNft) {
-      return this.token.name;
-    } else {
-      const tokenBalance = this.account.getTokenBalance(`${this.token.contractAddress}:${this.token.id}`);
-      return Big(tokenBalance).div(10 ** this.token.decimals).toString() + ' ' + this.token.symbol;
-    }
+    const tokenKey = `${this.token.contractAddress}:${this.token.id}`;
+    const tokenBalance = this.account.getTokenBalance(tokenKey);
+    return this.tokenService.formatAmount(tokenKey, tokenBalance);
   }
   openModal() {
     console.log('open');
