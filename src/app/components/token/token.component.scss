@@ -1,7 +1,6 @@
 @import '../../../scss/modal.scss';
 :host {
   flex-grow: 1;
-  cursor: pointer;
 }
 :host > div.list-item {
   display: flex;

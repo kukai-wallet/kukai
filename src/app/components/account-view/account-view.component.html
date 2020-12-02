@@ -35,7 +35,7 @@
         <ng-container *ngFor="let token of account.tokens">
           <ng-container *ngIf="tokenService.getAsset(token.tokenId); let tokenData">
             <div class="seperator"></div>
-            <div class="token-row">
+            <div class="token-row" [class.pointer-allowed]="pointerAllowed" (mouseenter)="pointerAllowed = true" (click)="pointerAllowed = false">
               <app-token [account]="account" [token]="tokenData"></app-token>
               <app-send [activeAccount]="account" [tokenTransfer]="token.tokenId"></app-send>
             </div>

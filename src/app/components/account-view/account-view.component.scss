@@ -251,7 +251,10 @@ div.line:last-child {
 }
 :host .token-container .token-row:hover {
   background-color: #EAEBF9 !important;
-  cursor: pointer !important;
+  //cursor: pointer;
+}
+:host .token-container .token-row.pointer-allowed:hover {
+  cursor: pointer;
 }
 :host .token-container .token-row:last-child {
   margin-bottom: -1px;
