@@ -44,7 +44,7 @@ export class TzktService implements Indexer {
           if (hash === 'edc66a88461120f2ea9132d64be0d8b9') { // empty account
             return '';
           }
-          return payload;
+          return hash;
         } else {
           return '';
         }
@@ -126,9 +126,8 @@ export class TzktService implements Indexer {
   }
   async getTokenMetadata(contractAddress: string, id: number): Promise<any> {
     const bigMapId = await this.getBigMapIds(contractAddress);
-    if (bigMapId.token) {
+    if (bigMapId.token !== -1) {
       const tokenBigMap = await this.fetchApi(`${this.bcd}/bigmap/carthagenet/${bigMapId.token}/keys`);
-      const contractBigMap = await this.fetchApi(`${this.bcd}/bigmap/carthagenet/${bigMapId.contract}/keys`);
       let metadata: any = {};
       let extras: any = null;
       try {
@@ -159,7 +158,9 @@ export class TzktService implements Indexer {
         console.log(e);
         return null;
       }
+      if (bigMapId.contract !== -1) {
       try {
+        const contractBigMap = await this.fetchApi(`${this.bcd}/bigmap/carthagenet/${bigMapId.contract}/keys`);
         const url = this.uriToUrl(contractBigMap[0].data.value.value);
         if (url) {
           const { interfaces } = await this.fetchApi(url);
@@ -170,6 +171,7 @@ export class TzktService implements Indexer {
           }
         }
       } catch {}
+      }
       if (extras) { // append extra metadata
         extras = await this.getUriExtras(extras);
         metadata = { ...metadata, ...extras };

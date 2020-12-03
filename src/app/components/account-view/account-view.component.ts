@@ -35,7 +35,6 @@ export class AccountViewComponent implements OnInit {
     public tokenService: TokenService
   ) { }
   trigger = true;
-  pointerAllowed = true;
   @Input() activity: any;
   ngOnInit(): void {
     if (!this.walletService.wallet) {
