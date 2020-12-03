@@ -168,10 +168,14 @@
       <div *ngIf="getTotalBurn()" class="preview-row">
         <span>Max storage cost</span><span>{{ getTotalBurn() | number:'1.0-6' }} tez</span>
       </div>
+      <div class="seperator"></div>
       <ng-container *ngIf="parameters">
-        <p *ngIf="parameters?.entrypoint" class="preview">
-          Entrypoint — {{ parameters.entrypoint }}
-        </p>
+        <div class="preview-row">
+          <span *ngIf="parameters?.entrypoint" class="preview">
+            Entrypoint
+          </span>
+          <span>{{ parameters.entrypoint }}</span>
+        </div>
         <div class="tabs-container">
           <ul class="tabs">
             <li class="tab" [class.active]="parametersFormat === 0" (click)="setParametersFormat(0)">Micheline</li>
@@ -180,7 +184,6 @@
         </div>
         <textarea *ngIf="parameters" style="width: 100%; font-size: 0.875rem" rows="10" readonly>{{ parametersTextboxDisplay() }}</textarea>
       </ng-container>
-      <div class="seperator"></div>
       <div class="row-group" style="margin: 1.25rem 0 1.5rem;">
         <input *ngIf="!walletService.isLedgerWallet() && !walletService.isTorusWallet()" [(ngModel)]="password"
           autocomplete="current-password" placeholder="Password" class="text password" type="password"

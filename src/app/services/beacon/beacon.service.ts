@@ -62,7 +62,7 @@ export class BeaconService {
       ...pairInfo,
       type: 'p2p-pairing-response',
       senderId
-    }
+    };
     await this.client.removePeer(peerResponse);
     await this.client.removeAppMetadata(senderId);
     this.syncBeaconState();
