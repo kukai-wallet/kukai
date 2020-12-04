@@ -40,6 +40,11 @@ const zeroTxParams: DefaultTransactionParams = {
 })
 
 export class SendComponent implements OnInit {
+  @Input() activeAccount: Account;
+  @Input() tokenTransfer: string;
+  @ViewChild('amountInput') amountInputView: ElementRef;
+  CONSTANTS = new Constants();
+  defaultTransactionParams: DefaultTransactionParams = zeroTxParams;
   costPerByte: string = this.estimateService.costPerByte;
   // torus
   torusVerifier = '';
@@ -47,17 +52,12 @@ export class SendComponent implements OnInit {
   torusLookupAddress = '';
   torusLookupId = '';
   torusTwitterId = '';
-  /* New variables */
+
+
   modalOpen = false;
   advancedForm = false;
   sendMax = false;
-  /* old variables */
-  @Input() activeAccount: Account;
-  @Input() tokenTransfer: string;
-  @ViewChild('amountInput') amountInputView: ElementRef;
-  CONSTANTS = new Constants();
-  defaultTransactionParams: DefaultTransactionParams = zeroTxParams;
-
+  hideAmount = false;
   // Transaction variables
   toPkh: string;
   amount = '';
@@ -125,6 +125,11 @@ export class SendComponent implements OnInit {
         this.activeAccount = this.implicitAccounts[0];
       }
       this.clearForm();
+      if (this.tokenTransfer && this.tokenService.getAsset(this.tokenTransfer).isNft) {
+        this.hideAmount = true;
+        this.amount = '1';
+        this.amountChange();
+      }
       if (window.innerWidth > 1300) {
         setTimeout(() => {
           const inputElem = <HTMLInputElement>this.amountInputView.nativeElement;
@@ -429,6 +434,7 @@ export class SendComponent implements OnInit {
     this.defaultTransactionParams = zeroTxParams;
     this.prevEquiClass = '';
     this.latestSimError = '';
+    this.hideAmount = false;
     this.clearTorus();
   }
 
@@ -796,5 +802,15 @@ export class SendComponent implements OnInit {
     } else {
       return 'tez';
     }
+  }
+  // Only Numbers with Decimals
+  keyPressNumbersDecimal(event) {
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode !== 46 && charCode > 31
+      && (charCode < 48 || charCode > 57)) {
+      event.preventDefault();
+      return false;
+    }
+    return true;
   }
 }
