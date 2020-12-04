@@ -76,6 +76,24 @@ export class MessageService {
       amount
     });
   }
+  addBeaconWait(message: string) {
+    const type = 'info';
+    this.messages.push({
+      type: type,
+      msg: message,
+      timeout: 30 * 1000,
+      loader: true
+    });
+  }
+  stopBeaconWait() {
+    for (let i = 0; i < this.messages.length; i++) {
+      if (this.messages[i].loader) {
+        this.messages.splice(i, 1);
+        break;
+      }
+    }
+    this.addSuccess('Pairing completed!', 5)
+  }
   clear() {
     this.messages = [];
   }
