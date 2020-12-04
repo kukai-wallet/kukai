@@ -95,6 +95,9 @@ export class AccountViewComponent implements OnInit {
   printAmount(activity: Activity): string {
     return this.tokenService.formatAmount(activity.tokenId, activity.amount.toString());
   }
+  receivedKind(activity): string {
+    return (activity.tokenId && !activity.source) ? 'Minted' : 'Received';
+  }
   hasTokens(): boolean {
     return (this.account instanceof ImplicitAccount && this.account.tokens.length > 0);
   }

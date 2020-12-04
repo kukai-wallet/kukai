@@ -85,7 +85,7 @@
           <div *ngSwitchCase="'received'" class="received">
             <img src="../../../assets/img/received.svg">
             <div>
-              <div class="line"><span class="green">Received {{ printAmount(activity) }}</span><a
+              <div class="line"><span class="green">{{ receivedKind(activity) }} {{ printAmount(activity) }}</span><a
                   href="{{ explorerURL(activity.hash) }}" target="_blank">
                   <ng-container *ngIf="activity.status > 0">{{ activity.timestamp | timeAgo:trigger }}</ng-container>
                   <ng-container *ngIf="activity.status === 0">Unconfirmed</ng-container>
