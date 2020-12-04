@@ -39,8 +39,8 @@ export class Constants {
           category: 'finance',
           tokens: {
             0: {
-              name: 'USDtz',
-              symbol: 'USDTZ',
+              name: 'USD tez',
+              symbol: 'USDtz',
               decimals: 6,
               description: 'USDtz is a Tezos on-chain stablecoin pegged to the value of the United States Dollar.',
               imageSrc: '../../../assets/img/tokens/usdtz.png'
@@ -66,7 +66,7 @@ export class Constants {
           tokens: {
             0: {
               name: 'tzBTC',
-              symbol: 'TZBTC',
+              symbol: 'tzBTC',
               decimals: 8,
               description: 'tzBTC delivers the power of Bitcoin as a token on the Tezos blockchain.',
               imageSrc: '../../../assets/img/tokens/tzbtc.png'

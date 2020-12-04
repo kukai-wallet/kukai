@@ -115,7 +115,7 @@ export class TokenService {
         };
         const token: TokenData = {
           name: metadata.name,
-          symbol: metadata.symbol.toUpperCase(),
+          symbol: metadata.symbol,
           decimals: Number(metadata.decimals),
           description: metadata.description ? metadata.description : '',
           imageSrc: metadata.imageUri ? metadata.imageUri : '../../../assets/img/tokens/default.png',
