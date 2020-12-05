@@ -45,7 +45,7 @@ export class BeaconService {
     const pairInfo: P2PPairingRequest = JSON.parse(pairInfoJson);
     console.log('PairInfo', pairInfo);
     await this.client.addPeer(pairInfo);
-    this.messageService.stopBeaconWait();
+    this.messageService.removeBeaconMsg();
 
   }
   async syncBeaconState() {

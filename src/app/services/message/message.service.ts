@@ -6,6 +6,7 @@ export class MessageService {
   spinnerText = '';
   messages: any[] = [];
   defaultTime = 10;
+  readonly pairingCompleteMsg = 'Pairing complete! Waiting for permission request...';
   add(message: string, seconds: number = this.defaultTime) {
     const type = 'info';
     console.log(type + ': ' + message);
@@ -85,14 +86,19 @@ export class MessageService {
       loader: true
     });
   }
-  stopBeaconWait() {
-    for (let i = 0; i < this.messages.length; i++) {
-      if (this.messages[i].loader) {
-        this.messages.splice(i, 1);
-        break;
+  async removeBeaconMsg(delay = false) {
+    setTimeout(() => {
+      for (let i = 0; i < this.messages.length; i++) {
+        if (this.messages[i].loader) {
+          this.messages.splice(i, 1);
+          this.addSuccess(this.pairingCompleteMsg, 10);
+          break;
+        } else if (this.messages[i].msg === this.pairingCompleteMsg) {
+          this.messages.splice(i, 1);
+          break;
+        }
       }
-    }
-    this.addSuccess('Pairing completed!', 5)
+    }, delay ? 500 : 0);
   }
   clear() {
     this.messages = [];
