@@ -12,7 +12,7 @@ interface Net {
 }
 export class Constants {
   // Select Testnet or Mainnet
-  readonly NET: Net = this.carthagenet();
+  readonly NET: Net = this.delphinet();
 
   private mainnet(): Net {
     return {
@@ -82,7 +82,21 @@ export class Constants {
       NETWORK: 'delphinet',
       NODE_URL: 'https://delphinet-tezos.giganode.io/',
       BLOCK_EXPLORER_URL: 'https://delphi.tzkt.io',
-      _ASSETS: {}
+      _ASSETS: {
+        'KT1REPEBMQS3Be8ZybkQQfSwAv3g4pHJViuK': {
+          kind: 'FA1.2',
+          category: 'finance',
+          tokens: {
+            0: {
+              name: 'USD tez',
+              symbol: 'USDtz',
+              decimals: 6,
+              description: 'USDtz is a Tezos on-chain stablecoin pegged to the value of the United States Dollar.',
+              imageSrc: '../../../assets/img/tokens/usdtz.png'
+            }
+          }
+        }
+      }
     };
   }
 }

@@ -14,8 +14,7 @@ export class TzktService implements Indexer {
     this.CONSTANTS = new Constants();
   }
   async getContractAddresses(pkh: string): Promise<any> {
-    const network = this.CONSTANTS.NET.network !== 'mainnet' ? '.' + this.CONSTANTS.NET.NETWORK.slice(0, -3) : '';
-    return fetch(`https://api${network}.tzkt.io/v1/operations/originations?contractManager=${pkh}`)
+    return fetch(`https://api.${this.CONSTANTS.NET.NETWORK}.tzkt.io/v1/operations/originations?contractManager=${pkh}`)
       .then(response => response.json())
       .then(data => data.map((op: any) => {
         return op.originatedContract.kind === 'delegator_contract' ? op.originatedContract.address : '';
@@ -52,8 +51,7 @@ export class TzktService implements Indexer {
   }
   // Todo: Merge with token transactions
   async getOperations(address: string): Promise<any> {
-    const network = this.CONSTANTS.NET.NETWORK !== 'mainnet' ? '.' + this.CONSTANTS.NET.NETWORK.slice(0, -3) : '';
-    const ops = await fetch(`https://api${network}.tzkt.io/v1/accounts/${address}/operations?limit=20&type=delegation,origination,transaction`)
+    const ops = await fetch(`https://api.${this.CONSTANTS.NET.NETWORK}.tzkt.io/v1/accounts/${address}/operations?limit=20&type=delegation,origination,transaction`)
       .then(response => response.json())
       .then(data => data.map(op => {
         if (!op.hasInternals && op.status === 'applied') {
@@ -127,7 +125,7 @@ export class TzktService implements Indexer {
   async getTokenMetadata(contractAddress: string, id: number): Promise<any> {
     const bigMapId = await this.getBigMapIds(contractAddress);
     if (bigMapId.token !== -1) {
-      const tokenBigMap = await this.fetchApi(`${this.bcd}/bigmap/carthagenet/${bigMapId.token}/keys`);
+      const tokenBigMap = await this.fetchApi(`${this.bcd}/bigmap/${this.CONSTANTS.NET.NETWORK}/${bigMapId.token}/keys`);
       let metadata: any = {};
       let extras: any = null;
       try {
@@ -160,7 +158,7 @@ export class TzktService implements Indexer {
       }
       if (bigMapId.contract !== -1) {
       try {
-        const contractBigMap = await this.fetchApi(`${this.bcd}/bigmap/carthagenet/${bigMapId.contract}/keys`);
+        const contractBigMap = await this.fetchApi(`${this.bcd}/bigmap/${this.CONSTANTS.NET.NETWORK}/${bigMapId.contract}/keys`);
         const url = this.uriToUrl(contractBigMap[0].data.value.value);
         if (url) {
           const { interfaces } = await this.fetchApi(url);
@@ -181,7 +179,7 @@ export class TzktService implements Indexer {
     return null;
   }
   async getBigMapIds(contractAddress: string): Promise<{ contract: number, token: number }> {
-    const storage: any = await this.fetchApi(`${this.bcd}/contract/carthagenet/${contractAddress}/storage`);
+    const storage: any = await this.fetchApi(`${this.bcd}/contract/${this.CONSTANTS.NET.NETWORK}/${contractAddress}/storage`);
     let token = -1;
     let contract = -1;
     try {
