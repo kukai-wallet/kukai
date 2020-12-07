@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, EventEmitter, Output, OnChanges, SimpleChanges } from '@angular/core';
 import { WalletService } from '../../services/wallet/wallet.service';
+import { MessageService } from '../../services/message/message.service';
 
 @Component({
   selector: 'app-permission-request',
@@ -11,7 +12,8 @@ export class PermissionRequestComponent implements OnInit, OnChanges {
   @Output() permissionResponse = new EventEmitter();
   selectedAccount: string;
   constructor(
-    public walletService: WalletService
+    public walletService: WalletService,
+    private messageService: MessageService
   ) { }
   ngOnInit(): void {
     if (this.walletService.wallet) {
@@ -24,6 +26,7 @@ export class PermissionRequestComponent implements OnInit, OnChanges {
       const scrollBarWidth = window.innerWidth - document.body.offsetWidth;
       document.body.style.marginRight = scrollBarWidth.toString();
       document.body.style.overflow = 'hidden';
+      this.messageService.removeBeaconMsg(true);
     }
   }
   rejectPermissions() {

@@ -38,7 +38,7 @@ export class BeaconService {
       }
     }
     if (newPublicKey) {
-      this.messageService.add(`Pairing with ${pairInfo.name}...`);
+      this.messageService.addBeaconWait(`Pairing with ${pairInfo.name}. Please wait!`);
     }
   }
   async addPeer(pairInfoJson: string) {
@@ -46,6 +46,8 @@ export class BeaconService {
     console.log('PairInfo', pairInfo);
     await this.client.addPeer(pairInfo);
     this.syncBeaconState();
+    this.messageService.removeBeaconMsg();
+
   }
   async syncBeaconState() {
     this.peers = await this.getPeers();
