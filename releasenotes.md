@@ -1,4 +1,10 @@
 # Release notes
+## 1.10
+* Beacon integration
+* Support for custom contract invocations
+* Menu added to the header
+* New settings page
+* Bug fixes
 ## 1.9.1
 * Support for the Delphi protocol
 * Add tzkt service
