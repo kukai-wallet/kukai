@@ -42,7 +42,6 @@ export class EstimateService {
         this.init(req[0].hash, req[0].chain_id, req[1], req[2], pk, pkh);
       }
     });
-    console.log('Ready for estimate!');
   }
   async estimate(transactions: any, from: string, callback) {
     this.queue.push({ transactions, from, callback });

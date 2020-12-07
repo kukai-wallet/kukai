@@ -15,12 +15,6 @@ export class BeaconService {
   ) {
     console.log('### BEACON SERVICE ###');
   }
-  correspondingResponseType: Record<string, string> = {
-    'permission_request': 'permission_response',
-    'operation_request': 'operation_response',
-    'sign_payload_request': 'sign_payload_response',
-    'broadcast_request': 'broadcast_response'
-  };
   preNotifyPairing(pairInfoJson: string) {
     const pairInfo: P2PPairingRequest = JSON.parse(pairInfoJson);
     const peersJson = localStorage.getItem('beacon:communication-peers');

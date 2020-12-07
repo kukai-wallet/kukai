@@ -727,7 +727,7 @@ export class SendComponent implements OnInit, OnChanges {
     if (this.storage !== '' && Number(this.storage)) {
       return Number(Big(this.storage).mul(this.transactions.length).times(this.costPerByte).div(1000000).toString());
     }
-    return Number(Big(this.defaultTransactionParams.burn));
+    return this.defaultTransactionParams.burn;
   }
   toggleTransactions() {
     if (this.showTransactions.length === 2) {
