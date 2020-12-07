@@ -48,9 +48,9 @@ export class BeaconService {
     this.permissions = await this.getPermissions();
   }
   async removePeers() {
-    await this.client.removeAllPeers();
-    await this.client.removeAllAppMetadata();
-    this.syncBeaconState();
+    while (this.peers.length > 0) {
+      await this.removePeer(0);
+    }
   }
   async removePeer(index: number) {
     const pairInfo: P2PPairingRequest = this.peers[index];
