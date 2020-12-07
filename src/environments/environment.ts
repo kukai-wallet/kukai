@@ -8,9 +8,9 @@ export const environment = {
   production: false
 };
 export const CONSTANTS: Constants = {
-  NAME: 'Testnet / Carthage',
-  NETWORK: 'carthagenet',
+  NAME: 'Testnet / Delphinet',
+  NETWORK: 'delphinet',
   MAINNET: false,
-  NODE_URL: 'https://testnet-tezos.giganode.io',
-  BLOCK_EXPLORER_URL: 'https://carthagenet.tzkt.io'
+  NODE_URL: 'https://delphinet-tezos.giganode.io',
+  BLOCK_EXPLORER_URL: 'https://delphinet.tzkt.io'
 };
