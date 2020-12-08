@@ -1,7 +1,6 @@
-import { Component, TemplateRef, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
+import { Component, TemplateRef, OnInit, Input, ViewChild, ElementRef, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
-
 import { KeyPair } from '../../interfaces';
 import { WalletService } from '../../services/wallet/wallet.service';
 import { CoordinatorService } from '../../services/coordinator/coordinator.service';
@@ -10,7 +9,6 @@ import { ExportService } from '../../services/export/export.service';
 import { DelegatorNamePipe } from '../../pipes/delegator-name.pipe';
 import { InputValidationService } from '../../services/input-validation/input-validation.service';
 import { LedgerService } from '../../services/ledger/ledger.service';
-import { Constants } from '../../constants';
 import { LedgerWallet, Account, ImplicitAccount, OriginatedAccount, TorusWallet } from '../../services/wallet/wallet';
 import { MessageService } from '../../services/message/message.service';
 import Big from 'big.js';
@@ -20,7 +18,7 @@ import Big from 'big.js';
   templateUrl: './delegate.component.html',
   styleUrls: ['./delegate.component.scss']
 })
-export class DelegateComponent implements OnInit {
+export class DelegateComponent implements OnInit, OnChanges {
   modalOpen = false;
   activeView = 0;
   recommendedFee = 0.0004;
@@ -28,7 +26,9 @@ export class DelegateComponent implements OnInit {
   pkhFee = 0.0004;
   ktFee = 0.0008;
   @ViewChild('toPkhInput') toPkhView: ElementRef;
-  CONSTANTS = new Constants();
+  @Input() beaconMode = false;
+  @Input() operationRequest: any;
+  @Output() operationResponse = new EventEmitter();
   @Input() activeAccount: Account;
   implicitAccounts;
   toPkh: string;
@@ -60,7 +60,23 @@ export class DelegateComponent implements OnInit {
       this.init();
     }
   }
-
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes);
+    if (this.operationRequest) {
+      if (this.operationRequest.operationDetails[0].kind === 'delegation') {
+        this.openModal();
+        if (this.operationRequest.operationDetails[0].delegate) {
+          this.toPkh = this.operationRequest.operationDetails[0].delegate;
+        } else {
+          console.warn('No delegate');
+        }
+      } else {
+        console.log('Not a delegation');
+      }
+    } else {
+      this.operationResponse.emit(null);
+    }
+  }
   init() {
     this.implicitAccounts = this.walletService.wallet.implicitAccounts;
   }
@@ -80,6 +96,10 @@ export class DelegateComponent implements OnInit {
         }, 100);
       }
     }
+  }
+  closeModalAction() {
+    this.operationResponse.emit(null);
+    this.closeModal();
   }
   closeModal() {
     // restore body scrollbar
@@ -186,6 +206,7 @@ export class DelegateComponent implements OnInit {
         console.log(JSON.stringify(ans));
         if (ans.success === true) {
           if (ans.payload.opHash) {
+            this.operationResponse.emit(ans.payload.opHash);
             const metadata = { delegate: this.getDelegate(), opHash: ans.payload.opHash };
             this.coordinatorService.boost(this.activeAccount.address, metadata);
           } else if (this.walletService.isLedgerWallet()) {

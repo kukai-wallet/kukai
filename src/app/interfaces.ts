@@ -111,3 +111,14 @@ export interface DefaultTransactionParams {
     storageLimit: number;
   }[];
 }
+export interface Constants {
+  NAME: string;
+  NETWORK: string;
+  MAINNET: boolean;
+  NODE_URL: string;
+  BLOCK_EXPLORER_URL: string;
+  CSI?: {
+    url: string;
+    apiKey: string;
+  };
+}

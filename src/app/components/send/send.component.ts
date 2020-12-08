@@ -1,4 +1,5 @@
-import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, Input, ViewChild, ElementRef, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { KeyPair, DefaultTransactionParams } from '../../interfaces';
 import { TranslateService } from '@ngx-translate/core';
 import { WalletService } from '../../services/wallet/wallet.service';
@@ -8,18 +9,19 @@ import { InputValidationService } from '../../services/input-validation/input-va
 import { LedgerService } from '../../services/ledger/ledger.service';
 import { EstimateService } from '../../services/estimate/estimate.service';
 import Big from 'big.js';
-import { Constants } from '../../constants';
 import { LedgerWallet, TorusWallet } from '../../services/wallet/wallet';
 import { Account, ImplicitAccount, OriginatedAccount } from '../../services/wallet/wallet';
 import { MessageService } from '../../services/message/message.service';
 import { TorusService } from '../../services/torus/torus.service';
 import { LookupService } from '../../services/lookup/lookup.service';
+import { emitMicheline, assertMichelsonData } from '@taquito/michel-codec';
 
 interface SendData {
   to: string;
   amount: number;
   gasLimit: number;
   storageLimit: number;
+  parameters?: any;
   meta?: {
     alias: string;
     verifier: string;
@@ -37,8 +39,7 @@ const zeroTxParams: DefaultTransactionParams = {
   templateUrl: './send.component.html',
   styleUrls: ['./send.component.scss']
 })
-
-export class SendComponent implements OnInit {
+export class SendComponent implements OnInit, OnChanges {
   costPerByte: string = this.estimateService.costPerByte;
   // torus
   torusVerifier = '';
@@ -51,15 +52,20 @@ export class SendComponent implements OnInit {
   advancedForm = false;
   sendMax = false;
   /* old variables */
+  @Input() beaconMode = false;
+  @Input() operationRequest: any;
   @Input() activeAccount: Account;
+  @Output() operationResponse = new EventEmitter();
   @ViewChild('amountInput') amountInputView: ElementRef;
-  CONSTANTS = new Constants();
   defaultTransactionParams: DefaultTransactionParams = zeroTxParams;
 
   // Transaction variables
   toPkh: string;
   amount = '';
   fee: string;
+  parameters: any;
+  micheline: { entrypoint: string, value: string };
+  parametersFormat = 0;
   sendFee: string;
   burnFee = 0;
   gas = '';
@@ -99,10 +105,33 @@ export class SendComponent implements OnInit {
 
   ngOnInit() {
     if (this.walletService.wallet) {
+      console.log('init send');
       this.init();
     }
   }
-
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes);
+    if (this.operationRequest && !(this.walletService.isLedgerWallet() && this.operationRequest.operationDetails[0].parameters)) {
+      console.log('Beacon payload to send', this.operationRequest);
+      if (this.operationRequest.operationDetails[0].kind === 'transaction') {
+        this.openModal();
+        if (this.operationRequest.operationDetails[0].destination) {
+          this.toPkh = this.operationRequest.operationDetails[0].destination;
+        } else {
+          console.warn('No destination');
+        }
+        if (this.operationRequest.operationDetails[0].amount) {
+          this.amount = Big(this.operationRequest.operationDetails[0].amount).div(1000000).toString();
+        }
+        if (this.operationRequest.operationDetails[0].parameters) {
+          this.parameters = this.operationRequest.operationDetails[0].parameters;
+        }
+        this.activeAccountChange();
+      }
+    } else {
+      this.operationResponse.emit(null);
+    }
+  }
   init() {
     if (!this.activeAccount) {
       this.activeAccount = this.walletService.wallet.implicitAccounts[0];
@@ -201,6 +230,10 @@ export class SendComponent implements OnInit {
       }
     }
   }
+  closeModalAction() {
+    this.closeModal();
+    this.operationResponse.emit(null);
+  }
   closeModal() {
     // restore body scrollbar
     document.body.style.marginRight = '';
@@ -272,16 +305,13 @@ export class SendComponent implements OnInit {
           this.showTransactions.push(this.transactions[0]);
         }
       } else {
-        const gasLimit = this.gas ? Number(this.gas) : this.defaultTransactionParams.gas;
-        const storageLimit = this.storage ? Number(this.storage) : this.defaultTransactionParams.storage;
+        const gasLimit: number = this.gas ? Number(this.gas) : this.defaultTransactionParams.gas;
+        const storageLimit: number = this.storage ? Number(this.storage) : this.defaultTransactionParams.storage;
         const toAddress = !this.torusVerifier ? this.toPkh : this.torusLookupAddress;
-        this.transactions = [{ to: toAddress, amount: Number(this.amount), gasLimit, storageLimit }];
+        const parameters = this.parameters ? this.parameters : undefined;
+        this.transactions = [{ to: toAddress, amount: Number(this.amount), gasLimit, storageLimit, parameters }];
         if (this.torusLookupId) {
-          if (this.torusVerifier === 'twitter') {
-            this.transactions[0].meta = { alias: this.torusLookupId, verifier: this.torusVerifier, twitterId: this.torusTwitterId };
-          } else {
-            this.transactions[0].meta = { alias: this.torusLookupId, verifier: this.torusVerifier };
-          }
+          this.transactions[0].meta = { alias: this.torusLookupId, verifier: this.torusVerifier, twitterId: (this.torusVerifier === 'twitter') ? this.torusTwitterId : undefined };
         }
       }
       return true;
@@ -309,6 +339,7 @@ export class SendComponent implements OnInit {
         if (ans.success === true) {
           console.log('Transaction successful ', ans);
           if (ans.payload.opHash) {
+            this.operationResponse.emit(ans.payload.opHash);
             this.messageService.stopSpinner();
             const metadata = { transactions: this.transactions, opHash: ans.payload.opHash };
             this.coordinatorService.boost(this.activeAccount.address, metadata);
@@ -421,6 +452,9 @@ export class SendComponent implements OnInit {
     this.prevEquiClass = '';
     this.latestSimError = '';
     this.clearTorus();
+    this.parameters = null;
+    this.micheline = null;
+    this.parametersFormat = 0;
   }
 
   checkInput(finalCheck = false): string {
@@ -462,6 +496,11 @@ export class SendComponent implements OnInit {
     }
     return '';
   }
+  amountInputChange() {
+    if (this.beaconMode) {
+      this.updateDefaultValues();
+    }
+  }
   async activeAccountChange() {
     await this.estimateService.preLoadData(this.activeAccount.pkh, this.activeAccount.pk);
     this.updateDefaultValues();
@@ -479,7 +518,8 @@ export class SendComponent implements OnInit {
     this.latestSimError = '';
     if (this.prepTransactions()) {
       const equiClass = this.equiClass(this.activeAccount.address, this.transactions);
-      if (this.prevEquiClass !== equiClass) {
+      if (this.prevEquiClass !== equiClass || this.parameters || this.beaconMode) {
+        console.log('simulate');
         this.latestSimError = '';
         this.prevEquiClass = equiClass;
         this.simSemaphore++; // Put lock on 'Preview and 'Send max'
@@ -582,23 +622,34 @@ export class SendComponent implements OnInit {
       return this.translate.instant('SENDCOMPONENT.INVALIDSENDERADDRESS');
     } else if (!this.inputValidationService.fee(this.fee)) {
       return this.translate.instant('SENDCOMPONENT.INVALIDFEE');
-    } else {
-      return this.checkReceiverAndAmount(this.toPkh, this.amount, finalCheck);
+    } else if (this.parameters) {
+      console.log('parameters', this.parameters);
+      try {
+        if (!this.parameters.value ||
+          !this.parameters.entrypoint) {
+          throw new Error('entrypoint and value expected');
+        }
+        assertMichelsonData(this.parameters.value);
+        const res = emitMicheline(this.parameters.value, { indent: '  ', newline: '\n' });
+        this.micheline = { entrypoint: this.parameters.entrypoint, value: res };
+      } catch (e) {
+        console.log(e);
+        if (this.beaconMode) {
+          this.formInvalid = e;
+        }
+        return e;
+      }
     }
+    return this.checkReceiverAndAmount(this.toPkh, this.amount, finalCheck);
   }
   checkReceiverAndAmount(toPkh: string, amount: string, finalCheck: boolean): string {
-    console.log(toPkh + ' ' + amount);
     if (!this.torusVerifier && (!this.inputValidationService.address(toPkh) || toPkh === this.activeAccount.address)) {
       return this.translate.instant('SENDCOMPONENT.INVALIDRECEIVERADDRESS');
     } else if (this.torusVerifier
       && (!this.inputValidationService.torusAccount(this.toPkh, this.torusVerifier) || this.torusLookupAddress === this.activeAccount.address)) {
       return 'Invalid recipient';
-      /*} else if (this.torusVerifier && this.torusVerifier === 'google' && (!this.inputValidationService.email(this.toPkh) || this.torusLookupAddress === this.activeAccount.address)) {
-        return 'Invalid email';
-      } else if (this.torusVerifier && this.torusVerifier === 'reddit' && (!this.inputValidationService.redditAccount(this.toPkh) || this.torusLookupAddress === this.activeAccount.address)) {
-        return 'Invalid Reddit account';*/
     } else if (!this.inputValidationService.amount(amount) ||
-      (finalCheck && (((amount === '0') || amount === '') && (toPkh.slice(0, 3) !== 'KT1')))) {
+      (finalCheck && ((amount === '0' || amount === '') && toPkh.slice(0, 3) !== 'KT1'))) {
       return this.translate.instant('SENDCOMPONENT.INVALIDAMOUNT');
     } else if (!this.inputValidationService.gas(this.gas)) {
       return this.translate.instant('SENDCOMPONENT.INVALIDGASLIMIT');
@@ -652,12 +703,12 @@ export class SendComponent implements OnInit {
     return validationError;
   }
 
-  totalAmount(): string {
+  totalAmount(): number {
     let totalSent = Big(0);
     for (const tx of this.transactions) {
       totalSent = totalSent.add(tx.amount);
     }
-    return totalSent.toString();
+    return Number(totalSent);
   }
   getTotalCost(display: boolean = false): string {
     const totalFee = Big(this.getTotalFee()).plus(Big(this.getTotalBurn())).toString();
@@ -676,7 +727,7 @@ export class SendComponent implements OnInit {
     if (this.storage !== '' && Number(this.storage)) {
       return Number(Big(this.storage).mul(this.transactions.length).times(this.costPerByte).div(1000000).toString());
     }
-    return Number(this.defaultTransactionParams.burn);
+    return this.defaultTransactionParams.burn;
   }
   toggleTransactions() {
     if (this.showTransactions.length === 2) {
@@ -776,5 +827,11 @@ export class SendComponent implements OnInit {
       }
     }
     return '';
+  }
+  parametersTextboxDisplay(): string {
+    return !this.parametersFormat ? this.micheline.value : JSON.stringify(this.parameters.value, null, 2);
+  }
+  setParametersFormat(id: number) {
+    this.parametersFormat = id;
   }
 }

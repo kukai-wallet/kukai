@@ -1,8 +1,6 @@
 import { Component, OnInit, HostBinding } from '@angular/core';
 import { Router } from '@angular/router';
-import { Constants } from '../../constants';
 import { TranslateService } from '@ngx-translate/core'; // Multiple instances created ?
-
 import { ImportService } from '../../services/import/import.service';
 import { MessageService } from '../../services/message/message.service';
 import { WalletService } from '../../services/wallet/wallet.service';
@@ -16,7 +14,6 @@ import { utils, hd } from '@tezos-core-tools/crypto-utils';
   styleUrls: ['./mnemonic-import.component.scss']
 })
 export class MnemonicImportComponent implements OnInit {
-  CONSTANTS = new Constants();
   @HostBinding('class.tacos') showTacos = false;
   MIN_PWD_LENGTH = 9;
   mnemonic: string;

@@ -5,6 +5,7 @@ import { flatMap, catchError } from 'rxjs/operators';
 import { of, Observable } from 'rxjs';
 import { DefaultTransactionParams } from '../../interfaces';
 import Big from 'big.js';
+import { CONSTANTS } from '../../../environments/environment';
 
 const httpOptions = { headers: { 'Content-Type': 'application/json' } };
 const hardGasLimit = 1040000;
@@ -14,8 +15,7 @@ export class EstimateService {
   readonly costPerByte = '250';
   readonly revealGasLimit = 1000;
   queue = [];
-  CONSTANTS = this.operationService.CONSTANTS;
-  nodeURL = this.CONSTANTS.NET.NODE_URL;
+  nodeURL = CONSTANTS.NODE_URL;
   pkh: string;
   pk: string;
   hash: string;
@@ -69,7 +69,7 @@ export class EstimateService {
       }
     }
   }
-  async _estimate(transactions: any, from: string): Promise<any> {
+  private async _estimate(transactions: any, from: string): Promise<any> {
     const extraGas = 80;
     if (!this.hash) { return null; }
     const simulation = {
@@ -156,7 +156,8 @@ export class EstimateService {
         if (internalResult.result) {
           if (internalResult.result.consumed_gas) {
             gasUsage += internalResult.result && internalResult.result.consumed_gas ? Number(internalResult.result.consumed_gas) : 0;
-          } if (internalResult.result.balance_updates) {
+          }
+          if (internalResult.result.balance_updates) {
             for (const balanceUpdate of internalResult.result.balance_updates) {
               if (balanceUpdate.contract === this.pkh && balanceUpdate.change.slice(0, 1) === '-') {
                 burn = burn.minus(balanceUpdate.change);
@@ -190,34 +191,33 @@ export class EstimateService {
       numberOfOperations++;
     }
     bytes += 10 * numberOfOperations; // add 10 extra bytes for variation in amount & fee
-    return Number(Big(Math.ceil(minimalFee + (feePerByte * bytes) + (feePerGasUnit * gasUnits))).div(1000000));
+    return Number(Big(Math.ceil(minimalFee + (feePerByte * bytes) + (feePerGasUnit * gasUnits))).div(1000000).toString());
   }
-  averageGasLimit(limits: any) {
+  averageGasLimit(limits: any): number {
     let totalGasLimit = 0;
     for (const data of limits) {
       totalGasLimit += data.gasLimit;
     }
     return Math.ceil(totalGasLimit / limits.length);
   }
-  averageStorageLimit(limits: any) {
+  averageStorageLimit(limits: any): number {
     let totalStorageLimit = 0;
     for (const data of limits) {
       totalStorageLimit += data.storageLimit;
     }
     return Math.ceil(totalStorageLimit / limits.length);
   }
-  burnFee(limits: any) {
-    let totalStorageLimit = 0;
+  burnFee(limits: any): number {
+    let totalStorageLimit = Big(0);
     for (const data of limits) {
-      totalStorageLimit += data.storageLimit;
+      totalStorageLimit = totalStorageLimit.plus(data.storageLimit);
     }
-    return Number(Big(totalStorageLimit).times(this.costPerByte).div('1000000'));
+    return Number(Big(totalStorageLimit).times(this.costPerByte).div('1000000').toString());
   }
   simulate(op: any): Observable<any> {
     op.signature = 'edsigtXomBKi5CTRf5cjATJWSyaRvhfYNHqSUGrn4SdbYRcGwQrUGjzEfQDTuqHhuA8b2d8NarZjz8TRf65WkpQmo423BtomS8Q';
     return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/scripts/run_operation',
       { operation: op, chain_id: this.chainId }, httpOptions).pipe(flatMap(res => {
-        console.log(JSON.stringify(res));
         this.operationService.checkApplied([res]);
         return of(res);
       })).pipe(catchError(err => this.operationService.errHandler(err)));
