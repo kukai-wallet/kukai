@@ -17,7 +17,7 @@ import { TestBed } from '@angular/core/testing';
 import { ErrorHandlingPipe } from '../../pipes/error-handling.pipe';
 import { Account, Wallet, Balance } from '../../interfaces';
 import { WalletObject } from '../wallet/wallet';
-import { Constants } from '../../constants';
+import { CONSTANTS } from '../../../environments/environment';
 import { InputValidationService } from '../input-validation/input-validation.service';
 
 /**
@@ -32,7 +32,7 @@ describe('[ TzrateService ]', () => {
 	let walletservice: WalletService;
 	let httpMock: HttpTestingController;
 	const walletTols = new WalletTools();
-  const isMainnet = (new Constants()).NET.NETWORK === 'mainnet';
+  const isMainnet = CONSTANTS.NETWORK === 'mainnet';
 	// mock network data
 	const apiUrl = 'https://api.coingecko.com/api/v3/simple/price?ids=tezos&vs_currencies=usd';
 	const ticker = {

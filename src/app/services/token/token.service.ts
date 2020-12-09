@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Constants } from '../../constants';
+import { CONSTANTS } from '../../../environments/environment';
 import { IndexerService } from '../indexer/indexer.service';
 import Big from 'big.js';
 
@@ -52,7 +52,7 @@ export class TokenService {
   constructor(
     public indexerService: IndexerService
   ) {
-    this.contracts = new Constants().NET._ASSETS;
+    this.contracts = CONSTANTS.ASSETS;
     this.loadMetadata();
     this.loadExplored();
   }
@@ -142,7 +142,6 @@ export class TokenService {
       }
       this.exploredIds[tokenId].lastCheck = now;
       this.saveExplored();
-      console.log(tokenId + ' - ' + (now - token.firstCheck));
       return true;
     }
   }
@@ -177,8 +176,6 @@ export class TokenService {
         this.exploredIds = explored;
       }
     }
-    console.log('###');
-    console.log(this.exploredIds);
   }
   formatAmount(tokenKey: string, amount: string, baseUnit = true) {
     if (!tokenKey) {

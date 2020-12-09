@@ -16,7 +16,6 @@ export class AgreementComponent implements OnInit {
     // localStorage.removeItem(this.key);
     const accepted = localStorage.getItem(this.key);
     const path = this.location.path();
-    console.log(path);
     if (!accepted && path !== '/terms-of-use' && path !== '/privacy-policy') {
       this.displayAgreement = true;
       const scrollBarWidth = window.innerWidth - document.body.offsetWidth;

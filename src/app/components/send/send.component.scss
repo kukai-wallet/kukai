@@ -1,7 +1,14 @@
 @import '../../../scss/modal.scss';
 @import '../../../scss/switch.scss';
 @import '../../../scss/dropdown.scss';
-:host button {
+button.purple:hover {
+  margin-top: -0.125rem;
+  margin-bottom: 0.125rem;
+}
+button:focus {
+  outline: none;
+}
+button.purple {
   border-radius: 0.75rem;
   height: 3rem;
   width: 100%;
@@ -216,4 +223,35 @@ div.kukai-modal p#previewAttention {
   color: #CD0000;
   font-size: 0.875rem;
   line-height: 1rem;
+}
+div.tabs-container {
+  margin-top: 0.5rem;
+}
+div.tabs-container > ul.tabs {
+  display: flex;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+div.tabs-container > ul.tabs > li.tab {
+  width: 100%;
+  color: #787878;
+  text-align: center;
+  cursor: pointer;
+  padding: 1rem auto;
+  background-color: rgb(246, 246, 246);
+}
+div.tabs-container > ul.tabs > li.tab:first-child {
+  border-top-left-radius: 0.75rem;
+}
+div.tabs-container > ul.tabs > li.tab:last-child {
+  border-top-right-radius: 0.75rem;
+}
+div.tabs-container > ul.tabs > li.tab.active {
+  background-color: #d9d9d9;
+  color: #484848;
+}
+div.tabs-container > ul.tabs > li.tab:hover {
+  background-color: #C0C0C0;
+  color: #484848;
 }

@@ -8,7 +8,7 @@ import { MessageService } from '../../services/message/message.service';
 import * as copy from 'copy-to-clipboard';
 import { filter } from 'rxjs/internal/operators/filter';
 import { CoordinatorService } from '../../services/coordinator/coordinator.service';
-import { Constants } from '../../constants';
+import { CONSTANTS } from '../../../environments/environment';
 import { LookupService } from '../../services/lookup/lookup.service';
 import { ActivityService } from '../../services/activity/activity.service';
 import Big from 'big.js';
@@ -21,7 +21,6 @@ import { TokenService, TokenResponseType } from '../../services/token/token.serv
 })
 export class AccountViewComponent implements OnInit {
   account: Account;
-  CONSTANTS = new Constants();
   constructor(
     private route: ActivatedRoute,
     private walletService: WalletService,
@@ -89,7 +88,7 @@ export class AccountViewComponent implements OnInit {
     this.messageService.add(account.address + ' ' + copyToClipboard, 5);
   }
   explorerURL(hash: string) {
-    const baseURL = this.CONSTANTS.NET.BLOCK_EXPLORER_URL;
+    const baseURL = CONSTANTS.BLOCK_EXPLORER_URL;
     return `${baseURL}/${hash}`;
   }
   printAmount(activity: Activity): string {

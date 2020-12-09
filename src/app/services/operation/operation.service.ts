@@ -9,7 +9,7 @@ import * as bip39 from 'bip39';
 import Big from 'big.js';
 import { localForger } from '@taquito/local-forging';
 import { TranslateService } from '@ngx-translate/core';
-import { Constants } from '../../constants';
+import { CONSTANTS } from '../../../environments/environment';
 import { ErrorHandlingPipe } from '../../pipes/error-handling.pipe';
 import * as elliptic from 'elliptic';
 import { instantiateSecp256k1, hexToBin, binToHex } from '@bitauth/libauth';
@@ -24,8 +24,7 @@ export interface KeyPair {
 }
 @Injectable()
 export class OperationService {
-  CONSTANTS = new Constants();
-  nodeURL = this.CONSTANTS.NET.NODE_URL;
+  nodeURL = CONSTANTS.NODE_URL;
   prefix = {
     tz1: new Uint8Array([6, 161, 159]),
     tz2: new Uint8Array([6, 161, 161]),
@@ -224,6 +223,9 @@ export class OperationService {
           amount: this.microTez.times(transactions[i].amount).toString(),
           destination: transactions[i].to,
         };
+        if (transactions.length === 1 && transactions[i].parameters) {
+          transactionOp.parameters = transactions[i].parameters;
+        }
         fop.contents.push(transactionOp);
       } else if (from.slice(0, 2) === 'KT') {
         if (transactions[i].to.slice(0, 2) === 'tz') {
@@ -422,7 +424,7 @@ export class OperationService {
                 pub_key_Y: pk.Y
               }
             };
-            const url = this.CONSTANTS.NET.NETWORK === 'mainnet' ? 'https://torus-19.torusnode.com/jrpc' : 'https://teal-15-1.torusnode.com/jrpc';
+            const url = CONSTANTS.NETWORK === 'mainnet' ? 'https://torus-19.torusnode.com/jrpc' : 'https://teal-15-1.torusnode.com/jrpc';
             return this.http.post(url, JSON.stringify(torusReq), httpOptions)
               .pipe(flatMap((ans: any) => {
                 try {
@@ -445,10 +447,16 @@ export class OperationService {
       if (applied[0].contents[i].metadata.operation_result.status !== 'applied') {
         console.log('throw error ->');
         if (applied[0].contents[i].metadata.operation_result.errors) {
-          throw new Error(applied[0].contents[i].metadata.operation_result.errors[0].id); // prevent failed operations
+          console.log('Error in operation_result');
+          throw applied[0].contents[i].metadata.operation_result.errors[
+            applied[0].contents[i].metadata.operation_result.errors.length - 1
+          ];
         } else if (applied[0].contents[i].metadata.internal_operation_results &&
           applied[0].contents[i].metadata.internal_operation_results[0].result.errors) {
-          throw new Error(applied[0].contents[i].metadata.internal_operation_results[0].result.errors[0].id);
+            console.log('Error in internal_operation_results');
+            throw applied[0].contents[i].metadata.internal_operation_results[0].result.errors[
+              applied[0].contents[i].metadata.internal_operation_results[0].result.errors.length - 1
+          ];
         } else {
           throw new Error('Uncatched error in preapply');
         }
@@ -457,21 +465,24 @@ export class OperationService {
   }
   errHandler(error: any): Observable<any> {
     console.log(JSON.stringify(error));
-    if (error.error && error.error[0] && error.error[0].id) {
-      let errorId = error.error[0].id;
-      if (errorId === 'failure' && error.error[0].msg) {
-        errorId = error.error[0].msg;
+    if (error.error && error.error[0]) {
+      error = error.error[0];
+    }
+    if (error.message) {
+      error = this.errorHandlingPipe.transform(error.message);
+    } else if (error.id) {
+      if (error.with) {
+        error = this.errorHandlingPipe.transform(error.id, error.with);
+      } else if (error.id === 'failure' && error.msg) {
+        error = this.errorHandlingPipe.transform(error.msg);
+      }  else {
+        error = this.errorHandlingPipe.transform(error.id);
       }
-      const errorMsg = this.errorHandlingPipe.transform(errorId);
-      error = errorMsg;
-    } else if (error.error && error.error[0] && error.error[0].error) {
-      error = error.error[0].error;
     } else if (error.statusText) {
       error = error.statusText;
-    } if (error.message) {
-      error = this.errorHandlingPipe.transform(error.message);
     } else {
-      console.log('Error not categorized');
+      error = 'Unrecogized error';
+      console.warn('Error not categorized', error);
     }
     return of(
       {

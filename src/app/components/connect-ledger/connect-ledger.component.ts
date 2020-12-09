@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Constants } from '../../constants';
 import { WalletService } from '../../services/wallet/wallet.service';
 import { LedgerService } from '../../services/ledger/ledger.service';
 import { ImportService } from '../../services/import/import.service';
@@ -15,7 +14,6 @@ import { utils } from '@tezos-core-tools/crypto-utils';
 })
 export class ConnectLedgerComponent implements OnInit {
   activePanel = 0;
-  CONSTANTS = new Constants();
   defaultPath = '44\'/1729\'/0\'/0\'';
   defaultText = 'Default derivation path';
   path: string;

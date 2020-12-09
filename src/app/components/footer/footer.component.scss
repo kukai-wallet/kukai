@@ -34,6 +34,13 @@
     -khtml-opacity: 0.8;
     vertical-align: top;
 }
+.dark #follow span,
+div.foot-container.dark > div.links > a {
+  color: rgba(0, 0, 0, 0.4) !important;
+}
+.dark img {
+  filter: invert(40%);
+}
 #follow a {
     position: relative;
     top: 0.24rem;
@@ -57,6 +64,10 @@ div.foot-container > div.links > a:not(:last-child) {
 div.foot-container > div.links > a:hover:not(:last-child) {
   color: white;
   background-color: #5963FF;
+}
+div.foot-container.dark > div.links > a:hover:not(:last-child) {
+  color: rgba(0, 0, 0, 0.8) !important;
+  background-color: inherit;
 }
 #tg {
     margin-left: 1.5rem;

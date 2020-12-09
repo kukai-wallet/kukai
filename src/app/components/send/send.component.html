@@ -1,16 +1,18 @@
-<button *ngIf="!tokenTransfer" class="purple" (click)="openModal()">Send</button>
-<span class="token-send" *ngIf="tokenTransfer" (click)="openModal()">Send</span>
+<ng-container *ngIf="!beaconMode">
+  <button *ngIf="!tokenTransfer" class="purple" (click)="openModal()">Send</button>
+  <span class="token-send" *ngIf="tokenTransfer" (click)="openModal()">Send</span>
+</ng-container>
+
 <!-- The Modal -->
-<div *ngIf="modalOpen" id="myModal" class="kukai-modal">
+<div *ngIf="modalOpen" id="myModal" class="kukai-modal" [class.top]="beaconMode">
   <!-- Modal content -->
   <div class="km-content">
-    <div class="x" (click)="closeModal()"><img src="../../../assets/img/x.svg"></div>
+    <div class="x" (click)="closeModalAction()"><img src="../../../assets/img/x.svg"></div>
     <div class="km-header">
       <H1 *ngIf="activeView === 0">Send {{ getAssetName(false) }}</H1>
       <H1 *ngIf="activeView === 1">Confirmation</H1>
       <!--<span class="close" (click)="modalOpen = false" class="close">&times;</span>-->
-      <button *ngIf="activeView === 0 && !walletService.isLedgerWallet() && !tokenTransfer"
-        class="small multiple-destinations" (click)="toggleDestination()">
+      <button *ngIf="activeView === 0 && !(walletService.isLedgerWallet() || tokenTransfer || beaconMode)" class="small multiple-destinations" (click)="toggleDestination()">
         <ng-container *ngIf="!this.isMultipleDestinations">Multiple transactions</ng-container>
         <ng-container *ngIf="this.isMultipleDestinations">Single transaction</ng-container>
       </button>
@@ -22,7 +24,7 @@
           <input #amountInput class="input" class="custom-large" placeholder="0.00" [(ngModel)]="amount"
             (mousedown)="sendMax = false; default" [style.font-size.rem]="dynSize()" (input)="amountChange()"
             (keypress)="keyPressNumbersDecimal($event)" (change)="amountChange()"
-            [style.width.ch]="amount ? amount.length + 1 : 3.6" [disabled]="isMultipleDestinations">
+            [style.width.ch]="amount ? amount.length + 1 : 3.6" [disabled]="isMultipleDestinations || (beaconMode && operationRequest.operationDetails[0].amount)">
           <span class="tez">{{ getAssetName() }}</span>
         </ng-container>
         <ng-container *ngIf="hideAmount">
@@ -31,9 +33,9 @@
       </div>
       <div class="row-group">
         <span *ngIf="hideAmount"></span>
-        <button *ngIf="!this.isMultipleDestinations && !hideAmount" tabindex=-1 class="small" [class.max]="sendMax"
+        <button *ngIf="!(this.isMultipleDestinations || hideAmount || beaconMode)" tabindex=-1 class="small" [class.max]="sendMax"
           (click)="sendEntireBalance($event)">Send Max</button>
-        <p *ngIf="this.isMultipleDestinations"></p>
+        <p *ngIf="this.isMultipleDestinations || beaconMode"></p>
         <p class="fee">
           <ng-container *ngIf="simSemaphore"><img src="../../../assets/img/feeLoader.gif">&nbsp;</ng-container>
           <ng-container *ngIf="!getTotalBurn() ; else burn">Fee: </ng-container>
@@ -47,13 +49,16 @@
       </div>
       <div *ngIf="!this.isMultipleDestinations" class="group">
         <label style="justify-content: space-between; opacity: 1; color: rgba(44, 50, 58, 0.4)"><span>Send to</span>
-          <select class="select-css" [(ngModel)]="torusVerifier" (ngModelChange)="verifierChange()">
+          <select class="select-css" [(ngModel)]="torusVerifier" (ngModelChange)="verifierChange()" [disabled]="beaconMode">
             <option value="" selected>Tezos Address</option>
             <option *ngFor="let key of torusService.verifierMapKeys" value="{{key}}">
               {{ torusService.verifierMap[key].name }} Account</option>
           </select></label>
-        <input type="text" class="text" (input)="updateDefaultValues()" (change)="validateReceiverAddress()"
+        <input type="text" class="text" (input)="updateDefaultValues()" (change)="validateReceiverAddress()" [disabled]="beaconMode"
           [(ngModel)]="toPkh">
+      </div>
+      <div *ngIf="beaconMode && parameters">
+        <label style="color: #C83532; margin-top: 1rem">This transaction will invoke a contract</label>
       </div>
       <ng-container *ngIf="torusVerifier">
         <p class="torus-details" *ngIf="torusPendingLookup">Loading address...</p>
@@ -183,6 +188,21 @@
         <span>Max storage cost</span><span>{{ getTotalBurn() | number:'1.0-6' }} tez</span>
       </div>
       <div class="seperator"></div>
+      <ng-container *ngIf="parameters">
+        <div class="preview-row">
+          <span *ngIf="parameters?.entrypoint" class="preview">
+            Entrypoint
+          </span>
+          <span>{{ parameters.entrypoint }}</span>
+        </div>
+        <div class="tabs-container">
+          <ul class="tabs">
+            <li class="tab" [class.active]="parametersFormat === 0" (click)="setParametersFormat(0)">Micheline</li>
+            <li class="tab" [class.active]="parametersFormat === 1" (click)="setParametersFormat(1)">JSON</li>
+          </ul>
+        </div>
+        <textarea *ngIf="parameters" style="width: 100%; font-size: 0.875rem" rows="10" readonly>{{ parametersTextboxDisplay() }}</textarea>
+      </ng-container>
       <div class="row-group" style="margin: 1.25rem 0 1.5rem;">
         <input *ngIf="!walletService.isLedgerWallet() && !walletService.isTorusWallet()" [(ngModel)]="password"
           autocomplete="current-password" placeholder="Password" class="text password" type="password"

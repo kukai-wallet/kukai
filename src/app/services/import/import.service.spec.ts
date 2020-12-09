@@ -171,8 +171,8 @@ describe('[ ImportService ]', () => {
 			});
 
 			it('should import full wallet v2', async () => {
+        spyOn(indexer, 'getContractAddresses').and.callFake(async function() { return []; });
 				await service.importWalletFromJson(walletdata2, password2);
-				console.log(wallet.wallet);
 
 				// expect a full wallet
 				expect(wallet.wallet instanceof LegacyWalletV2).toBeTruthy();

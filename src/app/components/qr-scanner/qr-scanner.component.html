@@ -1,0 +1,20 @@
+
+<button (click)="openModal()">Scan QR code</button>
+<!-- The Modal -->
+<div *ngIf="modalOpen" id="myModal" class="kukai-modal">
+  <!-- Modal content -->
+  <div class="km-content">
+    <div class="x" (click)="closeModal()"><img src="../../../assets/img/x.svg"></div>
+    <div class="km-header">
+    </div>
+    <div class="km-body">
+      <label>Scan QR code from dApp</label>
+      <div class="video-container">
+        <video #videoPlayer>
+          Browser not supported
+        </video>
+        <p class="no-cam" *ngIf="!qrScanner">No camera detected</p>
+      </div>
+    </div>
+  </div>
+</div>

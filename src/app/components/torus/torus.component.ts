@@ -22,7 +22,11 @@ export class TorusComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    if (this.walletService.wallet) {
+      this.router.navigate(['/accounts']);
+    } else {
     this.torusService.initTorus();
+    }
   }
   async torusLogin(verifier: string) {
     await this.messageService.startSpinner('Loading wallet...');

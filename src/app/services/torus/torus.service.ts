@@ -4,7 +4,7 @@ import FetchNodeDetails from '@toruslabs/fetch-node-details';
 import TorusUtils from '@toruslabs/torus.js';
 import { OperationService } from '../../services/operation/operation.service';
 import { InputValidationService } from '../../services/input-validation/input-validation.service';
-import { Constants } from '../../constants';
+import { CONSTANTS } from '../../../environments/environment';
 
 const GOOGLE = 'google';
 const REDDIT = 'reddit';
@@ -14,7 +14,6 @@ const AUTH_DOMAIN = 'https://dev-0li4gssz.eu.auth0.com';
   providedIn: 'root'
 })
 export class TorusService {
-  CONSTANTS = new Constants();
   torus: any = null;
   nodeDetails: { torusNodeEndpoints: String[], torusNodePub: any[] } = null;
   public readonly verifierMap: any;
@@ -72,10 +71,10 @@ export class TorusService {
     private operationService: OperationService,
     private inputValidationService: InputValidationService
   ) {
-    if (this.CONSTANTS.NET.NETWORK === 'mainnet') {
+    if (CONSTANTS.MAINNET) {
       this.verifierMap = this.verifierMaps.mainnet;
       this.proxy = { address: '0x638646503746d5456209e33a2ff5e3226d698bea', network: 'mainnet' };
-    } else if (this.CONSTANTS.NET.NETWORK) {
+    } else {
       this.verifierMap = this.verifierMaps.testnet;
       this.proxy = { address: '0x4023d2a0D330bF11426B12C6144Cfb96B7fa6183', network: 'ropsten' };
     }

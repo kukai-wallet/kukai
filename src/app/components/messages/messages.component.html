@@ -8,6 +8,6 @@
       <span *ngIf="message.email || message.username || message.twitterId">Click <a target="_blank" href="{{ notifyFormat(message) }}">here to notify</a> {{ getAlias(message) }} via {{ message.msg }}: <b>{{ message.amount }}</b> sent</span>
     </alert>
     <alert *ngIf="message.timeout" [type]="message.type" [dismissOnTimeout]="message.timeout">
-      <span *ngIf="message.msg">{{ message.msg }}</span></alert>
+      <span *ngIf="message.msg">{{ message.msg }}</span><img *ngIf="message.loader" class="loader" src="../../../assets/img/wait.svg"></alert>
   </div>
 </div>

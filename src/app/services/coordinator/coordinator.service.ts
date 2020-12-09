@@ -8,7 +8,6 @@ import { OperationService } from '../operation/operation.service';
 import { ErrorHandlingPipe } from '../../pipes/error-handling.pipe';
 import { Account } from '../wallet/wallet';
 import Big from 'big.js';
-import { Constants } from '../../constants';
 import { TokenService } from '../token/token.service';
 
 export interface ScheduleData {
@@ -31,7 +30,6 @@ export class CoordinatorService {
   tzrateInterval: any;
   defaultDelayPrice = 300000; // 300s
   accounts: Account[];
-  CONSTANTS = new Constants();
   constructor(
     private activityService: ActivityService,
     private tzrateService: TzrateService,

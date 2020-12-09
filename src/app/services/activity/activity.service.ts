@@ -7,12 +7,11 @@ import { MessageService } from '../message/message.service';
 import { LookupService } from '../lookup/lookup.service';
 import { IndexerService } from '../indexer/indexer.service';
 import Big from 'big.js';
-import { Constants } from '../../constants';
+import { CONSTANTS } from '../../../environments/environment';
 import { TokenService } from '../token/token.service';
 
 @Injectable()
 export class ActivityService {
-  constants = new Constants();
   maxTransactions = 10;
   constructor(
     private walletService: WalletService,
@@ -50,7 +49,7 @@ export class ActivityService {
   async updateTokenBalances(account: Account) {
     if (account instanceof ImplicitAccount) {
       console.log('TOKENS');
-      fetch(`https://you.better-call.dev/v1/account/${this.constants.NET.NETWORK}/${account.pkh}`)
+      fetch(`https://you.better-call.dev/v1/account/${CONSTANTS.NETWORK}/${account.pkh}`)
         .then(res => res.json())
         .then( data => {
           console.log('account info', data);
