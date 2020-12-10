@@ -6,18 +6,16 @@ import { IndexerService } from '../indexer/indexer.service';
 describe('TokenService', () => {
   let service: TokenService;
   let indexerService: IndexerService;
+  let response: any = {};
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
+    spyOn(localStorage.__proto__, 'getItem').and.returnValue(undefined);
     service = TestBed.inject(TokenService);
+    (service as any).contracts = {};
+    spyOn(service, 'explore').and.callFake(function () { return true; });
     indexerService = TestBed.inject(IndexerService);
-  });
-
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-  describe('> Search metadata', () => {
-    let response: any = {
+    response = {
       decimals: 0,
       tokenType: 'FA2',
       name: 'Test NFT',
@@ -26,11 +24,16 @@ describe('TokenService', () => {
       imageUri: 'https://gateway.pinata.cloud/ipfs/QmNYkGR7wb4XLHqTwF8NZKAMpsMUQGqBwfQXr5VcZy75ki',
       isNft: true
     };
+  });
+
+  it('should be created', () => {
+    expect(service).toBeTruthy();
+  });
+  describe('> Search metadata', async () => {
     beforeEach(() => {
-      spyOn(service, 'explore').and.callFake(function() { return true; });
+      spyOn(indexerService, 'getTokenMetadata').and.callFake(async function () { return response; });
     });
     it('Valid metadata => inclusion', async () => {
-      spyOn(indexerService, 'getTokenMetadata').and.callFake(async function() { return response });
       await service.searchMetadata('KT1XXCz59vAzfbvDsNrrmKKuqSFrzQgpUqGM', 0);
       const expectedTokenResponse: TokenResponseType = {
         kind: 'FA2',
@@ -46,30 +49,26 @@ describe('TokenService', () => {
       };
       expect(service.getAsset('KT1XXCz59vAzfbvDsNrrmKKuqSFrzQgpUqGM:0')).toEqual(expectedTokenResponse);
     });
-    /*
+
     it('Metadata with undefined decimals => exclusion', async () => {
-      spyOn(indexerService, 'getTokenMetadata').and.callFake(async function() { return response; });
+      response.decimals = undefined;
       await service.searchMetadata('KT1XXCz59vAzfbvDsNrrmKKuqSFrzQgpUqGM', 0);
       expect(service.getAsset('KT1XXCz59vAzfbvDsNrrmKKuqSFrzQgpUqGM:0')).toEqual(null);
     });
     it('Metadata with negative decimals => exclusion', async () => {
       response.decimals = -1;
-      spyOn(indexerService, 'getTokenMetadata').and.callFake(async function() { return response; });
       await service.searchMetadata('KT1XXCz59vAzfbvDsNrrmKKuqSFrzQgpUqGM', 0);
       expect(service.getAsset('KT1XXCz59vAzfbvDsNrrmKKuqSFrzQgpUqGM:0')).toEqual(null);
     });
     it('Metadata with no name => exclusion', async () => {
-      response.name = undefined;
-      spyOn(indexerService, 'getTokenMetadata').and.callFake(async function() { return response; });
+      response.name = null;
       await service.searchMetadata('KT1XXCz59vAzfbvDsNrrmKKuqSFrzQgpUqGM', 0);
       expect(service.getAsset('KT1XXCz59vAzfbvDsNrrmKKuqSFrzQgpUqGM:0')).toEqual(null);
     });
     it('Metadata with no symbol => exclusion', async () => {
-      response.symbol = undefined;
-      spyOn(indexerService, 'getTokenMetadata').and.callFake(async function() { return response; });
+      response.symbol = null;
       await service.searchMetadata('KT1XXCz59vAzfbvDsNrrmKKuqSFrzQgpUqGM', 0);
       expect(service.getAsset('KT1XXCz59vAzfbvDsNrrmKKuqSFrzQgpUqGM:0')).toEqual(null);
     });
-    */
   });
 });
