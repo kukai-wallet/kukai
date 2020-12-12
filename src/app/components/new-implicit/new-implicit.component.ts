@@ -63,7 +63,7 @@ export class NewImplicitComponent implements OnInit {
     }
   }
   openPkhSpot(): boolean {
-    const state = this.walletService.wallet.implicitAccounts[
+    const state: string = this.walletService.wallet.implicitAccounts[
       this.walletService.wallet.implicitAccounts.length - 1
     ].state;
     const balance: number = this.walletService.wallet.implicitAccounts[
@@ -71,7 +71,7 @@ export class NewImplicitComponent implements OnInit {
     ].balanceXTZ;
     return (
       this.walletService.wallet instanceof HdWallet &&
-      ( true || (balance !== null && balance > 0))
+      ( state.length > 0 || (balance !== null && balance > 0))
     );
   }
   clear() {

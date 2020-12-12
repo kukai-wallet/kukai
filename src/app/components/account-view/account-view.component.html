@@ -1,7 +1,7 @@
 <app-header [activeAccount]="account"></app-header>
 <div id="wrapper" *ngIf="account">
   <div class="left-container">
-    <div class="main-container small" [class.expanded]="!hasTokens()">
+    <div class="main-container small" [class.expanded]="!account.tokens">
       <div class="top-container">
         <H1>Account Information</H1>
       </div>
@@ -27,20 +27,26 @@
         </div>
       </div>
     </div>
-    <div class="main-container small" style="margin-top: 2rem" *ngIf="hasTokens()">
+    <div class="main-container small" style="margin-top: 2rem" *ngIf="account.tokens">
       <div class="top-container">
         <H1>Tokens</H1>
       </div>
       <div class="token-container">
-        <ng-container *ngFor="let token of account.tokens">
-          <ng-container *ngIf="tokenService.getAsset(token.tokenId); let tokenData">
-            <div class="seperator"></div>
-            <div class="token-row">
-              <app-token [account]="account" [token]="tokenData"></app-token>
-              <app-send [activeAccount]="account" [tokenTransfer]="token.tokenId"></app-send>
-            </div>
+        <ng-container *ngIf="account.tokens.length; else noTokens">
+          <ng-container *ngFor="let token of account.tokens">
+            <ng-container *ngIf="tokenService.getAsset(token.tokenId); let tokenData">
+              <div class="seperator"></div>
+              <div class="token-row">
+                <app-token [account]="account" [token]="tokenData"></app-token>
+                <app-send [activeAccount]="account" [tokenTransfer]="token.tokenId"></app-send>
+              </div>
+            </ng-container>
           </ng-container>
         </ng-container>
+        <ng-template #noTokens>
+          <span class="no-tokens">No tokens yet</span>
+        </ng-template>
+        
       </div>
     </div>
   </div>
@@ -53,7 +59,7 @@
       <ng-container *ngIf="!account.activities.length">
         <div class="line"><span>No transactions yet</span></div>
       </ng-container>
-      <ng-container *ngFor="let activity of knownActivities() | slice:0:5">
+      <ng-container *ngFor="let activity of account.activities | slice:0:5">
         <ng-container [ngSwitch]="getType(activity)">
           <ng-template #CounterpartyRef let-myactivity>
             <span class="grey truncate-overflow">

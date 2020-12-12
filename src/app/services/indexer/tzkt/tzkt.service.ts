@@ -10,7 +10,7 @@ export class TzktService implements Indexer {
   CONSTANTS: any;
   readonly bcd = 'https://you.better-call.dev/v1';
   constructor(
-  ) {}
+  ) { }
   async getContractAddresses(pkh: string): Promise<any> {
     console.log('ok?');
     return fetch(`https://api.${CONSTANTS.NETWORK}.tzkt.io/v1/operations/originations?contractManager=${pkh}`)
@@ -19,37 +19,52 @@ export class TzktService implements Indexer {
         return op.originatedContract.kind === 'delegator_contract' ? op.originatedContract.address : '';
       }).filter((address: string) => address.length));
   }
-  async accountInfo(address: string): Promise<string> {
+  async accountInfo(address: string, knownTokenIds: string[] = []): Promise<any> {
     const network = CONSTANTS.NETWORK;
+    const tokens = [];
+    const unknownTokenIds = [];
     return fetch(`${this.bcd}/account/${network}/${address}`)
       .then(response => response.json())
       .then(data => {
         if (data) {
+          if (data?.tokens?.length) {
+            for (let token of data.tokens) {
+              if (knownTokenIds.includes(`${token.contract}:${token.token_id}`)) {
+                tokens.push(token);
+              } else {
+                unknownTokenIds.push(`${token.contract}:${token.token_id}`);
+              }
+            }
+          }
+          tokens.sort(
+            function (a: any, b: any) {
+              if (a.contract < b.contract) {
+                return -1;
+              } else {
+                return 1;
+              }
+            }
+          );
           const payload: string =
             (data.balance ? data.balance : '') +
             (data.last_action ? data.last_action : '') +
-            (data.tokens ? JSON.stringify(data.tokens.sort(
-              function (a: any, b: any) {
-                if (a.contract < b.contract) {
-                  return -1;
-                } else {
-                  return 1;
-                }
-              }
-            )) : '');
+            (tokens ? JSON.stringify(tokens) : '');
           const input = Buffer.from(JSON.stringify(payload), 'base64');
           const hash = cryptob.createHash('md5').update(input, 'base64').digest('hex');
-          if (hash === 'edc66a88461120f2ea9132d64be0d8b9') { // empty account
-            return '';
+          console.log('### ' + address + ' ###');
+          console.log('payload', payload);
+          console.log('hash', hash);
+          if (hash !== 'edc66a88461120f2ea9132d64be0d8b9' && payload && payload !== '0001-01-01T00:00:00Z[]') {
+            return { counter: hash, unknownTokenIds, tokens };
           }
-          return hash;
-        } else {
-          return '';
         }
+        console.log('### ' + address + ' ###');
+        console.warn('No data');
+        return { counter: '', unknownTokenIds, tokens };
       });
   }
   // Todo: Merge with token transactions
-  async getOperations(address: string): Promise<any> {
+  async getOperations(address: string, knownTokenIds: string[] = []): Promise<any> {
     const ops = await fetch(`https://api.${CONSTANTS.NETWORK}.tzkt.io/v1/accounts/${address}/operations?limit=20&type=delegation,origination,transaction`)
       .then(response => response.json())
       .then(data => data.map(op => {
@@ -95,31 +110,38 @@ export class TzktService implements Indexer {
           };
         }
       }).filter(obj => obj));
+    const unknownTokenIds: string[] = [];
     const tokenTxs = await fetch(`${this.bcd}/tokens/${CONSTANTS.NETWORK}/transfers/${address}?size=20`)
       .then(response => response.json())
       .then(data => data.transfers.map(tx => {
         const tokenId = `${tx.contract}:${tx.token_id}`;
         if (tx.contract && tokenId && tx.status === 'applied') {
-          return {
-            type: 'transaction',
-            block: '',
-            status: 1,
-            amount: tx.amount,
-            tokenId,
-            source: tx.from,
-            destination: tx.to,
-            hash: tx.hash,
-            timestamp: (new Date(tx.timestamp)).getTime()
-          };
+          if (knownTokenIds.includes(tokenId)) {
+            return {
+              type: 'transaction',
+              block: '',
+              status: 1,
+              amount: tx.amount,
+              tokenId,
+              source: tx.from,
+              destination: tx.to,
+              hash: tx.hash,
+              timestamp: (new Date(tx.timestamp)).getTime()
+            };
+          } else {
+            unknownTokenIds.push(tokenId);
+            return null;
+          }
         } else {
           return null;
         }
       }).filter(obj => obj));
-    return ops.concat(tokenTxs).sort(
+    const operations = ops.concat(tokenTxs).sort(
       function (a: any, b: any) {
         return b.timestamp - a.timestamp;
       }
     );
+    return { operations, unknownTokenIds };
   }
   async getTokenMetadata(contractAddress: string, id: number): Promise<any> {
     const bigMapId = await this.getBigMapIds(contractAddress);
@@ -156,18 +178,18 @@ export class TzktService implements Indexer {
         return null;
       }
       if (bigMapId.contract !== -1) {
-      try {
-        const contractBigMap = await this.fetchApi(`${this.bcd}/bigmap/${CONSTANTS.NETWORK}/${bigMapId.contract}/keys`);
-        const url = this.uriToUrl(contractBigMap[0].data.value.value);
-        if (url) {
-          const { interfaces } = await this.fetchApi(url);
-          if (interfaces.includes('TZIP-12')) {
-            metadata['tokenType'] = 'FA2';
-          } else if (interfaces.includes('TZIP-7')) {
-            metadata['tokenType'] = 'FA1.2';
+        try {
+          const contractBigMap = await this.fetchApi(`${this.bcd}/bigmap/${CONSTANTS.NETWORK}/${bigMapId.contract}/keys`);
+          const url = this.uriToUrl(contractBigMap[0].data.value.value);
+          if (url) {
+            const { interfaces } = await this.fetchApi(url);
+            if (interfaces.includes('TZIP-12')) {
+              metadata['tokenType'] = 'FA2';
+            } else if (interfaces.includes('TZIP-7')) {
+              metadata['tokenType'] = 'FA1.2';
+            }
           }
-        }
-      } catch {}
+        } catch { }
       }
       if (extras) { // append extra metadata
         extras = await this.getUriExtras(extras);
@@ -215,7 +237,7 @@ export class TzktService implements Indexer {
           switch (extra.name) {
             case 'uri':
               if (typeof extra.value === 'string') {
-              url = this.uriToUrl(extra.value);
+                url = this.uriToUrl(extra.value);
               }
               break;
             case 'description':

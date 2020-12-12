@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import { Account, Activity, ImplicitAccount } from '../../services/wallet/wallet';
+import { Account, Activity, ImplicitAccount, OriginatedAccount } from '../../services/wallet/wallet';
 import { WalletService } from '../../services/wallet/wallet.service';
 import { TimeAgoPipe } from '../../pipes/time-ago.pipe';
 import { TranslateService } from '@ngx-translate/core';
@@ -96,18 +96,6 @@ export class AccountViewComponent implements OnInit {
   }
   receivedKind(activity): string {
     return (activity.tokenId && !activity.source) ? 'Minted' : 'Received';
-  }
-  hasTokens(): boolean {
-    return (this.account instanceof ImplicitAccount && this.account.tokens.length > 0);
-  }
-  knownActivities(): Activity[] {
-    const activities: Activity[] = [];
-    for (const activity of this.account.activities) {
-      if (!activity.tokenId || (activity.tokenId && this.tokenService.getAsset(activity.tokenId))) {
-        activities.push(activity);
-      }
-    }
-    return activities;
   }
 }
 

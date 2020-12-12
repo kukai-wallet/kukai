@@ -145,7 +145,6 @@ export class UriHandlerComponent implements OnInit {
       await this.beaconService.client.respond(response);
       console.log(response);
     }
-    console.log(this.operationRequest);
     this.operationRequest = null;
   }
   /* permission handling */

@@ -48,13 +48,11 @@ export class TokenService {
   private contracts: ContractsType = {};
   private exploredIds: Record<string, {firstCheck: number, lastCheck: number}> = {};
   readonly storeKey = 'tokenMetadata';
-  readonly storeKey2 = 'metadataList';
   constructor(
     public indexerService: IndexerService
   ) {
     this.contracts = CONSTANTS.ASSETS;
     this.loadMetadata();
-    this.loadExplored();
   }
   getAsset(tokenId: string): TokenResponseType {
     if (!tokenId || !tokenId.includes(':')) {
@@ -76,14 +74,28 @@ export class TokenService {
             contractAddress,
             ...token
           };
-        } else if (this.AUTO_DISCOVER) {
-          this.searchMetadata(contractAddress, id); // ToDo: Move this call
         }
-      } else if (this.AUTO_DISCOVER) {
-        this.searchMetadata(contractAddress, id); // ToDo: Move this call
       }
     }
     return null;
+  }
+  isKnownTokenId(tokenId: string): boolean {
+    return (this.getAsset(tokenId) !== null);
+  }
+  knownTokenIds(): string[] {
+    const tokenIds: string[] = [];
+    const contractKeys = Object.keys(this.contracts);
+    if (contractKeys) {
+      for (let contractKey of contractKeys) {
+        const tokenKeys = Object.keys(this.contracts[contractKey].tokens);
+        if (tokenKeys) {
+          for (let tokenKey of tokenKeys) {
+            tokenIds.push(`${contractKey}:${tokenKey}`);
+          }
+        }
+      }
+    }
+    return tokenIds;
   }
   addAsset(contractAddress: string, contract: ContractType) {
     if (!this.contracts[contractAddress]) {
@@ -131,7 +143,7 @@ export class TokenService {
     const now = new Date().getTime();
     if (!this.exploredIds[tokenId]) {
       this.exploredIds[tokenId] = {firstCheck: now, lastCheck: now};
-      this.saveExplored();
+      this.saveMetadata();
       return true;
     } else {
       const token = this.exploredIds[tokenId];
@@ -141,20 +153,14 @@ export class TokenService {
         return false;
       }
       this.exploredIds[tokenId].lastCheck = now;
-      this.saveExplored();
+      this.saveMetadata();
       return true;
     }
   }
   saveMetadata() {
     localStorage.setItem(
       this.storeKey,
-      JSON.stringify(this.contracts)
-    );
-  }
-  saveExplored() {
-    localStorage.setItem(
-      this.storeKey2,
-      JSON.stringify(this.exploredIds)
+      JSON.stringify({ contracts: this.contracts, exploredIds: this.exploredIds })
     );
   }
   loadMetadata(): any {
@@ -162,18 +168,15 @@ export class TokenService {
     const metadataJson = localStorage.getItem(this.storeKey);
     if (metadataJson) {
       const metadata = JSON.parse(metadataJson);
-      const contractAddresses = Object.keys(metadata);
-      for (const address of contractAddresses) {
-        this.addAsset(address, metadata[address]);
+      if (metadata?.contracts) {
+        console.log(metadata.contracts);
+        const contractAddresses = Object.keys(metadata.contracts);
+        for (const address of contractAddresses) {
+          this.addAsset(address, metadata.contracts[address]);
+        }
       }
-    }
-  }
-  loadExplored() {
-    const exploredJson = localStorage.getItem(this.storeKey2);
-    if (exploredJson) {
-      const explored = JSON.parse(exploredJson);
-      if (explored) {
-        this.exploredIds = explored;
+      if (metadata?.exploredIds) {
+        this.exploredIds = metadata.exploredIds
       }
     }
   }

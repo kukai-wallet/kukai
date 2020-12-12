@@ -17,11 +17,11 @@ export class IndexerService {
   async getContractAddresses(address: string): Promise<any> {
     return this.tzktService.getContractAddresses(address);
   }
-  async accountInfo(address: string): Promise<any> {
-    return this.tzktService.accountInfo(address);
+  async accountInfo(address: string, knownTokenIds: string[] = []): Promise<any> {
+    return this.tzktService.accountInfo(address, knownTokenIds);
   }
-  async getOperations(address: string): Promise<any> {
-    return this.tzktService.getOperations(address);
+  async getOperations(address: string, knownTokenIds: string[]): Promise<any> {
+    return this.tzktService.getOperations(address, knownTokenIds);
   }
   async getTokenMetadata(contractAddress: string, id: number): Promise<any> {
     return this.tzktService.getTokenMetadata(contractAddress, id);

@@ -741,7 +741,6 @@ export class OperationService {
     return r;
   }
   sign(bytes, sk): any {
-    console.log(sk);
     if (sk.slice(0, 4) === 'spsk') {
       const hash = libs.crypto_generichash(32, this.mergebuf(this.hex2buf(bytes)));
       const key = (new elliptic.ec('secp256k1')).keyFromPrivate(new Uint8Array(this.b58cdecode(sk, this.prefix.spsk)));

@@ -114,7 +114,6 @@ export class SendComponent implements OnInit, OnChanges {
     }
   }
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
     if (this.operationRequest && !(this.walletService.isLedgerWallet() && this.operationRequest.operationDetails[0].parameters)) {
       console.log('Beacon payload to send', this.operationRequest);
       if (this.operationRequest.operationDetails[0].kind === 'transaction') {

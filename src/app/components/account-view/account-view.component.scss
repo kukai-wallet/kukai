@@ -262,7 +262,11 @@ div.line:last-child {
 :host .token-container .token-row:last-child {
   border-bottom: none;
 }
-
+:host span.no-tokens {
+  padding: 0 0 0.5rem 1rem;
+  font-size: 0.8125rem;
+  color: rgb(44, 50, 58);
+}
 @media screen and (max-width: 65rem) {
 }
 @media screen and (max-width: 42rem) {

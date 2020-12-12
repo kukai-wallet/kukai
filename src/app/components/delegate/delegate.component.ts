@@ -61,7 +61,6 @@ export class DelegateComponent implements OnInit, OnChanges {
     }
   }
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
     if (this.operationRequest) {
       if (this.operationRequest.operationDetails[0].kind === 'delegation') {
         this.openModal();
