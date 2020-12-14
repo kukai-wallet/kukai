@@ -1239,6 +1239,10 @@ export class ErrorHandlingPipe implements PipeTransform {
     {
       msg: 'Fee exceeded hard cap!',
       id: 'TooHighFee'
+    },
+    {
+      msg: 'Node error: Timeout has occurred! Please try again later.',
+      id: 'Timeout has occurred'
     }
   ];
   transform(errorId: string, withObj?: any): any {
@@ -1248,7 +1252,7 @@ export class ErrorHandlingPipe implements PipeTransform {
     }
     let errorMessage = '';
     const index = this.ERROR_LIST.findIndex((s) => s.id === errorId);
-    console.log('##### ' + index);
+    console.log('errorId', errorId);
     if (errorId === 'proto.alpha.michelson_v1.script_rejected' && withObj && (withObj.string !== undefined || withObj.args)) {
       if (withObj.string) {
         errorMessage = this.ERROR_LIST[index].msg + ' > ' + withObj.string;

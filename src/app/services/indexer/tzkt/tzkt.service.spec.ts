@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { TzktService } from './tzkt.service';
-import { storageMock, bigMapMock, bigMapMock2, ipfsMock, ipfsMock2, expectedResult } from './tzkt.mock';
+import { storageMock, contractMetadataBigMapMock, tokenMetadataBigMapMock, contractIpfsMock, tokenIpfsMock, expectedResult } from './tzkt.mock';
 import { CONSTANTS } from '../../../../environments/environment';
 
 describe('TzktService', () => {
@@ -12,23 +12,23 @@ describe('TzktService', () => {
   });
 
   it('should return token metadata', async () => {
-    const contractAddress = 'KT1XnAdcer9EK3qWg4GTYzZM7i3x1gu1k837';
-    const bigMapId = { contract: 31948, token: 31951 };
-    const cloudUrl = 'https://cloudflare-ipfs.com/ipfs/QmZ5jRzHSeCYbyArRsPy7sQBZEroQ3xMhdZSMt4uqhsRGA';
-    const cloudUrl2 = 'https://cloudflare-ipfs.com/ipfs/QmZQck9Akebnabp58YJukBMEUg5fjZLfrV2DqnPNYpQPJJ';
-    const subdomain = 'you';
+    const contractAddress = 'KT1RhzBigSQWQkEZQpNSyi4abTFm5fpMyihH';
+    const bigMapId = { contract: 26006, token: 26009 };
+    const tokenCloudUrl = 'https://cloudflare-ipfs.com/ipfs/QmZDycNwSy12vueaPnxuCMFUCHeQieT5wA5yNwqswwFn3V';
+    const contractCloudUrl = 'https://cloudflare-ipfs.com/ipfs/QmVBdYhUXmF3QSRSYgoZfvUhLKgW4oCWC6xMzvHzV5TFVA';
+    const subdomain = 'api';
     spyOn(service, 'fetchApi')
       .withArgs(`https://${subdomain}.better-call.dev/v1/contract/${CONSTANTS.NETWORK}/${contractAddress}/storage`)
       .and.callFake(async () => JSON.parse(storageMock))
       .withArgs(`https://${subdomain}.better-call.dev/v1/bigmap/${CONSTANTS.NETWORK}/${bigMapId.token}/keys`)
-      .and.callFake(async function () { return JSON.parse(bigMapMock); })
+      .and.callFake(async function () { return JSON.parse(tokenMetadataBigMapMock); })
       .withArgs(`https://${subdomain}.better-call.dev/v1/bigmap/${CONSTANTS.NETWORK}/${bigMapId.contract}/keys`)
-      .and.callFake(async function () { return JSON.parse(bigMapMock2); })
-      .withArgs(cloudUrl)
-      .and.callFake(async function () { return JSON.parse(ipfsMock); })
-      .withArgs(cloudUrl2)
-      .and.callFake(async function () { return JSON.parse(ipfsMock2); });
+      .and.callFake(async function () { return JSON.parse(contractMetadataBigMapMock); })
+      .withArgs(tokenCloudUrl)
+      .and.callFake(async function () { return JSON.parse(tokenIpfsMock); })
+      .withArgs(contractCloudUrl)
+      .and.callFake(async function () { return JSON.parse(contractIpfsMock); });
     expect(await service.getBigMapIds(contractAddress)).toEqual(bigMapId);
-    expect(await service.getTokenMetadata(contractAddress, 2)).toEqual(expectedResult);
+    expect(await service.getTokenMetadata(contractAddress, 0)).toEqual(expectedResult);
   });
 });

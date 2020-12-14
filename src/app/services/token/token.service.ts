@@ -14,6 +14,9 @@ export interface TokenResponseType {
   category: string;
   kind: string;
   isNft?: boolean;
+  nonTransferable?: boolean;
+  symbolPrecedence?: boolean;
+  binaryAmount?: boolean;
 }
 export type ContractsType = Record<string, ContractType>;
 export type ContractType = FA12 | FA2;
@@ -28,6 +31,9 @@ export interface TokenData {
   description: string;
   imageSrc: string;
   isNft?: boolean;
+  nonTransferable?: boolean;
+  symbolPrecedence?: boolean;
+  binaryAmount?: boolean;
 }
 export interface FA12 extends TokensInterface {
   kind: 'FA1.2';
@@ -86,16 +92,19 @@ export class TokenService {
     const tokenIds: string[] = [];
     const contractKeys = Object.keys(this.contracts);
     if (contractKeys) {
-      for (let contractKey of contractKeys) {
+      for (const contractKey of contractKeys) {
         const tokenKeys = Object.keys(this.contracts[contractKey].tokens);
         if (tokenKeys) {
-          for (let tokenKey of tokenKeys) {
+          for (const tokenKey of tokenKeys) {
             tokenIds.push(`${contractKey}:${tokenKey}`);
           }
         }
       }
     }
     return tokenIds;
+  }
+  isKnownTokenContract(address: string): boolean {
+    return (this.contracts[address] !== undefined);
   }
   addAsset(contractAddress: string, contract: ContractType) {
     if (!this.contracts[contractAddress]) {
@@ -122,7 +131,7 @@ export class TokenService {
         metadata.decimals >= 0) {
         const contract: ContractType = {
           kind: metadata.tokenType ? metadata.tokenType : 'FA2',
-          category: '',
+          category: metadata.tokenCategory ? metadata.tokenCategory : '',
           tokens: {}
         };
         const token: TokenData = {
@@ -131,7 +140,10 @@ export class TokenService {
           decimals: Number(metadata.decimals),
           description: metadata.description ? metadata.description : '',
           imageSrc: metadata.imageUri ? metadata.imageUri : '../../../assets/img/tokens/default.png',
-          isNft: metadata?.isNft ? metadata.isNft : false
+          isNft: metadata?.isNft ? metadata.isNft : false,
+          nonTransferable: metadata?.nonTransferable ? metadata.nonTransferable : false,
+          symbolPrecedence: metadata?.symbolPrecedence ? metadata.symbolPrecedence : false,
+          binaryAmount: metadata?.binaryAmount ? metadata.binaryAmount : false
         };
         contract.tokens[id] = token;
         this.addAsset(contractAddress, contract);
@@ -164,19 +176,17 @@ export class TokenService {
     );
   }
   loadMetadata(): any {
-    console.log('### Load metadata');
     const metadataJson = localStorage.getItem(this.storeKey);
     if (metadataJson) {
       const metadata = JSON.parse(metadataJson);
       if (metadata?.contracts) {
-        console.log(metadata.contracts);
         const contractAddresses = Object.keys(metadata.contracts);
         for (const address of contractAddresses) {
           this.addAsset(address, metadata.contracts[address]);
         }
       }
       if (metadata?.exploredIds) {
-        this.exploredIds = metadata.exploredIds
+        this.exploredIds = metadata.exploredIds;
       }
     }
   }
@@ -185,7 +195,7 @@ export class TokenService {
       return `${Big(amount).div(10 ** (baseUnit ? 6 : 0)).toFixed()} tez`;
     } else {
       const token = this.getAsset(tokenKey);
-      if (token.isNft) {
+      if (token.isNft || token.binaryAmount) {
         return `${token.name}`;
       } else {
         return `${Big(amount).div(10 ** (baseUnit ? token.decimals : 0)).toFixed()} ${token.symbol}`;

@@ -118,22 +118,55 @@ export class SendComponent implements OnInit, OnChanges {
       console.log('Beacon payload to send', this.operationRequest);
       if (this.operationRequest.operationDetails[0].kind === 'transaction') {
         this.openModal();
-        if (this.operationRequest.operationDetails[0].destination) {
-          this.toPkh = this.operationRequest.operationDetails[0].destination;
+        const tokenTransfer = this.beaconTokenTransfer(this.operationRequest.operationDetails[0]);
+        if (tokenTransfer) {
+          const asset = this.tokenService.getAsset(tokenTransfer.tokenId);
+          this.amount = Big(tokenTransfer.amount).div(10 ** asset.decimals).toFixed();
+          this.toPkh = tokenTransfer.to;
+          this.tokenTransfer = tokenTransfer.tokenId;
+          if (asset.isNft || asset.binaryAmount) {
+            this.hideAmount = true;
+          }
         } else {
-          console.warn('No destination');
-        }
-        if (this.operationRequest.operationDetails[0].amount) {
-          this.amount = Big(this.operationRequest.operationDetails[0].amount).div(1000000).toString();
-        }
-        if (this.operationRequest.operationDetails[0].parameters) {
-          this.parameters = this.operationRequest.operationDetails[0].parameters;
+          if (this.operationRequest.operationDetails[0].destination) {
+            const destination = this.operationRequest.operationDetails[0].destination;
+            this.toPkh = destination;
+          } else {
+            console.warn('No destination');
+          }
+          if (this.operationRequest.operationDetails[0].amount) {
+            this.amount = Big(this.operationRequest.operationDetails[0].amount).div(1000000).toString();
+          }
+          if (this.operationRequest.operationDetails[0].parameters) {
+            this.parameters = this.operationRequest.operationDetails[0].parameters;
+          }
         }
         this.activeAccountChange();
       }
     } else {
       this.operationResponse.emit(null);
     }
+  }
+  beaconTokenTransfer(op: any) {
+    if (op.parameters && this.tokenService.isKnownTokenContract(op.destination)) {
+      const opJson = JSON.stringify(op.parameters);
+      const addresses = opJson.match(/(?<={\"string\":\")[^\"]*/g);
+      const amounts = opJson.match(/(?<={\"int\":\")[^\"]*/g);
+      if (addresses.length === 2) {
+        if (amounts.length === 1) {
+          const fa12ref = JSON.stringify(this.operationService.getFA12Transaction(addresses[0], addresses[1], amounts[0]));
+          if (fa12ref === opJson) {
+            return { tokenId: `${op.destination}:0`, to: addresses[1], amount: amounts[0] };
+          }
+        } else if (amounts.length === 2) {
+          const fa2ref = JSON.stringify(this.operationService.getFA2Transaction(addresses[0], addresses[1], amounts[1], Number(amounts[0])));
+          if (fa2ref === opJson) {
+            return { tokenId: `${op.destination}:${amounts[0]}`, to: addresses[1], amount: amounts[1] };
+          }
+        }
+      }
+    }
+    return null;
   }
   init() {
     if (!this.activeAccount) {
@@ -154,15 +187,20 @@ export class SendComponent implements OnInit, OnChanges {
         this.activeAccount = this.implicitAccounts[0];
       }
       this.clearForm();
-      if (this.tokenTransfer && this.tokenService.getAsset(this.tokenTransfer).isNft) {
-        this.hideAmount = true;
-        this.amount = '1';
-        this.amountChange();
+      if (this.tokenTransfer) {
+        const asset = this.tokenService.getAsset(this.tokenTransfer);
+        if (asset.isNft || asset.binaryAmount) {
+          this.hideAmount = true;
+          this.amount = '1';
+          this.amountChange();
+        }
       }
       if (window.innerWidth > 1300) {
         setTimeout(() => {
-          const inputElem = <HTMLInputElement>this.amountInputView.nativeElement;
-          inputElem.focus();
+          if (this.amountInputView) {
+            const inputElem = <HTMLInputElement>this.amountInputView.nativeElement;
+            inputElem.focus();
+          }
         }, 100);
       }
       this.estimateService.preLoadData(this.activeAccount.pkh, this.activeAccount.pk);

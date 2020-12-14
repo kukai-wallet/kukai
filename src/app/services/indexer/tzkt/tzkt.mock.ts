@@ -1,3 +1,4 @@
+// https://api.better-call.dev/v1/contract/delphinet/KT1RhzBigSQWQkEZQpNSyi4abTFm5fpMyihH/storage
 export const storageMock = `{
   "prim": "pair",
   "type": "namedtuple",
@@ -11,13 +12,13 @@ export const storageMock = `{
           "prim": "address",
           "type": "address",
           "name": "admin",
-          "value": "tz1MY7TveRsWswiAtVxuDv1hMmwd7za2g3zz"
+          "value": "tz1UTCnwfz6axmJYCZzrWrdmyuw9ctKtEakZ"
         },
         {
           "prim": "big_map",
           "type": "big_map",
           "name": "metadata",
-          "value": 31948
+          "value": 26006
         },
         {
           "prim": "bool",
@@ -39,19 +40,19 @@ export const storageMock = `{
           "prim": "big_map",
           "type": "big_map",
           "name": "ledger",
-          "value": 31949
+          "value": 26007
         },
         {
           "prim": "nat",
           "type": "nat",
           "name": "next_token_id",
-          "value": "2"
+          "value": "1"
         },
         {
           "prim": "big_map",
           "type": "big_map",
           "name": "operators",
-          "value": 31950
+          "value": 26008
         },
         {
           "prim": "pair",
@@ -85,127 +86,14 @@ export const storageMock = `{
           "prim": "big_map",
           "type": "big_map",
           "name": "token_metadata",
-          "value": 31951
+          "value": 26009
         }
       ]
     }
   ]
 }`;
-export const bigMapMock = `[
-  {
-    "data": {
-      "key": {
-        "prim": "nat",
-        "type": "nat",
-        "value": "2"
-      },
-      "value": {
-        "prim": "pair",
-        "type": "namedtuple",
-        "children": [
-          {
-            "prim": "nat",
-            "type": "nat",
-            "name": "token_id",
-            "value": "2"
-          },
-          {
-            "prim": "string",
-            "type": "string",
-            "name": "symbol",
-            "value": "TBBST"
-          },
-          {
-            "prim": "string",
-            "type": "string",
-            "name": "name",
-            "value": "BlueStar"
-          },
-          {
-            "prim": "nat",
-            "type": "nat",
-            "name": "decimals",
-            "value": "0"
-          },
-          {
-            "prim": "map",
-            "type": "map",
-            "name": "extras",
-            "children": [
-              {
-                "prim": "bytes",
-                "type": "bytes",
-                "name": "uri",
-                "value": "ipfs://QmZ5jRzHSeCYbyArRsPy7sQBZEroQ3xMhdZSMt4uqhsRGA"
-              }
-            ]
-          }
-        ]
-      },
-      "key_hash": "expruDuAZnFKqmLoisJqUGqrNzXTvw7PJM2rYk97JErM5FHCerQqgn",
-      "key_string": "2",
-      "level": 892502,
-      "timestamp": "2020-11-30T06:40:19Z"
-    },
-    "count": 1
-  },
-  {
-    "data": {
-      "key": {
-        "prim": "nat",
-        "type": "nat",
-        "value": "1"
-      },
-      "value": {
-        "prim": "pair",
-        "type": "namedtuple",
-        "children": [
-          {
-            "prim": "nat",
-            "type": "nat",
-            "name": "token_id",
-            "value": "1"
-          },
-          {
-            "prim": "string",
-            "type": "string",
-            "name": "symbol",
-            "value": "TBKKL"
-          },
-          {
-            "prim": "string",
-            "type": "string",
-            "name": "name",
-            "value": "Kukai Lanterns"
-          },
-          {
-            "prim": "nat",
-            "type": "nat",
-            "name": "decimals",
-            "value": "0"
-          },
-          {
-            "prim": "map",
-            "type": "map",
-            "name": "extras",
-            "children": [
-              {
-                "prim": "bytes",
-                "type": "bytes",
-                "name": "uri",
-                "value": "ipfs://QmPx4WPZjg1fmVtWtEUoCGVwyeX3pikSCNKEjPbbHdxcnF"
-              }
-            ]
-          }
-        ]
-      },
-      "key_hash": "expru2dKqDfZG8hu4wNGkiyunvq2hdSKuVYtcKta7BWP6Q18oNxKjS",
-      "key_string": "1",
-      "level": 891514,
-      "timestamp": "2020-11-29T10:02:17Z"
-    },
-    "count": 1
-  },
+// https://api.better-call.dev/v1/bigmap/delphinet/26009/keys
+export const tokenMetadataBigMapMock = `[
   {
     "data": {
       "key": {
@@ -224,33 +112,14 @@ export const bigMapMock = `[
             "value": "0"
           },
           {
-            "prim": "string",
-            "type": "string",
-            "name": "symbol",
-            "value": "TBSTS"
-          },
-          {
-            "prim": "string",
-            "type": "string",
-            "name": "name",
-            "value": "Star Token"
-          },
-          {
-            "prim": "nat",
-            "type": "nat",
-            "name": "decimals",
-            "value": "0"
-          },
-          {
             "prim": "map",
             "type": "map",
-            "name": "extras",
+            "name": "token_metadata_map",
             "children": [
               {
                 "prim": "bytes",
                 "type": "bytes",
-                "name": "uri",
-                "value": "ipfs://QmQsx6PauxbAfC7uo97Mg8BBuLdfsB6auojtxLr4yGSuyY"
+                "value": "ipfs://QmZDycNwSy12vueaPnxuCMFUCHeQieT5wA5yNwqswwFn3V"
               }
             ]
           }
@@ -258,13 +127,14 @@ export const bigMapMock = `[
       },
       "key_hash": "exprtZBwZUeYYYfUs9B9Rg2ywHezVHnCCnmF9WsDQVrs582dSK63dC",
       "key_string": "0",
-      "level": 891471,
-      "timestamp": "2020-11-29T09:09:39Z"
+      "level": 270786,
+      "timestamp": "2020-12-13T09:56:12Z"
     },
     "count": 1
   }
 ]`;
-export const bigMapMock2 = `[
+// https://api.better-call.dev/v1/bigmap/delphinet/26006/keys
+export const contractMetadataBigMapMock = `[
   {
     "data": {
       "key": {
@@ -275,26 +145,32 @@ export const bigMapMock2 = `[
       "value": {
         "prim": "bytes",
         "type": "bytes",
-        "value": "ipfs://QmZQck9Akebnabp58YJukBMEUg5fjZLfrV2DqnPNYpQPJJ"
+        "value": "ipfs://QmVBdYhUXmF3QSRSYgoZfvUhLKgW4oCWC6xMzvHzV5TFVA"
       },
       "key_hash": "expru5X1yxJG6ezR2uHMotwMLNmSzQyh5t1vUnhjx4cS6Pv9qE1Sdo",
       "key_string": "",
-      "level": 891469,
-      "timestamp": "2020-11-29T09:07:33Z"
+      "level": 270780,
+      "timestamp": "2020-12-13T09:53:12Z"
     },
     "count": 1
   }
 ]`;
-export const ipfsMock = `{
-  "name": "BlueStar",
-  "symbol": "TBBST",
-  "description": "A fantastic blue star for you.",
+// https://cloudflare-ipfs.com/ipfs/QmZDycNwSy12vueaPnxuCMFUCHeQieT5wA5yNwqswwFn3V
+export const tokenIpfsMock = `{
+  "name": "Klassare Alpha Brain",
+  "symbol": "TZBKAB",
+  "decimals": "0",
+  "description": "An upgraded unit, the great Klassare reborn.",
   "isNft": true,
-  "imageUri": "https://gateway.pinata.cloud/ipfs/QmNrZ8uHokqjtkD2EXBLwzPZkvpK4ireaHoDTEykeVFZgu",
-  "defaultPresentation": "large",
+  "nonTransferrable": false,
+  "symbolPrecedence": false,
+  "binaryAmount": true,
+  "imageUri": "https://gateway.pinata.cloud/ipfs/QmZjeBZT5QykT4sEELYP2cYYEPTtgwx3vQhnyMzCmDKB7Q",
+  "defaultPresentation": "small",
   "actionLabel": "Send"
 }`;
-export const ipfsMock2 = `{
+// https://cloudflare-ipfs.com/ipfs/QmVBdYhUXmF3QSRSYgoZfvUhLKgW4oCWC6xMzvHzV5TFVA
+export const contractIpfsMock = `{
   "name": "Tezible NFT",
   "description": "Multi NFT Asset with mint using latest metadata standard.",
   "version": "0.1.0",
@@ -739,21 +615,18 @@ export const ipfsMock2 = `{
         }
       ]
     }
-  ],
-  "tokens": {
-    "dynamic": [
-      {
-        "big_map": "token_metadata"
-      }
-    ]
-  }
+  ]
 }`;
 export const expectedResult: any = {
-  symbol: 'TBBST',
-  name: 'BlueStar',
-  description: 'A fantastic blue star for you.',
+  symbol: 'TZBKAB',
+  name: 'Klassare Alpha Brain',
+  description: 'An upgraded unit, the great Klassare reborn.',
   decimals: 0,
   tokenType: 'FA2', // tzip-12
-  imageUri: 'https://gateway.pinata.cloud/ipfs/QmNrZ8uHokqjtkD2EXBLwzPZkvpK4ireaHoDTEykeVFZgu',
-  isNft: true
+  tokenCategory: 'collectibles',
+  imageUri: 'https://gateway.pinata.cloud/ipfs/QmZjeBZT5QykT4sEELYP2cYYEPTtgwx3vQhnyMzCmDKB7Q',
+  isNft: true,
+  nonTransferable: false,
+  symbolPrecedence: false,
+  binaryAmount: true
 };

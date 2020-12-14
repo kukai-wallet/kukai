@@ -45,7 +45,10 @@ describe('TokenService', () => {
         symbol: 'tzTe',
         contractAddress: 'KT1XXCz59vAzfbvDsNrrmKKuqSFrzQgpUqGM',
         imageSrc: 'https://gateway.pinata.cloud/ipfs/QmNYkGR7wb4XLHqTwF8NZKAMpsMUQGqBwfQXr5VcZy75ki',
-        isNft: true
+        isNft: true,
+        nonTransferable: false,
+        symbolPrecedence: false,
+        binaryAmount: false
       };
       expect(service.getAsset('KT1XXCz59vAzfbvDsNrrmKKuqSFrzQgpUqGM:0')).toEqual(expectedTokenResponse);
     });

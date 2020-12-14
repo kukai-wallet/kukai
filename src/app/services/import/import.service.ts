@@ -139,7 +139,7 @@ export class ImportService {
           state = accountInfo.counter;
           console.log(accountInfo);
         if (!state && accountInfo.unknownTokenIds?.length) {
-          state = 'X'
+          state = 'X';
         }
         if (state || index === 0) {
           this.walletService.addImplicitAccount(

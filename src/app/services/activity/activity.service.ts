@@ -33,16 +33,15 @@ export class ActivityService {
     }
   }
   getTransactonsCounter(account: Account): Observable<any> {
-    this.tokenService
     const knownTokenIds: string[] = this.tokenService.knownTokenIds();
     return fromPromise(this.indexerService.accountInfo(account.address, knownTokenIds)).pipe(
       flatMap((data) => {
         const counter = data.counter;
         const unknownTokenIds = data.unknownTokenIds ? data.unknownTokenIds : [];
+        this.handleUnknownTokenIds(unknownTokenIds);
         if (account.state !== counter) {
           console.log(account.state + ' ' + counter);
           console.log('data', unknownTokenIds);
-          this.handleUnknownTokenIds(unknownTokenIds);
           if (data.tokens) {
             this.updateTokenBalances(account, data.tokens);
           }
@@ -57,7 +56,7 @@ export class ActivityService {
   }
   private handleUnknownTokenIds(unknownTokenIds) {
     if (unknownTokenIds.length) {
-      for (let tokenId of unknownTokenIds) {
+      for (const tokenId of unknownTokenIds) {
         const tok = tokenId.split(':');
         this.tokenService.searchMetadata(tok[0], tok[1]);
       }

@@ -2,17 +2,16 @@ import { Injectable } from '@angular/core';
 import { CONSTANTS } from '../../../../environments/environment';
 import { Indexer } from '../indexer.service';
 import * as cryptob from 'crypto-browserify';
+import Big from 'big.js';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TzktService implements Indexer {
   CONSTANTS: any;
-  readonly bcd = 'https://you.better-call.dev/v1';
-  constructor(
-  ) { }
+  readonly bcd = 'https://api.better-call.dev/v1';
+  constructor() { }
   async getContractAddresses(pkh: string): Promise<any> {
-    console.log('ok?');
     return fetch(`https://api.${CONSTANTS.NETWORK}.tzkt.io/v1/operations/originations?contractManager=${pkh}`)
       .then(response => response.json())
       .then(data => data.map((op: any) => {
@@ -28,7 +27,7 @@ export class TzktService implements Indexer {
       .then(data => {
         if (data) {
           if (data?.tokens?.length) {
-            for (let token of data.tokens) {
+            for (const token of data.tokens) {
               if (knownTokenIds.includes(`${token.contract}:${token.token_id}`)) {
                 tokens.push(token);
               } else {
@@ -51,15 +50,10 @@ export class TzktService implements Indexer {
             (tokens ? JSON.stringify(tokens) : '');
           const input = Buffer.from(JSON.stringify(payload), 'base64');
           const hash = cryptob.createHash('md5').update(input, 'base64').digest('hex');
-          console.log('### ' + address + ' ###');
-          console.log('payload', payload);
-          console.log('hash', hash);
           if (hash !== 'edc66a88461120f2ea9132d64be0d8b9' && payload && payload !== '0001-01-01T00:00:00Z[]') {
             return { counter: hash, unknownTokenIds, tokens };
           }
         }
-        console.log('### ' + address + ' ###');
-        console.warn('No data');
         return { counter: '', unknownTokenIds, tokens };
       });
   }
@@ -146,56 +140,137 @@ export class TzktService implements Indexer {
   async getTokenMetadata(contractAddress: string, id: number): Promise<any> {
     const bigMapId = await this.getBigMapIds(contractAddress);
     if (bigMapId.token !== -1) {
-      const tokenBigMap = await this.fetchApi(`${this.bcd}/bigmap/${CONSTANTS.NETWORK}/${bigMapId.token}/keys`);
-      let metadata: any = {};
-      let extras: any = null;
-      try {
-        for (const child of tokenBigMap) {
-          if (child.data.key.value === id.toString()) {
-            for (const entry of child.data.value.children) {
-              switch (entry.name) {
-                case 'extras':
-                  extras = entry.children;
-                  break;
-                case 'name':
-                case 'symbol':
-                  if (typeof entry.value === 'string') {
-                    metadata[entry.name] = entry.value;
-                  }
-                  break;
-                case 'decimals':
-                  if (!isNaN(Number(entry.value)) && Number(entry.value >= 0)) {
-                    metadata[entry.name] = Number(entry.value);
-                  }
-                  break;
-              }
-            }
-            break;
-          }
-        }
-      } catch (e) {
-        console.log(e);
-        return null;
-      }
-      if (bigMapId.contract !== -1) {
-        try {
-          const contractBigMap = await this.fetchApi(`${this.bcd}/bigmap/${CONSTANTS.NETWORK}/${bigMapId.contract}/keys`);
-          const url = this.uriToUrl(contractBigMap[0].data.value.value);
-          if (url) {
-            const { interfaces } = await this.fetchApi(url);
-            if (interfaces.includes('TZIP-12')) {
-              metadata['tokenType'] = 'FA2';
-            } else if (interfaces.includes('TZIP-7')) {
-              metadata['tokenType'] = 'FA1.2';
-            }
-          }
-        } catch { }
-      }
+      const tokenMetadata = await this.extractTokenMetadata(bigMapId.token, id);
+      const contractMetadata = await this.extractContractMetadata(bigMapId.contract);
+      /*
       if (extras) { // append extra metadata
         extras = await this.getUriExtras(extras);
         metadata = { ...metadata, ...extras };
       }
+      */
+      const metadata = { ...tokenMetadata, ...contractMetadata };
       return metadata;
+    }
+    return null;
+  }
+  async extractTokenMetadata(bigMapId: number, id: number) {
+    const tokenBigMap = await this.fetchApi(`${this.bcd}/bigmap/${CONSTANTS.NETWORK}/${bigMapId}/keys`);
+    console.log(`${this.bcd}/bigmap/${CONSTANTS.NETWORK}/${bigMapId}/keys`);
+    let url = '';
+    const metadata: any = {};
+    const lookFor = {
+      strings: ['name', 'symbol', 'description', 'imageUri'],
+      numbers: ['decimals'],
+      booleans: ['isNft', 'nonTransferrable', 'nonTransferable', 'symbolPrecedence', 'binaryAmount']
+    };
+    try {
+      for (const child of tokenBigMap) {
+        if (child.data.key.value === id.toString()) {
+          for (const child2 of child.data.value.children) {
+            if (child2.name === 'token_metadata_map') {
+              for (const child3 of child2.children) {
+                console.log(child3.name, child3.value);
+                if (!child3.name) {
+                  url = this.uriToUrl(child3.value);
+                } else {
+                  for (const key of lookFor.strings) {
+                    if (child3.name === key) {
+                      metadata[key] = child3.value;
+                    }
+                  }
+                  for (const key of lookFor.numbers) {
+                    if (child3.name === key) {
+                      metadata[key] = this.zarithDecodeInt(child3.value).value;
+                    }
+                  }
+                  for (const key of lookFor.booleans) {
+                    if (child3.name === key) {
+                      if (child3.value === '00') {
+                        metadata[key] = false;
+                      } else if (child3.value.toUpperCase() === 'FF') {
+                        metadata[key] = true;
+                      }
+                    }
+                  }
+                }
+              }
+              break;
+            }
+          }
+          break;
+        }
+      }
+    } catch (e) {
+      console.warn(e);
+      return null;
+    }
+    if (!url) {
+      if (metadata['imageUri']) {
+        metadata['imageUri'] = this.uriToUrl(metadata['imageUri']);
+      }
+      return metadata;
+    }
+    const offChainMeta = await this.fetchApi(`${url}`);
+    if (!offChainMeta) { return null; }
+    for (const key of lookFor.strings) {
+      if (offChainMeta[key] && typeof offChainMeta[key] === 'string' && typeof metadata[key] === 'undefined') {
+        metadata[key] = offChainMeta[key];
+      }
+    }
+    for (const key of lookFor.numbers) {
+      if (typeof offChainMeta[key] !== 'undefined' && typeof metadata[key] === 'undefined') {
+        if (typeof offChainMeta[key] === 'string') {
+          metadata[key] = Number(offChainMeta[key]);
+        } else if (typeof offChainMeta[key] === 'number') {
+          metadata[key] = offChainMeta[key];
+        }
+      }
+    }
+    for (const key of lookFor.booleans) {
+      if (typeof offChainMeta[key] !== 'undefined' && typeof offChainMeta[key] === 'boolean' && typeof metadata[key] === 'undefined') {
+        metadata[key] = offChainMeta[key];
+      }
+    }
+    if (metadata['imageUri']) {
+      metadata['imageUri'] = this.uriToUrl(metadata['imageUri']);
+    }
+    if (typeof metadata['nonTransferrable'] !== 'undefined') { // Temp spelling fix
+      metadata['nonTransferable'] = metadata['nonTransferrable'];
+      delete metadata['nonTransferrable'];
+    }
+    console.log(metadata);
+    return metadata;
+  }
+  async extractContractMetadata(bigMapId: number) {
+    const contractBigMap = await this.fetchApi(`${this.bcd}/bigmap/${CONSTANTS.NETWORK}/${bigMapId}/keys`);
+    let url = '';
+    try {
+      for (const child of contractBigMap) {
+        if (child.data.key.value === '') {
+          url = this.uriToUrl(child.data.value.value);
+          break;
+        }
+      }
+    } catch (e) {
+      return null;
+    }
+    if (!url) { return null; }
+    if (bigMapId !== -1) {
+      try {
+        const metadata: any = {};
+        const contractMeta = await this.fetchApi(`${url}`);
+        if (contractMeta.interfaces) {
+          if (contractMeta.interfaces.includes('TZIP-12')) {
+            metadata['tokenType'] = 'FA2';
+          } else if (contractMeta.interfaces.includes('TZIP-7')) {
+            metadata['tokenType'] = 'FA1.2';
+          }
+        }
+        if (contractMeta['token-category']) {
+          metadata['tokenCategory'] = contractMeta['token-category'];
+        }
+        return metadata;
+      } catch { }
     }
     return null;
   }
@@ -228,54 +303,6 @@ export class TzktService implements Indexer {
     }
     return { contract, token };
   }
-  private async getUriExtras(extras: any): Promise<any> {
-    const extraMetadata: any = {};
-    let url: string;
-    try {
-      if (extras && extras.length) {
-        for (const extra of extras) {
-          switch (extra.name) {
-            case 'uri':
-              if (typeof extra.value === 'string') {
-                url = this.uriToUrl(extra.value);
-              }
-              break;
-            case 'description':
-              if (typeof extra.value === 'string') {
-                extraMetadata[extra.name] = extra.value;
-              }
-              break;
-            case 'imageUri':
-              if (typeof extra.value === 'string') {
-                extraMetadata[extra.name] = this.uriToUrl(extra.value);
-              }
-              break;
-            case 'isNft':
-              if (typeof extra.value === 'boolean') {
-                extraMetadata[extra.name] = extra.value;
-              }
-              break;
-          }
-        }
-      }
-    } catch (e) {
-      console.log(e);
-      return {};
-    }
-    if (url) {
-      const extraOff = await this.fetchApi(url);
-      if (extraOff.description && typeof extraOff.description === 'string') {
-        extraMetadata['description'] = extraOff.description;
-      }
-      if (extraOff.imageUri && typeof extraOff.imageUri === 'string') {
-        extraMetadata['imageUri'] = this.uriToUrl(extraOff.imageUri);
-      }
-      if (extraOff.isNft && typeof extraOff.isNft === 'boolean') {
-        extraMetadata['isNft'] = extraOff.isNft;
-      }
-    }
-    return extraMetadata;
-  }
   uriToUrl(uri: string): string {
     if (uri && uri.length > 7) {
       if (uri.slice(0, 7) === 'ipfs://') {
@@ -290,5 +317,25 @@ export class TzktService implements Indexer {
     return fetch(url)
       .then(response => response.json())
       .then(data => data);
+  }
+  private zarithDecodeInt(hex: string): any {
+    let count = 0;
+    let value = Big(0);
+    while (1) {
+      const byte = Number('0x' + hex.slice(0 + count * 2, 2 + count * 2));
+      if (count === 0) {
+        value = Big(((byte & 63) * (128 ** count))).add(value);
+      } else {
+        value = Big(((byte & 127) * 2) >> 1).times(64 * 128 ** (count - 1)).add(value);
+      }
+      count++;
+      if ((byte & 128) !== 128) {
+        break;
+      }
+    }
+    return {
+      value: value,
+      count: count
+    };
   }
 }

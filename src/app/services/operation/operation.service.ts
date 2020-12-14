@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { of, Observable, from as fromPromise } from 'rxjs';
-import { catchError, flatMap } from 'rxjs/operators';
+import { catchError, flatMap, timeout } from 'rxjs/operators';
 import { Buffer } from 'buffer';
 import * as libs from 'libsodium-wrappers';
 import * as Bs58check from 'bs58check';
@@ -360,6 +360,9 @@ export class OperationService {
                   this.checkApplied(applied);
                   console.log('sop: ' + sopbytes);
                   return this.http.post(this.nodeURL + '/injection/operation', JSON.stringify(sopbytes), httpOptions)
+                    .pipe(
+                      timeout(20000)
+                    )
                     .pipe(flatMap((final: any) => {
                       let newPkh = null;
                       if (origination) {
@@ -449,13 +452,13 @@ export class OperationService {
         if (applied[0].contents[i].metadata.operation_result.errors) {
           console.log('Error in operation_result');
           throw applied[0].contents[i].metadata.operation_result.errors[
-            applied[0].contents[i].metadata.operation_result.errors.length - 1
+          applied[0].contents[i].metadata.operation_result.errors.length - 1
           ];
         } else if (applied[0].contents[i].metadata.internal_operation_results &&
           applied[0].contents[i].metadata.internal_operation_results[0].result.errors) {
-            console.log('Error in internal_operation_results');
-            throw applied[0].contents[i].metadata.internal_operation_results[0].result.errors[
-              applied[0].contents[i].metadata.internal_operation_results[0].result.errors.length - 1
+          console.log('Error in internal_operation_results');
+          throw applied[0].contents[i].metadata.internal_operation_results[0].result.errors[
+          applied[0].contents[i].metadata.internal_operation_results[0].result.errors.length - 1
           ];
         } else {
           throw new Error('Uncatched error in preapply');
@@ -475,7 +478,7 @@ export class OperationService {
         error = this.errorHandlingPipe.transform(error.id, error.with);
       } else if (error.id === 'failure' && error.msg) {
         error = this.errorHandlingPipe.transform(error.msg);
-      }  else {
+      } else {
         error = this.errorHandlingPipe.transform(error.id);
       }
     } else if (error.statusText) {
