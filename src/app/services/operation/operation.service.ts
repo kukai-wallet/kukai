@@ -14,6 +14,7 @@ import { ErrorHandlingPipe } from '../../pipes/error-handling.pipe';
 import * as elliptic from 'elliptic';
 import { instantiateSecp256k1, hexToBin, binToHex } from '@bitauth/libauth';
 import { TokenService } from '../token/token.service';
+import { isEqual } from 'lodash';
 
 const httpOptions = { headers: { 'Content-Type': 'application/json' } };
 
@@ -1395,5 +1396,24 @@ export class OperationService {
         }
       ]
     };
+  }
+  parseTokenTransfer(op: any): { tokenId: string, to: string, amount: string } {
+    const opJson = JSON.stringify(op.parameters);
+    const addresses = opJson.match(/(?<={\"string\":\")[^\"]*/g);
+    const amounts = opJson.match(/(?<={\"int\":\")[^\"]*/g);
+    if (addresses.length === 2) {
+      if (amounts.length === 1) {
+        const fa12ref = this.getFA12Transaction(addresses[0], addresses[1], amounts[0]);
+        if (isEqual(fa12ref, op.parameters)) {
+          return { tokenId: `${op.destination}:0`, to: addresses[1], amount: amounts[0] };
+        }
+      } else if (amounts.length === 2) {
+        const fa2ref = this.getFA2Transaction(addresses[0], addresses[1], amounts[1], Number(amounts[0]));
+        if (isEqual(fa2ref, op.parameters)) {
+          return { tokenId: `${op.destination}:${amounts[0]}`, to: addresses[1], amount: amounts[1] };
+        }
+      }
+    }
+    return null;
   }
 }

@@ -114,57 +114,45 @@ export class SendComponent implements OnInit, OnChanges {
     }
   }
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.operationRequest && !(this.walletService.isLedgerWallet() && this.operationRequest.operationDetails[0].parameters)) {
-      console.log('Beacon payload to send', this.operationRequest);
-      if (this.operationRequest.operationDetails[0].kind === 'transaction') {
-        this.openModal();
-        const tokenTransfer = this.beaconTokenTransfer(this.operationRequest.operationDetails[0]);
-        if (tokenTransfer) {
-          const asset = this.tokenService.getAsset(tokenTransfer.tokenId);
-          this.amount = Big(tokenTransfer.amount).div(10 ** asset.decimals).toFixed();
-          this.toPkh = tokenTransfer.to;
-          this.tokenTransfer = tokenTransfer.tokenId;
-          if (asset.isNft || asset.binaryAmount) {
-            this.hideAmount = true;
-          }
-        } else {
-          if (this.operationRequest.operationDetails[0].destination) {
-            const destination = this.operationRequest.operationDetails[0].destination;
-            this.toPkh = destination;
+    if (this.beaconMode) {
+      console.log('change');
+      if (this.operationRequest && !(this.walletService.isLedgerWallet() && this.operationRequest.operationDetails[0].parameters)) {
+        console.log('Beacon payload to send', this.operationRequest);
+        if (this.operationRequest.operationDetails[0].kind === 'transaction') {
+          this.openModal();
+          const tokenTransfer = this.beaconTokenTransfer(this.operationRequest.operationDetails[0]);
+          if (tokenTransfer) {
+            const asset = this.tokenService.getAsset(tokenTransfer.tokenId);
+            this.amount = Big(tokenTransfer.amount).div(10 ** asset.decimals).toFixed();
+            this.toPkh = tokenTransfer.to;
+            this.tokenTransfer = tokenTransfer.tokenId;
+            if (asset.isNft || asset.binaryAmount) {
+              this.hideAmount = true;
+            }
           } else {
-            console.warn('No destination');
+            if (this.operationRequest.operationDetails[0].destination) {
+              const destination = this.operationRequest.operationDetails[0].destination;
+              this.toPkh = destination;
+            } else {
+              console.warn('No destination');
+            }
+            if (this.operationRequest.operationDetails[0].amount) {
+              this.amount = Big(this.operationRequest.operationDetails[0].amount).div(1000000).toString();
+            }
+            if (this.operationRequest.operationDetails[0].parameters) {
+              this.parameters = this.operationRequest.operationDetails[0].parameters;
+            }
           }
-          if (this.operationRequest.operationDetails[0].amount) {
-            this.amount = Big(this.operationRequest.operationDetails[0].amount).div(1000000).toString();
-          }
-          if (this.operationRequest.operationDetails[0].parameters) {
-            this.parameters = this.operationRequest.operationDetails[0].parameters;
-          }
+          this.activeAccountChange();
         }
-        this.activeAccountChange();
+      } else {
+        this.operationResponse.emit(null);
       }
-    } else {
-      this.operationResponse.emit(null);
     }
   }
   beaconTokenTransfer(op: any) {
     if (op.parameters && this.tokenService.isKnownTokenContract(op.destination)) {
-      const opJson = JSON.stringify(op.parameters);
-      const addresses = opJson.match(/(?<={\"string\":\")[^\"]*/g);
-      const amounts = opJson.match(/(?<={\"int\":\")[^\"]*/g);
-      if (addresses.length === 2) {
-        if (amounts.length === 1) {
-          const fa12ref = JSON.stringify(this.operationService.getFA12Transaction(addresses[0], addresses[1], amounts[0]));
-          if (fa12ref === opJson) {
-            return { tokenId: `${op.destination}:0`, to: addresses[1], amount: amounts[0] };
-          }
-        } else if (amounts.length === 2) {
-          const fa2ref = JSON.stringify(this.operationService.getFA2Transaction(addresses[0], addresses[1], amounts[1], Number(amounts[0])));
-          if (fa2ref === opJson) {
-            return { tokenId: `${op.destination}:${amounts[0]}`, to: addresses[1], amount: amounts[1] };
-          }
-        }
-      }
+      return this.operationService.parseTokenTransfer(op);
     }
     return null;
   }
@@ -508,6 +496,9 @@ export class SendComponent implements OnInit, OnChanges {
     this.parameters = null;
     this.micheline = null;
     this.parametersFormat = 0;
+    if (this.beaconMode) {
+      this.tokenTransfer = '';
+    }
   }
 
   checkInput(finalCheck = false): string {
