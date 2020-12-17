@@ -9,7 +9,7 @@ import Big from 'big.js';
 })
 export class TzktService implements Indexer {
   CONSTANTS: any;
-  readonly bcd = 'https://api.better-call.dev/v1';
+  public readonly bcd = 'https://you.better-call.dev/v1';
   constructor() { }
   async getContractAddresses(pkh: string): Promise<any> {
     return fetch(`https://api.${CONSTANTS.NETWORK}.tzkt.io/v1/operations/originations?contractManager=${pkh}`)
@@ -138,16 +138,11 @@ export class TzktService implements Indexer {
     return { operations, unknownTokenIds };
   }
   async getTokenMetadata(contractAddress: string, id: number): Promise<any> {
+    console.log(contractAddress + ':' + id);
     const bigMapId = await this.getBigMapIds(contractAddress);
     if (bigMapId.token !== -1) {
       const tokenMetadata = await this.extractTokenMetadata(bigMapId.token, id);
       const contractMetadata = await this.extractContractMetadata(bigMapId.contract);
-      /*
-      if (extras) { // append extra metadata
-        extras = await this.getUriExtras(extras);
-        metadata = { ...metadata, ...extras };
-      }
-      */
       const metadata = { ...tokenMetadata, ...contractMetadata };
       return metadata;
     }
@@ -168,9 +163,9 @@ export class TzktService implements Indexer {
         if (child.data.key.value === id.toString()) {
           for (const child2 of child.data.value.children) {
             if (child2.name === 'token_metadata_map') {
+              console.log('token_metadata_map', child2.children);
               for (const child3 of child2.children) {
-                console.log(child3.name, child3.value);
-                if (!child3.name) {
+                if (!child3.name || child3.name === '""') {
                   url = this.uriToUrl(child3.value);
                 } else {
                   for (const key of lookFor.strings) {
@@ -180,7 +175,7 @@ export class TzktService implements Indexer {
                   }
                   for (const key of lookFor.numbers) {
                     if (child3.name === key) {
-                      metadata[key] = this.zarithDecodeInt(child3.value).value;
+                      metadata[key] = 0; //this.zarithDecodeInt(child3.value).value;
                     }
                   }
                   for (const key of lookFor.booleans) {
@@ -204,14 +199,21 @@ export class TzktService implements Indexer {
       console.warn(e);
       return null;
     }
+    console.log(metadata);
+    console.log(url);
     if (!url) {
+      console.log('No offchain metadata');
       if (metadata['imageUri']) {
         metadata['imageUri'] = this.uriToUrl(metadata['imageUri']);
       }
       return metadata;
     }
     const offChainMeta = await this.fetchApi(`${url}`);
-    if (!offChainMeta) { return null; }
+    if (!offChainMeta) {
+      console.warn('Failed to fetch offchain metadata');
+      return null;
+    }
+    console.log(offChainMeta);
     for (const key of lookFor.strings) {
       if (offChainMeta[key] && typeof offChainMeta[key] === 'string' && typeof metadata[key] === 'undefined') {
         metadata[key] = offChainMeta[key];
@@ -309,7 +311,11 @@ export class TzktService implements Indexer {
         return `https://cloudflare-ipfs.com/ipfs/${uri.slice(7)}`;
       } else if (uri.slice(0, 8) === 'https://') {
         return uri;
+      } else {
+        console.warn('wrong prefix', uri);
       }
+    } else {
+      console.warn('No uri');
     }
     return '';
   }

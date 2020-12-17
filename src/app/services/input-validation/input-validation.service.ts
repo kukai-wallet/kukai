@@ -82,7 +82,6 @@ export class InputValidationService {
   amount(amount: string, decimals: number = 6): Boolean {
     const decimalsPart = decimals ? `(\.[0-9]{1,${decimals}}){0,1}` : '';
     const expr = new RegExp(`^(0|[1-9][0-9]{0,8})${decimalsPart}$`, 'g');
-    console.log(amount);
     if (amount === '' || amount === '0') { // default value / zero
       return true;
     } else if (Number(amount) && amount.match(expr)) { // Positive number

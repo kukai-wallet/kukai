@@ -16,13 +16,12 @@ describe('TzktService', () => {
     const bigMapId = { contract: 26006, token: 26009 };
     const tokenCloudUrl = 'https://cloudflare-ipfs.com/ipfs/QmZDycNwSy12vueaPnxuCMFUCHeQieT5wA5yNwqswwFn3V';
     const contractCloudUrl = 'https://cloudflare-ipfs.com/ipfs/QmVBdYhUXmF3QSRSYgoZfvUhLKgW4oCWC6xMzvHzV5TFVA';
-    const subdomain = 'api';
     spyOn(service, 'fetchApi')
-      .withArgs(`https://${subdomain}.better-call.dev/v1/contract/${CONSTANTS.NETWORK}/${contractAddress}/storage`)
+      .withArgs(`${this.service.bcd}/contract/${CONSTANTS.NETWORK}/${contractAddress}/storage`)
       .and.callFake(async () => JSON.parse(storageMock))
-      .withArgs(`https://${subdomain}.better-call.dev/v1/bigmap/${CONSTANTS.NETWORK}/${bigMapId.token}/keys`)
+      .withArgs(`${this.service.bcd}/v1/bigmap/${CONSTANTS.NETWORK}/${bigMapId.token}/keys`)
       .and.callFake(async function () { return JSON.parse(tokenMetadataBigMapMock); })
-      .withArgs(`https://${subdomain}.better-call.dev/v1/bigmap/${CONSTANTS.NETWORK}/${bigMapId.contract}/keys`)
+      .withArgs(`${this.service.bcd}/v1/bigmap/${CONSTANTS.NETWORK}/${bigMapId.contract}/keys`)
       .and.callFake(async function () { return JSON.parse(contractMetadataBigMapMock); })
       .withArgs(tokenCloudUrl)
       .and.callFake(async function () { return JSON.parse(tokenIpfsMock); })

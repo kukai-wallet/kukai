@@ -120,8 +120,7 @@ export class DelegateComponent implements OnInit, OnChanges {
       this.storedDelegate = this.toPkh;
       this.activeView = 1;
       if (this.walletService.isLedgerWallet()) {
-        const keys = await this.walletService.getKeys('');
-        this.sendDelegation(keys);
+        this.ledgerError = '?';
       }
     }
   }
@@ -154,26 +153,7 @@ export class DelegateComponent implements OnInit, OnChanges {
       }
     }
   }
-  open1(template1: TemplateRef<any>) {
-    if (this.walletService.wallet) {
-      this.clearForm();
-      this.checkReveal();
-      this.modalRef1 = this.modalService.show(template1, { class: 'first' });
-    }
-  }
-  async open2(template: TemplateRef<any>) {
-    this.formInvalid = this.invalidInput();
-    if (!this.formInvalid) {
-      if (!this.fee) { this.fee = this.recommendedFee.toString(); }
-      this.storedFee = this.fee;
-      this.storedDelegate = this.toPkh;
-      if (this.walletService.isLedgerWallet()) {
-        await this.ledgerSign();
-      }
-    }
-  }
   async ledgerSign() {
-    this.ledgerError = '';
     const keys = await this.walletService.getKeys('');
     if (keys) {
       this.sendDelegation(keys);
@@ -242,6 +222,7 @@ export class DelegateComponent implements OnInit, OnChanges {
         const signedOp = op + signature;
         this.sendResponse.payload.signedOperation = signedOp;
         console.log(this.sendResponse);
+        this.ledgerError = '';
       } else {
         this.ledgerError = 'Failed to sign operation';
       }

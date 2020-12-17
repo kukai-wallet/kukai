@@ -1,5 +1,5 @@
 <ng-container *ngIf="!beaconMode">
-  <button *ngIf="!tokenTransfer" class="purple" (click)="openModal()">Send</button>
+  <button *ngIf="!tokenTransfer" class="purple open" (click)="openModal()">Send</button>
   <span class="token-send" *ngIf="tokenTransfer && !tokenService.getAsset(tokenTransfer).nonTransferable" (click)="openModal()">Send</span>
 </ng-container>
 
@@ -12,7 +12,7 @@
       <H1 *ngIf="activeView === 0">Send {{ getAssetName(false) }}</H1>
       <H1 *ngIf="activeView === 1">Confirmation</H1>
       <!--<span class="close" (click)="modalOpen = false" class="close">&times;</span>-->
-      <button *ngIf="activeView === 0 && !(walletService.isLedgerWallet() || tokenTransfer || beaconMode)" class="small multiple-destinations" (click)="toggleDestination()">
+      <button *ngIf="activeView === 0 && !(tokenTransfer || beaconMode)" class="small multiple-destinations" (click)="toggleDestination()">
         <ng-container *ngIf="!this.isMultipleDestinations">Multiple transactions</ng-container>
         <ng-container *ngIf="this.isMultipleDestinations">Single transaction</ng-container>
       </button>
@@ -157,7 +157,7 @@
           </tbody>
         </table>
         <button style="margin-left: auto; margin: 0.5rem 0 1rem; height: 2rem;" *ngIf='transactions.length > 2'
-          type="button" class="show-more" aria-label="More" (click)="toggleTransactions()">
+          type="button" class="small" aria-label="More" (click)="toggleTransactions()">
           <span aria-hidden="true"> {{ showBtn }} </span>
         </button>
         <div class="seperator"></div>
@@ -206,8 +206,8 @@
       <div class="row-group" style="margin: 1.25rem 0 1.5rem;">
         <input *ngIf="!walletService.isLedgerWallet() && !walletService.isTorusWallet()" [(ngModel)]="password"
           autocomplete="current-password" placeholder="Password" class="text password" type="password"
-          (input)="this.pwdValid = ''" (change)="this.pwdValid = ''">
-        <button class="retry" *ngIf="walletService.isLedgerWallet() && ledgerError; else elseBlock"
+          (input)="this.pwdValid = ''" (change)="this.pwdValid = ''" (keydown.enter)='inject()'>
+        <button class="purple confirm" *ngIf="walletService.isLedgerWallet() && ledgerError; else elseBlock"
           (click)="ledgerRetry()">Sign with Ledger</button>
         <ng-template #elseBlock>
           <button class="purple confirm" (click)="inject()"

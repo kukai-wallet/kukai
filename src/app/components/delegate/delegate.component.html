@@ -44,8 +44,9 @@
         Fee — {{ getFee() | number:'1.0-6' }} tez
       </p>
       <div class="row-group" style="margin: 1.25rem 0 1.5rem;">
-        <input *ngIf="!walletService.isLedgerWallet() && !walletService.isTorusWallet()" [(ngModel)]="password" placeholder="Password" autocomplete="current-password" class="text password" type="password" (input)="this.pwdValid = ''" (change)="this.pwdValid = ''">
-        <button *ngIf="walletService.isLedgerWallet() && ledgerError; else elseBlock" class="retry" (click)="ledgerSign()">Sign with Ledger</button>
+        <input *ngIf="!walletService.isLedgerWallet() && !walletService.isTorusWallet()" [(ngModel)]="password" placeholder="Password" 
+        autocomplete="current-password" class="text password" type="password" (input)="this.pwdValid = ''" (change)="this.pwdValid = ''" (keydown.enter)='inject()'>
+        <button *ngIf="walletService.isLedgerWallet() && ledgerError; else elseBlock" class="blue confirm" (click)="ledgerSign()">Sign with Ledger</button>
         <ng-template #elseBlock>
           <button class="blue confirm" (click)="inject()" [disabled]="walletService.isLedgerWallet() && (!sendResponse || !sendResponse.payload || !sendResponse.payload.signedOperation)">
             {{ walletService.isLedgerWallet() ? 'Broadcast' : 'Confirm'}}</button>

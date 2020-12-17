@@ -115,8 +115,7 @@ export class SendComponent implements OnInit, OnChanges {
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (this.beaconMode) {
-      console.log('change');
-      if (this.operationRequest && !(this.walletService.isLedgerWallet() && this.operationRequest.operationDetails[0].parameters)) {
+      if (this.operationRequest) {
         console.log('Beacon payload to send', this.operationRequest);
         if (this.operationRequest.operationDetails[0].kind === 'transaction') {
           this.openModal();
@@ -209,13 +208,7 @@ export class SendComponent implements OnInit, OnChanges {
         if (!this.formInvalid) {
           this.activeView++;
           if (this.walletService.isLedgerWallet()) {
-            this.messageService.startSpinner('Preparing transaction...');
-            const keys = await this.walletService.getKeys('');
-            if (keys) {
-              await this.sendTransaction(keys);
-            } else {
-              this.messageService.stopSpinner();
-            }
+            this.ledgerError = '?';
           }
         } else if (clearFee) {
           this.fee = '';
@@ -224,7 +217,6 @@ export class SendComponent implements OnInit, OnChanges {
     }
   }
   async ledgerRetry() {
-    this.ledgerError = '';
     this.messageService.startSpinner('Preparing transaction...');
     const keys = await this.walletService.getKeys('');
     if (keys) {
@@ -414,10 +406,12 @@ export class SendComponent implements OnInit, OnChanges {
       await this.messageService.startSpinner('Waiting for Ledger signature...');
       try {
         const op = this.sendResponse.payload.unsignedOperation;
-        const signature = await this.ledgerService.signOperation(op, this.walletService.wallet.implicitAccounts[0].derivationPath);
+        const toSign = op.length <= 458 ? op : this.operationService.ledgerPreHash(op);
+        const signature = await this.ledgerService.signOperation(toSign, this.walletService.wallet.implicitAccounts[0].derivationPath);
         if (signature) {
           const signedOp = op + signature;
           this.sendResponse.payload.signedOperation = signedOp;
+          this.ledgerError = '';
         } else {
           this.ledgerError = 'Failed to sign transaction';
         }

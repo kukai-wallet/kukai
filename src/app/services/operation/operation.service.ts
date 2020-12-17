@@ -381,30 +381,27 @@ export class OperationService {
     Broadcast a signed operation to the network
   */
   broadcast(sopbytes: string): Observable<any> {
-    let fop: any;
-    try {
-      const opbytes = sopbytes.slice(0, sopbytes.length - 128);
-      const edsig = this.sig2edsig(sopbytes.slice(sopbytes.length - 128));
-      fop = this.decodeOpBytes(opbytes);
+    console.log('Broadcast...');
+    const opbytes = sopbytes.slice(0, sopbytes.length - 128);
+    const edsig = this.sig2edsig(sopbytes.slice(sopbytes.length - 128));
+    return fromPromise(localForger.parse(opbytes)).pipe(flatMap((fop: any) => {
       fop.signature = edsig;
-    } catch (e) {
-      return this.errHandler('Invalid bytes');
-    }
-    return this.getHeader().pipe(flatMap((header: any) => {
-      fop.protocol = header.protocol;
-      return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/preapply/operations', [fop])
-        .pipe(flatMap((parsed: any) => {
-          let newPkh = null;
-          for (let i = 0; i < parsed[0].contents.length; i++) {
-            if (parsed[0].contents[i].kind === 'origination') {
-              newPkh = parsed[0].contents[i].metadata.operation_result.originated_contracts[0];
+      return this.getHeader().pipe(flatMap((header: any) => {
+        fop.protocol = header.protocol;
+        return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/preapply/operations', [fop])
+          .pipe(flatMap((parsed: any) => {
+            let newPkh = null;
+            for (let i = 0; i < parsed[0].contents.length; i++) {
+              if (parsed[0].contents[i].kind === 'origination') {
+                newPkh = parsed[0].contents[i].metadata.operation_result.originated_contracts[0];
+              }
             }
-          }
-          return this.http.post(this.nodeURL + '/injection/operation', JSON.stringify(sopbytes), httpOptions)
-            .pipe(flatMap((final: any) => {
-              return this.opCheck(final, newPkh);
-            }));
-        }));
+            return this.http.post(this.nodeURL + '/injection/operation', JSON.stringify(sopbytes), httpOptions)
+              .pipe(flatMap((final: any) => {
+                return this.opCheck(final, newPkh);
+              }));
+          }));
+      }));
     })).pipe(catchError(err => this.errHandler(err)));
   }
   torusKeyLookup(tz2address: string): Observable<any> {
@@ -484,9 +481,11 @@ export class OperationService {
       }
     } else if (error.statusText) {
       error = error.statusText;
+    } else if (typeof error === 'string') {
+      error = this.errorHandlingPipe.transform(error);
     } else {
-      error = 'Unrecogized error';
       console.warn('Error not categorized', error);
+      error = 'Unrecogized error';
     }
     return of(
       {
@@ -744,6 +743,9 @@ export class OperationService {
     r.set(b, wm.length);
     return r;
   }
+  ledgerPreHash(opbytes: string): string {
+    return this.buf2hex(libs.crypto_generichash(32, this.mergebuf(this.hex2buf(opbytes))));
+  }
   sign(bytes, sk): any {
     if (sk.slice(0, 4) === 'spsk') {
       const hash = libs.crypto_generichash(32, this.mergebuf(this.hex2buf(bytes)));
@@ -779,171 +781,6 @@ export class OperationService {
   }
   sig2edsig(sig: string): any {
     return this.b58cencode(this.hex2buf(sig), this.prefix.edsig);
-  }
-  /*
-    Binary decoding
-  */
-  decodeOpBytes(opbytes: string) {
-    // First 32 bytes = branch
-    const branch = this.b58cencode(this.hex2buf(opbytes.slice(0, 64)), this.prefix.B);
-    const contents = this.decodeContents(opbytes.slice(64));
-    return {
-      branch: branch,
-      contents: contents
-    };
-  }
-  decodeContents(content: string): any {
-    // Check tag
-    const tag = Number(this.hex2buf(content.slice(0, 2)));
-    switch (tag) {
-      case 4: {
-        return this.decodeActivateAccount(content.slice(2));
-      } case 107: {
-        return this.decodeReveal(content.slice(2));
-      } case 108: {
-        return this.decodeTransaction(content.slice(2));
-      } case 109: {
-        return this.decodeOrigination(content.slice(2));
-      } case 110: {
-        return this.decodeDelegation(content.slice(2));
-      } default: {
-        throw new Error('Unknown tag');
-      }
-    }
-  }
-  decodeActivateAccount(content: any): any { // Tag 4
-    const data: any = { kind: 'activate' };
-    data.pkh = this.b58cencode(this.hex2buf(content.slice(0, 40)), this.prefix.tz1);
-    data.secret = content.slice(40, 80);
-    return data;
-  }
-  decodeReveal(content: any): any { // Tag 7
-    let index = 0;
-    const op = this.decodeCommon({ kind: 'reveal' }, content);
-    if (op.rest.slice(index, index += 2) !== '00') {
-      throw new Error('TagErrorR1');
-    }
-    op.data.public_key = this.b58cencode(this.hex2buf(op.rest.slice(index, index += 64)), this.prefix.edpk);
-    if (op.rest.length === index) {
-      return [op.data];
-    } else {
-      return [op.data].concat(this.decodeContents(op.rest.slice(index)));
-    }
-  }
-  decodeTransaction(content: any): any { // Tag 8
-    let index = 0;
-    const op = this.decodeCommon({ kind: 'transaction' }, content);
-    const amount = this.zarithDecode(op.rest.slice(index));
-    op.data.amount = amount.value.toString();
-    op.data.destination = this.decodeContractId(op.rest.slice(index += amount.count * 2, index += 44));
-    if (op.rest.slice(index, index += 2) === 'ff') { // parameters?
-      if (op.rest.slice(index, index += 8) !== '02000000') {
-        throw new Error('UnsupportedTagT1');
-      }
-      const size = Number('0x' + op.rest.slice(index, index += 2));
-      const argument = op.rest.slice(index, index += size * 2);
-      if (argument.slice(0, 40) === '02000000' + (size - 5).toString(16) + '0320053d036d0743035d0100000024') {
-        const pkh = this.decodeString(argument.slice(40, 112));
-        if (argument.slice(112, 124) === '0346034e031b') { // KT delegate
-          op.data.parameters = this.getContractDelegation(pkh);
-        } else if (argument.slice(112, 126) === '031e0743036a00') { // KT to tz transaction
-          const amount2 = this.zarithDecodeInt(argument.slice(126, argument.length - 12));
-          if (argument.slice(argument.length - 12, argument.length) !== '034f034d031b') {
-            throw new Error('UnsupportedTagT4');
-          }
-          console.log(' Val: ' + amount2.value);
-          op.data.parameters = this.getContractPkhTransaction(pkh, amount2.value.toString());
-        } else {
-          throw new Error('UnsupportedTagT3');
-        }
-      } else if (argument.slice(0, 40) === '02000000' + (size - 5).toString(16) + '0320053d036d0743036e0100000024') { // KT to KT transaction
-        const kt = this.decodeString(argument.slice(40, 112));
-        if (argument.slice(112, 182) !== '0555036c0200000015072f02000000090200000004034f032702000000000743036a00') {
-        }
-        const amount2 = this.zarithDecodeInt(argument.slice(182));
-        if (argument.slice(184 + amount2.count * 2, 194 + amount2.count * 2) !== '4f034d031b') {
-          throw new Error('UnsupportedTagT6');
-        }
-        op.data.parameters = this.getContractKtTransaction(kt, amount2.value.toString());
-      } else {
-        throw new Error('UnsupportedTagT2');
-      }
-    }
-    if (op.rest.length === index) {
-      return [op.data];
-    } else {
-      return [op.data].concat(this.decodeContents(op.rest.slice(index)));
-    }
-  }
-  decodeOrigination(content: any): any { // Tag 9
-    let index = 0;
-    const op = this.decodeCommon({ kind: 'origination' }, content);
-    const balance = this.zarithDecode(op.rest.slice(index));
-    op.data.balance = balance.value.toString();
-    index += balance.count * 2;
-    if (op.rest.slice(index, index += 2) !== '00') { // delegate?
-      throw new Error('UnsupportedTagO1');
-    }
-    const managerScript = '000000c602000000c105000764085e036c055f036d0000000325646f046c000000082564656661756c740501035d050202000000950200000012020000000d03210316051f02000000020317072e020000006a0743036a00000313020000001e020000000403190325072c020000000002000000090200000004034f0327020000000b051f02000000020321034c031e03540348020000001e020000000403190325072c020000000002000000090200000004034f0327034f0326034202000000080320053d036d0342'; // manager script
-    if (op.rest.slice(index, index += managerScript.length) !== managerScript) {
-      throw new Error('InvalidManagerScript');
-    }
-    const storageDefinition = '0000001a0a00000015';
-    if (op.rest.slice(index, index += storageDefinition.length) !== storageDefinition) {
-      throw new Error('InvalidStorageDefinition');
-    }
-    op.data.script = this.getManagerScript(op.rest.slice(index, index += 42));
-    if (op.rest.length === index) {
-      return [op.data];
-    } else {
-      return [op.data].concat(this.decodeContents(op.rest.slice(index)));
-    }
-  }
-  decodeDelegation(content: any): any { // Tag 10
-    let index = 0;
-    const op = this.decodeCommon({ kind: 'delegation' }, content);
-    if (op.rest.slice(index, index += 2) === 'ff') {
-      op.data.delegate = this.decodePkh(op.rest.slice(index, index += 42));
-    } else if (op.rest.slice(index - 2, index) !== '00') {
-      throw new Error('TagErrorD1');
-    }
-    if (op.rest.length === index) {
-      return [op.data];
-    } else {
-      return [op.data].concat(this.decodeContents(op.rest.slice(index)));
-    }
-  }
-  decodeCommon(data: any, content: any): any {
-    let index = 0;
-    data.source = this.decodePkh(content.slice(index, index += 42));
-    // data.source = this.decodeContractId(content.slice(index, index += 44));
-    const fee = this.zarithDecode(content.slice(index));
-    data.fee = fee.value.toString();
-    const counter = this.zarithDecode(content.slice(index += fee.count * 2));
-    data.counter = counter.value.toString();
-    const gas_limit = this.zarithDecode(content.slice(index += counter.count * 2));
-    data.gas_limit = gas_limit.value.toString();
-    const storage_limit = this.zarithDecode(content.slice(index += gas_limit.count * 2));
-    data.storage_limit = storage_limit.value.toString();
-    const rest = content.slice(index += storage_limit.count * 2);
-    return {
-      data: data,
-      rest: rest
-    };
-  }
-  decodePkh(bytes: string): string {
-    if (bytes.slice(0, 2) === '00') {
-      return this.b58cencode(this.hex2buf(bytes.slice(2, 42)), this.prefix.tz1);
-    } else if (bytes.slice(0, 2) === '01') {
-      return this.b58cencode(this.hex2buf(bytes.slice(2, 42)), this.prefix.tz2);
-    } else if (bytes.slice(0, 2) === '02') {
-      return this.b58cencode(this.hex2buf(bytes.slice(2, 42)), this.prefix.tz3);
-    } else {
-      throw new Error('TagErrorPkh');
-    }
-  }
-  decodePk() {
-    return null;
   }
   decodeString(bytes: string): string {
     return Buffer.from(this.hex2buf(bytes)).toString('utf-8');
@@ -983,64 +820,6 @@ export class OperationService {
       value: value,
       count: count
     };
-  }
-  decodeContractId(hex: string): string {
-    if (hex.slice(0, 2) === '00') {
-      return this.decodePkh(hex.slice(2, 44));
-    } else if (hex.slice(0, 2) === '01') {
-      return this.b58cencode(this.hex2buf(hex.slice(2, 42)), this.prefix.KT);
-    } else {
-      throw new Error('TagError');
-    }
-  }
-  /*
-    Output
-  */
-  fop2strings(fop: any): any {
-    const output: string[] = [];
-    for (let i = 0; i < fop.contents.length; i++) {
-      if (fop.contents[i].kind !== 'reveal') {
-        let typeTmp = '';
-        let sourceTmp = '';
-        typeTmp = this.translate.instant('OPERATIONSERVICE.TYPE');
-        sourceTmp = this.translate.instant('OPERATIONSERVICE.SOURCE');
-        output.push(typeTmp + ' ' + fop.contents[i].kind);
-        output.push(sourceTmp + ' ' + fop.contents[i].source);
-        if (fop.contents[i].kind === 'transaction') {
-          let destinationTmp = '';
-          let amountTmp = '';
-          destinationTmp = this.translate.instant('OPERATIONSERVICE.DESTINATION');
-          amountTmp = this.translate.instant('OPERATIONSERVICE.AMOUNT');
-          output.push(destinationTmp + ' ' + fop.contents[i].destination);
-          output.push(amountTmp + ' ' + Big(Number(fop.contents[i].amount)).div(this.microTez).toString() + ' tez');
-        } else if (fop.contents[i].kind === 'origination') {
-          let managerTmp = '';
-          let balanceTmp = '';
-          managerTmp = this.translate.instant('OPERATIONSERVICE.MANAGER');
-          balanceTmp = this.translate.instant('OPERATIONSERVICE.BALANCE');
-          // output.push(managerTmp + ' ' + fop.contents[i].managerPubkey);  // betanet
-          output.push(managerTmp + ' ' + fop.contents[i].manager_pubkey);  // zeronet
-          output.push(balanceTmp + ' ' + Big(Number(fop.contents[i].balance)).div(this.microTez).toString() + ' tez');
-        } else if (fop.contents[i].kind === 'delegation') {
-          let delegateTmp = '';
-          delegateTmp = this.translate.instant('OPERATIONSERVICE.DELEGATE');
-          output.push(delegateTmp + ' ' + fop.contents[i].delegate);
-          // output.push('Delegate: ' + fop.contents[i].delegate);
-        } else {
-          let tagNotSupportedTmp = '';
-          tagNotSupportedTmp = this.translate.instant('OPERATIONSERVICE.TAGNOTSUPPORTED');
-          throw new Error(tagNotSupportedTmp);
-        }
-
-        let feeTmp = '';
-        feeTmp = this.translate.instant('OPERATIONSERVICE.FEE');
-        output.push(feeTmp + ' ' + Big(Number(fop.contents[i].fee)).div(this.microTez).toString() + ' tez');
-        if (i + 1 < fop.contents.length) {
-          output.push('');
-        }
-      }
-    }
-    return output;
   }
   getContractDelegation(pkh: string) {
     return {

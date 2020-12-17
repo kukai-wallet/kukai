@@ -52,7 +52,7 @@ export interface FA2 extends TokensInterface {
 export class TokenService {
   readonly AUTO_DISCOVER: boolean = true;
   private contracts: ContractsType = {};
-  private exploredIds: Record<string, {firstCheck: number, lastCheck: number}> = {};
+  private exploredIds: Record<string, { firstCheck: number, lastCheck: number }> = {};
   readonly storeKey = 'tokenMetadata';
   constructor(
     public indexerService: IndexerService
@@ -126,9 +126,7 @@ export class TokenService {
       const metadata = await this.indexerService.getTokenMetadata(contractAddress, id);
       if (metadata &&
         metadata.name &&
-        metadata.symbol &&
-        !isNaN(metadata.decimals) &&
-        metadata.decimals >= 0) {
+        metadata.symbol) {
         const contract: ContractType = {
           kind: metadata.tokenType ? metadata.tokenType : 'FA2',
           category: metadata.tokenCategory ? metadata.tokenCategory : '',
@@ -137,7 +135,7 @@ export class TokenService {
         const token: TokenData = {
           name: metadata.name,
           symbol: metadata.symbol,
-          decimals: Number(metadata.decimals),
+          decimals: (!isNaN(metadata.decimals) && metadata.decimals >= 0) ? Number(metadata.decimals) : 0,
           description: metadata.description ? metadata.description : '',
           imageSrc: metadata.imageUri ? metadata.imageUri : '../../../assets/img/tokens/default.png',
           isNft: metadata?.isNft ? metadata.isNft : false,
@@ -154,7 +152,7 @@ export class TokenService {
   explore(tokenId: string): boolean {
     const now = new Date().getTime();
     if (!this.exploredIds[tokenId]) {
-      this.exploredIds[tokenId] = {firstCheck: now, lastCheck: now};
+      this.exploredIds[tokenId] = { firstCheck: now, lastCheck: now };
       this.saveMetadata();
       return true;
     } else {
@@ -195,10 +193,14 @@ export class TokenService {
       return `${Big(amount).div(10 ** (baseUnit ? 6 : 0)).toFixed()} tez`;
     } else {
       const token = this.getAsset(tokenKey);
-      if (token.isNft || token.binaryAmount) {
-        return `${token.name}`;
+      if (token) {
+        if (token.isNft || token.binaryAmount) {
+          return `${token.name}`;
+        } else {
+          return `${Big(amount).div(10 ** (baseUnit ? token.decimals : 0)).toFixed()} ${token.symbol}`;
+        }
       } else {
-        return `${Big(amount).div(10 ** (baseUnit ? token.decimals : 0)).toFixed()} ${token.symbol}`;
+        return '';
       }
     }
   }

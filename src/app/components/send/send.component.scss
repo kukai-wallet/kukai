@@ -1,14 +1,15 @@
 @import '../../../scss/modal.scss';
 @import '../../../scss/switch.scss';
 @import '../../../scss/dropdown.scss';
-button.purple:hover {
+
+button.purple.open:hover {
   margin-top: -0.125rem;
   margin-bottom: 0.125rem;
 }
 button:focus {
   outline: none;
 }
-button.purple {
+:host button {
   border-radius: 0.75rem;
   height: 3rem;
   width: 100%;
@@ -23,10 +24,6 @@ button.purple {
   cursor: pointer;
   -webkit-appearance: none !important;
   border-width: 0;
-}
-:host button.purple:hover {
-  margin-top: -0.125rem;
-  margin-bottom: 0.125rem;
 }
 :host button:focus {
   outline: none;
