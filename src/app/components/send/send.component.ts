@@ -132,7 +132,7 @@ export class SendComponent implements OnInit, OnChanges {
     if (this.operationRequest.operationDetails.length > 1) {
       this.isMultipleDestinations = true;
       for (const [i, op] of this.operationRequest.operationDetails.entries()) {
-        this.toMultipleDestinationsString = this.toMultipleDestinationsString + `${op.destination} ${Big(op.amount).div(10 ** 6).toFixed()}; `
+        this.toMultipleDestinationsString = this.toMultipleDestinationsString + `${op.destination} ${Big(op.amount).div(10 ** 6).toFixed()}; `;
         if (op.parameters) {
           this.batchParameters.push({ num: i + 1, parameters: op.parameters });
           if (!this.parameters) {

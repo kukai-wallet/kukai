@@ -92,7 +92,7 @@ export class UriHandlerComponent implements OnInit {
       await this.beaconService.rejectOnSourceAddress(message);
       return false;
     } else if (message.operationDetails.length > 1) {
-      for (let op of message.operationDetails) {
+      for (const op of message.operationDetails) {
         if (op.kind !== 'transaction') {
           console.warn('Only transaction batches supported');
           await this.beaconService.rejectOnTooManyOps(message);
