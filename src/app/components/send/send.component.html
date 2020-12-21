@@ -58,7 +58,15 @@
           [(ngModel)]="toPkh">
       </div>
       <div *ngIf="beaconMode && parameters">
-        <label style="color: #C83532; margin-top: 1rem">This transaction will invoke a contract</label>
+        <label style="color: #C83532; margin-top: 1rem">
+        <ng-container *ngIf="!batchParameters.length">
+          This transaction will invoke a contract
+        </ng-container>
+        <ng-container *ngIf="batchParameters.length">
+          These transactions will invoke <ng-container *ngIf="batchParameters.length === 1">a contract</ng-container>
+          <ng-container *ngIf="batchParameters.length > 1">contracts</ng-container>
+        </ng-container>
+      </label>
       </div>
       <ng-container *ngIf="torusVerifier">
         <p class="torus-details" *ngIf="torusPendingLookup">Loading address...</p>
@@ -67,7 +75,7 @@
       <div *ngIf="this.isMultipleDestinations" class="group">
         <label>Addresses and amounts <span class="batchInfo">{{ batchSpace() }}</span></label>
         <textarea type="text" class="text" (input)="updateDefaultValues()" (change)="validateBatch()" rows="3"
-          [(ngModel)]="toMultipleDestinationsString"
+          [(ngModel)]="toMultipleDestinationsString" [disabled]="beaconMode"
           placeholder="address1 amount1 ; &#10;address2 amount2 ; &#10;address3 ..."></textarea>
       </div>
       <div class="advanced">
@@ -87,6 +95,7 @@
           <div class="group">
             <label>Gas limit</label>
             <input type="text" class="text" placeholder={{this.defaultTransactionParams.gas.toString()}}
+            [class.read-only]="beaconMode && isMultipleDestinations" [readonly]="beaconMode && isMultipleDestinations"
               [(ngModel)]="gas">
           </div>
           <div class="group">
@@ -98,7 +107,7 @@
         <div class="row-group">
           <div class="group">
             <label>Storage limit</label>
-            <input type="text" (input)="updateMaxAmount()" (paste)="updateMaxAmount()" class="text"
+            <input type="text" [class.read-only]="beaconMode && isMultipleDestinations" [readonly]="beaconMode && isMultipleDestinations" (input)="updateMaxAmount()" (paste)="updateMaxAmount()" class="text"
               placeholder={{this.defaultTransactionParams.storage.toString()}} [(ngModel)]="storage">
           </div>
           <div class="group">
@@ -156,7 +165,7 @@
             </tr>
           </tbody>
         </table>
-        <button style="margin-left: auto; margin: 0.5rem 0 1rem; height: 2rem;" *ngIf='transactions.length > 2'
+        <button style="margin-left: auto; margin: 0.5rem 0 1rem; height: 1.5rem;" *ngIf='transactions.length > 2'
           type="button" class="small" aria-label="More" (click)="toggleTransactions()">
           <span aria-hidden="true"> {{ showBtn }} </span>
         </button>
@@ -188,6 +197,22 @@
         <span>Max storage cost</span><span>{{ getTotalBurn() | number:'1.0-6' }} tez</span>
       </div>
       <div class="seperator"></div>
+      <ng-container *ngIf="batchParameters.length > 1">
+        Contract Invokations
+        <div class="tabs-container blue" *ngIf="batchParameters.length <= 5">
+          <ul class="tabs">
+            <ng-container *ngFor="let params of batchParameters; let i = index">
+              <li class="tab" [class.active]="batchParamIndex === i" (click)="updateParameters(i, params.parameters)">
+                <ng-container *ngIf="batchParameters.length <= 3">Operation</ng-container><ng-container *ngIf="batchParameters.length > 3">Tx</ng-container> {{ params.num }}</li>
+            </ng-container>
+          </ul>
+        </div>
+        <select *ngIf="batchParameters.length > 5" class="select-css parameters" [(ngModel)]="batchParamIndex"
+          (ngModelChange)="updateParameters(batchParamIndex, batchParameters[batchParamIndex].parameters)">
+          <option *ngFor="let params of batchParameters; let i = index" value="{{i}}">
+            Operation {{params.num}}</option>
+        </select>
+      </ng-container>
       <ng-container *ngIf="parameters">
         <div class="preview-row">
           <span *ngIf="parameters?.entrypoint" class="preview">

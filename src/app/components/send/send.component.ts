@@ -66,6 +66,8 @@ export class SendComponent implements OnInit, OnChanges {
   toPkh: string;
   amount = '';
   fee: string;
+  batchParameters: { num: number, parameters: any }[] = [];
+  batchParamIndex = 0;
   parameters: any;
   micheline: { entrypoint: string, value: string };
   parametersFormat = 0;
@@ -118,36 +120,60 @@ export class SendComponent implements OnInit, OnChanges {
       if (this.operationRequest) {
         console.log('Beacon payload to send', this.operationRequest);
         if (this.operationRequest.operationDetails[0].kind === 'transaction') {
-          this.openModal();
-          const tokenTransfer = this.beaconTokenTransfer(this.operationRequest.operationDetails[0]);
-          if (tokenTransfer) {
-            const asset = this.tokenService.getAsset(tokenTransfer.tokenId);
-            this.amount = Big(tokenTransfer.amount).div(10 ** asset.decimals).toFixed();
-            this.toPkh = tokenTransfer.to;
-            this.tokenTransfer = tokenTransfer.tokenId;
-            if (asset.isNft || asset.binaryAmount) {
-              this.hideAmount = true;
-            }
-          } else {
-            if (this.operationRequest.operationDetails[0].destination) {
-              const destination = this.operationRequest.operationDetails[0].destination;
-              this.toPkh = destination;
-            } else {
-              console.warn('No destination');
-            }
-            if (this.operationRequest.operationDetails[0].amount) {
-              this.amount = Big(this.operationRequest.operationDetails[0].amount).div(1000000).toString();
-            }
-            if (this.operationRequest.operationDetails[0].parameters) {
-              this.parameters = this.operationRequest.operationDetails[0].parameters;
-            }
-          }
-          this.activeAccountChange();
+          this.loadBeaconPayload();
         }
       } else {
         this.operationResponse.emit(null);
       }
     }
+  }
+  async loadBeaconPayload() {
+    await this.openModal();
+    if (this.operationRequest.operationDetails.length > 1) {
+      this.isMultipleDestinations = true;
+      for (const [i, op] of this.operationRequest.operationDetails.entries()) {
+        this.toMultipleDestinationsString = this.toMultipleDestinationsString + `${op.destination} ${Big(op.amount).div(10 ** 6).toFixed()}; `
+        if (op.parameters) {
+          this.batchParameters.push({ num: i + 1, parameters: op.parameters });
+          if (!this.parameters) {
+            this.updateParameters(0, op.parameters);
+          }
+        }
+      }
+      this.updateDefaultValues();
+      this.validateBatch();
+    } else {
+      const tokenTransfer = this.beaconTokenTransfer(this.operationRequest.operationDetails[0]);
+      if (tokenTransfer) {
+        const asset = this.tokenService.getAsset(tokenTransfer.tokenId);
+        this.amount = Big(tokenTransfer.amount).div(10 ** asset.decimals).toFixed();
+        this.toPkh = tokenTransfer.to;
+        this.tokenTransfer = tokenTransfer.tokenId;
+        if (asset.isNft || asset.binaryAmount) {
+          this.hideAmount = true;
+        }
+      } else {
+        if (this.operationRequest.operationDetails[0].destination) {
+          const destination = this.operationRequest.operationDetails[0].destination;
+          this.toPkh = destination;
+        } else {
+          console.warn('No destination');
+        }
+        if (this.operationRequest.operationDetails[0].amount) {
+          this.amount = Big(this.operationRequest.operationDetails[0].amount).div(1000000).toString();
+        }
+        if (this.operationRequest.operationDetails[0].parameters) {
+          this.parameters = this.operationRequest.operationDetails[0].parameters;
+        }
+      }
+      this.activeAccountChange();
+    }
+  }
+  updateParameters(index: number, parameters: any) {
+    console.log(index, parameters);
+    this.batchParamIndex = index;
+    this.parameters = parameters;
+    this.parametersToMicheline();
   }
   beaconTokenTransfer(op: any) {
     if (op.parameters && this.tokenService.isKnownTokenContract(op.destination)) {
@@ -162,7 +188,7 @@ export class SendComponent implements OnInit, OnChanges {
     this.implicitAccounts = this.walletService.wallet.implicitAccounts;
   }
   /* Modal 2 */
-  openModal() {
+  async openModal() {
     // hide body scrollbar
     const scrollBarWidth = window.innerWidth - document.body.offsetWidth;
     document.body.style.marginRight = scrollBarWidth.toString();
@@ -190,7 +216,7 @@ export class SendComponent implements OnInit, OnChanges {
           }
         }, 100);
       }
-      this.estimateService.preLoadData(this.activeAccount.pkh, this.activeAccount.pk);
+      await this.estimateService.preLoadData(this.activeAccount.pkh, this.activeAccount.pk);
     }
   }
   async openModal2() {
@@ -490,6 +516,8 @@ export class SendComponent implements OnInit, OnChanges {
     this.parameters = null;
     this.micheline = null;
     this.parametersFormat = 0;
+    this.batchParameters = [];
+    this.batchParamIndex = 0;
     if (this.beaconMode) {
       this.tokenTransfer = '';
     }
@@ -680,6 +708,25 @@ export class SendComponent implements OnInit, OnChanges {
     }
     return this.checkReceiverAndAmount(this.toPkh, this.amount, finalCheck);
   }
+  parametersToMicheline() {
+    if (this.parameters) {
+      try {
+        if (!this.parameters.value ||
+          !this.parameters.entrypoint) {
+          throw new Error('entrypoint and value expected');
+        }
+        assertMichelsonData(this.parameters.value);
+        const res = emitMicheline(this.parameters.value, { indent: '  ', newline: '\n' });
+        this.micheline = { entrypoint: this.parameters.entrypoint, value: res };
+      } catch (e) {
+        console.log(e);
+        if (this.beaconMode) {
+          this.formInvalid = e;
+        }
+        this.micheline = null;
+      }
+    }
+  }
   checkReceiverAndAmount(toPkh: string, amount: string, finalCheck: boolean): string {
     if (!this.torusVerifier && (!this.inputValidationService.address(toPkh) || toPkh === this.activeAccount.address)) {
       return this.translate.instant('SENDCOMPONENT.INVALIDRECEIVERADDRESS');
@@ -723,7 +770,12 @@ export class SendComponent implements OnInit, OnChanges {
             const storageLimit = this.storage ? Number(this.storage) : this.defaultTransactionParams.customLimits &&
               this.defaultTransactionParams.customLimits.length > index ?
               this.defaultTransactionParams.customLimits[index].storageLimit : this.defaultTransactionParams.storage;
-            this.toMultipleDestinations.push({ to: singleSendDataArray[0], amount: Number(singleSendDataArray[1]), gasLimit, storageLimit });
+            if (this.beaconMode && this.operationRequest.operationDetails[index].parameters) {
+              console.log('Beacon param', this.operationRequest.operationDetails[index].parameters);
+              this.toMultipleDestinations.push({ to: singleSendDataArray[0], amount: Number(singleSendDataArray[1]), gasLimit, storageLimit, parameters: this.operationRequest.operationDetails[index].parameters });
+            } else {
+              this.toMultipleDestinations.push({ to: singleSendDataArray[0], amount: Number(singleSendDataArray[1]), gasLimit, storageLimit });
+            }
           } else {
             this.toMultipleDestinations = [];
             validationError = singleSendDataCheckresult + '. Transaction ' + (index + 1);

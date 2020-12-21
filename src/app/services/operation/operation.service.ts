@@ -224,7 +224,7 @@ export class OperationService {
           amount: this.microTez.times(transactions[i].amount).toString(),
           destination: transactions[i].to,
         };
-        if (transactions.length === 1 && transactions[i].parameters) {
+        if (transactions[i].parameters) {
           transactionOp.parameters = transactions[i].parameters;
         }
         fop.contents.push(transactionOp);

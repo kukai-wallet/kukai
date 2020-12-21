@@ -84,26 +84,42 @@ export class UriHandlerComponent implements OnInit {
       .catch((error) => console.error('connect error', error));
   }
   async isSupportedOperationRequest(message: any): Promise<boolean> {
-    if (!this.walletService.wallet || !this.walletService.wallet.getImplicitAccount(message.sourceAddress)) {
+    if (!this.walletService.wallet) {
+      console.log('No wallet found');
+      return false;
+    } else if (!this.walletService.wallet.getImplicitAccount(message.sourceAddress)) {
       console.warn('Source address not recogized');
       await this.beaconService.rejectOnSourceAddress(message);
       return false;
     } else if (message.operationDetails.length > 1) {
-      console.warn('Multiple operations currently not supported in requests');
-      await this.beaconService.rejectOnTooManyOps(message);
-      return false;
+      for (let op of message.operationDetails) {
+        if (op.kind !== 'transaction') {
+          console.warn('Only transaction batches supported');
+          await this.beaconService.rejectOnTooManyOps(message);
+          return false;
+        }
+      }
     }
 
     if (message.operationDetails[0].kind === 'transaction') {
-      if (message.operationDetails[0].destination &&
-        message.operationDetails[0].parameters &&
-        this.walletService.wallet.getAccount(message.operationDetails[0].destination)) {
-        console.warn('Invocation of user controlled contract is disabled');
-        await this.beaconService.rejectOnPermission(message);
-        return false;
-      } else if (this.invalidParameters(message.operationDetails[0].parameters)) {
-        await this.beaconService.rejectOnParameters(message);
-        return false;
+      for (let i = 0; i < message.operationDetails.length; i++) {
+        if (message.operationDetails[i].destination &&
+          message.operationDetails[i].parameters &&
+          this.walletService.wallet.getAccount(message.operationDetails[i].destination)) {
+          console.warn('Invocation of user controlled contract is disabled');
+          await this.beaconService.rejectOnPermission(message);
+          return false;
+        } else if (message.operationDetails.length > 1 && (
+          !message.operationDetails[i].destination ||
+          !message.operationDetails[i].amount
+        )) {
+          console.warn('Missing destination or amount');
+          await this.beaconService.rejectOnUnknown(message);
+          return false;
+        } else if (this.invalidParameters(message.operationDetails[i].parameters)) {
+          await this.beaconService.rejectOnParameters(message);
+          return false;
+        }
       }
     } else if (message.operationDetails[0].kind === 'delegation') {
       if (!message.operationDetails[0].delegate) {

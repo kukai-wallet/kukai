@@ -175,7 +175,7 @@ export class TzktService implements Indexer {
                   }
                   for (const key of lookFor.numbers) {
                     if (child3.name === key) {
-                      metadata[key] = 0; //this.zarithDecodeInt(child3.value).value;
+                      metadata[key] = Number(child3.value);
                     }
                   }
                   for (const key of lookFor.booleans) {

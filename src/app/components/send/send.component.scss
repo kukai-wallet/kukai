@@ -50,6 +50,11 @@ div.kukai-modal div.km-body > div.group select.select-css {
   opacity: 0.6;
   border-radius: 0.5rem;
 }
+div.kukai-modal div.km-body select.select-css.parameters {
+  margin: 0.5rem 0;
+  height: 2.25rem;
+  line-height: 2.25rem;
+}
 div.kukai-modal table > thead,
 div.kukai-modal table > thead {
   width: 100%;
@@ -87,6 +92,14 @@ div.kukai-modal div.advanced-form input.text::placeholder {
 div.kukai-modal div.advanced-form input.text::-webkit-input-placeholder,
 div.kukai-modal div.advanced-form input.text:-ms-input-placeholder {
   color: black;
+}
+div.kukai-modal div.advanced-form input.text.read-only::placeholder {
+  color: #808080;
+  opacity: 1;
+}
+div.kukai-modal div.advanced-form input.text.read-only::-webkit-input-placeholder,
+div.kukai-modal div.advanced-form input.text.read-only:-ms-input-placeholder {
+  color: #808080;
 }
 div.kukai-modal div.advanced-form input.text.read-only {
   color: #808080;
@@ -224,6 +237,9 @@ div.kukai-modal p#previewAttention {
 div.tabs-container {
   margin-top: 0.5rem;
 }
+div.tabs-container.blue {
+  margin-bottom: 0.5rem;
+}
 div.tabs-container > ul.tabs {
   display: flex;
   list-style-type: none;
@@ -238,10 +254,15 @@ div.tabs-container > ul.tabs > li.tab {
   padding: 1rem auto;
   background-color: rgb(246, 246, 246);
 }
-div.tabs-container > ul.tabs > li.tab:first-child {
+div.tabs-container.blue > ul.tabs > li.tab {
+  color: black; //5963FF
+  background-color: rgba(89, 99, 255, 0.4);
+  border-bottom: 0.0625 solid #5963ff;
+}
+div.tabs-container:not(.blue) > ul.tabs > li.tab:first-child {
   border-top-left-radius: 0.75rem;
 }
-div.tabs-container > ul.tabs > li.tab:last-child {
+div.tabs-container:not(.blue) > ul.tabs > li.tab:last-child {
   border-top-right-radius: 0.75rem;
 }
 div.tabs-container > ul.tabs > li.tab.active {
@@ -251,4 +272,12 @@ div.tabs-container > ul.tabs > li.tab.active {
 div.tabs-container > ul.tabs > li.tab:hover {
   background-color: #C0C0C0;
   color: #484848;
+}
+div.tabs-container.blue > ul.tabs > li.tab.active {
+  background-color: #5963FF;
+  color: #f3f3f3;
+}
+div.tabs-container.blue > ul.tabs > li.tab:hover {
+  background-color: rgba(89, 99, 255, 0.7);
+  color: #f3f3f3;
 }
