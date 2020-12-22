@@ -46,8 +46,19 @@ export class AppComponent implements OnInit {
       }
       window.scrollTo(0, 0);
     });
+    window.addEventListener("storage", (e) => { this.handleStorageEvent(e) })
   }
-
+  private handleStorageEvent(e: StorageEvent) {
+    if (e.key === 'kukai-wallet') {
+      if (e.oldValue && !e.newValue) { // logout in another tab
+        window.location.reload();
+      } else if (!e.oldValue && e.newValue) { // login in another tab
+        setTimeout(() => {
+          window.location.reload();
+        }, 15000);
+      }
+    }
+  }
   returnLanguage(lang: string) {
 
     // this.translate.use(lang);
