@@ -422,6 +422,6 @@ export class WalletService {
         activity.destination = { address: activity.destination };
       }
       return activity;
-    })
+    });
   }
 }

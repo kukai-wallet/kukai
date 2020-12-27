@@ -113,13 +113,20 @@ export class TzktService implements Indexer {
         const tokenId = `${tx.contract}:${tx.token_id}`;
         if (tx.contract && tokenId && tx.status === 'applied') {
           if (knownTokenIds.includes(tokenId)) {
+            const source: any = { address: tx.from };
+            if (tx.from === '' && tx.contract) {
+              source.address = tx.contract;
+              if (tx.alias) {
+                source.alias = tx.alias;
+              }
+            }
             const activity: Activity = {
               type: 'transaction',
               block: '',
               status: 1,
               amount: tx.amount,
               tokenId,
-              source: { address: tx.from },
+              source,
               destination: { address: tx.to },
               hash: tx.hash,
               timestamp: (new Date(tx.timestamp)).getTime()

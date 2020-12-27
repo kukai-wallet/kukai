@@ -53,9 +53,10 @@ export class AppComponent implements OnInit {
       if (e.oldValue && !e.newValue) {
         window.location.reload();
       } else if (!e.oldValue && e.newValue) {
-        setTimeout(() => {
+        setTimeout(async () => {
+          await this.router.navigate(['']);
           window.location.reload();
-        }, 15000);
+        }, 10000);
       }
     }
   }

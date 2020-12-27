@@ -126,7 +126,7 @@ export class ActivityService {
     }
   }
   getCounterparty(transaction: Activity, account: Account, withLookup = true): string {
-    let counterParty = { address: '' }
+    let counterParty = { address: '' };
     let counterPartyAddress = '';
     if (transaction.type === 'delegation') {
       if (transaction.destination) {
