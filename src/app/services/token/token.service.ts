@@ -200,7 +200,7 @@ export class TokenService {
           return `${Big(amount).div(10 ** (baseUnit ? token.decimals : 0)).toFixed()} ${token.symbol}`;
         }
       } else {
-        return '';
+        return '[Unknown token]';
       }
     }
   }

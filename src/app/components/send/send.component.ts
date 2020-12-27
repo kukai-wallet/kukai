@@ -730,8 +730,7 @@ export class SendComponent implements OnInit, OnChanges {
   checkReceiverAndAmount(toPkh: string, amount: string, finalCheck: boolean): string {
     if (!this.torusVerifier && (
       !this.inputValidationService.address(toPkh) ||
-      toPkh === this.activeAccount.address ||
-      (this.tokenTransfer && toPkh && toPkh.slice(0, 3) === 'KT1')
+      toPkh === this.activeAccount.address
     )) {
       return this.translate.instant('SENDCOMPONENT.INVALIDRECEIVERADDRESS');
     } else if (this.torusVerifier

@@ -142,6 +142,7 @@ export abstract class Account {
   delegate: string;
   state: string;
   activities: Activity[];
+  tokens: Token[] = [];
   pkh: string;
   pk: string;
   address: string;
@@ -158,22 +159,6 @@ export abstract class Account {
   public abstract isImplicit(): boolean;
   shortAddress(): string {
     return this.address.slice(0, 7) + '...' + this.address.slice(-4);
-  }
-}
-
-export class ImplicitAccount extends Account {
-  originatedAccounts: OriginatedAccount[];
-  derivationPath?: string;
-  tokens: Token[] = [];
-  constructor(pkh: string, pk: string, derivationPath?: string) {
-    super(pkh, pk, pkh);
-    this.originatedAccounts = [];
-    if (derivationPath) {
-      this.derivationPath = derivationPath;
-    }
-  }
-  isImplicit(): boolean {
-    return true;
   }
   getTokenBalance(tokenId: string): string {
     if (this.tokens.length) {
@@ -203,6 +188,21 @@ export class ImplicitAccount extends Account {
     if (tokenId.length > 37 && balance && balance !== '0' && balance.slice(0, 1) !== '-') {
       this.tokens.push({ tokenId, balance});
     }
+  }
+}
+
+export class ImplicitAccount extends Account {
+  originatedAccounts: OriginatedAccount[];
+  derivationPath?: string;
+  constructor(pkh: string, pk: string, derivationPath?: string) {
+    super(pkh, pk, pkh);
+    this.originatedAccounts = [];
+    if (derivationPath) {
+      this.derivationPath = derivationPath;
+    }
+  }
+  isImplicit(): boolean {
+    return true;
   }
 }
 

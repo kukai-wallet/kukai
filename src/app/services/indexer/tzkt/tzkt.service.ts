@@ -80,7 +80,7 @@ export class TzktService implements Indexer {
               if (address !== op.sender.address) {
                 return null;
               }
-              destination = op.newDelegate ? op.newDelegate :  { address: '' };
+              destination = op.newDelegate ? op.newDelegate : { address: '' };
               amount = '0';
               break;
             case 'origination':
@@ -112,30 +112,28 @@ export class TzktService implements Indexer {
       .then(data => data.transfers.map(tx => {
         const tokenId = `${tx.contract}:${tx.token_id}`;
         if (tx.contract && tokenId && tx.status === 'applied') {
-          if (knownTokenIds.includes(tokenId)) {
-            const source: any = { address: tx.from };
-            if (tx.from === '' && tx.contract) {
-              source.address = tx.contract;
-              if (tx.alias) {
-                source.alias = tx.alias;
-              }
-            }
-            const activity: Activity = {
-              type: 'transaction',
-              block: '',
-              status: 1,
-              amount: tx.amount,
-              tokenId,
-              source,
-              destination: { address: tx.to },
-              hash: tx.hash,
-              timestamp: (new Date(tx.timestamp)).getTime()
-            };
-            return activity;
-          } else {
+          if (!knownTokenIds.includes(tokenId)) {
             unknownTokenIds.push(tokenId);
-            return null;
           }
+          const source: any = { address: tx.from };
+          if (tx.from === '' && tx.contract) {
+            source.address = tx.contract;
+            if (tx.alias) {
+              source.alias = tx.alias;
+            }
+          }
+          const activity: Activity = {
+            type: 'transaction',
+            block: '',
+            status: 1,
+            amount: tx.amount,
+            tokenId,
+            source,
+            destination: { address: tx.to },
+            hash: tx.hash,
+            timestamp: (new Date(tx.timestamp)).getTime()
+          };
+          return activity;
         } else {
           return null;
         }

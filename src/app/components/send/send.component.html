@@ -146,6 +146,7 @@
           {{ torusLookupId }}</span>
         <span class="single-to">{{ transactions[0].to }}</span>
         <p id="previewAttention" *ngIf="torusLookupId">{{ previewAttention() }}</p>
+        <p id="previewAttention" *ngIf="tokenTransfer && transactions[0].to.slice(0, 3) === 'KT1'">Make sure the contract can manage tokens</p>
         <div class="seperator"></div>
       </ng-container>
       <ng-container *ngIf="isMultipleDestinations">
