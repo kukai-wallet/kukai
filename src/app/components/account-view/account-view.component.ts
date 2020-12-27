@@ -52,7 +52,7 @@ export class AccountViewComponent implements OnInit {
             this.account = this.walletService.wallet.getAccount(address);
           }
         });
-      setInterval(() => this.trigger = !this.trigger, 10 * 1000);
+      setInterval(() => this.trigger = !this.trigger, 1000);
     }
   }
   getType(transaction: Activity): string {

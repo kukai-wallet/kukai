@@ -1,139 +1,75 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 import { TranslateService } from '@ngx-translate/core';  // Multiple instances created ?
-import { timeout } from 'rxjs/operators';
+import * as timediff from 'timediff';
 
 @Pipe({
-    name: 'timeAgo',
-    pure: true  // if false pipe will be called at each changes - necessary for translation - is there a better way?
+  name: 'timeAgo',
+  pure: true  // if false pipe will be called at each changes - necessary for translation - is there a better way?
 })
 export class TimeAgoPipe implements PipeTransform {
-    constructor(
-        private translate: TranslateService
-    ) {}
-    transform(timestamp: number): string {
-        let result: string;
+  constructor(
+    private translate: TranslateService
+  ) { }
+  transform(timestamp: number): string {
 
-        let secTmp = '';
-        let secsTmp = '';
-        let mnTmp = '';
-        let mnsTmp = '';
-        let hrTmp = '';
-        let hrsTmp = '';
-        let dayTmp = '';
-        let daysTmp = '';
-        let monthTmp = '';
-        let monthsTmp = '';
-        let yearTmp = '';
-        let yearsTmp = '';
+    const now = this.translate.instant('TIMEAGOPIPE.JUSTNOW');
+    const sec = this.translate.instant('TIMEAGOPIPE.SEC');
+    const secs = sec;
+    const mn = this.translate.instant('TIMEAGOPIPE.MINUTE');
+    const mns = mn;
+    const hr = this.translate.instant('TIMEAGOPIPE.HOUR');
+    const hrs = this.translate.instant('TIMEAGOPIPE.HOURS');
+    const day = this.translate.instant('TIMEAGOPIPE.DAY');
+    const days = this.translate.instant('TIMEAGOPIPE.DAYS');
+    const month = this.translate.instant('TIMEAGOPIPE.MONTH');
+    const months = this.translate.instant('TIMEAGOPIPE.MONTHS');
+    const year = this.translate.instant('TIMEAGOPIPE.YEAR');
+    const years = this.translate.instant('TIMEAGOPIPE.YEARS');
 
-        secTmp = this.translate.instant('TIMEAGOPIPE.SEC');
-        // console.log('loaded? ' + secTmp);
-        secsTmp = secTmp;
-        mnTmp = this.translate.instant('TIMEAGOPIPE.MINUTE');
-        mnsTmp = mnTmp;
-        hrTmp = this.translate.instant('TIMEAGOPIPE.HOUR');
-        hrsTmp = this.translate.instant('TIMEAGOPIPE.HOURS');
-        dayTmp = this.translate.instant('TIMEAGOPIPE.DAY');
-        daysTmp = this.translate.instant('TIMEAGOPIPE.DAYS');
-        monthTmp = this.translate.instant('TIMEAGOPIPE.MONTH');
-        monthsTmp = this.translate.instant('TIMEAGOPIPE.MONTHS');
-        yearTmp = this.translate.instant('TIMEAGOPIPE.YEAR');
-        yearsTmp = this.translate.instant('TIMEAGOPIPE.YEARS');
-        // Tranforming from String to Date format
+    const timeNow = new Date().getTime();
+    const diff = timediff(timestamp, timeNow, 'YMDHmS');
 
-        // current time
-        const now = new Date().getTime();
+    const keys = Object.keys(diff);
+    let count = 0;
+    let output = '';
 
-        // time since transaction was made in seconds
-        const delta = (now - timestamp) / 1000;
-
-        // If transaction has just been broadcasted then dateString will be null in the first few seconds (prevalidation stage)
-        if (delta < 20 ) {
-            return this.translate.instant('TIMEAGOPIPE.JUSTNOW');
-            // 'just now';
+    for (const key of keys) {
+      if (diff[key]) {
+        if (count) {
+          output = output + ' ';
         }
-
-        // Return interval format in seconds, hours or days
-        if (delta < 60) {  // Sent in last minute
-            // result = Math.floor(delta) + ' sec ';
-            result = Math.round(Math.floor(delta) / 10) * 10 + ' ' + secTmp + ' ';
-        } else if (delta < 120) {  // Sent in last hour: 1h = 3600 sec -> displays seconds
-            // result = Math.floor(delta / 60) + ' mn ';
-            result = Math.floor(delta / 60) + ' ' + mnTmp + ' ';
-
-            // Adds seconds details if there's a remainder in 'delta % 60'
-            if (Math.floor(delta % 60) !== 0) {
-                // result = result + Math.floor(delta % 60) + ' sec ';
-                result = result + Math.round(Math.floor(delta % 60) / 10) * 10 + ' ' + secTmp + ' ';
+        switch (key) {
+          case 'years':
+            output = `${diff[key]} ${diff[key] === 1 ? year : years}`;
+            break;
+          case 'months':
+            output = output + `${diff[key]} ${diff[key] === 1 ? month : months}`;
+            break;
+          case 'days':
+            output = output + `${diff[key]} ${diff[key] === 1 ? day : days}`;
+            break;
+          case 'hours':
+            output = output + `${diff[key]} ${diff[key] === 1 ? hr : hrs}`;
+            break;
+          case 'minutes':
+            output = output + `${diff[key]} ${diff[key] === 1 ? mn : mns}`;
+            break;
+          case 'seconds':
+            if (!diff.minutes && diff.seconds < 30) {
+              output = now;
+            } else if (diff.minutes < 5) {
+              output = output + `${diff[key]} ${diff[key] === 1 ? sec : secs}`;
             }
-        } else if (delta < 86400) {  // Sent on last day: 1d = 86400 sec -> displays hours and seconds
-            result = String(Math.floor(delta / 3600));
-
-            // Adds suffix hr or hrs depending on 'delta / 3600' value
-            // result = Math.floor(delta / 3600) > 1 ? result + ' hrs ' : result + ' hr ';
-            result = Math.floor(delta / 3600) > 1 ? result + ' ' + hrsTmp + ' ' : result + ' ' + hrTmp + ' ';
-
-            // Adds minutes details if there's a remainder in 'delta % 3600'
-            if (Math.floor((delta % 3600) / 60) !== 0) {
-                result = result + String(Math.floor((delta % 3600) / 60)) + ' ' + mnTmp + ' ';
-                // result = result + String(Math.floor((delta % 3600) / 60)) + ' mn ';
-                // result = Math.floor((delta % 3600) / 60) > 1 ? result + ' mns ' : result + ' mn '; // there's no plural in mn
-            }
-        } else if (delta < 2592000) {  // Sent on last month: 1m = 2592000 sec (30 days) -> displays days and hours
-            result = String(Math.floor(delta / 86400));
-
-            // Adds suffix day or days depending on 'delta / 86400' value
-            result = Math.floor(delta / 86400) > 1 ? result + ' ' + daysTmp + ' ' : result + ' ' + dayTmp + ' ';
-            // result = Math.floor(delta / 86400) > 1 ? result + ' days ' : result + ' day ';
-
-            // Adds hours details if there's a remainder in 'delta % 86400'
-            if (Math.floor((delta % 86400) / 3600) !== 0) {
-                result = result + String(Math.floor((delta % 86400) / 3600));
-
-                // Adds suffix hr or hrs depending on '(delta % 86400) / 3600' value
-                result = Math.floor((delta % 86400) / 3600) > 1 ? result + ' ' + hrsTmp + ' ' : result + ' ' + hrTmp + ' ';
-                // result = Math.floor((delta % 86400) / 3600) > 1 ? result + ' hrs ' : result + ' hr ';
-            }
-        } else if (delta < 31536000) {  // Sent on last year: 1y = 31536000 sec (365 days) -> displays months and days
-            result = String(Math.floor(delta / 2592000));
-
-            // Adds suffix month or months depending on 'delta / 2592000' value
-            result = Math.floor(delta / 2592000) > 1 ? result + ' ' + monthsTmp + ' ' : result + ' ' + monthTmp + ' ';
-            // result = Math.floor(delta / 2592000) > 1 ? result + ' months ' : result + ' month ';
-
-            // Adds days details if there's a remainder in 'delta / 2592000'
-            if (Math.floor((delta % 2592000) / 86400) !== 0) {
-                result = result + String(Math.floor((delta % 2592000) / 86400));
-
-                // Adds suffix day or days depending on '(delta % 2592000) / 86400' value
-                result = Math.floor((delta % 2592000) / 86400) > 1 ? result + ' ' + daysTmp + ' ' : result + ' ' + dayTmp + ' ';
-                // result = Math.floor((delta % 2592000) / 86400) > 1 ? result + ' days ' : result + ' day ';
-            }
-
-        } else {  // Sent more than one year ago -> displays years and months
-            result = String(Math.floor(delta / 31536000));
-
-            // Adds suffix year or years depending on 'delta / 31536000' value
-            result = Math.floor(delta / 31536000) > 1 ? result + ' ' + yearsTmp + ' ' : result + ' ' + yearTmp + ' ';
-            // result = Math.floor(delta / 31536000) > 1 ? result + ' years ' : result + ' year ';
-
-            // Adds months details if there's a remainder in 'delta / 31536000' which is more then 1
-            if (Math.floor((delta % 31536000) / 2592000) !== 0) {
-                result = result + String(Math.floor((delta % 31536000) / 2592000));
-
-                // Adds suffix month or months depending on '(delta % 31536000) / 2592000' value
-                result = Math.floor((delta % 31536000) / 2592000) > 1 ? result + ' ' + monthsTmp + ' ' : result + ' ' + monthTmp + ' ';
-                // result = Math.floor((delta % 31536000) / 2592000) > 1 ? result + ' months ' : result + ' month ';
-            }
-
+            break;
         }
-
-        // const agoTmp = this.translate.instant('TIMEAGOPIPE.AGO');  // not working
-        const agoTmp = this.translate.instant('TIMEAGOPIPE.AGO');
-
-        result = result + agoTmp;
-        // console.log('in time-ago return result: ', result);  // working but View not updated when language is changed and pipe is pure
-        return result;
+        if (count) {
+          break;
+        }
+        count++;
+      }
     }
+    return output;
+  }
 }
+
