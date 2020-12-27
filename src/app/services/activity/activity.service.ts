@@ -75,7 +75,7 @@ export class ActivityService {
   }
   getAllTransactions(account: Account, counter: string): Observable<any> {
     const knownTokenIds: string[] = this.tokenService.knownTokenIds();
-    return fromPromise(this.indexerService.getOperations(account.address, knownTokenIds)).pipe(
+    return fromPromise(this.indexerService.getOperations(account.address, knownTokenIds, this.walletService.wallet)).pipe(
       flatMap((resp) => {
         const operations = resp.operations;
         this.handleUnknownTokenIds(resp.unknownTokenIds);
@@ -109,10 +109,10 @@ export class ActivityService {
       const index = oldActivities.findIndex((a) => a.hash === activity.hash);
       if (index === -1 || (index !== -1 && oldActivities[index].status === 0)) {
         if (activity.type === 'transaction') {
-          if (account.address === activity.source) {
+          if (account.address === activity.source.address) {
             this.messageService.addSuccess(account.shortAddress() + ': Sent ' + this.tokenService.formatAmount(activity.tokenId, activity.amount.toString()));
           }
-          if (account.address === activity.destination) {
+          if (account.address === activity.destination.address) {
             this.messageService.addSuccess(account.shortAddress() + ': Received ' + this.tokenService.formatAmount(activity.tokenId, activity.amount.toString()));
           }
         } else if (activity.type === 'delegation') {
@@ -125,32 +125,33 @@ export class ActivityService {
       }
     }
   }
-  getCounterparty(transaction: any, account: Account, withLookup = true): string {
-    let counterParty = '';
+  getCounterparty(transaction: Activity, account: Account, withLookup = true): string {
+    let counterParty = { address: '' }
+    let counterPartyAddress = '';
     if (transaction.type === 'delegation') {
       if (transaction.destination) {
         counterParty = transaction.destination;
       } else {
-        counterParty = ''; // User has undelegated
+        counterParty = { address: '' }; // User has undelegated
       }
     } else if (transaction.type === 'transaction') {
-      if (account.address === transaction.source) {
+      if (account.address === transaction.source.address) {
         counterParty = transaction.destination; // to
       } else {
         counterParty = transaction.source; // from
       }
     } else if (transaction.type === 'origination') {
-      if (account.address === transaction.source) {
+      if (account.address === transaction.source.address) {
         counterParty = transaction.destination;
       } else {
         counterParty = transaction.source;
       }
     } else {
-      counterParty = '';
+      counterParty = { address: '' };
     }
     if (withLookup) {
-      counterParty = this.lookupService.resolve(counterParty);
+      counterPartyAddress = this.lookupService.resolve(counterParty);
     }
-    return counterParty;
+    return counterPartyAddress;
   }
 }

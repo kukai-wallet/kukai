@@ -1,3 +1,8 @@
+import { Activity } from './services/wallet/wallet';
+import { ContractType } from './services/token/token.service';
+
+export { Activity };
+
 export interface KeyPair {
     sk: string|null;
     pk: string|null;
@@ -20,16 +25,6 @@ export interface Account {
   balance: Balance;
   numberOfActivites: number;
   activities: Activity[];
-}
-export interface Activity {
-  hash: string;
-  block: string;
-  source: string;
-  destination: string;
-  amount: number;
-  fee: number;
-  timestamp: null|Date;
-  type: string;
 }
 export interface Balance {
   balanceXTZ: number | null;
@@ -123,4 +118,3 @@ export interface Constants {
   };
   ASSETS: Record<string, ContractType>;
 }
-import { ContractType } from './services/token/token.service';

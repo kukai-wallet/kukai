@@ -9,7 +9,8 @@ enum LookupType { // ordered in priority
   TezosDomains,
   Google,
   Reddit,
-  Twitter
+  Twitter,
+  Alias
 }
 
 @Injectable({
@@ -140,12 +141,14 @@ export class LookupService {
     }
     return { x, y };
   }
-  resolve(address: string): any {
+  resolve(party: any): any {
     this.initCheck();
-    const { x, y } = this.indexTop(address);
+    const { x, y } = this.indexTop(party.address);
     if (x !== -1 && y !== -1) {
-      return { name: this.records[x].data[y].name, lookupType: this.records[x].data[y].lookupType, address };
+      return { name: this.records[x].data[y].name, lookupType: this.records[x].data[y].lookupType, address: party.address };
+    } else if (party.alias) {
+      return { name: party.alias, lookupType: LookupType.Alias, address: party.address };
     }
-    return { address };
+    return { address: party.address };
   }
 }

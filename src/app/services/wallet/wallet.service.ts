@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { KeyPair, WalletType } from './../../interfaces';
+import { KeyPair, WalletType, Activity } from './../../interfaces';
 import {
   WalletObject,
   HdWallet,
@@ -389,7 +389,7 @@ export class WalletService {
       } else {
         impAcc.state = implicit.state;
       }
-      impAcc.activities = implicit.activities;
+      impAcc.activities = this.activityMigration(implicit.activities);
       if (implicit.tokens) {
         impAcc.tokens = implicit.tokens;
       }
@@ -407,10 +407,21 @@ export class WalletService {
         } else {
           impAcc.state = originated.state;
         }
-        origAcc.activities = originated.activities;
+        origAcc.activities = this.activityMigration(originated.activities);
         impAcc.originatedAccounts.push(origAcc);
       }
       this.wallet.implicitAccounts.push(impAcc);
     }
+  }
+  activityMigration(activities: any[]): Activity[] { // prevent storage from breaking (1.11)
+    return activities.map(activity => {
+      if (!activity.source.address) {
+        activity.source = { address: activity.source };
+      }
+      if (!activity.destination.address) {
+        activity.destination = { address: activity.destination };
+      }
+      return activity;
+    })
   }
 }

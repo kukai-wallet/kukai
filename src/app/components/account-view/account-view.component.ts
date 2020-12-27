@@ -55,10 +55,10 @@ export class AccountViewComponent implements OnInit {
       setInterval(() => this.trigger = !this.trigger, 10 * 1000);
     }
   }
-  getType(transaction: any): string {
+  getType(transaction: Activity): string {
     if (transaction.type !== 'transaction') {
       if (transaction.type === 'delegation') {
-        if (transaction.destination) {
+        if (transaction.destination.address) {
           return 'delegated';
         } else {
           return 'undelegated';
@@ -68,7 +68,7 @@ export class AccountViewComponent implements OnInit {
       }
     } else {
       let operationType = '';
-      if (transaction.source === this.account.address) {
+      if (transaction.source.address === this.account.address) {
         operationType = 'sent';
       } else {
         operationType = 'received';

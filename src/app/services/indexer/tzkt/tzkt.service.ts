@@ -3,6 +3,7 @@ import { CONSTANTS } from '../../../../environments/environment';
 import { Indexer } from '../indexer.service';
 import * as cryptob from 'crypto-browserify';
 import Big from 'big.js';
+import { WalletObject, Activity } from '../../wallet/wallet';
 
 @Injectable({
   providedIn: 'root'
@@ -48,9 +49,9 @@ export class TzktService implements Indexer {
             (data.balance ? data.balance : '') +
             (data.last_action ? data.last_action : '') +
             (tokens ? JSON.stringify(tokens) : '');
-          const input = Buffer.from(JSON.stringify(payload), 'base64');
+          const input = Buffer.from(payload);
           const hash = cryptob.createHash('md5').update(input, 'base64').digest('hex');
-          if (hash !== 'edc66a88461120f2ea9132d64be0d8b9' && payload && payload !== '0001-01-01T00:00:00Z[]') {
+          if (payload && payload !== '0001-01-01T00:00:00Z[]') {
             return { counter: hash, unknownTokenIds, tokens };
           }
         }
@@ -58,12 +59,12 @@ export class TzktService implements Indexer {
       });
   }
   // Todo: Merge with token transactions
-  async getOperations(address: string, knownTokenIds: string[] = []): Promise<any> {
+  async getOperations(address: string, knownTokenIds: string[] = [], wallet: WalletObject): Promise<any> {
     const ops = await fetch(`https://api.${CONSTANTS.NETWORK}.tzkt.io/v1/accounts/${address}/operations?limit=20&type=delegation,origination,transaction`)
       .then(response => response.json())
       .then(data => data.map(op => {
-        if (!op.hasInternals && op.status === 'applied') {
-          let destination = '';
+        if (!(op.hasInternals && wallet.getAccount(op.target.address)) && op.status === 'applied') {
+          let destination = { address: '' };
           let amount = '0';
           switch (op.type) {
             case 'transaction':
@@ -72,18 +73,18 @@ export class TzktService implements Indexer {
                 op.amount.toString() === '0') {
                 return null;
               }
-              destination = op.target.address;
+              destination = op.target;
               amount = op.amount.toString();
               break;
             case 'delegation':
               if (address !== op.sender.address) {
                 return null;
               }
-              destination = op.newDelegate ? op.newDelegate.address : '';
+              destination = op.newDelegate ? op.newDelegate :  { address: '' };
               amount = '0';
               break;
             case 'origination':
-              destination = op.originatedContract.address;
+              destination = op.originatedContract;
               if (op.contractBalance) {
                 amount = op.contractBalance.toString();
               }
@@ -92,16 +93,17 @@ export class TzktService implements Indexer {
               console.log(`Ignoring kind ${op.type}`);
               return null;
           }
-          return {
+          const activity: Activity = {
             type: op.type,
             block: op.block,
             status: 1,
             amount,
-            source: op.sender.address,
+            source: op.sender,
             destination,
             hash: op.hash,
             timestamp: (new Date(op.timestamp)).getTime()
           };
+          return activity;
         }
       }).filter(obj => obj));
     const unknownTokenIds: string[] = [];
@@ -111,17 +113,18 @@ export class TzktService implements Indexer {
         const tokenId = `${tx.contract}:${tx.token_id}`;
         if (tx.contract && tokenId && tx.status === 'applied') {
           if (knownTokenIds.includes(tokenId)) {
-            return {
+            const activity: Activity = {
               type: 'transaction',
               block: '',
               status: 1,
               amount: tx.amount,
               tokenId,
-              source: tx.from,
-              destination: tx.to,
+              source: { address: tx.from },
+              destination: { address: tx.to },
               hash: tx.hash,
               timestamp: (new Date(tx.timestamp)).getTime()
             };
+            return activity;
           } else {
             unknownTokenIds.push(tokenId);
             return null;

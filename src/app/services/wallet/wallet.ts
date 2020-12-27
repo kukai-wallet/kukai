@@ -219,10 +219,16 @@ export class Activity {
   type: string;
   block: string;
   status: number; // 0: unconfirmed, 1: confirmed, -1: failed
-  amount: number;
-  source: string;
-  fee: number;
-  destination: string;
+  amount: string;
+  source: {
+    address: string,
+    alias?: string
+  };
+  destination: {
+    address: string,
+    alias?: string
+  };
+  fee?: string;
   hash: string;
   timestamp: number | null;
   tokenId?: string;
