@@ -946,4 +946,10 @@ export class SendComponent implements OnInit, OnChanges {
   setParametersFormat(id: number) {
     this.parametersFormat = id;
   }
+  getTitle() {
+    if (this.beaconMode && this.parameters?.entrypoint === 'mint') {
+      return 'Mint token';
+    }
+    return `Send ${this.getAssetName(false)}`;
+  }
 }

@@ -1,7 +1,7 @@
 <app-header [activeAccount]="account"></app-header>
 <div id="wrapper" *ngIf="account">
   <div class="left-container">
-    <div class="main-container small" [class.expanded]="!(account.isImplicit() || account.tokens.length)">
+    <div class="main-container small" [class.expanded]="!displayTokenCard()">
       <div class="top-container">
         <H1>Account Information</H1>
       </div>
@@ -27,7 +27,7 @@
         </div>
       </div>
     </div>
-    <div class="main-container small" style="margin-top: 2rem" *ngIf="account.isImplicit() || account.tokens.length">
+    <div class="main-container small" style="margin-top: 2rem" *ngIf="displayTokenCard()">
       <div class="top-container">
         <H1>Tokens</H1>
       </div>

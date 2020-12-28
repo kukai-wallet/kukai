@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CONSTANTS } from '../../../environments/environment';
+import { CONSTANTS, TRUSTED_TOKEN_CONTRACTS } from '../../../environments/environment';
 import { IndexerService } from '../indexer/indexer.service';
 import Big from 'big.js';
 
@@ -120,6 +120,9 @@ export class TokenService {
     }
   }
   async searchMetadata(contractAddress: string, id: number) {
+    if (!TRUSTED_TOKEN_CONTRACTS.includes(contractAddress)) {
+      return;
+    }
     const tokenId = `${contractAddress}:${id}`;
     if (this.explore(tokenId)) {
       console.log(`Searching for tokenId: ${tokenId}`);

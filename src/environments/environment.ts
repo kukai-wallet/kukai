@@ -45,3 +45,6 @@ export const CONSTANTS: Constants = {
     }
   }
 };
+export const TRUSTED_TOKEN_CONTRACTS = [
+  'KT1T6uCxdWcvUhKZfeg83QU2wrormgy63Upd'
+];

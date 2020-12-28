@@ -9,7 +9,7 @@
   <div class="km-content">
     <div class="x" (click)="closeModalAction()"><img src="../../../assets/img/x.svg"></div>
     <div class="km-header">
-      <H1 *ngIf="activeView === 0">Send {{ getAssetName(false) }}</H1>
+      <H1 *ngIf="activeView === 0">{{ getTitle() }}</H1>
       <H1 *ngIf="activeView === 1">Confirmation</H1>
       <!--<span class="close" (click)="modalOpen = false" class="close">&times;</span>-->
       <button *ngIf="activeView === 0 && !(tokenTransfer || beaconMode)" class="small multiple-destinations" (click)="toggleDestination()">
