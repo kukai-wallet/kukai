@@ -145,6 +145,7 @@ export class CoordinatorService {
             const age = new Date().getTime() - new Date(latestActivity.timestamp).getTime();
             if (age > 360000) {
               acc.activities.shift();
+              this.walletService.storeWallet();
             }
           }
         }
@@ -261,5 +262,6 @@ export class CoordinatorService {
       console.log('Unknown metadata');
       console.log(metadata);
     }
+    this.walletService.storeWallet();
   }
 }
