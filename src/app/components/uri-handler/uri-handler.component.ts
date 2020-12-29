@@ -109,10 +109,10 @@ export class UriHandlerComponent implements OnInit {
           console.warn('Invocation of user controlled contract is disabled');
           await this.beaconService.rejectOnPermission(message);
           return false;
-        } else if (message.operationDetails.length > 1 && (
+        } else if (
           !message.operationDetails[i].destination ||
           !message.operationDetails[i].amount
-        )) {
+        ) {
           console.warn('Missing destination or amount');
           await this.beaconService.rejectOnUnknown(message);
           return false;
