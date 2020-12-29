@@ -23,7 +23,7 @@
         <ng-container *ngIf="!hideAmount">
           <input #amountInput class="input" class="custom-large" placeholder="0.00" [(ngModel)]="amount"
             (mousedown)="sendMax = false; default" [style.font-size.rem]="dynSize()" (input)="amountChange()"
-            (keypress)="keyPressNumbersDecimal($event)" (change)="amountChange()"
+            (keypress)="keyPressNumbersDecimal($event, 'amount')" (change)="amountChange()"
             [style.width.ch]="amount ? amount.length + 1 : 3.6" [disabled]="isMultipleDestinations || (beaconMode && operationRequest.operationDetails[0].amount)">
           <span class="tez">{{ getAssetName() }}</span>
         </ng-container>
@@ -101,6 +101,7 @@
           <div class="group">
             <label>Fee</label>
             <input type="text" (input)="updateMaxAmount()" (paste)="updateMaxAmount()" class="text"
+              (keypress)="keyPressNumbersDecimal($event, 'fee')"
               placeholder={{this.defaultTransactionParams.fee.toString()}} [(ngModel)]="fee">
           </div>
         </div>
@@ -146,7 +147,7 @@
           {{ torusLookupId }}</span>
         <span class="single-to">{{ transactions[0].to }}</span>
         <p id="previewAttention" *ngIf="torusLookupId">{{ previewAttention() }}</p>
-        <p id="previewAttention" *ngIf="tokenTransfer && transactions[0].to.slice(0, 3) === 'KT1'">Make sure the contract can manage tokens</p>
+        <p id="previewAttention" *ngIf="tokenTransfer && transactions[0].to.slice(0, 3) === 'KT1'">Warning: Verify the contract can manage tokens</p>
         <div class="seperator"></div>
       </ng-container>
       <ng-container *ngIf="isMultipleDestinations">

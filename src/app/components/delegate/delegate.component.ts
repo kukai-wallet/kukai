@@ -300,6 +300,18 @@ export class DelegateComponent implements OnInit, OnChanges {
       return '';
     }
   }
+  // Only Numbers with Decimals
+  keyPressNumbersDecimal(event, input) {
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode !== 46 && charCode > 31
+      && (charCode < 48 || charCode > 57)) {
+      event.preventDefault();
+      return false;
+    } else if (charCode === 46 && this[input].length === 0) {
+      this[input] = '0' + this[input];
+    }
+    return true;
+  }
   download() {
     this.exportService.downloadOperationData(this.sendResponse.payload.unsignedOperation, false);
   }
