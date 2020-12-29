@@ -21,9 +21,10 @@
   margin-left: 0.625rem;
 }
 :host > div.list-item div.imgWrapper {
-  width: 2.5rem;
+  margin-left: 1rem;
+  min-width: 1.5rem;
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   align-items: center;
 }
 :host > div.list-item img {
