@@ -157,7 +157,7 @@ export class TzktService implements Indexer {
     return null;
   }
   async extractTokenMetadata(bigMapId: number, id: number) {
-    const tokenBigMap = await this.fetchApi(`${this.bcd}/bigmap/${CONSTANTS.NETWORK}/${bigMapId}/keys`);
+    const tokenBigMap = await this.fetchApi(`${this.bcd}/bigmap/${CONSTANTS.NETWORK}/${bigMapId}/keys?size=1000`);
     console.log(`${this.bcd}/bigmap/${CONSTANTS.NETWORK}/${bigMapId}/keys`);
     let url = '';
     const metadata: any = {};
