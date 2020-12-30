@@ -120,9 +120,6 @@ export class TokenService {
     }
   }
   async searchMetadata(contractAddress: string, id: number) {
-    if (!TRUSTED_TOKEN_CONTRACTS.includes(contractAddress)) {
-      return;
-    }
     const tokenId = `${contractAddress}:${id}`;
     if (this.explore(tokenId)) {
       console.log(`Searching for tokenId: ${tokenId}`);
@@ -135,12 +132,13 @@ export class TokenService {
           category: metadata.tokenCategory ? metadata.tokenCategory : '',
           tokens: {}
         };
+        const imageSrc = (metadata.imageUri && TRUSTED_TOKEN_CONTRACTS.includes(contractAddress)) ? metadata.imageUri : '../../../assets/img/tokens/default.png';
         const token: TokenData = {
           name: metadata.name,
           symbol: metadata.symbol,
           decimals: (!isNaN(metadata.decimals) && metadata.decimals >= 0) ? Number(metadata.decimals) : 0,
           description: metadata.description ? metadata.description : '',
-          imageSrc: metadata.imageUri ? metadata.imageUri : '../../../assets/img/tokens/default.png',
+          imageSrc,
           isNft: metadata?.isNft ? metadata.isNft : false,
           nonTransferable: metadata?.nonTransferable ? metadata.nonTransferable : false,
           symbolPrecedence: metadata?.symbolPrecedence ? metadata.symbolPrecedence : false,
