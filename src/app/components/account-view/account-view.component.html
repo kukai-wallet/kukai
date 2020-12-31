@@ -17,8 +17,8 @@
           <span style="width: auto; font-size: 0.8125rem">{{ account.address }}</span>
           <H2>Balance</H2>
           <div style="margin-top: 0"><span>{{ account.balanceXTZ / 1000000 | number: "1.0-6" }} tez</span><span
-              class="mark">—</span><span class="grey"
-              style="font-size: 0.75rem">{{ account.balanceUSD | number: "1.0-0" }} USD</span></div>
+              class="mark">—</span><span class="grey" style="font-size: 0.75rem">{{ account.balanceUSD | number: "1.0-0"
+              }} USD</span></div>
           <H2>Delegate</H2>
           <app-delegate [activeAccount]="account"></app-delegate>
         </div>
@@ -34,19 +34,24 @@
       <div class="token-container">
         <ng-container *ngIf="account.tokens.length; else noTokens">
           <ng-container *ngFor="let token of account.tokens">
-            <ng-container *ngIf="tokenService.getAsset(token.tokenId); let tokenData">
-              <div class="seperator"></div>
+            <div class="seperator"></div>
+            <ng-container *ngIf="tokenService.getAsset(token.tokenId); else unknownToken; let tokenData">
               <div class="token-row">
                 <app-token [account]="account" [token]="tokenData"></app-token>
                 <app-send [activeAccount]="account" [tokenTransfer]="token.tokenId"></app-send>
               </div>
             </ng-container>
+            <ng-template #unknownToken>
+              <div class="token-row">
+                <app-token [account]="account" [token]="this.tokenService.getPlaceholderToken(token.tokenId)">
+                </app-token>
+              </div>
+            </ng-template>
           </ng-container>
         </ng-container>
         <ng-template #noTokens>
           <span class="no-tokens">No tokens found</span>
         </ng-template>
-        
       </div>
     </div>
   </div>

@@ -22,6 +22,9 @@ export class TokenComponent implements OnInit {
   listDisplayText(): string {
     const tokenKey = `${this.token.contractAddress}:${this.token.id}`;
     const tokenBalance = this.account.getTokenBalance(tokenKey);
+    if (this.token.name === '[Unknown token]') {
+      return (this.tokenService.searchTimeMs(tokenKey) > 90000) ? this.token.name : 'Searching for metadata...';
+    }
     return this.tokenService.formatAmount(tokenKey, tokenBalance);
   }
   openModal() {

@@ -168,6 +168,29 @@ export class TokenService {
       return true;
     }
   }
+  searchTimeMs(tokenId: string) {
+    if (this.exploredIds[tokenId]) {
+      const token = this.exploredIds[tokenId];
+      return (token.lastCheck - token.firstCheck);
+    }
+    return 0;
+  }
+  getPlaceholderToken(tokenId: string): TokenResponseType {
+    const tokenIdArray = tokenId.split(':');
+    const contractAddress: string = tokenIdArray[0];
+    const id: number = tokenIdArray[1] ? Number(tokenIdArray[1]) : -1;
+    return {
+      contractAddress,
+      id,
+      decimals: 0,
+      imageSrc: '../../../assets/img/tokens/default.png',
+      name: '[Unknown token]',
+      symbol: '',
+      description: '',
+      category: '',
+      kind: 'FA2',
+    };
+  }
   saveMetadata() {
     localStorage.setItem(
       this.storeKey,
@@ -189,7 +212,7 @@ export class TokenService {
       }
     }
   }
-  formatAmount(tokenKey: string, amount: string, baseUnit = true) {
+  formatAmount(tokenKey: string, amount: string, baseUnit = true): string {
     if (!tokenKey) {
       return `${Big(amount).div(10 ** (baseUnit ? 6 : 0)).toFixed()} tez`;
     } else {

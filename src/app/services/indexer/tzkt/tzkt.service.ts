@@ -29,10 +29,9 @@ export class TzktService implements Indexer {
         if (data) {
           if (data?.tokens?.length) {
             for (const token of data.tokens) {
-              if (knownTokenIds.includes(`${token.contract}:${token.token_id}`)) {
                 tokens.push(token);
-              } else {
-                unknownTokenIds.push(`${token.contract}:${token.token_id}`);
+                if (!knownTokenIds.includes(`${token.contract}:${token.token_id}`)) {
+                  unknownTokenIds.push(`${token.contract}:${token.token_id}`);
               }
             }
           }
