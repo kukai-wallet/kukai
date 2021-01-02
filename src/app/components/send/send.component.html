@@ -200,13 +200,14 @@
       </div>
       <div class="seperator"></div>
       <ng-container *ngIf="batchParameters.length > 1">
-        Contract Invokations
-        <div class="tabs-container blue" *ngIf="batchParameters.length <= 5">
+        <H6 style="color: #A8A8A8">Contract Invokations</H6>
+        <div class="simple-tabs" *ngIf="batchParameters.length <= 5">
           <ul class="tabs">
             <ng-container *ngFor="let params of batchParameters; let i = index">
               <li class="tab" [class.active]="batchParamIndex === i" (click)="updateParameters(i, params.parameters)">
-                <ng-container *ngIf="batchParameters.length <= 3">Operation</ng-container><ng-container *ngIf="batchParameters.length > 3">Tx</ng-container> {{ params.num }}</li>
+                <ng-container *ngIf="batchParameters.length <= 3">Operation</ng-container><ng-container *ngIf="batchParameters.length > 3">Tx</ng-container>&nbsp;{{ params.num }}</li>
             </ng-container>
+            <li class="tab rest"></li>
           </ul>
         </div>
         <select *ngIf="batchParameters.length > 5" class="select-css parameters" [(ngModel)]="batchParamIndex"

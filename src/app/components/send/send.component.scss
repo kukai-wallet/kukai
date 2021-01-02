@@ -234,11 +234,9 @@ div.kukai-modal p#previewAttention {
   font-size: 0.875rem;
   line-height: 1rem;
 }
+// Micheline / JSON tab
 div.tabs-container {
   margin-top: 0.5rem;
-}
-div.tabs-container.blue {
-  margin-bottom: 0.5rem;
 }
 div.tabs-container > ul.tabs {
   display: flex;
@@ -280,4 +278,30 @@ div.tabs-container.blue > ul.tabs > li.tab.active {
 div.tabs-container.blue > ul.tabs > li.tab:hover {
   background-color: rgba(89, 99, 255, 0.7);
   color: #f3f3f3;
+}
+// Multi invokation tab
+div.simple-tabs > ul.tabs {
+  display: flex;
+  list-style-type: none;
+  margin: 0.5rem 0;
+  padding: 0;
+}
+div.simple-tabs > ul.tabs > li.tab {
+  border: 1px solid rgba(0, 0, 0, 0);
+  color: #808080;
+  border-bottom: 1px solid;
+  text-align: center;
+  cursor: pointer;
+  padding: 0.25rem 0.75rem;
+}
+div.simple-tabs > ul.tabs > li.tab.active {
+  border: 1px solid;
+  color: #161616;
+  border-bottom: 1px solid rgba(0, 0, 0, 0);
+}
+div.simple-tabs > ul.tabs > li.tab.rest {
+  width: 100%;
+  padding: 0;
+  border-left: none;
+  border-right: none;
 }
