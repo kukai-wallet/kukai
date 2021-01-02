@@ -29,6 +29,8 @@
 }
 :host > div.list-item img {
   height: 1.5rem;
+  width: 1.5rem;
+  object-fit: contain;
 }
 :host > div.kukai-modal img {
   height: 6.5rem;
