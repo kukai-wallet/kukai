@@ -132,7 +132,7 @@ export class TokenService {
           category: metadata.tokenCategory ? metadata.tokenCategory : '',
           tokens: {}
         };
-        const imageSrc = (metadata.imageUri && TRUSTED_TOKEN_CONTRACTS.includes(contractAddress)) ? metadata.imageUri : '../../../assets/img/tokens/default.png';
+        const imageSrc = (metadata.imageUri/* && TRUSTED_TOKEN_CONTRACTS.includes(contractAddress)*/) ? metadata.imageUri : '../../../assets/img/tokens/default.png';
         const token: TokenData = {
           name: metadata.name,
           symbol: metadata.symbol,
