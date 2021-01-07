@@ -14,7 +14,7 @@ export const CONSTANTS: Constants = {
     apiKey: 'klassare'
   },
   ASSETS: {
-    'KT1LN4LPSqTMS7Sd2CJw4bbDGRkMv2t68Fy9': {
+    'KT1LN4LPSqTMS7Sd2CJw4bbDGRkMv2t68Fy9': { // USDtz
       kind: 'FA1.2',
       category: 'finance',
       tokens: {
@@ -27,7 +27,7 @@ export const CONSTANTS: Constants = {
         }
       }
     },
-    'KT1PWx2mnDueood7fEmfbBDKx1D9BAnnXitn': {
+    'KT1PWx2mnDueood7fEmfbBDKx1D9BAnnXitn': { // tzBTC
       kind: 'FA1.2',
       category: 'finance',
       tokens: {
@@ -37,6 +37,38 @@ export const CONSTANTS: Constants = {
           decimals: 8,
           description: 'tzBTC delivers the power of Bitcoin as a token on the Tezos blockchain.',
           imageSrc: '../../../assets/img/tokens/tzbtc.png',
+          nonTransferable: false,
+          symbolPrecedence: true,
+          binaryAmount: false
+        }
+      }
+    },
+    'KT19at7rQUvyjxnZ2fBv7D9zc8rkyG7gAoU8': { // ETHtz
+      kind: 'FA1.2',
+      category: 'finance',
+      tokens: {
+        0: {
+          name: 'Ethertez',
+          symbol: 'ETHtz',
+          decimals: 18,
+          description: 'ETHtz is Ethereum wrapped in the Tezos FA 2.0 token standard.',
+          imageSrc: '../../../assets/img/tokens/ethtz.png',
+          nonTransferable: false,
+          symbolPrecedence: true,
+          binaryAmount: false
+        }
+      }
+    },
+    'KT1VYsVfmobT7rsMVivvZ4J8i3bPiqz12NaH': { // wXTZ
+      kind: 'FA1.2',
+      category: 'finance',
+      tokens: {
+        0: {
+          name: 'Wrapped Tezos',
+          symbol: 'wXTZ',
+          decimals: 6,
+          description: 'Wrapped Tezos by StakerDAO, a fully collateralized representation of XTZ.',
+          imageSrc: '../../../assets/img/tokens/wxtz.png',
           nonTransferable: false,
           symbolPrecedence: true,
           binaryAmount: false
