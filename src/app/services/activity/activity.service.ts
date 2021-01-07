@@ -41,7 +41,6 @@ export class ActivityService {
         this.handleUnknownTokenIds(unknownTokenIds);
         if (account.state !== counter) {
           console.log(account.state + ' ' + counter);
-          console.log('data', unknownTokenIds);
           if (data.tokens) {
             this.updateTokenBalances(account, data.tokens);
           }
@@ -95,7 +94,6 @@ export class ActivityService {
             this.lookupService.check(counterParty);
           }
         } else {
-          console.log('#');
           console.log(operations);
         }
         return of({

@@ -57,7 +57,6 @@ export class TzktService implements Indexer {
         return { counter: '', unknownTokenIds, tokens };
       });
   }
-  // Todo: Merge with token transactions
   async getOperations(address: string, knownTokenIds: string[] = [], wallet: WalletObject): Promise<any> {
     const ops = await fetch(`https://api.${CONSTANTS.NETWORK}.tzkt.io/v1/accounts/${address}/operations?limit=20&type=delegation,origination,transaction`)
       .then(response => response.json())

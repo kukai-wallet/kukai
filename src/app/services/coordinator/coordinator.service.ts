@@ -259,8 +259,7 @@ export class CoordinatorService {
       const account = this.walletService.wallet.getAccount(from);
       account.activities.unshift(delegation);
     } else {
-      console.log('Unknown metadata');
-      console.log(metadata);
+      console.log('Unknown metadata', metadata);
     }
     this.walletService.storeWallet();
   }

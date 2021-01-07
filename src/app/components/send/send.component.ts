@@ -117,11 +117,10 @@ export class SendComponent implements OnInit, OnChanges {
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (this.beaconMode) {
-      if (this.operationRequest) {
+      if (this.operationRequest &&
+        this.operationRequest.operationDetails[0].kind === 'transaction') {
         console.log('Beacon payload to send', this.operationRequest);
-        if (this.operationRequest.operationDetails[0].kind === 'transaction') {
-          this.loadBeaconPayload();
-        }
+        this.loadBeaconPayload();
       } else {
         this.operationResponse.emit(null);
       }
@@ -154,8 +153,7 @@ export class SendComponent implements OnInit, OnChanges {
         }
       } else {
         if (this.operationRequest.operationDetails[0].destination) {
-          const destination = this.operationRequest.operationDetails[0].destination;
-          this.toPkh = destination;
+          this.toPkh = this.operationRequest.operationDetails[0].destination;
         } else {
           console.warn('No destination');
         }
