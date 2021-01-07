@@ -51,13 +51,13 @@ describe('TokenService', () => {
         binaryAmount: false
       };
       expect(service.getAsset('KT1XXCz59vAzfbvDsNrrmKKuqSFrzQgpUqGM:0')).toEqual(expectedTokenResponse);
-      done()
+      done();
     });
     it('Metadata with undefined decimals => exclusion', async (done) => {
       response.decimals = undefined;
       await service.searchMetadata('KT1XXCz59vAzfbvDsNrrmKKuqSFrzQgpUqGM', 0);
       expect(service.getAsset('KT1XXCz59vAzfbvDsNrrmKKuqSFrzQgpUqGM:0')).toEqual(null);
-      done()
+      done();
     });
     it('Metadata with no symbol => exclusion', async (done) => {
       response.symbol = null;
@@ -69,7 +69,7 @@ describe('TokenService', () => {
       response.decimals = -1;
       await service.searchMetadata('KT1XXCz59vAzfbvDsNrrmKKuqSFrzQgpUqGM', 0);
       expect(service.getAsset('KT1XXCz59vAzfbvDsNrrmKKuqSFrzQgpUqGM:0')).toEqual(null);
-      done()
+      done();
     });
     it('Metadata with no name => exclusion', async (done) => {
       response.name = null;
