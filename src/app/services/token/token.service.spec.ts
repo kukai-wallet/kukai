@@ -33,7 +33,7 @@ describe('TokenService', () => {
     beforeEach(() => {
       spyOn(indexerService, 'getTokenMetadata').and.callFake(async function () { return response; });
     });
-    it('Valid metadata => inclusion', async () => {
+    it('Valid metadata => inclusion', async (done) => {
       await service.searchMetadata('KT1XXCz59vAzfbvDsNrrmKKuqSFrzQgpUqGM', 0);
       const expectedTokenResponse: TokenResponseType = {
         kind: 'FA2',
@@ -51,27 +51,31 @@ describe('TokenService', () => {
         binaryAmount: false
       };
       expect(service.getAsset('KT1XXCz59vAzfbvDsNrrmKKuqSFrzQgpUqGM:0')).toEqual(expectedTokenResponse);
+      done()
     });
-
-    it('Metadata with undefined decimals => exclusion', async () => {
+    it('Metadata with undefined decimals => exclusion', async (done) => {
       response.decimals = undefined;
       await service.searchMetadata('KT1XXCz59vAzfbvDsNrrmKKuqSFrzQgpUqGM', 0);
       expect(service.getAsset('KT1XXCz59vAzfbvDsNrrmKKuqSFrzQgpUqGM:0')).toEqual(null);
+      done()
     });
-    it('Metadata with negative decimals => exclusion', async () => {
-      response.decimals = -1;
-      await service.searchMetadata('KT1XXCz59vAzfbvDsNrrmKKuqSFrzQgpUqGM', 0);
-      expect(service.getAsset('KT1XXCz59vAzfbvDsNrrmKKuqSFrzQgpUqGM:0')).toEqual(null);
-    });
-    it('Metadata with no name => exclusion', async () => {
-      response.name = null;
-      await service.searchMetadata('KT1XXCz59vAzfbvDsNrrmKKuqSFrzQgpUqGM', 0);
-      expect(service.getAsset('KT1XXCz59vAzfbvDsNrrmKKuqSFrzQgpUqGM:0')).toEqual(null);
-    });
-    it('Metadata with no symbol => exclusion', async () => {
+    it('Metadata with no symbol => exclusion', async (done) => {
       response.symbol = null;
       await service.searchMetadata('KT1XXCz59vAzfbvDsNrrmKKuqSFrzQgpUqGM', 0);
       expect(service.getAsset('KT1XXCz59vAzfbvDsNrrmKKuqSFrzQgpUqGM:0')).toEqual(null);
+      done();
+    });
+    it('Metadata with negative decimals => exclusion', async (done) => {
+      response.decimals = -1;
+      await service.searchMetadata('KT1XXCz59vAzfbvDsNrrmKKuqSFrzQgpUqGM', 0);
+      expect(service.getAsset('KT1XXCz59vAzfbvDsNrrmKKuqSFrzQgpUqGM:0')).toEqual(null);
+      done()
+    });
+    it('Metadata with no name => exclusion', async (done) => {
+      response.name = null;
+      await service.searchMetadata('KT1XXCz59vAzfbvDsNrrmKKuqSFrzQgpUqGM', 0);
+      expect(service.getAsset('KT1XXCz59vAzfbvDsNrrmKKuqSFrzQgpUqGM:0')).toEqual(null);
+      done();
     });
   });
 });

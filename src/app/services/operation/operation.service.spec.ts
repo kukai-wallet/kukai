@@ -77,7 +77,6 @@ describe('[ OperationService ]', () => {
 
 			//spies
 			spyOn(service, 'activate').and.callThrough();
-			spyOn(service, 'decodeOpBytes');
 
 			//call method
 			service.activate(pkh, secret)

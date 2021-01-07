@@ -17,11 +17,11 @@ describe('TzktService', () => {
     const tokenCloudUrl = 'https://cloudflare-ipfs.com/ipfs/QmZDycNwSy12vueaPnxuCMFUCHeQieT5wA5yNwqswwFn3V';
     const contractCloudUrl = 'https://cloudflare-ipfs.com/ipfs/QmVBdYhUXmF3QSRSYgoZfvUhLKgW4oCWC6xMzvHzV5TFVA';
     spyOn(service, 'fetchApi')
-      .withArgs(`${this.service.bcd}/contract/${CONSTANTS.NETWORK}/${contractAddress}/storage`)
+      .withArgs(`${service.bcd}/contract/${CONSTANTS.NETWORK}/${contractAddress}/storage`)
       .and.callFake(async () => JSON.parse(storageMock))
-      .withArgs(`${this.service.bcd}/v1/bigmap/${CONSTANTS.NETWORK}/${bigMapId.token}/keys`)
+      .withArgs(`${service.bcd}/bigmap/${CONSTANTS.NETWORK}/${bigMapId.token}/keys?size=1000`)
       .and.callFake(async function () { return JSON.parse(tokenMetadataBigMapMock); })
-      .withArgs(`${this.service.bcd}/v1/bigmap/${CONSTANTS.NETWORK}/${bigMapId.contract}/keys`)
+      .withArgs(`${service.bcd}/bigmap/${CONSTANTS.NETWORK}/${bigMapId.contract}/keys`)
       .and.callFake(async function () { return JSON.parse(contractMetadataBigMapMock); })
       .withArgs(tokenCloudUrl)
       .and.callFake(async function () { return JSON.parse(tokenIpfsMock); })

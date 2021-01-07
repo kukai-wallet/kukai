@@ -126,7 +126,9 @@ export class TokenService {
       const metadata = await this.indexerService.getTokenMetadata(contractAddress, id);
       if (metadata &&
         metadata.name &&
-        metadata.symbol) {
+        metadata.symbol &&
+        (!isNaN(metadata.decimals) && metadata.decimals >= 0)
+        ) {
         const contract: ContractType = {
           kind: metadata.tokenType ? metadata.tokenType : 'FA2',
           category: metadata.tokenCategory ? metadata.tokenCategory : '',
@@ -136,7 +138,7 @@ export class TokenService {
         const token: TokenData = {
           name: metadata.name,
           symbol: metadata.symbol,
-          decimals: (!isNaN(metadata.decimals) && metadata.decimals >= 0) ? Number(metadata.decimals) : 0,
+          decimals: Number(metadata.decimals),
           description: metadata.description ? metadata.description : '',
           imageSrc,
           isNft: metadata?.isNft ? metadata.isNft : false,

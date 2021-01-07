@@ -405,11 +405,11 @@ export class ActivityTools extends OperationTools {
     const activity: Activity = {
       hash: operationhash,
       block: blockhash,
-      source: source,
+      source: { address: source },
       status: 1,
-      destination: this.generateDestination(),
-      amount: this.generateAmount(),
-      fee: this.generateFee(),
+      destination: { address: this.generateDestination() },
+      amount: this.generateAmount().toString(),
+      fee: this.generateFee().toString(),
       timestamp: this.generateDate(),
       type: type,
     };

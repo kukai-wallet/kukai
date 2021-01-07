@@ -59,7 +59,7 @@ describe('[ TimeAgoPipe ]', () => {
 		});
 
 		it('should return timeago data given offset date', () => {
-      const expectedResult = date.getHours() + ' TIMEAGOPIPE.HOURS ' + date.getMinutes() + ' TIMEAGOPIPE.MINUTE TIMEAGOPIPE.AGO';
+      const expectedResult = date.getHours() + ' TIMEAGOPIPE.HOURS ' + date.getMinutes() + ' TIMEAGOPIPE.MINUTE';
 			expect(pipe.transform(Number(new Date(date.toDateString())))).toEqual(expectedResult);
 		});
 	});
