@@ -1,5 +1,5 @@
 <div class="list-item" (click)="openModal()">
-  <div class="imgWrapper"><img src="{{ token.imageSrc }}"></div>
+  <div class="imgWrapper"><img src="{{ token.displayUrl }}"></div>
     <span>{{ listDisplayText() }}</span>
 </div>
 
@@ -22,7 +22,7 @@
             <p style="margin-bottom: 0">{{ token.symbol }}</p>
           </div>
         </div>
-        <img src="{{ token.imageSrc }}">
+        <img src="{{ token.displayUrl }}">
       </div>
       <div class="group">
         <label>Description</label>

@@ -163,7 +163,7 @@ export const tokenIpfsMock = `{
   "description": "An upgraded unit, the great Klassare reborn.",
   "nonTransferable": false,
   "booleanAmount": true,
-  "imageUri": "https://gateway.pinata.cloud/ipfs/QmZjeBZT5QykT4sEELYP2cYYEPTtgwx3vQhnyMzCmDKB7Q",
+  "displayUri": "https://gateway.pinata.cloud/ipfs/QmZjeBZT5QykT4sEELYP2cYYEPTtgwx3vQhnyMzCmDKB7Q",
   "defaultPresentation": "small",
   "actionLabel": "Send",
   "symbolPreference": true
@@ -623,7 +623,7 @@ export const expectedResult: any = {
   decimals: 0,
   tokenType: 'FA2', // tzip-12
   tokenCategory: 'collectibles',
-  imageUri: 'https://gateway.pinata.cloud/ipfs/QmZjeBZT5QykT4sEELYP2cYYEPTtgwx3vQhnyMzCmDKB7Q',
+  displayUri: 'https://gateway.pinata.cloud/ipfs/QmZjeBZT5QykT4sEELYP2cYYEPTtgwx3vQhnyMzCmDKB7Q',
   nonTransferable: false,
   booleanAmount: true,
   symbolPreference: true

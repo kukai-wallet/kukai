@@ -160,7 +160,7 @@ export class TzktService implements Indexer {
     let url = '';
     const metadata: any = {};
     const lookFor = {
-      strings: ['name', 'symbol', 'description', 'imageUri'],
+      strings: ['name', 'symbol', 'description', 'displayUri', 'displayURI'],
       numbers: ['decimals'],
       booleans: [ 'nonTransferable', 'booleanAmount', 'symbolPreference' ]
     };
@@ -205,12 +205,16 @@ export class TzktService implements Indexer {
       console.warn(e);
       return null;
     }
+    if (!metadata['displayUri'] && metadata['displayURI']) {
+      metadata['displayUri'] = metadata['displayURI'];
+      delete metadata['displayURI'];
+    }
     console.log(metadata);
     console.log(url);
     if (!url) {
       console.log('No offchain metadata');
-      if (metadata['imageUri']) {
-        metadata['imageUri'] = this.uriToUrl(metadata['imageUri']);
+      if (metadata['displayUri']) {
+        metadata['displayUri'] = this.uriToUrl(metadata['displayUri']);
       }
       return metadata;
     }
@@ -239,8 +243,8 @@ export class TzktService implements Indexer {
         metadata[key] = offChainMeta[key];
       }
     }
-    if (metadata['imageUri']) {
-      metadata['imageUri'] = this.uriToUrl(metadata['imageUri']);
+    if (metadata['displayUri']) {
+      metadata['displayUri'] = this.uriToUrl(metadata['displayUri']);
     }
     if (typeof metadata['nonTransferrable'] !== 'undefined') { // Temp spelling fix
       metadata['nonTransferable'] = metadata['nonTransferrable'];

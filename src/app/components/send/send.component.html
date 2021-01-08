@@ -28,7 +28,7 @@
           <span class="tez">{{ getAssetName() }}</span>
         </ng-container>
         <ng-container *ngIf="hideAmount">
-          <img style="height: 100%; width: auto;" src="{{ tokenService.getAsset(tokenTransfer).imageSrc }}">
+          <img style="height: 100%; width: auto;" src="{{ tokenService.getAsset(tokenTransfer).displayUrl }}">
         </ng-container>
       </div>
       <div class="row-group">
@@ -139,7 +139,7 @@
         <img *ngIf="!tokenTransfer; else imgElseBlock" src="../../../assets/img/tezos-xtz-logo.svg"
           style="height: 4.5rem; margin-right: 1rem">
         <ng-template #imgElseBlock>
-          <img src="{{ tokenService.getAsset(tokenTransfer).imageSrc }}" style="height: 4.5rem; margin-right: 1rem">
+          <img src="{{ tokenService.getAsset(tokenTransfer).displayUrl }}" style="height: 4.5rem; margin-right: 1rem">
         </ng-template>
       </div>
       <ng-container *ngIf="!isMultipleDestinations">

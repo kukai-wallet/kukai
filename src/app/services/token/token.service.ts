@@ -7,7 +7,7 @@ export interface TokenResponseType {
   contractAddress: string;
   id: number;
   decimals: number;
-  imageSrc: string;
+  displayUrl: string;
   name: string;
   symbol: string;
   description: string;
@@ -27,7 +27,7 @@ export interface TokenData {
   symbol: string;
   decimals: number;
   description: string;
-  imageSrc: string;
+  displayUrl: string;
   nonTransferable?: boolean;
   booleanAmount?: boolean;
   symbolPreference?: boolean;
@@ -131,13 +131,13 @@ export class TokenService {
           category: metadata.tokenCategory ? metadata.tokenCategory : '',
           tokens: {}
         };
-        const imageSrc = (metadata.imageUri && TRUSTED_TOKEN_CONTRACTS.includes(contractAddress)) ? metadata.imageUri : '../../../assets/img/tokens/default.png';
+        const displayUrl = (metadata.displayUri && TRUSTED_TOKEN_CONTRACTS.includes(contractAddress)) ? metadata.displayUri : '../../../assets/img/tokens/default.png';
         const token: TokenData = {
           name: metadata.name,
           symbol: metadata.symbol,
           decimals: Number(metadata.decimals),
           description: metadata.description ? metadata.description : '',
-          imageSrc,
+          displayUrl,
           nonTransferable: metadata?.nonTransferable ? metadata.nonTransferable : false,
           booleanAmount: metadata?.booleanAmount ? metadata.booleanAmount : false
         };
@@ -180,7 +180,7 @@ export class TokenService {
       contractAddress,
       id,
       decimals: 0,
-      imageSrc: '../../../assets/img/tokens/default.png',
+      displayUrl: '../../../assets/img/tokens/default.png',
       name: '[Unknown token]',
       symbol: '',
       description: '',

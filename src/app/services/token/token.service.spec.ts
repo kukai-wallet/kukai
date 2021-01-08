@@ -21,7 +21,7 @@ describe('TokenService', () => {
       name: 'Test NFT',
       symbol: 'tzTe',
       uri: 'ipfs://QmTMHwTQhttR5e3R7Kbt2JyqRjrNxE61ENtHGzkp4h6MJD',
-      imageUri: 'https://gateway.pinata.cloud/ipfs/QmNYkGR7wb4XLHqTwF8NZKAMpsMUQGqBwfQXr5VcZy75ki'
+      displayUri: 'https://gateway.pinata.cloud/ipfs/QmNYkGR7wb4XLHqTwF8NZKAMpsMUQGqBwfQXr5VcZy75ki'
     };
   });
 
@@ -43,7 +43,7 @@ describe('TokenService', () => {
         category: '',
         symbol: 'tzTe',
         contractAddress: 'KT1XXCz59vAzfbvDsNrrmKKuqSFrzQgpUqGM',
-        imageSrc: 'https://gateway.pinata.cloud/ipfs/QmNYkGR7wb4XLHqTwF8NZKAMpsMUQGqBwfQXr5VcZy75ki',
+        displayUrl: '../../../assets/img/tokens/default.png',
         nonTransferable: false,
         booleanAmount: false
       };
