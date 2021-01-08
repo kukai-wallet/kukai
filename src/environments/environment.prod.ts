@@ -84,7 +84,7 @@ export const CONSTANTS: Constants = {
           symbol: 'MFIL',
           decimals: 0,
           description: 'This certificate verifies that the holder of its private key attended, contributed and completed the Tezos Israel and Madfish Solution Workshop on December 7th to the 9th, 2020. The certificate holder utilized skills in smart contract development and tokenization to build, test and deploy a token on the Tezos blockchain.',
-          imageSrc: 'https://gateway.pinata.cloud/ipfs/QmQ6TN52PCmm5oLWmJd3m5ceahsXHyHhiA6ZEgqQZU6bZy',
+          imageSrc: '../../../assets/img/tokens/mfil.jfif',
           nonTransferable: true,
           symbolPrecedence: false,
           binaryAmount: true
