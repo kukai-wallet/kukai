@@ -162,7 +162,7 @@ export class TzktService implements Indexer {
     const lookFor = {
       strings: ['name', 'symbol', 'description', 'imageUri'],
       numbers: ['decimals'],
-      booleans: ['isNft', 'nonTransferrable', 'nonTransferable', 'symbolPrecedence', 'binaryAmount']
+      booleans: [ 'nonTransferable', 'booleanAmount', 'symbolPreference' ]
     };
     try {
       for (const child of tokenBigMap) {
@@ -246,6 +246,9 @@ export class TzktService implements Indexer {
       metadata['nonTransferable'] = metadata['nonTransferrable'];
       delete metadata['nonTransferrable'];
     }
+    if (metadata.decimals === undefined) {
+      metadata.decimals = 0;
+    }
     console.log(metadata);
     return metadata;
   }
@@ -274,9 +277,10 @@ export class TzktService implements Indexer {
             metadata['tokenType'] = 'FA1.2';
           }
         }
-        if (contractMeta['token-category']) {
-          metadata['tokenCategory'] = contractMeta['token-category'];
+        if (contractMeta['tokenCategory']) {
+          metadata['tokenCategory'] = contractMeta['tokenCategory'];
         }
+        console.log('contract metadata', metadata);
         return metadata;
       } catch { }
     }
@@ -329,25 +333,5 @@ export class TzktService implements Indexer {
     return fetch(url)
       .then(response => response.json())
       .then(data => data);
-  }
-  private zarithDecodeInt(hex: string): any {
-    let count = 0;
-    let value = Big(0);
-    while (1) {
-      const byte = Number('0x' + hex.slice(0 + count * 2, 2 + count * 2));
-      if (count === 0) {
-        value = Big(((byte & 63) * (128 ** count))).add(value);
-      } else {
-        value = Big(((byte & 127) * 2) >> 1).times(64 * 128 ** (count - 1)).add(value);
-      }
-      count++;
-      if ((byte & 128) !== 128) {
-        break;
-      }
-    }
-    return {
-      value: value,
-      count: count
-    };
   }
 }

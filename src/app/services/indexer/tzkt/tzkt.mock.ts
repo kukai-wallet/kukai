@@ -161,13 +161,12 @@ export const tokenIpfsMock = `{
   "symbol": "TZBKAB",
   "decimals": "0",
   "description": "An upgraded unit, the great Klassare reborn.",
-  "isNft": true,
-  "nonTransferrable": false,
-  "symbolPrecedence": false,
-  "binaryAmount": true,
+  "nonTransferable": false,
+  "booleanAmount": true,
   "imageUri": "https://gateway.pinata.cloud/ipfs/QmZjeBZT5QykT4sEELYP2cYYEPTtgwx3vQhnyMzCmDKB7Q",
   "defaultPresentation": "small",
-  "actionLabel": "Send"
+  "actionLabel": "Send",
+  "symbolPreference": true
 }`;
 // https://cloudflare-ipfs.com/ipfs/QmVBdYhUXmF3QSRSYgoZfvUhLKgW4oCWC6xMzvHzV5TFVA
 export const contractIpfsMock = `{
@@ -186,7 +185,7 @@ export const contractIpfsMock = `{
   "authors": [
     "tezit"
   ],
-  "token-category": "collectibles",
+  "tokenCategory": "collectibles",
   "pictures": [
     {
       "link": "https://gateway.pinata.cloud/ipfs/QmPfMe4BWadWGhwsfMi2rwykmeZiyH7Cy7Dr55CdVLxyWD",
@@ -625,8 +624,7 @@ export const expectedResult: any = {
   tokenType: 'FA2', // tzip-12
   tokenCategory: 'collectibles',
   imageUri: 'https://gateway.pinata.cloud/ipfs/QmZjeBZT5QykT4sEELYP2cYYEPTtgwx3vQhnyMzCmDKB7Q',
-  isNft: true,
   nonTransferable: false,
-  symbolPrecedence: false,
-  binaryAmount: true
+  booleanAmount: true,
+  symbolPreference: true
 };

@@ -23,7 +23,8 @@ export const CONSTANTS: Constants = {
           symbol: 'USDtz',
           decimals: 6,
           description: 'USDtz is a Tezos on-chain stablecoin pegged to the value of the United States Dollar.',
-          imageSrc: '../../../assets/img/tokens/usdtz.png'
+          imageSrc: '../../../assets/img/tokens/usdtz.png',
+          symbolPreference: true
         }
       }
     },
@@ -38,8 +39,7 @@ export const CONSTANTS: Constants = {
           description: 'This certificate verifies that the holder of its private key attended, contributed and completed the Tezos Israel and Madfish Solution Workshop on December 7th to the 9th, 2020. The certificate holder utilized skills in smart contract development and tokenization to build, test and deploy a token on the Tezos blockchain.',
           imageSrc: '../../../assets/img/tokens/mfil.jfif',
           nonTransferable: true,
-          symbolPrecedence: false,
-          binaryAmount: true
+          booleanAmount: true
         }
       }
     },
@@ -53,14 +53,12 @@ export const CONSTANTS: Constants = {
           decimals: 18,
           description: 'Kolibri is a Tezos based stablecoin built on Collateralized Debt Positions (CDPs) known as Ovens.',
           imageSrc: '../../../assets/img/tokens/kusd.png',
-          nonTransferable: true,
-          symbolPrecedence: false,
-          binaryAmount: true
+          symbolPreference: true
         }
       }
     }
   }
 };
 export const TRUSTED_TOKEN_CONTRACTS = [
-  'KT1T6uCxdWcvUhKZfeg83QU2wrormgy63Upd'
+  'KT1LyJV9JdcDCp5zDfw6MxpoShXYrBMG3dfK'
 ];

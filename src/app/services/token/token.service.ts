@@ -13,10 +13,9 @@ export interface TokenResponseType {
   description: string;
   category: string;
   kind: string;
-  isNft?: boolean;
   nonTransferable?: boolean;
-  symbolPrecedence?: boolean;
-  binaryAmount?: boolean;
+  booleanAmount?: boolean;
+  symbolPreference?: boolean;
 }
 export type ContractsType = Record<string, ContractType>;
 export type ContractType = FA12 | FA2;
@@ -26,14 +25,12 @@ export interface TokensInterface {
 export interface TokenData {
   name: string;
   symbol: string;
-  protected?: boolean; // Reserve name and symbol
   decimals: number;
   description: string;
   imageSrc: string;
-  isNft?: boolean;
   nonTransferable?: boolean;
-  symbolPrecedence?: boolean;
-  binaryAmount?: boolean;
+  booleanAmount?: boolean;
+  symbolPreference?: boolean;
 }
 export interface FA12 extends TokensInterface {
   kind: 'FA1.2';
@@ -134,17 +131,15 @@ export class TokenService {
           category: metadata.tokenCategory ? metadata.tokenCategory : '',
           tokens: {}
         };
-        const imageSrc = (metadata.imageUri/* && TRUSTED_TOKEN_CONTRACTS.includes(contractAddress)*/) ? metadata.imageUri : '../../../assets/img/tokens/default.png';
+        const imageSrc = (metadata.imageUri && TRUSTED_TOKEN_CONTRACTS.includes(contractAddress)) ? metadata.imageUri : '../../../assets/img/tokens/default.png';
         const token: TokenData = {
           name: metadata.name,
           symbol: metadata.symbol,
           decimals: Number(metadata.decimals),
           description: metadata.description ? metadata.description : '',
           imageSrc,
-          isNft: metadata?.isNft ? metadata.isNft : false,
           nonTransferable: metadata?.nonTransferable ? metadata.nonTransferable : false,
-          symbolPrecedence: metadata?.symbolPrecedence ? metadata.symbolPrecedence : false,
-          binaryAmount: metadata?.binaryAmount ? metadata.binaryAmount : false
+          booleanAmount: metadata?.booleanAmount ? metadata.booleanAmount : false
         };
         contract.tokens[id] = token;
         this.addAsset(contractAddress, contract);
@@ -220,7 +215,7 @@ export class TokenService {
     } else {
       const token = this.getAsset(tokenKey);
       if (token) {
-        if (token.isNft || token.binaryAmount) {
+        if (!token.symbolPreference) {
           return `${token.name}`;
         } else {
           return `${Big(amount).div(10 ** (baseUnit ? token.decimals : 0)).toFixed()} ${token.symbol}`;

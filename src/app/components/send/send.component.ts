@@ -148,7 +148,7 @@ export class SendComponent implements OnInit, OnChanges {
         this.amount = Big(tokenTransfer.amount).div(10 ** asset.decimals).toFixed();
         this.toPkh = tokenTransfer.to;
         this.tokenTransfer = tokenTransfer.tokenId;
-        if (asset.isNft || asset.binaryAmount) {
+        if (asset.booleanAmount) {
           this.hideAmount = true;
         }
       } else {
@@ -200,7 +200,7 @@ export class SendComponent implements OnInit, OnChanges {
       this.clearForm();
       if (this.tokenTransfer) {
         const asset = this.tokenService.getAsset(this.tokenTransfer);
-        if (asset.isNft || asset.binaryAmount) {
+        if (asset.booleanAmount) {
           this.hideAmount = true;
           this.amount = '1';
           this.amountChange();
