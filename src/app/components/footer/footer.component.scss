@@ -35,7 +35,7 @@
     vertical-align: top;
 }
 .dark #follow span,
-div.foot-container.dark > div.links > a {
+div.foot-container.dark > div.links > div.low > a {
   color: rgba(0, 0, 0, 0.4) !important;
 }
 .dark img {
@@ -52,28 +52,46 @@ div.foot-container.dark > div.links > a {
 }
 div.foot-container > div.links {
   display: flex;
+  justify-content: space-between;
   width: 100vw;
+  height: 2.625rem;
   z-index: 0;
 }
-div.foot-container > div.links > a:not(:last-child) {
-  padding-top: 1rem;
+div.foot-container > div.links a {
   font-size: 0.5rem;
   color: rgba(256, 256, 256, 0.6);
   margin-left: 1rem;
 }
-div.foot-container > div.links > a:hover:not(:last-child) {
+div.foot-container > div.links a:hover {
   color: white;
   background-color: #5963FF;
 }
-div.foot-container.dark > div.links > a:hover:not(:last-child) {
+div.foot-container.dark > div.links a:hover {
   color: rgba(0, 0, 0, 0.8) !important;
   background-color: inherit;
+}
+div.foot-container > div.links > div {
+  width: 11.25rem;
+}
+div.foot-container > div.links > div.since {
+  width: auto;
+}
+div.foot-container > div.links > div.since > a {
+  margin: 0;
+  padding: 0;
+}
+div.foot-container > div.links > div:last-child > a.docs {
+  margin: 0 1rem 1rem auto;
+  float: right;
+}
+div.foot-container > div.links > div.low {
+  padding-top: 0.625rem;
 }
 #tg {
     margin-left: 1.5rem;
     margin-right: 1.5rem;
 }
 #follow img:hover,
-div.foot-container > div.links > a:hover:last-child {
+div.foot-container > div.links a.docs img:hover {
     filter: invert(25%) sepia(800%) saturate(2878%) hue-rotate(180deg);
 }
