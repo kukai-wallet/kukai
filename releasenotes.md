@@ -1,4 +1,10 @@
 # Release notes
+## 1.11
+* Token support (FA1.2 & FA2)
+* Basic contract/token metadata support (tzip16 & tzip23)
+* Change to tzkt and bcd for indexing
+* Support for tzip10 batched transactions
+* Various bug fixes and improvements
 ## 1.10
 * Beacon integration
 * Support for custom contract invocations
