@@ -35,7 +35,7 @@ export class TimeAgoPipe implements PipeTransform {
     let output = '';
 
     for (const key of keys) {
-      if (diff[key]) {
+      if (diff[key] || count) {
         if (count) {
           output = output + ' ';
         }
@@ -58,15 +58,14 @@ export class TimeAgoPipe implements PipeTransform {
           case 'seconds':
             if (!diff.minutes && diff.seconds < 30) {
               output = now;
-            } else if (diff.minutes < 5) {
+            } else if (diff.minutes < 2) {
               output = output + `${diff[key]} ${diff[key] === 1 ? sec : secs}`;
             }
             break;
         }
-        if (count) {
+        if (count++) {
           break;
         }
-        count++;
       }
     }
     return output;
