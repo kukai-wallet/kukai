@@ -98,7 +98,7 @@ export class AccountViewComponent implements OnInit {
     return (activity.tokenId && activity.source.address && (activity.tokenId.split(':')[0] === activity.source.address)) ? 'Minted' : 'Received';
   }
   displayTokenCard(): boolean {
-    return (this.account?.tokens?.length > 0);
+    return (this.account instanceof ImplicitAccount) || (this.account?.tokens?.length > 0);
   }
 }
 
