@@ -38,7 +38,7 @@ export class ConseilService implements Indexer {
     }
     return addresses;
   }
-  accountInfo(address: string): Promise<any> {
+  accountInfo(address: string): Promise<string> {
     const entity = 'accounts';
     let query = ConseilQueryBuilder.blankQuery();
     query = ConseilQueryBuilder.addFields(query, 'block_level');
@@ -46,9 +46,9 @@ export class ConseilService implements Indexer {
     query = ConseilQueryBuilder.setLimit(query, 1);
     return fromPromise(ConseilDataClient.executeEntityQuery(this.conseilServer, this.platform, this.network, entity, query)).pipe(flatMap((result) => {
       if (result[0]) {
-        return of(result[0].block_level);
+        return of(result[0].block_level.toString());
       } else {
-        return of(0);
+        return of('');
       }
     })).toPromise();
   }

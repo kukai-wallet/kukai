@@ -131,12 +131,17 @@ export class ImportService {
     this.walletService.initStorage();
     if (this.walletService.wallet instanceof HdWallet) {
       let index = 0;
-      let counter = 1;
-      while (counter) {
+      let state = 'X';
+      while (state) {
         keys = hd.keyPairFromAccountIndex(seed, index);
-        counter = await this.indexerService
+        const accountInfo = await this.indexerService
           .accountInfo(keys.pkh);
-        if (counter || index === 0) {
+          state = accountInfo.counter;
+          console.log(accountInfo);
+        if (!state && accountInfo.unknownTokenIds?.length) {
+          state = 'X';
+        }
+        if (state || index === 0) {
           this.walletService.addImplicitAccount(
             keys.pk,
             index++

@@ -2,10 +2,13 @@ import { Injectable } from '@angular/core';
 import { WalletService } from '../wallet/wallet.service';
 import { of, Observable, from as fromPromise } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
-import { Activity, Account } from '../wallet/wallet';
+import { Activity, Account, ImplicitAccount } from '../wallet/wallet';
 import { MessageService } from '../message/message.service';
 import { LookupService } from '../lookup/lookup.service';
 import { IndexerService } from '../indexer/indexer.service';
+import Big from 'big.js';
+import { CONSTANTS } from '../../../environments/environment';
+import { TokenService } from '../token/token.service';
 
 @Injectable()
 export class ActivityService {
@@ -14,8 +17,9 @@ export class ActivityService {
     private walletService: WalletService,
     private messageService: MessageService,
     private lookupService: LookupService,
-    private indexerService: IndexerService
-  ) {}
+    private indexerService: IndexerService,
+    private tokenService: TokenService
+  ) { }
   updateTransactions(pkh): Observable<any> {
     try {
       const account = this.walletService.wallet.getAccount(pkh);
@@ -28,10 +32,18 @@ export class ActivityService {
       console.log(e);
     }
   }
-  getTransactonsCounter(account): Observable<any> {
-    return fromPromise(this.indexerService.accountInfo(account.address)).pipe(
-      flatMap((counter) => {
-        if (account.activitiesCounter !== counter) {
+  getTransactonsCounter(account: Account): Observable<any> {
+    const knownTokenIds: string[] = this.tokenService.knownTokenIds();
+    return fromPromise(this.indexerService.accountInfo(account.address, knownTokenIds)).pipe(
+      flatMap((data) => {
+        const counter = data.counter;
+        const unknownTokenIds = data.unknownTokenIds ? data.unknownTokenIds : [];
+        this.handleUnknownTokenIds(unknownTokenIds);
+        if (account.state !== counter) {
+          console.log(account.state + ' ' + counter);
+          if (data.tokens) {
+            this.updateTokenBalances(account, data.tokens);
+          }
           return this.getAllTransactions(account, counter);
         } else {
           return of({
@@ -41,28 +53,48 @@ export class ActivityService {
       })
     );
   }
-  getAllTransactions(account, counter): Observable<any> {
-    return fromPromise(this.indexerService.getOperations(account.address)).pipe(
-      flatMap((ans) => {
-        if (Array.isArray(ans)) {
+  private handleUnknownTokenIds(unknownTokenIds) {
+    if (unknownTokenIds.length) {
+      for (const tokenId of unknownTokenIds) {
+        const tok = tokenId.split(':');
+        this.tokenService.searchMetadata(tok[0], tok[1]);
+      }
+    }
+  }
+  async updateTokenBalances(account, tokens) {
+    if (tokens && tokens.length) {
+      for (const token of tokens) {
+        const tokenId = `${token.contract}:${token.token_id}`;
+        if (tokenId) {
+          account.updateTokenBalance(tokenId, token.balance.toString());
+        }
+      }
+    }
+    this.walletService.storeWallet();
+  }
+  getAllTransactions(account: Account, counter: string): Observable<any> {
+    const knownTokenIds: string[] = this.tokenService.knownTokenIds();
+    return fromPromise(this.indexerService.getOperations(account.address, knownTokenIds, this.walletService.wallet)).pipe(
+      flatMap((resp) => {
+        const operations = resp.operations;
+        this.handleUnknownTokenIds(resp.unknownTokenIds);
+        if (Array.isArray(operations)) {
           const oldActivities = account.activities;
-          account.activities = ans;
-          const oldActivitiesCounter = account.activitiesCounter;
-          account.activitiesCounter = counter;
-          console.log(oldActivitiesCounter + ' # ' + counter);
+          account.activities = operations;
+          const oldState = account.state;
+          account.state = counter;
           this.walletService.storeWallet();
-          if (oldActivitiesCounter !== -1) { // Exclude inital loading
-            this.promptNewActivities(account, oldActivities, ans);
+          if (oldState !== '') { // Exclude inital loading
+            this.promptNewActivities(account, oldActivities, operations);
           } else {
             console.log('# Excluded ' + counter);
           }
-          for (const activity of ans) {
+          for (const activity of operations) {
             const counterParty = this.getCounterparty(activity, account, false);
             this.lookupService.check(counterParty);
           }
         } else {
-          console.log('#');
-          console.log(ans);
+          console.log(operations);
         }
         return of({
           upToDate: false
@@ -75,11 +107,11 @@ export class ActivityService {
       const index = oldActivities.findIndex((a) => a.hash === activity.hash);
       if (index === -1 || (index !== -1 && oldActivities[index].status === 0)) {
         if (activity.type === 'transaction') {
-          if (account.address === activity.source) {
-            this.messageService.addSuccess(account.shortAddress() + ': Sent ' + activity.amount / 1000000 + ' tez');
+          if (account.address === activity.source.address) {
+            this.messageService.addSuccess(account.shortAddress() + ': Sent ' + this.tokenService.formatAmount(activity.tokenId, activity.amount.toString()));
           }
-          if (account.address === activity.destination) {
-            this.messageService.addSuccess(account.shortAddress() + ': Received ' + activity.amount / 1000000 + ' tez');
+          if (account.address === activity.destination.address) {
+            this.messageService.addSuccess(account.shortAddress() + ': Received ' + this.tokenService.formatAmount(activity.tokenId, activity.amount.toString()));
           }
         } else if (activity.type === 'delegation') {
           this.messageService.addSuccess(account.shortAddress() + ': Delegate updated');
@@ -91,32 +123,33 @@ export class ActivityService {
       }
     }
   }
-  getCounterparty(transaction: any, account: Account, withLookup = true): string {
-    let counterParty = '';
+  getCounterparty(transaction: Activity, account: Account, withLookup = true): string {
+    let counterParty = { address: '' };
+    let counterPartyAddress = '';
     if (transaction.type === 'delegation') {
       if (transaction.destination) {
         counterParty = transaction.destination;
       } else {
-        counterParty =  ''; // User has undelegated
+        counterParty = { address: '' }; // User has undelegated
       }
     } else if (transaction.type === 'transaction') {
-      if (account.address === transaction.source) {
-        counterParty =  transaction.destination; // to
+      if (account.address === transaction.source.address) {
+        counterParty = transaction.destination; // to
       } else {
-        counterParty =  transaction.source; // from
+        counterParty = transaction.source; // from
       }
     } else if (transaction.type === 'origination') {
-      if (account.address === transaction.source) {
-        counterParty =  transaction.destination;
+      if (account.address === transaction.source.address) {
+        counterParty = transaction.destination;
       } else {
-        counterParty =  transaction.source;
+        counterParty = transaction.source;
       }
     } else {
-      counterParty =  '';
+      counterParty = { address: '' };
     }
     if (withLookup) {
-      counterParty = this.lookupService.resolve(counterParty);
+      counterPartyAddress = this.lookupService.resolve(counterParty);
     }
-    return counterParty;
+    return counterPartyAddress;
   }
 }

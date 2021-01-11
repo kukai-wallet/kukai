@@ -61,20 +61,21 @@ export class DelegateComponent implements OnInit, OnChanges {
     }
   }
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
-    if (this.operationRequest) {
-      if (this.operationRequest.operationDetails[0].kind === 'delegation') {
-        this.openModal();
-        if (this.operationRequest.operationDetails[0].delegate) {
-          this.toPkh = this.operationRequest.operationDetails[0].delegate;
+    if (this.beaconMode) {
+      if (this.operationRequest) {
+        if (this.operationRequest.operationDetails[0].kind === 'delegation') {
+          this.openModal();
+          if (this.operationRequest.operationDetails[0].delegate) {
+            this.toPkh = this.operationRequest.operationDetails[0].delegate;
+          } else {
+            console.warn('No delegate');
+          }
         } else {
-          console.warn('No delegate');
+          console.log('Not a delegation');
         }
       } else {
-        console.log('Not a delegation');
+        this.operationResponse.emit(null);
       }
-    } else {
-      this.operationResponse.emit(null);
     }
   }
   init() {
@@ -119,8 +120,7 @@ export class DelegateComponent implements OnInit, OnChanges {
       this.storedDelegate = this.toPkh;
       this.activeView = 1;
       if (this.walletService.isLedgerWallet()) {
-        const keys = await this.walletService.getKeys('');
-        this.sendDelegation(keys);
+        this.ledgerError = '?';
       }
     }
   }
@@ -153,26 +153,7 @@ export class DelegateComponent implements OnInit, OnChanges {
       }
     }
   }
-  open1(template1: TemplateRef<any>) {
-    if (this.walletService.wallet) {
-      this.clearForm();
-      this.checkReveal();
-      this.modalRef1 = this.modalService.show(template1, { class: 'first' });
-    }
-  }
-  async open2(template: TemplateRef<any>) {
-    this.formInvalid = this.invalidInput();
-    if (!this.formInvalid) {
-      if (!this.fee) { this.fee = this.recommendedFee.toString(); }
-      this.storedFee = this.fee;
-      this.storedDelegate = this.toPkh;
-      if (this.walletService.isLedgerWallet()) {
-        await this.ledgerSign();
-      }
-    }
-  }
   async ledgerSign() {
-    this.ledgerError = '';
     const keys = await this.walletService.getKeys('');
     if (keys) {
       this.sendDelegation(keys);
@@ -241,6 +222,7 @@ export class DelegateComponent implements OnInit, OnChanges {
         const signedOp = op + signature;
         this.sendResponse.payload.signedOperation = signedOp;
         console.log(this.sendResponse);
+        this.ledgerError = '';
       } else {
         this.ledgerError = 'Failed to sign operation';
       }
@@ -317,6 +299,18 @@ export class DelegateComponent implements OnInit, OnChanges {
     } else {
       return '';
     }
+  }
+  // Only Numbers with Decimals
+  keyPressNumbersDecimal(event, input) {
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode !== 46 && charCode > 31
+      && (charCode < 48 || charCode > 57)) {
+      event.preventDefault();
+      return false;
+    } else if (charCode === 46 && this[input].length === 0) {
+      this[input] = '0' + this[input];
+    }
+    return true;
   }
   download() {
     this.exportService.downloadOperationData(this.sendResponse.payload.unsignedOperation, false);

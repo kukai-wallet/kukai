@@ -77,7 +77,6 @@ describe('[ OperationService ]', () => {
 
 			//spies
 			spyOn(service, 'activate').and.callThrough();
-			spyOn(service, 'decodeOpBytes');
 
 			//call method
 			service.activate(pkh, secret)
@@ -200,7 +199,15 @@ describe('[ OperationService ]', () => {
 				});
 			expect(service.opCheck).toHaveBeenCalledWith(final, pkh);
 			expect(service.opCheck).toHaveBeenCalledTimes(1);
-		});
+    });
+    it('should parse token transfers', () => {
+      const fa12 = '{"kind":"transaction","source":"tz1arY7HNDq17nrZJ7f3sikxuHZgeopsU9xq","amount":"0","destination":"KT1REPEBMQS3Be8ZybkQQfSwAv3g4pHJViuK","parameters":{"entrypoint":"transfer","value":{"args":[{"string":"tz1arY7HNDq17nrZJ7f3sikxuHZgeopsU9xq"},{"args":[{"string":"tz1UeT3VS8LuAkvB66tjQTTDP1LFf3DEC4uA"},{"int":"20"}],"prim":"Pair"}],"prim":"Pair"}}}';
+      const faNone = '{"kind":"transaction","source":"tz1arY7HNDq17nrZJ7f3sikxuHZgeopsU9xq","amount":"0","destination":"KT1REPEBMQS3Be8ZybkQQfSwAv3g4pHJViuK","parameters":{"entrypoint":"transfer","value":{"args":[{"args":[{"string":"tz1UeT3VS8LuAkvB66tjQTTDP1LFf3DEC4uA"},{"int":"20"}],"prim":"Pair"}],"prim":"Pair"}}}';
+      const fa2 = '{"kind":"transaction","source":"tz1arY7HNDq17nrZJ7f3sikxuHZgeopsU9xq","amount":"0","destination":"KT1T6uCxdWcvUhKZfeg83QU2wrormgy63Upd","parameters":{"entrypoint":"transfer","value":[{"prim":"Pair","args":[{"string":"tz1arY7HNDq17nrZJ7f3sikxuHZgeopsU9xq"},[{"prim":"Pair","args":[{"string":"tz1UeT3VS8LuAkvB66tjQTTDP1LFf3DEC4uA"},{"prim":"Pair","args":[{"int":"12"},{"int":"1"}]}]}]]}]}}';
+      expect(service.parseTokenTransfer(JSON.parse(fa12))).toEqual({ tokenId: `KT1REPEBMQS3Be8ZybkQQfSwAv3g4pHJViuK:0`, to: `tz1UeT3VS8LuAkvB66tjQTTDP1LFf3DEC4uA`, amount: `20` });
+      expect(service.parseTokenTransfer(JSON.parse(fa2))).toEqual({ tokenId: `KT1T6uCxdWcvUhKZfeg83QU2wrormgy63Upd:12`, to: `tz1UeT3VS8LuAkvB66tjQTTDP1LFf3DEC4uA`, amount: `1` });
+      expect(service.parseTokenTransfer(JSON.parse(faNone))).toBeFalsy();
+    });
 	});
 	/*
 	describe('> Contract invocations', () => {

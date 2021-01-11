@@ -1,4 +1,7 @@
-<button *ngIf="!beaconMode" class="purple" (click)="openModal()">Send</button>
+<ng-container *ngIf="!beaconMode">
+  <button *ngIf="!tokenTransfer" class="purple open" (click)="openModal()">Send</button>
+  <span class="token-send" *ngIf="tokenTransfer && !tokenService.getAsset(tokenTransfer).nonTransferable" (click)="openModal()">Send</span>
+</ng-container>
 
 <!-- The Modal -->
 <div *ngIf="modalOpen" id="myModal" class="kukai-modal" [class.top]="beaconMode">
@@ -6,10 +9,10 @@
   <div class="km-content">
     <div class="x" (click)="closeModalAction()"><img src="../../../assets/img/x.svg"></div>
     <div class="km-header">
-      <H1 *ngIf="activeView === 0">Send tez</H1>
+      <H1 *ngIf="activeView === 0">{{ getTitle() }}</H1>
       <H1 *ngIf="activeView === 1">Confirmation</H1>
       <!--<span class="close" (click)="modalOpen = false" class="close">&times;</span>-->
-      <button *ngIf="activeView === 0 && !(walletService.isLedgerWallet() || beaconMode)" class="small multiple-destinations" (click)="toggleDestination()">
+      <button *ngIf="activeView === 0 && !(tokenTransfer || beaconMode)" class="small multiple-destinations" (click)="toggleDestination()">
         <ng-container *ngIf="!this.isMultipleDestinations">Multiple transactions</ng-container>
         <ng-container *ngIf="this.isMultipleDestinations">Single transaction</ng-container>
       </button>
@@ -17,16 +20,24 @@
     <!-- Prepare transaction -->
     <div class="km-body" *ngIf="activeView === 0">
       <div class="amount">
-        <input #amountInput class="input" (input)="amountInputChange()" class="custom-large" placeholder="0.00" [(ngModel)]="amount"
-          (click)="sendMax = false;" [style.font-size.rem]="dynSize()"
-          [style.width.ch]="amount ? amount.length + 1 : 3.6" [disabled]="isMultipleDestinations || (beaconMode && operationRequest.operationDetails[0].amount)">
-        <span class="tez">tez</span>
+        <ng-container *ngIf="!hideAmount">
+          <input #amountInput class="input" class="custom-large" placeholder="0.00" [(ngModel)]="amount"
+            (mousedown)="sendMax = false; default" [style.font-size.rem]="dynSize()" (input)="amountChange()"
+            (keypress)="keyPressNumbersDecimal($event, 'amount')" (change)="amountChange()"
+            [style.width.ch]="amount ? amount.length + 1 : 3.6" [disabled]="isMultipleDestinations || (beaconMode && operationRequest.operationDetails[0].amount)">
+          <span class="tez">{{ getAssetName() }}</span>
+        </ng-container>
+        <ng-container *ngIf="hideAmount">
+          <img style="height: 100%; width: auto;" src="{{ tokenService.getAsset(tokenTransfer).displayUrl }}">
+        </ng-container>
       </div>
       <div class="row-group">
-        <button *ngIf="!(this.isMultipleDestinations || beaconMode)" tabindex=-1 class="small" [class.max]="sendMax"
+        <span *ngIf="hideAmount"></span>
+        <button *ngIf="!(this.isMultipleDestinations || hideAmount || beaconMode)" tabindex=-1 class="small" [class.max]="sendMax"
           (click)="sendEntireBalance($event)">Send Max</button>
         <p *ngIf="this.isMultipleDestinations || beaconMode"></p>
         <p class="fee">
+          <ng-container *ngIf="simSemaphore"><img src="../../../assets/img/feeLoader.gif">&nbsp;</ng-container>
           <ng-container *ngIf="!getTotalBurn() ; else burn">Fee: </ng-container>
           <ng-template #burn>Fee & storage cost: </ng-template>
           {{ getTotalCost(true) }}
@@ -40,13 +51,22 @@
         <label style="justify-content: space-between; opacity: 1; color: rgba(44, 50, 58, 0.4)"><span>Send to</span>
           <select class="select-css" [(ngModel)]="torusVerifier" (ngModelChange)="verifierChange()" [disabled]="beaconMode">
             <option value="" selected>Tezos Address</option>
-            <option *ngFor="let key of torusService.verifierMapKeys" value="{{key}}">{{ torusService.verifierMap[key].name }} Account</option>
+            <option *ngFor="let key of torusService.verifierMapKeys" value="{{key}}">
+              {{ torusService.verifierMap[key].name }} Account</option>
           </select></label>
         <input type="text" class="text" (input)="updateDefaultValues()" (change)="validateReceiverAddress()" [disabled]="beaconMode"
           [(ngModel)]="toPkh">
       </div>
       <div *ngIf="beaconMode && parameters">
-        <label style="color: #C83532; margin-top: 1rem">This transaction will invoke a contract</label>
+        <label style="color: #C83532; margin-top: 1rem">
+        <ng-container *ngIf="!batchParameters.length">
+          This transaction will invoke a contract
+        </ng-container>
+        <ng-container *ngIf="batchParameters.length">
+          These transactions will invoke <ng-container *ngIf="batchParameters.length === 1">a contract</ng-container>
+          <ng-container *ngIf="batchParameters.length > 1">contracts</ng-container>
+        </ng-container>
+      </label>
       </div>
       <ng-container *ngIf="torusVerifier">
         <p class="torus-details" *ngIf="torusPendingLookup">Loading address...</p>
@@ -55,7 +75,7 @@
       <div *ngIf="this.isMultipleDestinations" class="group">
         <label>Addresses and amounts <span class="batchInfo">{{ batchSpace() }}</span></label>
         <textarea type="text" class="text" (input)="updateDefaultValues()" (change)="validateBatch()" rows="3"
-          [(ngModel)]="toMultipleDestinationsString"
+          [(ngModel)]="toMultipleDestinationsString" [disabled]="beaconMode"
           placeholder="address1 amount1 ; &#10;address2 amount2 ; &#10;address3 ..."></textarea>
       </div>
       <div class="advanced">
@@ -75,18 +95,20 @@
           <div class="group">
             <label>Gas limit</label>
             <input type="text" class="text" placeholder={{this.defaultTransactionParams.gas.toString()}}
+            [class.read-only]="beaconMode && isMultipleDestinations" [readonly]="beaconMode && isMultipleDestinations"
               [(ngModel)]="gas">
           </div>
           <div class="group">
             <label>Fee</label>
             <input type="text" (input)="updateMaxAmount()" (paste)="updateMaxAmount()" class="text"
+              (keypress)="keyPressNumbersDecimal($event, 'fee')"
               placeholder={{this.defaultTransactionParams.fee.toString()}} [(ngModel)]="fee">
           </div>
         </div>
         <div class="row-group">
           <div class="group">
             <label>Storage limit</label>
-            <input type="text" (input)="updateMaxAmount()" (paste)="updateMaxAmount()" class="text"
+            <input type="text" [class.read-only]="beaconMode && isMultipleDestinations" [readonly]="beaconMode && isMultipleDestinations" (input)="updateMaxAmount()" (paste)="updateMaxAmount()" class="text"
               placeholder={{this.defaultTransactionParams.storage.toString()}} [(ngModel)]="storage">
           </div>
           <div class="group">
@@ -105,19 +127,27 @@
     <div class="km-body" *ngIf="activeView === 1">
       <!-- Single transaction -->
       <div class="preview-top">
-      <div class="preview-amount">
-        <span class="section">Send</span>
-        <span class="amount-tez">{{ totalAmount() | number:'1.0-6' }} tez</span>
-        <span class="amount-usd">{{ totalAmount() * walletService.wallet.XTZrate | number:'1.0-2' }} USD</span>
-        <span *ngIf="!isMultipleDestinations" class="section">To</span>
-      </div>
-      <img src="../../../assets/img/tezos-xtz-logo.svg" style="height: 4.5rem; margin-right: 1rem">
+        <div class="preview-amount">
+          <span class="section">Send</span>
+          <span class="amount-tez">{{ tokenService.formatAmount(tokenTransfer, totalAmount(), false) }}</span>
+          <span class="amount-usd">
+            <ng-container *ngIf="!tokenTransfer">{{ totalAmount() * walletService.wallet.XTZrate | number:'1.0-2' }} USD
+            </ng-container>
+          </span>
+          <span *ngIf="!isMultipleDestinations" class="section">To</span>
+        </div>
+        <img *ngIf="!tokenTransfer; else imgElseBlock" src="../../../assets/img/tezos-xtz-logo.svg"
+          style="height: 4.5rem; margin-right: 1rem">
+        <ng-template #imgElseBlock>
+          <img src="{{ tokenService.getAsset(tokenTransfer).displayUrl }}" style="height: 4.5rem; margin-right: 1rem">
+        </ng-template>
       </div>
       <ng-container *ngIf="!isMultipleDestinations">
         <span *ngIf="torusLookupId" class="torus-to"><img src="../../../assets/img/{{ torusVerifier }}-logo.svg">
           {{ torusLookupId }}</span>
         <span class="single-to">{{ transactions[0].to }}</span>
         <p id="previewAttention" *ngIf="torusLookupId">{{ previewAttention() }}</p>
+        <p id="previewAttention" *ngIf="tokenTransfer && transactions[0].to.slice(0, 3) === 'KT1'">Warning: Verify the contract can manage tokens</p>
         <div class="seperator"></div>
       </ng-container>
       <ng-container *ngIf="isMultipleDestinations">
@@ -137,8 +167,8 @@
             </tr>
           </tbody>
         </table>
-        <button style="margin-left: auto; margin: 0.5rem 0 1rem; height: 2rem;" *ngIf='transactions.length > 2' type="button"
-          class="show-more" aria-label="More" (click)="toggleTransactions()">
+        <button style="margin-left: auto; margin: 0.5rem 0 1rem; height: 1.5rem;" *ngIf='transactions.length > 2'
+          type="button" class="small" aria-label="More" (click)="toggleTransactions()">
           <span aria-hidden="true"> {{ showBtn }} </span>
         </button>
         <div class="seperator"></div>
@@ -169,6 +199,23 @@
         <span>Max storage cost</span><span>{{ getTotalBurn() | number:'1.0-6' }} tez</span>
       </div>
       <div class="seperator"></div>
+      <ng-container *ngIf="batchParameters.length > 1">
+        <H6 style="color: #A8A8A8">Contract Invokations</H6>
+        <div class="simple-tabs" *ngIf="batchParameters.length <= 5">
+          <ul class="tabs">
+            <ng-container *ngFor="let params of batchParameters; let i = index">
+              <li class="tab" [class.active]="batchParamIndex === i" (click)="updateParameters(i, params.parameters)">
+                <ng-container *ngIf="batchParameters.length <= 3">Operation</ng-container><ng-container *ngIf="batchParameters.length > 3">Tx</ng-container>&nbsp;{{ params.num }}</li>
+            </ng-container>
+            <li class="tab rest"></li>
+          </ul>
+        </div>
+        <select *ngIf="batchParameters.length > 5" class="select-css parameters" [(ngModel)]="batchParamIndex"
+          (ngModelChange)="updateParameters(batchParamIndex, batchParameters[batchParamIndex].parameters)">
+          <option *ngFor="let params of batchParameters; let i = index" value="{{i}}">
+            Operation {{params.num}}</option>
+        </select>
+      </ng-container>
       <ng-container *ngIf="parameters">
         <div class="preview-row">
           <span *ngIf="parameters?.entrypoint" class="preview">
@@ -187,8 +234,8 @@
       <div class="row-group" style="margin: 1.25rem 0 1.5rem;">
         <input *ngIf="!walletService.isLedgerWallet() && !walletService.isTorusWallet()" [(ngModel)]="password"
           autocomplete="current-password" placeholder="Password" class="text password" type="password"
-          (input)="this.pwdValid = ''" (change)="this.pwdValid = ''">
-        <button class="retry" *ngIf="walletService.isLedgerWallet() && ledgerError; else elseBlock"
+          (input)="this.pwdValid = ''" (change)="this.pwdValid = ''" (keydown.enter)='inject()'>
+        <button class="purple confirm" *ngIf="walletService.isLedgerWallet() && ledgerError; else elseBlock"
           (click)="ledgerRetry()">Sign with Ledger</button>
         <ng-template #elseBlock>
           <button class="purple confirm" (click)="inject()"

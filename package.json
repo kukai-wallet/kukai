@@ -1,6 +1,6 @@
 {
   "name": "kukai",
-  "version": "1.10.0",
+  "version": "1.11.0",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
@@ -61,6 +61,7 @@
     "font-awesome": "^4.7.0",
     "jquery": "^3.5.1",
     "libsodium-wrappers": "^0.7.5",
+    "lodash.isequal": "^4.5",
     "moment": "^2.24.0",
     "mutationobserver-shim": "^0.3.5",
     "ngx-bootstrap": "^5.1.1",
@@ -73,6 +74,7 @@
     "rxjs-compat": "^6.5.2",
     "scryptsy": "^2.1.0",
     "simple-line-icons": "^2.4.1",
+    "timediff": "^1.1.1",
     "ts-helpers": "^1.1.2",
     "tslib": "^1.10.0",
     "web-animations-js": "^2.3.2",

@@ -12,5 +12,53 @@ export const CONSTANTS: Constants = {
   NETWORK: 'delphinet',
   MAINNET: false,
   NODE_URL: 'https://delphinet-tezos.giganode.io',
-  BLOCK_EXPLORER_URL: 'https://delphinet.tzkt.io'
+  BLOCK_EXPLORER_URL: 'https://delphinet.tzkt.io',
+  ASSETS: {
+    'KT1REPEBMQS3Be8ZybkQQfSwAv3g4pHJViuK': {
+      kind: 'FA1.2',
+      category: 'finance',
+      tokens: {
+        0: {
+          name: 'USD Tez',
+          symbol: 'USDtz',
+          decimals: 6,
+          description: 'USDtz is a Tezos on-chain stablecoin pegged to the value of the United States Dollar.',
+          displayUrl: '../../../assets/img/tokens/usdtz.png',
+          symbolPreference: true
+        }
+      }
+    },
+    'KT1MGe5wY9FugXvsjin4SnQFEU7yM1FFBF9U': {
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        0: {
+          name: 'Tezos Israel Workshop Certificate',
+          symbol: 'MFIL',
+          decimals: 0,
+          description: 'This certificate verifies that the holder of its private key attended, contributed and completed the Tezos Israel and Madfish Solution Workshop on December 7th to the 9th, 2020. The certificate holder utilized skills in smart contract development and tokenization to build, test and deploy a token on the Tezos blockchain.',
+          displayUrl: '../../../assets/img/tokens/mfil.jfif',
+          nonTransferable: true,
+          booleanAmount: true
+        }
+      }
+    },
+    'KT1RXpLtz22YgX24QQhxKVyKvtKZFaAVtTB9': {
+      kind: 'FA1.2',
+      category: 'finance',
+      tokens: {
+        0: {
+          name: 'Kolibri USD',
+          symbol: 'kUSD',
+          decimals: 18,
+          description: 'Kolibri is a Tezos based stablecoin built on Collateralized Debt Positions (CDPs) known as Ovens.',
+          displayUrl: '../../../assets/img/tokens/kusd.png',
+          symbolPreference: true
+        }
+      }
+    }
+  }
 };
+export const TRUSTED_TOKEN_CONTRACTS = [
+  'KT1LyJV9JdcDCp5zDfw6MxpoShXYrBMG3dfK'
+];

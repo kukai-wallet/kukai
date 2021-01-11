@@ -46,8 +46,20 @@ export class AppComponent implements OnInit {
       }
       window.scrollTo(0, 0);
     });
+    window.addEventListener('storage', (e) => { this.handleStorageEvent(e); });
   }
-
+  private handleStorageEvent(e: StorageEvent) {
+    if (e.key === 'kukai-wallet') {
+      if (e.oldValue && !e.newValue) {
+        window.location.reload();
+      } else if (!e.oldValue && e.newValue) {
+        setTimeout(async () => {
+          await this.router.navigate(['']);
+          window.location.reload();
+        }, 10000);
+      }
+    }
+  }
   returnLanguage(lang: string) {
 
     // this.translate.use(lang);

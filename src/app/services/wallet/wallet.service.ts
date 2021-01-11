@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { KeyPair, WalletType } from './../../interfaces';
+import { KeyPair, WalletType, Activity } from './../../interfaces';
 import {
   WalletObject,
   HdWallet,
@@ -384,8 +384,15 @@ export class WalletService {
       impAcc.balanceUSD = implicit.balanceUSD;
       impAcc.balanceXTZ = implicit.balanceXTZ;
       impAcc.delegate = implicit.delegate;
-      impAcc.activitiesCounter = implicit.activitiesCounter;
-      impAcc.activities = implicit.activities;
+      if (implicit.activitiesCounter) { // prevent storage from breaking (1.11)
+        impAcc.state = implicit.activitiesCounter.toString();
+      } else {
+        impAcc.state = implicit.state;
+      }
+      impAcc.activities = this.activityMigration(implicit.activities);
+      if (implicit.tokens) {
+        impAcc.tokens = implicit.tokens;
+      }
       for (const originated of implicit.originatedAccounts) {
         const origAcc = new OriginatedAccount(
           originated.address,
@@ -395,11 +402,26 @@ export class WalletService {
         origAcc.balanceUSD = originated.balanceUSD;
         origAcc.balanceXTZ = originated.balanceXTZ;
         origAcc.delegate = originated.delegate;
-        origAcc.activitiesCounter = originated.activitiesCounter;
-        origAcc.activities = originated.activities;
+        if (originated.activitiesCounter) { // prevent storage from breaking (1.11)
+          impAcc.state = originated.activitiesCounter.toString();
+        } else {
+          impAcc.state = originated.state;
+        }
+        origAcc.activities = this.activityMigration(originated.activities);
         impAcc.originatedAccounts.push(origAcc);
       }
       this.wallet.implicitAccounts.push(impAcc);
     }
+  }
+  activityMigration(activities: any[]): Activity[] { // prevent storage from breaking (1.11)
+    return activities.map(activity => {
+      if (!activity.source.address) {
+        activity.source = { address: activity.source };
+      }
+      if (!activity.destination.address) {
+        activity.destination = { address: activity.destination };
+      }
+      return activity;
+    });
   }
 }

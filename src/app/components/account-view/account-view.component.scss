@@ -11,6 +11,7 @@
   padding-bottom: 8rem;
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
 }
 .left {
   display: flex;
@@ -30,8 +31,8 @@ a.view-all {
   color: #5963ff;
 }
 .main-container {
+  margin: 0 2.5rem 2rem;
   width: 25rem;
-  height: 100%;
   background: #fcfcfc;
   border: 0.0625rem solid #ffffff;
   box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.04), 0px 2px 6px rgba(0, 0, 0, 0.14), 0px 16px 24px rgba(0, 0, 0, 0.16);
@@ -43,6 +44,9 @@ a.view-all {
 }
 .main-container.small {
   position: relative;
+}
+.main-container.small.expanded {
+  height: calc(100% - 2rem);
 }
 .top-container {
   width: 39.875rem;
@@ -204,7 +208,7 @@ img.copy-icon {
   font-weight: 500;
 }
 #operations-container div span.red {
-  color: #FE5004;
+  color: #f01004;
   font-weight: 500;
 }
 #operations-container div span.blue {
@@ -214,10 +218,6 @@ img.copy-icon {
 #operations-container div span.black {
   color: #000000;
   font-weight: 500;
-}
-div.left-container {
-  margin-right: 5rem;
-  width: 400px;
 }
 div.line {
   display: flex;
@@ -231,17 +231,43 @@ div.line:last-child {
   overflow: hidden;
   position: relative;
 }
-@media screen and (max-width: 70rem) {
-  #wrapper {
-    flex-direction: column;
-    justify-content: flex-start;
-    align-content: center;
-    align-items: center;
-  }
-  div.left-container {
-    margin-right: 0rem;
-    margin-bottom: 2rem;
-  }
+:host .token-container {
+  margin: 0rem;
+}
+:host .token-container .token-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 2.8125rem;
+  margin: 0 -1px;
+}
+:host .token-container > div.seperator {
+  width: calc(100% - 2rem);
+  margin: 0 1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+}
+:host .token-container div.seperator:first-child {
+  border-bottom-width: 0;
+}
+:host .token-container .token-row:hover {
+  background-color: #EAEBF9 !important;
+}
+:host .token-container .token-row:last-child {
+  margin-bottom: -1px;
+}
+:host .token-container .token-row:last-child:hover {
+  border-bottom-left-radius: 0.75rem;
+  border-bottom-right-radius: 0.75rem;
+}
+:host .token-container .token-row:last-child {
+  border-bottom: none;
+}
+:host span.no-tokens {
+  padding: 0 0 0.5rem 1rem;
+  font-size: 0.8125rem;
+  color: rgb(44, 50, 58);
+}
+@media screen and (max-width: 65rem) {
 }
 @media screen and (max-width: 42rem) {
   .truncate-overflow {
@@ -263,6 +289,12 @@ div.line:last-child {
       rgba(255, 255, 255, 0),
       rgba(255, 255, 255, 1) 50%
     );
+  }
+}
+@media screen and (max-width: 31rem) {
+  .main-container {
+    margin-left: 0;
+    margin-right: 0;
   }
 }
 @media screen and (max-width: 27rem) {

@@ -54,7 +54,7 @@ export class MessagesComponent implements OnInit {
     const s = (accountType === 'Reddit') ? '  ' : '';
     const b = (accountType === 'Reddit') ? '**' : '';
     const t = (accountType === 'Twitter') ? 'Tezos ' : '';
-    return encodeURI(`Hi,${s}\nI sent you ${b}${amount} tez${b} using the Kukai wallet.\n\nYou can access your ${t}wallet with your ${accountType} account at: ${url}`);
+    return encodeURI(`Hi,${s}\nI sent you ${b}${amount}${b} using the Kukai wallet.\n\nYou can access your ${t}wallet with your ${accountType} account at: ${url}`);
   }
   getAlias(message: any) {
     return message.email ? message.email :

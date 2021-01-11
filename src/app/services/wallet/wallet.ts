@@ -140,8 +140,9 @@ export abstract class Account {
   balanceXTZ: number | null;
   balanceUSD: number | null;
   delegate: string;
-  activitiesCounter: number;
+  state: string;
   activities: Activity[];
+  tokens: Token[] = [];
   pkh: string;
   pk: string;
   address: string;
@@ -149,7 +150,7 @@ export abstract class Account {
     this.balanceXTZ = null;
     this.balanceUSD = null;
     this.delegate = '';
-    this.activitiesCounter = -1;
+    this.state = '';
     this.activities = [];
     this.pkh = pkh;
     this.pk = pk;
@@ -158,6 +159,35 @@ export abstract class Account {
   public abstract isImplicit(): boolean;
   shortAddress(): string {
     return this.address.slice(0, 7) + '...' + this.address.slice(-4);
+  }
+  getTokenBalance(tokenId: string): string {
+    if (this.tokens.length) {
+      for (const token of this.tokens) {
+        if (tokenId === token.tokenId) {
+          return token.balance;
+        }
+      }
+    }
+    return '';
+  }
+  updateTokenBalance(tokenId: string, balance: string) {
+    if (this.tokens.length) {
+      for (let i = 0; i < this.tokens.length; i++) {
+        if (tokenId === this.tokens[i].tokenId) {
+          if (this.tokens[i].balance !== balance) {
+            if (balance === '0' || (balance && balance.slice(0, 1) === '-')) {
+              this.tokens.splice(i, 1);
+            } else {
+              this.tokens[i].balance = balance;
+            }
+          }
+          return;
+        }
+      }
+    }
+    if (tokenId.length > 37 && balance && balance !== '0' && balance.slice(0, 1) !== '-') {
+      this.tokens.push({ tokenId, balance});
+    }
   }
 }
 
@@ -189,10 +219,21 @@ export class Activity {
   type: string;
   block: string;
   status: number; // 0: unconfirmed, 1: confirmed, -1: failed
-  amount: number;
-  source: string;
-  fee: number;
-  destination: string;
+  amount: string;
+  source: {
+    address: string,
+    alias?: string
+  };
+  destination: {
+    address: string,
+    alias?: string
+  };
+  fee?: string;
   hash: string;
   timestamp: number | null;
+  tokenId?: string;
+}
+export class Token {
+  tokenId: string;
+  balance: string;
 }

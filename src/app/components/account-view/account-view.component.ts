@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import { Account } from '../../services/wallet/wallet';
+import { Account, Activity, ImplicitAccount, OriginatedAccount } from '../../services/wallet/wallet';
 import { WalletService } from '../../services/wallet/wallet.service';
 import { TimeAgoPipe } from '../../pipes/time-ago.pipe';
 import { TranslateService } from '@ngx-translate/core';
@@ -11,6 +11,8 @@ import { CoordinatorService } from '../../services/coordinator/coordinator.servi
 import { CONSTANTS } from '../../../environments/environment';
 import { LookupService } from '../../services/lookup/lookup.service';
 import { ActivityService } from '../../services/activity/activity.service';
+import Big from 'big.js';
+import { TokenService, TokenResponseType } from '../../services/token/token.service';
 
 @Component({
   selector: 'app-account-view',
@@ -28,10 +30,11 @@ export class AccountViewComponent implements OnInit {
     private router: Router,
     private coordinatorService: CoordinatorService,
     private lookupService: LookupService,
-    private activityService: ActivityService
-  ) {}
-    trigger = true;
-    @Input() activity: any;
+    private activityService: ActivityService,
+    public tokenService: TokenService
+  ) { }
+  trigger = true;
+  @Input() activity: any;
   ngOnInit(): void {
     if (!this.walletService.wallet) {
       this.router.navigate(['']);
@@ -49,13 +52,13 @@ export class AccountViewComponent implements OnInit {
             this.account = this.walletService.wallet.getAccount(address);
           }
         });
-        setInterval(() => this.trigger = !this.trigger, 10 * 1000);
+      setInterval(() => this.trigger = !this.trigger, 1000);
     }
   }
-  getType(transaction: any): string {
+  getType(transaction: Activity): string {
     if (transaction.type !== 'transaction') {
       if (transaction.type === 'delegation') {
-        if (transaction.destination) {
+        if (transaction.destination.address) {
           return 'delegated';
         } else {
           return 'undelegated';
@@ -65,7 +68,7 @@ export class AccountViewComponent implements OnInit {
       }
     } else {
       let operationType = '';
-      if (transaction.source === this.account.address) {
+      if (transaction.source.address === this.account.address) {
         operationType = 'sent';
       } else {
         operationType = 'received';
@@ -87,6 +90,15 @@ export class AccountViewComponent implements OnInit {
   explorerURL(hash: string) {
     const baseURL = CONSTANTS.BLOCK_EXPLORER_URL;
     return `${baseURL}/${hash}`;
+  }
+  printAmount(activity: Activity): string {
+    return this.tokenService.formatAmount(activity.tokenId, activity.amount.toString());
+  }
+  receivedKind(activity): string {
+    return (activity.tokenId && activity.source.address && (activity.tokenId.split(':')[0] === activity.source.address)) ? 'Minted' : 'Received';
+  }
+  displayTokenCard(): boolean {
+    return (this.account instanceof ImplicitAccount) || (this.account?.tokens?.length > 0);
   }
 }
 

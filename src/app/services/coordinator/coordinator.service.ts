@@ -8,6 +8,7 @@ import { OperationService } from '../operation/operation.service';
 import { ErrorHandlingPipe } from '../../pipes/error-handling.pipe';
 import { Account } from '../wallet/wallet';
 import Big from 'big.js';
+import { TokenService } from '../token/token.service';
 
 export interface ScheduleData {
   pkh: string;
@@ -36,7 +37,8 @@ export class CoordinatorService {
     private balanceService: BalanceService,
     private delegateService: DelegateService,
     private operationService: OperationService,
-    private errorHandlingPipe: ErrorHandlingPipe
+    private errorHandlingPipe: ErrorHandlingPipe,
+    private tokenService: TokenService
   ) {}
   startAll() {
     if (this.walletService.wallet) {
@@ -143,6 +145,7 @@ export class CoordinatorService {
             const age = new Date().getTime() - new Date(latestActivity.timestamp).getTime();
             if (age > 360000) {
               acc.activities.shift();
+              this.walletService.storeWallet();
             }
           }
         }
@@ -220,17 +223,19 @@ export class CoordinatorService {
     if (metadata.transactions) {
       console.log('Unconfirmed transactions:');
       console.log(metadata.transactions);
+      const decimals = metadata.tokenTransfer && this.tokenService.getAsset(metadata.tokenTransfer) ? this.tokenService.getAsset(metadata.tokenTransfer).decimals : 6;
       for (const op of metadata.transactions) {
         const transaction = {
           type: 'transaction',
           status: 0,
-          amount: Big(op.amount).times(1000000).toString(),
+          amount: Big(op.amount).times(10 ** decimals).toString(),
           fee: null,
-          source: from,
-          destination: op.to,
+          source: { address: from },
+          destination: { address: op.to },
           hash: metadata.opHash,
           block: null,
-          timestamp: new Date().getTime()
+          timestamp: new Date().getTime(),
+          tokenId: metadata.tokenTransfer ? metadata.tokenTransfer : undefined
         };
         let account = this.walletService.wallet.getAccount(from);
         account.activities.unshift(transaction);
@@ -245,8 +250,8 @@ export class CoordinatorService {
         status: 0,
         amount: null,
         fee: null,
-        source: from,
-        destination: metadata.delegate,
+        source: { address: from },
+        destination: { address: metadata.delegate },
         hash: metadata.opHash,
         block: null,
         timestamp: new Date().getTime()
@@ -254,8 +259,8 @@ export class CoordinatorService {
       const account = this.walletService.wallet.getAccount(from);
       account.activities.unshift(delegation);
     } else {
-      console.log('Unknown metadata');
-      console.log(metadata);
+      console.log('Unknown metadata', metadata);
     }
+    this.walletService.storeWallet();
   }
 }

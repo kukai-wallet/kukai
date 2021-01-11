@@ -14,6 +14,7 @@ import { Account, ImplicitAccount, OriginatedAccount } from '../../services/wall
 import { MessageService } from '../../services/message/message.service';
 import { TorusService } from '../../services/torus/torus.service';
 import { LookupService } from '../../services/lookup/lookup.service';
+import { TokenService } from '../../services/token/token.service';
 import { emitMicheline, assertMichelsonData } from '@taquito/michel-codec';
 
 interface SendData {
@@ -39,7 +40,15 @@ const zeroTxParams: DefaultTransactionParams = {
   templateUrl: './send.component.html',
   styleUrls: ['./send.component.scss']
 })
+
 export class SendComponent implements OnInit, OnChanges {
+  @Input() activeAccount: Account;
+  @Input() tokenTransfer: string;
+  @Input() beaconMode = false;
+  @Input() operationRequest: any;
+  @Output() operationResponse = new EventEmitter();
+  @ViewChild('amountInput') amountInputView: ElementRef;
+  defaultTransactionParams: DefaultTransactionParams = zeroTxParams;
   costPerByte: string = this.estimateService.costPerByte;
   // torus
   torusVerifier = '';
@@ -47,22 +56,18 @@ export class SendComponent implements OnInit, OnChanges {
   torusLookupAddress = '';
   torusLookupId = '';
   torusTwitterId = '';
-  /* New variables */
+
   modalOpen = false;
   advancedForm = false;
   sendMax = false;
-  /* old variables */
-  @Input() beaconMode = false;
-  @Input() operationRequest: any;
-  @Input() activeAccount: Account;
-  @Output() operationResponse = new EventEmitter();
-  @ViewChild('amountInput') amountInputView: ElementRef;
-  defaultTransactionParams: DefaultTransactionParams = zeroTxParams;
+  hideAmount = false;
 
   // Transaction variables
   toPkh: string;
   amount = '';
   fee: string;
+  batchParameters: { num: number, parameters: any }[] = [];
+  batchParamIndex = 0;
   parameters: any;
   micheline: { entrypoint: string, value: string };
   parametersFormat = 0;
@@ -100,7 +105,8 @@ export class SendComponent implements OnInit, OnChanges {
     private estimateService: EstimateService,
     private messageService: MessageService,
     public torusService: TorusService,
-    private lookupService: LookupService
+    private lookupService: LookupService,
+    public tokenService: TokenService
   ) { }
 
   ngOnInit() {
@@ -110,11 +116,42 @@ export class SendComponent implements OnInit, OnChanges {
     }
   }
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
-    if (this.operationRequest && !(this.walletService.isLedgerWallet() && this.operationRequest.operationDetails[0].parameters)) {
-      console.log('Beacon payload to send', this.operationRequest);
-      if (this.operationRequest.operationDetails[0].kind === 'transaction') {
-        this.openModal();
+    if (this.beaconMode) {
+      if (this.operationRequest &&
+        this.operationRequest.operationDetails[0].kind === 'transaction') {
+        console.log('Beacon payload to send', this.operationRequest);
+        this.loadBeaconPayload();
+      } else {
+        this.operationResponse.emit(null);
+      }
+    }
+  }
+  async loadBeaconPayload() {
+    await this.openModal();
+    if (this.operationRequest.operationDetails.length > 1) {
+      this.isMultipleDestinations = true;
+      for (const [i, op] of this.operationRequest.operationDetails.entries()) {
+        this.toMultipleDestinationsString = this.toMultipleDestinationsString + `${op.destination} ${Big(op.amount).div(10 ** 6).toFixed()}; `;
+        if (op.parameters) {
+          this.batchParameters.push({ num: i + 1, parameters: op.parameters });
+          if (!this.parameters) {
+            this.updateParameters(0, op.parameters);
+          }
+        }
+      }
+      this.updateDefaultValues();
+      this.validateBatch();
+    } else {
+      const tokenTransfer = this.beaconTokenTransfer(this.operationRequest.operationDetails[0]);
+      if (tokenTransfer) {
+        const asset = this.tokenService.getAsset(tokenTransfer.tokenId);
+        this.amount = Big(tokenTransfer.amount).div(10 ** asset.decimals).toFixed();
+        this.toPkh = tokenTransfer.to;
+        this.tokenTransfer = tokenTransfer.tokenId;
+        if (asset.booleanAmount) {
+          this.hideAmount = true;
+        }
+      } else {
         if (this.operationRequest.operationDetails[0].destination) {
           this.toPkh = this.operationRequest.operationDetails[0].destination;
         } else {
@@ -126,21 +163,30 @@ export class SendComponent implements OnInit, OnChanges {
         if (this.operationRequest.operationDetails[0].parameters) {
           this.parameters = this.operationRequest.operationDetails[0].parameters;
         }
-        this.activeAccountChange();
       }
-    } else {
-      this.operationResponse.emit(null);
+      this.activeAccountChange();
     }
+  }
+  updateParameters(index: number, parameters: any) {
+    console.log(index, parameters);
+    this.batchParamIndex = index;
+    this.parameters = parameters;
+    this.parametersToMicheline();
+  }
+  beaconTokenTransfer(op: any) {
+    if (op.parameters && this.tokenService.isKnownTokenContract(op.destination)) {
+      return this.operationService.parseTokenTransfer(op);
+    }
+    return null;
   }
   init() {
     if (!this.activeAccount) {
       this.activeAccount = this.walletService.wallet.implicitAccounts[0];
     }
-    console.log(this.activeAccount.address);
     this.implicitAccounts = this.walletService.wallet.implicitAccounts;
   }
   /* Modal 2 */
-  openModal() {
+  async openModal() {
     // hide body scrollbar
     const scrollBarWidth = window.innerWidth - document.body.offsetWidth;
     document.body.style.marginRight = scrollBarWidth.toString();
@@ -152,13 +198,23 @@ export class SendComponent implements OnInit, OnChanges {
         this.activeAccount = this.implicitAccounts[0];
       }
       this.clearForm();
+      if (this.tokenTransfer) {
+        const asset = this.tokenService.getAsset(this.tokenTransfer);
+        if (asset.booleanAmount) {
+          this.hideAmount = true;
+          this.amount = '1';
+          this.amountChange();
+        }
+      }
       if (window.innerWidth > 1300) {
         setTimeout(() => {
-          const inputElem = <HTMLInputElement>this.amountInputView.nativeElement;
-          inputElem.focus();
+          if (this.amountInputView) {
+            const inputElem = <HTMLInputElement>this.amountInputView.nativeElement;
+            inputElem.focus();
+          }
         }, 100);
       }
-      this.estimateService.preLoadData(this.activeAccount.pkh, this.activeAccount.pk);
+      await this.estimateService.preLoadData(this.activeAccount.pkh, this.activeAccount.pk);
     }
   }
   async openModal2() {
@@ -176,13 +232,7 @@ export class SendComponent implements OnInit, OnChanges {
         if (!this.formInvalid) {
           this.activeView++;
           if (this.walletService.isLedgerWallet()) {
-            this.messageService.startSpinner('Preparing transaction...');
-            const keys = await this.walletService.getKeys('');
-            if (keys) {
-              await this.sendTransaction(keys);
-            } else {
-              this.messageService.stopSpinner();
-            }
+            this.ledgerError = '?';
           }
         } else if (clearFee) {
           this.fee = '';
@@ -191,7 +241,6 @@ export class SendComponent implements OnInit, OnChanges {
     }
   }
   async ledgerRetry() {
-    this.ledgerError = '';
     this.messageService.startSpinner('Preparing transaction...');
     const keys = await this.walletService.getKeys('');
     if (keys) {
@@ -255,6 +304,7 @@ export class SendComponent implements OnInit, OnChanges {
     event.stopPropagation();
     this.sendMax = true;
     this.checkMaxAmount();
+    this.amountChange();
   }
   checkMaxAmount() {
     if (this.sendMax) {
@@ -279,7 +329,7 @@ export class SendComponent implements OnInit, OnChanges {
     }
   }
   maxToSend(account: Account): string {
-    if (account && (account instanceof ImplicitAccount)) {
+    if (account && (account instanceof ImplicitAccount) && !this.tokenTransfer) {
       let accountBalance = Big(account.balanceXTZ).div(1000000);
       accountBalance = accountBalance.minus(this.fee && Number(this.fee) ? Number(this.fee) : this.defaultTransactionParams.fee);
       if (!this.isMultipleDestinations) {
@@ -290,7 +340,13 @@ export class SendComponent implements OnInit, OnChanges {
       accountBalance = accountBalance.minus(0.000001); // dust
       return accountBalance.toString();
     } else {
-      return Big(account.balanceXTZ).div(1000000).toString();
+      if (this.tokenTransfer) {
+        if (account instanceof ImplicitAccount) {
+          return Big(account.getTokenBalance(this.tokenTransfer)).div(10 ** this.tokenService.getAsset(this.tokenTransfer).decimals).toFixed();
+        }
+      } else {
+        return Big(account.balanceXTZ).div(1000000).toString();
+      }
     }
   }
   prepTransactions(finalCheck = false): boolean {
@@ -333,7 +389,7 @@ export class SendComponent implements OnInit, OnChanges {
     }
     if (!amount) { amount = '0'; }
     if (!fee) { fee = '0'; }
-    this.operationService.transfer(this.activeAccount.address, this.transactions, Number(fee), keys).subscribe(
+    this.operationService.transfer(this.activeAccount.address, this.transactions, Number(fee), keys, this.tokenTransfer).subscribe(
       async (ans: any) => {
         this.sendResponse = ans;
         if (ans.success === true) {
@@ -341,7 +397,7 @@ export class SendComponent implements OnInit, OnChanges {
           if (ans.payload.opHash) {
             this.operationResponse.emit(ans.payload.opHash);
             this.messageService.stopSpinner();
-            const metadata = { transactions: this.transactions, opHash: ans.payload.opHash };
+            const metadata = { transactions: this.transactions, opHash: ans.payload.opHash, tokenTransfer: this.tokenTransfer };
             this.coordinatorService.boost(this.activeAccount.address, metadata);
             if (this.transactions[0].meta) {
               this.torusNotification(this.transactions[0]);
@@ -374,10 +430,12 @@ export class SendComponent implements OnInit, OnChanges {
       await this.messageService.startSpinner('Waiting for Ledger signature...');
       try {
         const op = this.sendResponse.payload.unsignedOperation;
-        const signature = await this.ledgerService.signOperation(op, this.walletService.wallet.implicitAccounts[0].derivationPath);
+        const toSign = op.length <= 458 ? op : this.operationService.ledgerPreHash(op);
+        const signature = await this.ledgerService.signOperation(toSign, this.walletService.wallet.implicitAccounts[0].derivationPath);
         if (signature) {
           const signedOp = op + signature;
           this.sendResponse.payload.signedOperation = signedOp;
+          this.ledgerError = '';
         } else {
           this.ledgerError = 'Failed to sign transaction';
         }
@@ -392,7 +450,7 @@ export class SendComponent implements OnInit, OnChanges {
       ((ans: any) => {
         this.sendResponse = ans;
         if (ans.success && this.activeAccount) {
-          const metadata = { transactions: this.transactions, opHash: ans.payload.opHash };
+          const metadata = { transactions: this.transactions, opHash: ans.payload.opHash, tokenTransfer: this.tokenTransfer };
           if (this.transactions[0].meta) {
             this.torusNotification(this.transactions[0]);
           }
@@ -451,10 +509,16 @@ export class SendComponent implements OnInit, OnChanges {
     this.defaultTransactionParams = zeroTxParams;
     this.prevEquiClass = '';
     this.latestSimError = '';
+    this.hideAmount = false;
     this.clearTorus();
     this.parameters = null;
     this.micheline = null;
     this.parametersFormat = 0;
+    this.batchParameters = [];
+    this.batchParamIndex = 0;
+    if (this.beaconMode) {
+      this.tokenTransfer = '';
+    }
   }
 
   checkInput(finalCheck = false): string {
@@ -469,10 +533,10 @@ export class SendComponent implements OnInit, OnChanges {
     }
     return result;
   }
-  checkBalance() {
+  checkBalance(): string {
     if (this.transactions.length > 0) {
       if (this.activeAccount && (this.activeAccount instanceof ImplicitAccount)) {
-        const max = Big(this.maxToSend(this.activeAccount)).plus(0.000001);
+        const max = Big(this.maxToSend(this.activeAccount)).plus(this.tokenTransfer ? 0 : 0.000001);
         let amount = Big(0);
         for (const tx of this.transactions) {
           amount = amount.plus(Big(tx.amount));
@@ -496,11 +560,6 @@ export class SendComponent implements OnInit, OnChanges {
     }
     return '';
   }
-  amountInputChange() {
-    if (this.beaconMode) {
-      this.updateDefaultValues();
-    }
-  }
   async activeAccountChange() {
     await this.estimateService.preLoadData(this.activeAccount.pkh, this.activeAccount.pk);
     this.updateDefaultValues();
@@ -509,17 +568,22 @@ export class SendComponent implements OnInit, OnChanges {
     if (!this.torusVerifier) {
       this.estimateFees();
       if (this.isMultipleDestinations) {
-        this.amount = this.totalAmount().toString();
+        this.amount = this.totalAmount();
       }
     }
   }
+  amountChange() {
+    if (this.beaconMode || this.tokenTransfer) {
+      this.estimateFees();
+    }
+  }
   async estimateFees() {
+    console.log('estimate..');
     const prevSimError = this.latestSimError;
     this.latestSimError = '';
     if (this.prepTransactions()) {
       const equiClass = this.equiClass(this.activeAccount.address, this.transactions);
-      if (this.prevEquiClass !== equiClass || this.parameters || this.beaconMode) {
-        console.log('simulate');
+      if (this.prevEquiClass !== equiClass || this.parameters || this.beaconMode || (this.tokenTransfer && this.checkBalance())) {
         this.latestSimError = '';
         this.prevEquiClass = equiClass;
         this.simSemaphore++; // Put lock on 'Preview and 'Send max'
@@ -538,7 +602,7 @@ export class SendComponent implements OnInit, OnChanges {
           this.simSemaphore--;
         };
         console.log('simulate...');
-        this.estimateService.estimate(JSON.parse(JSON.stringify(this.transactions)), this.activeAccount.address, callback);
+        this.estimateService.estimate(JSON.parse(JSON.stringify(this.transactions)), this.activeAccount.address, this.tokenTransfer, callback);
       } else {
         this.latestSimError = prevSimError;
         this.formInvalid = this.latestSimError;
@@ -555,8 +619,12 @@ export class SendComponent implements OnInit, OnChanges {
   // prevent redundant estimations
   equiClass(sender: string, transactions: SendData[]): string {
     let data = sender;
-    for (const tx of transactions) {
-      data += tx.to;
+    if (this.tokenTransfer) {
+      data += transactions[0].to + transactions[0].amount.toString();
+    } else {
+      for (const tx of transactions) {
+        data += tx.to;
+      }
     }
     return data;
   }
@@ -584,10 +652,6 @@ export class SendComponent implements OnInit, OnChanges {
       }
     } else { // Torus
       this.torusLookupAddress = '';
-      /*if (this.torusVerifier === 'google' && !this.inputValidationService.email(this.toPkh) && this.toPkh !== '') {
-        this.formInvalid = 'Invalid Google account';
-      } else if (this.torusVerifier === 'reddit' && !this.inputValidationService.redditAccount(this.toPkh) && this.toPkh !== '') {
-        this.formInvalid = 'Invalid Reddit account';*/
       if (this.torusService.verifierMapKeys.includes(this.torusVerifier)) {
         if (!this.inputValidationService.torusAccount(this.toPkh, this.torusVerifier) && this.toPkh !== '') {
           switch (this.torusVerifier) {
@@ -642,14 +706,36 @@ export class SendComponent implements OnInit, OnChanges {
     }
     return this.checkReceiverAndAmount(this.toPkh, this.amount, finalCheck);
   }
+  parametersToMicheline() {
+    if (this.parameters) {
+      try {
+        if (!this.parameters.value ||
+          !this.parameters.entrypoint) {
+          throw new Error('entrypoint and value expected');
+        }
+        assertMichelsonData(this.parameters.value);
+        const res = emitMicheline(this.parameters.value, { indent: '  ', newline: '\n' });
+        this.micheline = { entrypoint: this.parameters.entrypoint, value: res };
+      } catch (e) {
+        console.log(e);
+        if (this.beaconMode) {
+          this.formInvalid = e;
+        }
+        this.micheline = null;
+      }
+    }
+  }
   checkReceiverAndAmount(toPkh: string, amount: string, finalCheck: boolean): string {
-    if (!this.torusVerifier && (!this.inputValidationService.address(toPkh) || toPkh === this.activeAccount.address)) {
+    if (!this.torusVerifier && (
+      !this.inputValidationService.address(toPkh) ||
+      toPkh === this.activeAccount.address
+    )) {
       return this.translate.instant('SENDCOMPONENT.INVALIDRECEIVERADDRESS');
     } else if (this.torusVerifier
       && (!this.inputValidationService.torusAccount(this.toPkh, this.torusVerifier) || this.torusLookupAddress === this.activeAccount.address)) {
       return 'Invalid recipient';
-    } else if (!this.inputValidationService.amount(amount) ||
-      (finalCheck && ((amount === '0' || amount === '') && toPkh.slice(0, 3) !== 'KT1'))) {
+    } else if (!this.inputValidationService.amount(amount, this.tokenTransfer ? this.tokenService.getAsset(this.tokenTransfer).decimals : undefined) ||
+      (finalCheck && ((amount === '0') || amount === '') && (toPkh.slice(0, 3) !== 'KT1'))) {
       return this.translate.instant('SENDCOMPONENT.INVALIDAMOUNT');
     } else if (!this.inputValidationService.gas(this.gas)) {
       return this.translate.instant('SENDCOMPONENT.INVALIDGASLIMIT');
@@ -685,7 +771,12 @@ export class SendComponent implements OnInit, OnChanges {
             const storageLimit = this.storage ? Number(this.storage) : this.defaultTransactionParams.customLimits &&
               this.defaultTransactionParams.customLimits.length > index ?
               this.defaultTransactionParams.customLimits[index].storageLimit : this.defaultTransactionParams.storage;
-            this.toMultipleDestinations.push({ to: singleSendDataArray[0], amount: Number(singleSendDataArray[1]), gasLimit, storageLimit });
+            if (this.beaconMode && this.operationRequest.operationDetails[index].parameters) {
+              console.log('Beacon param', this.operationRequest.operationDetails[index].parameters);
+              this.toMultipleDestinations.push({ to: singleSendDataArray[0], amount: Number(singleSendDataArray[1]), gasLimit, storageLimit, parameters: this.operationRequest.operationDetails[index].parameters });
+            } else {
+              this.toMultipleDestinations.push({ to: singleSendDataArray[0], amount: Number(singleSendDataArray[1]), gasLimit, storageLimit });
+            }
           } else {
             this.toMultipleDestinations = [];
             validationError = singleSendDataCheckresult + '. Transaction ' + (index + 1);
@@ -703,12 +794,12 @@ export class SendComponent implements OnInit, OnChanges {
     return validationError;
   }
 
-  totalAmount(): number {
+  totalAmount(): string {
     let totalSent = Big(0);
     for (const tx of this.transactions) {
       totalSent = totalSent.add(tx.amount);
     }
-    return Number(totalSent);
+    return totalSent.toFixed();
   }
   getTotalCost(display: boolean = false): string {
     const totalFee = Big(this.getTotalFee()).plus(Big(this.getTotalBurn())).toString();
@@ -794,21 +885,22 @@ export class SendComponent implements OnInit, OnChanges {
   }
   async torusNotification(transaction: SendData) {
     if (transaction.meta) {
+      const amount = this.tokenService.formatAmount(this.tokenTransfer, transaction.amount.toString(), false);
       if (transaction.meta.verifier === 'google') {
-        this.messageService.emailNotify(transaction.meta.alias, transaction.amount.toString());
+        this.messageService.emailNotify(transaction.meta.alias, amount);
         this.lookupService.add(transaction.to, transaction.meta.alias, 2);
       } else if (transaction.meta.verifier === 'reddit') {
-        this.messageService.redditNotify(transaction.meta.alias, transaction.amount.toString());
+        this.messageService.redditNotify(transaction.meta.alias, amount);
         this.lookupService.add(transaction.to, transaction.meta.alias, 3);
       } else if (transaction.meta.verifier === 'twitter') {
-        this.messageService.twitterNotify(transaction.meta.twitterId, transaction.meta.alias, transaction.amount.toString());
+        this.messageService.twitterNotify(transaction.meta.twitterId, transaction.meta.alias, amount);
         this.lookupService.add(transaction.to, transaction.meta.alias, 4);
       }
     }
   }
   previewAttention(): string {
     if (this.torusLookupId) {
-      if (new Big(this.totalAmount()).gt('50')) {
+      if (!this.tokenTransfer && new Big(this.totalAmount()).gt('50')) {
         let recipientKind = '';
         switch (this.torusVerifier) {
           case 'google':
@@ -828,10 +920,36 @@ export class SendComponent implements OnInit, OnChanges {
     }
     return '';
   }
+  getAssetName(short = true): string {
+    if (this.tokenTransfer) {
+      const token = this.tokenService.getAsset(this.tokenTransfer);
+      return short ? token.symbol : token.name;
+    } else {
+      return 'tez';
+    }
+  }
+  // Only Numbers with Decimals
+  keyPressNumbersDecimal(event, input) {
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode !== 46 && charCode > 31
+      && (charCode < 48 || charCode > 57)) {
+      event.preventDefault();
+      return false;
+    } else if (charCode === 46 && this[input].length === 0) {
+      this[input] = '0' + this[input];
+    }
+    return true;
+  }
   parametersTextboxDisplay(): string {
     return !this.parametersFormat ? this.micheline.value : JSON.stringify(this.parameters.value, null, 2);
   }
   setParametersFormat(id: number) {
     this.parametersFormat = id;
+  }
+  getTitle() {
+    if (this.beaconMode && this.parameters?.entrypoint === 'mint') {
+      return 'Mint token';
+    }
+    return `Send ${this.getAssetName(false)}`;
   }
 }

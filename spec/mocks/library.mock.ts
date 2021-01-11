@@ -116,7 +116,7 @@ export class Tools {
       let pkh = impAcc.pkh;
       let balance = (impAcc.balanceXTZ / 1000000).toFixed(2);
       let delegate = impAcc.delegate;
-      let numberOfActivites = impAcc.activitiesCounter;
+      let numberOfActivites = impAcc.state;
 
       string += '\x1b[36m'; //set blue
       string += '   public key hash: ' + pkh + '\n';
@@ -130,7 +130,7 @@ export class Tools {
         pkh = origAcc.address;
         balance = (origAcc.balanceXTZ / 1000000).toFixed(2);
         delegate = origAcc.delegate;
-        numberOfActivites = origAcc.activitiesCounter;
+        numberOfActivites = origAcc.state;
 
         string += '\x1b[36m'; //set blue
         string += '   public key hash: ' + pkh + '\n';
@@ -405,11 +405,11 @@ export class ActivityTools extends OperationTools {
     const activity: Activity = {
       hash: operationhash,
       block: blockhash,
-      source: source,
+      source: { address: source },
       status: 1,
-      destination: this.generateDestination(),
-      amount: this.generateAmount(),
-      fee: this.generateFee(),
+      destination: { address: this.generateDestination() },
+      amount: this.generateAmount().toString(),
+      fee: this.generateFee().toString(),
       timestamp: this.generateDate(),
       type: type,
     };
@@ -510,7 +510,7 @@ export class AccountTools extends ActivityTools {
       delegate: this.generateRandomDelegate(),
       balanceXTZ: this.generateBalance(xtzrate),
       balanceUSD: 0,
-      activitiesCounter: 5,
+      state: '5',
       activities: this.generateActivities(5, pkh, 'transaction'),
       originatedAccounts: []
     };

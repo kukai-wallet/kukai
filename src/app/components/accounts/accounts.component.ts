@@ -45,7 +45,6 @@ export class AccountsComponent implements OnInit {
     this.messageService.add(account.address + ' ' + copyToClipboard, 5);
   }
   select(account: Account) {
-    console.log('Selected: ' + account.address);
     this.router.navigate(['account', account.address]);
   }
   @HostListener('window:resize')
