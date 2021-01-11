@@ -43,7 +43,7 @@ describe('TokenService', () => {
         category: '',
         symbol: 'tzTe',
         contractAddress: 'KT1XXCz59vAzfbvDsNrrmKKuqSFrzQgpUqGM',
-        displayUrl: '../../../assets/img/tokens/default.png',
+        displayUrl: '../../../assets/img/tokens/unknown-token.png',
         nonTransferable: false,
         booleanAmount: false
       };

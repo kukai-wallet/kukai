@@ -131,7 +131,7 @@ export class TokenService {
           category: metadata.tokenCategory ? metadata.tokenCategory : '',
           tokens: {}
         };
-        const displayUrl = (metadata.displayUri && TRUSTED_TOKEN_CONTRACTS.includes(contractAddress)) ? metadata.displayUri : '../../../assets/img/tokens/default.png';
+        const displayUrl = (metadata.displayUri && TRUSTED_TOKEN_CONTRACTS.includes(contractAddress)) ? metadata.displayUri : '../../../assets/img/tokens/unknown-token.png';
         const token: TokenData = {
           name: metadata.name,
           symbol: metadata.symbol,
@@ -180,7 +180,7 @@ export class TokenService {
       contractAddress,
       id,
       decimals: 0,
-      displayUrl: '../../../assets/img/tokens/default.png',
+      displayUrl: '../../../assets/img/tokens/unknown-token.png',
       name: '[Unknown token]',
       symbol: '',
       description: '',
