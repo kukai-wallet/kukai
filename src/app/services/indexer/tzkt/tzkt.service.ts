@@ -205,14 +205,14 @@ export class TzktService implements Indexer {
       console.warn(e);
       return null;
     }
-    if (!metadata['displayUri'] && metadata['displayURI']) {
-      metadata['displayUri'] = metadata['displayURI'];
-      delete metadata['displayURI'];
-    }
     console.log(metadata);
     console.log(url);
     if (!url) {
       console.log('No offchain metadata');
+      if (!metadata['displayUri'] && metadata['displayURI']) {
+        metadata['displayUri'] = metadata['displayURI'];
+        delete metadata['displayURI'];
+      }
       if (metadata['displayUri']) {
         metadata['displayUri'] = this.uriToUrl(metadata['displayUri']);
       }
@@ -243,12 +243,12 @@ export class TzktService implements Indexer {
         metadata[key] = offChainMeta[key];
       }
     }
+    if (!metadata['displayUri'] && metadata['displayURI']) {
+      metadata['displayUri'] = metadata['displayURI'];
+      delete metadata['displayURI'];
+    }
     if (metadata['displayUri']) {
       metadata['displayUri'] = this.uriToUrl(metadata['displayUri']);
-    }
-    if (typeof metadata['nonTransferrable'] !== 'undefined') { // Temp spelling fix
-      metadata['nonTransferable'] = metadata['nonTransferrable'];
-      delete metadata['nonTransferrable'];
     }
     if (metadata.decimals === undefined) {
       metadata.decimals = 0;

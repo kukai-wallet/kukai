@@ -28,6 +28,10 @@
         <label>Description</label>
         <p>{{ getDescription() }}</p>
       </div>
+      <div *ngIf="token.contractAddress" class="group">
+        <label>Contract Address</label>
+        <p>{{ token.contractAddress }}</p>
+      </div>
     </div>
   </div>
 </div>

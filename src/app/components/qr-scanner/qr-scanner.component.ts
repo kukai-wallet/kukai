@@ -44,6 +44,7 @@ export class QrScannerComponent implements OnInit {
     console.log('Pairing Info', pairInfo);
     const pairingInfo = this.deeplinkService.QRtoPairingJson(pairInfo);
     if (pairingInfo) {
+      this.beaconService.preNotifyPairing(pairingInfo);
       this.beaconService.addPeer(pairingInfo);
     }
     this.closeModal();
