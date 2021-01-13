@@ -1,6 +1,6 @@
 {
   "name": "kukai",
-  "version": "1.11.0",
+  "version": "1.11.1",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
@@ -16,7 +16,7 @@
     "stage-ghpages-testnet": "ng lint --fix && ng build && angular-cli-ghpages --repo \"git@github.com:kukai-wallet/testnet.git\" --branch staging --cname=testnet.kukai.app",
     "deploy-preview-version": "ng lint --fix && npm run build-dev && angular-cli-ghpages --repo \"git@github.com:kukai-wallet/preview.git\" --branch master --cname=preview.kukai.app",
     "deploy-experimental-version": "ng lint --fix && npm run build-dev && angular-cli-ghpages --repo \"git@github.com:kukai-wallet/experimental.git\" --branch master --cname=experimental.kukai.app",
-    "deploy-beta-version": "ng lint --fix && ng build && angular-cli-ghpages --repo \"git@github.com:kukai-wallet/beta.git\" --branch master --cname=beta.kukai.app"
+    "deploy-beta-version": "ng lint --fix && ng build --prod && angular-cli-ghpages --repo \"git@github.com:kukai-wallet/beta.git\" --branch master --cname=beta.kukai.app"
   },
   "private": true,
   "dependencies": {
@@ -42,9 +42,9 @@
     "@taquito/taquito": "^7.0.1-beta.0",
     "@taquito/utils": "^7.0.1-beta.0",
     "@tezos-core-tools/crypto-utils": "0.0.7",
-    "@toruslabs/fetch-node-details": "^2.3.0",
-    "@toruslabs/torus-direct-web-sdk": "^3.4.1",
-    "@toruslabs/torus.js": "^2.2.5",
+    "@toruslabs/fetch-node-details": "^2.3.3",
+    "@toruslabs/torus-direct-web-sdk": "^3.5.5",
+    "@toruslabs/torus.js": "^2.2.13",
     "aes-js": "^3.1.2",
     "babel-polyfill": "^6.26.0",
     "big.js": "^5.2.2",
