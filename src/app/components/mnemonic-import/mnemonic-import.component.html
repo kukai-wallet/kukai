@@ -11,7 +11,7 @@
             <p class="description bold" style="font-size: 1rem">
                 Import your wallet from an encrypted keystore file (.tez).
             </p>
-            <input type="file" (change)="handleFileInput($event.target.files)" accept=".tez" id="file" name="file"
+            <input type="file" (change)="handleFileInput($event.target.files)" accept=".tez{{ firefox ? ', application/json' : '' }}" id="file" name="file"
                 class="input-file">
             <label for="file" class="input-file" [class.loaded]="walletJson"><span
                     *ngIf="walletJson">{{ fileName }}</span><span>Browse</span></label>
