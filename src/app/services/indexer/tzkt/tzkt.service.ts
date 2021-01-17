@@ -16,7 +16,7 @@ export class TzktService implements Indexer {
     return fetch(`https://api.${CONSTANTS.NETWORK}.tzkt.io/v1/operations/originations?contractManager=${pkh}`)
       .then(response => response.json())
       .then(data => data.map((op: any) => {
-        return op.originatedContract.kind === 'delegator_contract' ? op.originatedContract.address : '';
+        return (op?.status === 'applied' && op?.originatedContract?.kind === 'delegator_contract') ? op.originatedContract.address : '';
       }).filter((address: string) => address.length));
   }
   async accountInfo(address: string, knownTokenIds: string[] = []): Promise<any> {
