@@ -1,4 +1,10 @@
 # Release notes
+## 1.11.2
+* Fix delegator contract import bug
+* Fix Firefox keystore import
+* Update Direct Auth deps
+## 1.11.1
+* Direct Auth hotfix
 ## 1.11
 * Token support (FA1.2 & FA2)
 * Basic contract/token metadata support (tzip16 & tzip23)

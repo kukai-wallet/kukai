@@ -33,6 +33,7 @@ export class MnemonicImportComponent implements OnInit {
   Downloaded = false;
   fileName = '';
   showWrongFileUploadMsg: false;
+  firefox = false;
 
   constructor(
     private translate: TranslateService,
@@ -45,8 +46,17 @@ export class MnemonicImportComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.checkBrowser();
   }
-
+  checkBrowser() {
+    try {
+      if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
+        this.firefox = true;
+      }
+    } catch (e) {
+      console.warn(e);
+    }
+  }
   retrieve() {
     if (this.mnemonic) {
       this.mnemonic = this.mnemonic.toLowerCase().replace(/(\r\n|\n|\r)/gm, ' ').trim();
