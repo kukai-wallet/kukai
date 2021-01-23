@@ -295,7 +295,6 @@ export class WalletService {
       } else if (this.wallet instanceof TorusWallet) {
         type = 'TorusWallet';
       }
-      console.log('Type is ' + type);
       localStorage.setItem(
         this.storeKey,
         JSON.stringify({ type, localStorageId: this.storageId, data: this.wallet })
@@ -372,7 +371,6 @@ export class WalletService {
     this.wallet.totalBalanceUSD = wd.totalBalanceUSD;
     this.wallet.totalBalanceXTZ = wd.totalBalanceXTZ;
     if (wd.lookups) {
-      console.log('found', wd.lookups);
       this.wallet.lookups = wd.lookups;
     }
     for (const implicit of wd.implicitAccounts) {

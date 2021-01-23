@@ -214,7 +214,7 @@ export class DelegateComponent implements OnInit, OnChanges {
       this.messageService.startSpinner('Waiting for Ledger signature');
       let signature;
       try {
-        signature = await this.ledgerService.signOperation(op, this.walletService.wallet.implicitAccounts[0].derivationPath);
+        signature = await this.ledgerService.signOperation('03' + op, this.walletService.wallet.implicitAccounts[0].derivationPath);
       } finally {
         this.messageService.stopSpinner();
       }

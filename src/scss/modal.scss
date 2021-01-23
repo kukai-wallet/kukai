@@ -101,6 +101,11 @@ div.kukai-modal input.custom-large {
   text-align: center;
   border: 0;
 }
+div.kukai-modal p.previewAttention {
+  color: #CD0000;
+  font-size: 0.875rem;
+  line-height: 1rem;
+}
 div.kukai-modal input.custom-large:disabled {
   background-color: rgba(0, 0, 0, 0);
 }

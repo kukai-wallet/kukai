@@ -40,7 +40,6 @@ export class ActivityService {
         const unknownTokenIds = data.unknownTokenIds ? data.unknownTokenIds : [];
         this.handleUnknownTokenIds(unknownTokenIds);
         if (account.state !== counter) {
-          console.log(account.state + ' ' + counter);
           if (data.tokens) {
             this.updateTokenBalances(account, data.tokens);
           }
