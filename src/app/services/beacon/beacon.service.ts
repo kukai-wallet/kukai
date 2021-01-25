@@ -99,6 +99,9 @@ export class BeaconService {
   async rejectOnParameters(message: any) {
     await this.respondWithError(BeaconErrorType.PARAMETERS_INVALID_ERROR, message);
   }
+  async rejectOnBroadcastError(message: any) {
+    await this.respondWithError(BeaconErrorType.BROADCAST_ERROR, message);
+  }
   async respondWithError(errorType: BeaconErrorType, requestMessage: any) {
     if (requestMessage) {
       const response: ErrorResponse = {

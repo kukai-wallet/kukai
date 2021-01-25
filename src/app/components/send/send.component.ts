@@ -414,6 +414,7 @@ export class SendComponent implements OnInit, OnChanges {
           this.messageService.stopSpinner();
           console.log('Transaction error id ', ans.payload.msg);
           this.messageService.addError(ans.payload.msg, 0);
+          this.operationResponse.emit('broadcast_error');
         }
       },
       err => {
@@ -421,6 +422,7 @@ export class SendComponent implements OnInit, OnChanges {
         console.log('Error Message ', JSON.stringify(err));
         if (this.walletService.isLedgerWallet()) {
           this.messageService.addError('Failed to create transaction', 0);
+          this.operationResponse.emit('broadcast_error');
         }
       },
     );
@@ -464,6 +466,7 @@ export class SendComponent implements OnInit, OnChanges {
           }
         } else {
           this.messageService.addError(this.sendResponse.payload.msg, 0);
+          this.operationResponse.emit('broadcast_error');
         }
         console.log('ans: ' + JSON.stringify(ans));
       })
