@@ -69,16 +69,20 @@ export class UriHandlerComponent implements OnInit {
             case BeaconMessageType.OperationRequest:
               if (await this.isSupportedOperationRequest(message)) {
                 this.operationRequest = message;
+              } else {
+                await this.beaconService.rejectOnUnknown(message);
               }
               break;
             case BeaconMessageType.SignPayloadRequest:
               if (await this.isSupportedSignPayload(message)) {
-              this.signRequest = message;
+                this.signRequest = message;
+              } else {
+                await this.beaconService.rejectOnUnknown(message);
               }
-              //await this.signPayloadResponse('edTest')
               break;
             default:
-              console.warn(message);
+              await this.beaconService.rejectOnUnknown(message);
+              console.warn('Unknown message type', message);
           }
         }
       })
@@ -164,7 +168,7 @@ export class UriHandlerComponent implements OnInit {
     const hexString = message.payload;
     console.log('hex', hexString);
     if (message.signingType !== 'raw' || !this.inputValidationService.hexString(hexString)) {
-      console.warn('Unvalid sign payload');
+      console.warn('Invalid sign payload');
       await this.beaconService.rejectOnUnknown(message);
       return false;
     } else if (hexString.slice(0, 2) !== '05') {
@@ -222,14 +226,14 @@ export class UriHandlerComponent implements OnInit {
     }
     this.permissionRequest = null;
   }
-    /* sign payload handling */
-    async signResponse(signature: string) {
-      if (!signature) {
-        await this.beaconService.rejectOnUserAbort(this.signRequest);
-      } else {
-        await this.beaconService.approveSignPayloadRequest(this.signRequest, signature);
-      }
-      console.log(signature);
-      this.signRequest = null;
+  /* sign payload handling */
+  async signResponse(signature: string) {
+    if (!signature) {
+      await this.beaconService.rejectOnUserAbort(this.signRequest);
+    } else {
+      await this.beaconService.approveSignPayloadRequest(this.signRequest, signature);
     }
+    console.log(signature);
+    this.signRequest = null;
+  }
 }

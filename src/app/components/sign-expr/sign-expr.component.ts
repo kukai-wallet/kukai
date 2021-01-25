@@ -61,9 +61,15 @@ export class SignExprComponent implements OnInit, OnChanges {
       }
       if (keys) {
         this.pwdInvalid = '';
-        const signature = this.operationService.sign(this.signRequest.payload, keys.sk).edsig;
-        this.messageService.stopSpinner();
-        this.acceptSigning(signature);
+        try {
+          const signature = this.operationService.sign(this.signRequest.payload, keys.sk).edsig;
+          this.acceptSigning(signature);
+        } catch (e) {
+          this.pwdInvalid = 'Signing failed';
+          console.warn(e);
+        } finally {
+          this.messageService.stopSpinner();
+        }
       } else {
         this.messageService.stopSpinner();
         if (this.walletService.isTorusWallet()) {
