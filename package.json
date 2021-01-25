@@ -40,7 +40,6 @@
     "@taquito/local-forging": "^7.0.1-beta.0",
     "@taquito/michel-codec": "^7.0.1-beta.0",
     "@taquito/taquito": "^7.0.1-beta.0",
-    "@taquito/utils": "^7.0.1-beta.0",
     "@tezos-core-tools/crypto-utils": "0.0.7",
     "@toruslabs/fetch-node-details": "^2.3.4",
     "@toruslabs/torus-direct-web-sdk": "^3.5.7",

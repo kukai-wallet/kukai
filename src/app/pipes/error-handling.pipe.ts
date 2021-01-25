@@ -210,7 +210,7 @@ export class ErrorHandlingPipe implements PipeTransform {
     },
     {
       msg:
-        'A script or one of its callee took more time than the operation said it would',
+        'An operation tried to exceed the gas limit',
       id: 'proto.alpha.gas_exhausted.operation',
     },
     {
