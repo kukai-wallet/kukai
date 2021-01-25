@@ -5,4 +5,5 @@
     [activeAccount]=activeAccount></app-delegate>
   <app-permission-request (permissionResponse)="permissionResponse($event)" [permissionRequest]="permissionRequest">
   </app-permission-request>
+  <app-sign-expr (signResponse)="signResponse($event)" [signRequest]="signRequest" [activeAccount]=activeAccount></app-sign-expr>
 </div>

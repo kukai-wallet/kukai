@@ -13,7 +13,7 @@ export class LedgerService {
   constructor(
     private operationService: OperationService,
     private messageService: MessageService
-  ) {}
+  ) { }
   async setTransport() {
     if (!this.transport) {
       console.log('Trying to use U2F for transport...');
@@ -36,7 +36,6 @@ export class LedgerService {
   async getPublicAddress(path: string) {
     await this.transportCheck();
     const xtz = new Tezos(this.transport);
-    console.log(path);
     const result = await xtz.getAddress(path, true)
       .catch(e => {
         if (e.message) {
@@ -50,23 +49,35 @@ export class LedgerService {
     return pk;
   }
   async signOperation(op: string, path: string) {
+    if (!['03', '05'].includes(op.slice(0, 2))) {
+      throw new Error('Invalid prefix');
+    }
     await this.transportCheck();
     const xtz = new Tezos(this.transport);
-    console.log('size', op.length);
     let result;
-    console.log(op);
-    if (op.length !== 64) {
-      op = '03' + op;
-      result = await xtz.signOperation(path, op)
-        .catch(e => {
-          this.messageService.addError(e, 0);
-        });
-    } else {
-      result = await xtz.signHash(path, op)
-        .catch(e => {
-          this.messageService.addError(e, 0);
-        });
+    console.log('op', op);
+    result = await xtz.signOperation(path, op)
+      .catch(e => {
+        console.warn(e);
+        this.messageService.addError(e, 0);
+      });
+    console.log(JSON.stringify(result));
+    if (result && result.signature) {
+      return result.signature;
     }
+    return null;
+  }
+  async signHash(hash: string, path: string) {
+    if (hash.length !== 64) {
+      throw new Error('Invalid hash!');
+    }
+    await this.transportCheck();
+    const xtz = new Tezos(this.transport);
+    let result;
+    result = await xtz.signHash(path, hash)
+      .catch(e => {
+        this.messageService.addError(e, 0);
+      });
     console.log(JSON.stringify(result));
     if (result && result.signature) {
       return result.signature;

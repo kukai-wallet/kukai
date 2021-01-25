@@ -430,8 +430,12 @@ export class SendComponent implements OnInit, OnChanges {
       await this.messageService.startSpinner('Waiting for Ledger signature...');
       try {
         const op = this.sendResponse.payload.unsignedOperation;
-        const toSign = op.length <= 458 ? op : this.operationService.ledgerPreHash(op);
-        const signature = await this.ledgerService.signOperation(toSign, this.walletService.wallet.implicitAccounts[0].derivationPath);
+        let signature = '';
+        if (op.length <= 2290) {
+          signature = await this.ledgerService.signOperation('03' + op, this.walletService.wallet.implicitAccounts[0].derivationPath);
+        } else {
+          signature = await this.ledgerService.signHash(this.operationService.ledgerPreHash('03' + op), this.walletService.wallet.implicitAccounts[0].derivationPath);
+        }
         if (signature) {
           const signedOp = op + signature;
           this.sendResponse.payload.signedOperation = signedOp;

@@ -4,6 +4,7 @@ import { utils, hd } from '@tezos-core-tools/crypto-utils';
 import * as zxcvbn from 'zxcvbn';
 
 import { TranslateService } from '@ngx-translate/core';
+import { TorusWallet } from '../wallet/wallet';
 
 @Injectable()
 export class InputValidationService {
@@ -118,11 +119,17 @@ export class InputValidationService {
     }
     return false;
   }
-  operationRaw(hex: string): Boolean {
+  hexString(hex: string): Boolean {
     if (hex && hex.match(/^[a-f0-9]*$/)) {
       return true;
     } else {
       return false;
     }
+  }
+  isMessageSigning(payload: string): boolean {
+    if (payload.match(/^0501[a-f0-9]{8}54657a6f73205369676e6564204d6573736167653a20[a-f0-9]*$/)) {
+      return true;
+    }
+    return false;
   }
 }

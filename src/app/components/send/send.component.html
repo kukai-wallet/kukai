@@ -146,8 +146,8 @@
         <span *ngIf="torusLookupId" class="torus-to"><img src="../../../assets/img/{{ torusVerifier }}-logo.svg">
           {{ torusLookupId }}</span>
         <span class="single-to">{{ transactions[0].to }}</span>
-        <p id="previewAttention" *ngIf="torusLookupId">{{ previewAttention() }}</p>
-        <p id="previewAttention" *ngIf="tokenTransfer && transactions[0].to.slice(0, 3) === 'KT1'">Warning: Verify the contract can manage tokens</p>
+        <p class="previewAttention" *ngIf="torusLookupId">{{ previewAttention() }}</p>
+        <p class="previewAttention" *ngIf="tokenTransfer && transactions[0].to.slice(0, 3) === 'KT1'">Warning: Verify the contract can manage tokens</p>
         <div class="seperator"></div>
       </ng-container>
       <ng-container *ngIf="isMultipleDestinations">
