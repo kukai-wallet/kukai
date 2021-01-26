@@ -942,8 +942,15 @@ export class SendComponent implements OnInit, OnChanges {
       && (charCode < 48 || charCode > 57)) {
       event.preventDefault();
       return false;
-    } else if (charCode === 46 && this[input].length === 0) {
-      this[input] = '0' + this[input];
+    } else if (charCode === 46) {
+      const meta = this.tokenTransfer ? this.tokenService.getAsset(this.tokenTransfer) : null;
+      if (this[input].includes('.') ||
+        (input === 'amount' && meta?.decimals === 0)) {
+        event.preventDefault();
+        return false;
+      } else if (this[input].length === 0) {
+        this[input] = '0' + this[input];
+      }
     }
     return true;
   }
