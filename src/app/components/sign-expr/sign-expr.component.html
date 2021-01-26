@@ -18,7 +18,7 @@
       <div class="row-group" style="margin: 1.25rem 0 1.5rem;">
         <input *ngIf="!walletService.isLedgerWallet() && !walletService.isTorusWallet()" [(ngModel)]="password"
           autocomplete="current-password" placeholder="Password" class="text password" type="password"
-          (input)="this.pwdValid = ''" (change)="this.pwdValid = ''" (keydown.enter)='sign()'>
+          (input)="this.pwdInvalid = ''" (change)="this.pwdInvalid = ''" (keydown.enter)='sign()'>
           <button class="purple confirm" (click)="sign()">
             {{ walletService.isLedgerWallet() ? 'Sign with Ledger' : 'Sign'}}</button>
       </div>

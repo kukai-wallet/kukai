@@ -51,7 +51,7 @@ export class SignExprComponent implements OnInit, OnChanges {
     } else {
       const pwd = this.password;
       this.password = '';
-      this.messageService.startSpinner(`Signing ${this.isMessage ? 'message' : 'payload'}...`);
+      await this.messageService.startSpinner(`Signing ${this.isMessage ? 'message' : 'payload'}...`);
       let keys;
       try {
         keys = await this.walletService.getKeys(pwd, this.activeAccount.pkh);
