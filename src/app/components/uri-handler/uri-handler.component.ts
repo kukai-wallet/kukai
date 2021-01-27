@@ -52,7 +52,7 @@ export class UriHandlerComponent implements OnInit {
   /* https://docs.walletbeacon.io/beacon/03.getting-started-wallet.html#setup */
   connectApp = async (): Promise<void> => {
     if (!this.beaconService.client) {
-      this.beaconService.client = new WalletClient({ name: 'Kukai' });
+      this.beaconService.client = new WalletClient({ name: 'Kukai Wallet' });
     }
     await this.beaconService.client.init(); // Establish P2P connection
     this.beaconService.client

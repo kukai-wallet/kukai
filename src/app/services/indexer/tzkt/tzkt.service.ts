@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { CONSTANTS } from '../../../../environments/environment';
 import { Indexer } from '../indexer.service';
 import * as cryptob from 'crypto-browserify';
-import Big from 'big.js';
 import { WalletObject, Activity } from '../../wallet/wallet';
 
 @Injectable({
@@ -10,7 +9,7 @@ import { WalletObject, Activity } from '../../wallet/wallet';
 })
 export class TzktService implements Indexer {
   CONSTANTS: any;
-  public readonly bcd = 'https://you.better-call.dev/v1';
+  public readonly bcd = 'https://api.better-call.dev/v1';
   constructor() { }
   async getContractAddresses(pkh: string): Promise<any> {
     return fetch(`https://api.${CONSTANTS.NETWORK}.tzkt.io/v1/operations/originations?contractManager=${pkh}`)
@@ -29,9 +28,9 @@ export class TzktService implements Indexer {
         if (data) {
           if (data?.tokens?.length) {
             for (const token of data.tokens) {
-                tokens.push(token);
-                if (!knownTokenIds.includes(`${token.contract}:${token.token_id}`)) {
-                  unknownTokenIds.push(`${token.contract}:${token.token_id}`);
+              tokens.push(token);
+              if (!knownTokenIds.includes(`${token.contract}:${token.token_id}`)) {
+                unknownTokenIds.push(`${token.contract}:${token.token_id}`);
               }
             }
           }
@@ -162,7 +161,7 @@ export class TzktService implements Indexer {
     const lookFor = {
       strings: ['name', 'symbol', 'description', 'displayUri', 'displayURI'],
       numbers: ['decimals'],
-      booleans: [ 'nonTransferable', 'booleanAmount', 'symbolPreference' ]
+      booleans: ['nonTransferable', 'booleanAmount', 'symbolPreference']
     };
     try {
       for (const child of tokenBigMap) {
@@ -312,6 +311,9 @@ export class TzktService implements Indexer {
               }
             }
           }
+        }
+        else if (child?.name === 'metadata') {
+          contract = child.value;
         }
       }
     } catch (e) {
