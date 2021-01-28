@@ -41,8 +41,9 @@ export class SignExprComponent implements OnInit, OnChanges {
       document.body.style.marginRight = scrollBarWidth.toString();
       document.body.style.overflow = 'hidden';
       this.isMessage = this.inputValidationService.isMessageSigning(this.signRequest.payload);
-      const payload = emitMicheline(valueDecoder(Uint8ArrayConsumer.fromHexString(this.signRequest.payload.slice(2))), { indent: '  ', newline: '\n' });
-      this.payload = this.isMessage ? payload.slice(1, -1) : payload;
+      const value = valueDecoder(Uint8ArrayConsumer.fromHexString(this.signRequest.payload.slice(2)));
+      const payload = emitMicheline(value, { indent: '  ', newline: '\n' });
+      this.payload = this.isMessage ? value.string : payload;
     }
   }
   async sign() {

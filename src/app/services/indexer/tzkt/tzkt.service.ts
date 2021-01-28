@@ -311,8 +311,7 @@ export class TzktService implements Indexer {
               }
             }
           }
-        }
-        else if (child?.name === 'metadata') {
+        } else if (child?.name === 'metadata') {
           contract = child.value;
         }
       }
