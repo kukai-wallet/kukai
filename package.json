@@ -1,6 +1,6 @@
 {
   "name": "kukai",
-  "version": "1.11.2",
+  "version": "1.11.3",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
@@ -20,7 +20,7 @@
   },
   "private": true,
   "dependencies": {
-    "@airgap/beacon-sdk": "2.0.0",
+    "@airgap/beacon-sdk": "2.1.0",
     "@angular/animations": "^9.1.1",
     "@angular/cdk": "^9.2.0",
     "@angular/common": "^9.1.1",

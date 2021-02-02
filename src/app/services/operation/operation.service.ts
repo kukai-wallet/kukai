@@ -1178,12 +1178,15 @@ export class OperationService {
   }
   parseTokenTransfer(op: any): { tokenId: string, to: string, amount: string } {
     const opJson = JSON.stringify(op.parameters);
-    const addresses = opJson.match(/\{\"string\":\"[^\"]*/g).map(s => {
+    const addresses = opJson.match(/\{\"string\":\"[^\"]*/g)?.map(s => {
       return s.slice(11);
     });
-    const amounts = opJson.match(/\{\"int\":\"[^\"]*/g).map(i => {
+    const amounts = opJson.match(/\{\"int\":\"[^\"]*/g)?.map(i => {
       return i.slice(8);
     });
+    if (!addresses || !amounts) {
+      return null;
+    }
     if (addresses.length === 2) {
       if (amounts.length === 1) {
         const fa12ref = this.getFA12Transaction(addresses[0], addresses[1], amounts[0]);

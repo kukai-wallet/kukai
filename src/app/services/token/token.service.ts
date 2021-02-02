@@ -48,6 +48,7 @@ export interface FA2 extends TokensInterface {
 
 export class TokenService {
   readonly AUTO_DISCOVER: boolean = true;
+  readonly version: string = '1.0.0';
   private contracts: ContractsType = {};
   private exploredIds: Record<string, { firstCheck: number, lastCheck: number }> = {};
   readonly storeKey = 'tokenMetadata';
@@ -122,10 +123,9 @@ export class TokenService {
       console.log(`Searching for tokenId: ${tokenId}`);
       const metadata = await this.indexerService.getTokenMetadata(contractAddress, id);
       if (metadata &&
-        metadata.name &&
-        metadata.symbol &&
+        (metadata.name || metadata.symbol) &&
         (!isNaN(metadata.decimals) && metadata.decimals >= 0)
-        ) {
+      ) {
         const contract: ContractType = {
           kind: metadata.tokenType ? metadata.tokenType : 'FA2',
           category: metadata.tokenCategory ? metadata.tokenCategory : '',
@@ -133,8 +133,8 @@ export class TokenService {
         };
         const displayUrl = (metadata.displayUri && TRUSTED_TOKEN_CONTRACTS.includes(contractAddress)) ? metadata.displayUri : '../../../assets/img/tokens/unknown-token.png';
         const token: TokenData = {
-          name: metadata.name,
-          symbol: metadata.symbol,
+          name: metadata.name ? metadata.name : '',
+          symbol: metadata.symbol ? metadata.symbol : '',
           decimals: Number(metadata.decimals),
           description: metadata.description ? metadata.description : '',
           displayUrl,
@@ -191,21 +191,23 @@ export class TokenService {
   saveMetadata() {
     localStorage.setItem(
       this.storeKey,
-      JSON.stringify({ contracts: this.contracts, exploredIds: this.exploredIds })
+      JSON.stringify({ contracts: this.contracts, exploredIds: this.exploredIds, version: this.version })
     );
   }
   loadMetadata(): any {
     const metadataJson = localStorage.getItem(this.storeKey);
     if (metadataJson) {
       const metadata = JSON.parse(metadataJson);
-      if (metadata?.contracts) {
-        const contractAddresses = Object.keys(metadata.contracts);
-        for (const address of contractAddresses) {
-          this.addAsset(address, metadata.contracts[address]);
+      if (metadata?.version === this.version) {
+        if (metadata?.contracts) {
+          const contractAddresses = Object.keys(metadata.contracts);
+          for (const address of contractAddresses) {
+            this.addAsset(address, metadata.contracts[address]);
+          }
         }
-      }
-      if (metadata?.exploredIds) {
-        this.exploredIds = metadata.exploredIds;
+        if (metadata?.exploredIds) {
+          this.exploredIds = metadata.exploredIds;
+        }
       }
     }
   }
@@ -215,8 +217,12 @@ export class TokenService {
     } else {
       const token = this.getAsset(tokenKey);
       if (token) {
-        if (!token.symbolPreference) {
-          return `${token.name}`;
+        if ((!token.symbolPreference && token.name) || !token.symbol) {
+          if (token.booleanAmount) {
+            return `${token.name}`;
+          } else {
+            return `${Big(amount).div(10 ** (baseUnit ? token.decimals : 0)).toFixed()} ${token.name}`;
+          }
         } else {
           return `${Big(amount).div(10 ** (baseUnit ? token.decimals : 0)).toFixed()} ${token.symbol}`;
         }
