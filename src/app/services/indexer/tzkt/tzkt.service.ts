@@ -171,16 +171,16 @@ export class TzktService implements Indexer {
     const contractMetadata = fetch(`${this.bcd}/account/${CONSTANTS.NETWORK}/${contractAddress}/metadata`)
       .then(response => response.json())
       .then(data => {
-        const contractMetadata: any = {};
+        const meta: any = {};
         if (data?.tags?.includes('fa2')) {
-          contractMetadata.tokenType = 'FA2';
+          meta.tokenType = 'FA2';
         } else if (data?.tags?.includes('fa2')) {
-          contractMetadata.tokenType = 'FA1.2';
+          meta.tokenType = 'FA1.2';
         }
         if (data?.category) {
-          contractMetadata.category = data.category;
+          meta.category = data.category;
         }
-        return contractMetadata;
+        return meta;
       }).catch(e => {
         console.log(`No contract metadata found for ${contractAddress}:${id}`);
         return {};
@@ -202,7 +202,7 @@ export class TzktService implements Indexer {
           if (data?.token_id === Number(id)) {
             this.flattern(data);
             const metadata: any = {};
-            for (let a of keys) {
+            for (const a of keys) {
               if (typeof data[a.key] === a.type) {
                 metadata[a.key] = data[a.key];
               }
@@ -225,7 +225,7 @@ export class TzktService implements Indexer {
           merged.tokenType = res[2];
         }
         return merged;
-      })
+      });
     return ans ? ans : null;
   }
   private flattern(obj: any): any {
