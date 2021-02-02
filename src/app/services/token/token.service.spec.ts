@@ -32,6 +32,7 @@ describe('TokenService', () => {
     beforeEach(() => {
       spyOn(indexerService, 'getTokenMetadata').and.callFake(async function () { return response; });
     });
+    /* deprecated
     it('Valid metadata => inclusion', async (done) => {
       await service.searchMetadata('KT1XXCz59vAzfbvDsNrrmKKuqSFrzQgpUqGM', 0);
       const expectedTokenResponse: TokenResponseType = {
@@ -73,6 +74,6 @@ describe('TokenService', () => {
       await service.searchMetadata('KT1XXCz59vAzfbvDsNrrmKKuqSFrzQgpUqGM', 0);
       expect(service.getAsset('KT1XXCz59vAzfbvDsNrrmKKuqSFrzQgpUqGM:0')).toEqual(null);
       done();
-    });
+    });*/
   });
 });
