@@ -3,6 +3,8 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { BeaconService } from '../../services/beacon/beacon.service';
 import QrScanner from 'qr-scanner';
 import { DeeplinkService } from '../../services/deeplink/deeplink.service';
+import { CONSTANTS as _CONSTANTS } from '../../../environments/environment';
+import { MessageService } from '../../services/message/message.service';
 
 @Component({
   selector: 'app-qr-scanner',
@@ -10,16 +12,17 @@ import { DeeplinkService } from '../../services/deeplink/deeplink.service';
   styleUrls: ['./qr-scanner.component.scss']
 })
 export class QrScannerComponent implements OnInit {
-
+  readonly CONSTANTS = _CONSTANTS;
   constructor(
     private beaconService: BeaconService,
-    private deeplinkService: DeeplinkService
+    private deeplinkService: DeeplinkService,
+    private messageService: MessageService
   ) { }
   @ViewChild('videoPlayer') videoplayer: ElementRef;
   modalRef1: BsModalRef;
   modalOpen = false;
   qrScanner: QrScanner;
-  //videoSource: HTMLVideoElement
+  manualInput: string = '';
   ngOnInit() {
   }
   openModal() {
@@ -49,6 +52,17 @@ export class QrScannerComponent implements OnInit {
     }
     this.closeModal();
   }
+  handlePaste(ev: ClipboardEvent) {
+    const pairingString = ev?.clipboardData?.getData('text');
+    const pairingInfo = pairingString ? this.deeplinkService.QRtoPairingJson(pairingString) : '';
+    if (pairingInfo) {
+      this.beaconService.preNotifyPairing(pairingInfo);
+      this.beaconService.addPeer(pairingInfo);
+      this.closeModal();
+    } else {
+      this.messageService.addError('Invalid Base58 checksum!');
+    }
+  }
   closeModal() {
     // restore body scrollbar
     if (this.qrScanner) {
@@ -57,6 +71,7 @@ export class QrScannerComponent implements OnInit {
     document.body.style.marginRight = '';
     document.body.style.overflow = '';
     this.modalOpen = false;
+    this.manualInput = '';
   }
 
 }
