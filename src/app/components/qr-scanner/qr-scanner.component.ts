@@ -22,7 +22,7 @@ export class QrScannerComponent implements OnInit {
   modalRef1: BsModalRef;
   modalOpen = false;
   qrScanner: QrScanner;
-  manualInput: string = '';
+  manualInput = '';
   ngOnInit() {
   }
   openModal() {

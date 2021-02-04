@@ -39,7 +39,7 @@ export class DeeplinkService {
     return pairingJson;
   }
   QRtoPairingJson(qrPayload: string): string {
-    if (qrPayload.length > 26 && qrPayload.slice(0, 26) ==='tezos://?type=tzip10&data=') {
+    if (qrPayload.length > 26 && qrPayload.slice(0, 26) === 'tezos://?type=tzip10&data=') {
       qrPayload = qrPayload.slice(26);
     }
     try {
