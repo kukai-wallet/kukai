@@ -1,4 +1,6 @@
 # Release notes
+## 1.11.3
+* Update token metdata indexing
 ## 1.11.2
 * Fix delegator contract import bug
 * Fix Firefox keystore import

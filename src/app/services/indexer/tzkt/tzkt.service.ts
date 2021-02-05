@@ -4,6 +4,19 @@ import { Indexer } from '../indexer.service';
 import * as cryptob from 'crypto-browserify';
 import { WalletObject, Activity } from '../../wallet/wallet';
 
+interface TokenMetadata {
+  name: string;
+  tokenType: 'FA2' | 'FA1.2';
+  decimals: number;
+  symbol?: string;
+  description?: string;
+  displayUri?: string;
+  category?: string;
+  nonTransferable?: boolean;
+  symbolPreference?: boolean;
+  booleanAmount?: boolean;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -36,7 +49,7 @@ export class TzktService implements Indexer {
           }
           tokens.sort(
             function (a: any, b: any) {
-              if (a.contract < b.contract) {
+              if (`${a.contract}:${a.token_id}` < `${b.contract}:${b.token_id}`) {
                 return -1;
               } else {
                 return 1;
@@ -142,7 +155,94 @@ export class TzktService implements Indexer {
     );
     return { operations, unknownTokenIds };
   }
-  async getTokenMetadata(contractAddress: string, id: number): Promise<any> {
+  async getTokenMetadata(contractAddress, id): Promise<TokenMetadata> {
+    const tokenKind = fetch(`${this.bcd}/contract/${CONSTANTS.NETWORK}/${contractAddress}`)
+      .then(response => response.json())
+      .then(data => {
+        if (data?.tags?.includes('fa2')) {
+          return 'FA2';
+        } else if (data?.tags.includes('fa12')) {
+          return 'FA1.2';
+        }
+        return null;
+      }).catch(e => {
+        return null;
+      });
+    const contractMetadata = fetch(`${this.bcd}/account/${CONSTANTS.NETWORK}/${contractAddress}/metadata`)
+      .then(response => response.json())
+      .then(data => {
+        const meta: any = {};
+        if (data?.tags?.includes('fa2')) {
+          meta.tokenType = 'FA2';
+        } else if (data?.tags?.includes('fa2')) {
+          meta.tokenType = 'FA1.2';
+        }
+        if (data?.category) {
+          meta.category = data.category;
+        }
+        return meta;
+      }).catch(e => {
+        console.log(`No contract metadata found for ${contractAddress}:${id}`);
+        return {};
+      });
+    const tokenMetadata = fetch(`${this.bcd}/contract/${CONSTANTS.NETWORK}/${contractAddress}/tokens`)
+      .then(response => response.json())
+      .then(datas => {
+        const keys = [
+          { key: 'name', type: 'string' },
+          { key: 'decimals', type: 'number' },
+          { key: 'symbol', type: 'string' },
+          { key: 'description', type: 'string' },
+          { key: 'displayUri', type: 'string' },
+          { key: 'nonTransferable', type: 'boolean' },
+          { key: 'symbolPreference', type: 'boolean' },
+          { key: 'booleanAmount', type: 'boolean' }
+        ];
+        for (const data of datas) {
+          if (data?.token_id === Number(id)) {
+            this.flattern(data);
+            const metadata: any = {};
+            for (const a of keys) {
+              if (typeof data[a.key] === a.type) {
+                metadata[a.key] = data[a.key];
+              }
+            }
+            if (metadata.displayUri) {
+              metadata.displayUri = this.uriToUrl(metadata.displayUri);
+            }
+            return metadata;
+          }
+        }
+        console.log(`No token metadata found for ${contractAddress}:${id}`);
+        return {};
+      }).catch(e => {
+        return {};
+      });
+    const ans = await Promise.all([contractMetadata, tokenMetadata, tokenKind])
+      .then(res => {
+        const merged: any = { ...res[0], ...res[1] };
+        if (!merged.tokenType && res[2]) {
+          merged.tokenType = res[2];
+        }
+        return merged;
+      });
+    return ans ? ans : null;
+  }
+  private flattern(obj: any): any {
+    const keys = Object.keys(obj);
+    for (const key of keys) {
+      if (typeof obj[key] === 'object' && !Array.isArray(obj[key])) {
+        const childKeys = Object.keys(obj[key]);
+        for (const childKey of childKeys) {
+          if (typeof obj[childKey] === 'undefined' && typeof obj[key][childKey] !== 'object') {
+            obj[childKey] = obj[key][childKey];
+          }
+        }
+        delete obj[key];
+      }
+    }
+  }
+  async getTokenMetadataDepricated(contractAddress: string, id: number): Promise<any> {
     console.log(contractAddress + ':' + id);
     const bigMapId = await this.getBigMapIds(contractAddress);
     if (bigMapId.token !== -1) {
@@ -322,9 +422,11 @@ export class TzktService implements Indexer {
   }
   uriToUrl(uri: string): string {
     if (uri && uri.length > 7) {
-      if (uri.slice(0, 7) === 'ipfs://') {
+      if (uri.startsWith('ipfs://')) {
         return `https://cloudflare-ipfs.com/ipfs/${uri.slice(7)}`;
-      } else if (uri.slice(0, 8) === 'https://') {
+      } else if (uri.startsWith('https://')) {
+        return uri;
+      } else if (!CONSTANTS.MAINNET && (uri.startsWith('http://localhost') || uri.startsWith('http://127.0.0.1'))) {
         return uri;
       } else {
         console.warn('wrong prefix', uri);

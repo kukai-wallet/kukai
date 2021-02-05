@@ -27,11 +27,6 @@ export class AppComponent implements OnInit {
       const languagePreference = window.localStorage.getItem('languagePreference');
       const browserLang = translate.getBrowserLang();
       translate.use('en');
-      /*if (languagePreference) {
-        translate.use(languagePreference.match(/en|fr|ru|jp|kor|por/) ? languagePreference : 'en');
-      } else {
-        translate.use(browserLang.match(/en|fr|ru|jp|kor|por/) ? browserLang : 'en');
-      }*/
   }
 
   ngOnInit() {

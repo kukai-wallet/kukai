@@ -401,9 +401,9 @@ export class WalletService {
         origAcc.balanceXTZ = originated.balanceXTZ;
         origAcc.delegate = originated.delegate;
         if (originated.activitiesCounter) { // prevent storage from breaking (1.11)
-          impAcc.state = originated.activitiesCounter.toString();
+          origAcc.state = originated.activitiesCounter.toString();
         } else {
-          impAcc.state = originated.state;
+          origAcc.state = originated.state;
         }
         origAcc.activities = this.activityMigration(originated.activities);
         impAcc.originatedAccounts.push(origAcc);

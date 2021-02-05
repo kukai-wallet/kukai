@@ -167,7 +167,7 @@ export class UriHandlerComponent implements OnInit {
     message.payload = message.payload.toLowerCase();
     const hexString = message.payload;
     console.log('hex', hexString);
-    if (message.signingType !== 'raw' || !this.inputValidationService.hexString(hexString)) {
+    if ((message.signingType !== 'raw' && message.signingType !== 'micheline') || !this.inputValidationService.hexString(hexString)) {
       console.warn('Invalid sign payload');
       await this.beaconService.rejectOnUnknown(message);
       return false;
