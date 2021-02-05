@@ -49,7 +49,7 @@ export class TzktService implements Indexer {
           }
           tokens.sort(
             function (a: any, b: any) {
-              if (a.contract < b.contract) {
+              if (`${a.contract}:${a.token_id}` < `${b.contract}:${b.token_id}`) {
                 return -1;
               } else {
                 return 1;
