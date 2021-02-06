@@ -80,9 +80,10 @@
             </span>
           </ng-template>
           <div *ngSwitchCase="'sent'" class="sent">
-            <img src="../../../assets/img/sent.svg">
+            <img *ngIf="!zeroSent(activity)" src="../../../assets/img/sent.svg">
+            <img *ngIf="zeroSent(activity)" src="../../../assets/img/sent-zero.svg">
             <div>
-              <div class="line"><span class="red">Sent {{ printAmount(activity) }}</span><a
+              <div class="line"><span class="black" [class.red]="!zeroSent(activity)" [class.black]="zeroSent(activity)">{{ sentKind(activity) }}<ng-container *ngIf="activity?.amount !== '0'"> {{ printAmount(activity) }}</ng-container></span><a
                   href="{{ explorerURL(activity.hash) }}" target="_blank">
                   <ng-container *ngIf="activity.status > 0">{{ activity.timestamp | timeAgo:trigger }}</ng-container>
                   <ng-container *ngIf="activity.status === 0">Unconfirmed</ng-container>

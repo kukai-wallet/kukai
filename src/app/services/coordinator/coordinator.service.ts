@@ -235,7 +235,8 @@ export class CoordinatorService {
           hash: metadata.opHash,
           block: null,
           timestamp: new Date().getTime(),
-          tokenId: metadata.tokenTransfer ? metadata.tokenTransfer : undefined
+          tokenId: metadata.tokenTransfer ? metadata.tokenTransfer : undefined,
+          entrypoint: op.parameters?.entrypoint ? op.parameters.entrypoint : ''
         };
         let account = this.walletService.wallet.getAccount(from);
         account.activities.unshift(transaction);

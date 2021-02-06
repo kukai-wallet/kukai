@@ -94,6 +94,15 @@ export class AccountViewComponent implements OnInit {
   printAmount(activity: Activity): string {
     return this.tokenService.formatAmount(activity.tokenId, activity.amount.toString());
   }
+  sentKind(activity): string {
+    if (activity.entrypoint) {
+      return `Called ${activity.entrypoint}`;
+    }
+    return 'Sent';
+  }
+  zeroSent(activity) {
+    return (this.sentKind(activity).length > 4 && activity.amount === '0');
+  }
   receivedKind(activity): string {
     return (activity.tokenId && activity.source.address && (activity.tokenId.split(':')[0] === activity.source.address)) ? 'Minted' : 'Received';
   }

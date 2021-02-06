@@ -76,15 +76,16 @@ export class TzktService implements Indexer {
         if (!(op.hasInternals && wallet.getAccount(op.target.address)) && op.status === 'applied') {
           let destination = { address: '' };
           let amount = '0';
+          let entrypoint = '';
           switch (op.type) {
             case 'transaction':
               if ((address !== op.target.address &&
-                address !== op.sender.address) ||
-                op.amount.toString() === '0') {
+                address !== op.sender.address)) {
                 return null;
               }
               destination = op.target;
               amount = op.amount.toString();
+              entrypoint = this.extractEntrypoint(op);
               break;
             case 'delegation':
               if (address !== op.sender.address) {
@@ -111,7 +112,8 @@ export class TzktService implements Indexer {
             source: op.sender,
             destination,
             hash: op.hash,
-            timestamp: (new Date(op.timestamp)).getTime()
+            timestamp: (new Date(op.timestamp)).getTime(),
+            entrypoint
           };
           return activity;
         }
@@ -131,6 +133,10 @@ export class TzktService implements Indexer {
             if (tx.alias) {
               source.alias = tx.alias;
             }
+          }
+          const index = ops.findIndex((op: any) => op.hash === tx.hash);
+          if (index !== -1) {
+            ops.splice(index, 1); // Hide token transfer invokation
           }
           const activity: Activity = {
             type: 'transaction',
@@ -154,6 +160,21 @@ export class TzktService implements Indexer {
       }
     );
     return { operations, unknownTokenIds };
+  }
+  private extractEntrypoint(op: any): string {
+    try {
+      if (op.parameters) {
+        const entrypoint = op.parameters.match(/\{\"entrypoint\":\"[^\"]*/g)?.map(i => {
+          return i.slice(15);
+        });
+        if (entrypoint !== null && entrypoint.length) {
+          return entrypoint[0];
+        }
+      }
+    } catch (e) {
+      console.log(e);
+    }
+    return '';
   }
   async getTokenMetadata(contractAddress, id): Promise<TokenMetadata> {
     const tokenKind = fetch(`${this.bcd}/contract/${CONSTANTS.NETWORK}/${contractAddress}`)

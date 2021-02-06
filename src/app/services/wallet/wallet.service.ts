@@ -413,10 +413,10 @@ export class WalletService {
   }
   activityMigration(activities: any[]): Activity[] { // prevent storage from breaking (1.11)
     return activities.map(activity => {
-      if (!activity.source.address) {
+      if (activity.source.address === undefined) {
         activity.source = { address: activity.source };
       }
-      if (!activity.destination.address) {
+      if (activity.destination.address === undefined) {
         activity.destination = { address: activity.destination };
       }
       return activity;
