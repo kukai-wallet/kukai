@@ -8,6 +8,7 @@ export interface TokenResponseType {
   id: number;
   decimals: number;
   displayUrl: string;
+  thumbnailUrl: string;
   name: string;
   symbol: string;
   description: string;
@@ -28,6 +29,7 @@ export interface TokenData {
   decimals: number;
   description: string;
   displayUrl: string;
+  thumbnailUrl: string;
   nonTransferable?: boolean;
   booleanAmount?: boolean;
   symbolPreference?: boolean;
@@ -48,7 +50,7 @@ export interface FA2 extends TokensInterface {
 
 export class TokenService {
   readonly AUTO_DISCOVER: boolean = true;
-  readonly version: string = '1.0.0';
+  readonly version: string = '1.0.1';
   private contracts: ContractsType = {};
   private exploredIds: Record<string, { firstCheck: number, lastCheck: number }> = {};
   readonly storeKey = 'tokenMetadata';
@@ -131,13 +133,22 @@ export class TokenService {
           category: metadata.tokenCategory ? metadata.tokenCategory : '',
           tokens: {}
         };
-        const displayUrl = (metadata.displayUri && TRUSTED_TOKEN_CONTRACTS.includes(contractAddress)) ? metadata.displayUri : '../../../assets/img/tokens/unknown-token.png';
+        const defaultImg = '../../../assets/img/tokens/unknown-token.png';
+        let displayUrl = (metadata.displayUri && TRUSTED_TOKEN_CONTRACTS.includes(contractAddress)) ? metadata.displayUri : defaultImg;
+        let thumbnailUrl = (metadata.thumbnailUri && TRUSTED_TOKEN_CONTRACTS.includes(contractAddress)) ? metadata.thumbnailUri : defaultImg;
+        if (displayUrl === defaultImg && thumbnailUrl !== defaultImg) {
+          displayUrl = thumbnailUrl;
+        }
+        if (displayUrl !== defaultImg && thumbnailUrl === defaultImg) {
+          thumbnailUrl = displayUrl;
+        }
         const token: TokenData = {
           name: metadata.name ? metadata.name : '',
           symbol: metadata.symbol ? metadata.symbol : '',
           decimals: Number(metadata.decimals),
           description: metadata.description ? metadata.description : '',
           displayUrl,
+          thumbnailUrl,
           nonTransferable: metadata?.nonTransferable ? metadata.nonTransferable : false,
           booleanAmount: metadata?.booleanAmount ? metadata.booleanAmount : false
         };
@@ -181,6 +192,7 @@ export class TokenService {
       id,
       decimals: 0,
       displayUrl: '../../../assets/img/tokens/unknown-token.png',
+      thumbnailUrl: '../../../assets/img/tokens/unknown-token.png',
       name: '[Unknown token]',
       symbol: '',
       description: '',

@@ -11,6 +11,7 @@ interface TokenMetadata {
   symbol?: string;
   description?: string;
   displayUri?: string;
+  thumbnailUri?: string;
   category?: string;
   nonTransferable?: boolean;
   symbolPreference?: boolean;
@@ -215,6 +216,7 @@ export class TzktService implements Indexer {
           { key: 'symbol', type: 'string' },
           { key: 'description', type: 'string' },
           { key: 'displayUri', type: 'string' },
+          { key: 'thumbnailUri', type: 'string' },
           { key: 'nonTransferable', type: 'boolean' },
           { key: 'symbolPreference', type: 'boolean' },
           { key: 'booleanAmount', type: 'boolean' }
@@ -230,6 +232,9 @@ export class TzktService implements Indexer {
             }
             if (metadata.displayUri) {
               metadata.displayUri = this.uriToUrl(metadata.displayUri);
+            }
+            if (metadata.thumbnailUri) {
+              metadata.thumbnailUri = this.uriToUrl(metadata.thumbnailUri);
             }
             return metadata;
           }
