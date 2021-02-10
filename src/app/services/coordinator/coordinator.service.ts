@@ -9,6 +9,7 @@ import { ErrorHandlingPipe } from '../../pipes/error-handling.pipe';
 import { Account } from '../wallet/wallet';
 import Big from 'big.js';
 import { TokenService } from '../token/token.service';
+import { CONSTANTS } from '../../../environments/environment';
 
 export interface ScheduleData {
   pkh: string;
@@ -25,10 +26,10 @@ enum State {
 @Injectable()
 export class CoordinatorService {
   scheduler: Map<string, any> = new Map<string, any>(); // pkh + delay
-  defaultDelayActivity = 30000; // 30s
+  defaultDelayActivity = CONSTANTS.MAINNET ? 60000 : 30000; // 60/30s
   shortDelayActivity = 5000; // 5s
   tzrateInterval: any;
-  defaultDelayPrice = 300000; // 300s
+  defaultDelayPrice = CONSTANTS.MAINNET ? 300000 : 3600000; // 5/60m
   accounts: Account[];
   constructor(
     private activityService: ActivityService,
@@ -153,7 +154,7 @@ export class CoordinatorService {
       err => console.log('Error in update(): ' + JSON.stringify(err)),
       () => {
         console.log(`account[${this.accounts.findIndex((a) => a.address === pkh)}][${
-          typeof this.scheduler.get(pkh).state !== 'undefined' ? this.scheduler.get(pkh).state : '*'}]: <<`);
+          typeof this.scheduler.get(pkh)?.state !== 'undefined' ? this.scheduler.get(pkh).state : '*'}]: <<`);
       }
     );
   }
