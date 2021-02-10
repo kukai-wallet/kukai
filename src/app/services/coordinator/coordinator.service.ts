@@ -97,7 +97,7 @@ export class CoordinatorService {
         setTimeout(() => {
           // Failsafe
           if (
-            this.scheduler &&
+            this.scheduler?.size &&
             this.scheduler.get(pkh).stateCounter === counter
           ) {
             console.log('Timeout from wait state');

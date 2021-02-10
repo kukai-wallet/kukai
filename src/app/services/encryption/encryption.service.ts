@@ -72,7 +72,7 @@ export class EncryptionService {
     });
   }
   // Version 2
-  async encrypt_v2(plaintext: Buffer, password: string, salt?: string): Promise<any> {
+  async encrypt_v2(plaintext: any, password: string, salt?: string): Promise<any> {
     if (!password) {
       throw new Error('Missing password');
     }
