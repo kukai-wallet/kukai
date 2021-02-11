@@ -1,4 +1,4 @@
-<div class="foot-container" [class.dark]="darkText">
+<div *ngIf="this.path !== '/embedded'" class="foot-container" [class.dark]="darkText">
   <div id="follow">
     <span>follow kukai on</span>
     <a href="https://github.com/kukai-wallet/kukai" target="_blank"><img src="../../../assets/img/logo-github.svg"></a>

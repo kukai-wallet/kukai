@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router, Event, NavigationEnd } from '@angular/router';
 import { WalletService } from './services/wallet/wallet.service';
 import { CoordinatorService } from './services/coordinator/coordinator.service';
 import { TranslateService } from '@ngx-translate/core';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -13,11 +14,14 @@ import { TranslateService } from '@ngx-translate/core';
   // template: '<router-outlet></router-outlet>'
 })
 export class AppComponent implements OnInit {
+  embedded = false;
   constructor(
     private walletService: WalletService,
     private coordinatorService: CoordinatorService,
     private router: Router,
-    public translate: TranslateService
+    public translate: TranslateService,
+    private location: Location
+    
   ) {
 
       // this language will be used as a fallback when a translation isn't found in the current language
@@ -45,6 +49,12 @@ export class AppComponent implements OnInit {
         return;
       }
       window.scrollTo(0, 0);
+    });
+    this.checkEmbedded()
+    this.router.events.subscribe((event: Event) => {
+      if (event instanceof NavigationEnd) {
+        this.checkEmbedded();
+      }
     });
     window.addEventListener('storage', (e) => { this.handleStorageEvent(e); });
   }
@@ -80,6 +90,10 @@ export class AppComponent implements OnInit {
     const language = map.get(lang);
 
     return language;
+  }
+  checkEmbedded() {
+    const path = this.location.path();
+    this.embedded = (path === '/embedded');
   }
   setLanguage(lang) {
     window.localStorage.setItem('languagePreference', lang);

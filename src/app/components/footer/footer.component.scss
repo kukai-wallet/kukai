@@ -7,6 +7,9 @@
     align-items: center;
     justify-content: center;
 }
+:host.hide {
+  visibility: hidden;
+}
 :host div.foot-container {
   display: flex;
     align-items: center;

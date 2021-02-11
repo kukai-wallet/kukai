@@ -15,6 +15,7 @@ import { TorusComponent } from './components/torus/torus.component';
 import { UriHandlerComponent } from './components/uri-handler/uri-handler.component';
 import { LoggedInComponent } from './components/logged-in/logged-in.component';
 import { SettingsComponent } from './components/settings/settings.component';
+import { EmbeddedComponent } from './components/embedded/embedded.component';
 
 const routes: Routes = [
   { path: '', component: StartComponent },
@@ -36,6 +37,7 @@ const routes: Routes = [
   { path: 'privacy-policy', component: PrivacyPolicyComponent },
   { path: 'terms-of-use', component: TermsOfUseComponent },
   { path: 'serviceworker', component: TermsOfUseComponent },
+  { path: 'embedded', component: EmbeddedComponent },
   { path: '404', component: P404Component, data: { title: 'Page 404' } },
   { path: '500', component: P500Component, data: { title: 'Page 500' } },
   { path: '**', redirectTo: '404'},

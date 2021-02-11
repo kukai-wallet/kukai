@@ -1,0 +1,9 @@
+<div class="spinIn">
+  <h2>Icabod Login</h2>
+  <div class="buttons" *ngIf="torusService && torusService.verifierMapKeys">
+    <ng-container *ngFor="let key of torusService.verifierMapKeys">
+      <img src="../../../../assets/img/torus-login/{{ key }}-color.svg" width="24" (click)="login(verifier)">
+    </ng-container>
+    <img src="../../../../assets/img/x.svg" (click)="abort()">
+  </div>
+</div>
