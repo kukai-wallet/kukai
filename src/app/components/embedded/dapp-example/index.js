@@ -50,6 +50,6 @@ function login() {
 function send() {
   showIframe();
   const iframeWindow = document.getElementById(iframeId).contentWindow;
-  const msg = JSON.stringify({ request: 'send', network: 'delphinet' });
+  const msg = JSON.stringify({ request: 'send', network: 'delphinet', destination: 'tz1NBvY7qUedReRcYx8gqV34c8fUuks8o8Nr', amount: '10000' });
   iframeWindow.postMessage(msg, iframeSrc);
 }

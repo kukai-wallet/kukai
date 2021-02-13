@@ -51,8 +51,9 @@ export class EmbeddedComponent implements OnInit {
               this.login = true;
               break;
             case 'send':
-              if (this.walletService.wallet instanceof EmbeddedTorusWallet && evt.origin === this.walletService.wallet.origin) {
-                this.operationRequest = this.beaconAdapter('tz1NBvY7qUedReRcYx8gqV34c8fUuks8o8Nr', '10000');
+              if (this.walletService.wallet instanceof EmbeddedTorusWallet && evt.origin === this.walletService.wallet.origin &&
+                data.destination && data.amount) {
+                this.operationRequest = this.beaconAdapter(data.destination, data.amount);
               }
               break;
             default:
@@ -62,7 +63,7 @@ export class EmbeddedComponent implements OnInit {
       } else if (data && data.request) {
         console.log(`Invalid origin (${evt.origin})`);
       }
-    } catch {}
+    } catch { }
   }
   loginResponse(loginData: any) {
     if (loginData) {
@@ -109,7 +110,8 @@ export class EmbeddedComponent implements OnInit {
     const transaction: PartialTezosTransactionOperation = {
       kind: TezosOperationType.TRANSACTION,
       amount,
-      destination,
+      destination
+      // add parameters here
     }
     return { operationDetails: [transaction] };
   }

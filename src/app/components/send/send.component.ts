@@ -281,7 +281,6 @@ export class SendComponent implements OnInit, OnChanges {
   }
   closeModalAction() {
     this.closeModal();
-    console.warn('closed modal');
     this.operationResponse.emit(null);
   }
   closeModal() {

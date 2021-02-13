@@ -39,21 +39,16 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.checkEmbedded();
     this.walletService.loadStoredWallet();
     if (this.walletService.wallet) {
       this.coordinatorService.startAll();
       //this.router.navigate(['/accounts']);
     }
-    this.router.events.subscribe((evt) => {
-      if (!(evt instanceof NavigationEnd)) {
-        return;
-      }
-      window.scrollTo(0, 0);
-    });
-    this.checkEmbedded()
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
         this.checkEmbedded();
+        window.scrollTo(0, 0);
       }
     });
     window.addEventListener('storage', (e) => { this.handleStorageEvent(e); });
