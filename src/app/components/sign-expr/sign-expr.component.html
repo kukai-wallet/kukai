@@ -1,0 +1,27 @@
+<!-- The Modal -->
+<div *ngIf="signRequest" id="myModal" class="kukai-modal">
+  <!-- Modal content -->
+  <div class="km-content">
+    <div class="x" (click)="rejectSigning()"><img src="../../../assets/img/x.svg"></div>
+    <div class="km-header">
+      <H1 *ngIf="!isMessage">Sign Micheline Expression</H1>
+      <H1 *ngIf="isMessage">Message Signing</H1>
+    </div>
+    <div class="km-body">
+      <label *ngIf="isMessage">Message</label>
+      <ng-container *ngIf="!isMessage">
+        <p class="previewAttention">Warning! Only sign if you understand the expression or trust the source.</p>
+        <label>Micheline Expression</label>
+      </ng-container>
+      <textarea rows="5" style="width: 100%" readonly>{{ payload }}</textarea>
+      <span *ngIf="this.pwdInvalid" class="danger margin">{{ this.pwdInvalid }}</span>
+      <div class="row-group" style="margin: 1.25rem 0 1.5rem;">
+        <input *ngIf="!walletService.isLedgerWallet() && !walletService.isTorusWallet()" [(ngModel)]="password"
+          autocomplete="current-password" placeholder="Password" class="text password" type="password"
+          (input)="this.pwdInvalid = ''" (change)="this.pwdInvalid = ''" (keydown.enter)='sign()'>
+          <button class="purple confirm" (click)="sign()">
+            {{ walletService.isLedgerWallet() ? 'Sign with Ledger' : 'Sign'}}</button>
+      </div>
+    </div>
+  </div>
+</div>

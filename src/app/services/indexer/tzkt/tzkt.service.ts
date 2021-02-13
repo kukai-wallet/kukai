@@ -11,6 +11,7 @@ interface TokenMetadata {
   symbol?: string;
   description?: string;
   displayUri?: string;
+  thumbnailUri?: string;
   category?: string;
   nonTransferable?: boolean;
   symbolPreference?: boolean;
@@ -49,7 +50,7 @@ export class TzktService implements Indexer {
           }
           tokens.sort(
             function (a: any, b: any) {
-              if (a.contract < b.contract) {
+              if (`${a.contract}:${a.token_id}` < `${b.contract}:${b.token_id}`) {
                 return -1;
               } else {
                 return 1;
@@ -76,15 +77,16 @@ export class TzktService implements Indexer {
         if (!(op.hasInternals && wallet.getAccount(op.target.address)) && op.status === 'applied') {
           let destination = { address: '' };
           let amount = '0';
+          let entrypoint = '';
           switch (op.type) {
             case 'transaction':
               if ((address !== op.target.address &&
-                address !== op.sender.address) ||
-                op.amount.toString() === '0') {
+                address !== op.sender.address)) {
                 return null;
               }
               destination = op.target;
               amount = op.amount.toString();
+              entrypoint = this.extractEntrypoint(op);
               break;
             case 'delegation':
               if (address !== op.sender.address) {
@@ -111,7 +113,8 @@ export class TzktService implements Indexer {
             source: op.sender,
             destination,
             hash: op.hash,
-            timestamp: (new Date(op.timestamp)).getTime()
+            timestamp: (new Date(op.timestamp)).getTime(),
+            entrypoint
           };
           return activity;
         }
@@ -131,6 +134,10 @@ export class TzktService implements Indexer {
             if (tx.alias) {
               source.alias = tx.alias;
             }
+          }
+          const index = ops.findIndex((op: any) => op.hash === tx.hash);
+          if (index !== -1) {
+            ops.splice(index, 1); // Hide token transfer invokation
           }
           const activity: Activity = {
             type: 'transaction',
@@ -154,6 +161,21 @@ export class TzktService implements Indexer {
       }
     );
     return { operations, unknownTokenIds };
+  }
+  private extractEntrypoint(op: any): string {
+    try {
+      if (op.parameters) {
+        const entrypoint = op.parameters.match(/\{\"entrypoint\":\"[^\"]*/g)?.map(i => {
+          return i.slice(15);
+        });
+        if (entrypoint !== null && entrypoint.length) {
+          return entrypoint[0];
+        }
+      }
+    } catch (e) {
+      console.log(e);
+    }
+    return '';
   }
   async getTokenMetadata(contractAddress, id): Promise<TokenMetadata> {
     const tokenKind = fetch(`${this.bcd}/contract/${CONSTANTS.NETWORK}/${contractAddress}`)
@@ -194,6 +216,7 @@ export class TzktService implements Indexer {
           { key: 'symbol', type: 'string' },
           { key: 'description', type: 'string' },
           { key: 'displayUri', type: 'string' },
+          { key: 'thumbnailUri', type: 'string' },
           { key: 'nonTransferable', type: 'boolean' },
           { key: 'symbolPreference', type: 'boolean' },
           { key: 'booleanAmount', type: 'boolean' }
@@ -209,6 +232,9 @@ export class TzktService implements Indexer {
             }
             if (metadata.displayUri) {
               metadata.displayUri = this.uriToUrl(metadata.displayUri);
+            }
+            if (metadata.thumbnailUri) {
+              metadata.thumbnailUri = this.uriToUrl(metadata.thumbnailUri);
             }
             return metadata;
           }
@@ -411,6 +437,8 @@ export class TzktService implements Indexer {
               }
             }
           }
+        } else if (child?.name === 'metadata') {
+          contract = child.value;
         }
       }
     } catch (e) {

@@ -197,6 +197,7 @@ export class DelegateComponent implements OnInit, OnChanges {
           this.messageService.stopSpinner();
           console.log('Delegation error id ', ans.payload.msg);
           this.messageService.addError(ans.payload.msg, 0);
+          this.operationResponse.emit('broadcast_error');
           if (this.walletService.isLedgerWallet) {
             this.closeModal();
           }
@@ -214,7 +215,7 @@ export class DelegateComponent implements OnInit, OnChanges {
       this.messageService.startSpinner('Waiting for Ledger signature');
       let signature;
       try {
-        signature = await this.ledgerService.signOperation(op, this.walletService.wallet.implicitAccounts[0].derivationPath);
+        signature = await this.ledgerService.signOperation('03' + op, this.walletService.wallet.implicitAccounts[0].derivationPath);
       } finally {
         this.messageService.stopSpinner();
       }
@@ -238,6 +239,7 @@ export class DelegateComponent implements OnInit, OnChanges {
           this.coordinatorService.boost(this.activeAccount.address, metadata);
         } else {
           this.messageService.addError(this.sendResponse.payload.msg, 0);
+          this.operationResponse.emit('broadcast_error');
         }
         this.closeModal();
         console.log('ans: ' + JSON.stringify(ans));
@@ -245,6 +247,7 @@ export class DelegateComponent implements OnInit, OnChanges {
       (error => {
         this.messageService.stopSpinner();
         this.messageService.addError(error, 0);
+        this.operationResponse.emit('broadcast_error');
       })
     );
   }

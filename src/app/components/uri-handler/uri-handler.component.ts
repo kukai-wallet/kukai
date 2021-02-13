@@ -9,6 +9,9 @@ import { Location } from '@angular/common';
 import { BeaconService } from '../../services/beacon/beacon.service';
 import { DeeplinkService } from '../../services/deeplink/deeplink.service';
 import { emitMicheline, assertMichelsonData } from '@taquito/michel-codec';
+import { valueDecoder } from '@taquito/local-forging/dist/lib/michelson/codec';
+import { Uint8ArrayConsumer } from '@taquito/local-forging/dist/lib/uint8array-consumer';
+import { InputValidationService } from '../../services/input-validation/input-validation.service';
 
 @Component({
   selector: 'app-uri-handler',
@@ -18,6 +21,7 @@ import { emitMicheline, assertMichelsonData } from '@taquito/michel-codec';
 export class UriHandlerComponent implements OnInit {
   permissionRequest: PermissionResponseInput = null;
   operationRequest: any = null;
+  signRequest: any = null;
   activeAccount: Account;
   constructor(
     private route: ActivatedRoute,
@@ -25,7 +29,8 @@ export class UriHandlerComponent implements OnInit {
     public walletService: WalletService,
     private location: Location,
     private beaconService: BeaconService,
-    private deeplinkService: DeeplinkService
+    private deeplinkService: DeeplinkService,
+    private inputValidationService: InputValidationService
   ) { }
   ngOnInit(): void {
     if (this.walletService.wallet) {
@@ -47,41 +52,55 @@ export class UriHandlerComponent implements OnInit {
   /* https://docs.walletbeacon.io/beacon/03.getting-started-wallet.html#setup */
   connectApp = async (): Promise<void> => {
     if (!this.beaconService.client) {
-      this.beaconService.client = new WalletClient({ name: 'Kukai' });
+      this.beaconService.client = new WalletClient({ name: 'Kukai Wallet' });
     }
     await this.beaconService.client.init(); // Establish P2P connection
     this.beaconService.client
       .connect(async (message: any) => {
         console.log('### beacon message', message);
-        if (message.network.type !== CONSTANTS.NETWORK) {
+        if (message.type !== BeaconMessageType.SignPayloadRequest && message.network.type !== CONSTANTS.NETWORK) {
           console.warn(`Rejecting Beacon message because of network. Expected ${CONSTANTS.NETWORK} instead of ${message.network.type}`);
           await this.beaconService.rejectOnNetwork(message);
-        } else if (!this.permissionRequest && !this.operationRequest) {
-          if (message.type === BeaconMessageType.PermissionRequest) {
-            console.log('## permission request');
-            message.scopes = message.scopes.filter((scope: PermissionScope) => [PermissionScope.OPERATION_REQUEST, PermissionScope.SIGN].includes(scope));
-            if (message.scopes.length) {
-              if (this.walletService.wallet) {
-                this.permissionRequest = message;
+        } else if (!this.permissionRequest && !this.operationRequest && !this.signRequest) {
+          switch (message.type) {
+            case BeaconMessageType.PermissionRequest:
+              await this.handlePermissionRequest(message);
+              break;
+            case BeaconMessageType.OperationRequest:
+              if (await this.isSupportedOperationRequest(message)) {
+                this.operationRequest = message;
               } else {
-                console.warn('No wallet found');
-                await this.beaconService.rejectOnSourceAddress(message);
+                await this.beaconService.rejectOnUnknown(message);
               }
-            } else {
-              console.warn('No valid scope');
-            }
-          } else if (message.type === BeaconMessageType.OperationRequest) {
-            if (await this.isSupportedOperationRequest(message)) {
-              console.log('supported operation request');
-              this.operationRequest = message;
-            }
-            console.log(message);
-          } else {
-            console.warn(message);
+              break;
+            case BeaconMessageType.SignPayloadRequest:
+              if (await this.isSupportedSignPayload(message)) {
+                this.signRequest = message;
+              } else {
+                await this.beaconService.rejectOnUnknown(message);
+              }
+              break;
+            default:
+              await this.beaconService.rejectOnUnknown(message);
+              console.warn('Unknown message type', message);
           }
         }
       })
       .catch((error) => console.error('connect error', error));
+  }
+  async handlePermissionRequest(message: any) {
+    console.log('## permission request');
+    message.scopes = message.scopes.filter((scope: PermissionScope) => [PermissionScope.OPERATION_REQUEST, PermissionScope.SIGN].includes(scope));
+    if (message.scopes.length) {
+      if (this.walletService.wallet) {
+        this.permissionRequest = message;
+      } else {
+        console.warn('No wallet found');
+        await this.beaconService.rejectOnSourceAddress(message);
+      }
+    } else {
+      console.warn('No valid scope');
+    }
   }
   async isSupportedOperationRequest(message: any): Promise<boolean> {
     if (!this.walletService.wallet) {
@@ -100,7 +119,6 @@ export class UriHandlerComponent implements OnInit {
         }
       }
     }
-
     if (message.operationDetails[0].kind === 'transaction') {
       for (let i = 0; i < message.operationDetails.length; i++) {
         if (message.operationDetails[i].destination &&
@@ -134,6 +152,41 @@ export class UriHandlerComponent implements OnInit {
     this.activeAccount = this.walletService.wallet.getImplicitAccount(message.sourceAddress);
     return true;
   }
+  async isSupportedSignPayload(message: any): Promise<Boolean> {
+    if (!this.walletService.wallet) {
+      console.log('No wallet found');
+      return false;
+    } else if (!this.walletService.wallet.getImplicitAccount(message.sourceAddress)) {
+      console.warn('Source address not recogized');
+      await this.beaconService.rejectOnSourceAddress(message);
+      return false;
+    }
+    if (message.payload.slice(0, 2) === '0x') {
+      message.payload = message.payload.slice(2);
+    }
+    message.payload = message.payload.toLowerCase();
+    const hexString = message.payload;
+    console.log('hex', hexString);
+    if ((message.signingType !== 'raw' && message.signingType !== 'micheline') || !this.inputValidationService.hexString(hexString)) {
+      console.warn('Invalid sign payload');
+      await this.beaconService.rejectOnUnknown(message);
+      return false;
+    } else if (hexString.slice(0, 2) !== '05') {
+      console.warn('Unsupported prefix (expected 05)');
+      await this.beaconService.rejectOnUnknown(message);
+      return false;
+    }
+    try {
+      const parsedPayload = valueDecoder(Uint8ArrayConsumer.fromHexString(hexString.slice(2)));
+      console.log('Parsed sign payload', parsedPayload);
+    } catch (e) {
+      console.warn(e.message ? 'Decoding: ' + e.message : e);
+      await this.beaconService.rejectOnUnknown(message);
+      return false;
+    }
+    this.activeAccount = this.walletService.wallet.getImplicitAccount(message.sourceAddress);
+    return true;
+  }
   invalidParameters(parameters: any): boolean {
     try {
       if (parameters) {
@@ -152,6 +205,8 @@ export class UriHandlerComponent implements OnInit {
   async operationResponse(opHash: any) {
     if (!opHash) {
       await this.beaconService.rejectOnUserAbort(this.operationRequest);
+    } else if (opHash === 'broadcast_error') {
+      await this.beaconService.rejectOnBroadcastError(this.signRequest);
     } else {
       const response: OperationResponseInput = {
         type: BeaconMessageType.OperationResponse,
@@ -172,5 +227,15 @@ export class UriHandlerComponent implements OnInit {
       this.beaconService.syncBeaconState();
     }
     this.permissionRequest = null;
+  }
+  /* sign payload handling */
+  async signResponse(signature: string) {
+    if (!signature) {
+      await this.beaconService.rejectOnUserAbort(this.signRequest);
+    } else {
+      await this.beaconService.approveSignPayloadRequest(this.signRequest, signature);
+    }
+    console.log(signature);
+    this.signRequest = null;
   }
 }

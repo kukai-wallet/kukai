@@ -1,4 +1,12 @@
 # Release notes
+## 1.12
+* Message signing
+* Signing of Micheline expressions
+* Manual Beacon pairing on testnets
+* Display invokations better in activity list
+* Support for thumbnailUri in token metadata
+* Migration to Angular 11
+* Bug fixes
 ## 1.11.3
 * Update token metdata indexing
 ## 1.11.2
