@@ -33,14 +33,14 @@ export class SigninComponent implements OnInit {
   }
   private async mockLogin(): Promise<any> {
     const keyPair = {
-      sk: "spsk3A8C3viEfeZ2uJgv1RjuWGAgHTJNDS7EgpNfMXoP5e7DCTeBwA",
-      pk: "sppk7cZQHLuxcGM4eAJuTzvUsXz5GY25EyHGx73645XL8RDe99bcpnH",
-      pkh: "tz2RAaUUKkejGWvLyxeB75YnFDMULBws2g2M"
+      sk: "spsk1VfCfhixtzGvUSKDre6jwyGbXFm6aoeLGnxeVLCouueZmkgtJF",
+      pk: "sppk7cZsZeBApsFgYEdWuSwj92YCWkJxMmBfkN3FeKRmEB7Lk5pmDrT",
+      pkh: "tz2WKg52VqnYXH52TZbSVjT4hcc8YGVKi7Pd"
     }
     const userInfo = {
       typeOfLogin: 'google',
-      verifierId: 'klas@kukai.app',
-      name: 'Klas'
+      verifierId: 'mock.user@gmail.com',
+      name: 'Mock User'
     };
     return new Promise((resolve) => {
       setTimeout(() => {

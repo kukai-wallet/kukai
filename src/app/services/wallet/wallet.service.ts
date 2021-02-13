@@ -295,7 +295,6 @@ export class WalletService {
       } else if (this.wallet instanceof TorusWallet) {
         type = 'TorusWallet';
       }
-      console.log('Type is ' + type);
       localStorage.setItem(
         this.storeKey,
         JSON.stringify({ type, localStorageId: this.storageId, data: this.wallet })

@@ -1,1 +1,3 @@
 <app-signin (loginResponse)="loginResponse($event)" *ngIf="login"></app-signin>
+<app-send *ngIf="activeAccount" (operationResponse)="operationResponse($event)" [beaconMode]=true [operationRequest]=operationRequest
+    [activeAccount]=activeAccount></app-send>

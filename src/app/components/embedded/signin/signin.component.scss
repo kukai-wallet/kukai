@@ -26,19 +26,19 @@
 }
 @-webkit-keyframes spinIn {
   0% {
-    transform: rotate(-720deg) scale(0);
+    transform: rotate(-720deg) scale(0) scaleY(0);
   }
   100% {
-    transform: rotate(720deg) scale(1);
+    transform: rotate(720deg) scale(1) scaleY(1);
   }
 }
 
 @keyframes spinIn  {
   0% {
-    transform: rotate(-720deg) scale(0);
+    transform: rotate(-720deg) scale(0) scaleY(0);
   }
   100% {
-    transform: rotate(720deg) scale(1);
+    transform: rotate(720deg) scale(1) scaleY(1);
   }
 }
 .spinIn {
