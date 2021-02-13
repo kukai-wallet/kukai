@@ -8,11 +8,11 @@ export const environment = {
   production: false
 };
 export const CONSTANTS: Constants = {
-  NAME: 'Testnet / Delphinet',
-  NETWORK: 'delphinet',
+  NAME: 'Testnet / Edonet',
+  NETWORK: 'edonet',
   MAINNET: false,
-  NODE_URL: 'https://delphinet-tezos.giganode.io',
-  BLOCK_EXPLORER_URL: 'https://delphinet.tzkt.io',
+  NODE_URL: 'https://edonet-tezos.giganode.io',
+  BLOCK_EXPLORER_URL: 'https://edonet.tzkt.io',
   ASSETS: {
     'KT1REPEBMQS3Be8ZybkQQfSwAv3g4pHJViuK': {
       kind: 'FA1.2',
