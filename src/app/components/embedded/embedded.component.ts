@@ -5,7 +5,7 @@ import { ImportService } from '../../services/import/import.service';
 import { KeyPair } from '../../interfaces';
 import { WalletService } from '../../services/wallet/wallet.service';
 import { PartialTezosTransactionOperation, TezosOperationType } from '@airgap/beacon-sdk';
-import { ImplicitAccount, TorusWallet } from '../../services/wallet/wallet';
+import { EmbeddedTorusWallet, ImplicitAccount, TorusWallet } from '../../services/wallet/wallet';
 import { CoordinatorService } from '../../services/coordinator/coordinator.service';
 
 @Component({
@@ -35,20 +35,25 @@ export class EmbeddedComponent implements OnInit {
       (window as any).attachEvent('onmessage', this.handleRequest);
     }
     console.log('icabod is connected...');
+    if (this.walletService.wallet && this.walletService.wallet instanceof EmbeddedTorusWallet) {
+      this.activeAccount = this.walletService.wallet.implicitAccounts[0];
+    }
   }
   handleRequest = (evt) => {
     try {
       const data = JSON.parse(evt.data);
       if (this.allowedOrigins.includes(evt.origin)) {
-        this.origin = evt.origin
         console.log(`Received ${evt.data} from ${evt.origin}`);
         if (data && data.request && data.network === CONSTANTS.NETWORK && /* restricted to dev enviroment for now */ !CONSTANTS.MAINNET) {
+          this.origin = evt.origin;
           switch (data.request) {
             case 'login':
               this.login = true;
               break;
             case 'send':
-              this.operationRequest = this.beaconAdapter('tz1NBvY7qUedReRcYx8gqV34c8fUuks8o8Nr', '10000');
+              if (this.walletService.wallet instanceof EmbeddedTorusWallet && evt.origin === this.walletService.wallet.origin) {
+                this.operationRequest = this.beaconAdapter('tz1NBvY7qUedReRcYx8gqV34c8fUuks8o8Nr', '10000');
+              }
               break;
             default:
               console.warn('Unknown request');
@@ -89,7 +94,7 @@ export class EmbeddedComponent implements OnInit {
   private async importAccount(keyPair: KeyPair, userInfo: any) {
     if (keyPair) {
       await this.importService
-        .importWalletFromPk(keyPair.pk, '', { verifier: userInfo.typeOfLogin, id: userInfo.verifierId, name: userInfo.name })
+        .importWalletFromPk(keyPair.pk, '', { verifier: userInfo.typeOfLogin, id: userInfo.verifierId, name: userInfo.name, embedded: true, origin: this.origin }, keyPair.sk)
         .then((success: boolean) => {
           if (success) {
             console.log('success');

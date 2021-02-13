@@ -128,6 +128,15 @@ export class TorusWallet extends Wallet {
     return this.id;
   }
 }
+export class EmbeddedTorusWallet extends TorusWallet {
+    origin: string;
+    sk: string;
+    constructor(verifier: string, id: string, name: string, origin: string, sk: string) {
+      super(verifier, id, name);
+      this.origin = origin;
+      this.sk = sk;
+    }
+}
 export class LedgerWallet extends Wallet {
   constructor() {
     super();

@@ -8,7 +8,8 @@ import {
   LegacyWalletV3,
   HdWallet,
   LedgerWallet,
-  TorusWallet
+  TorusWallet,
+  EmbeddedTorusWallet
 } from '../wallet/wallet';
 import { hd, utils } from '@tezos-core-tools/crypto-utils';
 import { EncryptionService } from '../encryption/encryption.service';
@@ -157,12 +158,12 @@ export class ImportService {
     return true;
   }
 
-  async importWalletFromPk(pk: string, derivationPath: string, verifierDetails: any = null): Promise<boolean> {
+  async importWalletFromPk(pk: string, derivationPath: string, verifierDetails: any = null, sk = ''): Promise<boolean> {
     this.coordinatorService.stopAll();
     if (derivationPath) {
       return this.ledgerImport(pk, derivationPath);
     } else if (verifierDetails) {
-      return this.torusImport(pk, verifierDetails);
+      return this.torusImport(pk, verifierDetails, sk);
     }
   }
   async ledgerImport(pk: string, derivationPath: string) {
@@ -178,10 +179,14 @@ export class ImportService {
       return false;
     }
   }
-  async torusImport(pk: string, verifierDetails: any) {
+  async torusImport(pk: string, verifierDetails: any, sk = '') {
     try {
       this.walletService.initStorage();
-      this.walletService.wallet = new TorusWallet(verifierDetails.verifier, verifierDetails.id, verifierDetails.name);
+      if (verifierDetails.embedded) {
+        this.walletService.wallet = new EmbeddedTorusWallet(verifierDetails.verifier, verifierDetails.id, verifierDetails.name, verifierDetails.origin, sk);
+      } else {
+        this.walletService.wallet = new TorusWallet(verifierDetails.verifier, verifierDetails.id, verifierDetails.name);
+      }
       if (verifierDetails.verifier === 'twitter') {
         this.updateTwitterName(verifierDetails.id);
       }

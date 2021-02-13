@@ -10,6 +10,7 @@ import {
   ImplicitAccount,
   LedgerWallet,
   TorusWallet,
+  EmbeddedTorusWallet,
   OriginatedAccount,
 } from './wallet';
 import { EncryptionService } from '../encryption/encryption.service';
@@ -105,10 +106,10 @@ export class WalletService {
         pkh: this.wallet.implicitAccounts[0].pkh,
       };
       return keyPair;
+    } else if (this.wallet instanceof EmbeddedTorusWallet) {
+      return this.operationService.spPrivKeyToKeyPair(this.wallet.sk);
     } else if (this.wallet instanceof TorusWallet) {
-      console.log('torus id ' + this.wallet.id);
       const keyPair = await this.torusService.getTorusKeyPair(this.wallet.verifier, this.wallet.id);
-      console.log(keyPair);
       if (this.wallet.getImplicitAccount(keyPair.pkh)) {
         return keyPair;
       } else {
@@ -252,6 +253,9 @@ export class WalletService {
   isTorusWallet(): boolean {
     return this.wallet instanceof TorusWallet;
   }
+  isEmbeddedTorusWallet(): boolean {
+    return this.wallet instanceof EmbeddedTorusWallet;
+  }
   exportKeyStoreInit(
     type: WalletType,
     encryptedSeed: string,
@@ -292,6 +296,8 @@ export class WalletService {
         type = 'LegacyWalletV3';
       } else if (this.wallet instanceof LedgerWallet) {
         type = 'LedgerWallet';
+      } else if (this.wallet instanceof EmbeddedTorusWallet) {
+        type = 'EmbeddedTorusWallet';
       } else if (this.wallet instanceof TorusWallet) {
         type = 'TorusWallet';
       }
@@ -365,6 +371,9 @@ export class WalletService {
         this.wallet = new TorusWallet(wd.verifier, wd.id, wd.name);
         this.torusService.initTorus();
         break;
+      case 'EmbeddedTorusWallet':
+        this.wallet = new EmbeddedTorusWallet(wd.verifier, wd.id, wd.name, wd.origin, wd.sk);
+        this.torusService.initTorus();
       default:
     }
     this.wallet.XTZrate = wd.XTZrate;

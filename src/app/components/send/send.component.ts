@@ -121,7 +121,7 @@ export class SendComponent implements OnInit, OnChanges {
         this.operationRequest.operationDetails[0].kind === 'transaction') {
         console.log('Beacon payload to send', this.operationRequest);
         this.loadBeaconPayload();
-      } else {
+      } else if (this.operationRequest) {
         this.operationResponse.emit(null);
       }
     }
@@ -281,6 +281,7 @@ export class SendComponent implements OnInit, OnChanges {
   }
   closeModalAction() {
     this.closeModal();
+    console.warn('closed modal');
     this.operationResponse.emit(null);
   }
   closeModal() {
