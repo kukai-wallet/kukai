@@ -8,6 +8,58 @@ import { PartialTezosTransactionOperation, TezosOperationType } from '@airgap/be
 import { EmbeddedTorusWallet, ImplicitAccount, TorusWallet } from '../../services/wallet/wallet';
 import { CoordinatorService } from '../../services/coordinator/coordinator.service';
 
+// could use literals instead of an enum
+export enum MessageTypes {
+  loginRequest = 'login_request',
+  loginResponse = 'login_response',
+  operationRequest = 'operation_request',
+  operationResponse = 'operation_response',
+  logoutRequest = 'logout_request',
+  logoutResponse = 'logout_response'
+}
+
+export type LoginRequest = {
+  type: MessageTypes.loginRequest
+}
+
+export type LoginResponse = {
+  type: MessageTypes.loginResponse,
+  instanceId: string,
+  pk: string,
+  pkh: string,
+  userData: {
+    typeOfLogin: string,
+    id: string
+  }
+}
+
+export type OperationRequest = {
+  type: MessageTypes.operationRequest,
+  operations: PartialTezosTransactionOperation[]
+}
+
+export type OperationResponse = {
+  type: MessageTypes.operationResponse,
+  opHash: string
+}
+
+export type LogoutRequest = {
+  type: MessageTypes.logoutRequest,
+}
+
+export type LogoutResponse = {
+  type: MessageTypes.logoutResponse,
+  instanceId: string
+}
+
+export type Message =
+  LoginRequest |
+  LoginResponse |
+  OperationRequest |
+  OperationResponse |
+  LogoutRequest |
+  LogoutResponse
+
 @Component({
   selector: 'app-embedded',
   templateUrl: './embedded.component.html',
