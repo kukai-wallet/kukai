@@ -8,6 +8,9 @@ import { PartialTezosTransactionOperation, TezosOperationType } from '@airgap/be
 import { EmbeddedTorusWallet, ImplicitAccount, TorusWallet } from '../../services/wallet/wallet';
 import { CoordinatorService } from '../../services/coordinator/coordinator.service';
 
+// TODO should the OperationsService be used instead of this dependancy??
+import * as Bs58check from 'bs58check';
+
 // could use literals instead of an enum
 export enum MessageTypes {
   loginRequest = 'login_request',
@@ -19,7 +22,8 @@ export enum MessageTypes {
 }
 
 export type LoginRequest = {
-  type: MessageTypes.loginRequest
+  type: MessageTypes.loginRequest,
+  network: string
 }
 
 export type LoginResponse = {
@@ -35,6 +39,7 @@ export type LoginResponse = {
 
 export type OperationRequest = {
   type: MessageTypes.operationRequest,
+  network: string,
   operations: PartialTezosTransactionOperation[]
 }
 
@@ -45,6 +50,7 @@ export type OperationResponse = {
 
 export type LogoutRequest = {
   type: MessageTypes.logoutRequest,
+  network: string
 }
 
 export type LogoutResponse = {
@@ -52,13 +58,16 @@ export type LogoutResponse = {
   instanceId: string
 }
 
-export type Message =
+export type RequestMessage =
   LoginRequest |
-  LoginResponse |
   OperationRequest |
+  LogoutRequest
+
+export type ResponseMessage =
+  LoginResponse |
   OperationResponse |
-  LogoutRequest |
   LogoutResponse
+  
 
 @Component({
   selector: 'app-embedded',
@@ -93,26 +102,27 @@ export class EmbeddedComponent implements OnInit {
   }
   handleRequest = (evt) => {
     try {
-      const data = JSON.parse(evt.data);
+      const data: RequestMessage = JSON.parse(evt.data);
       if (this.allowedOrigins.includes(evt.origin)) {
         console.log(`Received ${evt.data} from ${evt.origin}`);
-        if (data && data.request && data.network === CONSTANTS.NETWORK && /* restricted to dev enviroment for now */ !CONSTANTS.MAINNET) {
+        if (data && data.type && data.network === CONSTANTS.NETWORK && /* restricted to dev enviroment for now */ !CONSTANTS.MAINNET) {
           this.origin = evt.origin;
-          switch (data.request) {
-            case 'login':
+          switch (data.type) {
+            case MessageTypes.loginRequest:
               this.login = true;
               break;
-            case 'send':
+            case MessageTypes.operationRequest:
+              // TODO make this work for the full array of operations
               if (this.walletService.wallet instanceof EmbeddedTorusWallet && evt.origin === this.walletService.wallet.origin &&
-                data.destination && data.amount) {
-                this.operationRequest = this.beaconAdapter(data.destination, data.amount);
+                data.operations[0] && data.operations[0].destination && data.operations[0].amount) {
+                this.operationRequest = this.beaconAdapter(data.operations[0].destination, data.operations[0].amount);
               }
               break;
             default:
               console.warn('Unknown request');
           }
         }
-      } else if (data && data.request) {
+      } else if (data && data.type) {
         console.log(`Invalid origin (${evt.origin})`);
       }
     } catch { }
@@ -121,10 +131,13 @@ export class EmbeddedComponent implements OnInit {
     if (loginData) {
       const { keyPair, userInfo } = loginData;
       const response = JSON.stringify({
-        // userInfo
-        response: 'login',
+        type: MessageTypes.loginResponse,
+        // 128 bits of entropy, base58 encoded
+        // TODO should the OperationsService be used instead of this dependancy??
+        instanceId: Bs58check.encode(Buffer.from(window.crypto.getRandomValues(new Uint8Array(16)))),
         pk: keyPair.pk,
-        pkh: keyPair.pkh
+        pkh: keyPair.pkh,
+        userData: userInfo
       });
       window.parent.window.postMessage(response, this.origin);
       this.importAccount(keyPair, userInfo);
@@ -134,14 +147,16 @@ export class EmbeddedComponent implements OnInit {
     this.login = false;
   }
   abort() {
-    const msg = JSON.stringify({ response: 'login', failed: true, error: 'ABORTED_BY_USER' });
+    // TODO type the failure message type properly
+    const msg = JSON.stringify({ type: MessageTypes.loginResponse, failed: true, error: 'ABORTED_BY_USER' });
     window.parent.window.postMessage(msg, this.origin);
   }
   operationResponse(opHash: string) {
     this.operationRequest = null;
     const msg = opHash ?
-      JSON.stringify({ response: 'send', opHash }) :
-      JSON.stringify({ response: 'send', failed: true, error: 'ABORTED_BY_USER' });
+      JSON.stringify({ type: MessageTypes.operationResponse, opHash }) :
+      // TODO type the failure message type properly
+      JSON.stringify({ type: MessageTypes.operationResponse, failed: true, error: 'ABORTED_BY_USER' });
     window.parent.window.postMessage(msg, this.origin);
   }
   private async importAccount(keyPair: KeyPair, userInfo: any) {
