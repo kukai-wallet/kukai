@@ -28,7 +28,6 @@ export type Failure = {
 
 export type LoginRequest = {
   type: MessageTypes.loginRequest,
-  network: string
 }
 
 export type LoginResponse = {
@@ -45,7 +44,6 @@ export type LoginResponse = {
 
 export type OperationRequest = {
   type: MessageTypes.operationRequest,
-  network: string,
   operations: PartialTezosTransactionOperation[]
 }
 
@@ -57,7 +55,6 @@ export type OperationResponse = {
 
 export type LogoutRequest = {
   type: MessageTypes.logoutRequest,
-  network: string
 }
 
 export type LogoutResponse = {
@@ -75,7 +72,6 @@ export type ResponseMessage =
   OperationResponse |
   LogoutResponse
   
-
 @Component({
   selector: 'app-embedded',
   templateUrl: './embedded.component.html',
@@ -112,7 +108,7 @@ export class EmbeddedComponent implements OnInit {
       const data: RequestMessage = JSON.parse(evt.data);
       if (this.allowedOrigins.includes(evt.origin)) {
         console.log(`Received ${evt.data} from ${evt.origin}`);
-        if (data && data.type && data.network === CONSTANTS.NETWORK && /* restricted to dev enviroment for now */ !CONSTANTS.MAINNET) {
+        if (data && data.type && /* restricted to dev enviroment for now */ !CONSTANTS.MAINNET) {
           this.origin = evt.origin;
           switch (data.type) {
             case MessageTypes.loginRequest:
