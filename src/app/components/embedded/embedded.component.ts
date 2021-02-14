@@ -82,7 +82,7 @@ export class EmbeddedComponent implements OnInit {
   origin = '';
   login = false;
   activeAccount: ImplicitAccount = null;
-  operationRequest = null;
+  operationRequests = null;
   constructor(
     private torusService: TorusService,
     private importService: ImportService,
@@ -117,8 +117,8 @@ export class EmbeddedComponent implements OnInit {
             case MessageTypes.operationRequest:
               // TODO make this work for the full array of operations
               if (this.walletService.wallet instanceof EmbeddedTorusWallet && evt.origin === this.walletService.wallet.origin &&
-                data.operations[0] && data.operations[0].destination && data.operations[0].amount) {
-                this.operationRequest = this.beaconAdapter(data.operations[0].destination, data.operations[0].amount);
+                data.operations) {
+                this.operationRequests = data.operations.map(({destination, amount}) => this.beaconAdapter(destination, amount));
               }
               break;
             default:
@@ -154,7 +154,7 @@ export class EmbeddedComponent implements OnInit {
     this.sendResponse({ type: MessageTypes.loginResponse, failed: true, error: 'ABORTED_BY_USER' })
   }
   operationResponse(opHash: string) {
-    this.operationRequest = null;
+    this.operationRequests = null;
     this.sendResponse(opHash
       ? { type: MessageTypes.operationResponse, opHash }
       : { type: MessageTypes.operationResponse, failed: true, error: 'ABORTED_BY_USER' })
