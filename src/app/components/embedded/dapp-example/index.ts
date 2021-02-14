@@ -8,7 +8,8 @@ export class DappExample {
         if (evt.origin === 'http://localhost:4200') {
           console.log(`Received ${evt.data} from ${evt.origin}`);
           const data = JSON.parse(evt.data);
-          if (data?.response) {
+          // TODO type this neatly
+          if (['login_response', 'logout_response', 'operation_response'].includes(data?.type)) {
             hide();
           }
         } else {
@@ -62,11 +63,11 @@ export class DappExample {
 
   login(): void {
     this.show();
-    this.postMessage({ request: 'login', network: 'delphinet' })
+    this.postMessage({ type: 'login_request'})
   }
 
   send(): void {
     this.show();
-    this.postMessage({ request: 'send', network: 'delphinet', destination: 'tz1NBvY7qUedReRcYx8gqV34c8fUuks8o8Nr', amount: '10000' })
+    this.postMessage({ type: 'operation_request', operations: [{destination: 'tz1NBvY7qUedReRcYx8gqV34c8fUuks8o8Nr', amount: '10000' }]})
   }
 }
