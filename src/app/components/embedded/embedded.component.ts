@@ -21,13 +21,19 @@ export enum MessageTypes {
   logoutResponse = 'logout_response'
 }
 
+export type Failure = {
+  failed: true,
+  error: string
+}
+
 export type LoginRequest = {
   type: MessageTypes.loginRequest,
   network: string
 }
 
 export type LoginResponse = {
-  type: MessageTypes.loginResponse,
+  type: MessageTypes.loginResponse
+} & ({
   instanceId: string,
   pk: string,
   pkh: string,
@@ -35,7 +41,7 @@ export type LoginResponse = {
     typeOfLogin: string,
     id: string
   }
-}
+} | Failure)
 
 export type OperationRequest = {
   type: MessageTypes.operationRequest,
@@ -44,9 +50,10 @@ export type OperationRequest = {
 }
 
 export type OperationResponse = {
-  type: MessageTypes.operationResponse,
+  type: MessageTypes.operationResponse
+} & ({
   opHash: string
-}
+} | Failure)
 
 export type LogoutRequest = {
   type: MessageTypes.logoutRequest,
@@ -148,16 +155,16 @@ export class EmbeddedComponent implements OnInit {
   }
   abort() {
     // TODO type the failure message type properly
-    const msg = JSON.stringify({ type: MessageTypes.loginResponse, failed: true, error: 'ABORTED_BY_USER' });
-    window.parent.window.postMessage(msg, this.origin);
+    this.sendResponse({ type: MessageTypes.loginResponse, failed: true, error: 'ABORTED_BY_USER' })
   }
   operationResponse(opHash: string) {
     this.operationRequest = null;
-    const msg = opHash ?
-      JSON.stringify({ type: MessageTypes.operationResponse, opHash }) :
-      // TODO type the failure message type properly
-      JSON.stringify({ type: MessageTypes.operationResponse, failed: true, error: 'ABORTED_BY_USER' });
-    window.parent.window.postMessage(msg, this.origin);
+    this.sendResponse(opHash
+      ? { type: MessageTypes.operationResponse, opHash }
+      : { type: MessageTypes.operationResponse, failed: true, error: 'ABORTED_BY_USER' })
+  }
+  private sendResponse(resp: ResponseMessage) {
+    window.parent.window.postMessage(JSON.stringify(resp), this.origin)
   }
   private async importAccount(keyPair: KeyPair, userInfo: any) {
     if (keyPair) {
