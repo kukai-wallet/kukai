@@ -7,9 +7,7 @@ import { WalletService } from '../../services/wallet/wallet.service';
 import { PartialTezosTransactionOperation, TezosOperationType } from '@airgap/beacon-sdk';
 import { EmbeddedTorusWallet, ImplicitAccount, TorusWallet } from '../../services/wallet/wallet';
 import { CoordinatorService } from '../../services/coordinator/coordinator.service';
-
-// TODO should the OperationsService be used instead of this dependancy??
-import * as Bs58check from 'bs58check';
+import { utils, common } from '@tezos-core-tools/crypto-utils';
 
 // could use literals instead of an enum
 export enum MessageTypes {
@@ -115,7 +113,6 @@ export class EmbeddedComponent implements OnInit {
               this.login = true;
               break;
             case MessageTypes.operationRequest:
-              // TODO make this work for the full array of operations
               if (this.walletService.wallet instanceof EmbeddedTorusWallet && evt.origin === this.walletService.wallet.origin &&
                 data.operations) {
                 this.operationRequests = data.operations.map(({destination, amount}) => this.beaconAdapter(destination, amount));
@@ -133,16 +130,15 @@ export class EmbeddedComponent implements OnInit {
   loginResponse(loginData: any) {
     if (loginData) {
       const { keyPair, userInfo } = loginData;
-      const response = JSON.stringify({
+      this.sendResponse({
         type: MessageTypes.loginResponse,
         // 128 bits of entropy, base58 encoded
         // TODO should the OperationsService be used instead of this dependancy??
-        instanceId: Bs58check.encode(Buffer.from(window.crypto.getRandomValues(new Uint8Array(16)))),
+        instanceId: this.generateInstanceId(),
         pk: keyPair.pk,
         pkh: keyPair.pkh,
         userData: userInfo
       });
-      window.parent.window.postMessage(response, this.origin);
       this.importAccount(keyPair, userInfo);
     } else {
       this.abort();
@@ -150,7 +146,6 @@ export class EmbeddedComponent implements OnInit {
     this.login = false;
   }
   abort() {
-    // TODO type the failure message type properly
     this.sendResponse({ type: MessageTypes.loginResponse, failed: true, error: 'ABORTED_BY_USER' })
   }
   operationResponse(opHash: string) {
@@ -184,5 +179,8 @@ export class EmbeddedComponent implements OnInit {
       // add parameters here
     }
     return { operationDetails: [transaction] };
+  }
+  private generateInstanceId(): string {
+    return common.base58encode(utils.mnemonicToEntropy(utils.generateMnemonic(15)))
   }
 }
