@@ -69,7 +69,7 @@ export type ResponseMessage =
   LoginResponse |
   OperationResponse |
   LogoutResponse
-  
+
 @Component({
   selector: 'app-embedded',
   templateUrl: './embedded.component.html',
@@ -115,7 +115,7 @@ export class EmbeddedComponent implements OnInit {
             case MessageTypes.operationRequest:
               if (this.walletService.wallet instanceof EmbeddedTorusWallet && evt.origin === this.walletService.wallet.origin &&
                 data.operations) {
-                this.operationRequests = data.operations.map(({destination, amount}) => this.beaconAdapter(destination, amount));
+                this.operationRequests = this.beaconTypeGuard(data.operations);
               }
               break;
             default:
@@ -171,16 +171,24 @@ export class EmbeddedComponent implements OnInit {
         });
     }
   }
-  private beaconAdapter(destination: string, amount: string) {
-    const transaction: PartialTezosTransactionOperation = {
-      kind: TezosOperationType.TRANSACTION,
-      amount,
-      destination
-      // add parameters here
+  private beaconTypeGuard(transactions: PartialTezosTransactionOperation[]): any {
+    try {
+      transactions.forEach((tx) => {
+        if (
+          tx.kind !== 'transaction' ||
+          typeof tx.amount !== 'string' ||
+          !utils.validAddress(tx.destination)
+        ) {
+          throw new Error('Invalid transaction');
+        }
+      });
+    } catch (e) {
+      console.warn(e);
+      return null;
     }
-    return { operationDetails: [transaction] };
+    return { operationDetails: transactions };
   }
   private generateInstanceId(): string {
-    return common.base58encode(utils.mnemonicToEntropy(utils.generateMnemonic(15)))
+    return common.base58encode(utils.mnemonicToEntropy(utils.generateMnemonic(15)), new Uint8Array([]))
   }
 }
