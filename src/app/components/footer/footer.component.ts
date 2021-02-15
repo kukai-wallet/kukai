@@ -17,7 +17,7 @@ export class FooterComponent implements OnInit {
 
   ngOnInit(): void {
     this.path = this.location.path();
-    this.setFooter()
+    this.setFooter();
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
         this.setFooter();

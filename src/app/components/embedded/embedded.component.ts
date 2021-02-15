@@ -20,13 +20,13 @@ export enum MessageTypes {
   logoutResponse = 'logout_response'
 }
 
-export type Failure = {
-  failed: true,
-  error: string
+export interface Failure {
+  failed: true;
+  error: string;
 }
 
-export type LoginRequest = {
-  type: MessageTypes.loginRequest,
+export interface LoginRequest {
+  type: MessageTypes.loginRequest;
 }
 
 export type LoginResponse = {
@@ -39,37 +39,37 @@ export type LoginResponse = {
     typeOfLogin: string,
     id: string
   }
-} | Failure)
+} | Failure);
 
-export type OperationRequest = {
-  type: MessageTypes.operationRequest,
-  operations: PartialTezosTransactionOperation[]
+export interface OperationRequest {
+  type: MessageTypes.operationRequest;
+  operations: PartialTezosTransactionOperation[];
 }
 
 export type OperationResponse = {
   type: MessageTypes.operationResponse
 } & ({
   opHash: string
-} | Failure)
+} | Failure);
 
-export type LogoutRequest = {
-  type: MessageTypes.logoutRequest,
+export interface LogoutRequest {
+  type: MessageTypes.logoutRequest;
 }
 
-export type LogoutResponse = {
-  type: MessageTypes.logoutResponse,
-  instanceId: string
+export interface LogoutResponse {
+  type: MessageTypes.logoutResponse;
+  instanceId: string;
 }
 
 export type RequestMessage =
   LoginRequest |
   OperationRequest |
-  LogoutRequest
+  LogoutRequest;
 
 export type ResponseMessage =
   LoginResponse |
   OperationResponse |
-  LogoutResponse
+  LogoutResponse;
 
 @Component({
   selector: 'app-embedded',
@@ -140,6 +140,7 @@ export class EmbeddedComponent implements OnInit {
   loginResponse(loginData: any) {
     if (loginData) {
       const { keyPair, userInfo } = loginData;
+      const filteredUserInfo = { typeOfLogin: userInfo.typeOfLogin, id: userInfo.verifierId, name: userInfo.name };
       const instanceId = this.generateInstanceId();
       this.sendResponse({
         type: MessageTypes.loginResponse,
@@ -148,7 +149,7 @@ export class EmbeddedComponent implements OnInit {
         instanceId,
         pk: keyPair.pk,
         pkh: keyPair.pkh,
-        userData: userInfo
+        userData: filteredUserInfo
       });
       this.importAccount(keyPair, userInfo, instanceId);
     } else {
@@ -157,16 +158,16 @@ export class EmbeddedComponent implements OnInit {
     this.login = false;
   }
   abort() {
-    this.sendResponse({ type: MessageTypes.loginResponse, failed: true, error: 'ABORTED_BY_USER' })
+    this.sendResponse({ type: MessageTypes.loginResponse, failed: true, error: 'ABORTED_BY_USER' });
   }
   operationResponse(opHash: string) {
     this.operationRequests = null;
     this.sendResponse(opHash
       ? { type: MessageTypes.operationResponse, opHash }
-      : { type: MessageTypes.operationResponse, failed: true, error: 'ABORTED_BY_USER' })
+      : { type: MessageTypes.operationResponse, failed: true, error: 'ABORTED_BY_USER' });
   }
   private sendResponse(resp: ResponseMessage) {
-    window.parent.window.postMessage(JSON.stringify(resp), this.origin)
+    window.parent.window.postMessage(JSON.stringify(resp), this.origin);
   }
   private async importAccount(keyPair: KeyPair, userInfo: any, instanceId: string) {
     if (keyPair) {
@@ -200,6 +201,6 @@ export class EmbeddedComponent implements OnInit {
     return { operationDetails: transactions };
   }
   private generateInstanceId(): string {
-    return common.base58encode(utils.mnemonicToEntropy(utils.generateMnemonic(15)), new Uint8Array([]))
+    return common.base58encode(utils.mnemonicToEntropy(utils.generateMnemonic(15)), new Uint8Array([]));
   }
 }

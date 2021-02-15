@@ -25,7 +25,7 @@ export class SigninComponent implements OnInit {
     try {
       this.messageService.startSpinner('Mocking DirectAuth wallet...');
       const loginData = await this.mockLogin(); // Mock locally
-      //const loginData = this.torusService.loginTorus(typeOfLogin);
+      //const loginData = await this.torusService.loginTorus(typeOfLogin);
       this.loginResponse.emit(loginData);
     } finally {
       this.messageService.stopSpinner();
@@ -33,10 +33,10 @@ export class SigninComponent implements OnInit {
   }
   private async mockLogin(): Promise<any> {
     const keyPair = {
-      sk: "spsk1VfCfhixtzGvUSKDre6jwyGbXFm6aoeLGnxeVLCouueZmkgtJF",
-      pk: "sppk7cZsZeBApsFgYEdWuSwj92YCWkJxMmBfkN3FeKRmEB7Lk5pmDrT",
-      pkh: "tz2WKg52VqnYXH52TZbSVjT4hcc8YGVKi7Pd"
-    }
+      sk: 'spsk1VfCfhixtzGvUSKDre6jwyGbXFm6aoeLGnxeVLCouueZmkgtJF',
+      pk: 'sppk7cZsZeBApsFgYEdWuSwj92YCWkJxMmBfkN3FeKRmEB7Lk5pmDrT',
+      pkh: 'tz2WKg52VqnYXH52TZbSVjT4hcc8YGVKi7Pd'
+    };
     const userInfo = {
       typeOfLogin: 'google',
       verifierId: 'mock.user@gmail.com',
@@ -46,6 +46,6 @@ export class SigninComponent implements OnInit {
       setTimeout(() => {
         resolve({ keyPair, userInfo });
       }, 2000);
-    })
+    });
   }
 }
