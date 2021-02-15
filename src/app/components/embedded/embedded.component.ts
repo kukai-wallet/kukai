@@ -57,10 +57,11 @@ export interface LogoutRequest {
   type: MessageTypes.logoutRequest;
 }
 
-export interface LogoutResponse {
-  type: MessageTypes.logoutResponse;
-  instanceId: string;
-}
+export type LogoutResponse = {
+  type: MessageTypes.logoutResponse
+} & ({
+  instanceId: string
+} | Failure);
 
 export type RequestMessage =
   LoginRequest |
@@ -131,12 +132,19 @@ export class EmbeddedComponent implements OnInit {
               }
               break;
             case MessageTypes.logoutRequest:
-              if (this.walletService.wallet instanceof EmbeddedTorusWallet && evt.origin === this.walletService.wallet.origin) {
+              if (this.walletService.wallet instanceof EmbeddedTorusWallet && evt.origin === this.walletService.wallet.origin && 
+                this.walletService.wallet.instanceId) {
                 const instanceId = this.walletService.wallet.instanceId;
                 this.logout(instanceId);
                 this.sendResponse({
                   type: MessageTypes.logoutResponse,
                   instanceId
+                });
+              } else {
+                this.sendResponse({
+                  type: MessageTypes.logoutResponse,
+                  failed: true,
+                  error: 'NO_WALLET_FOUND'
                 });
               }
               break;
