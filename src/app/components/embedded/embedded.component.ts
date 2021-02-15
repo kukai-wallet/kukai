@@ -129,6 +129,8 @@ export class EmbeddedComponent implements OnInit {
               if (this.walletService.wallet instanceof EmbeddedTorusWallet && evt.origin === this.walletService.wallet.origin &&
                 data.operations) {
                 this.operationRequests = this.beaconTypeGuard(data.operations);
+              } else {
+                this.noWalletError();
               }
               break;
             case MessageTypes.logoutRequest:
@@ -141,11 +143,7 @@ export class EmbeddedComponent implements OnInit {
                   instanceId
                 });
               } else {
-                this.sendResponse({
-                  type: MessageTypes.logoutResponse,
-                  failed: true,
-                  error: 'NO_WALLET_FOUND'
-                });
+                this.noWalletError();
               }
               break;
             default:
@@ -179,6 +177,13 @@ export class EmbeddedComponent implements OnInit {
   }
   abort() {
     this.sendResponse({ type: MessageTypes.loginResponse, failed: true, error: 'ABORTED_BY_USER' });
+  }
+  noWalletError() {
+    this.sendResponse({
+      type: MessageTypes.logoutResponse,
+      failed: true,
+      error: 'NO_WALLET_FOUND'
+    });
   }
   operationResponse(opHash: string) {
     this.operationRequests = null;
