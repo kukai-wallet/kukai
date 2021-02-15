@@ -158,12 +158,12 @@ export class ImportService {
     return true;
   }
 
-  async importWalletFromPk(pk: string, derivationPath: string, verifierDetails: any = null, sk = ''): Promise<boolean> {
+  async importWalletFromPk(pk: string, derivationPath: string, verifierDetails: any = null, sk: string = '', instanceId: string = ''): Promise<boolean> {
     this.coordinatorService.stopAll();
     if (derivationPath) {
       return this.ledgerImport(pk, derivationPath);
     } else if (verifierDetails) {
-      return this.torusImport(pk, verifierDetails, sk);
+      return this.torusImport(pk, verifierDetails, sk, instanceId);
     }
   }
   async ledgerImport(pk: string, derivationPath: string) {
@@ -179,12 +179,13 @@ export class ImportService {
       return false;
     }
   }
-  async torusImport(pk: string, verifierDetails: any, sk = '') {
+  async torusImport(pk: string, verifierDetails: any, sk: string = '', instanceId: string = '') {
     try {
-      this.walletService.initStorage();
       if (verifierDetails.embedded) {
-        this.walletService.wallet = new EmbeddedTorusWallet(verifierDetails.verifier, verifierDetails.id, verifierDetails.name, verifierDetails.origin, sk);
+        this.walletService.initStorage(instanceId);
+        this.walletService.wallet = new EmbeddedTorusWallet(verifierDetails.verifier, verifierDetails.id, verifierDetails.name, verifierDetails.origin, sk, instanceId);
       } else {
+        this.walletService.initStorage();
         this.walletService.wallet = new TorusWallet(verifierDetails.verifier, verifierDetails.id, verifierDetails.name);
       }
       if (verifierDetails.verifier === 'twitter') {

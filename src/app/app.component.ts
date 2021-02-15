@@ -21,29 +21,30 @@ export class AppComponent implements OnInit {
     private router: Router,
     public translate: TranslateService,
     private location: Location
-    
+
   ) {
 
-      // this language will be used as a fallback when a translation isn't found in the current language
-      translate.setDefaultLang('en');
+    // this language will be used as a fallback when a translation isn't found in the current language
+    translate.setDefaultLang('en');
 
-      // the lang to use, if the lang isn't available, it will use the current loader to get them
-      const languagePreference = window.localStorage.getItem('languagePreference');
-      const browserLang = translate.getBrowserLang();
-      translate.use('en');
-      /*if (languagePreference) {
-        translate.use(languagePreference.match(/en|fr|ru|jp|kor|por/) ? languagePreference : 'en');
-      } else {
-        translate.use(browserLang.match(/en|fr|ru|jp|kor|por/) ? browserLang : 'en');
-      }*/
+    // the lang to use, if the lang isn't available, it will use the current loader to get them
+    const languagePreference = window.localStorage.getItem('languagePreference');
+    const browserLang = translate.getBrowserLang();
+    translate.use('en');
+    /*if (languagePreference) {
+      translate.use(languagePreference.match(/en|fr|ru|jp|kor|por/) ? languagePreference : 'en');
+    } else {
+      translate.use(browserLang.match(/en|fr|ru|jp|kor|por/) ? browserLang : 'en');
+    }*/
   }
 
   ngOnInit() {
     this.checkEmbedded();
-    this.walletService.loadStoredWallet();
-    if (this.walletService.wallet) {
-      this.coordinatorService.startAll();
-      //this.router.navigate(['/accounts']);
+    if (!this.embedded) {
+      this.walletService.loadStoredWallet();
+      if (this.walletService.wallet) {
+        this.coordinatorService.startAll();
+      }
     }
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
@@ -71,15 +72,15 @@ export class AppComponent implements OnInit {
     // console.log('lang ', lang);
 
     const map: Map<string, string> = new Map([
-        ['en', 'English'],
-        ['cn', '中国'],
-        ['es', 'Español'],
-        ['fr', 'Français'],
-        ['ru', 'Pусский'],
-        ['jp', '日本語'],
-        ['kor', '한국어'],
-        ['por', 'Português'],
-        ['swe', 'Svenska']
+      ['en', 'English'],
+      ['cn', '中国'],
+      ['es', 'Español'],
+      ['fr', 'Français'],
+      ['ru', 'Pусский'],
+      ['jp', '日本語'],
+      ['kor', '한국어'],
+      ['por', 'Português'],
+      ['swe', 'Svenska']
     ]);
 
     const language = map.get(lang);
@@ -88,7 +89,7 @@ export class AppComponent implements OnInit {
   }
   checkEmbedded() {
     const path = this.location.path();
-    this.embedded = (path === '/embedded');
+    this.embedded = path.startsWith('/embedded');
   }
   setLanguage(lang) {
     window.localStorage.setItem('languagePreference', lang);

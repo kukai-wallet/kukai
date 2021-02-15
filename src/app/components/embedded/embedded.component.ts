@@ -8,6 +8,7 @@ import { PartialTezosTransactionOperation, TezosOperationType } from '@airgap/be
 import { EmbeddedTorusWallet, ImplicitAccount, TorusWallet } from '../../services/wallet/wallet';
 import { CoordinatorService } from '../../services/coordinator/coordinator.service';
 import { utils, common } from '@tezos-core-tools/crypto-utils';
+import { ActivatedRoute } from '@angular/router';
 
 // could use literals instead of an enum
 export enum MessageTypes {
@@ -85,7 +86,8 @@ export class EmbeddedComponent implements OnInit {
     private torusService: TorusService,
     private importService: ImportService,
     private walletService: WalletService,
-    private coordinatorService: CoordinatorService
+    private coordinatorService: CoordinatorService,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
@@ -97,9 +99,17 @@ export class EmbeddedComponent implements OnInit {
       (window as any).attachEvent('onmessage', this.handleRequest);
     }
     console.log('icabod is connected...');
-    if (this.walletService.wallet && this.walletService.wallet instanceof EmbeddedTorusWallet) {
-      this.activeAccount = this.walletService.wallet.implicitAccounts[0];
-    }
+    this.route.queryParams
+      .filter(params => params.instanceId)
+      .subscribe(params => {
+        this.walletService.loadStoredWallet(params.instanceId);
+        if (this.walletService.wallet instanceof EmbeddedTorusWallet) {
+          this.origin = this.walletService.wallet.origin;
+          this.activeAccount = this.walletService.wallet.implicitAccounts[0];
+          this.coordinatorService.startAll();
+        }
+      }
+    );
   }
   handleRequest = (evt) => {
     try {
@@ -130,16 +140,17 @@ export class EmbeddedComponent implements OnInit {
   loginResponse(loginData: any) {
     if (loginData) {
       const { keyPair, userInfo } = loginData;
+      const instanceId = this.generateInstanceId();
       this.sendResponse({
         type: MessageTypes.loginResponse,
         // 128 bits of entropy, base58 encoded
         // TODO should the OperationsService be used instead of this dependancy??
-        instanceId: this.generateInstanceId(),
+        instanceId,
         pk: keyPair.pk,
         pkh: keyPair.pkh,
         userData: userInfo
       });
-      this.importAccount(keyPair, userInfo);
+      this.importAccount(keyPair, userInfo, instanceId);
     } else {
       this.abort();
     }
@@ -157,10 +168,10 @@ export class EmbeddedComponent implements OnInit {
   private sendResponse(resp: ResponseMessage) {
     window.parent.window.postMessage(JSON.stringify(resp), this.origin)
   }
-  private async importAccount(keyPair: KeyPair, userInfo: any) {
+  private async importAccount(keyPair: KeyPair, userInfo: any, instanceId: string) {
     if (keyPair) {
       await this.importService
-        .importWalletFromPk(keyPair.pk, '', { verifier: userInfo.typeOfLogin, id: userInfo.verifierId, name: userInfo.name, embedded: true, origin: this.origin }, keyPair.sk)
+        .importWalletFromPk(keyPair.pk, '', { verifier: userInfo.typeOfLogin, id: userInfo.verifierId, name: userInfo.name, embedded: true, origin: this.origin }, keyPair.sk, instanceId)
         .then((success: boolean) => {
           if (success) {
             console.log('success');

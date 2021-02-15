@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { KeyPair, WalletType, Activity } from './../../interfaces';
 import {
   WalletObject,
@@ -21,15 +20,14 @@ import { utils, hd } from '@tezos-core-tools/crypto-utils';
 
 @Injectable()
 export class WalletService {
-  storeKey: string;
+  storeKey: 'kukai-wallet';
   storageId = 0;
   wallet: WalletObject;
 
   constructor(
     private encryptionService: EncryptionService,
     private operationService: OperationService,
-    private torusService: TorusService,
-    private route: ActivatedRoute
+    private torusService: TorusService
   ) {}
   /*
     Wallet creation
@@ -233,8 +231,7 @@ export class WalletService {
   clearWallet() {
     this.wallet = null;
     this.storageId = 0;
-    this.getStorage().removeItem(this.storeKey)
-    this.storeKey = null;
+    localStorage.removeItem(this.storeKey);
   }
   /*
   Used to decide wallet type
@@ -279,13 +276,19 @@ export class WalletService {
   /*
     Read and write to localStorage
   */
-  initStorage() {
-    this.storeKey = 'kukai-wallet'
+  initStorage(instanceId: string = '') {
     this.storageId = Date.now();
-    localStorage.setItem(
-      this.storeKey,
-      JSON.stringify({ localStorageId: this.storageId })
-    );
+    if (instanceId) {
+      sessionStorage.setItem(
+        instanceId,
+        JSON.stringify({ localStorageId: this.storageId })
+      );
+    } else {
+      localStorage.setItem(
+        this.storeKey,
+        JSON.stringify({ localStorageId: this.storageId })
+      );
+    }
   }
   storeWallet() {
     const localStorageId = this.getLocalStorageId();
@@ -307,7 +310,7 @@ export class WalletService {
         type = 'TorusWallet';
       }
       this.getStorage().setItem(
-        this.storeKey,
+        (this.wallet instanceof EmbeddedTorusWallet) ? this.wallet.instanceId : this.storeKey,
         JSON.stringify({ type, localStorageId: this.storageId, data: this.wallet })
       );
     } else {
@@ -315,7 +318,7 @@ export class WalletService {
     }
   }
   getLocalStorageId() {
-    const walletData = localStorage.getItem(this.storeKey);
+    const walletData = this.wallet instanceof EmbeddedTorusWallet ? sessionStorage.getItem(this.wallet.instanceId) : localStorage.getItem(this.storeKey);
     if (walletData) {
       const parsed = JSON.parse(walletData);
       if (parsed && parsed.localStorageId) {
@@ -325,16 +328,8 @@ export class WalletService {
     return 0;
   }
 
-  loadStoredWallet() {
-    let storage;
-    if (this.route.snapshot.queryParams.instanceId) {
-      storage = sessionStorage;
-      this.storeKey = this.route.snapshot.queryParams.instanceId
-    } else {
-      storage = localStorage;
-      this.storeKey = 'kukai-wallet'
-    }
-    const walletData = storage.getItem(this.storeKey);
+  loadStoredWallet(instanceId = '') {
+    const walletData = instanceId ? sessionStorage.getItem(instanceId) : localStorage.getItem(this.storeKey);
     if (walletData && walletData !== 'undefined') {
       const parsedWalletData = JSON.parse(walletData);
       console.log(parsedWalletData);
@@ -385,8 +380,9 @@ export class WalletService {
         this.torusService.initTorus();
         break;
       case 'EmbeddedTorusWallet':
-        this.wallet = new EmbeddedTorusWallet(wd.verifier, wd.id, wd.name, wd.origin, wd.sk);
+        this.wallet = new EmbeddedTorusWallet(wd.verifier, wd.id, wd.name, wd.origin, wd.sk, wd.instanceId);
         this.torusService.initTorus();
+        break;
       default:
     }
     this.wallet.XTZrate = wd.XTZrate;
@@ -446,6 +442,6 @@ export class WalletService {
     });
   }
   private getStorage() {
-    return this.isEmbeddedTorusWallet() ? sessionStorage : localStorage
+    return this.isEmbeddedTorusWallet() ? sessionStorage : localStorage;
   }
 }
