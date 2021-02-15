@@ -195,7 +195,7 @@ export class ImportService {
       return true;
     } catch (err) {
       console.warn(err);
-      this.walletService.clearWallet();
+      this.walletService.clearWallet(instanceId);
       return false;
     }
   }

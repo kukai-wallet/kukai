@@ -228,10 +228,14 @@ export class WalletService {
   /*
     Clear wallet data from browser
   */
-  clearWallet() {
+  clearWallet(instanceId: string = '') {
     this.wallet = null;
     this.storageId = 0;
-    localStorage.removeItem(this.storeKey);
+    if (instanceId) {
+      sessionStorage.removeItem(instanceId);
+    } else {
+      localStorage.removeItem(this.storeKey);
+    }
   }
   /*
   Used to decide wallet type
@@ -340,11 +344,11 @@ export class WalletService {
         console.log(this.wallet);
       } else {
         console.log('couldnt load a wallet');
-        this.clearWallet();
+        this.clearWallet(instanceId);
       }
     } else {
       console.log('couldnt load a wallet');
-      this.clearWallet();
+      this.clearWallet(instanceId);
     }
   }
   deserializeStoredWallet(wd: any, type: string) {

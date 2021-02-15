@@ -9,6 +9,7 @@ import { EmbeddedTorusWallet, ImplicitAccount, TorusWallet } from '../../service
 import { CoordinatorService } from '../../services/coordinator/coordinator.service';
 import { utils, common } from '@tezos-core-tools/crypto-utils';
 import { ActivatedRoute } from '@angular/router';
+import { LookupService } from '../../services/lookup/lookup.service';
 
 // could use literals instead of an enum
 export enum MessageTypes {
@@ -87,7 +88,8 @@ export class EmbeddedComponent implements OnInit {
     private importService: ImportService,
     private walletService: WalletService,
     private coordinatorService: CoordinatorService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private lookupService: LookupService
   ) { }
 
   ngOnInit(): void {
@@ -126,6 +128,16 @@ export class EmbeddedComponent implements OnInit {
               if (this.walletService.wallet instanceof EmbeddedTorusWallet && evt.origin === this.walletService.wallet.origin &&
                 data.operations) {
                 this.operationRequests = this.beaconTypeGuard(data.operations);
+              }
+              break;
+            case MessageTypes.logoutRequest:
+              if (this.walletService.wallet instanceof EmbeddedTorusWallet && evt.origin === this.walletService.wallet.origin) {
+                const instanceId = this.walletService.wallet.instanceId;
+                this.logout(instanceId);
+                this.sendResponse({
+                  type: MessageTypes.logoutResponse,
+                  instanceId
+                });
               }
               break;
             default:
@@ -202,5 +214,10 @@ export class EmbeddedComponent implements OnInit {
   }
   private generateInstanceId(): string {
     return common.base58encode(utils.mnemonicToEntropy(utils.generateMnemonic(15)), new Uint8Array([]));
+  }
+  private logout(instanceId: string) {
+    this.coordinatorService.stopAll();
+    this.walletService.clearWallet(instanceId);
+    this.lookupService.clear();
   }
 }

@@ -95,10 +95,4 @@ export class AppComponent implements OnInit {
     window.localStorage.setItem('languagePreference', lang);
     this.translate.use(lang);
   }
-
-  logout() {
-    this.coordinatorService.stopAll();
-    this.walletService.clearWallet();
-    this.router.navigate(['']);
-  }
 }
