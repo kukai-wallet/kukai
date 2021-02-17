@@ -243,6 +243,7 @@ export class Activity {
   hash: string;
   timestamp: number | null;
   tokenId?: string;
+  entrypoint?: string;
 }
 export class Token {
   tokenId: string;

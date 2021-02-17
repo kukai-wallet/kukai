@@ -27,15 +27,10 @@ export class AppComponent implements OnInit {
     // this language will be used as a fallback when a translation isn't found in the current language
     translate.setDefaultLang('en');
 
-    // the lang to use, if the lang isn't available, it will use the current loader to get them
-    const languagePreference = window.localStorage.getItem('languagePreference');
-    const browserLang = translate.getBrowserLang();
-    translate.use('en');
-    /*if (languagePreference) {
-      translate.use(languagePreference.match(/en|fr|ru|jp|kor|por/) ? languagePreference : 'en');
-    } else {
-      translate.use(browserLang.match(/en|fr|ru|jp|kor|por/) ? browserLang : 'en');
-    }*/
+      // the lang to use, if the lang isn't available, it will use the current loader to get them
+      const languagePreference = window.localStorage.getItem('languagePreference');
+      const browserLang = translate.getBrowserLang();
+      translate.use('en');
   }
 
   ngOnInit() {

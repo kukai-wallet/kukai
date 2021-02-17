@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { MessageService } from '../../services/message/message.service';
-import { WalletClient, BeaconMessageType, PermissionResponseInput, P2PPairingRequest, BeaconErrorType, BEACON_VERSION, ErrorResponse, getSenderId } from '@airgap/beacon-sdk';
+import { WalletClient, BeaconMessageType, PermissionResponseInput, SignPayloadResponseInput, P2PPairingRequest, BeaconErrorType, BEACON_VERSION, ErrorResponse, getSenderId } from '@airgap/beacon-sdk';
 import { ExtendedP2PPairingResponse } from '@airgap/beacon-sdk/dist/cjs/types/P2PPairingResponse';
+import { CONSTANTS } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +13,7 @@ export class BeaconService {
   permissions = [];
   constructor(
     private messageService: MessageService
-  ) {
-    console.log('### BEACON SERVICE ###');
-  }
+  ) {}
   preNotifyPairing(pairInfoJson: string) {
     const pairInfo: P2PPairingRequest = JSON.parse(pairInfoJson);
     const peersJson = localStorage.getItem('beacon:communication-peers');
@@ -99,6 +98,9 @@ export class BeaconService {
   async rejectOnParameters(message: any) {
     await this.respondWithError(BeaconErrorType.PARAMETERS_INVALID_ERROR, message);
   }
+  async rejectOnBroadcastError(message: any) {
+    await this.respondWithError(BeaconErrorType.BROADCAST_ERROR, message);
+  }
   async respondWithError(errorType: BeaconErrorType, requestMessage: any) {
     if (requestMessage) {
       const response: ErrorResponse = {
@@ -118,6 +120,15 @@ export class BeaconService {
       scopes: message.scopes,
       id: message.id,
       publicKey: publicKey
+    };
+    await this.client.respond(response);
+  }
+  async approveSignPayloadRequest(message: any, signature: string) {
+    const response: SignPayloadResponseInput = {
+      type: BeaconMessageType.SignPayloadResponse,
+      id: message.id,
+      signingType: message.signingType,
+      signature
     };
     await this.client.respond(response);
   }

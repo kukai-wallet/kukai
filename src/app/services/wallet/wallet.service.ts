@@ -393,7 +393,6 @@ export class WalletService {
     this.wallet.totalBalanceUSD = wd.totalBalanceUSD;
     this.wallet.totalBalanceXTZ = wd.totalBalanceXTZ;
     if (wd.lookups) {
-      console.log('found', wd.lookups);
       this.wallet.lookups = wd.lookups;
     }
     for (const implicit of wd.implicitAccounts) {
@@ -424,9 +423,9 @@ export class WalletService {
         origAcc.balanceXTZ = originated.balanceXTZ;
         origAcc.delegate = originated.delegate;
         if (originated.activitiesCounter) { // prevent storage from breaking (1.11)
-          impAcc.state = originated.activitiesCounter.toString();
+          origAcc.state = originated.activitiesCounter.toString();
         } else {
-          impAcc.state = originated.state;
+          origAcc.state = originated.state;
         }
         origAcc.activities = this.activityMigration(originated.activities);
         impAcc.originatedAccounts.push(origAcc);
@@ -436,10 +435,10 @@ export class WalletService {
   }
   activityMigration(activities: any[]): Activity[] { // prevent storage from breaking (1.11)
     return activities.map(activity => {
-      if (!activity.source.address) {
+      if (activity.source.address === undefined) {
         activity.source = { address: activity.source };
       }
-      if (!activity.destination.address) {
+      if (activity.destination.address === undefined) {
         activity.destination = { address: activity.destination };
       }
       return activity;

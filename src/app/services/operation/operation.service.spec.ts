@@ -1,5 +1,5 @@
 // unit-testing framework
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpTestingController } from '@angular/common/http/testing';
 
 // class under inspection

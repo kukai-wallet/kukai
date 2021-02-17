@@ -414,6 +414,7 @@ export class SendComponent implements OnInit, OnChanges {
           this.messageService.stopSpinner();
           console.log('Transaction error id ', ans.payload.msg);
           this.messageService.addError(ans.payload.msg, 0);
+          this.operationResponse.emit('broadcast_error');
         }
       },
       err => {
@@ -421,6 +422,7 @@ export class SendComponent implements OnInit, OnChanges {
         console.log('Error Message ', JSON.stringify(err));
         if (this.walletService.isLedgerWallet()) {
           this.messageService.addError('Failed to create transaction', 0);
+          this.operationResponse.emit('broadcast_error');
         }
       },
     );
@@ -430,8 +432,12 @@ export class SendComponent implements OnInit, OnChanges {
       await this.messageService.startSpinner('Waiting for Ledger signature...');
       try {
         const op = this.sendResponse.payload.unsignedOperation;
-        const toSign = op.length <= 458 ? op : this.operationService.ledgerPreHash(op);
-        const signature = await this.ledgerService.signOperation(toSign, this.walletService.wallet.implicitAccounts[0].derivationPath);
+        let signature = '';
+        if (op.length <= 2290) {
+          signature = await this.ledgerService.signOperation('03' + op, this.walletService.wallet.implicitAccounts[0].derivationPath);
+        } else {
+          signature = await this.ledgerService.signHash(this.operationService.ledgerPreHash('03' + op), this.walletService.wallet.implicitAccounts[0].derivationPath);
+        }
         if (signature) {
           const signedOp = op + signature;
           this.sendResponse.payload.signedOperation = signedOp;
@@ -460,6 +466,7 @@ export class SendComponent implements OnInit, OnChanges {
           }
         } else {
           this.messageService.addError(this.sendResponse.payload.msg, 0);
+          this.operationResponse.emit('broadcast_error');
         }
         console.log('ans: ' + JSON.stringify(ans));
       })
@@ -935,8 +942,15 @@ export class SendComponent implements OnInit, OnChanges {
       && (charCode < 48 || charCode > 57)) {
       event.preventDefault();
       return false;
-    } else if (charCode === 46 && this[input].length === 0) {
-      this[input] = '0' + this[input];
+    } else if (charCode === 46) {
+      const meta = this.tokenTransfer ? this.tokenService.getAsset(this.tokenTransfer) : null;
+      if (this[input].includes('.') ||
+        (input === 'amount' && meta?.decimals === 0)) {
+        event.preventDefault();
+        return false;
+      } else if (this[input].length === 0) {
+        this[input] = '0' + this[input];
+      }
     }
     return true;
   }

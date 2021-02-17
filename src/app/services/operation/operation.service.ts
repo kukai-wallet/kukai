@@ -352,7 +352,7 @@ export class OperationService {
                 }));
             } else {
               fop.protocol = header.protocol;
-              const signed = this.sign(opbytes, keys.sk);
+              const signed = this.sign('03' + opbytes, keys.sk);
               const sopbytes = signed.sbytes;
               fop.signature = signed.edsig;
               return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/preapply/operations', [fop])
@@ -615,12 +615,6 @@ export class OperationService {
           }));
       }));
   }
-  createKTaddress(sopBytes: string): string {
-    const hash = libs.crypto_generichash(32, this.hex2buf(sopBytes));
-    const index = new Uint8Array([0, 0, 0, 0]);
-    const hash2 = libs.crypto_generichash(20, this.mergebuf(index, hash));
-    return this.b58cencode(hash2, this.prefix.KT);
-  }
   getConstants(): Observable<any> {
     return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/constants');
   }
@@ -737,18 +731,16 @@ export class OperationService {
     n = n.slice(prefixx.length);
     return n;
   }
-  mergebuf(b, wm = new Uint8Array([3])) {
-    const r = new Uint8Array(wm.length + b.length);
-    r.set(wm);
-    r.set(b, wm.length);
-    return r;
-  }
   ledgerPreHash(opbytes: string): string {
-    return this.buf2hex(libs.crypto_generichash(32, this.mergebuf(this.hex2buf(opbytes))));
+    return this.buf2hex(libs.crypto_generichash(32, this.hex2buf(opbytes)));
   }
-  sign(bytes, sk): any {
+  sign(bytes: string, sk: string): any {
+    if (!['03', '05'].includes(bytes.slice(0, 2))) {
+      throw new Error('Invalid prefix');
+    }
     if (sk.slice(0, 4) === 'spsk') {
-      const hash = libs.crypto_generichash(32, this.mergebuf(this.hex2buf(bytes)));
+      const hash = libs.crypto_generichash(32, this.hex2buf(bytes));
+      bytes = bytes.slice(2);
       const key = (new elliptic.ec('secp256k1')).keyFromPrivate(new Uint8Array(this.b58cdecode(sk, this.prefix.spsk)));
       let sig = key.sign(hash, { canonical: true });
       sig = new Uint8Array(sig.r.toArray().concat(sig.s.toArray()));
@@ -761,7 +753,8 @@ export class OperationService {
         sbytes: sbytes,
       };
     } else {
-      const hash = libs.crypto_generichash(32, this.mergebuf(this.hex2buf(bytes)));
+      const hash = libs.crypto_generichash(32, this.hex2buf(bytes));
+      bytes = bytes.slice(2);
       const sig = libs.crypto_sign_detached(hash, this.b58cdecode(sk, this.prefix.edsk), 'uint8array');
       const edsig = this.b58cencode(sig, this.prefix.edsig);
       const sbytes = bytes + this.buf2hex(sig);
@@ -773,9 +766,13 @@ export class OperationService {
       };
     }
   }
+  hexsigToEdsig(hex: string): string {
+    return this.b58cencode(this.hex2buf(hex), this.prefix.edsig);
+  }
   verify(bytes: string, sig: string, pk: string): Boolean {
-    const hash = libs.crypto_generichash(32, this.mergebuf(this.hex2buf(bytes)));
-    const signature = this.b58cdecode(sig, this.prefix.sig);
+    console.log('bytes', bytes);
+    const hash = libs.crypto_generichash(32, this.hex2buf(bytes));
+    const signature = this.b58cdecode(sig, this.prefix.edsig);
     const publicKey = this.b58cdecode(pk, this.prefix.edpk);
     return libs.crypto_sign_verify_detached(signature, hash, publicKey);
   }

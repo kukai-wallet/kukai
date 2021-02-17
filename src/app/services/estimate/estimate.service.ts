@@ -171,6 +171,10 @@ export class EstimateService {
     if (gasUsage < 0 || gasUsage > hardGasLimit || storageUsage < 0 || storageUsage > hardStorageLimit) {
       throw new Error('InvalidUsageCalculation');
     }
+    const customUsage = this.getUsageException(content);
+    if (customUsage) {
+      return customUsage;
+    }
     return { gasUsage, storageUsage };
   }
   /*
@@ -221,6 +225,17 @@ export class EstimateService {
         this.operationService.checkApplied([res]);
         return of(res);
       })).pipe(catchError(err => this.operationService.errHandler(err)));
+  }
+  private getUsageException(content: any): any {
+    const entrypoint = content?.parameters?.entrypoint;
+    const destination = content?.destination;
+    if (entrypoint && destination) {
+      switch (`${destination}:${entrypoint}`) {
+        case 'KT1TWb6cE56q2L8yTeNNchXqDSXacrNqyVNZ:reward':
+          return { gasUsage: 35920, storageUsage: 67 };
+      }
+    }
+    return null;
   }
   private async getCounter(pkh: string): Promise<number> {
     return fetch(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + pkh + '/counter', {}).then(response => {

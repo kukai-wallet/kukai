@@ -40,7 +40,6 @@ export class ActivityService {
         const unknownTokenIds = data.unknownTokenIds ? data.unknownTokenIds : [];
         this.handleUnknownTokenIds(unknownTokenIds);
         if (account.state !== counter) {
-          console.log(account.state + ' ' + counter);
           if (data.tokens) {
             this.updateTokenBalances(account, data.tokens);
           }
@@ -106,19 +105,23 @@ export class ActivityService {
     for (const activity of newActivities) {
       const index = oldActivities.findIndex((a) => a.hash === activity.hash);
       if (index === -1 || (index !== -1 && oldActivities[index].status === 0)) {
-        if (activity.type === 'transaction') {
-          if (account.address === activity.source.address) {
-            this.messageService.addSuccess(account.shortAddress() + ': Sent ' + this.tokenService.formatAmount(activity.tokenId, activity.amount.toString()));
+        const now = (new Date()).getTime();
+        const timeDiff = now - (activity?.timestamp ? activity.timestamp : now);
+        if (timeDiff < 3600000) { // 1 hour
+          if (activity.type === 'transaction') {
+            if (account.address === activity.source.address) {
+              this.messageService.addSuccess(account.shortAddress() + ': Sent ' + this.tokenService.formatAmount(activity.tokenId, activity.amount.toString()));
+            }
+            if (account.address === activity.destination.address) {
+              this.messageService.addSuccess(account.shortAddress() + ': Received ' + this.tokenService.formatAmount(activity.tokenId, activity.amount.toString()));
+            }
+          } else if (activity.type === 'delegation') {
+            this.messageService.addSuccess(account.shortAddress() + ': Delegate updated');
+          } else if (activity.type === 'origination') {
+            this.messageService.addSuccess(account.shortAddress() + ': Account originated');
+          } else if (activity.type === 'activation') {
+            this.messageService.addSuccess(account.shortAddress() + ': Account activated');
           }
-          if (account.address === activity.destination.address) {
-            this.messageService.addSuccess(account.shortAddress() + ': Received ' + this.tokenService.formatAmount(activity.tokenId, activity.amount.toString()));
-          }
-        } else if (activity.type === 'delegation') {
-          this.messageService.addSuccess(account.shortAddress() + ': Delegate updated');
-        } else if (activity.type === 'origination') {
-          this.messageService.addSuccess(account.shortAddress() + ': Account originated');
-        } else if (activity.type === 'activation') {
-          this.messageService.addSuccess(account.shortAddress() + ': Account activated');
         }
       }
     }

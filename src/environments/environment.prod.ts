@@ -24,6 +24,7 @@ export const CONSTANTS: Constants = {
           decimals: 6,
           description: 'USDtz is a Tezos on-chain stablecoin pegged to the value of the United States Dollar.',
           displayUrl: '../../../assets/img/tokens/usdtz.png',
+          thumbnailUrl: '../../../assets/img/tokens/usdtz.png',
           symbolPreference: true
         }
       }
@@ -38,6 +39,7 @@ export const CONSTANTS: Constants = {
           decimals: 8,
           description: 'tzBTC delivers the power of Bitcoin as a token on the Tezos blockchain.',
           displayUrl: '../../../assets/img/tokens/tzbtc.png',
+          thumbnailUrl: '../../../assets/img/tokens/tzbtc.png',
           symbolPreference: true
         }
       }
@@ -52,6 +54,7 @@ export const CONSTANTS: Constants = {
           decimals: 18,
           description: 'ETHtz is Ethereum wrapped in the Tezos FA 2.0 token standard.',
           displayUrl: '../../../assets/img/tokens/ethtz.png',
+          thumbnailUrl: '../../../assets/img/tokens/ethtz.png',
           symbolPreference: true
         }
       }
@@ -66,6 +69,7 @@ export const CONSTANTS: Constants = {
           decimals: 6,
           description: 'Wrapped Tezos by StakerDAO, a fully collateralized representation of XTZ.',
           displayUrl: '../../../assets/img/tokens/wxtz.png',
+          thumbnailUrl: '../../../assets/img/tokens/wxtz.png',
           symbolPreference: true
         }
       }
@@ -80,6 +84,7 @@ export const CONSTANTS: Constants = {
           decimals: 0,
           description: 'This certificate verifies that the holder of its private key attended, contributed and completed the Tezos Israel and Madfish Solution Workshop on December 7th to the 9th, 2020. The certificate holder utilized skills in smart contract development and tokenization to build, test and deploy a token on the Tezos blockchain.',
           displayUrl: '../../../assets/img/tokens/mfil.jfif',
+          thumbnailUrl: '../../../assets/img/tokens/mfil.jfif',
           nonTransferable: true,
           booleanAmount: true
         }

@@ -23,7 +23,7 @@ export class SigninComponent implements OnInit {
   }
   async login(typeOfLogin: string) {
     try {
-      this.messageService.startSpinner('Mocking DirectAuth wallet...');
+      this.messageService.startSpinner('Loading wallet...');
       const loginData = await this.mockLogin(); // Mock locally
       //const loginData = await this.torusService.loginTorus(typeOfLogin);
       await this.messageService.stopSpinner();

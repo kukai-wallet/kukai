@@ -84,6 +84,7 @@ import { SettingsComponent } from './components/settings/settings.component';
 import { QrScannerComponent } from './components/qr-scanner/qr-scanner.component';
 import { EmbeddedComponent } from './components/embedded/embedded.component';
 import { SigninComponent } from './components/embedded/signin/signin.component';
+import { SignExprComponent } from './components/sign-expr/sign-expr.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -131,7 +132,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     SettingsComponent,
     QrScannerComponent,
     EmbeddedComponent,
-    SigninComponent
+    SigninComponent,
+    SignExprComponent
   ],
   imports: [
     BrowserModule,

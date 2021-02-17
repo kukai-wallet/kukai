@@ -112,7 +112,7 @@ export class EmbeddedComponent implements OnInit {
           this.coordinatorService.startAll();
         }
       }
-    );
+      );
   }
   handleRequest = (evt) => {
     try {
@@ -134,7 +134,7 @@ export class EmbeddedComponent implements OnInit {
               }
               break;
             case MessageTypes.logoutRequest:
-              if (this.walletService.wallet instanceof EmbeddedTorusWallet && evt.origin === this.walletService.wallet.origin && 
+              if (this.walletService.wallet instanceof EmbeddedTorusWallet && evt.origin === this.walletService.wallet.origin &&
                 this.walletService.wallet.instanceId) {
                 const instanceId = this.walletService.wallet.instanceId;
                 this.logout(instanceId);
@@ -187,9 +187,15 @@ export class EmbeddedComponent implements OnInit {
   }
   operationResponse(opHash: string) {
     this.operationRequests = null;
-    this.sendResponse(opHash
-      ? { type: MessageTypes.operationResponse, opHash }
-      : { type: MessageTypes.operationResponse, failed: true, error: 'ABORTED_BY_USER' });
+    let response: ResponseMessage;
+    if (!opHash) {
+      response = { type: MessageTypes.operationResponse, failed: true, error: 'ABORTED_BY_USER' };
+    } else if (opHash === 'broadcast_error') {
+      response = { type: MessageTypes.operationResponse, failed: true, error: 'BROADCAST_ERROR' };
+    } else {
+      response = { type: MessageTypes.operationResponse, opHash };
+    }
+    this.sendResponse(response);
   }
   private sendResponse(resp: ResponseMessage) {
     window.parent.window.postMessage(JSON.stringify(resp), this.origin);
