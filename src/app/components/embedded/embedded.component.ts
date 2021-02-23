@@ -11,22 +11,23 @@ import { utils, common } from '@tezos-core-tools/crypto-utils';
 import { ActivatedRoute } from '@angular/router';
 import { LookupService } from '../../services/lookup/lookup.service';
 
-// could use literals instead of an enum
 export enum MessageTypes {
   loginRequest = 'login_request',
   loginResponse = 'login_response',
   operationRequest = 'operation_request',
   operationResponse = 'operation_response',
   logoutRequest = 'logout_request',
-  logoutResponse = 'logout_response'
+  logoutResponse = 'logout_response',
+  initRequest = 'init_commence',
+  initResponse = 'init_complete'
 }
 
-export interface Failure {
+export type Failure = {
   failed: true;
   error: string;
 }
 
-export interface LoginRequest {
+export type LoginRequest = {
   type: MessageTypes.loginRequest;
 }
 
@@ -39,10 +40,11 @@ export type LoginResponse = {
   userData: {
     typeOfLogin: string,
     id: string
-  }
+  },
+  failed: false
 } | Failure);
 
-export interface OperationRequest {
+export type OperationRequest = {
   type: MessageTypes.operationRequest;
   operations: PartialTezosTransactionOperation[];
 }
@@ -50,28 +52,42 @@ export interface OperationRequest {
 export type OperationResponse = {
   type: MessageTypes.operationResponse
 } & ({
-  opHash: string
+  opHash: string,
+  failed: false
 } | Failure);
 
-export interface LogoutRequest {
+export type LogoutRequest = {
   type: MessageTypes.logoutRequest;
 }
 
 export type LogoutResponse = {
   type: MessageTypes.logoutResponse
 } & ({
-  instanceId: string
+  instanceId: string,
+  failed: false
+} | Failure);
+
+export type InitRequest = {
+  type: MessageTypes.initRequest
+}
+
+export type InitResponse = {
+  type: MessageTypes.initResponse
+} & ({
+  failed: false
 } | Failure);
 
 export type RequestMessage =
   LoginRequest |
   OperationRequest |
-  LogoutRequest;
+  LogoutRequest |
+  InitRequest;
 
 export type ResponseMessage =
   LoginResponse |
   OperationResponse |
-  LogoutResponse;
+  LogoutResponse |
+  InitResponse;
 
 @Component({
   selector: 'app-embedded',
@@ -79,7 +95,7 @@ export type ResponseMessage =
   styleUrls: ['./embedded.component.scss']
 })
 export class EmbeddedComponent implements OnInit {
-  allowedOrigins = ['http://localhost', 'https://www.tezos.help'];
+  allowedOrigins = ['http://localhost:3000', 'https://www.tezos.help'];
   origin = '';
   login = false;
   activeAccount: ImplicitAccount = null;
@@ -112,7 +128,8 @@ export class EmbeddedComponent implements OnInit {
           this.coordinatorService.startAll();
         }
       }
-      );
+    );
+    window.parent.window.postMessage(JSON.stringify({ type: MessageTypes.initResponse, failed: false }), this.origin || "*");
   }
   handleRequest = (evt) => {
     try {
@@ -140,12 +157,20 @@ export class EmbeddedComponent implements OnInit {
                 this.logout(instanceId);
                 this.sendResponse({
                   type: MessageTypes.logoutResponse,
-                  instanceId
+                  instanceId,
+                  failed: false
                 });
               } else {
                 this.noWalletError();
               }
               break;
+            case MessageTypes.initRequest:
+              if (this.walletService.wallet instanceof EmbeddedTorusWallet && evt.origin === this.walletService.wallet.origin) {
+                this.sendResponse({
+                  type: MessageTypes.initResponse,
+                  failed: false
+                }) 
+              }
             default:
               console.warn('Unknown request');
           }
@@ -167,7 +192,8 @@ export class EmbeddedComponent implements OnInit {
         instanceId,
         pk: keyPair.pk,
         pkh: keyPair.pkh,
-        userData: filteredUserInfo
+        userData: filteredUserInfo,
+        failed: false
       });
       this.importAccount(keyPair, userInfo, instanceId);
     } else {
@@ -193,7 +219,7 @@ export class EmbeddedComponent implements OnInit {
     } else if (opHash === 'broadcast_error') {
       response = { type: MessageTypes.operationResponse, failed: true, error: 'BROADCAST_ERROR' };
     } else {
-      response = { type: MessageTypes.operationResponse, opHash };
+      response = { type: MessageTypes.operationResponse, opHash, failed: false };
     }
     this.sendResponse(response);
   }
