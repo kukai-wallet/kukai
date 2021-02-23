@@ -147,7 +147,11 @@ export class EmbeddedComponent implements OnInit {
                 data.operations) {
                 this.operationRequests = this.beaconTypeGuard(data.operations);
               } else {
-                this.noWalletError();
+                this.sendResponse({
+                  type: MessageTypes.operationResponse,
+                  failed: true,
+                  error: 'NO_WALLET_FOUND'
+                });
               }
               break;
             case MessageTypes.logoutRequest:
