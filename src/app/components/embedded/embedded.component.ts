@@ -10,84 +10,13 @@ import { CoordinatorService } from '../../services/coordinator/coordinator.servi
 import { utils, common } from '@tezos-core-tools/crypto-utils';
 import { ActivatedRoute } from '@angular/router';
 import { LookupService } from '../../services/lookup/lookup.service';
-
-export enum MessageTypes {
-  loginRequest = 'login_request',
-  loginResponse = 'login_response',
-  operationRequest = 'operation_request',
-  operationResponse = 'operation_response',
-  logoutRequest = 'logout_request',
-  logoutResponse = 'logout_response',
-  initRequest = 'init_commence',
-  initResponse = 'init_complete'
-}
-
-export type Failure = {
-  failed: true;
-  error: string;
-}
-
-export type LoginRequest = {
-  type: MessageTypes.loginRequest;
-}
-
-export type LoginResponse = {
-  type: MessageTypes.loginResponse
-} & ({
-  instanceId: string,
-  pk: string,
-  pkh: string,
-  userData: {
-    typeOfLogin: string,
-    id: string
-  },
-  failed: false
-} | Failure);
-
-export type OperationRequest = {
-  type: MessageTypes.operationRequest;
-  operations: PartialTezosTransactionOperation[];
-}
-
-export type OperationResponse = {
-  type: MessageTypes.operationResponse
-} & ({
-  opHash: string,
-  failed: false
-} | Failure);
-
-export type LogoutRequest = {
-  type: MessageTypes.logoutRequest;
-}
-
-export type LogoutResponse = {
-  type: MessageTypes.logoutResponse
-} & ({
-  instanceId: string,
-  failed: false
-} | Failure);
-
-export type InitRequest = {
-  type: MessageTypes.initRequest
-}
-
-export type InitResponse = {
-  type: MessageTypes.initResponse
-} & ({
-  failed: false
-} | Failure);
-
-export type RequestMessage =
-  LoginRequest |
-  OperationRequest |
-  LogoutRequest |
-  InitRequest;
-
-export type ResponseMessage =
-  LoginResponse |
-  OperationResponse |
-  LogoutResponse |
-  InitResponse;
+import {
+  RequestTypes,
+  ResponseTypes,
+  RequestMessage,
+  ResponseMessage,
+  OperationResponse
+} from 'kukai-embed/dist/types'
 
 @Component({
   selector: 'app-embedded',
@@ -129,7 +58,7 @@ export class EmbeddedComponent implements OnInit {
         }
       }
     );
-    window.parent.window.postMessage(JSON.stringify({ type: MessageTypes.initResponse, failed: false }), this.origin || "*");
+    window.parent.window.postMessage(JSON.stringify({ type: ResponseTypes.initResponse, failed: false }), this.origin || "*");
   }
   handleRequest = (evt) => {
     try {
@@ -139,28 +68,28 @@ export class EmbeddedComponent implements OnInit {
         if (data && data.type && /* restricted to dev enviroment for now */ !CONSTANTS.MAINNET) {
           this.origin = evt.origin;
           switch (data.type) {
-            case MessageTypes.loginRequest:
+            case RequestTypes.loginRequest:
               this.login = true;
               break;
-            case MessageTypes.operationRequest:
+            case RequestTypes.operationRequest:
               if (this.walletService.wallet instanceof EmbeddedTorusWallet && evt.origin === this.walletService.wallet.origin &&
                 data.operations) {
                 this.operationRequests = this.beaconTypeGuard(data.operations);
               } else {
                 this.sendResponse({
-                  type: MessageTypes.operationResponse,
+                  type: ResponseTypes.operationResponse,
                   failed: true,
                   error: 'NO_WALLET_FOUND'
                 });
               }
               break;
-            case MessageTypes.logoutRequest:
+            case RequestTypes.logoutRequest:
               if (this.walletService.wallet instanceof EmbeddedTorusWallet && evt.origin === this.walletService.wallet.origin &&
                 this.walletService.wallet.instanceId) {
                 const instanceId = this.walletService.wallet.instanceId;
                 this.logout(instanceId);
                 this.sendResponse({
-                  type: MessageTypes.logoutResponse,
+                  type: ResponseTypes.logoutResponse,
                   instanceId,
                   failed: false
                 });
@@ -168,10 +97,10 @@ export class EmbeddedComponent implements OnInit {
                 this.noWalletError();
               }
               break;
-            case MessageTypes.initRequest:
+            case RequestTypes.initRequest:
               if (this.walletService.wallet instanceof EmbeddedTorusWallet && evt.origin === this.walletService.wallet.origin) {
                 this.sendResponse({
-                  type: MessageTypes.initResponse,
+                  type: ResponseTypes.initResponse,
                   failed: false
                 }) 
               }
@@ -188,11 +117,10 @@ export class EmbeddedComponent implements OnInit {
     if (loginData) {
       const { keyPair, userInfo } = loginData;
       const filteredUserInfo = { typeOfLogin: userInfo.typeOfLogin, id: userInfo.verifierId, name: userInfo.name };
+      // 160 bits of entropy, base58 encoded
       const instanceId = this.generateInstanceId();
       this.sendResponse({
-        type: MessageTypes.loginResponse,
-        // 128 bits of entropy, base58 encoded
-        // TODO should the OperationsService be used instead of this dependancy??
+        type: ResponseTypes.loginResponse,
         instanceId,
         pk: keyPair.pk,
         pkh: keyPair.pkh,
@@ -206,24 +134,24 @@ export class EmbeddedComponent implements OnInit {
     this.login = false;
   }
   abort() {
-    this.sendResponse({ type: MessageTypes.loginResponse, failed: true, error: 'ABORTED_BY_USER' });
+    this.sendResponse({ type: ResponseTypes.loginResponse, failed: true, error: 'ABORTED_BY_USER' });
   }
   noWalletError() {
     this.sendResponse({
-      type: MessageTypes.logoutResponse,
+      type: ResponseTypes.logoutResponse,
       failed: true,
       error: 'NO_WALLET_FOUND'
     });
   }
   operationResponse(opHash: string) {
     this.operationRequests = null;
-    let response: ResponseMessage;
+    let response: OperationResponse;
     if (!opHash) {
-      response = { type: MessageTypes.operationResponse, failed: true, error: 'ABORTED_BY_USER' };
+      response = { type: ResponseTypes.operationResponse, failed: true, error: 'ABORTED_BY_USER' };
     } else if (opHash === 'broadcast_error') {
-      response = { type: MessageTypes.operationResponse, failed: true, error: 'BROADCAST_ERROR' };
+      response = { type: ResponseTypes.operationResponse, failed: true, error: 'BROADCAST_ERROR' };
     } else {
-      response = { type: MessageTypes.operationResponse, opHash, failed: false };
+      response = { type: ResponseTypes.operationResponse, opHash, failed: false };
     }
     this.sendResponse(response);
   }
