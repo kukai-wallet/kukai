@@ -144,6 +144,11 @@ export class UriHandlerComponent implements OnInit {
         console.warn('Invalid delegate');
         await this.beaconService.rejectOnUnknown(message);
       }
+    } else if (message.operationDetails[0].kind === 'origination') {
+      if (!message.operationDetails[0].script) {
+        console.warn('No script found');
+        await this.beaconService.rejectOnParameters(message);
+      }
     } else {
       console.warn('Unsupported operation kind');
       await this.beaconService.rejectOnUnknown(message);
@@ -206,7 +211,9 @@ export class UriHandlerComponent implements OnInit {
     if (!opHash) {
       await this.beaconService.rejectOnUserAbort(this.operationRequest);
     } else if (opHash === 'broadcast_error') {
-      await this.beaconService.rejectOnBroadcastError(this.signRequest);
+      await this.beaconService.rejectOnBroadcastError(this.operationRequest);
+    } else if (opHash === 'parameters_error') {
+      await this.beaconService.rejectOnParameters(this.operationRequest);
     } else {
       const response: OperationResponseInput = {
         type: BeaconMessageType.OperationResponse,

@@ -14,9 +14,9 @@ export interface TokenResponseType {
   description: string;
   category: string;
   kind: string;
-  nonTransferable?: boolean;
-  booleanAmount?: boolean;
-  symbolPreference?: boolean;
+  isTransferable?: boolean;
+  isBooleanAmount?: boolean;
+  shouldPreferSymbol?: boolean;
 }
 export type ContractsType = Record<string, ContractType>;
 export type ContractType = FA12 | FA2;
@@ -30,9 +30,9 @@ export interface TokenData {
   description: string;
   displayUrl: string;
   thumbnailUrl: string;
-  nonTransferable?: boolean;
-  booleanAmount?: boolean;
-  symbolPreference?: boolean;
+  isTransferable?: boolean;
+  isBooleanAmount?: boolean;
+  shouldPreferSymbol?: boolean;
 }
 export interface FA12 extends TokensInterface {
   kind: 'FA1.2';
@@ -50,7 +50,7 @@ export interface FA2 extends TokensInterface {
 
 export class TokenService {
   readonly AUTO_DISCOVER: boolean = true;
-  readonly version: string = '1.0.1';
+  readonly version: string = '1.0.2';
   private contracts: ContractsType = {};
   private exploredIds: Record<string, { firstCheck: number, lastCheck: number }> = {};
   readonly storeKey = 'tokenMetadata';
@@ -149,8 +149,8 @@ export class TokenService {
           description: metadata.description ? metadata.description : '',
           displayUrl,
           thumbnailUrl,
-          nonTransferable: metadata?.nonTransferable ? metadata.nonTransferable : false,
-          booleanAmount: metadata?.booleanAmount ? metadata.booleanAmount : false
+          isTransferable: metadata?.isTransferable ? metadata.isTransferable : true,
+          isBooleanAmount: metadata?.isBooleanAmount ? metadata.isBooleanAmount : false
         };
         contract.tokens[id] = token;
         this.addAsset(contractAddress, contract);
@@ -229,8 +229,8 @@ export class TokenService {
     } else {
       const token = this.getAsset(tokenKey);
       if (token) {
-        if ((!token.symbolPreference && token.name) || !token.symbol) {
-          if (token.booleanAmount) {
+        if ((!token.shouldPreferSymbol && token.name) || !token.symbol) {
+          if (token.isBooleanAmount) {
             return `${token.name}`;
           } else {
             return `${Big(amount).div(10 ** (baseUnit ? token.decimals : 0)).toFixed()} ${token.name}`;

@@ -46,7 +46,7 @@ describe('TokenService', () => {
         contractAddress: 'KT1XXCz59vAzfbvDsNrrmKKuqSFrzQgpUqGM',
         displayUrl: '../../../assets/img/tokens/unknown-token.png',
         nonTransferable: false,
-        booleanAmount: false
+        isBooleanAmount: false
       };
       expect(service.getAsset('KT1XXCz59vAzfbvDsNrrmKKuqSFrzQgpUqGM:0')).toEqual(expectedTokenResponse);
       done();

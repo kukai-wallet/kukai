@@ -1,6 +1,6 @@
 <ng-container *ngIf="!beaconMode">
   <button *ngIf="!tokenTransfer" class="purple open" (click)="openModal()">Send</button>
-  <span class="token-send" *ngIf="tokenTransfer && !tokenService.getAsset(tokenTransfer).nonTransferable" (click)="openModal()">Send</span>
+  <span class="token-send" *ngIf="tokenTransfer && tokenService.getAsset(tokenTransfer).isTransferable !== false" (click)="openModal()">Send</span>
 </ng-container>
 
 <!-- The Modal -->

@@ -43,7 +43,13 @@ export class EstimateService {
       }
     });
   }
-  async estimate(transactions: any, from: string, tokenTransfer: string = '', callback) {
+  public async estimateTransactions(transactions: any, from: string, tokenTransfer: string = '', callback) {
+    this.estimate(transactions, from, tokenTransfer, callback, false);
+  }
+  public async estimateOrigination(origination: any, from: string, callback) {
+    this.estimate([origination], from, '', callback, true);
+  }
+  private async estimate(transactions: any, from: string, tokenTransfer: string = '', callback, isOrigination: boolean) {
     this.queue.push({ transactions, from, callback });
     if (this.queue.length === 1) {
       while (this.queue.length > 0) {
@@ -53,7 +59,7 @@ export class EstimateService {
         }
         let retry = false;
         for (let i = 0; i < 1 || retry && i < 2; i++) {
-          await this._estimate(this.queue[0].transactions, this.queue[0].from, tokenTransfer).then((res) => {
+          await this._estimate(this.queue[0].transactions, this.queue[0].from, tokenTransfer, isOrigination).then((res) => {
             this.queue[0].callback(res);
           }).catch(async (error) => {
             if (error.message && error.message === 'An operation assumed a contract counter in the past' && !retry) {
@@ -69,7 +75,7 @@ export class EstimateService {
       }
     }
   }
-  private async _estimate(transactions: any, from: string, tokenTransfer: string): Promise<any> {
+  private async _estimate(operations: any, from: string, tokenTransfer: string, isOrigination: boolean = false): Promise<any> {
     const extraGas = 80;
     if (!this.hash) { return null; }
     const simulation = {
@@ -77,19 +83,21 @@ export class EstimateService {
       gasLimit: hardGasLimit,
       storageLimit: hardStorageLimit
     };
-    for (const tx of transactions) {
-      if (!tx.amount) {
-        tx.amount = 0;
-      }
-      if (tx.to.slice(0, 3) !== 'KT1' && !tokenTransfer) {
-        tx.amount = 0.000001;
+    for (const tx of operations) {
+      if (!isOrigination) {
+        if (!tx.amount) {
+          tx.amount = 0;
+        }
+        if (tx.to.slice(0, 3) !== 'KT1' && !tokenTransfer) {
+          tx.amount = 0.000001;
+        }
       }
       tx.gasLimit = simulation.gasLimit;
       tx.storageLimit = simulation.storageLimit;
     }
     if (this.hash && this.counter && (this.manager || this.manager === null)) {
-      const op = this.operationService.createTransactionObject(this.hash, this.counter, this.manager, transactions,
-        this.pkh, this.pk, from, simulation.fee, tokenTransfer);
+      const op = isOrigination ? this.operationService.createOriginationObject(this.hash, this.counter, this.manager, operations[0], simulation.fee, this.pk, this.pkh) :
+        this.operationService.createTransactionObject(this.hash, this.counter, this.manager, operations, this.pkh, this.pk, from, simulation.fee, tokenTransfer);
       const result = await this.simulate(op).toPromise().catch(
         e => {
           console.warn(e);
@@ -102,13 +110,11 @@ export class EstimateService {
         for (const content of result.contents) {
           if (content.kind === 'reveal') {
             reveal = true;
+          } else if (['transaction', 'origination'].includes(content.kind) && content.metadata.operation_result.status === 'applied') {
+            const { gasUsage, storageUsage } = this.getOpUsage(content);
+            limits.push({ gasLimit: gasUsage + extraGas, storageLimit: storageUsage });
           } else {
-            if (content.kind === 'transaction' && content.metadata.operation_result.status === 'applied') {
-              const { gasUsage, storageUsage } = this.getOpUsage(content);
-              limits.push({ gasLimit: gasUsage + extraGas, storageLimit: storageUsage });
-            } else {
-              return null;
-            }
+            return null;
           }
         }
         return await this.operationService.localForge(op).pipe(flatMap(fop => {
@@ -132,6 +138,7 @@ export class EstimateService {
     if (content.source && content.source === this.pkh) {
       burn = burn.minus(content.amount ? content.amount : '0');
       burn = burn.minus(content.fee ? content.fee : '0');
+      burn = burn.minus(content.balance ? content.balance : '0');
     }
     if (content.destination && content.destination === this.pkh) {
       burn = burn.plus(content.amount ? content.amount : '0');
@@ -231,10 +238,8 @@ export class EstimateService {
     const destination = content?.destination;
     if (entrypoint && destination) {
       switch (`${destination}:${entrypoint}`) {
-        case 'KT1PS2jZVzNMW54UsnqBqwwkArXnAZ29jiTF:reward':
-          return { gasUsage: 35920, storageUsage: 67 };
-        case 'KT1Szwqme712TkQ7LdP1hBqKjdUUBjxoB8bR:reward':
-          return { gasUsage: 35920, storageUsage: 67 };
+        case 'KT1TWb6cE56q2L8yTeNNchXqDSXacrNqyVNZ:reward':
+          return { gasUsage: 59920, storageUsage: 150 };
       }
     }
     return null;

@@ -161,12 +161,12 @@ export const tokenIpfsMock = `{
   "symbol": "TZBKAB",
   "decimals": "0",
   "description": "An upgraded unit, the great Klassare reborn.",
-  "nonTransferable": false,
-  "booleanAmount": true,
+  "isTransferable": true,
+  "isBooleanAmount": true,
   "displayUri": "https://gateway.pinata.cloud/ipfs/QmZjeBZT5QykT4sEELYP2cYYEPTtgwx3vQhnyMzCmDKB7Q",
   "defaultPresentation": "small",
   "actionLabel": "Send",
-  "symbolPreference": true
+  "shouldPreferSymbol": true
 }`;
 // https://cloudflare-ipfs.com/ipfs/QmVBdYhUXmF3QSRSYgoZfvUhLKgW4oCWC6xMzvHzV5TFVA
 export const contractIpfsMock = `{
@@ -624,7 +624,7 @@ export const expectedResult: any = {
   tokenType: 'FA2', // tzip-12
   tokenCategory: 'collectibles',
   displayUri: 'https://gateway.pinata.cloud/ipfs/QmZjeBZT5QykT4sEELYP2cYYEPTtgwx3vQhnyMzCmDKB7Q',
-  nonTransferable: false,
-  booleanAmount: true,
-  symbolPreference: true
+  isTransferable: true,
+  isBooleanAmount: true,
+  shouldPreferSymbol: true
 };
