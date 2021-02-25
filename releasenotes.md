@@ -1,4 +1,8 @@
 # Release notes
+## 1.12.1
+* Support for origination
+* Updated metadata spec
+* Minor bug fixes
 ## 1.12
 * Message signing
 * Signing of Micheline expressions

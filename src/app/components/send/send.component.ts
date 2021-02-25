@@ -111,7 +111,6 @@ export class SendComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     if (this.walletService.wallet) {
-      console.log('init send');
       this.init();
     }
   }
@@ -121,8 +120,6 @@ export class SendComponent implements OnInit, OnChanges {
         this.operationRequest.operationDetails[0].kind === 'transaction') {
         console.log('Beacon payload to send', this.operationRequest);
         this.loadBeaconPayload();
-      } else {
-        this.operationResponse.emit(null);
       }
     }
   }
@@ -148,7 +145,7 @@ export class SendComponent implements OnInit, OnChanges {
         this.amount = Big(tokenTransfer.amount).div(10 ** asset.decimals).toFixed();
         this.toPkh = tokenTransfer.to;
         this.tokenTransfer = tokenTransfer.tokenId;
-        if (asset.booleanAmount) {
+        if (asset.isBooleanAmount) {
           this.hideAmount = true;
         }
       } else {
@@ -200,7 +197,7 @@ export class SendComponent implements OnInit, OnChanges {
       this.clearForm();
       if (this.tokenTransfer) {
         const asset = this.tokenService.getAsset(this.tokenTransfer);
-        if (asset.booleanAmount) {
+        if (asset.isBooleanAmount) {
           this.hideAmount = true;
           this.amount = '1';
           this.amountChange();
@@ -609,7 +606,7 @@ export class SendComponent implements OnInit, OnChanges {
           this.simSemaphore--;
         };
         console.log('simulate...');
-        this.estimateService.estimate(JSON.parse(JSON.stringify(this.transactions)), this.activeAccount.address, this.tokenTransfer, callback);
+        this.estimateService.estimateTransactions(JSON.parse(JSON.stringify(this.transactions)), this.activeAccount.address, this.tokenTransfer, callback);
       } else {
         this.latestSimError = prevSimError;
         this.formInvalid = this.latestSimError;

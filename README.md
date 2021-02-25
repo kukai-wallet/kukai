@@ -1,7 +1,7 @@
 # Kukai
 
 ## Development
-Kukai is built using Angular 9
+Kukai is built using Angular 11
 
 Install dependencies:
 
@@ -10,8 +10,3 @@ Install dependencies:
 Run during development:
 
 `ng serve --open`
-
-## Troubleshooting
-1) Download and install LTS version https://nodejs.org/en/
-2) Upgrade npm: `npm install -g npm`
-3) Rebuild node-sass: `npm rebuild node-sass`

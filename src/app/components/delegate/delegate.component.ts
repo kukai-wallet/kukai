@@ -67,14 +67,8 @@ export class DelegateComponent implements OnInit, OnChanges {
           this.openModal();
           if (this.operationRequest.operationDetails[0].delegate) {
             this.toPkh = this.operationRequest.operationDetails[0].delegate;
-          } else {
-            console.warn('No delegate');
           }
-        } else {
-          console.log('Not a delegation');
         }
-      } else {
-        this.operationResponse.emit(null);
       }
     }
   }

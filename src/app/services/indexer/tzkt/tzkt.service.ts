@@ -13,9 +13,9 @@ interface TokenMetadata {
   displayUri?: string;
   thumbnailUri?: string;
   category?: string;
-  nonTransferable?: boolean;
-  symbolPreference?: boolean;
-  booleanAmount?: boolean;
+  isTransferable?: boolean;
+  shouldPreferSymbol?: boolean;
+  isBooleanAmount?: boolean;
 }
 
 @Injectable({
@@ -63,7 +63,7 @@ export class TzktService implements Indexer {
             (tokens ? JSON.stringify(tokens) : '');
           const input = Buffer.from(payload);
           const hash = cryptob.createHash('md5').update(input, 'base64').digest('hex');
-          if (payload && payload !== '0001-01-01T00:00:00Z[]') {
+          if (payload && (payload !== '0001-01-01T00:00:00Z[]') && payload !== '[]') {
             return { counter: hash, unknownTokenIds, tokens };
           }
         }
@@ -217,9 +217,9 @@ export class TzktService implements Indexer {
           { key: 'description', type: 'string' },
           { key: 'displayUri', type: 'string' },
           { key: 'thumbnailUri', type: 'string' },
-          { key: 'nonTransferable', type: 'boolean' },
-          { key: 'symbolPreference', type: 'boolean' },
-          { key: 'booleanAmount', type: 'boolean' }
+          { key: 'isTransferable', type: 'boolean' },
+          { key: 'shouldPreferSymbol', type: 'boolean' },
+          { key: 'isBooleanAmount', type: 'boolean' }
         ];
         for (const data of datas) {
           if (data?.token_id === Number(id)) {
@@ -287,7 +287,7 @@ export class TzktService implements Indexer {
     const lookFor = {
       strings: ['name', 'symbol', 'description', 'displayUri', 'displayURI'],
       numbers: ['decimals'],
-      booleans: ['nonTransferable', 'booleanAmount', 'symbolPreference']
+      booleans: ['isTransferable', 'isBooleanAmount', 'shouldPreferSymbol']
     };
     try {
       for (const child of tokenBigMap) {

@@ -1,0 +1,193 @@
+@import "../../../scss/modal.scss";
+@import '../../../scss/switch.scss';
+.modal-footer {
+  padding-bottom: 0rem;
+}
+div.outside-container {
+  padding: 0.5rem 0;
+}
+div.outside-container > span {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 0.8125rem;
+  line-height: 1rem;
+  color: #2C323A;
+}
+div.outside-container > span > span {
+  color: #5963FF;
+  cursor: pointer;
+}
+.fa-check-circle {
+  color: #28a745; //#5cb85c;
+  font-size: 96px;
+}
+button {
+  border-radius: 0.75rem;
+  height: 3rem;
+  width: 8rem;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 0.875rem;
+  line-height: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  -webkit-appearance: none !important;
+  transition: margin-top 0.1s ease-in, margin-bottom 0.1s ease-in;
+}
+button.blue:hover {
+  margin-top: -0.125rem;
+}
+button:focus {
+  outline: none;
+}
+button.blue {
+  color: #5963ff;
+  background: #a4a8ec;
+  box-shadow: 0px 0px 1px rgba(164, 168, 236, 0.04),
+    0px 2px 6px rgba(164, 168, 236, 0.04),
+    0px 16px 24px rgba(164, 168, 236, 0.24);
+  transition: margin-top 0.1s ease-in, margin-bottom 0.1s ease-in;
+}
+input.custom-textbox {
+  padding-left: 0.75rem;
+}
+div.kukai-modal > div.km-content > div.km-body > div.group > input.text {
+  font-size: 0.8125rem;
+}
+
+div.kukai-modal div.seperator {
+  border-bottom: 1px solid rgba($color: #000000, $alpha: 0.08);
+  margin: 0.5rem 0;
+}
+div.kukai-modal div.preview-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+div.kukai-modal div.preview-row > span {
+  margin: 0.25rem 0;
+  font-weight: normal;
+  font-size: 0.875rem;
+  line-height: 1rem;
+  color: #525252;
+}
+div.kukai-modal div.km-body span.section,
+div.kukai-modal div.preview-row > span:first-child {
+  font-weight: 500;
+  font-weight: normal;
+  font-size: 0.875rem;
+  line-height: 1rem;
+  color: #A8A8A8;
+}
+div.kukai-modal div.preview-row > span:last-child {
+  word-break: break-all;
+  padding-left: 0.5rem;
+}
+div.kukai-modal div.preview-row img,
+div.kukai-modal div.km-body span.torus-to img{
+  height: 0.75rem;
+  margin-bottom: 0.0625rem;
+}
+div.kukai-modal div.preview-amount {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0.5rem;
+}
+div.kukai-modal div.preview-top {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+div.kukai-modal div.preview-amount > span.amount-tez {
+  margin: 0.5rem 0 0.25rem;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 1.5rem;
+  line-height: 1.5rem;
+  color: #161616;
+}
+div.kukai-modal div.preview-amount > span.amount-usd {
+  margin-bottom: 0.75rem;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 0.875rem;
+  line-height: 1rem;
+  color: #525252;
+}
+div.kukai-modal div.km-body span.from {
+  display: flex;
+  margin: 0rem 0 0.5rem;
+  word-break: break-all;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 1rem;
+  line-height: 1rem;
+  color: #161616;
+}
+:host div.advanced-form {
+  margin-top: 1rem;
+}
+
+// Micheline / JSON tab
+div.tabs-container {
+  margin-top: 0.5rem;
+}
+div.tabs-container > ul.tabs {
+  display: flex;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+div.tabs-container > ul.tabs > li.tab {
+  width: 100%;
+  color: #787878;
+  text-align: center;
+  cursor: pointer;
+  padding: 1rem auto;
+  background-color: rgb(246, 246, 246);
+}
+div.tabs-container.blue > ul.tabs > li.tab {
+  color: black; //5963FF
+  background-color: rgba(89, 99, 255, 0.4);
+  border-bottom: 0.0625 solid #5963ff;
+}
+div.tabs-container:not(.blue) > ul.tabs > li.tab:first-child {
+  border-top-left-radius: 0.75rem;
+}
+div.tabs-container:not(.blue) > ul.tabs > li.tab:last-child {
+  border-top-right-radius: 0.75rem;
+}
+div.tabs-container > ul.tabs > li.tab.active {
+  background-color: #d9d9d9;
+  color: #484848;
+}
+div.tabs-container > ul.tabs > li.tab:hover {
+  background-color: #C0C0C0;
+  color: #484848;
+}
+div.tabs-container.blue > ul.tabs > li.tab.active {
+  background-color: #5963FF;
+  color: #f3f3f3;
+}
+div.tabs-container.blue > ul.tabs > li.tab:hover {
+  background-color: rgba(89, 99, 255, 0.7);
+  color: #f3f3f3;
+}
+
+div.kukai-modal > div.km-content {
+  width: 30rem;
+}
+@media screen and (max-width: 32.25rem) {
+  div.kukai-modal > div.km-content {
+    width: 25rem;
+  }
+  
+}
+@media screen and (max-width: 25rem) {
+  div.kukai-modal > div.km-content {
+    width: 22rem;
+  }
+}
