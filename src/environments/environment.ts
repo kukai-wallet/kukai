@@ -11,7 +11,7 @@ export const CONSTANTS: Constants = {
   NAME: 'Testnet / Edonet',
   NETWORK: 'edonet',
   MAINNET: false,
-  NODE_URL: 'https://edonet-tezos.giganode.io',
+  NODE_URL: 'https://api.tez.ie/rpc/edonet',
   BLOCK_EXPLORER_URL: 'https://edonet.tzkt.io',
   ASSETS: {
     'KT1REPEBMQS3Be8ZybkQQfSwAv3g4pHJViuK': {
