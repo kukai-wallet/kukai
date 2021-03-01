@@ -65,37 +65,22 @@ export class EmbeddedComponent implements OnInit {
       const data: RequestMessage = JSON.parse(evt.data);
       if (this.allowedOrigins.includes(evt.origin)) {
         console.log(`Received ${evt.data} from ${evt.origin}`);
-        if (data && data.type && /* restricted to dev enviroment for now */ !CONSTANTS.MAINNET) {
+        if (data &&
+          data.type &&
+          /* restricted to dev enviroment for now */ !CONSTANTS.MAINNET &&
+          evt.origin === this.walletService.wallet.origin) {
           this.origin = evt.origin;
           switch (data.type) {
             case RequestTypes.loginRequest:
-              this.login = true;
+              this.handleLoginRequest(data)
               break;
             case RequestTypes.operationRequest:
-              if (this.walletService.wallet instanceof EmbeddedTorusWallet && evt.origin === this.walletService.wallet.origin &&
-                data.operations) {
-                this.operationRequests = this.beaconTypeGuard(data.operations);
-              } else {
-                this.sendResponse({
-                  type: ResponseTypes.operationResponse,
-                  failed: true,
-                  error: 'NO_WALLET_FOUND'
-                });
-              }
+              this.handleOperationRequest(data)
               break;
+            case RequestTypes.trackRequest:
+              this.handleTrackRequest(data)
             case RequestTypes.logoutRequest:
-              if (this.walletService.wallet instanceof EmbeddedTorusWallet && evt.origin === this.walletService.wallet.origin &&
-                this.walletService.wallet.instanceId) {
-                const instanceId = this.walletService.wallet.instanceId;
-                this.logout(instanceId);
-                this.sendResponse({
-                  type: ResponseTypes.logoutResponse,
-                  instanceId,
-                  failed: false
-                });
-              } else {
-                this.noWalletError();
-              }
+              this.handleLogoutRequest(data)
               break;
             default:
               console.warn('Unknown request');
@@ -105,6 +90,40 @@ export class EmbeddedComponent implements OnInit {
         console.log(`Invalid origin (${evt.origin})`);
       }
     } catch { }
+  }
+  private handleLoginRequest(req: LoginRequest) {
+    this.login = true;
+  }
+  private handleOperationRequest(req: OperationRequest) {
+    if (this.walletService.wallet instanceof EmbeddedTorusWallet && data.operations) {
+      this.operationRequests = this.beaconTypeGuard(req.operations);
+    } else {
+      this.sendResponse({
+        type: ResponseTypes.operationResponse,
+        failed: true,
+        error: 'NO_WALLET_FOUND'
+      });
+    }
+  }
+  private handleTrackRequest(req: TrackRequest) {
+    this,sendResponse({
+      type: ResponseTypes.trackResponse,
+      failed: true,
+      error: 'NOT_IMPLEMENTED'
+    })
+  }
+  private handleLogoutRequest(req: LogoutRequest) {
+    if (this.walletService.wallet instanceof EmbeddedTorusWallet && this.walletService.wallet.instanceId) {
+      const instanceId = this.walletService.wallet.instanceId;
+      this.logout(instanceId);
+      this.sendResponse({
+        type: ResponseTypes.logoutResponse,
+        instanceId,
+        failed: false
+      });
+    } else {
+      this.noWalletError();
+    }
   }
   loginResponse(loginData: any) {
     if (loginData) {
