@@ -97,13 +97,6 @@ export class EmbeddedComponent implements OnInit {
                 this.noWalletError();
               }
               break;
-            case RequestTypes.initRequest:
-              if (this.walletService.wallet instanceof EmbeddedTorusWallet && evt.origin === this.walletService.wallet.origin) {
-                this.sendResponse({
-                  type: ResponseTypes.initResponse,
-                  failed: false
-                }) 
-              }
             default:
               console.warn('Unknown request');
           }
