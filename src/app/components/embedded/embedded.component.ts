@@ -15,7 +15,12 @@ import {
   ResponseTypes,
   RequestMessage,
   ResponseMessage,
-  OperationResponse
+  OperationResponse,
+  LogoutRequest,
+  TrackRequest,
+  TrackResponse,
+  LoginRequest,
+  OperationRequest
 } from 'kukai-embed/dist/types'
 
 @Component({
@@ -67,8 +72,7 @@ export class EmbeddedComponent implements OnInit {
         console.log(`Received ${evt.data} from ${evt.origin}`);
         if (data &&
           data.type &&
-          /* restricted to dev enviroment for now */ !CONSTANTS.MAINNET &&
-          evt.origin === this.walletService.wallet.origin) {
+          /* restricted to dev enviroment for now */ !CONSTANTS.MAINNET) {
           this.origin = evt.origin;
           switch (data.type) {
             case RequestTypes.loginRequest:
@@ -79,6 +83,7 @@ export class EmbeddedComponent implements OnInit {
               break;
             case RequestTypes.trackRequest:
               this.handleTrackRequest(data)
+              break;
             case RequestTypes.logoutRequest:
               this.handleLogoutRequest(data)
               break;
@@ -95,7 +100,7 @@ export class EmbeddedComponent implements OnInit {
     this.login = true;
   }
   private handleOperationRequest(req: OperationRequest) {
-    if (this.walletService.wallet instanceof EmbeddedTorusWallet && data.operations) {
+    if (this.walletService.wallet instanceof EmbeddedTorusWallet && req.operations) {
       this.operationRequests = this.beaconTypeGuard(req.operations);
     } else {
       this.sendResponse({
@@ -106,8 +111,9 @@ export class EmbeddedComponent implements OnInit {
     }
   }
   private handleTrackRequest(req: TrackRequest) {
-    this,sendResponse({
+    this.sendResponse({
       type: ResponseTypes.trackResponse,
+      opHash: req.opHash,
       failed: true,
       error: 'NOT_IMPLEMENTED'
     })
