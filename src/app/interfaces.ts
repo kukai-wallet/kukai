@@ -107,6 +107,7 @@ export interface DefaultTransactionParams {
   }[];
 }
 export interface Constants {
+  PROXY_IPFS: string;
   NAME: string;
   NETWORK: string;
   MAINNET: boolean;

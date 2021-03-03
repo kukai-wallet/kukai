@@ -449,7 +449,7 @@ export class TzktService implements Indexer {
   uriToUrl(uri: string): string {
     if (uri && uri.length > 7) {
       if (uri.startsWith('ipfs://')) {
-        return `https://cloudflare-ipfs.com/ipfs/${uri.slice(7)}`;
+        return `${CONSTANTS.PROXY_IPFS}/${uri.slice(7)}`;
       } else if (uri.startsWith('https://')) {
         return uri;
       } else if (!CONSTANTS.MAINNET && (uri.startsWith('http://localhost') || uri.startsWith('http://127.0.0.1'))) {

@@ -43,3 +43,20 @@
 :host > div.kukai-modal div.top-wrapper div.basics > div:first-child {
   margin-top: 0;
 }
+.badge-item {
+  position:relative;
+  padding-top:20px;
+  display:inline-block;
+}
+.badge-notify {
+  cursor: pointer;
+  position: absolute;
+  right:0px;
+  top:10px;
+  background:red;
+  text-align: center;
+  border-radius: 30px 30px 30px 30px;
+  color:white;
+  padding:5px 15px;
+  font-size:20px;
+}

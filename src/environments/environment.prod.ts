@@ -4,6 +4,7 @@ export const environment = {
   production: true
 };
 export const CONSTANTS: Constants = {
+  PROXY_IPFS: 'https://wallet.kukai.app/ipfs',
   NAME: 'Mainnet',
   NETWORK: 'mainnet',
   MAINNET: true,

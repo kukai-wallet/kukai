@@ -17,6 +17,7 @@ export interface TokenResponseType {
   isTransferable?: boolean;
   isBooleanAmount?: boolean;
   shouldPreferSymbol?: boolean;
+  isTrusted?: boolean;
 }
 export type ContractsType = Record<string, ContractType>;
 export type ContractType = FA12 | FA2;
@@ -33,6 +34,7 @@ export interface TokenData {
   isTransferable?: boolean;
   isBooleanAmount?: boolean;
   shouldPreferSymbol?: boolean;
+  isTrusted?: boolean;
 }
 export interface FA12 extends TokensInterface {
   kind: 'FA1.2';
@@ -49,6 +51,7 @@ export interface FA2 extends TokensInterface {
 })
 
 export class TokenService {
+  readonly defaultImg = '../../../assets/img/tokens/unknown-token.png';
   readonly AUTO_DISCOVER: boolean = true;
   readonly version: string = '1.0.2';
   private contracts: ContractsType = {};
@@ -133,22 +136,19 @@ export class TokenService {
           category: metadata.tokenCategory ? metadata.tokenCategory : '',
           tokens: {}
         };
-        const defaultImg = '../../../assets/img/tokens/unknown-token.png';
-        let displayUrl = (metadata.displayUri && TRUSTED_TOKEN_CONTRACTS.includes(contractAddress)) ? metadata.displayUri : defaultImg;
-        let thumbnailUrl = (metadata.thumbnailUri && TRUSTED_TOKEN_CONTRACTS.includes(contractAddress)) ? metadata.thumbnailUri : defaultImg;
-        if (displayUrl === defaultImg && thumbnailUrl !== defaultImg) {
-          displayUrl = thumbnailUrl;
-        }
-        if (displayUrl !== defaultImg && thumbnailUrl === defaultImg) {
-          thumbnailUrl = displayUrl;
-        }
+        const defaultImg = this.defaultImg;
+        const displayUrl = metadata.displayUri;
+        const thumbnailUrl = metadata.thumbnailUri;
+
         const token: TokenData = {
           name: metadata.name ? metadata.name : '',
           symbol: metadata.symbol ? metadata.symbol : '',
           decimals: Number(metadata.decimals),
           description: metadata.description ? metadata.description : '',
-          displayUrl,
-          thumbnailUrl,
+          // take the thumbnailUrl and vice vera if there is no url property
+          displayUrl: displayUrl || thumbnailUrl || defaultImg,
+          thumbnailUrl: thumbnailUrl || displayUrl || defaultImg,
+          isTrusted: TRUSTED_TOKEN_CONTRACTS.includes(contractAddress),
           isTransferable: metadata?.isTransferable ? metadata.isTransferable : true,
           isBooleanAmount: metadata?.isBooleanAmount ? metadata.isBooleanAmount : false
         };
@@ -191,8 +191,8 @@ export class TokenService {
       contractAddress,
       id,
       decimals: 0,
-      displayUrl: '../../../assets/img/tokens/unknown-token.png',
-      thumbnailUrl: '../../../assets/img/tokens/unknown-token.png',
+      displayUrl: this.defaultImg,
+      thumbnailUrl: this.defaultImg,
       name: '[Unknown token]',
       symbol: '',
       description: '',
@@ -241,6 +241,14 @@ export class TokenService {
       } else {
         return '[Unknown token]';
       }
+    }
+  }
+
+  setTrusted(contractAddress: string, tokenId: number, isTrusted: boolean) {
+    const token = this.contracts[contractAddress].tokens[tokenId]
+    if (token) {
+      token.isTrusted = isTrusted
+      this.saveMetadata()
     }
   }
 }

@@ -8,6 +8,7 @@ export const environment = {
   production: false
 };
 export const CONSTANTS: Constants = {
+  PROXY_IPFS: 'http://127.0.0.1:9000',
   NAME: 'Testnet / Delphinet',
   NETWORK: 'delphinet',
   MAINNET: false,

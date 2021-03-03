@@ -42,4 +42,18 @@ export class TokenComponent implements OnInit {
   getDescription(): string {
     return this.token.description ? this.token.description : '—';
   }
+  onTokenInfo() {
+    const x = confirm('approve token:' + JSON.stringify(this.token))
+    if (x) {
+      this.tokenService.setTrusted(this.token.contractAddress, this.token.id, true)
+    }
+  }
+  get getTokenImg() {
+    const token = this.token
+    const defaultImg = '../../../assets/img/tokens/unknown-token.png';
+    return token.isTrusted ? token.thumbnailUrl : defaultImg;
+  }
+  get isTrusted() {
+    return this.token.isTrusted
+  }
 }
