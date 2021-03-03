@@ -17,6 +17,7 @@ export interface TokenResponseType {
   isTransferable?: boolean;
   isBooleanAmount?: boolean;
   shouldPreferSymbol?: boolean;
+  series?: string;
 }
 export type ContractsType = Record<string, ContractType>;
 export type ContractType = FA12 | FA2;
@@ -33,6 +34,7 @@ export interface TokenData {
   isTransferable?: boolean;
   isBooleanAmount?: boolean;
   shouldPreferSymbol?: boolean;
+  series?: string;
 }
 export interface FA12 extends TokensInterface {
   kind: 'FA1.2';
@@ -50,7 +52,7 @@ export interface FA2 extends TokensInterface {
 
 export class TokenService {
   readonly AUTO_DISCOVER: boolean = true;
-  readonly version: string = '1.0.2';
+  readonly version: string = '1.0.3';
   private contracts: ContractsType = {};
   private exploredIds: Record<string, { firstCheck: number, lastCheck: number }> = {};
   readonly storeKey = 'tokenMetadata';
@@ -150,7 +152,8 @@ export class TokenService {
           displayUrl,
           thumbnailUrl,
           isTransferable: metadata?.isTransferable ? metadata.isTransferable : true,
-          isBooleanAmount: metadata?.isBooleanAmount ? metadata.isBooleanAmount : false
+          isBooleanAmount: metadata?.isBooleanAmount ? metadata.isBooleanAmount : false,
+          series: metadata.series ? metadata.series : undefined
         };
         contract.tokens[id] = token;
         this.addAsset(contractAddress, contract);

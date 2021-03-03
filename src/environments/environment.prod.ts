@@ -14,6 +14,21 @@ export const CONSTANTS: Constants = {
     apiKey: 'klassare'
   },
   ASSETS: {
+    'KT1K9gCRgaLRFKTErYt1wVxA3Frb9FjasjTV': { // kUSD
+      kind: 'FA1.2',
+      category: 'finance',
+      tokens: {
+        0: {
+          name: 'Kolibri USD',
+          symbol: 'kUSD',
+          decimals: 18,
+          description: 'Kolibri is a Tezos based stablecoin built on Collateralized Debt Positions (CDPs) known as Ovens.',
+          displayUrl: '../../../assets/img/tokens/kusd.png',
+          thumbnailUrl: '../../../assets/img/tokens/kusd.png',
+          shouldPreferSymbol: true
+        }
+      }
+    },
     'KT1LN4LPSqTMS7Sd2CJw4bbDGRkMv2t68Fy9': { // USDtz
       kind: 'FA1.2',
       category: 'finance',
@@ -92,4 +107,6 @@ export const CONSTANTS: Constants = {
     }
   }
 };
-export const TRUSTED_TOKEN_CONTRACTS = [];
+export const TRUSTED_TOKEN_CONTRACTS = [
+  'KT1Em3sjKdHo3Fo9Az4EusZXQbkgsdZHkQkF'
+];
