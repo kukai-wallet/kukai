@@ -13,6 +13,7 @@ export class TokenComponent implements OnInit {
   @Input() token: TokenResponseType;
   balance = '';
   modalOpen = false;
+  fullSize = false;
   constructor(
     private tokenService: TokenService
   ) {
@@ -38,6 +39,7 @@ export class TokenComponent implements OnInit {
     document.body.style.marginRight = '';
     document.body.style.overflow = '';
     this.modalOpen = false;
+    this.fullSize = false;
   }
   getDescription(): string {
     return this.token.description ? this.token.description : '—';

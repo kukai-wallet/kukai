@@ -1,4 +1,7 @@
 # Release notes
+## 1.12.2
+* Enlarge token image
+* add series token metadata property
 ## 1.12.1
 * Support for origination
 * Updated metadata spec

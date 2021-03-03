@@ -16,6 +16,7 @@ interface TokenMetadata {
   isTransferable?: boolean;
   shouldPreferSymbol?: boolean;
   isBooleanAmount?: boolean;
+  series?: string;
 }
 
 @Injectable({
@@ -218,7 +219,8 @@ export class TzktService implements Indexer {
           { key: 'thumbnailUri', type: 'string' },
           { key: 'isTransferable', type: 'boolean' },
           { key: 'shouldPreferSymbol', type: 'boolean' },
-          { key: 'isBooleanAmount', type: 'boolean' }
+          { key: 'isBooleanAmount', type: 'boolean' },
+          { key: 'series', type: 'string' }
         ];
         for (const data of datas) {
           if (data?.token_id === Number(id)) {

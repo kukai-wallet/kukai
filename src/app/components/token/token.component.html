@@ -1,6 +1,6 @@
 <div class="list-item" (click)="openModal()">
   <div class="imgWrapper"><img src="{{ token.thumbnailUrl }}"></div>
-    <span>{{ listDisplayText() }}</span>
+  <span>{{ listDisplayText() }}</span>
 </div>
 
 <!-- Modal -->
@@ -17,12 +17,18 @@
             <label>Name</label>
             <p>{{ token.name }}</p>
           </div>
-          <div class="group">
+          <div *ngIf="token.symbol || !token.series; else showSeries" class="group">
             <label>Symbol</label>
             <p style="margin-bottom: 0">{{ token.symbol }}</p>
           </div>
+          <ng-template #showSeries>
+            <div class="group">
+              <label>Series</label>
+              <p style="margin-bottom: 0">{{ token.series }}</p>
+            </div>
+          </ng-template>
         </div>
-        <img src="{{ token.thumbnailUrl }}">
+        <img (click)="fullSize = true" src="{{ token.displayUrl }}">
       </div>
       <div class="group">
         <label>Description</label>
@@ -34,4 +40,7 @@
       </div>
     </div>
   </div>
+</div>
+<div class="full-size" *ngIf="fullSize" (click)="fullSize = false">
+  <img (click)="fullSize = false" src="{{ token.displayUrl }}">
 </div>

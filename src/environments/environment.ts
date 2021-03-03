@@ -8,11 +8,16 @@ export const environment = {
   production: false
 };
 export const CONSTANTS: Constants = {
+  /* NAME: 'Testnet / Delphinet',
+  NETWORK: 'delphinet',
+  MAINNET: false,
+  NODE_URL: 'https://api.tez.ie/rpc/delphinet',
+  BLOCK_EXPLORER_URL: 'https://delphinet.tzkt.io',*/
   NAME: 'Testnet / Edonet',
   NETWORK: 'edonet',
   MAINNET: false,
   NODE_URL: 'https://api.tez.ie/rpc/edonet',
-  BLOCK_EXPLORER_URL: 'https://edonet.tzkt.io',
+  BLOCK_EXPLORER_URL: 'https://edo2net.tzkt.io',
   ASSETS: {
     'KT1REPEBMQS3Be8ZybkQQfSwAv3g4pHJViuK': {
       kind: 'FA1.2',
@@ -72,5 +77,10 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1RMqNMuXm2EU99E75cHk53iN75y9kmCG1X',
   'KT1TWb6cE56q2L8yTeNNchXqDSXacrNqyVNZ',
   'KT1PBL66suJeW2nBbWXgR9ex9gu7TFCmSgQg',
-  'KT1R5U6HXDZAykVd5gcoWEoGGwE7mznWLajL'
+  'KT1R5U6HXDZAykVd5gcoWEoGGwE7mznWLajL',
+  'KT1Ea5N3B4b3LTWvCX7FZoV9Q3pjs4XSvPHh',
+  'KT1Eb4LP7k15y6zCdHUjM3qkzi5T1dRSLPhq',
+  'KT1WcB4vxci5C1DjmJkMNSmaANFvgQDvdprZ',
+  'KT1T66r244FFuH2hpfZgoKVRLXDtnfjBRxVc',
+  'KT1XgGvzQSYrvo4NCxwTvJ7tSbZqGcji4BeV'
 ];
