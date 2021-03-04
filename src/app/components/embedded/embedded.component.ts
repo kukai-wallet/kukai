@@ -29,7 +29,7 @@ import {
   styleUrls: ['./embedded.component.scss']
 })
 export class EmbeddedComponent implements OnInit {
-  allowedOrigins = ['http://localhost:3000', 'https://www.tezos.help'];
+  allowedOrigins = ['http://localhost:5000', 'https://www.tezos.help'];
   origin = '';
   login = false;
   activeAccount: ImplicitAccount = null;
@@ -62,7 +62,7 @@ export class EmbeddedComponent implements OnInit {
           this.coordinatorService.startAll();
         }
       }
-    );
+      );
     window.parent.window.postMessage(JSON.stringify({ type: ResponseTypes.initResponse, failed: false }), this.origin || "*");
   }
   handleRequest = (evt) => {
