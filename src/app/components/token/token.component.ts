@@ -2,7 +2,6 @@ import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import Big from 'big.js';
 import { TokenService, TokenResponseType } from '../../services/token/token.service';
 import { ImplicitAccount } from '../../services/wallet/wallet';
-import { TokenMetadataComponent } from '../token-metadata/token-metadata.component';
 
 @Component({
   selector: 'app-token',
@@ -12,7 +11,6 @@ import { TokenMetadataComponent } from '../token-metadata/token-metadata.compone
 export class TokenComponent implements OnInit {
   @Input() account: ImplicitAccount;
   @Input() token: TokenResponseType;
-  @ViewChild(TokenMetadataComponent) tokenMetadataComponent: TokenMetadataComponent;
   balance = '';
   modalOpen = false;
   tokenMetaModal;
@@ -45,9 +43,13 @@ export class TokenComponent implements OnInit {
   getDescription(): string {
     return this.token.description ? this.token.description : '—';
   }
-  onTokenMeta() {
-    this.tokenMetadataComponent.openModal()
-    // this.closeModal()
+  onTrust(isTrust: boolean) {
+    if (isTrust) {
+      this.tokenService.setTrusted(this.token.contractAddress, this.token.id, true)
+    } else {
+      this.tokenService.setRejected(this.token.contractAddress, this.token.id, true)
+    }
+    this.closeModal()
   }
   get getTokenImg() {
     const token = this.token

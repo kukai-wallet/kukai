@@ -1,4 +1,5 @@
 @import '../../../scss/modal.scss';
+@import '../send/send.component.scss';
 :host {
   flex-grow: 1;
 }
@@ -49,7 +50,7 @@
   display:inline-block;
 }
 .badge-notify {
-  cursor: pointer;
+  // cursor: pointer;
   position: absolute;
   right:0px;
   top:10px;
@@ -59,4 +60,7 @@
   color:white;
   padding:5px 15px;
   font-size:20px;
+}
+button{
+  margin: 0 10px;
 }

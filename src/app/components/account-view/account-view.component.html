@@ -32,8 +32,8 @@
         <H1>Tokens</H1>
       </div>
       <div class="token-container">
-        <ng-container *ngIf="account.tokens.length; else noTokens">
-          <ng-container *ngFor="let token of account.tokens">
+        <ng-container *ngIf="getTokens.length; else noTokens">
+          <ng-container *ngFor="let token of getTokens">
             <div class="seperator"></div>
             <ng-container *ngIf="tokenService.getAsset(token.tokenId); else unknownToken; let tokenData">
               <div class="token-row">

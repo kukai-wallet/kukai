@@ -18,6 +18,7 @@ export interface TokenResponseType {
   isBooleanAmount?: boolean;
   shouldPreferSymbol?: boolean;
   isTrusted?: boolean;
+  isRejected?: boolean;
 }
 export type ContractsType = Record<string, ContractType>;
 export type ContractType = FA12 | FA2;
@@ -229,6 +230,9 @@ export class TokenService {
     } else {
       const token = this.getAsset(tokenKey);
       if (token) {
+        if (!token.isTrusted) {
+          return '[Pending Approval]'
+        }
         if ((!token.shouldPreferSymbol && token.name) || !token.symbol) {
           if (token.isBooleanAmount) {
             return `${token.name}`;
@@ -245,9 +249,16 @@ export class TokenService {
   }
 
   setTrusted(contractAddress: string, tokenId: number, isTrusted: boolean) {
-    const token = this.contracts[contractAddress].tokens[tokenId]
+    const token: TokenResponseType = this.contracts[contractAddress].tokens[tokenId]
     if (token) {
       token.isTrusted = isTrusted
+      this.saveMetadata()
+    }
+  }
+  setRejected(contractAddress: string, tokenId: number, isReject: boolean) {
+    const token: TokenResponseType = this.contracts[contractAddress].tokens[tokenId]
+    if (token) {
+      token.isRejected = isReject
       this.saveMetadata()
     }
   }

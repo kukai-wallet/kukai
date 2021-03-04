@@ -12,7 +12,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // For translation
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 // External libraries
 import { ComponentLoaderFactory } from 'ngx-bootstrap/component-loader';
@@ -83,7 +83,6 @@ import { LoggedInComponent } from './components/logged-in/logged-in.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { QrScannerComponent } from './components/qr-scanner/qr-scanner.component';
 import { SignExprComponent } from './components/sign-expr/sign-expr.component';
-import { TokenMetadataComponent } from './components/token-metadata/token-metadata.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -130,8 +129,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     LoggedInComponent,
     SettingsComponent,
     QrScannerComponent,
-    SignExprComponent,
-    TokenMetadataComponent
+    SignExprComponent
   ],
   imports: [
     BrowserModule,

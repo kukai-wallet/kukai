@@ -109,5 +109,13 @@ export class AccountViewComponent implements OnInit {
   displayTokenCard(): boolean {
     return (this.account instanceof ImplicitAccount) || (this.account?.tokens?.length > 0);
   }
+  get getTokens() {
+    // Do not show unknown tokens or rejected tokens
+    return this.account.tokens.filter(t =>
+      this.tokenService.getAsset(t.tokenId) &&
+      !this.tokenService.getAsset(t.tokenId)?.isRejected
+    )
+
+  }
 }
 
