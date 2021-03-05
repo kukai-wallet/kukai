@@ -1,13 +1,13 @@
 <div>
     <div>
         <div>
-            <img src="https://www.pngfind.com/pngs/m/673-6739250_transparent-background-twitter-logo-small-small-twitter-logo.png">
+            <img src="../../../assets/img/torus-login/{{verifier()}}-color.svg" width="24">
             <h4>{{displayName()}}</h4>
-            <h5>{{walletService.wallet.implicitAccounts[0]?.pkh}}</h5>
+            <h5>{{activeAccount.pkh}}</h5>
         </div>
         <div>
             <h3>BALANCE</h3>
-            <h2>{{walletService.wallet.totalBalanceUSD}} USD</h2>
+            <h2>{{activeAccount.balanceUSD}} USD</h2>
         </div>
     </div>
 </div>
