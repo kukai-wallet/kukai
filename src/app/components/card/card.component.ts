@@ -12,22 +12,13 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./card.component.scss']
 })
 export class CardComponent implements OnInit {
-  activeAccount: ImplicitAccount = null;
+  @input() activeAccount: ImplicitAccount;
 
   constructor(
     private walletService: WalletService,
-    private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
-    this.route.queryParams
-      .filter(params => params.instanceId)
-      .subscribe(params => {
-        this.walletService.loadStoredWallet(params.instanceId);
-        if (this.walletService.wallet instanceof TorusWallet) {
-          this.activeAccount = this.walletService.wallet.implicitAccounts[0];
-        }
-      });
   }
 
   displayName(): string {

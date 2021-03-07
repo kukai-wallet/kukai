@@ -16,7 +16,6 @@ import { UriHandlerComponent } from './components/uri-handler/uri-handler.compon
 import { LoggedInComponent } from './components/logged-in/logged-in.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { EmbeddedComponent } from './components/embedded/embedded.component';
-import { CardComponent } from './components/card/card.component';
 
 const routes: Routes = [
   { path: '', component: StartComponent },
@@ -39,7 +38,6 @@ const routes: Routes = [
   { path: 'terms-of-use', component: TermsOfUseComponent },
   { path: 'serviceworker', component: TermsOfUseComponent },
   { path: 'embedded', component: EmbeddedComponent },
-  { path: 'card', component: CardComponent },
   { path: '404', component: P404Component, data: { title: 'Page 404' } },
   { path: '500', component: P500Component, data: { title: 'Page 500' } },
   { path: '**', redirectTo: '404'},
