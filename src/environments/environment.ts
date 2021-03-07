@@ -8,13 +8,19 @@ export const environment = {
   production: false
 };
 export const CONSTANTS: Constants = {
+  NAME: 'Testnet / Edonet',
+  NETWORK: 'edonet',
+  MAINNET: false,
+  NODE_URL: 'https://api.tez.ie/rpc/edonet',
+  BLOCK_EXPLORER_URL: 'https://edo2net.tzkt.io',
+  /*
   NAME: 'Testnet / Delphinet',
   NETWORK: 'delphinet',
   MAINNET: false,
-  NODE_URL: 'https://delphinet-tezos.giganode.io',
-  BLOCK_EXPLORER_URL: 'https://delphinet.tzkt.io',
+  NODE_URL: 'https://api.tez.ie/rpc/delphinet',
+  BLOCK_EXPLORER_URL: 'https://delphinet.tzkt.io',*/
   ASSETS: {
-    'KT1REPEBMQS3Be8ZybkQQfSwAv3g4pHJViuK': {
+    'KT1FCMQk44tEP9fm9n5JJEhkSk1TW3XQdaWH': {
       kind: 'FA1.2',
       category: 'finance',
       tokens: {
@@ -26,6 +32,22 @@ export const CONSTANTS: Constants = {
           displayUrl: '../../../assets/img/tokens/usdtz.png',
           thumbnailUrl: '../../../assets/img/tokens/usdtz.png',
           symbolPreference: true
+        }
+      }
+    },
+    'KT1CUg39jQF8mV6nTMqZxjUUZFuz1KXowv3K': {
+      kind: 'FA1.2',
+      category: 'finance',
+      tokens: {
+        0: {
+          name: 'tzBTC',
+          symbol: 'tzBTC',
+          decimals: 8,
+          description: '',
+          displayUrl: '../../../assets/img/tokens/tzbtc.png',
+          thumbnailUrl: '../../../assets/img/tokens/tzbtc.png',
+          nonTransferable: false,
+          booleanAmount: false
         }
       }
     },
@@ -66,5 +88,7 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1LyJV9JdcDCp5zDfw6MxpoShXYrBMG3dfK',
   'KT1RfMoskMhR1hDFJTVN6gGMwQLDSTmLeDsc',
   'KT1Szwqme712TkQ7LdP1hBqKjdUUBjxoB8bR',
-  'KT1PS2jZVzNMW54UsnqBqwwkArXnAZ29jiTF'
+  'KT1PS2jZVzNMW54UsnqBqwwkArXnAZ29jiTF',
+  'KT1XgGvzQSYrvo4NCxwTvJ7tSbZqGcji4BeV',
+  'KT1R3TqdxsHPYxNQBdY7jmXAeU17WpucMXDh'
 ];

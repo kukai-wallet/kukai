@@ -232,7 +232,7 @@ export class CoordinatorService {
           amount: Big(op.amount).times(10 ** decimals).toString(),
           fee: null,
           source: { address: from },
-          destination: { address: op.to },
+          destination: { address: op.destination },
           hash: metadata.opHash,
           block: null,
           timestamp: new Date().getTime(),
@@ -241,7 +241,7 @@ export class CoordinatorService {
         };
         let account = this.walletService.wallet.getAccount(from);
         account.activities.unshift(transaction);
-        account = this.walletService.wallet.getAccount(op.to);
+        account = this.walletService.wallet.getAccount(op.destination);
         if (account) {
           account.activities.unshift(transaction);
         }

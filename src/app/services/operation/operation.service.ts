@@ -196,9 +196,9 @@ export class OperationService {
         let invocation: any;
         const { kind, decimals, contractAddress, id } = this.tokenService.getAsset(tokenTransfer);
         if (kind === 'FA1.2') {
-          invocation = this.getFA12Transaction(pkh, transactions[i].to, Big(10 ** decimals).times(transactions[i].amount).toString());
+          invocation = this.getFA12Transaction(pkh, transactions[i].destination, Big(10 ** decimals).times(transactions[i].amount).toString());
         } else if (kind === 'FA2') {
-          invocation = this.getFA2Transaction(pkh, transactions[i].to, Big(10 ** decimals).times(transactions[i].amount).toString(), id);
+          invocation = this.getFA2Transaction(pkh, transactions[i].destination, Big(10 ** decimals).times(transactions[i].amount).toString(), id);
         } else {
           throw new Error('Unrecognized token kind');
         }
@@ -222,15 +222,15 @@ export class OperationService {
           gas_limit: gasLimit,
           storage_limit: storageLimit,
           amount: this.microTez.times(transactions[i].amount).toString(),
-          destination: transactions[i].to,
+          destination: transactions[i].destination,
         };
         if (transactions[i].parameters) {
           transactionOp.parameters = transactions[i].parameters;
         }
         fop.contents.push(transactionOp);
       } else if (from.slice(0, 2) === 'KT') {
-        if (transactions[i].to.slice(0, 2) === 'tz') {
-          const managerTransaction = this.getContractPkhTransaction(transactions[i].to, this.microTez.times(transactions[i].amount).toString());
+        if (transactions[i].destination.slice(0, 2) === 'tz') {
+          const managerTransaction = this.getContractPkhTransaction(transactions[i].destination, this.microTez.times(transactions[i].amount).toString());
           fop.contents.push({
             kind: 'transaction',
             source: pkh,
@@ -242,8 +242,8 @@ export class OperationService {
             destination: from,
             parameters: managerTransaction
           });
-        } else if (transactions[i].to.slice(0, 2) === 'KT') {
-          const managerTransaction = this.getContractKtTransaction(transactions[i].to, this.microTez.times(transactions[i].amount).toString());
+        } else if (transactions[i].destination.slice(0, 2) === 'KT') {
+          const managerTransaction = this.getContractKtTransaction(transactions[i].destination, this.microTez.times(transactions[i].amount).toString());
           fop.contents.push({
             kind: 'transaction',
             source: pkh,

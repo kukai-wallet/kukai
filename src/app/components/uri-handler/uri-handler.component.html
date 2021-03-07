@@ -1,6 +1,5 @@
 <div>
-  <app-send (operationResponse)="operationResponse($event)" [beaconMode]=true [operationRequest]=operationRequest
-    [activeAccount]=activeAccount></app-send>
+  <app-send (operationResponse)="operationResponse($event)" [headless]=true [activeAccount]=activeAccount [operationRequest]="operationRequest"></app-send>
   <app-delegate (operationResponse)="operationResponse($event)" [beaconMode]=true [operationRequest]=operationRequest
     [activeAccount]=activeAccount></app-delegate>
   <app-permission-request (permissionResponse)="permissionResponse($event)" [permissionRequest]="permissionRequest">

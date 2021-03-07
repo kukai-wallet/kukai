@@ -63,18 +63,12 @@ export class DelegateComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (this.beaconMode) {
       if (this.operationRequest) {
-        if (this.operationRequest.operationDetails[0].kind === 'delegation') {
+        if (this.operationRequest[0]?.kind === 'delegation') {
           this.openModal();
-          if (this.operationRequest.operationDetails[0].delegate) {
-            this.toPkh = this.operationRequest.operationDetails[0].delegate;
-          } else {
-            console.warn('No delegate');
+          if (this.operationRequest[0].delegate) {
+            this.toPkh = this.operationRequest[0].delegate;
           }
-        } else {
-          console.log('Not a delegation');
         }
-      } else {
-        this.operationResponse.emit(null);
       }
     }
   }

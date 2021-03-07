@@ -22,21 +22,20 @@ interface TokenMetadata {
   providedIn: 'root'
 })
 export class TzktService implements Indexer {
-  CONSTANTS: any;
+  readonly network = CONSTANTS.NETWORK.replace('edonet', 'edo2net');
   public readonly bcd = 'https://api.better-call.dev/v1';
   constructor() { }
   async getContractAddresses(pkh: string): Promise<any> {
-    return fetch(`https://api.${CONSTANTS.NETWORK}.tzkt.io/v1/operations/originations?contractManager=${pkh}`)
+    return fetch(`https://api.${this.network}.tzkt.io/v1/operations/originations?contractManager=${pkh}`)
       .then(response => response.json())
       .then(data => data.map((op: any) => {
         return (op?.status === 'applied' && op?.originatedContract?.kind === 'delegator_contract') ? op.originatedContract.address : '';
       }).filter((address: string) => address.length));
   }
   async accountInfo(address: string, knownTokenIds: string[] = []): Promise<any> {
-    const network = CONSTANTS.NETWORK;
     const tokens = [];
     const unknownTokenIds = [];
-    return fetch(`${this.bcd}/account/${network}/${address}`)
+    return fetch(`${this.bcd}/account/${this.network}/${address}`)
       .then(response => response.json())
       .then(data => {
         if (data) {
@@ -71,7 +70,7 @@ export class TzktService implements Indexer {
       });
   }
   async getOperations(address: string, knownTokenIds: string[] = [], wallet: WalletObject): Promise<any> {
-    const ops = await fetch(`https://api.${CONSTANTS.NETWORK}.tzkt.io/v1/accounts/${address}/operations?limit=20&type=delegation,origination,transaction`)
+    const ops = await fetch(`https://api.${this.network}.tzkt.io/v1/accounts/${address}/operations?limit=20&type=delegation,origination,transaction`)
       .then(response => response.json())
       .then(data => data.map(op => {
         if (!(op.hasInternals && wallet.getAccount(op.target.address)) && op.status === 'applied') {
@@ -120,7 +119,7 @@ export class TzktService implements Indexer {
         }
       }).filter(obj => obj));
     const unknownTokenIds: string[] = [];
-    const tokenTxs = await fetch(`${this.bcd}/tokens/${CONSTANTS.NETWORK}/transfers/${address}?size=20`)
+    const tokenTxs = await fetch(`${this.bcd}/tokens/${this.network}/transfers/${address}?size=20`)
       .then(response => response.json())
       .then(data => data.transfers.map(tx => {
         const tokenId = `${tx.contract}:${tx.token_id}`;
@@ -178,7 +177,7 @@ export class TzktService implements Indexer {
     return '';
   }
   async getTokenMetadata(contractAddress, id): Promise<TokenMetadata> {
-    const tokenKind = fetch(`${this.bcd}/contract/${CONSTANTS.NETWORK}/${contractAddress}`)
+    const tokenKind = fetch(`${this.bcd}/contract/${this.network}/${contractAddress}`)
       .then(response => response.json())
       .then(data => {
         if (data?.tags?.includes('fa2')) {
@@ -190,7 +189,7 @@ export class TzktService implements Indexer {
       }).catch(e => {
         return null;
       });
-    const contractMetadata = fetch(`${this.bcd}/account/${CONSTANTS.NETWORK}/${contractAddress}/metadata`)
+    const contractMetadata = fetch(`${this.bcd}/account/${this.network}/${contractAddress}/metadata`)
       .then(response => response.json())
       .then(data => {
         const meta: any = {};
@@ -207,7 +206,7 @@ export class TzktService implements Indexer {
         console.log(`No contract metadata found for ${contractAddress}:${id}`);
         return {};
       });
-    const tokenMetadata = fetch(`${this.bcd}/contract/${CONSTANTS.NETWORK}/${contractAddress}/tokens`)
+    const tokenMetadata = fetch(`${this.bcd}/contract/${this.network}/${contractAddress}/tokens`)
       .then(response => response.json())
       .then(datas => {
         const keys = [
@@ -280,8 +279,8 @@ export class TzktService implements Indexer {
     return null;
   }
   async extractTokenMetadata(bigMapId: number, id: number) {
-    const tokenBigMap = await this.fetchApi(`${this.bcd}/bigmap/${CONSTANTS.NETWORK}/${bigMapId}/keys?size=1000`);
-    console.log(`${this.bcd}/bigmap/${CONSTANTS.NETWORK}/${bigMapId}/keys`);
+    const tokenBigMap = await this.fetchApi(`${this.bcd}/bigmap/${this.network}/${bigMapId}/keys?size=1000`);
+    console.log(`${this.bcd}/bigmap/${this.network}/${bigMapId}/keys`);
     let url = '';
     const metadata: any = {};
     const lookFor = {
@@ -382,7 +381,7 @@ export class TzktService implements Indexer {
     return metadata;
   }
   async extractContractMetadata(bigMapId: number) {
-    const contractBigMap = await this.fetchApi(`${this.bcd}/bigmap/${CONSTANTS.NETWORK}/${bigMapId}/keys`);
+    const contractBigMap = await this.fetchApi(`${this.bcd}/bigmap/${this.network}/${bigMapId}/keys`);
     let url = '';
     try {
       for (const child of contractBigMap) {
@@ -416,7 +415,7 @@ export class TzktService implements Indexer {
     return null;
   }
   async getBigMapIds(contractAddress: string): Promise<{ contract: number, token: number }> {
-    const storage: any = await this.fetchApi(`${this.bcd}/contract/${CONSTANTS.NETWORK}/${contractAddress}/storage`);
+    const storage: any = await this.fetchApi(`${this.bcd}/contract/${this.network}/${contractAddress}/storage`);
     let token = -1;
     let contract = -1;
     try {
