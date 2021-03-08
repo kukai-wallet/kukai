@@ -1,9 +1,26 @@
-<div class="spinIn">
-  <h2>Icabod Login</h2>
+<div class="direct-auth-login">
+  <div class="header">
+    <img src="../../../../assets/img/kukai_400x400.jpg">
+  </div>
+  <div class="body">
+    <H2>Please log in with one of the following providers:</H2>
+    <div class="login-options" *ngIf="torusService && torusService.verifierMapKeys">
+      <ng-container *ngFor="let key of torusService.verifierMapKeys">
+        <div class="login-option">
+          <img src="../../../../assets/img/torus-login/{{ key }}-color.svg" width="24" (click)="login(key)">
+        </div>
+      </ng-container>
+    </div>
+  </div>
+  <div class="footer">
+    Powered by&nbsp;
+    <img src="../../../../assets/img/kukai-logo-black.svg">
+  </div>
+  <!--<h2>Icabod Login</h2>
   <div class="buttons" *ngIf="torusService && torusService.verifierMapKeys">
     <ng-container *ngFor="let key of torusService.verifierMapKeys">
       <img src="../../../../assets/img/torus-login/{{ key }}-color.svg" width="24" (click)="login(key)">
     </ng-container>
     <img src="../../../../assets/img/x.svg" (click)="abort()">
-  </div>
+  </div>-->
 </div>

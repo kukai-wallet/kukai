@@ -5,13 +5,71 @@
   align-items: center;
   justify-content: center;
   background: rgba(0, 0, 0, 0.4);
-  font-family: "Lucida Handwriting", cursive;
 }
-:host h2 {
+div.direct-auth-login {
+  font-family: 'Poppins' !important;
+  font-style: normal !important;
+  font-weight: 300 !important;
+  width: 21.875rem;
+  background: #f3f3f3;
+  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.24), 0px 4px 12px rgba(0, 0, 0, 0.24),
+    0px 32px 48px rgba(0, 0, 0, 0.36);
+  border-radius: 0.625rem;
+}
+div.direct-auth-login > div.header {
+  height: 4.375rem;
+  background: white;
+  border-top-left-radius: 0.625rem;
+  border-top-right-radius: 0.625rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+div.direct-auth-login > div.header img {
+  height: 3.125rem;
+  width: 3.125rem;
+}
+div.direct-auth-login > div.body H2 {
+  margin: 0.5rem 2rem;
+  font-size: 1.25rem;
+  line-height: 1.875rem;
+  text-align: center;
+  vertical-align: top;
+}
+div.direct-auth-login > div.body div.login-options {
   margin: 1rem 0;
-  font-family: "Lucida Handwriting", cursive;
-  font-weight: 1000;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
 }
+div.direct-auth-login > div.body div.login-option {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: white;
+  border-radius: 0.625rem;
+  width: 90px;
+  height: 60px
+}
+div.direct-auth-login > div.body div.login-option:hover {
+  cursor: pointer;
+  background: #eaebf9;
+}
+div.direct-auth-login > div.body div.login-option > img {
+  width: 2.5rem;
+}
+div.direct-auth-login > div.footer {
+  font-size: 0.625rem;
+  line-height: 0.9375rem;
+  margin: 0.5rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+div.direct-auth-login > div.footer img {
+  width: 2.5rem;
+}
+/*
 :host > div {
   border: 1px solid;
   padding: 0 2rem 2rem;
@@ -19,31 +77,6 @@
   box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.24), 0px 4px 12px rgba(0, 0, 0, 0.24),
     0px 32px 48px rgba(0, 0, 0, 0.36);
   border-radius: 0.75rem;
-  -webkit-animation-duration: 1.5s;
-  animation-duration: 1.5s;
-  -webkit-animation-fill-mode: both;
-  animation-fill-mode: both;
-}
-@-webkit-keyframes spinIn {
-  0% {
-    transform: rotate(-720deg) scale(0) scaleY(0);
-  }
-  100% {
-    transform: rotate(720deg) scale(1) scaleY(1);
-  }
-}
-
-@keyframes spinIn  {
-  0% {
-    transform: rotate(-720deg) scale(0) scaleY(0);
-  }
-  100% {
-    transform: rotate(720deg) scale(1) scaleY(1);
-  }
-}
-.spinIn {
-  -webkit-animation-name: spinIn;
-  animation-name: spinIn;
 }
 :host > div > div.buttons {
   display: flex;
@@ -51,4 +84,4 @@
 }
 :host > div > div.buttons > img:hover {
   cursor: pointer;
-}
+}*/

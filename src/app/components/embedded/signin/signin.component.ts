@@ -1,4 +1,5 @@
 import { EventEmitter, Output } from '@angular/core';
+import { HostListener } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { MessageService } from '../../../services/message/message.service';
 import { TorusService } from '../../../services/torus/torus.service';
@@ -11,6 +12,12 @@ import { TorusService } from '../../../services/torus/torus.service';
 export class SigninComponent implements OnInit {
   loading = false;
   @Output() loginResponse = new EventEmitter();
+  @HostListener('click', ['$event'])
+  onClick(ev) {
+    if (ev?.toElement?.nodeName === 'APP-SIGNIN') {
+      this.abort();
+    }
+  }
   constructor(
     private messageService: MessageService,
     public torusService: TorusService
