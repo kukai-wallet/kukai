@@ -86,6 +86,8 @@ import { EmbeddedComponent } from './components/embedded/embedded.component';
 import { SigninComponent } from './components/embedded/signin/signin.component';
 import { SignExprComponent } from './components/sign-expr/sign-expr.component';
 import { CardComponent } from './components/card/card.component';
+import { PrepareSendComponent } from './components/send/prepare-send/prepare-send.component';
+import { ConfirmSendComponent } from './components/send/confirm-send/confirm-send.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -135,7 +137,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     EmbeddedComponent,
     SigninComponent,
     SignExprComponent,
-    CardComponent
+    CardComponent,
+    PrepareSendComponent,
+    ConfirmSendComponent
   ],
   imports: [
     BrowserModule,

@@ -101,7 +101,7 @@ export class EmbeddedComponent implements OnInit {
   }
   private handleOperationRequest(req: OperationRequest) {
     if (this.walletService.wallet instanceof EmbeddedTorusWallet && req.operations) {
-      this.operationRequests = this.beaconTypeGuard(req.operations);
+      this.operationRequests = this.isValidOperation(req.operations) ? req.operations : null;
     } else {
       this.sendResponse({
         type: ResponseTypes.operationResponse,
@@ -190,7 +190,7 @@ export class EmbeddedComponent implements OnInit {
         });
     }
   }
-  private beaconTypeGuard(transactions: PartialTezosTransactionOperation[]): any {
+  private isValidOperation(transactions: PartialTezosTransactionOperation[]): boolean {
     try {
       transactions.forEach((tx) => {
         if (
@@ -203,9 +203,9 @@ export class EmbeddedComponent implements OnInit {
       });
     } catch (e) {
       console.warn(e);
-      return null;
+      return false;
     }
-    return { operationDetails: transactions };
+    return true;
   }
   private generateInstanceId(): string {
     return common.base58encode(utils.mnemonicToEntropy(utils.generateMnemonic(15)), new Uint8Array([]));

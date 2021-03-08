@@ -12,6 +12,8 @@ import { emitMicheline, assertMichelsonData } from '@taquito/michel-codec';
 import { valueDecoder } from '@taquito/local-forging/dist/lib/michelson/codec';
 import { Uint8ArrayConsumer } from '@taquito/local-forging/dist/lib/uint8array-consumer';
 import { InputValidationService } from '../../services/input-validation/input-validation.service';
+import Big from 'big.js';
+import { PartiallyPreparedTransaction } from '../send/interfaces';
 
 @Component({
   selector: 'app-uri-handler',
@@ -58,8 +60,11 @@ export class UriHandlerComponent implements OnInit {
     this.beaconService.client
       .connect(async (message: any) => {
         console.log('### beacon message', message);
+        if (message?.network?.name === 'edonet giganode' && message.network.type === 'custom') {
+          message.network.type = 'edonet';
+        }
         if (message.type !== BeaconMessageType.SignPayloadRequest && message.network.type !== CONSTANTS.NETWORK) {
-          console.warn(`Rejecting Beacon message because of network. Expected ${CONSTANTS.NETWORK} instead of ${message.network.type}`);
+          console.warn(`Rejecting Beacon message because of network. Expected ${CONSTANTS.NETWORK} instead of ${message.network.type}`, message);
           await this.beaconService.rejectOnNetwork(message);
         } else if (!this.permissionRequest && !this.operationRequest && !this.signRequest) {
           switch (message.type) {
@@ -84,6 +89,8 @@ export class UriHandlerComponent implements OnInit {
               await this.beaconService.rejectOnUnknown(message);
               console.warn('Unknown message type', message);
           }
+        } else {
+          console.log('Blocked by other Beacon request');
         }
       })
       .catch((error) => console.error('connect error', error));
@@ -214,7 +221,6 @@ export class UriHandlerComponent implements OnInit {
         id: this.operationRequest.id
       };
       await this.beaconService.client.respond(response);
-      console.log(response);
     }
     this.operationRequest = null;
   }

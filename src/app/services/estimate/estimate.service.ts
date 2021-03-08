@@ -81,7 +81,7 @@ export class EstimateService {
       if (!tx.amount) {
         tx.amount = 0;
       }
-      if (tx.to.slice(0, 3) !== 'KT1' && !tokenTransfer) {
+      if (tx.destination.slice(0, 3) !== 'KT1' && !tokenTransfer) {
         tx.amount = 0.000001;
       }
       tx.gasLimit = simulation.gasLimit;
