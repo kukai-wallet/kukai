@@ -29,7 +29,7 @@ import {
   styleUrls: ['./embedded.component.scss']
 })
 export class EmbeddedComponent implements OnInit {
-  allowedOrigins = ['http://localhost:3000', 'https://www.tezos.help'];
+  allowedOrigins = ['http://localhost', 'http://localhost:3000', 'https://www.tezos.help', 'https://z-tz.com'];
   origin = '';
   login = false;
   activeAccount: ImplicitAccount = null;

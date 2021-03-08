@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { WalletService } from '../../services/wallet/wallet.service';
 import {
   TorusWallet,
@@ -12,7 +12,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./card.component.scss']
 })
 export class CardComponent implements OnInit {
-  @input() activeAccount: ImplicitAccount;
+  @Input() activeAccount: ImplicitAccount;
 
   constructor(
     private walletService: WalletService,

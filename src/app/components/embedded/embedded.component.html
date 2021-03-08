@@ -1,4 +1,7 @@
 <app-signin (loginResponse)="loginResponse($event)" *ngIf="login"></app-signin>
 <app-send *ngIf="activeAccount && operationRequests" (operationResponse)="operationResponse($event)" [beaconMode]=true [operationRequest]=operationRequests
     [activeAccount]=activeAccount></app-send>
-<app-card *ngIf="activeAccount && !operationRequests" [activeAccount]=activeAccount></app-card>
+<!--
+  Disable until iframe size is managed in the sdk
+  <app-card *ngIf="activeAccount && !operationRequests" [activeAccount]=activeAccount></app-card>
+-->
