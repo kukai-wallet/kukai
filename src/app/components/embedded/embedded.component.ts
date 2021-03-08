@@ -168,6 +168,8 @@ export class EmbeddedComponent implements OnInit {
       response = { type: ResponseTypes.operationResponse, failed: true, error: 'ABORTED_BY_USER' };
     } else if (opHash === 'broadcast_error') {
       response = { type: ResponseTypes.operationResponse, failed: true, error: 'BROADCAST_ERROR' };
+    } else if (opHash === 'invalid_parameters') {
+      response = { type: ResponseTypes.operationResponse, failed: true, error: 'INVALID_PARAMETERS' };
     } else {
       response = { type: ResponseTypes.operationResponse, opHash, failed: false };
     }

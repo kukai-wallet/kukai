@@ -213,7 +213,9 @@ export class UriHandlerComponent implements OnInit {
     if (!opHash) {
       await this.beaconService.rejectOnUserAbort(this.operationRequest);
     } else if (opHash === 'broadcast_error') {
-      await this.beaconService.rejectOnBroadcastError(this.signRequest);
+      await this.beaconService.rejectOnBroadcastError(this.operationRequest);
+    } else if (opHash === 'invalid_parameters') {
+      await this.beaconService.rejectOnParameters(this.operationRequest);
     } else {
       const response: OperationResponseInput = {
         type: BeaconMessageType.OperationResponse,

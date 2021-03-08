@@ -68,7 +68,7 @@ export class SendComponent implements OnInit, OnChanges {
           this.simulateRequest(txs, tokenTransferObj?.tokenId);
         }
       } else {
-        this.operationResponse.emit(null);
+        this.operationResponse.emit('invalid_parameters');
       }
     }
   }
@@ -103,6 +103,7 @@ export class SendComponent implements OnInit, OnChanges {
         if (res) {
           if (res.error) {
             this.messageService.addError(`Simulation error: ${res.error.message}`, 0);
+            this.operationResponse.emit('invalid_parameters');
           } else {
             const fullyPrepared: FullyPreparedTransaction[] = txs.map((tx, i) => {
               return {
