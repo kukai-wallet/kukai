@@ -21,7 +21,7 @@ import {
   TrackResponse,
   LoginRequest,
   OperationRequest
-} from 'kukai-embed/dist/types'
+} from 'kukai-embed/dist/types';
 
 @Component({
   selector: 'app-embedded',
@@ -63,7 +63,7 @@ export class EmbeddedComponent implements OnInit {
         }
       }
       );
-    window.parent.window.postMessage(JSON.stringify({ type: ResponseTypes.initResponse, failed: false }), this.origin || "*");
+    window.parent.window.postMessage(JSON.stringify({ type: ResponseTypes.initResponse, failed: false }), this.origin || '*');
   }
   handleRequest = (evt) => {
     try {
@@ -76,16 +76,16 @@ export class EmbeddedComponent implements OnInit {
           this.origin = evt.origin;
           switch (data.type) {
             case RequestTypes.loginRequest:
-              this.handleLoginRequest(data)
+              this.handleLoginRequest(data);
               break;
             case RequestTypes.operationRequest:
-              this.handleOperationRequest(data)
+              this.handleOperationRequest(data);
               break;
             case RequestTypes.trackRequest:
-              this.handleTrackRequest(data)
+              this.handleTrackRequest(data);
               break;
             case RequestTypes.logoutRequest:
-              this.handleLogoutRequest(data)
+              this.handleLogoutRequest(data);
               break;
             default:
               console.warn('Unknown request');
@@ -116,7 +116,7 @@ export class EmbeddedComponent implements OnInit {
       opHash: req.opHash,
       failed: true,
       error: 'NOT_IMPLEMENTED'
-    })
+    });
   }
   private handleLogoutRequest(req: LogoutRequest) {
     if (this.walletService.wallet instanceof EmbeddedTorusWallet && this.walletService.wallet.instanceId) {
