@@ -209,7 +209,7 @@ export class TzktService implements Indexer {
       });
     const tokenMetadata = fetch(`${this.bcd}/contract/${this.network}/${contractAddress}/tokens`)
       .then(response => response.json())
-      .then(datas => {
+      .then(async datas => {
         const keys = [
           { key: 'name', type: 'string' },
           { key: 'decimals', type: 'number' },
@@ -224,6 +224,7 @@ export class TzktService implements Indexer {
         ];
         for (const data of datas) {
           if (data?.token_id === Number(id)) {
+            const rawData = JSON.parse(JSON.stringify(data));
             this.flattern(data);
             const metadata: any = {};
             for (const a of keys) {
@@ -232,10 +233,17 @@ export class TzktService implements Indexer {
               }
             }
             if (metadata.displayUri) {
-              metadata.displayUri = this.uriToUrl(metadata.displayUri);
+              metadata.displayUri = await this.uriToUrl(metadata.displayUri);
             }
             if (metadata.thumbnailUri) {
-              metadata.thumbnailUri = this.uriToUrl(metadata.thumbnailUri);
+              metadata.thumbnailUri = await this.uriToUrl(metadata.thumbnailUri);
+            }
+            if (!metadata.displayUri && data?.symbol === 'OBJKT') { // Exception for hicetnunc
+              try {
+                if (['image/png', 'image/jpg', 'image/jpeg'].includes(rawData.token_info.formats[0].mimeType)) {
+                  metadata.displayUri = await this.uriToUrl(rawData.token_info.formats[0].uri);
+                }
+              } catch (e) {}
             }
             return metadata;
           }
@@ -298,7 +306,7 @@ export class TzktService implements Indexer {
               console.log('token_metadata_map', child2.children);
               for (const child3 of child2.children) {
                 if (!child3.name || child3.name === '""') {
-                  url = this.uriToUrl(child3.value);
+                  url = await this.uriToUrl(child3.value);
                 } else {
                   for (const key of lookFor.strings) {
                     if (child3.name === key) {
@@ -340,7 +348,7 @@ export class TzktService implements Indexer {
         delete metadata['displayURI'];
       }
       if (metadata['displayUri']) {
-        metadata['displayUri'] = this.uriToUrl(metadata['displayUri']);
+        metadata['displayUri'] = await this.uriToUrl(metadata['displayUri']);
       }
       return metadata;
     }
@@ -374,7 +382,7 @@ export class TzktService implements Indexer {
       delete metadata['displayURI'];
     }
     if (metadata['displayUri']) {
-      metadata['displayUri'] = this.uriToUrl(metadata['displayUri']);
+      metadata['displayUri'] = await this.uriToUrl(metadata['displayUri']);
     }
     if (metadata.decimals === undefined) {
       metadata.decimals = 0;
@@ -388,7 +396,7 @@ export class TzktService implements Indexer {
     try {
       for (const child of contractBigMap) {
         if (child.data.key.value === '') {
-          url = this.uriToUrl(child.data.value.value);
+          url = await this.uriToUrl(child.data.value.value);
           break;
         }
       }
@@ -447,21 +455,20 @@ export class TzktService implements Indexer {
     }
     return { contract, token };
   }
-  uriToUrl(uri: string): string {
-    if (uri && uri.length > 7) {
-      if (uri.startsWith('ipfs://')) {
-        return `https://cloudflare-ipfs.com/ipfs/${uri.slice(7)}`;
-      } else if (uri.startsWith('https://')) {
-        return uri;
-      } else if (!CONSTANTS.MAINNET && (uri.startsWith('http://localhost') || uri.startsWith('http://127.0.0.1'))) {
-        return uri;
-      } else {
-        console.warn('wrong prefix', uri);
-      }
-    } else {
-      console.warn('No uri');
+  async uriToUrl(uri: string): Promise<string> {
+    if (!uri || uri.length < 8) {
+      return '';
     }
-    return '';
+    let url = '';
+    if (uri.startsWith('ipfs://')) {
+      url = `https://cloudflare-ipfs.com/ipfs/${uri.slice(7)}`;
+    } else if (uri.startsWith('https://')) {
+      url = uri;
+    } else if (!CONSTANTS.MAINNET && (uri.startsWith('http://localhost') || uri.startsWith('http://127.0.0.1'))) {
+      url = uri;
+    }
+    const cacheUrl = await this.fetchApi(`https://www.tezos.help/api/img-proxy/?url=${url}`);
+    return cacheUrl ? cacheUrl : '';
   }
   async fetchApi(url: string): Promise<any> {
     return fetch(url)
