@@ -108,5 +108,7 @@ export const CONSTANTS: Constants = {
   }
 };
 export const TRUSTED_TOKEN_CONTRACTS = [
-  'KT1Em3sjKdHo3Fo9Az4EusZXQbkgsdZHkQkF'
+  'KT1Em3sjKdHo3Fo9Az4EusZXQbkgsdZHkQkF',
+  'KT1RJ6PbjHpwc3M5rw5s2Nbmefwbuwbdxton',//hicetnunc
+  'KT1W4wh1qDc2g22DToaTfnCtALLJ7jHn38Xc'//alchememist
 ];

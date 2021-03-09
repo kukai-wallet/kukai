@@ -1,4 +1,8 @@
 # Release notes
+## 1.12.3
+* Add image proxy
+* Display hicetnunc token images
+* Display alchememist images
 ## 1.12.2
 * Enlarge token image
 * add series token metadata property
