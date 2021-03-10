@@ -97,11 +97,14 @@ export class EmbeddedComponent implements OnInit {
   }
   private handleLoginRequest(req: LoginRequest) {
     this.login = true;
+    this.sendResizeReady();
   }
   private handleOperationRequest(req: OperationRequest) {
     if (this.walletService.wallet instanceof EmbeddedTorusWallet && req.operations) {
       this.operationRequests = this.isValidOperation(req.operations) ? req.operations : null;
+      this.sendResizeReady();
     } else {
+      this.sendResizeReady();
       this.sendResponse({
         type: ResponseTypes.operationResponse,
         failed: true,
@@ -161,7 +164,6 @@ export class EmbeddedComponent implements OnInit {
     });
   }
   operationResponse(opHash: string) {
-    this.operationRequests = null;
     let response: OperationResponse;
     if (!opHash) {
       response = { type: ResponseTypes.operationResponse, failed: true, error: 'ABORTED_BY_USER' };
@@ -173,9 +175,16 @@ export class EmbeddedComponent implements OnInit {
       response = { type: ResponseTypes.operationResponse, opHash, failed: false };
     }
     this.sendResponse(response);
+    this.operationRequests = null;
   }
   private sendResponse(resp: ResponseMessage) {
     window.parent.window.postMessage(JSON.stringify(resp), this.origin);
+  }
+  private sendResizeReady() {
+    this.sendResponse({
+      type: ResponseTypes.resize,
+      failed: false
+    })
   }
   private async importAccount(keyPair: KeyPair, userInfo: any, instanceId: string) {
     if (keyPair) {
