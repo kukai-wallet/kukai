@@ -151,7 +151,9 @@ export class EmbeddedComponent implements OnInit {
     } else {
       this.abort();
     }
-    this.login = false;
+    setTimeout(() => {
+      this.login = false;
+    }, 1)
   }
   abort() {
     this.sendResponse({ type: ResponseTypes.loginResponse, failed: true, error: 'ABORTED_BY_USER' });
@@ -175,7 +177,9 @@ export class EmbeddedComponent implements OnInit {
       response = { type: ResponseTypes.operationResponse, opHash, failed: false };
     }
     this.sendResponse(response);
-    this.operationRequests = null;
+    setTimeout(() => {
+      this.operationRequests = null;
+    }, 1)
   }
   private sendResponse(resp: ResponseMessage) {
     window.parent.window.postMessage(JSON.stringify(resp), this.origin);
