@@ -63,7 +63,6 @@ export class EmbeddedComponent implements OnInit {
         }
       }
       );
-    window.parent.window.postMessage(JSON.stringify({ type: ResponseTypes.initResponse, failed: false }), this.origin || '*');
   }
   handleRequest = (evt) => {
     try {
