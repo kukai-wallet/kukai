@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { TorusService } from '../../services/torus/torus.service';
 import { CONSTANTS } from '../../../environments/environment';
 import { ImportService } from '../../services/import/import.service';
@@ -29,11 +29,6 @@ import {
   styleUrls: ['./embedded.component.scss']
 })
 export class EmbeddedComponent implements OnInit {
-  allowedOrigins = ['http://localhost', 'http://localhost:3000', 'https://www.tezos.help', 'https://z-tz.com'];
-  origin = '';
-  login = false;
-  activeAccount: ImplicitAccount = null;
-  operationRequests = null;
   constructor(
     private torusService: TorusService,
     private importService: ImportService,
@@ -42,6 +37,18 @@ export class EmbeddedComponent implements OnInit {
     private route: ActivatedRoute,
     private lookupService: LookupService
   ) { }
+  allowedOrigins = ['http://localhost', 'http://localhost:3000', 'https://www.tezos.help', 'https://z-tz.com'];
+  origin = '';
+  login = false;
+  blockCard = false;
+  activeAccount: ImplicitAccount = null;
+  operationRequests = null;
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    if (event.target.innerWidth === 400) {
+      this.blockCard = false;
+    }
+  }
 
   ngOnInit(): void {
     document.body.style.background = 'none';
@@ -104,14 +111,14 @@ export class EmbeddedComponent implements OnInit {
       this.sendResizeReady();
       this.operationRequests = this.isValidOperation(req.operations) ? req.operations : null;
       if (this.isValidOperation(req.operations)) {
-        this.operationRequests = req.operations
+        this.operationRequests = req.operations;
       } else {
-        this.operationRequests = null
+        this.operationRequests = null;
         this.sendResponse({
           type: ResponseTypes.operationResponse,
           failed: true,
           error: 'INVALID_TRANSACTION'
-        })
+        });
       }
     } else {
       this.sendResizeReady();
@@ -144,29 +151,28 @@ export class EmbeddedComponent implements OnInit {
     }
   }
   loginResponse(loginData: any) {
+    let response: ResponseMessage;
     if (loginData) {
       const { keyPair, userInfo } = loginData;
       const filteredUserInfo = { typeOfLogin: userInfo.typeOfLogin, id: userInfo.verifierId, name: userInfo.name };
       // 160 bits of entropy, base58 encoded
       const instanceId = this.generateInstanceId();
-      this.sendResponse({
+      response = {
         type: ResponseTypes.loginResponse,
         instanceId,
         pk: keyPair.pk,
         pkh: keyPair.pkh,
         userData: filteredUserInfo,
         failed: false
-      });
+      };
       this.importAccount(keyPair, userInfo, instanceId);
     } else {
-      this.abort();
+      response = { type: ResponseTypes.loginResponse, failed: true, error: 'ABORTED_BY_USER' };
     }
+    this.login = false;
     setTimeout(() => {
-      this.login = false;
-    }, 100)
-  }
-  abort() {
-    this.sendResponse({ type: ResponseTypes.loginResponse, failed: true, error: 'ABORTED_BY_USER' });
+      this.sendResponse(response);
+    }, 0);
   }
   noWalletError() {
     this.sendResponse({
@@ -186,19 +192,22 @@ export class EmbeddedComponent implements OnInit {
     } else {
       response = { type: ResponseTypes.operationResponse, opHash, failed: false };
     }
-    this.sendResponse(response);
+    this.operationRequests = null;
     setTimeout(() => {
-      this.operationRequests = null;
-    }, 100)
+      this.sendResponse(response);
+    }, 0);
   }
   private sendResponse(resp: ResponseMessage) {
     window.parent.window.postMessage(JSON.stringify(resp), this.origin);
   }
   private sendResizeReady() {
-    this.sendResponse({
-      type: ResponseTypes.resize,
-      failed: false
-    })
+    this.blockCard = true;
+    setTimeout(() => {
+      this.sendResponse({
+        type: ResponseTypes.resize,
+        failed: false
+      });
+    }, 0);
   }
   private async importAccount(keyPair: KeyPair, userInfo: any, instanceId: string) {
     if (keyPair) {
