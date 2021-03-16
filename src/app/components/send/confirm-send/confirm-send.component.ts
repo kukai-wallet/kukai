@@ -209,8 +209,8 @@ export class ConfirmSendComponent implements OnInit, OnChanges {
         if (ans.success === true) {
           console.log('Transaction successful ', ans);
           if (ans.payload.opHash) {
+            await this.messageService.stopSpinner();
             this.operationResponse.emit(ans.payload.opHash);
-            this.messageService.stopSpinner();
             const metadata = { transactions: this.transactions, opHash: ans.payload.opHash, tokenTransfer: this.tokenTransfer };
             await this.coordinatorService.boost(this.activeAccount.address, metadata);
             if (this.transactions[0].meta) {
@@ -226,7 +226,7 @@ export class ConfirmSendComponent implements OnInit, OnChanges {
             return;
           }
         } else {
-          this.messageService.stopSpinner();
+          await this.messageService.stopSpinner();
           console.log('Transaction error id ', ans.payload.msg);
           this.messageService.addError(ans.payload.msg, 0);
           this.operationResponse.emit('broadcast_error');
