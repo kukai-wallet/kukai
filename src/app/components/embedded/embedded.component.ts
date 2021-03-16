@@ -37,7 +37,7 @@ export class EmbeddedComponent implements OnInit {
     private route: ActivatedRoute,
     private lookupService: LookupService
   ) { }
-  allowedOrigins = ['http://localhost', 'http://localhost:3000', 'https://www.tezos.help', 'https://z-tz.com'];
+  allowedOrigins = ['http://localhost', 'http://localhost:3000', 'https://www.tezos.help', 'https://x-tz.com'];
   origin = '';
   login = false;
   blockCard = false;
