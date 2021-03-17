@@ -88,11 +88,8 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1LyJV9JdcDCp5zDfw6MxpoShXYrBMG3dfK',
   'KT1RfMoskMhR1hDFJTVN6gGMwQLDSTmLeDsc',
   'KT1Szwqme712TkQ7LdP1hBqKjdUUBjxoB8bR',
-<<<<<<< HEAD
   'KT1PS2jZVzNMW54UsnqBqwwkArXnAZ29jiTF',
   'KT1XgGvzQSYrvo4NCxwTvJ7tSbZqGcji4BeV',
-  'KT1R3TqdxsHPYxNQBdY7jmXAeU17WpucMXDh'
-=======
+  'KT1R3TqdxsHPYxNQBdY7jmXAeU17WpucMXDh',
   'KT1PS2jZVzNMW54UsnqBqwwkArXnAZ29jiTF'
->>>>>>> main
 ];
