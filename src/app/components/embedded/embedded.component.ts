@@ -103,8 +103,13 @@ export class EmbeddedComponent implements OnInit {
     } catch { }
   }
   private handleLoginRequest(req: LoginRequest) {
-    this.login = true;
-    this.sendResizeReady();
+    if (this.activeAccount) {
+      const response: ResponseMessage = { type: ResponseTypes.loginResponse, failed: true, error: 'ALREADY_LOGGED_IN' };
+      this.sendResponse(response);
+    } else {
+      this.login = true;
+      this.sendResizeReady();
+    }
   }
   private handleOperationRequest(req: OperationRequest) {
     if (this.walletService.wallet instanceof EmbeddedTorusWallet && req.operations) {
