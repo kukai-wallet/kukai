@@ -252,5 +252,6 @@ export class EmbeddedComponent implements OnInit {
     this.coordinatorService.stopAll();
     this.walletService.clearWallet(instanceId);
     this.lookupService.clear();
+    this.activeAccount = null;
   }
 }
