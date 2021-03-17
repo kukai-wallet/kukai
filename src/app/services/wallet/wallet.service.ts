@@ -20,7 +20,7 @@ import { utils, hd } from '@tezos-core-tools/crypto-utils';
 
 @Injectable()
 export class WalletService {
-  storeKey: string = 'kukai-wallet';
+  storeKey = 'kukai-wallet';
   storageId = 0;
   wallet: WalletObject;
 
