@@ -113,12 +113,12 @@ export class EmbeddedComponent implements OnInit {
   }
   private handleOperationRequest(req: OperationRequest) {
     if (this.walletService.wallet instanceof EmbeddedTorusWallet && req.operations) {
-      this.sendResizeReady();
-      this.operationRequests = this.isValidOperation(req.operations) ? req.operations : null;
       if (this.isValidOperation(req.operations)) {
         this.operationRequests = req.operations;
+        this.sendResizeReady();
       } else {
-        this.operationRequests = null;
+        this.operationRequest = null;
+        this.sendResizeFailed('INVALID_SEND');
         this.sendResponse({
           type: ResponseTypes.operationResponse,
           failed: true,
@@ -126,7 +126,7 @@ export class EmbeddedComponent implements OnInit {
         });
       }
     } else {
-      this.sendResizeReady();
+      this.sendResizeFailed('INVALID_SEND');
       this.sendResponse({
         type: ResponseTypes.operationResponse,
         failed: true,
@@ -204,6 +204,16 @@ export class EmbeddedComponent implements OnInit {
   }
   private sendResponse(resp: ResponseMessage) {
     window.parent.window.postMessage(JSON.stringify(resp), this.origin);
+  }
+  private sendResizeFailed(error: string) {
+    this.blockCard = false;
+    setTimeout(() => {
+      this.sendResponse({
+        type: ResponseTypes.resize,
+        failed: true,
+        error
+      });
+    }, 0);
   }
   private sendResizeReady() {
     this.blockCard = true;
