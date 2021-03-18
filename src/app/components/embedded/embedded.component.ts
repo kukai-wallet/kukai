@@ -113,13 +113,12 @@ export class EmbeddedComponent implements OnInit {
   }
   private handleOperationRequest(req: OperationRequest) {
     if (this.walletService.wallet instanceof EmbeddedTorusWallet && req.operations) {
-      this.operationRequests = this.isValidOperation(req.operations) ? req.operations : null;
       if (this.isValidOperation(req.operations)) {
-        this.sendResizeReady();
         this.operationRequests = req.operations;
+        this.sendResizeReady();
       } else {
+        this.operationRequest = null;
         this.sendResizeFailed('INVALID_SEND');
-        this.operationRequests = null;
         this.sendResponse({
           type: ResponseTypes.operationResponse,
           failed: true,
