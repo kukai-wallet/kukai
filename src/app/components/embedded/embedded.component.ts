@@ -10,6 +10,7 @@ import { CoordinatorService } from '../../services/coordinator/coordinator.servi
 import { utils, common } from '@tezos-core-tools/crypto-utils';
 import { ActivatedRoute } from '@angular/router';
 import { LookupService } from '../../services/lookup/lookup.service';
+import { ActivityService } from '../../services/activity/activity.service';
 import {
   RequestTypes,
   ResponseTypes,
@@ -22,6 +23,7 @@ import {
   LoginRequest,
   OperationRequest
 } from 'kukai-embed/dist/types';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-embedded',
@@ -35,9 +37,12 @@ export class EmbeddedComponent implements OnInit {
     private walletService: WalletService,
     private coordinatorService: CoordinatorService,
     private route: ActivatedRoute,
-    private lookupService: LookupService
+    private lookupService: LookupService,
+    private activityService: ActivityService
   ) { }
   allowedOrigins = ['http://localhost', 'http://localhost:3000', 'https://www.tezos.help', 'https://x-tz.com'];
+  pendingOps: string[] = [];
+  ophashSubscription: Subscription;
   origin = '';
   login = false;
   blockCard = false;
@@ -67,6 +72,7 @@ export class EmbeddedComponent implements OnInit {
           this.origin = this.walletService.wallet.origin;
           this.activeAccount = this.walletService.wallet.implicitAccounts[0];
           this.coordinatorService.startAll();
+          this.subscribeToConfirmedOps();
         }
       }
       );
@@ -94,7 +100,7 @@ export class EmbeddedComponent implements OnInit {
               this.handleLogoutRequest(data);
               break;
             default:
-              console.warn('Unknown request');
+              console.warn('Unknown request', data);
           }
         }
       } else if (data && data.type) {
@@ -134,13 +140,8 @@ export class EmbeddedComponent implements OnInit {
       });
     }
   }
-  private handleTrackRequest(req: TrackRequest) {
-    this.sendResponse({
-      type: ResponseTypes.trackResponse,
-      opHash: req.opHash,
-      failed: true,
-      error: 'NOT_IMPLEMENTED'
-    });
+  private async handleTrackRequest(req: TrackRequest) {
+    this.pendingOps.push(req.opHash);
   }
   private handleLogoutRequest(req: LogoutRequest) {
     if (this.walletService.wallet instanceof EmbeddedTorusWallet && this.walletService.wallet.instanceId) {
@@ -230,10 +231,9 @@ export class EmbeddedComponent implements OnInit {
         .importWalletFromPk(keyPair.pk, '', { verifier: userInfo.typeOfLogin, id: userInfo.verifierId, name: userInfo.name, embedded: true, origin: this.origin }, keyPair.sk, instanceId)
         .then((success: boolean) => {
           if (success) {
-            console.log('success');
             this.activeAccount = this.walletService.wallet.implicitAccounts[0];
-            // should disable the message component in headless mode
             this.coordinatorService.startAll();
+            this.subscribeToConfirmedOps();
           }
         });
     }
@@ -263,5 +263,22 @@ export class EmbeddedComponent implements OnInit {
     this.walletService.clearWallet(instanceId);
     this.lookupService.clear();
     this.activeAccount = null;
+    this.ophashSubscription.unsubscribe();
+  }
+  subscribeToConfirmedOps() {
+    this.ophashSubscription = this.activityService.confirmedOp.subscribe((opHash) => {
+      if (this.pendingOps.includes(opHash)) {
+        this.sendResponse({
+          type: ResponseTypes.trackResponse,
+          opHash: opHash,
+          failed: false
+        });
+        for (let i = 0; i < this.pendingOps.length; i++) {
+          if (this.pendingOps[i] === opHash) {
+            this.pendingOps.splice(i, 1);
+          }
+        }
+      }
+    });
   }
 }

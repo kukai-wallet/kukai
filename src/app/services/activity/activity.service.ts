@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { WalletService } from '../wallet/wallet.service';
-import { of, Observable, from as fromPromise } from 'rxjs';
+import { of, Observable, from as fromPromise, Subject } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 import { Activity, Account, ImplicitAccount } from '../wallet/wallet';
 import { MessageService } from '../message/message.service';
@@ -12,6 +12,7 @@ import { TokenService } from '../token/token.service';
 
 @Injectable()
 export class ActivityService {
+  confirmedOp = new Subject<string>();
   maxTransactions = 10;
   constructor(
     private walletService: WalletService,
@@ -108,6 +109,9 @@ export class ActivityService {
         const now = (new Date()).getTime();
         const timeDiff = now - (activity?.timestamp ? activity.timestamp : now);
         if (timeDiff < 3600000) { // 1 hour
+          if (activity.hash) {
+            this.confirmedOp.next(activity.hash);
+          }
           if (activity.type === 'transaction') {
             if (account.address === activity.source.address) {
               this.messageService.addSuccess(account.shortAddress() + ': Sent ' + this.tokenService.formatAmount(activity.tokenId, activity.amount.toString()));
