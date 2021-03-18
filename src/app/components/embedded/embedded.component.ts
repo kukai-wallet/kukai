@@ -10,7 +10,7 @@ import { CoordinatorService } from '../../services/coordinator/coordinator.servi
 import { utils, common } from '@tezos-core-tools/crypto-utils';
 import { ActivatedRoute } from '@angular/router';
 import { LookupService } from '../../services/lookup/lookup.service';
-import { ActivityService } from '../../services/activity/activity.service'
+import { ActivityService } from '../../services/activity/activity.service';
 import {
   RequestTypes,
   ResponseTypes,
@@ -269,6 +269,6 @@ export class EmbeddedComponent implements OnInit {
           }
         }
       }
-    })
+    });
   }
 }
