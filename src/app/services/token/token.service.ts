@@ -52,7 +52,7 @@ export interface FA2 extends TokensInterface {
 
 export class TokenService {
   readonly AUTO_DISCOVER: boolean = true;
-  readonly version: string = '1.0.4';
+  readonly version: string = '1.0.5';
   private contracts: ContractsType = {};
   private exploredIds: Record<string, { firstCheck: number, lastCheck: number }> = {};
   readonly storeKey = 'tokenMetadata';
@@ -170,7 +170,7 @@ export class TokenService {
     } else {
       const token = this.exploredIds[tokenId];
       const timeout = (token.lastCheck - token.firstCheck) > 600000;
-      const reCheck = (now - token.lastCheck) > 2000;
+      const reCheck = (now - token.lastCheck) > 15000;
       if (timeout || !reCheck) {
         return false;
       }
