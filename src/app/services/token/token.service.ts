@@ -170,7 +170,7 @@ export class TokenService {
     } else {
       const token = this.exploredIds[tokenId];
       const timeout = (token.lastCheck - token.firstCheck) > 600000;
-      const reCheck = (now - token.lastCheck) > 2000;
+      const reCheck = (now - token.lastCheck) > 15000;
       if (timeout || !reCheck) {
         return false;
       }
