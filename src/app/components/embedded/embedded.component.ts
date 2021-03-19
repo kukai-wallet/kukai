@@ -40,7 +40,7 @@ export class EmbeddedComponent implements OnInit {
     private lookupService: LookupService,
     private activityService: ActivityService
   ) { }
-  allowedOrigins = ['http://localhost', 'http://localhost:3000', 'https://www.tezos.help', 'https://x-tz.com'];
+  allowedOrigins = [];
   pendingOps: string[] = [];
   ophashSubscription: Subscription;
   origin = '';
@@ -80,7 +80,7 @@ export class EmbeddedComponent implements OnInit {
   handleRequest = (evt) => {
     try {
       const data: RequestMessage = JSON.parse(evt.data);
-      if (this.allowedOrigins.includes(evt.origin)) {
+      if (!CONSTANTS.MAINNET || this.allowedOrigins.includes(evt.origin)) {
         console.log(`Received ${evt.data} from ${evt.origin}`);
         if (data &&
           data.type &&
@@ -123,7 +123,7 @@ export class EmbeddedComponent implements OnInit {
         this.operationRequests = req.operations;
         this.sendResizeReady();
       } else {
-        this.operationRequest = null;
+        this.operationRequests = null;
         this.sendResizeFailed('INVALID_SEND');
         this.sendResponse({
           type: ResponseTypes.operationResponse,
