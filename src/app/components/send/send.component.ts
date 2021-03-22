@@ -172,7 +172,10 @@ export class SendComponent implements OnInit, OnChanges {
   }
   beaconTokenTransfer(op: any) {
     if (op.parameters && this.tokenService.isKnownTokenContract(op.destination)) {
-      return this.operationService.parseTokenTransfer(op);
+      const tokenTransfer = this.operationService.parseTokenTransfer(op);
+      if (tokenTransfer && this.tokenService.isKnownTokenId(tokenTransfer?.tokenId)) {
+        return tokenTransfer;
+      }
     }
     return null;
   }
