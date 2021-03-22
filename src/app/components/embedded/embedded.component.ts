@@ -160,7 +160,7 @@ export class EmbeddedComponent implements OnInit {
     let response: ResponseMessage;
     if (loginData) {
       const { keyPair, userInfo } = loginData;
-      const filteredUserInfo = { typeOfLogin: userInfo.typeOfLogin, id: userInfo.verifierId, name: userInfo.name };
+      const { idToken = '', accessToken = '', ...filteredUserInfo } = { ...userInfo };
       // 160 bits of entropy, base58 encoded
       const instanceId = this.generateInstanceId();
       response = {
