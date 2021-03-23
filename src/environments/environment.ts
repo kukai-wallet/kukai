@@ -8,6 +8,7 @@ export const environment = {
   production: false
 };
 export const CONSTANTS: Constants = {
+  DEFAULT_TOKEN_IMG: '../../../assets/img/tokens/unknown-token.png',
   NAME: 'Testnet / Edonet',
   NETWORK: 'edonet',
   MAINNET: false,

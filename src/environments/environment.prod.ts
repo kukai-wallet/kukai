@@ -4,6 +4,7 @@ export const environment = {
   production: true
 };
 export const CONSTANTS: Constants = {
+  DEFAULT_TOKEN_IMG: '../../../assets/img/tokens/unknown-token.png',
   NAME: 'Mainnet',
   NETWORK: 'mainnet',
   MAINNET: true,

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import Big from 'big.js';
-import { TokenService, TokenResponseType } from '../../services/token/token.service';
+import { CONSTANTS } from '../../../../src/environments/environment';
+import { TokenService, TokenResponseType, TokenStatus } from '../../services/token/token.service';
 import { ImplicitAccount } from '../../services/wallet/wallet';
 
 @Component({
@@ -43,5 +43,18 @@ export class TokenComponent implements OnInit {
   }
   getDescription(): string {
     return this.token.description ? this.token.description : '—';
+  }
+  onTrust(isTrust: boolean) {
+    if (isTrust) {
+      this.tokenService.setTrusted(this.token.contractAddress, this.token.id)
+    } else {
+      this.tokenService.setRejected(this.token.contractAddress, this.token.id)
+    }
+    this.closeModal()
+  }
+  get getTokenImg() {
+    const token = this.token
+    const defaultImg = CONSTANTS.DEFAULT_TOKEN_IMG;
+    return token.tokenStatus == TokenStatus.APPROVED ? token.thumbnailUrl : defaultImg;
   }
 }

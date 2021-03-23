@@ -1,5 +1,5 @@
 <div class="list-item" (click)="openModal()">
-  <div class="imgWrapper"><img src="{{ token.thumbnailUrl }}"></div>
+  <div class="imgWrapper"><img [src]="getTokenImg"></div>
   <span>{{ listDisplayText() }}</span>
 </div>
 
@@ -28,7 +28,7 @@
             </div>
           </ng-template>
         </div>
-        <img (click)="fullSize = true" src="{{ token.displayUrl }}">
+        <img (click)="fullSize = true" [src]="getTokenImg">
       </div>
       <div class="group">
         <label>Description</label>
@@ -36,7 +36,11 @@
       </div>
       <div *ngIf="token.contractAddress" class="group">
         <label>Contract Address</label>
-        <p>{{ token.contractAddress }}</p>
+        <p>{{ token.contractAddress }}&nbsp;<span style="font-weight: lighter;">(#{{ token.id }})</span></p>
+      </div>
+      <div *ngIf="token.tokenStatus === undefined" class="row-group row-approve" style="margin: 1.25rem 0 0.5rem 0;">
+        <button class="purple confirm" (click)="onTrust(true)">Approve</button>
+        <button class="confirm" style="background-color: rgb(214, 89, 89);color: white;" (click)="onTrust(false)">Reject</button>
       </div>
     </div>
   </div>

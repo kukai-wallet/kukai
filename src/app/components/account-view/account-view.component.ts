@@ -12,7 +12,7 @@ import { CONSTANTS } from '../../../environments/environment';
 import { LookupService } from '../../services/lookup/lookup.service';
 import { ActivityService } from '../../services/activity/activity.service';
 import Big from 'big.js';
-import { TokenService, TokenResponseType } from '../../services/token/token.service';
+import { TokenService, TokenResponseType, TokenStatus } from '../../services/token/token.service';
 
 @Component({
   selector: 'app-account-view',
@@ -43,6 +43,7 @@ export class AccountViewComponent implements OnInit {
       let address = this.route.snapshot.paramMap.get('address');
       if (this.walletService.addressExists(address)) {
         this.account = this.walletService.wallet.getAccount(address);
+        // console.log('this.account',JSON.stringify(this.account,null,2))
       }
       this.router.events
         .pipe(filter((evt) => evt instanceof NavigationEnd))
@@ -108,6 +109,13 @@ export class AccountViewComponent implements OnInit {
   }
   displayTokenCard(): boolean {
     return (this.account instanceof ImplicitAccount) || (this.account?.tokens?.length > 0);
+  }
+  get getTokens() {
+    // Do not show unknown tokens or rejected tokens
+    return this.account.tokens.filter(t =>
+      this.tokenService.getAsset(t.tokenId) &&
+      !(this.tokenService.getAsset(t.tokenId)?.tokenStatus == TokenStatus.REJECTED)
+    )
   }
 }
 

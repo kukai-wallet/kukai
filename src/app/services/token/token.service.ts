@@ -1,7 +1,12 @@
 import { Injectable } from '@angular/core';
-import { CONSTANTS, TRUSTED_TOKEN_CONTRACTS } from '../../../environments/environment';
+import { CONSTANTS } from '../../../environments/environment';
 import { IndexerService } from '../indexer/indexer.service';
 import Big from 'big.js';
+
+export enum TokenStatus {
+  APPROVED,
+  REJECTED,
+}
 
 export interface TokenResponseType {
   contractAddress: string;
@@ -18,6 +23,8 @@ export interface TokenResponseType {
   isBooleanAmount?: boolean;
   shouldPreferSymbol?: boolean;
   series?: string;
+  tokenStatus?: TokenStatus;
+
 }
 export type ContractsType = Record<string, ContractType>;
 export type ContractType = FA12 | FA2;
@@ -135,22 +142,18 @@ export class TokenService {
           category: metadata.tokenCategory ? metadata.tokenCategory : '',
           tokens: {}
         };
-        const defaultImg = '../../../assets/img/tokens/unknown-token.png';
-        let displayUrl = (metadata.displayUri && TRUSTED_TOKEN_CONTRACTS.includes(contractAddress)) ? metadata.displayUri : defaultImg;
-        let thumbnailUrl = (metadata.thumbnailUri && TRUSTED_TOKEN_CONTRACTS.includes(contractAddress)) ? metadata.thumbnailUri : defaultImg;
-        if (displayUrl === defaultImg && thumbnailUrl !== defaultImg) {
-          displayUrl = thumbnailUrl;
-        }
-        if (displayUrl !== defaultImg && thumbnailUrl === defaultImg) {
-          thumbnailUrl = displayUrl;
-        }
+        const defaultImg = CONSTANTS.DEFAULT_TOKEN_IMG;
+        const displayUrl = metadata.displayUri;
+        const thumbnailUrl = metadata.thumbnailUri;
+
         const token: TokenData = {
           name: metadata.name ? metadata.name : '',
           symbol: metadata.symbol ? metadata.symbol : '',
           decimals: Number(metadata.decimals),
           description: metadata.description ? metadata.description : '',
-          displayUrl,
-          thumbnailUrl,
+          // take the thumbnailUrl and vice vera if there is no url property
+          displayUrl: displayUrl || thumbnailUrl || defaultImg,
+          thumbnailUrl: thumbnailUrl || displayUrl || defaultImg,
           isTransferable: metadata?.isTransferable ? metadata.isTransferable : true,
           isBooleanAmount: metadata?.isBooleanAmount ? metadata.isBooleanAmount : false,
           series: metadata.series ? metadata.series : undefined
@@ -190,12 +193,13 @@ export class TokenService {
     const tokenIdArray = tokenId.split(':');
     const contractAddress: string = tokenIdArray[0];
     const id: number = tokenIdArray[1] ? Number(tokenIdArray[1]) : -1;
+    const defaultImg = CONSTANTS.DEFAULT_TOKEN_IMG;
     return {
       contractAddress,
       id,
       decimals: 0,
-      displayUrl: '../../../assets/img/tokens/unknown-token.png',
-      thumbnailUrl: '../../../assets/img/tokens/unknown-token.png',
+      displayUrl: defaultImg,
+      thumbnailUrl: defaultImg,
       name: '[Unknown token]',
       symbol: '',
       description: '',
@@ -244,6 +248,20 @@ export class TokenService {
       } else {
         return '[Unknown token]';
       }
+    }
+  }
+  setTrusted(contractAddress: string, tokenId: number) {
+    const token: TokenResponseType = this.contracts[contractAddress].tokens[tokenId]
+    if (token) {
+      token.tokenStatus = TokenStatus.APPROVED
+      this.saveMetadata()
+    }
+  }
+  setRejected(contractAddress: string, tokenId: number) {
+    const token: TokenResponseType = this.contracts[contractAddress].tokens[tokenId]
+    if (token) {
+      token.tokenStatus = TokenStatus.REJECTED
+      this.saveMetadata()
     }
   }
 }

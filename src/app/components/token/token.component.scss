@@ -1,4 +1,5 @@
 @import '../../../scss/modal.scss';
+@import '../send/send.component.scss';
 :host {
   flex-grow: 1;
 }
@@ -68,4 +69,7 @@
   object-fit: contain;
   height: 100%;
   width: 100%;
+}
+.row-approve button{
+  margin: 0 10px;
 }

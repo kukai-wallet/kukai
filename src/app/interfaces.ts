@@ -107,6 +107,7 @@ export interface DefaultTransactionParams {
   }[];
 }
 export interface Constants {
+  DEFAULT_TOKEN_IMG: string;
   NAME: string;
   NETWORK: string;
   MAINNET: boolean;
