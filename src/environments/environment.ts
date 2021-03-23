@@ -8,11 +8,6 @@ export const environment = {
   production: false
 };
 export const CONSTANTS: Constants = {
-  /* NAME: 'Testnet / Delphinet',
-  NETWORK: 'delphinet',
-  MAINNET: false,
-  NODE_URL: 'https://api.tez.ie/rpc/delphinet',
-  BLOCK_EXPLORER_URL: 'https://delphinet.tzkt.io',*/
   NAME: 'Testnet / Edonet',
   NETWORK: 'edonet',
   MAINNET: false,
@@ -84,5 +79,8 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1T66r244FFuH2hpfZgoKVRLXDtnfjBRxVc',
   'KT1XgGvzQSYrvo4NCxwTvJ7tSbZqGcji4BeV',
   'KT1GhzeDu852VfxHQT3AnnUu2U1q4GnVTYJv',
-  'KT1R3TqdxsHPYxNQBdY7jmXAeU17WpucMXDh'
+  'KT1R3TqdxsHPYxNQBdY7jmXAeU17WpucMXDh',
+  'KT1RUSCZ7pJ3WNTuXFD44UpStmNRjA459guZ',
+  'KT1PrNd3sy1pLAqGtft47dzG4v8KizqPJntT',
+  'KT1WgeR4SaaTiTrwzrR1aD7h9YfeUTWcvC9j'
 ];

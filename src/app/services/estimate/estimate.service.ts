@@ -240,6 +240,10 @@ export class EstimateService {
       switch (`${destination}:${entrypoint}`) {
         case 'KT1TWb6cE56q2L8yTeNNchXqDSXacrNqyVNZ:reward':
           return { gasUsage: 59920, storageUsage: 150 };
+        case 'KT1RUSCZ7pJ3WNTuXFD44UpStmNRjA459guZ:reward':
+          return { gasUsage: 59920, storageUsage: 150 };
+        case 'KT1PrNd3sy1pLAqGtft47dzG4v8KizqPJntT:reward':
+          return { gasUsage: 59920, storageUsage: 150 };
       }
     }
     return null;
