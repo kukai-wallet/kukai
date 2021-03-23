@@ -238,13 +238,19 @@ export class TzktService implements Indexer {
             if (metadata.thumbnailUri) {
               metadata.thumbnailUri = await this.uriToUrl(metadata.thumbnailUri);
             }
-            if (!metadata.displayUri && data?.symbol === 'OBJKT') { // Exception for hicetnunc
-              try {
+            try { // Exceptions
+              if (!metadata.thumbnailUri && data?.thumbnail_uri && typeof data.thumbnail_uri === 'string') { // mandala
+                metadata.thumbnailUri = await this.uriToUrl(data.thumbnail_uri);
+              }
+              if (metadata?.isBooleanAmount === undefined && typeof data?.isBooleanAmount === 'string' && data?.isBooleanAmount === 'true') { // mandala
+                metadata.isBooleanAmount = true;
+              }
+              if (!metadata.displayUri && data?.symbol === 'OBJKT') { // hicetnunc
                 if (['image/png', 'image/jpg', 'image/jpeg'].includes(rawData.token_info.formats[0].mimeType)) {
                   metadata.displayUri = await this.uriToUrl(rawData.token_info.formats[0].uri);
                 }
-              } catch (e) {}
-            }
+              }
+            } catch (e) { }
             return metadata;
           }
         }

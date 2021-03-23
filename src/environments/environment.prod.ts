@@ -111,5 +111,6 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1Em3sjKdHo3Fo9Az4EusZXQbkgsdZHkQkF',
   'KT1RJ6PbjHpwc3M5rw5s2Nbmefwbuwbdxton',//hicetnunc
   'KT1M2JnD1wsg7w2B4UXJXtKQPuDUpU2L7cJH',//hicetnunc-legacy
-  'KT1W4wh1qDc2g22DToaTfnCtALLJ7jHn38Xc'//alchememist
+  'KT1W4wh1qDc2g22DToaTfnCtALLJ7jHn38Xc',//alchememist
+  'KT1EH8yKXkRoxNkULRB1dSuwhkKyi5LJH82o'//mandala
 ];
