@@ -11,6 +11,7 @@ import { utils, common } from '@tezos-core-tools/crypto-utils';
 import { ActivatedRoute } from '@angular/router';
 import { LookupService } from '../../services/lookup/lookup.service';
 import { ActivityService } from '../../services/activity/activity.service';
+import { EmbeddedAuthService } from '../../services/embedded-auth/embedded-auth.service';
 import {
   RequestTypes,
   ResponseTypes,
@@ -21,7 +22,9 @@ import {
   TrackRequest,
   TrackResponse,
   LoginRequest,
-  OperationRequest
+  OperationRequest,
+  AuthRequest,
+  AuthResponse
 } from 'kukai-embed/dist/types';
 import { Subscription } from 'rxjs';
 
@@ -38,7 +41,8 @@ export class EmbeddedComponent implements OnInit {
     private coordinatorService: CoordinatorService,
     private route: ActivatedRoute,
     private lookupService: LookupService,
-    private activityService: ActivityService
+    private activityService: ActivityService,
+    private embeddedAuthService: EmbeddedAuthService
   ) { }
   allowedOrigins = [];
   pendingOps: string[] = [];
@@ -98,6 +102,9 @@ export class EmbeddedComponent implements OnInit {
               break;
             case RequestTypes.logoutRequest:
               this.handleLogoutRequest(data);
+              break;
+            case RequestTypes.authRequest:
+              this.handleAuthRequest(data);
               break;
             default:
               console.warn('Unknown request', data);
@@ -179,6 +186,22 @@ export class EmbeddedComponent implements OnInit {
     setTimeout(() => {
       this.sendResponse(response);
     }, 0);
+  }
+  async handleAuthRequest(authReq: AuthRequest) {
+    this.embeddedAuthService.authenticate(authReq, this.origin).then((authResponse: any) => {
+      this.sendResponse({
+        type: ResponseTypes.authResponse,
+        failed: false,
+        message: authResponse.message,
+        signature: authResponse.signature
+      });
+    }).catch((e: Error) => {
+      this.sendResponse({
+        type: ResponseTypes.authResponse,
+        failed: true,
+        error: e.message ? e.message : 'UNKNOWN_ERROR'
+      });
+    });
   }
   noWalletError() {
     this.sendResponse({
