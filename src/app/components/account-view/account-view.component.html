@@ -38,7 +38,7 @@
             <ng-container *ngIf="tokenService.getAsset(token.tokenId); else unknownToken; let tokenData">
               <div class="token-row">
                 <app-token [account]="account" [token]="tokenData"></app-token>
-                <app-send [activeAccount]="account" [tokenTransfer]="token.tokenId"></app-send>
+                <app-send *ngIf="isTokenTrusted(tokenData)" [activeAccount]="account" [tokenTransfer]="token.tokenId"></app-send>
               </div>
             </ng-container>
             <ng-template #unknownToken>

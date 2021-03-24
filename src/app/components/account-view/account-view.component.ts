@@ -110,6 +110,9 @@ export class AccountViewComponent implements OnInit {
   displayTokenCard(): boolean {
     return (this.account instanceof ImplicitAccount) || (this.account?.tokens?.length > 0);
   }
+  isTokenTrusted(token) {
+    return token.tokenStatus == TokenStatus.APPROVED
+  }
   get getTokens() {
     // Do not show unknown tokens or rejected tokens
     return this.account.tokens.filter(t =>
@@ -117,5 +120,6 @@ export class AccountViewComponent implements OnInit {
       !(this.tokenService.getAsset(t.tokenId)?.tokenStatus == TokenStatus.REJECTED)
     )
   }
+
 }
 

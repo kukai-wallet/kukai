@@ -52,9 +52,4 @@ export class TokenComponent implements OnInit {
     }
     this.closeModal()
   }
-  get getTokenImg() {
-    const token = this.token
-    const defaultImg = CONSTANTS.DEFAULT_TOKEN_IMG;
-    return token.tokenStatus == TokenStatus.APPROVED ? token.thumbnailUrl : defaultImg;
-  }
 }

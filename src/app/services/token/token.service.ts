@@ -24,7 +24,8 @@ export interface TokenResponseType {
   shouldPreferSymbol?: boolean;
   series?: string;
   tokenStatus?: TokenStatus;
-
+  metaDisplayUrl: string;
+  metaThumbnailUrl: string;
 }
 export type ContractsType = Record<string, ContractType>;
 export type ContractType = FA12 | FA2;
@@ -42,6 +43,8 @@ export interface TokenData {
   isBooleanAmount?: boolean;
   shouldPreferSymbol?: boolean;
   series?: string;
+  metaDisplayUrl: string;
+  metaThumbnailUrl: string;
 }
 export interface FA12 extends TokensInterface {
   kind: 'FA1.2';
@@ -143,8 +146,8 @@ export class TokenService {
           tokens: {}
         };
         const defaultImg = CONSTANTS.DEFAULT_TOKEN_IMG;
-        const displayUrl = metadata.displayUri;
-        const thumbnailUrl = metadata.thumbnailUri;
+        const displayUrl = defaultImg;
+        const thumbnailUrl = defaultImg;
 
         const token: TokenData = {
           name: metadata.name ? metadata.name : '',
@@ -152,11 +155,13 @@ export class TokenService {
           decimals: Number(metadata.decimals),
           description: metadata.description ? metadata.description : '',
           // take the thumbnailUrl and vice vera if there is no url property
-          displayUrl: displayUrl || thumbnailUrl || defaultImg,
-          thumbnailUrl: thumbnailUrl || displayUrl || defaultImg,
+          displayUrl: displayUrl,
+          thumbnailUrl: thumbnailUrl,
           isTransferable: metadata?.isTransferable ? metadata.isTransferable : true,
           isBooleanAmount: metadata?.isBooleanAmount ? metadata.isBooleanAmount : false,
-          series: metadata.series ? metadata.series : undefined
+          series: metadata.series ? metadata.series : undefined,
+          metaDisplayUrl: metadata.displayUri || metadata.thumbnailUrl || defaultImg,
+          metaThumbnailUrl: metadata.thumbnailUri || metadata.displayUrl || defaultImg,
         };
         contract.tokens[id] = token;
         this.addAsset(contractAddress, contract);
@@ -205,6 +210,8 @@ export class TokenService {
       description: '',
       category: '',
       kind: 'FA2',
+      metaDisplayUrl: defaultImg,
+      metaThumbnailUrl: defaultImg
     };
   }
   saveMetadata() {
@@ -236,6 +243,9 @@ export class TokenService {
     } else {
       const token = this.getAsset(tokenKey);
       if (token) {
+        if(token.tokenStatus == TokenStatus.REJECTED){
+          return `[REJECTED TOKEN]`;
+        }
         if ((!token.shouldPreferSymbol && token.name) || !token.symbol) {
           if (token.isBooleanAmount) {
             return `${token.name}`;
@@ -254,6 +264,8 @@ export class TokenService {
     const token: TokenResponseType = this.contracts[contractAddress].tokens[tokenId]
     if (token) {
       token.tokenStatus = TokenStatus.APPROVED
+      token.displayUrl = token.metaDisplayUrl
+      token.thumbnailUrl = token.metaThumbnailUrl
       this.saveMetadata()
     }
   }

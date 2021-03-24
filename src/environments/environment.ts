@@ -26,7 +26,9 @@ export const CONSTANTS: Constants = {
           description: 'USDtz is a Tezos on-chain stablecoin pegged to the value of the United States Dollar.',
           displayUrl: '../../../assets/img/tokens/usdtz.png',
           thumbnailUrl: '../../../assets/img/tokens/usdtz.png',
-          shouldPreferSymbol: true
+          shouldPreferSymbol: true,
+          metaDisplayUrl: '../../../assets/img/tokens/usdtz.png',
+          metaThumbnailUrl: '../../../assets/img/tokens/usdtz.png',
         }
       }
     },
@@ -42,7 +44,9 @@ export const CONSTANTS: Constants = {
           displayUrl: '../../../assets/img/tokens/mfil.jfif',
           thumbnailUrl: '../../../assets/img/tokens/mfil.jfif',
           isTransferable: false,
-          isBooleanAmount: true
+          isBooleanAmount: true,
+          metaDisplayUrl: '../../../assets/img/tokens/mfil.jfif',
+          metaThumbnailUrl: '../../../assets/img/tokens/mfil.jfif',
         }
       }
     },
@@ -57,7 +61,9 @@ export const CONSTANTS: Constants = {
           description: 'Kolibri is a Tezos based stablecoin built on Collateralized Debt Positions (CDPs) known as Ovens.',
           displayUrl: '../../../assets/img/tokens/kusd.png',
           thumbnailUrl: '../../../assets/img/tokens/kusd.png',
-          shouldPreferSymbol: true
+          shouldPreferSymbol: true,
+          metaDisplayUrl: '../../../assets/img/tokens/kusd.png',
+          metaThumbnailUrl: '../../../assets/img/tokens/kusd.png',
         }
       }
     }
