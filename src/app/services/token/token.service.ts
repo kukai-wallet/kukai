@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CONSTANTS } from '../../../environments/environment';
+import { CONSTANTS, TRUSTED_TOKEN_CONTRACTS } from '../../../environments/environment';
 import { IndexerService } from '../indexer/indexer.service';
 import Big from 'big.js';
 
@@ -42,6 +42,7 @@ export interface TokenData {
   isBooleanAmount?: boolean;
   shouldPreferSymbol?: boolean;
   series?: string;
+  tokenStatus: TokenStatus;
 }
 export interface FA12 extends TokensInterface {
   kind: 'FA1.2';
@@ -163,6 +164,7 @@ export class TokenService {
           isTransferable: metadata?.isTransferable ? metadata.isTransferable : true,
           isBooleanAmount: metadata?.isBooleanAmount ? metadata.isBooleanAmount : false,
           series: metadata.series ? metadata.series : undefined,
+          tokenStatus: TRUSTED_TOKEN_CONTRACTS.includes(contractAddress) ? TokenStatus.APPROVED : TokenStatus.PENDING,
         };
         contract.tokens[id] = token;
         this.addAsset(contractAddress, contract);
