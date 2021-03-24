@@ -47,7 +47,7 @@ export class EmbeddedAuthService {
   }
   private signMessage(message: string, sk: string): string {
     const p = new Parser();
-    const res = p.parseMichelineExpression(message);
+    const res = p.parseMichelineExpression(`"${message.replace('"', '\"')}"`);
     const hexMessage = `05${valueEncoder(res)}`;
     const signature: string = this.operationService.sign(hexMessage, sk).edsig;
     return signature;
