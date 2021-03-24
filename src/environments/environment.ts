@@ -10,7 +10,11 @@ export const environment = {
 };
 export const CONSTANTS: Constants = {
   DEFAULT_TOKEN_IMG: '../../../assets/img/tokens/unknown-token.png',
-  METADATA_VERSION: '1.0.6',
+  // add new versions to end of array
+  METADATA_VERSIONS: [
+    '1.0.5',
+    '1.0.6'
+  ],
   NAME: 'Testnet / Edonet',
   NETWORK: 'edonet',
   MAINNET: false,

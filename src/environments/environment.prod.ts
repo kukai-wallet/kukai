@@ -5,6 +5,10 @@ export const environment = {
 };
 export const CONSTANTS: Constants = {
   DEFAULT_TOKEN_IMG: '../../../assets/img/tokens/unknown-token.png',
+  METADATA_VERSIONS: [
+    '1.0.5',
+    '1.0.6'
+  ],
   NAME: 'Mainnet',
   NETWORK: 'mainnet',
   MAINNET: true,

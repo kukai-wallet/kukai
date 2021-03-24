@@ -60,7 +60,7 @@ export interface FA2 extends TokensInterface {
 
 export class TokenService {
   readonly AUTO_DISCOVER: boolean = true;
-  readonly version: string = CONSTANTS.METADATA_VERSION;
+  readonly version: string = CONSTANTS.METADATA_VERSIONS[CONSTANTS.METADATA_VERSIONS.length - 1];
   private contracts: ContractsType = {};
   private exploredIds: Record<string, { firstCheck: number, lastCheck: number }> = {};
   readonly storeKey = 'tokenMetadata';
@@ -225,27 +225,19 @@ export class TokenService {
   loadMetadata(): any {
     const metadataJson = localStorage.getItem(this.storeKey);
     if (metadataJson) {
-      let metadata = JSON.parse(metadataJson);
-
       // backwards compatibility for tokenStatus
-      if (metadata && typeof metadata.version === 'string' && metadata.version !== this.version) {
-        for (const contractAddress of Object.keys(metadata.contracts || [])) {
-          metadata.tokenStatus = TRUSTED_TOKEN_CONTRACTS.includes(contractAddress) ? TokenStatus.APPROVED : TokenStatus.PENDING;
-        }
-        metadata.version = this.version
-        localStorage.setItem(this.storeKey, JSON.stringify(metadata))
-      }
+      const metadata = this.migrateMetadataVersions(JSON.parse(metadataJson))
 
-      if (metadata?.version === this.version) {
-        if (metadata?.contracts) {
-          const contractAddresses = Object.keys(metadata.contracts);
-          for (const address of contractAddresses) {
-            this.addAsset(address, metadata.contracts[address]);
-          }
+      // load assets into token-service class
+      if (metadata?.contracts) {
+        const contractAddresses = Object.keys(metadata.contracts);
+        for (const address of contractAddresses) {
+          this.addAsset(address, metadata.contracts[address]);
         }
-        if (metadata?.exploredIds) {
-          this.exploredIds = metadata.exploredIds;
-        }
+      }
+      // load exploredIds into token-service class
+      if (metadata?.exploredIds) {
+        this.exploredIds = metadata.exploredIds;
       }
     }
   }
@@ -285,5 +277,28 @@ export class TokenService {
       token.tokenStatus = TokenStatus.REJECTED
       this.saveMetadata()
     }
+  }
+
+  migrateMetadataVersions(metadata: any) {
+    console.log('metadata.version', metadata.version)
+    switch (metadata.version) {
+      case '1.0.5':
+        // update from '1.0.5' to '1.0.6' requires the tokenStatus property
+        for (const contractAddress of Object.keys(metadata.contracts || [])) {
+          metadata.tokenStatus = TRUSTED_TOKEN_CONTRACTS.includes(contractAddress) ? TokenStatus.APPROVED : TokenStatus.PENDING;
+        }
+        metadata.version = CONSTANTS.METADATA_VERSIONS[CONSTANTS.METADATA_VERSIONS.findIndex(v => v == metadata.version) + 1]
+        localStorage.setItem(this.storeKey, JSON.stringify(metadata))
+        break;
+      case '1.0.6':
+        // current version, nothing to do
+        return metadata
+      default:
+        console.warn('metadata version migration not configured')
+        return metadata
+    }
+
+    // continue migrating
+    return this.migrateMetadataVersions(metadata)
   }
 }
