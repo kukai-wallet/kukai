@@ -244,7 +244,7 @@ export class TokenService {
       const token = this.getAsset(tokenKey);
       if (token) {
         if(token.tokenStatus == TokenStatus.REJECTED){
-          return `[REJECTED TOKEN]`;
+          return `[Unknown token]`;
         }
         if ((!token.shouldPreferSymbol && token.name) || !token.symbol) {
           if (token.isBooleanAmount) {
