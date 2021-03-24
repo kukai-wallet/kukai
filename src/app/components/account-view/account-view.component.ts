@@ -120,6 +120,5 @@ export class AccountViewComponent implements OnInit {
       !(this.tokenService.getAsset(t.tokenId)?.tokenStatus == TokenStatus.REJECTED)
     )
   }
-
 }
 

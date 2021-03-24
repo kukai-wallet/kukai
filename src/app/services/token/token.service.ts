@@ -4,6 +4,7 @@ import { IndexerService } from '../indexer/indexer.service';
 import Big from 'big.js';
 
 export enum TokenStatus {
+  PENDING,
   APPROVED,
   REJECTED,
 }
@@ -23,9 +24,7 @@ export interface TokenResponseType {
   isBooleanAmount?: boolean;
   shouldPreferSymbol?: boolean;
   series?: string;
-  tokenStatus?: TokenStatus;
-  metaDisplayUrl: string;
-  metaThumbnailUrl: string;
+  tokenStatus: TokenStatus;
 }
 export type ContractsType = Record<string, ContractType>;
 export type ContractType = FA12 | FA2;
@@ -43,8 +42,6 @@ export interface TokenData {
   isBooleanAmount?: boolean;
   shouldPreferSymbol?: boolean;
   series?: string;
-  metaDisplayUrl: string;
-  metaThumbnailUrl: string;
 }
 export interface FA12 extends TokensInterface {
   kind: 'FA1.2';
@@ -81,17 +78,23 @@ export class TokenService {
     const contractAddress: string = tokenIdArray[0];
     const id: number = tokenIdArray[1] ? Number(tokenIdArray[1]) : -1;
     const contract: ContractType = this.contracts[contractAddress];
+    const defaultImg = CONSTANTS.DEFAULT_TOKEN_IMG;
     if (id > -1) {
       if (contract) {
         const token = contract.tokens[id];
         if (token) {
-          return {
+          const objAsset = {
             kind: contract.kind,
             category: contract.category,
             id,
             contractAddress,
             ...token
-          };
+          }
+          if (token.tokenStatus !== TokenStatus.APPROVED) {
+            objAsset.displayUrl = defaultImg
+            objAsset.thumbnailUrl = defaultImg
+          }
+          return objAsset;
         }
       }
     }
@@ -146,20 +149,20 @@ export class TokenService {
           tokens: {}
         };
         const defaultImg = CONSTANTS.DEFAULT_TOKEN_IMG;
+        // take the thumbnailUrl and vice vera if there is no url property
+        const displayUrl = metadata.displayUri || metadata.thumbnailUri || defaultImg;
+        const thumbnailUrl = metadata.thumbnailUri || metadata.displayUrl || defaultImg;
 
         const token: TokenData = {
           name: metadata.name ? metadata.name : '',
           symbol: metadata.symbol ? metadata.symbol : '',
           decimals: Number(metadata.decimals),
           description: metadata.description ? metadata.description : '',
-          displayUrl: defaultImg,
-          thumbnailUrl: defaultImg,
+          displayUrl: displayUrl,
+          thumbnailUrl: thumbnailUrl,
           isTransferable: metadata?.isTransferable ? metadata.isTransferable : true,
           isBooleanAmount: metadata?.isBooleanAmount ? metadata.isBooleanAmount : false,
           series: metadata.series ? metadata.series : undefined,
-          // take the thumbnailUrl and vice vera if there is no url property
-          metaDisplayUrl: metadata.displayUri || metadata.thumbnailUri || defaultImg,
-          metaThumbnailUrl: metadata.thumbnailUri || metadata.displayUrl || defaultImg,
         };
         contract.tokens[id] = token;
         this.addAsset(contractAddress, contract);
@@ -208,8 +211,7 @@ export class TokenService {
       description: '',
       category: '',
       kind: 'FA2',
-      metaDisplayUrl: defaultImg,
-      metaThumbnailUrl: defaultImg
+      tokenStatus: TokenStatus.PENDING,
     };
   }
   saveMetadata() {
@@ -241,7 +243,7 @@ export class TokenService {
     } else {
       const token = this.getAsset(tokenKey);
       if (token) {
-        if(token.tokenStatus == TokenStatus.REJECTED){
+        if (token.tokenStatus == TokenStatus.REJECTED) {
           return `[Unknown token]`;
         }
         if ((!token.shouldPreferSymbol && token.name) || !token.symbol) {
@@ -262,8 +264,6 @@ export class TokenService {
     const token: TokenResponseType = this.contracts[contractAddress].tokens[tokenId]
     if (token) {
       token.tokenStatus = TokenStatus.APPROVED
-      token.displayUrl = token.metaDisplayUrl
-      token.thumbnailUrl = token.metaThumbnailUrl
       this.saveMetadata()
     }
   }

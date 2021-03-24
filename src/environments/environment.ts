@@ -27,8 +27,6 @@ export const CONSTANTS: Constants = {
           displayUrl: '../../../assets/img/tokens/usdtz.png',
           thumbnailUrl: '../../../assets/img/tokens/usdtz.png',
           shouldPreferSymbol: true,
-          metaDisplayUrl: '../../../assets/img/tokens/usdtz.png',
-          metaThumbnailUrl: '../../../assets/img/tokens/usdtz.png',
         }
       }
     },
@@ -45,8 +43,6 @@ export const CONSTANTS: Constants = {
           thumbnailUrl: '../../../assets/img/tokens/mfil.jfif',
           isTransferable: false,
           isBooleanAmount: true,
-          metaDisplayUrl: '../../../assets/img/tokens/mfil.jfif',
-          metaThumbnailUrl: '../../../assets/img/tokens/mfil.jfif',
         }
       }
     },
@@ -62,8 +58,6 @@ export const CONSTANTS: Constants = {
           displayUrl: '../../../assets/img/tokens/kusd.png',
           thumbnailUrl: '../../../assets/img/tokens/kusd.png',
           shouldPreferSymbol: true,
-          metaDisplayUrl: '../../../assets/img/tokens/kusd.png',
-          metaThumbnailUrl: '../../../assets/img/tokens/kusd.png',
         }
       }
     }
