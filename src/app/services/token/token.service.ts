@@ -146,21 +146,19 @@ export class TokenService {
           tokens: {}
         };
         const defaultImg = CONSTANTS.DEFAULT_TOKEN_IMG;
-        const displayUrl = defaultImg;
-        const thumbnailUrl = defaultImg;
 
         const token: TokenData = {
           name: metadata.name ? metadata.name : '',
           symbol: metadata.symbol ? metadata.symbol : '',
           decimals: Number(metadata.decimals),
           description: metadata.description ? metadata.description : '',
-          // take the thumbnailUrl and vice vera if there is no url property
-          displayUrl: displayUrl,
-          thumbnailUrl: thumbnailUrl,
+          displayUrl: defaultImg,
+          thumbnailUrl: defaultImg,
           isTransferable: metadata?.isTransferable ? metadata.isTransferable : true,
           isBooleanAmount: metadata?.isBooleanAmount ? metadata.isBooleanAmount : false,
           series: metadata.series ? metadata.series : undefined,
-          metaDisplayUrl: metadata.displayUri || metadata.thumbnailUrl || defaultImg,
+          // take the thumbnailUrl and vice vera if there is no url property
+          metaDisplayUrl: metadata.displayUri || metadata.thumbnailUri || defaultImg,
           metaThumbnailUrl: metadata.thumbnailUri || metadata.displayUrl || defaultImg,
         };
         contract.tokens[id] = token;
