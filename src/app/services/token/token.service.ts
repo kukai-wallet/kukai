@@ -60,7 +60,7 @@ export interface FA2 extends TokensInterface {
 
 export class TokenService {
   readonly AUTO_DISCOVER: boolean = true;
-  readonly version: string = '1.0.5';
+  readonly version: string = CONSTANTS.METADATA_VERSION;
   private contracts: ContractsType = {};
   private exploredIds: Record<string, { firstCheck: number, lastCheck: number }> = {};
   readonly storeKey = 'tokenMetadata';
@@ -225,7 +225,17 @@ export class TokenService {
   loadMetadata(): any {
     const metadataJson = localStorage.getItem(this.storeKey);
     if (metadataJson) {
-      const metadata = JSON.parse(metadataJson);
+      let metadata = JSON.parse(metadataJson);
+
+      // backwards compatibility for tokenStatus
+      if (metadata && typeof metadata.version === 'string' && metadata.version !== this.version) {
+        for (const contractAddress of Object.keys(metadata.contracts || [])) {
+          metadata.tokenStatus = TRUSTED_TOKEN_CONTRACTS.includes(contractAddress) ? TokenStatus.APPROVED : TokenStatus.PENDING;
+        }
+        metadata.version = this.version
+        localStorage.setItem(this.storeKey, JSON.stringify(metadata))
+      }
+
       if (metadata?.version === this.version) {
         if (metadata?.contracts) {
           const contractAddresses = Object.keys(metadata.contracts);

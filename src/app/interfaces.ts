@@ -4,15 +4,15 @@ import { ContractType } from './services/token/token.service';
 export { Activity };
 
 export interface KeyPair {
-    sk: string|null;
-    pk: string|null;
-    pkh: string;
+  sk: string | null;
+  pk: string | null;
+  pkh: string;
 }
 export interface Wallet {
-  seed: null|string;
-  salt: null|string;
+  seed: null | string;
+  salt: null | string;
   pk?: string;
-  encryptionVersion: number|null;
+  encryptionVersion: number | null;
   type: WalletType;
   balance: Balance;
   XTZrate: number | null;
@@ -20,7 +20,7 @@ export interface Wallet {
   derivationPath?: string;
 }
 export interface Account {
-  pkh: string|null;
+  pkh: string | null;
   delegate: string;
   balance: Balance;
   numberOfActivites: number;
@@ -108,6 +108,7 @@ export interface DefaultTransactionParams {
 }
 export interface Constants {
   DEFAULT_TOKEN_IMG: string;
+  METADATA_VERSION: string;
   NAME: string;
   NETWORK: string;
   MAINNET: boolean;

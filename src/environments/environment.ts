@@ -2,6 +2,7 @@
 // The build system defaults to the dev environment which uses `environment.ts`, but if you do
 // `ng build --env=prod` then `environment.prod.ts` will be used instead.
 // The list of which env maps to which file can be found in `.angular-cli.json`.
+import { TokenStatus } from '../../src/app/services/token/token.service';
 import { Constants } from './../app/interfaces';
 
 export const environment = {
@@ -9,6 +10,7 @@ export const environment = {
 };
 export const CONSTANTS: Constants = {
   DEFAULT_TOKEN_IMG: '../../../assets/img/tokens/unknown-token.png',
+  METADATA_VERSION: '1.0.6',
   NAME: 'Testnet / Edonet',
   NETWORK: 'edonet',
   MAINNET: false,
@@ -27,6 +29,7 @@ export const CONSTANTS: Constants = {
           displayUrl: '../../../assets/img/tokens/usdtz.png',
           thumbnailUrl: '../../../assets/img/tokens/usdtz.png',
           shouldPreferSymbol: true,
+          tokenStatus: TokenStatus.APPROVED,
         }
       }
     },
@@ -43,6 +46,7 @@ export const CONSTANTS: Constants = {
           thumbnailUrl: '../../../assets/img/tokens/mfil.jfif',
           isTransferable: false,
           isBooleanAmount: true,
+          tokenStatus: TokenStatus.APPROVED,
         }
       }
     },
@@ -58,6 +62,7 @@ export const CONSTANTS: Constants = {
           displayUrl: '../../../assets/img/tokens/kusd.png',
           thumbnailUrl: '../../../assets/img/tokens/kusd.png',
           shouldPreferSymbol: true,
+          tokenStatus: TokenStatus.APPROVED,
         }
       }
     }
