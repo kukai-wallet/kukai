@@ -74,9 +74,15 @@
 .group{
   width: 100%;
 }
-.btnPreview{
-  background: transparent;
-}
 .seperator {
   border-top: 1px solid rgba($color: #000000, $alpha: 0.08);
+}
+.btn-preview{
+  background: transparent;
+  color: #5963FF;
+  width: 128px !important;
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-size: 0.8125rem !important;
+  line-height: 1rem !important;
 }

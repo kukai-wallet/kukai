@@ -31,8 +31,8 @@
         <div style="text-align:center">
           <img (click)="fullSize = true" src="{{ toggleShowHidePreviewImg ? token.metaDisplayUrl : token.displayUrl }}">
           <p style="display: block;">
-            <button class="btnPreview" *ngIf="!toggleShowHidePreviewImg" (click)="onToggleShowHidePreviewImg()">show</button>
-            <button class="btnPreview" *ngIf="toggleShowHidePreviewImg" (click)="onToggleShowHidePreviewImg()">hide</button>
+            <button class="btn-preview" *ngIf="!toggleShowHidePreviewImg" (click)="onToggleShowHidePreviewImg()">(show image)</button>
+            <button class="btn-preview" *ngIf="toggleShowHidePreviewImg" (click)="onToggleShowHidePreviewImg()">(hide image)</button>
           </p>
       </div>
       </div>
@@ -46,11 +46,11 @@
       </div>
       <div *ngIf="isTokenPending(token)" class="row-group seperator" style="margin: 1.25rem 0 0.5rem 0;">
         <div class="group">
-          <label>text here for Reject Button <br> line 2</label>
+          <label>text here wraps to stay centered above button</label>
           <app-token-modal-reject [token]="token"></app-token-modal-reject>
         </div>
         <div class="group">
-          <label>text here for Approve Button <br> line 2</label>
+          <label>text here wraps to stay centered above button</label>
           <button class="purple confirm" (click)="onTrust(true)">Approve</button>
         </div>
       </div>
