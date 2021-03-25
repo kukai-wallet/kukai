@@ -84,6 +84,7 @@ import { SettingsComponent } from './components/settings/settings.component';
 import { QrScannerComponent } from './components/qr-scanner/qr-scanner.component';
 import { SignExprComponent } from './components/sign-expr/sign-expr.component';
 import { OriginateComponent } from './components/originate/originate.component';
+import { TokenModalRejectComponent } from './components/token-modal-reject/token-modal-reject.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -131,7 +132,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     SettingsComponent,
     QrScannerComponent,
     SignExprComponent,
-    OriginateComponent
+    OriginateComponent,
+    TokenModalRejectComponent
   ],
   imports: [
     BrowserModule,

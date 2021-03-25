@@ -1,0 +1,18 @@
+<button class="confirm btn-reject" (click)="onModal()">Reject</button>
+<!-- Modal -->
+<div *ngIf="modalOpen" id="myModal" class="kukai-modal">
+  <div class="km-content">
+    <div class="km-header">
+      <H1>Reject Token</H1>
+    </div>
+    <div class="km-body">
+      <div class="group">
+        <p>You have received this token<b>&nbsp;{{token.name}}</b></p>
+        <p>By rejecting you will no longer be able to see this token in your token list</p>
+      </div>
+      <div class="row-group" style="margin: 1.25rem 0 0.5rem 0;">
+        <button class="confirm btn-reject" (click)="onRejectToken()">Reject Token</button>
+      </div>
+    </div>
+  </div>
+</div>

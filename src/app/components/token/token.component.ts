@@ -1,7 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { CONSTANTS } from '../../../../src/environments/environment';
 import { TokenService, TokenResponseType, TokenStatus } from '../../services/token/token.service';
 import { ImplicitAccount } from '../../services/wallet/wallet';
+import { TokenModalRejectComponent } from '../token-modal-reject/token-modal-reject.component';
 
 @Component({
   selector: 'app-token',
@@ -11,6 +12,8 @@ import { ImplicitAccount } from '../../services/wallet/wallet';
 export class TokenComponent implements OnInit {
   @Input() account: ImplicitAccount;
   @Input() token: TokenResponseType;
+  @ViewChild(TokenModalRejectComponent) tokenModalReject: TokenModalRejectComponent;
+
   balance = '';
   modalOpen = false;
   fullSize = false;
@@ -54,7 +57,8 @@ export class TokenComponent implements OnInit {
     if (isTrust) {
       this.tokenService.setTrusted(this.token.contractAddress, this.token.id)
     } else {
-      this.tokenService.setRejected(this.token.contractAddress, this.token.id)
+      this.tokenModalReject.openModal()
+      return
     }
     this.closeModal()
   }
