@@ -46,9 +46,9 @@ export class EmbeddedAuthService {
     return `Tezos Signed Message: ${JSON.stringify(authPayload)}`;
   }
   private signMessage(message: string, sk: string): string {
-    const p = new Parser();
-    const res = p.parseMichelineExpression(`"${message.replace('"', '\"')}"`);
-    const hexMessage = `05${valueEncoder(res)}`;
+    const parser = new Parser();
+    const expr = parser.parseMichelineExpression(`"${message.replace(/"/g, '\\"')}"`);
+    const hexMessage = `05${valueEncoder(expr)}`;
     const signature: string = this.operationService.sign(hexMessage, sk).edsig;
     return signature;
   }
