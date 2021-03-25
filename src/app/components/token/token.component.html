@@ -28,7 +28,13 @@
             </div>
           </ng-template>
         </div>
-        <img (click)="fullSize = true" src="{{ token.displayUrl }}">
+        <div style="text-align:center">
+          <img (click)="fullSize = true" src="{{ toggleShowHidePreviewImg ? token.metaDisplayUrl : token.displayUrl }}">
+          <p style="display: block;">
+            <button class="btnPreview" *ngIf="!toggleShowHidePreviewImg" (click)="onToggleShowHidePreviewImg()">show</button>
+            <button class="btnPreview" *ngIf="toggleShowHidePreviewImg" (click)="onToggleShowHidePreviewImg()">hide</button>
+          </p>
+      </div>
       </div>
       <div class="group">
         <label>Description</label>
@@ -38,7 +44,7 @@
         <label>Contract Address</label>
         <p>{{ token.contractAddress }}&nbsp;<span style="font-weight: lighter;">(#{{ token.id }})</span></p>
       </div>
-      <div *ngIf="token.tokenStatus === undefined" class="row-group" style="margin: 1.25rem 0 0.5rem 0;">
+      <div *ngIf="isTokenPending(token)" class="row-group" style="margin: 1.25rem 0 0.5rem 0;">
         <button style="margin: 0 10px 0 0;" class="confirm" style="background-color: rgb(214, 89, 89);color: white;" (click)="onTrust(false)">Reject</button>
         <button style="margin: 0 0 0 10px;" class="purple confirm" (click)="onTrust(true)">Approve</button>
       </div>

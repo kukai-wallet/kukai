@@ -14,6 +14,8 @@ export class TokenComponent implements OnInit {
   balance = '';
   modalOpen = false;
   fullSize = false;
+  toggleShowHidePreviewImg = false;
+
   constructor(
     private tokenService: TokenService
   ) {
@@ -34,6 +36,7 @@ export class TokenComponent implements OnInit {
     document.body.style.marginRight = scrollBarWidth.toString();
     document.body.style.overflow = 'hidden';
     this.modalOpen = true;
+    this.toggleShowHidePreviewImg = false
   }
   closeModal() {
     document.body.style.marginRight = '';
@@ -44,6 +47,9 @@ export class TokenComponent implements OnInit {
   getDescription(): string {
     return this.token.description ? this.token.description : '—';
   }
+  isTokenPending(token) {
+    return token.tokenStatus === TokenStatus.PENDING
+  }
   onTrust(isTrust: boolean) {
     if (isTrust) {
       this.tokenService.setTrusted(this.token.contractAddress, this.token.id)
@@ -51,5 +57,8 @@ export class TokenComponent implements OnInit {
       this.tokenService.setRejected(this.token.contractAddress, this.token.id)
     }
     this.closeModal()
+  }
+  onToggleShowHidePreviewImg() {
+    this.toggleShowHidePreviewImg = !this.toggleShowHidePreviewImg
   }
 }

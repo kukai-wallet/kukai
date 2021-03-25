@@ -89,7 +89,9 @@ export class TokenService {
             category: contract.category,
             id,
             contractAddress,
-            ...token
+            ...token,
+            metaDisplayUrl: token.displayUrl,
+            // metaThumbnailUrl: token.thumbnailUrl,
           }
           if (token.tokenStatus !== TokenStatus.APPROVED) {
             objAsset.displayUrl = defaultImg
@@ -248,7 +250,7 @@ export class TokenService {
       const token = this.getAsset(tokenKey);
       if (token) {
         if (token.tokenStatus == TokenStatus.REJECTED) {
-          return `[Unknown token]`;
+          return `[Rejected Token]`;
         }
         if ((!token.shouldPreferSymbol && token.name) || !token.symbol) {
           if (token.isBooleanAmount) {
