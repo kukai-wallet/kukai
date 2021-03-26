@@ -207,7 +207,7 @@ export class TzktService implements Indexer {
         console.log(`No contract metadata found for ${contractAddress}:${id}`);
         return {};
       });
-    const tokenMetadata = fetch(`${this.bcd}/contract/${this.network}/${contractAddress}/tokens?size=1000000`)
+    const tokenMetadata = fetch(`${this.bcd}/contract/${this.network}/${contractAddress}/tokens?token_id=${id}`)
       .then(response => response.json())
       .then(async datas => {
         const keys = [
