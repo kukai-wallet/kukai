@@ -9,6 +9,7 @@ import {
   LegacyWalletV2,
   Activity,
   LegacyWalletV3,
+  EmbeddedTorusWallet,
   HdWallet,
 } from './../../src/app/services/wallet/wallet';
 import { viewClassName } from '@angular/compiler';
@@ -624,7 +625,25 @@ export class WalletTools extends AccountTools {
     v1wallet.totalBalanceUSD = balanceUSD;
     return v1wallet;
   }
-
+  generateWalletEmbedded(): EmbeddedTorusWallet {
+    const keyPair = {
+      sk: 'spsk1VfCfhixtzGvUSKDre6jwyGbXFm6aoeLGnxeVLCouueZmkgtJF',
+      pk: 'sppk7cZsZeBApsFgYEdWuSwj92YCWkJxMmBfkN3FeKRmEB7Lk5pmDrT',
+      pkh: 'tz2WKg52VqnYXH52TZbSVjT4hcc8YGVKi7Pd'
+    };
+    const userInfo = {
+      typeOfLogin: 'google',
+      verifierId: 'mock.user@gmail.com',
+      name: 'Mock User'
+    };
+    const wallet = new EmbeddedTorusWallet(userInfo.typeOfLogin, userInfo.verifierId, userInfo.name, 'https://test.com', keyPair.sk, '1');
+    wallet.XTZrate = 4.01;
+    wallet.implicitAccounts.push(
+      new ImplicitAccount(keyPair.pkh, keyPair.pk)
+    );
+    wallet.implicitAccounts[0].balanceXTZ = 234324.234;
+    return wallet;
+  }
   /**
    * Generate Wallet v2
    * @param seed

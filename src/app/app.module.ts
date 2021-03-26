@@ -44,6 +44,7 @@ import { LedgerService } from './services/ledger/ledger.service';
 import { EstimateService } from './services/estimate/estimate.service';
 import { BeaconService } from './services/beacon/beacon.service';
 import { TorusService } from './services/torus/torus.service';
+import { EmbeddedAuthService } from './services/embedded-auth/embedded-auth.service';
 
 // View components
 import { StartComponent } from './components/start/start.component';
@@ -185,6 +186,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     EstimateService,
     BeaconService,
     TorusService,
+    EmbeddedAuthService,
 
     // Pipes
     ErrorHandlingPipe,
