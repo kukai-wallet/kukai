@@ -44,13 +44,16 @@
         <label>Contract Address</label>
         <p>{{ token.contractAddress }}&nbsp;<span style="font-weight: lighter;">(#{{ token.id }})</span></p>
       </div>
-      <div *ngIf="isTokenPending(token)" class="row-group seperator" style="margin: 1.25rem 0 0.5rem 0;">
+      <div *ngIf="isTokenPending(token)" class="row-group seperator">
         <div class="group">
-          <label>text here wraps to stay centered above button</label>
+          <label>text here wraps to stay centered above both buttons; text here wraps to stay centered above both buttons</label>
+        </div>
+      </div>
+      <div *ngIf="isTokenPending(token)" class="row-group row-buttons" style="margin: -1rem 0 0.5rem 0;">
+        <div class="group">
           <app-token-modal-reject [token]="token"></app-token-modal-reject>
         </div>
         <div class="group">
-          <label>text here wraps to stay centered above button</label>
           <button class="purple confirm" (click)="onTrust(true)">Approve</button>
         </div>
       </div>
