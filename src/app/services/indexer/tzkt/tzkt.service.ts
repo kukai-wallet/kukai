@@ -120,7 +120,7 @@ export class TzktService implements Indexer {
         }
       }).filter(obj => obj));
     const unknownTokenIds: string[] = [];
-    const tokenTxs = await fetch(`${this.bcd}/tokens/${this.network}/transfers/${address}?size=20`)
+    const tokenTxs = await fetch(`${this.bcd}/tokens/${this.network}/transfers/${address}?size=20&offset=0`)
       .then(response => response.json())
       .then(data => data.transfers.map(tx => {
         const tokenId = `${tx.contract}:${tx.token_id}`;
@@ -207,7 +207,7 @@ export class TzktService implements Indexer {
         console.log(`No contract metadata found for ${contractAddress}:${id}`);
         return {};
       });
-    const tokenMetadata = fetch(`${this.bcd}/contract/${this.network}/${contractAddress}/tokens?token_id=${id}`)
+    const tokenMetadata = fetch(`${this.bcd}/contract/${this.network}/${contractAddress}/tokens?token_id=${id}&offset=0`)
       .then(response => response.json())
       .then(async datas => {
         const keys = [
@@ -246,8 +246,8 @@ export class TzktService implements Indexer {
                 metadata.isBooleanAmount = true;
               }
               if (!metadata.displayUri && data?.symbol === 'OBJKT') { // hicetnunc
-                if (['image/png', 'image/jpg', 'image/jpeg'].includes(rawData.token_info.formats[0].mimeType)) {
-                  metadata.displayUri = await this.uriToUrl(rawData.token_info.formats[0].uri);
+                if (['image/png', 'image/jpg', 'image/jpeg'].includes(rawData.formats[0].mimeType)) {
+                  metadata.displayUri = await this.uriToUrl(rawData.formats[0].uri);
                 }
               }
             } catch (e) { }
