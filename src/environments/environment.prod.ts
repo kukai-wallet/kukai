@@ -104,6 +104,23 @@ export const CONSTANTS: Constants = {
           isBooleanAmount: true
         }
       }
+    },
+    'KT1AFA2mwNUMNd4SsujE1YYp29vd8BZejyKW': { // hDAO
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        0: {
+          name: 'hic et nunc DAO',
+          symbol: 'hDAO',
+          decimals: 6,     
+          description: '',
+          displayUrl: '../../../assets/img/tokens/hdao.png',
+          thumbnailUrl: '../../../assets/img/tokens/hdao.png',
+          isTransferable: true,
+          isBooleanAmount: false,
+          shouldPreferSymbol: true
+        }
+      }
     }
   }
 };
