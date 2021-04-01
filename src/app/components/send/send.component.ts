@@ -1,14 +1,15 @@
 import { Component, OnInit, ViewEncapsulation, Input, ViewChild, ElementRef, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { KeyPair, DefaultTransactionParams } from '../../interfaces';
 import { Account, ImplicitAccount, OriginatedAccount } from '../../services/wallet/wallet';
-import { PrepareRequest, ConfirmRequest, FullyPreparedTransaction, PartiallyPreparedTransaction } from './interfaces';
+import { PrepareRequest, ConfirmRequest, FullyPreparedTransaction, PartiallyPreparedTransaction, Template, TemplateRequest, TemplateFee } from './interfaces';
 import { TokenService } from '../../services/token/token.service';
 import { EstimateService } from '../../services/estimate/estimate.service';
 import { MessageService } from '../../services/message/message.service';
 import { assertMichelsonData } from '@taquito/michel-codec';
 import { OperationService } from '../../services/operation/operation.service';
 import Big from 'big.js';
-import { ParametersInvalidBeaconError } from '@airgap/beacon-sdk';
+import { WalletService } from '../../services/wallet/wallet.service';
+import { CoordinatorService } from '../../services/coordinator/coordinator.service';
 
 @Component({
   selector: 'app-send',
@@ -21,14 +22,18 @@ export class SendComponent implements OnInit, OnChanges {
   @Input() headless: boolean;
   @Input() tokenTransfer: string;
   @Input() operationRequest: string;
+  @Input() template: Template;
   @Output() operationResponse = new EventEmitter();
   prepareRequest: PrepareRequest = null;
   confirmRequest: ConfirmRequest = null;
+  templateRequest: TemplateRequest = null;
   constructor(
     public tokenService: TokenService,
     private estimateService: EstimateService,
     private messageService: MessageService,
-    private operationService: OperationService
+    private operationService: OperationService,
+    private walletService: WalletService,
+    private coordinatorService: CoordinatorService
   ) { }
 
   ngOnInit() {
@@ -113,7 +118,13 @@ export class SendComponent implements OnInit, OnChanges {
                 storageLimit: res.customLimits[i].storageLimit.toString(),
               };
             });
-            this.confirmTransactions(fullyPrepared);
+            if (this.template) {
+              const fee = this.getTemplateFee(fullyPrepared);
+              console.log('Use template', this.template);
+              this.templateRequest = { template: this.template, ops: fullyPrepared, fee };
+            } else {
+              this.confirmTransactions(fullyPrepared);
+            }
           }
         } else {
           console.log('no res');
@@ -142,5 +153,75 @@ export class SendComponent implements OnInit, OnChanges {
   handleConfirmResponse(opHash: string) {
     this.confirmRequest = null;
     this.operationResponse.emit(opHash);
+  }
+  handleTemplateApproval(ops: FullyPreparedTransaction[]) {
+    if (ops) {
+      this.silentInject(ops);
+    } else {
+      this.operationResponse.emit(null);
+    }
+    this.template = null;
+  }
+  private getTemplateFee(ops: FullyPreparedTransaction[]): TemplateFee {
+    let network = new Big(0);
+    let storageLimit = new Big(0);
+    for (const op of ops) {
+      network = network.plus(op.fee);
+      storageLimit = storageLimit.plus(op.storageLimit);
+    }
+    let storage = storageLimit.times(this.estimateService.costPerByte);
+    const total = network.plus(storage).toFixed();
+    network = network.toFixed();
+    storage = storage.toFixed();
+    return { network, storage, total };
+  }
+  async silentInject(ops: FullyPreparedTransaction[]) {
+    if (!this.walletService.isEmbeddedTorusWallet()) {
+      this.operationResponse.emit('UNSUPPORTED_WALLET_TYPE');
+      return;
+    }
+    for (const op of ops) { // Limit to transactions for now
+      if (op.kind !== 'transaction') {
+        this.operationResponse.emit('UNSUPPORTED_KIND');
+        break;
+      }
+    }
+    this.messageService.startSpinner('Sending transaction...');
+    let keys;
+    try {
+      keys = await this.walletService.getKeys('', this.activeAccount.pkh);
+    } catch {
+      this.messageService.stopSpinner();
+    }
+    if (!keys) {
+      this.operationResponse.emit('FAILED_TO_SIGN');
+      return;
+    }
+    this.operationService.transfer(this.activeAccount.address, ops, Number(ops[ops.length - 1].fee), keys, '').subscribe(
+      async (ans: any) => {
+        if (ans.success === true) {
+          console.log('Transaction successful ', ans);
+          await this.messageService.stopSpinner();
+          this.operationResponse.emit(ans.payload.opHash);
+          const metadata = { transactions: ops, opHash: ans.payload.opHash };
+          await this.coordinatorService.boost(this.activeAccount.address, metadata);
+          for (const transaction of ops) {
+            if (this.walletService.addressExists(transaction.destination)) {
+              await this.coordinatorService.boost(transaction.destination);
+            }
+          }
+        } else {
+          await this.messageService.stopSpinner();
+          console.log('Transaction error id ', ans.payload.msg);
+          this.messageService.addError(ans.payload.msg, 0);
+          this.operationResponse.emit('broadcast_error');
+        }
+      },
+      err => {
+        this.messageService.stopSpinner();
+        console.log(err);
+        this.operationResponse.emit('UNKNOWN_ERROR');
+      },
+    );
   }
 }
