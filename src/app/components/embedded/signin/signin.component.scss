@@ -1,3 +1,4 @@
+@import '../../../../assets/fonts/Poppins/stylesheet.css';
 :host {
   width: 100vw;
   height: 100vh;
@@ -7,14 +8,17 @@
   background: rgba(0, 0, 0, 0.4);
 }
 div.direct-auth-login {
-  font-family: 'Poppins' !important;
-  font-style: normal !important;
-  font-weight: 300 !important;
   width: 21.875rem;
   background: #f3f3f3;
   box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.24), 0px 4px 12px rgba(0, 0, 0, 0.24),
     0px 32px 48px rgba(0, 0, 0, 0.36);
   border-radius: 0.625rem;
+}
+:host > div.direct-auth-login H2,
+:host > div.direct-auth-login span {
+  font-family: 'Poppins' !important;
+  font-style: normal !important;
+  font-weight: 300 !important;
 }
 div.direct-auth-login > div.header {
   height: 4.375rem;
@@ -29,7 +33,7 @@ div.direct-auth-login > div.header img {
   height: 3.125rem;
   width: 3.125rem;
 }
-div.direct-auth-login > div.body H2 {
+div.direct-auth-login H2 {
   margin: 0.5rem 2rem;
   font-size: 1.25rem;
   line-height: 1.875rem;
@@ -59,29 +63,16 @@ div.direct-auth-login > div.body div.login-option > img {
   width: 2.5rem;
 }
 div.direct-auth-login > div.footer {
-  font-size: 0.625rem;
-  line-height: 0.9375rem;
   margin: 0.5rem 0;
   display: flex;
   justify-content: center;
   align-items: center;
 }
+div.direct-auth-login > div.footer > span {
+  font-size: 0.625rem;
+  line-height: 0.9375rem;
+}
 div.direct-auth-login > div.footer img {
   width: 2.5rem;
+  margin-left: 0.25rem;
 }
-/*
-:host > div {
-  border: 1px solid;
-  padding: 0 2rem 2rem;
-  background: white;
-  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.24), 0px 4px 12px rgba(0, 0, 0, 0.24),
-    0px 32px 48px rgba(0, 0, 0, 0.36);
-  border-radius: 0.75rem;
-}
-:host > div > div.buttons {
-  display: flex;
-  justify-content: space-between;
-}
-:host > div > div.buttons > img:hover {
-  cursor: pointer;
-}*/

@@ -52,6 +52,7 @@ export class EmbeddedComponent implements OnInit {
   login = false;
   blockCard = false;
   activeAccount: ImplicitAccount = null;
+  template = null;
   operationRequests = null;
   @HostListener('window:resize', ['$event'])
   onResize(event) {
@@ -129,6 +130,7 @@ export class EmbeddedComponent implements OnInit {
   private handleOperationRequest(req: OperationRequest) {
     if (this.walletService.wallet instanceof EmbeddedTorusWallet && req.operations) {
       if (this.isValidOperation(req.operations)) {
+        this.template = req.ui ? req.ui : null;
         this.operationRequests = req.operations;
         this.sendResizeReady();
       } else {
@@ -220,9 +222,13 @@ export class EmbeddedComponent implements OnInit {
       response = { type: ResponseTypes.operationResponse, failed: true, error: 'BROADCAST_ERROR' };
     } else if (opHash === 'invalid_parameters') {
       response = { type: ResponseTypes.operationResponse, failed: true, error: 'INVALID_PARAMETERS' };
-    } else {
+    } else if (utils.validOperationHash(opHash)) {
       response = { type: ResponseTypes.operationResponse, opHash, failed: false };
+    } else {
+      console.warn('Unknown operation response:', opHash);
+      response = { type: ResponseTypes.operationResponse, failed: true, error: 'UNKNOWN_ERROR' };
     }
+    this.template = null;
     this.operationRequests = null;
     setTimeout(() => {
       this.sendResponse(response);

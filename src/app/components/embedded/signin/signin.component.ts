@@ -14,7 +14,7 @@ export class SigninComponent implements OnInit {
   @Output() loginResponse = new EventEmitter();
   @HostListener('click', ['$event'])
   onClick(ev) {
-    if (ev?.toElement?.nodeName === 'APP-SIGNIN') {
+    if (ev?.target?.localName === 'app-signin') {
       this.abort();
     }
   }
