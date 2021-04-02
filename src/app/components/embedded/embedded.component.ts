@@ -24,8 +24,9 @@ import {
   LoginRequest,
   OperationRequest,
   AuthRequest,
-  AuthResponse
-} from 'kukai-embed/dist/types';
+  AuthResponse,
+  Init
+} from 'kukai-embed';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -80,6 +81,7 @@ export class EmbeddedComponent implements OnInit {
         }
       }
       );
+    window.parent.window.postMessage(JSON.stringify({ type: ResponseTypes.initComplete, failed: false }), this.origin || '*');
   }
   handleRequest = (evt) => {
     try {
