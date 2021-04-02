@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { ConseilService } from './conseil/conseil.service';
 import { TzktService } from './tzkt/tzkt.service';
 import { WalletObject } from '../wallet/wallet';
 

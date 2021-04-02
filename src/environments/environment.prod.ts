@@ -9,10 +9,6 @@ export const CONSTANTS: Constants = {
   MAINNET: true,
   NODE_URL: 'https://mainnet-tezos.giganode.io',
   BLOCK_EXPLORER_URL: 'https://tzkt.io',
-  CSI: {
-    url: 'https://conseil-prod.cryptonomic-infra.tech',
-    apiKey: 'klassare'
-  },
   ASSETS: {
     'KT1K9gCRgaLRFKTErYt1wVxA3Frb9FjasjTV': { // kUSD
       kind: 'FA1.2',
