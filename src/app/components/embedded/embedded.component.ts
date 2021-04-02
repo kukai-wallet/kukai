@@ -26,7 +26,7 @@ import {
   AuthRequest,
   AuthResponse,
   Init
-} from 'kukai-embed/dist/types';
+} from 'kukai-embed';
 import { Subscription } from 'rxjs';
 
 @Component({
