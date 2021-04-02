@@ -26,7 +26,7 @@ interface TokenMetadata {
 export class TzktService implements Indexer {
   readonly network = CONSTANTS.NETWORK.replace('edonet', 'edo2net');
   public readonly bcd = 'https://ee.better-call.dev/v1';
-  readonly BCD_TOKEN_QUERY_SIZE = 10
+  readonly BCD_TOKEN_QUERY_SIZE = 10;
   constructor() { }
   async getContractAddresses(pkh: string): Promise<any> {
     return fetch(`https://api.${this.network}.tzkt.io/v1/operations/originations?contractManager=${pkh}`)
@@ -39,14 +39,14 @@ export class TzktService implements Indexer {
     const tokens = [];
     const unknownTokenIds = [];
 
-    const aryTokens = await this.getTokenBalancesUsingPromiseAll(address)
+    const aryTokens = await this.getTokenBalancesUsingPromiseAll(address);
 
     return fetch(`${this.bcd}/account/${this.network}/${address}`)
       .then(response => response.json())
       .then(data => {
         if (data) {
           // inject aryTokens result back into where tokens property used to be
-          data.tokens = aryTokens
+          data.tokens = aryTokens;
           if (data?.tokens?.length) {
             for (const token of data.tokens) {
               tokens.push(token);
@@ -231,11 +231,11 @@ export class TzktService implements Indexer {
           { key: 'series', type: 'string' }
         ];
         // should always be 1
-        assert(datas.length === 1, `cannot find token_id ${id} for contract: ${contractAddress}`)
+        assert(datas.length === 1, `cannot find token_id ${id} for contract: ${contractAddress}`);
         for (const data of datas) {
           if (data?.token_id === Number(id)) {
             // possible snake_case to camelCase conversion; depending on future BCD updates
-            mutableConvertObjectPropertiesSnakeToCamel(data)
+            mutableConvertObjectPropertiesSnakeToCamel(data);
             const rawData = JSON.parse(JSON.stringify(data));
             this.flattern(data);
             const metadata: any = {};
@@ -314,22 +314,22 @@ export class TzktService implements Indexer {
   }
   async getTokenBalancesUsingPromiseAll(address: string) {
     // get total number of tokens
-    const tokenCount = await (await fetch(`${this.bcd}/account/${this.network}/${address}/count`)).json()
-    const tokenTotal = Object.keys(tokenCount).map(key => tokenCount[key]).reduce((a, b) => a + b, 0)
+    const tokenCount = await (await fetch(`${this.bcd}/account/${this.network}/${address}/count`)).json();
+    const tokenTotal = Object.keys(tokenCount).map(key => tokenCount[key]).reduce((a, b) => a + b, 0);
 
     // Use Promise.All to get all token balances
-    const querySizeMax = this.BCD_TOKEN_QUERY_SIZE ?? 10
-    const totalPromises = Math.floor(tokenTotal / querySizeMax) + Number((tokenTotal % querySizeMax) !== 0)
-    const aryTokenFetchUrl: Promise<Response>[] = []
+    const querySizeMax = this.BCD_TOKEN_QUERY_SIZE ?? 10;
+    const totalPromises = Math.floor(tokenTotal / querySizeMax) + Number((tokenTotal % querySizeMax) !== 0);
+    const aryTokenFetchUrl: Promise<Response>[] = [];
     for (let i = 0; i < totalPromises; i++) {
-      const url = `${this.bcd}/account/${this.network}/${address}/token_balances?size=${querySizeMax}&offset=${querySizeMax * i}`
-      console.log('url', url)
-      aryTokenFetchUrl.push(fetch(url))
+      const url = `${this.bcd}/account/${this.network}/${address}/token_balances?size=${querySizeMax}&offset=${querySizeMax * i}`;
+      console.log('url', url);
+      aryTokenFetchUrl.push(fetch(url));
     }
-    const aryTokenResults = await Promise.all(aryTokenFetchUrl)
-    const aryTokenBalances = await Promise.all(aryTokenResults.map(r => r.json()))
-    const aryTokens = [].concat(...aryTokenBalances.map(t => t.balances))
-    return aryTokens
+    const aryTokenResults = await Promise.all(aryTokenFetchUrl);
+    const aryTokenBalances = await Promise.all(aryTokenResults.map(r => r.json()));
+    const aryTokens = [].concat(...aryTokenBalances.map(t => t.balances));
+    return aryTokens;
   }
 }
 
@@ -337,19 +337,19 @@ export class TzktService implements Indexer {
 export function mutableConvertObjectPropertiesSnakeToCamel(data: Object) {
   for (const key in data) {
     if (key.indexOf('_') !== -1) {
-      const aryCamelKey = []
+      const aryCamelKey = [];
       for (let i = 0; i < key.length; i++) {
-        const char = key.charAt(i)
+        const char = key.charAt(i);
         if (char === '_') {
-          aryCamelKey.push(key.charAt(i + 1).toUpperCase())
-          i++
+          aryCamelKey.push(key.charAt(i + 1).toUpperCase());
+          i++;
         } else {
-          aryCamelKey.push(char)
+          aryCamelKey.push(char);
         }
       }
-      const camelKey = aryCamelKey.join('')
+      const camelKey = aryCamelKey.join('');
       if (!data.hasOwnProperty(camelKey)) {
-        data[camelKey] = data[key]
+        data[camelKey] = data[key];
       }
     }
   }
