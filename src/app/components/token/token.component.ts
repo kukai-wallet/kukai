@@ -39,7 +39,7 @@ export class TokenComponent implements OnInit {
     document.body.style.marginRight = scrollBarWidth.toString();
     document.body.style.overflow = 'hidden';
     this.modalOpen = true;
-    this.toggleShowHidePreviewImg = false
+    this.toggleShowHidePreviewImg = false;
   }
   closeModal() {
     document.body.style.marginRight = '';
@@ -51,18 +51,18 @@ export class TokenComponent implements OnInit {
     return this.token.description ? this.token.description : '—';
   }
   isTokenPending(token) {
-    return token.tokenStatus === TokenStatus.PENDING
+    return token.tokenStatus === TokenStatus.PENDING;
   }
   onTrust(isTrust: boolean) {
     if (isTrust) {
-      this.tokenService.setTrusted(this.token.contractAddress, this.token.id)
+      this.tokenService.setTrusted(this.token.contractAddress, this.token.id);
     } else {
-      this.tokenModalReject.openModal()
-      return
+      this.tokenModalReject.openModal();
+      return;
     }
-    this.closeModal()
+    this.closeModal();
   }
   onToggleShowHidePreviewImg() {
-    this.toggleShowHidePreviewImg = !this.toggleShowHidePreviewImg
+    this.toggleShowHidePreviewImg = !this.toggleShowHidePreviewImg;
   }
 }

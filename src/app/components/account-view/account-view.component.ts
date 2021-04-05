@@ -111,14 +111,14 @@ export class AccountViewComponent implements OnInit {
     return (this.account instanceof ImplicitAccount) || (this.account?.tokens?.length > 0);
   }
   isTokenTrusted(token) {
-    return token.tokenStatus == TokenStatus.APPROVED
+    return token.tokenStatus === TokenStatus.APPROVED;
   }
   get getTokens() {
     // Do not show unknown tokens or rejected tokens
     return this.account.tokens.filter(t =>
       this.tokenService.getAsset(t.tokenId) &&
-      !(this.tokenService.getAsset(t.tokenId)?.tokenStatus == TokenStatus.REJECTED)
-    )
+      !(this.tokenService.getAsset(t.tokenId)?.tokenStatus === TokenStatus.REJECTED)
+    );
   }
 }
 

@@ -30,7 +30,7 @@
         </div>
         <div style="text-align:center">
           <img (click)="fullSize = true" src="{{ toggleShowHidePreviewImg ? token.metaDisplayUrl : token.displayUrl }}">
-          <p style="display: block;">
+          <p *ngIf="isTokenPending(token)" style="display: block;">
             <button class="btn-preview" *ngIf="!toggleShowHidePreviewImg" (click)="onToggleShowHidePreviewImg()">(show image)</button>
             <button class="btn-preview" *ngIf="toggleShowHidePreviewImg" (click)="onToggleShowHidePreviewImg()">(hide image)</button>
           </p>

@@ -29,10 +29,10 @@ export class TokenModalRejectComponent implements OnInit {
     this.modalOpen = false;
   }
   onModal() {
-    this.openModal()
+    this.openModal();
   }
   onRejectToken() {
-    this.tokenService.setRejected(this.token.contractAddress, this.token.id)
-    this.closeModal()
+    this.tokenService.setRejected(this.token.contractAddress, this.token.id);
+    this.closeModal();
   }
 }

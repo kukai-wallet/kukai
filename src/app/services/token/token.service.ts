@@ -92,10 +92,10 @@ export class TokenService {
             ...token,
             metaDisplayUrl: token.displayUrl,
             // metaThumbnailUrl: token.thumbnailUrl,
-          }
+          };
           if (token.tokenStatus !== TokenStatus.APPROVED) {
-            objAsset.displayUrl = defaultImg
-            objAsset.thumbnailUrl = defaultImg
+            objAsset.displayUrl = defaultImg;
+            objAsset.thumbnailUrl = defaultImg;
           }
           return objAsset;
         }
@@ -228,7 +228,7 @@ export class TokenService {
     const metadataJson = localStorage.getItem(this.storeKey);
     if (metadataJson) {
       // backwards compatibility for tokenStatus
-      const metadata = this.migrateMetadataVersions(JSON.parse(metadataJson))
+      const metadata = this.migrateMetadataVersions(JSON.parse(metadataJson));
 
       // load assets into token-service class
       if (metadata?.contracts) {
@@ -249,7 +249,7 @@ export class TokenService {
     } else {
       const token = this.getAsset(tokenKey);
       if (token) {
-        if (token.tokenStatus == TokenStatus.REJECTED) {
+        if (token.tokenStatus === TokenStatus.REJECTED) {
           return `[Rejected Token]`;
         }
         if ((!token.shouldPreferSymbol && token.name) || !token.symbol) {
@@ -267,40 +267,40 @@ export class TokenService {
     }
   }
   setTrusted(contractAddress: string, tokenId: number) {
-    const token: TokenResponseType = this.contracts[contractAddress].tokens[tokenId]
+    const token: TokenResponseType = this.contracts[contractAddress].tokens[tokenId];
     if (token) {
-      token.tokenStatus = TokenStatus.APPROVED
-      this.saveMetadata()
+      token.tokenStatus = TokenStatus.APPROVED;
+      this.saveMetadata();
     }
   }
   setRejected(contractAddress: string, tokenId: number) {
-    const token: TokenResponseType = this.contracts[contractAddress].tokens[tokenId]
+    const token: TokenResponseType = this.contracts[contractAddress].tokens[tokenId];
     if (token) {
-      token.tokenStatus = TokenStatus.REJECTED
-      this.saveMetadata()
+      token.tokenStatus = TokenStatus.REJECTED;
+      this.saveMetadata();
     }
   }
 
   migrateMetadataVersions(metadata: any) {
-    console.log('metadata.version', metadata.version)
+    console.log('metadata.version', metadata.version);
     switch (metadata.version) {
       case '1.0.5':
         // update from '1.0.5' to '1.0.6' requires the tokenStatus property
         for (const contractAddress of Object.keys(metadata.contracts || [])) {
           metadata.tokenStatus = TRUSTED_TOKEN_CONTRACTS.includes(contractAddress) ? TokenStatus.APPROVED : TokenStatus.PENDING;
         }
-        metadata.version = CONSTANTS.METADATA_VERSIONS[CONSTANTS.METADATA_VERSIONS.findIndex(v => v == metadata.version) + 1]
-        localStorage.setItem(this.storeKey, JSON.stringify(metadata))
+        metadata.version = CONSTANTS.METADATA_VERSIONS[CONSTANTS.METADATA_VERSIONS.findIndex(v => v === metadata.version) + 1];
+        localStorage.setItem(this.storeKey, JSON.stringify(metadata));
         break;
       case '1.0.6':
         // current version, nothing to do
-        return metadata
+        return metadata;
       default:
-        console.warn('metadata version migration not configured')
-        return metadata
+        console.warn('metadata version migration not configured');
+        return metadata;
     }
 
     // continue migrating
-    return this.migrateMetadataVersions(metadata)
+    return this.migrateMetadataVersions(metadata);
   }
 }
