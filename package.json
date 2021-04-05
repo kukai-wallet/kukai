@@ -15,7 +15,7 @@
     "stage-ghpages-mainnet": "ng lint --fix && ng build --prod && angular-cli-ghpages --repo \"git@github.com:kukai-wallet/wallet.git\" --branch staging --cname=wallet.kukai.app",
     "stage-ghpages-testnet": "ng lint --fix && ng build && angular-cli-ghpages --repo \"git@github.com:kukai-wallet/testnet.git\" --branch staging --cname=testnet.kukai.app",
     "deploy-edonet-version": "ng lint --fix && npm run build-dev && angular-cli-ghpages --repo \"git@github.com:kukai-wallet/edonet.git\" --branch main --cname=edonet.kukai.app",
-    "deploy-test-edonet-version": "ng lint --fix && npm run build-dev && angular-cli-ghpages --repo \"git@github.com:kukai-wallet/test-edonet.git\" --branch main --cname=testnet.kukai.app",
+    "deploy-test-edonet-version": "ng lint --fix && npm run build-dev && angular-cli-ghpages --repo \"git@github.com:kukai-wallet/test-edonet.git\" --branch main --cname=test-edonet.kukai.app",
     "deploy-preview-version": "ng lint --fix && npm run build-dev && angular-cli-ghpages --repo \"git@github.com:kukai-wallet/preview.git\" --branch master --cname=preview.kukai.app",
     "deploy-experimental-version": "ng lint --fix && npm run build-dev && angular-cli-ghpages --repo \"git@github.com:kukai-wallet/experimental.git\" --branch master --cname=experimental.kukai.app",
     "deploy-beta-version": "ng lint --fix && ng build --prod && angular-cli-ghpages --repo \"git@github.com:kukai-wallet/beta.git\" --branch master --cname=beta.kukai.app"
