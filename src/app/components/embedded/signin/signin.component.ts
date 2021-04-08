@@ -10,7 +10,6 @@ import { TorusService } from '../../../services/torus/torus.service';
   styleUrls: ['./signin.component.scss']
 })
 export class SigninComponent implements OnInit {
-  loading = false;
   @Output() loginResponse = new EventEmitter();
   @HostListener('click', ['$event'])
   onClick(ev) {

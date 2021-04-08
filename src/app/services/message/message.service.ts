@@ -120,6 +120,8 @@ export class MessageService {
     });
   }
   async spinnerChecked() {
-    this.checked = of(true);
+    setTimeout(() => {
+      this.checked = of(true);
+    }, 0);
   }
 }
