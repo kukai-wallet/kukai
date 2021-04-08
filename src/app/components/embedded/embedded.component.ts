@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TorusService } from '../../services/torus/torus.service';
 import { CONSTANTS } from '../../../environments/environment';
 import { ImportService } from '../../services/import/import.service';
@@ -25,7 +25,9 @@ import {
   OperationRequest,
   AuthRequest,
   AuthResponse,
-  Init
+  Init,
+  CardRequest,
+  CardResponse
 } from 'kukai-embed';
 import { Subscription } from 'rxjs';
 
@@ -50,16 +52,10 @@ export class EmbeddedComponent implements OnInit {
   ophashSubscription: Subscription;
   origin = '';
   login = false;
-  blockCard = false;
+  blockCard = true;
   activeAccount: ImplicitAccount = null;
   template = null;
   operationRequests = null;
-  @HostListener('window:resize', ['$event'])
-  onResize(event) {
-    if (event.target.innerWidth === 400) {
-      this.blockCard = false;
-    }
-  }
 
   ngOnInit(): void {
     document.body.style.background = 'none';
@@ -109,6 +105,9 @@ export class EmbeddedComponent implements OnInit {
             case RequestTypes.authRequest:
               this.handleAuthRequest(data);
               break;
+            case RequestTypes.cardRequest:
+              this.handleCardRequest(data);
+              break;
             default:
               console.warn('Unknown request', data);
           }
@@ -124,7 +123,6 @@ export class EmbeddedComponent implements OnInit {
       this.sendResponse(response);
     } else {
       this.login = true;
-      this.sendResizeReady();
     }
   }
   private handleOperationRequest(req: OperationRequest) {
@@ -132,10 +130,8 @@ export class EmbeddedComponent implements OnInit {
       if (this.isValidOperation(req.operations)) {
         this.template = req.ui ? req.ui : null;
         this.operationRequests = req.operations;
-        this.sendResizeReady();
       } else {
         this.operationRequests = null;
-        this.sendResizeFailed('INVALID_SEND');
         this.sendResponse({
           type: ResponseTypes.operationResponse,
           failed: true,
@@ -143,7 +139,6 @@ export class EmbeddedComponent implements OnInit {
         });
       }
     } else {
-      this.sendResizeFailed('INVALID_SEND');
       this.sendResponse({
         type: ResponseTypes.operationResponse,
         failed: true,
@@ -169,6 +164,7 @@ export class EmbeddedComponent implements OnInit {
   }
   loginResponse(loginData: any) {
     let response: ResponseMessage;
+    let toImport: any;
     if (loginData) {
       const { keyPair, userInfo } = loginData;
       const { idToken = '', accessToken = '', ...filteredUserInfo } = { ...userInfo };
@@ -182,13 +178,16 @@ export class EmbeddedComponent implements OnInit {
         userData: filteredUserInfo,
         failed: false
       };
-      this.importAccount(keyPair, userInfo, instanceId);
+      toImport = { keyPair, userInfo, instanceId };
     } else {
       response = { type: ResponseTypes.loginResponse, failed: true, error: 'ABORTED_BY_USER' };
     }
     this.login = false;
     setTimeout(() => {
       this.sendResponse(response);
+      if (toImport) {
+        this.importAccount(toImport.keyPair, toImport.userInfo, toImport.instanceId);
+      }
     }, 0);
   }
   async handleAuthRequest(authReq: AuthRequest) {
@@ -206,6 +205,11 @@ export class EmbeddedComponent implements OnInit {
         error: e.message ? e.message : 'UNKNOWN_ERROR'
       });
     });
+  }
+  handleCardRequest(req: CardRequest) {
+    this.blockCard = !req.show;
+    const response: CardResponse = { type: ResponseTypes.cardResponse, failed: false };
+    this.sendResponse(response);
   }
   noWalletError() {
     this.sendResponse({
@@ -236,25 +240,6 @@ export class EmbeddedComponent implements OnInit {
   }
   private sendResponse(resp: ResponseMessage) {
     window.parent.window.postMessage(JSON.stringify(resp), this.origin);
-  }
-  private sendResizeFailed(error: string) {
-    this.blockCard = false;
-    setTimeout(() => {
-      this.sendResponse({
-        type: ResponseTypes.resize,
-        failed: true,
-        error
-      });
-    }, 0);
-  }
-  private sendResizeReady() {
-    this.blockCard = true;
-    setTimeout(() => {
-      this.sendResponse({
-        type: ResponseTypes.resize,
-        failed: false
-      });
-    }, 0);
   }
   private async importAccount(keyPair: KeyPair, userInfo: any, instanceId: string) {
     if (keyPair) {
