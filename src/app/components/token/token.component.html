@@ -1,5 +1,5 @@
 <div class="list-item" (click)="openModal()">
-  <div class="imgWrapper"><img src="{{ token.thumbnailUrl }}"></div>
+  <div class="imgWrapper" [class.badge-notify]="isTokenPending(token)" data-badge=""><img src="{{ token.thumbnailUrl }}"></div>
   <span>{{ listDisplayText() }}</span>
 </div>
 

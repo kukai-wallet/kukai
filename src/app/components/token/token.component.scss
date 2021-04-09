@@ -87,3 +87,23 @@
   font-size: 0.8125rem !important;
   line-height: 1rem !important;
 }
+
+
+.badge-notify {
+  position:relative;
+}
+.badge-notify[data-badge]:after {
+  content:attr(data-badge);
+  position:absolute;
+  top:18px;
+  right:-6px;
+  font-size:.7em;
+  background:#4B77D6;
+  color:white;
+  width:8px;
+  height:8px;
+  text-align:center;
+  line-height:18px;
+  border-radius:50%;
+  box-shadow:0 0 1px #333;
+}
