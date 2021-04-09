@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { TokenResponseType, TokenStatus } from '../../../../src/app/services/token/token-interfaces';
 import { CONSTANTS } from '../../../../src/environments/environment';
-import { TokenService, TokenResponseType, TokenStatus } from '../../services/token/token.service';
+import { TokenService } from '../../services/token/token.service';
 import { ImplicitAccount } from '../../services/wallet/wallet';
 import { TokenModalRejectComponent } from '../token-modal-reject/token-modal-reject.component';
 

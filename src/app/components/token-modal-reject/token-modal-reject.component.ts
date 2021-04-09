@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { TokenResponseType, TokenService } from '../../../../src/app/services/token/token.service';
+import { TokenResponseType } from '../../../../src/app/services/token/token-interfaces';
+import { TokenService } from '../../../../src/app/services/token/token.service';
 
 @Component({
   selector: 'app-token-modal-reject',

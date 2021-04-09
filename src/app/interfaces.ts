@@ -1,5 +1,5 @@
 import { Activity } from './services/wallet/wallet';
-import { ContractType } from './services/token/token.service';
+import { ContractType } from './services/token/token-interfaces';
 
 export { Activity };
 

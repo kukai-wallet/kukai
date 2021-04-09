@@ -12,7 +12,8 @@ import { CONSTANTS } from '../../../environments/environment';
 import { LookupService } from '../../services/lookup/lookup.service';
 import { ActivityService } from '../../services/activity/activity.service';
 import Big from 'big.js';
-import { TokenService, TokenResponseType, TokenStatus } from '../../services/token/token.service';
+import { TokenService } from '../../services/token/token.service';
+import { TokenStatus } from '../../../../src/app/services/token/token-interfaces';
 
 @Component({
   selector: 'app-account-view',
