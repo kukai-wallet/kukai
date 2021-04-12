@@ -52,7 +52,7 @@ export interface FA2 extends TokensInterface {
 
 export class TokenService {
   readonly AUTO_DISCOVER: boolean = true;
-  readonly version: string = '1.0.6';
+  readonly version: string = '1.0.7';
   private contracts: ContractsType = {};
   private exploredIds: Record<string, { firstCheck: number, lastCheck: number }> = {};
   readonly storeKey = 'tokenMetadata';
