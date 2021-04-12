@@ -25,7 +25,7 @@ interface TokenMetadata {
 })
 export class TzktService implements Indexer {
   readonly network = CONSTANTS.NETWORK.replace('edonet', 'edo2net');
-  public readonly bcd = 'https://ee.better-call.dev/v1';
+  public readonly bcd = 'https://api.better-call.dev/v1';
   readonly BCD_TOKEN_QUERY_SIZE = 10;
   constructor() { }
   async getContractAddresses(pkh: string): Promise<any> {
@@ -322,7 +322,7 @@ export class TzktService implements Indexer {
     const totalPromises = Math.floor(tokenTotal / querySizeMax) + Number((tokenTotal % querySizeMax) !== 0);
     const aryTokenFetchUrl: Promise<Response>[] = [];
     for (let i = 0; i < totalPromises; i++) {
-      const url = `${this.bcd}/account/${this.network}/${address}/token_balances?size=${querySizeMax}&offset=${querySizeMax * i}`;
+      const url = `${this.bcd}/account/${this.network}/${address}/token_balances?max=${querySizeMax}&offset=${querySizeMax * i}`;
       console.log('url', url);
       aryTokenFetchUrl.push(fetch(url));
     }
