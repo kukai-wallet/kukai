@@ -174,11 +174,7 @@ export class SendComponent implements OnInit, OnChanges {
     if (op.parameters && this.tokenService.isKnownTokenContract(op.destination)) {
       const tokenTransfer = this.operationService.parseTokenTransfer(op);
       if (tokenTransfer && this.tokenService.isKnownTokenId(tokenTransfer?.tokenId)) {
-        // makes sure that decimals property is defined
-        const asset = this.tokenService.getAsset(tokenTransfer.tokenId);
-        if (typeof asset.decimals !== 'undefined') {
-          return tokenTransfer;
-        }
+        return tokenTransfer;
       }
     }
     return null;
