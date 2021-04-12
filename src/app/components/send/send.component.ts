@@ -342,10 +342,7 @@ export class SendComponent implements OnInit, OnChanges {
     } else {
       if (this.tokenTransfer) {
         if (account instanceof ImplicitAccount) {
-          // attempting to solve negative balance issue
-          const tokenBalance = account.getTokenBalance(this.tokenTransfer)
-          if (tokenBalance)
-            return Big(tokenBalance).div(10 ** this.tokenService.getAsset(this.tokenTransfer).decimals).toFixed();
+          return Big(account.getTokenBalance(this.tokenTransfer)).div(10 ** this.tokenService.getAsset(this.tokenTransfer).decimals).toFixed();
         }
       } else {
         return Big(account.balanceXTZ).div(1000000).toString();
