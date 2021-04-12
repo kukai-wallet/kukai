@@ -112,9 +112,5 @@ export interface Constants {
   MAINNET: boolean;
   NODE_URL: string;
   BLOCK_EXPLORER_URL: string;
-  CSI?: {
-    url: string;
-    apiKey: string;
-  };
   ASSETS: Record<string, ContractType>;
 }

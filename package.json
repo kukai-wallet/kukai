@@ -52,7 +52,6 @@
     "bootstrap": "^4.5.0",
     "bs58check": "^2.1.2",
     "buffer": "^5.4.0",
-    "conseiljs": "^0.3.0",
     "copy-to-clipboard": "^3.2.0",
     "core-js": "^3.2.1",
     "crypto-browserify": "^3.12.0",
