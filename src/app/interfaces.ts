@@ -1,26 +1,26 @@
 import { Activity } from './services/wallet/wallet';
-import { ContractType } from './services/token/token.service';
+import { ContractOverrideType, ContractType } from './services/token/token.service';
 
 export { Activity };
 
 export interface KeyPair {
-    sk: string|null;
-    pk: string|null;
-    pkh: string;
+  sk: string|null;
+  pk: string|null;
+  pkh: string;
 }
 export interface Wallet {
-  seed: null|string;
-  salt: null|string;
-  pk?: string;
-  encryptionVersion: number|null;
-  type: WalletType;
-  balance: Balance;
-  XTZrate: number | null;
-  accounts: Account[];
-  derivationPath?: string;
+seed: null|string;
+salt: null|string;
+pk?: string;
+encryptionVersion: number|null;
+type: WalletType;
+balance: Balance;
+XTZrate: number | null;
+accounts: Account[];
+derivationPath?: string;
 }
 export interface Account {
-  pkh: string|null;
+pkh: string|null;
   delegate: string;
   balance: Balance;
   numberOfActivites: number;
@@ -117,4 +117,5 @@ export interface Constants {
     apiKey: string;
   };
   ASSETS: Record<string, ContractType>;
+  CONTRACT_OVERRIDES: Record<string, ContractOverrideType>;
 }

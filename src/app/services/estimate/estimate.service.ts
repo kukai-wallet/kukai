@@ -6,6 +6,7 @@ import { of, Observable } from 'rxjs';
 import { DefaultTransactionParams } from '../../interfaces';
 import Big from 'big.js';
 import { CONSTANTS } from '../../../environments/environment';
+import { ContractOverrideType, ContractsOverrideType } from '../token/token.service';
 
 const httpOptions = { headers: { 'Content-Type': 'application/json' } };
 const hardGasLimit = 1040000;
@@ -24,7 +25,8 @@ export class EstimateService {
   counter: number;
   constructor(
     private http: HttpClient,
-    private operationService: OperationService
+    private operationService: OperationService,
+    private contractsOverride: ContractsOverrideType,
   ) { }
   init(hash: string, chainId: string, counter: number, manager: string, pk: string, pkh: string) {
     this.hash = hash;
@@ -33,6 +35,7 @@ export class EstimateService {
     this.manager = manager;
     this.pk = pk;
     this.pkh = pkh;
+    this.contractsOverride = CONSTANTS.CONTRACT_OVERRIDES
   }
   async preLoadData(pkh: string, pk: string) {
     this.pkh = pkh;
@@ -180,7 +183,8 @@ export class EstimateService {
     }
     const customUsage = this.getUsageException(content);
     if (customUsage) {
-      return customUsage;
+      // if there is a usageException then override values
+      return { gasUsage, storageUsage, ...customUsage };
     }
     return { gasUsage, storageUsage };
   }
@@ -233,18 +237,22 @@ export class EstimateService {
         return of(res);
       })).pipe(catchError(err => this.operationService.errHandler(err)));
   }
-  private getUsageException(content: any): any {
+  private getUsageException(content: any): ContractOverrideType {
     const entrypoint = content?.parameters?.entrypoint;
     const destination = content?.destination;
     if (entrypoint && destination) {
-      switch (`${destination}:${entrypoint}`) {
-        case 'KT1TWb6cE56q2L8yTeNNchXqDSXacrNqyVNZ:reward':
-          return { gasUsage: 59920, storageUsage: 150 };
-        case 'KT1RUSCZ7pJ3WNTuXFD44UpStmNRjA459guZ:reward':
-          return { gasUsage: 59920, storageUsage: 150 };
-        case 'KT1PrNd3sy1pLAqGtft47dzG4v8KizqPJntT:reward':
-          return { gasUsage: 59920, storageUsage: 150 };
+      const contractOverride = this.contractsOverride[`${destination}:${entrypoint}`]
+      if (contractOverride) {
+        return contractOverride
       }
+      // switch () {
+      //   case 'KT1TWb6cE56q2L8yTeNNchXqDSXacrNqyVNZ:reward':
+      //     return { gasUsage: 59920, storageUsage: 150 };
+      //   case 'KT1RUSCZ7pJ3WNTuXFD44UpStmNRjA459guZ:reward':
+      //     return { gasUsage: 59920, storageUsage: 150 };
+      //   case 'KT1PrNd3sy1pLAqGtft47dzG4v8KizqPJntT:reward':
+      //     return { gasUsage: 59920, storageUsage: 150 };
+      // }
     }
     return null;
   }

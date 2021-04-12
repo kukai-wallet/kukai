@@ -112,7 +112,7 @@ export const CONSTANTS: Constants = {
         0: {
           name: 'hic et nunc DAO',
           symbol: 'hDAO',
-          decimals: 6,     
+          decimals: 6,
           description: '',
           displayUrl: '../../../assets/img/tokens/hdao.png',
           thumbnailUrl: '../../../assets/img/tokens/hdao.png',
@@ -122,6 +122,9 @@ export const CONSTANTS: Constants = {
         }
       }
     }
+  },
+  CONTRACT_OVERRIDES: {
+    
   }
 };
 export const TRUSTED_TOKEN_CONTRACTS = [
