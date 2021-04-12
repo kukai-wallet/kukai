@@ -174,7 +174,8 @@ export class SendComponent implements OnInit, OnChanges {
     if (op.parameters && this.tokenService.isKnownTokenContract(op.destination)) {
       const tokenTransfer = this.operationService.parseTokenTransfer(op);
       if (tokenTransfer && this.tokenService.isKnownTokenId(tokenTransfer?.tokenId)) {
-        return tokenTransfer;
+        if (this.activeAccount.getTokenBalance(tokenTransfer.tokenId))
+          return tokenTransfer
       }
     }
     return null;
