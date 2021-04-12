@@ -15,6 +15,7 @@ const hardStorageLimit = 60000;
 export class EstimateService {
   readonly costPerByte = '250';
   readonly revealGasLimit = 1000;
+  readonly contractsOverride: Record<string, ContractOverrideType>;
   queue = [];
   nodeURL = CONSTANTS.NODE_URL;
   pkh: string;
@@ -26,8 +27,9 @@ export class EstimateService {
   constructor(
     private http: HttpClient,
     private operationService: OperationService,
-    private contractsOverride: ContractsOverrideType,
-  ) { }
+  ) {
+    this.contractsOverride = CONSTANTS.CONTRACT_OVERRIDES
+  }
   init(hash: string, chainId: string, counter: number, manager: string, pk: string, pkh: string) {
     this.hash = hash;
     this.chainId = chainId;
@@ -35,7 +37,6 @@ export class EstimateService {
     this.manager = manager;
     this.pk = pk;
     this.pkh = pkh;
-    this.contractsOverride = CONSTANTS.CONTRACT_OVERRIDES
   }
   async preLoadData(pkh: string, pk: string) {
     this.pkh = pkh;
