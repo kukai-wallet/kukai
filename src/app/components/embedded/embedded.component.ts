@@ -52,6 +52,7 @@ export class EmbeddedComponent implements OnInit {
   ophashSubscription: Subscription;
   origin = '';
   login = false;
+  dismiss: Boolean = null;
   blockCard = true;
   activeAccount: ImplicitAccount = null;
   template = null;
@@ -108,6 +109,9 @@ export class EmbeddedComponent implements OnInit {
             case RequestTypes.cardRequest:
               this.handleCardRequest(data);
               break;
+            case RequestTypes.dismissRequest:
+              this.dismiss = true;
+              break;
             default:
               console.warn('Unknown request', data);
           }
@@ -122,6 +126,9 @@ export class EmbeddedComponent implements OnInit {
       const response: ResponseMessage = { type: ResponseTypes.loginResponse, failed: true, error: 'ALREADY_LOGGED_IN' };
       this.sendResponse(response);
     } else {
+      if (req?.config?.customSpinnerDismissal) {
+        this.dismiss = false;
+      }
       this.login = true;
     }
   }
@@ -165,7 +172,13 @@ export class EmbeddedComponent implements OnInit {
   loginResponse(loginData: any) {
     let response: ResponseMessage;
     let toImport: any;
-    if (loginData) {
+    if (loginData === 'dismiss') {
+      this.dismiss = null;
+      response = {
+        type: ResponseTypes.dismissResponse,
+        failed: false
+      };
+    } else if (loginData) {
       const { keyPair, userInfo } = loginData;
       const { idToken = '', accessToken = '', ...filteredUserInfo } = { ...userInfo };
       // 160 bits of entropy, base58 encoded
@@ -180,9 +193,12 @@ export class EmbeddedComponent implements OnInit {
       };
       toImport = { keyPair, userInfo, instanceId };
     } else {
+      this.dismiss = null;
       response = { type: ResponseTypes.loginResponse, failed: true, error: 'ABORTED_BY_USER' };
     }
-    this.login = false;
+    if (this.dismiss === null) {
+      this.login = false;
+    }
     setTimeout(() => {
       this.sendResponse(response);
       if (toImport) {
