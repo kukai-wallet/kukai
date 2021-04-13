@@ -124,7 +124,11 @@ export const CONSTANTS: Constants = {
     }
   },
   CONTRACT_OVERRIDES: {
-    
+    // hice et nunc
+    'KT1Hkg5qeNhfwpKW4fXvq7HGZB9z2EnmCCA9:mint_OBJKT': { storageUsage: 308 },
+    'KT1Hkg5qeNhfwpKW4fXvq7HGZB9z2EnmCCA9:swap': { storageUsage: 180 },
+    'KT1Hkg5qeNhfwpKW4fXvq7HGZB9z2EnmCCA9:curate': { storageUsage: 100 },
+    'KT1Hkg5qeNhfwpKW4fXvq7HGZB9z2EnmCCA9:collect': { storageUsage: 212 },
   }
 };
 export const TRUSTED_TOKEN_CONTRACTS = [
@@ -132,5 +136,6 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1RJ6PbjHpwc3M5rw5s2Nbmefwbuwbdxton',//hicetnunc
   'KT1M2JnD1wsg7w2B4UXJXtKQPuDUpU2L7cJH',//hicetnunc-legacy
   'KT1W4wh1qDc2g22DToaTfnCtALLJ7jHn38Xc',//alchememist
-  'KT1EH8yKXkRoxNkULRB1dSuwhkKyi5LJH82o'//mandala
+  'KT1EH8yKXkRoxNkULRB1dSuwhkKyi5LJH82o',//mandala
+  'KT1DKBvxiwDR7qazNuuxCxY2AaXnoytmDE7H',//Mandala v2
 ];
