@@ -7,7 +7,7 @@ export const CONSTANTS: Constants = {
   NAME: 'Mainnet',
   NETWORK: 'mainnet',
   MAINNET: true,
-  NODE_URL: 'https://mainnet-tezos.giganode.io',
+  NODE_URL: 'https://api.tez.ie/rpc/mainnet',
   BLOCK_EXPLORER_URL: 'https://tzkt.io',
   ASSETS: {
     'KT1K9gCRgaLRFKTErYt1wVxA3Frb9FjasjTV': { // kUSD
