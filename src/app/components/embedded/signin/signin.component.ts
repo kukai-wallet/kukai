@@ -1,6 +1,4 @@
-import { EventEmitter, Output } from '@angular/core';
-import { HostListener } from '@angular/core';
-import { Component, OnInit } from '@angular/core';
+import { EventEmitter, Input, Output, SimpleChanges, HostListener, Component, OnInit, OnChanges } from '@angular/core';
 import { MessageService } from '../../../services/message/message.service';
 import { TorusService } from '../../../services/torus/torus.service';
 
@@ -9,7 +7,8 @@ import { TorusService } from '../../../services/torus/torus.service';
   templateUrl: './signin.component.html',
   styleUrls: ['./signin.component.scss']
 })
-export class SigninComponent implements OnInit {
+export class SigninComponent implements OnInit, OnChanges {
+  @Input() dismiss: Boolean;
   @Output() loginResponse = new EventEmitter();
   @HostListener('click', ['$event'])
   onClick(ev) {
@@ -24,6 +23,12 @@ export class SigninComponent implements OnInit {
 
   ngOnInit(): void {
   }
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log('changes', changes);
+    if (changes?.dismiss?.currentValue === true) {
+        this.messageService.stopSpinner().then(() => setTimeout(() => this.loginResponse.emit('dismiss'), 10));
+    }
+  }
   abort() {
     this.loginResponse.emit(null);
   }
@@ -32,7 +37,9 @@ export class SigninComponent implements OnInit {
       this.messageService.startSpinner('Loading wallet...');
       //const loginData = await this.mockLogin(); // Mock locally
       const loginData = await this.torusService.loginTorus(typeOfLogin);
-      await this.messageService.stopSpinner();
+      if (this.dismiss === null) {
+        await this.messageService.stopSpinner();
+      }
       this.loginResponse.emit(loginData);
     } catch {
       await this.messageService.stopSpinner();
