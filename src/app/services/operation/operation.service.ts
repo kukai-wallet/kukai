@@ -199,9 +199,9 @@ export class OperationService {
         let invocation: any;
         const { kind, decimals, contractAddress, id } = this.tokenService.getAsset(tokenTransfer);
         if (kind === 'FA1.2') {
-          invocation = this.getFA12Transaction(pkh, transactions[i].to, Big(10 ** decimals).times(transactions[i].amount).toString());
+          invocation = this.getFA12Transaction(pkh, transactions[i].to, Big(10 ** decimals).times(transactions[i].amount).toFixed(0));
         } else if (kind === 'FA2') {
-          invocation = this.getFA2Transaction(pkh, transactions[i].to, Big(10 ** decimals).times(transactions[i].amount).toString(), id);
+          invocation = this.getFA2Transaction(pkh, transactions[i].to, Big(10 ** decimals).times(transactions[i].amount).toFixed(0), id);
         } else {
           throw new Error('Unrecognized token kind');
         }
