@@ -198,10 +198,14 @@ export class OperationService {
         console.log('Invoke contract: ' + tokenTransfer);
         let invocation: any;
         const { kind, decimals, contractAddress, id } = this.tokenService.getAsset(tokenTransfer);
+        const txAmount = Big(10 ** decimals).times(transactions[i].amount)
+        if (!txAmount.mod(1).eq(0)) {
+          throw new Error(`the amount ${transactions[i].amount} is not within ${decimals} decimals`);
+        }
         if (kind === 'FA1.2') {
-          invocation = this.getFA12Transaction(pkh, transactions[i].to, Big(10 ** decimals).times(transactions[i].amount).toFixed(0));
+          invocation = this.getFA12Transaction(pkh, transactions[i].to, txAmount.toFixed(0));
         } else if (kind === 'FA2') {
-          invocation = this.getFA2Transaction(pkh, transactions[i].to, Big(10 ** decimals).times(transactions[i].amount).toFixed(0), id);
+          invocation = this.getFA2Transaction(pkh, transactions[i].to, txAmount.toFixed(0), id);
         } else {
           throw new Error('Unrecognized token kind');
         }
