@@ -28,7 +28,7 @@ export class EstimateService {
     private http: HttpClient,
     private operationService: OperationService,
   ) {
-    this.contractsOverride = CONSTANTS.CONTRACT_OVERRIDES
+    this.contractsOverride = CONSTANTS.CONTRACT_OVERRIDES;
   }
   init(hash: string, chainId: string, counter: number, manager: string, pk: string, pkh: string) {
     this.hash = hash;
@@ -242,9 +242,9 @@ export class EstimateService {
     const entrypoint = content?.parameters?.entrypoint;
     const destination = content?.destination;
     if (entrypoint && destination) {
-      const contractOverride = this.contractsOverride[`${destination}:${entrypoint}`]
+      const contractOverride = this.contractsOverride[`${destination}:${entrypoint}`];
       if (contractOverride) {
-        return contractOverride
+        return contractOverride;
       }
     }
     return null;
