@@ -60,6 +60,18 @@ export const CONSTANTS: Constants = {
         }
       }
     }
+  },
+  CONTRACT_OVERRIDES: {
+    // mystery map
+    'KT1TWb6cE56q2L8yTeNNchXqDSXacrNqyVNZ:reward': {
+      storageUsage: 150, gasUsage: 59920
+    },
+    'KT1RUSCZ7pJ3WNTuXFD44UpStmNRjA459guZ:reward': {
+      storageUsage: 150, gasUsage: 59920
+    },
+    'KT1PrNd3sy1pLAqGtft47dzG4v8KizqPJntT:reward': {
+      storageUsage: 150, gasUsage: 59920
+    },
   }
 };
 export const TRUSTED_TOKEN_CONTRACTS = [
