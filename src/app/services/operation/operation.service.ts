@@ -198,7 +198,7 @@ export class OperationService {
         console.log('Invoke contract: ' + tokenTransfer);
         let invocation: any;
         const { kind, decimals, contractAddress, id } = this.tokenService.getAsset(tokenTransfer);
-        const txAmount = Big(10 ** decimals).times(transactions[i].amount)
+        const txAmount = Big(10 ** decimals).times(transactions[i].amount);
         if (!txAmount.mod(1).eq(0)) {
           throw new Error(`the amount ${transactions[i].amount} is not within ${decimals} decimals`);
         }
