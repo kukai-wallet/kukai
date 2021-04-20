@@ -86,7 +86,7 @@ import { QrScannerComponent } from './components/qr-scanner/qr-scanner.component
 import { EmbeddedComponent } from './components/embedded/embedded.component';
 import { SigninComponent } from './components/embedded/signin/signin.component';
 import { SignExprComponent } from './components/sign-expr/sign-expr.component';
-import { CardComponent } from './components/card/card.component';
+import { CardComponent } from './components/embedded/card/card.component';
 import { PrepareSendComponent } from './components/send/prepare-send/prepare-send.component';
 import { ConfirmSendComponent } from './components/send/confirm-send/confirm-send.component';
 import { ConfirmSendTemplateComponent } from './components/send/confirm-send-template/confirm-send-template.component';

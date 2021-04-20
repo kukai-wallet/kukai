@@ -1,9 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { WalletService } from '../../services/wallet/wallet.service';
+import { WalletService } from '../../../services/wallet/wallet.service';
 import {
   TorusWallet,
   ImplicitAccount
-} from '../../services/wallet/wallet';
+} from '../../../services/wallet/wallet';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
