@@ -683,7 +683,8 @@ export class OperationService {
     const keyPair = (new elliptic.ec('secp256k1')).keyFromPrivate(
       new Uint8Array(this.b58cdecode(sk, this.prefix.spsk))
     );
-    const prefixVal = keyPair.getPublic().getY().toArray()[31] % 2 ? 3 : 2; // Y odd / even
+    const yArray = keyPair.getPublic().getY().toArray();
+    const prefixVal = yArray[yArray.length - 1] % 2 ? 3 : 2; // Y odd / even
     const pad = new Array(32).fill(0); // Zero-padding
     const publicKey = new Uint8Array(
       [prefixVal].concat(pad.concat(keyPair.getPublic().getX().toArray()).slice(-32)
@@ -694,7 +695,8 @@ export class OperationService {
   }
   spPointsToPkh(pubX: string, pubY: string): string {
     const key = (new elliptic.ec('secp256k1')).keyFromPublic({ x: pubX, y: pubY });
-    const prefixVal = key.getPublic().getY().toArray()[31] % 2 ? 3 : 2;
+    const yArray = key.getPublic().getY().toArray();
+    const prefixVal = yArray[yArray.length - 1] % 2 ? 3 : 2;
     const pad = new Array(32).fill(0);
     const publicKey = new Uint8Array(
       [prefixVal].concat(pad.concat(key.getPublic().getX().toArray()).slice(-32)
