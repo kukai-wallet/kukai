@@ -79,7 +79,10 @@ export class SendComponent implements OnInit, OnChanges {
   }
   getTokenTransferObj(op: any) {
     if (op.parameters && this.tokenService.isKnownTokenContract(op.destination)) {
-      return this.operationService.parseTokenTransfer(op);
+      const tokenTransfer = this.operationService.parseTokenTransfer(op);
+      if (tokenTransfer && this.tokenService.isKnownTokenId(tokenTransfer?.tokenId)) {
+        return tokenTransfer;
+      }
     }
     return null;
   }
@@ -130,7 +133,7 @@ export class SendComponent implements OnInit, OnChanges {
           console.log('no res');
         }
       };
-      await this.estimateService.estimate(JSON.parse(JSON.stringify(txs)), this.activeAccount.pkh, tokenTransfer, callback);
+      await this.estimateService.estimateTransactions(JSON.parse(JSON.stringify(txs)), this.activeAccount.pkh, tokenTransfer, callback);
     } finally {
       await this.messageService.stopSpinner();
     }

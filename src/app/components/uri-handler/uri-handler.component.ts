@@ -60,11 +60,8 @@ export class UriHandlerComponent implements OnInit {
     this.beaconService.client
       .connect(async (message: any) => {
         console.log('### beacon message', message);
-        if (message?.network?.name === 'edonet giganode' && message.network.type === 'custom') {
-          message.network.type = 'edonet';
-        }
-        if (message.type !== BeaconMessageType.SignPayloadRequest && message.network.type !== CONSTANTS.NETWORK) {
-          console.warn(`Rejecting Beacon message because of network. Expected ${CONSTANTS.NETWORK} instead of ${message.network.type}`, message);
+        if (message.type !== BeaconMessageType.SignPayloadRequest && message.network.type.replace('edo2net', 'edonet') !== CONSTANTS.NETWORK) {
+          console.warn(`Rejecting Beacon message because of network. Expected ${CONSTANTS.NETWORK} instead of ${message.network.type}`);
           await this.beaconService.rejectOnNetwork(message);
         } else if (!this.permissionRequest && !this.operationRequest && !this.signRequest) {
           switch (message.type) {
@@ -151,6 +148,11 @@ export class UriHandlerComponent implements OnInit {
         console.warn('Invalid delegate');
         await this.beaconService.rejectOnUnknown(message);
       }
+    } else if (message.operationDetails[0].kind === 'origination') {
+      if (!message.operationDetails[0].script) {
+        console.warn('No script found');
+        await this.beaconService.rejectOnParameters(message);
+      }
     } else {
       console.warn('Unsupported operation kind');
       await this.beaconService.rejectOnUnknown(message);
@@ -215,6 +217,8 @@ export class UriHandlerComponent implements OnInit {
     } else if (opHash === 'broadcast_error') {
       await this.beaconService.rejectOnBroadcastError(this.operationRequest);
     } else if (opHash === 'invalid_parameters') {
+      await this.beaconService.rejectOnParameters(this.operationRequest);
+    } else if (opHash === 'parameters_error') {
       await this.beaconService.rejectOnParameters(this.operationRequest);
     } else {
       const response: OperationResponseInput = {

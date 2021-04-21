@@ -202,7 +202,7 @@ export class PrepareSendComponent implements OnInit, OnChanges {
           }
           this.simSemaphore--;
         };
-        this.estimateService.estimate(JSON.parse(JSON.stringify(txs)), this.activeAccount.address, this.tokenTransfer, callback);
+        this.estimateService.estimateTransactions(JSON.parse(JSON.stringify(txs)), this.activeAccount.address, this.tokenTransfer, callback);
       } else {
         this.latestSimError = prevSimError;
         this.formInvalid = this.latestSimError;

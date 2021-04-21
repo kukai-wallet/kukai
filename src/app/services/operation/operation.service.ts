@@ -105,7 +105,8 @@ export class OperationService {
   /*
     Returns an observable for the origination of new accounts.
   */
-  originate(pkh: string, amount: number, fee: number = 0, keys: KeyPair): Observable<any> {
+  originate(origination: any, fee: number = 0, keys: KeyPair): Observable<any> {
+    console.log(fee, origination);
     return this.getHeader()
       .pipe(flatMap((header: any) => {
         return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + keys.pkh + '/counter', {})
@@ -115,40 +116,42 @@ export class OperationService {
                 if (fee >= this.feeHardCap) {
                   throw new Error('TooHighFee');
                 }
-                let counter: number = Number(actions);
-                const script = this.getManagerScript(keys.pkh);
-                const fop: any = {
-                  branch: header.hash,
-                  contents: [
-                    {
-                      kind: 'origination',
-                      source: keys.pkh,
-                      fee: this.microTez.times(fee).toString(),
-                      counter: (++counter).toString(),
-                      gas_limit: '15678',
-                      storage_limit: '509',
-                      balance: this.microTez.times(amount).toString(),
-                      script: script
-                    }
-                  ]
-                };
-                if (manager === null) {
-                  fop.contents[1] = fop.contents[0];
-                  fop.contents[0] = {
-                    kind: 'reveal',
-                    source: keys.pkh,
-                    fee: '0',
-                    counter: (counter).toString(),
-                    gas_limit: '1000',
-                    storage_limit: '0',
-                    public_key: keys.pk
-                  };
-                  fop.contents[1].counter = (Number(fop.contents[1].counter) + 1).toString();
-                }
+                const counter: number = Number(actions);
+                const fop = this.createOriginationObject(header.hash, counter, manager, origination, fee, keys.pk, keys.pkh);
                 return this.operation(fop, header, keys, true);
               }));
           }));
       })).pipe(catchError(err => this.errHandler(err)));
+  }
+  createOriginationObject(hash: string, counter: number, manager: string, origination: any, fee: number, pk: string, pkh: string): any {
+    const fop: any = {
+      branch: hash,
+      contents: []
+    };
+    const gas_limit = origination.gasLimit.toString();
+    const storage_limit = origination.storageLimit.toString();
+    if (manager === null) { // Reveal
+      fop.contents.push({
+        kind: 'reveal',
+        source: pkh,
+        fee: '0',
+        counter: (++counter).toString(),
+        gas_limit: '1000',
+        storage_limit: '0',
+        public_key: pk
+      });
+    }
+    fop.contents.push({
+      kind: 'origination',
+      source: pkh,
+      fee: this.microTez.times(fee).toString(),
+      counter: (++counter).toString(),
+      gas_limit,
+      storage_limit,
+      balance: this.microTez.times(origination.balance).toString(),
+      script: origination.script
+    });
+    return fop;
   }
   /*
     Returns an observable for the transaction of tez.
@@ -195,10 +198,14 @@ export class OperationService {
         console.log('Invoke contract: ' + tokenTransfer);
         let invocation: any;
         const { kind, decimals, contractAddress, id } = this.tokenService.getAsset(tokenTransfer);
+        const txAmount = Big(10 ** decimals).times(transactions[i].amount);
+        if (!txAmount.mod(1).eq(0)) {
+          throw new Error(`the amount ${transactions[i].amount} is not within ${decimals} decimals`);
+        }
         if (kind === 'FA1.2') {
-          invocation = this.getFA12Transaction(pkh, transactions[i].destination, Big(10 ** decimals).times(transactions[i].amount).toString());
+          invocation = this.getFA12Transaction(pkh, transactions[i].to, txAmount.toFixed(0));
         } else if (kind === 'FA2') {
-          invocation = this.getFA2Transaction(pkh, transactions[i].destination, Big(10 ** decimals).times(transactions[i].amount).toString(), id);
+          invocation = this.getFA2Transaction(pkh, transactions[i].to, txAmount.toFixed(0), id);
         } else {
           throw new Error('Unrecognized token kind');
         }
@@ -444,9 +451,10 @@ export class OperationService {
       }));
   }
   checkApplied(applied: any) {
+    let failed = false;
     for (let i = 0; i < applied[0].contents.length; i++) {
       if (applied[0].contents[i].metadata.operation_result.status !== 'applied') {
-        console.log('throw error ->');
+        failed = true;
         if (applied[0].contents[i].metadata.operation_result.errors) {
           console.log('Error in operation_result');
           throw applied[0].contents[i].metadata.operation_result.errors[
@@ -458,10 +466,11 @@ export class OperationService {
           throw applied[0].contents[i].metadata.internal_operation_results[0].result.errors[
           applied[0].contents[i].metadata.internal_operation_results[0].result.errors.length - 1
           ];
-        } else {
-          throw new Error('Uncatched error in preapply');
         }
       }
+    }
+    if (failed) {
+      throw new Error('Uncaught error in preapply');
     }
   }
   errHandler(error: any): Observable<any> {

@@ -122,7 +122,7 @@ export class ActivityService {
           } else if (activity.type === 'delegation') {
             this.messageService.addSuccess(account.shortAddress() + ': Delegate updated');
           } else if (activity.type === 'origination') {
-            this.messageService.addSuccess(account.shortAddress() + ': Account originated');
+            this.messageService.addSuccess(account.shortAddress() + ': Contract originated');
           } else if (activity.type === 'activation') {
             this.messageService.addSuccess(account.shortAddress() + ': Account activated');
           }

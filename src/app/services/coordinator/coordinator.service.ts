@@ -144,7 +144,7 @@ export class CoordinatorService {
           const latestActivity = acc.activities[0];
           if (latestActivity.status === 0) {
             const age = new Date().getTime() - new Date(latestActivity.timestamp).getTime();
-            if (age > 360000) {
+            if (age > 3000000) { // 50m
               acc.activities.shift();
               this.walletService.storeWallet();
             }
@@ -260,6 +260,20 @@ export class CoordinatorService {
       };
       const account = this.walletService.wallet.getAccount(from);
       account.activities.unshift(delegation);
+    } else if (metadata.origination !== undefined) {
+      const origination = {
+        type: 'origination',
+        status: 0,
+        amount: metadata.origination.balance,
+        fee: null,
+        source: { address: from },
+        destination: { address: metadata.kt1 },
+        hash: metadata.opHash,
+        block: null,
+        timestamp: new Date().getTime()
+      };
+      const account = this.walletService.wallet.getAccount(from);
+      account.activities.unshift(origination);
     } else {
       console.log('Unknown metadata', metadata);
     }

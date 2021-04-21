@@ -1,4 +1,17 @@
 # Release notes
+## 1.12.4
+* Minor fixes
+## 1.12.3
+* Add image proxy
+* Display hicetnunc token images
+* Display alchememist images
+## 1.12.2
+* Enlarge token image
+* add series token metadata property
+## 1.12.1
+* Support for origination
+* Updated metadata spec
+* Minor bug fixes
 ## 1.12
 * Message signing
 * Signing of Micheline expressions

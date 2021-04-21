@@ -21,7 +21,6 @@ export class PermissionRequestComponent implements OnInit, OnChanges {
     }
   }
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
     if (this.permissionRequest) {
       const scrollBarWidth = window.innerWidth - document.body.offsetWidth;
       document.body.style.marginRight = scrollBarWidth.toString();

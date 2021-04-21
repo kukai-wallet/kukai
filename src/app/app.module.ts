@@ -90,6 +90,7 @@ import { CardComponent } from './components/embedded/card/card.component';
 import { PrepareSendComponent } from './components/send/prepare-send/prepare-send.component';
 import { ConfirmSendComponent } from './components/send/confirm-send/confirm-send.component';
 import { ConfirmSendTemplateComponent } from './components/send/confirm-send-template/confirm-send-template.component';
+import { OriginateComponent } from './components/originate/originate.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -142,7 +143,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     CardComponent,
     PrepareSendComponent,
     ConfirmSendComponent,
-    ConfirmSendTemplateComponent
+    ConfirmSendTemplateComponent,
+    SignExprComponent,
+    OriginateComponent
   ],
   imports: [
     BrowserModule,
