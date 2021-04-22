@@ -24,9 +24,8 @@ export class SigninComponent implements OnInit, OnChanges {
   ngOnInit(): void {
   }
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('changes', changes);
     if (changes?.dismiss?.currentValue === true) {
-        this.messageService.stopSpinner().then(() => setTimeout(() => this.loginResponse.emit('dismiss'), 10));
+        this.messageService.stopSpinner().then(() => this.loginResponse.emit('dismiss'));
     }
   }
   abort() {

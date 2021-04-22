@@ -204,7 +204,7 @@ export class EmbeddedComponent implements OnInit {
       if (toImport) {
         this.importAccount(toImport.keyPair, toImport.userInfo, toImport.instanceId);
       }
-    }, 0);
+    }, 10);
   }
   async handleAuthRequest(authReq: AuthRequest) {
     this.embeddedAuthService.authenticate(authReq, this.origin).then((authResponse: any) => {

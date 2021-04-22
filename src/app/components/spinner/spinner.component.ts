@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterContentChecked } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MessageService } from '../../services/message/message.service';
 
 @Component({
@@ -6,15 +6,10 @@ import { MessageService } from '../../services/message/message.service';
   templateUrl: './spinner.component.html',
   styleUrls: ['./spinner.component.scss']
 })
-export class SpinnerComponent implements OnInit, AfterContentChecked {
+export class SpinnerComponent implements OnInit {
 
   constructor(public messageService: MessageService) { }
 
   ngOnInit(): void {
-  }
-  ngAfterContentChecked(): void {
-    if (!this.messageService.spinnerOn) {
-      this.messageService.spinnerChecked();
-    }
   }
 }

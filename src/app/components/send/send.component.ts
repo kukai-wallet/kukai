@@ -133,6 +133,7 @@ export class SendComponent implements OnInit, OnChanges {
           console.log('no res');
         }
       };
+      console.log('sim1');
       await this.estimateService.estimateTransactions(JSON.parse(JSON.stringify(txs)), this.activeAccount.pkh, tokenTransfer, callback);
     } finally {
       await this.messageService.stopSpinner();

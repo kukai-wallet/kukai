@@ -110,18 +110,8 @@ export class MessageService {
     this.spinnerOn = true;
   }
   async stopSpinner(): Promise<void> {
-    if (!this.spinnerOn) {
-      return;
-    }
     this.spinnerText = '';
     this.spinnerOn = false;
-    return new Promise(resolve => {
-      this.checked.subscribe((checked) => { resolve(); } );
-    });
-  }
-  async spinnerChecked() {
-    setTimeout(() => {
-      this.checked = of(true);
-    }, 0);
+    return;
   }
 }
