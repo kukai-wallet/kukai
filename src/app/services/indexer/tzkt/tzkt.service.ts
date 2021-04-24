@@ -323,7 +323,6 @@ export class TzktService implements Indexer {
     const aryTokenFetchUrl: Promise<Response>[] = [];
     for (let i = 0; i < totalPromises; i++) {
       const url = `${this.bcd}/account/${this.network}/${address}/token_balances?max=${querySizeMax}&offset=${querySizeMax * i}`;
-      console.log('url', url);
       aryTokenFetchUrl.push(fetch(url));
     }
     const aryTokenResults = await Promise.all(aryTokenFetchUrl);

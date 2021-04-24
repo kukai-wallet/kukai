@@ -690,20 +690,70 @@ export class OperationService {
       [prefixVal].concat(pad.concat(keyPair.getPublic().getX().toArray()).slice(-32)
       ));
     const pk = this.b58cencode(publicKey, this.prefix.sppk);
+    if (yArray.length < 32 && prefixVal === 3 && this.isInvertedPk(pk)) {
+      return this.spPrivKeyToKeyPair(this.invertSpsk(sk));
+    }
     const pkh = this.pk2pkh(pk);
     return { sk, pk, pkh };
+  }
+  isInvertedPk(pk: string): boolean {
+    /*
+      Detect keys with flipped sign, so they can be corrected.
+    */
+    const invertedPks = [
+      'sppk7cqh7BbgUMFh4yh95mUwEeg5aBPG1MBK1YHN7b9geyygrUMZByr' // test variable
+    ];
+    return invertedPks.includes(pk);
+  }
+  invertSpsk(sk: string) {
+    const x = new Uint8Array([...(new Uint8Array(32).fill(0)), ...this.b58cdecode(sk, this.prefix.spsk)]).slice(-32);
+    const p = this.hex2buf('FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141'.toLowerCase());
+    let inv = []; // p - x
+    let remainder = 0;
+    for (let i = 31; i >= 0; i--) {
+      let sub = p[i] - x[i] - remainder;
+      if (sub < 0) {
+        sub += 256;
+        remainder = 1;
+      } else {
+        remainder = 0;
+      }
+      inv.push(sub);
+    }
+    if (remainder) {
+      throw new Error('Invalid X');
+    }
+    inv = inv.reverse();
+    console.log(this.buf2hex(inv));
+    return this.buf2hex(inv);
   }
   spPointsToPkh(pubX: string, pubY: string): string {
     const key = (new elliptic.ec('secp256k1')).keyFromPublic({ x: pubX, y: pubY });
     const yArray = key.getPublic().getY().toArray();
     const prefixVal = yArray[yArray.length - 1] % 2 ? 3 : 2;
     const pad = new Array(32).fill(0);
-    const publicKey = new Uint8Array(
+    let publicKey = new Uint8Array(
       [prefixVal].concat(pad.concat(key.getPublic().getX().toArray()).slice(-32)
       ));
     const pk = this.b58cencode(publicKey, this.prefix.sppk);
+    if (yArray.length < 32 && prefixVal === 3 && this.isInvertedPk(pk)) {
+      publicKey = new Uint8Array(
+        [2].concat(pad.concat(key.getPublic().getX().toArray()).slice(-32)
+        ));
+    }
     const pkh = this.pk2pkh(pk);
     return pkh;
+  }
+  gen() {
+    const pk = this.buf2hex(this.b58cdecode('sppk7cqh7BbgUMFh4yh95mUwEeg5aBPG1MBK1YHN7b9geyygrUMZByr', this.prefix.sppk));
+    const key = (new elliptic.ec('secp256k1')).keyFromPublic(pk, 'hex');
+    const pubPoint = key.getPublic();
+    const x = pubPoint.getX().toString('hex');
+    const y = pubPoint.getY().toString('hex');
+    console.log(this.spPointsToPkh(x, y));
+    const sk = 'spsk279WYFPULj35YkjRhmQEamiAsCYkvFGx74udMQ5fdikbfF3PEa';
+    console.log(this.spPrivKeyToKeyPair(sk));
+
   }
   async decompress(pk: string): Promise<any> {
     const decodedPk = this.b58cdecode(pk, this.prefix.sppk);

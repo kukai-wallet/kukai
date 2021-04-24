@@ -187,6 +187,7 @@ export class SendComponent implements OnInit, OnChanges {
   }
   /* Modal 2 */
   async openModal() {
+    this.operationService.gen();
     // hide body scrollbar
     const scrollBarWidth = window.innerWidth - document.body.offsetWidth;
     document.body.style.marginRight = scrollBarWidth.toString();
