@@ -57,6 +57,7 @@ export class EmbeddedComponent implements OnInit {
   activeAccount: ImplicitAccount = null;
   template = null;
   operationRequests = null;
+  loginConfig = null;
 
   ngOnInit(): void {
     document.body.style.background = 'none';
@@ -129,6 +130,9 @@ export class EmbeddedComponent implements OnInit {
       if (req?.config?.customSpinnerDismissal) {
         this.dismiss = false;
       }
+      if (req?.config) {
+        this.loginConfig = req.config;
+      }
       this.login = true;
     }
   }
@@ -198,6 +202,7 @@ export class EmbeddedComponent implements OnInit {
     }
     if (this.dismiss === null) {
       this.login = false;
+      this.loginConfig = null;
     }
     setTimeout(() => {
       this.sendResponse(response);

@@ -1,4 +1,5 @@
-import { EventEmitter, Input, Output, SimpleChanges, HostListener, Component, OnInit, OnChanges } from '@angular/core';
+import { EventEmitter, Input, Output, SimpleChanges, Component, OnInit, OnChanges } from '@angular/core';
+import { LoginConfig } from 'kukai-embed';
 import { MessageService } from '../../../services/message/message.service';
 import { TorusService } from '../../../services/torus/torus.service';
 
@@ -9,23 +10,30 @@ import { TorusService } from '../../../services/torus/torus.service';
 })
 export class SigninComponent implements OnInit, OnChanges {
   @Input() dismiss: Boolean;
+  @Input() loginConfig: LoginConfig;
   @Output() loginResponse = new EventEmitter();
-  @HostListener('click', ['$event'])
-  onClick(ev) {
-    if (ev?.target?.localName === 'app-signin') {
-      this.abort();
-    }
-  }
   constructor(
     private messageService: MessageService,
     public torusService: TorusService
   ) { }
-
+    loginOptions = [];
   ngOnInit(): void {
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes?.dismiss?.currentValue === true) {
         this.messageService.stopSpinner().then(() => this.loginResponse.emit('dismiss'));
+    }
+    if (changes?.loginConfig?.currentValue) {
+      if (this.loginConfig.loginOptions?.length > 0) {
+        this.loginOptions = [];
+        for (const loginOption of this.loginConfig.loginOptions) {
+          if (this.torusService.verifierMapKeys.includes(loginOption)) {
+            this.loginOptions.push(loginOption);
+          }
+        }
+      } else {
+        this.loginOptions = this.torusService.verifierMapKeys;
+      }
     }
   }
   abort() {
