@@ -19,7 +19,7 @@
         <ng-template #defaultButtonText>Send</ng-template>
       </button>
     </div>
-    <p *ngIf="templateRequest.fee" class="fee">Estimated fee <b>{{templateRequest.fee.total}} tez</b></p>
+    <p class="fee">Estimated fee <b *ngIf="templateRequest.fee">{{templateRequest.fee.total}} tez</b><img *ngIf="!templateRequest.fee" src="../../../../assets/img/feeLoader.gif"></p>
     <div class="footer">
       <span>Powered by</span><img class="logo" src="../../../../assets/img/kukai-logo-black.svg">
     </div>

@@ -5,9 +5,9 @@ export interface PrepareRequest {
   tokenTransfer: string;
 }
 export interface TemplateRequest {
-  ops: FullyPreparedTransaction[];
   template: Template;
-  fee: TemplateFee;
+  ops?: FullyPreparedTransaction[];
+  fee?: TemplateFee;
 }
 export interface TemplateFee {
   network: string;

@@ -105,7 +105,11 @@ export class SendComponent implements OnInit, OnChanges {
     return true;
   }
   async simulateRequest(txs: PartiallyPreparedTransaction[], tokenTransfer: string) {
-    await this.messageService.startSpinner('Preparing transaction...');
+    if (this.template) {
+      this.templateRequest = { template: this.template };
+    } else {
+      await this.messageService.startSpinner('Preparing transaction...');
+    }
     try {
       await this.estimateService.preLoadData(this.activeAccount.pkh, this.activeAccount.pk);
       const callback = (res) => {

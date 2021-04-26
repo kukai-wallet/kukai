@@ -1,7 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, OnChanges } from '@angular/core';
 import { TemplateRequest, TemplateFee, FullyPreparedTransaction } from '../interfaces';
-import { EstimateService } from '../../../services/estimate/estimate.service';
-import Big from 'big.js';
 
 @Component({
   selector: 'app-confirm-send-template',
@@ -12,14 +10,12 @@ export class ConfirmSendTemplateComponent implements OnInit, OnChanges {
   @Input() templateRequest: TemplateRequest = null;
   @Output() isApproved = new EventEmitter();
   active = false;
-  constructor(
-    private estimateService: EstimateService
-  ) { }
+  constructor() { }
 
   ngOnInit(): void {
   }
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes?.templateRequest?.currentValue && !changes.templateRequest.previousValue) {
+    if (changes?.templateRequest?.currentValue) {
       console.log(this.templateRequest);
       if (this.templateRequest.template?.descriptions?.length) {
         this.hideScrollbar();
@@ -35,8 +31,10 @@ export class ConfirmSendTemplateComponent implements OnInit, OnChanges {
     this.isApproved.emit(null);
   }
   approve() {
-    this.isApproved.emit(this.templateRequest.ops);
-    this.reset();
+    if (this.templateRequest.ops && this.templateRequest.fee) {
+      this.isApproved.emit(this.templateRequest.ops);
+      this.reset();
+    }
   }
   reset() {
     this.resetScrollbar();
