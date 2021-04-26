@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewEncapsulation, Input, ViewChild, ElementRef, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { KeyPair, DefaultTransactionParams } from '../../interfaces';
 import { Account, ImplicitAccount, OriginatedAccount } from '../../services/wallet/wallet';
-import { PrepareRequest, ConfirmRequest, FullyPreparedTransaction, PartiallyPreparedTransaction, Template, TemplateRequest, TemplateFee } from './interfaces';
+import { PrepareRequest, ConfirmRequest, FullyPreparedTransaction, PartiallyPreparedTransaction, TemplateRequest, TemplateFee } from './interfaces';
+import { Template } from 'kukai-embed';
 import { TokenService } from '../../services/token/token.service';
 import { EstimateService } from '../../services/estimate/estimate.service';
 import { MessageService } from '../../services/message/message.service';
@@ -133,7 +134,6 @@ export class SendComponent implements OnInit, OnChanges {
           console.log('no res');
         }
       };
-      console.log('sim1');
       await this.estimateService.estimateTransactions(JSON.parse(JSON.stringify(txs)), this.activeAccount.pkh, tokenTransfer, callback);
     } finally {
       await this.messageService.stopSpinner();

@@ -1,4 +1,5 @@
 @import '../../../../assets/fonts/Poppins/stylesheet.css';
+@import '../../../../assets/fonts/Gotham/stylesheet.css';
 :host {
   width: 100vw;
   height: 100vh;
@@ -9,6 +10,7 @@
   background: rgba(0, 0, 0, 0.6);
 }
 div.direct-auth-login {
+  margin: 0 0.25rem;
   width: 21.875rem;
   background: #f3f3f3;
   box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.24), 0px 4px 12px rgba(0, 0, 0, 0.24),
@@ -19,11 +21,11 @@ div.direct-auth-login {
   height: 2rem;
   padding: 0.5rem 1rem 0;
   display: flex;
-  flex-direction: row-reverse
+  flex-direction: row-reverse;
 }
 :host > div.direct-auth-login H2,
 :host > div.direct-auth-login span {
-  font-family: 'Poppins' !important;
+  font-family: 'Gotham' !important;
   font-style: normal !important;
   font-weight: 500 !important;
 }
@@ -42,8 +44,8 @@ div.direct-auth-login > div.header img {
 }
 div.direct-auth-login H2 {
   margin: 0rem 0 0.5rem;
-  font-size: 1.25rem;
-  line-height: 1.875rem;
+  font-size: 1rem;
+  line-height: 1.3125rem;
   text-align: center;
   vertical-align: top;
 }

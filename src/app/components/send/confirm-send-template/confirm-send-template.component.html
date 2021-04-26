@@ -1,21 +1,27 @@
 <div *ngIf="active" class="kukai-template">
   <div *ngIf="templateRequest.template" class="card">
-    <H1>You are about to <b *ngIf="templateRequest.template.action; else defaultAction">{{templateRequest.template.action}}:</b>
-      <ng-template #defaultAction><b>send:</b></ng-template>
+    <H1>You are about to<BR><b *ngIf="templateRequest.template.action; else defaultAction">{{templateRequest.template.action}}</b>
+      <ng-template #defaultAction><b>send</b></ng-template>
     </H1>
-    <img *ngIf="templateRequest.template.description[0] && templateRequest.template.description[0].imgUrl" src="{{templateRequest.template.description[0].imgUrl}}" height="150">
-    <p *ngIf="templateRequest.template.description[0]" class="blue">{{templateRequest.template.description[0].text}}</p>
-    <p *ngIf="templateRequest.template.description[1]">{{templateRequest.template.description[1]}}</p>
-    <p *ngIf="templateRequest.template.description[2]" class="blue">{{templateRequest.template.description[2].text}}</p>
-    <img *ngIf="templateRequest.template.description[2] && templateRequest.template.description[2].imgUrl" src="{{templateRequest.template.description[2].imgUrl}}" height="150">
-    <p *ngIf="templateRequest.fee" class="fee">Estimated Fee: <b>{{templateRequest.fee.total}} tez</b><img
-        src="../../../../assets/img/coolicon.svg"></p>
-    <div class="buttons">
+    <ng-container *ngFor="let description of templateRequest.template.descriptions">
+      <ng-container *ngIf="!description.imgUrl">
+        <p class="single" *ngIf="description.text">{{ description.text }}</p>
+      </ng-container>
+      <ng-container *ngIf="description.imgUrl">
+        <img *ngIf="description.imgUrl" src="{{description.imgUrl}}" height="150">
+        <p class="img-text" *ngIf="description.text">{{description.text}}</p>
+      </ng-container>
+    </ng-container>
+    <div class="buttons" [class.horizontally]="!templateRequest.template.buttonsVertically" [class.vertically]="templateRequest.template.buttonsVertically">
       <button class="secondary" (click)="cancel()">Cancel</button>
       <button (click)="approve()">
         <ng-container *ngIf="templateRequest.template.button; else defaultButtonText">{{templateRequest.template.button}}</ng-container>
         <ng-template #defaultButtonText>Send</ng-template>
       </button>
+    </div>
+    <p *ngIf="templateRequest.fee" class="fee">Estimated fee <b>{{templateRequest.fee.total}} tez</b></p>
+    <div class="footer">
+      <span>Powered by</span><img class="logo" src="../../../../assets/img/kukai-logo-black.svg">
     </div>
   </div>
 </div>

@@ -20,16 +20,12 @@ export class ConfirmSendTemplateComponent implements OnInit, OnChanges {
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes?.templateRequest?.currentValue && !changes.templateRequest.previousValue) {
-      if (this.templateRequest.template.description) {
+      console.log(this.templateRequest);
+      if (this.templateRequest.template?.descriptions?.length) {
         this.hideScrollbar();
-        if (this.templateRequest.template.description[0] && typeof this.templateRequest.template.description[0] === 'string') {
-          this.templateRequest.template.description[0] = { text: this.templateRequest.template.description[0] };
-        }
-        if (this.templateRequest.template.description[2] && typeof this.templateRequest.template.description[2] === 'string') {
-          this.templateRequest.template.description[2] = { text: this.templateRequest.template.description[2] };
-        }
         this.active = true;
       } else {
+        console.log('No template descriptions');
         this.isApproved.emit(null);
       }
     }
