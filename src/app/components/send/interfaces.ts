@@ -1,31 +1,18 @@
 import { Account } from '../../services/wallet/wallet';
+import { Template } from 'kukai-embed';
 export interface PrepareRequest {
   account: Account;
   tokenTransfer: string;
 }
 export interface TemplateRequest {
-  ops: FullyPreparedTransaction[];
   template: Template;
-  fee: TemplateFee;
+  ops?: FullyPreparedTransaction[];
+  fee?: TemplateFee;
 }
 export interface TemplateFee {
   network: string;
   storage: string;
   total: string;
-}
-export interface Template {
-  action?: string;
-  description: Description;
-  button?: string;
-}
-interface Description {
-  [0]: TextWithImg|string;
-  [1]: string;
-  [2]: TextWithImg|string;
-}
-interface TextWithImg {
-  text: string;
-  imgUrl?: string;
 }
 
 export interface ConfirmRequest {

@@ -1,7 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, OnChanges } from '@angular/core';
 import { TemplateRequest, TemplateFee, FullyPreparedTransaction } from '../interfaces';
-import { EstimateService } from '../../../services/estimate/estimate.service';
-import Big from 'big.js';
 
 @Component({
   selector: 'app-confirm-send-template',
@@ -12,24 +10,18 @@ export class ConfirmSendTemplateComponent implements OnInit, OnChanges {
   @Input() templateRequest: TemplateRequest = null;
   @Output() isApproved = new EventEmitter();
   active = false;
-  constructor(
-    private estimateService: EstimateService
-  ) { }
+  constructor() { }
 
   ngOnInit(): void {
   }
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes?.templateRequest?.currentValue && !changes.templateRequest.previousValue) {
-      if (this.templateRequest.template.description) {
+    if (changes?.templateRequest?.currentValue) {
+      console.log(this.templateRequest);
+      if (this.templateRequest.template?.descriptions?.length) {
         this.hideScrollbar();
-        if (this.templateRequest.template.description[0] && typeof this.templateRequest.template.description[0] === 'string') {
-          this.templateRequest.template.description[0] = { text: this.templateRequest.template.description[0] };
-        }
-        if (this.templateRequest.template.description[2] && typeof this.templateRequest.template.description[2] === 'string') {
-          this.templateRequest.template.description[2] = { text: this.templateRequest.template.description[2] };
-        }
         this.active = true;
       } else {
+        console.log('No template descriptions');
         this.isApproved.emit(null);
       }
     }
@@ -39,8 +31,10 @@ export class ConfirmSendTemplateComponent implements OnInit, OnChanges {
     this.isApproved.emit(null);
   }
   approve() {
-    this.isApproved.emit(this.templateRequest.ops);
-    this.reset();
+    if (this.templateRequest.ops && this.templateRequest.fee) {
+      this.isApproved.emit(this.templateRequest.ops);
+      this.reset();
+    }
   }
   reset() {
     this.resetScrollbar();
