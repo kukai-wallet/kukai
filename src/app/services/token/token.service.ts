@@ -49,7 +49,7 @@ export interface FA12 extends TokensInterface {
 }
 export interface FA2 extends TokensInterface {
   kind: 'FA2';
-  tokens: Record<number, TokenData>;
+  tokens: Record<number | string, TokenData>;
 }
 @Injectable({
   providedIn: 'root'
@@ -65,7 +65,32 @@ export class TokenService {
     public indexerService: IndexerService
   ) {
     this.contracts = CONSTANTS.ASSETS;
+    this.unPack();
     this.loadMetadata();
+  }
+  unPack() { // Used for hardcoded id ranges
+    const contracts = Object.keys(this.contracts);
+    for (const contract of contracts) {
+      if (this.contracts[contract]?.kind === 'FA2') {
+        const ids = Object.keys(this.contracts[contract].tokens);
+        if (ids?.length) {
+          for (const id of ids) {
+            if (id.includes('-')) {
+              const span = id.split('-');
+              if (span.length === 2 && !isNaN(Number(span[0])) && !isNaN(Number(span[1]))) {
+                const first = Number(span[0]);
+                const last = Number(span[1]);
+                for (let i = first; i <= last; i++) {
+                  this.contracts[contract].tokens[i] = JSON.parse(JSON.stringify(this.contracts[contract].tokens[id]));
+                  this.contracts[contract].tokens[i].name = `${this.contracts[contract].tokens[id].name} #${(i - first + 1)}`;
+                }
+                delete this.contracts[contract].tokens[id];
+              }
+            }
+          }
+        }
+      }
+    }
   }
   getAsset(tokenId: string): TokenResponseType {
     if (!tokenId || !tokenId.includes(':')) {

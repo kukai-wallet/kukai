@@ -75,6 +75,22 @@ export const CONSTANTS: Constants = {
           shouldPreferSymbol: true
         }
       }
+    },
+    'KT1DgT2VViqZR5qt9bzXZnmbAsPkdad8fxrc': {
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        '0-29': {
+          name: 'Eli Forever',
+          symbol: '',
+          decimals: 0,
+          description: 'You can keep my face',
+          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmZwSEXcagB1SGtbbncSDxMwAe6haf1xyFKMUwpMwvMAEc',
+          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmXJHCoidLgxcf4Sbi3UvasEtFTbzVme6f7ztSQ6tJFXTr',
+          shouldPreferSymbol: false,
+          isBooleanAmount: true
+        }
+      }
     }
   },
   CONTRACT_OVERRIDES: {
