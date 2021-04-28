@@ -239,14 +239,19 @@ export class EmbeddedComponent implements OnInit {
       error: 'NO_WALLET_FOUND'
     });
   }
-  operationResponse(opHash: string) {
+  operationResponse(opHash: any) {
     let response: OperationResponse;
+    let errorMessage = '';
+    if (opHash?.error && opHash.errorMessage) {
+      errorMessage = opHash.errorMessage;
+      opHash = opHash.error;
+    }
     if (!opHash) {
       response = { type: ResponseTypes.operationResponse, failed: true, error: 'ABORTED_BY_USER' };
     } else if (opHash === 'broadcast_error') {
-      response = { type: ResponseTypes.operationResponse, failed: true, error: 'BROADCAST_ERROR' };
+      response = { type: ResponseTypes.operationResponse, failed: true, error: 'BROADCAST_ERROR', errorMessage };
     } else if (opHash === 'invalid_parameters') {
-      response = { type: ResponseTypes.operationResponse, failed: true, error: 'INVALID_PARAMETERS' };
+      response = { type: ResponseTypes.operationResponse, failed: true, error: 'INVALID_PARAMETERS', errorMessage };
     } else if (utils.validOperationHash(opHash)) {
       response = { type: ResponseTypes.operationResponse, opHash, failed: false };
     } else {

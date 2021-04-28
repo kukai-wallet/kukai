@@ -212,6 +212,9 @@ export class UriHandlerComponent implements OnInit {
   }
   /* operation request handling */
   async operationResponse(opHash: any) {
+    if (opHash?.error) {
+      opHash = opHash.error;
+    }
     if (!opHash) {
       await this.beaconService.rejectOnUserAbort(this.operationRequest);
     } else if (opHash === 'broadcast_error') {

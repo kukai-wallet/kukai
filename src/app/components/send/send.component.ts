@@ -116,7 +116,7 @@ export class SendComponent implements OnInit, OnChanges {
         if (res) {
           if (res.error) {
             this.messageService.addError(`Simulation error: ${res.error.message}`, 0);
-            this.operationResponse.emit('invalid_parameters');
+            this.operationResponse.emit({ error: 'invalid_parameters', errorMessage: res.error.message });
           } else {
             const fullyPrepared: FullyPreparedTransaction[] = txs.map((tx, i) => {
               return {
@@ -222,7 +222,7 @@ export class SendComponent implements OnInit, OnChanges {
           await this.messageService.stopSpinner();
           console.log('Transaction error id ', ans.payload.msg);
           this.messageService.addError(ans.payload.msg, 0);
-          this.operationResponse.emit('broadcast_error');
+          this.operationResponse.emit({ error: 'broadcast_error', errorMessage: ans.payload.msg });
         }
       },
       err => {
