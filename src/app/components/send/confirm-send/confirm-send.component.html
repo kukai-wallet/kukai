@@ -28,8 +28,7 @@
         <span class="single-to">{{ transactions[0].destination }}</span>
         <p class="previewAttention" *ngIf="transactions[0].meta && transactions[0].meta.verifier">{{ previewAttention() }}</p>
         <p class="previewAttention" *ngIf="tokenTransfer && transactions[0].destination.slice(0, 3) === 'KT1'">Warning:
-          Verify
-          the contract can manage tokens</p>
+          Verify the contract can manage tokens</p>
         <div class="seperator"></div>
       </ng-container>
       <ng-container *ngIf="(transactions.length > 1)">
@@ -50,7 +49,7 @@
             </tr>
           </tbody>
         </table>
-        <button style="margin-left: auto; margin: 0.5rem 0 1rem; height: 1.5rem;" *ngIf='transactions.length > 2'
+        <button style="margin-left: auto; margin: 0.5rem 0 1rem; height: 1.5rem;" *ngIf='transactions.length > 3'
           type="button" class="small" aria-label="More" (click)="showFullBatch = !showFullBatch">
           <span aria-hidden="true" *ngIf="!showFullBatch">Show all</span>
           <span aria-hidden="true" *ngIf="showFullBatch">Show less</span>

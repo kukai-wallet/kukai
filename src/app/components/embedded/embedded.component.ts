@@ -47,7 +47,9 @@ export class EmbeddedComponent implements OnInit {
     private activityService: ActivityService,
     private embeddedAuthService: EmbeddedAuthService
   ) { }
-  allowedOrigins = [];
+  allowedOrigins = [
+    'https://www.truesy.com'
+  ];
   pendingOps: string[] = [];
   ophashSubscription: Subscription;
   origin = '';
@@ -88,8 +90,7 @@ export class EmbeddedComponent implements OnInit {
       if (!CONSTANTS.MAINNET || this.allowedOrigins.includes(evt.origin)) {
         console.log(`Received ${evt.data} from ${evt.origin}`);
         if (data &&
-          data.type &&
-          /* restricted to dev enviroment for now */ !CONSTANTS.MAINNET) {
+          data.type) {
           this.origin = evt.origin;
           switch (data.type) {
             case RequestTypes.loginRequest:
@@ -118,7 +119,7 @@ export class EmbeddedComponent implements OnInit {
           }
         }
       } else if (data && data.type) {
-        console.log(`Invalid origin (${evt.origin})`);
+        console.warn(`Invalid origin (${evt.origin})`);
       }
     } catch { }
   }
