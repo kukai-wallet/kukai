@@ -1,6 +1,6 @@
 {
   "name": "kukai",
-  "version": "1.12.4",
+  "version": "1.13.0",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
@@ -17,6 +17,7 @@
     "deploy-edonet-version": "ng lint --fix && npm run build-dev && angular-cli-ghpages --repo \"git@github.com:kukai-wallet/edonet.git\" --branch main --cname=edonet.kukai.app",
     "deploy-preview-version": "ng lint --fix && npm run build-dev && angular-cli-ghpages --repo \"git@github.com:kukai-wallet/preview.git\" --branch master --cname=preview.kukai.app",
     "deploy-experimental-version": "ng lint --fix && npm run build-dev && angular-cli-ghpages --repo \"git@github.com:kukai-wallet/experimental.git\" --branch master --cname=experimental.kukai.app",
+    "deploy-ichabod-version": "ng lint --fix && npm run build-dev && angular-cli-ghpages --repo \"git@github.com:kukai-wallet/ichabod-dev.git\" --branch main --cname=ichabod-dev.kukai.app",
     "deploy-beta-version": "ng lint --fix && ng build --prod && angular-cli-ghpages --repo \"git@github.com:kukai-wallet/beta.git\" --branch master --cname=beta.kukai.app"
   },
   "private": true,
@@ -101,6 +102,7 @@
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "^1.5.0",
     "karma-mocha-reporter": "^2.2.5",
+    "kukai-embed": "0.6.4",
     "protractor": "~7.0.0",
     "ts-node": "~8.3.0",
     "tslint": "~6.1.0",

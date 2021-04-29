@@ -10,15 +10,17 @@ import {
   ImplicitAccount,
   LedgerWallet,
   TorusWallet,
+  EmbeddedTorusWallet,
   OriginatedAccount,
 } from './wallet';
 import { EncryptionService } from '../encryption/encryption.service';
 import { OperationService } from '../operation/operation.service';
 import { TorusService } from '../torus/torus.service';
 import { utils, hd } from '@tezos-core-tools/crypto-utils';
+
 @Injectable()
 export class WalletService {
-  storeKey = `kukai-wallet`;
+  storeKey = 'kukai-wallet';
   storageId = 0;
   wallet: WalletObject;
 
@@ -105,10 +107,10 @@ export class WalletService {
         pkh: this.wallet.implicitAccounts[0].pkh,
       };
       return keyPair;
+    } else if (this.wallet instanceof EmbeddedTorusWallet) {
+      return this.operationService.spPrivKeyToKeyPair(this.wallet.sk);
     } else if (this.wallet instanceof TorusWallet) {
-      console.log('torus id ' + this.wallet.id);
       const keyPair = await this.torusService.getTorusKeyPair(this.wallet.verifier, this.wallet.id);
-      console.log(keyPair);
       if (this.wallet.getImplicitAccount(keyPair.pkh)) {
         return keyPair;
       } else {
@@ -226,10 +228,14 @@ export class WalletService {
   /*
     Clear wallet data from browser
   */
-  clearWallet() {
+  clearWallet(instanceId: string = '') {
     this.wallet = null;
     this.storageId = 0;
-    localStorage.removeItem(this.storeKey);
+    if (instanceId) {
+      sessionStorage.removeItem(instanceId);
+    } else {
+      localStorage.removeItem(this.storeKey);
+    }
   }
   /*
   Used to decide wallet type
@@ -252,6 +258,9 @@ export class WalletService {
   isTorusWallet(): boolean {
     return this.wallet instanceof TorusWallet;
   }
+  isEmbeddedTorusWallet(): boolean {
+    return this.wallet instanceof EmbeddedTorusWallet;
+  }
   exportKeyStoreInit(
     type: WalletType,
     encryptedSeed: string,
@@ -271,12 +280,19 @@ export class WalletService {
   /*
     Read and write to localStorage
   */
-  initStorage() {
+  initStorage(instanceId: string = '') {
     this.storageId = Date.now();
-    localStorage.setItem(
-      this.storeKey,
-      JSON.stringify({ localStorageId: this.storageId })
-    );
+    if (instanceId) {
+      sessionStorage.setItem(
+        instanceId,
+        JSON.stringify({ localStorageId: this.storageId })
+      );
+    } else {
+      localStorage.setItem(
+        this.storeKey,
+        JSON.stringify({ localStorageId: this.storageId })
+      );
+    }
   }
   storeWallet() {
     const localStorageId = this.getLocalStorageId();
@@ -292,11 +308,13 @@ export class WalletService {
         type = 'LegacyWalletV3';
       } else if (this.wallet instanceof LedgerWallet) {
         type = 'LedgerWallet';
+      } else if (this.wallet instanceof EmbeddedTorusWallet) {
+        type = 'EmbeddedTorusWallet';
       } else if (this.wallet instanceof TorusWallet) {
         type = 'TorusWallet';
       }
-      localStorage.setItem(
-        this.storeKey,
+      this.getStorage().setItem(
+        (this.wallet instanceof EmbeddedTorusWallet) ? this.wallet.instanceId : this.storeKey,
         JSON.stringify({ type, localStorageId: this.storageId, data: this.wallet })
       );
     } else {
@@ -304,7 +322,7 @@ export class WalletService {
     }
   }
   getLocalStorageId() {
-    const walletData = localStorage.getItem(this.storeKey);
+    const walletData = this.wallet instanceof EmbeddedTorusWallet ? sessionStorage.getItem(this.wallet.instanceId) : localStorage.getItem(this.storeKey);
     if (walletData) {
       const parsed = JSON.parse(walletData);
       if (parsed && parsed.localStorageId) {
@@ -314,8 +332,8 @@ export class WalletService {
     return 0;
   }
 
-  loadStoredWallet() {
-    const walletData = localStorage.getItem(this.storeKey);
+  loadStoredWallet(instanceId = '') {
+    const walletData = instanceId ? sessionStorage.getItem(instanceId) : localStorage.getItem(this.storeKey);
     if (walletData && walletData !== 'undefined') {
       const parsedWalletData = JSON.parse(walletData);
       console.log(parsedWalletData);
@@ -326,11 +344,11 @@ export class WalletService {
         console.log(this.wallet);
       } else {
         console.log('couldnt load a wallet');
-        this.clearWallet();
+        this.clearWallet(instanceId);
       }
     } else {
       console.log('couldnt load a wallet');
-      this.clearWallet();
+      this.clearWallet(instanceId);
     }
   }
   deserializeStoredWallet(wd: any, type: string) {
@@ -363,6 +381,10 @@ export class WalletService {
         break;
       case 'TorusWallet':
         this.wallet = new TorusWallet(wd.verifier, wd.id, wd.name);
+        this.torusService.initTorus();
+        break;
+      case 'EmbeddedTorusWallet':
+        this.wallet = new EmbeddedTorusWallet(wd.verifier, wd.id, wd.name, wd.origin, wd.sk, wd.instanceId);
         this.torusService.initTorus();
         break;
       default:
@@ -421,5 +443,8 @@ export class WalletService {
       }
       return activity;
     });
+  }
+  private getStorage() {
+    return this.isEmbeddedTorusWallet() ? sessionStorage : localStorage;
   }
 }

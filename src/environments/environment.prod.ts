@@ -117,6 +117,38 @@ export const CONSTANTS: Constants = {
           shouldPreferSymbol: true
         }
       }
+    },
+    'KT197APGtQ8mk2svRSpDkqXLzHedRtkJ7Hjr': {
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        '0-9': {
+          name: 'Goated: Die Ideale',
+          symbol: '',
+          decimals: 0,
+          description: 'A recreation of Die Ideale by Piet Mondrian painted with brush strokes of gemstones and precious metals. The work comprises various iconic jewelry styles and pieces from diamond tennis chains, loose gemstones, timepieces and rope chains among numerous others. The work was assembled and designed by artist Rachel Goatlely in partnership with Greg Yüna who crafted and designed the jewelry pieces used.',
+          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmSEtUcV9HuvLdcZbyxVK23TNoyCouf5cpsb1JwoWZffeK',
+          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmbxKzdmd9uWT9AYTmzJNDabvRmC916XkqXeuycoHH2dTC',
+          shouldPreferSymbol: false,
+          isBooleanAmount: true
+        }
+      }
+    },
+    'KT1CTqQ4vg2zyG1AQmDLVeJ473ueoy2Rw8t1': {
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        '0-9': {
+          name: 'Goated: The Kiss',
+          symbol: '',
+          decimals: 0,
+          description: 'A recreation of The Kiss by Gustav Klimt painted with brush strokes of gemstones and precious metals. The work comprises various iconic jewelry styles and pieces from diamond tennis chains, loose gemstones, timepieces and rope chains among numerous others. The work was assembled and designed by artist Rachel Goatlely in partnership with Greg Yüna who crafted and designed the jewelry pieces used.',
+          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmWeiSKjS3tXLemcdRSEV8wZMwpx71kQ9dJcpxo2BmUonh',
+          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmQTTxZ4eveDM65Lu7W2pKv1hGJjbsj66ZBfhPkiKBW3kT',
+          shouldPreferSymbol: false,
+          isBooleanAmount: true
+        }
+      }
     }
   },
   CONTRACT_OVERRIDES: {

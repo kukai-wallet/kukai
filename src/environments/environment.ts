@@ -14,7 +14,7 @@ export const CONSTANTS: Constants = {
   NODE_URL: 'https://api.tez.ie/rpc/edonet',
   BLOCK_EXPLORER_URL: 'https://edo2net.tzkt.io',
   ASSETS: {
-    'KT1REPEBMQS3Be8ZybkQQfSwAv3g4pHJViuK': {
+    'KT1FCMQk44tEP9fm9n5JJEhkSk1TW3XQdaWH': {
       kind: 'FA1.2',
       category: 'finance',
       tokens: {
@@ -26,6 +26,22 @@ export const CONSTANTS: Constants = {
           displayUrl: '../../../assets/img/tokens/usdtz.png',
           thumbnailUrl: '../../../assets/img/tokens/usdtz.png',
           shouldPreferSymbol: true
+        }
+      }
+    },
+    'KT1CUg39jQF8mV6nTMqZxjUUZFuz1KXowv3K': {
+      kind: 'FA1.2',
+      category: 'finance',
+      tokens: {
+        0: {
+          name: 'tzBTC',
+          symbol: 'tzBTC',
+          decimals: 8,
+          description: '',
+          displayUrl: '../../../assets/img/tokens/tzbtc.png',
+          thumbnailUrl: '../../../assets/img/tokens/tzbtc.png',
+          isTransferable: false,
+          isBooleanAmount: false
         }
       }
     },
@@ -59,6 +75,22 @@ export const CONSTANTS: Constants = {
           shouldPreferSymbol: true
         }
       }
+    },
+    'KT1DgT2VViqZR5qt9bzXZnmbAsPkdad8fxrc': {
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        '0-29': {
+          name: 'Eli Forever',
+          symbol: '',
+          decimals: 0,
+          description: 'You can keep my face',
+          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmZwSEXcagB1SGtbbncSDxMwAe6haf1xyFKMUwpMwvMAEc',
+          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmXJHCoidLgxcf4Sbi3UvasEtFTbzVme6f7ztSQ6tJFXTr',
+          shouldPreferSymbol: false,
+          isBooleanAmount: true
+        }
+      }
     }
   },
   CONTRACT_OVERRIDES: {
@@ -78,6 +110,9 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1LyJV9JdcDCp5zDfw6MxpoShXYrBMG3dfK',
   'KT1RfMoskMhR1hDFJTVN6gGMwQLDSTmLeDsc',
   'KT1Szwqme712TkQ7LdP1hBqKjdUUBjxoB8bR',
+  'KT1PS2jZVzNMW54UsnqBqwwkArXnAZ29jiTF',
+  'KT1XgGvzQSYrvo4NCxwTvJ7tSbZqGcji4BeV',
+  'KT1R3TqdxsHPYxNQBdY7jmXAeU17WpucMXDh',
   'KT1PS2jZVzNMW54UsnqBqwwkArXnAZ29jiTF',
   'KT1Jscaxi6J9sKUzX37wFfRRdZPdNfMDy85R',
   'KT1NaoA6pjAMCpnQAmUoQTxMCuEjJ2kodyrj',

@@ -1,0 +1,104 @@
+@import '../../../../assets/fonts/Poppins/stylesheet.css';
+:host {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(0, 0, 0);
+  background: rgba(0, 0, 0, 0.6);
+}
+div.direct-auth-login {
+  margin: 0 0.25rem;
+  width: 21.875rem;
+  background: #f3f3f3;
+  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.24), 0px 4px 12px rgba(0, 0, 0, 0.24),
+    0px 32px 48px rgba(0, 0, 0, 0.36);
+  border-radius: 0.625rem;
+}
+:host div.header {
+  height: 2rem;
+  padding: 0.5rem 1rem 0;
+  display: flex;
+  flex-direction: row-reverse;
+}
+:host > div.direct-auth-login H2,
+:host > div.direct-auth-login span {
+  font-family: 'Poppins' !important;
+  font-style: normal !important;
+  font-weight: 500 !important;
+}
+div.direct-auth-login > div.header {
+  height: 4.375rem;
+  background: white;
+  border-top-left-radius: 0.625rem;
+  border-top-right-radius: 0.625rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+div.direct-auth-login > div.header img {
+  height: 3.125rem;
+  width: 3.125rem;
+}
+div.direct-auth-login H2 {
+  margin: 0rem 0 0.5rem;
+  font-size: 1rem;
+  line-height: 1.3125rem;
+  text-align: center;
+  vertical-align: top;
+}
+// horizontal login buttons
+div.direct-auth-login > div.body div.login-options.vertically {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+div.direct-auth-login > div.body div.login-options.vertically div.login-option {
+  margin: 0.5rem 0;
+}
+
+// Vertical login buttons
+div.direct-auth-login > div.body div.login-options.horizontally {
+  margin: 1rem 0;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+div.direct-auth-login > div.body div.login-options.horizontally div.login-option {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: white;
+  border-radius: 0.625rem;
+  width: 90px;
+  height: 60px
+}
+div.direct-auth-login > div.body div.login-options.horizontally div.login-option:hover {
+  background: #eaebf9;
+}
+div.direct-auth-login > div.body div.login-options.horizontally div.login-option > img {
+  width: 2.5rem;
+}
+// both
+div.direct-auth-login > div.body div.login-options div.login-option:hover,
+div.direct-auth-login img.abort:hover {
+  cursor: pointer;
+}
+
+div.direct-auth-login > div.footer {
+  margin: 2.5rem 0 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0.5;
+}
+div.direct-auth-login > div.footer > span {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 600;
+}
+div.direct-auth-login > div.footer img {
+  height: 0.75rem;
+  margin: 0.0625rem 0 0.1875rem 0.375rem;
+}

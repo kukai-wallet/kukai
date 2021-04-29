@@ -28,6 +28,12 @@ div.kukai-modal > div.km-content {
   animation-name: animatetop;
   animation-duration: 0.5s;
 }
+div.kukai-modal.confirm > div.km-content {
+  -webkit-animation-name: none;
+  -webkit-animation-duration: none;
+  animation-name: none;
+  animation-duration: none;
+}
 /* Add Animation */
 @-webkit-keyframes animatetop {
   from {
