@@ -70,6 +70,8 @@ export class SendComponent implements OnInit, OnChanges {
             txs[0].destination = tokenTransferObj.to;
             this.tokenTransfer = tokenTransferObj.tokenId;
             delete txs[0].parameters;
+          } else {
+            this.tokenTransfer = '';
           }
           this.simulateRequest(txs, tokenTransferObj?.tokenId);
         } else {
