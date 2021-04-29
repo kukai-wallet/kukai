@@ -144,7 +144,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     PrepareSendComponent,
     ConfirmSendComponent,
     ConfirmSendTemplateComponent,
-    SignExprComponent,
     OriginateComponent
   ],
   imports: [
