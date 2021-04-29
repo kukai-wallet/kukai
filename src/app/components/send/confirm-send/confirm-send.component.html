@@ -19,7 +19,7 @@
         <img *ngIf="!tokenTransfer; else imgElseBlock" src="../../../assets/img/tezos-xtz-logo.svg"
           style="height: 4.5rem; margin-right: 1rem">
         <ng-template #imgElseBlock>
-          <img src="{{ tokenService.getAsset(tokenTransfer).thumbnailUrl }}" style="height: 4.5rem; margin-right: 1rem">
+          <img src="{{ tokenService.getAsset(tokenTransfer).displayUrl }}" style="height: 4.5rem; margin-right: 1rem">
         </ng-template>
       </div>
       <ng-container *ngIf="!(transactions.length > 1)">
