@@ -82,7 +82,13 @@
         <span>Max storage cost</span><span>{{ getTotalBurn() | number:'1.0-6' }} tez</span>
       </div>
       <div class="seperator"></div>
-      <H6 *ngIf="this.parameters" style="color: #A8A8A8">Contract Invokation<ng-container *ngIf="batchParameters.length > 1">s</ng-container></H6>
+      <div *ngIf="parameters && parameters.entrypoint && !batchParameters.length" class="preview-row">
+        <span class="preview">
+          Contract call
+        </span>
+        <span>{{ parameters.entrypoint }}</span>
+      </div>
+      <H6 *ngIf="this.parameters && batchParameters.length > 1" style="color: #888888">Multiple contract calls</H6>
       <div *ngIf="advancedForm" class="advanced-form">
         <!-- Parameters -->
         <ng-container *ngIf="batchParameters.length > 1">
@@ -104,9 +110,9 @@
           </select>
         </ng-container>
         <ng-container *ngIf="parameters">
-          <div class="preview-row">
-            <span *ngIf="parameters?.entrypoint" class="preview">
-              Entrypoint
+          <div *ngIf="parameters.entrypoint && batchParameters.length" class="preview-row">
+            <span class="preview">
+              Contract call
             </span>
             <span>{{ parameters.entrypoint }}</span>
           </div>

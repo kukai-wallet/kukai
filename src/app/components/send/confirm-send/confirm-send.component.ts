@@ -349,6 +349,7 @@ export class ConfirmSendComponent implements OnInit, OnChanges {
   closeModalAction() {
     this.closeModal();
     this.operationResponse.emit(null);
+    this.reset();
   }
   closeModal() {
     document.body.style.marginRight = '';

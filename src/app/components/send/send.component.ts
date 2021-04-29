@@ -62,7 +62,7 @@ export class SendComponent implements OnInit, OnChanges {
         };
       });
       if (this.validParameters(txs)) {
-        if (txs.length === 1) {
+        if (txs.length === 1 && !this.template) {
           const tokenTransferObj: any = this.getTokenTransferObj(txs[0]);
           if (tokenTransferObj) {
             const asset = this.tokenService.getAsset(tokenTransferObj.tokenId);
@@ -72,6 +72,9 @@ export class SendComponent implements OnInit, OnChanges {
             delete txs[0].parameters;
           }
           this.simulateRequest(txs, tokenTransferObj?.tokenId);
+        } else {
+          this.tokenTransfer = '';
+          this.simulateRequest(txs, '');
         }
       } else {
         this.operationResponse.emit('invalid_parameters');
