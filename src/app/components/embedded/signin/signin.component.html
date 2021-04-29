@@ -1,0 +1,21 @@
+<div class="direct-auth-login">
+  <div class="body">
+    <div class="header">
+      <img (click)="abort()" class="abort" src="../../../assets/img/x.svg">
+    </div>
+    <H2>Sign in with one of the<BR>following providers:</H2>
+    <div class="login-options" [class.vertically]="loginConfig.buttonsVertically" [class.horizontally]="!loginConfig.buttonsVertically" *ngIf="torusService && torusService.verifierMapKeys">
+      <ng-container *ngFor="let key of loginOptions">
+        <div *ngIf="!loginConfig.buttonsVertically" class="login-option" (click)="login(key)">
+          <img src="../../../../assets/img/torus-login/{{ key }}-color.svg" width="24">
+        </div>
+        <div *ngIf="loginConfig.buttonsVertically" class="login-option" (click)="login(key)">
+          <img src="../../../../assets/img/torus-login/{{ key }}-wide.svg" width="219">
+        </div>
+      </ng-container>
+    </div>
+  </div>
+  <div class="footer">
+    <span>Powered by</span><img class="logo" src="../../../../assets/img/kukai-logo2.svg">
+  </div>
+</div>

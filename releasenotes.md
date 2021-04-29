@@ -1,4 +1,6 @@
 # Release notes
+## 1.13
+* Kukai embed
 ## 1.12.4
 * Minor fixes
 ## 1.12.3

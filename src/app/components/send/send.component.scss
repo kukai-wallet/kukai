@@ -85,6 +85,9 @@ div.kukai-modal input.text.read-only {
 input.custom-textbox {
   padding-left: 0.75rem;
 }
+div.kukai-modal.confirm div.advanced{
+  margin-top: 0.5rem;
+}
 div.kukai-modal div.advanced-form input.text::placeholder {
   color: black;
   opacity: 1;

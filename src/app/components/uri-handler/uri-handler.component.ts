@@ -12,6 +12,8 @@ import { emitMicheline, assertMichelsonData } from '@taquito/michel-codec';
 import { valueDecoder } from '@taquito/local-forging/dist/lib/michelson/codec';
 import { Uint8ArrayConsumer } from '@taquito/local-forging/dist/lib/uint8array-consumer';
 import { InputValidationService } from '../../services/input-validation/input-validation.service';
+import Big from 'big.js';
+import { PartiallyPreparedTransaction } from '../send/interfaces';
 
 @Component({
   selector: 'app-uri-handler',
@@ -84,6 +86,8 @@ export class UriHandlerComponent implements OnInit {
               await this.beaconService.rejectOnUnknown(message);
               console.warn('Unknown message type', message);
           }
+        } else {
+          console.log('Blocked by other Beacon request');
         }
       })
       .catch((error) => console.error('connect error', error));
@@ -208,10 +212,15 @@ export class UriHandlerComponent implements OnInit {
   }
   /* operation request handling */
   async operationResponse(opHash: any) {
+    if (opHash?.error) {
+      opHash = opHash.error;
+    }
     if (!opHash) {
       await this.beaconService.rejectOnUserAbort(this.operationRequest);
     } else if (opHash === 'broadcast_error') {
       await this.beaconService.rejectOnBroadcastError(this.operationRequest);
+    } else if (opHash === 'invalid_parameters') {
+      await this.beaconService.rejectOnParameters(this.operationRequest);
     } else if (opHash === 'parameters_error') {
       await this.beaconService.rejectOnParameters(this.operationRequest);
     } else {
@@ -221,7 +230,6 @@ export class UriHandlerComponent implements OnInit {
         id: this.operationRequest.id
       };
       await this.beaconService.client.respond(response);
-      console.log(response);
     }
     this.operationRequest = null;
   }

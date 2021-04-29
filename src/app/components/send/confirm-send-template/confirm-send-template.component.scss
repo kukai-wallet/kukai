@@ -1,0 +1,145 @@
+@import "../../../../assets/fonts/Poppins/stylesheet.css";
+
+div.kukai-template {
+  position: fixed;
+  z-index: 100;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.6);
+}
+div.kukai-template > div.card {
+  width: 21.875rem;
+  position: relative;
+  background-color: #f3f3f3;
+  margin: 1rem auto;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.625rem;
+  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.24), 0px 4px 12px rgba(0, 0, 0, 0.24),
+    0px 32px 48px rgba(0, 0, 0, 0.36);
+  max-width: 25rem;
+  min-height: 6rem;
+}
+
+div.kukai-template p,
+div.kukai-template H1 {
+  font-family: "Poppins";
+  font-weight: 500;
+  font-style: normal;
+  font-size: 1rem;
+  line-height: 1.25rem;
+  margin: 0.5rem 0;
+  text-align: center;
+}
+div.kukai-template H1 {
+  margin: 0.375rem 0 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.125rem;
+}
+div.kukai-template H1 > b {
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1.25rem;
+}
+div.kukai-template p.img-text {
+  font-weight: 400;
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+div.kukai-template p.fee {
+  margin-bottom: 0.5rem;
+  font-weight: 300;
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+div.kukai-template p.fee img {
+  position: relative;
+  top: -0.0625rem;
+  left: 0.125rem;
+  width: 0.75rem;
+  height: 0.75rem;
+}
+div.kukai-template div.buttons {
+  display: flex;
+  justify-content: space-between;
+}
+div.kukai-template div.buttons.horizontally {
+  margin: 1rem 0 0.5rem;
+}
+div.kukai-template div.buttons.vertically {
+  margin-top: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column-reverse;
+}
+div.kukai-template div.buttons.vertically button {
+  width: 15.25rem;
+  margin: 0.5rem 0;
+}
+div.kukai-template button {
+  all: unset;
+  cursor: pointer;
+  font-family: "Poppins";
+  font-weight: 500;
+  font-style: normal;
+  font-size: 1rem;
+  color: #f3f3f3;
+  -webkit-text-fill-color: #f3f3f3;
+  background: #5b63f7;
+
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 1.25rem;
+  border: 1px solid #5b63f7;
+  height: 2rem;
+  width: 100%;
+  text-align: center;
+}
+div.kukai-template button.secondary {
+  color: #5b63f7;
+  -webkit-text-fill-color: #5b63f7;
+  background: #f3f3f3;
+  border-color: #5b63f7;
+  margin-right: 1.25rem;
+}
+div.kukai-template > div.card > img {
+  margin: 0.5rem 0 0;
+  max-height: 150px;
+  object-fit: contain;
+}
+div.kukai-template div.footer {
+  margin: 1rem 0 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0.5;
+}
+div.kukai-template div.footer > span {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 600;
+}
+div.kukai-template div.footer img {
+  height: 0.75rem;
+  margin: 0.0625rem 0 0.1875rem 0.375rem;
+}
+@media screen and (max-width: 23.5rem) {
+  div.kukai-template > div.card {
+    width: 18rem;
+  }
+  div.kukai-template div.buttons.vertically button {
+    width: 90%;
+  }
+}
+@media screen and (max-width: 19.5rem) {
+  div.kukai-template > div.card {
+    width: 15rem;
+  }
+  div.kukai-template div.buttons.vertically button {
+    width: 100%;
+  }
+}

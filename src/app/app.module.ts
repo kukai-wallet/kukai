@@ -12,7 +12,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // For translation
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 // External libraries
 import { ComponentLoaderFactory } from 'ngx-bootstrap/component-loader';
@@ -44,6 +44,7 @@ import { LedgerService } from './services/ledger/ledger.service';
 import { EstimateService } from './services/estimate/estimate.service';
 import { BeaconService } from './services/beacon/beacon.service';
 import { TorusService } from './services/torus/torus.service';
+import { EmbeddedAuthService } from './services/embedded-auth/embedded-auth.service';
 
 // View components
 import { StartComponent } from './components/start/start.component';
@@ -82,7 +83,13 @@ import { PermissionRequestComponent } from './components/permission-request/perm
 import { LoggedInComponent } from './components/logged-in/logged-in.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { QrScannerComponent } from './components/qr-scanner/qr-scanner.component';
+import { EmbeddedComponent } from './components/embedded/embedded.component';
+import { SigninComponent } from './components/embedded/signin/signin.component';
 import { SignExprComponent } from './components/sign-expr/sign-expr.component';
+import { CardComponent } from './components/embedded/card/card.component';
+import { PrepareSendComponent } from './components/send/prepare-send/prepare-send.component';
+import { ConfirmSendComponent } from './components/send/confirm-send/confirm-send.component';
+import { ConfirmSendTemplateComponent } from './components/send/confirm-send-template/confirm-send-template.component';
 import { OriginateComponent } from './components/originate/originate.component';
 
 // AoT requires an exported function for factories
@@ -130,7 +137,13 @@ export function HttpLoaderFactory(http: HttpClient) {
     LoggedInComponent,
     SettingsComponent,
     QrScannerComponent,
+    EmbeddedComponent,
+    SigninComponent,
     SignExprComponent,
+    CardComponent,
+    PrepareSendComponent,
+    ConfirmSendComponent,
+    ConfirmSendTemplateComponent,
     OriginateComponent
   ],
   imports: [
@@ -177,6 +190,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     EstimateService,
     BeaconService,
     TorusService,
+    EmbeddedAuthService,
 
     // Pipes
     ErrorHandlingPipe,

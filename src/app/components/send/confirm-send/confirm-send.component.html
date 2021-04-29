@@ -1,0 +1,186 @@
+<div *ngIf="modalOpen" id="myModal" class="kukai-modal confirm" [class.top]="headlessMode">
+  <div class="km-content">
+    <div class="x" (click)="closeModalAction()"><img src="../../../assets/img/x.svg"></div>
+    <div class="km-header">
+      <H1>Confirmation</H1>
+    </div>
+    <div class="km-body">
+      <!-- Single transaction -->
+      <div class="preview-top">
+        <div class="preview-amount">
+          <span class="section">Send</span>
+          <span class="amount-tez">{{ tokenService.formatAmount(tokenTransfer, totalAmount(), false) }}</span>
+          <span class="amount-usd">
+            <ng-container *ngIf="!tokenTransfer">{{ totalAmount() * walletService.wallet.XTZrate | number:'1.0-2' }} USD
+            </ng-container>
+          </span>
+          <span *ngIf="!(transactions.length > 1)" class="section">To</span>
+        </div>
+        <img *ngIf="!tokenTransfer; else imgElseBlock" src="../../../assets/img/tezos-xtz-logo.svg"
+          style="height: 4.5rem; margin-right: 1rem">
+        <ng-template #imgElseBlock>
+          <img src="{{ tokenService.getAsset(tokenTransfer).thumbnailUrl }}" style="height: 4.5rem; margin-right: 1rem">
+        </ng-template>
+      </div>
+      <ng-container *ngIf="!(transactions.length > 1)">
+        <span *ngIf="transactions[0].meta && transactions[0].meta.verifier" class="torus-to"><img src="../../../assets/img/{{ transactions[0].meta.verifier }}-logo.svg">
+          {{ transactions[0].meta.alias }}</span>
+        <span class="single-to">{{ transactions[0].destination }}</span>
+        <p class="previewAttention" *ngIf="transactions[0].meta && transactions[0].meta.verifier">{{ previewAttention() }}</p>
+        <p class="previewAttention" *ngIf="tokenTransfer && transactions[0].destination.slice(0, 3) === 'KT1'">Warning:
+          Verify the contract can manage tokens</p>
+        <div class="seperator"></div>
+      </ng-container>
+      <ng-container *ngIf="(transactions.length > 1)">
+        <div class="seperator"></div>
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">{{ 'SENDCOMPONENT.TO' | translate }}</th>
+              <th scope="col">{{ 'SENDCOMPONENT.AMOUNT' | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let transaction of transactions; index as i">
+              <ng-container *ngIf="i < 3 || showFullBatch">
+                <td><span *ngIf="transaction.storageLimit !== '0'">*</span>{{ transaction.destination }}</td>
+                <td class="txAmount">{{ transaction.amount | number:'1.0-6' }}</td>
+              </ng-container>
+            </tr>
+          </tbody>
+        </table>
+        <button style="margin-left: auto; margin: 0.5rem 0 1rem; height: 1.5rem;" *ngIf='transactions.length > 3'
+          type="button" class="small" aria-label="More" (click)="showFullBatch = !showFullBatch">
+          <span aria-hidden="true" *ngIf="!showFullBatch">Show all</span>
+          <span aria-hidden="true" *ngIf="showFullBatch">Show less</span>
+        </button>
+        <div class="seperator"></div>
+      </ng-container>
+      <!-- Sender -->
+      <ng-container *ngIf="this.walletService.wallet.verifier">
+        <!-- Torus -->
+        <div class="preview-row">
+          <span>From</span><span><img src="../../../assets/img/{{ this.walletService.wallet.verifier }}-logo.svg">
+            {{ this.walletService.wallet.displayName() }}
+          </span>
+        </div>
+        <div class="preview-row">
+          <span>Address</span><span>{{ activeAccount.address }}</span>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="!this.walletService.wallet.name">
+        <!-- Other -->
+        <div class="preview-row">
+          <span>From</span><span>{{ activeAccount.address }}</span>
+        </div>
+      </ng-container>
+      <div class="seperator"></div>
+      <div class="preview-row">
+        <span>Fee</span><span>{{ getTotalFee() | number:'1.0-6' }} tez</span>
+      </div>
+      <div *ngIf="getTotalBurn()" class="preview-row">
+        <span>Max storage cost</span><span>{{ getTotalBurn() | number:'1.0-6' }} tez</span>
+      </div>
+      <div class="seperator"></div>
+      <div *ngIf="parameters && parameters.entrypoint && !batchParameters.length" class="preview-row">
+        <span class="preview">
+          Contract call
+        </span>
+        <span>{{ parameters.entrypoint }}</span>
+      </div>
+      <H6 *ngIf="this.parameters && batchParameters.length > 1" style="color: #888888">Multiple contract calls</H6>
+      <div *ngIf="advancedForm" class="advanced-form">
+        <!-- Parameters -->
+        <ng-container *ngIf="batchParameters.length > 1">
+          <div class="simple-tabs" *ngIf="batchParameters.length <= 5">
+            <ul class="tabs">
+              <ng-container *ngFor="let params of batchParameters; let i = index">
+                <li class="tab" [class.active]="batchParamIndex === i" (click)="updateParameters(i, params.parameters)">
+                  <ng-container *ngIf="batchParameters.length <= 3">Operation</ng-container>
+                  <ng-container *ngIf="batchParameters.length > 3">Tx</ng-container>&nbsp;{{ params.num }}
+                </li>
+              </ng-container>
+              <li class="tab rest"></li>
+            </ul>
+          </div>
+          <select *ngIf="batchParameters.length > 5" class="select-css parameters" [(ngModel)]="batchParamIndex"
+            (ngModelChange)="updateParameters(batchParamIndex, batchParameters[batchParamIndex].parameters)">
+            <option *ngFor="let params of batchParameters; let i = index" value="{{i}}">
+              Operation {{params.num}}</option>
+          </select>
+        </ng-container>
+        <ng-container *ngIf="parameters">
+          <div *ngIf="parameters.entrypoint && batchParameters.length" class="preview-row">
+            <span class="preview">
+              Contract call
+            </span>
+            <span>{{ parameters.entrypoint }}</span>
+          </div>
+          <div class="tabs-container">
+            <ul class="tabs">
+              <li class="tab" [class.active]="parametersFormat === 0" (click)="setParametersFormat(0)">Micheline</li>
+              <li class="tab" [class.active]="parametersFormat === 1" (click)="setParametersFormat(1)">JSON</li>
+            </ul>
+          </div>
+          <textarea *ngIf="parameters" style="width: 100%; font-size: 0.875rem" rows="10"
+            readonly>{{ parametersTextboxDisplay() }}</textarea>
+        </ng-container>
+        <!-- custom gas, storage, fee -->
+        <ng-container *ngIf="headlessMode && (!walletService.isLedgerWallet()) || ledgerError">
+          <div class="row-group">
+            <!--
+            <div class="group">
+              <label>Gas limit</label>
+              <input type="text" class="text" placeholder={{this.defaultTransactionParams.gas.toString()}}
+                [(ngModel)]="customGasLimit">
+            </div>-->
+            <div class="group" style="width: 100%">
+              <label>Fee</label>
+              <input type="text" style="width: 100%" class="text"
+                (keypress)="keyPressNumbersDecimal($event, 'customFee')"
+                placeholder={{this.transactions[this.transactions.length-1].fee}} [(ngModel)]="customFee">
+            </div>
+          </div>
+          <!--
+          <div class="row-group">
+            <div class="group">
+              <label>Storage limit</label>
+              <input type="text" (input)="updateMaxAmount()" (paste)="updateMaxAmount()" class="text"
+                placeholder={{this.defaultTransactionParams.storage.toString()}} [(ngModel)]="customStorageLimit">
+            </div>
+            <div class="group">
+              <label>Max storage cost</label>
+              <input type="text" class="text read-only" [value]="burnAmount() ? burnAmount() : '0 tez'" tabindex=-1
+                readonly>
+            </div>
+          </div>-->
+        </ng-container>
+      </div>
+      <div class="advanced" *ngIf="(this.parameters || this.headlessMode)">
+        <small>Advanced</small>
+        <div class="switch-container">
+          <label class="switch">
+            <input type="checkbox" [(ngModel)]="advancedForm" tabindex=-1>
+            <span class="slider round"></span>
+          </label><span class="switch-desc">
+            <ng-container *ngIf="!advancedForm">Off</ng-container>
+            <ng-container *ngIf="advancedForm">On</ng-container>
+          </span>
+        </div>
+      </div>
+      <div class="row-group" style="margin: 1.25rem 0 1.5rem;">
+        <input *ngIf="!walletService.isLedgerWallet() && !walletService.isTorusWallet()" [(ngModel)]="password"
+          autocomplete="current-password" placeholder="Password" class="text password" type="password"
+          (input)="this.pwdInvalid = ''" (change)="this.pwdInvalid = ''" (keydown.enter)='inject()'>
+        <button class="purple confirm" *ngIf="walletService.isLedgerWallet() && ledgerError; else elseBlock"
+          (click)="ledgerRetry()">Sign with Ledger</button>
+        <ng-template #elseBlock>
+          <button class="purple confirm" (click)="inject()"
+            [disabled]="walletService.isLedgerWallet() && (!sendResponse || !sendResponse.payload || !sendResponse.payload.signedOperation)">
+            {{ walletService.isLedgerWallet() ? 'Broadcast' : 'Confirm'}}</button>
+        </ng-template>
+      </div>
+      <span *ngIf="this.pwdInvalid" class="danger margin">{{ this.pwdInvalid }}</span>
+    </div>
+  </div>
+</div>

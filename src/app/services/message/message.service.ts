@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
 
 @Injectable()
 export class MessageService {
@@ -6,6 +7,7 @@ export class MessageService {
   spinnerText = '';
   messages: any[] = [];
   defaultTime = 10;
+  checked: Observable<boolean>;
   readonly pairingCompleteMsg = 'Pairing complete! Waiting for permission request...';
   add(message: string, seconds: number = this.defaultTime) {
     const type = 'info';
@@ -107,8 +109,9 @@ export class MessageService {
     this.spinnerText = text;
     this.spinnerOn = true;
   }
-  async stopSpinner() {
+  async stopSpinner(): Promise<void> {
     this.spinnerText = '';
     this.spinnerOn = false;
+    return;
   }
 }

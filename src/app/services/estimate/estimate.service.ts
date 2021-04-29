@@ -88,11 +88,12 @@ export class EstimateService {
       storageLimit: hardStorageLimit
     };
     for (const tx of operations) {
+      console.log(tx);
       if (!isOrigination) {
         if (!tx.amount) {
           tx.amount = 0;
         }
-        if (tx.to.slice(0, 3) !== 'KT1' && !tokenTransfer) {
+        if (tx.destination.slice(0, 3) !== 'KT1' && !tokenTransfer) {
           tx.amount = 0.000001;
         }
       }
