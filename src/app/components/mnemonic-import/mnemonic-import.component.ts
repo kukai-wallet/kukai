@@ -23,7 +23,7 @@ export class MnemonicImportComponent implements OnInit {
   pkh: string;
   importOption = 0;
   activePanel = 0;
-  hdImport = false;
+  hdImport = true;
   wallet: any;
   walletJson: string;
   pwd = '';
