@@ -11,6 +11,7 @@ import { OperationService } from '../../services/operation/operation.service';
 import Big from 'big.js';
 import { WalletService } from '../../services/wallet/wallet.service';
 import { CoordinatorService } from '../../services/coordinator/coordinator.service';
+import { CONSTANTS } from '../../../environments/environment';
 
 @Component({
   selector: 'app-send',
@@ -28,6 +29,7 @@ export class SendComponent implements OnInit, OnChanges {
   prepareRequest: PrepareRequest = null;
   confirmRequest: ConfirmRequest = null;
   templateRequest: TemplateRequest = null;
+  readonly thresholdUSD = 50;
   constructor(
     public tokenService: TokenService,
     private estimateService: EstimateService,
@@ -111,7 +113,11 @@ export class SendComponent implements OnInit, OnChanges {
   }
   async simulateRequest(txs: PartiallyPreparedTransaction[], tokenTransfer: string) {
     if (this.template) {
-      this.templateRequest = { template: this.template };
+      if (this.template.silent) {
+        console.log('Silent signing');
+      } else {
+        this.templateRequest = { template: this.template };
+      }
     } else {
       await this.messageService.startSpinner('Preparing transaction...');
     }
@@ -134,7 +140,21 @@ export class SendComponent implements OnInit, OnChanges {
             if (this.template) {
               const fee = this.getTemplateFee(fullyPrepared);
               console.log('Use template', this.template);
-              this.templateRequest = { template: this.template, ops: fullyPrepared, fee };
+              if (!this.template.silent) {
+                this.templateRequest = { template: this.template, ops: fullyPrepared, fee };
+              } else {
+                let amount = Big(0);
+                for (const op of fullyPrepared) {
+                  amount = Big(op.amount).plus(amount);
+                }
+                amount = Big(fee.total).plus(amount);
+                amount = amount.times(Big(CONSTANTS.MAINNET ? this.walletService.wallet.XTZrate : 5));
+                if (amount.gt(Big(this.thresholdUSD))) {
+                  this.operationResponse.emit('exceeded_threshold');
+                } else {
+                  this.silentInject(fullyPrepared);
+                }
+              }
             } else {
               this.confirmTransactions(fullyPrepared);
             }
@@ -199,7 +219,9 @@ export class SendComponent implements OnInit, OnChanges {
         break;
       }
     }
-    this.messageService.startSpinner('Sending transaction...');
+    if (!this.template.silent) {
+      this.messageService.startSpinner('Sending transaction...');
+    }
     let keys;
     try {
       keys = await this.walletService.getKeys('', this.activeAccount.pkh);
