@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, OnChanges } from '@angular/core';
 import { TemplateRequest, TemplateFee, FullyPreparedTransaction } from '../interfaces';
+import { Template, BaseTemplate } from 'kukai-embed';
 
 @Component({
   selector: 'app-confirm-send-template',
@@ -17,12 +18,12 @@ export class ConfirmSendTemplateComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes?.templateRequest?.currentValue) {
       console.log(this.templateRequest);
-      if (this.templateRequest.template?.descriptions?.length) {
+      if ((<BaseTemplate>this.templateRequest?.template)?.descriptions?.length) {
         this.hideScrollbar();
         this.active = true;
       } else {
-        console.log('No template descriptions');
-        this.isApproved.emit(null);
+        console.warn('No template descriptions');
+        this.cancel();
       }
     }
   }

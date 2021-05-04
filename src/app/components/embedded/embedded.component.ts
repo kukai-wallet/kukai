@@ -249,6 +249,8 @@ export class EmbeddedComponent implements OnInit {
     }
     if (!opHash) {
       response = { type: ResponseTypes.operationResponse, failed: true, error: 'ABORTED_BY_USER' };
+    } else if (opHash === 'exceeded_threshold') {
+      response = { type: ResponseTypes.operationResponse, failed: true, error: 'EXEEDED_THRESHOLD' };
     } else if (opHash === 'broadcast_error') {
       response = { type: ResponseTypes.operationResponse, failed: true, error: 'BROADCAST_ERROR', errorMessage };
     } else if (opHash === 'invalid_parameters') {
