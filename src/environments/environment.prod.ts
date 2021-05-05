@@ -149,6 +149,22 @@ export const CONSTANTS: Constants = {
           isBooleanAmount: true
         }
       }
+    },
+    'KT1JXZPcfEnxswdzYLox1LeALWTkSm1nsdhp': {
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        '0-126': {
+          name: 'ATX Tezos Taco',
+          symbol: '',
+          decimals: 0,
+          description: 'This Taco NFT was inspired by and minted for Austin, Texas on Taco Tuesday, May 4th, 2021, to help push the Clean NFT movement forward. Enjoy your taco or send it to a friend to help spread the word about Clean NFTs on Tezos.',
+          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmYbWkagqQyQ4bJhWWWSGaCLNGP1czbPgD2PLmJ4aVmtGR',
+          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmYbWkagqQyQ4bJhWWWSGaCLNGP1czbPgD2PLmJ4aVmtGR',
+          shouldPreferSymbol: false,
+          isBooleanAmount: true
+        }
+      }
     }
   },
   CONTRACT_OVERRIDES: {
