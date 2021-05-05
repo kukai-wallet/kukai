@@ -209,6 +209,37 @@ describe('[ OperationService ]', () => {
       expect(service.parseTokenTransfer(JSON.parse(faNone))).toBeFalsy();
     });
 	});
+
+  describe('> Secp256k1', () => {
+		it('Correct signs', function () {
+      const skHex = '59e0ed31a00eabaada1cc39fa6ac06e625f8b5b1cd5b1505116842c02a0e7962';
+      const kpWrong = {sk: 'spsk279WYFPULj35YkjRhmQEamiAsCYkvFGx74udMQ5fdikbfF3PEa', pk: 'sppk7atwvx9ecvaTwA7SBBrwHL5Jf4mYMeLSDuDFsSTnfKyJMstkaAG', pkh: 'tz2VouZdAQfwLPS2RuDisRXqpkKpWP44kVw3'};
+      const kpCorrect = {sk: 'spsk279WYFPULj35YkjRhmQEamiAsCYkvFGx74udMQ5fdikbfF3PEa', pk: 'sppk7cqh7BbgUMFh4yh95mUwEeg5aBPG1MBK1YHN7b9geyygrUMZByr', pkh: 'tz2UYG1doNM6AaXhVRyJXpEELmn8vo7pVZj5'};
+      const kpFlipped = {sk: 'spsk2gj2eCpecgKZFSix8KY8UFhbqahRGxzLYi9QLihSbQ823e5o99', pk: 'sppk7atwvx9ecvaTwA7SBBrwHL5Jf4mYMeLSDuDFsSTnfKyJMstkaAG', pkh: 'tz2VouZdAQfwLPS2RuDisRXqpkKpWP44kVw3'};
+      let kp = service.spPrivKeyToKeyPair(skHex);
+      expect(kp).not.toEqual(kpWrong);
+			expect(kp).toEqual(kpFlipped);
+      spyOn(service, 'isInvertedPk').and.returnValue(false);
+      kp = service.spPrivKeyToKeyPair(skHex);
+      expect(kp).toEqual(kpCorrect);
+		});
+    it('derive keypair', () => {
+      const hexSk = '5a557ccd5893a316f4729f48e3cf7cc80cb7aaa0f180773b46edb910d76f8952';
+      const kp = service.spPrivKeyToKeyPair(hexSk);
+      const keypair = {sk: 'spsk27M974UiZToCo5xrqnSGFbRAYCKcMbV8d5DZSG1UXHhhD9KAHZ', pk: 'sppk7cBjVH9SKnUvLoB37pypfvS3HneSrjN1zQ1jHDySkdgSKCRfdks', pkh: 'tz2JyFwMxKTuimkiH2x8XUns4qBVZAvCWL6Z'};
+      const pubKey = {
+        X: '7b6a196a3f2c6a11b230bec5ffde0daa56ba6f18e7a05f1134f2b4b238890acf',
+        Y: '962957f376c1f30da1589c75b895d7edb922e193f8b36bcf5a4f3da684d6a503'
+      };
+      expect(kp).toEqual(keypair);
+      expect(service.spPointsToPkh(pubKey.X, pubKey.Y)).toEqual(keypair.pkh);
+    });
+    it('derive inverted pk', () => {
+      const x = 'c8205b9b2a607ddfcfe07055585bbd860e6dee9f36f80b3a82e2b49370db297';
+      const y = '5713641f2b6df02d700b2cdc6a525f23396161446b09de1f5d95bcd3b4afc3';
+      expect(service.spPointsToPkh(x, y)).toEqual('tz2JV2paU9GQSXFCFWYUJGGEmKEq6PYDx1eT');
+    });
+  });
 	/*
 	describe('> Contract invocations', () => {
 		it('convert string expression to mic', () => {
