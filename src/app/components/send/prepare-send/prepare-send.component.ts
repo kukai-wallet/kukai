@@ -66,7 +66,7 @@ export class PrepareSendComponent implements OnInit, OnChanges {
     public torusService: TorusService,
     private translate: TranslateService,
     private walletService: WalletService,
-    private inputValidationService: InputValidationService,
+    private inputValidationService: InputValidationService
   ) { }
 
   ngOnInit(): void {
