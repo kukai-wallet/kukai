@@ -182,7 +182,7 @@ export class SendComponent implements OnInit, OnChanges {
       network = network.plus(op.fee);
       storageLimit = storageLimit.plus(op.storageLimit);
     }
-    let storage = storageLimit.times(this.estimateService.costPerByte);
+    let storage = storageLimit.times(this.estimateService.costPerByte).div('1000000');
     const total = network.plus(storage).toFixed();
     network = network.toFixed();
     storage = storage.toFixed();
