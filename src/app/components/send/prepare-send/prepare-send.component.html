@@ -44,13 +44,19 @@
         <label style="justify-content: space-between; opacity: 1; color: rgba(44, 50, 58, 0.4)"><span>Send to</span>
           <select class="select-css" [(ngModel)]="torusVerifier" (ngModelChange)="verifierChange()">
             <option value="" selected>Tezos Address</option>
+            <option value="domain">Tezos Domains</option>
             <option *ngFor="let key of torusService.verifierMapKeys" value="{{key}}">
               {{ torusService.verifierMap[key].name }} Account</option>
           </select></label>
         <input type="text" class="text" (input)="updateDefaultValues()" (change)="toPkhChange()" [(ngModel)]="toPkh">
       </div>
       <ng-container *ngIf="torusVerifier">
-        <p class="torus-details" *ngIf="torusPendingLookup">Loading address...</p>
+        <div *ngIf="torusPendingLookup" style="margin-top: 0.5rem;">
+          <img style="float:left" src="../../../assets/img/feeLoader.gif">
+          <div style="margin-left: 20px;">
+            <p class="torus-details" style="margin:0;">Loading address...</p>
+          </div>
+        </div>
         <p class="torus-details" *ngIf="!torusPendingLookup && torusLookupAddress">{{ torusLookupAddress }}</p>
       </ng-container>
       <div *ngIf="this.isMultipleDestinations" class="group">

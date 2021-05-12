@@ -126,13 +126,16 @@ export class ActivityService {
           } else if (activity.type === 'activation') {
             this.messageService.addSuccess(account.shortAddress() + ': Account activated');
           }
+          const counter = this.getCounterparty(activity, account, false);
+          if (counter?.address) {
+            this.lookupService.check(counter.address, true);
+          }
         }
       }
     }
   }
-  getCounterparty(transaction: Activity, account: Account, withLookup = true): string {
+  getCounterparty(transaction: Activity, account: Account, withLookup = true): any {
     let counterParty = { address: '' };
-    let counterPartyAddress = '';
     if (transaction.type === 'delegation') {
       if (transaction.destination) {
         counterParty = transaction.destination;
@@ -155,8 +158,9 @@ export class ActivityService {
       counterParty = { address: '' };
     }
     if (withLookup) {
-      counterPartyAddress = this.lookupService.resolve(counterParty);
+      return this.lookupService.resolve(counterParty);
+    } else {
+      return counterParty;
     }
-    return counterPartyAddress;
   }
 }

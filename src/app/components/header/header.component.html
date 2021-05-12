@@ -56,7 +56,7 @@
     {{ CONSTANTS.NETWORK.toUpperCase() }} VERSION
   </div>
   <div class="main">
-    <ng-container *ngIf="getVerifier()"><img class="verifier-logo"
-        src="../../../assets/img/{{ getVerifier() }}-logo.svg">&nbsp;</ng-container>{{ getUsername() }}
+    <ng-container *ngIf="getUsername(); let displayName"><img class="verifier-logo"
+        src="../../../assets/img/{{ getVerifier() }}-logo.svg">&nbsp;{{ displayName }}</ng-container>
   </div>
 </div>

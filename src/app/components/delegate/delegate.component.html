@@ -20,6 +20,12 @@
         <label>Delegate to Baker Address</label>
         <input #toPkhInput type="text" class="text" [(ngModel)]="toPkh" [disabled]="beaconMode">
       </div>
+      <div *ngIf="domainPendingLookup" style="margin-top: 0.5rem;">
+        <img style="float:left" src="../../../assets/img/feeLoader.gif">
+        <div style="margin-left: 20px;">
+          <p class="" style="margin:0;">Loading address...</p>
+        </div>
+      </div>
       <div class="group">
         <label>Fee (tez)</label>
         <input type="text" class="text" [(ngModel)]="fee" placeholder={{this.recommendedFee.toString()}}
