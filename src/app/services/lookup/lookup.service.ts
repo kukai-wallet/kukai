@@ -63,7 +63,7 @@ export class LookupService {
   }
   async recheckWalletAddresses(force: boolean) {
     console.log('lookup wallet addresses');
-    for (let address of this.walletService.wallet.getImplicitAccounts()) {
+    for (const address of this.walletService.wallet.getImplicitAccounts()) {
       this.check(address, force);
     }
   }

@@ -296,7 +296,7 @@ export class PrepareSendComponent implements OnInit, OnChanges {
     return txs;
   }
   getFullyPreparedTxs(): FullyPreparedTransaction[] {
-    assert(!this.simSemaphore && (!this.torusVerifier || this.torusReady()), 
+    assert(!this.simSemaphore && (!this.torusVerifier || this.torusReady()),
       this.formInvalid ? this.formInvalid : 'Awaiting request'
     );
     const minimalTxs = this.getMinimalPreparedTxs(true);
@@ -443,7 +443,7 @@ export class PrepareSendComponent implements OnInit, OnChanges {
     } else if (this.toPkh) {
       this.torusPendingLookup = true;
       this.torusLookupId = this.toPkh;
-      
+
       const { pkh, twitterId } = this.torusVerifier === 'domain' ?
       await this.tezosDomains.getAddressFromDomain(this.toPkh).then((ans) => {
         if (ans?.pkh === '') {
