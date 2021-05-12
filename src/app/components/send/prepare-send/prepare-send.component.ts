@@ -11,6 +11,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { WalletService } from '../../../services/wallet/wallet.service';
 import { InputValidationService } from '../../../services/input-validation/input-validation.service';
 import assert from 'assert';
+import { TezosDomainsService } from '../../../services/tezos-domains/tezos-domains.service';
 
 
 const zeroTxParams: DefaultTransactionParams = {
@@ -66,6 +67,7 @@ export class PrepareSendComponent implements OnInit, OnChanges {
     public torusService: TorusService,
     private translate: TranslateService,
     private walletService: WalletService,
+    public tezosDomains: TezosDomainsService,
     private inputValidationService: InputValidationService
   ) { }
 
@@ -294,7 +296,9 @@ export class PrepareSendComponent implements OnInit, OnChanges {
     return txs;
   }
   getFullyPreparedTxs(): FullyPreparedTransaction[] {
-    assert(!this.simSemaphore && (!this.torusVerifier || this.torusReady()), 'Awaiting request');
+    assert(!this.simSemaphore && (!this.torusVerifier || this.torusReady()), 
+      this.formInvalid ? this.formInvalid : 'Awaiting request'
+    );
     const minimalTxs = this.getMinimalPreparedTxs(true);
     this.transactions = minimalTxs;
     assert(this.inputValidationService.fee(this.customFee), 'Invalid fee');
@@ -315,7 +319,7 @@ export class PrepareSendComponent implements OnInit, OnChanges {
     return fullyTxs;
   }
   invalidTorusAccount(): string {
-    const torusError = { google: 'Invalid Google email address', reddit: 'Invalid Reddit username', twitter: 'Twitter username begins with "@"' };
+    const torusError = { google: 'Invalid Google email address', reddit: 'Invalid Reddit username', twitter: 'Twitter username begins with "@"', domain: 'Tezos Domains must be valid url' };
     if (!this.inputValidationService.torusAccount(this.toPkh, this.torusVerifier) && this.toPkh !== '') {
       return torusError[this.torusVerifier];
     }
@@ -432,18 +436,31 @@ export class PrepareSendComponent implements OnInit, OnChanges {
     // resimulate?
   }
   async torusLookup() {
-    if (!this.torusService.verifierMapKeys.includes(this.torusVerifier)) {
+    if (!this.torusService.verifierMapKeys.includes(this.torusVerifier) && this.torusVerifier !== 'domain') {
       this.formInvalid = 'Invalid verifier';
     } else if (this.invalidTorusAccount()) {
       this.formInvalid = this.invalidTorusAccount();
     } else if (this.toPkh) {
       this.torusPendingLookup = true;
       this.torusLookupId = this.toPkh;
-      const { pkh, twitterId } = await this.torusService.lookupPkh(this.torusVerifier, this.toPkh).catch(e => {
+      
+      const { pkh, twitterId } = this.torusVerifier === 'domain' ?
+      await this.tezosDomains.getAddressFromDomain(this.toPkh).then((ans) => {
+        if (ans?.pkh === '') {
+          this.formInvalid = 'Could not find the domain';
+        }
+        return ans;
+      }).catch(e => {
+        console.error(e);
+        this.formInvalid = e;
+        return '';
+      }) :
+      await this.torusService.lookupPkh(this.torusVerifier, this.toPkh).catch(e => {
         console.error(e);
         this.formInvalid = e;
         return '';
       });
+
       this.torusPendingLookup = false;
       if (pkh) {
         this.torusLookupAddress = pkh;

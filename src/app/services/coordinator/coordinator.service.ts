@@ -9,6 +9,7 @@ import { ErrorHandlingPipe } from '../../pipes/error-handling.pipe';
 import { Account } from '../wallet/wallet';
 import Big from 'big.js';
 import { TokenService } from '../token/token.service';
+import { LookupService } from '../lookup/lookup.service';
 import { CONSTANTS } from '../../../environments/environment';
 
 export interface ScheduleData {
@@ -29,7 +30,7 @@ export class CoordinatorService {
   defaultDelayActivity = CONSTANTS.MAINNET ? 60000 : 30000; // 60/30s
   shortDelayActivity = 5000; // 5s
   tzrateInterval: any;
-  defaultDelayPrice = CONSTANTS.MAINNET ? 300000 : 3600000; // 5/60m
+  defaultDelayPrice = 300000; // 5m
   accounts: Account[];
   constructor(
     private activityService: ActivityService,
@@ -39,7 +40,8 @@ export class CoordinatorService {
     private delegateService: DelegateService,
     private operationService: OperationService,
     private errorHandlingPipe: ErrorHandlingPipe,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private lookupService: LookupService
   ) {}
   startAll() {
     if (this.walletService.wallet) {
@@ -56,8 +58,12 @@ export class CoordinatorService {
     if (!this.tzrateInterval) {
       console.log('Start scheduler XTZ');
       this.tzrateService.getTzrate();
+      this.lookupService.recheckWalletAddresses(false);
       this.tzrateInterval = setInterval(
-        () => this.tzrateService.getTzrate(),
+        () => {
+          this.tzrateService.getTzrate();
+          this.lookupService.recheckWalletAddresses(true);
+        },
         this.defaultDelayPrice
       );
     }
