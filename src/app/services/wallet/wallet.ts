@@ -122,7 +122,7 @@ export class TorusWallet extends Wallet {
     this.name = name;
   }
   displayName() {
-    if (this.verifier === 'twitter') {
+    if (['twitter', 'facebook'].includes(this.verifier)) {
       return this.name;
     }
     return this.id;

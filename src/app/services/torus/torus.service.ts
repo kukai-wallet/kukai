@@ -9,6 +9,7 @@ import { CONSTANTS } from '../../../environments/environment';
 const GOOGLE = 'google';
 const REDDIT = 'reddit';
 const TWITTER = 'twitter';
+const FACEBOOK = 'facebook';
 const AUTH_DOMAIN = 'https://dev-0li4gssz.eu.auth0.com';
 @Injectable({
   providedIn: 'root'
@@ -39,6 +40,13 @@ export class TorusService {
         typeOfLogin: 'twitter',
         clientId: 'vKFgnaYZzKLUnhxnX5xqTqeMcumdVTz1',
         verifier: 'tezos-twitter-test',
+        caseSensitiveVerifierID: false
+      },
+      [FACEBOOK]: {
+        name: 'Facebook',
+        typeOfLogin: 'facebook',
+        clientId: '213778980232619',
+        verifier: 'tezos-facebook-testnet',
         caseSensitiveVerifierID: false
       }
     },
@@ -160,6 +168,7 @@ export class TorusService {
       });
       const keyPair = this.operationService.spPrivKeyToKeyPair(loginDetails.privateKey);
       console.log('DirectAuth KeyPair', keyPair);
+      console.log('DirectAuth UserInfo', loginDetails.userInfo);
       return { keyPair, userInfo: loginDetails.userInfo };
     } catch (e) {
       console.error(e, 'login caught');
@@ -173,7 +182,10 @@ export class TorusService {
   _loginToConnectionMap = () => {
     return {
       [TWITTER]: {
-        domain: AUTH_DOMAIN,
+        domain: AUTH_DOMAIN
+      },
+      [FACEBOOK]: {
+        auth_type: 'reauthenticate'
       }
     };
   }

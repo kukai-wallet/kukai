@@ -215,6 +215,7 @@ export const CONSTANTS: Constants = {
           isBooleanAmount: true
         }
       }
+<<<<<<< HEAD
     },
     'KT1WN9yWqV9pEm1ANR56ExJZbnVukWN31fTY': {
       kind: 'FA2',
@@ -440,6 +441,9 @@ export const CONSTANTS: Constants = {
         }
       }
     },
+=======
+    }
+>>>>>>> c88857a (add facebook)
   },
   CONTRACT_OVERRIDES: {
     // hice et nunc

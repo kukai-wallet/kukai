@@ -60,19 +60,22 @@ div.direct-auth-login > div.body div.login-options.vertically div.login-option {
 
 // Vertical login buttons
 div.direct-auth-login > div.body div.login-options.horizontally {
-  margin: 1rem 0;
+  margin: 0.5rem 0;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
+  flex-wrap: wrap;
+  flex-grow: 4;
 }
 div.direct-auth-login > div.body div.login-options.horizontally div.login-option {
   display: flex;
   justify-content: center;
   align-items: center;
   background: white;
+  margin: 0.5rem;
   border-radius: 0.625rem;
   width: 90px;
-  height: 60px
+  height: 60px;
 }
 div.direct-auth-login > div.body div.login-options.horizontally div.login-option:hover {
   background: #eaebf9;
