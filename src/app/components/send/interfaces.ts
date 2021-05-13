@@ -30,6 +30,8 @@ export interface PartiallyPreparedTransaction {
     verifier: string;
     twitterId?: string;
   };
+  gasRecommendation?: string;
+  storageRecommendation?: string;
 }
 export interface FullyPreparedTransaction extends PartiallyPreparedTransaction {
   fee: string;

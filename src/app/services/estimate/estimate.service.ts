@@ -11,6 +11,7 @@ import { ContractOverrideType, ContractsOverrideType } from '../token/token.serv
 const httpOptions = { headers: { 'Content-Type': 'application/json' } };
 const hardGasLimit = 1040000;
 const hardStorageLimit = 60000;
+const extraGas = 80;
 @Injectable()
 export class EstimateService {
   readonly costPerByte = '250';
@@ -80,7 +81,6 @@ export class EstimateService {
     }
   }
   private async _estimate(operations: any, from: string, tokenTransfer: string, isOrigination: boolean = false): Promise<any> {
-    const extraGas = 80;
     if (!this.hash) { return null; }
     const simulation = {
       fee: 0,
@@ -112,11 +112,13 @@ export class EstimateService {
       if (result && result.contents) {
         let reveal = false;
         const limits = [];
-        for (const content of result.contents) {
-          if (content.kind === 'reveal') {
+        for (const i in result.contents) {
+          if (result.contents[i].kind === 'reveal') {
             reveal = true;
-          } else if (['transaction', 'origination'].includes(content.kind) && content.metadata.operation_result.status === 'applied') {
-            const { gasUsage, storageUsage } = this.getOpUsage(content);
+          } else if (['transaction', 'origination'].includes(result.contents[i].kind) && result.contents[i].metadata.operation_result.status === 'applied') {
+            const index: number = Number(i) + ((result.contents[0]?.kind === 'reveal') ? -1 : 0);
+            const opObj = index > -1 ? operations[index] : null;
+            const { gasUsage, storageUsage } = this.getOpUsage(result.contents[i], opObj);
             limits.push({ gasLimit: gasUsage + extraGas, storageLimit: storageUsage });
           } else {
             return null;
@@ -137,7 +139,7 @@ export class EstimateService {
     }
     return null;
   }
-  getOpUsage(content: any): { gasUsage: number, storageUsage: number } {
+  getOpUsage(content: any, op: any): { gasUsage: number, storageUsage: number } {
     let gasUsage = 0;
     let burn = Big(0);
     if (content.source && content.source === this.pkh) {
@@ -183,7 +185,7 @@ export class EstimateService {
     if (gasUsage < 0 || gasUsage > hardGasLimit || storageUsage < 0 || storageUsage > hardStorageLimit) {
       throw new Error('InvalidUsageCalculation');
     }
-    const customUsage = this.getUsageException(content);
+    const customUsage = this.getUsageException(content, op);
     if (customUsage) {
       // if there is a usageException then override values
       return { gasUsage, storageUsage, ...customUsage };
@@ -239,7 +241,7 @@ export class EstimateService {
         return of(res);
       })).pipe(catchError(err => this.operationService.errHandler(err)));
   }
-  private getUsageException(content: any): ContractOverrideType {
+  private getUsageException(content: any, op: any): ContractOverrideType {
     const entrypoint = content?.parameters?.entrypoint;
     const destination = content?.destination;
     if (entrypoint && destination) {
@@ -247,6 +249,17 @@ export class EstimateService {
       if (contractOverride) {
         return contractOverride;
       }
+    }
+    if (op?.gasRecommendation || op?.storageRecommendation) {
+      let override: ContractOverrideType = {};
+      if (op.gasRecommendation) {
+        override.gasUsage = Number(op.gasRecommendation) - extraGas;
+      }
+      if (op.storageRecommendation) {
+        override.storageUsage = Number(op.storageRecommendation);
+      }
+      console.log('Dapp recommendation', {gas: op.gasRecommendation, storage: op.storageRecommendation});
+      return override;
     }
     return null;
   }
