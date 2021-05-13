@@ -58,7 +58,9 @@ export class SendComponent implements OnInit, OnChanges {
           kind: 'transaction',
           destination: tx.destination,
           amount: Big(tx.amount).div(10 ** 6).toFixed(), // handle token decimals here
-          parameters: tx.parameters ? tx.parameters : undefined
+          parameters: tx.parameters ? tx.parameters : undefined,
+          gasRecommendation: tx.gas_limit ? tx.gas_limit : undefined,
+          storageRecommendation: tx.storage_limit ? tx.storage_limit : undefined
         };
       });
       if (this.validParameters(txs)) {

@@ -70,7 +70,11 @@ export class OriginateComponent implements OnInit, OnChanges {
           this.openModal();
           this.balance = Big(this.operationRequest.operationDetails[0].balance).div(10 ** 6).toFixed();
           this.script = this.operationRequest.operationDetails[0].script;
-          this.estimateFees();
+          const recommendations = {
+            gasRecommendation: this.operationRequest.operationDetails[0].gas_limit ? this.operationRequest.operationDetails[0].gas_limit : undefined,
+            storageRecommendation: this.operationRequest.operationDetails[0].storage_limit ? this.operationRequest.operationDetails[0].storage_limit : undefined
+          }
+          this.estimateFees(recommendations);
         } else {
           console.warn('Invalid origination');
           this.operationResponse.emit('parameters_error');
@@ -106,7 +110,7 @@ export class OriginateComponent implements OnInit, OnChanges {
     }
     return true;
   }
-  async estimateFees() {
+  async estimateFees(recommendations: any = {}) {
     const callback = (res) => {
       if (res) {
         if (res.error) {
@@ -120,7 +124,7 @@ export class OriginateComponent implements OnInit, OnChanges {
     };
     this.simSemaphore++;
     await this.estimateService.preLoadData(this.activeAccount.pkh, this.activeAccount.pk);
-    this.estimateService.estimateOrigination(this.getOrigination(), this.activeAccount.pkh, callback);
+    this.estimateService.estimateOrigination({...this.getOrigination(), ...recommendations}, this.activeAccount.pkh, callback);
   }
   getOrigination() {
     const gasLimit = this.customGas ? Number(this.customGas) : this.defaultTransactionParams.gas;

@@ -141,6 +141,9 @@ export class UriHandlerComponent implements OnInit {
         } else if (this.invalidParameters(message.operationDetails[i].parameters)) {
           await this.beaconService.rejectOnParameters(message);
           return false;
+        } else if (this.invalidOptionals(message.operationDetails[i])) {
+          await this.beaconService.rejectOnParameters(message);
+          return false;
         }
       }
     } else if (message.operationDetails[0].kind === 'delegation') {
@@ -152,6 +155,10 @@ export class UriHandlerComponent implements OnInit {
       if (!message.operationDetails[0].script) {
         console.warn('No script found');
         await this.beaconService.rejectOnParameters(message);
+        return false;
+      } else if (this.invalidOptionals(message.operationDetails[0])) {
+        await this.beaconService.rejectOnParameters(message);
+        return false;
       }
     } else {
       console.warn('Unsupported operation kind');
@@ -160,6 +167,14 @@ export class UriHandlerComponent implements OnInit {
     }
     this.activeAccount = this.walletService.wallet.getImplicitAccount(message.sourceAddress);
     return true;
+  }
+  private invalidOptionals(op: any): boolean {
+    if (op.gas_limit && (typeof op.gas_limit !== 'string' || !this.inputValidationService.amount(op.gas_limit, 0))) {
+      return true;
+    } else if (op.storage_limit && (typeof op.storage_limit !== 'string' || !this.inputValidationService.amount(op.storage_limit, 0))) {
+      return true;
+    }
+    return false;
   }
   async isSupportedSignPayload(message: any): Promise<Boolean> {
     if (!this.walletService.wallet) {
