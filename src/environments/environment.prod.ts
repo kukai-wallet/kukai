@@ -149,6 +149,70 @@ export const CONSTANTS: Constants = {
           isBooleanAmount: true
         }
       }
+    },
+    'KT1JXZPcfEnxswdzYLox1LeALWTkSm1nsdhp': {
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        '0-126': {
+          name: 'ATX Tezos Taco',
+          symbol: '',
+          decimals: 0,
+          description: 'This Taco NFT was inspired by and minted for Austin, Texas on Taco Tuesday, May 4th, 2021, to help push the Clean NFT movement forward. Enjoy your taco or send it to a friend to help spread the word about Clean NFTs on Tezos.',
+          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmYbWkagqQyQ4bJhWWWSGaCLNGP1czbPgD2PLmJ4aVmtGR',
+          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmYbWkagqQyQ4bJhWWWSGaCLNGP1czbPgD2PLmJ4aVmtGR',
+          shouldPreferSymbol: false,
+          isBooleanAmount: true
+        }
+      }
+    },
+    'KT1QE4nZiAXbpuDCu4P5QTNibQSx6FFW3y2W': {
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        '0-332': {
+          name: 'Fancy Turtle, 2017',
+          symbol: '',
+          decimals: 0,
+          description: 'Turtle wears fancy outfit',
+          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmVbriNfu2Xw1miWadT1zwC8BN36cGHMNBxd3TpzE5tLje',
+          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/Qmat9rrmybBzuYgaVgFQvG9iaKkg96Y5u1EovihGxp9J8H',
+          shouldPreferSymbol: false,
+          isBooleanAmount: true
+        }
+      }
+    },
+    'KT1QbzLyzwXB9JTevvjT3B24BzgWfMzFfBHt': {
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        '0-332': {
+          name: 'Dancing Laa-Laa, 2019',
+          symbol: '',
+          decimals: 0,
+          description: 'Laa-Laa dancing',
+          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmZLutyj5jABYvt4ekU1Pq6hCZRBf8C9FwKVeZYHy7Zfv7',
+          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmZLutyj5jABYvt4ekU1Pq6hCZRBf8C9FwKVeZYHy7Zfv7',
+          shouldPreferSymbol: false,
+          isBooleanAmount: true
+        }
+      }
+    },
+    'KT1LqKWDtzUh4CXNqfJQMcATv4PdZxBjPJjH': {
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        '0-332': {
+          name: 'Lebrun Jame TopShot Moment, 2021',
+          symbol: '',
+          decimals: 0,
+          description: 'Lebrun dunks on Washington Wizards',
+          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmRHvJRqJYMqbFfoKd1tXYkaxaKJcoao7VijT6yMDM67ud',
+          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmRHvJRqJYMqbFfoKd1tXYkaxaKJcoao7VijT6yMDM67ud',
+          shouldPreferSymbol: false,
+          isBooleanAmount: true
+        }
+      }
     }
   },
   CONTRACT_OVERRIDES: {
