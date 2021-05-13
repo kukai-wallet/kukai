@@ -376,6 +376,22 @@ export const CONSTANTS: Constants = {
         }
       }
     },
+    'KT1KSYCk8zjdhgzDDRsmb2ygAfanjBx25Wto': {
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        0: {
+          name: 'Dynamic DJ Mona Lisa AP',
+          symbol: '',
+          decimals: 0,
+          description: "DJ MONA LISA is the amalgamation of one of the most recognizable images from 15th century Florence, blended and mixed with BUA’s classic, iconographic pop culture DJ painting. Her flirtatious smile might make you wonder what DJ Mona is mixing up on the 1's & 2's.",
+          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmQzfvT6tPTdECds6Q11NpYcAf9pcjUHqmCBZ9NDjJMotM',
+          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmQzfvT6tPTdECds6Q11NpYcAf9pcjUHqmCBZ9NDjJMotM',
+          shouldPreferSymbol: false,
+          isBooleanAmount: true
+        }
+      }
+    },
   },
   CONTRACT_OVERRIDES: {
     // hice et nunc
