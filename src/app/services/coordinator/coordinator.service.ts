@@ -190,13 +190,11 @@ export class CoordinatorService {
   }
   stopAll() {
     if (this.walletService.wallet) {
-      console.log('Stop all schedulers');
-      for (
-        let i = 0;
-        i < this.accounts.length;
-        i++
-      ) {
-        this.stop(this.accounts[i].address);
+      if (this.accounts.length) {
+        console.log('Stop all schedulers');
+        for (const account of this.accounts) {
+          this.stop(account.address);
+        }
       }
       clearInterval(this.tzrateInterval);
       this.tzrateInterval = null;
@@ -206,9 +204,11 @@ export class CoordinatorService {
     console.log(
       'Stop scheduler ' + this.accounts.findIndex((a) => a.address === pkh)
     );
-    clearInterval(this.scheduler.get(pkh).interval);
-    this.scheduler.get(pkh).interval = null;
-    this.scheduler.delete(pkh);
+    if (this.scheduler.get(pkh)) {
+      clearInterval(this.scheduler.get(pkh).interval);
+      this.scheduler.get(pkh).interval = null;
+      this.scheduler.delete(pkh);
+    }
   }
   updateAccountData(pkh: string) {
     // Maybe also check for originations to account?
