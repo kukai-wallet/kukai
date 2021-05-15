@@ -251,7 +251,7 @@ export class EstimateService {
       }
     }
     if (op?.gasRecommendation || op?.storageRecommendation) {
-      let override: ContractOverrideType = {};
+      const override: ContractOverrideType = {};
       if (op.gasRecommendation) {
         override.gasUsage = Number(op.gasRecommendation) - extraGas;
       }

@@ -73,7 +73,7 @@ export class OriginateComponent implements OnInit, OnChanges {
           const recommendations = {
             gasRecommendation: this.operationRequest.operationDetails[0].gas_limit ? this.operationRequest.operationDetails[0].gas_limit : undefined,
             storageRecommendation: this.operationRequest.operationDetails[0].storage_limit ? this.operationRequest.operationDetails[0].storage_limit : undefined
-          }
+          };
           this.estimateFees(recommendations);
         } else {
           console.warn('Invalid origination');
