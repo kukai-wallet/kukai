@@ -7,7 +7,6 @@ import { MessageService } from '../message/message.service';
 import { TzrateService } from '../tzrate/tzrate.service';
 import { OperationService } from '../operation/operation.service';
 import { Account } from '../wallet/wallet';
-import { isNullOrUndefined } from 'util';
 
 @Injectable()
 export class BalanceService {

@@ -121,6 +121,12 @@ export class CoordinatorService {
           case State.UpToDate: {
             if (!ans.upToDate) {
               this.changeState(pkh, State.Updating);
+            } else if (ans?.balance) {
+              const balance = this.walletService.wallet.getAccount(pkh).balanceXTZ;
+              if (balance !== ans.balance) {
+                console.log('recheck balance');
+                this.updateAccountData(pkh);
+              }
             }
             break;
           }
@@ -190,7 +196,7 @@ export class CoordinatorService {
   }
   stopAll() {
     if (this.walletService.wallet) {
-      if (this.accounts.length) {
+      if (this.accounts?.length) {
         console.log('Stop all schedulers');
         for (const account of this.accounts) {
           this.stop(account.address);
