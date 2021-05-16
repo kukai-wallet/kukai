@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { TzktService } from './tzkt/tzkt.service';
 import { WalletObject } from '../wallet/wallet';
-import { Console } from 'console';
 
 export interface Indexer {
   getContractAddresses(pkh: string): Promise<any>;

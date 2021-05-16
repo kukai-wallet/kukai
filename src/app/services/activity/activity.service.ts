@@ -48,6 +48,7 @@ export class ActivityService {
         } else {
           return of({
             upToDate: true,
+            balance: data?.balance ? data.balance : 0
           });
         }
       })
