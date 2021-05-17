@@ -48,7 +48,7 @@
             <option *ngFor="let key of torusService.verifierMapKeys" value="{{key}}">
               {{ torusService.verifierMap[key].name }} Account</option>
           </select></label>
-        <input type="text" class="text" (input)="updateDefaultValues()" (change)="toPkhChange()" [(ngModel)]="toPkh">
+        <input type="text" class="text" (input)="preCheckAddress(); updateDefaultValues()" (change)="toPkhChange()" [(ngModel)]="toPkh">
       </div>
       <ng-container *ngIf="torusVerifier">
         <div *ngIf="torusPendingLookup" style="margin-top: 0.5rem;">

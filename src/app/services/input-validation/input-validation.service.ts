@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { OperationService } from '../operation/operation.service';
 import { utils, hd } from '@tezos-core-tools/crypto-utils';
 import * as zxcvbn from 'zxcvbn';
-
+import { CONSTANTS } from '../../../environments/environment';
 import { TranslateService } from '@ngx-translate/core';
 import { TorusWallet } from '../wallet/wallet';
 import assert from 'assert';
@@ -79,7 +79,8 @@ export class InputValidationService {
         return false;
       }
     }
-    return a.length >= 2;
+    const topDomain = CONSTANTS.MAINNET ? '.tez' : '.edo';
+    return (a.length >= 2 && domain.endsWith(topDomain));
   }
   twitterAccount(username: string) {
     // The only characters you can use are uppercase and lowercase letters, numbers, and the underscore character ( _ ).

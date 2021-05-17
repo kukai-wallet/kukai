@@ -180,7 +180,7 @@ export class PrepareSendComponent implements OnInit, OnChanges {
       txs = this.getMinimalPreparedTxs();
       this.transactions = txs;
     } catch (e) {
-      console.warn(e);
+      console.log(e);
     }
     if (txs?.length) {
       const equiClass = this.equiClass(this.activeAccount.address, txs);
@@ -529,5 +529,10 @@ export class PrepareSendComponent implements OnInit, OnChanges {
       }
     }
     return true;
+  }
+  preCheckAddress() {
+    if (!this.torusVerifier && this.inputValidationService.tezosDomain(this.toPkh)) {
+      this.torusVerifier = 'domain';
+    }
   }
 }
