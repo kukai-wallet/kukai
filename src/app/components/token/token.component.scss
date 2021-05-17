@@ -32,8 +32,13 @@
   width: 1.5rem;
   object-fit: contain;
 }
+:host > div.kukai-modal div.km-body div.img-container {
+  margin-left: 1rem;
+}
 :host > div.kukai-modal div.km-body img {
   height: 8rem;
+  max-width: 100%;
+  object-fit: contain;
 }
 :host > div.kukai-modal div.km-body img:hover {
   cursor: zoom-in;
