@@ -9,7 +9,7 @@ export const CONSTANTS: Constants = {
   TEZOS_DOMAIN_CONTRACT: 'KT1P8n2qzJjwMPbHJfi4o8xu6Pe3gaU3u2A3',
   NETWORK: 'mainnet',
   MAINNET: true,
-  NODE_URL: 'https://rpc.tzbeta.net',
+  NODE_URL: 'https://mainnet-tezos.giganode.io',
   BLOCK_EXPLORER_URL: 'https://tzkt.io',
   ASSETS: {
     'KT1K9gCRgaLRFKTErYt1wVxA3Frb9FjasjTV': { // kUSD
