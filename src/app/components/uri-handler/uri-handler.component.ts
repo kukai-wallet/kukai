@@ -60,6 +60,10 @@ export class UriHandlerComponent implements OnInit {
     this.beaconService.client
       .connect(async (message: any) => {
         console.log('### beacon message', message);
+        if (message?.network?.type === 'custom' && message?.network?.name === 'Tezos Mainnet') {
+          // fix network type
+          message.network.type = 'mainnet';
+        }
         if (message.type !== BeaconMessageType.SignPayloadRequest && message.network.type.replace('edo2net', 'edonet') !== CONSTANTS.NETWORK) {
           console.warn(`Rejecting Beacon message because of network. Expected ${CONSTANTS.NETWORK} instead of ${message.network.type}`);
           await this.beaconService.rejectOnNetwork(message);
