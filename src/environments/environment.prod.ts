@@ -392,6 +392,22 @@ export const CONSTANTS: Constants = {
         }
       }
     },
+    'KT1KJNPUsHrjhN9iUJMz7DL3WkTcibhGrxse': {
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        '0-23': {
+          name: 'Gerbil Abloh',
+          symbol: '',
+          decimals: 0,
+          description: "",
+          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmTdRF1uNMQhkHqqrQstiwtZzfsUd39wMUzqCTJSQmE8ef',
+          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmXATeW5cS1dMHymiHay1HQrhrixSRuAVjPedB2nYg3cAq',
+          shouldPreferSymbol: false,
+          isBooleanAmount: true
+        }
+      }
+    },
   },
   CONTRACT_OVERRIDES: {
     // hice et nunc
