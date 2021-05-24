@@ -136,7 +136,7 @@ export class ImportService {
       while (state) {
         keys = hd.keyPairFromAccountIndex(seed, index);
         const accountInfo = await this.indexerService
-          .accountInfo(keys.pkh);
+          .accountInfo(keys.pkh, undefined, true);
           state = accountInfo.counter;
           console.log(accountInfo);
         if (!state && accountInfo.unknownTokenIds?.length) {

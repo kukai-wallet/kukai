@@ -57,7 +57,7 @@ export interface FA2 extends TokensInterface {
 
 export class TokenService {
   readonly AUTO_DISCOVER: boolean = true;
-  readonly version: string = '1.0.7';
+  readonly version: string = '1.0.8';
   private contracts: ContractsType = {};
   private exploredIds: Record<string, { firstCheck: number, lastCheck: number }> = {};
   readonly storeKey = 'tokenMetadata';
@@ -65,32 +65,8 @@ export class TokenService {
     public indexerService: IndexerService
   ) {
     this.contracts = CONSTANTS.ASSETS;
-    this.unPack();
     this.loadMetadata();
-  }
-  unPack() { // Used for hardcoded id ranges
-    const contracts = Object.keys(this.contracts);
-    for (const contract of contracts) {
-      if (this.contracts[contract]?.kind === 'FA2') {
-        const ids = Object.keys(this.contracts[contract].tokens);
-        if (ids?.length) {
-          for (const id of ids) {
-            if (id.includes('-')) {
-              const span = id.split('-');
-              if (span.length === 2 && !isNaN(Number(span[0])) && !isNaN(Number(span[1]))) {
-                const first = Number(span[0]);
-                const last = Number(span[1]);
-                for (let i = first; i <= last; i++) {
-                  this.contracts[contract].tokens[i] = JSON.parse(JSON.stringify(this.contracts[contract].tokens[id]));
-                  this.contracts[contract].tokens[i].name = `${this.contracts[contract].tokens[id].name} #${(i - first + 1)}`;
-                }
-                delete this.contracts[contract].tokens[id];
-              }
-            }
-          }
-        }
-      }
-    }
+    this.saveMetadata();
   }
   getAsset(tokenId: string): TokenResponseType {
     if (!tokenId || !tokenId.includes(':')) {
@@ -103,7 +79,24 @@ export class TokenService {
     const contract: ContractType = this.contracts[contractAddress];
     if (id > -1) {
       if (contract) {
-        const token = contract.tokens[id];
+        let token = contract.tokens[id];
+        if (!token) { // check ranges
+          const ids = Object.keys(contract.tokens);
+          for (const idx of ids) {
+            if (idx.includes('-')) {
+              const span = idx.split('-');
+              if (span.length === 2 && !isNaN(Number(span[0])) && !isNaN(Number(span[1]))) {
+                const first = Number(span[0]);
+                const last = Number(span[1]);
+                if (id >= first && id <= last) {
+                  token = JSON.parse(JSON.stringify(contract.tokens[idx]));
+                  token.name = `${JSON.parse(JSON.stringify(contract.tokens[idx].name))} #${(id - first + 1)}`;
+                  break;
+                }
+              }
+            }
+          }
+        }
         if (token) {
           return {
             kind: contract.kind,
