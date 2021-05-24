@@ -4,7 +4,7 @@ import { WalletObject } from '../wallet/wallet';
 
 export interface Indexer {
   getContractAddresses(pkh: string): Promise<any>;
-  accountInfo(address: string): Promise<any>;
+  accountInfo(address: string, knownTokenIds: string[], init: boolean): Promise<any>;
   getOperations(address: string, knownTokenIds: string[], wallet: WalletObject): Promise<any>;
 }
 @Injectable({
@@ -17,8 +17,8 @@ export class IndexerService {
   async getContractAddresses(address: string): Promise<any> {
     return this.tzktService.getContractAddresses(address);
   }
-  async accountInfo(address: string, knownTokenIds: string[] = []): Promise<any> {
-    return this.tzktService.accountInfo(address, knownTokenIds);
+  async accountInfo(address: string, knownTokenIds: string[] = [], init: boolean = false): Promise<any> {
+    return this.tzktService.accountInfo(address, knownTokenIds, init);
   }
   async getOperations(address: string, knownTokenIds: string[], wallet: WalletObject): Promise<any> {
     return this.tzktService.getOperations(address, knownTokenIds, wallet);

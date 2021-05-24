@@ -35,12 +35,18 @@ export class TzktService implements Indexer {
         return (op?.status === 'applied' && op?.originatedContract?.kind === 'delegator_contract') ? op.originatedContract.address : '';
       }).filter((address: string) => address.length));
   }
-  async accountInfo(address: string, knownTokenIds: string[] = []): Promise<any> {
+  async accountInfo(address: string, knownTokenIds: string[], init: boolean): Promise<any> {
     const tokens = [];
     const unknownTokenIds = [];
 
-    const aryTokens = await this.getTokenBalancesUsingPromiseAll(address);
-
+    const aryTokens: any[] = await this.getTokenBalancesUsingPromiseAll(address).catch((e: Error) => {
+      if (init) {
+        console.error(e);
+        return [];
+      } else {
+        throw e;
+      }
+    });
     return fetch(`${this.bcd}/account/${this.network}/${address}`)
       .then(response => response.json())
       .then(data => {
