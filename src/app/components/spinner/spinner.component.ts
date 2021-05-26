@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { MessageService } from '../../services/message/message.service';
 
 @Component({
@@ -7,9 +7,19 @@ import { MessageService } from '../../services/message/message.service';
   styleUrls: ['./spinner.component.scss']
 })
 export class SpinnerComponent implements OnInit {
-
+  @Input() embedded: boolean;
+  logo = 'default';
   constructor(public messageService: MessageService) { }
 
   ngOnInit(): void {
+    this.messageService.origin.subscribe((o) => {
+      if (o.endsWith('truesy.com')) {
+        this.logo = 'truesy';
+      } else if (o.endsWith('playwithbrio.com')) {
+        this.logo = 'brio';
+      } else {
+        this.logo = 'default';
+      }
+    });
   }
 }

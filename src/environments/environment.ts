@@ -13,6 +13,7 @@ export const CONSTANTS: Constants = {
   MAINNET: false,
   NODE_URL: 'https://api.tez.ie/rpc/edonet',
   BLOCK_EXPLORER_URL: 'https://edo2net.tzkt.io',
+  ALLOWED_EMBED_ORIGINS: [],
   ASSETS: {
     'KT1FCMQk44tEP9fm9n5JJEhkSk1TW3XQdaWH': {
       kind: 'FA1.2',
