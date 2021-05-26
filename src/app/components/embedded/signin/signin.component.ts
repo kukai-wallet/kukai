@@ -9,14 +9,15 @@ import { TorusService } from '../../../services/torus/torus.service';
   styleUrls: ['./signin.component.scss']
 })
 export class SigninComponent implements OnInit, OnChanges {
-  @Input() dismiss: Boolean;
-  @Input() loginConfig: LoginConfig;
-  @Output() loginResponse = new EventEmitter();
   constructor(
     private messageService: MessageService,
     public torusService: TorusService
   ) { }
+  @Input() dismiss: Boolean;
+  @Input() loginConfig: LoginConfig;
+  @Output() loginResponse = new EventEmitter();
     loginOptions = [];
+  private capitalize;
   ngOnInit(): void {
   }
   ngOnChanges(changes: SimpleChanges): void {

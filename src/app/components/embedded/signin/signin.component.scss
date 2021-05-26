@@ -5,8 +5,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgb(0, 0, 0);
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.5);
 }
 div.direct-auth-login {
   margin: 0 0.25rem;
@@ -56,6 +55,20 @@ div.direct-auth-login > div.body div.login-options.vertically {
 }
 div.direct-auth-login > div.body div.login-options.vertically div.login-option {
   margin: 0.5rem 0;
+  padding-left: 1.25rem;
+  display: flex;
+  align-items: center;
+  background: white;
+  width: 17rem;
+  height: 3.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid #CFCFCF;
+}
+div.direct-auth-login > div.body div.login-options.vertically div.login-option > span {
+  font-family: 'Inter', sans-serif !important;
+  margin-left: 1.625rem;
+  font-weight: 700 !important;
+  color: #5D5D5D;
 }
 
 // Vertical login buttons

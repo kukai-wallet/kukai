@@ -11,6 +11,10 @@ export const CONSTANTS: Constants = {
   MAINNET: true,
   NODE_URL: 'https://mainnet.kukai.network',
   BLOCK_EXPLORER_URL: 'https://tzkt.io',
+  ALLOWED_EMBED_ORIGINS: [
+    'https://www.truesy.com',
+    'https://playwithbrio.com'
+  ],
   ASSETS: {
     'KT1K9gCRgaLRFKTErYt1wVxA3Frb9FjasjTV': { // kUSD
       kind: 'FA1.2',
