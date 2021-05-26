@@ -30,6 +30,7 @@ import {
   CardResponse
 } from 'kukai-embed';
 import { Subscription } from 'rxjs';
+import { MessageService } from '../../services/message/message.service';
 
 @Component({
   selector: 'app-embedded',
@@ -45,11 +46,9 @@ export class EmbeddedComponent implements OnInit {
     private route: ActivatedRoute,
     private lookupService: LookupService,
     private activityService: ActivityService,
-    private embeddedAuthService: EmbeddedAuthService
+    private embeddedAuthService: EmbeddedAuthService,
+    private messageService: MessageService
   ) { }
-  allowedOrigins = [
-    'https://www.truesy.com'
-  ];
   pendingOps: string[] = [];
   ophashSubscription: Subscription;
   origin = '';
@@ -76,6 +75,7 @@ export class EmbeddedComponent implements OnInit {
         this.walletService.loadStoredWallet(params.instanceId);
         if (this.walletService.wallet instanceof EmbeddedTorusWallet) {
           this.origin = this.walletService.wallet.origin;
+          this.messageService.origin.next(this.origin);
           this.activeAccount = this.walletService.wallet.implicitAccounts[0];
           this.coordinatorService.startAll();
           this.subscribeToConfirmedOps();
@@ -87,11 +87,12 @@ export class EmbeddedComponent implements OnInit {
   handleRequest = (evt) => {
     try {
       const data: RequestMessage = JSON.parse(evt.data);
-      if (!CONSTANTS.MAINNET || this.allowedOrigins.includes(evt.origin)) {
+      if (!CONSTANTS.MAINNET || CONSTANTS.ALLOWED_EMBED_ORIGINS.includes(evt.origin)) {
         console.log(`Received ${evt.data} from ${evt.origin}`);
         if (data &&
           data.type) {
           this.origin = evt.origin;
+          this.messageService.origin.next(this.origin);
           switch (data.type) {
             case RequestTypes.loginRequest:
               this.handleLoginRequest(data);

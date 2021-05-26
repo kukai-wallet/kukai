@@ -25,7 +25,7 @@ export class TorusComponent implements OnInit {
     if (this.walletService.wallet) {
       this.router.navigate(['/accounts']);
     } else {
-    this.torusService.initTorus();
+      this.torusService.initTorus();
     }
   }
   async torusLogin(verifier: string) {

@@ -113,6 +113,7 @@ export interface Constants {
   MAINNET: boolean;
   NODE_URL: string;
   BLOCK_EXPLORER_URL: string;
+  ALLOWED_EMBED_ORIGINS: string[];
   ASSETS: Record<string, ContractType>;
   CONTRACT_OVERRIDES: Record<string, ContractOverrideType>;
 }

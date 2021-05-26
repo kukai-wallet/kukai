@@ -1,17 +1,4 @@
-<div *ngIf="messageService.spinnerOn" class="spinner-wrapper">
-    <div class="container">
-        <div class="row">
-            <div id="loader">
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="loading">{{ messageService.spinnerText }}</div>
-            </div>
-        </div>
-    </div>
-</div>
+<ng-container *ngIf="messageService && messageService.spinnerOn">
+  <app-spinner-new *ngIf="embedded" [logo]="logo"></app-spinner-new>
+  <app-spinner-legacy *ngIf="!embedded"></app-spinner-legacy>
+</ng-container>
