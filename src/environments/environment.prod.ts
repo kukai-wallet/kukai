@@ -408,6 +408,38 @@ export const CONSTANTS: Constants = {
         }
       }
     },
+    'KT1AGcbS4TyquQjQsa4fwce3FjLZv2UpGMse': {
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        '0-49': {
+          name: 'I Believe in Goddess voice memo demo 1',
+          symbol: '',
+          decimals: 0,
+          description: "It’s hard to tell this is even the same song. The first time I heard this, I didn’t know what song it was. Then I heard the second version and figured it out. Oh, and the bridge at the end…. What the hell was I thinking?",
+          displayUrl: 'https://cloudflare-ipfs.com/ipfs/Qmauf5qn3gq8dTpQZNVT6iruzuYuAscp7ns2bg6Pe39wdp',
+          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/Qmauf5qn3gq8dTpQZNVT6iruzuYuAscp7ns2bg6Pe39wdp',
+          shouldPreferSymbol: false,
+          isBooleanAmount: true
+        }
+      }
+    },
+    'KT1RbCvEFWCJXUswKxWrH9wxgu88hMm8YEZz': {
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        '0-49': {
+          name: 'Total Bummer full band demo',
+          symbol: '',
+          decimals: 0,
+          description: "",
+          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmdyEUPQZnF8XKoxAGtidUgLz4AMtBSLFGo7MV3C5r1hsY',
+          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmdyEUPQZnF8XKoxAGtidUgLz4AMtBSLFGo7MV3C5r1hsY',
+          shouldPreferSymbol: false,
+          isBooleanAmount: true
+        }
+      }
+    },
   },
   CONTRACT_OVERRIDES: {
     // hice et nunc
