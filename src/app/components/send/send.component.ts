@@ -142,10 +142,13 @@ export class SendComponent implements OnInit, OnChanges {
             }
           }
         } else {
-          console.log('no res');
+          throw new Error('No simulation result');
         }
       };
       await this.estimateService.estimateTransactions(JSON.parse(JSON.stringify(txs)), this.activeAccount.pkh, tokenTransfer, callback);
+    } catch (e) {
+      console.error(e);
+      this.operationResponse.emit('unknown_error');
     } finally {
       await this.messageService.stopSpinner();
     }
