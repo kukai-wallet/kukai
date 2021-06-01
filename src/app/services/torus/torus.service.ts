@@ -71,6 +71,13 @@ export class TorusService {
         clientId: 'UJl5d4iHVgbrAaSlucXNf2F2uKlC0m25',
         verifier: 'tezos-twitter',
         caseSensitiveVerifierID: false
+      },
+      [FACEBOOK]: {
+        name: 'Facebook',
+        typeOfLogin: 'facebook',
+        clientId: '523634882377310',
+        verifier: 'tezos-facebook',
+        caseSensitiveVerifierID: false
       }
     }
   };
