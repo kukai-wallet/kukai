@@ -16,13 +16,12 @@ export class SigninComponent implements OnInit, OnChanges {
   @Input() dismiss: Boolean;
   @Input() loginConfig: LoginConfig;
   @Output() loginResponse = new EventEmitter();
-    loginOptions = [];
-  private capitalize;
+  loginOptions = [];
   ngOnInit(): void {
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes?.dismiss?.currentValue === true) {
-        this.messageService.stopSpinner().then(() => this.loginResponse.emit('dismiss'));
+      this.messageService.stopSpinner().then(() => this.loginResponse.emit('dismiss'));
     }
     if (changes?.loginConfig?.currentValue) {
       if (this.loginConfig.loginOptions?.length > 0) {
