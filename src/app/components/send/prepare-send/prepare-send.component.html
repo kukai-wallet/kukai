@@ -14,7 +14,7 @@
     <div class="km-body">
       <div class="amount">
         <ng-container *ngIf="!hideAmount">
-          <input #amountInput class="input" class="custom-large" placeholder="0.00" [(ngModel)]="amount"
+          <input #amountInput class="input" class="custom-large" placeholder={{placeholderAmount()}} [(ngModel)]="amount"
             (mousedown)="sendMax = false; default" [style.font-size.rem]="dynSize()" (input)="amountChange()"
             (keypress)="keyPressNumbersDecimal($event, 'amount')" (change)="amountChange()"
             [style.width.ch]="amount ? amount.length + 1 : 3.6" [disabled]="isMultipleDestinations">
@@ -28,7 +28,7 @@
         <span *ngIf="hideAmount"></span>
         <button *ngIf="!this.isMultipleDestinations" tabindex=-1 class="small" [class.max]="sendMax"
           (click)="sendEntireBalance($event)">Send Max</button>
-        <p *ngIf="this.isMultipleDestinations"></p>`
+        <p *ngIf="this.isMultipleDestinations"></p>
         <p class="fee">
           <ng-container *ngIf="simSemaphore"><img src="../../../assets/img/feeLoader.gif">&nbsp;</ng-container>
           <ng-container *ngIf="!getTotalBurn() ; else burn">Fee: </ng-container>
