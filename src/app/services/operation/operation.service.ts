@@ -527,7 +527,7 @@ export class OperationService {
     }));
   }
   getHeader(): Observable<any> {
-    return this.http.get(this.nodeURL + '/chains/main/blocks/head/header');
+    return this.http.get(this.nodeURL + '/chains/main/blocks/head~3/header');
   }
   getBalance(pkh: string): Observable<any> {
     return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + pkh + '/balance')

@@ -108,6 +108,7 @@ export interface DefaultTransactionParams {
 }
 export interface Constants {
   NAME: string;
+  TEZOS_DOMAIN_CONTRACT: string;
   NETWORK: string;
   MAINNET: boolean;
   NODE_URL: string;

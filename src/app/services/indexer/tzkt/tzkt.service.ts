@@ -35,12 +35,18 @@ export class TzktService implements Indexer {
         return (op?.status === 'applied' && op?.originatedContract?.kind === 'delegator_contract') ? op.originatedContract.address : '';
       }).filter((address: string) => address.length));
   }
-  async accountInfo(address: string, knownTokenIds: string[] = []): Promise<any> {
+  async accountInfo(address: string, knownTokenIds: string[], init: boolean): Promise<any> {
     const tokens = [];
     const unknownTokenIds = [];
 
-    const aryTokens = await this.getTokenBalancesUsingPromiseAll(address);
-
+    const aryTokens: any[] = await this.getTokenBalancesUsingPromiseAll(address).catch((e: Error) => {
+      if (init) {
+        console.error(e);
+        return [];
+      } else {
+        throw e;
+      }
+    });
     return fetch(`${this.bcd}/account/${this.network}/${address}`)
       .then(response => response.json())
       .then(data => {
@@ -71,7 +77,8 @@ export class TzktService implements Indexer {
           const input = Buffer.from(payload);
           const hash = cryptob.createHash('md5').update(input, 'base64').digest('hex');
           if (payload && (payload !== '0001-01-01T00:00:00Z[]') && payload !== '[]') {
-            return { counter: hash, unknownTokenIds, tokens };
+            const balance = data?.balance !== undefined ? data.balance : 0;
+            return { counter: hash, unknownTokenIds, tokens, balance };
           }
         }
         return { counter: '', unknownTokenIds, tokens };
@@ -190,30 +197,12 @@ export class TzktService implements Indexer {
       .then(data => {
         if (data?.tags?.includes('fa2')) {
           return 'FA2';
-        } else if (data?.tags.includes('fa12')) {
+        } else if (data?.tags.includes('fa1-2')) {
           return 'FA1.2';
         }
         return null;
       }).catch(e => {
         return null;
-      });
-    // no change to this endpoint
-    const contractMetadata = fetch(`${this.bcd}/account/${this.network}/${contractAddress}/metadata`)
-      .then(response => response.json())
-      .then(data => {
-        const meta: any = {};
-        if (data?.tags?.includes('fa2')) {
-          meta.tokenType = 'FA2';
-        } else if (data?.tags?.includes('fa2')) {
-          meta.tokenType = 'FA1.2';
-        }
-        if (data?.category) {
-          meta.category = data.category;
-        }
-        return meta;
-      }).catch(e => {
-        console.log(`No contract metadata found for ${contractAddress}:${id}`);
-        return {};
       });
     const tokenMetadata = fetch(`${this.bcd}/contract/${this.network}/${contractAddress}/tokens?token_id=${id}&offset=0`)
       .then(response => response.json())
@@ -268,11 +257,11 @@ export class TzktService implements Indexer {
       }).catch(e => {
         return {};
       });
-    const ans = await Promise.all([contractMetadata, tokenMetadata, tokenKind])
+    const ans = await Promise.all([tokenMetadata, tokenKind])
       .then(res => {
-        const merged: any = { ...res[0], ...res[1] };
-        if (!merged.tokenType && res[2]) {
-          merged.tokenType = res[2];
+        const merged: any = { ...res[0] };
+        if (!merged.tokenType && res[1]) {
+          merged.tokenType = res[1];
         }
         return merged;
       });

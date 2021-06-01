@@ -16,11 +16,13 @@
           </span>
           <span *ngIf="!(transactions.length > 1)" class="section">To</span>
         </div>
-        <img *ngIf="!tokenTransfer; else imgElseBlock" src="../../../assets/img/tezos-xtz-logo.svg"
-          style="height: 4.5rem; margin-right: 1rem">
-        <ng-template #imgElseBlock>
-          <img src="{{ tokenService.getAsset(tokenTransfer).displayUrl }}" style="height: 4.5rem; margin-right: 1rem">
-        </ng-template>
+        <div class="img-holder">
+          <img *ngIf="!tokenTransfer; else imgElseBlock" src="../../../assets/img/tezos-xtz-logo.svg"
+            style="height: 4.5rem; margin-right: 1rem">
+          <ng-template #imgElseBlock>
+            <img src="{{ tokenService.getAsset(tokenTransfer).displayUrl }}" style="height: 4.5rem; object-fit: contain; max-width: 100%">
+          </ng-template>
+        </div>
       </div>
       <ng-container *ngIf="!(transactions.length > 1)">
         <span *ngIf="transactions[0].meta && transactions[0].meta.verifier" class="torus-to"><img src="../../../assets/img/{{ transactions[0].meta.verifier }}-logo.svg">

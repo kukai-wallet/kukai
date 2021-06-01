@@ -60,7 +60,9 @@ export class SendComponent implements OnInit, OnChanges {
           kind: 'transaction',
           destination: tx.destination,
           amount: Big(tx.amount).div(10 ** 6).toFixed(), // handle token decimals here
-          parameters: tx.parameters ? tx.parameters : undefined
+          parameters: tx.parameters ? tx.parameters : undefined,
+          gasRecommendation: tx.gas_limit ? tx.gas_limit : undefined,
+          storageRecommendation: tx.storage_limit ? tx.storage_limit : undefined
         };
       });
       if (this.validParameters(txs)) {
@@ -160,10 +162,13 @@ export class SendComponent implements OnInit, OnChanges {
             }
           }
         } else {
-          console.log('no res');
+          throw new Error('No simulation result');
         }
       };
       await this.estimateService.estimateTransactions(JSON.parse(JSON.stringify(txs)), this.activeAccount.pkh, tokenTransfer, callback);
+    } catch (e) {
+      console.error(e);
+      this.operationResponse.emit('unknown_error');
     } finally {
       await this.messageService.stopSpinner();
     }
@@ -176,9 +181,8 @@ export class SendComponent implements OnInit, OnChanges {
   }
   handlePrepareResponse(preparedTransactions: FullyPreparedTransaction[]) {
     this.prepareRequest = null;
-    if (!preparedTransactions) {
-      //modalOpen
-    } else {
+    if (preparedTransactions) {
+      console.log('PrepareResponse', preparedTransactions);
       this.confirmTransactions(preparedTransactions);
     }
   }

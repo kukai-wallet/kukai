@@ -5,9 +5,11 @@ export const environment = {
 };
 export const CONSTANTS: Constants = {
   NAME: 'Mainnet',
+  // https://gitlab.com/tezos-domains/contracts/-/blob/master/deployed/mainnet.json#L9
+  TEZOS_DOMAIN_CONTRACT: 'KT1P8n2qzJjwMPbHJfi4o8xu6Pe3gaU3u2A3',
   NETWORK: 'mainnet',
   MAINNET: true,
-  NODE_URL: 'https://kukai-mainnet.tez.ie',
+  NODE_URL: 'https://mainnet.kukai.network',
   BLOCK_EXPLORER_URL: 'https://tzkt.io',
   ALLOWED_EMBED_ORIGINS: [
     'https://www.truesy.com',
@@ -217,7 +219,231 @@ export const CONSTANTS: Constants = {
           isBooleanAmount: true
         }
       }
-    }
+    },
+    'KT1WN9yWqV9pEm1ANR56ExJZbnVukWN31fTY': {
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        '0-4': {
+          name: 'Starry Serenade',
+          symbol: '',
+          decimals: 0,
+          description: 'The stars and sky dance in the tempestuous night. El Guitarrista joins in the nocturnal symphony of the cosmos. He plays, the sky dances—a dalliance that lasts until the dawn.',
+          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmNym5CYDeSTneeL9oSzcGZ5QfUzYjPv97EYpK92LneNav',
+          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmTaWdJxu8vaqgr3XAJ92TsX6d6aPpxo6qjyANNedMX4vK',
+          shouldPreferSymbol: false,
+          isBooleanAmount: true
+        }
+      }
+    },
+    'KT1WBXFKW1sozV7ZLBHvw5eks6Pb8KSoVmLq': {
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        '0-1': {
+          name: 'Dynamic Starry Serenade',
+          symbol: '',
+          decimals: 0,
+          description: 'The stars and sky dance in the tempestuous night. El Guitarrista joins in the nocturnal symphony of the cosmos. He plays, the sky dances—a dalliance that lasts until the dawn.',
+          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmTaWdJxu8vaqgr3XAJ92TsX6d6aPpxo6qjyANNedMX4vK',
+          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmTaWdJxu8vaqgr3XAJ92TsX6d6aPpxo6qjyANNedMX4vK',
+          shouldPreferSymbol: false,
+          isBooleanAmount: true
+        }
+      }
+    },
+    'KT1KWNNBtb7z8pejNUNigaRWSTkTQL4DEcf8': {
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        '0-4': {
+          name: 'Piano Man II',
+          symbol: '',
+          decimals: 0,
+          description: 'The Piano Man, hypnotized in atmospheric space, ensconced in smoke, translates emotions musically—melancholy, sorrow, passion, and love. We see him through the lens of our own fleshly perceptions. He is a reflection, a mirror, a teacher…',
+          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmUceK52RXegM9Uj1KrojSdmaiDvSNPG4cwrrQNHP7FrGp',
+          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmXk9udjsm4ErhpBPv4W3tX8q7Zm7m6NiKVcBaztdCV3Xs',
+          shouldPreferSymbol: false,
+          isBooleanAmount: true
+        }
+      }
+    },
+    'KT1D6CNSXcftRTArCF73Jpsh95dwgEwAy6qZ': {
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        '0-1': {
+          name: 'Dynamic Piano Man II',
+          symbol: '',
+          decimals: 0,
+          description: 'The Piano Man, hypnotized in atmospheric space, ensconced in smoke, translates emotions musically—melancholy, sorrow, passion, and love. We see him through the lens of our own fleshly perceptions. He is a reflection, a mirror, a teacher…',
+          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmXk9udjsm4ErhpBPv4W3tX8q7Zm7m6NiKVcBaztdCV3Xs',
+          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmXk9udjsm4ErhpBPv4W3tX8q7Zm7m6NiKVcBaztdCV3Xs',
+          shouldPreferSymbol: false,
+          isBooleanAmount: true
+        }
+      }
+    },
+    'KT1R87j2qFxtPZE3EmmeSoubg2mZkk3j4X8y': {
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        '0-4': {
+          name: 'DJ Mona Lisa',
+          symbol: '',
+          decimals: 0,
+          description: "DJ MONA LISA is the amalgamation of one of the most recognizable images from 15th century Florence, blended and mixed with BUA’s classic, iconographic pop culture DJ painting. Her flirtatious smile might make you wonder what DJ Mona is mixing up on the 1's & 2's.",
+          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmQTdKE183LWB33VmJQPEZMtEGg3JMFF2dgtLfezgUANeq',
+          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmQzfvT6tPTdECds6Q11NpYcAf9pcjUHqmCBZ9NDjJMotM',
+          shouldPreferSymbol: false,
+          isBooleanAmount: true
+        }
+      }
+    },
+    'KT1HRCc359qXshgMpBygY3VwqTnV7fc7nYfp': {
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        '0-1': {
+          name: 'Dynamic DJ Mona Lisa',
+          symbol: '',
+          decimals: 0,
+          description: "DJ MONA LISA is the amalgamation of one of the most recognizable images from 15th century Florence, blended and mixed with BUA’s classic, iconographic pop culture DJ painting. Her flirtatious smile might make you wonder what DJ Mona is mixing up on the 1's & 2's.",
+          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmQzfvT6tPTdECds6Q11NpYcAf9pcjUHqmCBZ9NDjJMotM',
+          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmQzfvT6tPTdECds6Q11NpYcAf9pcjUHqmCBZ9NDjJMotM',
+          shouldPreferSymbol: false,
+          isBooleanAmount: true
+        }
+      }
+    },
+    'KT1MU8Pb9DFjnVpEULyWDrqPLjedZPNHFrEN': {
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        '0-4': {
+          name: 'The Block',
+          symbol: '',
+          decimals: 0,
+          description: 'The Block is a home we all belong to. A place to come where warmth embraces and the light is always on. The birds and brownstones syncopate with the urban landscape, indicative of the unspoken language between the wild and tamed on The Block.',
+          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmVvFrcxoJjbtAJVxoLhvHxnG1jdAc5E69Lp6a42A3VFfS',
+          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmRAWffkFZdeLFWmLoVuLqTqW3D8yq4hPZroGfGkLDd6Dz',
+          shouldPreferSymbol: false,
+          isBooleanAmount: true
+        }
+      }
+    },
+    'KT1FPfsRVWVju2mH1r2iFg5jfzWj7RDCb6ia': {
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        '0-1': {
+          name: 'Dynamic The Block',
+          symbol: '',
+          decimals: 0,
+          description: 'The Block is a home we all belong to. A place to come where warmth embraces and the light is always on. The birds and brownstones syncopate with the urban landscape, indicative of the unspoken language between the wild and tamed on The Block.',
+          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmRAWffkFZdeLFWmLoVuLqTqW3D8yq4hPZroGfGkLDd6Dz',
+          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmRAWffkFZdeLFWmLoVuLqTqW3D8yq4hPZroGfGkLDd6Dz',
+          shouldPreferSymbol: false,
+          isBooleanAmount: true
+        }
+      }
+    },
+    'KT19AqSn4m3NtvztPXuETjCzoQ75bKDd1Pyi': {
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        '0-4': {
+          name: 'Trumpet Man',
+          symbol: '',
+          decimals: 0,
+          description: 'A year ago the world stopped. Trumpet Man cries and mourns for the city he belongs to.  Trumpet man’s musical notes give us hope.  He delicately conducts his magic in an architectural symphony. The coolness of the monochromatic palette is complemented by the warm yellow windows that illuminate his horn.',
+          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmemuQ5X6stcbFQgR79rjBU3oxbzRGLgjMiehSh244c5kM',
+          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmUZNJ3Ez4QZfyEkpKHK4BwQj5jskuvt3pfJRsQSskyW2G',
+          shouldPreferSymbol: false,
+          isBooleanAmount: true
+        }
+      }
+    },
+    'KT1PcYxsFmXuoxcJpcfRSCcQQeSDLERSMzsW': {
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        '0-1': {
+          name: 'Dynamic Trumpet Man',
+          symbol: '',
+          decimals: 0,
+          description: 'A year ago the world stopped. Trumpet Man cries and mourns for the city he belongs to.  Trumpet man’s musical notes give us hope.  He delicately conducts his magic in an architectural symphony. The coolness of the monochromatic palette is complemented by the warm yellow windows that illuminate his horn.',
+          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmUZNJ3Ez4QZfyEkpKHK4BwQj5jskuvt3pfJRsQSskyW2G',
+          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmUZNJ3Ez4QZfyEkpKHK4BwQj5jskuvt3pfJRsQSskyW2G',
+          shouldPreferSymbol: false,
+          isBooleanAmount: true
+        }
+      }
+    },
+    'KT1KSYCk8zjdhgzDDRsmb2ygAfanjBx25Wto': {
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        0: {
+          name: 'Dynamic DJ Mona Lisa AP',
+          symbol: '',
+          decimals: 0,
+          description: "DJ MONA LISA is the amalgamation of one of the most recognizable images from 15th century Florence, blended and mixed with BUA’s classic, iconographic pop culture DJ painting. Her flirtatious smile might make you wonder what DJ Mona is mixing up on the 1's & 2's.",
+          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmQzfvT6tPTdECds6Q11NpYcAf9pcjUHqmCBZ9NDjJMotM',
+          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmQzfvT6tPTdECds6Q11NpYcAf9pcjUHqmCBZ9NDjJMotM',
+          shouldPreferSymbol: false,
+          isBooleanAmount: true
+        }
+      }
+    },
+    'KT1KJNPUsHrjhN9iUJMz7DL3WkTcibhGrxse': {
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        '0-23': {
+          name: 'Gerbil Abloh',
+          symbol: '',
+          decimals: 0,
+          description: "",
+          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmTdRF1uNMQhkHqqrQstiwtZzfsUd39wMUzqCTJSQmE8ef',
+          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmXATeW5cS1dMHymiHay1HQrhrixSRuAVjPedB2nYg3cAq',
+          shouldPreferSymbol: false,
+          isBooleanAmount: true
+        }
+      }
+    },
+    'KT1AGcbS4TyquQjQsa4fwce3FjLZv2UpGMse': {
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        '0-49': {
+          name: 'I Believe in Goddess voice memo demo 1',
+          symbol: '',
+          decimals: 0,
+          description: "It’s hard to tell this is even the same song. The first time I heard this, I didn’t know what song it was. Then I heard the second version and figured it out. Oh, and the bridge at the end…. What the hell was I thinking?",
+          displayUrl: 'https://cloudflare-ipfs.com/ipfs/Qmauf5qn3gq8dTpQZNVT6iruzuYuAscp7ns2bg6Pe39wdp',
+          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/Qmauf5qn3gq8dTpQZNVT6iruzuYuAscp7ns2bg6Pe39wdp',
+          shouldPreferSymbol: false,
+          isBooleanAmount: true
+        }
+      }
+    },
+    'KT1RbCvEFWCJXUswKxWrH9wxgu88hMm8YEZz': {
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        '0-49': {
+          name: 'Total Bummer full band demo',
+          symbol: '',
+          decimals: 0,
+          description: "",
+          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmdyEUPQZnF8XKoxAGtidUgLz4AMtBSLFGo7MV3C5r1hsY',
+          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmdyEUPQZnF8XKoxAGtidUgLz4AMtBSLFGo7MV3C5r1hsY',
+          shouldPreferSymbol: false,
+          isBooleanAmount: true
+        }
+      }
+    },
   },
   CONTRACT_OVERRIDES: {
     // hice et nunc

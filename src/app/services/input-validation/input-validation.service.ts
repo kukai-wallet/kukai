@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 import { OperationService } from '../operation/operation.service';
 import { utils, hd } from '@tezos-core-tools/crypto-utils';
 import * as zxcvbn from 'zxcvbn';
-
+import { CONSTANTS } from '../../../environments/environment';
 import { TranslateService } from '@ngx-translate/core';
 import { TorusWallet } from '../wallet/wallet';
+import assert from 'assert';
 
 @Injectable()
 export class InputValidationService {
@@ -53,6 +54,8 @@ export class InputValidationService {
         return this.redditAccount(verifierId);
       case 'twitter':
         return this.twitterAccount(verifierId);
+      case 'domain':
+        return this.tezosDomain(verifierId);
       default:
         return false;
     }
@@ -67,6 +70,17 @@ export class InputValidationService {
   email(email: string): Boolean {
     const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);
+  }
+  tezosDomain(domain: string) {
+    const a = domain.split('.');
+    // basic validation that is in the correct format
+    for (const sub of a) {
+      if (!sub.length) {
+        return false;
+      }
+    }
+    const topDomain = CONSTANTS.MAINNET ? '.tez' : '.edo';
+    return (a.length >= 2 && domain.endsWith(topDomain));
   }
   twitterAccount(username: string) {
     // The only characters you can use are uppercase and lowercase letters, numbers, and the underscore character ( _ ).

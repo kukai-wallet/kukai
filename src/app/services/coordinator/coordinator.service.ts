@@ -9,6 +9,7 @@ import { ErrorHandlingPipe } from '../../pipes/error-handling.pipe';
 import { Account } from '../wallet/wallet';
 import Big from 'big.js';
 import { TokenService } from '../token/token.service';
+import { LookupService } from '../lookup/lookup.service';
 import { CONSTANTS } from '../../../environments/environment';
 
 export interface ScheduleData {
@@ -29,7 +30,7 @@ export class CoordinatorService {
   defaultDelayActivity = CONSTANTS.MAINNET ? 60000 : 30000; // 60/30s
   shortDelayActivity = 5000; // 5s
   tzrateInterval: any;
-  defaultDelayPrice = CONSTANTS.MAINNET ? 300000 : 3600000; // 5/60m
+  defaultDelayPrice = 300000; // 5m
   accounts: Account[];
   constructor(
     private activityService: ActivityService,
@@ -39,7 +40,8 @@ export class CoordinatorService {
     private delegateService: DelegateService,
     private operationService: OperationService,
     private errorHandlingPipe: ErrorHandlingPipe,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private lookupService: LookupService
   ) {}
   startAll() {
     if (this.walletService.wallet) {
@@ -56,8 +58,12 @@ export class CoordinatorService {
     if (!this.tzrateInterval) {
       console.log('Start scheduler XTZ');
       this.tzrateService.getTzrate();
+      this.lookupService.recheckWalletAddresses(false);
       this.tzrateInterval = setInterval(
-        () => this.tzrateService.getTzrate(),
+        () => {
+          this.tzrateService.getTzrate();
+          this.lookupService.recheckWalletAddresses(true);
+        },
         this.defaultDelayPrice
       );
     }
@@ -115,6 +121,12 @@ export class CoordinatorService {
           case State.UpToDate: {
             if (!ans.upToDate) {
               this.changeState(pkh, State.Updating);
+            } else if (ans?.balance) {
+              const balance = this.walletService.wallet.getAccount(pkh).balanceXTZ;
+              if (balance !== ans.balance) {
+                console.log('recheck balance');
+                this.updateAccountData(pkh);
+              }
             }
             break;
           }
@@ -184,13 +196,11 @@ export class CoordinatorService {
   }
   stopAll() {
     if (this.walletService.wallet) {
-      console.log('Stop all schedulers');
-      for (
-        let i = 0;
-        i < this.accounts.length;
-        i++
-      ) {
-        this.stop(this.accounts[i].address);
+      if (this.accounts?.length) {
+        console.log('Stop all schedulers');
+        for (const account of this.accounts) {
+          this.stop(account.address);
+        }
       }
       clearInterval(this.tzrateInterval);
       this.tzrateInterval = null;
@@ -200,9 +210,11 @@ export class CoordinatorService {
     console.log(
       'Stop scheduler ' + this.accounts.findIndex((a) => a.address === pkh)
     );
-    clearInterval(this.scheduler.get(pkh).interval);
-    this.scheduler.get(pkh).interval = null;
-    this.scheduler.delete(pkh);
+    if (this.scheduler.get(pkh)) {
+      clearInterval(this.scheduler.get(pkh).interval);
+      this.scheduler.get(pkh).interval = null;
+      this.scheduler.delete(pkh);
+    }
   }
   updateAccountData(pkh: string) {
     // Maybe also check for originations to account?

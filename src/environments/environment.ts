@@ -9,6 +9,7 @@ export const environment = {
 };
 export const CONSTANTS: Constants = {
   NAME: 'Testnet / Edonet',
+  TEZOS_DOMAIN_CONTRACT: 'KT1KQkkVMTRhGUfJYbHBoaeJ6NUJi8o58cvg',
   NETWORK: 'edonet',
   MAINNET: false,
   NODE_URL: 'https://api.tez.ie/rpc/edonet',

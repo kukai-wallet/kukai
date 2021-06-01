@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import 'babel-polyfill';
 import TransportU2F from '@ledgerhq/hw-transport-u2f';
+import TransportWebHID from '@ledgerhq/hw-transport-webhid';
 import Tezos from '@obsidiansystems/hw-app-xtz';
 import { OperationService } from '../operation/operation.service';
 import { MessageService } from '../message/message.service';
@@ -8,21 +9,40 @@ import { MessageService } from '../message/message.service';
 @Injectable()
 export class LedgerService {
   transport: any;
-  errorMessage = 'U2F browser support is needed for Ledger. Please use Chrome, Opera ' +
-    'or Firefox with a U2F extension. Also make sure you\'re on an HTTPS connection';
+  errorMessage = 'U2F or WebHID browser support is needed for Ledger';
   constructor(
     private operationService: OperationService,
     private messageService: MessageService
   ) { }
   async setTransport() {
     if (!this.transport) {
-      console.log('Trying to use U2F for transport...');
-      try {
-        this.transport = await TransportU2F.create();
-        console.log('Transport is now set to use U2F!');
-      } catch (e) {
-        console.log('Couldn\'t use U2F for transport!');
+      if (this.useWebHID()) {
+        console.log('Trying to use WebHID for transport...');
+        try {
+          this.transport = await TransportWebHID.create();
+          console.log('Transport is now set to use WebHID!');
+        } catch (e) {
+          console.error(e);
+          console.warn('Couldn\'t use WebHID for transport!');
+        }
+      } else {
+        try {
+          this.transport = await TransportU2F.create();
+          console.log('Transport is now set to use U2F!');
+        } catch (e) {
+          console.error(e);
+          console.log('Couldn\'t use U2F for transport!');
+        }
       }
+    }
+  }
+  private useWebHID(): boolean {
+    try {
+      const isMac = navigator.platform.indexOf('Mac') > -1;
+      const isChrome = (navigator as any).userAgentData?.brands?.some(b => b.brand === 'Google Chrome');
+      return (isMac && isChrome);
+    } catch (e) {
+      return false;
     }
   }
   async transportCheck() {
