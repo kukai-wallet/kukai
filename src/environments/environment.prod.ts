@@ -436,9 +436,73 @@ export const CONSTANTS: Constants = {
           name: 'Total Bummer full band demo',
           symbol: '',
           decimals: 0,
-          description: "",
+          description: "from the Pump Up the Valuum demo collection. Recorded in 1999. What’s cool about this version is that there’s an octave chord part that we never put on the album. The sound isn’t that great, but Smelly rips and Mel’s octaves are really cool. My vocals…… ugh… Photo by Lisa Johnson",
           displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmdyEUPQZnF8XKoxAGtidUgLz4AMtBSLFGo7MV3C5r1hsY',
           thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmdyEUPQZnF8XKoxAGtidUgLz4AMtBSLFGo7MV3C5r1hsY',
+          shouldPreferSymbol: false,
+          isBooleanAmount: true
+        }
+      }
+    },
+    'KT1Gba7KnVXB563kxmk4mgKUQ4ujP8yFbQfr': {
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        '0-27': {
+          name: 'Herojuana cassette demo',
+          symbol: '',
+          decimals: 0,
+          description: "I wrote this in 1999 and clearly I couldn’t decide if it was going to be a fast song or a slow song. I don’t know what the hell I was singing about either. Just place holder lyrics, but I think they sound kind of sweet. I think it would have been better slow…. Oh well. Photo by Krousky.",
+          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmeoazGDgUdykHWWVG99bd1ifVUzpVq6wZcrv7toLbehqM',
+          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmeoazGDgUdykHWWVG99bd1ifVUzpVq6wZcrv7toLbehqM',
+          shouldPreferSymbol: false,
+          isBooleanAmount: true
+        }
+      }
+    },
+    'KT1UQaoRqLgFvsTwprgsGXj84DT9Wm5jC7tY': {
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        '0-49': {
+          name: 'I Believe in Goddess full band demo',
+          symbol: '',
+          decimals: 0,
+          description: "",
+          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmWFUrVwyexUcNPsCgQriHLZ4ea5oXBomjyddrcRxJJeqC',
+          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmWFUrVwyexUcNPsCgQriHLZ4ea5oXBomjyddrcRxJJeqC',
+          shouldPreferSymbol: false,
+          isBooleanAmount: true
+        }
+      }
+    },
+    'KT1K1vBSP5MyKfBBpyHEjmCHTuYeugid4Tqn': {
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        '0-49': {
+          name: 'I Believe in Goddess voice memo demo 3',
+          symbol: '',
+          decimals: 0,
+          description: "",
+          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmSsRt6PXMii8uCC6mNhMHfcwPuYJEDtK7JG5avEuJypTz',
+          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmSsRt6PXMii8uCC6mNhMHfcwPuYJEDtK7JG5avEuJypTz',
+          shouldPreferSymbol: false,
+          isBooleanAmount: true
+        }
+      }
+    },
+    'KT1FCCDtoG71hJb4KiUegpCqGr1GDG3YyY7g': {
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        '0-49': {
+          name: 'I Believe in Goddess voice memo demo 2',
+          symbol: '',
+          decimals: 0,
+          description: "Recorded in 2009- What is the deal with me and that lame bridge. Stop it! At least I got a better hold on the verse, and I started to write the cool guitar riff. I actually wish I would of kept the rhythm at 2:20. Whoops. Photo by Jonathon Weiner",
+          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmcU5pmCwcwvHaArZLaabF5PTnbqpCoUr67ywgga796rAU',
+          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmcU5pmCwcwvHaArZLaabF5PTnbqpCoUr67ywgga796rAU',
           shouldPreferSymbol: false,
           isBooleanAmount: true
         }
