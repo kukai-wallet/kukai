@@ -530,6 +530,9 @@ export class PrepareSendComponent implements OnInit, OnChanges {
     }
     return true;
   }
+  placeholderAmount() {
+    return (this.tokenTransfer && this.tokenService.getAsset(this.tokenTransfer)?.decimals === 0) ? '0' : '0.00';
+  }
   preCheckAddress() {
     if (!this.torusVerifier && this.inputValidationService.tezosDomain(this.toPkh)) {
       this.torusVerifier = 'domain';
