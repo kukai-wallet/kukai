@@ -8,12 +8,12 @@ export const environment = {
   production: false
 };
 export const CONSTANTS: Constants = {
-  NAME: 'Testnet / Edonet',
+  NAME: 'Testnet / Florencenet',
   TEZOS_DOMAIN_CONTRACT: 'KT1KQkkVMTRhGUfJYbHBoaeJ6NUJi8o58cvg',
-  NETWORK: 'edonet',
+  NETWORK: 'florencenet',
   MAINNET: false,
-  NODE_URL: 'https://api.tez.ie/rpc/edonet',
-  BLOCK_EXPLORER_URL: 'https://edo2net.tzkt.io',
+  NODE_URL: 'https://api.tez.ie/rpc/florencenet',
+  BLOCK_EXPLORER_URL: 'https://florencenet.tzkt.io',
   ALLOWED_EMBED_ORIGINS: [],
   ASSETS: {
     'KT1FCMQk44tEP9fm9n5JJEhkSk1TW3XQdaWH': {
