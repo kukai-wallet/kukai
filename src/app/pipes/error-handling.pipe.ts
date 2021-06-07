@@ -1253,11 +1253,16 @@ export class ErrorHandlingPipe implements PipeTransform {
     let errorMessage = '';
     const index = this.ERROR_LIST.findIndex((s) => s.id === errorId);
     console.log('errorId', errorId);
-    if (errorId === 'proto.alpha.michelson_v1.script_rejected' && withObj && (withObj.string !== undefined || withObj.args)) {
+    if (errorId === 'proto.alpha.michelson_v1.script_rejected' && withObj) {
       if (withObj.string) {
-        errorMessage = this.ERROR_LIST[index].msg + ' > ' + withObj.string;
+        errorMessage = `${this.ERROR_LIST[index].msg} | ${withObj.string}`;
       } else {
-        errorMessage = this.ERROR_LIST[index].msg + ' ' + JSON.stringify(withObj);
+        let jsonWith = JSON.stringify(withObj);
+        if (jsonWith.length > 200) {
+          jsonWith = '[...]';
+          console.error('FAILWITH', withObj);
+        }
+        errorMessage = `${this.ERROR_LIST[index].msg} ${jsonWith}`;
       }
       console.log(withObj);
     } else if (index !== -1) {

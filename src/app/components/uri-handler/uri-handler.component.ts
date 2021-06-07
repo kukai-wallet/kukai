@@ -169,6 +169,12 @@ export class UriHandlerComponent implements OnInit {
     return true;
   }
   private invalidOptionals(op: any): boolean {
+    if (typeof op.gas_limit === 'number') { // normalize
+      op.gas_limit = op.gas_limit.toString();
+    }
+    if (typeof op.storage_limit === 'number') {
+      op.storage_limit = op.storage_limit.toString();
+    }
     if (op.gas_limit && (typeof op.gas_limit !== 'string' || !this.inputValidationService.amount(op.gas_limit, 0))) {
       return true;
     } else if (op.storage_limit && (typeof op.storage_limit !== 'string' || !this.inputValidationService.amount(op.storage_limit, 0))) {
