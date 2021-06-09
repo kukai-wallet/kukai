@@ -16,7 +16,12 @@ export class BeaconService {
   ) {}
   preNotifyPairing(pairInfoJson: string) {
     const pairInfo: P2PPairingRequest = JSON.parse(pairInfoJson);
-    const peersJson = localStorage.getItem('beacon:communication-peers');
+    if (this.isNewPairingRequest(pairInfo)) {
+      this.messageService.addBeaconWait(`Pairing with ${pairInfo.name}. Please wait!`);
+    }
+  }
+  isNewPairingRequest(pairInfo: P2PPairingRequest): boolean {
+    const peersJson = localStorage.getItem('beacon:communication-peers-wallet');
     let newPublicKey = true;
     if (peersJson) {
       const peers = JSON.parse(peersJson);
@@ -30,14 +35,12 @@ export class BeaconService {
         }
       }
     }
-    if (newPublicKey) {
-      this.messageService.addBeaconWait(`Pairing with ${pairInfo.name}. Please wait!`);
-    }
+    return newPublicKey;
   }
-  async addPeer(pairInfoJson: string) {
+  async addPeer(pairInfoJson: string, force = true) {
     const pairInfo = JSON.parse(pairInfoJson);
     console.log('PairInfo', pairInfo);
-    await this.client.addPeer(pairInfo);
+    await this.client.addPeer(pairInfo, force);
     this.syncBeaconState();
     this.messageService.removeBeaconMsg();
 
@@ -131,5 +134,9 @@ export class BeaconService {
       signature
     };
     await this.client.respond(response);
+  }
+  async responseSync() {
+    localStorage.setItem('beacon:request-response', 'true');
+    localStorage.removeItem('beacon:request-response');
   }
 }

@@ -13,6 +13,7 @@ import { LedgerWallet, Account, ImplicitAccount, OriginatedAccount, TorusWallet 
 import { MessageService } from '../../services/message/message.service';
 import { TezosDomainsService } from '../../services/tezos-domains/tezos-domains.service';
 import Big from 'big.js';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-delegate',
@@ -32,6 +33,7 @@ export class DelegateComponent implements OnInit, OnChanges {
   @Input() operationRequest: any;
   @Output() operationResponse = new EventEmitter();
   @Input() activeAccount: Account;
+  syncSub: Subscription;
   implicitAccounts;
   toPkh: string;
   storedDelegate: string;
@@ -93,6 +95,14 @@ export class DelegateComponent implements OnInit, OnChanges {
           const inputElem = <HTMLInputElement>this.toPkhView.nativeElement;
           inputElem.focus();
         }, 100);
+      }
+      if (this.beaconMode) {
+        this.syncSub = this.messageService.beaconResponse.subscribe((response) => {
+          if (response) {
+            this.operationResponse.emit('silent');
+            this.closeModal();
+          }
+        });
       }
     }
   }
@@ -289,6 +299,10 @@ export class DelegateComponent implements OnInit, OnChanges {
     this.sendResponse = '';
     this.ledgerError = '';
     this.domainPendingLookup = false;
+    if (this.syncSub) {
+      this.syncSub.unsubscribe();
+      this.syncSub = undefined;
+    }
   }
   async invalidInput(): Promise<string> {
     // if it is a tezos-domain

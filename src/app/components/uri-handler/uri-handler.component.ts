@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from '../../services/message/message.service';
 import { WalletClient, BeaconMessageType, PermissionScope, PermissionResponseInput, P2PPairingRequest, BeaconErrorType, BeaconResponseInputMessage, BeaconMessage, OperationResponseInput } from '@airgap/beacon-sdk';
 import { WalletService } from '../../services/wallet/wallet.service';
@@ -32,7 +32,8 @@ export class UriHandlerComponent implements OnInit {
     private location: Location,
     private beaconService: BeaconService,
     private deeplinkService: DeeplinkService,
-    private inputValidationService: InputValidationService
+    private inputValidationService: InputValidationService,
+    private router: Router
   ) { }
   ngOnInit(): void {
     if (this.walletService.wallet) {
@@ -45,6 +46,7 @@ export class UriHandlerComponent implements OnInit {
       console.log(pairingString);
       this.beaconService.preNotifyPairing(pairingString);
     }
+    window.addEventListener('storage', (e) => { this.handleStorageEvent(e); });
     await this.connectApp().catch((error) => console.error('connect error', error));
     if (pairingString) {
       await this.beaconService.client.isConnected;
@@ -71,15 +73,11 @@ export class UriHandlerComponent implements OnInit {
             case BeaconMessageType.OperationRequest:
               if (await this.isSupportedOperationRequest(message)) {
                 this.operationRequest = message;
-              } else {
-                await this.beaconService.rejectOnUnknown(message);
               }
               break;
             case BeaconMessageType.SignPayloadRequest:
               if (await this.isSupportedSignPayload(message)) {
                 this.signRequest = message;
-              } else {
-                await this.beaconService.rejectOnUnknown(message);
               }
               break;
             default:
@@ -109,6 +107,7 @@ export class UriHandlerComponent implements OnInit {
   async isSupportedOperationRequest(message: any): Promise<boolean> {
     if (!this.walletService.wallet) {
       console.log('No wallet found');
+      await this.beaconService.rejectOnUnknown(message);
       return false;
     } else if (!this.walletService.wallet.getImplicitAccount(message.sourceAddress)) {
       console.warn('Source address not recogized');
@@ -150,6 +149,7 @@ export class UriHandlerComponent implements OnInit {
       if (!message.operationDetails[0].delegate) {
         console.warn('Invalid delegate');
         await this.beaconService.rejectOnUnknown(message);
+        return false;
       }
     } else if (message.operationDetails[0].kind === 'origination') {
       if (!message.operationDetails[0].script) {
@@ -185,6 +185,7 @@ export class UriHandlerComponent implements OnInit {
   async isSupportedSignPayload(message: any): Promise<Boolean> {
     if (!this.walletService.wallet) {
       console.log('No wallet found');
+      await this.beaconService.rejectOnUnknown(message);
       return false;
     } else if (!this.walletService.wallet.getImplicitAccount(message.sourceAddress)) {
       console.warn('Source address not recogized');
@@ -246,7 +247,7 @@ export class UriHandlerComponent implements OnInit {
       await this.beaconService.rejectOnParameters(this.operationRequest);
     } else if (opHash === 'unknown_error') {
       await this.beaconService.rejectOnUnknown(this.operationRequest);
-    } else {
+    } else if (opHash !== 'silent') {
       const response: OperationResponseInput = {
         type: BeaconMessageType.OperationResponse,
         transactionHash: opHash,
@@ -254,15 +255,20 @@ export class UriHandlerComponent implements OnInit {
       };
       await this.beaconService.client.respond(response);
     }
+    if (opHash !== 'silent') {
+      this.beaconService.responseSync();
+    }
     this.operationRequest = null;
   }
   /* permission handling */
   async permissionResponse(publicKey: string) {
     if (!publicKey) {
       await this.beaconService.rejectOnUserAbort(this.permissionRequest);
-    } else {
+      this.beaconService.responseSync();
+    } else if (publicKey !== 'silent') {
       await this.beaconService.approvePermissionRequest(this.permissionRequest, publicKey);
       this.beaconService.syncBeaconState();
+      this.beaconService.responseSync();
     }
     this.permissionRequest = null;
   }
@@ -275,5 +281,34 @@ export class UriHandlerComponent implements OnInit {
     }
     console.log(signature);
     this.signRequest = null;
+  }
+  private async handleStorageEvent(ev: StorageEvent) {
+    if (ev.key.startsWith('beacon') && ev.key !== 'beacon:sdk-matrix-preserved-state') {
+      console.log(ev.key, ev.newValue);
+    }
+    switch (ev.key) {
+      case 'beacon:communication-peers-wallet':
+        const peers = JSON.parse(ev.newValue);
+        const senderIds = (await this.beaconService.client.getAppMetadataList()).map(app => {
+          return app.senderId;
+        });
+        const newPeers = peers.length - senderIds.length;
+        if (newPeers > 0) {
+          const newPeer = peers ? peers.pop() : null;
+          if (newPeer && !senderIds.includes(newPeer.senderId)) {
+            const { senderId, ...peer } = newPeer;
+            await this.beaconService.addPeer(JSON.stringify(peer), false);
+          }
+        } else {
+          this.beaconService.syncBeaconState();
+        }
+        break;
+      case 'beacon:request-response':
+        if (ev.newValue) {
+          this.messageService.beaconResponse.next(true);
+          this.beaconService.syncBeaconState();
+        }
+        break;
+    }
   }
 }

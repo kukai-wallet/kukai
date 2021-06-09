@@ -15,6 +15,7 @@ import { emitMicheline, assertMichelsonData } from '@taquito/michel-codec';
 import Big from 'big.js';
 import { LedgerWallet, TorusWallet, Account, ImplicitAccount, OriginatedAccount } from '../../../services/wallet/wallet';
 import { InputValidationService } from '../../../services/input-validation/input-validation.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-confirm-send',
@@ -25,6 +26,7 @@ export class ConfirmSendComponent implements OnInit, OnChanges {
   @Input() confirmRequest: PrepareRequest = null;
   @Input() headlessMode: boolean;
   @Output() operationResponse = new EventEmitter();
+  syncSub: Subscription;
   tokenTransfer = '';
   activeAccount = null;
   transactions: FullyPreparedTransaction[] = [];
@@ -66,6 +68,13 @@ export class ConfirmSendComponent implements OnInit, OnChanges {
       this.transactions = changes.confirmRequest.currentValue.transactions;
       console.log('transactions', this.transactions);
       this.init();
+      if (this.headlessMode) {
+        this.syncSub = this.messageService.beaconResponse.subscribe((response) => {
+          if (response) {
+            this.closeModalAction('silent');
+          }
+        });
+      }
     }
   }
   async init() {
@@ -346,9 +355,9 @@ export class ConfirmSendComponent implements OnInit, OnChanges {
     }
     return true;
   }
-  closeModalAction() {
+  closeModalAction(emit: string = null) {
     this.closeModal();
-    this.operationResponse.emit(null);
+    this.operationResponse.emit(emit);
     this.reset();
   }
   closeModal() {
@@ -378,5 +387,9 @@ export class ConfirmSendComponent implements OnInit, OnChanges {
     this.pwdInvalid = '';
     this.advancedForm = false;
     this.customFee = '';
+    if (this.syncSub) {
+      this.syncSub.unsubscribe();
+      this.syncSub = undefined;
+    }
   }
 }

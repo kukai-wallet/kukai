@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, EventEmitter, Output, OnChanges, SimpleChanges } from '@angular/core';
 import { WalletService } from '../../services/wallet/wallet.service';
 import { MessageService } from '../../services/message/message.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-permission-request',
@@ -10,6 +11,7 @@ import { MessageService } from '../../services/message/message.service';
 export class PermissionRequestComponent implements OnInit, OnChanges {
   @Input() permissionRequest: any;
   @Output() permissionResponse = new EventEmitter();
+  syncSub: Subscription;
   selectedAccount: string;
   constructor(
     public walletService: WalletService,
@@ -26,6 +28,12 @@ export class PermissionRequestComponent implements OnInit, OnChanges {
       document.body.style.marginRight = scrollBarWidth.toString();
       document.body.style.overflow = 'hidden';
       this.messageService.removeBeaconMsg(true);
+      this.syncSub = this.messageService.beaconResponse.subscribe((response) => {
+        if (response) {
+          this.permissionResponse.emit('silent');
+          this.reset();
+        }
+      });
     }
   }
   rejectPermissions() {
@@ -42,6 +50,10 @@ export class PermissionRequestComponent implements OnInit, OnChanges {
     document.body.style.marginRight = '';
     document.body.style.overflow = '';
     this.permissionRequest = null;
+    if (this.syncSub) {
+      this.syncSub.unsubscribe();
+      this.syncSub = undefined;
+    }
   }
   scopeToText(scope: string) {
     if (scope === 'sign') {

@@ -10,6 +10,7 @@ import { valueDecoder } from '@taquito/local-forging/dist/lib/michelson/codec';
 import { Uint8ArrayConsumer } from '@taquito/local-forging/dist/lib/uint8array-consumer';
 import { LedgerService } from '../../services/ledger/ledger.service';
 import { InputValidationService } from '../../services/input-validation/input-validation.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-sign-expr',
@@ -20,6 +21,7 @@ export class SignExprComponent implements OnInit, OnChanges {
   @Input() signRequest: any;
   @Input() activeAccount: Account;
   @Output() signResponse = new EventEmitter();
+  syncSub: Subscription;
   password = '';
   pwdInvalid = '';
   payload = '';
@@ -44,6 +46,12 @@ export class SignExprComponent implements OnInit, OnChanges {
       const value = valueDecoder(Uint8ArrayConsumer.fromHexString(this.signRequest.payload.slice(2)));
       const payload = emitMicheline(value, { indent: '  ', newline: '\n' });
       this.payload = this.isMessage ? value.string : payload;
+      this.syncSub = this.messageService.beaconResponse.subscribe((response) => {
+        if (response) {
+          this.signResponse.emit('silent');
+          this.closeModal();
+        }
+      });
     }
   }
   async sign() {
@@ -120,5 +128,9 @@ export class SignExprComponent implements OnInit, OnChanges {
     this.pwdInvalid = '';
     this.payload = '';
     this.isMessage = false;
+    if (this.syncSub) {
+      this.syncSub.unsubscribe();
+      this.syncSub = undefined;
+    }
   }
 }
