@@ -10,6 +10,7 @@ import { MessageService } from '../../services/message/message.service';
 import Big from 'big.js';
 import { emitMicheline, assertMichelsonData, assertMichelsonContract } from '@taquito/michel-codec';
 import { EstimateService } from '../../services/estimate/estimate.service';
+import { Subscription } from 'rxjs';
 
 
 const zeroTxParams: DefaultTransactionParams = {
@@ -30,6 +31,7 @@ export class OriginateComponent implements OnInit, OnChanges {
   @Input() operationRequest: any;
   @Output() operationResponse = new EventEmitter();
   @Input() activeAccount: Account;
+  syncSub: Subscription;
   defaultTransactionParams: DefaultTransactionParams = zeroTxParams;
   costPerByte: string = this.estimateService.costPerByte;
 
@@ -75,6 +77,14 @@ export class OriginateComponent implements OnInit, OnChanges {
             storageRecommendation: this.operationRequest.operationDetails[0].storage_limit ? this.operationRequest.operationDetails[0].storage_limit : undefined
           };
           this.estimateFees(recommendations);
+          if (this.beaconMode) {
+            this.syncSub = this.messageService.beaconResponse.subscribe((response) => {
+              if (response) {
+                this.operationResponse.emit('silent');
+                this.closeModal();
+              }
+            });
+          }
         } else {
           console.warn('Invalid origination');
           this.operationResponse.emit('parameters_error');
@@ -327,6 +337,11 @@ export class OriginateComponent implements OnInit, OnChanges {
     this.ledgerError = '';
     this.simSemaphore = 0;
     this.activeTab = 0;
+
+    if (this.syncSub) {
+      this.syncSub.unsubscribe();
+      this.syncSub = undefined;
+    }
   }
   // Only Numbers with Decimals
   keyPressNumbersDecimal(event, input) {
