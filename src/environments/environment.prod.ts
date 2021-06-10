@@ -508,6 +508,22 @@ export const CONSTANTS: Constants = {
         }
       }
     },
+    'KT1CGHpbtxvPRX6HF4mVQo48Rb5z2aYVnvB6': {
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        '0-99': {
+          name: 'Underground Soul',
+          symbol: '',
+          decimals: 0,
+          description: "This NFT was created to share our love of travel, and how music has been the catalyst for us to explore mother earth, enabling us to give back and serve the communities on our journey. The sights and sounds and people and colors we encounter when we travel and how it connects us and brings us together.\nCreated by the Room Service International (RSI) team, Rahmi Halaby & Julio Galvez, exclusively for Truesy. Photography by Rahmi Halaby, Joshua Lang, TESIBE and The Whooligan.\nMusic: Humanity’s Universal Language\nMusic produced by The Whooligan.",
+          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmavbVoEMaNGrkCxG1Eem1JMoE4A7zw5zN6z7mJd3EpQun',
+          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmavbVoEMaNGrkCxG1Eem1JMoE4A7zw5zN6z7mJd3EpQun',
+          shouldPreferSymbol: false,
+          isBooleanAmount: true
+        }
+      }
+    },
   },
   CONTRACT_OVERRIDES: {
     // hice et nunc
