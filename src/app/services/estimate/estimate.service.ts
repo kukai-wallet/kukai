@@ -233,13 +233,21 @@ export class EstimateService {
     }
     return Number(Big(totalStorageLimit).times(this.costPerByte).div('1000000').toString());
   }
-  simulate(op: any): Observable<any> {
+  simulate(op: any, retries: number = 1): Observable<any> {
     op.signature = 'edsigtXomBKi5CTRf5cjATJWSyaRvhfYNHqSUGrn4SdbYRcGwQrUGjzEfQDTuqHhuA8b2d8NarZjz8TRf65WkpQmo423BtomS8Q';
     return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/scripts/run_operation',
       { operation: op, chain_id: this.chainId }, httpOptions).pipe(flatMap(res => {
         this.operationService.checkApplied([res]);
         return of(res);
-      })).pipe(catchError(err => this.operationService.errHandler(err)));
+      })).pipe(catchError(err => {
+        if (retries > 0) {
+          console.warn('Retry');
+          return this.simulate(op, retries--);
+        } else {
+          return this.operationService.errHandler(err);
+        }
+      }
+      ));
   }
   private getUsageException(content: any, op: any): ContractOverrideType {
     const entrypoint = content?.parameters?.entrypoint;
