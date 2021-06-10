@@ -14,6 +14,7 @@ import { Uint8ArrayConsumer } from '@taquito/local-forging/dist/lib/uint8array-c
 import { InputValidationService } from '../../services/input-validation/input-validation.service';
 import Big from 'big.js';
 import { PartiallyPreparedTransaction } from '../send/interfaces';
+import { HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-uri-handler',
@@ -21,6 +22,10 @@ import { PartiallyPreparedTransaction } from '../send/interfaces';
   styleUrls: ['./uri-handler.component.scss']
 })
 export class UriHandlerComponent implements OnInit {
+  @HostListener('window:focus', ['$event'])
+  onFocus(event: FocusEvent): void {
+    this.changeFavicon();
+  };
   permissionRequest: PermissionResponseInput = null;
   operationRequest: any = null;
   signRequest: any = null;
@@ -53,6 +58,14 @@ export class UriHandlerComponent implements OnInit {
       this.beaconService.addPeer(pairingString);
     }
   }
+  changeFavicon(active: boolean = false) {
+    if (active && document.hasFocus()) {
+      active = false;
+    }
+    console.log('favicon active', active);
+    const src: string = active ? 'favicon-attention.ico' : 'favicon.ico';
+    document.getElementById('favicon').setAttribute('href', src);
+  }
   /* https://docs.walletbeacon.io/beacon/03.getting-started-wallet.html#setup */
   connectApp = async (): Promise<void> => {
     if (!this.beaconService.client) {
@@ -73,11 +86,13 @@ export class UriHandlerComponent implements OnInit {
             case BeaconMessageType.OperationRequest:
               if (await this.isSupportedOperationRequest(message)) {
                 this.operationRequest = message;
+                this.changeFavicon(true);
               }
               break;
             case BeaconMessageType.SignPayloadRequest:
               if (await this.isSupportedSignPayload(message)) {
                 this.signRequest = message;
+                this.changeFavicon(true);
               }
               break;
             default:
@@ -96,6 +111,7 @@ export class UriHandlerComponent implements OnInit {
     if (message.scopes.length) {
       if (this.walletService.wallet) {
         this.permissionRequest = message;
+        this.changeFavicon(true);
       } else {
         console.warn('No wallet found');
         await this.beaconService.rejectOnSourceAddress(message);
@@ -198,6 +214,8 @@ export class UriHandlerComponent implements OnInit {
     message.payload = message.payload.toLowerCase();
     const hexString = message.payload;
     console.log('hex', hexString);
+    console.log(message.signingType !== 'raw');
+    console.log(message.signingType !== 'micheline');
     if ((message.signingType !== 'raw' && message.signingType !== 'micheline') || !this.inputValidationService.hexString(hexString)) {
       console.warn('Invalid sign payload');
       await this.beaconService.rejectOnUnknown(message);
@@ -307,6 +325,7 @@ export class UriHandlerComponent implements OnInit {
         if (ev.newValue) {
           this.messageService.beaconResponse.next(true);
           this.beaconService.syncBeaconState();
+          this.changeFavicon();
         }
         break;
     }
