@@ -64,17 +64,15 @@ export class OperationService {
             secret: secret
           }]
         };
-        return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/forge/operations', fop)
+        return this.postRpc('chains/main/blocks/head/helpers/forge/operations', fop)
           .pipe(flatMap((opbytes: any) => {
             const sopbytes: string = opbytes + Array(129).join('0');
             fop.protocol = header.protocol;
             fop.signature = 'edsigtXomBKi5CTRf5cjATJWSyaRvhfYNHqSUGrn4SdbYRcGwQrUGjzEfQDTuqHhuA8b2d8NarZjz8TRf65WkpQmo423BtomS8Q';
-            return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/preapply/operations', [fop])
+            return this.postRpc('chains/main/blocks/head/helpers/preapply/operations', [fop])
               .pipe(flatMap((preApplyResult: any) => {
                 console.log(JSON.stringify(preApplyResult));
-                return this.http.post(this.nodeURL + '/injection/operation',
-                  JSON.stringify(sopbytes), httpOptions)
-                  .pipe(flatMap((final: any) => {
+                return this.postRpc('injection/operation', JSON.stringify(sopbytes)).pipe(flatMap((final: any) => {
                     return this.opCheck(final);
                   }));
               }));
@@ -109,9 +107,9 @@ export class OperationService {
     console.log(fee, origination);
     return this.getHeader()
       .pipe(flatMap((header: any) => {
-        return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + keys.pkh + '/counter', {})
+        return this.getRpc(`chains/main/blocks/head/context/contracts/${keys.pkh}/counter`)
           .pipe(flatMap((actions: number) => {
-            return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + keys.pkh + '/manager_key', {})
+            return this.getRpc(`chains/main/blocks/head/context/contracts/${keys.pkh}/manager_key`)
               .pipe(flatMap((manager: any) => {
                 if (fee >= this.feeHardCap) {
                   throw new Error('TooHighFee');
@@ -159,9 +157,9 @@ export class OperationService {
   transfer(from: string, transactions: any, fee: number, keys: KeyPair, tokenTransfer: string = ''): Observable<any> {
     return this.getHeader()
       .pipe(flatMap((header: any) => {
-        return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + keys.pkh + '/counter', {})
+        return this.getRpc(`chains/main/blocks/head/context/contracts/${keys.pkh}/counter`)
           .pipe(flatMap((actions: any) => {
-            return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + keys.pkh + '/manager_key', {})
+            return this.getRpc(`chains/main/blocks/head/context/contracts/${keys.pkh}/manager_key`)
               .pipe(flatMap((manager: any) => {
                 if (fee >= this.feeHardCap) {
                   throw new Error('TooHighFee');
@@ -273,9 +271,9 @@ export class OperationService {
   delegate(from: string, to: string, fee: number = 0, keys: KeyPair): Observable<any> {
     return this.getHeader()
       .pipe(flatMap((header: any) => {
-        return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + keys.pkh + '/counter', {})
+        return this.getRpc(`chains/main/blocks/head/context/contracts/${keys.pkh}/counter`)
           .pipe(flatMap((actions: any) => {
-            return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + keys.pkh + '/manager_key', {})
+            return this.getRpc(`chains/main/blocks/head/context/contracts/${keys.pkh}/manager_key`)
               .pipe(flatMap((manager: any) => {
                 if (fee >= this.feeHardCap) {
                   throw new Error('TooHighFee');
@@ -336,7 +334,7 @@ export class OperationService {
   */
   operation(fop: any, header: any, keys: KeyPair, origination: boolean = false): Observable<any> {
     console.log('fop to send: ' + JSON.stringify(fop));
-    return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/forge/operations', fop)
+    return this.postRpc('chains/main/blocks/head/helpers/forge/operations', fop)
       .pipe(flatMap((opbytes: any) => {
         return this.localForge(fop)
           .pipe(flatMap((localOpbytes: string) => {
@@ -345,7 +343,7 @@ export class OperationService {
             }
             if (!keys.sk) {
               fop.signature = 'edsigtXomBKi5CTRf5cjATJWSyaRvhfYNHqSUGrn4SdbYRcGwQrUGjzEfQDTuqHhuA8b2d8NarZjz8TRf65WkpQmo423BtomS8Q';
-              return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/scripts/run_operation', { operation: fop, chain_id: header.chain_id })
+              return this.postRpc('chains/main/blocks/head/helpers/scripts/run_operation', { operation: fop, chain_id: header.chain_id })
                 .pipe(flatMap((applied: any) => {
                   console.log('applied: ' + JSON.stringify(applied));
                   this.checkApplied([applied]);
@@ -362,14 +360,14 @@ export class OperationService {
               const signed = this.sign('03' + opbytes, keys.sk);
               const sopbytes = signed.sbytes;
               fop.signature = signed.edsig;
-              return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/preapply/operations', [fop])
+              return this.postRpc('chains/main/blocks/head/helpers/preapply/operations', [fop])
                 .pipe(flatMap((applied: any) => {
                   console.log('applied: ' + JSON.stringify(applied));
                   this.checkApplied(applied);
                   console.log('sop: ' + sopbytes);
-                  return this.http.post(this.nodeURL + '/injection/operation', JSON.stringify(sopbytes), httpOptions)
+                  return this.postRpc('injection/operation', JSON.stringify(sopbytes))
                     .pipe(
-                      timeout(20000)
+                      timeout(30000)
                     )
                     .pipe(flatMap((final: any) => {
                       let newPkh = null;
@@ -395,7 +393,7 @@ export class OperationService {
       fop.signature = edsig;
       return this.getHeader().pipe(flatMap((header: any) => {
         fop.protocol = header.protocol;
-        return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/preapply/operations', [fop])
+        return this.postRpc('chains/main/blocks/head/helpers/preapply/operations', [fop])
           .pipe(flatMap((parsed: any) => {
             let newPkh = null;
             for (let i = 0; i < parsed[0].contents.length; i++) {
@@ -403,7 +401,7 @@ export class OperationService {
                 newPkh = parsed[0].contents[i].metadata.operation_result.originated_contracts[0];
               }
             }
-            return this.http.post(this.nodeURL + '/injection/operation', JSON.stringify(sopbytes), httpOptions)
+            return this.postRpc('injection/operation', JSON.stringify(sopbytes))
               .pipe(flatMap((final: any) => {
                 return this.opCheck(final, newPkh);
               }));
@@ -417,7 +415,7 @@ export class OperationService {
     if (tz2address.length !== 36 || tz2address.slice(0, 3) !== 'tz2') {
       throw new Error('InvalidTorusAddress');
     }
-    return this.http.get(this.nodeURL + `/chains/main/blocks/head/context/contracts/${tz2address}/manager_key`, {})
+    return this.getRpc(`chains/main/blocks/head/context/contracts/${tz2address}/manager_key`)
       .pipe(flatMap((manager: any) => {
         if (manager === null) {
           return of({ noReveal: true });
@@ -527,10 +525,10 @@ export class OperationService {
     }));
   }
   getHeader(): Observable<any> {
-    return this.http.get(this.nodeURL + '/chains/main/blocks/head~3/header');
+    return this.getRpc(`chains/main/blocks/head~3/header`);
   }
   getBalance(pkh: string): Observable<any> {
-    return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + pkh + '/balance')
+    return this.getRpc(`chains/main/blocks/head/context/contracts/${pkh}/balance`)
       .pipe(flatMap((balance: any) => {
         return of(
           {
@@ -543,7 +541,7 @@ export class OperationService {
       })).pipe(catchError(err => this.errHandler(err)));
   }
   getDelegate(pkh: string): Observable<any> {
-    return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + pkh)
+    return this.getRpc(`chains/main/blocks/head/context/contracts/${pkh}`)
       .pipe(flatMap((contract: any) => {
         let delegate = '';
         if (contract.delegate) {
@@ -560,7 +558,7 @@ export class OperationService {
       })).pipe(catchError(err => this.errHandler(err)));
   }
   getVotingRights(): Observable<any> {
-    return this.http.get(this.nodeURL + '/chains/main/blocks/head/votes/listings')
+    return this.getRpc(`chains/main/blocks/head/votes/listings`)
       .pipe(flatMap((listings: any) => {
         return of(
           {
@@ -571,7 +569,7 @@ export class OperationService {
       })).pipe(catchError(err => this.errHandler(err)));
   }
   isRevealed(pkh: string): Observable<boolean> {
-    return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + pkh + '/manager_key', {})
+    return this.getRpc(`chains/main/blocks/head/context/contracts/${pkh}/manager_key`)
       .pipe(flatMap((manager: any) => {
         if (manager === null) {
           return of(false);
@@ -584,7 +582,7 @@ export class OperationService {
       })); // conservative action
   }
   getAccount(pkh: string): Observable<any> {
-    return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + pkh)
+    return this.getRpc(`chains/main/blocks/head/context/contracts/${pkh}`)
       .pipe(flatMap((contract: any) => {
         let delegate = '';
         if (contract.delegate) {
@@ -604,10 +602,10 @@ export class OperationService {
       })).pipe(catchError(err => this.errHandler(err)));
   }
   getVerifiedOpBytes(operationLevel, operationHash, pkh, pk): Observable<string> {
-    return this.http.get(this.nodeURL + '/chains/main/blocks/' + operationLevel + '/operation_hashes', {})
+    return this.getRpc(`chains/main/blocks/${operationLevel}/operation_hashes`)
       .pipe(flatMap((opHashes: any) => {
         const opIndex = opHashes[3].findIndex(a => a === operationHash);
-        return this.http.get(this.nodeURL + '/chains/main/blocks/' + operationLevel + '/operations', {})
+        return this.getRpc(`chains/main/blocks/${operationLevel}/operations`)
           .pipe(flatMap((op: any) => {
             let ans = '';
             op = op[3][opIndex];
@@ -623,7 +621,7 @@ export class OperationService {
                 delete op.contents[i].managerPubkey;
               }
             }
-            return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/forge/operations', op)
+            return this.postRpc('chains/main/blocks/head/helpers/forge/operations', op)
               .pipe(flatMap((opBytes: any) => {
                 if (this.pk2pkh(pk) === pkh) {
                   if (this.verify(opBytes, sig, pk)) {
@@ -640,7 +638,7 @@ export class OperationService {
       }));
   }
   getConstants(): Observable<any> {
-    return this.http.get(this.nodeURL + '/chains/main/blocks/head/context/constants');
+    return this.getRpc(`chains/main/blocks/head/context/constants`);
   }
   seed2keyPair(seed: Buffer): KeyPair {
     if (!seed) {
@@ -1265,5 +1263,29 @@ export class OperationService {
       }
     }
     return null;
+  }
+  postRpc(path: string, payload: any, retries: number = 2): Observable<any> {
+    return this.http.post(`${this.nodeURL}/${path}`, payload, httpOptions).pipe(flatMap(res => {
+      return of(res);
+    })).pipe(catchError(err => {
+      if (retries > 0 && err.name === 'HttpErrorResponse' && err.statusText === 'Unknown Error') {
+        console.warn('Retry', path);
+        return this.postRpc(path, payload, --retries);
+      } else {
+        throw err;
+      }
+    }))
+  }
+  getRpc(path: string, payload: any = {}, retries: number = 2): Observable<any> {
+    return this.http.get(`${this.nodeURL}/${path}`, payload).pipe(flatMap(res => {
+      return of(res);
+    })).pipe(catchError(err => {
+      if (retries > 0 && err.name === 'HttpErrorResponse' && err.statusText === 'Unknown Error') {
+        console.warn('Retry', path);
+        return this.postRpc(path, payload, --retries);
+      } else {
+        throw err;
+      }
+    }))
   }
 }

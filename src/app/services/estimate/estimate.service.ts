@@ -233,21 +233,15 @@ export class EstimateService {
     }
     return Number(Big(totalStorageLimit).times(this.costPerByte).div('1000000').toString());
   }
-  simulate(op: any, retries: number = 1): Observable<any> {
+  simulate(op: any): Observable<any> {
     op.signature = 'edsigtXomBKi5CTRf5cjATJWSyaRvhfYNHqSUGrn4SdbYRcGwQrUGjzEfQDTuqHhuA8b2d8NarZjz8TRf65WkpQmo423BtomS8Q';
-    return this.http.post(this.nodeURL + '/chains/main/blocks/head/helpers/scripts/run_operation',
-      { operation: op, chain_id: this.chainId }, httpOptions).pipe(flatMap(res => {
+    return this.operationService.postRpc('chains/main/blocks/head/helpers/scripts/run_operation', { operation: op, chain_id: this.chainId })
+      .pipe(flatMap(res => {
         this.operationService.checkApplied([res]);
         return of(res);
       })).pipe(catchError(err => {
-        if (retries > 0) {
-          console.warn('Retry');
-          return this.simulate(op, retries--);
-        } else {
-          return this.operationService.errHandler(err);
-        }
-      }
-      ));
+        return this.operationService.errHandler(err);
+      }));
   }
   private getUsageException(content: any, op: any): ContractOverrideType {
     const entrypoint = content?.parameters?.entrypoint;
@@ -266,19 +260,15 @@ export class EstimateService {
       if (op.storageRecommendation) {
         override.storageUsage = Number(op.storageRecommendation);
       }
-      console.log('Dapp recommendation', {gas: op.gasRecommendation, storage: op.storageRecommendation});
+      console.log('Dapp recommendation', { gas: op.gasRecommendation, storage: op.storageRecommendation });
       return override;
     }
     return null;
   }
   private async getCounter(pkh: string): Promise<number> {
-    return fetch(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + pkh + '/counter', {}).then(response => {
-      return response.json();
-    });
+    return this.operationService.getRpc(`chains/main/blocks/head/context/contracts/${pkh}/counter`).toPromise();
   }
   private async getManager(pkh: string): Promise<string> {
-    return fetch(this.nodeURL + '/chains/main/blocks/head/context/contracts/' + pkh + '/manager_key', {}).then(response => {
-      return response.json();
-    });
+    return this.operationService.getRpc(`chains/main/blocks/head/context/contracts/${pkh}/manager_key`).toPromise();
   }
 }
