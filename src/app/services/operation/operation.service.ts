@@ -810,7 +810,10 @@ export class OperationService {
       bytes = bytes.slice(2);
       const key = (new elliptic.ec('secp256k1')).keyFromPrivate(new Uint8Array(this.b58cdecode(sk, this.prefix.spsk)));
       let sig = key.sign(hash, { canonical: true });
-      sig = new Uint8Array(sig.r.toArray().concat(sig.s.toArray()));
+      const pad = new Array(32).fill(0);
+      const r = pad.concat(sig.r.toArray()).slice(-32);
+      const s = pad.concat(sig.s.toArray()).slice(-32);
+      sig = new Uint8Array(r.concat(s));
       const spsig = this.b58cencode(sig, this.prefix.spsig);
       const sbytes = bytes + this.buf2hex(sig);
       return {
