@@ -37,8 +37,15 @@ export class QrScannerComponent implements OnInit {
     const hasCamera = await QrScanner.hasCamera();
     if (hasCamera) {
       QrScanner.WORKER_PATH = './assets/js/qr-scanner-worker.min.js';
-      this.qrScanner = new QrScanner(this.videoplayer.nativeElement, result => this.handleQrCode(result));
+      const qrScanner = this.qrScanner = new QrScanner(this.videoplayer.nativeElement, result => this.handleQrCode(result));
       await this.qrScanner.start();
+      console.log('started');
+      setTimeout(() => {
+        if (!this.modalOpen) {
+          qrScanner.stop();
+          qrScanner.destroy();
+        }
+      });
     } else {
       console.warn('no camera found');
     }
@@ -67,6 +74,7 @@ export class QrScannerComponent implements OnInit {
     // restore body scrollbar
     if (this.qrScanner) {
       this.qrScanner.stop();
+      this.qrScanner.destroy();
     }
     document.body.style.marginRight = '';
     document.body.style.overflow = '';

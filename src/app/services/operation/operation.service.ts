@@ -1274,7 +1274,7 @@ export class OperationService {
       } else {
         throw err;
       }
-    }))
+    }));
   }
   getRpc(path: string, payload: any = {}, retries: number = 2): Observable<any> {
     return this.http.get(`${this.nodeURL}/${path}`, payload).pipe(flatMap(res => {
@@ -1286,6 +1286,6 @@ export class OperationService {
       } else {
         throw err;
       }
-    }))
+    }));
   }
 }
