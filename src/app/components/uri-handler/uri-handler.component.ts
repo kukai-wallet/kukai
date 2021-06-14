@@ -22,14 +22,6 @@ import { HostListener } from '@angular/core';
   styleUrls: ['./uri-handler.component.scss']
 })
 export class UriHandlerComponent implements OnInit {
-  @HostListener('window:focus', ['$event'])
-  onFocus(event: FocusEvent): void {
-    this.changeFavicon();
-  };
-  permissionRequest: PermissionResponseInput = null;
-  operationRequest: any = null;
-  signRequest: any = null;
-  activeAccount: Account;
   constructor(
     private route: ActivatedRoute,
     public messageService: MessageService,
@@ -40,6 +32,14 @@ export class UriHandlerComponent implements OnInit {
     private inputValidationService: InputValidationService,
     private router: Router
   ) { }
+  permissionRequest: PermissionResponseInput = null;
+  operationRequest: any = null;
+  signRequest: any = null;
+  activeAccount: Account;
+  @HostListener('window:focus', ['$event'])
+  onFocus(event: FocusEvent): void {
+    this.changeFavicon();
+  }
   ngOnInit(): void {
     if (this.walletService.wallet) {
       this.init();
@@ -62,7 +62,6 @@ export class UriHandlerComponent implements OnInit {
     if (active && document.hasFocus()) {
       active = false;
     }
-    console.log('favicon active', active);
     const src: string = active ? 'favicon-attention.ico' : 'favicon.ico';
     document.getElementById('favicon').setAttribute('href', src);
   }
@@ -214,8 +213,6 @@ export class UriHandlerComponent implements OnInit {
     message.payload = message.payload.toLowerCase();
     const hexString = message.payload;
     console.log('hex', hexString);
-    console.log(message.signingType !== 'raw');
-    console.log(message.signingType !== 'micheline');
     if ((message.signingType !== 'raw' && message.signingType !== 'micheline') || !this.inputValidationService.hexString(hexString)) {
       console.warn('Invalid sign payload');
       await this.beaconService.rejectOnUnknown(message);
@@ -294,16 +291,15 @@ export class UriHandlerComponent implements OnInit {
   async signResponse(signature: string) {
     if (!signature) {
       await this.beaconService.rejectOnUserAbort(this.signRequest);
-    } else {
+      this.beaconService.responseSync();
+    } else if (signature !== 'silent') {
       await this.beaconService.approveSignPayloadRequest(this.signRequest, signature);
+      this.beaconService.responseSync();
     }
     console.log(signature);
     this.signRequest = null;
   }
   private async handleStorageEvent(ev: StorageEvent) {
-    if (ev.key.startsWith('beacon') && ev.key !== 'beacon:sdk-matrix-preserved-state') {
-      console.log(ev.key, ev.newValue);
-    }
     switch (ev.key) {
       case 'beacon:communication-peers-wallet':
         const peers = JSON.parse(ev.newValue);
