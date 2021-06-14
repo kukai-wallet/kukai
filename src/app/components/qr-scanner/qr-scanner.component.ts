@@ -5,6 +5,7 @@ import QrScanner from 'qr-scanner';
 import { DeeplinkService } from '../../services/deeplink/deeplink.service';
 import { CONSTANTS as _CONSTANTS } from '../../../environments/environment';
 import { MessageService } from '../../services/message/message.service';
+import { setTime } from 'ngx-bootstrap/chronos/utils/date-setters';
 
 @Component({
   selector: 'app-qr-scanner',
@@ -23,6 +24,7 @@ export class QrScannerComponent implements OnInit {
   modalOpen = false;
   qrScanner: QrScanner;
   manualInput = '';
+  loadingCam = false;
   ngOnInit() {
   }
   openModal() {
@@ -34,14 +36,21 @@ export class QrScannerComponent implements OnInit {
     this.scan();
   }
   async scan() {
+    this.loadingCam = true;
     const hasCamera = await QrScanner.hasCamera();
     if (hasCamera) {
       QrScanner.WORKER_PATH = './assets/js/qr-scanner-worker.min.js';
       this.qrScanner = new QrScanner(this.videoplayer.nativeElement, result => this.handleQrCode(result));
       await this.qrScanner.start();
+      if (!this.modalOpen) {
+          this.qrScanner.stop();
+          this.qrScanner.destroy();
+          this.qrScanner = null;
+      }
     } else {
       console.warn('no camera found');
     }
+    this.loadingCam = false;
   }
   handleQrCode(pairInfo: string) {
     console.log('Pairing Info', pairInfo);
@@ -65,8 +74,10 @@ export class QrScannerComponent implements OnInit {
   }
   closeModal() {
     // restore body scrollbar
-    if (this.qrScanner) {
+    if (this.qrScanner && !this.loadingCam) {
       this.qrScanner.stop();
+      this.qrScanner.destroy();
+      this.qrScanner = null;
     }
     document.body.style.marginRight = '';
     document.body.style.overflow = '';

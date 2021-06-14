@@ -9,7 +9,10 @@ export const environment = {
 };
 export const CONSTANTS: Constants = {
   NAME: 'Testnet / Florencenet',
-  TEZOS_DOMAIN_CONTRACT: 'KT1KQkkVMTRhGUfJYbHBoaeJ6NUJi8o58cvg',
+  TEZOS_DOMAIN: {
+    CONTRACT: 'KT1KQkkVMTRhGUfJYbHBoaeJ6NUJi8o58cvg',
+    TOP_DOMAIN: 'flo'
+  },
   NETWORK: 'florencenet',
   MAINNET: false,
   NODE_URL: 'https://api.tez.ie/rpc/florencenet',
