@@ -293,7 +293,7 @@ export class TzktService implements Indexer {
     } else if (!CONSTANTS.MAINNET && (uri.startsWith('http://localhost') || uri.startsWith('http://127.0.0.1'))) {
       url = uri;
     }
-    const cacheUrl = await this.fetchApi(`https://www.tezos.help/api/img-proxy/?url=${url}`);
+    const cacheUrl = await this.fetchApi(`https://k4ullpx9yd.execute-api.us-east-1.amazonaws.com/400x400?img=${url}`);
     return cacheUrl ? cacheUrl : '';
   }
   async fetchApi(url: string): Promise<any> {
