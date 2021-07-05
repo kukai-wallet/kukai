@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
-import { CONSTANTS } from '../../../../environments/environment';
-import { Indexer } from '../indexer.service';
+import {Injectable} from '@angular/core';
+import {CONSTANTS} from '../../../../environments/environment';
+import {Indexer} from '../indexer.service';
 import * as cryptob from 'crypto-browserify';
-import { WalletObject, Activity } from '../../wallet/wallet';
+import {Activity, WalletObject} from '../../wallet/wallet';
 import assert from 'assert';
 
 interface TokenMetadata {
@@ -293,8 +293,7 @@ export class TzktService implements Indexer {
     } else if (!CONSTANTS.MAINNET && (uri.startsWith('http://localhost') || uri.startsWith('http://127.0.0.1'))) {
       url = uri;
     }
-    const cacheUrl = await this.fetchApi(`https://k4ullpx9yd.execute-api.us-east-1.amazonaws.com/400x400?img=${url}`);
-    return cacheUrl ? cacheUrl : '';
+    return `https://k4ullpx9yd.execute-api.us-east-1.amazonaws.com/400x400?img=${url}`;
   }
   async fetchApi(url: string): Promise<any> {
     return fetch(url)
