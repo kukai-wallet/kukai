@@ -1,0 +1,79 @@
+@use '../../../abstracts/variables' as v;
+
+@mixin top-container {
+  margin-top: 0.5rem;
+  margin-bottom: 0.25rem;
+  height: 4.5rem;
+  width: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  & h1 {
+    font-size: 2.25rem;
+    font-weight: 400;
+  }
+}
+
+@mixin top-container-right {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  & .icon {
+    margin-left: 1.5rem;
+    width: 2.15rem;
+    height: 1.15rem;
+    padding: 0.5rem 0rem;
+    border-radius: v.$border-radius-hard;
+    border: 2px solid v.$base-color-lightened-5;
+  }
+}
+
+@mixin base {
+  :host {
+    width: 100%;
+  }
+
+  @media (max-width: v.$lower-limit) {
+    :host {
+      width: 90%;
+      margin: 0;
+    }
+  }
+
+  .main-container {
+    margin-top: 4rem;
+    border-radius: 0.75rem;
+    height: calc(100% - 4rem);
+
+    & .scroll-wrapper {
+      padding: 0 0.75rem 0 0;
+      border-radius: v.$border-radius;
+      background-color: v.$base-end-color;
+      box-shadow: v.$box-shadow;
+    }
+  }
+
+  %button {
+    padding: 1rem 1.5rem;
+    border-radius: v.$border-radius-hard;
+    font-size: 1.0rem;
+    font-weight: 600;
+  }
+
+  .button {
+    &-primary {
+      background-color: v.$base-blue-color-lightened;
+      color: v.$base-end-color;
+      @extend %button;
+
+      &-inverted {
+        background-color: v.$base-end-color;
+        color: v.$base-blue-color-lightened;
+        border: 2px solid v.$base-blue-color-lightened;
+        @extend %button;
+      }
+    }
+  }
+}

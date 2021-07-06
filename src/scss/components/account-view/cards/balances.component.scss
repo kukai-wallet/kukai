@@ -1,0 +1,122 @@
+@use '../../../abstracts/variables'as v;
+@import './mixins';
+
+@include base;
+
+.top-container {
+  @include top-container;
+
+  &-balances {
+    @include top-container;
+
+    & .right {
+      @include top-container-right;
+      position: relative;
+      z-index: 0;
+
+      & .icon-text {
+        font-size: 1rem;
+        width: 14rem;
+        padding: 0.5rem 0 0.5em 1.5rem;
+        background-color: v.$base-background-color;
+        border: 2px solid v.$base-color-lightened-5;
+        border-radius: v.$border-radius-hard;
+      }
+
+      & .icon-grey {
+        width: 1rem;
+        padding: 0.25rem;
+        background-color: #8e871c;
+        border-radius: calc(1rem * 2);
+        border-left: none;
+        position: absolute;
+        filter: invert(1);
+        right: 0.625rem;
+      }
+    }
+  }
+}
+
+.balances {
+  max-height: 36rem;
+  overflow: hidden;
+  overflow-y: auto;
+  border-radius: v.$border-radius;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  background-color: v.$base-end-color;
+  padding: 1rem 0rem 1rem 2rem;
+
+  & .balance {
+    align-items: flex-start;
+    padding: 1rem 0;
+    border-bottom: 2px solid v.$border-color;
+    margin-right: 1rem;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &>* {
+      margin-right: 0.5rem;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+
+    & .left {
+      width: 75%;
+      justify-content: flex-start;
+
+      & .icon {
+        width: 3rem;
+        height: 3rem;
+        padding: 0.25rem;
+        border: 2px solid v.$base-color-lightened-5;
+        border-radius: v.$border-radius-hardest;
+        margin-right: 1rem;
+      }
+
+      & .title {
+        width: 8rem;
+        margin-right: 1rem;
+        font-size: 1.5rem;
+        height: 3rem;
+        align-items: flex-start;
+      }
+
+      & .prices {
+        width: 35%;
+
+        & .price {
+          font-size: 1.5rem;
+          margin-bottom: 0.25rem;
+        }
+
+        & .price-usd {
+          color: v.$base-font-color-secondary;
+          font-size: 1rem;
+        }
+      }
+    }
+
+    & .right {
+      width: calc(25%) - 2rem;
+      height: 3.5rem;
+      justify-content: flex-end;
+
+      & .icon-send,
+      & .icon-fund {
+
+        width: 1.75rem;
+        height: 1.75rem;
+        margin-right: 0.5rem;
+        padding: 0.5rem;
+        border-radius: v.$border-radius-hard;
+        border: 2px solid v.$base-color-lightened-6;
+        object-fit: scale-down;
+      }
+    }
+  }
+}

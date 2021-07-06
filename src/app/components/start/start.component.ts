@@ -6,20 +6,27 @@ import { ActivatedRoute } from '@angular/router';
 import { DeeplinkService } from '../../services/deeplink/deeplink.service';
 import 'rxjs/add/operator/filter';
 import { Location } from '@angular/common';
+import { TorusService } from '../../services/torus/torus.service';
+import { MessageService } from '../../services/message/message.service';
+import { ImportService } from '../../services/import/import.service';
+import { ModalComponent } from '../modal/modal.component';
 
 @Component({
   selector: 'app-start',
   templateUrl: './start.component.html',
-  styleUrls: ['./start.component.scss']
+  styleUrls: ['../../../scss/components/start/start.component.scss']
 })
 export class StartComponent implements OnInit {
   constructor(
     private walletService: WalletService,
     public translate: TranslateService,
+    public torusService: TorusService,
+    private importService: ImportService,
+    private messageService: MessageService,
     private router: Router,
     private route: ActivatedRoute,
     private deeplinkService: DeeplinkService,
-    private location: Location,
+    private location: Location
   ) {
   }
   animationActive = true;
@@ -31,9 +38,33 @@ export class StartComponent implements OnInit {
         this.deeplinkService.set(params);
         this.location.replaceState('');
       }
+      );
+    if (!this.walletService.wallet) {
+      this.torusService.initTorus();
+    }
+  }
+
+  async torusLogin(verifier: string) {
+    await this.messageService.startSpinner('Loading wallet...');
+    const { keyPair, userInfo } = await this.torusService.loginTorus(verifier).catch(async (e) =>
+      await this.messageService.stopSpinner()
     );
-    if (this.walletService.wallet) {
-      this.router.navigate(['/accounts']);
+    console.log('login done');
+    if (keyPair) {
+      await this.importService
+        .importWalletFromPk(keyPair.pk, '', { verifier: userInfo.typeOfLogin, id: userInfo.verifierId, name: userInfo.name })
+        .then((success: boolean) => {
+          if (success) {
+            console.log('success');
+            this.router.navigate([`/account/`]);
+            this.messageService.stopSpinner();
+          } else {
+            this.messageService.addError('Torus import failed');
+            this.messageService.stopSpinner();
+          }
+        });
+    } else {
+      await this.messageService.stopSpinner();
     }
   }
 }

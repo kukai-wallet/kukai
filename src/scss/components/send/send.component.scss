@@ -1,0 +1,42 @@
+@use '../../abstracts/variables'as v;
+
+:host {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+button {
+  &.with-image {
+    width: auto;
+    padding: 1rem;
+
+    &:not(.tez) {
+      background-color: transparent;
+      border: 2px solid v.$base-color-lightened-5;
+      border-radius: v.$border-radius-hard;
+    }
+
+    & span {
+      font-size: 1.25rem;
+      margin: 0 1rem 0 0.25rem;
+    }
+
+    & img {
+      height: 1.25rem;
+      padding: 0 0.1rem;
+    }
+
+    &.tez img {
+      filter: invert(1) brightness(34);
+    }
+  }
+
+  &.detail {
+    max-width: 32rem;
+    width: 100%;
+    height: 4rem;
+  }
+}

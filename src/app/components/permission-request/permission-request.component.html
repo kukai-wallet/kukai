@@ -1,12 +1,11 @@
-<div *ngIf="permissionRequest" id="myModal" class="kukai-modal top">
-  <!-- Modal content -->
-  <div class="km-content">
-    <div class="x" (click)="rejectPermissions()"><img src="../../../assets/img/x.svg"></div>
-    <div class="km-header">
-      <H1>Permission Request</H1>
+<div *ngIf="permissionRequest" class="flex-column kukai-modal">
+  <div class="content">
+    <div class="flex-column top">
+      <img class="flex-row button close" (click)="rejectPermissions()" src="../../../assets/img/close.svg" />
+      <h1 class="title">Permission Request</h1>
     </div>
-    <!-- Request -->
-    <div class="km-body">
+    <div class="seperator"></div>
+    <div class="flex-column permission-request">
       <p>{{ permissionRequest.appMetadata.name }} wants the following permissions:</p>
       <ul>
         <li *ngFor="let scope of permissionRequest.scopes">{{ scopeToText(scope) }}</li>
@@ -17,8 +16,8 @@
           <option value="{{ acc.address }}">{{ acc.pkh }}</option>
         </ng-container>
       </select>
-      <div class="row-group" style="margin: 1.25rem 0 1.5rem;">
-        <button  class="blue confirm" (click)="grantPermissions()">Approve</button>
+      <div class="flex-column bottom">
+        <button class="blue confirm" (click)="grantPermissions()">Approve</button>
       </div>
     </div>
   </div>

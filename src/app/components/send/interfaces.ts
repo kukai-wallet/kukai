@@ -3,6 +3,7 @@ import { Template } from 'kukai-embed';
 export interface PrepareRequest {
   account: Account;
   tokenTransfer: string;
+  symbol: string;
 }
 export interface TemplateRequest {
   template: Template;

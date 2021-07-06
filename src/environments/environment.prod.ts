@@ -18,6 +18,29 @@ export const CONSTANTS: Constants = {
     'https://www.truesy.com',
     'https://playwithbrio.com'
   ],
+  CONTRACT_ALIASES: {
+    "Truesy": {
+      address: ["KT197APGtQ8mk2svRSpDkqXLzHedRtkJ7Hjr", "KT1CTqQ4vg2zyG1AQmDLVeJ473ueoy2Rw8t1", "KT1QE4nZiAXbpuDCu4P5QTNibQSx6FFW3y2W", "KT1QbzLyzwXB9JTevvjT3B24BzgWfMzFfBHt"],
+      thumbnailUrl: "https://wallet.kukai.app/assets/img/spinner/truesy.svg",
+      link: "", shouldDisplayLink: false
+    },
+    "NBA": {
+      address: ["KT1LqKWDtzUh4CXNqfJQMcATv4PdZxBjPJjH"],
+      thumbnailUrl: "",
+      link: "", shouldDisplayLink: false
+    },
+    "BUA": {
+      address: ["KT1WN9yWqV9pEm1ANR56ExJZbnVukWN31fTY", "KT1WBXFKW1sozV7ZLBHvw5eks6Pb8KSoVmLq", "KT1KWNNBtb7z8pejNUNigaRWSTkTQL4DEcf8", "KT1D6CNSXcftRTArCF73Jpsh95dwgEwAy6qZ", "KT1R87j2qFxtPZE3EmmeSoubg2mZkk3j4X8y", "KT1HRCc359qXshgMpBygY3VwqTnV7fc7nYfp", "KT1MU8Pb9DFjnVpEULyWDrqPLjedZPNHFrEN", "KT1FPfsRVWVju2mH1r2iFg5jfzWj7RDCb6ia", "KT19AqSn4m3NtvztPXuETjCzoQ75bKDd1Pyi", "KT1PcYxsFmXuoxcJpcfRSCcQQeSDLERSMzsW", "KT1KSYCk8zjdhgzDDRsmb2ygAfanjBx25Wto"],
+      thumbnailUrl: "../../../assets/img/tokens/bua.png",
+      link: "", shouldDisplayLink: false
+    },
+    'OpenMinter': {
+      address: ["KT1QcxwB4QyPKfmSwjH1VRxa6kquUjeDWeEy"],
+      thumbnailUrl: "https://openminter.com/static/media/header-logo.a9dd48a8.svg",
+      link: "", shouldDisplayLink: false
+    }
+
+  },
   ASSETS: {
     'KT1K9gCRgaLRFKTErYt1wVxA3Frb9FjasjTV': { // kUSD
       kind: 'FA1.2',
@@ -534,7 +557,8 @@ export const CONSTANTS: Constants = {
     'KT1Hkg5qeNhfwpKW4fXvq7HGZB9z2EnmCCA9:swap': { storageUsage: 180 },
     'KT1Hkg5qeNhfwpKW4fXvq7HGZB9z2EnmCCA9:curate': { storageUsage: 100 },
     'KT1Hkg5qeNhfwpKW4fXvq7HGZB9z2EnmCCA9:collect': { storageUsage: 212 },
-  }
+  },
+  NFT_CONTRACT_OVERRIDES: []
 };
 export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1Em3sjKdHo3Fo9Az4EusZXQbkgsdZHkQkF',

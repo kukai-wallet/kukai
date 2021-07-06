@@ -2,11 +2,12 @@ import { Component, OnInit, Input, EventEmitter, Output, OnChanges, SimpleChange
 import { WalletService } from '../../services/wallet/wallet.service';
 import { MessageService } from '../../services/message/message.service';
 import { Subscription } from 'rxjs';
+import { SubjectService } from '../../services/subject/subject.service';
 
 @Component({
   selector: 'app-permission-request',
   templateUrl: './permission-request.component.html',
-  styleUrls: ['./permission-request.component.scss']
+  styleUrls: ['../../../scss/components/modal/modal.scss']
 })
 export class PermissionRequestComponent implements OnInit, OnChanges {
   @Input() permissionRequest: any;
@@ -15,11 +16,12 @@ export class PermissionRequestComponent implements OnInit, OnChanges {
   selectedAccount: string;
   constructor(
     public walletService: WalletService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private subjectService: SubjectService
   ) { }
   ngOnInit(): void {
     if (this.walletService.wallet) {
-      this.selectedAccount = this.walletService.wallet.implicitAccounts[0].address;
+      this.selectedAccount = this.walletService.wallet.implicitAccounts[0]?.address;
     }
   }
   ngOnChanges(changes: SimpleChanges): void {
@@ -28,7 +30,7 @@ export class PermissionRequestComponent implements OnInit, OnChanges {
       document.body.style.marginRight = scrollBarWidth.toString();
       document.body.style.overflow = 'hidden';
       this.messageService.removeBeaconMsg(true);
-      this.syncSub = this.messageService.beaconResponse.subscribe((response) => {
+      this.syncSub = this.subjectService.beaconResponse.subscribe((response) => {
         if (response) {
           this.permissionResponse.emit('silent');
           this.reset();
@@ -41,7 +43,6 @@ export class PermissionRequestComponent implements OnInit, OnChanges {
     this.reset();
   }
   grantPermissions() {
-    console.log(this.selectedAccount);
     const pk = this.walletService.wallet.getImplicitAccount(this.selectedAccount).pk;
     this.permissionResponse.emit(pk);
     this.reset();

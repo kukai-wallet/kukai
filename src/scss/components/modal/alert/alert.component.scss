@@ -1,0 +1,184 @@
+@use '../../../abstracts/variables' as v;
+
+:host {
+
+  span {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 1.5rem;
+    color: v.$base-font-color;
+  }
+
+  button {
+    width: auto;
+    height: auto;
+    margin-left: 1rem;
+
+    &.close>span {
+      font-size: 2.5rem;
+      font-weight: bold;
+    }
+  }
+
+  img.loader {
+    width: 1.25rem;
+    height: 1.25rem;
+    margin: 0rem 0rem 0rem 0.5rem;
+    padding: 1rem 0.5rem;
+  }
+
+  &.alert {
+    position: relative;
+    padding: 1rem 1.25rem 1rem 1.75rem;
+    min-height: 3rem;
+    border: 1px solid transparent;
+    border-radius: v.$border-radius;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    & .close {
+      width: 1rem;
+      height: 1rem;
+      margin: 0.5rem 0rem 0.5rem 0.5rem;
+      padding: 0.75rem;
+      border-radius: 4rem;
+      fill: v.$base-font-color;
+      background-color: v.$base-end-color;
+    }
+  }
+
+  &.alert-info {
+    color: v.$base-font-color;
+    background-color: #e2e3ff;
+    border-color: #e2e3ff;
+  }
+
+
+  &.alert-heading {
+    color: inherit
+  }
+
+  &.alert-link {
+    font-weight: 700
+  }
+
+  &.alert-dismissible {
+    padding-right: 4rem
+  } 
+
+  &.alert-dismissible .close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: .75rem 1.25rem;
+    color: inherit
+  }
+
+  &.alert-primary {
+    color: v.$base-font-color;
+    background-color: #e2e3ff;
+    border-color: #e2e3ff
+  }
+
+  &.alert-primary hr {
+    border-top-color: #e2e3ff
+  }
+
+  &.alert-primary &.alert-link {
+    color: v.$base-font-color
+  }
+
+  &.alert-secondary {
+    color: v.$base-font-color;
+    background-color: #e2e3ff;
+    border-color: #e2e3ff
+  }
+
+  &.alert-secondary hr {
+    border-top-color: #e2e3ff
+  }
+
+  &.alert-secondary &.alert-link {
+    color: v.$base-font-color
+  }
+
+  &.alert-success {
+    color: v.$base-end-color;
+    background-color: #e2e3ff;
+    border-color: #e2e3ff
+  }
+
+  &.alert-success hr {
+    border-top-color: #e2e3ff;
+  }
+
+  &.alert-success &.alert-link {
+    color: v.$base-font-color
+  }
+
+  &.alert-info hr {
+    border-top-color: #e2e3ff
+  }
+
+  &.alert-info &.alert-link {
+    color: v.$base-font-color
+  }
+
+  &.alert-warning {
+    color: v.$base-end-color;
+    background-color: v.$base-red-color;
+    border-color: v.$base-red-color
+  }
+
+  &.alert-warning hr {
+    border-top-color: v.$base-red-color
+  }
+
+  &.alert-warning &.alert-link {
+    color: v.$base-end-color
+  }
+
+  &.alert-danger {
+    color: v.$base-end-color;
+    background-color: v.$base-red-color;
+    border-color: v.$base-red-color;
+    flex-flow: row-reverse;
+  }
+
+  &.alert-danger hr {
+    border-top-color: v.$base-red-color
+  }
+
+  &.alert-danger &.alert-link {
+    color: v.$base-end-color;
+  }
+
+  &.alert-light {
+    color: v.$base-font-color;
+    background-color: #e2e3ff;
+    border-color: #e2e3ff;
+  }
+
+  &.alert-light hr {
+    border-top-color: #e2e3ff;
+  }
+
+  &.alert-light &.alert-link {
+    color: v.$base-font-color-secondary;
+  }
+
+  &.alert-dark {
+    color: v.$base-font-color;
+    background-color: #e2e3ff;
+    border-color: #e2e3ff;
+  }
+
+  &.alert-dark hr {
+    border-top-color: #e2e3ff;
+  }
+
+  &.alert-dark .alert-link {
+    color: v.$base-font-color;
+  }
+}

@@ -1,0 +1,33 @@
+@import "../../layouts/card.scss";
+
+:host {
+  width: 100%;
+  padding-bottom: 8rem;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  background: #5963FF;
+
+  &>div {
+    min-height: calc(100vh - 13rem);
+    margin-top: 5rem;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  & div>h1 {
+    max-width: 100vw;
+  }
+
+  & p {
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
+
+  & span.text-danger {
+    font-size: 1rem;
+    margin-top: 1rem;
+  }
+}

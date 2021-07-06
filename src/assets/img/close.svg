@@ -1,0 +1,14 @@
+<svg version="1.2" baseProfile="tiny-ps" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14" width="14" height="14">
+	<title>Popups</title>
+	<style>
+		tspan { white-space:pre }
+		.shp0 { fill: #3e4855 } 
+	</style>
+	<g id="Popups">
+		<g id="Confirmation TEZ">
+			<g id="Close Button">
+				<path id="Rectangle 13" class="shp0" d="M13.46 0.54C14.18 1.25 14.18 2.41 13.46 3.12L3.12 13.46C2.41 14.18 1.25 14.18 0.54 13.46C-0.18 12.75 -0.18 11.59 0.54 10.88L10.88 0.54C11.59 -0.18 12.75 -0.18 13.46 0.54ZM3.12 0.54L13.46 10.88C14.18 11.59 14.18 12.75 13.46 13.46C12.75 14.18 11.59 14.18 10.88 13.46L0.54 3.12C-0.18 2.41 -0.18 1.25 0.54 0.54C1.25 -0.18 2.41 -0.18 3.12 0.54Z" />
+			</g>
+		</g>
+	</g>
+</svg>

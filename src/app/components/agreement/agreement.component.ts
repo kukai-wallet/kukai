@@ -4,7 +4,7 @@ import { Location } from '@angular/common';
 @Component({
   selector: 'app-agreement',
   templateUrl: './agreement.component.html',
-  styleUrls: ['./agreement.component.scss']
+  styleUrls: ['../../../scss/components/agreement/agreement.component.scss']
 })
 export class AgreementComponent implements OnInit {
   displayAgreement = false;

@@ -1,0 +1,66 @@
+@use '../../abstracts/variables' as v;
+
+:host {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  flex-flow: column nowrap;
+  min-height: calc(100vh - 10rem);
+}
+
+.wrapper {
+  width: 100%;
+  margin-bottom: 2rem;
+
+  & .desktop, & .mobile {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  & .mobile {
+    display: none;
+  }
+
+  & .desktop>div, & .mobile>div {
+    width: 49%;
+    max-width: 1024px;
+    margin: 0 4% 0 1.5%;
+  
+    &:nth-child(odd) {
+      width: 37%;
+      max-width: 768px;
+      margin: 0 1.5% 0 4%;
+    }
+  }
+}
+
+@media (max-width: v.$lower-limit) {
+  .wrapper {
+    align-items: center;
+    flex-flow: column wrap;
+    width: 100%;
+
+    // & .mobile {
+    //   display: initial;
+    // }
+
+    // & .desktop {
+    //   display: none;
+    // }
+
+    & .desktop>div, & .mobile>div {
+      width: 100%;
+      align-items: center;
+      max-width: unset;
+      margin: 0;
+    
+      &:nth-child(odd) {
+        width: 100%;
+        max-width: unset;
+        margin: 0;
+      }
+    }
+  }
+}

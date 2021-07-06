@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { CONSTANTS, TRUSTED_TOKEN_CONTRACTS } from '../../../environments/environment';
 import { IndexerService } from '../indexer/indexer.service';
 import Big from 'big.js';
+import { SubjectService } from '../subject/subject.service';
 
 export interface TokenResponseType {
   contractAddress: string;
@@ -62,7 +63,8 @@ export class TokenService {
   private exploredIds: Record<string, { firstCheck: number, lastCheck: number }> = {};
   readonly storeKey = 'tokenMetadata';
   constructor(
-    public indexerService: IndexerService
+    public indexerService: IndexerService,
+    private subjectService: SubjectService
   ) {
     this.contracts = CONSTANTS.ASSETS;
     this.loadMetadata();
@@ -128,6 +130,9 @@ export class TokenService {
     }
     return tokenIds;
   }
+  isCategoryType(address, regex: RegExp): boolean {
+    return regex.test(this.contracts[address]?.category);
+  }
   isKnownTokenContract(address: string): boolean {
     return (this.contracts[address] !== undefined);
   }
@@ -158,22 +163,13 @@ export class TokenService {
           category: metadata.tokenCategory ? metadata.tokenCategory : '',
           tokens: {}
         };
-        const defaultImg = '../../../assets/img/tokens/unknown-token.png';
-        let displayUrl = (metadata.displayUri && TRUSTED_TOKEN_CONTRACTS.includes(contractAddress)) ? metadata.displayUri : defaultImg;
-        let thumbnailUrl = (metadata.thumbnailUri && TRUSTED_TOKEN_CONTRACTS.includes(contractAddress)) ? metadata.thumbnailUri : defaultImg;
-        if (displayUrl === defaultImg && thumbnailUrl !== defaultImg) {
-          displayUrl = thumbnailUrl;
-        }
-        if (displayUrl !== defaultImg && thumbnailUrl === defaultImg) {
-          thumbnailUrl = displayUrl;
-        }
         const token: TokenData = {
           name: metadata.name ? metadata.name : '',
           symbol: metadata.symbol ? metadata.symbol : '',
           decimals: Number(metadata.decimals),
           description: metadata.description ? metadata.description : '',
-          displayUrl,
-          thumbnailUrl,
+          displayUrl: metadata.displayUri,
+          thumbnailUrl: metadata.thumbnailUri,
           isTransferable: metadata?.isTransferable ? metadata.isTransferable : true,
           isBooleanAmount: metadata?.isBooleanAmount ? metadata.isBooleanAmount : false,
           series: metadata.series ? metadata.series : undefined
@@ -181,6 +177,7 @@ export class TokenService {
         contract.tokens[id] = token;
         this.addAsset(contractAddress, contract);
         this.saveMetadata();
+        this.subjectService.metadataUpdated.next({contractAddress, token});
       }
     }
   }
@@ -258,7 +255,7 @@ export class TokenService {
       if (token) {
         if ((!token.shouldPreferSymbol && token.name) || !token.symbol) {
           if (token.isBooleanAmount) {
-            return `${token.name}`;
+            return `1 ${token.name}`;
           } else {
             return `${Big(amount).div(10 ** (baseUnit ? token.decimals : 0)).toFixed()} ${token.name}`;
           }

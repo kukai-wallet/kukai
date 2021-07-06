@@ -1,0 +1,75 @@
+<div *ngIf="isOpen" class="flex-column kukai-modal">
+  <div class="content">
+    <div class="flex-column top">
+      <img class="flex-row button close" (click)="close()" src="../../../assets/img/close.svg" />
+      <h1 class="title">Token Info</h1>
+    </div>
+    <div class="flex-column token-info">
+      <div class="flex-row data">
+        <div class="flex-column img-wrapper" [class]="imageExpanded ? 'expanded' : ''">
+          <img class="button" [src]="token?.displayUrl" (click)="expandImage()" />
+          <img *ngIf="imageExpanded" class="flex-row button close" (click)="expandImage()"
+            src="../../../assets/img/close.svg" />
+        </div>
+        <div class="flex-column meta">
+          <div class="flex-column top">
+            <div *ngIf="token?.name" class="flex-column key-value">
+              <div class="key">
+                name
+              </div>
+              <div class="value">
+                {{ token?.name }}
+              </div>
+            </div>
+            <div *ngIf="token?.description" class="flex-column key-value">
+              <div class="key">
+                description
+              </div>
+              <div class="value">
+                {{ token?.description }}
+              </div>
+            </div>
+            <div *ngIf="token?.creator" class="flex-column key-value">
+              <div class="key">
+                creator
+              </div>
+              <div class="value">
+                {{ token?.creator }}
+              </div>
+            </div>
+          </div>
+          <!-- <div class="flex-column bottom">
+          </div> -->
+        </div>
+      </div>
+      <div class="flex-row button more-info" [class]="moreInfo ? 'open' : ''" (click)="expand()">
+        <span>{{ moreInfo ? 'LESS' : 'MORE' }} INFO</span><img src="../../../assets/img/chevron-down.svg" />
+      </div>
+      <div [style.maxHeight]="moreInfo ? (3.25 * Object.keys(tokenFiltered).length) + 'rem' : ''" class="flex-column meta-more">
+        <ng-container *ngFor="let key of Object.keys(tokenFiltered)">
+          <div *ngIf="key === 'contractAddress'" class="flex-column key-value">
+            <div class="key">
+              {{ 'CONTRACT (ID)' }}
+            </div>
+            <div class="value">
+              {{ token[key] + ' ' + '(' + token['id'] + ')' }}
+            </div>
+          </div>
+          <div *ngIf="key !== 'contractAddress' && key !== 'id' && !!token[key]" class="flex-column key-value">
+            <div class="key">
+              {{key}}
+            </div>
+            <div class="value">
+              {{ token[key] }}
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    <div class="seperator"></div>
+    <div class="flex-column bottom">
+      <app-send-button [activeAccount]="activeAccount" [tokenTransfer]="token['contractAddress']+':'+token['id']">
+      </app-send-button>
+    </div>
+  </div>
+</div>

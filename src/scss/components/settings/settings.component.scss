@@ -1,0 +1,175 @@
+@use '../../abstracts/variables' as v;
+
+:host {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+
+  & .back {
+    background-color: v.$base-background-color;
+    border: 2px solid v.$base-color-lightened-4;
+    border-radius: v.$border-radius-hardest;
+    color: v.$base-font-color;
+    font-size: 1.25rem;
+    padding: 0.5rem 1rem;
+    width: 7rem;
+  }
+
+  & div.settings {
+    min-height: calc(100% - 8rem);
+    padding-bottom: 8rem;
+    max-width: v.$lower-limit;
+    width: 100%;
+
+    &>h3,
+    &>h4 {
+      font-style: normal;
+      display: flex;
+      align-items: center;
+      color: v.$base-font-color;
+    }
+
+    &>h3 {
+      margin: 2.5rem 0 1rem 1rem;
+      font-weight: bold;
+      font-size: 2.25rem;
+      line-height: 1.5rem;
+
+      &:first-child {
+        margin-top: 1.5rem;
+      }
+    }
+
+    & h4 {
+      margin: 2.5rem 0 0;
+      font-weight: 400;
+      font-size: 1.5rem;
+      line-height: 1.5rem;
+    }
+
+    &>div.seperator {
+      height: 1px;
+      background: rgba(0, 0, 0, 0.08);
+      width: 100%;
+    }
+  }
+
+  & div.handler {
+    display: flex;
+    margin: 0 1rem;
+
+    &>div:first-child {
+      flex-grow: 1;
+
+      & p {
+        margin-top: 0.25rem;
+        font-size: 1.5rem;
+        line-height: 1rem;
+        align-items: center;
+        color: v.$base-font-color;
+        opacity: 0.8;
+      }
+    }
+  }
+
+  & .scan-button {
+    margin: 1.5rem 0 0 0;
+  }
+
+  & button {
+    display: flex;
+    white-space: nowrap;
+    flex-direction: row;
+    margin: 1.5rem 0rem 1.5rem 1rem;
+    padding: 0.75rem 1.5rem;
+    border: 1px solid #5963FF;
+    color: #5963FF;
+    background: #FCFCFC;
+    font-weight: 500;
+    box-sizing: border-box;
+    border-radius: 0.5rem;
+  }
+
+  & table,
+  & thead,
+  & tbody {
+    width: 100%;
+  }
+
+  & thead>tr {
+    border-bottom: 1px solid rgba(0, 0, 0, .15);
+    border-top: 1px solid rgba(0, 0, 0, .15);
+    width: 100%;
+
+    &>th {
+      color: #2C323A44;
+
+      &:last-child {
+        color: #FF5959;
+        opacity: 1;
+
+        &>span:hover {
+          text-decoration: underline;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+
+  & table th,
+  & table td {
+    font-size: 1.5rem;
+    line-height: 1rem;
+    padding: 1rem 0.25rem;
+  }
+
+  & table th:first-child,
+  & table td:first-child {
+    padding-left: 1rem;
+  }
+
+  & table th:last-child,
+  & table td:last-child {
+    padding-right: 1rem;
+  }
+
+  & table>tbody>tr>td {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+
+    &:last-child {
+      text-align: right;
+      width: 1rem;
+
+      & img {
+        cursor: pointer;
+      }
+    }
+  }
+
+  & table>tbody>tr:first-child>td {
+    padding-top: 1rem;
+  }
+
+  & .inactive {
+    opacity: 0.5;
+  }
+}
+
+@media screen and (max-width: 37.5rem) {
+
+  :host {
+
+    & div.settings>table>tbody>tr>th:last-child,
+    & div.settings>table>tbody>tr>td:last-child {
+      padding-left: 0rem;
+    }
+
+    & button {
+      white-space: normal;
+    }
+
+  }
+}

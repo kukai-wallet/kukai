@@ -1,0 +1,132 @@
+<div *ngIf="isOpen" class="flex-column kukai-modal">
+  <div class="content">
+    <div class="flex-column top">
+      <img class="flex-row button close" (click)="closeModalAction()" src="../../../assets/img/close.svg" />
+      <h1 class="title">{{ getTitle() }}</h1>
+    </div>
+    <div class="flex-column prepare-send">
+      <!-- Single transaction -->
+      <div *ngIf="!this.isMultipleDestinations" class="flex-column top">
+        <div *ngIf="token?.displayUrl" class="flex-row token">
+          <img [src]="token?.displayUrl" />
+          <span class="title">{{token?.name}}</span>
+        </div>
+        <span class="flex-row label title">Enter {{!tokenTransfer || tokenTransfer?.symbol ? 'Amount' :
+          'Quantity'}}:</span>
+        <div class="flex-row amount">
+          <input #amountInput [placeholder]="token?.decimals == 0 ? '0' : '0.00'" [(ngModel)]="amount"
+            (mousedown)="sendMax = false; default" (input)="amountChange()"
+            (keypress)="keyPressNumbersDecimal($event, 'amount')" (change)="amountChange()"
+            [disabled]="isMultipleDestinations" />
+          <button *ngIf="!this.isMultipleDestinations" tabindex=-1 class="small" [class.max]="sendMax"
+            (click)="sendEntireBalance($event)">MAX</button>
+        </div>
+        <div class="flex-row fees">
+          <span *ngIf="!tokenTransfer" class="amount-usd">
+            <span>USD:&nbsp;</span>{{ getTotalAmount() * walletService.wallet.XTZrate | number:'1.0-2' || '0.00' }}
+          </span>
+          <span class="amount-fee"><span>FEE{{ getTotalBurn() > 0 ? ' & STORAGE COST' : ''}}:&nbsp;</span>{{ getTotalCost() != 0 ? (getTotalCost() | number:'1.0-6') + ' tez' : '--'
+            }}</span>
+        </div>
+      </div>
+      <div class="to">
+        <div *ngIf="!this.isMultipleDestinations" class="flex-column">
+          <span class="label title">Send to:</span>
+          <div class="address">
+            <div class="flex-row dropdown">
+              <img [style.visibility]="torusVerifier === '' || torusVerifier === 'domain' ? 'hidden' : 'visible'"
+                class="button icon-torus"
+                [src]="torusVerifier === '' || torusVerifier === 'domain' ? '' :  '../../../assets/img/' + torusVerifier.toLowerCase() + '-logo.svg'"
+                (click)="toggleDropdown('.prepare-send .dropdown-content')" />
+              <!-- TODO: Move style conditionals to scss -->
+              <input readonly
+                [style.padding]="torusVerifier === '' || torusVerifier === 'domain' ? '0 0 0 1rem' : '0 0 0 4rem'"
+                [style.width]="torusVerifier === '' || torusVerifier === 'domain' ? 'calc(100% - 1rem)' : 'calc(100% - 4rem)'"
+                [(ngModel)]="torusVerifierName" /><img class="button icon-db"
+                src="../../../assets/img/down-arrow-purple.svg"
+                (click)="toggleDropdown('.prepare-send .dropdown-content')" />
+              <div class="flex-column dropdown-content"
+                (click)="updateDefaultValues(); verifierChange(); toggleDropdown('.prepare-send .dropdown-content'); ">
+                <a [class.selected]="torusVerifierName === 'Tezos Address'"
+                  (click)="torusVerifier = ''; torusVerifierName = 'Tezos Address'">
+                  Tezos Address
+                </a>
+                <a [class.selected]="torusVerifierName === 'Tezos Domains'"
+                  (click)="torusVerifier = 'domain'; torusVerifierName = 'Tezos Domains'">
+                  Tezos Domains
+                </a>
+                <ng-container *ngFor="let key of torusService.verifierMapKeys">
+                  <a [class.selected]="torusVerifierName === torusService.verifierMap[key].name"
+                    (click)="torusVerifier = key; torusVerifierName = torusService.verifierMap[key].name">
+                    {{ torusService.verifierMap[key].name }}
+                  </a>
+                </ng-container>
+              </div>
+            </div>
+            <input type="text" placeholder="Recipient" class="text" (input)="updateDefaultValues($event)"
+              (change)="toPkhChange()" [(ngModel)]="toPkh">
+            <span class="label" *ngIf="!torusPendingLookup && torusLookupAddress">{{ torusLookupAddress }}</span><span
+              class="label" *ngIf="torusPendingLookup">Loading address...</span>
+          </div>
+        </div>
+        <div *ngIf="this.isMultipleDestinations" class="flex-column">
+          <label class="label">Addresses and amounts <span class="batchInfo">{{ batchSpace() }}</span></label>
+          <textarea type="text" class="text" (input)="updateDefaultValues()" rows="3"
+            [(ngModel)]="toMultipleDestinationsString"
+            placeholder="address1 amount1 ; &#10;address2 amount2 ; &#10;address3 ..."></textarea>
+        </div>
+        <div class="flex-row">
+          <div class="flex-row advanced">
+            <div class="flex-row switch-container">
+              <span class="value">Advanced:&nbsp;&nbsp;<span class="key" [class]="advancedForm ? 'active' : ''">{{ advancedForm ? ' ON' : 'OFF'
+                  }}</span>&nbsp;&nbsp;</span>
+              <label class="switch">
+                <input type="checkbox" [(ngModel)]="advancedForm" tabindex=-1 />
+                <span class="slider round"></span>
+              </label>
+            </div>
+          </div>
+          <button [style.visibilty]="!tokenTransfer ? '' : 'hidden'" class="small multiple-destinations" (click)="toggleDestination()">
+            <!--fix me-->
+            <ng-container *ngIf="!this.isMultipleDestinations">Multiple transactions</ng-container>
+            <ng-container *ngIf="this.isMultipleDestinations">Single transaction</ng-container>
+          </button>
+        </div>
+      </div>
+      <div *ngIf="advancedForm" class="flex-column advanced-form">
+        <div class="flex-row">
+          <div class="flex-column">
+            <label class="label">Gas limit</label>
+            <input type="text" class="text" placeholder={{this.defaultTransactionParams.gas.toString()}}
+              [(ngModel)]="customGasLimit">
+          </div>
+          <div class="flex-column">
+            <label class="label">Fee</label>
+            <input type="text" (input)="updateMaxAmount()" (paste)="updateMaxAmount()" class="text"
+              (keypress)="keyPressNumbersDecimal($event, 'customFee')"
+              placeholder={{this.defaultTransactionParams.fee.toString()}} [(ngModel)]="customFee">
+          </div>
+        </div>
+        <div class="flex-row">
+          <div class="flex-column">
+            <label class="label">Storage limit</label>
+            <input type="text" (input)="updateMaxAmount()" (paste)="updateMaxAmount()" class="text"
+              placeholder={{this.defaultTransactionParams.storage.toString()}} [(ngModel)]="customStorageLimit">
+          </div>
+          <div class="flex-column">
+            <label class="label">Max storage cost</label>
+            <input type="text" class="text read-only" [value]="burnAmount() ? burnAmount() : '0 tez'" tabindex=-1
+              readonly>
+          </div>
+        </div>
+      </div>
+      <div class="flex-column bottom">
+        <div class="seperator"></div>
+        <span [style.visibility]="!formInvalid ? 'hidden' : ''" class="label danger">
+          {{ formInvalid }}
+        </span>
+        <button class="confirm" (click)="preview()">Preview</button>
+      </div>
+    </div>
+  </div>
+</div>

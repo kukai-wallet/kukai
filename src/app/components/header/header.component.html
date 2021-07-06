@@ -1,62 +1,114 @@
-<div id="top-container">
-  <a routerLink="/accounts" class="logo">
-    <img *ngIf="!settings" id="logo" src="../../../assets/img/kukai-logo.svg">
-    <img *ngIf="settings" id="logo" src="../../../assets/img/kukai-logo2.svg">
+<div class="flex-row top-container desktop" [class]="router.url.indexOf('/account') === 0 ? 'default' : ''">
+  <a class="flex-row brand-logo">
+    <div class="icon">Ku</div>
+    <div class="title">Kukai</div>
   </a>
-  <div class="middle">
-    <ng-container *ngIf="!activeAccount">
-      <ng-container *ngIf="settings">
-        <a class="accounts light" routerLink="/accounts">
-          Accounts
-        </a>
-        <img src="../../../assets/img/slash2.svg">
-        <span>Settings</span>
-      </ng-container>
-      <ng-container *ngIf="!settings">
-        <a class="accounts solo" routerLink="/accounts">
-          Accounts
-        </a>
-      </ng-container>
-    </ng-container>
-    <ng-container *ngIf="activeAccount">
-      <a class="accounts" routerLink="/accounts">
-        Accounts
-      </a>
-      <img src="../../../assets/img/slash.svg">
-      <div class="dropdown">
-        <div class="dropbtn"><span>{{ activeAccount.shortAddress() }}</span><img
-            src="../../../assets/img/chevron-down.svg"></div>
-        <div class="dropdown-content">
-          <ng-container *ngFor="let impAcc of impAccs">
-            <a routerLink="/account/{{impAcc.address}}" [class.selected]="impAcc.address === activeAccount.address">
-              {{ impAcc.shortAddress() }}
+  <div *ngIf="router.url.indexOf('/account/') === 0" class="flex-row right">
+    <div class="flex-column left">
+      <div class="flex-row dropdown"><input [placeholder]="activeAccount?.shortAddress()" /><img class="button icon-db"
+          src="../../../assets/img/down-arrow.svg" (click)="toggleDropdown('.dropdown-content')" />
+        <div class="flex-column dropdown-content">
+          <ng-container *ngFor="let account of accounts">
+            <a routerLink="/account/{{account?.address}}" [class.selected]="account?.address === activeAccount?.address"
+              (click)="toggleDropdown('.dropdown-content')">
+              {{ account?.shortAddress() }}
             </a>
-            <ng-container *ngFor="let origAcc of impAcc.originatedAccounts">
-              <a routerLink="/account/{{origAcc.address}}" [class.selected]="origAcc.address === activeAccount.address">
-                {{ origAcc.shortAddress() }}
-              </a>
-            </ng-container>
           </ng-container>
         </div>
       </div>
-    </ng-container>
-  </div>
-  <div class="dropdown right">
-    <div id="menu" class="dropbtn">
-      <img src="../../../assets/img/user.svg">
+      <div class="delegation">
+        <div class="flex-row outside-container" *ngIf="!beaconMode">
+          <div class="flex-row" routerLink="/account/{{activeAccount?.address}}/stakers">
+            <span *ngIf="!activeAccount?.delegate">STAKER: <span class="choose">NOT
+                STAKED</span></span>
+            <span *ngIf="activeAccount?.delegate" class="address">STAKER: {{ delegateName }}</span><span
+              *ngIf="activeAccount?.delegate" class="change">&nbsp;(Change)</span>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="dropdown-content right">
-      <a routerLink="/settings">Settings</a>
-      <a (click)="logout()">Logout</a>
+    <div class="flex-row right">
+      <div class="icon">
+        <img class="button" src="../../../assets/img/copy.svg" (click)="copy()" />
+      </div>
+      <div class="icon">
+        <img class="button" src="../../../assets/img/add.svg" (click)="newAccount()" />
+      </div>
+      <div class="icon">
+        <img class="button" [routerLink]="'/account/' + activeAccount?.address + '/settings'"
+          src="../../../assets/img/settings.svg" />
+      </div>
+      <div class="icon">
+        <img class="button" (click)="logout()" src="../../../assets/img/logout.svg" />
+      </div>
+    </div>
+  </div>
+  <div *ngIf="router.url.indexOf('/account/') !== 0" class="flex-row right">
+    <div class="right">
+      <span *ngIf="router.url.indexOf('/import') === 0 || router.url === '/'" routerLink="/import/" class="button" [class.selected]="router.url.indexOf('/import') === 0">Import Wallet</span>
+      <span *ngIf="router.url.indexOf('/new-wallet') === 0 || router.url === '/'" routerLink="/new-wallet/" class="button" [class.selected]="router.url.indexOf('/new-wallet') === 0">Create New Wallet</span>
+      <span *ngIf="router.url.indexOf('/connect-ledger') === 0 || router.url === '/'" routerLink="/connect-ledger/" class="button" [class.selected]="router.url.indexOf('/connect-ledger') === 0">Connect Ledger</span>
+      <span *ngIf="router.url.indexOf('/activate') === 0" routerLink="/activate/" class="button" [class.selected]="router.url.indexOf('/activate') === 0">Activate</span>
     </div>
   </div>
 </div>
-<div id="header-list" [class.invert]="settings">
-  <div class="left" *ngIf="!CONSTANTS.MAINNET">
-    {{ CONSTANTS.NETWORK.toUpperCase() }} VERSION
+<div class="flex-row top-container mobile" [class]="router.url === '/account/' ? 'default' : ''">
+  <a routerLink="/accounts" class="flex-row brand-logo">
+    <div class="icon">Ku</div>
+    <div class="title">Kukai</div>
+  </a>
+  <div *ngIf="router.url.indexOf('/account/') > -1" class="flex-row dropdown"><input
+      [placeholder]="activeAccount?.shortAddress()" /><img class="button icon-db"
+      src="../../../assets/img/down-arrow.svg" (click)="toggleDropdown('.mobile .dropdown .dropdown-content')" />
+    <div class="flex-column dropdown-content">
+      <ng-container *ngFor="let account of accounts">
+        <a routerLink="/settings" [class.selected]="account?.address === activeAccount?.address">
+          {{ account?.shortAddress() }}
+        </a>
+        <ng-container *ngFor="let origAcc of account.originatedAccounts">
+          <a routerLink="/account/{{origAcc?.address}}" [class.selected]="origAcc?.address === activeAccount?.address">
+            {{ origAcc?.shortAddress() }}
+          </a>
+        </ng-container>
+      </ng-container>
+    </div>
   </div>
-  <div class="main">
-    <ng-container *ngIf="getUsername(); let displayName"><img class="verifier-logo"
-        src="../../../assets/img/{{ getVerifier() }}-logo.svg">&nbsp;{{ displayName }}</ng-container>
+  <div class="copy">
+    <img class="button" src="../../../assets/img/copy.svg" (click)="copy()" />
+  </div>
+  <div class="hamburger-dropdown" (click)="toggleDropdown('.mobile .hamburger-dropdown .hamburger-dropdown-content')">
+    <div class="button icon-db"></div>
+    <div *ngIf="router.url.indexOf('/account/') === 0" class="flex-column mobile hamburger-dropdown-content">
+      <div class="flex-row button delegation" routerLink="/account/{{activeAccount?.address}}/stakers">
+        <div *ngIf="!activeAccount?.delegate" class="flex-row">
+          <span class="flex-row">STAKER:</span><span class="choose">NOT
+            STAKED</span>
+        </div>
+        <div *ngIf="activeAccount?.delegate" class="flex-row">
+          <span class="flex-row address">STAKER: {{ activeAccount.delegate
+            }}</span><span *ngIf="activeAccount?.delegate">(Change)</span>
+        </div>
+      </div>
+      <div class="flex-row button" (click)="newAccount()">
+        <img class="icon" src="../../../assets/img/add.svg" /><span>Add Account</span>
+      </div>
+      <div class="flex-row button" (click)="this.router.url = '/account/' + activeAccount?.address + '/settings'">
+        <img class="icon" src="../../../assets/img/cog.svg" /><span>Settings</span>
+      </div>
+      <div class="flex-row button" (click)="logout()">
+        <img class="icon" src="../../../assets/img/sign-out-alt.svg" /><span>Logout</span>
+      </div>
+    </div>
+    <div *ngIf="router.url.indexOf('/account/') !== 0" class="flex-column mobile hamburger-dropdown-content">
+      <div class="flex-row button">
+        <span routerLink="/import/">Import Wallet</span>
+      </div>
+      <div class="flex-row button">
+        <span routerLink="/new-wallet/">Create New Wallet</span>
+      </div>
+      <div class="flex-row button">
+        <span routerLink="/connect-ledger/">Connect Ledger</span>
+      </div>
+    </div>
   </div>
 </div>

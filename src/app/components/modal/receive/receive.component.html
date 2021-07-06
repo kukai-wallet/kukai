@@ -1,0 +1,14 @@
+<div *ngIf="isOpen" class="flex-column kukai-modal">
+  <div class="content">
+    <div class="flex-column top">
+      <img class="flex-row button close" (click)="closeModalAction()" src="../../../assets/img/close.svg" />
+      <h1 class="title">Receive</h1>
+    </div>
+    <div class="seperator"></div>
+    <div class="flex-column receive">
+      <label class="value">Your account QR code</label>
+      <canvas id='canvas'></canvas>
+      <span class="value">{{ activeAddress }}</span>
+    </div>
+  </div>
+</div>

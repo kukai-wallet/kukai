@@ -7,7 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-activate',
   templateUrl: './activate.component.html',
-  styleUrls: ['./activate.component.scss']
+  styleUrls: ['../../../scss/components/start/login.component.scss']
 })
 export class ActivateComponent implements OnInit {
   pkh: string;

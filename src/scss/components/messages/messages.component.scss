@@ -1,0 +1,25 @@
+@use '../../abstracts/variables' as v;
+
+:host {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  .msg-container {
+    position: fixed;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    bottom: 1rem;
+    right: 0;
+    z-index: 105;
+  }
+}
+
+@media(max-width: v.$lower-limit) {
+  :host {
+    & .msg-container {
+      top: 1rem;
+      bottom: unset;
+    }
+  }
+}

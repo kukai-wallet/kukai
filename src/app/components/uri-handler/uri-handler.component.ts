@@ -15,11 +15,11 @@ import { InputValidationService } from '../../services/input-validation/input-va
 import Big from 'big.js';
 import { PartiallyPreparedTransaction } from '../send/interfaces';
 import { HostListener } from '@angular/core';
+import { SubjectService } from '../../services/subject/subject.service';
 
 @Component({
   selector: 'app-uri-handler',
-  templateUrl: './uri-handler.component.html',
-  styleUrls: ['./uri-handler.component.scss']
+  templateUrl: './uri-handler.component.html'
 })
 export class UriHandlerComponent implements OnInit {
   constructor(
@@ -30,7 +30,8 @@ export class UriHandlerComponent implements OnInit {
     private beaconService: BeaconService,
     private deeplinkService: DeeplinkService,
     private inputValidationService: InputValidationService,
-    private router: Router
+    private router: Router,
+    private subjectService: SubjectService
   ) { }
   permissionRequest: PermissionResponseInput = null;
   operationRequest: any = null;
@@ -252,6 +253,11 @@ export class UriHandlerComponent implements OnInit {
     if (opHash?.error) {
       opHash = opHash.error;
     }
+    if(!this.operationRequest) {
+      return;
+    }
+    console.log("hash", opHash);
+    console.log("operationRequest", this.operationRequest);
     if (!opHash) {
       await this.beaconService.rejectOnUserAbort(this.operationRequest);
     } else if (opHash === 'broadcast_error') {
@@ -319,7 +325,7 @@ export class UriHandlerComponent implements OnInit {
         break;
       case 'beacon:request-response':
         if (ev.newValue) {
-          this.messageService.beaconResponse.next(true);
+          this.subjectService.beaconResponse.next(true);
           this.beaconService.syncBeaconState();
           this.changeFavicon();
         }

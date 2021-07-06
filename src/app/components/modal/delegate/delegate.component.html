@@ -1,0 +1,51 @@
+<div *ngIf="isOpen" class="flex-column kukai-modal">
+  <div class="content">
+    <div class="flex-column top">
+      <img class="flex-row button close" (click)="closeModalAction()" src="../../../assets/img/close.svg" />
+      <h1 class="title">Confirm Staker</h1>
+    </div>
+    <div class="flex-column confirm-staking">
+      <div class="flex-row head">
+        <img *ngIf="delegate?.logo" [src]="delegate.logo" />
+        <div class="flex-column data">
+          <span class="name">{{ delegate?.name ? delegate.name : getDelegate() }}</span>
+          <div class="flex-row fee-space"><span class="fee"><span>STAKER FEE:</span>&nbsp;{{ delegate.fee ? toPercent(delegate.fee) : 'UNKNOWN' }}</span><span
+              *ngIf="delegate?.freeSpace" class="space"><span>SPACE:</span>&nbsp;{{ round(delegate.freeSpace) }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="seperator"></div>
+      <div class="flex-row advanced">
+        <div class="flex-row switch-container">
+          <span class="value">Advanced:&nbsp;&nbsp;<span class="key">{{ advanced ? 'ON' : 'OFF' }}</span>&nbsp;&nbsp;</span>
+          <label class="switch">
+            <input type="checkbox" [(ngModel)]="advanced" tabindex=-1 />
+            <span class="slider round"></span>
+          </label>
+        </div>
+      </div>
+      <ng-container *ngIf="advanced">
+        <div class="label">Fee (tez)</div>
+        <input [(ngModel)]="fee" class="text fee" type="text" />
+      </ng-container>
+      <ng-container *ngIf="!getDelegate()" class="preview">
+        <span>Withdraw delegation</span>
+      </ng-container>
+    </div>
+    <div class="seperator"></div>
+    <div class="bottom">
+      <div class="label">ENTER YOUR PASSWORD TO CONFIRM</div>
+      <input *ngIf="!walletService.isLedgerWallet() && !walletService.isTorusWallet()" [(ngModel)]="password"
+        placeholder="Password" autocomplete="current-password" class="text password" type="password"
+        (input)="this.pwdValid = ''" (change)="this.pwdValid = ''" (keydown.enter)='inject()'>
+      <button *ngIf="walletService.isLedgerWallet() && ledgerError; else elseBlock" class="confirm"
+        (click)="ledgerSign()">Sign with Ledger</button>
+      <ng-template #elseBlock>
+        <button class="confirm" (click)="inject()"
+          [disabled]="walletService.isLedgerWallet() && (!sendResponse || !sendResponse.payload || !sendResponse.payload.signedOperation)">
+          {{ walletService.isLedgerWallet() ? 'Broadcast' : 'Confirm'}}</button>
+      </ng-template>
+      <span *ngIf="this.pwdValid" class="danger margin">{{ this.pwdValid }}</span>
+    </div>
+  </div>
+</div>

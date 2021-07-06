@@ -1,0 +1,21 @@
+<div *ngIf="isOpen" class="flex-column kukai-modal">
+  <div class="content">
+    <div class="flex-column top">
+      <img class="flex-row button close" (click)="closeModal()" src="../../../assets/img/close.svg" />
+      <h1 class="title">Add New Account</h1>
+    </div>
+    <div class="seperator"></div>
+    <div class="flex-column new-account">
+      <div class="label">
+        ENTER YOUR PASSWORD TO CONFIRM
+      </div>
+      <input #pwdInput [(ngModel)]="password" class="text password" autocomplete="current-password"
+        placeholder="Password" type="password" (input)="this.errorMsg = ''" (change)="this.errorMsg = ''">
+      <span *ngIf="this.errorMsg" class="danger margin">{{ this.errorMsg }}</span>
+    </div>
+    <div class="seperator"></div>
+    <div class="bottom">
+      <button class="confirm" (click)="addPkh()">Confirm</button>
+    </div>
+  </div>
+</div>

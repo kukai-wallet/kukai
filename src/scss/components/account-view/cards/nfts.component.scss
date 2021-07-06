@@ -1,0 +1,263 @@
+@use '../../../abstracts/variables'as v;
+@import './mixins';
+
+@include base;
+
+.top-container {
+  @include top-container;
+
+  &-nfts {
+    @include top-container;
+
+    & .right {
+      @include top-container-right;
+
+      & .icon {
+        margin-left: 1.5rem;
+        width: 2.15rem;
+        height: 1.15rem;
+        padding: 0.5rem 0rem;
+        border-radius: v.$border-radius-hard;
+        border: 2px solid v.$base-color-lightened-5;
+      }
+
+      & .icon-grey {
+        margin-left: 1.5rem;
+        width: 4rem;
+        padding: 0.5rem 0.5rem;
+        background-color: v.$base-color-lightened-7;
+        border-radius: v.$border-radius-hard;
+        border: 2px solid v.$base-color-lightened-5;
+        justify-content: center;
+        font-size: 1.15rem;
+      }
+    }
+  }
+}
+
+.pending,
+.nfts {
+  & .head {
+    padding: 1rem 2rem;
+    border-radius: v.$border-radius;
+    background-color: v.$base-end-color;
+
+    & .left {
+      justify-content: flex-start;
+
+      & .title {
+        font-size: 1.5rem;
+        margin-right: 1rem;
+      }
+    }
+  }
+}
+
+.nfts {
+  width: 100%;
+
+  & .collection {
+    min-height: 2rem;
+    height: 0;
+    transition: 0.15s height;
+    margin: 0 0 5rem 0;
+    border-radius: v.$border-radius;
+
+    &.expanded {
+      height: auto;
+      box-shadow: v.$box-shadow;
+
+      & .head {
+        padding: 1rem 2rem;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+        box-shadow: unset;
+
+        & .right {
+          & .toggle img {
+            transform: rotate(180deg);
+          }
+        }
+      }
+
+      & > .scroll {
+        top: 0rem;
+      }
+    }
+
+    & .head {
+      transition: 0.15s top;
+      z-index: 1;
+      box-shadow: v.$box-shadow;
+
+      & .left {
+        justify-content: flex-start;
+        width: 90%;
+
+        & .title {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        & .icon {
+          width: 50px;
+          height: 50px;
+          margin-right: 1.25rem;
+        }
+
+        & .count {
+          font-size: 1rem;
+          padding: 0.25rem;
+          width: 2rem;
+          background-color: v.$base-color-lightened-5;
+          border-radius: v.$border-radius-hard;
+          text-align: center;
+          color: v.$base-color-lightened-1;
+        }
+      }
+
+      & .right {
+        & .toggle img {
+          transition: 0.25s transform;
+          width: 1rem;
+          transform: rotate(0deg);
+        }
+        & a.link-to-app {
+          & button {
+            padding: 1rem 1.5rem;
+            border-radius: calc(1rem * 2);
+            font-size: 1rem;
+            font-weight: 600;
+            width: 10rem;
+            justify-content: center;
+            border: 2px solid;
+            color: v.$base-blue-color-lightened !important;
+            border-color: v.$base-blue-color-lightened !important;
+            background-color: transparent;
+          }
+        }
+      }
+    }
+
+    & .body {
+      overflow: auto;
+      flex-wrap: wrap;
+      height: 100%;
+      padding: 0 1rem;
+      border-radius: v.$border-radius;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+      background-color: v.$base-end-color;
+
+      &.expanded {
+        overflow-y: auto;
+      }
+
+      & .token {
+        width: calc(50% - 2rem);
+        justify-content: flex-start;
+        padding: 1rem;
+        cursor: pointer;
+
+        & .img-wrapper {
+          position: relative;
+          & .icon {
+            width: 8rem;
+            height: 8rem;
+            margin-right: 1.25rem;
+            object-fit: cover;
+            box-shadow: v.$box-shadow;
+            border-radius: v.$border-radius;
+          }
+
+          & .balance {
+            position: absolute;
+            bottom: 0.5rem;
+            left: 0.5rem;
+            padding: 0.5rem;
+            width: auto;
+            height: 0.5rem;
+            border-radius: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            background-color: v.$base-color-lightened-5;
+            color: v.$base-font-color;
+          }
+        }
+
+        & .right {
+          width: calc(100% - 9.25rem);
+
+          & .title {
+            font-size: 1.5rem;
+            margin-right: 1rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+
+          & .issue {
+            font-size: 1rem;
+          }
+        }
+      }
+    }
+
+    &.scroll {
+      height: 100%;
+      max-height: 78.5rem;
+      padding: 0 0.75rem 0 0;
+      background-color: #fff;
+    }
+
+    &>.scroll {
+      max-height: 52rem;
+      overflow-x: hidden;
+      overflow-y: auto;
+      flex-wrap: wrap;
+      padding: 0.5rem 1rem;
+      border-radius: 1rem;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+      background-color: #fff;
+      z-index: 0;
+      position: relative;
+      top: -1rem;
+    }
+
+    &.scroll .body {
+      overflow-x: hidden;
+      overflow-y: auto;
+      padding: 1rem 1rem 1rem 2rem;
+      border-radius: v.$border-radius;
+    }
+  }
+}
+
+@media (max-width: v.$middle-limit) {
+  .nfts .collection {
+    & .body .token {
+      width: 100%;
+      padding: 1rem 0;
+      border-bottom: 2px solid v.$border-color;
+
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+  }
+}
+
+@media (max-width: v.$middle-limit) {
+  .nfts .collection {
+    min-height: 5rem;
+  }
+}
+
+@media (max-width: v.$lower-limit) {
+  .nfts .collection {
+    min-height: 8rem;
+  }
+}

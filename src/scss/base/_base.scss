@@ -1,0 +1,184 @@
+@use '../abstracts/variables'as v;
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
+
+%base-button {
+  outline: none;
+  border: none;
+  border-radius: v.$border-radius-hard;
+  background-color: v.$base-blue-color-lightened;
+  color: v.$base-end-color;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: 500;
+
+  img {
+    height: 1rem;
+  }
+}
+
+%flex {
+  display: flex;
+}
+
+%row {
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+%column {
+  flex-direction: column;
+}
+
+%wrap {
+  flex-wrap: wrap;
+}
+
+%nowrap {
+  flex-wrap: nowrap;
+}
+
+%grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: v.$base-color-lightened-3;
+  font-family: "Roboto", serif;
+}
+
+*::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+*::-webkit-scrollbar-track {
+  background: v.$base-color-lightened-6;
+  margin: 1.5rem 0;
+  border-radius: v.$border-radius;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: v.$base-color-lightened-3;
+  border-radius: v.$border-radius;
+  border: 2px solid v.$base-color-lightened-3;
+}
+
+html {
+  font-size: 100%;
+}
+
+html,
+body {
+  background-color: v.$base-background-color;
+  overflow: scroll;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+input {
+  text-align: left;
+  padding: 0 0 0 2rem;
+}
+
+textarea {
+  border: 2px solid v.$border-color;
+  border-radius: v.$border-radius;
+}
+
+input::placeholder {
+  // font-size: 1.5rem;
+}
+
+.button {
+  cursor: pointer;
+
+  &.selected {
+    font-weight: 600 !important;
+    color: v.$base-blue-color;
+    border-color: v.$base-blue-color-lightened !important;
+  }
+}
+
+button {
+  @extend %base-button;
+
+  &--invert {
+    @extend %base-button;
+    border: "2px solid";
+    border-color: v.$base-blue-color;
+    border-radius: v.$border-radius-hard;
+    background-color: #fff;
+    color: v.$base-blue-color;
+  }
+
+  &.selected {
+    font-weight: 600 !important;
+    color: v.$base-blue-color;
+    border-color: v.$base-blue-color !important;
+  }
+
+  &:hover {
+    filter: invert(0.05);
+  }
+}
+
+.block {
+  display: block;
+}
+
+.inline {
+  display: inline-block;
+}
+
+.flex {
+  @extend %flex;
+
+  &-row {
+    @extend %flex;
+    @extend %row;
+
+    &-wrap {
+      @extend %flex;
+      @extend %row;
+      @extend %wrap;
+    }
+  }
+
+  &-column {
+    @extend %flex;
+    @extend %column;
+
+    &-wrap {
+      @extend %flex;
+      @extend %column;
+      @extend %wrap;
+    }
+  }
+}
+
+.grid {
+  @extend %grid;
+}
+
+@media (max-width: v.$middle-limit) {
+  html {
+    font-size: 100%;
+  }
+}
+
+@media (max-width: v.$middle-limit) {
+  html {
+    font-size: 75%;
+  }
+}
+
+@media (max-width: v.$lower-limit) {
+  html {
+    font-size: 48%;
+  }
+}

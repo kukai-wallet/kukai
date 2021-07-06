@@ -30,12 +30,12 @@ import {
   CardResponse
 } from 'kukai-embed';
 import { Subscription } from 'rxjs';
-import { MessageService } from '../../services/message/message.service';
+import { SubjectService } from '../../services/subject/subject.service';
 
 @Component({
   selector: 'app-embedded',
   templateUrl: './embedded.component.html',
-  styleUrls: ['./embedded.component.scss']
+  styleUrls: ['../../../scss/components/embedded/embedded.component.scss']
 })
 export class EmbeddedComponent implements OnInit {
   constructor(
@@ -47,7 +47,7 @@ export class EmbeddedComponent implements OnInit {
     private lookupService: LookupService,
     private activityService: ActivityService,
     private embeddedAuthService: EmbeddedAuthService,
-    private messageService: MessageService
+    private subjectService: SubjectService
   ) { }
   pendingOps: string[] = [];
   ophashSubscription: Subscription;
@@ -75,7 +75,7 @@ export class EmbeddedComponent implements OnInit {
         this.walletService.loadStoredWallet(params.instanceId);
         if (this.walletService.wallet instanceof EmbeddedTorusWallet) {
           this.origin = this.walletService.wallet.origin;
-          this.messageService.origin.next(this.origin);
+          this.subjectService.origin.next(this.origin);
           this.activeAccount = this.walletService.wallet.implicitAccounts[0];
           this.coordinatorService.startAll();
           this.subscribeToConfirmedOps();
@@ -92,7 +92,7 @@ export class EmbeddedComponent implements OnInit {
         if (data &&
           data.type) {
           this.origin = evt.origin;
-          this.messageService.origin.next(this.origin);
+          this.subjectService.origin.next(this.origin);
           switch (data.type) {
             case RequestTypes.loginRequest:
               this.handleLoginRequest(data);

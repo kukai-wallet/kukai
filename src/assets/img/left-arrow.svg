@@ -1,0 +1,14 @@
+<svg version="1.2" baseProfile="tiny-ps" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 13 20" width="13" height="20">
+	<title>1</title>
+	<style>
+		tspan { white-space:pre }
+		.shp0 { fill: #4a5d75 } 
+	</style>
+	<g id="1">
+		<g id="NFT">
+			<g id="Line 2">
+				<path id="Rectangle 4" class="shp0" d="M12.98 2.86L2.89 12.86L0.01 10L10.1 0.01L12.98 2.86ZM12.98 17.14L10.1 19.99L0.01 10L2.89 7.14L12.98 17.14Z" />
+			</g>
+		</g>
+	</g>
+</svg>

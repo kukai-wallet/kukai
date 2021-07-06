@@ -122,7 +122,7 @@ export class CoordinatorService {
             if (!ans.upToDate) {
               this.changeState(pkh, State.Updating);
             } else if (ans?.balance) {
-              const balance = this.walletService.wallet.getAccount(pkh).balanceXTZ;
+              const balance = this.walletService.wallet?.getAccount(pkh).balanceXTZ;
               if (balance !== ans.balance) {
                 console.log('recheck balance');
                 this.updateAccountData(pkh);
@@ -151,7 +151,7 @@ export class CoordinatorService {
             break;
           }
         }
-        const acc = this.walletService.wallet.getAccount(pkh);
+        const acc = this.walletService.wallet?.getAccount(pkh);
         if (acc && acc.activities.length) {
           const latestActivity = acc.activities[0];
           if (latestActivity.status === 0) {
@@ -222,10 +222,10 @@ export class CoordinatorService {
     this.operationService.getAccount(pkh).subscribe((ans: any) => {
       if (ans.success) {
         this.balanceService.updateAccountBalance(
-          this.walletService.wallet.getAccount(pkh),
+          this.walletService.wallet?.getAccount(pkh),
           Number(ans.payload.balance)
         );
-        const acc = this.walletService.wallet.getAccount(pkh);
+        const acc = this.walletService.wallet?.getAccount(pkh);
         this.delegateService.handleDelegateResponse(acc, ans.payload.delegate);
       } else {
         console.log('updateAccountData -> getAccount failed ', ans.payload.msg);
@@ -251,9 +251,9 @@ export class CoordinatorService {
           tokenId: metadata.tokenTransfer ? metadata.tokenTransfer : undefined,
           entrypoint: op.parameters?.entrypoint ? op.parameters.entrypoint : ''
         };
-        let account = this.walletService.wallet.getAccount(from);
+        let account = this.walletService.wallet?.getAccount(from);
         account.activities.unshift(transaction);
-        account = this.walletService.wallet.getAccount(op.destination);
+        account = this.walletService.wallet?.getAccount(op.destination);
         if (account) {
           account.activities.unshift(transaction);
         }
@@ -270,8 +270,8 @@ export class CoordinatorService {
         block: null,
         timestamp: new Date().getTime()
       };
-      const account = this.walletService.wallet.getAccount(from);
-      account.activities.unshift(delegation);
+      const account = this.walletService.wallet?.getAccount(from);
+      account?.activities.unshift(delegation);
     } else if (metadata.origination !== undefined) {
       const origination = {
         type: 'origination',
@@ -284,8 +284,8 @@ export class CoordinatorService {
         block: null,
         timestamp: new Date().getTime()
       };
-      const account = this.walletService.wallet.getAccount(from);
-      account.activities.unshift(origination);
+      const account = this.walletService.wallet?.getAccount(from);
+      account?.activities.unshift(origination);
     } else {
       console.log('Unknown metadata', metadata);
     }

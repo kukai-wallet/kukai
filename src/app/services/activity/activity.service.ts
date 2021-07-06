@@ -9,11 +9,13 @@ import { IndexerService } from '../indexer/indexer.service';
 import Big from 'big.js';
 import { CONSTANTS } from '../../../environments/environment';
 import { TokenService } from '../token/token.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class ActivityService {
   confirmedOp = new Subject<string>();
   maxTransactions = 10;
+  public tokenBalanceUpdated = new BehaviorSubject(null);
   constructor(
     private walletService: WalletService,
     private messageService: MessageService,
@@ -70,6 +72,7 @@ export class ActivityService {
           account.updateTokenBalance(tokenId, token.balance.toString());
         }
       }
+      this.tokenBalanceUpdated.next(true);
     }
     this.walletService.storeWallet();
   }

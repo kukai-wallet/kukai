@@ -1,0 +1,417 @@
+@import "../../layouts/card.scss";
+
+%flex-column-centered {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+:host {
+  width: 100%;
+  min-height: calc(100vh - 8rem);
+  padding-bottom: 8rem;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  background: #5963FF;
+}
+
+:host-context(app-connect-ledger) {
+
+  &>div {
+    margin-top: 5rem;
+    width: 100vw;
+    min-height: 100%;
+    @extend %flex-column-centered;
+  }
+
+  & input.text {
+    margin-top: 2.5rem;
+  }
+
+  & input.text[disabled] {
+    background: #e1e1e1;
+  }
+
+  & small {
+    margin-top: 1rem;
+  }
+
+  @import '../../layouts/switch.scss';
+}
+
+:host-context(app-mnemonic-import-wallet) {
+  flex-direction: row;
+
+  &.tacos {
+    background-image: url(../../../assets/img/tacos.svg);
+  }
+
+  &>div.kukai-card {
+
+    & input[type="radio"] {
+      /* remove standard background appearance */
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      /* create custom radiobutton appearance */
+      display: inline-block;
+      width: 1.25rem;
+      height: 1.25rem;
+      padding: 0.25rem;
+      /* background-color only for content */
+      background-clip: content-box;
+      border: 0.125rem solid #161616;
+      border-radius: 50%;
+      outline-style: none;
+
+      &:checked {
+        background-color: #161616;
+      }
+    }
+
+    & small {
+      margin-top: 1.25rem;
+    }
+
+    & p.faucet {
+      &>span {
+        display: inline;
+        font-size: 1rem;
+        line-height: 1.5rem;
+      }
+
+      & a {
+        color: #5963ff !important;
+
+        &:hover {
+          border-bottom: 1px solid;
+          margin-bottom: -1px;
+        }
+      }
+    }
+
+    &>div {
+      margin-top: 5rem;
+      @extend %flex-column-centered;
+
+      &>div.grey-card.menu {
+        margin-top: 0.5rem;
+      }
+    }
+
+    & div {
+
+      &.radios {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        width: calc(100% - 4rem);
+        margin-left: 2rem;
+        margin-top: 1.5rem;
+      }
+
+      &.import-options {
+        margin-top: 2.75rem;
+        display: flex;
+        justify-content: space-between;
+        flex-direction: row;
+        width: 25rem;
+        margin-bottom: 1rem;
+
+        & span {
+          padding: 0;
+          font-size: 1rem;
+          line-height: 1.5rem;
+          cursor: pointer;
+
+          &.selected {
+            line-height: 1.5rem;
+            margin-bottom: -1px;
+            border-bottom: 1px solid;
+          }
+        }
+      }
+    }
+  }
+
+  &>div.kukai-card div.buttons {
+    margin-top: 2.5rem;
+  }
+
+  &>div.kukai-card div.radios small {
+    font-size: 0.875rem;
+    line-height: 1.125rem;
+    margin-left: 0.5rem;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  &>div.kukai-card div.radios>div {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+  }
+
+  &>div.kukai-card div.radios>div:last-child {
+    margin-top: 0.5rem;
+  }
+
+  &>div.kukai-card input.input-file {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    -webkit-opacity: 0;
+    -khtml-opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+  }
+
+  &>div.kukai-card label.input-file {
+    margin-top: 2rem;
+    margin-left: 2rem;
+    margin-bottom: 0;
+    width: calc(100% - 4rem);
+    height: 3.125rem;
+    border: 1px dashed #5963ff;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+  }
+
+  &>div.kukai-card label.input-file.loaded {
+    justify-content: space-between;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    width: calc(100% - 7rem);
+    background: rgba(89, 99, 255, 0.2);
+    border: none;
+  }
+
+  &>div.kukai-card label.input-file>span {
+    color: #5963ff;
+    font-style: normal;
+    font-weight: bold;
+    line-height: 1.5rem;
+    font-size: 0.75rem;
+  }
+
+  &>div.kukai-card label.input-file>span:last-child {
+    text-decoration-line: underline;
+  }
+
+  &>div.kukai-card label.input-file:hover {
+    cursor: pointer;
+  }
+
+  &>div.kukai-card div.authenticate>input {
+    margin-top: 1.5rem;
+  }
+
+  @media (max-width: 32.5rem) {
+    div.kukai-card label.input-file {
+      width: calc(100% - 2rem);
+      margin-left: 1rem;
+
+      &.loaded {
+        width: calc(100% - 5rem);
+      }
+    }
+
+    div.kukai-card div.authenticate>input#pwd {
+      width: calc(100% - 4rem);
+      margin-left: 1rem;
+    }
+
+    div.kukai-card div.radios {
+      margin-left: 1rem;
+      width: calc(100% - 2rem);
+    }
+
+    div.kukai-card div.radios small {
+      width: 17rem;
+    }
+
+    div.kukai-card div.import-options {
+      width: 21.875rem;
+      justify-content: space-around;
+    }
+  }
+}
+
+:host-context(app-new-wallet) {
+
+  width: 100%;
+  min-height: calc(100vh - 8rem);
+  padding-bottom: 8rem;
+  @extend %flex-column-centered;
+  margin-block-start: 0;
+  margin-block-end: 0;
+  background: #5963FF;
+
+  &.tacos {
+    background-image: url(../../../assets/img/tacos.svg);
+  }
+
+  &>div.kukai-card>div {
+    width: 100%;
+    @extend %flex-column-centered;
+    margin-top: 1rem;
+  }
+
+  & #wordInput {
+    width: 13rem;
+    margin-left: 0;
+    margin-right: 0
+  }
+
+  @media screen and (max-width: 32.5rem) {
+    :host #wordInput {
+      width: 10rem;
+    }
+  }
+}
+
+:host-context(app-torus) {
+
+  width: 100%;
+  min-height: calc(100vh - 7rem);
+  padding-bottom: 7rem;
+  overflow: hidden;
+  display: flex;
+  background: #5963FF;
+
+  &>div {
+    width: 100vw;
+    min-height: 100%;
+    @extend %flex-column-centered;
+
+    &>div.top {
+      width: 100vw;
+      display: flex;
+      z-index: 3;
+    }
+
+    &>div.main {
+      flex-grow: 1;
+      width: 100vw;
+      @extend %flex-column-centered;
+      z-index: 3;
+
+      & p {
+        text-align: center;
+        color: white;
+        padding: 0 1rem;
+        font-size: 1rem;
+        line-height: 1.25rem;
+        margin-bottom: 1rem;
+      }
+
+      & h1 {
+        color: white;
+        margin: 0.5rem 0 1rem;
+      }
+
+      &>div.main-top {
+        @extend %flex-column-centered;
+        justify-content: center;
+        max-width: 27.5rem;
+      }
+
+      &>div.main-mid {
+        margin-top: 8rem;
+        margin-bottom: 1rem;
+      }
+
+      &>div.main-bottom {
+        flex-grow: 1;
+        display: flex;
+        align-items: flex-end;
+
+        & p {
+          color: rgba(255, 255, 255, 0.4);
+          font-size: 0.75rem;
+        }
+      }
+    }
+  }
+
+  & a.logo {
+    margin: 2.25rem 2rem;
+    width: 5.6875rem;
+    height: 1.4375rem;
+  }
+
+  & div.torus-bg {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    opacity: 0.2;
+    mix-blend-mode: multiply;
+
+    &>img {
+      width: 80%;
+      height: 100vh;
+    }
+  }
+
+  & div.login-options {
+    display: flex;
+    flex-direction: row;
+  }
+
+  & div.login-option {
+    margin: 0 0.25rem;
+    width: 3.5rem;
+    height: 3.5rem;
+    background-color: white;
+    box-shadow: 0px 0.5rem 1rem rgba(17, 17, 17, 0.08);
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      cursor: pointer;
+      background-color: #f3f3f3;
+    }
+  }
+
+  & img.login-logo.grey {
+    opacity: 0.2;
+    height: 1.75rem;
+  }
+
+  & img.login-logo.color {
+    height: 1.875rem;
+  }
+
+  & div.learn-more {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+  }
+
+  & a.learn-more {
+    font-size: 0.875rem;
+
+    &:link,
+    &:visited {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    &:hover,
+    &:active {
+      color: rgba(255, 255, 255, 1);
+    }
+  }
+
+  @media screen and (max-height: 41.5rem) {
+    :host>div>div.main>div.main-mid {
+      margin-top: 4rem;
+    }
+  }
+}

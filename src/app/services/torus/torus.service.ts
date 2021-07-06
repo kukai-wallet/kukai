@@ -16,7 +16,7 @@ const AUTH_DOMAIN = 'https://dev-0li4gssz.eu.auth0.com';
 })
 export class TorusService {
   torus: any = null;
-  nodeDetails: { torusNodeEndpoints: String[], torusNodePub: any[] } = null;
+  nodeDetails: { torusNodeEndpoints: string[], torusNodePub: any[] } = null;
   public readonly verifierMap: any;
   private readonly proxy: any;
   verifierMaps = {

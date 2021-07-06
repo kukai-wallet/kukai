@@ -1,5 +1,6 @@
+<app-header *ngIf="!embedded"></app-header>
 <router-outlet></router-outlet>
 <app-messages *ngIf="!embedded"></app-messages>
 <app-spinner [embedded]="embedded"></app-spinner>
 <app-agreement *ngIf="!embedded"></app-agreement>
-<app-footer *ngIf="!embedded"></app-footer>
+<!-- <app-footer *ngIf="!embedded"></app-footer> -->

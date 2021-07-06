@@ -1,0 +1,86 @@
+<div *ngIf="isOpen" class="flex-column kukai-modal">
+  <div class="content">
+    <div class="flex-column top">
+      <img class="flex-row button close" (click)="closeModalAction()" src="../../../assets/img/close.svg" />
+      <h1 class="title">Originate</h1>
+    </div>
+    <div class="seperator"></div>
+    <div class="flex-column originate">
+      <div class="flex-column">
+        <span class="key"><span class="value">{{ this.balance ? this.balance + ' ' + 'tez' : '' }}</span></span>
+        <span class="amount-usd"></span>
+        <span class="section key">From:&nbsp;<span class="from value">{{ activeAccount?.address }}</span></span>
+      </div>
+      <div class="seperator"></div>
+      <div class="flex-row">
+        <span class="key">FEE:&nbsp;</span><span class="value">{{ this.getTotalFee() }} tez</span>
+      </div>
+      <div class="seperator"></div>
+      <div class="flex-row">
+        <span class="key">MAX STORAGE COST:&nbsp;</span><span class="value">{{ getTotalBurn() }} tez</span>
+      </div>
+      <div class="seperator"></div>
+      <div class="flex-row advanced">
+        <div class="flex-row switch-container">
+          <span class="value">Advanced:&nbsp;&nbsp;<span class="key">{{ advancedForm ? ' ON' : 'OFF'
+              }}</span>&nbsp;&nbsp;</span>
+          <label class="switch">
+            <input type="checkbox" [(ngModel)]="advancedForm" tabindex=-1 />
+            <span class="slider round"></span>
+          </label>
+        </div>
+      </div>
+      <div *ngIf="advancedForm" class="advanced-form">
+        <div class="tabs-container">
+          <div class="flex-row tabs">
+            <span class="tab" [class.active]="activeTab === 0" (click)="activeTab = 0">Code</span>
+            <span class="tab" [class.active]="activeTab === 1" (click)="activeTab = 1">Storage</span>
+          </div>
+        </div>
+        <textarea style="width: 100%" rows="10" readonly>{{ getScript() }}</textarea>
+        <ng-container *ngIf="!(walletService.isLedgerWallet() && !ledgerError)">
+          <div class="row-group">
+            <div class="group">
+              <label>Gas limit</label>
+              <input type="text" class="text" placeholder={{this.defaultTransactionParams.gas.toString()}}
+                [(ngModel)]="customGas">
+            </div>
+            <div class="group">
+              <label>Fee</label>
+              <input type="text" class="text" (keypress)="keyPressNumbersDecimal($event, 'customFee')"
+                placeholder={{this.defaultTransactionParams.fee.toString()}} [(ngModel)]="customFee">
+            </div>
+          </div>
+          <div class="row-group">
+            <div class="group">
+              <label>Storage limit</label>
+              <input type="text" class="text" placeholder={{this.defaultTransactionParams?.storage.toString()}}
+                [(ngModel)]="customStorage">
+            </div>
+            <div class="group">
+              <label>Max storage cost</label>
+              <input type="text" class="text read-only" [value]="burnAmount() ? burnAmount() : '0 tez'" tabindex=-1
+                readonly>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+      <span *ngIf="formInvalid" style="margin-top: 1rem" class="danger margin">
+        {{ formInvalid }}
+      </span>
+      <div class="row-group" style="margin: 1.25rem 0 1.5rem;">
+        <input *ngIf="!walletService.isLedgerWallet() && !walletService.isTorusWallet()" [(ngModel)]="password"
+          placeholder="Password" autocomplete="current-password" class="text password" type="password"
+          (input)="this.pwdInvalid = ''" (paste)="this.pwdInvalid = ''" (keydown.enter)='inject()'>
+        <button *ngIf="walletService.isLedgerWallet() && ledgerError; else elseBlock" class="blue confirm"
+          (click)="ledgerSign()">Sign with Ledger</button>
+        <ng-template #elseBlock>
+          <button class="blue confirm" (click)="inject()"
+            [disabled]="walletService.isLedgerWallet() && (!sendResponse || !sendResponse.payload || !sendResponse.payload.signedOperation)">
+            {{ walletService.isLedgerWallet() ? 'Broadcast' : 'Confirm'}}</button>
+        </ng-template>
+      </div>
+      <span *ngIf="this.pwdInvalid" class="danger margin">{{ this.pwdInvalid }}</span>
+    </div>
+  </div>
+</div>

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { Account, Activity, ImplicitAccount, OriginatedAccount } from '../../services/wallet/wallet';
 import { WalletService } from '../../services/wallet/wallet.service';
@@ -17,7 +17,7 @@ import { TokenService, TokenResponseType } from '../../services/token/token.serv
 @Component({
   selector: 'app-account-view',
   templateUrl: './account-view.component.html',
-  styleUrls: ['./account-view.component.scss'],
+  styleUrls: ['../../../scss/components/account-view/account-view.component.scss'],
 })
 export class AccountViewComponent implements OnInit {
   account: Account;
@@ -32,28 +32,19 @@ export class AccountViewComponent implements OnInit {
     private lookupService: LookupService,
     private activityService: ActivityService,
     public tokenService: TokenService
-  ) { }
+  ) { this.getScreenSize(); }
   trigger = true;
+  isMobile = false;
   @Input() activity: any;
   ngOnInit(): void {
-    if (!this.walletService.wallet) {
-      this.router.navigate(['']);
-    } else {
+    if (this.walletService.wallet) {
       this.coordinatorService.startAll();
-      let address = this.route.snapshot.paramMap.get('address');
-      if (this.walletService.addressExists(address)) {
-        this.account = this.walletService.wallet.getAccount(address);
-      }
-      this.router.events
-        .pipe(filter((evt) => evt instanceof NavigationEnd))
-        .subscribe(() => {
-          address = this.route.snapshot.paramMap.get('address');
-          if (this.walletService.wallet && this.walletService.addressExists(address)) {
-            this.account = this.walletService.wallet.getAccount(address);
-          }
-        });
-      setInterval(() => this.trigger = !this.trigger, 1000);
     }
+
+    this.walletService.activeAccount.subscribe(activeAccount => {
+      this.account = activeAccount;
+    });
+    setInterval(() => this.trigger = !this.trigger, 1000);
   }
   getType(transaction: Activity): string {
     if (transaction.type !== 'transaction') {
@@ -109,5 +100,13 @@ export class AccountViewComponent implements OnInit {
   displayTokenCard(): boolean {
     return (this.account instanceof ImplicitAccount) || (this.account?.tokens?.length > 0);
   }
-}
 
+  @HostListener('window:resize', ['$event'])
+  getScreenSize(event?) {
+    if (window.innerWidth < 1041) {
+      this.isMobile = true;
+    } else {
+      this.isMobile = false
+    }
+  }
+}

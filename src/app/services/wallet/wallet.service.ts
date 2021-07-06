@@ -17,12 +17,16 @@ import { EncryptionService } from '../encryption/encryption.service';
 import { OperationService } from '../operation/operation.service';
 import { TorusService } from '../torus/torus.service';
 import { utils, hd } from '@tezos-core-tools/crypto-utils';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class WalletService {
   storeKey = 'kukai-wallet';
   storageId = 0;
   wallet: WalletObject;
+
+  activeAccount = new BehaviorSubject(null);
+  walletUpdated = new BehaviorSubject(null);
 
   constructor(
     private encryptionService: EncryptionService,
@@ -100,7 +104,6 @@ export class WalletService {
         3
       );
     } else if (this.wallet instanceof LedgerWallet) {
-      console.log(this.wallet);
       const keyPair: KeyPair = {
         sk: null,
         pk: this.wallet.implicitAccounts[0].pk,
@@ -203,7 +206,7 @@ export class WalletService {
   }*/
   addressExists(address: string): boolean {
     return (
-      this.wallet.getAccounts().findIndex((a) => a.address === address) !== -1
+      this.wallet?.getAccounts().findIndex((a) => a.address === address) !== -1
     );
   }
   async incrementAccountIndex(password: string): Promise<string> {
@@ -320,6 +323,8 @@ export class WalletService {
     } else {
       console.log('Outdated storage id');
     }
+
+    this.walletUpdated.next(null);
   }
   getLocalStorageId() {
     const walletData = this.wallet instanceof EmbeddedTorusWallet ? sessionStorage.getItem(this.wallet.instanceId) : localStorage.getItem(this.storeKey);
@@ -341,7 +346,6 @@ export class WalletService {
         this.storageId = parsedWalletData.localStorageId;
         const wd = parsedWalletData.data;
         this.deserializeStoredWallet(wd, parsedWalletData.type);
-        console.log(this.wallet);
       } else {
         console.log('couldnt load a wallet');
         this.clearWallet(instanceId);

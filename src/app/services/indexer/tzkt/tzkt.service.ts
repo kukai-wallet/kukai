@@ -26,6 +26,7 @@ interface TokenMetadata {
 export class TzktService implements Indexer {
   readonly network = CONSTANTS.NETWORK.replace('edonet', 'edo2net');
   public readonly bcd = 'https://api.better-call.dev/v1';
+  public readonly tzkt = `https://api.${this.network}.tzkt.io/v1`;
   readonly BCD_TOKEN_QUERY_SIZE = 10;
   constructor() { }
   async getContractAddresses(pkh: string): Promise<any> {
@@ -85,7 +86,7 @@ export class TzktService implements Indexer {
       });
   }
   async getOperations(address: string, knownTokenIds: string[] = [], wallet: WalletObject): Promise<any> {
-    const ops = await fetch(`https://api.${this.network}.tzkt.io/v1/accounts/${address}/operations?limit=20&type=delegation,origination,transaction`)
+    const ops = await fetch(`${this.tzkt}/accounts/${address}/operations?limit=20&type=delegation,origination,transaction`)
       .then(response => response.json())
       .then(data => data.map(op => {
         if (!(op.hasInternals && wallet.getAccount(op.target.address)) && op.status === 'applied') {
@@ -299,7 +300,7 @@ export class TzktService implements Indexer {
   async fetchApi(url: string): Promise<any> {
     return fetch(url)
       .then(response => response.json())
-      .then(data => data);
+      .then(data => data).catch(() => url.substring(url.indexOf('https://cloudflare-ipfs.com')));
   }
   async getTokenBalancesUsingPromiseAll(address: string) {
     // get total number of tokens

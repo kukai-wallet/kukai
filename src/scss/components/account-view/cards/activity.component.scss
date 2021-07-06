@@ -1,0 +1,114 @@
+@use '../../../abstracts/variables'as v;
+@import './mixins';
+
+@include base;
+
+.top-container {
+  @include top-container;
+
+  &-activity {
+    @include top-container;
+    & .right {
+    @include top-container-right;
+    }
+
+    & a.view-all {
+      float: right;
+      margin: 0;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 1rem;
+      line-height: 1rem;
+      color: v.$base-font-color-secondary;
+      text-decoration: none;
+    }
+  }
+}
+
+#operations-container {
+  &>div {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    margin-top: 1rem;
+    padding: 1rem 2rem 1rem 2rem;
+    border-radius: v.$border-radius;
+    background-color: transparent;
+    box-shadow: v.$box-shadow;
+
+    &>img {
+      padding-bottom: 1.125rem;
+    }
+
+    &:first-child {
+      margin-top: 0;
+    }
+
+    &:last-child {
+      border-bottom: 0;
+    }
+
+    &>div {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  & .sent,
+  .delegated,
+  .received {
+    position: relative;
+    overflow: hidden;
+    &.unconfirmed {
+      background-color: v.$base-color-lightened-5;
+
+      &:after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        height: 0.3rem;
+        width: 100%;
+        background-color: v.$base-color-lightened-1;
+      }
+    }
+
+    &.confirmed {
+      background-color: v.$base-color-lightened-7;
+    }
+
+    &.new {
+      background-color: v.$base-end-color;
+
+      &:after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        height: 0.3rem;
+        width: 100%;
+        background-color: v.$base-green-color;
+      }
+    }
+
+    & .title {
+      font-size: 1.75rem;
+      margin-bottom: 0.5rem;
+    }
+
+    & .address {
+      color: v.$base-color-lightened-2;
+      font-size: 1rem;
+    }
+
+    & .time {
+      color: v.$base-font-color;
+    }
+  }
+
+  & .received {
+    &.confirmed {
+      color: v.$base-blue-color-lightened;
+    }
+  }
+}

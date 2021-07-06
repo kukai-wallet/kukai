@@ -12,11 +12,11 @@ import Big from 'big.js';
 import { WalletService } from '../../services/wallet/wallet.service';
 import { CoordinatorService } from '../../services/coordinator/coordinator.service';
 import { CONSTANTS } from '../../../environments/environment';
+import { SubjectService } from '../../services/subject/subject.service';
 
 @Component({
   selector: 'app-send',
-  templateUrl: './send.component.html',
-  styleUrls: ['./send.component.scss']
+  templateUrl: './send.component.html'
 })
 
 export class SendComponent implements OnInit, OnChanges {
@@ -29,6 +29,7 @@ export class SendComponent implements OnInit, OnChanges {
   prepareRequest: PrepareRequest = null;
   confirmRequest: ConfirmRequest = null;
   templateRequest: TemplateRequest = null;
+  symbol: string;
   readonly thresholdUSD = 50;
   constructor(
     public tokenService: TokenService,
@@ -36,10 +37,17 @@ export class SendComponent implements OnInit, OnChanges {
     private messageService: MessageService,
     private operationService: OperationService,
     private walletService: WalletService,
-    private coordinatorService: CoordinatorService
+    private coordinatorService: CoordinatorService,
+    private subjectService: SubjectService
   ) { }
 
   ngOnInit() {
+    this.subjectService.prepareTokenTransfer.subscribe(t => {
+      this.prepareRequest = t;
+      this.tokenTransfer = t?.tokenTransfer;
+      this.activeAccount = t?.account;
+      this.symbol = t?.symbol;
+    });
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (this.headless && changes?.operationRequest?.currentValue) {
@@ -174,7 +182,7 @@ export class SendComponent implements OnInit, OnChanges {
     }
   }
   prepareTransaction() {
-    this.prepareRequest = { account: this.activeAccount, tokenTransfer: this.tokenTransfer };
+    this.prepareRequest = { account: this.activeAccount, tokenTransfer: this.tokenTransfer, symbol: this.symbol };
   }
   confirmTransactions(transactions: FullyPreparedTransaction[]) {
     this.confirmRequest = { account: this.activeAccount, tokenTransfer: this.tokenTransfer, transactions };

@@ -2,17 +2,19 @@ import { Component, OnInit, HostListener } from '@angular/core';
 import { MessageService } from '../../services/message/message.service';
 import { BeaconService } from '../../services/beacon/beacon.service';
 import { WalletService } from '../../services/wallet/wallet.service';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { SlicePipe } from '@angular/common';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
-  styleUrls: ['./settings.component.scss']
+  styleUrls: ['../../../scss/components/settings/settings.component.scss']
 })
 export class SettingsComponent implements OnInit {
   implicitAccounts = [];
   wideAccounts = false;
+  activeAccount = null;
   constructor(
     public beaconService: BeaconService,
     private messageService: MessageService,
@@ -24,9 +26,11 @@ export class SettingsComponent implements OnInit {
       this.implicitAccounts = this.walletService.wallet.getImplicitAccounts();
       this.beaconService.syncBeaconState();
       this.onResize();
-    } else {
-      this.router.navigate(['']);
     }
+
+    this.walletService.activeAccount.subscribe(activeAccount => {
+      this.activeAccount = activeAccount;
+    });
   }
   accountAvailable(pkh: string): boolean {
     const index = this.implicitAccounts.findIndex((impAcc: any) => impAcc.pkh === pkh);

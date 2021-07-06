@@ -3,7 +3,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { of, Observable, from as fromPromise } from 'rxjs';
 import { catchError, flatMap, timeout } from 'rxjs/operators';
 import { Buffer } from 'buffer';
-import * as libs from 'libsodium-wrappers';
+import { blake2b } from 'blakejs';
+import { sign as naclSign } from 'tweetnacl';
 import * as Bs58check from 'bs58check';
 import * as bip39 from 'bip39';
 import Big from 'big.js';
@@ -644,11 +645,11 @@ export class OperationService {
     if (!seed) {
       throw new Error('NullSeed');
     }
-    const keyPair = libs.crypto_sign_seed_keypair(seed);
+    const keyPair = naclSign.keyPair.fromSeed(seed);
     return {
-      sk: this.b58cencode(keyPair.privateKey, this.prefix.edsk),
+      sk: this.b58cencode(keyPair.secretKey, this.prefix.edsk),
       pk: this.b58cencode(keyPair.publicKey, this.prefix.edpk),
-      pkh: this.b58cencode(libs.crypto_generichash(20, keyPair.publicKey), this.prefix.tz1)
+      pkh: this.b58cencode(blake2b(keyPair.publicKey, null, 20), this.prefix.tz1)
     };
   }
   mnemonic2seed(mnemonic: string, passphrase: string = '') {
@@ -677,10 +678,10 @@ export class OperationService {
   pk2pkh(pk: string): string {
     if (pk.length === 54 && pk.slice(0, 4) === 'edpk') {
       const pkDecoded = this.b58cdecode(pk, this.prefix.edpk);
-      return this.b58cencode(libs.crypto_generichash(20, pkDecoded), this.prefix.tz1);
+      return this.b58cencode(blake2b(pkDecoded, null, 20), this.prefix.tz1);
     } else if (pk.length === 55 && pk.slice(0, 4) === 'sppk') {
       const pkDecoded = this.b58cdecode(pk, this.prefix.edpk);
-      return this.b58cencode(libs.crypto_generichash(20, pkDecoded), this.prefix.tz2);
+      return this.b58cencode(blake2b(pkDecoded, null, 20), this.prefix.tz2);
     }
     throw new Error('Invalid public key');
   }
@@ -797,14 +798,14 @@ export class OperationService {
     return n;
   }
   ledgerPreHash(opbytes: string): string {
-    return this.buf2hex(libs.crypto_generichash(32, this.hex2buf(opbytes)));
+    return this.buf2hex(blake2b(this.hex2buf(opbytes), null, 32));
   }
   sign(bytes: string, sk: string): any {
     if (!['03', '05'].includes(bytes.slice(0, 2))) {
       throw new Error('Invalid prefix');
     }
     if (sk.slice(0, 4) === 'spsk') {
-      const hash = libs.crypto_generichash(32, this.hex2buf(bytes));
+      const hash = blake2b(this.hex2buf(bytes), null, 32);
       bytes = bytes.slice(2);
       const key = (new elliptic.ec('secp256k1')).keyFromPrivate(new Uint8Array(this.b58cdecode(sk, this.prefix.spsk)));
       let sig = key.sign(hash, { canonical: true });
@@ -821,9 +822,9 @@ export class OperationService {
         sbytes: sbytes,
       };
     } else {
-      const hash = libs.crypto_generichash(32, this.hex2buf(bytes));
+      const hash = blake2b(this.hex2buf(bytes), null, 32);
       bytes = bytes.slice(2);
-      const sig = libs.crypto_sign_detached(hash, this.b58cdecode(sk, this.prefix.edsk), 'uint8array');
+      const sig = naclSign.detached(hash, this.b58cdecode(sk, this.prefix.edsk));
       const edsig = this.b58cencode(sig, this.prefix.edsig);
       const sbytes = bytes + this.buf2hex(sig);
       return {
@@ -839,10 +840,10 @@ export class OperationService {
   }
   verify(bytes: string, sig: string, pk: string): Boolean {
     console.log('bytes', bytes);
-    const hash = libs.crypto_generichash(32, this.hex2buf(bytes));
+    const hash = blake2b(this.hex2buf(bytes), null, 32);
     const signature = this.b58cdecode(sig, this.prefix.edsig);
     const publicKey = this.b58cdecode(pk, this.prefix.edpk);
-    return libs.crypto_sign_verify_detached(signature, hash, publicKey);
+    return naclSign.detached.verify(signature, hash, publicKey);
   }
   sig2edsig(sig: string): any {
     return this.b58cencode(this.hex2buf(sig), this.prefix.edsig);

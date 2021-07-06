@@ -1,0 +1,18 @@
+<svg version="1.2" baseProfile="tiny-ps" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">
+	<title>1</title>
+	<style>
+		tspan { white-space:pre }
+		.shp0 { fill: #7178e3 } 
+	</style>
+	<g id="1">
+		<g id="Balance">
+			<g id="5">
+				<g id="Buttons">
+					<g id="2">
+						<path id="Icon" class="shp0" d="M8 0C9.1 0 10 0.9 10 2L10 14C10 15.1 9.1 16 8 16C6.9 16 6 15.1 6 14L6 2C6 0.9 6.9 0 8 0ZM2 6L14 6C15.1 6 16 6.9 16 8C16 9.1 15.1 10 14 10L2 10C0.9 10 0 9.1 0 8C0 6.9 0.9 6 2 6Z" />
+					</g>
+				</g>
+			</g>
+		</g>
+	</g>
+</svg>

@@ -1,15 +1,4 @@
-.main-container {
-    width: 100%;
-    min-height: 100%;
-    margin-left: 0;
-    margin-right: 0;
-    margin-top: 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding-bottom: 8rem;
-}
-#top-main-container {
-    min-height: 100%;
-    min-height: 100%;
+:host {
+  width: 100vw;
+  min-height: 100vh;
 }

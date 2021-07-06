@@ -1,0 +1,21 @@
+<div class="flex-column card">
+  <a routerLink="/"><button class="flex-row back"><img src="../../../../../assets/img/left-arrow.svg">BACK</button></a>
+  <div class="flex-column body">
+    <h1>Connect with your Ledger Nano S</h1>
+    <p class="description">Keep the private keys safely on your Ledger device and use Kukai to access the Tezos
+      blockchain.</p>
+    <p class="description">You need to open the Tezos Wallet app on your Ledger device and set the derivation path.</p>
+    <input type="text" class="text" [disabled]="!isHDDerivationPathCustom" [(ngModel)]="path"
+      value="'44\'/1729\'/0\'/0\''">
+    <div class="flex-row advanced">
+      <div class="flex-row switch-container">
+        <span>Use custom HD derivation path:&nbsp;</span>
+        <label class="switch">
+          <input type="checkbox" [(ngModel)]="isHDDerivationPathCustom" (click)="setDefaultPath()">
+          <span class="slider round"></span>
+        </label>
+      </div>
+    </div>
+    <button class="button next" (click)="getPk()">Connect</button>
+  </div>
+</div>

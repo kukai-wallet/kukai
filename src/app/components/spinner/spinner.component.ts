@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { MessageService } from '../../services/message/message.service';
+import { SubjectService } from '../../services/subject/subject.service';
 
 @Component({
   selector: 'app-spinner',
@@ -9,10 +10,13 @@ import { MessageService } from '../../services/message/message.service';
 export class SpinnerComponent implements OnInit {
   @Input() embedded: boolean;
   logo = 'default';
-  constructor(public messageService: MessageService) { }
+  constructor(
+    public messageService: MessageService,
+    private subjectService: SubjectService
+    ) { }
 
   ngOnInit(): void {
-    this.messageService.origin.subscribe((o) => {
+    this.subjectService.origin.subscribe((o) => {
       if (o.endsWith('truesy.com')) {
         this.logo = 'truesy';
       } else if (o.endsWith('playwithbrio.com')) {
