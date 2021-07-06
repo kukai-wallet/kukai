@@ -13,6 +13,11 @@
               (click)="toggleDropdown('.dropdown-content')">
               {{ account?.shortAddress() }}
             </a>
+            <ng-container *ngFor="let origAcc of account.originatedAccounts">
+              <a routerLink="/account/{{origAcc?.address}}" [class.selected]="origAcc?.address === activeAccount?.address">
+                {{ origAcc?.shortAddress() }}
+              </a>
+            </ng-container>
           </ng-container>
         </div>
       </div>
@@ -62,7 +67,7 @@
       src="../../../assets/img/down-arrow.svg" (click)="toggleDropdown('.mobile .dropdown .dropdown-content')" />
     <div class="flex-column dropdown-content">
       <ng-container *ngFor="let account of accounts">
-        <a routerLink="/settings" [class.selected]="account?.address === activeAccount?.address">
+        <a routerLink="/account/{{account?.address}}" [class.selected]="account?.address === activeAccount?.address">
           {{ account?.shortAddress() }}
         </a>
         <ng-container *ngFor="let origAcc of account.originatedAccounts">
