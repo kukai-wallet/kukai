@@ -305,7 +305,7 @@ export class EmbeddedComponent implements OnInit {
     return common.base58encode(utils.mnemonicToEntropy(utils.generateMnemonic(15)), new Uint8Array([]));
   }
   private logout(instanceId: string) {
-    this.coordinatorService.stopAll();
+    this.subjectService.logout.next(true);
     this.walletService.clearWallet(instanceId);
     this.lookupService.clear();
     this.activeAccount = null;

@@ -11,6 +11,7 @@ import Big from 'big.js';
 import { TokenService } from '../token/token.service';
 import { LookupService } from '../lookup/lookup.service';
 import { CONSTANTS } from '../../../environments/environment';
+import { SubjectService } from '../subject/subject.service';
 
 export interface ScheduleData {
   pkh: string;
@@ -41,8 +42,15 @@ export class CoordinatorService {
     private operationService: OperationService,
     private errorHandlingPipe: ErrorHandlingPipe,
     private tokenService: TokenService,
-    private lookupService: LookupService
-  ) {}
+    private lookupService: LookupService,
+    private subjectService: SubjectService
+  ) {
+    this.subjectService.logout.subscribe((o) => {
+      if (!!o) {
+        this.stopAll();
+      }
+    })
+  }
   startAll() {
     if (this.walletService.wallet) {
       this.accounts = this.walletService.wallet.getAccounts();

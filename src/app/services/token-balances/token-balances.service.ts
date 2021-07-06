@@ -31,7 +31,7 @@ enum UPDATE_TYPE {
 })
 export class TokenBalancesService {
   balances: TokenWithBalance[] = [];
-  nfts: ContractsWithBalance = {};
+  nfts: ContractsWithBalance = null;
   activeAccount: Account = null;
   lastMetadataUpdate = null;
   lastTokenBalanceUpdate = null;
@@ -60,8 +60,16 @@ export class TokenBalancesService {
       }
     });
     this.reload(UPDATE_TYPE.ACCOUNT_UPDATED);
+    this.subjectService.logout.subscribe((o) => {
+      if (!!o) {
+        this.destroy();
+      }
+    });
   }
-
+  destroy() {
+    this.balances = [];
+    this.nfts = null;
+  }
   resolveAsset(token, balances, nfts, _thumbnailsToCreate) {
     const asset = this.tokenService.getAsset(token.tokenId);
     if (asset) {

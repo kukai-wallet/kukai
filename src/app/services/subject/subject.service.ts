@@ -21,5 +21,6 @@ export class SubjectService {
   public prepareTokenTransfer = new Subject<PrepareTokenTransfer>();
   public origin = new Subject<string>();
   public beaconResponse = new Subject<boolean>();
+  public logout = new Subject<boolean>();
   constructor() { }
 }

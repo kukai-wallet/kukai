@@ -10,7 +10,7 @@
   </div>
   <div class="flex-column nfts">
     <ng-container
-      *ngIf="this.tokenBalancesService.nfts !== {} && Object.keys(this.tokenBalancesService.nfts).length > 0; else noTokens">
+      *ngIf="this.tokenBalancesService.nfts && Object.keys(this.tokenBalancesService.nfts).length > 0; else noTokens">
       <!-- loop through contracts -->
       <div [style.display]="filter !== 'ALL' ? '' : 'none'">
         <ng-container *ngFor="let key of Object.keys(this.tokenBalancesService.nfts); let i = index">
@@ -73,7 +73,7 @@
         </div>
       </div>
     </ng-container>
-    <ng-template #noTokens>
+    <ng-template #noTokens *ngIf="this.tokenBalancesService.nfts === {}">
       <ng-container *ngFor="let key of Object.keys(contractAliases); let i = index">
         <ng-container *ngIf="contractAliases[key]?.shouldDisplayLink">
           <div class="flex-column collection" [class]="filter === key ? 'expanded' : ''" [id]="key">

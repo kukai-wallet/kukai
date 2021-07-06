@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, ChangeDetectorRef, HostListener, SimpleChanges } from '@angular/core';
 import { Router, NavigationEnd, ActivatedRoute, NavigationStart } from '@angular/router';
 import { WalletService } from '../../services/wallet/wallet.service';
-import { CoordinatorService } from '../../services/coordinator/coordinator.service';
 import { Account, TorusWallet } from '../../services/wallet/wallet';
 import { LookupService } from '../../services/lookup/lookup.service';
 import { MessageService } from '../../services/message/message.service';
@@ -11,6 +10,7 @@ import copy from 'copy-to-clipboard';
 import { TranslateService } from '@ngx-translate/core';
 import { ModalComponent } from '../modal/modal.component';
 import { DelegateService } from '../../services/delegate/delegate.service';
+import { SubjectService } from '../../services/subject/subject.service';
 
 @Component({
   selector: 'app-header',
@@ -27,10 +27,10 @@ export class HeaderComponent implements OnInit {
     public router: Router,
     public walletService: WalletService,
     public lookupService: LookupService,
-    private coordinatorService: CoordinatorService,
     private messageService: MessageService,
     private translate: TranslateService,
-    private delegateService: DelegateService
+    private delegateService: DelegateService,
+    private subjectService: SubjectService
   ) { }
 
   ngOnInit(): void {
@@ -68,7 +68,7 @@ export class HeaderComponent implements OnInit {
   }
 
   logout() {
-    this.coordinatorService.stopAll();
+    this.subjectService.logout.next(true);
     this.messageService.clear();
     this.walletService.clearWallet();
     this.lookupService.clear();
