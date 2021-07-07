@@ -78,7 +78,7 @@
       </ng-container>
     </div>
   </div>
-  <div class="copy">
+  <div *ngIf="router.url.indexOf('/account/') !== 0" class="copy">
     <img class="button" src="../../../assets/img/copy.svg" (click)="copy()" />
   </div>
   <div class="hamburger-dropdown" (click)="toggleDropdown('.mobile .hamburger-dropdown .hamburger-dropdown-content')">
@@ -105,14 +105,14 @@
       </div>
     </div>
     <div *ngIf="router.url.indexOf('/account/') !== 0" class="flex-column mobile hamburger-dropdown-content">
-      <div class="flex-row button">
-        <span routerLink="/import/">Import Wallet</span>
+      <div routerLink="/import/" class="flex-row button">
+        <span>Import Wallet</span>
       </div>
-      <div class="flex-row button">
-        <span routerLink="/new-wallet/">Create New Wallet</span>
+      <div routerLink="/new-wallet/" class="flex-row button">
+        <span>Create New Wallet</span>
       </div>
-      <div class="flex-row button">
-        <span routerLink="/connect-ledger/">Connect Ledger</span>
+      <div routerLink="/connect-ledger/" class="flex-row button">
+        <span>Connect Ledger</span>
       </div>
     </div>
   </div>

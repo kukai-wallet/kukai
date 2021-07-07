@@ -32,7 +32,6 @@
               ]
             },
             "scripts": [
-              "node_modules/jquery/dist/jquery.min.js"
             ]
           },
           "configurations": {
@@ -102,7 +101,6 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.spec.json",
             "scripts": [
-              "node_modules/jquery/dist/jquery.min.js"
             ],
             "styles": [
               "src/scss/styles.scss"

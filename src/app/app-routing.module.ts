@@ -26,12 +26,9 @@ const routes: Routes = [
       { path: 'direct-auth', component: TorusComponent },
       {
         path: '', component: LoggedInComponent,
-        children: [
-          { path: 'account/:address', component: AccountViewComponent },
-          { path: 'account/:address/settings', component: SettingsComponent },
-          { path: 'account/:address/stakers', component: DelegatePageComponent },
-          { path: 'activate', component: ActivateComponent }
-        ]
+        loadChildren: () => import(`./components/logged-in/logged-in.module`).then(
+          module => module.LoggedInModule
+        )
       },
       { path: 'account/:address', component: AccountViewComponent },
       { path: 'privacy-policy', component: PrivacyPolicyComponent },

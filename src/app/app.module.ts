@@ -87,6 +87,7 @@ import { SpinnerLegacyComponent } from './components/spinner/legacy/spinner-lega
 import { SpinnerNewComponent } from './components/spinner/new/spinner-new.component';
 import { LoggedInComponent } from './components/logged-in/logged-in.component';
 import { ConfirmSendTemplateComponent } from './components/send/confirm-send-template/confirm-send-template.component';
+import { LoggedInModule } from './components/logged-in/logged-in.module';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -100,13 +101,13 @@ export function HttpLoaderFactory(http: HttpClient) {
     // View components
     NewWalletComponent,
     StartComponent,
-    SendComponent,
-    ReceiveComponent,
-    DelegatePageComponent,
+    // SendComponent,
+    // ReceiveComponent,
+    // DelegatePageComponent,
     MnemonicImportComponent,
-    ActivateComponent,
+    // ActivateComponent,
     MessagesComponent,
-    LoggedInComponent,
+    // LoggedInComponent,
     ModalComponent,
     HeaderComponent,
     P404Component,
@@ -119,34 +120,34 @@ export function HttpLoaderFactory(http: HttpClient) {
     NftsComponent,
     PendingComponent,
     BalancesComponent,
-    NewImplicitComponent,
+    // NewImplicitComponent,
     SpinnerComponent,
     AgreementComponent,
     TermsOfUseComponent,
     PrivacyPolicyComponent,
     TorusComponent,
-    UriHandlerComponent,
-    PermissionRequestComponent,
-    SettingsComponent,
-    QrScannerComponent,
+    // UriHandlerComponent,
+    // PermissionRequestComponent,
+    // SettingsComponent,
+    // QrScannerComponent,
     EmbeddedComponent,
     SigninComponent,
-    SignExprComponent,
+    // SignExprComponent,
     CardComponent,
-    PrepareSendComponent,
-    ConfirmSendComponent,
-    ConfirmSendTemplateComponent,
+    // PrepareSendComponent,
+    // ConfirmSendComponent,
+    // ConfirmSendTemplateComponent,
     TokenDetail,
-    OriginateComponent,
+    // OriginateComponent,
     SpinnerLegacyComponent,
     SpinnerNewComponent,
 
     // Modals
     ModalComponent,
     AlertComponent,
-    ConfirmSendComponent,
-    PrepareSendComponent,
-    DelegateComponent,
+    // ConfirmSendComponent,
+    // PrepareSendComponent,
+    // DelegateComponent,
 
     // Pipes
     ErrorHandlingPipe,
@@ -160,6 +161,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     FormsModule,
     AppRoutingModule,
     HttpClientModule,
+    LoggedInModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -183,11 +185,11 @@ export function HttpLoaderFactory(http: HttpClient) {
     DelegateService,
     InputValidationService,
     LedgerService,
-    EstimateService,
-    BeaconService,
+    // EstimateService,
+    // BeaconService,
     TorusService,
     EmbeddedAuthService,
-    TokenBalancesService,
+    // TokenBalancesService,
     SubjectService,
 
     // Pipes
