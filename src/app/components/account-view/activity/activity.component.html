@@ -10,7 +10,7 @@
     <ng-container *ngIf="!account.activities.length">
       <div class="line"><span>No transactions yet</span></div>
     </ng-container>
-    <ng-container *ngFor="let activity of account.activities | slice:0:5">
+    <ng-container *ngFor="let activity of account.activities | slice:0:5; trackBy: trackActivity">
       <ng-container [ngSwitch]="getType(activity)">
         <ng-template #CounterpartyRef let-myactivity>
           <span class="grey truncate-overflow">

@@ -25,12 +25,11 @@ const routes: Routes = [
       { path: 'connect-ledger', component: ConnectLedgerComponent },
       { path: 'direct-auth', component: TorusComponent },
       {
-        path: '', component: LoggedInComponent,
+        path: 'account', component: LoggedInComponent,
         loadChildren: () => import(`./components/logged-in/logged-in.module`).then(
           module => module.LoggedInModule
         )
       },
-      { path: 'account/:address', component: AccountViewComponent },
       { path: 'privacy-policy', component: PrivacyPolicyComponent },
       { path: 'terms-of-use', component: TermsOfUseComponent },
       { path: 'serviceworker', component: TermsOfUseComponent },

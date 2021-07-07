@@ -24,10 +24,10 @@ export class AppComponent implements OnInit {
     // this language will be used as a fallback when a translation isn't found in the current language
     translate.setDefaultLang('en');
 
-      // the lang to use, if the lang isn't available, it will use the current loader to get them
-      const languagePreference = window.localStorage.getItem('languagePreference');
-      const browserLang = translate.getBrowserLang();
-      translate.use('en');
+    // the lang to use, if the lang isn't available, it will use the current loader to get them
+    const languagePreference = window.localStorage.getItem('languagePreference');
+    const browserLang = translate.getBrowserLang();
+    translate.use('en');
   }
 
   ngOnInit() {
@@ -45,6 +45,15 @@ export class AppComponent implements OnInit {
       }
     });
     window.addEventListener('storage', (e) => { this.handleStorageEvent(e); });
+  }
+  trackKey(index: number, key: any) {
+    return key ? key : null;
+  }
+  trackToken(index: number, token: any) {
+    return token?.id ? token.contractAddress + ':' + token?.id : null;
+  }
+  trackActivity(index: number, activity: any) {
+    return activity.hash ? activity.hash : null;
   }
   private handleStorageEvent(e: StorageEvent) {
     if (e.key === 'kukai-wallet') {
