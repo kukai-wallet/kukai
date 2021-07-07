@@ -46,15 +46,6 @@ export class AppComponent implements OnInit {
     });
     window.addEventListener('storage', (e) => { this.handleStorageEvent(e); });
   }
-  trackKey(index: number, key: any) {
-    return key ? key : null;
-  }
-  trackToken(index: number, token: any) {
-    return token?.id ? token.contractAddress + ':' + token?.id : null;
-  }
-  trackActivity(index: number, activity: any) {
-    return activity.hash ? activity.hash : null;
-  }
   private handleStorageEvent(e: StorageEvent) {
     if (e.key === 'kukai-wallet') {
       if (e.oldValue && !e.newValue) {

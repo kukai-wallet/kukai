@@ -7,7 +7,6 @@ import { CONSTANTS } from '../../../../environments/environment';
 import { ModalComponent } from '../../modal/modal.component';
 import { WalletService } from '../../../services/wallet/wallet.service';
 import { TokenBalancesService } from '../../../services/token-balances/token-balances.service';
-import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-nfts',
@@ -30,32 +29,8 @@ export class NftsComponent implements OnInit, AfterViewInit {
   @Input() activity: any;
   @Input() account: Account;
   ngOnInit(): void {
-    // this.tokenBalancesService.tokenReload.pipe(debounceTime(200)).subscribe(() => {
-    //   const _nfts = this.tokenBalancesService.nfts;
-    //   if (this.Object.keys(_nfts)?.length > 0) {
-    //     let _filter = Object.keys(_nfts)?.reduce((stored, key) => (_nfts[key]?.tokens.length > _nfts[stored]?.tokens.length && _nfts[key]?.tokens.length > 9) ? key : stored);
-    //     this.filter = this.tokenBalancesService.nfts[_filter]?.tokens.length > 9 ? _filter : 'ALL';
-    //   }
-    // });
   }
   ngAfterViewInit() {
-    // var lazyImages = [].slice.call(document.querySelectorAll("img.lazy"));
-    // if ("IntersectionObserver" in window) {
-    //   let lazyImageObserver = new IntersectionObserver(function (entries, observer) {
-    //     entries.forEach(function (entry) {
-    //       if (entry.isIntersecting) {
-    //         let lazyImage: HTMLImageElement = entry.target as HTMLImageElement;
-    //         lazyImage.src = lazyImage.dataset.src;
-    //         lazyImage.srcset = lazyImage.dataset.srcset;
-    //         lazyImage.classList.remove("lazy");
-    //         lazyImageObserver.unobserve(lazyImage);
-    //       }
-    //     });
-    //   });
-    //   lazyImages.forEach(function (lazyImage) {
-    //     lazyImageObserver.observe(lazyImage);
-    //   });
-    // }
   }
   displayTokenCard(): boolean {
     return (this.account instanceof ImplicitAccount) || (this.account?.tokens?.length > 0);
@@ -68,5 +43,8 @@ export class NftsComponent implements OnInit, AfterViewInit {
   }
   viewToken(token) {
     ModalComponent.currentModel.next({ name: 'token-detail', data: token });
+  }
+  trackToken(index: number, token: any) {
+    return token?.id ? token.contractAddress + ':' + token?.id + ':' + token?.balance : null;
   }
 }

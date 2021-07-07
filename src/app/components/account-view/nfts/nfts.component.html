@@ -13,7 +13,7 @@
       *ngIf="this.tokenBalancesService.nfts && Object.keys(this.tokenBalancesService.nfts).length > 0; else noTokens">
       <!-- loop through contracts -->
       <div [style.display]="filter !== 'ALL' ? '' : 'none'">
-        <ng-container *ngFor="let key of Object.keys(this.tokenBalancesService.nfts); let i = index; trackBy: trackKey">
+        <ng-container *ngFor="let key of Object.keys(this.tokenBalancesService.nfts)">
           <div class="flex-column collection" [class]="filter === key ? 'expanded' : ''" [id]="key">
             <div class="flex-row head" (click)="toggleDropdown('#' + key)">
               <div class="flex-row left">
@@ -51,8 +51,8 @@
       </div>
       <div class="flex-column collection scroll" [style.display]="filter === 'ALL' ? '' : 'none'">
         <div class="flex-row body">
-          <ng-container *ngFor="let key of Object.keys(this.tokenBalancesService.nfts); trackBy: trackKey">
-            <ng-container *ngFor="let token of this.tokenBalancesService.nfts[key]?.tokens;trackBy: trackToken">
+          <ng-container *ngFor="let key of Object.keys(this.tokenBalancesService.nfts)">
+            <ng-container *ngFor="let token of this.tokenBalancesService.nfts[key]?.tokens; let i = index; trackBy: trackToken">
               <div class="flex-row token" (click)="viewToken(token)">
                 <div class="img-wrapper">
                   <img class="icon" [src]="token?.thumbnailUrl || token?.displayUrl" />
@@ -74,7 +74,7 @@
       </div>
     </ng-container>
     <ng-template #noTokens *ngIf="this.tokenBalancesService.nfts === {}">
-      <ng-container *ngFor="let key of Object.keys(contractAliases); let i = index; trackBy: trackKey">
+      <ng-container *ngFor="let key of Object.keys(contractAliases); let i = index">
         <ng-container *ngIf="contractAliases[key]?.shouldDisplayLink">
           <div class="flex-column collection" [class]="filter === key ? 'expanded' : ''" [id]="key">
             <div class="flex-row head">
