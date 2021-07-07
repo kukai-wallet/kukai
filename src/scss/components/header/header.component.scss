@@ -151,10 +151,9 @@
       & .icon-db {
         width: calc(2rem - 2px);
         height: calc(2rem - 2px);
-        padding: 0.5rem;
         position: absolute;
-        top: 5px;
-        right: calc(3rem + 2px);
+        top: 13px;
+        right: calc(3.5rem + 2px);
         background-color: v.$base-end-color;
         border-radius: v.$border-radius;
         transform: rotate(0deg);

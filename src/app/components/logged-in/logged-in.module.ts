@@ -27,7 +27,7 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 // import { InputValidationService } from '../../services/input-validation/input-validation.service';
 // import { LedgerService } from '../../services/ledger/ledger.service';
 import { EstimateService } from '../../services/estimate/estimate.service';
-import { BeaconService } from '../../services/beacon/beacon.service';
+// import { BeaconService } from '../../services/beacon/beacon.service';
 // import { TorusService } from '../../services/torus/torus.service';
 // import { EmbeddedAuthService } from '../../services/embedded-auth/embedded-auth.service';
 import { TokenBalancesService } from '../../services/token-balances/token-balances.service';
@@ -183,10 +183,9 @@ import { LoggedInRoutingModule } from './logged-in-routing.module';
     // InputValidationService,
     // LedgerService,
     EstimateService,
-    BeaconService,
     // TorusService,
     // EmbeddedAuthService,
-    TokenBalancesService,
+    // TokenBalancesService,
     // SubjectService,
 
     // // Pipes

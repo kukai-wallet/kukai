@@ -186,10 +186,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     InputValidationService,
     LedgerService,
     // EstimateService,
-    // BeaconService,
+    BeaconService,
     TorusService,
     EmbeddedAuthService,
-    // TokenBalancesService,
+    TokenBalancesService,
     SubjectService,
 
     // Pipes
