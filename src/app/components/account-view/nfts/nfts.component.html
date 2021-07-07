@@ -52,7 +52,8 @@
       <div class="flex-column collection scroll" [style.display]="filter === 'ALL' ? '' : 'none'">
         <div class="flex-row body">
           <ng-container *ngFor="let key of Object.keys(this.tokenBalancesService.nfts)">
-            <ng-container *ngFor="let token of this.tokenBalancesService.nfts[key]?.tokens; let i = index; trackBy: trackToken">
+            <ng-container
+              *ngFor="let token of this.tokenBalancesService.nfts[key]?.tokens; let i = index; trackBy: trackToken">
               <div class="flex-row token" (click)="viewToken(token)">
                 <div class="img-wrapper">
                   <img class="icon" [src]="token?.thumbnailUrl || token?.displayUrl" />
@@ -73,27 +74,29 @@
         </div>
       </div>
     </ng-container>
-    <ng-template #noTokens *ngIf="this.tokenBalancesService.nfts === {}">
-      <ng-container *ngFor="let key of Object.keys(contractAliases); let i = index">
-        <ng-container *ngIf="contractAliases[key]?.shouldDisplayLink">
-          <div class="flex-column collection" [class]="filter === key ? 'expanded' : ''" [id]="key">
-            <div class="flex-row head">
-              <div class="flex-row left">
-                <img class="icon" [src]="contractAliases[key]?.thumbnailUrl" />
-                <div class="title">{{ key }}</div>
-                <div class="count">{{ '0' }}</div>
+    <ng-template #noTokens>
+      <ng-container *ngIf="this.tokenBalancesService.nfts !== null">
+        <ng-container *ngFor="let key of Object.keys(contractAliases); let i = index">
+          <ng-container *ngIf="contractAliases[key]?.shouldDisplayLink">
+            <div class="flex-column collection" [class]="filter === key ? 'expanded' : ''" [id]="key">
+              <div class="flex-row head">
+                <div class="flex-row left">
+                  <img class="icon" [src]="contractAliases[key]?.thumbnailUrl" />
+                  <div class="title">{{ key }}</div>
+                  <div class="count">{{ '0' }}</div>
+                </div>
+                <div class="flex-row right">
+                  <a [href]="contractAliases[key]?.link || '/'" target="_blank" class="link-to-app">
+                    <button class="flex-row button">GO TO APP</button>
+                  </a>
+                </div>
               </div>
-              <div class="flex-row right">
-                <a [href]="contractAliases[key]?.link || '/'" target="_blank" class="link-to-app">
-                  <button class="flex-row button">GO TO APP</button>
-                </a>
+              <div class="flex-column scroll">
+                <div class="flex-row body">
+                </div>
               </div>
             </div>
-            <div class="flex-column scroll">
-              <div class="flex-row body">
-              </div>
-            </div>
-          </div>
+          </ng-container>
         </ng-container>
       </ng-container>
     </ng-template>
