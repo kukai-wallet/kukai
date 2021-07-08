@@ -2,7 +2,7 @@
   <div class="content">
     <div class="flex-column top">
       <img class="flex-row button close" (click)="closeModalAction()" src="../../../assets/img/close.svg" />
-      <h1 class="title">{{ getTitle() }}</h1>
+      <h1 class="title">{{ !tokenBalancesService.isNFT(token) ? getTitle() : 'Send Token'}}</h1>
     </div>
     <div class="flex-column prepare-send">
       <!-- Single transaction -->
@@ -25,7 +25,7 @@
           <span *ngIf="!tokenTransfer" class="amount-usd">
             <span>USD:&nbsp;</span>{{ getTotalAmount() * walletService.wallet.XTZrate | number:'1.0-2' || '0.00' }}
           </span>
-          <span class="amount-fee"><span>FEE{{ getTotalBurn() > 0 ? ' & STORAGE COST' : ''}}:&nbsp;</span>{{ getTotalCost() != 0 ? (getTotalCost() | number:'1.0-6') + ' tez' : '--'
+          <span class="amount-fee"><span>FEE{{ getTotalBurn() > 0 ? ' & STORAGE COST' : ''}}:&nbsp;</span><img *ngIf="simSemaphore" src="../../../../assets/img/feeLoader.gif">{{ getTotalCost() != 0 ? (getTotalCost() | number:'1.0-6') + ' tez' : '--'
             }}</span>
         </div>
       </div>
@@ -66,7 +66,7 @@
             <input type="text" placeholder="Recipient" class="text" (input)="updateDefaultValues($event)"
               (change)="toPkhChange()" [(ngModel)]="toPkh">
             <span class="label" *ngIf="!torusPendingLookup && torusLookupAddress">{{ torusLookupAddress }}</span><span
-              class="label" *ngIf="torusPendingLookup">Loading address...</span>
+              class="label" *ngIf="torusPendingLookup"><img src="../../../../assets/img/feeLoader.gif"></span>
           </div>
         </div>
         <div *ngIf="this.isMultipleDestinations" class="flex-column">

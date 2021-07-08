@@ -9,7 +9,7 @@
         <ng-container *ngIf="isShowingCustom">
           <span>Address or domain of a registered baker</span>
           <div class="custom">
-            <input [(ngModel)]="customAddress" /><button class="button"
+            <input [(ngModel)]="customAddress" /><button [disabled]="customAddress.indexOf('tz') !== 0" class="button"
               (click)="stake({address: customAddress})">STAKE</button>
           </div>
         </ng-container>

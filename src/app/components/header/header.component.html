@@ -1,5 +1,5 @@
 <div class="flex-row top-container desktop" [class]="router.url.indexOf('/account') === 0 ? 'default' : ''">
-  <a class="flex-row brand-logo">
+  <a routerLink="/" class="flex-row brand-logo">
     <div class="icon">Ku</div>
     <div class="title">Kukai</div>
   </a>
@@ -24,9 +24,9 @@
       <div class="delegation">
         <div class="flex-row outside-container" *ngIf="!beaconMode">
           <div class="flex-row" routerLink="/account/{{activeAccount?.address}}/stakers">
-            <span *ngIf="!activeAccount?.delegate">STAKER: <span class="choose">NOT
+            <span *ngIf="!activeAccount?.delegate">STAKING: <span class="choose">NOT
                 STAKED</span></span>
-            <span *ngIf="activeAccount?.delegate" class="address">STAKER: {{ delegateName }}</span><span
+            <span *ngIf="activeAccount?.delegate" class="address">STAKING: {{ delegateName }}</span><span
               *ngIf="activeAccount?.delegate" class="change">&nbsp;(Change)</span>
           </div>
         </div>
@@ -58,7 +58,7 @@
   </div>
 </div>
 <div class="flex-row top-container mobile" [class]="router.url === '/account/' ? 'default' : ''">
-  <a routerLink="/accounts" class="flex-row brand-logo">
+  <a routerLink="/" class="flex-row brand-logo">
     <div class="icon">Ku</div>
     <div class="title">Kukai</div>
   </a>
@@ -86,11 +86,11 @@
     <div *ngIf="router.url.indexOf('/account/') === 0" class="flex-column mobile hamburger-dropdown-content">
       <div class="flex-row button delegation" routerLink="/account/{{activeAccount?.address}}/stakers">
         <div *ngIf="!activeAccount?.delegate" class="flex-row">
-          <span class="flex-row">STAKER:</span><span class="choose">NOT
-            STAKED</span>
+          <span class="flex-row">STAKING:</span><span class="choose">NOT
+            STAKING</span>
         </div>
         <div *ngIf="activeAccount?.delegate" class="flex-row">
-          <span class="flex-row address">STAKER: {{ activeAccount.delegate
+          <span class="flex-row address">STAKING: {{ activeAccount.delegate
             }}</span><span *ngIf="activeAccount?.delegate">(Change)</span>
         </div>
       </div>

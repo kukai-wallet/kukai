@@ -31,21 +31,21 @@
       <ng-container *ngIf="!getDelegate()" class="preview">
         <span>Withdraw delegation</span>
       </ng-container>
-    </div>
-    <div class="seperator"></div>
-    <div class="bottom">
-      <div class="label">ENTER YOUR PASSWORD TO CONFIRM</div>
-      <input *ngIf="!walletService.isLedgerWallet() && !walletService.isTorusWallet()" [(ngModel)]="password"
-        placeholder="Password" autocomplete="current-password" class="text password" type="password"
-        (input)="this.pwdValid = ''" (change)="this.pwdValid = ''" (keydown.enter)='inject()'>
-      <button *ngIf="walletService.isLedgerWallet() && ledgerError; else elseBlock" class="confirm"
-        (click)="ledgerSign()">Sign with Ledger</button>
-      <ng-template #elseBlock>
-        <button class="confirm" (click)="inject()"
-          [disabled]="walletService.isLedgerWallet() && (!sendResponse || !sendResponse.payload || !sendResponse.payload.signedOperation)">
-          {{ walletService.isLedgerWallet() ? 'Broadcast' : 'Confirm'}}</button>
-      </ng-template>
-      <span *ngIf="this.pwdValid" class="danger margin">{{ this.pwdValid }}</span>
+      <div class="seperator"></div>
+      <div class="flex-column bottom">
+        <div class="label">ENTER YOUR PASSWORD TO CONFIRM</div>
+        <input *ngIf="!walletService.isLedgerWallet() && !walletService.isTorusWallet()" [(ngModel)]="password"
+          placeholder="Password" autocomplete="current-password" class="text password" type="password"
+          (input)="this.pwdValid = ''" (change)="this.pwdValid = ''" (keydown.enter)='inject()'>
+        <button *ngIf="walletService.isLedgerWallet() && ledgerError; else elseBlock" class="confirm"
+          (click)="ledgerSign()">Sign with Ledger</button>
+        <ng-template #elseBlock>
+          <span *ngIf="this.pwdValid" class="label danger">{{ this.pwdValid }}</span>
+          <button class="confirm" (click)="inject()"
+            [disabled]="walletService.isLedgerWallet() && (!sendResponse || !sendResponse.payload || !sendResponse.payload.signedOperation)">
+            {{ walletService.isLedgerWallet() ? 'Broadcast' : 'Confirm'}}</button>
+        </ng-template>
+      </div>
     </div>
   </div>
 </div>

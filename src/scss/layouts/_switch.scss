@@ -42,7 +42,7 @@
         right: 0;
         bottom: 0;
         background-color: v.$base-end-color;
-        border: 2px solid v.$border-color;
+        border: 2px solid v.$advanced-color;
         transition: 0.4s;
 
         &.round {
@@ -67,9 +67,9 @@
       margin: 0;
       font-weight: 500;
       &.key {
-        color: v.$base-color-lightened-4 !important;
+        color: v.$advanced-color !important;
         &.active {
-          color: v.$base-font-color !important;
+          color: v.$advanced-color !important;
         }
       }
 

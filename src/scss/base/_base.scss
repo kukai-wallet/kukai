@@ -82,7 +82,9 @@ body {
 
 input {
   text-align: left;
+  height: 4rem;
   padding: 0 0 0 2rem;
+  border-radius: v.$border-radius-hard;
 }
 
 textarea {

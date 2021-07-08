@@ -6,26 +6,28 @@
     </div>
     <div class="flex-column confirm-send">
       <div class="flex-row top">
-        <span *ngIf="!tokenBalanceService.isNFT(token)" class="key">AMOUNT TO SEND:</span>
         <div class="flex-column left">
+          <span *ngIf="!tokenBalanceService.isNFT(token)" class="key">AMOUNT TO SEND:</span>
           <img class="token-image"
             [src]="token?.thumbnailUrl || token?.displayUrl || '../../../assets/img/tezos-xtz-logo.svg'"
-            [style.object-fit]="token?.displayUrl?.indexOf('.svg') === -1 || token?.thumbnailUrl?.indexOf('.svg') === -1 ? 'cover' : 'scale-down'" />
+            [style.object-fit]="token?.displayUrl?.indexOf('.svg') === -1 || token?.thumbnailUrl?.indexOf('.svg') === -1 ? 'cover' : 'scale-down'"
+            [class.balance]="!tokenBalanceService.isNFT(token)">
         </div>
         <div class="flex-column right">
           <span class="amount-tez value">{{ formatAmount(token, totalAmount(),
             false)
             }}</span>
           <div class="flex-column">
-            <ng-container *ngIf="!tokenTransfer"><span class="amount-usd key">USD: <span class="value">{{ totalAmount()
+            <ng-container *ngIf="!tokenTransfer"><span class="amount-usd key">USD: <span class="value">{{'$' +
+                  (totalAmount()
                   *
-                  walletService.wallet.XTZrate | number:'1.0-2'
+                  walletService.wallet.XTZrate | number:'1.0-2')
                   }}</span></span>
             </ng-container>
             <span *ngIf="tokenBalanceService.isNFT(token)" class="amount-quantity key">QUANTITY:&nbsp;&nbsp;<span
                 class="value">{{ getQuantity(totalAmount())
                 }}</span></span>
-            <span class="key">FEE:&nbsp;&nbsp;<span class="value">{{ getTotalFee() | number:'1.0-6'
+            <span class="key">FEE:&nbsp;&nbsp;<span class="value">{{ (getTotalFee() | number:'1.0-6') + ' tez'
                 }}</span></span>
             <span *ngIf="totalBurn > 0" class="key">STORAGE COST:&nbsp;<span class="value">{{ (totalBurn |
                 number:'1.0-6') + ' tez'
@@ -57,77 +59,21 @@
             <span *ngIf="transaction?.meta && transaction.meta?.verifier" class="flex-row torus-to value"><img
                 src="../../../assets/img/{{ transaction.meta.verifier }}-logo.svg" class="icon">
               {{ transaction.meta?.alias }}</span>
-            <span class="flex-row single-to" [class.selectable]="transactions.length > 1 && parameters" [class.active]="batchParamIndex === i && transactions.length > 1 && parameters"><span style="width: 19.5rem;">{{
+            <span class="flex-row single-to" [class.selectable]="transactions.length > 1 && parameters"
+              [class.active]="batchParamIndex === i && transactions.length > 1 && parameters"><span
+                style="width: 34rem; font-family: 'Roboto Mono';">{{
                 transaction?.destination
-                }}</span><span *ngIf="parameters" style="width: 3.5rem;">{{ (transaction.amount | number:'1.0-6') }}</span></span>
+                }}</span><span *ngIf="parameters" style="width: 3.5rem;">{{ (transaction.amount | number:'1.0-6')
+                }}</span></span>
             <p class="previewAttention" *ngIf="tokenTransfer && transaction?.destination.slice(0, 3) === 'KT1'">
               Warning:
               Verify the contract can manage tokens</p>
           </div>
         </div>
-        <!-- <div *ngIf="transactions.length > 1" class="flex-column right">
-          <ng-container *ngIf="(transactions.length > 1)">
-            <table>
-              <thead>
-                <tr>
-                  <th scope="col">{{ 'SENDCOMPONENT.TO' | translate }}</th>
-                  <th scope="col">{{ 'SENDCOMPONENT.AMOUNT' | translate }}</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let transaction of transactions; index as i">
-                  <ng-container *ngIf="i < 3 || showFullBatch">
-                    <td><span *ngIf="transaction.storageLimit !== '0'">*</span>{{ transaction.destination }}</td>
-                    <td class="txAmount">{{ transaction.amount | number:'1.0-6' }}</td>
-                  </ng-container>
-                </tr>
-              </tbody>
-            </table>
-            <button style="margin-left: auto; margin: 0.5rem 0 1rem; height: 1.5rem;" *ngIf='transactions.length > 3'
-              type="button" class="small" aria-label="More" (click)="showFullBatch = !showFullBatch">
-              <span aria-hidden="true" *ngIf="!showFullBatch">Show all</span>
-              <span aria-hidden="true" *ngIf="showFullBatch">Show less</span>
-            </button>
-          </ng-container>
-          <ng-container *ngIf="batchParameters.length > 1">
-            <div class="simple-tabs" *ngIf="batchParameters.length <= 5">
-              <ul class="tabs">
-                <ng-container *ngFor="let params of batchParameters; let i = index">
-                  <li class="tab" [class.active]="batchParamIndex === i"
-                    (click)="updateParameters(i, params.parameters)">
-                    <ng-container *ngIf="batchParameters.length <= 3">Operation</ng-container>
-                    <ng-container *ngIf="batchParameters.length > 3">Tx</ng-container>&nbsp;{{ params.num }}
-                  </li>
-                </ng-container>
-                <li class="tab rest"></li>
-              </ul>
-            </div>
-            <select *ngIf="batchParameters.length > 5" class="select-css parameters" [(ngModel)]="batchParamIndex"
-              (ngModelChange)="updateParameters(batchParamIndex, batchParameters[batchParamIndex].parameters)">
-              <option *ngFor="let params of batchParameters; let i = index" value="{{i}}">
-                Operation {{params.num}}</option>
-            </select>
-          </ng-container>
-          <ng-container *ngIf="batchParameters.length">
-            <div *ngIf="parameters.entrypoint && batchParameters.length" class="preview-row">
-              <span class="preview">
-                Contract call
-              </span>
-              <span>{{ parameters.entrypoint }}</span>
-            </div>
-            <div class="tabs-container">
-              <ul class="tabs">
-                <li class="tab" [class.active]="parametersFormat === 0" (click)="setParametersFormat(0)">Micheline</li>
-                <li class="tab" [class.active]="parametersFormat === 1" (click)="setParametersFormat(1)">JSON</li>
-              </ul>
-            </div>
-            <textarea *ngIf="batchParameters.length" style="width: 100%; font-size: 0.875rem" rows="10"
-              readonly>{{ parametersTextboxDisplay() }}</textarea>
-          </ng-container>
-        </div> -->
       </div>
-      <br/>
-      <div *ngIf="parameters" class="key">{{transactions.length === 1 ? 'CONTRACT CALL' + ' ' + transaction[0].entrypoint : 'MULTIPLE CONTRACT CALLS'}}</div>
+      <br />
+      <div *ngIf="parameters" class="key">{{transactions.length === 1 ? 'CONTRACT CALL' + ' ' +
+        transaction[0].entrypoint : 'MULTIPLE CONTRACT CALLS'}}</div>
       <div class="flex-row advanced" *ngIf="this.parameters">
         <div class="flex-row switch-container">
           <span class="value">Advanced:&nbsp;&nbsp;<span class="key">{{ advancedForm ? ' ON' : 'OFF'
@@ -152,21 +98,19 @@
           <div class="flex-row">
             <div class="flex-column">
               <label class="label">Gas limit</label>
-              <input type="text" class="text" [placeholder]="transactions[0].gasLimit || '0'"
-                (input)="getTotalBurn()" [(ngModel)]="customGasLimit">
+              <input type="text" class="text" [placeholder]="transactions[0].gasLimit || '0'" (input)="getTotalBurn()"
+                [(ngModel)]="customGasLimit">
             </div>
             <div class="flex-column">
               <label class="label">Fee</label>
-              <input type="text" class="text" (input)="getTotalBurn()"
-                [placeholder]="getTotalFee() || '0'"
+              <input type="text" class="text" (input)="getTotalBurn()" [placeholder]="getTotalFee() || '0'"
                 [(ngModel)]="customFee">
             </div>
           </div>
           <div class="flex-row">
             <div class="flex-column">
               <label class="label">Storage limit</label>
-              <input type="text" class="text" (input)="getTotalBurn()"
-                [placeholder]="customStorageLimit || '0'"
+              <input type="text" class="text" (input)="getTotalBurn()" [placeholder]="customStorageLimit || '0'"
                 [(ngModel)]="customStorageLimit">
             </div>
             <div class="flex-column">

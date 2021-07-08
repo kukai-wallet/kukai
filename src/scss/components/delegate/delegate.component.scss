@@ -4,23 +4,6 @@
   background-color: #fff;
   align-items: center;
 
-  & .back {
-    background-color: v.$base-background-color;
-    border: 2px solid v.$base-color-lightened-4;
-    border-radius: v.$border-radius-hardest;
-    color: v.$base-font-color;
-    font-size: 1.25rem;
-    padding: 0.25rem 1rem;
-    height: 4rem;
-    width: 7rem;
-
-    & img {
-      width: 1rem;
-      height: 1.5rem;
-      object-fit: cover;
-    }
-  }
-
   & input {
     height: 2rem;
     border: 1px solid v.$base-color-lightened-4;
@@ -85,11 +68,23 @@
         & a {
           position: absolute;
           top: 1rem;
-          left: -22rem;
+          left: -1.5rem;
           width: 8rem;
 
           & button {
             width: 100%;
+
+            &.back {
+              background-color: v.$base-end-color;
+              border: 2px solid v.$base-color-lightened-4;
+              border-radius: v.$border-radius-hardest;
+              color: v.$base-font-color;
+              width: 7rem;
+              font-size: 1.25rem;
+              padding: 0.5rem 1rem;
+              width: 7rem;
+              margin: 1.5rem 0rem 1.5rem 1rem;
+            }
           }
         }
 

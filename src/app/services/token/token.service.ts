@@ -255,7 +255,10 @@ export class TokenService {
       if (token) {
         if ((!token.shouldPreferSymbol && token.name) || !token.symbol) {
           if (token.isBooleanAmount) {
-            return `1 ${token.name}`;
+            if(parseInt(amount) > 1) {
+              return `${amount} ${token.name}`;
+            }
+            return `${token.name}`;
           } else {
             return `${Big(amount).div(10 ** (baseUnit ? token.decimals : 0)).toFixed()} ${token.name}`;
           }

@@ -50,7 +50,7 @@
       input.text,
       input[type=password],
       .input-file {
-        border-radius: v.$border-radius-hard;
+        border-radius: v.$border-radius-hardest;
         border: 2px solid v.$base-color-lightened-3;
         padding: 1rem;
         width: 100%;
@@ -63,6 +63,7 @@
 
       & textarea {
         height: 12rem;
+        border-radius: v.$border-radius-hard;
       }
 
       & .seed-word {

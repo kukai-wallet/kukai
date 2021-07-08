@@ -13,8 +13,8 @@
       </p>
       <input #keyStore type="file" (change)="handleFileInput($event.target.files)"
         accept=".tez{{ firefox ? ', application/json' : '' }}" id="file" name="file">
-      <div class="flex-row input-file-wrapper">
-        <label for="file" class="flex-row input-file" [class.loaded]="walletJson"
+      <div class="flex-row button input-file-wrapper">
+        <label for="file" class="flex-row button input-file" [class.loaded]="walletJson"
           (click)="keyStore?.nativeElement?.click();"><span *ngIf="walletJson">{{ fileName
             }}:&nbsp;</span><span><b>Browse</b></span></label>
       </div>

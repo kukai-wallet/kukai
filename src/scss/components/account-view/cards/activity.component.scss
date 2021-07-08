@@ -34,7 +34,6 @@
     padding: 1rem 2rem 1rem 2rem;
     border-radius: v.$border-radius;
     background-color: transparent;
-    box-shadow: v.$box-shadow;
 
     &>img {
       padding-bottom: 1.125rem;
@@ -74,7 +73,7 @@
     }
 
     &.confirmed {
-      background-color: v.$base-color-lightened-7;
+      background-color: v.$base-color-lightened-6;
     }
 
     &.new {

@@ -88,6 +88,10 @@
     & .key {
       color: v.$base-font-color-secondary;
       text-transform: uppercase;
+
+      & .value {
+        text-transform: unset;
+      }
     }
 
     & .value {
@@ -121,7 +125,7 @@
 
     & .meta-more {
       width: 100%;
-      height: 100%;
+      height: auto;
       max-height: 0;
       transition: 0.15s max-height;
       overflow: auto;
@@ -130,7 +134,7 @@
     & .token-info {
       height: calc(100% - 11rem);
       margin: 2rem 0 0 0;
-      max-width: 48rem;
+      max-width: 50rem;
 
       & .data {
         justify-content: flex-start;
@@ -196,7 +200,11 @@
           justify-content: space-between;
           margin: 0 0 0 1rem;
 
-          & .top {}
+          & .top {
+            & .desc .value {
+              max-height: 51%;
+            }
+          }
 
           & .bottom {}
         }
@@ -213,12 +221,13 @@
       & .head {
         height: 6rem;
         margin: 1rem 0;
-        padding: 1rem;
+        padding: 2rem;
         background-color: v.$base-color-lightened-5;
         border-radius: v.$border-radius;
 
         & img {
-          height: 6rem;
+          width: 5rem;
+          height: 5rem;
         }
 
         & .data {
@@ -257,6 +266,19 @@
               }
             }
           }
+        }
+      }
+
+      & .bottom {
+        & .text.password {
+          width: calc(100% - 2.5rem);
+          margin: 0 0 1rem 0;
+        }
+
+        & span.label.danger {
+          color: v.$base-red-color;
+          font-weight: 500;
+          margin: 0 1rem 1rem 1rem;
         }
       }
     }
@@ -391,6 +413,7 @@
       & .bottom {
         align-items: center;
         width: 100%;
+
         & button.confirm {
           width: 75%;
         }
@@ -466,7 +489,7 @@
           overflow: hidden;
           width: calc(100% + 1px);
           top: 3.78rem;
-          box-shadow: v.$box-shadow;
+          box-shadow: v.$box-shadow-dark;
 
           &.right {
             margin-top: -1.1rem;
@@ -548,10 +571,12 @@
           margin: 0 0 2rem 0;
 
           & img {
-            width: 8rem;
-            height: 8rem;
+            width: 10rem;
+            height: 10rem;
             object-fit: cover;
-            object-position: center;
+            background-color: v.$base-end-color;
+            border-radius: v.$border-radius;
+            box-shadow: v.$box-shadow-dark;
           }
 
           & .title {
@@ -709,6 +734,7 @@
         background-color: v.$base-color-lightened-7;
         border-radius: v.$border-radius;
         height: auto;
+        padding: 2rem;
 
         & .key {
           width: 100%;
@@ -723,12 +749,20 @@
         }
 
         & .token-image {
-          width: 100%;
-          height: 100%;
+          width: 10rem;
+          height: 10rem;
           object-fit: cover;
           background-color: v.$base-end-color;
           border-radius: v.$border-radius;
-          box-shadow: v.$box-shadow;
+          box-shadow: v.$box-shadow-dark;
+
+          &.balance {
+            width: 3rem;
+            height: 3rem;
+            box-shadow: unset;
+            border-radius: v.$border-radius-hard;
+            border: 2px solid v.$base-color-lightened-5;
+          }
         }
 
         & .bottom {
@@ -741,19 +775,25 @@
         }
 
         & .left {
-          width: 8rem;
-          height: 8rem;
+          width: 30%;
+          height: auto;
           justify-content: space-between;
           align-items: center;
+
+          & .key {
+            text-align: center;
+            color: #333;
+            margin: 0.35rem 0 1rem 0;
+          }
         }
 
         & .right {
-          width: calc(100% - 9rem);
+          width: 67%;
           height: 100%;
           justify-content: flex-start;
 
           & .amount-tez {
-            margin: 0 0 0.5rem 0;
+            margin: 0 0 1rem 0;
             padding: 0 0 0.5rem 0;
             font-size: 1.5rem;
             font-weight: 600;
@@ -768,7 +808,7 @@
 
       & .from {
         margin-top: 1rem;
-        padding: 1rem 2rem 1rem 0;
+        padding: 1rem 2rem;
 
         & .left {
           width: 30%;
@@ -801,7 +841,7 @@
           border-bottom: 3px solid v.$border-color;
 
           &:first-child {
-            width: 5%;
+            width: 12.5%;
           }
 
           &:last-child {
@@ -818,11 +858,10 @@
       }
 
       & .to {
-        padding: 2rem 2rem 2rem 0;
-        margin: 1rem 0 0 0;
+        padding: 2rem;
+        margin: 2rem 0 0 0;
         align-items: flex-start;
         background-color: #7178e333;
-        width: 48rem;
 
         & .left {
           width: 30%;
@@ -856,6 +895,9 @@
             justify-content: flex-start;
             font-size: 1.5rem;
             font-weight: 500;
+            position: relative;
+            left: -2.55rem;
+            top: 0;
 
             & .icon {
               object-fit: unset;
