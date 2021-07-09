@@ -5,22 +5,7 @@
   </a>
   <div *ngIf="router.url.indexOf('/account/') === 0" class="flex-row right">
     <div class="flex-column left">
-      <div class="flex-row dropdown"><input [placeholder]="activeAccount?.shortAddress()" /><img class="button icon-db"
-          src="../../../assets/img/down-arrow.svg" (click)="toggleDropdown('.dropdown-content')" />
-        <div class="flex-column dropdown-content">
-          <ng-container *ngFor="let account of accounts">
-            <a routerLink="/account/{{account?.address}}" [class.selected]="account?.address === activeAccount?.address"
-              (click)="toggleDropdown('.dropdown-content')">
-              {{ account?.shortAddress() }}
-            </a>
-            <ng-container *ngFor="let origAcc of account.originatedAccounts">
-              <a routerLink="/account/{{origAcc?.address}}" [class.selected]="origAcc?.address === activeAccount?.address">
-                {{ origAcc?.shortAddress() }}
-              </a>
-            </ng-container>
-          </ng-container>
-        </div>
-      </div>
+      <app-ui-dropdown-account [list]="accounts" [current]="activeAccount"></app-ui-dropdown-account>
       <div class="delegation">
         <div class="flex-row outside-container" *ngIf="!beaconMode">
           <div class="flex-row" routerLink="/account/{{activeAccount?.address}}/stakers">
@@ -50,10 +35,14 @@
   </div>
   <div *ngIf="router.url.indexOf('/account/') !== 0" class="flex-row right">
     <div class="right">
-      <span *ngIf="router.url.indexOf('/import') === 0 || router.url === '/'" routerLink="/import/" class="button" [class.selected]="router.url.indexOf('/import') === 0">Import Wallet</span>
-      <span *ngIf="router.url.indexOf('/new-wallet') === 0 || router.url === '/'" routerLink="/new-wallet/" class="button" [class.selected]="router.url.indexOf('/new-wallet') === 0">Create New Wallet</span>
-      <span *ngIf="router.url.indexOf('/connect-ledger') === 0 || router.url === '/'" routerLink="/connect-ledger/" class="button" [class.selected]="router.url.indexOf('/connect-ledger') === 0">Connect Ledger</span>
-      <span *ngIf="router.url.indexOf('/activate') === 0" routerLink="/activate/" class="button" [class.selected]="router.url.indexOf('/activate') === 0">Activate</span>
+      <span *ngIf="router.url.indexOf('/import') === 0 || router.url === '/'" routerLink="/import/" class="button"
+        [class.selected]="router.url.indexOf('/import') === 0">Import Wallet</span>
+      <span *ngIf="router.url.indexOf('/new-wallet') === 0 || router.url === '/'" routerLink="/new-wallet/"
+        class="button" [class.selected]="router.url.indexOf('/new-wallet') === 0">Create New Wallet</span>
+      <span *ngIf="router.url.indexOf('/connect-ledger') === 0 || router.url === '/'" routerLink="/connect-ledger/"
+        class="button" [class.selected]="router.url.indexOf('/connect-ledger') === 0">Connect Ledger</span>
+      <span *ngIf="router.url.indexOf('/activate') === 0" routerLink="/activate/" class="button"
+        [class.selected]="router.url.indexOf('/activate') === 0">Activate</span>
     </div>
   </div>
 </div>
@@ -62,22 +51,7 @@
     <div class="icon">Ku</div>
     <div class="title">Kukai</div>
   </a>
-  <div *ngIf="router.url.indexOf('/account/') > -1" class="flex-row dropdown"><input
-      [placeholder]="activeAccount?.shortAddress()" /><img class="button icon-db"
-      src="../../../assets/img/down-arrow.svg" (click)="toggleDropdown('.mobile .dropdown .dropdown-content')" />
-    <div class="flex-column dropdown-content">
-      <ng-container *ngFor="let account of accounts">
-        <a routerLink="/account/{{account?.address}}" [class.selected]="account?.address === activeAccount?.address">
-          {{ account?.shortAddress() }}
-        </a>
-        <ng-container *ngFor="let origAcc of account.originatedAccounts">
-          <a routerLink="/account/{{origAcc?.address}}" [class.selected]="origAcc?.address === activeAccount?.address">
-            {{ origAcc?.shortAddress() }}
-          </a>
-        </ng-container>
-      </ng-container>
-    </div>
-  </div>
+  <app-ui-dropdown-account [list]="accounts" [current]="activeAccount"></app-ui-dropdown-account>
   <div *ngIf="router.url.indexOf('/account/') !== 0" class="copy">
     <img class="button" src="../../../assets/img/copy.svg" (click)="copy()" />
   </div>

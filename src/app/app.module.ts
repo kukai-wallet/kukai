@@ -61,9 +61,12 @@ import { TokenDetail } from './components/modal/send/detail/token-detail.compone
 import { AlertComponent } from './components/modal/alert/alert.component';
 import { SpinnerLegacyComponent } from './components/spinner/legacy/spinner-legacy.component';
 import { SpinnerNewComponent } from './components/spinner/new/spinner-new.component';
-import { LoggedInModule } from './components/logged-in/logged-in.module';
+import { AccountDropdownComponent } from './components/ui/dropdown/account/account-dropdown.component';
 import { P404Component } from './views/error/404.component';
 import { P500Component } from './views/error/500.component';
+
+// Modules
+import { LoggedInModule } from './components/logged-in/logged-in.module';
 
 // Pipes
 import { ErrorHandlingPipe } from './pipes/error-handling.pipe';
@@ -108,10 +111,17 @@ export function HttpLoaderFactory(http: HttpClient) {
     TokenDetail,
     SpinnerLegacyComponent,
     SpinnerNewComponent,
+    AccountDropdownComponent,
 
     // Modals
     ModalComponent,
     AlertComponent,
+    
+    // Pipes
+    ErrorHandlingPipe,
+    DelegatorNamePipe,
+    TruncatePipe,
+    TimeAgoPipe
   ],
   imports: [
     BrowserModule,

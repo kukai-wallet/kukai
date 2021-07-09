@@ -1,0 +1,17 @@
+<div *ngIf="router.url.indexOf('/account/') > -1" class="flex-row dropdown"><input
+    [placeholder]="current?.shortAddress()" /><img class="button icon-db" src="../../../assets/img/down-arrow.svg"
+    (click)="toggleDropdown('.dropdown .dropdown-content')" />
+  <div class="flex-column dropdown-content">
+    <ng-container *ngFor="let account of list">
+      <a routerLink="/account/{{account?.address}}" [class.selected]="account?.address === current?.address"
+        (click)="toggleDropdown('.dropdown-content')">
+        {{ account?.shortAddress() }}
+      </a>
+      <ng-container *ngFor="let origAcc of current.originatedAccounts">
+        <a routerLink="/account/{{origAcc?.address}}" [class.selected]="origAcc?.address === current?.address">
+          {{ origAcc?.shortAddress() }}
+        </a>
+      </ng-container>
+    </ng-container>
+  </div>
+</div>
