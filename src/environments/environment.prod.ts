@@ -16,7 +16,8 @@ export const CONSTANTS: Constants = {
   BLOCK_EXPLORER_URL: 'https://tzkt.io',
   ALLOWED_EMBED_ORIGINS: [
     'https://www.truesy.com',
-    'https://playwithbrio.com'
+    'https://playwithbrio.com',
+    'https://www.playwithbrio.com'
   ],
   ASSETS: {
     'KT1K9gCRgaLRFKTErYt1wVxA3Frb9FjasjTV': { // kUSD
