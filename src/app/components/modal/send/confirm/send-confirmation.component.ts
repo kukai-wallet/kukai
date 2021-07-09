@@ -102,6 +102,7 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
     this.customFee = d?.customFee;
     this.customGasLimit = d?.customGasLimit;
     this.customStorageLimit = d?.customStorageLimit;
+    console.log(this.customStorageLimit)
     super.open();
   }
   async init() {

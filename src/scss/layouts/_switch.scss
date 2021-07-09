@@ -65,6 +65,7 @@
 
     & span {
       margin: 0;
+      font-size: 1rem !important;
       font-weight: 500;
       &.key {
         color: v.$advanced-color !important;
@@ -74,7 +75,7 @@
       }
 
       &.value {
-        color: v.$base-font-color-secondary;
+        color: #6c7a8d !important;
       }
     }
   }

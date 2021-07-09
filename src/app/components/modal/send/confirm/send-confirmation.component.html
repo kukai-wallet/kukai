@@ -29,7 +29,7 @@
                 }}</span></span>
             <span class="key">FEE:&nbsp;&nbsp;<span class="value">{{ (getTotalFee() | number:'1.0-6') + ' tez'
                 }}</span></span>
-            <span *ngIf="totalBurn > 0" class="key">STORAGE COST:&nbsp;<span class="value">{{ (totalBurn |
+            <span *ngIf="getTotalBurn() > 0" class="key">STORAGE COST:&nbsp;<span class="value">{{ (totalBurn |
                 number:'1.0-6') + ' tez'
                 }}</span></span>
           </div>

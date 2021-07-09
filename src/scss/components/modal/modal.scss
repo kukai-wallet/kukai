@@ -544,8 +544,9 @@
       }
 
       & .title {
-        font-size: 1.25rem;
-        color: v.$base-color;
+        font-size: 1rem;
+        color: v.$base-font-color;
+        font-weight: 500;
         width: calc(100% - 8rem);
         white-space: nowrap;
         overflow: hidden;
@@ -594,14 +595,15 @@
 
           & input {
             width: calc(100% - 2rem);
+            height: 3.5rem;
           }
 
           & button {
             position: absolute;
-            right: 0.625rem;
-            top: 0.625rem;
+            right: 0.5rem;
+            top: 0.5rem;
             width: 5rem;
-            height: 3rem;
+            height: 2.75rem;
             background-color: transparent;
             color: #666;
             border: 2px solid v.$border-color;
@@ -783,8 +785,9 @@
 
           & .key {
             text-align: center;
-            color: #333;
+            color: v.$base-font-color;
             margin: 0.35rem 0 1rem 0;
+            font-weight: 500;
           }
         }
 
@@ -803,6 +806,7 @@
 
           & .key {
             font-size: 1rem;
+            text-transform: unset;
           }
         }
       }
@@ -815,6 +819,10 @@
           width: 30%;
           height: auto;
           align-items: center;
+
+          & .key {
+            font-weight: 500;
+          }
         }
 
         & .right {
