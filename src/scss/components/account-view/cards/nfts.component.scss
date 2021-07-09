@@ -236,7 +236,7 @@
   }
 }
 
-@media (max-width: calc(v.$lower-limit / 2)) {
+@media (max-width: 33rem) {
   .nfts .collection {
     & .body .token {
       width: 100%;
