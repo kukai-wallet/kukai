@@ -5,7 +5,6 @@ import { BalanceService } from '../balance/balance.service';
 import { WalletService } from '../wallet/wallet.service';
 import { DelegateService } from '../delegate/delegate.service';
 import { OperationService } from '../operation/operation.service';
-import { ErrorHandlingPipe } from '../../pipes/error-handling.pipe';
 import { Account } from '../wallet/wallet';
 import Big from 'big.js';
 import { TokenService } from '../token/token.service';
@@ -40,7 +39,6 @@ export class CoordinatorService {
     private balanceService: BalanceService,
     private delegateService: DelegateService,
     private operationService: OperationService,
-    private errorHandlingPipe: ErrorHandlingPipe,
     private tokenService: TokenService,
     private lookupService: LookupService,
     private subjectService: SubjectService

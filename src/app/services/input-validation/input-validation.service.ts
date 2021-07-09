@@ -1,11 +1,8 @@
 import { Injectable } from '@angular/core';
 import { OperationService } from '../operation/operation.service';
-import { utils, hd } from '@tezos-core-tools/crypto-utils';
 import * as zxcvbn from 'zxcvbn';
 import { CONSTANTS } from '../../../environments/environment';
 import { TranslateService } from '@ngx-translate/core';
-import { TorusWallet } from '../wallet/wallet';
-import assert from 'assert';
 
 @Injectable()
 export class InputValidationService {

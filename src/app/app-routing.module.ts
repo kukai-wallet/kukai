@@ -3,17 +3,13 @@ import { RouterModule, Routes } from '@angular/router';
 import { StartComponent } from './components/start/start.component';
 import { NewWalletComponent } from './components/start/login-types/new-wallet/new-wallet.component';
 import { MnemonicImportComponent } from './components/start/login-types/mnemonic-import/mnemonic-import.component';
-import { ActivateComponent } from './components/activate/activate.component';
 import { ConnectLedgerComponent } from './components/start/login-types/connect-ledger/connect-ledger.component';
 import { P404Component } from './views/error/404.component';
 import { P500Component } from './views/error/500.component';
-import { AccountViewComponent } from './components/account-view/account-view.component';
 import { PrivacyPolicyComponent } from './components/agreement/privacy-policy/privacy-policy.component';
 import { TermsOfUseComponent } from './components/agreement/terms-of-use/terms-of-use.component';
 import { TorusComponent } from './components/start/login-types/torus/torus.component';
-import { SettingsComponent } from './components/settings/settings.component';
 import { EmbeddedComponent } from './components/embedded/embedded.component';
-import { DelegatePageComponent } from './components/delegate-page/delegate-page.component';
 import { LoggedInComponent } from './components/logged-in/logged-in.component';
 
 const routes: Routes = [

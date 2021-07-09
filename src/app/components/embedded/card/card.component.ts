@@ -4,7 +4,6 @@ import {
   TorusWallet,
   ImplicitAccount
 } from '../../../services/wallet/wallet';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-card',

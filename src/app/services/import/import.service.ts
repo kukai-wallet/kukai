@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { WalletType, KeyPair } from './../../interfaces';
+import { KeyPair } from './../../interfaces';
 import { WalletService } from '../wallet/wallet.service';
 import { CoordinatorService } from '../coordinator/coordinator.service';
 import {

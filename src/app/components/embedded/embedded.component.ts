@@ -4,8 +4,8 @@ import { CONSTANTS } from '../../../environments/environment';
 import { ImportService } from '../../services/import/import.service';
 import { KeyPair } from '../../interfaces';
 import { WalletService } from '../../services/wallet/wallet.service';
-import { PartialTezosTransactionOperation, TezosOperationType } from '@airgap/beacon-sdk';
-import { EmbeddedTorusWallet, ImplicitAccount, TorusWallet } from '../../services/wallet/wallet';
+import { PartialTezosTransactionOperation } from '@airgap/beacon-sdk';
+import { EmbeddedTorusWallet, ImplicitAccount } from '../../services/wallet/wallet';
 import { CoordinatorService } from '../../services/coordinator/coordinator.service';
 import { utils, common } from '@tezos-core-tools/crypto-utils';
 import { ActivatedRoute } from '@angular/router';
@@ -20,12 +20,9 @@ import {
   OperationResponse,
   LogoutRequest,
   TrackRequest,
-  TrackResponse,
   LoginRequest,
   OperationRequest,
   AuthRequest,
-  AuthResponse,
-  Init,
   CardRequest,
   CardResponse
 } from 'kukai-embed';

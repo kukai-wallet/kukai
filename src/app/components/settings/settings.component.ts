@@ -1,10 +1,6 @@
 import { Component, OnInit, HostListener } from '@angular/core';
-import { MessageService } from '../../services/message/message.service';
 import { BeaconService } from '../../services/beacon/beacon.service';
 import { WalletService } from '../../services/wallet/wallet.service';
-import { NavigationEnd, Router } from '@angular/router';
-import { SlicePipe } from '@angular/common';
-import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-settings',
@@ -17,9 +13,8 @@ export class SettingsComponent implements OnInit {
   activeAccount = null;
   constructor(
     public beaconService: BeaconService,
-    private messageService: MessageService,
-    private walletService: WalletService,
-    private router: Router) { }
+    private walletService: WalletService
+  ) { }
 
   ngOnInit(): void {
     if (this.walletService.wallet) {

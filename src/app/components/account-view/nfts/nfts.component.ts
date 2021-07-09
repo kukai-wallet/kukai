@@ -5,7 +5,6 @@ import { MessageService } from '../../../services/message/message.service';
 import { TokenService } from '../../../services/token/token.service';
 import { CONSTANTS } from '../../../../environments/environment';
 import { ModalComponent } from '../../modal/modal.component';
-import { WalletService } from '../../../services/wallet/wallet.service';
 import { TokenBalancesService } from '../../../services/token-balances/token-balances.service';
 
 @Component({
@@ -23,7 +22,6 @@ export class NftsComponent implements OnInit, AfterViewInit {
     public translate: TranslateService,
     public messageService: MessageService,
     public tokenService: TokenService,
-    private walletService: WalletService,
     public tokenBalancesService: TokenBalancesService
   ) { }
   @Input() activity: any;

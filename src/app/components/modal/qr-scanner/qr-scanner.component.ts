@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, TemplateRef, Input, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { BeaconService } from '../../../services/beacon/beacon.service';
 import QrScanner from 'qr-scanner';
 import { DeeplinkService } from '../../../services/deeplink/deeplink.service';

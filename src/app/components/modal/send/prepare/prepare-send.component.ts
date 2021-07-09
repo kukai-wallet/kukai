@@ -1,9 +1,8 @@
-import { Component, OnInit, ViewEncapsulation, Input, ViewChild, ElementRef, Output, EventEmitter, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { TokenService } from '../../../../services/token/token.service';
 import { EstimateService } from '../../../../services/estimate/estimate.service';
-import { KeyPair, DefaultTransactionParams } from '../../../../interfaces';
+import { DefaultTransactionParams } from '../../../../interfaces';
 import { FullyPreparedTransaction, PartiallyPreparedTransaction, PrepareRequest } from '../../../send/interfaces';
-import { LedgerWallet, TorusWallet } from '../../../../services/wallet/wallet';
 import { Account, ImplicitAccount, OriginatedAccount } from '../../../../services/wallet/wallet';
 import { TorusService } from '../../../../services/torus/torus.service';
 import Big from 'big.js';

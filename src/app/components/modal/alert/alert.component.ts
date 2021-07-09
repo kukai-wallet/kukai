@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MessageService } from '../../../services/message/message.service';
-import { ModalComponent } from '../modal.component';
 
 @Component({
   selector: 'app-alert',

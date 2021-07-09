@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
-import { Subject } from 'rxjs';
-import { debounceTime, filter } from 'rxjs/operators';
+import { Router } from '@angular/router';
 import { WalletService } from '../../services/wallet/wallet.service';
 import { DelegateService } from '../../services/delegate/delegate.service';
 import { ModalComponent } from '../modal/modal.component';

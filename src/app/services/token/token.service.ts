@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CONSTANTS, TRUSTED_TOKEN_CONTRACTS } from '../../../environments/environment';
+import { CONSTANTS } from '../../../environments/environment';
 import { IndexerService } from '../indexer/indexer.service';
 import Big from 'big.js';
 import { SubjectService } from '../subject/subject.service';

@@ -2,12 +2,10 @@ import { Injectable } from '@angular/core';
 import { WalletService } from '../wallet/wallet.service';
 import { of, Observable, from as fromPromise, Subject } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
-import { Activity, Account, ImplicitAccount } from '../wallet/wallet';
+import { Activity, Account } from '../wallet/wallet';
 import { MessageService } from '../message/message.service';
 import { LookupService } from '../lookup/lookup.service';
 import { IndexerService } from '../indexer/indexer.service';
-import Big from 'big.js';
-import { CONSTANTS } from '../../../environments/environment';
 import { TokenService } from '../token/token.service';
 import { BehaviorSubject } from 'rxjs';
 

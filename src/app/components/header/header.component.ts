@@ -1,5 +1,5 @@
-import { Component, OnInit, Input, ChangeDetectorRef, HostListener, SimpleChanges } from '@angular/core';
-import { Router, NavigationEnd, ActivatedRoute, NavigationStart } from '@angular/router';
+import { Component, OnInit, Input, HostListener, SimpleChanges } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
 import { WalletService } from '../../services/wallet/wallet.service';
 import { Account, TorusWallet } from '../../services/wallet/wallet';
 import { LookupService } from '../../services/lookup/lookup.service';
@@ -23,7 +23,6 @@ export class HeaderComponent implements OnInit {
   delegateName = '';
   readonly CONSTANTS = _CONSTANTS;
   constructor(
-    private route: ActivatedRoute,
     public router: Router,
     public walletService: WalletService,
     public lookupService: LookupService,

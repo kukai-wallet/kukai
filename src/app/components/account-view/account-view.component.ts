@@ -1,18 +1,14 @@
 import { Component, HostListener, Input, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import { Account, Activity, ImplicitAccount, OriginatedAccount } from '../../services/wallet/wallet';
+import { Account, Activity, ImplicitAccount } from '../../services/wallet/wallet';
 import { WalletService } from '../../services/wallet/wallet.service';
 import { TimeAgoPipe } from '../../pipes/time-ago.pipe';
 import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from '../../services/message/message.service';
 import * as copy from 'copy-to-clipboard';
-import { filter } from 'rxjs/internal/operators/filter';
 import { CoordinatorService } from '../../services/coordinator/coordinator.service';
 import { CONSTANTS } from '../../../environments/environment';
-import { LookupService } from '../../services/lookup/lookup.service';
 import { ActivityService } from '../../services/activity/activity.service';
-import Big from 'big.js';
-import { TokenService, TokenResponseType } from '../../services/token/token.service';
+import { TokenService } from '../../services/token/token.service';
 
 @Component({
   selector: 'app-account-view',
@@ -22,14 +18,11 @@ import { TokenService, TokenResponseType } from '../../services/token/token.serv
 export class AccountViewComponent implements OnInit {
   account: Account;
   constructor(
-    private route: ActivatedRoute,
     private walletService: WalletService,
     public translate: TranslateService,
     public messageService: MessageService,
     public timeAgoPipe: TimeAgoPipe,
-    private router: Router,
     private coordinatorService: CoordinatorService,
-    private lookupService: LookupService,
     private activityService: ActivityService,
     public tokenService: TokenService
   ) { this.getScreenSize(); }

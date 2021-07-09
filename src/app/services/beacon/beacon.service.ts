@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { MessageService } from '../../services/message/message.service';
 import { WalletClient, BeaconMessageType, PermissionResponseInput, SignPayloadResponseInput, P2PPairingRequest, BeaconErrorType, BEACON_VERSION, ErrorResponse, getSenderId } from '@airgap/beacon-sdk';
 import { ExtendedP2PPairingResponse } from '@airgap/beacon-sdk/dist/cjs/types/P2PPairingResponse';
-import { CONSTANTS } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'

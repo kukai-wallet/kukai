@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, TemplateRef, Input } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import * as QRCode from 'qrcode';
 import { MessageService } from '../../../services/message/message.service';
 import { ModalComponent } from '../modal.component';
@@ -26,7 +26,6 @@ export class ReceiveComponent extends ModalComponent implements OnInit {
     ngOnInit() {
     }
     openModal() {
-      // hide body scrollbar
       ModalComponent.currentModel.next({name:this.name, data:null});
       setTimeout(() => {
         this.getQR();

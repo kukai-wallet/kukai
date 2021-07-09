@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { WalletService } from '../../../../services/wallet/wallet.service';
 import { LedgerService } from '../../../../services/ledger/ledger.service';
 import { ImportService } from '../../../../services/import/import.service';
 import { MessageService } from '../../../../services/message/message.service';
@@ -25,8 +24,7 @@ export class ConnectLedgerComponent implements OnInit {
     private ledgerService: LedgerService,
     private importService: ImportService,
     private messageService: MessageService,
-    private inputValidationService: InputValidationService,
-    private walletService: WalletService
+    private inputValidationService: InputValidationService
   ) { }
 
   ngOnInit() {

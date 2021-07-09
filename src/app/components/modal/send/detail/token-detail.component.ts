@@ -1,12 +1,6 @@
-import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, OnChanges } from '@angular/core';
-import { TemplateRequest, TemplateFee, FullyPreparedTransaction } from '../../../send/interfaces';
-import { Template, BaseTemplate } from 'kukai-embed';
+import { Component, OnInit } from '@angular/core';
 import { ModalComponent } from '../../modal.component';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { filter } from 'rxjs/operators';
 import { WalletService } from '../../../../services/wallet/wallet.service';
-import { timeStamp } from 'console';
-import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-token-detail',

@@ -1,6 +1,5 @@
-import { Component, OnInit, ViewEncapsulation, Input, ViewChild, ElementRef, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
-import { KeyPair, DefaultTransactionParams } from '../../interfaces';
-import { Account, ImplicitAccount, OriginatedAccount } from '../../services/wallet/wallet';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Account } from '../../services/wallet/wallet';
 import { PrepareRequest, ConfirmRequest, FullyPreparedTransaction, PartiallyPreparedTransaction, TemplateRequest, TemplateFee } from './interfaces';
 import { Template } from 'kukai-embed';
 import { TokenService } from '../../services/token/token.service';

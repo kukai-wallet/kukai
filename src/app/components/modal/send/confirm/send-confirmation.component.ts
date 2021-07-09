@@ -10,7 +10,7 @@ import { CoordinatorService } from '../../../../services/coordinator/coordinator
 import { LookupService } from '../../../../services/lookup/lookup.service';
 import { LedgerService } from '../../../../services/ledger/ledger.service';
 import { TranslateService } from '@ngx-translate/core';
-import { DefaultTransactionParams, KeyPair } from '../../../../interfaces';
+import { KeyPair } from '../../../../interfaces';
 import { emitMicheline, assertMichelsonData } from '@taquito/michel-codec';
 import Big from 'big.js';
 import { LedgerWallet, TorusWallet } from '../../../../services/wallet/wallet';

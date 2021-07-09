@@ -1,19 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from '../../services/message/message.service';
-import { WalletClient, BeaconMessageType, PermissionScope, PermissionResponseInput, P2PPairingRequest, BeaconErrorType, BeaconResponseInputMessage, BeaconMessage, OperationResponseInput } from '@airgap/beacon-sdk';
+import { WalletClient, BeaconMessageType, PermissionScope, PermissionResponseInput, OperationResponseInput } from '@airgap/beacon-sdk';
 import { WalletService } from '../../services/wallet/wallet.service';
 import { CONSTANTS } from '../../../environments/environment';
-import { Account, ImplicitAccount, OriginatedAccount } from '../../services/wallet/wallet';
-import { Location } from '@angular/common';
+import { Account } from '../../services/wallet/wallet';
 import { BeaconService } from '../../services/beacon/beacon.service';
 import { DeeplinkService } from '../../services/deeplink/deeplink.service';
-import { emitMicheline, assertMichelsonData } from '@taquito/michel-codec';
+import { assertMichelsonData } from '@taquito/michel-codec';
 import { valueDecoder } from '@taquito/local-forging/dist/lib/michelson/codec';
 import { Uint8ArrayConsumer } from '@taquito/local-forging/dist/lib/uint8array-consumer';
 import { InputValidationService } from '../../services/input-validation/input-validation.service';
-import Big from 'big.js';
-import { PartiallyPreparedTransaction } from '../send/interfaces';
 import { HostListener } from '@angular/core';
 import { SubjectService } from '../../services/subject/subject.service';
 
@@ -23,14 +19,11 @@ import { SubjectService } from '../../services/subject/subject.service';
 })
 export class UriHandlerComponent implements OnInit {
   constructor(
-    private route: ActivatedRoute,
     public messageService: MessageService,
     public walletService: WalletService,
-    private location: Location,
     private beaconService: BeaconService,
     private deeplinkService: DeeplinkService,
     private inputValidationService: InputValidationService,
-    private router: Router,
     private subjectService: SubjectService
   ) { }
   permissionRequest: PermissionResponseInput = null;

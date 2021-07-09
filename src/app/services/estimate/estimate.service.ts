@@ -6,7 +6,7 @@ import { of, Observable } from 'rxjs';
 import { DefaultTransactionParams } from '../../interfaces';
 import Big from 'big.js';
 import { CONSTANTS } from '../../../environments/environment';
-import { ContractOverrideType, ContractsOverrideType } from '../token/token.service';
+import { ContractOverrideType } from '../token/token.service';
 
 const httpOptions = { headers: { 'Content-Type': 'application/json' } };
 const hardGasLimit = 1040000;

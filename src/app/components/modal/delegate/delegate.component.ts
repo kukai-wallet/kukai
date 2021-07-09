@@ -1,20 +1,17 @@
-import { Component, TemplateRef, OnInit, Input, ViewChild, ElementRef, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { KeyPair } from '../../../interfaces';
 import { WalletService } from '../../../services/wallet/wallet.service';
 import { CoordinatorService } from '../../../services/coordinator/coordinator.service';
 import { OperationService } from '../../../services/operation/operation.service';
 import { ExportService } from '../../../services/export/export.service';
-import { DelegatorNamePipe } from '../../../pipes/delegator-name.pipe';
 import { InputValidationService } from '../../../services/input-validation/input-validation.service';
 import { LedgerService } from '../../../services/ledger/ledger.service';
 import { LedgerWallet, Account, ImplicitAccount, OriginatedAccount, TorusWallet } from '../../../services/wallet/wallet';
 import { MessageService } from '../../../services/message/message.service';
 import { TezosDomainsService } from '../../../services/tezos-domains/tezos-domains.service';
 import Big from 'big.js';
-import { DelegateService } from '../../../services/delegate/delegate.service';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { ModalComponent } from '../modal.component';
-import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { SubjectService } from '../../../services/subject/subject.service';
 
@@ -63,8 +60,6 @@ export class DelegateComponent extends ModalComponent implements OnInit, OnChang
     private ledgerService: LedgerService,
     private messageService: MessageService,
     private tezosDomains: TezosDomainsService,
-    private delegateService: DelegateService,
-    private router: Router,
     private subjectService: SubjectService
   ) {
     super();

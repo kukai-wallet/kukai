@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { of, Observable, from as fromPromise } from 'rxjs';
 import { catchError, flatMap, timeout } from 'rxjs/operators';
 import { Buffer } from 'buffer';
@@ -9,7 +9,6 @@ import * as Bs58check from 'bs58check';
 import * as bip39 from 'bip39';
 import Big from 'big.js';
 import { localForger } from '@taquito/local-forging';
-import { TranslateService } from '@ngx-translate/core';
 import { CONSTANTS } from '../../../environments/environment';
 import { ErrorHandlingPipe } from '../../pipes/error-handling.pipe';
 import * as elliptic from 'elliptic';
@@ -47,7 +46,6 @@ export class OperationService {
   feeHardCap = 10; //tez
   constructor(
     private http: HttpClient,
-    private translate: TranslateService,
     private errorHandlingPipe: ErrorHandlingPipe,
     private tokenService: TokenService
   ) { }
