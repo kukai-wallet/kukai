@@ -128,7 +128,7 @@
       height: auto;
       max-height: 0;
       transition: 0.15s max-height;
-      overflow: auto;
+      overflow: hidden;
     }
 
     & .token-info {
@@ -437,12 +437,12 @@
 
       & .dropdown {
 
-        width: 13rem;
+        width: 11.5rem;
         display: block;
         position: absolute;
         justify-content: flex-end;
         align-items: center;
-        top: -4rem;
+        top: -3rem;
         right: -1px;
 
         & input {
@@ -453,19 +453,21 @@
           border-radius: v.$border-radius-hard;
           transition: 0.25s border-radius;
           text-transform: uppercase;
-          height: 3rem;
+          font-weight: 600;
+          color: v.$base-font-color;
+          height: 2rem;
           margin: 0;
-          font-size: 1rem;
-          margin: 0;
+          font-size: 1.05rem;
+          padding-top: 0.05rem !important;
         }
 
         & .icon-db {
-          height: 1.75rem;
-          width: 1.75rem;
+          height: 1.5rem;
+          width: 1.5rem;
           object-fit: scale-down;
           position: absolute;
-          top: 0.75rem;
-          right: 0.5rem;
+          top: 0.375rem;
+          right: 0.125rem;
           background-color: transparent;
           border-radius: v.$border-radius-hard;
           transform: rotate(0deg);
@@ -474,11 +476,10 @@
 
         & .icon-torus {
           position: absolute;
-          top: 0;
-          left: 0;
+          top: 0.375rem;
+          left: 0.45rem;
           width: 1.5rem;
-          height: 1.75rem;
-          padding: 0.75rem 0 0.75rem 1rem;
+          height: 1.5rem;
         }
 
         & .dropdown-content {

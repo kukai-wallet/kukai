@@ -20,6 +20,7 @@ export class TokenDetail extends ModalComponent implements OnInit {
   activeAccount = null;
   moreInfo = false;
   imageExpanded = false;
+  autoOverflow = false;
   descOverflow = false;
   name = "token-detail";
   blacklistMeta = ['name', 'kind', 'displayUrl', 'thumbnailUrl', 'isTransferable', 'isBooleanAmount', 'balance', 'category', 'symbol', 'decimals'];
@@ -48,6 +49,13 @@ export class TokenDetail extends ModalComponent implements OnInit {
 
   expand() {
     this.moreInfo = !this.moreInfo;
+    if(!this.autoOverflow) {
+      setTimeout(() => {
+        this.autoOverflow = !this.autoOverflow;
+      }, 160)
+    } else {
+      this.autoOverflow = !this.autoOverflow;
+    }
   }
 
   expandImage() {

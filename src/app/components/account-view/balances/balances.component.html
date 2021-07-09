@@ -20,7 +20,7 @@
           <app-send-button [activeAccount]="account" symbol="tez"></app-send-button>
         </div>
       </div>
-      <ng-container *ngFor="let tokenBalance of this.tokenBalancesService.balances">
+      <ng-container *ngFor="let tokenBalance of this.tokenBalancesService.balances; trackBy: trackToken">
         <div class="flex-row balance">
           <div class="flex-row left">
             <img class="icon" [src]="tokenBalance?.thumbnailUrl || tokenBalance?.displayUrl || ''" />

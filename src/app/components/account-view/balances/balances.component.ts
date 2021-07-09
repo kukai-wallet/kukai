@@ -30,5 +30,8 @@ export class BalancesComponent implements OnInit {
   }
   ngOnInit(): void {
   }
+  trackToken(index: number, token: any) {
+    return token?.id ? token.contractAddress + ':' + token?.id + ':' + token?.balance : null;
+  }
 }
 

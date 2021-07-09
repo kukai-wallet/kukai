@@ -82,7 +82,7 @@ body {
 
 input {
   text-align: left;
-  height: 4rem;
+  height: calc(4rem - 4px);
   padding: 0 0 0 2rem;
   border-radius: v.$border-radius-hard;
 }
@@ -90,10 +90,6 @@ input {
 textarea {
   border: 2px solid v.$border-color;
   border-radius: v.$border-radius;
-}
-
-input::placeholder {
-  // font-size: 1.5rem;
 }
 
 .button {

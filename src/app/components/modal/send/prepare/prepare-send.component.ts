@@ -45,6 +45,7 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
   advancedForm = false;
   hideAmount = false;
   simSemaphore = 0;
+  isNFT = false
 
   torusVerifierName = 'Tezos Address';
   torusVerifier = '';
@@ -88,6 +89,7 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
       this.reset(true);
       this.tokenTransfer = changes.prepareRequest.currentValue.tokenTransfer;
       this.token = this.tokenService.getAsset(this.tokenTransfer);
+      this.isNFT = this.tokenBalancesService.isNFT(this.token);
       this.activeAccount = changes.prepareRequest.currentValue.account;
       if (!this.isOpen) {
         this.openModal();
@@ -115,6 +117,9 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
     this.advancedForm = false;
     this.hideAmount = false;
     this.simSemaphore = 0;
+
+    this.token = null;
+    this.isNFT = null;
 
     this.transactions = [];
     this.toMultipleDestinationsString = '';

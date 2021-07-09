@@ -45,21 +45,10 @@ export class TokenBalancesService {
     combineLatest([this.walletService.activeAccount, this.walletService.walletUpdated, this.subjectService.metadataUpdated, this.activityService.tokenBalanceUpdated]).pipe(debounceTime(200)).subscribe(([a, b, c, d]) => {
       if (this.activeAccount !== a) {
         this.activeAccount = a;
-        this.reload(UPDATE_TYPE.ACCOUNT_UPDATED);
       }
-      if(!this.lastMetadataUpdate && !!c || !this.lastTokenBalanceUpdate && !!d) {
-        this.lastMetadataUpdate = c;
-        this.reload(UPDATE_TYPE.ACCOUNT_UPDATED);
-      } else if (this.lastMetadataUpdate !== c) {
-        this.lastMetadataUpdate = c;
-        this.reload(UPDATE_TYPE.METADATA_UPDATED);
-      }
-      if (this.lastTokenBalanceUpdate !== d) {
-        this.lastTokenBalanceUpdate = d;
-        this.reload(UPDATE_TYPE.TOKENBALANCE_UPDATED);
-      }
+      this.reload(null);
     });
-    this.reload(UPDATE_TYPE.ACCOUNT_UPDATED);
+    this.reload(null);
     this.subjectService.logout.subscribe((o) => {
       if (!!o) {
         this.destroy();

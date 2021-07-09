@@ -2,7 +2,7 @@
   <div class="content">
     <div class="flex-column top">
       <img class="flex-row button close" (click)="closeModalAction()" src="../../../assets/img/close.svg" />
-      <h1 class="title">{{ !tokenBalancesService.isNFT(token) ? getTitle() : 'Send Token'}}</h1>
+      <h1 class="title">{{ !isNFT ? getTitle() : 'Send Token'}}</h1>
     </div>
     <div class="flex-column prepare-send">
       <!-- Single transaction -->
@@ -11,7 +11,7 @@
           <img [src]="token?.displayUrl" />
           <span class="title">{{token?.name}}</span>
         </div>
-        <span class="flex-row label title">Enter {{!tokenTransfer || tokenTransfer?.symbol ? 'Amount' :
+        <span class="flex-row label title">Enter {{!isNFT ? 'Amount' :
           'Quantity'}}:</span>
         <div class="flex-row amount">
           <input #amountInput [placeholder]="token?.decimals == 0 ? '0' : '0.00'" [(ngModel)]="amount"
@@ -40,8 +40,8 @@
                 (click)="toggleDropdown('.prepare-send .dropdown-content')" />
               <!-- TODO: Move style conditionals to scss -->
               <input readonly
-                [style.padding]="torusVerifier === '' || torusVerifier === 'domain' ? '0 0 0 1rem' : '0 0 0 4rem'"
-                [style.width]="torusVerifier === '' || torusVerifier === 'domain' ? 'calc(100% - 1rem)' : 'calc(100% - 4rem)'"
+                [style.padding]="torusVerifier === '' || torusVerifier === 'domain' ? '0 0 0 1rem' : '0 0 0 3rem'"
+                [style.width]="torusVerifier === '' || torusVerifier === 'domain' ? 'calc(100% - 1rem)' : 'calc(100% - 3rem)'"
                 [(ngModel)]="torusVerifierName" /><img class="button icon-db"
                 src="../../../assets/img/down-arrow-purple.svg"
                 (click)="toggleDropdown('.prepare-send .dropdown-content')" />
@@ -86,7 +86,7 @@
               </label>
             </div>
           </div>
-          <button [style.visibilty]="!tokenTransfer ? '' : 'hidden'" class="small multiple-destinations" (click)="toggleDestination()">
+          <button [style.visibility]="!isNFT && advancedForm ? '' : 'hidden'" class="small multiple-destinations" (click)="toggleDestination()">
             <!--fix me-->
             <ng-container *ngIf="!this.isMultipleDestinations">Multiple transactions</ng-container>
             <ng-container *ngIf="this.isMultipleDestinations">Single transaction</ng-container>
