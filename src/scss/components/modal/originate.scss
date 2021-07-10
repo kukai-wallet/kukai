@@ -1,0 +1,33 @@
+& .originate {
+
+  margin: 2rem 0 0 0;
+  height: auto;
+
+  & .seperator {
+    margin: 0.5rem 0;
+  }
+
+  & .advanced-form {
+    margin-top: 1rem;
+
+    & .tabs-container {
+      margin-top: 0.5rem;
+      width: 100%;
+
+      & .tabs {
+        width: 100%;
+        margin: 0 0 0.5rem 0;
+
+        & .tab {
+          font-size: 1.25rem;
+          color: v.$base-font-color;
+          cursor: pointer;
+
+          &.active {
+            color: v.$base-blue-color;
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,22 @@
+& .qr-scanner {
+  position: relative;
+  background-color: v.$base-end-color;
+  padding: 2rem;
+  border-radius: v.$border-radius-hard;
+  max-width: v.$lower-limit;
+  width: calc(100% - 4rem);
+
+  & video {
+    width: 100%;
+  }
+
+  & .video-container {
+    margin: 1rem -1rem -0.5rem;
+  }
+
+  & p.no-cam {
+    display: block;
+    width: 100%;
+    text-align: center;
+  }
+}

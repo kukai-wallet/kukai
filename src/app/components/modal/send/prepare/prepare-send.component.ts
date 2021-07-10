@@ -53,7 +53,7 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
   torusTwitterId = '';
   torusPendingLookup = false;
 
-  transactions = []; // Todo: remove me
+  transactions = [];
   toMultipleDestinationsString = '';
 
   formInvalid = '';
