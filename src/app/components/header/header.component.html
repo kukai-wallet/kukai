@@ -52,7 +52,7 @@
     <div class="title">Kukai</div>
   </a>
   <app-ui-dropdown-account [list]="accounts" [current]="activeAccount"></app-ui-dropdown-account>
-  <div *ngIf="router.url.indexOf('/account/') !== 0" class="copy">
+  <div *ngIf="router.url.indexOf('/account/') === 0" class="copy">
     <img class="button" src="../../../assets/img/copy.svg" (click)="copy()" />
   </div>
   <div class="hamburger-dropdown" (click)="toggleDropdown('.mobile .hamburger-dropdown .hamburger-dropdown-content')">

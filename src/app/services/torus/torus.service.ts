@@ -42,13 +42,13 @@ export class TorusService {
         verifier: 'tezos-twitter-test',
         caseSensitiveVerifierID: false
       },
-      [FACEBOOK]: {
-        name: 'Facebook',
-        typeOfLogin: 'facebook',
-        clientId: '213778980232619',
-        verifier: 'tezos-facebook-testnet',
-        caseSensitiveVerifierID: false
-      }
+      // [FACEBOOK]: {
+      //   name: 'Facebook',
+      //   typeOfLogin: 'facebook',
+      //   clientId: '213778980232619',
+      //   verifier: 'tezos-facebook-testnet',
+      //   caseSensitiveVerifierID: false
+      // }
     },
     mainnet: {
       [GOOGLE]: {
@@ -72,13 +72,13 @@ export class TorusService {
         verifier: 'tezos-twitter',
         caseSensitiveVerifierID: false
       },
-      [FACEBOOK]: {
-        name: 'Facebook',
-        typeOfLogin: 'facebook',
-        clientId: '523634882377310',
-        verifier: 'tezos-facebook',
-        caseSensitiveVerifierID: false
-      }
+      // [FACEBOOK]: {
+      //   name: 'Facebook',
+      //   typeOfLogin: 'facebook',
+      //   clientId: '523634882377310',
+      //   verifier: 'tezos-facebook',
+      //   caseSensitiveVerifierID: false
+      // }
     }
   };
   verifierMapKeys: any;
