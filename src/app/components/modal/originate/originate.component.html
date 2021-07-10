@@ -20,16 +20,7 @@
         <span class="key">MAX STORAGE COST:&nbsp;</span><span class="value">{{ getTotalBurn() }} tez</span>
       </div>
       <div class="seperator"></div>
-      <div class="flex-row advanced">
-        <div class="flex-row switch-container">
-          <span class="value">Advanced:&nbsp;&nbsp;<span class="key">{{ advancedForm ? ' ON' : 'OFF'
-              }}</span>&nbsp;&nbsp;</span>
-          <label class="switch">
-            <input type="checkbox" [(ngModel)]="advancedForm" tabindex=-1 />
-            <span class="slider round"></span>
-          </label>
-        </div>
-      </div>
+      <app-ui-toggle-advanced [default]="false" (stateChange)="advancedForm = $event"></app-ui-toggle-advanced>
       <div *ngIf="advancedForm" class="advanced-form">
         <div class="tabs-container">
           <div class="flex-row tabs">

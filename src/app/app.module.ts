@@ -116,7 +116,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     // Modals
     ModalComponent,
     AlertComponent,
-    
+
     // Pipes
     ErrorHandlingPipe,
     DelegatorNamePipe,

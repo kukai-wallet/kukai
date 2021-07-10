@@ -20,6 +20,7 @@ import { OriginateComponent } from '../../components/modal/originate/originate.c
 import { LoggedInComponent } from '../../components/logged-in/logged-in.component';
 import { ConfirmSendTemplateComponent } from '../../components/send/confirm-send-template/confirm-send-template.component';
 import { LoggedInRoutingModule } from './logged-in-routing.module';
+import { AdvancedToggleComponent } from '../ui/toggle/advanced/advanced.component';
 
 @NgModule({
   declarations: [
@@ -38,13 +39,17 @@ import { LoggedInRoutingModule } from './logged-in-routing.module';
     ConfirmSendComponent,
     PrepareSendComponent,
     ConfirmSendTemplateComponent,
-    DelegateComponent
+    DelegateComponent,
+    AdvancedToggleComponent
   ],
   imports: [
     CommonModule,
     LoggedInRoutingModule,
     HttpClientModule,
     FormsModule
+  ],
+  exports: [
+    AdvancedToggleComponent
   ],
   providers: [
     EstimateService

@@ -1,5 +1,3 @@
-@import "../../layouts/card.scss";
-
 %flex-column-centered {
   display: flex;
   align-items: center;
@@ -36,8 +34,6 @@
   & small {
     margin-top: 1rem;
   }
-
-  @import '../../layouts/switch.scss';
 }
 
 :host-context(app-mnemonic-import-wallet) {

@@ -32,15 +32,7 @@
           [placeholder]="'Seed Words (required)'"></textarea>
       </ng-container>
       <ng-container *ngIf="importOption === 1">
-        <div class="flex-row advanced">
-          <div class="flex-row switch-container">
-            <span>Advanced:&nbsp;</span>
-            <label class="switch">
-              <input type="checkbox" [(ngModel)]="advancedForm" tabindex=-1>
-              <span class="slider round"></span>
-            </label>
-          </div>
-        </div>
+        <app-ui-toggle-advanced [default]="false" (stateChange)="advancedForm = $event"></app-ui-toggle-advanced>
         <div *ngIf="advancedForm" class="flex-row import-option-1">
           <div class="flex-column">
             <span><b>If your seed words are protected by a passphrase, it needs to be entered here</b></span>

@@ -15,15 +15,7 @@
         </div>
       </div>
       <div class="seperator"></div>
-      <div class="flex-row advanced">
-        <div class="flex-row switch-container">
-          <span class="value">Advanced:&nbsp;&nbsp;<span class="key">{{ advanced ? 'ON' : 'OFF' }}</span>&nbsp;&nbsp;</span>
-          <label class="switch">
-            <input type="checkbox" [(ngModel)]="advanced" tabindex=-1 />
-            <span class="slider round"></span>
-          </label>
-        </div>
-      </div>
+      <app-ui-toggle-advanced [default]="false" (stateChange)="advanced = $event"></app-ui-toggle-advanced>
       <ng-container *ngIf="advanced">
         <div class="label">Fee (tez)</div>
         <input [(ngModel)]="fee" class="text fee" type="text" />

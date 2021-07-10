@@ -74,16 +74,7 @@
       <br />
       <div *ngIf="parameters" class="key">{{transactions.length === 1 ? 'CONTRACT CALL' + ' ' +
         transaction[0].entrypoint : 'MULTIPLE CONTRACT CALLS'}}</div>
-      <div class="flex-row advanced" *ngIf="this.parameters">
-        <div class="flex-row switch-container">
-          <span class="value">Advanced:&nbsp;&nbsp;<span class="key">{{ advancedForm ? ' ON' : 'OFF'
-              }}</span>&nbsp;&nbsp;</span>
-          <label class="switch">
-            <input type="checkbox" [(ngModel)]="advancedForm" tabindex=-1 />
-            <span class="slider round"></span>
-          </label>
-        </div>
-      </div>
+        <app-ui-toggle-advanced [default]="false" (stateChange)="advancedForm = $event"></app-ui-toggle-advanced>
       <div *ngIf="advancedForm" class="advanced-form">
         <ng-container *ngIf="parameters">
           <div class="tabs-container">

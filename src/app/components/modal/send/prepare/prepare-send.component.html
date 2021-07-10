@@ -5,7 +5,6 @@
       <h1 class="title">{{ !isNFT ? getTitle() : 'Send Token'}}</h1>
     </div>
     <div class="flex-column prepare-send">
-      <!-- Single transaction -->
       <div *ngIf="!this.isMultipleDestinations" class="flex-column top">
         <div *ngIf="token?.displayUrl" class="flex-row token">
           <img [src]="token?.displayUrl" />
@@ -76,18 +75,8 @@
             placeholder="address1 amount1 ; &#10;address2 amount2 ; &#10;address3 ..."></textarea>
         </div>
         <div class="flex-row">
-          <div class="flex-row advanced">
-            <div class="flex-row switch-container">
-              <span class="value">Advanced:&nbsp;&nbsp;<span class="key" [class]="advancedForm ? 'active' : ''">{{ advancedForm ? ' ON' : 'OFF'
-                  }}</span>&nbsp;&nbsp;</span>
-              <label class="switch">
-                <input type="checkbox" [(ngModel)]="advancedForm" tabindex=-1 />
-                <span class="slider round"></span>
-              </label>
-            </div>
-          </div>
+          <app-ui-toggle-advanced [default]="false" (stateChange)="advancedForm = $event"></app-ui-toggle-advanced>
           <button [style.visibility]="!isNFT && advancedForm ? '' : 'hidden'" class="small multiple-destinations" (click)="toggleDestination()">
-            <!--fix me-->
             <ng-container *ngIf="!this.isMultipleDestinations">Multiple transactions</ng-container>
             <ng-container *ngIf="this.isMultipleDestinations">Single transaction</ng-container>
           </button>
