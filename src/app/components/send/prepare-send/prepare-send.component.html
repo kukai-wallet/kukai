@@ -45,8 +45,10 @@
           <select class="select-css" [(ngModel)]="torusVerifier" (ngModelChange)="verifierChange()">
             <option value="" selected>Tezos Address</option>
             <option value="domain">Tezos Domains</option>
-            <option *ngFor="let key of torusService.verifierMapKeys" value="{{key}}">
-              {{ torusService.verifierMap[key].name }} Account</option>
+            <ng-container *ngFor="let key of torusService.verifierMapKeys">
+              <option *ngIf="torusService.verifierMap[key].lookups" value="{{key}}">
+                {{ torusService.verifierMap[key].name }} Account</option>
+            </ng-container>
           </select></label>
         <input type="text" class="text" (input)="preCheckAddress(); updateDefaultValues()" (change)="toPkhChange()" [(ngModel)]="toPkh">
       </div>
