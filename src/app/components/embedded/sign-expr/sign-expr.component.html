@@ -1,0 +1,17 @@
+<div *ngIf="signRequest" class="flex-column kukai-modal">
+  <div class="content">
+    <div class="flex-column top">
+      <img class="flex-row button close" (click)="rejectSigning()" src="../../../../assets/img/close.svg" />
+      <h1 class="title">{{ signRequest?.title ? signRequest.title : 'Sign Expression' }}</h1>
+    </div>
+    <div class="flex-column sign-expr">
+      <p class="previewAttention">{{ signRequest?.desc ? signRequest.desc : 'An application has requested you sign an expression.' }}</p>
+      <textarea rows="10" readonly>{{ payload }}</textarea>
+      <div class="seperator"></div>
+      <div class="flex-column bottom">
+        <span *ngIf="this.pwdInvalid" class="danger margin">{{ this.pwdInvalid }}</span>
+          <button class="purple confirm" (click)="sign()">Sign</button>
+      </div>
+    </div>
+  </div>
+</div>

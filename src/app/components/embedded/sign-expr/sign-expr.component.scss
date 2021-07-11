@@ -1,0 +1,322 @@
+// generic color constants
+$base-color: #000 !default;
+$base-color-lightened-1: #4a5d75 !default;
+$base-color-lightened-2: #98a0ab !default;
+$base-color-lightened-3: #b9bfc7 !default;
+$base-color-lightened-4: #c1cdd5 !default;
+$base-color-lightened-5: #dde3e8 !default;
+$base-color-lightened-6: #e6e9ed !default;
+$base-color-lightened-7: #f2f4f6 !default;
+$base-end-color: #fff !default;
+$base-background-color: #eceff1 !default;
+$base-blue-color: #5963ff !default;
+$base-blue-color-lightened: #7178e3 !default;
+$base-blue-color-alt: #37a9fa !default;
+$base-red-color: #eb4e39 !default;
+$base-green-color: #c4ec7d !default;
+$base-font-color: #3e4855 !default;
+$base-font-color-secondary: #98a0ab !default;
+
+$advanced-color: #e6eaef !important;
+
+// box shadow constants
+$box-shadow: 0px 12px 24px #3331 !default;
+$box-shadow-dark: 0px 6px 12px #3333 !default;
+
+// border constant
+$border-radius: 1.0rem !default;
+$border-radius-hard: calc(#{$border-radius} * 2) !default;
+$border-radius-hardest: calc(#{$border-radius} * 10) !default;
+$border-color: #aaa3;
+
+// @media constants
+$lower-limit: 75rem;
+$middle-limit: 130rem;
+$upper-limit: 260rem;
+
+%base-button {
+  outline: none;
+  border: none;
+  border-radius: $border-radius-hard;
+  background-color: $base-blue-color-lightened;
+  color: $base-end-color;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: 500;
+
+  img {
+    height: 1rem;
+  }
+}
+
+%flex {
+  display: flex;
+}
+
+%row {
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+%column {
+  flex-direction: column;
+}
+
+%wrap {
+  flex-wrap: wrap;
+}
+
+%nowrap {
+  flex-wrap: nowrap;
+}
+
+.flex {
+  @extend %flex;
+
+  &-row {
+    @extend %flex;
+    @extend %row;
+
+    &-wrap {
+      @extend %flex;
+      @extend %row;
+      @extend %wrap;
+    }
+  }
+
+  &-column {
+    @extend %flex;
+    @extend %column;
+
+    &-wrap {
+      @extend %flex;
+      @extend %column;
+      @extend %wrap;
+    }
+  }
+}
+
+textarea {
+  border: 2px solid;
+  border-color: $border-color;
+  border-radius: $border-radius-hard;
+}
+
+button {
+  @extend %base-button;
+
+  &--invert {
+    @extend %base-button;
+    border: "2px solid";
+    border-color: $base-blue-color;
+    border-radius: $border-radius-hard;
+    background-color: #fff;
+    color: $base-blue-color;
+  }
+
+  &.selected {
+    font-weight: 600 !important;
+    color: $base-blue-color;
+    border-color: $base-blue-color !important;
+  }
+
+  &:hover {
+    filter: invert(0.05);
+  }
+}
+
+.kukai-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #0006;
+  justify-content: flex-start;
+  align-items: center;
+  z-index: 1000;
+
+  & .content {
+    justify-content: center;
+    align-items: center;
+    background-color: $base-end-color;
+    width: auto;
+    height: auto;
+    max-width: 85vw;
+    max-height: 75vh;
+    border-radius: $border-radius-hard;
+    padding: 2rem;
+    min-width: 38rem;
+    position: relative;
+    margin: 5rem 0 0 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    & .close {
+      top: -0.65rem;
+      right: 0;
+      position: absolute;
+      width: 2rem;
+      height: 2rem;
+      padding: 1rem;
+      border: 2px solid $border-color;
+      border-radius: $border-radius-hardest;
+    }
+
+    &>.top {
+      position: relative;
+      margin: 0 0 2rem 0;
+      align-items: center;
+
+      .title {
+        font-size: 2.5rem;
+        width: 70%;
+        font-weight: 500;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+
+    & .label {
+      margin: 1rem;
+    }
+
+    & .seperator {
+      position: relative;
+      height: 1px;
+      background-color: $border-color;
+      left: -2rem;
+      width: calc(100% + 4rem);
+    }
+
+    & input:not([type=checkbox]) {
+      height: 4rem;
+      width: calc(100% - 2rem);
+      background-color: $base-end-color;
+      border: 2px solid $border-color;
+      border-radius: $border-radius-hardest;
+      font-size: 1.25rem;
+
+      &.password,
+      &.text {
+        width: calc(100% - 2rem);
+        margin: 0 0 2rem 0;
+      }
+    }
+
+    & .key-value {
+      margin: 0 0 1rem 0;
+    }
+
+    & .key {
+      color: $base-font-color-secondary;
+      text-transform: uppercase;
+
+      & .value {
+        text-transform: unset;
+      }
+    }
+
+    & .value {
+      color: $base-font-color;
+      font-size: 1.25rem;
+    }
+
+    & .more-info {
+      height: 2rem;
+      justify-content: flex-end;
+      margin: 1rem 0;
+
+      span {
+        color: $base-font-color-secondary;
+        text-transform: uppercase;
+        font-size: 1rem;
+      }
+
+      img {
+        height: 1.75rem;
+        width: auto;
+        filter: invert(1);
+      }
+
+      &.open {
+        img {
+          transform: rotate(180deg);
+        }
+      }
+    }
+
+    & .meta-more {
+      width: 100%;
+      height: auto;
+      max-height: 0;
+      transition: 0.15s max-height;
+      overflow: hidden;
+    }
+
+    & .prepare-send,
+    & .confirm-send {
+      & input::placeholder {
+        text-transform: uppercase;
+      }
+    }
+
+    & .sign-expr {
+      margin: 2rem 0 0 0;
+      align-items: center;
+
+      & label,
+      & p {
+        margin: 0.25rem 0 0.25rem 0;
+        font-size: 1.25rem;
+        font-weight: 500;
+      }
+
+      & .previewAttention {
+        margin: 0 0 1rem 0;
+        text-align: center;
+
+        &:first-of-type {
+          margin: 0;
+        }
+
+        &.warning {
+          color: $base-red-color;
+        }
+      }
+
+      & textarea {
+        margin: 1rem 0 2rem 0;
+        padding: 1rem;
+        width: calc(75% - 2rem);
+      }
+
+      & .bottom {
+        align-items: center;
+        width: 100%;
+
+        & button.confirm {
+          width: 75%;
+        }
+
+        & input {
+          width: calc(75% - 2.25rem);
+        }
+      }
+    }
+
+    & .bottom {
+      margin: 2rem 0 0 0;
+    }
+
+    & button.confirm {
+      width: 100%;
+      height: 4rem;
+      border-radius: $border-radius-hard;
+    }
+  }
+}

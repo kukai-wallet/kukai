@@ -93,6 +93,7 @@ import { ConfirmSendTemplateComponent } from './components/send/confirm-send-tem
 import { OriginateComponent } from './components/originate/originate.component';
 import { SpinnerLegacyComponent } from './components/spinner/legacy/spinner-legacy.component';
 import { SpinnerNewComponent } from './components/spinner/new/spinner-new.component';
+import { SignExprEmbedComponent } from './components/embedded/sign-expr/sign-expr.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -148,7 +149,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     ConfirmSendTemplateComponent,
     OriginateComponent,
     SpinnerLegacyComponent,
-    SpinnerNewComponent
+    SpinnerNewComponent,
+    SignExprEmbedComponent
   ],
   imports: [
     BrowserModule,
