@@ -2,8 +2,11 @@
   <div class="flex-row top-container-nfts">
     <h1>NFT / Collectibles</h1>
     <div class="flex-row right">
-      <span class="flex-row button icon-grey" [class.selected]="filter === 'ALL'" (click)="filter = 'ALL'">ALL</span>
-      <span class="flex-row button icon-grey" [class.selected]="filter !== 'ALL'" (click)="filter = 'APP'">APP</span>
+      <ng-container
+        *ngIf="this.tokenBalancesService.nfts && Object.keys(this.tokenBalancesService.nfts).length > 0">
+        <span class="flex-row button icon-grey" [class.selected]="filter === 'ALL'" (click)="filter = 'ALL'">ALL</span>
+        <span class="flex-row button icon-grey" [class.selected]="filter !== 'ALL'" (click)="filter = 'APP'">APP</span>
+      </ng-container>
       <!-- <img class="button icon" src="../../../../assets/img/filter.svg" />
       <img class="button icon" src="../../../../assets/img/info.svg" /> -->
     </div>

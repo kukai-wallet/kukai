@@ -33,14 +33,12 @@
           <span class="label title">SEND TO:</span>
           <div class="address">
             <div class="flex-row dropdown">
-              <img [style.visibility]="torusVerifier === '' ? 'hidden' : 'visible'"
+              <img [style.visibility]="torusVerifier === '' || torusVerifier === 'domain' ? 'hidden' : 'visible'"
                 class="button icon-torus"
                 [src]="torusVerifier === '' ? '' :  '../../../assets/img/' + torusVerifier.toLowerCase() + '-logo.svg'"
                 (click)="toggleDropdown('.prepare-send .dropdown-content')" />
               <!-- TODO: Move style conditionals to scss -->
               <input readonly
-                [style.padding]="torusVerifier === '' || torusVerifier === 'domain' ? '0 2rem 0 0' : '0 2rem 0 0'"
-                [style.width]="torusVerifier === '' || torusVerifier === 'domain' ? 'calc(100% - 1rem)' : 'calc(100% - 1rem)'"
                 [(ngModel)]="torusVerifierName" /><img class="button icon-db"
                 src="../../../assets/img/down-arrow-purple.svg"
                 (click)="toggleDropdown('.prepare-send .dropdown-content')" />

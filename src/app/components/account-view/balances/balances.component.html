@@ -13,7 +13,7 @@
           <div class="flex-row title">Tezos</div>
           <div class="flex-column prices">
             <div *ngIf="account" class="price">{{this.account?.balanceXTZ / 1000000 | number: "1.0-6"}}</div>
-            <div class="price-usd">{{this.account?.balanceUSD }}</div>
+            <div class="price-usd">{{'$' + (this.account?.balanceUSD || '0.00') }}</div>
           </div>
         </div>
         <div class="flex-row right">
@@ -27,7 +27,7 @@
             <div class="flex-row title">{{tokenBalance?.symbol}}</div>
             <div class="flex-column prices">
               <div class="price">{{tokenBalance?.balance}}</div>
-              <div class="price-usd">{{tokenBalance?.priceUSD}}</div>
+              <div class="price-usd">{{'$' + (tokenBalance?.priceUSD || '0.00') }}</div>
             </div>
           </div>
           <div class="flex-row right">

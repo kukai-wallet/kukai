@@ -33,9 +33,7 @@ export class TokenBalancesService {
   balances: TokenWithBalance[] = [];
   nfts: ContractsWithBalance = null;
   activeAccount: Account = null;
-  lastMetadataUpdate = null;
-  lastTokenBalanceUpdate = null;
-  tokenReload = new BehaviorSubject(null);
+  _thumbnailsToCreate = [];
   constructor(
     private tokenService: TokenService,
     private activityService: ActivityService,
@@ -59,7 +57,7 @@ export class TokenBalancesService {
     this.balances = [];
     this.nfts = null;
   }
-  resolveAsset(token, balances, nfts, _thumbnailsToCreate) {
+  resolveAsset(token, balances, nfts) {
     const asset = this.tokenService.getAsset(token.tokenId);
     if (asset) {
       if (this.isNFT(asset)) { // token balance or NFT?
@@ -67,7 +65,9 @@ export class TokenBalancesService {
         if (nfts[contractAlias] === undefined) {
           let thumbnailUrl = CONSTANTS.CONTRACT_ALIASES[(contractAlias as string)]?.thumbnailUrl;
           if (!thumbnailUrl) {
-            _thumbnailsToCreate.push({ contractAlias, address: asset.contractAddress });
+            if (this._thumbnailsToCreate.filter(obj => obj.contractAlias === contractAlias).length === 0) {
+              this._thumbnailsToCreate.push({ contractAlias, address: asset.contractAddress });
+            }
           }
           nfts[contractAlias] = { name: contractAlias, thumbnailUrl, tokens: [] };
         }
@@ -83,23 +83,22 @@ export class TokenBalancesService {
     if (this.activeAccount) {
       const balances: TokenWithBalance[] = [];
       const nfts: ContractsWithBalance = {};
-      const _thumbnailsToCreate = [];
       for (let token of this.activeAccount.tokens) {
         if (token.balance && token.balance !== '0') {
-          this.resolveAsset(token, balances, nfts, _thumbnailsToCreate);
+          this.resolveAsset(token, balances, nfts);
         }
       }
       this.balances = balances;
       this.nfts = nfts;
 
-      if (_thumbnailsToCreate.length) {
-        setTimeout(() => {
-          for (let { contractAlias, address } of _thumbnailsToCreate) {
-            if (!this.nfts[contractAlias].thumbnailUrl) {
-              this.nfts[contractAlias].thumbnailUrl = this.getThumbnailUrl(address);
-            }
+      if (this._thumbnailsToCreate.length) {
+        this._thumbnailsToCreate.forEach(({ contractAlias, address }) => {
+          if (!this.nfts[contractAlias].thumbnailUrl) {
+            console.log(this.nfts[contractAlias].thumbnailUrl);
+            this.nfts[contractAlias].thumbnailUrl = this.getThumbnailUrl(address);
           }
-        }, 0);
+        });
+        this._thumbnailsToCreate = [];
       }
     }
   }
