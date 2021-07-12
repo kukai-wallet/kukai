@@ -34,10 +34,6 @@ $lower-limit: 75rem;
 $middle-limit: 130rem;
 $upper-limit: 260rem;
 
-html {
-  font-size: 75%;
-}
-
 %base-button {
   outline: none;
   border: none;
@@ -106,6 +102,7 @@ textarea {
   border: 2px solid;
   border-color: $border-color;
   border-radius: $border-radius;
+  font-size: 1.25em;
 }
 
 button {
@@ -130,6 +127,12 @@ button {
   }
 }
 
+@media (max-width: 767px) {
+  :host {
+    font-size: 75%;
+  }
+}
+
 .kukai-modal {
   position: fixed;
   top: 0;
@@ -147,10 +150,9 @@ button {
     background-color: $base-end-color;
     width: auto;
     height: auto;
-    max-width: 85vw;
     border-radius: $border-radius-hard;
     padding: 2rem;
-    min-width: 32rem;
+    width: 32em;
     position: relative;
     margin: 5rem 0 0 0;
     overflow-x: hidden;
@@ -176,7 +178,7 @@ button {
       align-items: center;
 
       .title {
-        font-size: 2.5rem;
+        font-size: 2em;
         width: 70%;
         font-weight: 500;
         text-align: center;

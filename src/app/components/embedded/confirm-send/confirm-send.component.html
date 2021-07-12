@@ -6,15 +6,14 @@
     </div>
     <div class="seperator"></div>
     <div class="flex-column confirm-send">
-      <ng-container *ngFor="let transaction of templateRequest.partialOps; let i = index">
-        <div class="asset-name">{{ templateRequest.template.descriptions[i].text }}</div>
+        <div class="asset-name">{{ templateRequest.template.descriptions[0].text }}</div>
         <div class="flex-row transaction">
           <div class="flex-column left">
             <span class="default-text">Send</span>
-            <span class="default-text amount">{{ (transaction.amount | number:'1.0-6') + ' tez'
+            <span class="default-text amount">{{ (templateRequest.partialOps[0].amount | number:'1.0-6') + ' tez'
               }}</span>
             <span class="default-text">USD&nbsp;{{'$' +
-              (transaction.amount
+              (templateRequest.partialOps[0].amount
               *
               walletService.wallet.XTZrate | number:'1.0-2')
               }}</span>
@@ -29,11 +28,10 @@
             <span *ngIf="!this.walletService.wallet.verifier" class="default-text single-to">{{ activeAccount.address
               }}</span>
           </div>
-          <div *ngIf="templateRequest.template.descriptions[i]?.imgUrl" class="flex-column right">
-            <img class="token-image" [src]="templateRequest.template.descriptions[i]?.imgUrl" />
+          <div *ngIf="templateRequest.template.descriptions[0]?.imgUrl" class="flex-column right">
+            <img class="token-image" [src]="templateRequest.template.descriptions[0]?.imgUrl" />
           </div>
         </div>
-      </ng-container>
       <br />
       <div class="seperator"></div>
       <div class="flex-column bottom">
@@ -44,8 +42,8 @@
             <div class="default-text">
               Send to:
             </div>
-            <div *ngFor="let transaction of templateRequest.ops; let i = index" class="default-text">
-              {{ transaction.destination }}
+            <div class="default-text">
+              {{ templateRequest.ops[0].destination }}
             </div>
           </div>
           <div class="seperator"></div>
@@ -60,7 +58,7 @@
             </div>
             <div class="flex-row">
               <div class="default-text">
-                Storage
+                Max Storage Cost
               </div>
               <div class="default-text">
                 {{ templateRequest.fee.storage + ' tez' }}
@@ -77,6 +75,7 @@
                 {{ templateRequest.ops[0]?.parameters?.entrypoint }}
               </div>
             </div>
+            <br/>
           </div>
         </div>
       </div>
