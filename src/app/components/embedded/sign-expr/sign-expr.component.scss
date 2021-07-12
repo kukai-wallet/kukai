@@ -281,7 +281,7 @@ button {
         margin: 0 0 1em 0;
         font-size: 1.25em;
         text-align: center;
-        white-space: nowrap;
+        max-height: 4rem;
         overflow: hidden;
         text-overflow: ellipsis;
 

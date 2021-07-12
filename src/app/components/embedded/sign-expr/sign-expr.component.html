@@ -5,7 +5,7 @@
       <h1 class="title">{{ signRequest?.title ? signRequest.title : 'Sign Expression' }}</h1>
     </div>
     <div class="flex-column sign-expr">
-      <p class="previewAttention">{{ signRequest?.desc ? signRequest.desc : 'An application has requested you sign an
+      <p class="previewAttention">{{ desc ? desc : 'An application has requested you sign an
         expression.' }}</p>
         <div class="seperator"></div>
       <div class="flex-row more-info" [class]="showMore ? 'open' : ''" (click)="toggle()">{{ !showMore ? 'Show More' : 'Show Less' }}<img src="../../../../assets/img/dropdown-minterpop.svg"></div>
