@@ -72,8 +72,8 @@
       </div>
       <br/>
       <div class="flex-row buttons" [class.vertical]="templateRequest.template.buttonsVertically">
-        <button [style.backgroundColor]="templateRequest.template.buttonBackgroundColor ? templateRequest.template.buttonBackgroundColor : ''" [style.borderRadius]="templateRequest.template.buttonBorderRadius ? templateRequest.template.buttonBorderRadius : ''" [style.color]="templateRequest.template.color ? templateRequest.template.color : ''" (click)="cancel()">Cancel</button>
-        <button [style.backgroundColor]="templateRequest.template.buttonBackgroundColor ? templateRequest.template.buttonBackgroundColor : ''" [style.borderRadius]="templateRequest.template.buttonBorderRadius ? templateRequest.template.buttonBorderRadius : ''" [style.color]="templateRequest.template.color ? templateRequest.template.color : ''"  (click)="approve()">
+        <button [style.backgroundColor]="templateRequest.template.buttonBackgroundColor ? templateRequest.template.buttonBackgroundColor : ''" [style.borderRadius]="templateRequest.template.buttonBorderRadius ? templateRequest.template.buttonBorderRadius : ''" [style.color]="templateRequest.template.buttonColor ? templateRequest.template.buttonColor : ''" (click)="cancel()">Cancel</button>
+        <button [style.backgroundColor]="templateRequest.template.buttonBackgroundColor ? templateRequest.template.buttonBackgroundColor : ''" [style.borderRadius]="templateRequest.template.buttonBorderRadius ? templateRequest.template.buttonBorderRadius : ''" [style.color]="templateRequest.template.buttonColor ? templateRequest.template.buttonColor : ''"  (click)="approve()">
           <ng-container *ngIf="templateRequest.template.button; else defaultButtonText">{{templateRequest.template.button}}</ng-container>
           <ng-template #defaultButtonText>Send</ng-template>
         </button>
