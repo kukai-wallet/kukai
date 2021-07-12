@@ -1,17 +1,20 @@
 <div *ngIf="signRequest" class="flex-column kukai-modal">
   <div class="content">
     <div class="flex-column top">
-      <img class="flex-row button close" (click)="rejectSigning()" src="../../../../assets/img/close.svg" />
+      <img class="flex-row button close" (click)="rejectSigning()" src="../../../../assets/img/add.svg" />
       <h1 class="title">{{ signRequest?.title ? signRequest.title : 'Sign Expression' }}</h1>
     </div>
     <div class="flex-column sign-expr">
       <p class="previewAttention">{{ signRequest?.desc ? signRequest.desc : 'An application has requested you sign an
         expression.' }}</p>
-      <textarea rows="10" readonly>{{ payload }}</textarea>
+      <div class="more-info" [class]="showMore ? 'open' : ''" (click)="toggle()">{{ !showMore ? 'Show More' : 'Show Less' }}<img src="../../../../assets/img/dropdown-minterpop.svg"></div>
+      <div *ngIf="showMore" class="info">
+        <textarea rows="10" readonly>{{ payload }}</textarea>
+      </div>
       <div class="seperator"></div>
       <div class="flex-column bottom">
         <span *ngIf="this.pwdInvalid" class="danger margin">{{ this.pwdInvalid }}</span>
-        <button class="purple confirm" [style.backgroundColor]="signRequest?.buttonBackgroundColor ? signRequest.buttonBackgroundColor : ''" [style.borderRadius]="signRequest?.buttonBorderRadius ? signRequest.buttonBorderRadius : ''" [style.color]="signRequest?.buttonColor ? signRequest.buttonColor : ''" (click)="sign()">Sign</button>
+        <button class="purple confirm" (click)="sign()">Sign</button>
         <div class="footer">
           <span>Powered by</span><img class="logo" src="../../../../assets/img/kukai-logo2.svg">
         </div>

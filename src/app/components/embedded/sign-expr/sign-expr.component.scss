@@ -37,8 +37,8 @@ $upper-limit: 260rem;
 %base-button {
   outline: none;
   border: none;
-  border-radius: $border-radius-hard;
-  background-color: $base-blue-color-lightened;
+  border-radius: 4px;
+  background-color: #2639bf;
   color: $base-end-color;
   padding: 1rem 2rem;
   font-size: 1rem;
@@ -101,7 +101,7 @@ $upper-limit: 260rem;
 textarea {
   border: 2px solid;
   border-color: $border-color;
-  border-radius: $border-radius-hard;
+  border-radius: $border-radius;
 }
 
 button {
@@ -111,7 +111,6 @@ button {
     @extend %base-button;
     border: "2px solid";
     border-color: $base-blue-color;
-    border-radius: $border-radius-hard;
     background-color: #fff;
     color: $base-blue-color;
   }
@@ -163,11 +162,12 @@ button {
       padding: 1rem;
       border: 2px solid $border-color;
       border-radius: $border-radius-hardest;
+      transform: rotate(45deg);
     }
 
     &>.top {
       position: relative;
-      margin: 0 0 2rem 0;
+      margin: 0 0 1rem 0;
       align-items: center;
 
       .title {
@@ -227,9 +227,13 @@ button {
     }
 
     & .more-info {
-      height: 2rem;
-      justify-content: flex-end;
+      font-size: 1.375rem;
+      color: $base-font-color;
+      font-weight: 500;
+      text-align: center;
       margin: 1rem 0;
+      width: 10rem;
+      cursor: pointer;
 
       span {
         color: $base-font-color-secondary;
@@ -240,7 +244,6 @@ button {
       img {
         height: 1.75rem;
         width: auto;
-        filter: invert(1);
       }
 
       &.open {
@@ -250,20 +253,10 @@ button {
       }
     }
 
-    & .meta-more {
+    & .info {
       width: 100%;
-      height: auto;
-      max-height: 0;
-      transition: 0.15s max-height;
-      overflow: hidden;
     }
 
-    & .prepare-send,
-    & .confirm-send {
-      & input::placeholder {
-        text-transform: uppercase;
-      }
-    }
 
     & .sign-expr {
       margin: 2rem 0 0 0;
@@ -292,7 +285,7 @@ button {
       & textarea {
         margin: 1rem 0 2rem 0;
         padding: 1rem;
-        width: calc(75% - 2rem);
+        width: 100%;
       }
 
       & .bottom {
@@ -318,7 +311,6 @@ button {
     & button.confirm {
       width: 100%;
       height: 4rem;
-      border-radius: $border-radius-hard;
     }
 
     & .footer {
@@ -328,7 +320,7 @@ button {
       align-items: center;
       opacity: 0.5;
 
-      &> span {
+      &>span {
         font-size: 0.75rem;
         line-height: 1rem;
         font-weight: 600;

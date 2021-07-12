@@ -24,6 +24,7 @@ export class SignExprEmbedComponent implements OnInit, OnChanges {
   pwdInvalid = '';
   payload = '';
   isMessage = false;
+  showMore = false;
   constructor(
     public walletService: WalletService,
     private messageService: MessageService,
@@ -95,5 +96,8 @@ export class SignExprEmbedComponent implements OnInit, OnChanges {
     this.pwdInvalid = '';
     this.payload = '';
     this.isMessage = false;
+  }
+  toggle() {
+    this.showMore = !this.showMore;
   }
 }
