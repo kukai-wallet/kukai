@@ -7,7 +7,7 @@
     <div class="flex-column sign-expr">
       <p class="previewAttention">{{ signRequest?.desc ? signRequest.desc : 'An application has requested you sign an
         expression.' }}</p>
-      <div class="more-info" [class]="showMore ? 'open' : ''" (click)="toggle()">{{ !showMore ? 'Show More' : 'Show Less' }}<img src="../../../../assets/img/dropdown-minterpop.svg"></div>
+      <div class="flex-row more-info" [class]="showMore ? 'open' : ''" (click)="toggle()">{{ !showMore ? 'Show More' : 'Show Less' }}<img src="../../../../assets/img/dropdown-minterpop.svg"></div>
       <div *ngIf="showMore" class="info">
         <textarea rows="10" readonly>{{ payload }}</textarea>
       </div>
