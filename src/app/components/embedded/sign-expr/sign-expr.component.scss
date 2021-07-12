@@ -281,6 +281,9 @@ button {
         margin: 0 0 1em 0;
         font-size: 1.25em;
         text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
 
         &.warning {
           color: $base-red-color;
