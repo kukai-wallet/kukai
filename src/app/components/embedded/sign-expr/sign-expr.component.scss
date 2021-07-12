@@ -148,7 +148,6 @@ button {
     width: auto;
     height: auto;
     max-width: 85vw;
-    max-height: 75vh;
     border-radius: $border-radius-hard;
     padding: 2rem;
     min-width: 32rem;
@@ -167,6 +166,8 @@ button {
       border: 2px solid $border-color;
       border-radius: $border-radius-hardest;
       transform: rotate(45deg);
+      opacity: 1;
+      cursor: pointer;
     }
 
     &>.top {
