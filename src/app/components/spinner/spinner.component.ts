@@ -17,6 +17,8 @@ export class SpinnerComponent implements OnInit {
         this.logo = 'truesy';
       } else if (o?.endsWith('playwithbrio.com')) {
         this.logo = 'brio';
+      } else if (o?.indexOf('minterpop') !== -1) {
+        this.logo = 'minterPop';
       } else {
         this.logo = 'default';
       }
