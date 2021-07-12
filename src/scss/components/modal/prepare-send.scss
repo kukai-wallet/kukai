@@ -11,6 +11,7 @@
     align-items: center;
     top: -3.5rem;
     right: 1rem;
+    cursor: pointer;
 
     & input {
       text-align: center;
@@ -25,6 +26,7 @@
       height: 2.25rem;
       margin: 0;
       font-size: 1.05rem;
+      cursor: pointer;
     }
 
     & .icon-db {
