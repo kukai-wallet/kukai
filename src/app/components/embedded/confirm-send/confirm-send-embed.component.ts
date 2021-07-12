@@ -1,17 +1,20 @@
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, OnChanges } from '@angular/core';
-import { TemplateRequest, TemplateFee, FullyPreparedTransaction } from '../interfaces';
+import { TemplateRequest, TemplateFee, FullyPreparedTransaction } from '../../send/interfaces';
 import { Template, BaseTemplate } from 'kukai-embed';
+import { WalletService } from '../../../services/wallet/wallet.service';
 
 @Component({
-  selector: 'app-confirm-send-template',
-  templateUrl: './confirm-send-template.component.html',
-  styleUrls: ['./confirm-send-template.component.scss']
+  selector: 'app-confirm-send-embed',
+  templateUrl: './confirm-send-embed.component.html',
+  styleUrls: ['./confirm-send-embed.component.scss']
 })
-export class ConfirmSendTemplateComponent implements OnInit, OnChanges {
+export class ConfirmSendEmbedComponent implements OnInit, OnChanges {
   @Input() templateRequest: TemplateRequest = null;
   @Output() isApproved = new EventEmitter();
+  @Input() activeAccount = null;
   active = false;
-  constructor() { }
+  showMore = false;
+  constructor(public walletService: WalletService) { }
 
   ngOnInit(): void {
   }
@@ -36,6 +39,9 @@ export class ConfirmSendTemplateComponent implements OnInit, OnChanges {
       this.isApproved.emit(this.templateRequest.ops);
       this.reset();
     }
+  }
+  toggle() {
+    this.showMore = !this.showMore;
   }
   reset() {
     this.resetScrollbar();

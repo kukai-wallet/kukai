@@ -1,0 +1,86 @@
+<div *ngIf="active" class="flex-column kukai-modal">
+  <div class="content">
+    <div class="flex-column top">
+      <h1 class="title">Confirmation</h1>
+    </div>
+    <div class="seperator"></div>
+    <div class="flex-column confirm-send">
+      <ng-container *ngFor="let transaction of templateRequest.ops; let i = index">
+        <div class="asset-name">{{ templateRequest.template.descriptions[i].text }}</div>
+        <div class="flex-row transaction">
+          <div class="flex-column left">
+            <span class="default-text">Send</span>
+            <span class="default-text amount">{{ (transaction.amount | number:'1.0-6') + ' tez'
+              }}</span>
+            <span class="default-text">USD&nbsp;{{'$' +
+              (transaction.amount
+              *
+              walletService.wallet.XTZrate | number:'1.0-2')
+              }}</span>
+            <span class="default-text">From:</span>
+            <span class="default-text single-to">{{ activeAccount.address }}</span>
+          </div>
+          <div *ngIf="templateRequest.template.descriptions[i]?.imgUrl" class="flex-column right">
+            <img class="token-image" [src]="templateRequest.template.descriptions[i]?.imgUrl" />
+          </div>
+        </div>
+      </ng-container>
+      <br/>
+      <div class="seperator"></div>
+      <div class="flex-column bottom">
+        <div class="default-text more-info" (click)="toggle()">{{ !showMore ? 'Show More' : 'Show Less' }}</div>
+        <div *ngIf="showMore" class="info">
+          <div class="flex-column">
+            <div class="default-text">
+              Send to:
+            </div>
+            <div *ngFor="let transaction of templateRequest.ops; let i = index" class="default-text">
+              {{ transaction.destination }}
+            </div>
+          </div>
+          <div class="seperator"></div>
+          <div class="flex-column">
+            <div class="flex-row">
+              <div class="default-text">
+                Fee
+              </div>
+              <div class="default-text">
+                {{ templateRequest.fee.network + ' tez' }}
+              </div>
+            </div>
+            <div class="flex-row">
+              <div class="default-text">
+                Storage
+              </div>
+              <div class="default-text">
+                {{ templateRequest.fee.storage + ' tez' }}
+              </div>
+            </div>
+          </div>
+          <div class="seperator"></div>
+          <div class="flex-column">
+            <div class="flex-row">
+              <div class="default-text">
+                Contract Call
+              </div>
+              <div class="default-text">
+                {{ templateRequest.ops[0]?.parameters?.entrypoint }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br/>
+      <div class="flex-row buttons" [class.vertical]="templateRequest.template.buttonsVertically">
+        <button [style.backgroundColor]="templateRequest.template.buttonBackgroundColor ? templateRequest.template.buttonBackgroundColor : ''" [style.borderRadius]="templateRequest.template.buttonBorderRadius ? templateRequest.template.buttonBorderRadius : ''" [style.color]="templateRequest.template.color ? templateRequest.template.color : ''" (click)="cancel()">Cancel</button>
+        <button [style.backgroundColor]="templateRequest.template.buttonBackgroundColor ? templateRequest.template.buttonBackgroundColor : ''" [style.borderRadius]="templateRequest.template.buttonBorderRadius ? templateRequest.template.buttonBorderRadius : ''" [style.color]="templateRequest.template.color ? templateRequest.template.color : ''"  (click)="approve()">
+          <ng-container *ngIf="templateRequest.template.button; else defaultButtonText">{{templateRequest.template.button}}</ng-container>
+          <ng-template #defaultButtonText>Send</ng-template>
+        </button>
+      </div>
+      <div class="footer">
+        <span>Powered by</span><img class="logo" src="../../../../assets/img/kukai-logo2.svg">
+      </div>
+    </div>
+  </div>
+</div>
