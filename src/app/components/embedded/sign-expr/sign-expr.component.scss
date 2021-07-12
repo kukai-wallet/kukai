@@ -163,11 +163,12 @@ button {
       padding: 1rem;
       border: 2px solid $border-color;
       border-radius: $border-radius-hardest;
+      transform: rotate(45deg);
     }
 
     &>.top {
       position: relative;
-      margin: 0 0 2rem 0;
+      margin: 0 0 1rem 0;
       align-items: center;
 
       .title {

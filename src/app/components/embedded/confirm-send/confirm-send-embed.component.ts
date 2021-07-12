@@ -2,6 +2,8 @@ import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, OnChange
 import { TemplateRequest, TemplateFee, FullyPreparedTransaction } from '../../send/interfaces';
 import { Template, BaseTemplate } from 'kukai-embed';
 import { WalletService } from '../../../services/wallet/wallet.service';
+import { MessageService } from '../../../services/message/message.service';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-confirm-send-embed',
@@ -9,14 +11,22 @@ import { WalletService } from '../../../services/wallet/wallet.service';
   styleUrls: ['./confirm-send-embed.component.scss']
 })
 export class ConfirmSendEmbedComponent implements OnInit, OnChanges {
+
   @Input() templateRequest: TemplateRequest = null;
   @Output() isApproved = new EventEmitter();
   @Input() activeAccount = null;
   active = false;
   showMore = false;
-  constructor(public walletService: WalletService) { }
+  template = 'default';
+  constructor(public walletService: WalletService, public messageService: MessageService) { }
 
   ngOnInit(): void {
+    this.messageService.origin.pipe(take(1)).subscribe((origin) => {
+      console.log(origin);
+      if(origin.indexOf('minterpop') !== -1) {
+        this.template = 'default';
+      }
+    });
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes?.templateRequest?.currentValue) {
