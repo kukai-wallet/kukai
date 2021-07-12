@@ -37,6 +37,10 @@ $lower-limit: 75rem;
 $middle-limit: 130rem;
 $upper-limit: 260rem;
 
+html {
+  font-size: 75%;
+}
+
 %base-button {
   outline: none;
   border: none;
@@ -148,10 +152,9 @@ button {
     width: auto;
     height: auto;
     max-width: 85vw;
-    max-height: 75vh;
     border-radius: $border-radius-hard;
     padding: 1rem 2rem 2rem 2rem;
-    min-width: 38rem;
+    min-width: 32rem;
     position: relative;
     margin: 5rem 0 0 0;
     overflow-x: hidden;
@@ -167,6 +170,8 @@ button {
       border: 2px solid $border-color;
       border-radius: $border-radius-hardest;
       transform: rotate(45deg);
+      opacity: 1;
+      cursor: pointer;
     }
 
     &>.top {

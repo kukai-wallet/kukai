@@ -7,8 +7,8 @@ import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-confirm-send-embed',
-  templateUrl: './confirm-send-embed.component.html',
-  styleUrls: ['./confirm-send-embed.component.scss']
+  templateUrl: './confirm-send.component.html',
+  styleUrls: ['./confirm-send.component.scss']
 })
 export class ConfirmSendEmbedComponent implements OnInit, OnChanges {
 
