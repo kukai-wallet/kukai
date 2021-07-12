@@ -23,7 +23,7 @@ export class SignExprEmbedComponent implements OnInit, OnChanges {
   password = '';
   pwdInvalid = '';
   payload = '';
-  desc = null;
+  description = null;
   isMessage = false;
   showMore = false;
   constructor(
@@ -44,7 +44,7 @@ export class SignExprEmbedComponent implements OnInit, OnChanges {
       const value = valueDecoder(Uint8ArrayConsumer.fromHexString(this.signRequest.payload.slice(2)));
       const payload = emitMicheline(value, { indent: '  ', newline: '\n' });
       this.payload = this.isMessage ? value.string : payload;
-      this.desc = this.signRequest?.desc ? this.signRequest?.desc.substring(0, 71).trim() + '...' : null;
+      this.description = this.signRequest?.description ? this.signRequest?.desc.substring(0, 104).trim() + '...' : null;
     }
   }
   async sign() {
