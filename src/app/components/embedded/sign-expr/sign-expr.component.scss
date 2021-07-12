@@ -130,6 +130,10 @@ button {
 @media (max-width: 767px) {
   :host {
     font-size: 75%;
+
+    & .close {
+      top: 0 !important;
+    }
   }
 }
 
@@ -159,7 +163,7 @@ button {
     overflow-y: auto;
 
     & .close {
-      top: -0.25em;
+      top: -0.125em;
       right: 0;
       font-size: 95%;
       position: absolute;
