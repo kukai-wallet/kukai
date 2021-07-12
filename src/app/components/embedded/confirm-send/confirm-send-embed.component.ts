@@ -51,7 +51,9 @@ export class ConfirmSendEmbedComponent implements OnInit, OnChanges {
     }
   }
   toggle() {
-    this.showMore = !this.showMore;
+    if (this.templateRequest.ops) {
+      this.showMore = !this.showMore;
+    }
   }
   reset() {
     this.resetScrollbar();

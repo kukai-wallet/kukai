@@ -6,7 +6,7 @@
     </div>
     <div class="seperator"></div>
     <div class="flex-column confirm-send">
-      <ng-container *ngFor="let transaction of templateRequest.ops; let i = index">
+      <ng-container *ngFor="let transaction of templateRequest.partialOps; let i = index">
         <div class="asset-name">{{ templateRequest.template.descriptions[i].text }}</div>
         <div class="flex-row transaction">
           <div class="flex-column left">
