@@ -139,8 +139,8 @@ button {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: #0006;
-  justify-content: flex-start;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
   align-items: center;
   z-index: 1000;
 
@@ -239,7 +239,7 @@ button {
       color: $base-font-color;
       font-weight: 500;
       text-align: center;
-      margin: 1em 0;
+      margin: 1em 0 0 0;
       width: 8em;
       cursor: pointer;
 
@@ -267,7 +267,7 @@ button {
 
 
     & .sign-expr {
-      margin: 2rem 0 0 0;
+      margin: 1em 0 0 0;
       align-items: center;
 
       & label,
@@ -278,7 +278,7 @@ button {
       }
 
       & .previewAttention {
-        margin: 0 0 1em 0;
+        margin: 1em 0;
         font-size: 1.25em;
         text-align: left;
         max-height: 8rem;
@@ -313,7 +313,7 @@ button {
     }
 
     & .bottom {
-      margin: 2em 0 0 0;
+      margin: 1.25em 0 0 0;
     }
 
     & button.confirm {
