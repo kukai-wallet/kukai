@@ -4,19 +4,19 @@
 
   & .dropdown {
 
-    width: 13rem;
+    width: 14rem;
     display: block;
     position: absolute;
     justify-content: flex-end;
     align-items: center;
     top: -3.5rem;
-    right: 1rem;
+    right: 2px;
     cursor: pointer;
 
     & input {
-      text-align: center;
-      width: calc(100% - 2rem);
-      padding: 0 1.5rem;
+      text-align: left;
+      width: calc(100% - 4rem);
+      padding: 0 1rem 0 3rem;
       border: 2px solid v.$base-color-lightened-6;
       border-radius: v.$border-radius-hard;
       transition: 0.25s border-radius;
@@ -34,8 +34,8 @@
       width: 1.25rem;
       object-fit: scale-down;
       position: absolute;
-      top: 0.7rem;
-      right: -0.775rem;
+      top: 0.625rem;
+      right: 0.5rem;
       background-color: transparent;
       border-radius: v.$border-radius-hard;
       transform: rotate(0deg);
@@ -44,8 +44,8 @@
 
     & .icon-torus {
       position: absolute;
-      top: 0.7rem;
-      left: 0.775rem;
+      top: 0.625rem;
+      left: 0.75rem;
       width: 1.25rem;
       height: 1.25rem;
     }
@@ -56,8 +56,8 @@
       display: none;
       z-index: 1;
       overflow: hidden;
-      width: calc(100% + 1rem);
-      top: 3.78rem;
+      width: calc(100%);
+      top: 3rem;
       box-shadow: v.$box-shadow-dark;
 
       &.right {

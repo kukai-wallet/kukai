@@ -168,7 +168,7 @@
   & .to {
     padding: 2rem;
     margin: 2rem 0 0 0;
-    align-items: flex-start;
+    align-items: center;
     background-color: #7178e333;
 
     & .left {
@@ -222,10 +222,9 @@
         font-weight: 400;
         cursor: pointer;
         width: 100%;
-        margin: 0 0 0.5rem 0;
 
         &:not(.scroll) {
-          font-weight: 600;
+          font-weight: 400;
         }
 
         &.active {
