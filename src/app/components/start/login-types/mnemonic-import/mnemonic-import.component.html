@@ -33,6 +33,7 @@
       </ng-container>
       <ng-container *ngIf="importOption === 1">
         <app-ui-toggle-advanced [default]="false" (stateChange)="advancedForm = $event"></app-ui-toggle-advanced>
+        <br/><br/>
         <div *ngIf="advancedForm" class="flex-row import-option-1">
           <div class="flex-column">
             <span><b>If your seed words are protected by a passphrase, it needs to be entered here</b></span>

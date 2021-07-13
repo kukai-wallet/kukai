@@ -1,10 +1,10 @@
 & .qr-scanner {
   position: relative;
   background-color: v.$base-end-color;
-  padding: 2rem;
+  padding: 0 2rem;
   border-radius: v.$border-radius-hard;
   max-width: v.$lower-limit;
-  width: calc(100% - 4rem);
+  width: 36rem;
 
   & video {
     width: 100%;
@@ -18,5 +18,9 @@
     display: block;
     width: 100%;
     text-align: center;
+  }
+
+  input.text {
+    margin: 0;
   }
 }

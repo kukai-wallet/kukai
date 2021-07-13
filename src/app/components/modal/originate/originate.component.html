@@ -8,8 +8,8 @@
     <div class="flex-column originate">
       <div class="flex-column">
         <span class="key"><span class="value">{{ this.balance ? this.balance + ' ' + 'tez' : '' }}</span></span>
-        <span class="amount-usd"></span>
-        <span class="section key">From:&nbsp;<span class="from value">{{ activeAccount?.address }}</span></span>
+        <!-- <span class="amount-usd"> </span> -->
+        <span class="section key">From:&nbsp;<span class="from">{{ activeAccount?.address }}</span></span>
       </div>
       <div class="seperator"></div>
       <div class="flex-row">
@@ -20,6 +20,7 @@
         <span class="key">MAX STORAGE COST:&nbsp;</span><span class="value">{{ getTotalBurn() }} tez</span>
       </div>
       <div class="seperator"></div>
+      <br/>
       <app-ui-toggle-advanced [default]="false" (stateChange)="advancedForm = $event"></app-ui-toggle-advanced>
       <div *ngIf="advancedForm" class="advanced-form">
         <div class="tabs-container">
@@ -30,26 +31,26 @@
         </div>
         <textarea style="width: 100%" rows="10" readonly>{{ getScript() }}</textarea>
         <ng-container *ngIf="!(walletService.isLedgerWallet() && !ledgerError)">
-          <div class="row-group">
-            <div class="group">
-              <label>Gas limit</label>
+          <div class="flex-row">
+            <div class="flex-column">
+              <label class="label">Gas limit</label>
               <input type="text" class="text" placeholder={{this.defaultTransactionParams.gas.toString()}}
                 [(ngModel)]="customGas">
             </div>
-            <div class="group">
-              <label>Fee</label>
+            <div class="flex-column">
+              <label class="label">Fee</label>
               <input type="text" class="text" (keypress)="keyPressNumbersDecimal($event, 'customFee')"
                 placeholder={{this.defaultTransactionParams.fee.toString()}} [(ngModel)]="customFee">
             </div>
           </div>
-          <div class="row-group">
-            <div class="group">
-              <label>Storage limit</label>
+          <div class="flex-row">
+            <div class="flex-column">
+              <label class="label">Storage limit</label>
               <input type="text" class="text" placeholder={{this.defaultTransactionParams?.storage.toString()}}
                 [(ngModel)]="customStorage">
             </div>
-            <div class="group">
-              <label>Max storage cost</label>
+            <div class="flex-column">
+              <label class="label">Max storage cost</label>
               <input type="text" class="text read-only" [value]="burnAmount() ? burnAmount() : '0 tez'" tabindex=-1
                 readonly>
             </div>

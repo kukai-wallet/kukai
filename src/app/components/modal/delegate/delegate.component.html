@@ -14,8 +14,10 @@
           </div>
         </div>
       </div>
-      <div class="seperator"></div>
+      <br/>
       <app-ui-toggle-advanced [default]="false" (stateChange)="advanced = $event"></app-ui-toggle-advanced>
+      <br/>
+      <br/>
       <ng-container *ngIf="advanced">
         <div class="label">Fee (tez)</div>
         <input [(ngModel)]="fee" class="text fee" type="text" />

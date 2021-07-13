@@ -3,12 +3,27 @@
   margin: 2rem 0 0 0;
   height: auto;
 
-  & .seperator {
+  & .seperator, span {
     margin: 0.5rem 0;
   }
 
   & .advanced-form {
-    margin-top: 1rem;
+    margin: 1rem 0 0 0;
+
+    &>div:not(.tabs-container) {
+      width: 100%;
+
+      &>div {
+        width: 50%;
+      }
+    }
+
+    & input {
+      margin: 0 0 1rem 0;
+      width: calc(100% - 3rem);
+      height: 3.5rem;
+      align-self: center;
+    }
 
     & .tabs-container {
       margin-top: 0.5rem;

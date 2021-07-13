@@ -94,7 +94,6 @@ export class TokenBalancesService {
       if (this._thumbnailsToCreate.length) {
         this._thumbnailsToCreate.forEach(({ contractAlias, address }) => {
           if (!this.nfts[contractAlias].thumbnailUrl) {
-            console.log(this.nfts[contractAlias].thumbnailUrl);
             this.nfts[contractAlias].thumbnailUrl = this.getThumbnailUrl(address);
           }
         });
