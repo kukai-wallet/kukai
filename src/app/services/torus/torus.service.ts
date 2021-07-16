@@ -26,21 +26,24 @@ export class TorusService {
         typeOfLogin: 'google',
         clientId: '952872982551-od475jfe3ach7dghacin634rbkcqhpll.apps.googleusercontent.com',
         verifier: 'kukai-google',
-        caseSensitiveVerifierID: false
+        caseSensitiveVerifierID: false,
+        lookups: true
       },
       [REDDIT]: {
         name: 'Reddit',
         typeOfLogin: 'reddit',
         clientId: 'H0nhRv1leU9pGQ',
         verifier: 'tezos-reddit-testnet',
-        caseSensitiveVerifierID: false
+        caseSensitiveVerifierID: false,
+        lookups: true
       },
       [TWITTER]: {
         name: 'Twitter',
         typeOfLogin: 'twitter',
         clientId: 'vKFgnaYZzKLUnhxnX5xqTqeMcumdVTz1',
         verifier: 'tezos-twitter-test',
-        caseSensitiveVerifierID: false
+        caseSensitiveVerifierID: false,
+        lookups: true
       },
       // [FACEBOOK]: {
       //   name: 'Facebook',
@@ -56,21 +59,24 @@ export class TorusService {
         typeOfLogin: 'google',
         clientId: '952872982551-49mfvktoios59oj2kmiknlltfq9pvi6c.apps.googleusercontent.com',
         verifier: 'tezos-google',
-        caseSensitiveVerifierID: false
+        caseSensitiveVerifierID: false,
+        lookups: true
       },
       [REDDIT]: {
         name: 'Reddit',
         typeOfLogin: 'reddit',
         clientId: 'YivAW_t3iCp9QA',
         verifier: 'tezos-reddit',
-        caseSensitiveVerifierID: false
+        caseSensitiveVerifierID: false,
+        lookups: true
       },
       [TWITTER]: {
         name: 'Twitter',
         typeOfLogin: 'twitter',
         clientId: 'UJl5d4iHVgbrAaSlucXNf2F2uKlC0m25',
         verifier: 'tezos-twitter',
-        caseSensitiveVerifierID: false
+        caseSensitiveVerifierID: false,
+        lookups: true
       },
       // [FACEBOOK]: {
       //   name: 'Facebook',
