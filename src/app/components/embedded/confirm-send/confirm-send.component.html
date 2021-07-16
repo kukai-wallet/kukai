@@ -1,0 +1,128 @@
+<div *ngIf="active && template === 'minterpop'" class="flex-column kukai-modal">
+  <div class="content">
+    <div class="flex-column top">
+      <img class="flex-row button close" (click)="cancel()" src="../../../../assets/img/add-minterpop.svg" />
+      <h1 class="title">Confirmation</h1>
+    </div>
+    <div class="seperator"></div>
+    <div class="flex-column confirm-send">
+        <div class="asset-name">{{ templateRequest.template.descriptions[0].text }}</div>
+        <div class="flex-row transaction">
+          <div class="flex-column left">
+            <span class="default-text">Send</span>
+            <span class="default-text amount">{{ (templateRequest.partialOps[0].amount | number:'1.0-6') + ' tez'
+              }}</span>
+            <span class="default-text">USD&nbsp;{{'$' +
+              (templateRequest.partialOps[0].amount
+              *
+              walletService.wallet.XTZrate | number:'1.0-2')
+              }}</span>
+            <span class="default-text">From:</span>
+            <div class="flex-row torus" *ngIf="this.walletService.wallet.verifier">
+              <img class="icon" src="../../../assets/img/{{ this.walletService.wallet.verifier }}-logo.svg">
+              <div class="flex-column">
+                <span class="name">{{ this.walletService.wallet.displayName() }}</span><span class="address">{{
+                  activeAccount.address }}</span>
+              </div>
+            </div>
+            <span *ngIf="!this.walletService.wallet.verifier" class="default-text single-to">{{ activeAccount.address
+              }}</span>
+          </div>
+          <div *ngIf="templateRequest.template.descriptions[0]?.imgUrl" class="flex-column right">
+            <img class="token-image" [src]="templateRequest.template.descriptions[0]?.imgUrl" />
+          </div>
+        </div>
+      <br />
+      <div class="seperator"></div>
+      <div class="flex-column bottom">
+        <div class="flex-row default-text more-info" [class]="showMore ? 'open' : ''" (click)="toggle()">{{ !showMore ?
+          'Show More' : 'Show Less' }}<img src="../../../../assets/img/dropdown-minterpop.svg"></div>
+        <div *ngIf="showMore" class="info">
+          <div class="flex-column">
+            <div class="default-text">
+              Send to:
+            </div>
+            <div class="default-text">
+              {{ templateRequest.ops[0].destination }}
+            </div>
+          </div>
+          <div class="seperator"></div>
+          <div class="flex-column">
+            <div class="flex-row">
+              <div class="default-text">
+                Fee
+              </div>
+              <div class="default-text">
+                {{ templateRequest.fee.network + ' tez' }}
+              </div>
+            </div>
+            <div class="flex-row">
+              <div class="default-text">
+                Max Storage Cost
+              </div>
+              <div class="default-text">
+                {{ templateRequest.fee.storage + ' tez' }}
+              </div>
+            </div>
+          </div>
+          <div class="seperator"></div>
+          <div class="flex-column">
+            <div class="flex-row">
+              <div class="default-text">
+                Contract Call
+              </div>
+              <div class="default-text">
+                {{ templateRequest.ops[0]?.parameters?.entrypoint }}
+              </div>
+            </div>
+            <br/>
+          </div>
+        </div>
+      </div>
+      <br />
+      <div class="flex-row buttons">
+        <button (click)="approve()">
+          <ng-container *ngIf="templateRequest.template.button; else defaultButtonText">
+            {{templateRequest.template.button}}</ng-container>
+          <ng-template #defaultButtonText>Send</ng-template>
+        </button>
+      </div>
+      <div class="footer">
+        <span>Powered by</span><img class="logo" src="../../../../assets/img/kukai-logo2.svg">
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div *ngIf="active && template === 'default'" class="kukai-template">
+  <div *ngIf="templateRequest.template" class="card">
+    <H1>You are about to<BR><b
+        *ngIf="templateRequest.template.action; else defaultAction">{{templateRequest.template.action}}</b>
+      <ng-template #defaultAction><b>send</b></ng-template>
+    </H1>
+    <ng-container *ngFor="let description of templateRequest.template.descriptions">
+      <ng-container *ngIf="!description.imgUrl">
+        <p class="single" *ngIf="description.text">{{ description.text }}</p>
+      </ng-container>
+      <ng-container *ngIf="description.imgUrl">
+        <img *ngIf="description.imgUrl" src="{{description.imgUrl}}" height="150">
+        <p class="img-text" *ngIf="description.text">{{description.text}}</p>
+      </ng-container>
+    </ng-container>
+    <div class="buttons" [class.horizontally]="!templateRequest.template.buttonsVertically"
+      [class.vertically]="templateRequest.template.buttonsVertically">
+      <button class="secondary" (click)="cancel()">Cancel</button>
+      <button (click)="approve()">
+        <ng-container *ngIf="templateRequest.template.button; else defaultButtonText">
+          {{templateRequest.template.button}}</ng-container>
+        <ng-template #defaultButtonText>Send</ng-template>
+      </button>
+    </div>
+    <p class="fee">Estimated fee <b *ngIf="templateRequest.fee">{{templateRequest.fee.total}} tez</b><img
+        *ngIf="!templateRequest.fee" src="../../../../assets/img/feeLoader.gif"></p>
+    <div class="footer">
+      <span>Powered by</span><img class="logo" src="../../../../assets/img/kukai-logo2.svg">
+    </div>
+  </div>
+</div>

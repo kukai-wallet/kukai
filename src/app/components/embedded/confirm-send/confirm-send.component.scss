@@ -1,0 +1,734 @@
+@import "../../../../assets/fonts/Poppins/stylesheet.css";
+
+
+// generic color constants
+$base-color: #000 !default;
+$base-color-lightened-1: #4a5d75 !default;
+$base-color-lightened-2: #98a0ab !default;
+$base-color-lightened-3: #b9bfc7 !default;
+$base-color-lightened-4: #c1cdd5 !default;
+$base-color-lightened-5: #dde3e8 !default;
+$base-color-lightened-6: #e6e9ed !default;
+$base-color-lightened-7: #f2f4f6 !default;
+$base-end-color: #fff !default;
+$base-background-color: #eceff1 !default;
+$base-blue-color: #5963ff !default;
+$base-blue-color-lightened: #7178e3 !default;
+$base-blue-color-alt: #37a9fa !default;
+$base-red-color: #eb4e39 !default;
+$base-green-color: #c4ec7d !default;
+$base-font-color: #3e4855 !default;
+$base-font-color-secondary: #98a0ab !default;
+
+$advanced-color: #e6eaef !important;
+
+// box shadow constants
+$box-shadow: 0px 12px 24px #3331 !default;
+$box-shadow-dark: 0px 6px 12px #3333 !default;
+
+// border constant
+$border-radius: 1.0rem !default;
+$border-radius-hard: calc(#{$border-radius} * 2) !default;
+$border-radius-hardest: calc(#{$border-radius} * 10) !default;
+$border-color: #aaa3;
+
+// @media constants
+$lower-limit: 75rem;
+$middle-limit: 130rem;
+$upper-limit: 260rem;
+
+%base-button {
+  outline: none;
+  border: none;
+  border-radius: 4px;
+  background-color: #2639bf;
+  color: $base-end-color;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: 500;
+
+  img {
+    height: 1rem;
+  }
+}
+
+%flex {
+  display: flex;
+}
+
+%row {
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+%column {
+  flex-direction: column;
+}
+
+%wrap {
+  flex-wrap: wrap;
+}
+
+%nowrap {
+  flex-wrap: nowrap;
+}
+
+.flex {
+  @extend %flex;
+
+  &-row {
+    @extend %flex;
+    @extend %row;
+
+    &-wrap {
+      @extend %flex;
+      @extend %row;
+      @extend %wrap;
+    }
+  }
+
+  &-column {
+    @extend %flex;
+    @extend %column;
+
+    &-wrap {
+      @extend %flex;
+      @extend %column;
+      @extend %wrap;
+    }
+  }
+}
+
+textarea {
+  border: 2px solid;
+  border-color: $border-color;
+  border-radius: $border-radius-hard;
+}
+
+button {
+  @extend %base-button;
+
+  &--invert {
+    @extend %base-button;
+    border: "2px solid";
+    border-color: $base-blue-color;
+    border-radius: $border-radius-hard;
+    background-color: #fff;
+    color: $base-blue-color;
+  }
+
+  &.selected {
+    font-weight: 600 !important;
+    color: $base-blue-color;
+    border-color: $base-blue-color !important;
+  }
+
+  &:hover {
+    filter: invert(0.05);
+  }
+}
+
+.kukai-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: flex-start;
+  align-items: center;
+  z-index: 1000;
+
+  & .content {
+    justify-content: center;
+    align-items: center;
+    background-color: $base-end-color;
+    height: auto;
+    border-radius: $border-radius-hard;
+    padding: 2rem;
+    width: 38rem;
+    position: relative;
+    margin: 5rem 0 0 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    & .close {
+      top: -0.25rem;
+      right: 0;
+      position: absolute;
+      width: 3rem;
+      height: 3rem;
+      padding: 0.25rem;
+      border: 2px solid $border-color;
+      border-radius: $border-radius-hardest;
+      transform: rotate(45deg);
+      opacity: 1;
+      cursor: pointer;
+    }
+
+    &>.top {
+      position: relative;
+      margin: 0 0 1rem 0;
+      align-items: center;
+
+      & .title {
+        font-size: 2em;
+        width: 70%;
+        font-weight: 500;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+
+    & .confirm-send {
+      align-items: center;
+
+      & .transaction {
+        width: 100%;
+      }
+
+      & > .seperator {
+        left: 0;
+      }
+    }
+
+    & .torus {
+      justify-content: flex-start;
+      align-items: flex-start;
+
+      & .icon {
+        width: 1.5rem;
+        height: 1.5rem;
+        margin: 0.25rem 0.5rem 0 0;
+      }
+
+      & .name {
+        font-weight: 600;
+        font-size: 1.25rem;
+        color: $base-font-color;
+      }
+
+      & .address {
+        font-weight: 500;
+        font-size: 1rem;
+        color: $base-font-color-secondary;
+        font-style: italic;
+      }
+    }
+
+    & .token-image {
+      margin: 0 0 0 1rem;
+      width: 8rem;
+      height: 8rem;
+      object-fit: scale-down;
+    }
+
+    & .single-to {
+      font-style: italic;
+      font-weight: 500;
+    }
+
+    & .asset-name {
+      margin: 1rem 0 0 0;
+      font-size: 1.5rem;
+      color: $base-font-color;
+      font-weight: 600;
+      width: 80%;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    & .default-text {
+      font-size: 1rem;
+      color: $base-font-color-secondary;
+      font-weight: 500;
+
+      &.amount {
+        font-weight: 600;
+        font-size: 2.25rem;
+        color: $base-font-color;
+        margin: -0.5rem 0 0 0;
+      }
+
+      &.more-info {
+        font-size: 1.25rem;
+        color: $base-font-color;
+        font-weight: 500;
+        text-align: center;
+        margin: 1rem 0;
+        width: 9rem;
+        cursor: pointer;
+  
+        span {
+          color: $base-font-color-secondary;
+          text-transform: uppercase;
+          font-size: 1rem;
+        }
+  
+        img {
+          height: 1.75rem;
+          width: auto;
+        }
+  
+        &.open {
+          img {
+            transform: rotate(180deg);
+          }
+        }
+      }
+    }
+
+    & .info {
+      width: 100%;
+      & .default-text {
+        width: 65%;
+      }
+
+      & .seperator {
+        margin: 0.5rem 0;
+      }
+    }
+
+    & .seperator {
+      position: relative;
+      height: 2px;
+      background-color: $border-color;
+      left: -2rem;
+      width: calc(100% + 4rem);
+    }
+
+    & input:not([type=checkbox]) {
+      height: 4rem;
+      width: calc(100% - 2rem);
+      background-color: $base-end-color;
+      border: 2px solid $border-color;
+      border-radius: $border-radius-hardest;
+      font-size: 1.25rem;
+
+      &.password,
+      &.text {
+        width: calc(100% - 2rem);
+        margin: 0 0 2rem 0;
+      }
+    }
+
+    & .bottom {
+      margin: 1rem 0 0 0;
+      width: 100%;
+      align-items: center;
+    }
+
+    & .buttons {
+      width: 100%;
+      justify-content: center;
+      & button {
+        width: calc(100% - 4rem);
+        text-transform: uppercase;
+        font-weight: 800;
+        font-size: 1.25rem;
+      }
+    }
+
+    & button.confirm {
+      width: 100%;
+      height: 4rem;
+      border-radius: $border-radius-hard;
+    }
+
+    & .footer {
+      margin: 2rem 0 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0.5;
+      & > span {
+        font-size: 0.75rem;
+        line-height: 1rem;
+        font-weight: 600;
+      }
+
+      & img {
+        height: 0.75rem;
+        margin: 0.0625rem 0 0.1875rem 0.375rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  :host {
+    font-size: 62%;
+    & .kukai-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: #0006;
+      justify-content: flex-start;
+      align-items: center;
+      z-index: 1000;
+    
+      & .content {
+        justify-content: center;
+        align-items: center;
+        background-color: $base-end-color;
+        height: auto;
+        border-radius: $border-radius-hard;
+        padding: 1rem 2rem 2rem 2rem;
+        width: 38em;
+        max-width: 90%;
+        position: relative;
+        margin: 5rem 0 0 0;
+        overflow-x: hidden;
+        overflow-y: auto;
+    
+        & .close {
+          top: 0;
+          font-size: 95%;
+          width: 3em !important;
+          height: 3em !important;
+        }
+    
+        &>.top {
+          position: relative;
+          margin: 0;
+          align-items: center;
+    
+          & .title {
+            margin: 0 0 1rem 0;
+            font-size: 2em;
+          }
+        }
+    
+        & .confirm-send {
+          align-items: center;
+    
+          & .transaction {
+            width: 100%;
+          }
+          & .transaction .left {
+            font-size: 75%;
+          }
+    
+          & > .seperator {
+            left: 0;
+          }
+        }
+    
+        & .torus {
+          justify-content: flex-start;
+          align-items: flex-start;
+    
+          & .icon {
+            width: 1.5rem;
+            height: 1.5rem;
+            margin: 0.25rem 0.5rem 0 0;
+          }
+    
+          & .name {
+            font-weight: 600;
+            font-size: 1.25em;
+            color: $base-font-color;
+          }
+    
+          & .address {
+            font-weight: 500;
+            font-size: 1em;
+            color: $base-font-color-secondary;
+            font-style: italic;
+          }
+        }
+    
+        & .token-image {
+          margin: 0 0 0 1rem;
+          width: 8em;
+          height: 8em;
+          object-fit: scale-down;
+        }
+    
+        & .single-to {
+          font-style: italic;
+          font-weight: 500;
+        }
+    
+        & .asset-name {
+          margin: 1rem 0 0 0;
+          font-size: 1.5em;
+          color: $base-font-color;
+          font-weight: 600;
+          width: 80%;
+          text-align: center;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+    
+        & .default-text {
+          font-size: 1em;
+          color: $base-font-color-secondary;
+          font-weight: 500;
+    
+          &.amount {
+            font-weight: 600;
+            font-size: 2.25em;
+            color: $base-font-color;
+            margin: -0.5rem 0 0 0;
+          }
+    
+          &.more-info {
+            font-size: 1.25em;
+            color: $base-font-color;
+            font-weight: 500;
+            text-align: center;
+            margin: 1em 0;
+            width: 8em;
+            cursor: pointer;
+      
+            span {
+              color: $base-font-color-secondary;
+              text-transform: uppercase;
+              font-size: 1rem;
+            }
+      
+            img {
+              height: 1.75em;
+              width: auto;
+            }
+      
+            &.open {
+              img {
+                transform: rotate(180deg);
+              }
+            }
+          }
+        }
+    
+        & .info {
+          width: 100%;
+          & .default-text {
+            width: 65%;
+          }
+    
+          & .seperator {
+            margin: 0.5rem 0;
+          }
+        }
+    
+        & .seperator {
+          position: relative;
+          height: 2px;
+          background-color: $border-color;
+          left: -2rem;
+          width: calc(100% + 4rem);
+        }
+    
+        & input:not([type=checkbox]) {
+          height: 4rem;
+          width: calc(100% - 2rem);
+          background-color: $base-end-color;
+          border: 2px solid $border-color;
+          border-radius: $border-radius-hardest;
+          font-size: 1.25rem;
+    
+          &.password,
+          &.text {
+            width: calc(100% - 2rem);
+            margin: 0 0 2rem 0;
+          }
+        }
+    
+        & .bottom {
+          margin: 1rem 0 0 0;
+          width: 100%;
+          align-items: center;
+        }
+    
+        & .buttons {
+          width: 100%;
+          justify-content: center;
+          & button {
+            width: calc(100% - 4rem);
+            text-transform: uppercase;
+            font-weight: 800;
+            font-size: 1.25em;
+            height: 4em;
+          }
+        }
+    
+        & button.confirm {
+          width: 100%;
+          height: 2.5em;
+          border-radius: $border-radius-hard;
+        }
+    
+        & .footer {
+          margin: 2rem 0 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          opacity: 0.5;
+          & > span {
+            font-size: 0.75rem;
+            line-height: 1rem;
+            font-weight: 600;
+          }
+    
+          & img {
+            height: 0.75rem;
+            margin: 0.0625rem 0 0.1875rem 0.375rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+div.kukai-template {
+  position: fixed;
+  z-index: 100;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+div.kukai-template > div.card {
+  width: 21.875rem;
+  position: relative;
+  background-color: #f3f3f3;
+  margin: 1rem auto;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.625rem;
+  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.24), 0px 4px 12px rgba(0, 0, 0, 0.24),
+    0px 32px 48px rgba(0, 0, 0, 0.36);
+  max-width: 25rem;
+  min-height: 6rem;
+}
+
+div.kukai-template p,
+div.kukai-template H1 {
+  font-family: "Poppins";
+  font-weight: 500;
+  font-style: normal;
+  font-size: 1rem;
+  line-height: 1.25rem;
+  margin: 0.5rem 0;
+  text-align: center;
+}
+div.kukai-template H1 {
+  margin: 0.375rem 0 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.125rem;
+}
+div.kukai-template H1 > b {
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1.25rem;
+}
+div.kukai-template p.img-text {
+  font-weight: 400;
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+div.kukai-template p.fee {
+  margin-bottom: 0.5rem;
+  font-weight: 300;
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+div.kukai-template p.fee img {
+  position: relative;
+  top: -0.0625rem;
+  left: 0.125rem;
+  width: 0.75rem;
+  height: 0.75rem;
+}
+div.kukai-template div.buttons {
+  display: flex;
+  justify-content: space-between;
+}
+div.kukai-template div.buttons.horizontally {
+  margin: 1rem 0 0.5rem;
+}
+div.kukai-template div.buttons.vertically {
+  margin-top: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column-reverse;
+}
+div.kukai-template div.buttons.vertically button {
+  width: 15.25rem;
+  margin: 0.5rem 0;
+}
+div.kukai-template button {
+  all: unset;
+  cursor: pointer;
+  font-family: "Poppins";
+  font-weight: 500;
+  font-style: normal;
+  font-size: 1rem;
+  color: #f3f3f3;
+  -webkit-text-fill-color: #f3f3f3;
+  background: #5b63f7;
+
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 1.25rem;
+  border: 1px solid #5b63f7;
+  height: 2rem;
+  width: 100%;
+  text-align: center;
+}
+div.kukai-template button.secondary {
+  color: #5b63f7;
+  -webkit-text-fill-color: #5b63f7;
+  background: #f3f3f3;
+  border-color: #5b63f7;
+  margin-right: 1.25rem;
+}
+div.kukai-template > div.card > img {
+  margin: 0.5rem 0 0;
+  max-height: 150px;
+  object-fit: contain;
+}
+div.kukai-template div.footer {
+  margin: 1rem 0 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0.5;
+}
+div.kukai-template div.footer > span {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 600;
+}
+div.kukai-template div.footer img {
+  height: 0.75rem;
+  margin: 0.0625rem 0 0.1875rem 0.375rem;
+}
+@media screen and (max-width: 23.5rem) {
+  div.kukai-template > div.card {
+    width: 18rem;
+  }
+  div.kukai-template div.buttons.vertically button {
+    width: 90%;
+  }
+}
+@media screen and (max-width: 19.5rem) {
+  div.kukai-template > div.card {
+    width: 15rem;
+  }
+  div.kukai-template div.buttons.vertically button {
+    width: 100%;
+  }
+}

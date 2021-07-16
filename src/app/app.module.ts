@@ -89,10 +89,11 @@ import { SignExprComponent } from './components/sign-expr/sign-expr.component';
 import { CardComponent } from './components/embedded/card/card.component';
 import { PrepareSendComponent } from './components/send/prepare-send/prepare-send.component';
 import { ConfirmSendComponent } from './components/send/confirm-send/confirm-send.component';
-import { ConfirmSendTemplateComponent } from './components/send/confirm-send-template/confirm-send-template.component';
+import { ConfirmSendEmbedComponent } from './components/embedded/confirm-send/confirm-send.component';
 import { OriginateComponent } from './components/originate/originate.component';
 import { SpinnerLegacyComponent } from './components/spinner/legacy/spinner-legacy.component';
 import { SpinnerNewComponent } from './components/spinner/new/spinner-new.component';
+import { SignExprEmbedComponent } from './components/embedded/sign-expr/sign-expr.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -145,10 +146,11 @@ export function HttpLoaderFactory(http: HttpClient) {
     CardComponent,
     PrepareSendComponent,
     ConfirmSendComponent,
-    ConfirmSendTemplateComponent,
+    ConfirmSendEmbedComponent,
     OriginateComponent,
     SpinnerLegacyComponent,
-    SpinnerNewComponent
+    SpinnerNewComponent,
+    SignExprEmbedComponent
   ],
   imports: [
     BrowserModule,

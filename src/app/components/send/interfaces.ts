@@ -7,6 +7,7 @@ export interface PrepareRequest {
 export interface TemplateRequest {
   template: Template;
   ops?: FullyPreparedTransaction[];
+  partialOps?: PartiallyPreparedTransaction[];
   fee?: TemplateFee;
 }
 export interface TemplateFee {
