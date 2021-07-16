@@ -56,7 +56,7 @@ import { TorusComponent } from './components/start/login-types/torus/torus.compo
 import { EmbeddedComponent } from './components/embedded/embedded.component';
 import { SigninComponent } from './components/embedded/signin/signin.component';
 import { CardComponent } from './components/embedded/card/card.component';
-import { SendButtonComponent } from './components/send/button/send-button.component';
+import { SendButtonComponent } from './components/ui/button/basic/send/send-button.component';
 import { TokenDetail } from './components/modal/send/detail/token-detail.component';
 import { AlertComponent } from './components/modal/alert/alert.component';
 import { SpinnerLegacyComponent } from './components/spinner/legacy/spinner-legacy.component';
