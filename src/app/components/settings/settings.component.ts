@@ -3,7 +3,7 @@ import { MessageService } from '../../services/message/message.service';
 import { BeaconService } from '../../services/beacon/beacon.service';
 import { WalletService } from '../../services/wallet/wallet.service';
 import { Router } from '@angular/router';
-import { SlicePipe } from '@angular/common';
+import { TokenService } from '../../services/token/token.service';
 
 @Component({
   selector: 'app-settings',
@@ -17,7 +17,8 @@ export class SettingsComponent implements OnInit {
     public beaconService: BeaconService,
     private messageService: MessageService,
     private walletService: WalletService,
-    private router: Router) { }
+    private router: Router,
+    private tokenService: TokenService) { }
 
   ngOnInit(): void {
     if (this.walletService.wallet) {
@@ -45,5 +46,9 @@ export class SettingsComponent implements OnInit {
     } else {
       return address.slice(0, 6) + '...' + address.slice(-4);
     }
+  }
+  rescan() {
+    this.tokenService.resetCounters();
+    this.messageService.add('Scanning for token metadata...');
   }
 }
