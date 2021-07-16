@@ -16,7 +16,8 @@ export const CONSTANTS: Constants = {
   BLOCK_EXPLORER_URL: 'https://tzkt.io',
   ALLOWED_EMBED_ORIGINS: [
     'https://www.truesy.com',
-    'https://playwithbrio.com'
+    'https://playwithbrio.com',
+    'https://www.playwithbrio.com'
   ],
   CONTRACT_ALIASES: {
     "Truesy": {
@@ -545,6 +546,54 @@ export const CONSTANTS: Constants = {
           description: "This NFT was created to share our love of travel, and how music has been the catalyst for us to explore mother earth, enabling us to give back and serve the communities on our journey. The sights and sounds and people and colors we encounter when we travel and how it connects us and brings us together.\nCreated by the Room Service International (RSI) team, Rahmi Halaby & Julio Galvez, exclusively for Truesy. Photography by Rahmi Halaby, Joshua Lang, TESIBE and The Whooligan.\nMusic: Humanity’s Universal Language\nMusic produced by The Whooligan.",
           displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmavbVoEMaNGrkCxG1Eem1JMoE4A7zw5zN6z7mJd3EpQun',
           thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmavbVoEMaNGrkCxG1Eem1JMoE4A7zw5zN6z7mJd3EpQun',
+          shouldPreferSymbol: false,
+          isBooleanAmount: true
+        }
+      }
+    },
+    'KT1WAxpXZ8hvyoXy47YogdNURArGkFy4k3To': {
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        '0-1': {
+          name: 'in bloom',
+          symbol: '',
+          decimals: 0,
+          description: "I had a pretty intense year both personally and artistically, something between dream and frenzy. Things I was expecting for a long time happened suddenly and I feel like everything is blooming right now. It’s funny because the artwork itself is blooming while you’re watching it.",
+          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmaN5STTo5TS5ittfMVFPmQSsS3z4JdNQfpMJNJtsCNsYZ',
+          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmaN5STTo5TS5ittfMVFPmQSsS3z4JdNQfpMJNJtsCNsYZ',
+          shouldPreferSymbol: false,
+          isBooleanAmount: true
+        }
+      }
+    },
+    'KT1LfsA9WzzGX7jkhovSTVnZZoBQQNcpvatQ': {
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        '0-2': {
+          name: 'The Dancer',
+          symbol: '',
+          decimals: 0,
+          description: "From an early age, I was exposed to ballet. My mother would bring me to the studio and I would sit and watch in awe as the dancers practiced for hours upon hours.\nI was taken by the beauty of the female body, the movements, balance, and more than anything, the commitment it takes to be a successful ballerina. I also saw the frustration, tears, anxiety, joy and many other emotions that are displayed backstage.\nA recurring theme in this work parallels the social media era we are living in today. Just like the ballerinas who hide the pain, anxiety, and tears on stage, many people portray a perfect life on social media, but behind closed doors, are dealing with life’s issues.\nThe Dancer is a celebration of women, their strength, perseverance, and beauty, reinforces the idea of hard work and dedication, and serves as a constant reminder to spread love and be there for the ones you love, as you don’t always know what’s going on backstage.",
+          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmcLELkXz39Sqrn1wHMasbDygjxTvuB44Zqpg9ubnrWP9M',
+          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmcLELkXz39Sqrn1wHMasbDygjxTvuB44Zqpg9ubnrWP9M',
+          shouldPreferSymbol: false,
+          isBooleanAmount: true
+        }
+      }
+    },
+    'KT1PvfewvyW7zxWHSHCivkeJRFyrHNjE3xDr': {
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        '0': {
+          name: 'Welcome to Miami',
+          symbol: '',
+          decimals: 0,
+          description: "This piece was the first time I painted something inspired by the city that I’ve called home for my whole life. Miami. \nWhen I was considering the composition for this piece, I kept coming back to that famous saying, “the whole is greater than the sum of its parts.”\nSo if you asked me, what makes Miami, “Miami”? It’s the Miami skyline. It’s the palm trees that line the streets. It’s the boats parked on the dock. It’s the lifeguard towers spread along the beaches. It’s the ocean’s waves. And it’s the weather. The bipolar weather represented in the woman carrying an umbrella. First it’s sunny, then it rains, then it’s sunny again.\nMiami wouldn’t be “Miami” without all these features incorporated together that make up the vibrant city that it is. And so much more.",
+          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmPfQcyyjqAATqjtpVH9YCUxKH8fasUYZGoaSR4BwyMiu5',
+          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmPfQcyyjqAATqjtpVH9YCUxKH8fasUYZGoaSR4BwyMiu5',
           shouldPreferSymbol: false,
           isBooleanAmount: true
         }
