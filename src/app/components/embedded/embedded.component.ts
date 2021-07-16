@@ -24,10 +24,14 @@ import {
   OperationRequest,
   AuthRequest,
   CardRequest,
-  CardResponse
+  CardResponse,
+  SignExprRequest,
+  SignExprResponse,
+  LoginConfig
 } from 'kukai-embed';
 import { Subscription } from 'rxjs';
 import { SubjectService } from '../../services/subject/subject.service';
+import { InputValidationService } from '../../services/input-validation/input-validation.service';
 
 @Component({
   selector: 'app-embedded',
@@ -44,7 +48,8 @@ export class EmbeddedComponent implements OnInit {
     private lookupService: LookupService,
     private activityService: ActivityService,
     private embeddedAuthService: EmbeddedAuthService,
-    private subjectService: SubjectService
+    private subjectService: SubjectService,
+    private inputValidationService: InputValidationService
   ) { }
   pendingOps: string[] = [];
   ophashSubscription: Subscription;
@@ -55,6 +60,7 @@ export class EmbeddedComponent implements OnInit {
   activeAccount: ImplicitAccount = null;
   template = null;
   operationRequests = null;
+  signRequest = null;
   loginConfig = null;
 
   ngOnInit(): void {
@@ -97,6 +103,9 @@ export class EmbeddedComponent implements OnInit {
             case RequestTypes.operationRequest:
               this.handleOperationRequest(data);
               break;
+            case RequestTypes.signExprRequest:
+              this.handleSignExprRequest(data);
+              break;
             case RequestTypes.trackRequest:
               this.handleTrackRequest(data);
               break;
@@ -120,6 +129,36 @@ export class EmbeddedComponent implements OnInit {
         console.warn(`Invalid origin (${evt.origin})`);
       }
     } catch { }
+  }
+  private handleSignExprRequest(req: SignExprRequest) {
+    if (this.walletService.wallet instanceof EmbeddedTorusWallet && req.expr) {
+      if (req.expr.slice(0, 2) === '0x') {
+        req.expr = req.expr.slice(2);
+      }
+      if (this.inputValidationService.isMichelineExpr(req.expr)) {
+        this.signRequest = { payload: req.expr, title: req.title, description: req.description };
+      } else {
+        this.sendResponse({ type: ResponseTypes.loginResponse, failed: true, error: 'INVALID_PARAMETERS' });
+      }
+    } else {
+      let response: ResponseMessage;
+      if (!(this.walletService.wallet instanceof EmbeddedTorusWallet)) {
+        response = { type: ResponseTypes.loginResponse, failed: true, error: 'NO_WALLET_FOUND' };
+      } else {
+        response = { type: ResponseTypes.loginResponse, failed: true, error: 'INVALID_PARAMETERS' };
+      }
+      this.sendResponse(response);
+    }
+  }
+  public signResponse(response: any) {
+    this.signRequest = null;
+    let resp: SignExprResponse;
+    if (response && typeof response === 'string' && response.length > 95 && response.slice(0, 5) === 'spsig') {
+      resp = { type: ResponseTypes.signExprResponse, failed: false, signature: response };
+    } else {
+      resp = { type: ResponseTypes.signExprResponse, failed: true, error: 'ABORTED_BY_USER'};
+    }
+    this.sendResponse(resp);
   }
   private handleLoginRequest(req: LoginRequest) {
     if (this.activeAccount) {

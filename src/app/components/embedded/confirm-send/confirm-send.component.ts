@@ -1,19 +1,33 @@
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, OnChanges } from '@angular/core';
-import { TemplateRequest, TemplateFee, FullyPreparedTransaction } from '../interfaces';
+import { TemplateRequest, TemplateFee, FullyPreparedTransaction } from '../../send/interfaces';
 import { Template, BaseTemplate } from 'kukai-embed';
+import { WalletService } from '../../../services/wallet/wallet.service';
+import { MessageService } from '../../../services/message/message.service';
+import { take } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-confirm-send-template',
-  templateUrl: './confirm-send-template.component.html',
-  styleUrls: ['../../../../scss/components/send/confirm-send-template/confirm-send-template.component.scss']
+  selector: 'app-confirm-send-embed',
+  templateUrl: './confirm-send.component.html',
+  styleUrls: ['./confirm-send.component.scss']
 })
-export class ConfirmSendTemplateComponent implements OnInit, OnChanges {
+export class ConfirmSendEmbedComponent implements OnInit, OnChanges {
+
   @Input() templateRequest: TemplateRequest = null;
   @Output() isApproved = new EventEmitter();
+  @Input() activeAccount = null;
   active = false;
-  constructor() { }
+  showMore = false;
+  template = 'default';
+  constructor(public walletService: WalletService, public messageService: MessageService) { }
 
   ngOnInit(): void {
+    this.messageService.origin.pipe(take(1)).subscribe((origin) => {
+      if (origin?.indexOf('interpop') !== -1) { // (m)interpop
+        this.template = 'minterpop';
+      } else {
+        this.template = 'default';
+      }
+    });
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes?.templateRequest?.currentValue) {
@@ -35,6 +49,11 @@ export class ConfirmSendTemplateComponent implements OnInit, OnChanges {
     if (this.templateRequest.ops && this.templateRequest.fee) {
       this.isApproved.emit(this.templateRequest.ops);
       this.reset();
+    }
+  }
+  toggle() {
+    if (this.templateRequest.ops) {
+      this.showMore = !this.showMore;
     }
   }
   reset() {

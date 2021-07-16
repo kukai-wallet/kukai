@@ -18,9 +18,10 @@ import { ConfirmSendComponent } from '../../components/modal/send/confirm/send-c
 import { PrepareSendComponent } from '../../components/modal/send/prepare/prepare-send.component';
 import { OriginateComponent } from '../../components/modal/originate/originate.component';
 import { LoggedInComponent } from '../../components/logged-in/logged-in.component';
-import { ConfirmSendTemplateComponent } from '../../components/send/confirm-send-template/confirm-send-template.component';
 import { LoggedInRoutingModule } from './logged-in-routing.module';
 import { AdvancedToggleComponent } from '../ui/toggle/advanced/advanced.component';
+import { ConfirmSendEmbedComponent } from '../../components/embedded/confirm-send/confirm-send.component';
+import { SignExprEmbedComponent } from '../../components/embedded/sign-expr/sign-expr.component';
 
 @NgModule({
   declarations: [
@@ -38,9 +39,10 @@ import { AdvancedToggleComponent } from '../ui/toggle/advanced/advanced.componen
     OriginateComponent,
     ConfirmSendComponent,
     PrepareSendComponent,
-    ConfirmSendTemplateComponent,
     DelegateComponent,
-    AdvancedToggleComponent
+    AdvancedToggleComponent,
+    ConfirmSendEmbedComponent,
+    SignExprEmbedComponent
   ],
   imports: [
     CommonModule,

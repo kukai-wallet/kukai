@@ -216,11 +216,7 @@ export class UriHandlerComponent implements OnInit {
       await this.beaconService.rejectOnUnknown(message);
       return false;
     }
-    try {
-      const parsedPayload = valueDecoder(Uint8ArrayConsumer.fromHexString(hexString.slice(2)));
-      console.log('Parsed sign payload', parsedPayload);
-    } catch (e) {
-      console.warn(e.message ? 'Decoding: ' + e.message : e);
+    if (!this.inputValidationService.isMichelineExpr(hexString)) {
       await this.beaconService.rejectOnUnknown(message);
       return false;
     }

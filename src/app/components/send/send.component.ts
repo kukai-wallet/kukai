@@ -125,7 +125,7 @@ export class SendComponent implements OnInit, OnChanges {
       if (this.template.silent) {
         console.log('Silent signing');
       } else {
-        this.templateRequest = { template: this.template };
+        this.templateRequest = { template: this.template, partialOps: txs };
       }
     } else {
       await this.messageService.startSpinner('Preparing transaction...');
@@ -150,7 +150,7 @@ export class SendComponent implements OnInit, OnChanges {
               const fee = this.getTemplateFee(fullyPrepared);
               console.log('Use template', this.template);
               if (!this.template.silent) {
-                this.templateRequest = { template: this.template, ops: fullyPrepared, fee };
+                this.templateRequest = { template: this.template, partialOps: txs, ops: fullyPrepared, fee };
               } else {
                 let amount = Big(0);
                 for (const op of fullyPrepared) {

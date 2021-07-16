@@ -58,9 +58,9 @@ export interface FA2 extends TokensInterface {
 
 export class TokenService {
   readonly AUTO_DISCOVER: boolean = true;
-  readonly version: string = '1.0.8';
+  readonly version: string = '1.0.9';
   private contracts: ContractsType = {};
-  private exploredIds: Record<string, { firstCheck: number, lastCheck: number }> = {};
+  private exploredIds: Record<string, { firstCheck: number, lastCheck: number, counter: number }> = {};
   readonly storeKey = 'tokenMetadata';
   constructor(
     public indexerService: IndexerService,
@@ -184,20 +184,30 @@ export class TokenService {
   explore(tokenId: string): boolean {
     const now = new Date().getTime();
     if (!this.exploredIds[tokenId]) {
-      this.exploredIds[tokenId] = { firstCheck: now, lastCheck: now };
+      this.exploredIds[tokenId] = { firstCheck: now, lastCheck: now, counter: 0 };
       this.saveMetadata();
       return true;
     } else {
       const token = this.exploredIds[tokenId];
-      let t1 = (token.lastCheck - token.firstCheck);
-      t1 = (t1 < 300000) ? 20000 : t1;
+      let t1 = (2 ** token.counter) * 250;
+      t1 = (t1 < 20000) ? 20000 : t1;
       const t2 = (now - token.lastCheck);
       if (t1 > t2) {
         return false;
       }
       this.exploredIds[tokenId].lastCheck = now;
+      this.exploredIds[tokenId].counter = ++token.counter;
       this.saveMetadata();
       return true;
+    }
+  }
+  resetCounters() {
+    const ids = Object.keys(this.exploredIds);
+    if (ids) {
+      for (const id of ids) {
+        this.exploredIds[id].counter = 0;
+      }
+      this.saveMetadata();
     }
   }
   searchTimeMs(tokenId: string) {
@@ -243,6 +253,17 @@ export class TokenService {
         }
         if (metadata?.exploredIds) {
           this.exploredIds = metadata.exploredIds;
+        }
+      } else if (metadata?.version === '1.0.8') {
+        // add metadata counter
+        if (metadata?.exploredIds) {
+          const ids = Object.keys(metadata.exploredIds);
+          for (const id of ids) {
+            metadata.exploredIds[id].counter = 0;
+          }
+          metadata.version = '1.0.9';
+          localStorage.setItem(this.storeKey, JSON.stringify(metadata));
+          this.loadMetadata();
         }
       }
     }

@@ -112,6 +112,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     SpinnerLegacyComponent,
     SpinnerNewComponent,
     AccountDropdownComponent,
+    SpinnerLegacyComponent,
 
     // Modals
     ModalComponent,

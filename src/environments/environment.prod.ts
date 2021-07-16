@@ -17,7 +17,10 @@ export const CONSTANTS: Constants = {
   ALLOWED_EMBED_ORIGINS: [
     'https://www.truesy.com',
     'https://playwithbrio.com',
-    'https://www.playwithbrio.com'
+    'https://www.playwithbrio.com',
+    'https://minterpop.com',
+    'https://interpopcomics.com',
+    'https://www.interpopcomics.com'
   ],
   CONTRACT_ALIASES: {
     "Truesy": {
