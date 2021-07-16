@@ -18,7 +18,9 @@ export const CONSTANTS: Constants = {
     'https://www.truesy.com',
     'https://playwithbrio.com',
     'https://www.playwithbrio.com',
-    'https://minterpop.com'
+    'https://minterpop.com',
+    'https://interpopcomics.com',
+    'https://www.interpopcomics.com'
   ],
   ASSETS: {
     'KT1K9gCRgaLRFKTErYt1wVxA3Frb9FjasjTV': { // kUSD
