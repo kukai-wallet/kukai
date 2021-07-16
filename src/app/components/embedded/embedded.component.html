@@ -1,4 +1,5 @@
 <app-signin *ngIf="login" [dismiss]="dismiss" [loginConfig]="loginConfig" (loginResponse)="loginResponse($event)"></app-signin>
 <app-send *ngIf="operationRequests && activeAccount" (operationResponse)="operationResponse($event)" [headless]=true [operationRequest]=operationRequests
     [template]="template" [activeAccount]=activeAccount></app-send>
-<app-card *ngIf="activeAccount && !blockCard && (!operationRequests && !login)" [activeAccount]=activeAccount></app-card>
+<app-sign-expr-embed *ngIf="signRequest && activeAccount" [signRequest]="signRequest" [activeAccount]=activeAccount (signResponse)="signResponse($event)"></app-sign-expr-embed>
+<app-card *ngIf="activeAccount && !blockCard && (!operationRequests && !login && !signRequest)" [activeAccount]=activeAccount></app-card>

@@ -13,10 +13,12 @@ export class SpinnerComponent implements OnInit {
 
   ngOnInit(): void {
     this.messageService.origin.subscribe((o) => {
-      if (o.endsWith('truesy.com')) {
+      if (o?.endsWith('truesy.com')) {
         this.logo = 'truesy';
-      } else if (o.endsWith('playwithbrio.com')) {
+      } else if (o?.endsWith('playwithbrio.com')) {
         this.logo = 'brio';
+      } else if (o?.indexOf('minterpop') !== -1) {
+        this.logo = 'minterPop';
       } else {
         this.logo = 'default';
       }

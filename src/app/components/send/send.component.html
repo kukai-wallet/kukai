@@ -5,4 +5,4 @@
 
 <app-prepare-send [prepareRequest]="prepareRequest" (prepareResponse)="handlePrepareResponse($event)"></app-prepare-send>
 <app-confirm-send [headlessMode]="headless" [confirmRequest]="confirmRequest" (operationResponse)="handleConfirmResponse($event)"></app-confirm-send>
-<app-confirm-send-template [templateRequest]="templateRequest" (isApproved)="handleTemplateApproval($event)"></app-confirm-send-template>
+<app-confirm-send-embed [templateRequest]="templateRequest" (isApproved)="handleTemplateApproval($event)" [activeAccount]="activeAccount"></app-confirm-send-embed>

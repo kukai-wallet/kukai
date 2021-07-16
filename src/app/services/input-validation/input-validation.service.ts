@@ -6,6 +6,8 @@ import { CONSTANTS } from '../../../environments/environment';
 import { TranslateService } from '@ngx-translate/core';
 import { TorusWallet } from '../wallet/wallet';
 import assert from 'assert';
+import { valueDecoder } from '@taquito/local-forging/dist/lib/michelson/codec';
+import { Uint8ArrayConsumer } from '@taquito/local-forging/dist/lib/uint8array-consumer';
 
 @Injectable()
 export class InputValidationService {
@@ -144,5 +146,21 @@ export class InputValidationService {
       return true;
     }
     return false;
+  }
+  isMichelineExpr(hex: string) {
+    try {
+      if (!this.hexString(hex)) {
+        throw new Error('Not a hex string');
+      }
+      if (hex.slice(0, 2) !== '05') {
+        throw new Error('invalid prefix');
+      }
+      const parsedPayload = valueDecoder(Uint8ArrayConsumer.fromHexString(hex.slice(2)));
+      console.log('Parsed sign payload', parsedPayload);
+    } catch (e) {
+      console.warn(e.message ? 'Decoding: ' + e.message : e);
+      return false;
+    }
+    return true;
   }
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 
 @Injectable()
 export class MessageService {
@@ -8,7 +8,7 @@ export class MessageService {
   messages: any[] = [];
   defaultTime = 10;
   checked: Observable<boolean>;
-  origin = new Subject<string>();
+  origin = new BehaviorSubject<string>(null);
   beaconResponse = new Subject<boolean>();
   readonly pairingCompleteMsg = 'Pairing complete! Waiting for permission request...';
   add(message: string, seconds: number = this.defaultTime) {
