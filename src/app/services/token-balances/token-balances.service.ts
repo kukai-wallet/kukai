@@ -9,6 +9,7 @@ import { decode } from "blurhash";
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { debounceTime, filter } from 'rxjs/operators';
 import { SubjectService } from '../subject/subject.service';
+import { MessageService } from '../message/message.service';
 
 interface TokenWithBalance extends TokenResponseType {
   balance: string;
@@ -38,8 +39,12 @@ export class TokenBalancesService {
     private tokenService: TokenService,
     private activityService: ActivityService,
     private walletService: WalletService,
-    private subjectService: SubjectService
+    private subjectService: SubjectService,
+    private messageService: MessageService
   ) {
+    combineLatest([this.walletService.activeAccount, this.walletService.walletUpdated, this.subjectService.metadataUpdated, this.activityService.tokenBalanceUpdated]).pipe(debounceTime(1000)).subscribe(([a, b, c, d]) => {
+      this.messageService.stopSpinner();
+    });
     combineLatest([this.walletService.activeAccount, this.walletService.walletUpdated, this.subjectService.metadataUpdated, this.activityService.tokenBalanceUpdated]).pipe(debounceTime(200)).subscribe(([a, b, c, d]) => {
       if (this.activeAccount !== a) {
         this.activeAccount = a;

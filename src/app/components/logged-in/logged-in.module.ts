@@ -19,9 +19,9 @@ import { PrepareSendComponent } from '../../components/modal/send/prepare/prepar
 import { OriginateComponent } from '../../components/modal/originate/originate.component';
 import { LoggedInComponent } from '../../components/logged-in/logged-in.component';
 import { LoggedInRoutingModule } from './logged-in-routing.module';
-import { AdvancedToggleComponent } from '../ui/toggle/advanced/advanced.component';
 import { ConfirmSendEmbedComponent } from '../../components/embedded/confirm-send/confirm-send.component';
 import { SignExprEmbedComponent } from '../../components/embedded/sign-expr/sign-expr.component';
+import { AdvancedToggleComponent } from '../ui/button/toggle/advanced/advanced.component';
 
 @NgModule({
   declarations: [
