@@ -41,9 +41,9 @@ export class SigninComponent implements OnInit, OnChanges {
   }
   async login(typeOfLogin: string) {
     try {
-      //this.messageService.startSpinner('Loading wallet...');
-       const loginData = await this.mockLogin(); // Mock locally
-      //const loginData = await this.torusService.loginTorus(typeOfLogin);
+      this.messageService.startSpinner('Loading wallet...');
+      //const loginData = await this.mockLogin(); // Mock locally
+      const loginData = await this.torusService.loginTorus(typeOfLogin);
       if (!loginData?.keyPair) {
         throw new Error('Login failed');
       }
