@@ -51,7 +51,11 @@ import { SignExprEmbedComponent } from '../../components/embedded/sign-expr/sign
     FormsModule
   ],
   exports: [
-    AdvancedToggleComponent
+    AdvancedToggleComponent,
+    SendComponent,
+    ConfirmSendEmbedComponent,
+    SignExprEmbedComponent
+
   ],
   providers: [
     EstimateService
