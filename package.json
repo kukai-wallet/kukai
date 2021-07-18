@@ -75,7 +75,7 @@
     "tweetnacl": "^1.0.3",
     "web-animations-js": "^2.3.2",
     "xmlhttprequest": "^1.8.0",
-    "zone.js": "~0.10.2",
+    "zone.js": "~0.10.3",
     "zxcvbn": "^4.4.2"
   },
   "devDependencies": {

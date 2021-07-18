@@ -8,6 +8,7 @@ import { Component, HostListener, Input, OnInit } from '@angular/core';
 export class DropdownComponent implements OnInit {
   @Input() list: any[];
   @Input() current: any;
+  ecmpId = this.constructor['ɵcmp'].id;
   constructor() { }
 
   ngOnInit(): void {
@@ -15,12 +16,12 @@ export class DropdownComponent implements OnInit {
 
   @HostListener('document:click', ['$event'])
   closeDropdown(e) {
-    if (!e.target.classList.contains('icon-db')) {
-      (document.querySelector('.dropdown-content')?.parentNode as HTMLElement)?.classList.remove('expanded');
+    if (e.target.parentNode.id !== this.ecmpId) {
+      (document.querySelector('#' + this.ecmpId) as HTMLElement)?.classList.remove('expanded');
     }
   }
 
   toggleDropdown(sel) {
-    document.querySelector(sel).parentNode.classList.toggle('expanded');
+    document.querySelector(sel).classList.toggle('expanded');
   }
 }

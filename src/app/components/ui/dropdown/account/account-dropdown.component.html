@@ -1,14 +1,15 @@
-<div *ngIf="router.url.indexOf('/account/') > -1" class="flex-row dropdown"><input
-    [placeholder]="current?.shortAddress()" /><img class="button icon-db" src="../../../assets/img/down-arrow.svg"
-    (click)="toggleDropdown('.dropdown .dropdown-content')" />
+<div *ngIf="router.url.indexOf('/account/') > -1" class="flex-row dropdown" [id]="ecmpId"><input
+    [placeholder]="current?.shortAddress()" readonly (click)="toggleDropdown('#' + ecmpId)"><img
+    class="button icon-db" src="../../../assets/img/down-arrow.svg" (click)="toggleDropdown('#' + ecmpId)" />
   <div class="flex-column dropdown-content">
     <ng-container *ngFor="let account of list">
       <a routerLink="/account/{{account?.address}}" [class.selected]="account?.address === current?.address"
-        (click)="toggleDropdown('.dropdown-content')">
+        (click)="toggleDropdown('#' + ecmpId)">
         {{ account?.shortAddress() }}
       </a>
-      <ng-container *ngFor="let origAcc of current.originatedAccounts">
-        <a routerLink="/account/{{origAcc?.address}}" [class.selected]="origAcc?.address === current?.address">
+      <ng-container *ngFor="let origAcc of current?.originatedAccounts">
+        <a routerLink="/account/{{origAcc?.address}}" [class.selected]="origAcc?.address === current?.address"
+          (click)="toggleDropdown('#' + ecmpId)">
           {{ origAcc?.shortAddress() }}
         </a>
       </ng-container>

@@ -99,13 +99,6 @@ export class HeaderComponent implements OnInit {
     this.messageService.add(this.activeAccount.address + ' ' + copyToClipboard, 5);
   }
 
-  @HostListener('document:click', ['$event'])
-  closeDropdown(e) {
-    if (!e.target.classList.contains('icon-db')) {
-      (document.querySelector('.dropdown-content')?.parentNode as HTMLElement)?.classList.remove('expanded');
-    }
-  }
-
   toggleDropdown(sel) {
     document.querySelector(sel).parentNode.classList.toggle('expanded');
   }

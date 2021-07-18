@@ -51,7 +51,9 @@
     <div class="icon">Ku</div>
     <div class="title">Kukai</div>
   </a>
-  <app-ui-dropdown-account [list]="accounts" [current]="activeAccount"></app-ui-dropdown-account>
+  <ng-container *ngIf="router.url.indexOf('/account/') > -1">
+    <app-ui-dropdown-account [list]="accounts" [current]="activeAccount"></app-ui-dropdown-account>
+  </ng-container>
   <div *ngIf="router.url.indexOf('/account/') === 0" class="copy">
     <img class="button" src="../../../assets/img/copy.svg" (click)="copy()" />
   </div>
