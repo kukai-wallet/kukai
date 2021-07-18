@@ -24,7 +24,9 @@
           <span *ngIf="!tokenTransfer" class="amount-usd">
             <span>USD:&nbsp;</span>{{ getTotalAmount() * walletService.wallet.XTZrate | number:'1.0-2' || '0.00' }}
           </span>
-          <span class="amount-fee"><span>FEE{{ getTotalBurn() > 0 ? ' & STORAGE COST' : ''}}:&nbsp;</span><img *ngIf="simSemaphore" src="../../../../assets/img/feeLoader.gif">{{ getTotalCost() != 0 ? (getTotalCost() | number:'1.0-6') + ' tez' : '--'
+          <span class="amount-fee"><span>FEE{{ getTotalBurn() > 0 ? ' & STORAGE COST' : ''}}:&nbsp;</span><img
+              *ngIf="simSemaphore" src="../../../../assets/img/feeLoader.gif">{{ getTotalCost() != 0 ? (getTotalCost() |
+            number:'1.0-6') + ' tez' : '--'
             }}</span>
         </div>
       </div>
@@ -33,15 +35,11 @@
           <span class="label title">SEND TO:</span>
           <div class="address">
             <div class="flex-row dropdown" (click)="toggleDropdown('.prepare-send .dropdown-content')">
-              <img [style.visibility]="torusVerifier === '' || torusVerifier === 'domain' ? 'hidden' : 'visible'"
-                class="button icon-torus"
-                [src]="torusVerifier === '' ? '' :  '../../../assets/img/' + torusVerifier.toLowerCase() + '-logo.svg'"
-                 />
+              <img class="button icon-torus"
+                [src]="torusVerifier === '' ? '../../../assets/img/tezos-xtz-logo.svg' :  '../../../assets/img/' + torusVerifier.toLowerCase() + '-logo.svg'" />
               <!-- TODO: Move style conditionals to scss -->
-              <input readonly
-                [(ngModel)]="torusVerifierName" /><img class="button icon-db"
-                src="../../../assets/img/down-arrow-purple.svg"
-            />
+              <input readonly [(ngModel)]="torusVerifierName" /><img class="button icon-db"
+                src="../../../assets/img/down-arrow-purple.svg" />
               <div class="flex-column dropdown-content"
                 (click)="updateDefaultValues(); verifierChange(); toggleDropdown('.prepare-send .dropdown-content'); ">
                 <a [class.selected]="torusVerifierName === 'Tezos Address'"
@@ -74,7 +72,8 @@
         </div>
         <div class="flex-row">
           <app-ui-toggle-advanced [default]="false" (stateChange)="advancedForm = $event"></app-ui-toggle-advanced>
-          <button [style.visibility]="!isNFT && advancedForm ? '' : 'hidden'" class="small multiple-destinations" (click)="toggleDestination()">
+          <button [style.visibility]="!isNFT && advancedForm ? '' : 'hidden'" class="small multiple-destinations"
+            (click)="toggleDestination()">
             <ng-container *ngIf="!this.isMultipleDestinations">Multiple transactions</ng-container>
             <ng-container *ngIf="this.isMultipleDestinations">Single transaction</ng-container>
           </button>
