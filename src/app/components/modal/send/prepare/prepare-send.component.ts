@@ -253,9 +253,9 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
       if (val.indexOf('@') === 0) {
         this.torusVerifier = 'twitter';
         this.torusVerifierName = 'Twitter';
-      } else if (val.indexOf('@gmail') > -1) {
-        this.torusVerifier = 'google';
-        this.torusVerifierName = 'Google';
+      } else if (val.indexOf('tz') === 0 && val.length === 36) {
+        this.torusVerifier = '';
+        this.torusVerifierName = 'Tezos Address';
       }
     }
 
