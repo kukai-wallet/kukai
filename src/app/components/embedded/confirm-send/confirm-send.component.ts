@@ -22,7 +22,6 @@ export class ConfirmSendEmbedComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.messageService.origin.pipe(take(1)).subscribe((origin) => {
-      console.log(origin)
       if (!!origin && origin.indexOf('interpop') !== -1) { // (m)interpop
         this.template = 'minterpop';
       } else {
