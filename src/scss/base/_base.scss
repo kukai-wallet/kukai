@@ -163,7 +163,7 @@ button {
   @extend %grid;
 }
 
-@media (max-width: v.$middle-limit) {
+@media (max-width: v.$upper-limit) {
   html {
     font-size: 100%;
   }
@@ -171,7 +171,7 @@ button {
 
 @media (max-width: v.$middle-limit) {
   html {
-    font-size: 60%;
+    font-size: 75%;
   }
 }
 
