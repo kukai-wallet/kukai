@@ -127,6 +127,31 @@
         height: 2rem;
         padding: 0.5rem;
         border-radius: v.$border-radius-hard;
+        position: relative;
+        top: 0;
+        left: 0;
+
+        &:hover {
+          & .tooltip {
+            display: flex;
+          }
+        }
+
+        & .tooltip {
+          position: absolute;
+          top: 4rem;
+          left: -3rem;
+          background-color: v.$base-color-lightened-7;
+          width: auto;
+          min-width: 7rem;
+          height: 2.5rem;
+          padding: 1rem;
+          justify-content: center;
+          align-items: center;
+          border-radius: v.$border-radius-hard;
+          display: none;
+          box-shadow: v.$box-shadow;
+        }
 
         & img {
           width: 100%;
