@@ -30,10 +30,11 @@
       right: 0;
       position: absolute;
       width: 2rem;
-      height: 2rem;
-      padding: 1rem;
-      border: 2px solid v.$border-color;
+      height: 1.5rem;
+      padding: 1.25rem 1rem;
+      border: 4px solid v.$border-color;
       border-radius: v.$border-radius-hardest;
+      object-fit: scale-down;
     }
 
     &>.top {
