@@ -18,27 +18,27 @@
       </div>
     </div>
     <div class="flex-row right">
-      <div class="icon">
-        <img class="button" src="../../../assets/img/copy.svg" (click)="copy()" />
+      <div class="icon" (click)="copy()">
+        <img class="button" src="../../../assets/img/copy.svg" />
         <div class="tooltip">
           <div class="description">Copy Clipboard</div>
         </div>
       </div>
-      <div class="icon">
-        <img class="button" src="../../../assets/img/add.svg" (click)="newAccount()" />
+      <div class="icon" (click)="newAccount()">
+        <img class="button" src="../../../assets/img/add.svg" />
         <div class="tooltip">
           <div class="description">Add Account</div>
         </div>
       </div>
-      <div class="icon">
-        <img class="button" [routerLink]="'/account/' + activeAccount?.address + '/settings'"
+      <div class="icon" [routerLink]="'/account/' + activeAccount?.address + '/settings'">
+        <img class="button"
           src="../../../assets/img/settings.svg" />
           <div class="tooltip">
             <div class="description">Settings</div>
           </div>
       </div>
-      <div class="icon">
-        <img class="button" (click)="logout()" src="../../../assets/img/logout.svg" />
+      <div class="icon" (click)="logout()">
+        <img class="button"  src="../../../assets/img/logout.svg" />
         <div class="tooltip">
           <div class="description">Sign Out</div>
         </div>
