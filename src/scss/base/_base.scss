@@ -165,18 +165,21 @@ button {
 
 @media (max-width: v.$upper-limit) {
   html {
+    -webkit-text-size-adjust:none;
     font-size: 100%;
   }
 }
 
 @media (max-width: v.$middle-limit) {
   html {
+    -webkit-text-size-adjust:none;
     font-size: 75%;
   }
 }
 
 @media (max-width: v.$lower-limit) {
   html {
+    -webkit-text-size-adjust:none;
     font-size: 48%;
   }
 }
