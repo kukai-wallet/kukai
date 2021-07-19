@@ -46,6 +46,6 @@ a, a:-webkit-any-link {
   text-decoration: none;
 }
 
-input, textarea {
+input:not([type='radio']), textarea {
   -webkit-appearance: none;
 }
