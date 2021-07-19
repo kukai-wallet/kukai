@@ -16,9 +16,12 @@
     justify-content: center;
     align-items: center;
     position: relative;
+    top: 0;
+    left: 0;
 
     & a .back {
       position: absolute;
+      top: 0;
       left: -15rem;
       width: 10rem;
       background-color: v.$base-background-color;
@@ -95,6 +98,8 @@
         margin: 0 0 4rem 0;
         border-radius: v.$border-radius;
         position: relative;
+        top: 0;
+        left: 0;
 
         &.final .description {
           margin: 0;
@@ -229,6 +234,7 @@
             margin: 0;
             padding: 2rem 0;
             top: 1px;
+            left: 0;
 
             &:after {
               content: "";
@@ -328,7 +334,7 @@
   }
 }
 
-@media (max-width: v.$lower-limit) {
+@media (max-width: 95rem) {
   :host {
     & .card {
       padding: 0 2rem;
