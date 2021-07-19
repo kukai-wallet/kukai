@@ -195,7 +195,7 @@
   }
 }
 
-@media (max-width: 95rem) {
+@media (max-width: v.$lower-limit) {
 
   :host {
 
