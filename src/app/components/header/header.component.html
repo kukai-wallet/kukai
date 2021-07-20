@@ -64,7 +64,7 @@
   </a>
   <div class="flex-row" style="width: 55%;">
     <ng-container *ngIf="router.url.indexOf('/account/') > -1">
-      <app-ui-dropdown-account [list]="accounts" [current]="activeAccount" style="width: 100%;"></app-ui-dropdown-account>
+      <app-ui-dropdown-account [list]="accounts" [current]="activeAccount" style="width: calc(100% - 4rem);"></app-ui-dropdown-account>
     </ng-container>
     <div *ngIf="router.url.indexOf('/account/') === 0" class="copy">
       <img class="button" src="../../../assets/img/copy.svg" (click)="copy()" />
