@@ -25,7 +25,7 @@
     left: 0;
     width: 100vw;
     height: 42vh;
-    border-top: 2rem solid v.$base-color-lightened-5;
+    border-top: 2rem solid #d6dbe3;
     background-color: v.$base-color-lightened-6;
     z-index: -100;
   }
@@ -276,7 +276,7 @@
         & #ribbon {
           margin: 0;
           height: calc(100% - 23rem) !important;
-          background: linear-gradient(0deg, v.$base-color-lightened-5, v.$base-background-color);
+          background: linear-gradient(180deg, v.$base-color-lightened-5, v.$base-background-color);
           bottom: unset !important;
           top: 21rem !important;
         }
@@ -361,5 +361,11 @@
         }
       }
     }
+  }
+}
+
+@media (orientation: portrait) and (max-width: v.$lower-limit) {
+  :host {
+    justify-content: center;
   }
 }
