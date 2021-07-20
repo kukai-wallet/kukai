@@ -60,7 +60,7 @@
     min-height: 2rem;
     height: 0;
     transition: 0.15s height;
-    margin: 0 0 5rem 0;
+    margin: 0 0 7rem 0;
     border-radius: v.$border-radius;
 
     &.expanded {
@@ -89,6 +89,7 @@
       transition: 0.15s top;
       z-index: 1;
       box-shadow: v.$box-shadow;
+      min-height: 4rem;
 
       & .left {
         justify-content: flex-start;
@@ -253,11 +254,19 @@
 @media (max-width: v.$middle-limit) {
   .nfts .collection {
     min-height: 5rem;
+
+    & .head {
+      min-height: 5rem;
+    }
   }
 }
 
 @media (max-width: v.$lower-limit) {
   .nfts .collection {
     min-height: 6rem;
+
+    & .head {
+      min-height: 6rem;
+    }
   }
 }
