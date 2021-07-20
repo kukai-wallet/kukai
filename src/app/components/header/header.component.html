@@ -31,14 +31,13 @@
         </div>
       </div>
       <div class="icon" [routerLink]="'/account/' + activeAccount?.address + '/settings'">
-        <img class="button"
-          src="../../../assets/img/settings.svg" />
-          <div class="tooltip">
-            <div class="description">Settings</div>
-          </div>
+        <img class="button" src="../../../assets/img/settings.svg" />
+        <div class="tooltip">
+          <div class="description">Settings</div>
+        </div>
       </div>
       <div class="icon" (click)="logout()">
-        <img class="button"  src="../../../assets/img/logout.svg" />
+        <img class="button" src="../../../assets/img/logout.svg" />
         <div class="tooltip">
           <div class="description">Sign Out</div>
         </div>
@@ -63,11 +62,13 @@
     <div class="icon">Ku</div>
     <div class="title">Kukai</div>
   </a>
-  <ng-container *ngIf="router.url.indexOf('/account/') > -1">
-    <app-ui-dropdown-account [list]="accounts" [current]="activeAccount"></app-ui-dropdown-account>
-  </ng-container>
-  <div *ngIf="router.url.indexOf('/account/') === 0" class="copy">
-    <img class="button" src="../../../assets/img/copy.svg" (click)="copy()" />
+  <div class="flex-row" style="width: 55%;">
+    <ng-container *ngIf="router.url.indexOf('/account/') > -1">
+      <app-ui-dropdown-account [list]="accounts" [current]="activeAccount" style="width: 100%;"></app-ui-dropdown-account>
+    </ng-container>
+    <div *ngIf="router.url.indexOf('/account/') === 0" class="copy">
+      <img class="button" src="../../../assets/img/copy.svg" (click)="copy()" />
+    </div>
   </div>
   <div class="hamburger-dropdown" (click)="toggleDropdown('.mobile .hamburger-dropdown .hamburger-dropdown-content')">
     <div class="button icon-db"></div>
