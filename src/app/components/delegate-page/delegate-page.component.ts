@@ -27,20 +27,20 @@ export class DelegatePageComponent implements OnInit {
     this.walletService.activeAccount.subscribe(activeAccount => {
       if (this.activeAccount !== activeAccount) {
         this.activeAccount = activeAccount;
-        this.filter();
       }
     });
 
     this.delegateService.delegates.subscribe((d) => {
-      this.delegates = d;
+      this.delegates = this.filter(d);
     })
   }
 
-  filter() {
-    if (!!this.delegates.length && !!this.activeAccount) {
-      this.delegates = this.delegates.map((d) => {
+  filter(delegates: any) {
+    if (delegates?.length) {
+      const balanceXTZ = this.activeAccount ? Math.ceil(this.activeAccount.balanceXTZ / 1000000) : 0;
+      return delegates.map((d) => {
         try {
-          if (d.freeSpace > 0 && d.estimatedRoi > 0 && d.openForDelegation === true) {
+          if (d.freeSpace > balanceXTZ && d.estimatedRoi > 0 && d.openForDelegation === true) {
             return d;
           }
         } catch {
@@ -49,6 +49,7 @@ export class DelegatePageComponent implements OnInit {
         return null;
       }).filter(obj => obj);
     }
+    return [];
   }
   stake(delegate) {
     ModalComponent.currentModel.next({ name: 'delegate-confirm', data: delegate });
