@@ -13,21 +13,21 @@
 :host {
   width: 100%;
   min-height: calc(100vh - 10rem);
-  height: 80rem;
+  height: 60rem;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   flex-direction: column;
 
   & #ribbon {
     position: absolute;
-    top: 0;
+    bottom: 0;
     left: 0;
     width: 100vw;
     height: 42vh;
-    margin: calc(58vh - 2rem) 0 0 0;
     border-top: 2rem solid v.$base-color-lightened-5;
     background-color: v.$base-color-lightened-6;
+    z-index: -100;
   }
 }
 
@@ -82,6 +82,11 @@
       }
     }
 
+    & .bottom {
+      position: relative;
+      align-items: center;
+    }
+
     & .login {
 
       &>* {
@@ -130,7 +135,7 @@
         &>.google {
           border: 2px solid v.$border-color;
           border-radius: v.$border-radius-hardest;
-          width: 30rem;
+          width: 29rem;
           height: 6rem;
           color: v.$base-font-color;
           font-size: 1.5rem;
@@ -185,12 +190,56 @@
   & #bg {
     position: absolute;
     top: 0;
-    left: 0;
+    right: 0;
     @extend %bg;
 
     &-mobile {
       display: none;
       @extend %bg;
+      width: 100% !important;
+      height: 46rem !important;
+      background-size: contain !important;
+    }
+  }
+}
+
+@media (max-width: 171em) {
+
+  #wrapper {
+
+    & .left,
+    & .right {
+      & h1 {
+        font-size: 4.5rem;
+      }
+
+      & h3 {
+        font-size: 2rem;
+        line-height: 4rem;
+      }
+
+      & .login {
+        & .social {
+
+          & .facebook,
+          & .twitter,
+          & .reddit,
+          &>.google img {
+            margin: 0 0 0 1rem;
+          }
+
+          & .facebook,
+          & .twitter,
+          & .reddit {
+            width: 4rem;
+            height: 4rem;
+          }
+
+          & .google {
+            height: 5rem;
+          }
+        }
+      }
     }
   }
 }
@@ -201,14 +250,8 @@
 
     height: unset;
 
-    & #ribbon {
-      height: 17vh;
-      margin: calc(71vh - 2rem) 0 0 0;
-      background: linear-gradient(0deg, v.$base-background-color, v.$base-color-lightened-5);
-    }
-
     #wrapper {
-      width: 95%;
+      width: 100%;
       height: auto;
       flex-direction: column;
       align-items: center;
@@ -230,6 +273,14 @@
         height: 100%;
         align-items: center;
 
+        & #ribbon {
+          margin: 0;
+          height: calc(100% - 21rem) !important;
+          background: linear-gradient(0deg, v.$base-color-lightened-5, v.$base-background-color);
+          bottom: unset !important;
+          top: 21rem !important;
+        }
+
         & h1,
         & h3 {
           width: 100%;
@@ -247,6 +298,8 @@
           font-weight: 400;
           line-height: auto;
           color: v.$base-font-color-secondary;
+          padding: 0 1rem;
+          width: calc(100% - 2rem);
         }
 
         &>div {
@@ -262,8 +315,7 @@
           padding: 0;
           height: auto;
 
-          & .email,
-          .social {
+          & .email {
             justify-content: center;
           }
         }
@@ -288,7 +340,12 @@
             flex-direction: column;
             align-items: center;
             height: 15rem;
-            justify-content: space-between;
+            justify-content: flex-start;
+
+            & .google {
+              margin: 0 0 2rem 0;
+              width: 30rem;
+            }
 
             & .facebook {
               margin: 0;

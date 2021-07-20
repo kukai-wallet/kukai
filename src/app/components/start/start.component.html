@@ -1,27 +1,30 @@
-<div id="ribbon"></div>
 <div class="flex-row" id="wrapper">
   <div class="flex-column left">
     <div class="flex-column top">
       <h1>A Secure Home<br />for your Digital Assets</h1>
       <h3>Manage your digital assets and seamlessly connect with experiences and apps on Tezos.</h3>
     </div>
-    <div id="bg-mobile"></div>
-    <div class="flex-column login">
-      <span>Login via social networks:</span>
-      <div class="flex-row social">
-        <button class="flex-row google" (click)="torusLogin('google')"><img src="../../../assets/img/google-logo.svg">&nbsp;<span>CONTINUE WITH
-            GOOGLE</span></button>
-        <div>
-          <img class="facebook" src="../../../assets/img/facebook-logo.svg" (click)="torusLogin('facebook')">
-          <img class="twitter" src="../../../assets//img/twitter-logo.svg" (click)="torusLogin('twitter')">
-          <img class="reddit" src="../../../assets/img/reddit-logo.svg" (click)="torusLogin('reddit')">
+    <div class="flex-column bottom">
+      <div id="ribbon"></div>
+      <div id="bg-mobile"></div>
+      <div class="flex-column login">
+        <span>Login via social networks:</span>
+        <div class="flex-row social">
+          <button class="flex-row google" (click)="torusLogin('google')"><img
+              src="../../../assets/img/google-logo.svg">&nbsp;<span>CONTINUE WITH
+              GOOGLE</span></button>
+          <div>
+            <img class="facebook" src="../../../assets/img/facebook-logo.svg" (click)="torusLogin('facebook')">
+            <img class="twitter" src="../../../assets//img/twitter-logo.svg" (click)="torusLogin('twitter')">
+            <img class="reddit" src="../../../assets/img/reddit-logo.svg" (click)="torusLogin('reddit')">
+          </div>
         </div>
+        <!-- <span>OR CONTINUE WITH EMAIL:</span>
+        <div class="flex-row email">
+          <input type=email placeholder="Your email">
+          <button class="signin">SIGN IN</button>
+        </div> -->
       </div>
-      <!-- <span>OR CONTINUE WITH EMAIL:</span>
-      <div class="flex-row email">
-        <input type=email placeholder="Your email">
-        <button class="signin">SIGN IN</button>
-      </div> -->
     </div>
   </div>
   <div class="flex-column right">
