@@ -10,7 +10,7 @@
     <ng-container *ngIf="!account.activities.length">
       <div class="line"><span>No transactions yet</span></div>
     </ng-container>
-    <ng-container *ngFor="let activity of account.activities | slice:0:5; trackBy: trackActivity">
+    <ng-container *ngFor="let activity of account.activities | slice:0:10; trackBy: trackActivity">
       <ng-container [ngSwitch]="getType(activity)">
         <ng-template #CounterpartyRef let-myactivity>
           <span class="grey truncate-overflow">
@@ -30,13 +30,15 @@
           <div class="flex-column">
             <div class="flex-row title">
               <ng-container *ngIf="activity?.amount !== '0'">
-                {{ '- ' + printAmount(activity) }}</ng-container><a href="{{ explorerURL(activity.hash) }}"
-                target="_blank">
-              </a>
+                {{ '- ' + printAmount(activity) }}</ng-container>
             </div>
             <div class="flex-row"><span class="address">Sent to:&nbsp;{{ getCounterparty(activity)?.address || 'Burn'
                 }}</span>
-              <span *ngIf="activity.status > 0" class="time">{{ activity.timestamp | timeAgo:trigger }}</span>
+              <span *ngIf="activity.status > 0" class="time">
+                <a href="{{ explorerURL(activity.hash) }}" target="_blank">
+                  {{ activity.timestamp | timeAgo:trigger }}
+                </a>
+              </span>
               <ng-container *ngIf="activity.status === 0">Unconfirmed</ng-container>
             </div>
           </div>
@@ -46,14 +48,16 @@
           <div class="flex-column">
             <div class="flex-row title">
               <ng-container *ngIf="activity?.amount !== '0'">
-                {{'+ ' + printAmount(activity) }}</ng-container><a href="{{ explorerURL(activity.hash) }}"
-                target="_blank">
-              </a>
+                {{'+ ' + printAmount(activity) }}</ng-container>
             </div>
             <div class="flex-row"><span class="address">{{ receivedKind(activity) }} from:&nbsp;{{
                 getCounterparty(activity)?.address || ''
                 }}</span>
-              <span *ngIf="activity.status > 0" class="time">{{ activity.timestamp | timeAgo:trigger }}</span>
+              <span *ngIf="activity.status > 0" class="time">
+                <a href="{{ explorerURL(activity.hash) }}" target="_blank">
+                  {{ activity.timestamp | timeAgo:trigger }}
+                </a>
+              </span>
               <ng-container *ngIf="activity.status === 0">Unconfirmed</ng-container>
             </div>
           </div>
@@ -66,7 +70,11 @@
             </div>
             <div class="flex-row"><span class="address">to:&nbsp;{{ getCounterparty(activity)?.address || ''
                 }}</span>
-              <span *ngIf="activity.status > 0" class="time">{{ activity.timestamp | timeAgo:trigger }}</span>
+              <span *ngIf="activity.status > 0" class="time">
+                <a href="{{ explorerURL(activity.hash) }}" target="_blank">
+                  {{ activity.timestamp | timeAgo:trigger }}
+                </a>
+              </span>
               <ng-container *ngIf="activity.status === 0">Unconfirmed</ng-container>
             </div>
           </div>
@@ -79,18 +87,25 @@
             </div>
             <div class="flex-row"><span class="address">to:&nbsp;{{ getCounterparty(activity)?.address || '(none)'
                 }}</span>
-              <span *ngIf="activity.status > 0" class="time">{{ activity.timestamp | timeAgo:trigger }}</span>
+              <span *ngIf="activity.status > 0" class="time">
+                <a href="{{ explorerURL(activity.hash) }}" target="_blank">
+                  {{ activity.timestamp | timeAgo:trigger }}
+                </a>
+              </span>
               <ng-container *ngIf="activity.status === 0">Unconfirmed</ng-container>
             </div>
           </div>
         </div>
         <div *ngSwitchDefault>
           <div style="padding-left: 0.75rem">
-            <div class="line"><span class="black">{{ getType(activity) | titlecase }}</span><a
-                href="{{ explorerURL(activity.hash) }}" target="_blank">
-                <span *ngIf="activity.status > 0" class="time">{{ activity.timestamp | timeAgo:trigger }}</span>
-                <ng-container *ngIf="activity.status === 0">Unconfirmed</ng-container>
-              </a></div>
+            <div class="line"><span class="black">{{ getType(activity) | titlecase }}</span>
+              <span *ngIf="activity.status > 0" class="time">
+                <a href="{{ explorerURL(activity.hash) }}" target="_blank">
+                  {{ activity.timestamp | timeAgo:trigger }}
+                </a>
+              </span>
+              <ng-container *ngIf="activity.status === 0">Unconfirmed</ng-container>
+            </div>
             <div class="line"><span class="grey">Counterparty —</span>
               <ng-template [ngTemplateOutlet]="CounterpartyRef"
                 [ngTemplateOutletContext]="{ $implicit: getCounterparty(activity) }"></ng-template>

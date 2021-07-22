@@ -102,6 +102,9 @@
 
     & .time {
       color: v.$base-font-color;
+      & a {
+        color: v.$base-font-color;
+      }
     }
   }
 
