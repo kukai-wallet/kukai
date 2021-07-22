@@ -7,12 +7,6 @@
         (click)="toggleDropdown('#' + ecmpId)">
         {{ account?.shortAddress() }}
       </a>
-      <ng-container *ngFor="let origAcc of current?.originatedAccounts">
-        <a routerLink="/account/{{origAcc?.address}}" [class.selected]="origAcc?.address === current?.address"
-          (click)="toggleDropdown('#' + ecmpId)">
-          {{ origAcc?.shortAddress() }}
-        </a>
-      </ng-container>
     </ng-container>
   </div>
 </div>

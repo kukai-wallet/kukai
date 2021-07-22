@@ -105,7 +105,7 @@
         <div class="flex-column">
           <div class="flex-row title">
             <ng-container *ngIf="activity?.amount !== '0'">
-              {{ '- ' + printAmount(activity) }}</ng-container>
+              <ng-container *ngIf="activity?.destination?.address !== this.account.address">- </ng-container>{{ printAmount(activity) }}</ng-container>
             <span class="failed" *ngIf="activity.status === -1">Failed</span>
           </div>
           <div class="flex-row"><span class="address">Originated contract:&nbsp;{{ getCounterparty(activity)?.address }}</span>
