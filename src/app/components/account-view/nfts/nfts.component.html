@@ -21,7 +21,10 @@
             <div class="flex-row head" (click)="toggleDropdown('#' + key)">
               <div class="flex-row left">
                 <img class="icon" [src]="this.tokenBalancesService.nfts[key]?.thumbnailUrl" />
-                <div class="title">{{ this.tokenBalancesService.nfts[key]?.name }}</div>
+                <div class="title">
+                  <a *ngIf="this.tokenBalancesService.nfts[key]?.visitUrl; else noVisitUrl" target="_blank" href="{{this.tokenBalancesService.nfts[key].visitUrl}}">{{ this.tokenBalancesService.nfts[key]?.name }}</a>
+                  <ng-template #noVisitUrl>{{ this.tokenBalancesService.nfts[key]?.name }}</ng-template>
+                </div>
                 <div class="count">{{ this.tokenBalancesService.nfts[key]?.tokens?.length }}</div>
               </div>
               <div class="flex-row right">

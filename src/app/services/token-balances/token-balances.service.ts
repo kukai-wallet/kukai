@@ -17,6 +17,7 @@ interface TokenWithBalance extends TokenResponseType {
 interface ContractWithImg {
   name: string;
   thumbnailUrl: string;
+  visitUrl: string;
   tokens: TokenWithBalance[];
 }
 type ContractsWithBalance = Record<string, ContractWithImg>;
@@ -68,13 +69,16 @@ export class TokenBalancesService {
       if (this.isNFT(asset)) { // token balance or NFT?
         const contractAlias = this.getContractAlias(asset.contractAddress) ?? asset.contractAddress;
         if (nfts[contractAlias] === undefined) {
-          let thumbnailUrl = CONSTANTS.CONTRACT_ALIASES[(contractAlias as string)]?.thumbnailUrl;
-          if (!thumbnailUrl) {
+          const CONTRACT_ALIASES = CONSTANTS.CONTRACT_ALIASES[(contractAlias as string)];
+          if (!CONTRACT_ALIASES?.thumbnailUrl) {
             if (this._thumbnailsToCreate.filter(obj => obj.contractAlias === contractAlias).length === 0) {
               this._thumbnailsToCreate.push({ contractAlias, address: asset.contractAddress });
             }
           }
-          nfts[contractAlias] = { name: contractAlias, thumbnailUrl, tokens: [] };
+          nfts[contractAlias] = { name: contractAlias, thumbnailUrl: CONTRACT_ALIASES?.thumbnailUrl, tokens: [] };
+          if (CONTRACT_ALIASES?.link) {
+            nfts[contractAlias].visitUrl = CONTRACT_ALIASES.link;
+          }
         }
         nfts[contractAlias].tokens.push({ ...asset, balance: token.balance });
       } else {
