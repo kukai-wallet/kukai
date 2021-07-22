@@ -114,7 +114,7 @@
         </ng-container>
       </div>
       <div class="flex-column bottom">
-        <span [style.visibility]="!pwdInvalid ? 'hidden' : ''" class="label danger">{{ this.pwdInvalid }}</span>
+        <span [style.visibility]="!pwdInvalid ? 'hidden' : ''" [style.margin]="!pwdInvalid ? '0' : ''" class="label danger">{{ this.pwdInvalid }}</span>
         <span class="label">ENTER YOUR PASSWORD TO CONFIRM:</span>
         <input *ngIf="!walletService.isLedgerWallet() && !walletService.isTorusWallet()" [(ngModel)]="password"
           autocomplete="current-password" placeholder="Password" class="text password" type="password"

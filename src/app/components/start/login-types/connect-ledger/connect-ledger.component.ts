@@ -60,11 +60,12 @@ export class ConnectLedgerComponent implements OnInit {
       this.messageService.addError('Not a valid public key');
     }
   }
-  setDefaultPath() {
+  setDefaultPath(v) {
     if (this.isHDDerivationPathCustom) {
       this.path = this.defaultText;
     } else {
       this.path = this.defaultPath;
     }
+    this.isHDDerivationPathCustom = v;
   }
 }

@@ -33,8 +33,9 @@ export class HeaderComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.walletService.walletUpdated.subscribe(() => {
+    this.walletService.walletUpdated.subscribe(async () => {
       this.accounts = this.walletService.wallet?.getAccounts();
+      this.delegateName = await this.getDelegateName(this.activeAccount?.delegate);
     });
     this.accounts = this.walletService.wallet?.getAccounts();
 
@@ -55,6 +56,7 @@ export class HeaderComponent implements OnInit {
             this.activeAccount = this.walletService.wallet?.getAccount(accountAddress);
             this.walletService.activeAccount.next(this.activeAccount);
           }
+          console.log(this.activeAccount?.delegate);
           this.delegateName = await this.getDelegateName(this.activeAccount?.delegate);
         }
       });

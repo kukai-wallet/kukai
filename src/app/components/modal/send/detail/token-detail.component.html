@@ -26,7 +26,7 @@
                 description
               </div>
               <div class="value">
-                {{ descOverflow ? token?.description.substring(0, 250).trim() + '...' : token?.description }}
+                {{ token?.description }}
               </div>
             </div>
             <div *ngIf="token?.creator" class="flex-column key-value">
@@ -45,7 +45,7 @@
       <div class="flex-row button more-info" [class]="moreInfo ? 'open' : ''" (click)="expand()">
         <span>{{ moreInfo ? 'LESS' : 'MORE' }} INFO</span><img src="../../../assets/img/chevron-down.svg" />
       </div>
-      <div [style.maxHeight]="moreInfo ? ((3.25 * Object.keys(tokenFiltered).length) + (descOverflow ? 7 : 0)) + 'rem' : ''" [style.overflowY]="autoOverflow ? 'auto' : ''" class="flex-column meta-more">
+      <div [style.maxHeight]="moreInfo ? (3.25 * Object.keys(tokenFiltered).length) + 'rem' : ''" [style.overflowY]="autoOverflow ? 'auto' : ''" class="flex-column meta-more">
         <ng-container *ngFor="let key of Object.keys(tokenFiltered)">
           <div *ngIf="key === 'contractAddress'" class="flex-column key-value">
             <div class="key">
@@ -53,14 +53,6 @@
             </div>
             <div class="value">
               {{ token[key] + ' ' + '(' + token['id'] + ')' }}
-            </div>
-          </div>
-          <div *ngIf="key === 'description' && descOverflow" class="flex-column key-value">
-            <div class="key">
-              {{ 'DESCRIPTION' }}
-            </div>
-            <div class="value">
-              {{ token[key] }}
             </div>
           </div>
           <div *ngIf="key !== 'contractAddress' && key !== 'description' && key !== 'id' && !!token[key]" class="flex-column key-value">

@@ -32,7 +32,7 @@ export class TokenDetail extends ModalComponent implements OnInit {
   open(data) {
     Object.keys(data).filter(key => !this.blacklistMeta.includes(key)).forEach(key => (this.tokenFiltered[key] = data[key]));
     this.token = data;
-    this.descOverflow = this.token?.description && this.token?.description.length > 250 ? true : false
+    this.descOverflow = this.token?.description && this.token?.description.length > 250 ? true : false;
     super.open();
   }
 

@@ -6,7 +6,7 @@
   position: relative;
 
   & input {
-    font-size: 1rem;
+    font-size: 1.15rem;
     width: calc(100% - 4rem);
     padding: 0 0 0 2rem;
     background-color: v.$base-color-lightened-7;
@@ -16,6 +16,10 @@
     transition: 0.25s border-radius;
     height: 3.375rem;
     cursor: pointer;
+
+    &::placeholder {
+      color: v.$base-font-color;
+    }
   }
 
   & .icon-db {

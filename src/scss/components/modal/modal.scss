@@ -183,10 +183,11 @@
 
     & .bottom {
       margin: 2rem 0 0 0;
+      align-items: center;
     }
 
     & button.confirm {
-      width: 100%;
+      width: 50%;
       height: 4rem;
       border-radius: v.$border-radius-hard;
     }

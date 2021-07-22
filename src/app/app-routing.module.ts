@@ -11,6 +11,7 @@ import { TermsOfUseComponent } from './components/agreement/terms-of-use/terms-o
 import { TorusComponent } from './components/start/login-types/torus/torus.component';
 import { EmbeddedComponent } from './components/embedded/embedded.component';
 import { LoggedInComponent } from './components/logged-in/logged-in.component';
+import { ActivateComponent } from './components/activate/activate.component';
 
 const routes: Routes = [
   {
@@ -26,6 +27,7 @@ const routes: Routes = [
           module => module.LoggedInModule
         )
       },
+      { path: 'activate', component: ActivateComponent },
       { path: 'privacy-policy', component: PrivacyPolicyComponent },
       { path: 'terms-of-use', component: TermsOfUseComponent },
       { path: 'serviceworker', component: TermsOfUseComponent },

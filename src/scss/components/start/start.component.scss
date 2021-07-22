@@ -89,6 +89,9 @@
 
     & .login {
 
+      position: relative;
+      top: -4rem;
+
       &>* {
         margin: 1rem 0;
       }
@@ -331,6 +334,8 @@
         }
 
         & .login {
+          position: unset;
+          top: unset;
 
           &>span {
             text-align: center;
@@ -367,5 +372,19 @@
 @media (orientation: portrait) and (max-width: v.$lower-limit) {
   :host {
     justify-content: center;
+
+    & #wrapper .left .login {
+      position: unset;
+      top: unset;
+    }
+  }
+}
+
+@media (orientation: portrait) and (min-width: 55em) and (max-width: v.$middle-limit) {
+  :host {
+    & #wrapper #bg-mobile {
+      width: 100% !important;
+      height: 100rem !important;
+    }
   }
 }

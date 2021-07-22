@@ -65,7 +65,7 @@
 
         & a {
           position: absolute;
-          top: 1rem;
+          top: 0rem;
           left: -1.5rem;
           width: 8rem;
           margin: 1.5rem 0rem 1.5rem 1rem;
@@ -249,6 +249,16 @@
       padding: 0 4rem;
       height: 4rem;
     }
+
+    & button.confirm {
+      width: 50%;
+    }
+  }
+}
+
+@media (min-width: v.$middle-limit) {
+  .delegate-page .content .manual>.delegate {
+    width: 59.5rem
   }
 }
 

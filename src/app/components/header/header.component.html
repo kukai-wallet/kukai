@@ -8,11 +8,10 @@
       <app-ui-dropdown-account [list]="accounts" [current]="activeAccount"></app-ui-dropdown-account>
       <div class="delegation">
         <div class="flex-row outside-container" *ngIf="!beaconMode">
-          <div class="flex-row" routerLink="/account/{{activeAccount?.address}}/stakers">
+          <div class="flex-row button" routerLink="/account/{{activeAccount?.address}}/stakers">
             <span *ngIf="!activeAccount?.delegate">STAKING: <span class="choose">NOT
                 STAKED</span></span>
-            <span *ngIf="activeAccount?.delegate" class="address">STAKING: {{ delegateName }}</span><span
-              *ngIf="activeAccount?.delegate" class="change">&nbsp;(Change)</span>
+            <span *ngIf="activeAccount?.delegate" class="address">STAKING: <span>{{ delegateName }}</span></span>
           </div>
         </div>
       </div>
@@ -21,25 +20,25 @@
       <div class="icon" (click)="copy()">
         <img class="button" src="../../../assets/img/copy.svg" />
         <div class="tooltip">
-          <div class="description">Copy Clipboard</div>
+          <div class="description">COPY ADDRESS</div>
         </div>
       </div>
       <div class="icon" (click)="newAccount()">
         <img class="button" src="../../../assets/img/add.svg" />
         <div class="tooltip">
-          <div class="description">Add Account</div>
+          <div class="description">ADD ACCOUNT</div>
         </div>
       </div>
       <div class="icon" [routerLink]="'/account/' + activeAccount?.address + '/settings'">
         <img class="button" src="../../../assets/img/settings.svg" />
         <div class="tooltip">
-          <div class="description">Settings</div>
+          <div class="description">SETTINGS</div>
         </div>
       </div>
       <div class="icon" (click)="logout()">
         <img class="button" src="../../../assets/img/logout.svg" />
         <div class="tooltip">
-          <div class="description">Sign Out</div>
+          <div class="description">SIGN OUT</div>
         </div>
       </div>
     </div>
@@ -64,7 +63,8 @@
   </a>
   <div class="flex-row" style="width: 55%;">
     <ng-container *ngIf="router.url.indexOf('/account/') > -1">
-      <app-ui-dropdown-account [list]="accounts" [current]="activeAccount" style="width: calc(100% - 4rem);"></app-ui-dropdown-account>
+      <app-ui-dropdown-account [list]="accounts" [current]="activeAccount" style="width: calc(100% - 4rem);">
+      </app-ui-dropdown-account>
     </ng-container>
     <div *ngIf="router.url.indexOf('/account/') === 0" class="copy">
       <img class="button" src="../../../assets/img/copy.svg" (click)="copy()" />
@@ -79,8 +79,8 @@
             STAKING</span>
         </div>
         <div *ngIf="activeAccount?.delegate" class="flex-row">
-          <span class="flex-row address">STAKING: {{ activeAccount.delegate
-            }}</span><span *ngIf="activeAccount?.delegate">(Change)</span>
+          <span class="flex-row address">STAKING: <span>{{ delegateName
+              }}</span></span>
         </div>
       </div>
       <div class="flex-row button" (click)="newAccount()">

@@ -290,12 +290,13 @@
 
     & .label {
       height: 1.25rem;
-      margin: 0.5rem 1rem 0.5rem 1rem;
+      margin: 1rem;
+      align-self: flex-start;
     }
 
     & .danger {
       color: v.$base-red-color;
-      margin: 0.5rem 1rem 0rem 1rem;
+      margin: 1rem 1rem 0rem 1rem;
     }
   }
 }

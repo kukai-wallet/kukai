@@ -333,7 +333,7 @@ button {
     }
 
     & button.confirm {
-      width: 100%;
+      width: 50%;
       height: 4rem;
       border-radius: $border-radius-hard;
     }
@@ -560,7 +560,7 @@ button {
         }
     
         & button.confirm {
-          width: 100%;
+          width: 50%;
           height: 2.5em;
           border-radius: $border-radius-hard;
         }

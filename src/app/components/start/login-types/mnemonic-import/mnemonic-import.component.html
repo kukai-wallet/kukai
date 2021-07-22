@@ -27,14 +27,14 @@
       <p class="description faucet" *ngIf="importOption === 2"><span>Please make sure to first <a
             routerLink="/activate">activate</a> your fundraiser wallet.</span></p>
       <ng-container>
-        <span><b>THE SEED</b> (12-24 words)</span>
+        <span><b>RECOVERY WORDS</b> (12-24 words)</span>
         <textarea class="text seed-word" [(ngModel)]="mnemonic" autocomplete="off"
           [placeholder]="'Seed Words (required)'"></textarea>
       </ng-container>
       <ng-container *ngIf="importOption === 1">
         <app-ui-toggle-advanced [default]="false" (stateChange)="advancedForm = $event"></app-ui-toggle-advanced>
-        <br/><br/>
-        <div *ngIf="advancedForm" class="flex-row import-option-1">
+        <br /><br />
+        <div *ngIf="advancedForm" class="flex-row-wrap import-option-1">
           <div class="flex-column">
             <span><b>If your seed words are protected by a passphrase, it needs to be entered here</b></span>
             <input class="text" type="password" name="passphrase" autocomplete="one-time-code" [(ngModel)]="passphrase"
@@ -42,7 +42,17 @@
           </div>
           <div class="flex-column">
             <span><b>{{ 'MNEMONICIMPORTCOMPONENT.INFOPKH' | translate }}</b></span>
-            <input type="text" class="text" [(ngModel)]="pkh" [placeholder]="'tz1... (recomended)'">
+            <input type="text" class="text" [(ngModel)]="pkh" [placeholder]="'tz1... (recommended)'">
+          </div>
+          <div class="flex-row radios" *ngIf="importOption === 1">
+            <div class="flex-row">
+              <input (change)="hdImport = !hdImport" type="radio" name="walletType" value="hd" checked>
+              <span>HD wallet</span>
+            </div>
+            <div class="flex-row">
+              <input (change)="hdImport = !hdImport" type="radio" name="walletType" value="legacy">
+              <span>Legacy wallet</span>
+            </div>
           </div>
         </div>
       </ng-container>
@@ -55,18 +65,6 @@
         <span>{{ 'MNEMONICIMPORTCOMPONENT.INFOPKHICO' | translate }}</span>
         <input type="text" class="text" [(ngModel)]="pkh" [placeholder]="'tz1... (recomended)'">
       </ng-container>
-      <ng-container>
-      </ng-container>
-      <div class="flex-row radios" *ngIf="importOption === 1">
-        <div class="flex-row">
-          <input (change)="hdImport = !hdImport" type="radio" name="walletType" value="hd" checked>
-          <span>HD wallet</span>
-        </div>
-        <div class="flex-row">
-          <input (change)="hdImport = !hdImport" type="radio" name="walletType" value="legacy">
-          <span>Legacy wallet</span>
-        </div>
-      </div>
       <button class="button next" (click)="retrieve()">Import</button>
     </ng-container>
   </div>
@@ -77,11 +75,12 @@
       secret key, this password will be required</p>
     <input type="password" placeholder="{{ 'NEWWALLETCOMPONENT.PASSWORD' | translate }}" class="text"
       autocomplete="new-password" [(ngModel)]="pwd1" (keyup)="calcStrength()">
-    <small class="strength"> {{ 'NEWWALLETCOMPONENT.PASSWORDSTRENGTH' | translate }} — <b [style.color]="pwdStrength === 'Catastrophic!' ? 'darkred' : pwdStrength === 'Very weak!' ? 'red' : pwdStrength === 'Weak!' ? 'orange' : pwdStrength === 'Strong!' ? 'green' : 'red'">{{
-      pwdStrength }}</b></small>
+    <small class="strength"> {{ 'NEWWALLETCOMPONENT.PASSWORDSTRENGTH' | translate }} — <b
+        [style.color]="pwdStrength === 'Catastrophic!' ? 'darkred' : pwdStrength === 'Very weak!' ? 'red' : pwdStrength === 'Weak!' ? 'orange' : pwdStrength === 'Strong!' ? 'green' : 'red'">{{
+        pwdStrength }}</b></small>
     <input type="password" placeholder="{{ 'NEWWALLETCOMPONENT.CONFIRMPASSWORD' | translate }}" class="text"
       autocomplete="new-password" [(ngModel)]="pwd2">
-      <button class="button next" [class.disabled-button]="!pwd1" (click)="setPwd()">Next</button>
+    <button class="button next" [class.disabled-button]="!pwd1" (click)="setPwd()">Next</button>
   </div>
   <div *ngIf="activePanel==2" class="flex-column body">
     <h1>Wallet created!</h1>
