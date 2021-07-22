@@ -93,6 +93,10 @@
     & .title {
       font-size: 1.75rem;
       margin-bottom: 0.5rem;
+      & .failed {
+        color: v.$base-red-color;
+        font-size: 1.25rem;
+      }
     }
 
     & .address {

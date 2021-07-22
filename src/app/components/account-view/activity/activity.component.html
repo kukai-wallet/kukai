@@ -31,10 +31,11 @@
             <div class="flex-row title">
               <ng-container *ngIf="activity?.amount !== '0'">
                 {{ '- ' + printAmount(activity) }}</ng-container>
+              <span class="failed" *ngIf="activity.status === -1">Failed</span>
             </div>
             <div class="flex-row"><span class="address">Sent to:&nbsp;{{ getCounterparty(activity)?.address || 'Burn'
                 }}</span>
-              <span *ngIf="activity.status > 0" class="time">
+              <span *ngIf="activity.status !== 0" class="time">
                 <a href="{{ explorerURL(activity.hash) }}" target="_blank">
                   {{ activity.timestamp | timeAgo:trigger }}
                 </a>
@@ -49,11 +50,12 @@
             <div class="flex-row title">
               <ng-container *ngIf="activity?.amount !== '0'">
                 {{'+ ' + printAmount(activity) }}</ng-container>
+                <span class="failed" *ngIf="activity.status === -1">Failed</span>
             </div>
             <div class="flex-row"><span class="address">{{ receivedKind(activity) }} from:&nbsp;{{
                 getCounterparty(activity)?.address || ''
                 }}</span>
-              <span *ngIf="activity.status > 0" class="time">
+              <span *ngIf="activity.status !== 0" class="time">
                 <a href="{{ explorerURL(activity.hash) }}" target="_blank">
                   {{ activity.timestamp | timeAgo:trigger }}
                 </a>
@@ -67,10 +69,11 @@
           <div class="flex-column">
             <div class="flex-row title">
               Staked
+              <span class="failed" *ngIf="activity.status === -1">Failed</span>
             </div>
             <div class="flex-row"><span class="address">to:&nbsp;{{ getCounterparty(activity)?.address || ''
                 }}</span>
-              <span *ngIf="activity.status > 0" class="time">
+              <span *ngIf="activity.status !== 0" class="time">
                 <a href="{{ explorerURL(activity.hash) }}" target="_blank">
                   {{ activity.timestamp | timeAgo:trigger }}
                 </a>
@@ -84,10 +87,11 @@
           <div class="flex-column">
             <div class="flex-row title">
               Unstaked
+              <span class="failed" *ngIf="activity.status === -1">Failed</span>
             </div>
             <div class="flex-row"><span class="address">to:&nbsp;{{ getCounterparty(activity)?.address || '(none)'
                 }}</span>
-              <span *ngIf="activity.status > 0" class="time">
+              <span *ngIf="activity.status !== 0" class="time">
                 <a href="{{ explorerURL(activity.hash) }}" target="_blank">
                   {{ activity.timestamp | timeAgo:trigger }}
                 </a>
@@ -99,7 +103,7 @@
         <div *ngSwitchDefault>
           <div style="padding-left: 0.75rem">
             <div class="line"><span class="black">{{ getType(activity) | titlecase }}</span>
-              <span *ngIf="activity.status > 0" class="time">
+              <span *ngIf="activity.status !== 0" class="time">
                 <a href="{{ explorerURL(activity.hash) }}" target="_blank">
                   {{ activity.timestamp | timeAgo:trigger }}
                 </a>

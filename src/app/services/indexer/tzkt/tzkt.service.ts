@@ -89,7 +89,8 @@ export class TzktService implements Indexer {
     const ops = await fetch(`${this.tzkt}/accounts/${address}/operations?limit=20&type=delegation,origination,transaction`)
       .then(response => response.json())
       .then(data => data.map(op => {
-        if (!(op.hasInternals && wallet.getAccount(op.target.address)) && op.status === 'applied') {
+        if (!(op.hasInternals && wallet.getAccount(op.target.address))) {
+          const status = op.status === 'applied' ? 1 : -1;
           let destination = { address: '' };
           let amount = '0';
           let entrypoint = '';
@@ -123,7 +124,7 @@ export class TzktService implements Indexer {
           const activity: Activity = {
             type: op.type,
             block: op.block,
-            status: 1,
+            status,
             amount,
             source: op.sender,
             destination,
