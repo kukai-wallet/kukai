@@ -55,7 +55,8 @@
 
   & .sent,
   .delegated,
-  .received {
+  .received,
+  .origination {
     position: relative;
     overflow: hidden;
     &.unconfirmed {

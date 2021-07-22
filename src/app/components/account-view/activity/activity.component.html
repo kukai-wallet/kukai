@@ -100,6 +100,24 @@
             </div>
           </div>
         </div>
+        <div *ngSwitchCase="'origination'" class="origination"
+        [class]="activity.status === 0 ? 'unconfirmed' : isNew(activity.timestamp) ? 'new' : 'confirmed'">
+        <div class="flex-column">
+          <div class="flex-row title">
+            <ng-container *ngIf="activity?.amount !== '0'">
+              {{ '- ' + printAmount(activity) }}</ng-container>
+            <span class="failed" *ngIf="activity.status === -1">Failed</span>
+          </div>
+          <div class="flex-row"><span class="address">Originated contract:&nbsp;{{ getCounterparty(activity)?.address }}</span>
+            <span *ngIf="activity.status !== 0" class="time">
+              <a href="{{ explorerURL(activity.hash) }}" target="_blank">
+                {{ activity.timestamp | timeAgo:trigger }}
+              </a>
+            </span>
+            <ng-container *ngIf="activity.status === 0">Unconfirmed</ng-container>
+          </div>
+        </div>
+      </div>
         <div *ngSwitchDefault>
           <div style="padding-left: 0.75rem">
             <div class="line"><span class="black">{{ getType(activity) | titlecase }}</span>

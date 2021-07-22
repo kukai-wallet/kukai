@@ -152,7 +152,7 @@ export class ActivityService {
       }
     } else if (transaction.type === 'origination') {
       if (account.address === transaction.source.address) {
-        counterParty = transaction.destination;
+        counterParty = transaction.destination ? transaction.destination : { address: '' };
       } else {
         counterParty = transaction.source;
       }

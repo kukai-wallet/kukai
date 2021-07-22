@@ -408,12 +408,8 @@ export class WalletService {
       impAcc.balanceUSD = implicit.balanceUSD;
       impAcc.balanceXTZ = implicit.balanceXTZ;
       impAcc.delegate = implicit.delegate;
-      if (implicit.activitiesCounter) { // prevent storage from breaking (1.11)
-        impAcc.state = implicit.activitiesCounter.toString();
-      } else {
-        impAcc.state = implicit.state;
-      }
-      impAcc.activities = this.activityMigration(implicit.activities);
+      impAcc.state = implicit.state;
+      impAcc.activities = implicit.activities;
       if (implicit.tokens) {
         impAcc.tokens = implicit.tokens;
       }
@@ -426,27 +422,12 @@ export class WalletService {
         origAcc.balanceUSD = originated.balanceUSD;
         origAcc.balanceXTZ = originated.balanceXTZ;
         origAcc.delegate = originated.delegate;
-        if (originated.activitiesCounter) { // prevent storage from breaking (1.11)
-          origAcc.state = originated.activitiesCounter.toString();
-        } else {
-          origAcc.state = originated.state;
-        }
-        origAcc.activities = this.activityMigration(originated.activities);
+        origAcc.state = originated.state;
+        origAcc.activities = originated.activities;
         impAcc.originatedAccounts.push(origAcc);
       }
       this.wallet.implicitAccounts.push(impAcc);
     }
-  }
-  activityMigration(activities: any[]): Activity[] { // prevent storage from breaking (1.11)
-    return activities.map(activity => {
-      if (activity.source.address === undefined) {
-        activity.source = { address: activity.source };
-      }
-      if (activity.destination.address === undefined) {
-        activity.destination = { address: activity.destination };
-      }
-      return activity;
-    });
   }
   private getStorage() {
     return this.isEmbeddedTorusWallet() ? sessionStorage : localStorage;
