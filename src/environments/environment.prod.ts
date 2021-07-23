@@ -38,6 +38,21 @@ export const CONSTANTS: Constants = {
         }
       }
     },
+    'KT1JkoE42rrMBP9b2oDhbx6EUr26GcySZMUH': { // kDAO
+      kind: 'FA1.2',
+      category: 'finance',
+      tokens: {
+        0: {
+          name: 'Kolibri DAO',
+          symbol: 'kUSD',
+          decimals: 18,
+          description: '',
+          displayUrl: '../../../assets/img/tokens/kdao.png',
+          thumbnailUrl: '../../../assets/img/tokens/kdao.png',
+          shouldPreferSymbol: true
+        }
+      }
+    },
     'KT1LN4LPSqTMS7Sd2CJw4bbDGRkMv2t68Fy9': { // USDtz
       kind: 'FA1.2',
       category: 'finance',
@@ -49,6 +64,36 @@ export const CONSTANTS: Constants = {
           description: 'USDtz is a Tezos on-chain stablecoin pegged to the value of the United States Dollar.',
           displayUrl: '../../../assets/img/tokens/usdtz.png',
           thumbnailUrl: '../../../assets/img/tokens/usdtz.png',
+          shouldPreferSymbol: true
+        }
+      }
+    },
+    'KT1XRPEPXbZK25r3Htzp2o1x7xdMMmfocKNW': { // uUSD
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        0: {
+          name: 'Youves uUSD',
+          symbol: 'uUSD',
+          decimals: 12,
+          description: '',
+          displayUrl: '../../../assets/img/tokens/uusd.png',
+          thumbnailUrl: '../../../assets/img/tokens/uusd.png',
+          shouldPreferSymbol: true
+        }
+      }
+    },
+    'KT1Xobej4mc6XgEjDoJoHtTKgbD1ELMvcQuL': { // YOU
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        0: {
+          name: 'youves YOU Governance',
+          symbol: 'YOU',
+          decimals: 12,
+          description: '',
+          displayUrl: '../../../assets/img/tokens/you.png',
+          thumbnailUrl: '../../../assets/img/tokens/you.png',
           shouldPreferSymbol: true
         }
       }
@@ -596,5 +641,6 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1EH8yKXkRoxNkULRB1dSuwhkKyi5LJH82o',//mandala
   'KT1DKBvxiwDR7qazNuuxCxY2AaXnoytmDE7H',//Mandala v2
   'KT1UxMVVrK2pbYYEtwes1zKYdpYnzoZ6yPKC',//Comic app
-  'KT1AaaBSo5AE6Eo8fpEN5xhCD4w3kHStafxk'//Minterpop
+  'KT1AaaBSo5AE6Eo8fpEN5xhCD4w3kHStafxk',//Minterpop
+  'KT1EpGgjQs73QfFJs9z7m1Mxm5MTnpC2tqse'//Kalamint
 ];
