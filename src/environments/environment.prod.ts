@@ -53,6 +53,36 @@ export const CONSTANTS: Constants = {
         }
       }
     },
+    'KT1XRPEPXbZK25r3Htzp2o1x7xdMMmfocKNW': { // uUSD
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        0: {
+          name: 'Youves uUSD',
+          symbol: 'uUSD',
+          decimals: 12,
+          description: '',
+          displayUrl: '../../../assets/img/tokens/uusd.png',
+          thumbnailUrl: '../../../assets/img/tokens/uusd.png',
+          shouldPreferSymbol: true
+        }
+      }
+    },
+    'KT1Xobej4mc6XgEjDoJoHtTKgbD1ELMvcQuL': { // YOU
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        0: {
+          name: 'youves YOU Governance',
+          symbol: 'YOU',
+          decimals: 12,
+          description: '',
+          displayUrl: '../../../assets/img/tokens/you.png',
+          thumbnailUrl: '../../../assets/img/tokens/you.png',
+          shouldPreferSymbol: true
+        }
+      }
+    },
     'KT1PWx2mnDueood7fEmfbBDKx1D9BAnnXitn': { // tzBTC
       kind: 'FA1.2',
       category: 'finance',
