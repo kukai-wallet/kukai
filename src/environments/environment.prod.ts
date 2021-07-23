@@ -38,6 +38,21 @@ export const CONSTANTS: Constants = {
         }
       }
     },
+    'KT1JkoE42rrMBP9b2oDhbx6EUr26GcySZMUH': { // kDAO
+      kind: 'FA1.2',
+      category: 'finance',
+      tokens: {
+        0: {
+          name: 'Kolibri DAO',
+          symbol: 'kUSD',
+          decimals: 18,
+          description: '',
+          displayUrl: '../../../assets/img/tokens/kdao.png',
+          thumbnailUrl: '../../../assets/img/tokens/kdao.png',
+          shouldPreferSymbol: true
+        }
+      }
+    },
     'KT1LN4LPSqTMS7Sd2CJw4bbDGRkMv2t68Fy9': { // USDtz
       kind: 'FA1.2',
       category: 'finance',
