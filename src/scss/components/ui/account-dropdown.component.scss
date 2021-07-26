@@ -16,6 +16,7 @@
     transition: 0.25s border-radius;
     height: 3.375rem;
     cursor: pointer;
+    font-weight: 500;
 
     &::placeholder {
       color: v.$base-font-color;
