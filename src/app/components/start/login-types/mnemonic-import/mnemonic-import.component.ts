@@ -234,7 +234,9 @@ export class MnemonicImportComponent implements OnInit {
     }
   }
   async checkImportPwd() {
-    if (this.pwd) {
+    if (!this.walletJson) {
+      this.messageService.addWarning('No keystore file imported', 5);
+    } else if (this.pwd) {
       await this.messageService.startSpinner('Importing wallet...');
       try {
         await this.import(this.walletJson, this.pwd);
