@@ -14,29 +14,15 @@
     height: 1rem;
 
     & .switch {
-      position: relative;
-      display: inline-block;
-      width: 3.25rem;
-      height: 1.75rem;
-      padding: 0.25rem;
-      margin-bottom: 0;
 
       & input {
         width: 0;
         height: 0;
-
-        &:checked + .slider {
-          &:before {
-            -webkit-transform: translateX(1.5rem);
-            -ms-transform: translateX(1.5rem);
-            transform: translateX(1.5rem);
-            background-color: v.$base-blue-color-lightened;
-          }
-        }
+        padding: 0 0 0 0.5rem;
       }
 
       & .slider {
-        position: absolute;
+        position: relative;
         cursor: pointer;
         top: 0;
         left: 0;
@@ -44,19 +30,27 @@
         bottom: 0;
         background-color: v.$base-end-color;
         border: 2px solid v.$advanced-color;
+        border-radius: v.$border-radius-hardest;
         transition: 0.4s;
+        width: 3.5em;
+        height: 2em;
 
-        &.round {
-          border-radius: v.$border-radius-hardest;
+        &.active {
+          & .round {
+            -webkit-transform: translateX(1.5rem);
+            -ms-transform: translateX(1.5rem);
+            transform: translateX(1.5rem);
+            background-color: v.$base-blue-color-lightened;
+          }
         }
 
-        &:before {
+        & .round {
           position: absolute;
           content: "";
-          height: 1.25rem;
-          width: 1.25rem;
-          left: 0.375rem;
-          bottom: 4px;
+          height: 1.25em;
+          width: 1.25em;
+          left: 0.375em;
+          bottom: 0.375em;
           background-color: v.$border-color;
           transition: 0.25s all;
           border-radius: v.$border-radius-hardest;
@@ -66,12 +60,19 @@
 
     & span {
       margin: 0;
-      font-size: 1rem !important;
+      font-size: 1em !important;
       font-weight: 500;
       &.key {
         color: #b9bfc7 !important;
         &.active {
           color: #b9bfc7 !important;
+
+          & .round {
+            -webkit-transform: translateX(1.5rem);
+            -ms-transform: translateX(1.5rem);
+            transform: translateX(1.5rem);
+            background-color: v.$base-blue-color-lightened;
+          }
         }
       }
 
@@ -85,7 +86,8 @@
 @media not all and (min-resolution:.001dpcm) { 
   @supports (-webkit-appearance:none) {
     .advanced .switch-container .switch .slider:before {
-      bottom: .35rem;
+      left: 0.3em;
+      bottom: 0.3em;
     }
   }
 }

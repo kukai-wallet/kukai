@@ -2,9 +2,11 @@
   <div class="flex-row switch-container">
     <span class="value">{{ text }}&nbsp;&nbsp;<span class="key" [class]="state ? 'active' : ''">{{ state ? ' ON' : 'OFF'
         }}</span>&nbsp;&nbsp;</span>
-    <label class="switch">
+    <label class="flex-row switch">
       <input type="checkbox" [value]="state" tabindex=-1 />
-      <span class="slider round" (click)="toggle()"></span>
+      <span class="slider" [class]="state ? 'active' : ''" (click)="toggle()">
+        <span class="round"></span>
+      </span>
     </label>
   </div>
 </div>
