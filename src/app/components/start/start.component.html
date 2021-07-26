@@ -5,31 +5,30 @@
       <h3>Manage your digital assets and seamlessly connect with experiences and apps on Tezos.</h3>
     </div>
     <div class="flex-column bottom">
-      <div id="ribbon"></div>
-      <div id="bg-mobile"></div>
-      <div class="flex-column login">
-        <span>Sign in with social:</span>
-        <div class="flex-row social">
-          <button class="flex-row google" (click)="torusLogin('google')"><img
-              src="../../../assets/img/google-logo.svg">&nbsp;<span>CONTINUE WITH
-              GOOGLE</span></button>
-          <div class="flex-row">
-            <img class="facebook" src="../../../assets/img/facebook-logo.svg" (click)="torusLogin('facebook')">
-            <img class="twitter" src="../../../assets//img/twitter-logo.svg" (click)="torusLogin('twitter')">
-            <img class="reddit" src="../../../assets/img/reddit-logo.svg" (click)="torusLogin('reddit')">
-          </div>
+      <img src="../../../assets/img/landing-hero.png" id="bg-mobile">
+      <div id="ribbon-mobile"></div>
+    </div>
+    <div class="flex-column login">
+      <span>Sign in with social:</span>
+      <div class="flex-row social">
+        <button class="flex-row google" (click)="torusLogin('google')"><img
+            src="../../../assets/img/google-logo.svg">&nbsp;<span>CONTINUE WITH
+            GOOGLE</span></button>
+        <div class="flex-row">
+          <img class="facebook" src="../../../assets/img/facebook-logo.svg" (click)="torusLogin('facebook')">
+          <img class="twitter" src="../../../assets//img/twitter-logo.svg" (click)="torusLogin('twitter')">
+          <img class="reddit" src="../../../assets/img/reddit-logo.svg" (click)="torusLogin('reddit')">
         </div>
-        <!-- <span>OR CONTINUE WITH EMAIL:</span>
-        <div class="flex-row email">
-          <input type=email placeholder="Your email">
-          <button class="signin">SIGN IN</button>
-        </div> -->
       </div>
+      <!-- <span>OR CONTINUE WITH EMAIL:</span>
+      <div class="flex-row email">
+        <input type=email placeholder="Your email">
+        <button class="signin">SIGN IN</button>
+      </div> -->
     </div>
   </div>
   <div class="flex-column right">
-    <div id="bg"></div>
-    <div class="flex-column"></div>
-    <div class="flex-column"></div>
+    <img src="../../../assets/img/landing-hero.png" id="bg">
+    <div id="ribbon"></div>
   </div>
 </div>

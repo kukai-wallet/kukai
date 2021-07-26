@@ -192,7 +192,19 @@ button {
 
 @media (max-width: v.$middle-limit) {
   html {
+    font-size: 80%;
+  }
+}
+
+@media (max-width: calc(#{v.$middle-limit} - 25em)) {
+  html {
     font-size: 75%;
+  }
+}
+
+@media (max-width: calc(#{v.$middle-limit} - 50em)) {
+  html {
+    font-size: 60%;
   }
 }
 

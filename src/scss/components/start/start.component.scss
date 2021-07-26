@@ -1,13 +1,22 @@
 @use '../../abstracts/variables'as v;
 
 %bg {
-  height: 100%;
-  width: 100%;
-  z-index: 10;
-  background: url(../../../assets/img/landing-hero.png);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
+  width: 85%;
+  height: 85%;
+  object-fit: contain;
+  object-position: center;
+}
+
+%ribbon {
+  position: absolute;
+  bottom: 0;
+  left: -100%;
+  width: 100vw !important;
+  height: 45vh;
+  border-top: 2rem solid #d6dbe3;
+  background-color: v.$base-color-lightened-6;
+  z-index: -100;
+  background: linear-gradient(180deg, v.$base-color-lightened-5, v.$base-background-color);
 }
 
 :host {
@@ -20,14 +29,12 @@
   flex-direction: column;
 
   & #ribbon {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100vw;
-    height: 43vh;
-    border-top: 18px solid #d6dbe3;
-    background-color: v.$base-color-lightened-6;
-    z-index: -100;
+    @extend %ribbon;
+
+    &-mobile {
+      @extend %ribbon;
+      display: none;
+    }
   }
 }
 
@@ -42,7 +49,8 @@
   & .right {
     width: 50%;
     height: 100%;
-    z-index: 5;
+    position: relative;
+    z-index: 100;
 
     & h1 {
       font-size: 7rem;
@@ -69,14 +77,14 @@
 
     & .top,
     & .login {
-      width: calc(100% - 12rem);
-      padding: 0 0 0 12rem;
+      width: calc(100% - 11%);
+      padding: 0 0 0 11%;
     }
 
     & .top {
       justify-content: center;
-      width: calc(100% - 12rem);
-      padding: 0 0 0 12rem;
+      width: calc(100% - 11%);
+      padding: 0 0 0 11%;
 
       &>* {
         margin: 2rem 0;
@@ -84,6 +92,7 @@
     }
 
     & .bottom {
+      display: none;
       position: relative;
       align-items: center;
     }
@@ -189,21 +198,20 @@
   }
 
   & .right {
+    justify-content: center;
+    align-items: flex-end;
     position: relative;
+    z-index: 0;
+    width: calc(50vw - 4rem);
+    padding: 0 4rem 0 0;
   }
 
   & #bg {
-    position: absolute;
-    top: 0;
-    right: 0;
     @extend %bg;
 
     &-mobile {
       display: none;
       @extend %bg;
-      width: 100% !important;
-      height: 46rem !important;
-      background-size: contain !important;
     }
   }
 }
@@ -250,9 +258,23 @@
   }
 }
 
-@media (max-width: 85rem) {
+@media (max-width: v.$lower-limit) {
 
   :host {
+
+    & .bottom {
+      display: flex !important;
+    }
+
+    & #ribbon {
+      display: none;
+    }
+
+    & #ribbon-mobile {
+      left: 0;
+      display: block;
+      height: 48%;
+    }
 
     height: unset;
 
@@ -268,8 +290,9 @@
 
         &-mobile {
           display: block;
-          height: 32rem;
-          width: 38rem;
+          width: 75% !important;
+          height: 100% !important;
+          max-width: 70rem;
         }
       }
 
@@ -278,14 +301,6 @@
         width: 100%;
         height: 100%;
         align-items: center;
-
-        & #ribbon {
-          margin: 0;
-          height: calc(100% - 23rem) !important;
-          background: linear-gradient(180deg, v.$base-color-lightened-5, v.$base-background-color);
-          bottom: unset !important;
-          top: 21rem !important;
-        }
 
         & h1,
         & h3 {
@@ -302,7 +317,6 @@
         & h3 {
           font-size: 3rem;
           font-weight: 400;
-          line-height: auto;
           color: v.$base-font-color-secondary;
           padding: 0 1rem;
           width: calc(100% - 2rem);
@@ -340,6 +354,7 @@
           position: unset;
           top: unset;
 
+
           &>span {
             text-align: center;
           }
@@ -361,39 +376,23 @@
           }
         }
       }
+    }
+  }
+}
 
+@media (max-width: v.$lower-limit) {
+
+  :host {
+    #wrapper {
+      & .left,
       & .right {
-
-        &>div:last-child {
-          border-top: none;
+        & h1 {
+          font-size: 5rem;
+        }
+        & h3 {
+          font-size: 2.25rem;
         }
       }
-    }
-  }
-}
-
-@media (orientation: portrait) and (max-width: 85rem) {
-  :host {
-    justify-content: center;
-
-    & #wrapper .left .login {
-      position: unset;
-      top: unset;
-    }
-  }
-}
-
-@media (orientation: portrait) and (min-width: 55em) and (max-width: v.$middle-limit) {
-  :host {
-    & #wrapper #bg-mobile {
-      width: 100% !important;
-      height: 100rem !important;
-    }
-
-    & #wrapper .left #ribbon {
-      height: calc(100% - 51rem) !important;
-      bottom: 0 !important;
-      top: unset !important;
     }
   }
 }
