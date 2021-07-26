@@ -73,8 +73,7 @@
       </div>
       <br />
       <br />
-      <div *ngIf="parameters" class="key">{{transactions.length === 1 ? 'CONTRACT CALL' + ' ' +
-        transactions[0]?.entrypoint : 'MULTIPLE CONTRACT CALLS'}}</div>
+      <div *ngIf="parameters" class="key" style="margin: 0 0 2rem 1rem;">CONTRACT CALL: {{ parameters?.entrypoint }}</div>
         <app-ui-toggle-advanced [default]="false" (stateChange)="advancedForm = $event"></app-ui-toggle-advanced>
       <div *ngIf="advancedForm" class="advanced-form">
         <ng-container *ngIf="parameters">
