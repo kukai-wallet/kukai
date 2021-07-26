@@ -148,15 +148,16 @@
         &>.google {
           border: 2px solid v.$border-color;
           border-radius: v.$border-radius-hardest;
-          width: 28rem;
+          width: 25rem;
           height: 6rem;
           color: v.$base-font-color;
           font-size: 1.5rem;
-          padding: 0 3rem 0 2rem;
+          padding: 0 3rem 0 1rem;
 
           &>span {
-            padding: 1rem;
+            padding: 1rem 0;
             font-size: 1.25rem;
+            font-weight: 600;
           }
 
           & img {
@@ -367,7 +368,7 @@
 
             & .google {
               margin: 0 0 2rem 0;
-              width: 26rem;
+              width: 25rem;
             }
 
             & .facebook {
