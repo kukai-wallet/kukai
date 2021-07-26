@@ -13,10 +13,11 @@
   margin-bottom: 2rem;
 
   & .desktop, & .mobile {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    width: 100%;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      width: calc(100% - 4rem);
+      padding: 0 2rem;
   }
 
   & .mobile {
@@ -36,7 +37,7 @@
   }
 }
 
-@media (max-width: v.$lower-limit) {
+@media (max-width: calc(#{v.$middle-limit} - 50em)) {
   .wrapper {
     align-items: center;
     flex-flow: column wrap;
