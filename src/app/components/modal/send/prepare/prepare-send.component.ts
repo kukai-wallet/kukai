@@ -563,9 +563,9 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
     }
     return true;
   }
-  toggleDropdown() {
-    this.updateDefaultValues();
-    this.verifierChange();
-    this.accountDropdownIsOpen = !this.accountDropdownIsOpen;
+
+  dropdownResponse(data) {
+    this.torusVerifier = data.torusVerifier;
+    this.torusVerifierName = data.torusVerifierName;
   }
 }

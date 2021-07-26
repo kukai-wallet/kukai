@@ -1,4 +1,4 @@
-import { Component, HostListener, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-ui-dropdown',
@@ -8,6 +8,7 @@ import { Component, HostListener, Input, OnInit } from '@angular/core';
 export class DropdownComponent implements OnInit {
   @Input() list: any[];
   @Input() current: any;
+  @Output() dropdownResponse = new EventEmitter();
   ecmpId = this.constructor['ɵcmp'].id;
   isOpen = false;
   constructor() { }

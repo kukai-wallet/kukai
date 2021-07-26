@@ -22,6 +22,7 @@ import { LoggedInRoutingModule } from './logged-in-routing.module';
 import { ConfirmSendEmbedComponent } from '../../components/embedded/confirm-send/confirm-send.component';
 import { SignExprEmbedComponent } from '../../components/embedded/sign-expr/sign-expr.component';
 import { AdvancedToggleComponent } from '../ui/button/toggle/advanced/advanced.component';
+import { PrepareSendDropdownComponent } from '../ui/dropdown/prepare-send/prepare-send-dropdown.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { AdvancedToggleComponent } from '../ui/button/toggle/advanced/advanced.c
     DelegateComponent,
     AdvancedToggleComponent,
     ConfirmSendEmbedComponent,
-    SignExprEmbedComponent
+    SignExprEmbedComponent,
+    PrepareSendDropdownComponent
   ],
   imports: [
     CommonModule,
@@ -55,7 +57,6 @@ import { AdvancedToggleComponent } from '../ui/button/toggle/advanced/advanced.c
     SendComponent,
     ConfirmSendEmbedComponent,
     SignExprEmbedComponent
-
   ],
   providers: [
     EstimateService

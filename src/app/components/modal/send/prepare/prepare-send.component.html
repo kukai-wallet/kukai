@@ -34,29 +34,7 @@
         <div *ngIf="!this.isMultipleDestinations" class="flex-column">
           <span class="label title">SEND TO:</span>
           <div class="address">
-            <div class="flex-row dropdown" [class.expanded]="accountDropdownIsOpen" (click)="toggleDropdown()">
-              <img class="button icon-torus"
-                [src]="torusVerifier === '' ? '../../../assets/img/tezos-xtz-logo.svg' :  '../../../assets/img/' + torusVerifier.toLowerCase() + '-logo.svg'" />
-              <!-- TODO: Move style conditionals to scss -->
-              <input readonly [(ngModel)]="torusVerifierName" /><img class="button icon-db"
-                src="../../../assets/img/down-arrow-purple.svg" />
-              <div class="flex-column dropdown-content">
-                <a [class.selected]="torusVerifierName === 'Tezos Address'"
-                  (click)="torusVerifier = ''; torusVerifierName = 'Tezos Address';">
-                  Tezos Address
-                </a>
-                <a [class.selected]="torusVerifierName === 'Tezos Domains'"
-                  (click)="torusVerifier = 'domain'; torusVerifierName = 'Tezos Domains'">
-                  Tezos Domains
-                </a>
-                <ng-container *ngFor="let key of torusService.verifierMapKeys">
-                  <a [class.selected]="torusVerifierName === torusService.verifierMap[key].name"
-                    (click)="torusVerifier = key; torusVerifierName = torusService.verifierMap[key].name">
-                    {{ torusService.verifierMap[key].name }}
-                  </a>
-                </ng-container>
-              </div>
-            </div>
+            <app-ui-dropdown-prepare-send (dropdownResponse)="dropdownResponse($event)"></app-ui-dropdown-prepare-send>
             <input type="text" placeholder="Recipient" class="text" (input)="updateDefaultValues($event)"
               (change)="toPkhChange()" [(ngModel)]="toPkh">
             <span class="label" *ngIf="!torusPendingLookup && torusLookupAddress">{{ torusLookupAddress }}</span><span
