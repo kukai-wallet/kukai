@@ -6,7 +6,7 @@
     font-style: normal;
     font-weight: 500;
     font-size: 1.5rem;
-    color: v.$base-font-color;
+    color: inherit;
   }
 
   button {
@@ -105,7 +105,7 @@
   }
 
   &.alert-success {
-    color: v.$base-end-color;
+    color: v.$base-font-color;
     background-color: #e2e3ff;
     border-color: #e2e3ff
   }
