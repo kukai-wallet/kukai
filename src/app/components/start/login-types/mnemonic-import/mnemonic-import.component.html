@@ -3,20 +3,21 @@
   <div *ngIf="activePanel === 0" class="flex-column body">
     <h1>Import wallet</h1>
     <div class="flex-row import-options">
-      <span [class.selected]="importOption===0" (click)="importOption = 0">Keystore File</span>
-      <span [class.selected]="importOption===1" (click)="importOption = 1">Seed Words</span>
-      <span [class.selected]="importOption===2" (click)="importOption = 2">Fundraiser</span>
+      <span [class.selected]="importOption===0" (click)="reset(); importOption = 0">Keystore File</span>
+      <span [class.selected]="importOption===1" (click)="reset(); importOption = 1">Seed Words</span>
+      <span [class.selected]="importOption===2" (click)="reset(); importOption = 2">Fundraiser</span>
     </div>
     <ng-container *ngIf="importOption === 0">
       <p class="description">
-        Import your wallet from an encrypted keystore file (.tez).
+        Import your wallet from an encrypted keystore file (<span style="text-transform: lowercase;">.tez</span>)
       </p>
       <input #keyStore type="file" (change)="handleFileInput($event.target.files)"
         accept=".tez{{ firefox ? ', application/json' : '' }}" id="file" name="file">
       <div class="flex-row button input-file-wrapper">
         <label for="file" class="flex-row button input-file" [class.loaded]="walletJson"
-          (click)="keyStore?.nativeElement?.click();"><span *ngIf="walletJson">{{ fileName
-            }}:&nbsp;</span><span><b>Browse</b></span></label>
+          (click)="keyStore?.nativeElement?.click();"><span *ngIf="walletJson" class="flex-row filename"><img src="../../../../../assets/img/lock.png" />{{ fileName
+            }}</span><span class="b">Browse</span><img *ngIf="!walletJson"
+            src="../../../../../assets/img/import-plus.png" /></label>
       </div>
       <input *ngIf="walletJson" type="password" class="text" autocomplete="current-password"
         (keydown.enter)='checkImportPwd()' id="pwd" [(ngModel)]="pwd" placeholder="Password">
@@ -27,7 +28,7 @@
       <p class="description faucet" *ngIf="importOption === 2"><span>Please make sure to first <a
             routerLink="/activate">activate</a> your fundraiser wallet.</span></p>
       <ng-container>
-        <span><b>RECOVERY WORDS</b> (12-24 words)</span>
+        <span><b>RECOVERY WORDS <span style="color: #98a0ab">12-24 WORDS</span></b></span>
         <textarea class="text seed-word" [(ngModel)]="mnemonic" autocomplete="off"
           [placeholder]="'Seed Words (required)'"></textarea>
       </ng-container>
@@ -41,7 +42,7 @@
               [placeholder]="'Passphrase (optional)'">
           </div>
           <div class="flex-column">
-            <span><b>{{ 'MNEMONICIMPORTCOMPONENT.INFOPKH' | translate }}</b></span>
+            <span><b>Provide the public key hash<br/> to verify your passphrase is correct</b></span>
             <input type="text" class="text" [(ngModel)]="pkh" [placeholder]="'tz1... (recommended)'">
           </div>
           <div class="flex-row radios" *ngIf="importOption === 1">

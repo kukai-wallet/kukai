@@ -74,7 +74,7 @@
       <br />
       <br />
       <div *ngIf="parameters" class="key">{{transactions.length === 1 ? 'CONTRACT CALL' + ' ' +
-        transaction[0].entrypoint : 'MULTIPLE CONTRACT CALLS'}}</div>
+        transactions[0]?.entrypoint : 'MULTIPLE CONTRACT CALLS'}}</div>
         <app-ui-toggle-advanced [default]="false" (stateChange)="advancedForm = $event"></app-ui-toggle-advanced>
       <div *ngIf="advancedForm" class="advanced-form">
         <ng-container *ngIf="parameters">
@@ -90,7 +90,7 @@
           <div class="flex-row">
             <div class="flex-column">
               <label class="label">Gas limit</label>
-              <input type="text" class="text" [placeholder]="transactions[0].gasLimit || '0'" (input)="getTotalBurn()"
+              <input type="text" class="text" [placeholder]="transactions[0]?.gasLimit || '0'" (input)="getTotalBurn()"
                 [(ngModel)]="customGasLimit">
             </div>
             <div class="flex-column">

@@ -52,7 +52,7 @@ export const CONSTANTS: Constants = {
     'PixelPotus': {
       address: ["KT1D1S7KywvhzrTWHBo9MWUn5x3R9vxBmbio"],
       thumbnailUrl: "https://www.pixelpotus.com/img/eagle-right.d1840b0b.png",
-      link: "https://www.pixelpotus.com/", shouldDisplayLink: true
+      link: "https://pixelpotus-frontend-172tineil-pixelpotus.vercel.app/", shouldDisplayLink: true
     },
     'MysteryMap': {
       address: ["KT1MktwJ9ud6i57e4NKzBkwweEArVsMobHrU"],

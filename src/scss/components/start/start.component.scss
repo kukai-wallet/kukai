@@ -25,7 +25,7 @@
     left: 0;
     width: 100vw;
     height: 43vh;
-    border-top: 1.5rem solid #d6dbe3;
+    border-top: 18px solid #d6dbe3;
     background-color: v.$base-color-lightened-6;
     z-index: -100;
   }
@@ -390,9 +390,10 @@
       height: 100rem !important;
     }
 
-    & #wrapper .right #ribbon {
-      height: calc(100% - 49.5rem) !important;
-      top: 51rem;
+    & #wrapper .left #ribbon {
+      height: calc(100% - 51rem) !important;
+      bottom: 0 !important;
+      top: unset !important;
     }
   }
 }

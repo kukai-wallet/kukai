@@ -51,6 +51,7 @@ export class MnemonicImportComponent implements OnInit {
   ngOnInit() {
     this.checkBrowser();
   }
+
   checkBrowser() {
     try {
       if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
@@ -304,5 +305,9 @@ export class MnemonicImportComponent implements OnInit {
     } else {
       return false;
     }
+  }
+
+  reset() {
+    this.advancedForm = false;
   }
 }

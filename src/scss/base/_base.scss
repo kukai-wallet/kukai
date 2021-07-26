@@ -100,11 +100,13 @@ input {
   height: calc(4rem - 4px);
   padding: 0 0 0 2rem;
   border-radius: v.$border-radius-hard;
+  background-color: #fff;
 }
 
 textarea {
   border: 2px solid v.$border-color;
   border-radius: v.$border-radius;
+  background-color: #fff;
 }
 
 .button {
