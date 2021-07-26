@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 @Component({
   templateUrl: '404.component.html',
-  styleUrls: ['./error.scss']
+  styleUrls: ['../../../scss/components/error/error.scss']
 })
 export class P404Component {
 
