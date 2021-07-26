@@ -7,7 +7,7 @@
 
   & input {
     font-size: 1.15rem;
-    width: calc(100% - 4rem);
+    width: calc(100% - 3rem);
     padding: 0 0 0 2rem;
     background-color: v.$base-color-lightened-7;
     border-top-left-radius: v.$border-radius-hard;
@@ -27,7 +27,7 @@
     height: 3.375rem;
     position: absolute;
     top: 0;
-    right: 2.75rem;
+    right: 1.75rem;
     background-color: v.$base-color-lightened-7;
     border-radius: v.$border-radius-hard;
     transform: rotate(0deg);
@@ -41,7 +41,7 @@
     display: none;
     z-index: 1;
     overflow: hidden;
-    width: calc(100% - 2rem);
+    width: calc(100% - 1rem);
     top: 3.78rem;
 
     &.right {

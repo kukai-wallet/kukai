@@ -56,7 +56,6 @@ export class HeaderComponent implements OnInit {
             this.activeAccount = this.walletService.wallet?.getAccount(accountAddress);
             this.walletService.activeAccount.next(this.activeAccount);
           }
-          console.log(this.activeAccount?.delegate);
           this.delegateName = await this.getDelegateName(this.activeAccount?.delegate);
         }
       });
@@ -109,6 +108,6 @@ export class HeaderComponent implements OnInit {
   }
 
   async getDelegateName(address: string) {
-    return address ? (await this.delegateService.resolveDelegateByAddress(address))?.name ?? address : address;
+    return address ? (await this.delegateService.resolveDelegateByAddress(address))?.name ?? address.substring(0, 7) + '...' + address.substring(address.length - 5, address.length -1) : address;
   }
 }

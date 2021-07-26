@@ -10,8 +10,8 @@
 
 .top-container.desktop {
   height: 100%;
-  width: calc(100% - 24rem);
-  padding: 0 12rem;
+  width: calc(100% - 12rem);
+  padding: 0 6rem;
   flex-wrap: wrap;
 
   &.default {
@@ -43,12 +43,13 @@
     height: 100%;
 
     &>.left {
+      width: 22rem;
       height: 100%;
       justify-content: flex-end;
       
       &>.delegation {
         text-align: center;
-        padding: 1rem 1rem 1rem 0;
+        padding: 1rem 1rem 1rem 2rem;
         width: 18rem;
 
         & .outside-container {
@@ -137,6 +138,10 @@
         left: 0;
         cursor: pointer;
 
+        &:last-of-type {
+          margin-right: 0;
+        }
+
         &:hover {
           & .tooltip {
             display: flex;
@@ -146,10 +151,10 @@
         & .tooltip {
           position: absolute;
           top: 4rem;
-          left: -3rem;
+          left: -4rem;
           background-color: v.$base-color-lightened-7;
           width: auto;
-          min-width: 7rem;
+          min-width: 8rem;
           height: 2.5rem;
           padding: 1rem;
           justify-content: center;
