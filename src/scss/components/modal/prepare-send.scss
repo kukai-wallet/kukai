@@ -116,10 +116,23 @@
 
     & .address {
       position: relative;
-      height: 6rem;
+      height: 5.5rem;
 
       & input.text {
         margin: 0 0 0.5rem 0;
+      }
+
+      &-display {
+        height: 1rem;
+
+        & span {
+          height: 1rem;
+          margin: 0 1rem;
+
+          & img {
+            height: 1rem;
+          }
+        }
       }
     }
   }
