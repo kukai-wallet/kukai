@@ -38,7 +38,7 @@
       <!--*ngIf="this.walletService.wallet.verifier" -->
       <div class="flex-row from">
         <div class="flex-column left">
-          <span class="key">FROM ADDRESS: </span>
+          <span class="key">FROM: </span>
         </div>
         <div class="flex-column right"><span *ngIf="!!domain" class="domain">{{ domain }}</span><span class="address">{{
             activeAccount?.address
@@ -59,7 +59,7 @@
             <span *ngIf="transaction?.meta && transaction.meta?.verifier" class="flex-row torus-to value"><img
                 src="../../../assets/img/{{ transaction.meta.verifier }}-logo.svg" class="icon">
               {{ transaction.meta?.alias }}</span>
-            <span class="flex-row single-to" [class.selectable]="transactions.length > 1 && parameters"
+            <span class="flex-row single-to" [class.default]="transactions.length === 1" [class.selectable]="transactions.length > 1 && parameters"
               [class.active]="batchParamIndex === i && transactions.length > 1 && parameters"><span
                 style="width: 34rem; font-family: 'Roboto Mono';">{{
                 transaction?.destination

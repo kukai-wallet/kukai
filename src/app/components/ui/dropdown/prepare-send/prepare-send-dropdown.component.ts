@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TorusService } from '../../../../services/torus/torus.service';
 import { DropdownComponent } from '../dropdown.component';
@@ -10,8 +10,8 @@ import { DropdownComponent } from '../dropdown.component';
 })
 export class PrepareSendDropdownComponent extends DropdownComponent implements OnInit {
 
-  torusVerifierName = 'Tezos Address';
-  torusVerifier = '';
+  @Input() torusVerifierName = 'Tezos Address';
+  @Input() torusVerifier = '';
 
   constructor(public router: Router, public torusService: TorusService) { super(); }
 

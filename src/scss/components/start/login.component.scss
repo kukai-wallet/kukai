@@ -48,6 +48,11 @@
         font-size: 1.5rem;
         margin: 0 0 2rem 0;
 
+        &.label {
+          letter-spacing: 0.02em;
+          font-weight: 600;
+        }
+
         & a {
           color: v.$base-blue-color-lightened;
         }
@@ -73,7 +78,7 @@
       }
 
       & .seed-word {
-        margin: 0 0 2rem 0;
+        margin: 0 0 4rem 0;
       }
 
       & .description,
@@ -82,10 +87,11 @@
         font-size: 2rem;
         text-align: center;
         color: v.$base-font-color;
+        letter-spacing: 0.02em;
       }
 
       & .description {
-        margin: 2rem 0 1rem 0;
+        margin: 2rem 0 2rem 0;
         font-weight: 600;
         font-size: 1.5rem;
         text-transform: uppercase;
@@ -234,9 +240,10 @@
           text-transform: uppercase;
           font-weight: 600;
           color: v.$base-font-color-secondary;
+          letter-spacing: 0.06em;
 
           &.selected {
-            color: v.$base-blue-color;
+            color: v.$base-blue-color-lightened;
             position: relative;
             margin: 0;
             padding: 2rem 0 calc(2rem + 1px) 0;
@@ -250,7 +257,7 @@
               left: 0;
               height: 3px;
               width: 100%;
-              background-color: v.$base-blue-color;
+              background-color: v.$base-blue-color-lightened;
               ;
             }
           }

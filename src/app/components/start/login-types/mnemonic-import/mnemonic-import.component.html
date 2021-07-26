@@ -37,12 +37,12 @@
         <br /><br />
         <div *ngIf="advancedForm" class="flex-row-wrap import-option-1">
           <div class="flex-column">
-            <span><b>If your seed words are protected by a passphrase, it needs to be entered here</b></span>
+            <span class="label"><b>If your seed words are protected by a passphrase, it needs to be entered here</b></span>
             <input class="text" type="password" name="passphrase" autocomplete="one-time-code" [(ngModel)]="passphrase"
               [placeholder]="'Passphrase (optional)'">
           </div>
           <div class="flex-column">
-            <span><b>Provide the public key hash<br/> to verify your passphrase is correct</b></span>
+            <span class="label"><b>Provide the public key hash<br/> to verify your passphrase is correct</b></span>
             <input type="text" class="text" [(ngModel)]="pkh" [placeholder]="'tz1... (recommended)'">
           </div>
           <div class="flex-row radios" *ngIf="importOption === 1">
@@ -58,12 +58,12 @@
         </div>
       </ng-container>
       <ng-container *ngIf="importOption === 2">
-        <span>The email used during the fundraiser</span>
+        <span class="label">The email used during the fundraiser</span>
         <input class="text" type="text" [(ngModel)]="email" [placeholder]="'Email (required)'">
-        <span>The password you chose during the fundraiser</span>
+        <span class="label">The password you chose during the fundraiser</span>
         <input class="text" type="password" name="tge-password" autocomplete="one-time-code" [(ngModel)]="password"
           [placeholder]="'Password (required)'">
-        <span>{{ 'MNEMONICIMPORTCOMPONENT.INFOPKHICO' | translate }}</span>
+        <span class="label">Provide the public key hash to verify your email and password are correct</span>
         <input type="text" class="text" [(ngModel)]="pkh" [placeholder]="'tz1... (recomended)'">
       </ng-container>
       <button class="button next" (click)="retrieve()">Import</button>

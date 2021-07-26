@@ -20,7 +20,7 @@
     max-width: 85vw;
     border-radius: v.$border-radius-hard;
     padding: 2rem;
-    min-width: 38rem;
+    min-width: 35rem;
     position: relative;
     top: 0;
     left: 0;
@@ -93,6 +93,7 @@
     & .key {
       color: v.$base-font-color-secondary;
       text-transform: uppercase;
+      letter-spacing: 0.02em;
 
       & .value {
         text-transform: unset;

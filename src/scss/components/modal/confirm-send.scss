@@ -168,7 +168,7 @@
   & .to {
     padding: 2rem;
     margin: 2rem 0 0 0;
-    align-items: center;
+    align-items: flex-start;
     background-color: #7178e333;
 
     & .left {
@@ -177,6 +177,7 @@
       align-items: center;
 
       & span {
+        margin: 0.5rem 0 0 0;
         color: v.$base-blue-color-lightened;
         font-weight: 500;
       }
@@ -216,6 +217,7 @@
       }
 
       & .single-to {
+
         color: v.$base-font-color-secondary;
         font-family: 'Roboto Mono';
         font-size: 1.125rem;
@@ -231,6 +233,11 @@
           font-weight: 500;
           color: #7178e3;
           text-decoration: underline;
+        }
+
+        &.default {
+          color: v.$base-blue-color-lightened;
+          font-weight: 500;
         }
       }
     }

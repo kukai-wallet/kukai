@@ -34,12 +34,12 @@
         <div *ngIf="!this.isMultipleDestinations" class="flex-column">
           <span class="label title">SEND TO:</span>
           <div class="address">
-            <app-ui-dropdown-prepare-send (dropdownResponse)="dropdownResponse($event)"></app-ui-dropdown-prepare-send>
+            <app-ui-dropdown-prepare-send [torusVerifier]="torusVerifier" [torusVerifierName]="torusVerifierName" (dropdownResponse)="dropdownResponse($event)"></app-ui-dropdown-prepare-send>
             <input type="text" placeholder="Recipient" class="text" (input)="updateDefaultValues($event)"
               (change)="toPkhChange()" [(ngModel)]="toPkh">
-            <span class="label" *ngIf="!torusPendingLookup && torusLookupAddress">{{ torusLookupAddress }}</span><span
-              class="label" *ngIf="torusPendingLookup"><img src="../../../../assets/img/feeLoader.gif"></span>
           </div>
+          <span style="margin: 0 1rem" *ngIf="!torusPendingLookup && torusLookupAddress">{{ torusLookupAddress }}</span><span
+          style="margin: 0 1rem" *ngIf="torusPendingLookup"><img src="../../../../assets/img/feeLoader.gif"></span>
         </div>
         <div *ngIf="this.isMultipleDestinations" class="flex-column">
           <label class="label">Addresses and amounts <span class="batchInfo">{{ batchSpace() }}</span></label>
@@ -83,8 +83,9 @@
           </div>
         </div>
       </div>
+      <br/>
+      <div class="seperator"></div>
       <div class="flex-column bottom">
-        <div class="seperator"></div>
         <span [style.visibility]="!formInvalid ? 'hidden' : ''" class="label danger">
           {{ formInvalid }}
         </span>

@@ -1,4 +1,4 @@
-<div class="flex-row top-container desktop">
+<div class="flex-row top-container desktop" [class]="router.url.indexOf('/account') === 0 ? 'default' : ''">
   <a routerLink="/" class="flex-row brand-logo">
     <img class="icon" src="../../../assets/img/header-logo.png" />
     <div class="title">Kukai</div>
@@ -56,7 +56,7 @@
     </div>
   </div>
 </div>
-<div class="flex-row top-container mobile">
+<div class="flex-row top-container mobile" [class]="router.url.indexOf('/account') === 0 ? 'default' : ''">
   <a routerLink="/" class="flex-row brand-logo">
     <img class="icon" src="../../../assets/img/header-logo.png" />
     <div class="title">Kukai</div>

@@ -52,7 +52,7 @@
       
       &>.delegation {
         text-align: center;
-        padding: 0.825rem 1rem 1rem 2rem;
+        padding: 0.75rem 1rem 1rem 2rem;
         width: 18rem;
 
         & .outside-container {
@@ -194,6 +194,28 @@
   flex-wrap: wrap;
   display: none;
 
+  &.default {
+    background-color: v.$base-end-color;
+
+    & .brand-logo {
+      & .icon {
+        margin-right: 1rem;
+        width: 3.125rem;
+        height: 3.125rem;
+      }
+
+      & .title {
+        font-size: 3rem;
+        color: v.$base-blue-color;
+        font-weight: 500;
+        font-family: 'Gilroy';
+        position: relative;
+        left: 0;
+        top: 0.3rem;
+      }
+    }
+  }
+
   .brand-logo {
     text-decoration: none;
 
@@ -240,7 +262,7 @@
       left: 0;
       top: 10rem;
       background-color: v.$base-end-color;
-      z-index: 10;
+      z-index: 1000;
       border-top: 2px solid v.$base-color-lightened-6;
       box-shadow: v.$box-shadow;
 
