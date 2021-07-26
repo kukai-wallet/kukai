@@ -15,7 +15,7 @@ button {
 
     &:not(.tez) {
       background-color: transparent;
-      border: 2px solid v.$base-color-lightened-5;
+      border: 3px solid v.$base-color-lightened-5;
       border-radius: v.$border-radius-hard;
     }
 
@@ -29,7 +29,8 @@ button {
       padding: 0 0.1rem;
     }
 
-    &.tez img {
+    &.tez {
+      padding: 1rem 1.15rem 1rem 1rem
     }
   }
 

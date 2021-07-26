@@ -23,19 +23,23 @@
     text-decoration: none;
 
     & .icon {
-      font-size: 2.5rem;
       background-color: v.$base-blue-color;
       color: v.$base-end-color;
       border-radius: v.$border-radius;
-      padding: 0.5rem;
-      font-weight: 600;
-      margin-right: 0.5rem;
+      padding: 0.75rem;
+      margin-right: 1rem;
+      width: 3rem;
+      height: 3rem;
     }
 
     & .title {
-      font-size: 3rem;
+      font-size: 3.75rem;
       color: v.$base-blue-color;
-      font-weight: 600;
+      font-weight: 500;
+      font-family: 'Gilroy';
+      position: relative;
+      left: 0;
+      top: 0.35rem;
     }
   }
 
@@ -199,18 +203,23 @@
 
     & .brand-logo {
       & .icon {
-        font-size: 2.5rem;
-        background-color: v.$base-end-color;
-        color: v.$base-blue-color;
+        background-color: v.$base-blue-color;
+        color: v.$base-end-color;
         border-radius: v.$border-radius;
-        padding: 0.5rem;
-        font-weight: 600;
-        margin-right: 0.5rem;
+        padding: 0.75rem;
+        margin-right: 1rem;
+        width: 2rem;
+        height: 2rem;
       }
-
+  
       & .title {
         font-size: 3rem;
-        color: v.$base-end-color;
+        color: v.$base-blue-color;
+        font-weight: 600;
+        font-family: 'Gilroy';
+        position: relative;
+        left: 0;
+        top: 0.3rem;
       }
     }
   }
@@ -219,19 +228,23 @@
     text-decoration: none;
 
     & .icon {
-      font-size: 2.5rem;
       background-color: v.$base-blue-color;
       color: v.$base-end-color;
       border-radius: v.$border-radius;
-      padding: 0.5rem;
-      font-weight: 600;
-      margin-right: 0.5rem;
+      padding: 0.75rem;
+      margin-right: 1rem;
+      width: 2rem;
+      height: 2rem;
     }
 
     & .title {
       font-size: 3rem;
       color: v.$base-blue-color;
       font-weight: 600;
+      font-family: 'Gilroy';
+      position: relative;
+      left: 0;
+      top: 0.3rem;
     }
   }
 
