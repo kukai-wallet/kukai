@@ -303,24 +303,24 @@
         height: 100%;
         align-items: center;
 
-        & h1,
-        & h3 {
+        & .top h1,
+        & .top h3 {
           width: 100%;
           text-align: center;
           font-weight: 400;
+          margin: 2rem;
+          width: calc(100% - 4rem);
         }
 
-        & h1 {
+        & .top h1 {
           font-size: 6rem;
           color: v.$base-font-color;
         }
 
-        & h3 {
-          font-size: 3rem;
+        & .top h3 {
+          font-size: 2.5rem;
           font-weight: 400;
           color: v.$base-font-color-secondary;
-          padding: 0 1rem;
-          width: calc(100% - 2rem);
         }
 
         &>div {
