@@ -24,8 +24,8 @@
     bottom: 0;
     left: 0;
     width: 100vw;
-    height: 42vh;
-    border-top: 2rem solid #d6dbe3;
+    height: 43vh;
+    border-top: 1.5rem solid #d6dbe3;
     background-color: v.$base-color-lightened-6;
     z-index: -100;
   }
@@ -47,13 +47,14 @@
     & h1 {
       font-size: 7rem;
       color: v.$base-font-color;
+      font-weight: 400;
     }
 
     & h3 {
       font-size: 3rem;
       font-weight: 400;
       line-height: 4.5rem;
-      color: v.$base-font-color-secondary;
+      color: #6c7a8d;
     }
 
     &>div {
@@ -102,7 +103,7 @@
 
         &:last-of-type {
           font-size: 2rem;
-          color: v.$base-font-color-secondary;
+          color: v.$base-font-color;
         }
       }
 
@@ -138,7 +139,7 @@
         &>.google {
           border: 2px solid v.$border-color;
           border-radius: v.$border-radius-hardest;
-          width: 29rem;
+          width: 26rem;
           height: 6rem;
           color: v.$base-font-color;
           font-size: 1.5rem;
@@ -146,6 +147,7 @@
 
           &>span {
             padding: 1rem;
+            font-size: 1.25rem;
           }
 
           & img {
@@ -218,11 +220,12 @@
 
       & h3 {
         font-size: 2rem;
-        line-height: 4rem;
+        line-height: 3rem;
       }
 
       & .login {
         & .social {
+          justify-content: flex-start;
 
           & .facebook,
           & .twitter,
@@ -247,7 +250,7 @@
   }
 }
 
-@media (max-width: v.$lower-limit) {
+@media (max-width: 85rem) {
 
   :host {
 
@@ -349,7 +352,7 @@
 
             & .google {
               margin: 0 0 2rem 0;
-              width: 30rem;
+              width: 26rem;
             }
 
             & .facebook {
@@ -369,7 +372,7 @@
   }
 }
 
-@media (orientation: portrait) and (max-width: v.$lower-limit) {
+@media (orientation: portrait) and (max-width: 85rem) {
   :host {
     justify-content: center;
 
@@ -385,6 +388,11 @@
     & #wrapper #bg-mobile {
       width: 100% !important;
       height: 100rem !important;
+    }
+
+    & #wrapper .right #ribbon {
+      height: calc(100% - 49.5rem) !important;
+      top: 51rem;
     }
   }
 }
