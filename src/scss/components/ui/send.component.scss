@@ -25,12 +25,11 @@ button {
     }
 
     & img {
-      height: 1.25rem;
+      height: 100%;
       padding: 0 0.1rem;
     }
 
     &.tez img {
-      filter: invert(1) brightness(34);
     }
   }
 

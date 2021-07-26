@@ -1,7 +1,7 @@
 <button *ngIf="symbol; else detailButton" class="flex-row button button-primary with-image" [class]="symbol === 'tez' ? 'tez' : ''"
   (click)="prepareTransaction()">
   <ng-container *ngIf="symbol === 'tez'"><span>SEND</span></ng-container><img
-    src="../../../../assets/img/up-arrow.png" />
+    [src]="symbol === 'tez' ? '../../../../assets/img/up-arrow-white.png' : '../../../../assets/img/up-arrow.png'" />
 </button>
 <ng-template #detailButton>
   <button class="button button-primary detail" (click)="prepareTransaction()">SEND</button>

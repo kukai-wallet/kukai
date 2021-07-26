@@ -10,8 +10,8 @@
 
 .top-container.desktop {
   height: 100%;
-  width: calc(100% - 12rem);
-  padding: 0 6rem;
+  width: calc(89%);
+  padding: 0 5.5%;
   flex-wrap: wrap;
 
   &.default {
@@ -46,6 +46,9 @@
       width: 22rem;
       height: 100%;
       justify-content: flex-end;
+      position: relative;
+      top: -0.25rem;
+      left: 0;
       
       &>.delegation {
         text-align: center;
