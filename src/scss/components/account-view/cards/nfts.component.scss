@@ -105,6 +105,7 @@
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
+          width: calc(100% - 8.75rem);
         }
 
         & .icon {
