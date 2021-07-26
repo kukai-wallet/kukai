@@ -15,9 +15,17 @@
         accept=".tez{{ firefox ? ', application/json' : '' }}" id="file" name="file">
       <div class="flex-row button input-file-wrapper">
         <label for="file" class="flex-row button input-file" [class.loaded]="walletJson"
-          (click)="keyStore?.nativeElement?.click();"><span *ngIf="walletJson" class="flex-row filename"><img src="../../../../../assets/img/lock.png" />{{ fileName
-            }}</span><span class="b">Browse</span><img *ngIf="!walletJson"
-            src="../../../../../assets/img/import-plus.png" /></label>
+          (click)="keyStore?.nativeElement?.click();">
+          <ng-container *ngIf="!walletJson"><span class="b">Browse</span><img
+              src="../../../../../assets/img/import-plus.png" /></ng-container>
+          <ng-container *ngIf="walletJson">
+            <div class="flex-row" style="width: calc(100% - 5rem); justify-content:flex-start"><img src="../../../../../assets/img/lock.png" />&nbsp;&nbsp;<span class="flex-row filename">{{
+                fileName
+                }}</span>
+            </div>
+            <span class="b">Browse</span>
+          </ng-container>
+        </label>
       </div>
       <input *ngIf="walletJson" type="password" class="text" autocomplete="current-password"
         (keydown.enter)='checkImportPwd()' id="pwd" [(ngModel)]="pwd" placeholder="Password">
@@ -37,12 +45,13 @@
         <br /><br />
         <div *ngIf="advancedForm" class="flex-row-wrap import-option-1">
           <div class="flex-column">
-            <span class="label"><b>If your seed words are protected by a passphrase, it needs to be entered here</b></span>
+            <span class="label"><b>If your seed words are protected by a passphrase, it needs to be entered
+                here</b></span>
             <input class="text" type="password" name="passphrase" autocomplete="one-time-code" [(ngModel)]="passphrase"
               [placeholder]="'Passphrase (optional)'">
           </div>
           <div class="flex-column">
-            <span class="label"><b>Provide the public key hash<br/> to verify your passphrase is correct</b></span>
+            <span class="label"><b>Provide the public key hash<br /> to verify your passphrase is correct</b></span>
             <input type="text" class="text" [(ngModel)]="pkh" [placeholder]="'tz1... (recommended)'">
           </div>
           <div class="flex-row radios" *ngIf="importOption === 1">

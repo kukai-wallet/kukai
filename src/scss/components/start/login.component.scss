@@ -288,6 +288,11 @@
         & .filename {
           color: v.$base-blue-color-lightened;
           align-items: center;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: block;
+          max-width: 100%;
 
           & img {
             padding: 0 0.5rem 0.25rem 0;
@@ -403,6 +408,11 @@
         .input-file {
           max-width: unset;
           width: calc(100% - 4rem);
+        }
+
+        & .input-file {
+          max-width: unset;
+          width: calc(100% - 6rem);
         }
 
         & .import-option-1 {
