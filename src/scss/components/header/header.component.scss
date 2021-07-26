@@ -211,7 +211,7 @@
         font-family: 'Gilroy';
         position: relative;
         left: 0;
-        top: 0.3rem;
+        top: 0.2rem;
       }
     }
   }
@@ -273,6 +273,7 @@
         padding: 1rem 2rem;
         border-bottom: 2px solid v.$border-color;
         height: 4rem;
+        font-size: 2rem;
 
         &:last-child {
           border-bottom: none;

@@ -71,7 +71,7 @@
     </div>
   </div>
   <div class="hamburger-dropdown" (click)="toggleDropdown('.mobile .hamburger-dropdown .hamburger-dropdown-content')">
-    <img class="button icon-db" src="../../../assets//img/hamburger.svg"/>
+    <img class="button icon-db" src="../../../assets//img/hamburger.svg" />
     <div *ngIf="router.url.indexOf('/account/') === 0" class="flex-column mobile hamburger-dropdown-content">
       <div class="flex-row button delegation" routerLink="/account/{{activeAccount?.address}}/stakers">
         <div *ngIf="!activeAccount?.delegate" class="flex-row">
@@ -79,8 +79,9 @@
             STAKING</span>
         </div>
         <div *ngIf="activeAccount?.delegate" class="flex-row">
-          <span class="flex-row address">STAKING: <span>{{ delegateName
-              }}</span></span>
+          STAKING:
+          <span class="flex-row address">{{ delegateName
+            }}</span>
         </div>
       </div>
       <div class="flex-row button" (click)="newAccount()">
