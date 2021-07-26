@@ -9,6 +9,7 @@ export class DropdownComponent implements OnInit {
   @Input() list: any[];
   @Input() current: any;
   ecmpId = this.constructor['ɵcmp'].id;
+  isOpen = false;
   constructor() { }
 
   ngOnInit(): void {
@@ -17,11 +18,11 @@ export class DropdownComponent implements OnInit {
   @HostListener('document:click', ['$event'])
   closeDropdown(e) {
     if (e.target.parentNode.id !== this.ecmpId) {
-      (document.querySelector('#' + this.ecmpId) as HTMLElement)?.classList.remove('expanded');
+      this.isOpen = false;
     }
   }
 
-  toggleDropdown(sel) {
-    document.querySelector(sel).classList.toggle('expanded');
+  toggleDropdown() {
+    this.isOpen = !this.isOpen;
   }
 }
