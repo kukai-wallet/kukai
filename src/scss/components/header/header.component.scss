@@ -221,18 +221,18 @@
 
     & .icon {
       margin-right: 1rem;
-      width: 3.125rem;
-      height: 3.125rem;
+      width: 4.5rem;
+      height: 4.5rem;
     }
 
     & .title {
-      font-size: 3.5rem;
+      font-size: 4.5rem;
       color: v.$base-blue-color;
       font-weight: 500;
       font-family: 'Gilroy';
       position: relative;
       left: 0;
-      top: 0.3rem;
+      top: 0.35rem;
     }
   }
 
@@ -252,8 +252,11 @@
   }
 
   & .hamburger-dropdown {
-    height: 2rem;
     cursor: pointer;
+    border: 2px solid #9993;
+    border-radius: 10rem;
+    width: 4.5rem;
+    height: 4.5rem;
 
     & .hamburger-dropdown-content {
       display: none;
@@ -309,27 +312,10 @@
     }
 
     & .icon-db {
-      position: relative;
-      width: 2.5rem;
-      height: 4px;
-      background-color: #333;
-
-      &:before,
-      &:after {
-        content: "";
-        position: absolute;
-        width: 100%;
-        height: 4px;
-        background-color: #333;
-      }
-
-      &:before {
-        top: 0.8rem;
-      }
-
-      &:after {
-        top: 1.625rem;
-      }
+      padding: 1.5rem;
+      width: 1.5rem;
+      height: 1.5rem;
+      object-fit: scale-down;
     }
   }
 }
