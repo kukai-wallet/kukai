@@ -29,7 +29,7 @@
       </div>
       <input *ngIf="walletJson" type="password" class="text" autocomplete="current-password"
         (keydown.enter)='checkImportPwd()' id="pwd" [(ngModel)]="pwd" placeholder="Password">
-      <button class="button next" [class.disabled-button]="!walletJson || !pwd"
+      <button class="button next" [style.visibility]="!walletJson || !pwd ? 'hidden' : ''"
         (click)='checkImportPwd()'>Import</button>
     </ng-container>
     <ng-container *ngIf="importOption > 0">
@@ -90,7 +90,7 @@
         pwdStrength }}</b></small>
     <input type="password" placeholder="{{ 'NEWWALLETCOMPONENT.CONFIRMPASSWORD' | translate }}" class="text"
       autocomplete="new-password" [(ngModel)]="pwd2">
-    <button class="button next" [class.disabled-button]="!pwd1" (click)="setPwd()">Next</button>
+    <button class="button next" [style.visibility]="!pwd1 ? 'hidden' : ''" (click)="setPwd()">Next</button>
   </div>
   <div *ngIf="activePanel==2" class="flex-column body">
     <h1>Wallet created!</h1>
@@ -98,9 +98,9 @@
     <p class="description">Download your encrypted keystore file and import it when you want to access your wallet.
     </p>
     <div class="whitebox final">
-      <p class="description bold pkh">Your public account address:&#10;&#13;{{ showPkh() }}</p>
+      <p class="description bold pkh">Your public account address:<br/>{{ showPkh() }}</p>
     </div>
     <button class="button next" (click)="download()">Download</button>
-    <button class="button next" [class.disabled-button]="!Downloaded" (click)="done()">Open Wallet</button>
+    <button class="button next" [style.visibility]="!Downloaded ? 'hidden' : ''" (click)="done()">Open Wallet</button>
   </div>
 </div>

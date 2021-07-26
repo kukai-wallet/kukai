@@ -47,7 +47,7 @@
       pwdStrength }}</b></small>
     <input type="password" placeholder="{{ 'NEWWALLETCOMPONENT.CONFIRMPASSWORD' | translate }}" class="text"
       autocomplete="new-password" [(ngModel)]="pwd2">
-    <button class="button next" [class.disabled-button]="!pwd1" (click)="encryptWallet()">Next</button>
+    <button class="button next" [style.visibility]="!pwd1 ? 'hidden' : ''" (click)="encryptWallet()">Next</button>
   </div>
   <div *ngIf="activePanel==4" class="flex-column body">
     <h1>Wallet created!</h1>
@@ -55,10 +55,10 @@
     <p class="description">Download your encrypted keystore file and import it when you want to access your wallet.
     </p>
     <div class="whitebox final">
-      <p class="description bold pkh">Your public account address:&#10;&#13;{{ getPkh() }}</p>
+      <p class="description bold pkh">Your public account address:<br/>{{ getPkh() }}</p>
     </div>
     <button class="button next" (click)="download()">Download</button>
-    <button class="button next" [class.disabled]="!ekfDownloaded" [disabled]="!ekfDownloaded" (click)="done()">Open Wallet</button>
+    <button class="button next" [style.visibility]="!ekfDownloaded ? 'hidden' : ''" (click)="done()">Open Wallet</button>
   </div>
   <span class="flex-row step-counter">
     <ng-container *ngFor="let _ of [1, 2, 3, 4]">

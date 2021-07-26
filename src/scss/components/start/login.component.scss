@@ -78,7 +78,7 @@
       }
 
       & .seed-word {
-        margin: 0 0 4rem 0;
+        margin: 0 0 2.5rem 0;
       }
 
       & .description,
@@ -88,6 +88,12 @@
         text-align: center;
         color: v.$base-font-color;
         letter-spacing: 0.02em;
+        -webkit-touch-callout: text;
+        -webkit-user-select: text;
+        -khtml-user-select: text;
+        -moz-user-select: text;
+        -ms-user-select: text;
+        user-select: text;
       }
 
       & .description {
@@ -115,6 +121,7 @@
 
         &.final .description {
           margin: 0;
+          text-transform: none;
         }
 
         & .seed-blur {
