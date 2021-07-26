@@ -240,7 +240,6 @@ export class MnemonicImportComponent implements OnInit {
         await this.import(this.walletJson, this.pwd);
         this.pwd = '';
       } finally {
-        //this.messageService.stopSpinner();
       }
     } else {
       this.messageService.addWarning('No password provided', 5);
@@ -259,6 +258,7 @@ export class MnemonicImportComponent implements OnInit {
         }
       }).catch((e) => {
         this.messageService.addError(e);
+        this.messageService.stopSpinner();
       });
   }
   handleFileInput(files: FileList) {

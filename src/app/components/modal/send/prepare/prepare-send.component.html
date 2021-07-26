@@ -34,16 +34,15 @@
         <div *ngIf="!this.isMultipleDestinations" class="flex-column">
           <span class="label title">SEND TO:</span>
           <div class="address">
-            <div class="flex-row dropdown" (click)="toggleDropdown('.prepare-send .dropdown-content')">
+            <div class="flex-row dropdown" [class.expanded]="accountDropdownIsOpen" (click)="toggleDropdown()">
               <img class="button icon-torus"
                 [src]="torusVerifier === '' ? '../../../assets/img/tezos-xtz-logo.svg' :  '../../../assets/img/' + torusVerifier.toLowerCase() + '-logo.svg'" />
               <!-- TODO: Move style conditionals to scss -->
               <input readonly [(ngModel)]="torusVerifierName" /><img class="button icon-db"
                 src="../../../assets/img/down-arrow-purple.svg" />
-              <div class="flex-column dropdown-content"
-                (click)="updateDefaultValues(); verifierChange(); toggleDropdown('.prepare-send .dropdown-content'); ">
+              <div class="flex-column dropdown-content">
                 <a [class.selected]="torusVerifierName === 'Tezos Address'"
-                  (click)="torusVerifier = ''; torusVerifierName = 'Tezos Address'">
+                  (click)="torusVerifier = ''; torusVerifierName = 'Tezos Address';">
                   Tezos Address
                 </a>
                 <a [class.selected]="torusVerifierName === 'Tezos Domains'"

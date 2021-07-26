@@ -10,7 +10,7 @@
       <ul>
         <li *ngFor="let scope of permissionRequest.scopes">{{ scopeToText(scope) }}</li>
       </ul>
-      <p>Select an account the permissions should be applied to:</p>
+      <p style="font-size: 1.25rem">Select an account the permissions should be applied to:</p>
       <select class="select-css" [(ngModel)]="selectedAccount">
         <ng-container *ngFor="let acc of walletService.wallet.implicitAccounts">
           <option value="{{ acc.address }}">{{ acc.pkh }}</option>

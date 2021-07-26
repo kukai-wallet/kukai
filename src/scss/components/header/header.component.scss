@@ -134,7 +134,7 @@
         border: 2px solid v.$base-color-lightened-5;
         width: 2rem;
         height: 2rem;
-        padding: 0.5rem;
+        padding: calc(0.5rem + 1px);
         border-radius: v.$border-radius-hard;
         position: relative;
         top: 0;
@@ -199,14 +199,14 @@
 
     & .icon {
       margin-right: 1rem;
-      width: 4rem;
-      height: 4rem;
+      width: 3.125rem;
+      height: 3.125rem;
     }
 
     & .title {
-      font-size: 4rem;
+      font-size: 3.5rem;
       color: v.$base-blue-color;
-      font-weight: 600;
+      font-weight: 500;
       font-family: 'Gilroy';
       position: relative;
       left: 0;

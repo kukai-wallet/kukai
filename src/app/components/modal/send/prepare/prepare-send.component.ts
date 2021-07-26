@@ -45,6 +45,7 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
   hideAmount = false;
   simSemaphore = 0;
   isNFT = false
+  accountDropdownIsOpen = false;
 
   torusVerifierName = 'Tezos Address';
   torusVerifier = '';
@@ -119,6 +120,7 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
 
     this.token = null;
     this.isNFT = null;
+    this.accountDropdownIsOpen = false;
 
     this.transactions = [];
     this.toMultipleDestinationsString = '';
@@ -561,7 +563,9 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
     }
     return true;
   }
-  toggleDropdown(sel) {
-    document.querySelector(sel).parentNode.classList.toggle('expanded');
+  toggleDropdown() {
+    this.updateDefaultValues();
+    this.verifierChange();
+    this.accountDropdownIsOpen = !this.accountDropdownIsOpen;
   }
 }
