@@ -153,13 +153,13 @@
 
         & .tooltip {
           position: absolute;
-          top: 4rem;
-          left: -4rem;
-          background-color: v.$base-color-lightened-7;
+          top: 3.5rem;
+          left: -3rem;
+          background-color: v.$base-background-color;
           width: auto;
           min-width: 8rem;
-          height: 2.5rem;
-          padding: 1rem;
+          height: 1rem;
+          padding: 0.5rem;
           justify-content: center;
           align-items: center;
           border-radius: v.$border-radius-hard;
