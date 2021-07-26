@@ -215,3 +215,12 @@ button {
     font-size: 48%;
   }
 }
+
+// input zoom prevention fallback
+@media screen and (-webkit-min-device-pixel-ratio:0) { 
+  select,
+  textarea,
+  input {
+    font-size: 16px;
+  }
+}
