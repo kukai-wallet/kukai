@@ -1,0 +1,20 @@
+@use '../abstracts/variables'as v;
+
+@function font-size-adjust($base, $is-mobile) {
+  @if $is-mobile == 0 {
+    @return #{v.$font-size-offset + $base}rem;
+  } @else {
+    @return #{$base}rem;
+  }
+}
+// @media (max-width: v.$lower-limit) {
+//   @function font-size($base) {
+//     @return #{v.$font-size-offset + $base}rem;
+//   }
+// }
+
+// @media (min-width: v.$lower-limit) {
+//   @function font-size($base) {
+//     @return #{$base}rem;
+//   }
+// }

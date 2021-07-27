@@ -1,0 +1,11 @@
+@use '../abstracts/functions' as f;
+@use '../abstracts/variables'as v;
+
+@mixin font-size($base) {
+  @media (min-width: v.$lower-limit) {
+    font-size: f.font-size-adjust($base, 0);
+  }
+  @media (max-width: v.$lower-limit) {
+    font-size: f.font-size-adjust($base, 1);
+  }
+}
