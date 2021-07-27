@@ -1,11 +1,11 @@
 @use '../abstracts/functions' as f;
 @use '../abstracts/variables'as v;
 
-@mixin multiply($property, $base) {
+@mixin multiply($property, $base, $postfix: 'rem') {
   @media (min-width: v.$lower-limit) {
-    #{$property}: f.multiply($base, 1);
+    #{$property}: f.multiply($base, 1) + $postfix;
   }
   @media (max-width: v.$lower-limit) {
-    #{$property}: f.multiply($base, 0);
+    #{$property}: f.multiply($base, 0) + $postfix;
   }
 }

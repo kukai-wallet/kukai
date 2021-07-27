@@ -32,7 +32,7 @@
     flex-direction: row;
     height: 100%;
     margin-top: 1rem;
-    padding: 1rem 2rem 1rem 2rem;
+    padding: 1rem 2rem;
     border-radius: v.$border-radius;
     background-color: transparent;
 
@@ -93,7 +93,7 @@
     }
 
     & .title {
-      @include m.multiply('font-size',1.75);
+      @include m.multiply('font-size',1.5);
       margin-bottom: 0.5rem;
       & .failed {
         color: v.$base-red-color;

@@ -47,7 +47,7 @@
       justify-content: flex-start;
 
       & .title {
-        @include m.multiply('font-size',1.875);
+        @include m.multiply('font-size',1.75);
         margin-right: 1rem;
         & a {
           color: black;
@@ -115,7 +115,7 @@
           width: 3.5rem;
           height: 3.5rem;
           border-radius: 0.5rem;
-          margin-right: 1.875rem;
+          margin-right: 1rem;
         }
 
         & .count {
@@ -205,7 +205,7 @@
           width: calc(100% - 9.25rem);
 
           & .title {
-            @include m.multiply('font-size',1.5);
+            @include m.multiply('font-size',1.75);
             margin-right: 1rem;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -249,7 +249,7 @@
   }
 }
 
-@media (max-width: 33rem) {
+@media (max-width: v.$lower-limit) {
   .nfts .collection {
     & .body .token {
       width: 100%;

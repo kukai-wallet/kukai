@@ -2,8 +2,8 @@
 
 @function multiply($base, $is-mobile) {
   @if $is-mobile == 0 {
-    @return #{v.$offset * $base}rem;
+    @return #{v.$offset * $base};
   } @else {
-    @return #{$base}rem;
+    @return #{$base};
   }
 }

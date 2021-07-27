@@ -70,6 +70,9 @@
   <div class="hamburger-dropdown" (click)="toggleDropdown('.mobile .hamburger-dropdown .hamburger-dropdown-content')">
     <img class="button icon-db" src="../../../assets//img/hamburger.svg" />
     <div *ngIf="router.url.indexOf('/account/') === 0" class="flex-column mobile hamburger-dropdown-content">
+      <div *ngIf="router.url.indexOf('/account/') === 0" class="flex-row button" (click)="copy()">
+        <img class="icon" src="../../../assets/img/copy.svg" /><span>Copy Address</span>
+      </div>
       <div class="flex-row button delegation" routerLink="/account/{{activeAccount?.address}}/stakers">
         <div *ngIf="!activeAccount?.delegate" class="flex-row">
           <span class="flex-row">STAKING:</span><span class="choose">NOT
@@ -80,9 +83,6 @@
           <span class="flex-row address">{{ delegateName
             }}</span>
         </div>
-      </div>
-      <div *ngIf="router.url.indexOf('/account/') === 0" class="flex-row button" (click)="copy()">
-        <img class="icon" src="../../../assets/img/copy.svg" /><span>Copy Address</span>
       </div>
       <div class="flex-row button" (click)="newAccount()">
         <img class="icon" src="../../../assets/img/add.svg" /><span>Add Account</span>

@@ -31,7 +31,7 @@
 
     & .title {
       @include m.multiply('font-size',4);
-      color: v.$base-blue-color-lightened;
+      color: v.$base-blue-color;
       font-weight: 500;
       font-family: 'Gilroy';
       position: relative;
@@ -194,6 +194,7 @@
   padding: 0 2rem;
   flex-wrap: wrap;
   display: none;
+  position: relative;
 
   &.default {
     background-color: v.$base-end-color;
@@ -208,7 +209,7 @@
 
       & .title {
         @include m.multiply('font-size',3);
-        color: v.$base-blue-color-lightened;
+        color: v.$base-blue-color;
         font-weight: 500;
         font-family: 'Gilroy';
         position: relative;
@@ -229,7 +230,7 @@
 
     & .title {
       @include m.multiply('font-size',4.5);
-      color: v.$base-blue-color-lightened;
+      color: v.$base-blue-color;
       font-weight: 500;
       font-family: 'Gilroy';
       position: relative;
@@ -263,7 +264,7 @@
     & .hamburger-dropdown-content {
       display: none;
       width: 100%;
-      position: fixed;
+      position: absolute;
       left: 0;
       top: 10rem;
       background-color: v.$base-end-color;

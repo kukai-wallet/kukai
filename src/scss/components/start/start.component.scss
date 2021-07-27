@@ -29,6 +29,10 @@
   align-items: center;
   flex-direction: column;
 
+  & .is-mobile {
+    display: block;
+  }
+
   & #ribbon {
     @extend %ribbon;
 
@@ -322,6 +326,7 @@
         & .top h3 {
           @include m.multiply('font-size',2.5);
           font-weight: 400;
+          line-height: 4rem;
           color: v.$base-font-color-secondary;
         }
 
@@ -372,18 +377,12 @@
 
             & .google {
               margin: 0 0 2rem 0;
-              width: 29rem;
-              padding: 0 2rem 0 1.5rem;
+              min-width: 27rem;
               height: 6rem;
 
               &>img {
                 width: 2.5rem;
                 height: 2.5rem;
-                margin: 0;
-              }
-
-              & span {
-                @include m.multiply('font-size',2);
               }
             }
 
@@ -406,7 +405,7 @@
 @media (max-width: v.$lower-limit) {
 
   :host {
-    #wrapper {
+    & #wrapper {
       & .left,
       & .right {
         & h1 {
@@ -416,6 +415,15 @@
           @include m.multiply('font-size',2.25);
         }
       }
+    }
+  }
+}
+
+@media (max-width: calc(#{v.$lower-limit} - 20em)) {
+
+  :host {
+    & .is-mobile {
+      display: none;
     }
   }
 }
