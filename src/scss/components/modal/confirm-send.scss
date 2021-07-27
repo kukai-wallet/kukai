@@ -138,9 +138,8 @@
     }
 
     & .address {
-      @include m.font-size(1.125);
+      @include m.font-size(1);
       color: v.$base-font-color-secondary;
-      font-family: 'Roboto Mono';
     }
   }
 
@@ -219,7 +218,6 @@
       & .single-to {
 
         color: v.$base-font-color-secondary;
-        font-family: 'Roboto Mono';
         @include m.font-size(1.125);
         font-weight: 400;
         cursor: pointer;
@@ -237,7 +235,8 @@
 
         &.default {
           color: v.$base-blue-color-lightened;
-          font-weight: 500;
+          font-weight: 400;
+          font-size: 1rem;
         }
       }
     }

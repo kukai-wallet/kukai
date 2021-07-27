@@ -1,7 +1,7 @@
 <div *ngIf="isOpen" class="flex-column kukai-modal">
   <div class="content">
     <div class="flex-column top">
-      <img class="flex-row button close" (click)="closeModalAction()" src="../../../assets/img/close-btn-x.png" />
+      <div class="flex-row button close" (click)="closeModalAction()"><img class="x" src="../../../assets/img/close-btn-x.png" /></div>
       <h1 class="title">{{ !isNFT ? getTitle() : 'Send Token'}}</h1>
     </div>
     <div class="flex-column prepare-send">

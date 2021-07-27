@@ -21,7 +21,7 @@
     max-width: 85vw;
     border-radius: v.$border-radius-hard;
     padding: 2rem;
-    min-width: 35rem;
+    min-width: 36rem;
     position: relative;
     top: 0;
     left: 0;
@@ -29,15 +29,21 @@
     overflow-x: hidden;
 
     & .close {
-      top: -0.65rem;
+      display: flex;
+      justify-content: center;
+      top: -0.375rem;
       right: 0;
       position: absolute;
-      width: 2rem;
-      height: 1.5rem;
-      padding: 1.25rem 1rem;
+      width: calc(3rem - 6px);
+      height: calc(3rem - 6px);
       border: 3px solid v.$border-color;
       border-radius: v.$border-radius-hardest;
-      object-fit: scale-down;
+
+      & .x {
+        object-fit: scale-down;
+        width: 0.875rem;
+        height: 0.875rem;
+      }
     }
 
     &>.top {
@@ -48,7 +54,7 @@
       align-items: center;
 
       .title {
-        @include m.font-size(2.5);
+        @include m.font-size(1.875);
         width: 70%;
         font-weight: 500;
         text-align: center;
