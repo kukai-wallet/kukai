@@ -22,12 +22,12 @@
   }
 
   & p {
-    @include m.font-size(1);
+    @include m.multiply('font-size',1);
     line-height: 1.5rem;
   }
 
   & span.text-danger {
-    @include m.font-size(1);
+    @include m.multiply('font-size',1);
     margin-top: 1rem;
   }
 }

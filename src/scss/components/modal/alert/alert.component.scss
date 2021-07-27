@@ -6,7 +6,7 @@
   span {
     font-style: normal;
     font-weight: 500;
-    @include m.font-size(1.5);
+    @include m.multiply('font-size',1.5);
     color: inherit;
   }
 
@@ -16,7 +16,7 @@
     margin-left: 1rem;
 
     &.close>span {
-      @include m.font-size(2.5);
+      @include m.multiply('font-size',2.5);
       font-weight: bold;
     }
   }

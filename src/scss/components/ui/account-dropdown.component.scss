@@ -7,7 +7,7 @@
   position: relative;
 
   & input {
-    @include m.font-size(1.15);
+    @include m.multiply('font-size',1.15);
     width: calc(100% - 3rem);
     padding: 0 0 0 2rem;
     background-color: v.$base-color-lightened-7;

@@ -54,13 +54,13 @@
     z-index: 100;
 
     & h1 {
-      @include m.font-size(7);
+      @include m.multiply('font-size',7);
       color: v.$base-font-color;
       font-weight: 500;
     }
 
     & h3 {
-      @include m.font-size(3);
+      @include m.multiply('font-size',3);
       font-weight: 400;
       line-height: 4.5rem;
       color: #6c7a8d;
@@ -108,11 +108,11 @@
       }
 
       &>span {
-        @include m.font-size(3);
+        @include m.multiply('font-size',3);
         color: v.$base-font-color;
 
         &:last-of-type {
-          @include m.font-size(2);
+          @include m.multiply('font-size',2);
           color: v.$base-font-color;
         }
       }
@@ -152,12 +152,12 @@
           width: 25rem;
           height: 6rem;
           color: v.$base-font-color;
-          @include m.font-size(1.5);
+          @include m.multiply('font-size',1.5);
           padding: 0 3rem 0 0.5rem;
 
           &>span {
             padding: 1rem 0;
-            @include m.font-size(1.25);
+            @include m.multiply('font-size',1.25);
             font-weight: 600;
           }
 
@@ -184,7 +184,7 @@
           width: 55%;
           text-align: left;
           padding: 0.5rem 0 0.5rem 2rem;
-          @include m.font-size(2);
+          @include m.multiply('font-size',2);
         }
 
         & .signin {
@@ -192,7 +192,7 @@
           height: 5rem;
           background-color: v.$base-background-color;
           color: v.$base-font-color-secondary;
-          @include m.font-size(1.5);
+          @include m.multiply('font-size',1.5);
           margin: 0 0 0 2rem;
         }
       }
@@ -225,11 +225,11 @@
     & .left,
     & .right {
       & h1 {
-        @include m.font-size(4.5);
+        @include m.multiply('font-size',4.5);
       }
 
       & h3 {
-        @include m.font-size(2);
+        @include m.multiply('font-size',2);
         line-height: 3rem;
       }
 
@@ -314,13 +314,13 @@
         }
 
         & .top h1 {
-          @include m.font-size(6);
+          @include m.multiply('font-size',6);
           color: v.$base-font-color;
           font-weight: 500;
         }
 
         & .top h3 {
-          @include m.font-size(2.5);
+          @include m.multiply('font-size',2.5);
           font-weight: 400;
           color: v.$base-font-color-secondary;
         }
@@ -361,7 +361,7 @@
           &>span {
             text-align: center;
             font-weight: 500;
-            @include m.font-size(2.5);
+            @include m.multiply('font-size',2.5);
           }
 
           & .social {
@@ -383,7 +383,7 @@
               }
 
               & span {
-                @include m.font-size(2);
+                @include m.multiply('font-size',2);
               }
             }
 
@@ -410,10 +410,10 @@
       & .left,
       & .right {
         & h1 {
-          @include m.font-size(5);
+          @include m.multiply('font-size',5);
         }
         & h3 {
-          @include m.font-size(2.25);
+          @include m.multiply('font-size',2.25);
         }
       }
     }

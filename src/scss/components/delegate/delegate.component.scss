@@ -10,7 +10,7 @@
     border-radius: v.$border-radius-hard;
     padding: 0 0 0 1rem;
     width: calc(100% - 1rem);
-    @include m.font-size(1);
+    @include m.multiply('font-size',1);
   }
 
   & .content {
@@ -31,7 +31,7 @@
       }
 
       & label {
-        @include m.font-size(1.5);
+        @include m.multiply('font-size',1.5);
       }
 
       & input {
@@ -51,12 +51,12 @@
 
         & h1 {
           text-align: center;
-          @include m.font-size(3);
+          @include m.multiply('font-size',3);
           margin: 0 0 4rem 0;
         }
 
         & span {
-          @include m.font-size(1);
+          @include m.multiply('font-size',1);
 
           &.blue {
             margin: 0 0 0.5rem 0;
@@ -81,9 +81,12 @@
               border-radius: v.$border-radius-hardest;
               color: v.$base-font-color;
               width: 7rem;
-              @include m.font-size(1.25);
+              @include m.multiply('font-size',1.25);
               padding: 0.5rem 1rem;
-              width: 7rem;
+              width: 7.5rem;
+              & img {
+                @include m.multiply('height',1);
+              }
             }
           }
         }
@@ -125,7 +128,7 @@
         width: 20rem;
 
         & .value {
-          @include m.font-size(1.25);
+          @include m.multiply('font-size',1.25);
         }
       }
 
@@ -212,7 +215,7 @@
 
     & h1 {
       text-align: center;
-      @include m.font-size(4);
+      @include m.multiply('font-size',4);
       font-weight: 500;
       margin: 0 0 4rem 0;
     }
@@ -222,7 +225,7 @@
     }
 
     & .value {
-      @include m.font-size(1.25);
+      @include m.multiply('font-size',1.25);
       color: v.$base-font-color-secondary;
     }
 
@@ -236,7 +239,7 @@
       border-radius: v.$border-radius-hard;
       padding: 0 0 0 1rem;
       width: calc(100% - 1rem);
-      @include m.font-size(1);
+      @include m.multiply('font-size',1);
       color: v.$base-font-color;
     }
 

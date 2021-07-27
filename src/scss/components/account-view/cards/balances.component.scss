@@ -16,7 +16,7 @@
       z-index: 0;
 
       & .icon-text {
-        @include m.font-size(1);
+        @include m.multiply('font-size',1);
         width: 14rem;
         padding: 0.5rem 0 0.5em 1.5rem;
         background-color: v.$base-background-color;
@@ -82,24 +82,24 @@
       & .title {
         width: 8rem;
         margin-right: 1rem;
-        @include m.font-size(1.5);
+        @include m.multiply('font-size',1.5);
         height: 3rem;
         align-items: flex-start;
       }
 
       & .prices {
         width: 35%;
-        height: 3rem;
+        height: 100%;
         font-weight: 500;
 
         & .price {
-          @include m.font-size(1.5);
+          @include m.multiply('font-size',1.5);
           margin-bottom: 0.25rem;
         }
 
         & .price-usd {
           color: v.$base-font-color-secondary;
-          @include m.font-size(1);
+          @include m.multiply('font-size',1);
         }
       }
     }

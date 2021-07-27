@@ -9,13 +9,13 @@
 
   & h1 {
     color: v.$base-end-color;
-    @include m.font-size(8rem);
+    @include m.multiply('font-size',8rem);
     line-height: 8rem;
   }
 
   & h4 {
     color: v.$base-end-color;
-    @include m.font-size(2rem);
+    @include m.multiply('font-size',2rem);
   }
 
   & p {

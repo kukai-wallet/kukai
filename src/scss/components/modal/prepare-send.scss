@@ -5,6 +5,7 @@
   margin: 2rem 0 0 0;
   height: auto;
   width: 100%;
+  max-width: 32rem;
 
   & textarea {
     border-radius: v.$border-radius-hard;
@@ -14,7 +15,7 @@
   }
 
   & .title {
-    @include m.font-size(1);
+    @include m.multiply('font-size',1);
     color: v.$base-font-color;
     font-weight: 500;
     width: calc(100% - 8rem);
@@ -53,7 +54,7 @@
 
       & .title {
         color: v.$base-font-color;
-        @include m.font-size(1.5);
+        @include m.multiply('font-size',1.5);
         font-weight: 600;
         margin: 0 0 0 1rem;
       }
@@ -141,7 +142,8 @@
   }
 
   & .multiple-destinations {
-    width: 20rem;
+    padding: 1rem;
+    width: 17rem;
     background-color: v.$base-end-color;
     color: v.$base-font-color-secondary;
     border: 3px solid v.$border-color;

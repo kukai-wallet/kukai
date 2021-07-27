@@ -18,7 +18,7 @@
 
     & span {
       color: #2C323A;
-      @include m.font-size(0.875);
+      @include m.multiply('font-size',0.875);
       font-weight: 400;
       margin: 0;
       align-items: center;

@@ -18,7 +18,7 @@
       margin: 0;
       font-style: normal;
       font-weight: normal;
-      @include m.font-size(1);
+      @include m.multiply('font-size',1);
       line-height: 1rem;
       color: v.$base-font-color-secondary;
       text-decoration: none;
@@ -93,17 +93,17 @@
     }
 
     & .title {
-      @include m.font-size(1.75);
+      @include m.multiply('font-size',1.75);
       margin-bottom: 0.5rem;
       & .failed {
         color: v.$base-red-color;
-        @include m.font-size(1.25);
+        @include m.multiply('font-size',1.25);
       }
     }
 
     & .address {
       color: v.$base-color-lightened-2;
-      @include m.font-size(1);
+      @include m.multiply('font-size',1);
     }
 
     & .time {

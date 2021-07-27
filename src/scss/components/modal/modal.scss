@@ -21,7 +21,7 @@
     max-width: 85vw;
     border-radius: v.$border-radius-hard;
     padding: 2rem;
-    min-width: 36rem;
+    min-width: 32rem;
     position: relative;
     top: 0;
     left: 0;
@@ -54,7 +54,7 @@
       align-items: center;
 
       .title {
-        @include m.font-size(1.875);
+        @include m.multiply('font-size',1.875);
         width: 70%;
         font-weight: 500;
         text-align: center;
@@ -84,7 +84,7 @@
       background-color: v.$base-end-color;
       border: 2px solid v.$border-color;
       border-radius: v.$border-radius-hardest;
-      @include m.font-size(1.25);
+      @include m.multiply('font-size',1.25);
 
       &.password,
       &.text {
@@ -109,7 +109,7 @@
 
     & .value {
       color: v.$base-font-color;
-      @include m.font-size(1.25);
+      @include m.multiply('font-size',1.25);
     }
 
     & .more-info {
@@ -120,7 +120,7 @@
       span {
         color: v.$base-font-color-secondary;
         text-transform: uppercase;
-        @include m.font-size(1);
+        @include m.multiply('font-size',1);
       }
 
       img {

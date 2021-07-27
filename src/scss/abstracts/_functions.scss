@@ -1,8 +1,8 @@
 @use '../abstracts/variables'as v;
 
-@function font-size-adjust($base, $is-mobile) {
+@function multiply($base, $is-mobile) {
   @if $is-mobile == 0 {
-    @return #{v.$font-size-offset * $base}rem;
+    @return #{v.$offset * $base}rem;
   } @else {
     @return #{$base}rem;
   }

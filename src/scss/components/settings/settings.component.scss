@@ -13,9 +13,12 @@
     border: 2px solid v.$base-color-lightened-4;
     border-radius: v.$border-radius-hardest;
     color: v.$base-font-color;
-    @include m.font-size(1.25);
+    @include m.multiply('font-size',1.25);
     padding: 0.5rem 1rem;
-    width: 7rem;
+    width: 7.5rem;
+    & img {
+      @include m.multiply('height',1);
+    }
   }
 
   & div.settings {
@@ -35,7 +38,7 @@
     &>h3 {
       margin: 2.5rem 0 1rem 1rem;
       font-weight: bold;
-      @include m.font-size(2.25);
+      @include m.multiply('font-size',2.25);
       line-height: 1.5rem;
 
       &:first-child {
@@ -46,7 +49,7 @@
     & h4 {
       margin: 2.5rem 0 0;
       font-weight: 400;
-      @include m.font-size(1.5);
+      @include m.multiply('font-size',1.5);
       line-height: 1.5rem;
     }
 
@@ -66,7 +69,7 @@
 
       & p {
         margin-top: 0.25rem;
-        @include m.font-size(1.5);
+        @include m.multiply('font-size',1.5);
         line-height: 1rem;
         align-items: center;
         color: v.$base-font-color;
@@ -121,7 +124,7 @@
 
   & table th,
   & table td {
-    @include m.font-size(1.5);
+    @include m.multiply('font-size',1.5);
     line-height: 1rem;
     padding: 1rem 0.25rem;
   }

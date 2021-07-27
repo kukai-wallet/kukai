@@ -30,7 +30,7 @@
         border-radius: v.$border-radius-hard;
         border: 2px solid v.$base-color-lightened-5;
         justify-content: center;
-        @include m.font-size(1.15);
+        @include m.multiply('font-size',1.15);
       }
     }
   }
@@ -39,7 +39,7 @@
 .pending,
 .nfts {
   & .head {
-    padding: 1rem 2rem;
+    padding: 1.5rem 2.5rem 1.5rem 1.875rem;
     border-radius: v.$border-radius;
     background-color: v.$base-end-color;
 
@@ -47,7 +47,7 @@
       justify-content: flex-start;
 
       & .title {
-        @include m.font-size(1.25);
+        @include m.multiply('font-size',1.875);
         margin-right: 1rem;
         & a {
           color: black;
@@ -64,10 +64,10 @@
   width: 100%;
 
   & .collection {
-    min-height: 2rem;
+    min-height: 7rem;
     height: 0;
     transition: 0.15s height;
-    margin: 0 0 6rem 0;
+    margin: 0 0 2rem 0;
     border-radius: v.$border-radius;
 
     &.expanded {
@@ -75,10 +75,10 @@
       box-shadow: v.$box-shadow;
 
       & .head {
-        padding: 1rem 2rem;
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
         box-shadow: unset;
+        border-bottom: 3px solid #aaa3;
 
         & .right {
           & .toggle img {
@@ -97,6 +97,7 @@
       z-index: 1;
       box-shadow: v.$box-shadow;
       min-height: 4rem;
+      cursor: pointer;
 
       & .left {
         justify-content: flex-start;
@@ -107,22 +108,25 @@
           overflow: hidden;
           text-overflow: ellipsis;
           max-width: calc(100% - 8.75rem);
+          cursor: pointer;
         }
 
         & .icon {
-          width: 4rem;
-          height: 4rem;
-          margin-right: 1.25rem;
+          width: 3.5rem;
+          height: 3.5rem;
+          border-radius: 0.5rem;
+          margin-right: 1.875rem;
         }
 
         & .count {
-          @include m.font-size(1);
+          @include m.multiply('font-size',1);
           padding: 0.25rem;
           width: 2rem;
           background-color: v.$base-color-lightened-5;
           border-radius: v.$border-radius-hard;
           text-align: center;
           color: v.$base-color-lightened-1;
+          font-weight: 500;
         }
       }
 
@@ -136,7 +140,7 @@
           & button {
             padding: 1rem 1.5rem;
             border-radius: calc(1rem * 2);
-            @include m.font-size(1);
+            @include m.multiply('font-size',1);
             font-weight: 600;
             width: 10rem;
             justify-content: center;
@@ -201,14 +205,14 @@
           width: calc(100% - 9.25rem);
 
           & .title {
-            @include m.font-size(1.5);
+            @include m.multiply('font-size',1.5);
             margin-right: 1rem;
             overflow: hidden;
             text-overflow: ellipsis;
           }
 
           & .issue {
-            @include m.font-size(1);
+            @include m.multiply('font-size',1);
           }
         }
       }
@@ -259,22 +263,22 @@
   }
 }
 
-@media (max-width: v.$middle-limit) {
-  .nfts .collection {
-    min-height: 3rem;
+// @media (max-width: v.$middle-limit) {
+//   .nfts .collection {
+//     min-height: 3rem;
 
-    & .head {
-      min-height: 5rem;
-    }
-  }
-}
+//     & .head {
+//       min-height: 5rem;
+//     }
+//   }
+// }
 
-@media (max-width: v.$lower-limit) {
-  .nfts .collection {
-    min-height: 6rem;
+// @media (max-width: v.$lower-limit) {
+//   .nfts .collection {
+//     min-height: 6rem;
 
-    & .head {
-      min-height: 6rem;
-    }
-  }
-}
+//     & .head {
+//       min-height: 6rem;
+//     }
+//   }
+// }

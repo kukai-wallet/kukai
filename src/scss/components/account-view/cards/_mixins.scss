@@ -11,7 +11,7 @@
   align-items: center;
 
   & h1 {
-    @include m.font-size(2.25);
+    @include m.multiply('font-size',2.25);
     font-weight: 400;
   }
 }
@@ -59,7 +59,7 @@
   %button {
     padding: 1rem 1.5rem;
     border-radius: v.$border-radius-hard;
-    @include m.font-size(1.0);
+    @include m.multiply('font-size',1.0);
     font-weight: 600;
   }
 

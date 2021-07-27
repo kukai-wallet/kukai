@@ -37,7 +37,7 @@
         margin: 0 0 0.5rem 0;
 
         & .tab {
-          @include m.font-size(1.25);
+          @include m.multiply('font-size',1.25);
           color: v.$base-font-color;
           cursor: pointer;
 

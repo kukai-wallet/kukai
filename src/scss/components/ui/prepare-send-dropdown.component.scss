@@ -24,7 +24,7 @@
     color: v.$base-font-color;
     height: 2.25em;
     margin: 0;
-    @include m.font-size(1.05);
+    @include m.multiply('font-size',1.05);
     cursor: pointer;
   }
 
