@@ -1,10 +1,13 @@
+@use '../../abstracts/mixins' as m;
+@use '../../abstracts/variables'as v;
+
 & .permission-request {
   margin: 2rem 0 0 0;
   align-items: center;
 
   & p,
   & li {
-    font-size: 2rem;
+    @include m.font-size(2);
     color: v.$base-font-color;
   }
 
@@ -15,7 +18,7 @@
   & ul {
     margin: 2rem ​3rem 2rem 0;
     &>li {
-      font-size: 1.5rem;
+      @include m.font-size(1.5);
       color: v.$base-font-color;
     }
   }
@@ -32,7 +35,7 @@
     border-radius: 0.75rem;
     font-style: normal;
     font-weight: normal;
-    font-size: 1rem;
+    @include m.font-size(1);
     letter-spacing: 0.16px;
     color: #000000;
     padding-left: 1rem;

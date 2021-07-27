@@ -7,14 +7,3 @@
     @return #{$base}rem;
   }
 }
-// @media (max-width: v.$lower-limit) {
-//   @function font-size($base) {
-//     @return #{v.$font-size-offset + $base}rem;
-//   }
-// }
-
-// @media (min-width: v.$lower-limit) {
-//   @function font-size($base) {
-//     @return #{$base}rem;
-//   }
-// }

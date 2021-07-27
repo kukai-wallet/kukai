@@ -1,4 +1,5 @@
 @use '../../abstracts/variables'as v;
+@use '../../abstracts/mixins' as m;
 
 .dropdown {
   width: 14rem;
@@ -23,7 +24,7 @@
     color: v.$base-font-color;
     height: 2.25em;
     margin: 0;
-    font-size: 1.05rem;
+    @include m.font-size(1.05);
     cursor: pointer;
   }
 

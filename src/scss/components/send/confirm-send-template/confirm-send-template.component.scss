@@ -1,3 +1,5 @@
+@use '../../../abstracts/mixins' as m;
+
 :host {
 
   div.kukai-template {
@@ -26,7 +28,7 @@
       }
 
       &>span {
-        font-size: 0.75rem;
+        @include m.font-size(0.75);
         line-height: 1rem;
         font-weight: 600;
       }
@@ -37,7 +39,7 @@
       cursor: pointer;
       font-weight: 500;
       font-style: normal;
-      font-size: 1rem;
+      @include m.font-size(1);
       color: #f3f3f3;
       -webkit-text-fill-color: #f3f3f3;
       background: #5b63f7;
@@ -62,7 +64,7 @@
     &>h1 {
       font-weight: 500;
       font-style: normal;
-      font-size: 1rem;
+      @include m.font-size(1);
       line-height: 1.25rem;
       margin: 0.5rem 0;
       text-align: center;
@@ -71,14 +73,14 @@
     & p {
       &.img-text {
         font-weight: 400;
-        font-size: 0.75rem;
+        @include m.font-size(0.75);
         line-height: 1rem;
       }
 
       &.fee {
         margin-bottom: 0.5rem;
         font-weight: 300;
-        font-size: 0.75rem;
+        @include m.font-size(0);
         line-height: 1rem;
 
         & img {
@@ -93,12 +95,12 @@
 
     &>h1 {
       margin: 0.375rem 0 0.5rem;
-      font-size: 0.875rem;
+      @include m.font-size(0.875);
       line-height: 1.125rem;
 
       &>b {
         font-weight: 700;
-        font-size: 1rem;
+        @include m.font-size(1);
         line-height: 1.25rem;
       }
     }

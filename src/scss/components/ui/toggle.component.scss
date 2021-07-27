@@ -1,4 +1,5 @@
 @use '../../abstracts/variables' as v;
+@use '../../abstracts/mixins' as m;
 
 .advanced {
   min-width: 12rem;

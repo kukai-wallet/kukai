@@ -1,4 +1,5 @@
 @use '../../abstracts/variables'as v;
+@use '../../abstracts/mixins' as m;
 
 :host {
   display: flex;
@@ -20,7 +21,7 @@ button {
     }
 
     & span {
-      font-size: 1.25rem;
+      @include m.font-size(1.25);
       margin: 0 1rem 0 0.25rem;
     }
 

@@ -3,9 +3,9 @@
 
 @mixin font-size($base) {
   @media (min-width: v.$lower-limit) {
-    font-size: f.font-size-adjust($base, 0);
+    font-size: f.font-size-adjust($base, 1);
   }
   @media (max-width: v.$lower-limit) {
-    font-size: f.font-size-adjust($base, 1);
+    font-size: f.font-size-adjust($base, 0);
   }
 }

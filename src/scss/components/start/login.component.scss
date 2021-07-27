@@ -1,4 +1,5 @@
 @use '../../abstracts/variables'as v;
+@use '../../abstracts/mixins' as m;
 
 :host {
   display: flex;
@@ -27,7 +28,7 @@
       border: 2px solid v.$base-color-lightened-4;
       border-radius: v.$border-radius-hardest;
       color: v.$base-font-color;
-      font-size: 1.25rem;
+      @include m.font-size(1.25);
       padding: 0.5rem 1rem;
       width: 7rem;
     }
@@ -39,13 +40,13 @@
 
       & h1 {
         text-align: center;
-        font-size: 4rem;
+        @include m.font-size(4);
         font-weight: 500;
         margin: 0 0 4rem 0;
       }
 
       & span {
-        font-size: 1.5rem;
+        @include m.font-size(1.5);
         margin: 0 0 2rem 0;
 
         &.label {
@@ -69,7 +70,7 @@
         max-width: calc(100% - 2rem);
         margin-bottom: 4rem;
         text-align: center;
-        font-size: 1.5rem;
+        @include m.font-size(1.5);
       }
 
       & textarea {
@@ -84,7 +85,7 @@
       & .description,
       & .whitebox,
       & .seed-blur {
-        font-size: 2rem;
+        @include m.font-size(2);
         text-align: center;
         color: v.$base-font-color;
         letter-spacing: 0.02em;
@@ -99,12 +100,12 @@
       & .description {
         margin: 2rem 0 2rem 0;
         font-weight: 600;
-        font-size: 1.5rem;
+        @include m.font-size(1.5);
         text-transform: uppercase;
 
         &.red {
           color: red;
-          font-size: 1.5rem;
+          @include m.font-size(1.5);
         }
 
       }
@@ -139,7 +140,7 @@
       }
 
       & .next {
-        font-size: 2rem;
+        @include m.font-size(2);
         width: 50%;
         height: 6rem;
         border-radius: v.$border-radius-hardest;
@@ -184,7 +185,7 @@
       }
 
       & .word-verify {
-        font-size: 2rem;
+        @include m.font-size(2);
         width: 100%;
         padding: 1rem;
         margin: 0 0 4rem 0;
@@ -212,7 +213,7 @@
         border: 3px solid #ccc;
         text-align: center;
         color: black;
-        font-size: 2rem;
+        @include m.font-size(2);
         border-radius: v.$border-radius-hard;
       }
 
@@ -227,13 +228,13 @@
 
       & .strength {
         margin: 0 0 2rem 0;
-        font-size: 1rem;
+        @include m.font-size(1);
       }
 
       .import-options {
         width: 100%;
         margin: 0 0 4rem 0;
-        font-size: 2rem;
+        @include m.font-size(2);
         align-items: flex-end;
       }
 
@@ -276,7 +277,7 @@
       }
 
       & .input-file {
-        font-size: 2rem;
+        @include m.font-size(2);
         width: 100%;
         max-width: calc(100% - 6rem);
         margin: 0.5rem;

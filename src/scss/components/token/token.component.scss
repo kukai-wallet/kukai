@@ -1,4 +1,6 @@
+@use '../../abstracts/mixins' as m;
 @import '../../layouts/modal.scss';
+
 
 :host {
   flex-grow: 1;
@@ -16,7 +18,7 @@
 
     & span {
       color: #2C323A;
-      font-size: 0.875rem;
+      @include m.font-size(0.875);
       font-weight: 400;
       margin: 0;
       align-items: center;

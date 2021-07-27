@@ -1,3 +1,6 @@
+@use '../../abstracts/mixins' as m;
+@use '../../abstracts/variables'as v;
+
 & .originate {
 
   margin: 2rem 0 0 0;
@@ -34,7 +37,7 @@
         margin: 0 0 0.5rem 0;
 
         & .tab {
-          font-size: 1.25rem;
+          @include m.font-size(1.25);
           color: v.$base-font-color;
           cursor: pointer;
 

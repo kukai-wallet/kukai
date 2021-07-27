@@ -1,4 +1,5 @@
 @use '../../abstracts/variables'as v;
+@use '../../abstracts/mixins' as m;
 
 .dropdown {
 
@@ -6,7 +7,7 @@
   position: relative;
 
   & input {
-    font-size: 1.15rem;
+    @include m.font-size(1.15);
     width: calc(100% - 3rem);
     padding: 0 0 0 2rem;
     background-color: v.$base-color-lightened-7;

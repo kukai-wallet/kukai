@@ -1,3 +1,6 @@
+@use '../../abstracts/mixins' as m;
+@use '../../abstracts/variables'as v;
+
 & .prepare-send {
   margin: 2rem 0 0 0;
   height: auto;
@@ -11,7 +14,7 @@
   }
 
   & .title {
-    font-size: 1rem;
+    @include m.font-size(1);
     color: v.$base-font-color;
     font-weight: 500;
     width: calc(100% - 8rem);
@@ -50,7 +53,7 @@
 
       & .title {
         color: v.$base-font-color;
-        font-size: 1.5rem;
+        @include m.font-size(1.5);
         font-weight: 600;
         margin: 0 0 0 1rem;
       }

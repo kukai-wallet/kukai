@@ -1,3 +1,5 @@
+@use '../../../abstracts/mixins' as m;
+
 :host {
   width: 100vw;
   height: 100vh;
@@ -40,7 +42,7 @@ div.direct-auth-login > div.header img {
 }
 div.direct-auth-login H2 {
   margin: 0rem 0 0.5rem;
-  font-size: 1rem;
+  @include m.font-size(1rem);
   line-height: 1.3125rem;
   text-align: center;
   vertical-align: top;
@@ -108,7 +110,7 @@ div.direct-auth-login > div.footer {
   opacity: 0.5;
 }
 div.direct-auth-login > div.footer > span {
-  font-size: 0.75rem;
+  @include m.font-size(0.75rem);
   line-height: 1rem;
   font-weight: 600;
 }

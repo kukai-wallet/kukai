@@ -1,3 +1,5 @@
+@use '../../abstracts/mixins' as m;
+
 %flex-column-centered {
   display: flex;
   align-items: center;
@@ -73,7 +75,7 @@
     & p.faucet {
       &>span {
         display: inline;
-        font-size: 1rem;
+        @include m.font-size(1);
         line-height: 1.5rem;
       }
 
@@ -117,7 +119,7 @@
 
         & span {
           padding: 0;
-          font-size: 1rem;
+          @include m.font-size(1);
           line-height: 1.5rem;
           cursor: pointer;
 
@@ -136,7 +138,7 @@
   }
 
   &>div.kukai-card div.radios small {
-    font-size: 0.875rem;
+    @include m.font-size(0.875);
     line-height: 1.125rem;
     margin-left: 0.5rem;
     margin-top: 0;
@@ -192,7 +194,7 @@
     font-style: normal;
     font-weight: bold;
     line-height: 1.5rem;
-    font-size: 0.75rem;
+    @include m.font-size(0.75);
   }
 
   &>div.kukai-card label.input-file>span:last-child {
@@ -301,7 +303,7 @@
         text-align: center;
         color: white;
         padding: 0 1rem;
-        font-size: 1rem;
+        @include m.font-size(1);
         line-height: 1.25rem;
         margin-bottom: 1rem;
       }
@@ -329,7 +331,7 @@
 
         & p {
           color: rgba(255, 255, 255, 0.4);
-          font-size: 0.75rem;
+          @include m.font-size(0.75);
         }
       }
     }
@@ -392,7 +394,7 @@
   }
 
   & a.learn-more {
-    font-size: 0.875rem;
+    @include m.font-size(0.875);
 
     &:link,
     &:visited {

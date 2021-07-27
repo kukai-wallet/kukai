@@ -1,11 +1,12 @@
 @use '../../../abstracts/variables' as v;
+@use '../../../abstracts/mixins' as m;
 
 :host {
 
   span {
     font-style: normal;
     font-weight: 500;
-    font-size: 1.5rem;
+    @include m.font-size(1.5);
     color: inherit;
   }
 
@@ -15,7 +16,7 @@
     margin-left: 1rem;
 
     &.close>span {
-      font-size: 2.5rem;
+      @include m.font-size(2.5);
       font-weight: bold;
     }
   }

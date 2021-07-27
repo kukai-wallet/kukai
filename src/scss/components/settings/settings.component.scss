@@ -1,4 +1,5 @@
 @use '../../abstracts/variables' as v;
+@use '../../abstracts/mixins' as m;
 
 :host {
   width: 100%;
@@ -12,7 +13,7 @@
     border: 2px solid v.$base-color-lightened-4;
     border-radius: v.$border-radius-hardest;
     color: v.$base-font-color;
-    font-size: 1.25rem;
+    @include m.font-size(1.25);
     padding: 0.5rem 1rem;
     width: 7rem;
   }
@@ -34,7 +35,7 @@
     &>h3 {
       margin: 2.5rem 0 1rem 1rem;
       font-weight: bold;
-      font-size: 2.25rem;
+      @include m.font-size(2.25);
       line-height: 1.5rem;
 
       &:first-child {
@@ -45,7 +46,7 @@
     & h4 {
       margin: 2.5rem 0 0;
       font-weight: 400;
-      font-size: 1.5rem;
+      @include m.font-size(1.5);
       line-height: 1.5rem;
     }
 
@@ -65,7 +66,7 @@
 
       & p {
         margin-top: 0.25rem;
-        font-size: 1.5rem;
+        @include m.font-size(1.5);
         line-height: 1rem;
         align-items: center;
         color: v.$base-font-color;
@@ -120,7 +121,7 @@
 
   & table th,
   & table td {
-    font-size: 1.5rem;
+    @include m.font-size(1.5);
     line-height: 1rem;
     padding: 1rem 0.25rem;
   }

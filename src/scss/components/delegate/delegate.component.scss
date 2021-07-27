@@ -1,4 +1,5 @@
 @use '../../abstracts/variables'as v;
+@use '../../abstracts/mixins' as m;
 
 .delegate-page {
   align-items: center;
@@ -9,7 +10,7 @@
     border-radius: v.$border-radius-hard;
     padding: 0 0 0 1rem;
     width: calc(100% - 1rem);
-    font-size: 1rem;
+    @include m.font-size(1);
   }
 
   & .content {
@@ -30,7 +31,7 @@
       }
 
       & label {
-        font-size: 1.5rem;
+        @include m.font-size(1.5);
       }
 
       & input {
@@ -50,12 +51,12 @@
 
         & h1 {
           text-align: center;
-          font-size: 3rem;
+          @include m.font-size(3);
           margin: 0 0 4rem 0;
         }
 
         & span {
-          font-size: 1rem;
+          @include m.font-size(1);
 
           &.blue {
             margin: 0 0 0.5rem 0;
@@ -80,7 +81,7 @@
               border-radius: v.$border-radius-hardest;
               color: v.$base-font-color;
               width: 7rem;
-              font-size: 1.25rem;
+              @include m.font-size(1.25);
               padding: 0.5rem 1rem;
               width: 7rem;
             }
@@ -124,7 +125,7 @@
         width: 20rem;
 
         & .value {
-          font-size: 1.25rem;
+          @include m.font-size(1.25);
         }
       }
 
@@ -211,7 +212,7 @@
 
     & h1 {
       text-align: center;
-      font-size: 4rem;
+      @include m.font-size(4);
       font-weight: 500;
       margin: 0 0 4rem 0;
     }
@@ -221,7 +222,7 @@
     }
 
     & .value {
-      font-size: 1.25rem;
+      @include m.font-size(1.25);
       color: v.$base-font-color-secondary;
     }
 
@@ -235,7 +236,7 @@
       border-radius: v.$border-radius-hard;
       padding: 0 0 0 1rem;
       width: calc(100% - 1rem);
-      font-size: 1rem;
+      @include m.font-size(1);
       color: v.$base-font-color;
     }
 

@@ -1,4 +1,5 @@
 @use '../../../abstracts/variables' as v;
+@use '../../../abstracts/mixins' as m;
 
 @mixin top-container {
   margin-top: 0.5rem;
@@ -10,7 +11,7 @@
   align-items: center;
 
   & h1 {
-    font-size: 2.25rem;
+    @include m.font-size(2.25);
     font-weight: 400;
   }
 }
@@ -58,7 +59,7 @@
   %button {
     padding: 1rem 1.5rem;
     border-radius: v.$border-radius-hard;
-    font-size: 1.0rem;
+    @include m.font-size(1.0);
     font-weight: 600;
   }
 
