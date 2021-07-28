@@ -39,12 +39,10 @@ export class StartComponent implements OnInit {
         this.location.replaceState('');
       }
       );
-    if (!this.walletService.wallet) {
-      this.torusService.initTorus();
-    }
   }
 
   async torusLogin(verifier: string) {
+    await this.torusService.initTorus();
     await this.messageService.startSpinner('Loading wallet...');
     const { keyPair, userInfo } = await this.torusService.loginTorus(verifier).catch(async (e) =>
       await this.messageService.stopSpinner()
