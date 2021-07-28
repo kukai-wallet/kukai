@@ -66,6 +66,9 @@
 
     & .label {
       margin: 1rem;
+      letter-spacing: 0.02em;
+      font-weight: 500;
+      @include m.multiply('font-size',1);
     }
 
     & .seperator {

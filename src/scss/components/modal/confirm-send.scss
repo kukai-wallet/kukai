@@ -112,7 +112,7 @@
 
   & .from {
     margin-top: 1rem;
-    padding: 1rem 2rem;
+    padding: 1rem 0;
 
     & .left {
       width: 30%;
@@ -148,11 +148,11 @@
       border-bottom: 3px solid v.$border-color;
 
       &:first-child {
-        width: 12.5%;
+        width: 10%;
       }
 
       &:last-child {
-        width: 77%;
+        width: 81%;
       }
     }
 
@@ -166,7 +166,7 @@
 
   & .to {
     padding: 2rem 0;
-    margin: 2rem 0 0 0;
+    margin: 1rem 0 0 0;
     align-items: flex-start;
     background-color: #7178e333;
 
@@ -292,7 +292,7 @@
 
   & .bottom {
     border-top: 2px solid v.$border-color;
-    margin: 2rem 0 0 0;
+    margin: 0;
 
     & .label {
       height: 1.25rem;

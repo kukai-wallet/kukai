@@ -35,6 +35,15 @@
   & .top {
     background-color: v.$base-color-lightened-7;
     align-items: flex-start;
+    padding: 0.75rem 1rem 1rem 1rem;
+
+    & .label {
+      text-transform: uppercase;
+
+      &.title {
+        margin: 1rem 0 1rem 0;
+      }
+    }
 
     & .token {
       justify-content: flex-start;
@@ -85,19 +94,20 @@
     }
 
     & .fees {
-      width: calc(100% - 2rem);
+      width: calc(100% - 4px);
       margin: 1rem 0 0 0;
-      padding: 0 1rem;
       height: 1.25rem;
+      padding: 0;
+      color: v.$base-color-lightened-3;
 
       & .amount {
 
         &-usd,
         &-fee {
-          color: v.$base-font-color;
+          color: #6c7a8d;
 
           &>span {
-            color: v.$base-font-color-secondary;
+            color: #b9bfc7;
           }
         }
       }

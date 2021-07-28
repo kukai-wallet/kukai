@@ -61,7 +61,7 @@
 
     & span {
       margin: 0;
-      @include m.multiply('font-size',1, 'em !important');
+      @include m.multiply('font-size',1.125, 'em !important');
       font-weight: 500;
       &.key {
         color: #b9bfc7 !important;
@@ -79,6 +79,7 @@
 
       &.value {
         color: #6c7a8d !important;
+        @include m.multiply('font-size',1.125, 'em !important');
       }
     }
   }

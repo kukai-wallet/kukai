@@ -97,6 +97,10 @@ body {
   overflow-x: hidden;
 }
 
+body {
+  touch-action: pan-x pan-y;
+}
+
 input {
   text-align: left;
   height: calc(4rem - 4px);

@@ -8,24 +8,30 @@
   align-items: center;
   flex-direction: column;
 
-  & .back {
-    background-color: v.$base-background-color;
-    border: 2px solid v.$base-color-lightened-4;
-    border-radius: v.$border-radius-hardest;
-    color: v.$base-font-color;
-    @include m.multiply('font-size',1.25);
-    padding: 0.5rem 1rem;
-    width: 7.5rem;
-    & img {
-      @include m.multiply('height',1);
+    & a .back {
+      background-color: v.$base-background-color;
+      border: 2px solid v.$base-color-lightened-4;
+      border-radius: v.$border-radius-hardest;
+      color: v.$base-font-color;
+      @include m.multiply('font-size',1);
+      font-weight: 500;
+      padding: 0.75rem 1.25rem;
+
+      & img {
+        height: 1rem;
+        margin: 0 1rem 0 0;
+      }
     }
-  }
 
   & div.settings {
     min-height: calc(100% - 8rem);
     padding: 4rem 0 8rem 0;
     max-width: v.$lower-limit;
     width: 100%;
+
+    & #rescan {
+      margin: 2rem 0 0 0;
+    }
 
     &>h3,
     &>h4 {
@@ -80,20 +86,6 @@
 
   & .scan-button {
     margin: 1.5rem 0 0 0;
-  }
-
-  & button {
-    display: flex;
-    white-space: nowrap;
-    flex-direction: row;
-    margin: 1.5rem 0rem 1.5rem 1rem;
-    padding: 0.75rem 1.5rem;
-    border: 1px solid #5963FF;
-    color: #5963FF;
-    background: #FCFCFC;
-    font-weight: 500;
-    box-sizing: border-box;
-    border-radius: 0.5rem;
   }
 
   & table,
