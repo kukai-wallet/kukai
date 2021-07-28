@@ -104,9 +104,9 @@
 
       & .description {
         margin: 2rem 0 2rem 0;
-        font-weight: 600;
         @include m.multiply('font-size',1.5);
         text-transform: uppercase;
+        font-weight: 600;
 
         &.red {
           color: red;
