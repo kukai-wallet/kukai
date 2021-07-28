@@ -85,6 +85,14 @@ export class TokenBalancesService {
         const balance = Big(token.balance).div(10 ** asset.decimals).toFixed();
         balances.push({ ...asset, balance });
       }
+    } else {
+      if (nfts['unknown'] === undefined) {
+        nfts['unknown'] = { name: 'Unknown tokens', thumbnailUrl: '../../../assets/img/tokens/unknown-token.png', tokens: [] };
+      }
+      const placeholder = this.tokenService.getPlaceholderToken(token.tokenId);
+      placeholder.name = `${placeholder.contractAddress.slice(0, 8)}... (${placeholder.id.toString()})`;
+      delete placeholder.decimals;
+      nfts['unknown'].tokens.push(placeholder);
     }
   }
 
@@ -96,6 +104,11 @@ export class TokenBalancesService {
         if (token.balance && token.balance !== '0') {
           this.resolveAsset(token, balances, nfts);
         }
+      }
+      if (nfts['unknown']) { // property last
+        const temp = nfts['unknown'];
+        delete nfts['unknown'];
+        nfts['unknown'] = temp;
       }
       this.balances = balances;
       this.nfts = nfts;
