@@ -8,7 +8,6 @@ import { P404Component } from './components/error/404.component';
 import { P500Component } from './components/error/500.component';
 import { PrivacyPolicyComponent } from './components/agreement/privacy-policy/privacy-policy.component';
 import { TermsOfUseComponent } from './components/agreement/terms-of-use/terms-of-use.component';
-import { TorusComponent } from './components/start/login-types/torus/torus.component';
 import { EmbeddedComponent } from './components/embedded/embedded.component';
 import { LoggedInComponent } from './components/logged-in/logged-in.component';
 import { ActivateComponent } from './components/activate/activate.component';
@@ -20,7 +19,6 @@ const routes: Routes = [
       { path: 'new-wallet', component: NewWalletComponent },
       { path: 'import', component: MnemonicImportComponent },
       { path: 'connect-ledger', component: ConnectLedgerComponent },
-      { path: 'direct-auth', component: TorusComponent },
       {
         path: 'account', component: LoggedInComponent,
         loadChildren: () => import(`./components/logged-in/logged-in.module`).then(

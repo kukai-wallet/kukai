@@ -52,7 +52,6 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
 import { AgreementComponent } from './components/agreement/agreement.component';
 import { TermsOfUseComponent } from './components/agreement/terms-of-use/terms-of-use.component';
 import { PrivacyPolicyComponent } from './components/agreement/privacy-policy/privacy-policy.component';
-import { TorusComponent } from './components/start/login-types/torus/torus.component';
 import { EmbeddedComponent } from './components/embedded/embedded.component';
 import { SigninComponent } from './components/embedded/signin/signin.component';
 import { CardComponent } from './components/embedded/card/card.component';
@@ -104,7 +103,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     AgreementComponent,
     TermsOfUseComponent,
     PrivacyPolicyComponent,
-    TorusComponent,
     EmbeddedComponent,
     SigninComponent,
     CardComponent,
