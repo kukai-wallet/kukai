@@ -68,7 +68,7 @@
     </div>
     <div class="seperator"></div>
     <div class="flex-column bottom">
-      <app-send-button [activeAccount]="activeAccount" [tokenTransfer]="token['contractAddress']+':'+token['id']">
+      <app-send-button *ngIf="token.decimals !== undefined" [activeAccount]="activeAccount" [tokenTransfer]="token['contractAddress']+':'+token['id']">
       </app-send-button>
     </div>
   </div>
