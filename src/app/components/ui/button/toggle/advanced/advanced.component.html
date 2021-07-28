@@ -3,7 +3,7 @@
     <span class="value">{{ text }}&nbsp;&nbsp;<span class="key" [class]="state ? 'active' : ''">{{ state ? ' ON' : 'OFF'
         }}</span>&nbsp;&nbsp;</span>
     <label class="flex-row switch">
-      <input type="checkbox" [value]="state" tabindex=-1 />
+      <input type="checkbox" [checked]="state ? 'checked' : 'unchecked'" tabindex=-1 />
       <span class="slider" [class]="state ? 'active' : ''" (click)="toggle()">
         <span class="round"></span>
       </span>

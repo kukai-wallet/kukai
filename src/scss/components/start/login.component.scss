@@ -432,13 +432,14 @@
           flex-direction: column;
 
           &>div {
+            width: 100%;
             height: 100%;
             padding: 0;
           }
-        }
-
-        & .radios {
-          margin: 0 0 2rem 0;
+          &>div.radios {
+            margin: 0 0 2rem 0;
+            width: 85%;
+          }
         }
       }
 
