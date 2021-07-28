@@ -22,6 +22,7 @@
 
   .brand-logo {
     text-decoration: none;
+    height: 4rem;
 
     & .icon {
       margin-right: 1rem;
@@ -34,9 +35,7 @@
       color: v.$base-blue-color;
       font-weight: 500;
       font-family: 'Gilroy';
-      position: relative;
-      left: 0;
-      top: 0;
+      height: 4.375rem;
     }
   }
 
@@ -201,6 +200,7 @@
 
     & .brand-logo {
       margin: 0 1rem 0 0;
+      height: 3.125rem;
       & .icon {
         margin-right: 0.5rem;
         width: 3.125rem;
@@ -212,9 +212,7 @@
         color: v.$base-blue-color;
         font-weight: 500;
         font-family: 'Gilroy';
-        position: relative;
-        left: 0;
-        top: 0.2rem;
+        height: 3.375rem;
       }
     }
   }
@@ -233,9 +231,7 @@
       color: v.$base-blue-color;
       font-weight: 500;
       font-family: 'Gilroy';
-      position: relative;
-      left: 0;
-      top: 0;
+      height: 5.0625rem;
     }
   }
 
@@ -382,13 +378,5 @@ a.logo {
     color: white;
     display: flex;
     align-items: center;
-  }
-}
-
-@media not all and (min-resolution:.001dpcm) { 
-  @supports (-webkit-appearance:none) {
-    .brand-logo .title {
-      top: 0.3rem !important;
-    }
   }
 }
