@@ -81,7 +81,7 @@
 
       & .title {
         width: 8rem;
-        margin-right: 1rem;
+        margin-right: 0rem;
         @include m.multiply('font-size',1.5);
         height: 3rem;
         align-items: flex-start;

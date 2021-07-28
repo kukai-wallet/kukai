@@ -68,6 +68,8 @@
       margin: 1rem;
       letter-spacing: 0.02em;
       font-weight: 500;
+      color: #3e4855;
+      text-transform: uppercase;
       @include m.multiply('font-size',1);
     }
 

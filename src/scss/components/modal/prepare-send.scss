@@ -50,7 +50,7 @@
       align-items: center;
       width: 100%;
       height: auto;
-      margin: 0 0 2rem 0;
+      margin: 0.6rem 0 2rem 0.6rem;
 
       & img {
         width: 6rem;
@@ -64,7 +64,7 @@
       & .title {
         color: v.$base-font-color;
         @include m.multiply('font-size',1.5);
-        font-weight: 600;
+        font-weight: 500;
         margin: 0 0 0 1rem;
       }
     }

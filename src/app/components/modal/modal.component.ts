@@ -44,8 +44,7 @@ export class ModalComponent implements OnInit {
   }
 
   open(data?: any) {
-    const scrollBarWidth = window.innerWidth - document.body.offsetWidth;
-    document.body.style.marginRight = scrollBarWidth.toString();
+    document.body.style.marginRight = '0.5rem';
     document.body.style.overflow = 'hidden';
     this.isOpen = true;
   }

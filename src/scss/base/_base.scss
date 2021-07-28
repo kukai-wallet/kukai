@@ -109,6 +109,19 @@ input {
   background-color: #fff;
 }
 
+h1 {
+  font-weight: 500;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: v.$base-font-color;
+}
+
 textarea {
   border: 2px solid v.$border-color;
   border-radius: v.$border-radius;

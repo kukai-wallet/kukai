@@ -67,7 +67,7 @@ export const CONSTANTS: Constants = {
     'Truesy': {
       address: ["KT1TVA93qdPyhKXXgi5rN4XphJZBh4PgARb5", "KT1Dwucgeaa9bgFi3Ds16Q1VAgpapXPhMZ5Q"],
       thumbnailUrl: "../../../assets/img/spinner/truesy.svg",
-      link: "https://www.truesy.com/", shouldDisplayLink: true
+      link: "https://www.truesy.com/", shouldDisplayLink: false
     },
     "MinterPop": {
       address: ['KT1M2TMFrF1gbr64a7ySE3Cvt5BjZqQLKE6s'],
