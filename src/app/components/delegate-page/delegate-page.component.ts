@@ -17,7 +17,7 @@ export class DelegatePageComponent implements OnInit {
   isShowingCustom = false;
 
   constructor(
-    private delegateService: DelegateService,
+    public delegateService: DelegateService,
     public router: Router,
     public walletService: WalletService
   ) {
