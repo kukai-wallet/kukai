@@ -4,7 +4,7 @@
       <div class="flex-row button close" (click)="closeModalAction()"><img class="x" src="../../../assets/img/close-btn-x.png" /></div>
       <h1 class="title">Confirmation</h1>
     </div>
-    <div class="flex-column confirm-send">
+    <div class="flex-column confirm-send" [class.batch]="parameters">
       <div class="flex-row top">
         <div class="flex-column left">
           <span *ngIf="!tokenBalanceService.isNFT(token)" class="key">AMOUNT TO SEND:</span>
@@ -45,15 +45,14 @@
             }}</span>
         </div>
       </div>
-      <div class="flex-row divider">
+      <!-- <div class="flex-row divider">
         <span></span><img class="icon" src="../../../assets/img/send-down-arrow.png" /><span></span>
-      </div>
+      </div> -->
       <div class="flex-row to">
         <div class="flex-column left">
           <span class="key">SEND TO: </span>
         </div>
         <div class="flex-column right">
-          <span *ngIf="parameters" class="flex-row single-to"><span>DESTINATION</span><span>AMOUNT</span></span>
           <div class="flex-column" *ngFor="let transaction of transactions; index as i"
             (click)="updateParameters(i, transaction.parameters)">
             <span *ngIf="transaction?.meta && transaction.meta?.verifier" class="flex-row torus-to value"><img
@@ -63,8 +62,7 @@
               [class.active]="batchParamIndex === i && transactions.length > 1 && parameters"><span
                 style="width: 34rem; font-family: 'Roboto Mono';">{{
                 transaction?.destination
-                }}</span><span *ngIf="parameters" style="width: 3.5rem;">{{ (transaction.amount | number:'1.0-6')
-                }}</span></span>
+                }}</span><input type="radio" [checked]="batchParamIndex === i && transactions.length > 1 && parameters" /></span>
             <p class="previewAttention" *ngIf="tokenTransfer && transaction?.destination.slice(0, 3) === 'KT1'">
               Warning:
               Verify the contract can manage tokens</p>
@@ -73,7 +71,8 @@
       </div>
       <br />
       <br />
-      <div *ngIf="parameters" class="key" style="margin: 0 0 2rem 1rem;">CONTRACT CALL: {{ parameters?.entrypoint }}</div>
+      <span *ngIf="parameters" style="margin: 0 0 2rem 1rem;"><span class="key">AMOUNT: </span><span class="key">{{ (transactions[batchParamIndex]?.amount | number:'1.0-6') }}</span></span>
+      <div *ngIf="parameters" style="margin: 0 0 2rem 1rem;"><span class="key">CONTRACT CALL: </span><span class="key">{{ parameters?.entrypoint }}</span></div>
         <app-ui-toggle-advanced *ngIf="parameters" [default]="false" (stateChange)="advancedForm = $event"></app-ui-toggle-advanced>
       <div *ngIf="advancedForm" class="advanced-form">
         <ng-container *ngIf="parameters">

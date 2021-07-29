@@ -41,7 +41,7 @@
     background: v.$base-end-color;
     position: absolute;
     display: none;
-    z-index: 1;
+    z-index: 100;
     overflow: hidden;
     width: calc(100% - 1rem);
     top: 3.78rem;

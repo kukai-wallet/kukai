@@ -1,3 +1,6 @@
+@use '../../abstracts/mixins' as m;
+@use '../../abstracts/variables'as v;
+
 & .confirm-send {
 
   margin: 2rem 0 0 0;
@@ -229,8 +232,7 @@
 
         &.active {
           font-weight: 500;
-          color: #7178e3;
-          text-decoration: underline;
+          color: v.$base-font-color;
         }
 
         &.default {
@@ -306,4 +308,70 @@
       margin: 1rem 1rem 0rem 1rem;
     }
   }
+}
+
+& .confirm-send.batch {
+  & .top, & .to, & .from {
+  padding: 2rem 0;
+  margin: 0 0 0 -2rem;
+  border-radius: 0;
+  width: calc(100% + 4rem);
+ }
+
+ & .top {
+
+  & .left {
+    width: 35%;
+  }
+
+   & .right {
+  width: calc(65% - 2rem);
+  margin: 0 2rem 0 0;
+   }
+ }
+
+ & .from {
+   & .left {
+    width: 35%;
+   }
+
+   & .right {
+     width: 65%;
+   }
+ }
+
+ & .to {
+  flex-direction: column;
+  align-items: center;
+   & .left, .right {
+    width: calc(100% - 2rem);
+   }
+
+   & .left {
+    align-items: flex-start;
+    width: 35%;
+    align-self: flex-start;
+    margin: 0 0 1rem 0;
+
+     & .key {
+      text-align: center;
+      width: 100%;
+    }
+   }
+
+   & .right {
+     width: calc(100% - 8.5rem);
+     & .single-to {
+      margin: 0.5rem 0;
+      & input[type=radio] {
+        width: 1rem;
+        height: 1rem;
+        transform: scale(1.5);
+      }
+     }
+   }
+ }
+ & .bottom {
+  margin: 2rem 0 0 0;
+ }
 }
