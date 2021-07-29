@@ -25,12 +25,12 @@
     height: 4rem;
 
     & .icon {
-      margin-right: 1rem;
       width: 4rem;
       height: 4rem;
     }
 
     & .title {
+      margin: 0 0 0 1rem;
       font-size: 4rem;
       color: v.$base-blue-color;
       font-weight: 500;
@@ -211,6 +211,7 @@
       }
   
       & .title {
+        margin: 0 0 0 1rem;
         font-size: 4rem;
         color: v.$base-blue-color;
         font-weight: 500;
@@ -245,6 +246,7 @@
     }
 
     & .title {
+      margin: 0 0 0 1rem;
       font-size: 4rem;
       color: v.$base-blue-color;
       font-weight: 500;
