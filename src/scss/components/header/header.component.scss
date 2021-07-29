@@ -211,12 +211,12 @@
       }
   
       & .title {
-        margin: 0 0 0 0.5rem;
+        margin: 0 0 0 1rem;
         font-size: 4rem;
         color: v.$base-blue-color;
         font-weight: 500;
         font-family: 'Gilroy';
-        height: 4.25rem;
+        height: 4.425rem;
         letter-spacing: -0.02em;
       }
     }
@@ -232,12 +232,12 @@
     }
 
     & .title {
-      margin: 0 0 0 0.5rem;
+      margin: 0 0 0 1rem;
       font-size: 4rem;
       color: v.$base-blue-color;
       font-weight: 500;
       font-family: 'Gilroy';
-      height: 4.25rem;
+      height: 4.425rem;
       letter-spacing: -0.02em;
     }
   }
@@ -331,12 +331,13 @@
 
   @media not all and (min-resolution:.001dpcm)
 { @supports (-webkit-appearance:none) {
+  @supports not (-webkit-touch-callout: none) {
 
   .top-container.mobile .brand-logo .title {
     height: 3.75rem !important;
   }
 
-}}
+}}}
 
   .top-container.desktop {
     display: none;
