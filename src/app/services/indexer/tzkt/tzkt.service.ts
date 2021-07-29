@@ -36,18 +36,10 @@ export class TzktService implements Indexer {
         return (op?.status === 'applied' && op?.originatedContract?.kind === 'delegator_contract') ? op.originatedContract.address : '';
       }).filter((address: string) => address.length));
   }
-  async accountInfo(address: string, knownTokenIds: string[], init: boolean): Promise<any> {
+  async accountInfo(address: string, knownTokenIds: string[]): Promise<any> {
     const tokens = [];
     const unknownTokenIds = [];
-
-    const aryTokens: any[] = await this.getTokenBalancesUsingPromiseAll(address).catch((e: Error) => {
-      if (init) {
-        console.error(e);
-        return [];
-      } else {
-        throw e;
-      }
-    });
+    const aryTokens: any[] = await this.getTokenBalancesUsingPromiseAll(address);
     return fetch(`${this.bcd}/account/${this.network}/${address}`)
       .then(response => response.json())
       .then(data => {
@@ -84,6 +76,18 @@ export class TzktService implements Indexer {
         }
         return { counter: '', unknownTokenIds, tokens };
       });
+  }
+  async isUsedAccount(address: string): Promise<boolean> {
+    const accountInfo = await (await fetch(`${this.bcd}/account/${this.network}/${address}`)).json();
+    if (accountInfo && (accountInfo.balance || accountInfo.tx_count)) {
+      return true;
+    } else {
+      const tokenCount = await (await fetch(`${this.bcd}/account/${this.network}/${address}/count`)).json();
+      if (tokenCount && Object.keys(tokenCount).length > 0) {
+        return true;
+      }
+    }
+    return false;
   }
   async getOperations(address: string, knownTokenIds: string[] = [], wallet: WalletObject): Promise<any> {
     const ops = await fetch(`${this.tzkt}/accounts/${address}/operations?limit=20&type=delegation,origination,transaction`)

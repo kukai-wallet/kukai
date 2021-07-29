@@ -55,6 +55,7 @@ export class NewImplicitComponent extends ModalComponent implements OnInit {
       this.messageService.stopSpinner();
     } else { 
       console.log('blocked!');
+      this.messageService.addError("Can't create additional accounts when an unused account already exists");
     }
   }
   openPkhSpot(): boolean {
