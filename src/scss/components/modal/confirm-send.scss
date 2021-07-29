@@ -278,9 +278,10 @@
     }
 
     & ul.tabs {
-      width: calc(100%);
+      width: calc(100% - 2rem);
       padding: 0;
-      margin: 1rem 0 0.5rem 0;
+      margin: 1rem 0 0.5rem 1rem;
+      list-style-type: none;
     }
 
     & td.txAmount {
@@ -311,6 +312,7 @@
 }
 
 & .confirm-send.batch {
+  width: 32rem;
   & .top, & .to, & .from {
   padding: 2rem 0;
   margin: 0 0 0 -2rem;
@@ -321,22 +323,23 @@
  & .top {
 
   & .left {
-    width: 35%;
+    width: 40%;
   }
 
    & .right {
-  width: calc(65% - 2rem);
+  width: calc(60% - 2rem);
   margin: 0 2rem 0 0;
    }
  }
 
  & .from {
    & .left {
-    width: 35%;
+    width: auto;
+    margin: 0 0 0 3rem;
    }
 
    & .right {
-     width: 65%;
+     width: 67%;
    }
  }
 
@@ -349,18 +352,18 @@
 
    & .left {
     align-items: flex-start;
-    width: 35%;
+    width: 28%;
     align-self: flex-start;
     margin: 0 0 1rem 0;
 
      & .key {
       text-align: center;
-      width: 100%;
+      margin: 0.5rem 0 0 3rem;
     }
    }
 
    & .right {
-     width: calc(100% - 8.5rem);
+     width: calc(100% - 6rem);
      & .single-to {
       margin: 0.5rem 0;
       & input[type=radio] {
@@ -368,6 +371,12 @@
         height: 1rem;
         transform: scale(1.5);
       }
+     }
+     & .show-all {
+      margin: 1rem 0 0 0;
+      text-transform: uppercase;
+      font-weight: 500;
+      color: #6c7a8d;
      }
    }
  }

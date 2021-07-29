@@ -149,6 +149,9 @@
         &>.google {
           background-color: v.$base-end-color;
           box-shadow: v.$box-shadow;
+          &:hover {
+            filter: invert(0.05);
+          }
         }
 
         &>.google {

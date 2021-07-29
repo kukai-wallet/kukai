@@ -1,7 +1,8 @@
 <div *ngIf="isOpen" class="flex-column kukai-modal">
   <div class="content">
     <div class="flex-column top">
-      <div class="flex-row button close" (click)="closeModalAction()"><img class="x" src="../../../assets/img/close-btn-x.png" /></div>
+      <div class="flex-row button close" (click)="closeModalAction()"><img class="x"
+          src="../../../assets/img/close-btn-x.png" /></div>
       <h1 class="title">Confirmation</h1>
     </div>
     <div class="flex-column confirm-send" [class.batch]="parameters">
@@ -45,35 +46,44 @@
             }}</span>
         </div>
       </div>
-      <!-- <div class="flex-row divider">
+      <div *ngIf="!parameters" class="flex-row divider">
         <span></span><img class="icon" src="../../../assets/img/send-down-arrow.png" /><span></span>
-      </div> -->
+      </div>
       <div class="flex-row to">
         <div class="flex-column left">
           <span class="key">SEND TO: </span>
         </div>
         <div class="flex-column right">
-          <div class="flex-column" *ngFor="let transaction of transactions; index as i"
+          <div class="flex-column" *ngFor="let transaction of transactions | slice:0:showAll; index as i"
             (click)="updateParameters(i, transaction.parameters)">
             <span *ngIf="transaction?.meta && transaction.meta?.verifier" class="flex-row torus-to value"><img
                 src="../../../assets/img/{{ transaction.meta.verifier }}-logo.svg" class="icon">
               {{ transaction.meta?.alias }}</span>
-            <span class="flex-row single-to" [class.default]="transactions.length === 1" [class.selectable]="transactions.length > 1 && parameters"
+            <span class="flex-row single-to" [class.default]="transactions.length === 1"
+              [class.selectable]="transactions.length > 1 && parameters"
               [class.active]="batchParamIndex === i && transactions.length > 1 && parameters"><span
                 style="width: 34rem; font-family: 'Roboto Mono';">{{
                 transaction?.destination
-                }}</span><input type="radio" [checked]="batchParamIndex === i && transactions.length > 1 && parameters" /></span>
+                }}</span><input *ngIf="parameters" type="radio"
+                [checked]="batchParamIndex === i && transactions.length > 1 && parameters" /></span>
             <p class="previewAttention" *ngIf="tokenTransfer && transaction?.destination.slice(0, 3) === 'KT1'">
               Warning:
               Verify the contract can manage tokens</p>
           </div>
+          <div *ngIf="transactions?.length > 10" class="button show-all"
+            (click)="showAll = showAll === 10 ? undefined : 10">{{ showAll === 10 ? 'Show All' : 'Show Less' }}</div>
         </div>
       </div>
       <br />
       <br />
-      <span *ngIf="parameters" style="margin: 0 0 2rem 1rem;"><span class="key">AMOUNT: </span><span class="key">{{ (transactions[batchParamIndex]?.amount | number:'1.0-6') }}</span></span>
-      <div *ngIf="parameters" style="margin: 0 0 2rem 1rem;"><span class="key">CONTRACT CALL: </span><span class="key">{{ parameters?.entrypoint }}</span></div>
-        <app-ui-toggle-advanced *ngIf="parameters" [default]="false" (stateChange)="advancedForm = $event"></app-ui-toggle-advanced>
+      <span *ngIf="parameters" class="flex-row" style="margin: 0 0rem 1rem 1rem;width: calc(100% - 2rem);"><span
+          class="key">TRANSFER AMOUNT: </span><span class="key">{{ (transactions[batchParamIndex]?.amount | number:'1.0-6')
+          }}</span></span>
+      <div *ngIf="parameters && parameters?.entrypoint" class="flex-row"
+        style="margin: 0 0rem 2rem 1rem;width: calc(100% - 2rem);"><span class="key">CONTRACT CALL: </span><span
+          class="key">{{ parameters?.entrypoint }}</span></div>
+      <app-ui-toggle-advanced *ngIf="parameters" [default]="false" (stateChange)="advancedForm = $event">
+      </app-ui-toggle-advanced>
       <div *ngIf="advancedForm" class="advanced-form">
         <ng-container *ngIf="parameters">
           <div class="tabs-container">
@@ -82,7 +92,7 @@
               <li class="tab" [class.active]="parametersFormat === 1" (click)="setParametersFormat(1)">JSON</li>
             </ul>
           </div>
-          <textarea *ngIf="parameters" rows="10" readonly>{{ parametersTextboxDisplay() }}</textarea>
+          <textarea *ngIf="parameters" rows="10" readonly>{{ parametersDisplay }}</textarea>
         </ng-container>
         <ng-container *ngIf="headlessMode && (!walletService.isLedgerWallet()) || ledgerError">
           <div class="flex-row">
@@ -112,7 +122,8 @@
         </ng-container>
       </div>
       <div class="flex-column bottom">
-        <span [style.visibility]="!pwdInvalid ? 'hidden' : ''" [style.margin]="!pwdInvalid ? '0' : ''" class="label danger">{{ this.pwdInvalid }}</span>
+        <span [style.visibility]="!pwdInvalid ? 'hidden' : ''" [style.margin]="!pwdInvalid ? '0' : ''"
+          class="label danger">{{ this.pwdInvalid }}</span>
         <span class="label">ENTER YOUR PASSWORD TO CONFIRM:</span>
         <input *ngIf="!walletService.isLedgerWallet() && !walletService.isTorusWallet()" [(ngModel)]="password"
           autocomplete="current-password" placeholder="Password" class="text password" type="password"

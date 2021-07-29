@@ -46,6 +46,8 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
   micheline: any = null;
   batchParameters: { num: number, parameters: any }[] = [];
   parametersFormat = 0;
+  parametersDisplay = "";
+  showAll = 10;
 
   showFullBatch = false;
   sendResponse = null;
@@ -128,6 +130,7 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
     this.batchParamIndex = index;
     this.parameters = parameters;
     this.parametersToMicheline();
+    this.parametersDisplay = this.parametersTextboxDisplay();
   }
   parametersTextboxDisplay(): string {
     return !this.parametersFormat ?
