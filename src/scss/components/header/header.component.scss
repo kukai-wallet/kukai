@@ -330,13 +330,14 @@
 @media (max-width: v.$lower-limit) {
 
   @media not all and (min-resolution:.001dpcm)
-{
+{ @supports (-webkit-appearance:none) {
   @supports not (-webkit-touch-callout: none) {
 
   .top-container.mobile .brand-logo .title {
     height: 3.75rem !important;
   }
-}}
+
+}}}
 
   .top-container.desktop {
     display: none;
