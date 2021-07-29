@@ -254,13 +254,14 @@
           & .facebook,
           & .twitter,
           & .reddit {
-            width: 4rem;
-            height: 4rem;
+            width: 3rem;
+            height: 3rem;
             padding: 1rem;
           }
 
           & .google {
-            height: 6rem;
+            width: 26rem;
+            height: 5rem;
           }
         }
       }
@@ -381,7 +382,7 @@
 
             & .google {
               margin: 0 0 2rem 0;
-              min-width: 30rem;
+              min-width: 28rem;
               height: 6rem;
 
               &>img {
