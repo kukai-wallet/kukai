@@ -7,6 +7,16 @@
   display: flex;
   flex-direction: column;
   background-color: v.$base-background-color;
+
+  & .brand-logo {
+    text-decoration: none;
+    height: 4rem;
+
+    & .icon {
+      width: auto;
+      height: 100%;
+    }
+  }
 }
 
 .top-container.desktop {
@@ -18,26 +28,6 @@
   &.default {
     background-color: v.$base-end-color;
     border-bottom: 2px solid v.$border-color;
-  }
-
-  .brand-logo {
-    text-decoration: none;
-    height: 4rem;
-
-    & .icon {
-      width: 4rem;
-      height: 4rem;
-    }
-
-    & .title {
-      margin: 0 0 0 1rem;
-      font-size: 4rem;
-      color: v.$base-blue-color;
-      font-weight: 500;
-      font-family: 'Gilroy';
-      height: 4.375rem;
-      letter-spacing: -0.02em;
-    }
   }
 
   &>.right {
@@ -190,56 +180,14 @@
 
 .top-container.mobile {
   height: 100%;
-  width: calc(100% - 4rem);
-  padding: 0 2rem;
+  width: calc(89%);
+  padding: 0 5.5%;
   flex-wrap: wrap;
   display: none;
   position: relative;
 
   &.default {
     background-color: v.$base-end-color;
-
-    & .brand-logo {
-      margin: 0 1rem 0 0;
-      transform: scale(0.9);
-      text-decoration: none;
-      height: 4rem;
-  
-      & .icon {
-        width: 4rem;
-        height: 4rem;
-      }
-  
-      & .title {
-        margin: 0 0 0 1rem;
-        font-size: 4rem;
-        color: v.$base-blue-color;
-        font-weight: 500;
-        font-family: 'Gilroy';
-        height: 4.425rem;
-        letter-spacing: -0.02em;
-      }
-    }
-  }
-
-  & .brand-logo {
-    text-decoration: none;
-    transform: scale(0.9);
-
-    & .icon {
-      width: 4rem;
-      height: 4rem;
-    }
-
-    & .title {
-      margin: 0 0 0 1rem;
-      font-size: 4rem;
-      color: v.$base-blue-color;
-      font-weight: 500;
-      font-family: 'Gilroy';
-      height: 4.425rem;
-      letter-spacing: -0.02em;
-    }
   }
 
   & .copy {
@@ -329,15 +277,15 @@
 
 @media (max-width: v.$lower-limit) {
 
-  @media not all and (min-resolution:.001dpcm)
-{ @supports (-webkit-appearance:none) {
-  @supports not (-webkit-touch-callout: none) {
+//   @media not all and (min-resolution:.001dpcm)
+// { @supports (-webkit-appearance:none) {
+//   @supports not (-webkit-touch-callout: none) {
 
-  .top-container.mobile .brand-logo .title {
-    height: 3.75rem !important;
-  }
+//   .top-container.mobile .brand-logo .title {
+//     height: 3.75rem !important;
+//   }
 
-}}}
+// }}}
 
   .top-container.desktop {
     display: none;

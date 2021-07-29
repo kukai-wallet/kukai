@@ -1,7 +1,6 @@
 <div class="flex-row top-container desktop" [class]="router.url.indexOf('/account') === 0 ? 'default' : ''">
   <a routerLink="/" class="flex-row brand-logo">
     <img class="icon" src="../../../assets/img/header-logo.svg" />
-    <div class="title">Kukai</div>
   </a>
   <div *ngIf="router.url.indexOf('/account/') === 0" class="flex-row right">
     <div class="flex-column left">
@@ -59,7 +58,6 @@
 <div class="flex-row top-container mobile" [class]="router.url.indexOf('/account') === 0 ? 'default' : ''">
   <a routerLink="/" class="flex-row brand-logo">
     <img class="icon" src="../../../assets/img/header-logo.svg" />
-    <div class="title">Kukai</div>
   </a>
   <div *ngIf="router.url.indexOf('/account/') > -1" class="flex-row" style="width: 48%; justify-content: center;">
     <ng-container>
