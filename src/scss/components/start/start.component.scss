@@ -155,7 +155,7 @@
           border: 2px solid v.$border-color;
           border-radius: v.$border-radius-hardest;
           min-width: 27rem;
-          height: 5rem;
+          height: 6rem;
           color: v.$base-font-color;
           padding: 0 3rem 0 0.5rem;
 
@@ -257,7 +257,7 @@
           }
 
           & .google {
-            height: 5rem;
+            height: 6rem;
           }
         }
       }
@@ -378,8 +378,8 @@
 
             & .google {
               margin: 0 0 2rem 0;
-              min-width: 28rem;
-              height: 5rem;
+              min-width: 30rem;
+              height: 6rem;
 
               &>img {
                 width: 2.5rem;
