@@ -19,7 +19,7 @@ export class DropdownComponent implements OnInit {
   @HostListener('document:click', ['$event'])
   @HostListener('document:touchstart', ['$event'])
   closeDropdown(e) {
-    if (e.target.parentNode.id !== this.ecmpId) {
+    if (e.target.parentNode.id !== this.ecmpId && this.isOpen) {
       this.isOpen = false;
     }
   }
