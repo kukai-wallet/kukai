@@ -200,40 +200,58 @@
     background-color: v.$base-end-color;
 
     & .brand-logo {
-      margin: 0 1rem 0 0;
-      height: 3.125rem;
+      transform: scale(0.8);
+      text-decoration: none;
+      height: 4rem;
+  
       & .icon {
-        margin-right: 0.5rem;
-        width: 3.125rem;
-        height: 3.125rem;
+        margin-right: 1rem;
+        width: 4rem;
+        height: 4rem;
       }
-
+  
       & .title {
-        font-size: 3.625rem;
+        font-size: 4rem;
         color: v.$base-blue-color;
         font-weight: 500;
         font-family: 'Gilroy';
-        height: 3.375rem;
+        height: 3.75rem;
+        letter-spacing: -0.02em;
       }
-    }
+    //   height: 3.125rem;
+    //   & .icon {
+    //     margin-right: 0.5rem;
+    //     width: 3.125rem;
+    //     height: 3.125rem;
+    //   }
+
+    //   & .title {
+    //     font-size: 3.625rem;
+    //     color: v.$base-blue-color;
+    //     font-weight: 500;
+    //     font-family: 'Gilroy';
+    //     height: 3.375rem;
+    //   }
+    // }
   }
 
   .brand-logo {
     text-decoration: none;
+    transform: scale(0.8);
 
-    & .icon {
-      margin-right: 1rem;
-      width: 4.5rem;
-      height: 4.5rem;
-    }
+    // & .icon {
+    //   margin-right: 1rem;
+    //   width: 4.5rem;
+    //   height: 4.5rem;
+    // }
 
-    & .title {
-      font-size: 5.375rem;
-      color: v.$base-blue-color;
-      font-weight: 500;
-      font-family: 'Gilroy';
-      height: 5.0625rem;
-      letter-spacing: -0.02em;
+    // & .title {
+      // font-size: 5.375rem;
+      // color: v.$base-blue-color;
+      // font-weight: 500;
+      // font-family: 'Gilroy';
+      // height: 5.0625rem;
+      // letter-spacing: -0.02em;
     }
   }
 
