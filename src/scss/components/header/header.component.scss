@@ -36,6 +36,7 @@
       font-weight: 500;
       font-family: 'Gilroy';
       height: 4.375rem;
+      letter-spacing: -0.02em;
     }
   }
 
@@ -232,6 +233,7 @@
       font-weight: 500;
       font-family: 'Gilroy';
       height: 5.0625rem;
+      letter-spacing: -0.02em;
     }
   }
 
@@ -361,22 +363,5 @@ a.logo {
 
   &.invert {
     color: rgba(0, 0, 0, 0.8);
-  }
-}
-
-// Dropdown
-.dropbtn {
-  height: 2rem;
-  cursor: pointer;
-  display: flex;
-
-  &>span {
-    font-style: normal;
-    font-weight: 500;
-    @include m.multiply('font-size',1);
-    line-height: 1rem;
-    color: white;
-    display: flex;
-    align-items: center;
   }
 }

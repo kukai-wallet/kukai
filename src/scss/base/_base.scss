@@ -62,6 +62,15 @@
   user-select: none;
 }
 
+%selection {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 * {
   scrollbar-width: thin;
   scrollbar-color: v.$base-color-lightened-3;
@@ -126,6 +135,10 @@ textarea {
   border: 2px solid v.$border-color;
   border-radius: v.$border-radius;
   background-color: #fff;
+}
+
+.selectable {
+  @extend %selection;
 }
 
 .button {

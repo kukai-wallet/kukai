@@ -44,8 +44,10 @@ export class ModalComponent implements OnInit {
   }
 
   open(data?: any) {
-    document.body.style.marginRight = '0.5rem';
-    document.body.style.overflow = 'hidden';
+    if (window.innerHeight < document.body.scrollHeight) {
+      document.body.style.marginRight = '0.5rem';
+      document.body.style.overflow = 'hidden';
+    }
     this.isOpen = true;
   }
 
