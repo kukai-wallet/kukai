@@ -31,7 +31,7 @@
     }
 
     & .title {
-      @include m.multiply('font-size',4);
+      font-size: 4rem;
       color: v.$base-blue-color;
       font-weight: 500;
       font-family: 'Gilroy';
@@ -209,7 +209,7 @@
       }
 
       & .title {
-        @include m.multiply('font-size',3);
+        font-size: 3.625rem;
         color: v.$base-blue-color;
         font-weight: 500;
         font-family: 'Gilroy';
@@ -228,7 +228,7 @@
     }
 
     & .title {
-      @include m.multiply('font-size',4.5);
+      font-size: 5.375rem;
       color: v.$base-blue-color;
       font-weight: 500;
       font-family: 'Gilroy';
