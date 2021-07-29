@@ -138,8 +138,8 @@
         .facebook,
         .twitter,
         .reddit {
-          width: 3rem;
-          height: 3rem;
+          width: 4rem;
+          height: 4rem;
           padding: 1rem;
         }
 
@@ -155,7 +155,7 @@
           border: 2px solid v.$border-color;
           border-radius: v.$border-radius-hardest;
           min-width: 27rem;
-          height: 6rem;
+          height: 5rem;
           color: v.$base-font-color;
           padding: 0 3rem 0 0.5rem;
 
@@ -251,13 +251,13 @@
           & .facebook,
           & .twitter,
           & .reddit {
-            width: 3rem;
-            height: 3rem;
+            width: 4rem;
+            height: 4rem;
             padding: 1rem;
           }
 
           & .google {
-            height: 6rem;
+            height: 5rem;
           }
         }
       }
@@ -378,8 +378,8 @@
 
             & .google {
               margin: 0 0 2rem 0;
-              min-width: 27rem;
-              height: 6rem;
+              min-width: 28rem;
+              height: 5rem;
 
               &>img {
                 width: 2.5rem;
