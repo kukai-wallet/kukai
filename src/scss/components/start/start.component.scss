@@ -133,8 +133,8 @@
         .reddit,
         &>.google img {
           border-radius: v.$border-radius-hardest;
-          width: 4rem;
-          height: 4rem;
+          width: 3.5rem;
+          height: 3.5rem;
           cursor: pointer;
         }
 
@@ -142,7 +142,7 @@
         .twitter,
         .reddit {
           margin: 0 0 0 2rem;
-          padding: 1rem;
+          padding: 0.75rem;
         }
 
         .facebook,
@@ -255,9 +255,9 @@
           & .facebook,
           & .twitter,
           & .reddit {
-            width: 3rem;
-            height: 3rem;
-            padding: 1rem;
+            width: 3.5rem;
+            height: 3.5rem;
+            padding: 0.75rem;
           }
 
           & .google {
@@ -393,9 +393,9 @@
             }
 
             & .facebook, & .twitter, & .reddit {
-              width: 4rem;
-              height: 4rem;
-              padding: 1rem;
+              width: 4.5rem;
+              height: 4.5rem;
+              padding: 0.75rem;
               margin: 0 0 0 2rem;
             }
 

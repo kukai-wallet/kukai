@@ -40,7 +40,6 @@ export class HeaderComponent implements OnInit {
       this.delegateName = await this.getDelegateName(this.activeAccount?.delegate);
     });
     this.accounts = this.walletService.wallet?.getAccounts();
-    console.log(window, document)
 
     this.router.events
       .pipe(filter((evt) => evt instanceof NavigationEnd))

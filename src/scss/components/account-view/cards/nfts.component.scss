@@ -1,6 +1,6 @@
 @use '../../../abstracts/variables'as v;
 @use '../../../abstracts/mixins' as m;
-@import './mixins';
+@import "./mixins";
 
 @include base;
 
@@ -30,7 +30,7 @@
         border-radius: v.$border-radius-hard;
         border: 2px solid v.$base-color-lightened-5;
         justify-content: center;
-        @include m.multiply('font-size',1.15);
+        @include m.multiply("font-size", 1.15);
       }
     }
   }
@@ -47,7 +47,7 @@
       justify-content: flex-start;
 
       & .title {
-        @include m.multiply('font-size',1.75);
+        @include m.multiply("font-size", 1.75);
         margin-right: 1rem;
         & a {
           color: black;
@@ -119,7 +119,7 @@
         }
 
         & .count {
-          @include m.multiply('font-size',1);
+          @include m.multiply("font-size", 1);
           padding: 0.25rem;
           width: 2rem;
           background-color: v.$base-color-lightened-5;
@@ -140,7 +140,7 @@
           & button {
             padding: 1rem 1.5rem;
             border-radius: calc(1rem * 2);
-            @include m.multiply('font-size',1);
+            @include m.multiply("font-size", 1);
             font-weight: 600;
             width: 10rem;
             justify-content: center;
@@ -205,14 +205,14 @@
           width: calc(100% - 9.25rem);
 
           & .title {
-            @include m.multiply('font-size',1.75);
+            @include m.multiply("font-size", 1.75);
             margin-right: 1rem;
             overflow: hidden;
             text-overflow: ellipsis;
           }
 
           & .issue {
-            @include m.multiply('font-size',1);
+            @include m.multiply("font-size", 1);
           }
         }
       }
@@ -225,7 +225,7 @@
       background-color: #fff;
     }
 
-    &>.scroll {
+    & > .scroll {
       max-height: 52rem;
       overflow-x: hidden;
       overflow-y: auto;

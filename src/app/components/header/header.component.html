@@ -13,7 +13,7 @@
           <div class="flex-row button" routerLink="/account/{{activeAccount?.address}}/stakers">
             <span *ngIf="!activeAccount?.delegate">STAKING: <span class="choose">NOT
                 STAKED</span></span>
-            <span *ngIf="activeAccount?.delegate" class="address">STAKING: <span>{{ delegateName }}</span></span>
+            <span *ngIf="activeAccount?.delegate" class="selectable address">STAKING: <span>{{ delegateName }}</span></span>
           </div>
         </div>
       </div>
@@ -25,7 +25,7 @@
           <div class="description">COPY ADDRESS</div>
         </div>
       </div>
-      <div class="icon" (click)="newAccount()">
+      <div *ngIf="walletService.isHdWallet()" class="icon" (click)="newAccount()">
         <img class="button" src="../../../assets/img/add.svg" />
         <div class="tooltip">
           <div class="description">ADD ACCOUNT</div>
@@ -85,7 +85,7 @@
             }}</span>
         </div>
       </div>
-      <div class="flex-row button" (click)="newAccount()">
+      <div *ngIf="walletService.isHdWallet()" class="flex-row button" (click)="newAccount()">
         <img class="icon" src="../../../assets/img/add.svg" /><span>Add Account</span>
       </div>
       <div class="flex-row button" [routerLink]="'/account/' + activeAccount?.address + '/settings'">

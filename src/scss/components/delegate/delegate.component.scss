@@ -10,7 +10,7 @@
     border-radius: v.$border-radius-hard;
     padding: 0 0 0 1rem;
     width: calc(100% - 1rem);
-    @include m.multiply('font-size',1);
+    @include m.multiply("font-size", 1);
   }
 
   & .content {
@@ -31,7 +31,7 @@
       }
 
       & label {
-        @include m.multiply('font-size',1.5);
+        @include m.multiply("font-size", 1.5);
       }
 
       & input {
@@ -50,18 +50,18 @@
           margin: 0;
         }
 
-        &>*:not(a) {
+        & > *:not(a) {
           width: 100%;
         }
 
         & h1 {
           text-align: center;
-          @include m.multiply('font-size',3);
+          @include m.multiply("font-size", 3);
           margin: 0 0 4rem 0;
         }
 
         & span {
-          @include m.multiply('font-size',1.125);
+          @include m.multiply("font-size", 1.125);
 
           &.blue {
             margin: 0 0 0.5rem 0;
@@ -86,17 +86,18 @@
               border-radius: v.$border-radius-hardest;
               color: v.$base-font-color;
               width: 7rem;
-              @include m.multiply('font-size',1.25);
+              @include m.multiply("font-size", 1.25);
               padding: 0.5rem 1rem;
               width: 7.5rem;
               & img {
-                @include m.multiply('height',1);
+                @include m.multiply("height", 1);
               }
             }
           }
         }
 
-        & .logo {}
+        & .logo {
+        }
 
         & .button {
           margin: 0 0 0 2rem;
@@ -128,12 +129,12 @@
         border-bottom: none;
       }
 
-      &>* {
+      & > * {
         margin-right: 1rem;
         width: 20rem;
 
         & .value {
-          @include m.multiply('font-size',1.25);
+          @include m.multiply("font-size", 1.25);
         }
       }
 
@@ -220,7 +221,7 @@
 
     & h1 {
       text-align: center;
-      @include m.multiply('font-size',4);
+      @include m.multiply("font-size", 4);
       font-weight: 500;
       margin: 0 0 4rem 0;
     }
@@ -230,11 +231,11 @@
     }
 
     & .value {
-      @include m.multiply('font-size',1.25);
+      @include m.multiply("font-size", 1.25);
       color: v.$base-font-color-secondary;
     }
 
-    & .preview>* {
+    & .preview > * {
       margin: 0 0 2rem 0;
     }
 
@@ -244,7 +245,7 @@
       border-radius: v.$border-radius-hard;
       padding: 0 0 0 1rem;
       width: calc(100% - 1rem);
-      @include m.multiply('font-size',1);
+      @include m.multiply("font-size", 1);
       color: v.$base-font-color;
     }
 
@@ -267,21 +268,19 @@
 }
 
 @media (min-width: v.$middle-limit) {
-  .delegate-page .content .manual>.delegate {
-    width: 59.5rem
+  .delegate-page .content .manual > .delegate {
+    width: 59.5rem;
   }
 }
 
 @media (max-width: v.$middle-limit) {
-
   .delegate-page .content {
     max-width: v.$lower-limit;
   }
 }
 
 @media (max-width: v.$lower-limit) {
-
-  .delegate-page .content .manual>.delegate {
+  .delegate-page .content .manual > .delegate {
     & a {
       left: 0;
     }

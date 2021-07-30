@@ -26,7 +26,7 @@
     padding: 0.5rem 0;
     @include m.multiply('font-size',1.25);
     font-weight: 500;
-    color: v.$base-font-color;
+    color: v.$base-end-color;
     z-index: 5000;
     text-align: center;
     background-color: v.$base-red-color;
@@ -292,7 +292,7 @@
 
 @media (max-width: v.$lower-limit) {
 
-  .top-container.mobile .brand-logo .icon {
+  .top-container.mobile.default .brand-logo .icon {
     height: 75% !important;
   }
 

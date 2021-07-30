@@ -54,6 +54,13 @@
     border-bottom: 2px solid v.$border-color;
     margin-right: 1rem;
 
+    &:first-child .left .icon  {
+      background-color: #0e61ff;
+      padding: 0.25rem;
+      width: 3rem;
+      height: 3rem;
+    }
+
     &:last-child {
       border-bottom: none;
     }
@@ -71,12 +78,11 @@
       justify-content: flex-start;
 
       & .icon {
-        width: 3rem;
-        height: 3rem;
-        padding: 0.25rem;
-        border: 2px solid v.$base-color-lightened-5;
-        border-radius: v.$border-radius-hardest;
+        width: 3.5rem;
+        height: 3.5rem;
         margin-right: 1rem;
+        border-radius: v.$border-radius-hardest;
+        border: 2px solid v.$base-color-lightened-5;
       }
 
       & .title {
@@ -101,6 +107,7 @@
         & .price-usd {
           color: v.$base-font-color-secondary;
           @include m.multiply('font-size',1);
+          font-weight: 500;
         }
       }
     }
