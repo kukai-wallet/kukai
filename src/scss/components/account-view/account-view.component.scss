@@ -43,14 +43,6 @@
     flex-flow: column wrap;
     width: 100%;
 
-    // & .mobile {
-    //   display: initial;
-    // }
-
-    // & .desktop {
-    //   display: none;
-    // }
-
     & .desktop>div, & .mobile>div {
       width: 100%;
       align-items: center;

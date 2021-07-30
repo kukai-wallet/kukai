@@ -4,6 +4,7 @@ import { WalletService } from './services/wallet/wallet.service';
 import { CoordinatorService } from './services/coordinator/coordinator.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Location } from '@angular/common';
+import { CONSTANTS as _CONSTANTS } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -11,6 +12,7 @@ import { Location } from '@angular/common';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
+  readonly CONSTANTS = _CONSTANTS;
   embedded = false;
   constructor(
     private walletService: WalletService,
