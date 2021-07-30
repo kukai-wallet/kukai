@@ -5,7 +5,7 @@
           src="../../../assets/img/close-btn-x.png" /></div>
       <h1 class="title">Confirmation</h1>
     </div>
-    <div class="flex-column confirm-send" [class.batch]="parameters">
+    <div class="flex-column confirm-send" [class.image]="tokenBalanceService.isNFT(token)" [class.batch]="parameters">
       <div class="flex-row top">
         <div class="flex-column left">
           <span *ngIf="!tokenBalanceService.isNFT(token)" class="key">AMOUNT TO SEND:</span>
@@ -18,14 +18,14 @@
           <span class="amount-tez value">{{ formatAmount(token, totalAmount(),
             false)
             }}</span>
-          <div class="flex-column">
+          <div class="flex-column items">
             <ng-container *ngIf="!tokenTransfer"><span class="amount-usd key">USD: <span class="value">{{'$' +
                   (totalAmount()
                   *
                   walletService.wallet.XTZrate | number:'1.0-2')
                   }}</span></span>
             </ng-container>
-            <span *ngIf="tokenBalanceService.isNFT(token)" class="amount-quantity key">QUANTITY:&nbsp;&nbsp;<span
+            <span *ngIf="tokenBalanceService.isNFT(token)" class="key amount-quantity">QUANTITY:&nbsp;&nbsp;<span
                 class="value">{{ getQuantity(totalAmount())
                 }}</span></span>
             <span class="key">FEE:&nbsp;&nbsp;<span class="value">{{ (getTotalFee() | number:'1.0-6') + ' tez'
@@ -121,7 +121,7 @@
           </div>
         </ng-container>
       </div>
-      <div class="flex-column bottom">
+      <div class="flex-column bottom" [style.margin]="transactions.length > 1 ? '2rem 0 0 0' : ''">
         <span [style.visibility]="!pwdInvalid ? 'hidden' : ''" [style.margin]="!pwdInvalid ? '0' : ''"
           class="label danger">{{ this.pwdInvalid }}</span>
         <span class="label">ENTER YOUR PASSWORD TO CONFIRM:</span>

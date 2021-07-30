@@ -3,7 +3,40 @@
 
 & .confirm-send {
   margin: 2rem 0 0 0;
+  width: 38rem;
   height: auto;
+
+  &.batch {
+    & .top {
+      & .left {
+        width: 23%;
+      }
+
+      & .right {
+        width: calc(77% - 1rem);
+      }
+    }
+
+    & .from {
+      & .left {
+        width: 23%;
+      }
+
+      & .right {
+        width: calc(77% - 1rem);
+      }
+    }
+
+    & .to {
+      & .left {
+        width: 23%;
+      }
+
+      & .right {
+        width: calc(77% - 1rem);
+      }
+    }
+  }
 
   & .amount-fee {
     &.key {
@@ -93,7 +126,7 @@
     }
 
     & .right {
-      width: 67%;
+      width: 64%;
       height: 100%;
       justify-content: flex-start;
 
@@ -105,16 +138,57 @@
         border-bottom: 3px solid v.$border-color;
       }
 
-      & .key {
-        @include m.multiply("font-size", 1);
-        text-transform: unset;
+      & .items {
+        & .key.amount-quantity {
+          font-weight: 500;
+          color: v.$base-font-color;
+
+          & .value {
+            font-weight: 500;
+            font-size: 1.5rem;
+          }
+        }
+
+        & .key {
+          @include m.multiply("font-size", 1);
+          text-transform: unset;
+
+          & .value {
+            font-size: 1rem;
+          }
+        }
+      }
+    }
+
+    &.image {
+      align-items: center;
+      padding: 1rem;
+      width: calc(100% - 2rem);
+      & .left {
+        width: auto;
+        height: auto;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      & .right {
+        height: 100%;
+        justify-content: center;
+        width: calc(67% - 0.5rem);
+        margin: 0 1rem 0 0;
+      }
+
+      & .token-image {
+        width: 7.5rem;
+        height: 7.5rem;
+        margin: 0;
       }
     }
   }
 
   & .from {
     margin-top: 1rem;
-    padding: 1rem 0;
+    padding: 1rem 2rem;
 
     & .left {
       width: 30%;
@@ -127,7 +201,7 @@
     }
 
     & .right {
-      width: 67%;
+      width: 64%;
       height: auto;
       justify-content: space-between;
     }
@@ -149,11 +223,11 @@
       border-bottom: 3px solid v.$border-color;
 
       &:first-child {
-        width: 10%;
+        width: 12%;
       }
 
       &:last-child {
-        width: 81%;
+        width: 75%;
       }
     }
 
@@ -166,7 +240,7 @@
   }
 
   & .to {
-    padding: 2rem 0;
+    padding: 2rem;
     margin: 1rem 0 0 0;
     align-items: flex-start;
     background-color: #7178e333;
@@ -184,7 +258,7 @@
     }
 
     & .right {
-      width: 67%;
+      width: 64%;
       height: auto;
       justify-content: space-between;
 
@@ -217,7 +291,7 @@
       }
 
       & .transaction {
-        width: calc(100% - 1.25rem);
+        width: 100%;
         justify-content: center;
 
         & .single-to {
@@ -229,7 +303,7 @@
           margin: 0 0 0.5rem 0;
 
           & span {
-            font-size: 0.825rem;
+            font-size: 1rem;
           }
 
           &:not(.scroll) {
@@ -319,7 +393,7 @@
 
   & .bottom {
     border-top: 2px solid v.$border-color;
-    margin: 2rem 0 0 0;
+    margin: 0;
 
     & .label {
       height: 1.25rem;
@@ -335,8 +409,103 @@
 }
 
 @media (max-width: calc(#{v.$lower-limit} - 50rem)) {
+  & .confirm-send {
+    width: 33rem;
+    & .divider {
+      & span {
+        border-bottom: 3px solid v.$border-color;
+
+        &:first-child {
+          width: 12%;
+        }
+
+        &:last-child {
+          width: 45%;
+        }
+      }
+    }
+
+    & .top {
+      width: calc(100% - 4rem);
+
+      & .left {
+        width: 33%;
+      }
+
+      & .right {
+        width: calc(69% - 2rem);
+      }
+    }
+
+    & .from {
+      padding: 1rem 2rem;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+
+      & .left {
+        width: 31%;
+        align-items: flex-start;
+      }
+
+      & .right {
+        width: 100%;
+
+        & .address {
+          font-size: 1.5rem;
+          font-family: "Roboto Mono";
+          margin: 0.5rem 0 0 0;
+        }
+      }
+    }
+
+    & .to {
+      padding: 2rem;
+      width: calc(100% - 4rem);
+      flex-direction: column;
+
+      & .left {
+        width: 31%;
+        height: auto;
+        align-items: flex-start;
+      }
+
+      & .right {
+        width: 100%;
+
+        & .transaction {
+          & .torus-to {
+            left: 0;
+            margin: 0.5rem 0 0 0;
+          }
+
+          & .single-to {
+            margin: 0.5rem 0 0 0;
+
+            & span {
+              font-family: "Roboto Mono";
+              font-size: 1.5rem;
+            }
+          }
+        }
+      }
+    }
+
+    & .bottom {
+      width: 100%;
+    }
+  }
+
+  & .confirm-send.image {
+  }
+
   & .confirm-send.batch {
     width: 32rem;
+
+    & .divider {
+      display: none;
+    }
+
     & .top,
     & .to,
     & .from {
@@ -355,6 +524,31 @@
         width: calc(60% - 2rem);
         margin: 0 2rem 0 0;
       }
+
+      &.image {
+        align-items: center;
+        padding: 1rem;
+        width: calc(100% + 2rem);
+        & .left {
+          width: auto;
+          height: auto;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        & .right {
+          height: 100%;
+          justify-content: center;
+          width: calc(67% - 2rem);
+          margin: 0 2rem 0 0;
+        }
+
+        & .token-image {
+          width: 8rem;
+          height: 8rem;
+          margin: 0 0 0 1.5rem;
+        }
+      }
     }
 
     & .from {
@@ -365,6 +559,10 @@
 
       & .right {
         width: 67%;
+
+        & .address {
+          margin: 0.5rem 0 0 3rem;
+        }
       }
     }
 
@@ -374,6 +572,9 @@
       & .left,
       .right {
         width: calc(100% - 2rem);
+        & .torus-to {
+          left: 0;
+        }
       }
 
       & .left {
@@ -406,9 +607,6 @@
           }
         }
       }
-    }
-    & .bottom {
-      margin: 2rem 0 0 0;
     }
   }
 }
