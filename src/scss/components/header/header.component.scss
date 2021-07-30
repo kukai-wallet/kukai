@@ -17,6 +17,21 @@
       height: 100%;
     }
   }
+
+  & .network {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    padding: 0.5rem 0;
+    @include m.multiply('font-size',1.25);
+    font-weight: 500;
+    color: v.$base-font-color;
+    z-index: 5000;
+    text-align: center;
+    background-color: v.$base-end-color;
+    transition: 0.25s box-shadow;
+  }
 }
 
 .top-container.desktop {

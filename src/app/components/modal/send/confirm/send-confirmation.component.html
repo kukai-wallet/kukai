@@ -54,15 +54,15 @@
           <span class="key">SEND TO: </span>
         </div>
         <div class="flex-column right">
-          <div class="flex-column" *ngFor="let transaction of transactions | slice:0:showAll; index as i"
-            (click)="updateParameters(i, transaction.parameters)">
+          <div *ngFor="let transaction of transactions | slice:0:showAll; index as i"
+            (click)="updateParameters(i, transaction.parameters)" class="flex-column transaction">
             <span *ngIf="transaction?.meta && transaction.meta?.verifier" class="flex-row torus-to value"><img
                 src="../../../assets/img/{{ transaction.meta.verifier }}-logo.svg" class="icon">
               {{ transaction.meta?.alias }}</span>
             <span class="flex-row single-to" [class.default]="transactions.length === 1"
               [class.selectable]="transactions.length > 1 && parameters"
               [class.active]="batchParamIndex === i && transactions.length > 1 && parameters"><span
-                style="width: 34rem; font-family: 'Roboto Mono';">{{
+                style="font-family: 'Roboto Mono';">{{
                 transaction?.destination
                 }}</span><input *ngIf="parameters" type="radio"
                 [checked]="batchParamIndex === i && transactions.length > 1 && parameters" /></span>

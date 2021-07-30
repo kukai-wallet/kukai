@@ -118,7 +118,7 @@
   }
 
   & .received {
-    &.confirmed {
+    &.confirmed .title {
       color: v.$base-blue-color-lightened;
     }
   }

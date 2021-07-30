@@ -1,3 +1,6 @@
+<div *ngIf="!CONSTANTS.MAINNET" class="network" [style.boxShadow]="document?.body.scrollTop !== 0 ? '0 2px 10px #3333' : ''">
+  {{ CONSTANTS.NETWORK.toUpperCase() }} VERSION
+</div>
 <div class="flex-row top-container desktop" [class]="router.url.indexOf('/account') === 0 ? 'default' : ''">
   <a routerLink="/" class="flex-row brand-logo">
     <img class="icon" src="../../../assets/img/header-logo.svg" />

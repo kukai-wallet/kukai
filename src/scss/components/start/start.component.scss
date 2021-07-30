@@ -124,11 +124,14 @@
       & .social {
         justify-content: flex-start;
 
+        & .torus {
+          width: fit-content;
+        }
+
         .facebook,
         .twitter,
         .reddit,
         &>.google img {
-          margin: 0 0 0 2rem;
           border-radius: v.$border-radius-hardest;
           width: 4rem;
           height: 4rem;
@@ -138,8 +141,7 @@
         .facebook,
         .twitter,
         .reddit {
-          width: 4rem;
-          height: 4rem;
+          margin: 0 0 0 2rem;
           padding: 1rem;
         }
 
@@ -160,16 +162,16 @@
           min-width: 27rem;
           height: 6rem;
           color: v.$base-font-color;
-          padding: 0 3rem 0 0.5rem;
+          padding: 0 1rem 0 2rem;
 
           &>span {
             padding: 1rem 0;
             @include m.multiply('font-size',1.375);
             font-weight: 600;
+            width: 100%;
           }
 
           & img {
-            margin: 0 0 0 1rem;
             width: 2rem;
             height: 2rem;
           }
@@ -246,8 +248,7 @@
 
           & .facebook,
           & .twitter,
-          & .reddit,
-          &>.google img {
+          & .reddit {
             margin: 0 0 0 1rem;
           }
 
@@ -260,7 +261,7 @@
           }
 
           & .google {
-            width: 26rem;
+            min-width: 28rem;
             height: 5rem;
           }
         }
@@ -269,7 +270,7 @@
   }
 }
 
-@media (max-width: v.$lower-limit) {
+@media (max-width: calc(#{v.$lower-limit} + 20em)) {
 
   :host {
 

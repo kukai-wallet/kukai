@@ -85,6 +85,7 @@
         @include m.multiply('font-size',1.5);
         height: 3rem;
         align-items: flex-start;
+        letter-spacing: 0.02em;
       }
 
       & .prices {

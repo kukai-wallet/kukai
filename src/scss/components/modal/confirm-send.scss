@@ -2,27 +2,26 @@
 @use '../../abstracts/variables'as v;
 
 & .confirm-send {
-
   margin: 2rem 0 0 0;
   height: auto;
 
   & .amount-fee {
     &.key {
-      @include m.multiply('font-size',1.25);
+      @include m.multiply("font-size", 1.25);
     }
 
     .value {
-      @include m.multiply('font-size',1.25);
+      @include m.multiply("font-size", 1.25);
     }
   }
 
   & .amount-quantity {
     &.key {
-      @include m.multiply('font-size',1.25);
+      @include m.multiply("font-size", 1.25);
     }
 
     .value {
-      @include m.multiply('font-size',1.625);
+      @include m.multiply("font-size", 1.625);
     }
   }
 
@@ -101,13 +100,13 @@
       & .amount-tez {
         margin: 0 0 1rem 0;
         padding: 0 0 0.5rem 0;
-        @include m.multiply('font-size',1.5);
+        @include m.multiply("font-size", 1.5);
         font-weight: 600;
         border-bottom: 3px solid v.$border-color;
       }
 
       & .key {
-        @include m.multiply('font-size',1);
+        @include m.multiply("font-size", 1);
         text-transform: unset;
       }
     }
@@ -131,17 +130,16 @@
       width: 67%;
       height: auto;
       justify-content: space-between;
-
     }
 
     & .domain {
-      @include m.multiply('font-size',1.5);
+      @include m.multiply("font-size", 1.5);
       font-weight: 500;
       color: v.$base-font-color;
     }
 
     & .address {
-      @include m.multiply('font-size',1);
+      @include m.multiply("font-size", 1);
       color: v.$base-font-color-secondary;
     }
   }
@@ -204,7 +202,7 @@
 
       & .torus-to {
         justify-content: flex-start;
-        @include m.multiply('font-size',1.5);
+        @include m.multiply("font-size", 1.5);
         font-weight: 500;
         position: relative;
         left: -2.55rem;
@@ -218,29 +216,54 @@
         }
       }
 
-      & .single-to {
+      & .transaction {
+        width: calc(100% - 1.25rem);
+        justify-content: center;
 
-        color: v.$base-font-color-secondary;
-        @include m.multiply('font-size',1.125);
-        font-weight: 400;
-        cursor: pointer;
-        width: 100%;
-
-        &:not(.scroll) {
+        & .single-to {
+          color: v.$base-font-color-secondary;
+          @include m.multiply("font-size", 1.125);
           font-weight: 400;
-        }
+          cursor: pointer;
+          width: 100%;
+          margin: 0 0 0.5rem 0;
 
-        &.active {
-          font-weight: 500;
-          color: v.$base-font-color;
-        }
+          & span {
+            font-size: 0.825rem;
+          }
 
-        &.default {
-          color: v.$base-blue-color-lightened;
-          font-weight: 400;
-          font-size: 1rem;
-          cursor: unset;
+          &:not(.scroll) {
+            font-weight: 400;
+          }
+
+          &.active {
+            font-weight: 500;
+            color: v.$base-font-color;
+          }
+
+          &.default {
+            font-weight: 400;
+            font-size: 1rem;
+            cursor: unset;
+
+            & span {
+              color: v.$base-blue-color-lightened;
+            }
+          }
+
+          & input[type="radio"] {
+            width: 1rem;
+            height: 0.5rem;
+            transform: scale(1.5);
+          }
         }
+      }
+
+      & .show-all {
+        margin: 1rem 0 0 0;
+        text-transform: uppercase;
+        font-weight: 500;
+        color: #6c7a8d;
       }
     }
   }
@@ -248,10 +271,10 @@
   & .advanced-form {
     margin: 1rem 0 0 0;
 
-    &>div {
+    & > div {
       width: 100%;
 
-      &>div {
+      & > div {
         width: 50%;
       }
     }
@@ -266,7 +289,7 @@
     & li.tab {
       appearance: auto;
       cursor: pointer;
-      @include m.multiply('font-size',1.25);
+      @include m.multiply("font-size", 1.25);
       font-weight: 400;
       color: v.$base-font-color-secondary;
 
@@ -296,7 +319,7 @@
 
   & .bottom {
     border-top: 2px solid v.$border-color;
-    margin: 0;
+    margin: 2rem 0 0 0;
 
     & .label {
       height: 1.25rem;
@@ -311,76 +334,81 @@
   }
 }
 
-& .confirm-send.batch {
-  width: 32rem;
-  & .top, & .to, & .from {
-  padding: 2rem 0;
-  margin: 0 0 0 -2rem;
-  border-radius: 0;
-  width: calc(100% + 4rem);
- }
-
- & .top {
-
-  & .left {
-    width: 40%;
-  }
-
-   & .right {
-  width: calc(60% - 2rem);
-  margin: 0 2rem 0 0;
-   }
- }
-
- & .from {
-   & .left {
-    width: auto;
-    margin: 0 0 0 3rem;
-   }
-
-   & .right {
-     width: 67%;
-   }
- }
-
- & .to {
-  flex-direction: column;
-  align-items: center;
-   & .left, .right {
-    width: calc(100% - 2rem);
-   }
-
-   & .left {
-    align-items: flex-start;
-    width: 28%;
-    align-self: flex-start;
-    margin: 0 0 1rem 0;
-
-     & .key {
-      text-align: center;
-      margin: 0.5rem 0 0 3rem;
+@media (max-width: calc(#{v.$lower-limit} - 50rem)) {
+  & .confirm-send.batch {
+    width: 32rem;
+    & .top,
+    & .to,
+    & .from {
+      padding: 2rem 0;
+      margin: 0 0 0 -2rem;
+      border-radius: 0;
+      width: calc(100% + 4rem);
     }
-   }
 
-   & .right {
-     width: calc(100% - 6rem);
-     & .single-to {
-      margin: 0.5rem 0;
-      & input[type=radio] {
-        width: 1rem;
-        height: 1rem;
-        transform: scale(1.5);
+    & .top {
+      & .left {
+        width: 40%;
       }
-     }
-     & .show-all {
-      margin: 1rem 0 0 0;
-      text-transform: uppercase;
-      font-weight: 500;
-      color: #6c7a8d;
-     }
-   }
- }
- & .bottom {
-  margin: 2rem 0 0 0;
- }
+
+      & .right {
+        width: calc(60% - 2rem);
+        margin: 0 2rem 0 0;
+      }
+    }
+
+    & .from {
+      & .left {
+        width: auto;
+        margin: 0 0 0 3rem;
+      }
+
+      & .right {
+        width: 67%;
+      }
+    }
+
+    & .to {
+      flex-direction: column;
+      align-items: center;
+      & .left,
+      .right {
+        width: calc(100% - 2rem);
+      }
+
+      & .left {
+        align-items: flex-start;
+        width: 28%;
+        align-self: flex-start;
+        margin: 0 0 1rem 0;
+
+        & .key {
+          text-align: center;
+          margin: 0.5rem 0 0 3rem;
+        }
+      }
+
+      & .right {
+        width: calc(100% - 6rem);
+        & .transaction {
+          width: 100%;
+          & .single-to {
+            margin: 0.5rem 0;
+            width: 100%;
+            & span {
+              font-size: 1.375rem;
+            }
+            & input[type="radio"] {
+              width: 1rem;
+              height: 1rem;
+              transform: scale(1.5);
+            }
+          }
+        }
+      }
+    }
+    & .bottom {
+      margin: 2rem 0 0 0;
+    }
+  }
 }

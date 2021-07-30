@@ -24,6 +24,7 @@ button {
       @include m.multiply('font-size',1.25);
       margin: 0 1rem 0 0.25rem;
       font-weight: 500;
+      color: v.$base-end-color;
     }
 
     & img {

@@ -4,23 +4,23 @@ import { ContractOverrideType, ContractType } from './services/token/token.servi
 export { Activity };
 
 export interface KeyPair {
-  sk: string|null;
-  pk: string|null;
+  sk: string | null;
+  pk: string | null;
   pkh: string;
 }
 export interface Wallet {
-seed: null|string;
-salt: null|string;
-pk?: string;
-encryptionVersion: number|null;
-type: WalletType;
-balance: Balance;
-XTZrate: number | null;
-accounts: Account[];
-derivationPath?: string;
+  seed: null | string;
+  salt: null | string;
+  pk?: string;
+  encryptionVersion: number | null;
+  type: WalletType;
+  balance: Balance;
+  XTZrate: number | null;
+  accounts: Account[];
+  derivationPath?: string;
 }
 export interface Account {
-pkh: string|null;
+  pkh: string | null;
   delegate: string;
   balance: Balance;
   numberOfActivites: number;
@@ -119,6 +119,6 @@ export interface Constants {
   ALLOWED_EMBED_ORIGINS: string[];
   ASSETS: Record<string, ContractType>;
   CONTRACT_OVERRIDES: Record<string, ContractOverrideType>;
-  CONTRACT_ALIASES: Record<string, {address: string[], thumbnailUrl: string, link: string, shouldDisplayLink: boolean}>;
+  CONTRACT_ALIASES: Record<string, { address: string[], thumbnailUrl: string, link: string, shouldDisplayLink: boolean }>;
   NFT_CONTRACT_OVERRIDES: string[];
 }

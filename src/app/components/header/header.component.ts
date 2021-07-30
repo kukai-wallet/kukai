@@ -18,6 +18,8 @@ import { SubjectService } from '../../services/subject/subject.service';
   styleUrls: ['../../../scss/components/header/header.component.scss']
 })
 export class HeaderComponent implements OnInit {
+  window = window;
+  document = document;
   @Input() activeAccount: Account;
   accounts: Account[];
   delegateName = '';
@@ -38,6 +40,7 @@ export class HeaderComponent implements OnInit {
       this.delegateName = await this.getDelegateName(this.activeAccount?.delegate);
     });
     this.accounts = this.walletService.wallet?.getAccounts();
+    console.log(window, document)
 
     this.router.events
       .pipe(filter((evt) => evt instanceof NavigationEnd))
