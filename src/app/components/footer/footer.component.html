@@ -1,14 +1,22 @@
-<div *ngIf="this.path !== '/embedded'" class="flex-row foot-container">
-  <div class="flex-row left">
-    <!-- <a>Since 2018 &trade;</a> -->
-    <a href="./terms-of-use" target="_blank">Terms of Use</a>
-    <a href="./privacy-policy" target="_blank">Privacy Policy</a>
-    <a target="_blank" href="mailto:contact@kukai.app">Contact</a>
-    <a class="docs" href="https://docs.kukai.app" target="_blank">Help</a>
-  </div>
-  <div class="flex-row" class="right">
+<div *ngIf="this.path !== '/embedded'" class="foot-container" [class.dark]="true">
+  <div class="flex-row-wrap" id="follow">
+    <span>follow kukai on</span>
     <a href="https://github.com/kukai-wallet/kukai" target="_blank"><img src="../../../assets/img/logo-github.svg"></a>
-    <a href="https://t.me/KukaiWallet" target="_blank"><img src="../../../assets/img/logo-telegram.svg"></a>
+    <a id="tg" href="https://t.me/KukaiWallet" target="_blank"><img src="../../../assets/img/logo-telegram.svg"></a>
     <a href="https://twitter.com/KukaiWallet/" target="_blank"><img src="../../../assets/img/logo-twitter.svg"></a>
+  </div>
+  <div class="links">
+    <div class="left low">
+      <a href="./terms-of-use" target="_blank">Terms of Use</a>
+      <a href="./privacy-policy" target="_blank">Privacy Policy</a>
+      <a target="_blank" href="mailto:contact@kukai.app">Contact</a>
+    </div>
+    <div class="since low">
+      <a>Since 2018 &trade;</a>
+    </div>
+    <div class="low">
+        <a class="docs" href="https://docs.kukai.app" target="_blank">
+          Help</a>
+    </div>
   </div>
 </div>
