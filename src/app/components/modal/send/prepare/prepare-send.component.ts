@@ -331,18 +331,35 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
     assert(this.inputValidationService.gas(this.customGasLimit), 'Invalid gas limit');
     assert(this.inputValidationService.gas(this.customStorageLimit), 'Invalid storage limit');
     assert(!this.checkBalance(), this.checkBalance());
-    const fullyTxs: FullyPreparedTransaction[] = [];
     assert(minimalTxs.length === this.defaultTransactionParams.customLimits?.length, 'Simulation error');
-    for (let i = 0; i < minimalTxs.length; i++) {
-      const fullyTx: FullyPreparedTransaction = {
-        ...minimalTxs[i],
-        fee: (i === minimalTxs.length - 1) ? this.getTotalFee().toString() : '0',
-        gasLimit: this.customGasLimit ? this.customGasLimit : this.defaultTransactionParams.customLimits[i].gasLimit.toString(),
-        storageLimit: this.customStorageLimit ? this.customStorageLimit : this.defaultTransactionParams.customLimits[i].storageLimit.toString(),
-      };
-      fullyTxs.push(fullyTx);
+    return this.opsWithCustomLimits();
+  }
+  opsWithCustomLimits(): FullyPreparedTransaction[] {
+    let extraGas: number = 0;
+    let extraStorage: number = 0;
+    if (this.customGasLimit && this.customGasLimit !== this.defaultTransactionParams.gas.toString()) {
+      extraGas = Number(this.customGasLimit) - this.defaultTransactionParams.gas;
     }
-    return fullyTxs;
+    if (this.customStorageLimit && this.customStorageLimit !== this.defaultTransactionParams.storage.toString()) {
+      extraStorage = Number(this.customStorageLimit) - this.defaultTransactionParams.storage;
+    }
+    const extraGasPerOp: number = Math.round(extraGas / this.transactions.length);
+    const extraStoragePerOp: number = Math.round(extraStorage / this.transactions.length);
+    const txs: FullyPreparedTransaction[] = [];
+    for (let i = 0; i < this.transactions.length; i++) {
+      let gasLimit: string = extraGas ? (Number(this.defaultTransactionParams.customLimits[i].gasLimit) + extraGasPerOp).toString() : this.defaultTransactionParams.customLimits[i].gasLimit.toString();
+      let storageLimit = extraStorage ? (Number(this.defaultTransactionParams.customLimits[i].storageLimit) + extraStoragePerOp).toString() : this.defaultTransactionParams.customLimits[i].storageLimit.toString();
+      gasLimit = !(Number(gasLimit) < 0) ? gasLimit : '0';
+      storageLimit = !(Number(storageLimit) < 0) ? storageLimit : '0';
+      const fullyTx: FullyPreparedTransaction = {
+        ...this.transactions[i],
+        fee: (i === this.transactions.length - 1) ? this.getTotalFee().toString() : '0',
+        gasLimit,
+        storageLimit,
+      };
+      txs.push(fullyTx);
+    }
+    return txs;
   }
   invalidTorusAccount(): string {
     const torusError = { google: 'Invalid Google email address', reddit: 'Invalid Reddit username', twitter: 'Invalid Twitter username', domain: 'Tezos Domains must be valid url' };

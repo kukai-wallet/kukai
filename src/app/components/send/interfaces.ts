@@ -21,6 +21,7 @@ export interface ConfirmRequest {
   account: Account;
   tokenTransfer: string;
   transactions: FullyPreparedTransaction[];
+  externalReq: boolean
 }
 export interface PartiallyPreparedTransaction {
   kind: 'transaction';

@@ -28,15 +28,14 @@ import { SubjectService } from '../../../../services/subject/subject.service';
 })
 export class ConfirmSendComponent extends ModalComponent implements OnInit, OnChanges {
   @Input() confirmRequest: PrepareRequest = null;
-  @Input() headlessMode: boolean;
   @Output() operationResponse = new EventEmitter();
   syncSub: Subscription;
   tokenTransfer = '';
   activeAccount = null;
+  externalReq: boolean = false;
   transactions: FullyPreparedTransaction[] = [];
   costPerByte: string = this.estimateService.costPerByte;
 
-  totalBurn = 0;
   customFee = '';
   customGasLimit = '';
   customStorageLimit = '';
@@ -79,19 +78,20 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
   ngOnChanges(changes: SimpleChanges): void {
     if (changes?.confirmRequest?.currentValue) {
       this.reset(true);
+      this.externalReq = changes.confirmRequest.currentValue.externalReq;
       this.tokenTransfer = changes.confirmRequest.currentValue.tokenTransfer;
       this.activeAccount = changes.confirmRequest.currentValue.account;
-      this.tezosDomainService.getDomainFromAddress(this.activeAccount?.address).then(d => {
-        this.domain = d;
+      this.tezosDomainService.getDomainFromAddress(this.activeAccount?.address).then(domain => {
+        this.domain = domain;
       })
       this.transactions = changes.confirmRequest.currentValue.transactions;
       this.token = this.tokenService.getAsset(this.tokenTransfer);
       console.log('transactions', this.transactions);
-      if (this.headlessMode) {
+      if (this.externalReq) {
         ModalComponent.currentModel.next({ name: this.name, data: null });
       }
       this.init();
-      if (this.headlessMode) {
+      if (this.externalReq) {
         this.syncSub = this.subjectService.beaconResponse.subscribe((response) => {
           if (response) {
             this.closeModalAction('silent');
@@ -100,10 +100,10 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
       }
     }
   }
-  open(d) {
-    this.customFee = d?.customFee;
-    this.customGasLimit = d?.customGasLimit;
-    this.customStorageLimit = d?.customStorageLimit;
+  open(data: any) {
+    this.customFee = data?.customFee;
+    this.customGasLimit = data?.customGasLimit;
+    this.customStorageLimit = data?.customStorageLimit;
     super.open();
   }
   async init() {
@@ -187,10 +187,22 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
     return totalFee.toFixed();
   }
   getTotalBurn(): number {
-    if (this.customStorageLimit !== '' && Number(this.customStorageLimit)) {
-      return this.totalBurn = Number(Big(this.customStorageLimit).mul(this.transactions.length).times(this.costPerByte).div(1000000).toString());
+    const totalActiveStorageLimit: number = (this.customStorageLimit !== '' && Number(this.customStorageLimit)) ? Number(this.customStorageLimit) : this.getTotalDefaultStorage();
+    return Number(Big(totalActiveStorageLimit).times(this.costPerByte).div(1000000).toString());
+  }
+  getTotalDefaultGas(): number {
+    let totalGas = Big(0);
+    for (const tx of this.transactions) {
+      totalGas = totalGas.plus(tx.gasLimit);
     }
-    return this.totalBurn ?? 0;
+    return totalGas.toFixed();
+  }
+  getTotalDefaultStorage(): number {
+    let totalStorage = Big(0);
+    for (const tx of this.transactions) {
+      totalStorage = totalStorage.plus(tx.storageLimit);
+    }
+    return totalStorage.toFixed();
   }
   getQuantity(amount) {
     return Big(amount).div(10 ** (false ? this.token.decimals : 0)).toFixed();
@@ -231,18 +243,6 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
     }
   }
   async inject() {
-    const _t = [];
-    for (let i = 0; i < this.transactions.length; i++) {
-      const fullyTx: FullyPreparedTransaction = {
-        ...this.transactions[i],
-        fee: (i === this.transactions.length - 1) ? this.getTotalFee().toString() : '0',
-        gasLimit: this.customGasLimit ? this.customGasLimit.toString() : this.transactions[i].gasLimit.toString(),
-        storageLimit: this.customStorageLimit ? this.customStorageLimit.toString() : this.transactions[i].storageLimit.toString(),
-      };
-      _t.push(fullyTx);
-    }
-    this.transactions = _t;
-
     if (this.walletService.isLedgerWallet()) {
       this.broadCastLedgerTransaction();
       this.sendResponse = null;
@@ -277,7 +277,8 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
     }
   }
   async sendTransaction(keys: KeyPair) {
-    this.operationService.transfer(this.activeAccount.address, this.transactions, Number(this.getTotalFee()), keys, this.tokenTransfer).subscribe(
+    const txs: FullyPreparedTransaction[] = this.opsWithCustomLimits();
+    this.operationService.transfer(this.activeAccount.address, txs, Number(this.getTotalFee()), keys, this.tokenTransfer).subscribe(
       async (ans: any) => {
         this.sendResponse = ans;
         if (ans.success === true) {
@@ -317,6 +318,33 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
         this.reset();
       },
     );
+  }
+  opsWithCustomLimits(): FullyPreparedTransaction[] {
+    let extraGas: number = 0;
+    let extraStorage: number = 0;
+    if (this.customGasLimit && this.customGasLimit !== this.getTotalDefaultGas().toString()) {
+      extraGas = Number(this.customGasLimit) - this.getTotalDefaultGas();
+    }
+    if (this.customStorageLimit && this.customStorageLimit !== this.getTotalDefaultStorage().toString()) {
+      extraStorage = Number(this.customStorageLimit) - this.getTotalDefaultStorage();
+    }
+    const extraGasPerOp: number = Math.round(extraGas / this.transactions.length);
+    const extraStoragePerOp: number = Math.round(extraStorage / this.transactions.length);
+    const txs: FullyPreparedTransaction[] = [];
+    for (let i = 0; i < this.transactions.length; i++) {
+      let gasLimit: string = extraGas ? (Number(this.transactions[i].gasLimit) + extraGasPerOp).toString() : this.transactions[i].gasLimit.toString();
+      let storageLimit = extraStorage ? (Number(this.transactions[i].storageLimit) + extraStoragePerOp).toString() : this.transactions[i].storageLimit.toString();
+      gasLimit = !(Number(gasLimit) < 0) ? gasLimit : '0';
+      storageLimit = !(Number(storageLimit) < 0) ? storageLimit : '0';
+      const fullyTx: FullyPreparedTransaction = {
+        ...this.transactions[i],
+        fee: (i === this.transactions.length - 1) ? this.getTotalFee().toString() : '0',
+        gasLimit,
+        storageLimit,
+      };
+      txs.push(fullyTx);
+    }
+    return txs;
   }
   async requestLedgerSignature() {
     if (this.walletService.wallet instanceof LedgerWallet) {
@@ -440,6 +468,13 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
     this.transactions = [];
     this.activeAccount = null;
 
+    this.customFee = '';
+    this.customGasLimit = '';
+    this.customStorageLimit = '';
+
+    this.token = null;
+    this.domain = undefined;
+
     this.parameters = null;
     this.batchParamIndex = 0;
     this.micheline = null;
@@ -453,5 +488,6 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
     this.pwdInvalid = '';
     this.advancedForm = false;
     this.customFee = '';
+    this.externalReq = false;
   }
 }

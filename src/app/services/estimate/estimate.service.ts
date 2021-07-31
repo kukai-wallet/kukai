@@ -126,8 +126,8 @@ export class EstimateService {
         }
         return await this.operationService.localForge(op).pipe(flatMap(fop => {
           const bytes = (fop.length / 2) + 64;
-          const gas = this.averageGasLimit(limits);
-          const storage = this.averageStorageLimit(limits);
+          const gas = this.totalGasLimit(limits);
+          const storage = this.totalStorageLimit(limits);
           const dtp: DefaultTransactionParams = { customLimits: limits, fee: this.recommendFee(limits, reveal, bytes), burn: this.burnFee(limits), gas, storage, reveal };
           console.log(JSON.stringify(dtp));
           return of(dtp);
@@ -212,19 +212,19 @@ export class EstimateService {
     bytes += 10 * numberOfOperations; // add 10 extra bytes for variation in amount & fee
     return Number(Big(Math.ceil(minimalFee + (feePerByte * bytes) + (feePerGasUnit * gasUnits))).div(1000000).toString());
   }
-  averageGasLimit(limits: any): number {
+  totalGasLimit(limits: any): number {
     let totalGasLimit = 0;
     for (const data of limits) {
       totalGasLimit += data.gasLimit;
     }
-    return Math.ceil(totalGasLimit / limits.length);
+    return totalGasLimit;
   }
-  averageStorageLimit(limits: any): number {
+  totalStorageLimit(limits: any): number {
     let totalStorageLimit = 0;
     for (const data of limits) {
       totalStorageLimit += data.storageLimit;
     }
-    return Math.ceil(totalStorageLimit / limits.length);
+    return totalStorageLimit;
   }
   burnFee(limits: any): number {
     let totalStorageLimit = Big(0);

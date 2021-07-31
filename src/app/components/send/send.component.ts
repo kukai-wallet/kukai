@@ -20,7 +20,6 @@ import { SubjectService } from '../../services/subject/subject.service';
 
 export class SendComponent implements OnInit, OnChanges {
   @Input() activeAccount: Account;
-  @Input() headless: boolean;
   @Input() tokenTransfer: string;
   @Input() operationRequest: string;
   @Input() template: Template;
@@ -49,7 +48,7 @@ export class SendComponent implements OnInit, OnChanges {
     });
   }
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.headless && changes?.operationRequest?.currentValue) {
+    if (changes?.operationRequest?.currentValue) {
       this.checkOpReq(changes.operationRequest.currentValue);
     }
   }
@@ -165,7 +164,7 @@ export class SendComponent implements OnInit, OnChanges {
                 }
               }
             } else {
-              this.confirmTransactions(fullyPrepared);
+              this.confirmTransactions(fullyPrepared, true);
             }
           }
         } else {
@@ -183,14 +182,14 @@ export class SendComponent implements OnInit, OnChanges {
   prepareTransaction() {
     this.prepareRequest = { account: this.activeAccount, tokenTransfer: this.tokenTransfer, symbol: this.symbol };
   }
-  confirmTransactions(transactions: FullyPreparedTransaction[]) {
-    this.confirmRequest = { account: this.activeAccount, tokenTransfer: this.tokenTransfer, transactions };
+  confirmTransactions(transactions: FullyPreparedTransaction[], externalReq: boolean) {
+    this.confirmRequest = { account: this.activeAccount, tokenTransfer: this.tokenTransfer, transactions, externalReq };
   }
   handlePrepareResponse(preparedTransactions: FullyPreparedTransaction[]) {
     this.prepareRequest = null;
     if (preparedTransactions) {
       console.log('PrepareResponse', preparedTransactions);
-      this.confirmTransactions(preparedTransactions);
+      this.confirmTransactions(preparedTransactions, false);
     }
   }
   handleConfirmResponse(opHash: string) {
