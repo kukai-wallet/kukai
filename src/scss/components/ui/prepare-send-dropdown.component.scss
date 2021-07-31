@@ -12,10 +12,13 @@
   right: 2px;
   cursor: pointer;
   font-size: 1em;
-  border: 2px solid v.$base-color-lightened-6;
+  border: v.$border-width-thin solid v.$base-color-lightened-6;
   border-radius: v.$border-radius-hard;
   transition: 0.25s border-radius;
   padding: 0 0.5rem;
+  & * {
+    -webkit-tap-highlight-color:  rgba(255, 255, 255, 0); 
+  }
 
   & input {
     text-align: left;

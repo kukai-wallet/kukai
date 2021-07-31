@@ -27,7 +27,7 @@
     height: 1.15rem;
     padding: 0.5rem 0rem;
     border-radius: v.$border-radius-hard;
-    border: 2px solid v.$base-color-lightened-5;
+    border: v.$border-width-thin solid v.$base-color-lightened-5;
   }
 }
 
@@ -72,7 +72,7 @@
       &-inverted {
         background-color: v.$base-end-color;
         color: v.$base-blue-color-lightened;
-        border: 2px solid v.$base-blue-color-lightened;
+        border: v.$border-width-thin solid v.$base-blue-color-lightened;
         @extend %button;
       }
     }

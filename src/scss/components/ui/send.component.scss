@@ -16,7 +16,7 @@ button {
 
     &:not(.tez) {
       background-color: transparent;
-      border: 3px solid v.$base-color-lightened-5;
+      border: v.$border-width solid v.$base-color-lightened-5;
       border-radius: v.$border-radius-hardest;
     }
 

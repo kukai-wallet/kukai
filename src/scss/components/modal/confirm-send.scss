@@ -98,7 +98,7 @@
         height: 3rem;
         box-shadow: unset;
         border-radius: v.$border-radius-hard;
-        border: 2px solid v.$base-color-lightened-5;
+        border: v.$border-width-thin solid v.$base-color-lightened-5;
       }
     }
 

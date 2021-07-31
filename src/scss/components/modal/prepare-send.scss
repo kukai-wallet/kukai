@@ -9,7 +9,7 @@
 
   & textarea {
     border-radius: v.$border-radius-hard;
-    border: 3px solid v.$border-color;
+    border: v.$border-width solid v.$border-color;
     padding: 2rem;
     margin: 1rem 0;
   }
@@ -86,7 +86,7 @@
         height: 2.75rem;
         background-color: transparent;
         color: #666;
-        border: 2px solid v.$border-color;
+        border: v.$border-width-thin solid v.$border-color;
         padding: 0 1rem;
         font-weight: 600;
         font-size: 1rem;
@@ -157,7 +157,7 @@
     width: 17rem;
     background-color: v.$base-end-color;
     color: v.$base-font-color-secondary;
-    border: 3px solid v.$border-color;
+    border: v.$border-width solid v.$border-color;
     font-size: 1rem;
   }
 

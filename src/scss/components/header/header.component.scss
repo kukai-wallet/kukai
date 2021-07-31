@@ -101,7 +101,7 @@
         padding: 0.6rem 0 0.6rem 2rem;
         background-color: v.$base-end-color;
         border-radius: v.$border-radius;
-        border: 2px solid v.$base-color-lightened-5;
+        border: v.$border-width-thin solid v.$base-color-lightened-5;
         border-radius: 2rem;
         transition: 0.25s border-radius;
         text-align: left;
@@ -137,7 +137,7 @@
       & .icon {
 
         margin-right: 1rem;
-        border: 2px solid v.$base-color-lightened-5;
+        border: v.$border-width-thin solid v.$base-color-lightened-5;
         width: 2rem;
         height: 2rem;
         padding: calc(0.5rem + 1px);
@@ -207,7 +207,7 @@
 
   & .copy {
     margin-right: 1rem;
-    border: 2px solid v.$base-color-lightened-5;
+    border: v.$border-width-thin solid v.$base-color-lightened-5;
     width: 2rem;
     height: 2rem;
     padding: 0.5rem;
@@ -222,7 +222,7 @@
 
   & .hamburger-dropdown {
     cursor: pointer;
-    border: 2px solid #9993;
+    border: v.$border-width-thin solid #9993;
     border-radius: 10rem;
     width: 4.5rem;
     height: 4.5rem;

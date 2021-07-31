@@ -36,7 +36,7 @@
       position: absolute;
       width: calc(3rem - 6px);
       height: calc(3rem - 6px);
-      border: 3px solid v.$border-color;
+      border: v.$border-width solid v.$border-color;
       border-radius: v.$border-radius-hardest;
 
       & .x {
@@ -87,7 +87,7 @@
       height: 4rem;
       width: calc(100% - 2rem);
       background-color: v.$base-end-color;
-      border: 2px solid v.$border-color;
+      border: v.$border-width-thin solid v.$border-color;
       border-radius: v.$border-radius-hardest;
       @include m.multiply('font-size',1.25);
 

@@ -20,7 +20,7 @@
         width: 14rem;
         padding: 0.5rem 0 0.5em 1.5rem;
         background-color: v.$base-background-color;
-        border: 2px solid v.$base-color-lightened-5;
+        border: v.$border-width-thin solid v.$base-color-lightened-5;
         border-radius: v.$border-radius-hard;
       }
 
@@ -81,7 +81,7 @@
         height: 3.5rem;
         margin-right: 1rem;
         border-radius: v.$border-radius-hardest;
-        border: 2px solid v.$base-color-lightened-5;
+        border: v.$border-width-thin solid v.$base-color-lightened-5;
       }
 
       & .title {
@@ -124,7 +124,7 @@
         margin-right: 0.5rem;
         padding: 0.5rem;
         border-radius: v.$border-radius-hard;
-        border: 2px solid v.$base-color-lightened-6;
+        border: v.$border-width-thin solid v.$base-color-lightened-6;
         object-fit: scale-down;
       }
     }

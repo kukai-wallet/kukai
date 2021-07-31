@@ -27,7 +27,7 @@
         right: 0;
         bottom: 0;
         background-color: v.$base-end-color;
-        border: 2px solid v.$advanced-color;
+        border: v.$border-width-thin solid v.$advanced-color;
         border-radius: v.$border-radius-hardest;
         transition: 0.4s;
         width: 3.5rem;

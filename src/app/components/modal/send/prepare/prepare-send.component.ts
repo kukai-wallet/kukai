@@ -250,7 +250,7 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
     2. create basic transaction array
   */
   updateDefaultValues(e?: any) {
-    const val = e?.target.value;
+    const val = e?.target.value.trim();
     if (val) {
       if (val.indexOf('@') === 0) {
         this.torusVerifier = 'twitter';
@@ -259,6 +259,7 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
         this.torusVerifier = '';
         this.torusVerifierName = 'Tezos Address';
       }
+      e.target.value = e.target.value.trim();
     }
 
     if (!this.torusVerifier) {

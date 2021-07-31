@@ -6,6 +6,10 @@
   display: block;
   position: relative;
 
+  & * {
+    -webkit-tap-highlight-color:  rgba(255, 255, 255, 0); 
+  }
+
   & input {
     @include m.multiply('font-size',1.15);
     width: calc(100% - 3rem);

@@ -17,7 +17,11 @@
   border-top: 1.5rem solid #d6dbe3;
   background-color: v.$base-color-lightened-6;
   z-index: -100;
-  background: linear-gradient(180deg, v.$base-color-lightened-5, v.$base-background-color);
+  background: linear-gradient(
+    180deg,
+    v.$base-color-lightened-5,
+    v.$base-background-color
+  );
 }
 
 :host {
@@ -44,7 +48,6 @@
 }
 
 #wrapper {
-
   width: 100%;
   height: 100%;
   justify-content: center;
@@ -58,19 +61,19 @@
     z-index: 100;
 
     & h1 {
-      @include m.multiply('font-size',7);
+      @include m.multiply("font-size", 7);
       color: v.$base-font-color;
       font-weight: 500;
     }
 
     & h3 {
-      @include m.multiply('font-size',3);
+      @include m.multiply("font-size", 3);
       font-weight: 400;
       line-height: 4.5rem;
       color: #6c7a8d;
     }
 
-    &>div {
+    & > div {
       width: 100%;
       height: 52%;
       justify-content: center;
@@ -91,7 +94,7 @@
       width: calc(100% - 11%);
       padding: 0 0 0 11%;
 
-      &>* {
+      & > * {
         margin: 2rem 0;
       }
     }
@@ -103,20 +106,19 @@
     }
 
     & .login {
-
       position: relative;
       top: -4rem;
 
-      &>* {
+      & > * {
         margin: 1rem 0;
       }
 
-      &>span {
-        @include m.multiply('font-size',3);
+      & > span {
+        @include m.multiply("font-size", 3);
         color: v.$base-font-color;
 
         &:last-of-type {
-          @include m.multiply('font-size',2);
+          @include m.multiply("font-size", 2);
           color: v.$base-font-color;
         }
       }
@@ -131,7 +133,7 @@
         .facebook,
         .twitter,
         .reddit,
-        &>.google img {
+        & > .google img {
           border-radius: v.$border-radius-hardest;
           width: 3.5rem;
           height: 3.5rem;
@@ -148,7 +150,7 @@
         .facebook,
         .twitter,
         .reddit,
-        &>.google {
+        & > .google {
           background-color: v.$base-end-color;
           box-shadow: v.$box-shadow;
           &:hover {
@@ -156,17 +158,17 @@
           }
         }
 
-        &>.google {
-          border: 2px solid v.$border-color;
+        & > .google {
+          border: v.$border-width-thin solid v.$border-color;
           border-radius: v.$border-radius-hardest;
           min-width: 27rem;
           height: 6rem;
           color: v.$base-font-color;
           padding: 0 1rem 0 2rem;
 
-          &>span {
+          & > span {
             padding: 1rem 0;
-            @include m.multiply('font-size',1.375);
+            @include m.multiply("font-size", 1.375);
             font-weight: 600;
             width: 100%;
           }
@@ -185,7 +187,7 @@
         & input,
         & .signin {
           height: 100%;
-          border: 2px solid v.$border-color;
+          border: v.$border-width-thin solid v.$border-color;
           border-radius: v.$border-radius-hardest;
         }
 
@@ -193,7 +195,7 @@
           width: 55%;
           text-align: left;
           padding: 0.5rem 0 0.5rem 2rem;
-          @include m.multiply('font-size',2);
+          @include m.multiply("font-size", 2);
         }
 
         & .signin {
@@ -201,7 +203,7 @@
           height: 5rem;
           background-color: v.$base-background-color;
           color: v.$base-font-color-secondary;
-          @include m.multiply('font-size',1.5);
+          @include m.multiply("font-size", 1.5);
           margin: 0 0 0 2rem;
         }
       }
@@ -228,17 +230,15 @@
 }
 
 @media (max-width: 171em) {
-
   #wrapper {
-
     & .left,
     & .right {
       & h1 {
-        @include m.multiply('font-size',4.5);
+        @include m.multiply("font-size", 4.5);
       }
 
       & h3 {
-        @include m.multiply('font-size',2);
+        @include m.multiply("font-size", 2);
         line-height: 3rem;
       }
 
@@ -271,9 +271,7 @@
 }
 
 @media (max-width: calc(#{v.$lower-limit} + 20em)) {
-
   :host {
-
     & .bottom {
       display: flex !important;
     }
@@ -324,19 +322,19 @@
         }
 
         & .top h1 {
-          @include m.multiply('font-size',6);
+          @include m.multiply("font-size", 6);
           color: v.$base-font-color;
           font-weight: 500;
         }
 
         & .top h3 {
-          @include m.multiply('font-size',2.5);
+          @include m.multiply("font-size", 2.5);
           font-weight: 400;
           line-height: 4rem;
           color: v.$base-font-color-secondary;
         }
 
-        &>div {
+        & > div {
           width: 100%;
           height: 100%;
           justify-content: center;
@@ -359,7 +357,7 @@
           width: 100%;
           padding: 0;
 
-          &>* {
+          & > * {
             margin: 2rem 0;
           }
         }
@@ -368,11 +366,10 @@
           position: unset;
           top: unset;
 
-
-          &>span {
+          & > span {
             text-align: center;
             font-weight: 500;
-            @include m.multiply('font-size',2.5);
+            @include m.multiply("font-size", 2.5);
           }
 
           & .social {
@@ -386,13 +383,15 @@
               min-width: 28rem;
               height: 6rem;
 
-              &>img {
+              & > img {
                 width: 2.5rem;
                 height: 2.5rem;
               }
             }
 
-            & .facebook, & .twitter, & .reddit {
+            & .facebook,
+            & .twitter,
+            & .reddit {
               width: 4.5rem;
               height: 4.5rem;
               padding: 0.75rem;
@@ -410,16 +409,15 @@
 }
 
 @media (max-width: v.$lower-limit) {
-
   :host {
     & #wrapper {
       & .left,
       & .right {
         & h1 {
-          @include m.multiply('font-size',5);
+          @include m.multiply("font-size", 5);
         }
         & h3 {
-          @include m.multiply('font-size',2.25);
+          @include m.multiply("font-size", 2.25);
         }
       }
     }
@@ -427,10 +425,17 @@
 }
 
 @media (max-width: calc(#{v.$lower-limit} - 20em)) {
-
   :host {
     & .is-mobile {
       display: none;
+    }
+  }
+}
+
+@media (max-aspect-ratio: 3/2) and (min-width: calc(#{v.$lower-limit} + 20em)) {
+  :host {
+    & #wrapper {
+      max-height: calc((100vw / 3) * 2);
     }
   }
 }

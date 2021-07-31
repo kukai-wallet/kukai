@@ -29,6 +29,10 @@ $border-radius-hard: calc(#{$border-radius} * 2) !default;
 $border-radius-hardest: calc(#{$border-radius} * 10) !default;
 $border-color: #aaa3;
 
+$border-width: 0.1875rem;
+$border-width-thin: calc((#{$border-width} / 3) * 2);
+$border-width-thick: calc((#{$border-width} / 3) * 4);
+
 // @media constants
 $lower-limit: 63em;
 $middle-limit: 127em;
