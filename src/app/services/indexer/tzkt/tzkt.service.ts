@@ -210,9 +210,9 @@ export class TzktService implements Indexer {
       }).catch(e => {
         return null;
       });
-    const tokenMetadata = fetch(`${this.bcd}/contract/${this.network}/${contractAddress}/tokens?token_id=${id}&offset=0`)
+    const tokenMetadata = fetch(`https://metadata.kukai.network/${this.network}/tokenInfo/${contractAddress}/${id}`)
       .then(response => response.json())
-      .then(async datas => {
+      .then(async data => {
         const keys = [
           { key: 'name', type: 'string' },
           { key: 'decimals', type: 'number' },
@@ -226,37 +226,35 @@ export class TzktService implements Indexer {
           { key: 'series', type: 'string' }
         ];
         // should always be 1
-        assert(datas.length === 1, `cannot find token_id ${id} for contract: ${contractAddress}`);
-        for (const data of datas) {
-          if (data?.token_id === Number(id)) {
-            // possible snake_case to camelCase conversion; depending on future BCD updates
-            mutableConvertObjectPropertiesSnakeToCamel(data);
-            const rawData = JSON.parse(JSON.stringify(data));
-            this.flattern(data);
-            const metadata: any = {};
-            for (const a of keys) {
-              if (typeof data[a.key] === a.type) {
-                metadata[a.key] = data[a.key];
-              }
+        assert(data, `cannot find token_id ${id} for contract: ${contractAddress}`);
+        if (data?.token_id === Number(id)) {
+          // possible snake_case to camelCase conversion; depending on future BCD updates
+          mutableConvertObjectPropertiesSnakeToCamel(data);
+          const rawData = JSON.parse(JSON.stringify(data));
+          this.flattern(data);
+          const metadata: any = {};
+          for (const a of keys) {
+            if (typeof data[a.key] === a.type) {
+              metadata[a.key] = data[a.key];
             }
-            if (metadata.displayUri) {
-              metadata.displayUri = await this.uriToUrl(metadata.displayUri);
-            }
-            if (metadata.thumbnailUri) {
-              metadata.thumbnailUri = await this.uriToUrl(metadata.thumbnailUri);
-            }
-            try { // Exceptions
-              if (metadata?.isBooleanAmount === undefined && typeof data?.isBooleanAmount === 'string' && data?.isBooleanAmount === 'true') { // mandala
-                metadata.isBooleanAmount = true;
-              }
-              if (!metadata.displayUri && data?.symbol === 'OBJKT') { // hicetnunc
-                if (['image/png', 'image/jpg', 'image/jpeg'].includes(rawData.formats[0].mimeType)) {
-                  metadata.displayUri = await this.uriToUrl(rawData.formats[0].uri);
-                }
-              }
-            } catch (e) { }
-            return metadata;
           }
+          if (metadata.displayUri) {
+            metadata.displayUri = await this.uriToUrl(metadata.displayUri);
+          }
+          if (metadata.thumbnailUri) {
+            metadata.thumbnailUri = await this.uriToUrl(metadata.thumbnailUri);
+          }
+          try { // Exceptions
+            if (metadata?.isBooleanAmount === undefined && typeof data?.isBooleanAmount === 'string' && data?.isBooleanAmount === 'true') { // mandala
+              metadata.isBooleanAmount = true;
+            }
+            if (!metadata.displayUri && data?.symbol === 'OBJKT') { // hicetnunc
+              if (['image/png', 'image/jpg', 'image/jpeg'].includes(rawData.formats[0].mimeType)) {
+                metadata.displayUri = await this.uriToUrl(rawData.formats[0].uri);
+              }
+            }
+          } catch (e) { }
+          return metadata;
         }
         console.log(`No token metadata found for ${contractAddress}:${id}`);
         return {};
