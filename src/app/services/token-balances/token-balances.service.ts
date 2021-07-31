@@ -87,7 +87,7 @@ export class TokenBalancesService {
       }
     } else {
       if (nfts['unknown'] === undefined) {
-        nfts['unknown'] = { name: 'Unknown tokens', thumbnailUrl: '../../../assets/img/tokens/unknown-token.png', tokens: [] };
+        nfts['unknown'] = { name: 'Unknown tokens', thumbnailUrl: '../../../assets/img/question-mark.svg', tokens: [] };
       }
       const placeholder = this.tokenService.getPlaceholderToken(token.tokenId);
       placeholder.name = `${placeholder.contractAddress.slice(0, 8)}... (${placeholder.id.toString()})`;

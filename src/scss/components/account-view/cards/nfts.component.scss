@@ -247,6 +247,10 @@
       border-radius: v.$border-radius;
     }
   }
+
+  & #unknown .body .token .img-wrapper .icon {
+    box-shadow: none;
+  }
 }
 
 @media (max-width: v.$lower-limit) {
