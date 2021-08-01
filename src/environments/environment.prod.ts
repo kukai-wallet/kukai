@@ -642,5 +642,6 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1DKBvxiwDR7qazNuuxCxY2AaXnoytmDE7H',//Mandala v2
   'KT1UxMVVrK2pbYYEtwes1zKYdpYnzoZ6yPKC',//Comic app
   'KT1AaaBSo5AE6Eo8fpEN5xhCD4w3kHStafxk',//Minterpop
-  'KT1EpGgjQs73QfFJs9z7m1Mxm5MTnpC2tqse'//Kalamint
+  'KT1EpGgjQs73QfFJs9z7m1Mxm5MTnpC2tqse',//Kalamint
+  'KT1BA9igcUcgkMT4LEEQzwURsdMpQayfb6i4'//turtle
 ];
