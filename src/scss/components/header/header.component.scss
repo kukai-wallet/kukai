@@ -179,8 +179,8 @@
           object-fit: scale-down;
         }
 
-        &:nth-child(2) {
-          margin-right: 2rem;
+        &.settings {
+          margin-left: 2rem;
         }
 
         &:last-child {

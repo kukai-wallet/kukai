@@ -31,7 +31,7 @@
           <div class="description">ADD ACCOUNT</div>
         </div>
       </div>
-      <div class="icon" [routerLink]="'/account/' + activeAccount?.address + '/settings'">
+      <div class="icon settings" [routerLink]="'/account/' + activeAccount?.address + '/settings'">
         <img class="button" src="../../../assets/img/settings.svg" />
         <div class="tooltip">
           <div class="description">SETTINGS</div>
@@ -89,7 +89,7 @@
         <img class="icon" src="../../../assets/img/add.svg" /><span>Add Account</span>
       </div>
       <div class="flex-row button" [routerLink]="'/account/' + activeAccount?.address + '/settings'">
-        <img class="icon" src="../../../assets/img/cog.svg" /><span>Settings</span>
+        <img class="icon settings" src="../../../assets/img/cog.svg" /><span>Settings</span>
       </div>
       <div class="flex-row button" (click)="logout()">
         <img class="icon" src="../../../assets/img/sign-out-alt.svg" /><span>Logout</span>
