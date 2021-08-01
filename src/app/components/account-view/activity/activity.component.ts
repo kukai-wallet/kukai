@@ -62,9 +62,9 @@ export class ActivityComponent implements OnInit {
   }
   sentKind(activity): string {
     if (activity.entrypoint) {
-      return `Called ${activity.entrypoint}`;
+      return `Call ${activity.entrypoint}`;
     }
-    return 'Sent';
+    return '0';
   }
   zeroSent(activity) {
     return (this.sentKind(activity).length > 4 && activity.amount === '0');
