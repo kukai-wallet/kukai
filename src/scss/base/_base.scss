@@ -62,15 +62,6 @@
   user-select: none;
 }
 
-%selection {
-  -webkit-touch-callout: text;
-  -webkit-user-select: text;
-  -khtml-user-select: text;
-  -moz-user-select: text;
-  -ms-user-select: text;
-  user-select: text;
-}
-
 * {
   scrollbar-width: thin;
   scrollbar-color: v.$base-color-lightened-3;
@@ -133,8 +124,8 @@ textarea {
   background-color: #fff;
 }
 
-.selectable {
-  @extend %selection;
+.noselection {
+  @extend %noselection;
 }
 
 .button {
@@ -145,10 +136,6 @@ textarea {
     color: v.$base-blue-color;
     border-color: v.$base-blue-color-lightened !important;
   }
-}
-
-div {
-  @extend %noselection;
 }
 
 button {

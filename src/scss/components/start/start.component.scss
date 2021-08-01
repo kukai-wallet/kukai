@@ -270,7 +270,7 @@
   }
 }
 
-@media (max-width: calc(#{v.$lower-limit} + 20em)) {
+@media (max-width: calc(#{v.$lower-limit} + 20em)) and (max-aspect-ratio: 1/1), (max-width: v.$lower-limit) {
   :host {
     & .bottom {
       display: flex !important;

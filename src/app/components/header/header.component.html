@@ -13,7 +13,7 @@
           <div class="flex-row button" routerLink="/account/{{activeAccount?.address}}/stakers">
             <span *ngIf="!activeAccount?.delegate">STAKING: <span class="choose">NOT
                 STAKED</span></span>
-            <span *ngIf="activeAccount?.delegate" class="selectable address">STAKING: <span>{{ delegateName }}</span></span>
+            <span *ngIf="activeAccount?.delegate" class="address">STAKING: <span>{{ delegateName }}</span></span>
           </div>
         </div>
       </div>
