@@ -17,7 +17,7 @@
     <div class="flex-column">
       <div class="flex-row title">
         <ng-container *ngIf="activity?.amount !== '0'; else zeroCall">
-          {{ '- ' + printAmount(activity) + ' ' + fresh }}</ng-container>
+          {{ '- ' + printAmount(activity) }}</ng-container>
         <ng-template #zeroCall>{{ sentKind(activity) }}</ng-template>
         <span class="failed" *ngIf="activity.status === -1">Failed</span>
       </div>

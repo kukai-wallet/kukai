@@ -28,7 +28,7 @@ export class EventComponent implements OnInit {
   @Input() account: Account;
   ngOnInit(): void {
     setInterval(() => { this.trigger = !this.trigger; this.currTimeStamp = (new Date()).getTime();
-      if(this.activity.status === 1 && this.fresh === undefined && this.freshTimer === null) {
+      if(this.activity.status === 1 && this.fresh === undefined && this.freshTimer === null && this.currTimeStamp - 60000 < this.activity.timestamp) {
         this.fresh = true;
         this.freshTimer = setTimeout(() => {
           this.fresh = false;
