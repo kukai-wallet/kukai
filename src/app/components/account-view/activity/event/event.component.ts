@@ -5,6 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from '../../../../services/message/message.service';
 import { ActivityService } from '../../../../services/activity/activity.service';
 import { TokenService } from '../../../../services/token/token.service';
+import { CONSTANTS } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-event',
