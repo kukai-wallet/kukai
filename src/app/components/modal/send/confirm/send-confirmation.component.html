@@ -22,7 +22,7 @@
             <ng-container *ngIf="!tokenTransfer"><span class="amount-usd key">USD: <span class="value">{{'$' +
                   (totalAmount()
                   *
-                  walletService.wallet.XTZrate | number:'1.0-2')
+                  walletService.wallet.XTZrate | number:'1.2-2')
                   }}</span></span>
             </ng-container>
             <span *ngIf="tokenBalanceService.isNFT(token)" class="key amount-quantity">QUANTITY:&nbsp;&nbsp;<span

@@ -22,7 +22,7 @@
         </div>
         <div class="flex-row fees">
           <span *ngIf="!tokenTransfer" class="amount-usd">
-            <span>USD:&nbsp;</span>{{'$' + (getTotalAmount() * walletService.wallet.XTZrate | number:'1.0-2' || '0.00') }}
+            <span>USD:&nbsp;</span>{{'$' + (getTotalAmount() * walletService.wallet.XTZrate | number:'1.2-2' || '0.00') }}
           </span>
           <span class="amount-fee"><span>FEE{{ getTotalBurn() > 0 ? ' & STORAGE COST' : ''}}:&nbsp;</span><img
               *ngIf="simSemaphore" src="../../../../assets/img/feeLoader.gif">{{ getTotalCost() != 0 ? (getTotalCost() |
