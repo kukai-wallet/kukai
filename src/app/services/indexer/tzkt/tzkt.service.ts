@@ -93,7 +93,7 @@ export class TzktService implements Indexer {
     const ops = await fetch(`${this.tzkt}/accounts/${address}/operations?limit=20&type=delegation,origination,transaction`)
       .then(response => response.json())
       .then(data => data.map(op => {
-        if (!(op.hasInternals && wallet.getAccount(op.target.address))) {
+        if (!op.hasInternals || !wallet.getAccount(op.target.address)) {
           const status = op.status === 'applied' ? 1 : -1;
           let destination = { address: '' };
           let amount = '0';
@@ -133,6 +133,7 @@ export class TzktService implements Indexer {
             source: op.sender,
             destination,
             hash: op.hash,
+            counter: op.counter,
             timestamp: (new Date(op.timestamp)).getTime(),
             entrypoint
           };
@@ -155,7 +156,7 @@ export class TzktService implements Indexer {
               source.alias = tx.alias;
             }
           }
-          const index = ops.findIndex((op: any) => op.hash === tx.hash);
+          const index = ops.findIndex((op: any) => op.hash === tx.hash && op.counter === tx.counter);
           if (index !== -1) {
             ops.splice(index, 1); // Hide token transfer invokation
           }
@@ -168,6 +169,7 @@ export class TzktService implements Indexer {
             source,
             destination: { address: tx.to },
             hash: tx.hash,
+            counter: tx.counter,
             timestamp: (new Date(tx.timestamp)).getTime()
           };
           return activity;
@@ -177,6 +179,9 @@ export class TzktService implements Indexer {
       }).filter(obj => obj));
     const operations = ops.concat(tokenTxs).sort(
       function (a: any, b: any) {
+        if (b.timestamp - a.timestamp === 0 && a.counter && b.counter) {
+          return b.counter - a.counter;
+        }
         return b.timestamp - a.timestamp;
       }
     );

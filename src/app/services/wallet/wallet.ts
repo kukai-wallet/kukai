@@ -241,6 +241,7 @@ export class Activity {
   };
   fee?: string;
   hash: string;
+  counter?: number;
   timestamp: number | null;
   tokenId?: string;
   entrypoint?: string;
