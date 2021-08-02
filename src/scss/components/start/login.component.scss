@@ -28,7 +28,7 @@
       border: v.$border-width-thin solid v.$base-color-lightened-4;
       border-radius: v.$border-radius-hardest;
       color: v.$base-font-color;
-      @include m.multiply('font-size',1);
+      @include m.multiply("font-size", 1);
       font-weight: 500;
       padding: 0.75rem 1.25rem;
 
@@ -45,18 +45,18 @@
 
       & h1 {
         text-align: center;
-        @include m.multiply('font-size',4);
+        @include m.multiply("font-size", 4);
         font-weight: 500;
         margin: 0 0 4rem 0;
       }
 
       & span {
-        @include m.multiply('font-size',1.5);
+        @include m.multiply("font-size", 1.5);
         margin: 0 0 2rem 0;
 
         &.label {
           letter-spacing: 0.02em;
-          font-weight: 600;
+          font-weight: 500;
         }
 
         & a {
@@ -66,16 +66,16 @@
 
       & textarea,
       input.text,
-      input[type=password],
+      input[type="password"],
       .input-file {
         border-radius: v.$border-radius-hardest;
-        border: v.$border-width-thin solid rgba(132,152,177,0.2);
+        border: v.$border-width-thin solid rgba(132, 152, 177, 0.2);
         padding: 1rem;
         width: 100%;
         max-width: calc(100% - 2rem);
         margin-bottom: 4rem;
         text-align: center;
-        @include m.multiply('font-size',1.5);
+        @include m.multiply("font-size", 1.5);
       }
 
       & textarea {
@@ -90,7 +90,7 @@
       & .description,
       & .whitebox,
       & .seed-blur {
-        @include m.multiply('font-size',2);
+        @include m.multiply("font-size", 2);
         text-align: center;
         color: v.$base-font-color;
         letter-spacing: 0.02em;
@@ -104,15 +104,14 @@
 
       & .description {
         margin: 2rem 0 2rem 0;
-        @include m.multiply('font-size',1.5);
+        @include m.multiply("font-size", 1.5);
         text-transform: uppercase;
         font-weight: 600;
 
         &.red {
           color: red;
-          @include m.multiply('font-size',1.5);
+          @include m.multiply("font-size", 1.5);
         }
-
       }
 
       & .whitebox {
@@ -145,7 +144,7 @@
       }
 
       & .next {
-        @include m.multiply('font-size',2);
+        @include m.multiply("font-size", 2);
         width: 50%;
         height: 6rem;
         border-radius: v.$border-radius-hardest;
@@ -190,7 +189,7 @@
       }
 
       & .word-verify {
-        @include m.multiply('font-size',2);
+        @include m.multiply("font-size", 2);
         width: 100%;
         padding: 1rem;
         margin: 0 0 4rem 0;
@@ -218,11 +217,11 @@
         border: v.$border-width solid #ccc;
         text-align: center;
         color: black;
-        @include m.multiply('font-size',2);
+        @include m.multiply("font-size", 2);
         border-radius: v.$border-radius-hard;
       }
 
-      & input[type=password] {
+      & input[type="password"] {
         width: 100%;
         max-width: calc(50% - 2rem);
 
@@ -233,25 +232,25 @@
 
       & .strength {
         margin: 0 0 2rem 0;
-        @include m.multiply('font-size',1);
+        @include m.multiply("font-size", 1);
       }
 
       .import-options {
         width: 100%;
         margin: 0 0 4rem 0;
-        @include m.multiply('font-size',2);
+        @include m.multiply("font-size", 2);
         align-items: flex-end;
       }
 
       .import-options {
         border-bottom: 1px solid v.$border-color;
 
-        &>span {
+        & > span {
           width: 30%;
           text-align: center;
           cursor: pointer;
           text-transform: uppercase;
-          font-weight: 600;
+          font-weight: 500;
           color: v.$base-font-color-secondary;
           letter-spacing: 0.06em;
 
@@ -271,7 +270,6 @@
               height: 3px;
               width: 100%;
               background-color: v.$base-blue-color-lightened;
-              ;
             }
           }
         }
@@ -282,7 +280,7 @@
       }
 
       & .input-file {
-        @include m.multiply('font-size',2);
+        @include m.multiply("font-size", 2);
         width: 100%;
         max-width: calc(100% - 6rem);
         margin: 0.5rem;
@@ -318,7 +316,7 @@
           left: 0;
 
           &::after {
-            content: '';
+            content: "";
             width: 100%;
             height: 2px;
             background-color: #d3d9e0;
@@ -354,7 +352,7 @@
           max-width: calc(100% - 2rem);
         }
 
-        &>div {
+        & > div {
           width: calc(50% - 2rem);
           height: 10rem;
           justify-content: space-between;
@@ -414,10 +412,9 @@
       width: calc(100% - 4rem);
 
       & .body {
-
         textarea,
         input.text,
-        input[type=password],
+        input[type="password"],
         .input-file {
           max-width: unset;
           width: calc(100% - 4rem);
@@ -431,12 +428,12 @@
         & .import-option-1 {
           flex-direction: column;
 
-          &>div {
+          & > div {
             width: 100%;
             height: 100%;
             padding: 0;
           }
-          &>div.radios {
+          & > div.radios {
             margin: 0 0 2rem 0;
             width: 85%;
           }
