@@ -60,6 +60,11 @@ export class EventComponent implements OnInit {
     }
   }
 
+  explorerURL(hash: string) {
+    const baseURL = CONSTANTS.BLOCK_EXPLORER_URL;
+    return `${baseURL}/${hash}`;
+  }
+
   getCounterparty(transaction: any): string {
     return this.activityService.getCounterparty(transaction, this.account);
   }
