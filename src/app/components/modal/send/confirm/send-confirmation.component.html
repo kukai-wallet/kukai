@@ -51,7 +51,7 @@
       </div>
       <div class="flex-row to">
         <div class="flex-column left">
-          <span class="key" [style.margin]="transactions.length === 1 ? '0.185rem 0 0 0' : ''">SEND TO: </span>
+          <span class="key" [style.margin]="transactions.length === 1 ? '0.125rem 0 0 0' : ''">SEND TO: </span>
         </div>
         <div class="flex-column right">
           <div *ngFor="let transaction of transactions | slice:0:showAll; index as i"
@@ -76,7 +76,7 @@
       </div>
       <br />
       <br />
-      <span *ngIf="parameters" class="flex-row" style="margin: 0 0rem 1rem 1rem;width: calc(100% - 2rem);"><span
+      <span *ngIf="parameters && transactions.length > 1" class="flex-row" style="margin: 0 0rem 1rem 1rem;width: calc(100% - 2rem);"><span
           class="key">TRANSFER AMOUNT: </span><span class="key">{{ (transactions[batchParamIndex]?.amount | number:'1.0-6')
           }}</span></span>
       <div *ngIf="parameters && parameters?.entrypoint" class="flex-row"
