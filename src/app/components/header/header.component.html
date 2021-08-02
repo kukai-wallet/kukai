@@ -1,4 +1,5 @@
-<div *ngIf="!CONSTANTS.MAINNET" class="network" [style.boxShadow]="document?.body.scrollTop !== 0 ? '0 2px 10px #3333' : ''">
+<div *ngIf="!CONSTANTS.MAINNET" class="network"
+  [style.boxShadow]="document?.body.scrollTop !== 0 ? '0 2px 10px #3333' : ''">
   {{ CONSTANTS.NETWORK.toUpperCase() }} VERSION
 </div>
 <div class="flex-row top-container desktop" [class]="router.url.indexOf('/account') === 0 ? 'default' : ''">
@@ -6,6 +7,8 @@
     <img class="icon" src="../../../assets/img/header-logo.svg" />
   </a>
   <div *ngIf="router.url.indexOf('/account/') === 0" class="flex-row right">
+    <div *ngIf="getUsername(); let displayName" class="flex-row torus-name"><img class="verifier-logo"
+      src="../../../assets/img/{{ getVerifier() }}-logo.svg">&nbsp;{{ displayName }}</div>
     <div class="flex-column left">
       <app-ui-dropdown-account [list]="accounts" [current]="activeAccount"></app-ui-dropdown-account>
       <div class="delegation">
@@ -62,11 +65,11 @@
   <a routerLink="/" class="flex-row brand-logo">
     <img class="icon" src="../../../assets/img/header-logo.svg" />
   </a>
-  <div *ngIf="router.url.indexOf('/account/') > -1" class="flex-row" style="width: 48%; justify-content: center;">
-    <ng-container>
+  <div *ngIf="router.url.indexOf('/account/') > -1" class="flex-row center">
       <app-ui-dropdown-account [list]="accounts" [current]="activeAccount" style="width: 100%;">
       </app-ui-dropdown-account>
-    </ng-container>
+      <div *ngIf="getUsername(); let displayName" class="flex-row torus-name"><img class="verifier-logo"
+        src="../../../assets/img/{{ getVerifier() }}-logo.svg">&nbsp;{{ displayName }}</div>
   </div>
   <div class="hamburger-dropdown" (click)="toggleDropdown('.mobile .hamburger-dropdown .hamburger-dropdown-content')">
     <img class="button icon-db" src="../../../assets//img/hamburger.svg" />

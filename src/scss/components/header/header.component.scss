@@ -24,13 +24,30 @@
     left: 0;
     width: 100vw;
     padding: 0.5rem 0;
-    @include m.multiply('font-size',1.25);
+    @include m.multiply("font-size", 1.25);
     font-weight: 500;
     color: v.$base-end-color;
     z-index: 5000;
     text-align: center;
     background-color: v.$base-red-color;
     transition: 0.25s box-shadow;
+  }
+
+  & .torus-name {
+    position: absolute;
+    bottom: 1rem;
+    right: 0;
+    width: auto;
+    justify-content: flex-start;
+    height: 1.375rem;
+    color: v.$base-font-color;
+    font-weight: 500;
+
+    & img {
+      width: auto;
+      height: 100%;
+      margin: 0 0.25rem 0 0;
+    }
   }
 }
 
@@ -45,18 +62,19 @@
     border-bottom: 2px solid v.$border-color;
   }
 
-  &>.right {
+  & > .right {
     height: 100%;
+    position: relative;
 
-    &>.left {
+    & > .left {
       width: 22rem;
       height: 100%;
       justify-content: flex-end;
       position: relative;
       top: -0.25rem;
       left: 0;
-      
-      &>.delegation {
+
+      & > .delegation {
         text-align: center;
         padding: 0.75rem 1rem 1rem 2rem;
         width: 18rem;
@@ -64,17 +82,17 @@
         & .outside-container {
           width: 100%;
 
-          &>div {
+          & > div {
             width: 100%;
             justify-content: flex-start;
 
-            &>.address {
+            & > .address {
               white-space: nowrap;
               overflow: hidden;
               text-overflow: ellipsis;
               color: v.$base-font-color-secondary;
 
-              &>span {
+              & > span {
                 color: v.$base-font-color;
               }
             }
@@ -95,7 +113,7 @@
       }
 
       & input {
-        @include m.multiply('font-size',1);
+        @include m.multiply("font-size", 1);
         width: calc(100% - 5rem);
         height: 2rem;
         padding: 0.6rem 0 0.6rem 2rem;
@@ -121,21 +139,20 @@
       }
     }
 
-    &>.right {
-
-      &>span {
-        @include m.multiply('font-size',1.35);
+    & > .right {
+      & > span {
+        @include m.multiply("font-size", 1.35);
         margin: 0 0 0 4rem;
         color: v.$base-color-lightened-2;
         cursor: pointer;
 
-        &:hover, &.selected {
+        &:hover,
+        &.selected {
           color: v.$base-blue-color;
         }
       }
 
       & .icon {
-
         margin-right: 1rem;
         border: v.$border-width-thin solid v.$base-color-lightened-5;
         width: 2rem;
@@ -220,6 +237,17 @@
     }
   }
 
+  & .center {
+    position: relative;
+    width: 48%;
+    justify-content: center;
+
+    & .torus-name {
+      bottom: -2.25rem;
+      left: 1rem;
+    }
+  }
+
   & .hamburger-dropdown {
     cursor: pointer;
     border: v.$border-width-thin solid #9993;
@@ -238,24 +266,24 @@
       border-top: 2px solid v.$base-color-lightened-6;
       box-shadow: v.$box-shadow;
 
-      &>div {
+      & > div {
         padding: 1rem 2rem;
         border-bottom: 2px solid v.$border-color;
         height: 4rem;
-        @include m.multiply('font-size',2);
+        @include m.multiply("font-size", 2);
 
         &:last-child {
           border-bottom: none;
         }
 
-        &>.delegation {
+        & > .delegation {
           text-align: center;
           padding: 0.5rem 0;
           width: 100%;
         }
 
         & span {
-          @include m.multiply('font-size',2);
+          @include m.multiply("font-size", 2);
         }
 
         & .icon {
@@ -269,7 +297,7 @@
         display: flex;
 
         & .delegation {
-          &>div {
+          & > div {
             width: 100%;
           }
 
@@ -291,11 +319,9 @@
 }
 
 @media (max-width: v.$lower-limit) {
-
   .top-container.mobile.default .brand-logo .icon {
     height: 75% !important;
   }
-
 
   .top-container.desktop {
     display: none;
@@ -314,7 +340,7 @@ a.logo {
 
 #header-list {
   display: flex;
-  @include m.multiply('font-size',0.875);
+  @include m.multiply("font-size", 0.875);
   color: rgba(255, 255, 255, 0.8);
   vertical-align: bottom;
   text-align: right;
@@ -323,15 +349,15 @@ a.logo {
   align-items: center;
   width: 100%;
 
-  &>.left {
+  & > .left {
     padding: 0 0.125rem;
     text-align: left;
     color: white;
-    background-color: #CC0000;
+    background-color: #cc0000;
     font-weight: 600;
   }
 
-  &>.main {
+  & > .main {
     flex-grow: 1;
   }
 

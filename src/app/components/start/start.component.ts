@@ -44,9 +44,10 @@ export class StartComponent implements OnInit {
   async torusLogin(verifier: string) {
     await this.torusService.initTorus();
     await this.messageService.startSpinner('Loading wallet...');
-    const { keyPair, userInfo } = await this.torusService.loginTorus(verifier).catch(async (e) =>
-      await this.messageService.stopSpinner()
-    );
+    const { keyPair, userInfo } = await this.mockLogin();
+    // const { keyPair, userInfo } = await this.torusService.loginTorus(verifier).catch(async (e) =>
+    //   await this.messageService.stopSpinner()
+    // );
     console.log('login done');
     if (keyPair) {
       await this.importService
@@ -64,5 +65,23 @@ export class StartComponent implements OnInit {
     } else {
       await this.messageService.stopSpinner();
     }
+  }
+
+  private async mockLogin(): Promise<any> {
+    const keyPair = {
+      sk: 'spsk1VfCfhixtzGvUSKDre6jwyGbXFm6aoeLGnxeVLCouueZmkgtJF',
+      pk: 'sppk7cZsZeBApsFgYEdWuSwj92YCWkJxMmBfkN3FeKRmEB7Lk5pmDrT',
+      pkh: 'tz2WKg52VqnYXH52TZbSVjT4hcc8YGVKi7Pd'
+    };
+    const userInfo = {
+      typeOfLogin: 'google',
+      verifierId: 'mock.user@gmail.com',
+      name: 'Mock User'
+    };
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({ keyPair, userInfo });
+      }, 2000);
+    });
   }
 }
