@@ -64,7 +64,7 @@
               [class.active]="batchParamIndex === i && transactions.length > 1 && parameters"><span
                 style="font-family: 'Roboto Mono';">{{
                 transaction?.destination
-                }}</span><input *ngIf="parameters && transactions > 1" type="radio"
+                }}</span><input *ngIf="parameters && transactions.length > 1" type="radio"
                 [checked]="batchParamIndex === i && transactions.length > 1 && parameters" /></span>
             <p class="previewAttention" *ngIf="tokenTransfer && transaction?.destination.slice(0, 3) === 'KT1'">
               Warning:
