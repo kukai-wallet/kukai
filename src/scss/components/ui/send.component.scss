@@ -13,11 +13,12 @@ button {
   &.with-image {
     width: auto;
     padding: 1rem;
+    border: v.$border-width solid transparent;
+    border-radius: v.$border-radius-hardest;
 
     &:not(.tez) {
       background-color: transparent;
-      border: v.$border-width solid v.$base-color-lightened-5;
-      border-radius: v.$border-radius-hardest;
+      border-color: v.$base-color-lightened-5;
     }
 
     & span {
@@ -28,12 +29,12 @@ button {
     }
 
     & img {
-      height: 100%;
-      padding: 0 0.0625rem;
+      width: 1.5rem;
+      height: 1.5rem;
     }
 
     &.tez {
-      padding: 1rem 1.15rem 1rem 1rem
+      padding: 1rem
     }
   }
 
