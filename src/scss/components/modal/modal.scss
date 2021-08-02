@@ -201,8 +201,9 @@
 
     & button.confirm {
       width: 50%;
-      height: 4rem;
+      height: 4.5rem;
       border-radius: v.$border-radius-hard;
+      font-size: 1.125;
     }
   }
 }
