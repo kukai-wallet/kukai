@@ -1,4 +1,4 @@
-<div class="main-container">
+<div class="selectable main-container">
   <div class="top-container-activity">
     <h1 style="float:left">Recent Activity</h1>
     <div class="right">
@@ -6,12 +6,136 @@
       <!-- <img class="button icon" src="../../../../assets/img/info.svg" /> -->
     </div>
   </div>
-  <div id="operations-container" *ngIf="this.translate.store.translations.en">
+  <div class="selectable"  id="operations-container" *ngIf="this.translate.store.translations.en">
     <ng-container *ngIf="!account.activities.length">
       <div class="line"><span>No transactions yet</span></div>
     </ng-container>
-    <ng-container *ngFor="let activity of account.activities | slice:0:10; trackBy: trackEvent">
-      <app-event [activity]="activity" [account]="account"></app-event>
+    <ng-container *ngFor="let activity of account.activities | slice:0:10; trackBy: trackActivity">
+      <ng-container [ngSwitch]="getType(activity)">
+        <ng-template #CounterpartyRef let-myactivity>
+          <span class="grey truncate-overflow">
+            <ng-container *ngIf="myactivity.name; else elseBlock">
+              <ng-container [ngSwitch]="myactivity.lookupType">
+                <img *ngSwitchCase="2" height="12" src="../../../assets/img/google-logo.svg">
+                <img *ngSwitchCase="3" height="12" src="../../../assets/img/reddit-logo.svg">
+                <img *ngSwitchCase="4" height="12" src="../../../assets/img/twitter-logo.svg">
+              </ng-container>
+              &nbsp;{{ myactivity.name }}
+            </ng-container>
+            <ng-template #elseBlock>{{ myactivity.address }}</ng-template>
+          </span>
+        </ng-template>
+        <div *ngSwitchCase="'sent'" class="sent"
+          [class]="activity.status === 0 ? 'unconfirmed' : isNew(activity.timestamp) ? 'new' : 'confirmed'">
+          <div class="flex-column">
+            <div class="flex-row title">
+              <ng-container *ngIf="activity?.amount !== '0'; else zeroCall">
+                {{ '- ' + printAmount(activity) }}</ng-container>
+                <ng-template #zeroCall>{{ sentKind(activity) }}</ng-template>
+              <span class="failed" *ngIf="activity.status === -1">Failed</span>
+            </div>
+            <div class="flex-row"><span class="selectable address">Sent to:&nbsp;{{ getCounterparty(activity)?.address || 'Burn'
+                }}</span>
+              <span *ngIf="activity.status !== 0" class="time">
+                <a href="{{ explorerURL(activity.hash) }}" target="_blank">
+                  {{ activity.timestamp | timeAgo:trigger }}
+                </a>
+              </span>
+              <ng-container *ngIf="activity.status === 0">Unconfirmed</ng-container>
+            </div>
+          </div>
+        </div>
+        <div *ngSwitchCase="'received'" class="received"
+          [class]="activity.status === 0 ? 'unconfirmed' : isNew(activity.timestamp) ? 'new' : 'confirmed'">
+          <div class="flex-column">
+            <div class="flex-row title">
+              <ng-container *ngIf="activity?.amount !== '0'">
+                {{'+ ' + printAmount(activity) }}</ng-container>
+                <span class="failed" *ngIf="activity.status === -1">Failed</span>
+            </div>
+            <div class="flex-row"><span class="selectable address">{{ receivedKind(activity) }} from:&nbsp;{{
+                getCounterparty(activity)?.address || ''
+                }}</span>
+              <span *ngIf="activity.status !== 0" class="time">
+                <a href="{{ explorerURL(activity.hash) }}" target="_blank">
+                  {{ activity.timestamp | timeAgo:trigger }}
+                </a>
+              </span>
+              <ng-container *ngIf="activity.status === 0">Unconfirmed</ng-container>
+            </div>
+          </div>
+        </div>
+        <div *ngSwitchCase="'delegated'" class="delegated"
+          [class]="activity.status === 0 ? 'unconfirmed' : isNew(activity.timestamp) ? 'new' : 'confirmed'">
+          <div class="flex-column">
+            <div class="flex-row title">
+              Staked
+              <span class="failed" *ngIf="activity.status === -1">Failed</span>
+            </div>
+            <div class="flex-row"><span class="selectable address">to:&nbsp;{{ getCounterparty(activity)?.address || ''
+                }}</span>
+              <span *ngIf="activity.status !== 0" class="time">
+                <a href="{{ explorerURL(activity.hash) }}" target="_blank">
+                  {{ activity.timestamp | timeAgo:trigger }}
+                </a>
+              </span>
+              <ng-container *ngIf="activity.status === 0">Unconfirmed</ng-container>
+            </div>
+          </div>
+        </div>
+        <div *ngSwitchCase="'undelegated'" class="delegated"
+          [class]="activity.status === 0 ? 'unconfirmed' : isNew(activity.timestamp) ? 'new' : 'confirmed'">
+          <div class="flex-column">
+            <div class="flex-row title">
+              Unstaked
+              <span class="failed" *ngIf="activity.status === -1">Failed</span>
+            </div>
+            <div class="flex-row"><span class="selectable address">to:&nbsp;{{ getCounterparty(activity)?.address || '(none)'
+                }}</span>
+              <span *ngIf="activity.status !== 0" class="time">
+                <a href="{{ explorerURL(activity.hash) }}" target="_blank">
+                  {{ activity.timestamp | timeAgo:trigger }}
+                </a>
+              </span>
+              <ng-container *ngIf="activity.status === 0">Unconfirmed</ng-container>
+            </div>
+          </div>
+        </div>
+        <div *ngSwitchCase="'origination'" class="origination"
+        [class]="activity.status === 0 ? 'unconfirmed' : isNew(activity.timestamp) ? 'new' : 'confirmed'">
+        <div class="flex-column">
+          <div class="flex-row title">
+            <ng-container *ngIf="activity?.amount !== '0'">
+              <ng-container *ngIf="activity?.destination?.address !== this.account.address">- </ng-container>{{ printAmount(activity) }}</ng-container>
+            <span class="failed" *ngIf="activity.status === -1">Failed</span>
+          </div>
+          <div class="flex-row"><span class="selectable address">Originated contract:&nbsp;{{ getCounterparty(activity)?.address }}</span>
+            <span *ngIf="activity.status !== 0" class="time">
+              <a href="{{ explorerURL(activity.hash) }}" target="_blank">
+                {{ activity.timestamp | timeAgo:trigger }}
+              </a>
+            </span>
+            <ng-container *ngIf="activity.status === 0">Unconfirmed</ng-container>
+          </div>
+        </div>
+      </div>
+        <div *ngSwitchDefault>
+          <div style="padding-left: 0.75rem">
+            <div class="line"><span class="black">{{ getType(activity) | titlecase }}</span>
+              <span *ngIf="activity.status !== 0" class="time">
+                <a href="{{ explorerURL(activity.hash) }}" target="_blank">
+                  {{ activity.timestamp | timeAgo:trigger }}
+                </a>
+              </span>
+              <ng-container *ngIf="activity.status === 0">Unconfirmed</ng-container>
+            </div>
+            <div class="line"><span class="grey">Counterparty —</span>
+              <ng-template [ngTemplateOutlet]="CounterpartyRef"
+                [ngTemplateOutletContext]="{ $implicit: getCounterparty(activity) }"></ng-template>
+            </div>
+          </div>
+        </div>
+      </ng-container>
     </ng-container>
   </div>
 </div>

@@ -73,6 +73,26 @@ export const CONSTANTS: Constants = {
       address: ['KT1M2TMFrF1gbr64a7ySE3Cvt5BjZqQLKE6s'],
       thumbnailUrl: 'https://minterpop.vercel.app/_next/static/images/logo-ac73543744326030947adf91a3dad06c.svg',
       link: "https://minterpop.vercel.app/", shouldDisplayLink: true
+    },
+    "MinterPop Dev": {
+      address: ['KT1AzVpQRrQNNQU4x1KGUS3E6P96yZYjQfbS'],
+      thumbnailUrl: 'https://minterpop.vercel.app/_next/static/images/logo-ac73543744326030947adf91a3dad06c.svg',
+      link: "https://minterpop-dev.vercel.app/", shouldDisplayLink: true
+    },
+    'PixelPotus v2': {
+      address: ["KT1AorRGJvDkbpa8ap6setUGMCNm21bpp8qe"],
+      thumbnailUrl: "https://www.pixelpotus.com/img/eagle-right.d1840b0b.png",
+      link: "https://pixelpotus-frontend-r7y63b2h9-pixelpotus.vercel.app/", shouldDisplayLink: true
+    },
+    'Kalamint': {
+      address: ["KT1DEJEcfiMUWYjn1ZCTbbLokRcP26sx2pTH"],
+      thumbnailUrl: "https://testnet.kalamint.io/static/media/logo.2681f48f.svg",
+      link: "https://testnet.kalamint.io/", shouldDisplayLink: true
+    },
+    'Tezotopia': {
+      address: ["KT1G1V5hS6ghW95GsUV2ZbEfEHENAvq3zTMn"],
+      thumbnailUrl: "https://tezotopia.web.app/static/media/tezotopia-logo.bf94c3f8.png",
+      link: "", shouldDisplayLink: false
     }
   },
   ASSETS: {
