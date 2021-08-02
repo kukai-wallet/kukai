@@ -74,12 +74,14 @@ export const CONSTANTS: Constants = {
       thumbnailUrl: 'https://minterpop.vercel.app/_next/static/images/logo-ac73543744326030947adf91a3dad06c.svg',
       link: "https://minterpop.vercel.app/", shouldDisplayLink: true
     },
-    "MinterPop Dev": {
+    "MinterPopDev": {
+      name: 'MinterPop Dev',
       address: ['KT1AzVpQRrQNNQU4x1KGUS3E6P96yZYjQfbS'],
       thumbnailUrl: 'https://minterpop.vercel.app/_next/static/images/logo-ac73543744326030947adf91a3dad06c.svg',
       link: "https://minterpop-dev.vercel.app/", shouldDisplayLink: true
     },
-    'PixelPotus v2': {
+    'PixelPotusv2': {
+      name: 'PixelPotus v2',
       address: ["KT1AorRGJvDkbpa8ap6setUGMCNm21bpp8qe"],
       thumbnailUrl: "https://www.pixelpotus.com/img/eagle-right.d1840b0b.png",
       link: "https://pixelpotus-frontend-r7y63b2h9-pixelpotus.vercel.app/", shouldDisplayLink: true

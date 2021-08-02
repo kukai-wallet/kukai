@@ -75,7 +75,8 @@ export class TokenBalancesService {
               this._thumbnailsToCreate.push({ contractAlias, address: asset.contractAddress });
             }
           }
-          nfts[contractAlias] = { name: contractAlias, thumbnailUrl: CONTRACT_ALIASES?.thumbnailUrl, tokens: [] };
+          const name = CONTRACT_ALIASES?.name ? CONTRACT_ALIASES.name : contractAlias;
+          nfts[contractAlias] = { name, thumbnailUrl: CONTRACT_ALIASES?.thumbnailUrl, tokens: [] };
           if (CONTRACT_ALIASES?.link) {
             nfts[contractAlias].visitUrl = CONTRACT_ALIASES.link;
           }
