@@ -1,0 +1,27 @@
+@use '../../../abstracts/variables'as v;
+@use '../../../abstracts/mixins' as m;
+@import './mixins';
+
+@include base;
+
+.top-container {
+  @include top-container;
+
+  &-activity {
+    @include top-container;
+    & .right {
+    @include top-container-right;
+    }
+
+    & a.view-all {
+      float: right;
+      margin: 0;
+      font-style: normal;
+      font-weight: normal;
+      @include m.multiply('font-size',1);
+      line-height: 1rem;
+      color: v.$base-font-color-secondary;
+      text-decoration: none;
+    }
+  }
+}

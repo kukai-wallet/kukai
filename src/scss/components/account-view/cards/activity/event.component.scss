@@ -1,42 +1,17 @@
 @use '../../../abstracts/variables'as v;
 @use '../../../abstracts/mixins' as m;
-@import './mixins';
 
-@include base;
-
-.top-container {
-  @include top-container;
-
-  &-activity {
-    @include top-container;
-    & .right {
-    @include top-container-right;
-    }
-
-    & a.view-all {
-      float: right;
-      margin: 0;
-      font-style: normal;
-      font-weight: normal;
-      @include m.multiply('font-size',1);
-      line-height: 1rem;
-      color: v.$base-font-color-secondary;
-      text-decoration: none;
-    }
-  }
-}
-
-#operations-container {
-  &>div {
+:host {
+  & > div {
     display: flex;
     flex-direction: row;
     height: 100%;
-    margin-top: 1rem;
+    margin: 0 0 1rem 0;
     padding: 1rem 2rem;
     border-radius: v.$border-radius;
     background-color: transparent;
 
-    &>img {
+    & > img {
       padding-bottom: 1.125rem;
     }
 
@@ -48,7 +23,7 @@
       border-bottom: 0;
     }
 
-    &>div {
+    & > div {
       width: 100%;
       height: 100%;
     }
@@ -64,7 +39,7 @@
       background-color: v.$base-color-lightened-5;
 
       &:after {
-        content: '';
+        content: "";
         position: absolute;
         left: 0;
         bottom: 0;
@@ -82,7 +57,7 @@
       background-color: v.$base-end-color;
 
       &:after {
-        content: '';
+        content: "";
         position: absolute;
         left: 0;
         bottom: 0;
@@ -93,17 +68,17 @@
     }
 
     & .title {
-      @include m.multiply('font-size',1.5);
+      @include m.multiply("font-size", 1.5);
       margin-bottom: 0.5rem;
       & .failed {
         color: v.$base-red-color;
-        @include m.multiply('font-size',1.25);
+        @include m.multiply("font-size", 1.25);
       }
     }
 
     & .address {
       color: v.$base-color-lightened-2;
-      @include m.multiply('font-size',1);
+      @include m.multiply("font-size", 1);
     }
 
     & .time {

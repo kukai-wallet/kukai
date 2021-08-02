@@ -64,7 +64,7 @@
               [class.active]="batchParamIndex === i && transactions.length > 1 && parameters"><span
                 style="font-family: 'Roboto Mono';">{{
                 transaction?.destination
-                }}</span><input *ngIf="parameters" type="radio"
+                }}</span><input *ngIf="parameters && transactions > 1" type="radio"
                 [checked]="batchParamIndex === i && transactions.length > 1 && parameters" /></span>
             <p class="previewAttention" *ngIf="tokenTransfer && transaction?.destination.slice(0, 3) === 'KT1'">
               Warning:
@@ -121,7 +121,7 @@
           </div>
         </ng-container>
       </div>
-      <div class="flex-column bottom" [style.margin]="transactions.length > 1 ? '2rem 0 0 0' : ''">
+      <div class="flex-column bottom" [style.margin]="parameters ? '2rem 0 0 0' : ''">
         <span [style.visibility]="!pwdInvalid ? 'hidden' : ''" [style.margin]="!pwdInvalid ? '0' : ''"
           class="label danger">{{ this.pwdInvalid }}</span>
         <span *ngIf="!walletService.isLedgerWallet() && !walletService.isTorusWallet()" class="label">ENTER YOUR PASSWORD TO CONFIRM:</span>
