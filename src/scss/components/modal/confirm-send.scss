@@ -332,6 +332,11 @@
             transform: scale(2);
           }
         }
+
+        & .previewAttention {
+          color: v.$base-red-color;
+          font-weight: 500;
+        }
       }
 
       & .show-all {
