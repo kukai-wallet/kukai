@@ -64,7 +64,7 @@ export class TokenBalancesService {
     this.nfts = null;
   }
   resolveAsset(token, balances, nfts) {
-    const asset = this.tokenService.getAsset(token.tokenId);
+    const asset: TokenResponseType = this.tokenService.getAsset(token.tokenId);
     if (asset) {
       if (this.isNFT(asset)) { // token balance or NFT?
         const contractAlias = this.getContractAlias(asset.contractAddress) ?? asset.contractAddress;
@@ -144,7 +144,11 @@ export class TokenBalancesService {
     return canvas.toDataURL();
   }
 
-  isNFT(asset): boolean {
-    return (asset?.isBooleanAmount || asset?.decimals == 0) && !CONSTANTS.NFT_CONTRACT_OVERRIDES.includes(asset?.contractAddress) ? true : false;
+  isNFT(asset: TokenResponseType): boolean {
+    if (CONSTANTS.MAINNET) {
+      return !CONSTANTS.NFT_CONTRACT_OVERRIDES.includes(asset.contractAddress);
+    } else {
+      return (asset?.isBooleanAmount || asset?.decimals == 0) && !CONSTANTS.NFT_CONTRACT_OVERRIDES.includes(asset?.contractAddress) ? true : false;
+    }
   }
 }
