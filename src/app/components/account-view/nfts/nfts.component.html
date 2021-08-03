@@ -87,7 +87,7 @@
               <div class="flex-row head">
                 <div class="flex-row left">
                   <img class="icon" [src]="contractAliases[key]?.thumbnailUrl" />
-                  <div class="title">{{ key }}</div>
+                  <div class="title">{{ contractAliases[key]?.name || key }}</div>
                   <div class="count">{{ '0' }}</div>
                 </div>
                 <div class="flex-row right">
