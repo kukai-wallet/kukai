@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { LookupService, LookupType } from '../../../../services/lookup/lookup.service';
 import { DropdownComponent } from '../dropdown.component';
 
 @Component({
@@ -9,7 +10,9 @@ import { DropdownComponent } from '../dropdown.component';
 })
 export class AccountDropdownComponent extends DropdownComponent implements OnInit {
 
-  constructor(public router: Router) { super(); }
+  LookupType = LookupType;
+
+  constructor(public router: Router, public lookupService: LookupService) { super(); }
 
   ngOnInit(): void {
   }

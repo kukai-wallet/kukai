@@ -5,7 +5,7 @@ import { WalletService } from '../../services/wallet/wallet.service';
 import { InputValidationService } from '../../services/input-validation/input-validation.service';
 import { TezosDomainsService } from '../../services/tezos-domains/tezos-domains.service';
 
-enum LookupType { // ordered in priority
+export enum LookupType { // ordered in priority
   AddressBook,
   TezosDomains,
   Google,

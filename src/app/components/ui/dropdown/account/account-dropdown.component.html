@@ -5,7 +5,7 @@
     <ng-container *ngFor="let account of list">
       <a routerLink="/account/{{account?.address}}" [class.selected]="account?.address === current?.address"
         (click)="toggleDropdown()">
-        {{ account?.shortAddress() }}
+        {{ lookupService.resolve(account?.address)?.lookupType === LookupType.TezosDomains ? lookupService.resolve(account?.address)?.alias : account?.shortAddress() }}
       </a>
     </ng-container>
   </div>
