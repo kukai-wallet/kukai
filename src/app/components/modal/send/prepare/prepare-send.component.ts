@@ -91,6 +91,7 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
       this.token = this.tokenService.getAsset(this.tokenTransfer);
       this.isNFT = this.tokenBalancesService.isNFT(this.token);
       this.activeAccount = changes.prepareRequest.currentValue.account;
+      this.amount = !this.token?.isBooleanAmount ? '1' : '';
       if (!this.isOpen) {
         this.openModal();
       }

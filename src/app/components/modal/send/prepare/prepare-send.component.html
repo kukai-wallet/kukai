@@ -10,9 +10,9 @@
           <img [src]="token?.thumbnailUrl || token?.displayUrl" />
           <span class="title">{{token?.name}}</span>
         </div>
-        <span class="flex-row label title">ENTER {{!isNFT ? 'AMOUNT' :
+        <span *ngIf="!token?.isBooleanAmount" class="flex-row label title">ENTER {{!isNFT ? 'AMOUNT' :
           'QUANTITY'}}:</span>
-        <div class="flex-row amount">
+        <div *ngIf="!token?.isBooleanAmount" class="flex-row amount">
           <input #amountInput [placeholder]="token?.decimals == 0 ? '0' : '0.00'" [(ngModel)]="amount"
             (mousedown)="sendMax = false; default" (input)="amountChange()"
             (keypress)="keyPressNumbersDecimal($event, 'amount')" (change)="amountChange()"
