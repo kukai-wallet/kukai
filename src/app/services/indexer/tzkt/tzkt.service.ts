@@ -215,7 +215,7 @@ export class TzktService implements Indexer {
       }).catch(e => {
         return null;
       });
-    const tokenMetadata = fetch(`https://metadata.kukai.network/${this.network}/tokenInfo/${contractAddress}/${id}`)
+    const tokenMetadata = fetch(`https://backend.kukai.network/metadata/${this.network}/tokenInfo/${contractAddress}/${id}`)
       .then(response => response.json())
       .then(async data => {
         const keys = [
@@ -232,7 +232,7 @@ export class TzktService implements Indexer {
         ];
         // should always be 1
         assert(data, `cannot find token_id ${id} for contract: ${contractAddress}`);
-        if (data?.token_id === Number(id)) {
+        if (data?.token_id === Number(id) || data.tokenId === Number(id)) {
           // possible snake_case to camelCase conversion; depending on future BCD updates
           mutableConvertObjectPropertiesSnakeToCamel(data);
           const rawData = JSON.parse(JSON.stringify(data));
@@ -256,6 +256,7 @@ export class TzktService implements Indexer {
             if (!metadata.displayUri && data?.symbol === 'OBJKT') { // hicetnunc
               if (['image/png', 'image/jpg', 'image/jpeg'].includes(rawData.formats[0].mimeType)) {
                 metadata.displayUri = await this.uriToUrl(rawData.formats[0].uri);
+                delete metadata.thumbnailUri;
               }
             }
           } catch (e) { }
