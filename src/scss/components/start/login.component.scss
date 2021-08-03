@@ -72,15 +72,17 @@
         border: v.$border-width-thin solid rgba(132, 152, 177, 0.2);
         padding: 1rem;
         width: 100%;
-        max-width: calc(100% - 2rem);
+        max-width: calc(50% - 2rem);
         margin-bottom: 4rem;
         text-align: center;
+        height: 2.25rem;
         @include m.multiply("font-size", 1.5);
       }
 
       & textarea {
         height: 12rem;
         border-radius: v.$border-radius-hard;
+        max-width: calc(100% - 2rem);
       }
 
       & .seed-word {
@@ -212,6 +214,7 @@
 
       & #wordInput {
         width: auto;
+        max-width: calc(100% - 2rem);
         padding: 1rem;
         background-color: #eaedef;
         border: v.$border-width solid #ccc;
