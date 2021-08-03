@@ -6,7 +6,7 @@
       <!-- <img class="button icon" src="../../../../assets/img/info.svg" /> -->
     </div>
   </div>
-  <div class="selectable"  id="operations-container" *ngIf="this.translate.store.translations.en">
+  <div class="selectable" id="operations-container" *ngIf="this.translate.store.translations.en">
     <ng-container *ngIf="!account.activities.length">
       <div class="line"><span>No transactions yet</span></div>
     </ng-container>
@@ -31,10 +31,13 @@
             <div class="flex-row title">
               <ng-container *ngIf="activity?.amount !== '0'; else zeroCall">
                 {{ '- ' + printAmount(activity) }}</ng-container>
-                <ng-template #zeroCall>{{ sentKind(activity) }}</ng-template>
+              <ng-template #zeroCall>{{ sentKind(activity) }}</ng-template>
               <span class="failed" *ngIf="activity.status === -1">Failed</span>
             </div>
-            <div class="flex-row"><span class="selectable address">Sent to:&nbsp;{{ getCounterparty(activity)?.name || getCounterparty(activity)?.address || 'Burn'
+            <div class="flex-row"><span class="flex-row address">Sent to:<img
+                  *ngIf="!!getCounterparty(activity)?.lookupType && getCounterparty(activity)?.lookupType !== 'domain'"
+                  src="../../../../assets/img/{{ getCounterparty(activity)?.lookupType }}-logo.svg" />{{
+                getCounterparty(activity)?.name || getCounterparty(activity)?.address || 'Burn'
                 }}</span>
               <span *ngIf="activity.status !== 0" class="time">
                 <a href="{{ explorerURL(activity.hash) }}" target="_blank">
@@ -51,10 +54,12 @@
             <div class="flex-row title">
               <ng-container *ngIf="activity?.amount !== '0'">
                 {{'+ ' + printAmount(activity) }}</ng-container>
-                <span class="failed" *ngIf="activity.status === -1">Failed</span>
+              <span class="failed" *ngIf="activity.status === -1">Failed</span>
             </div>
-            <div class="flex-row"><span class="selectable address">{{ receivedKind(activity) }} from:&nbsp;{{
-              getCounterparty(activity)?.name || getCounterparty(activity)?.address || ''
+            <div class="flex-row"><span class="flex-row address">{{ receivedKind(activity) }} from:<img
+                  *ngIf="!!getCounterparty(activity)?.lookupType && getCounterparty(activity)?.lookupType !== 'domain'"
+                  src="../../../../assets/img/{{ getCounterparty(activity)?.lookupType }}-logo.svg" />{{
+                getCounterparty(activity)?.name || getCounterparty(activity)?.address || ''
                 }}</span>
               <span *ngIf="activity.status !== 0" class="time">
                 <a href="{{ explorerURL(activity.hash) }}" target="_blank">
@@ -72,7 +77,11 @@
               Staked
               <span class="failed" *ngIf="activity.status === -1">Failed</span>
             </div>
-            <div class="flex-row"><span class="selectable address">to:&nbsp;{{ getCounterparty(activity)?.name || getCounterparty(activity)?.address || ''
+            <div class="flex-row"><span class="flex-row address">to:<img
+                  *ngIf="!!getCounterparty(activity)?.lookupType && getCounterparty(activity)?.lookupType !== 'domain'"
+                  src="../../../../assets/img/{{ getCounterparty(activity)?.lookupType }}-logo.svg" />{{
+                getCounterparty(activity)?.name ||
+                getCounterparty(activity)?.address || ''
                 }}</span>
               <span *ngIf="activity.status !== 0" class="time">
                 <a href="{{ explorerURL(activity.hash) }}" target="_blank">
@@ -90,7 +99,11 @@
               Unstaked
               <span class="failed" *ngIf="activity.status === -1">Failed</span>
             </div>
-            <div class="flex-row"><span class="selectable address">to:&nbsp;{{ getCounterparty(activity)?.name || getCounterparty(activity)?.address || '(none)'
+            <div class="flex-row"><span class="flex-row address">to:<img
+                  *ngIf="!!getCounterparty(activity)?.lookupType && getCounterparty(activity)?.lookupType !== 'domain'"
+                  src="../../../../assets/img/{{ getCounterparty(activity)?.lookupType }}-logo.svg" />{{
+                getCounterparty(activity)?.name ||
+                getCounterparty(activity)?.address || '(none)'
                 }}</span>
               <span *ngIf="activity.status !== 0" class="time">
                 <a href="{{ explorerURL(activity.hash) }}" target="_blank">
@@ -102,23 +115,28 @@
           </div>
         </div>
         <div *ngSwitchCase="'origination'" class="origination"
-        [class]="activity.status === 0 ? 'unconfirmed' : isNew(activity.timestamp) ? 'new' : 'confirmed'">
-        <div class="flex-column">
-          <div class="flex-row title">
-            <ng-container *ngIf="activity?.amount !== '0'">
-              <ng-container *ngIf="activity?.destination?.address !== this.account.address">- </ng-container>{{ printAmount(activity) }}</ng-container>
-            <span class="failed" *ngIf="activity.status === -1">Failed</span>
-          </div>
-          <div class="flex-row"><span class="selectable address">Originated contract:&nbsp;{{ getCounterparty(activity)?.name || getCounterparty(activity)?.address }}</span>
-            <span *ngIf="activity.status !== 0" class="time">
-              <a href="{{ explorerURL(activity.hash) }}" target="_blank">
-                {{ activity.timestamp | timeAgo:trigger }}
-              </a>
-            </span>
-            <ng-container *ngIf="activity.status === 0">Unconfirmed</ng-container>
+          [class]="activity.status === 0 ? 'unconfirmed' : isNew(activity.timestamp) ? 'new' : 'confirmed'">
+          <div class="flex-column">
+            <div class="flex-row title">
+              <ng-container *ngIf="activity?.amount !== '0'">
+                <ng-container *ngIf="activity?.destination?.address !== this.account.address">- </ng-container>{{
+                printAmount(activity) }}
+              </ng-container>
+              <span class="failed" *ngIf="activity.status === -1">Failed</span>
+            </div>
+            <div class="flex-row"><span class="flex-row address">Originated contract:<img
+                  *ngIf="!!getCounterparty(activity)?.lookupType && getCounterparty(activity)?.lookupType !== 'domain'"
+                  src="../../../../assets/img/{{ getCounterparty(activity)?.lookupType }}-logo.svg" />{{
+                getCounterparty(activity)?.name || getCounterparty(activity)?.address }}</span>
+              <span *ngIf="activity.status !== 0" class="time">
+                <a href="{{ explorerURL(activity.hash) }}" target="_blank">
+                  {{ activity.timestamp | timeAgo:trigger }}
+                </a>
+              </span>
+              <ng-container *ngIf="activity.status === 0">Unconfirmed</ng-container>
+            </div>
           </div>
         </div>
-      </div>
         <div *ngSwitchDefault>
           <div style="padding-left: 0.75rem">
             <div class="line"><span class="black">{{ getType(activity) | titlecase }}</span>
