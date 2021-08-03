@@ -436,6 +436,11 @@
 
       & .left {
         width: 33%;
+        align-items: flex-start;
+
+        & .key {
+          text-align: left;
+        }
       }
 
       & .right {

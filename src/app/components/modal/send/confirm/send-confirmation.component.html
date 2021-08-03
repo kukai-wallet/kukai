@@ -8,7 +8,7 @@
     <div class="flex-column confirm-send" [class.image]="tokenBalanceService.isNFT(token)" [class.batch]="parameters">
       <div class="flex-row top">
         <div class="flex-column left">
-          <span *ngIf="!tokenBalanceService.isNFT(token)" class="key">AMOUNT TO SEND:</span>
+          <span *ngIf="!tokenBalanceService.isNFT(token)" class="key">SEND AMOUNT:</span>
           <img class="token-image"
             [src]="token?.thumbnailUrl || token?.displayUrl || '../../../assets/img/tezos-xtz-logo.svg'"
             [style.object-fit]="token?.displayUrl?.indexOf('.svg') === -1 || token?.thumbnailUrl?.indexOf('.svg') === -1 ? 'cover' : 'scale-down'"
