@@ -30,7 +30,8 @@
                 }}</span></span>
             <span class="key">FEE:&nbsp;&nbsp;<span class="value">{{ (getTotalFee() | number:'1.0-6') + ' tez'
                 }}</span></span>
-            <span *ngIf="getTotalBurn(); let totalBurn" class="key">STORAGE COST:&nbsp;<span class="value">{{ (totalBurn |
+            <span *ngIf="getTotalBurn(); let totalBurn" class="key">STORAGE COST:&nbsp;<span class="value">{{ (totalBurn
+                |
                 number:'1.0-6') + ' tez'
                 }}</span></span>
           </div>
@@ -41,7 +42,10 @@
         <div class="flex-column left">
           <span class="key">FROM: </span>
         </div>
-        <div class="flex-column right"><span *ngIf="!!domain" class="domain">{{ domain }}</span><span class="address">{{
+        <div class="flex-column right">
+          <div *ngIf="getUsername(); let displayName" class="flex-row torus-name"><img class="verifier-logo"
+              src="../../../assets/img/{{ getVerifier() }}-logo.svg">{{ displayName }}</div>
+          <span class="address">{{
             activeAccount?.address
             }}</span>
         </div>
@@ -76,8 +80,9 @@
       </div>
       <br />
       <br />
-      <span *ngIf="parameters && transactions.length > 1" class="flex-row" style="margin: 0 0rem 1rem 1rem;width: calc(100% - 2rem);"><span
-          class="key">TRANSFER AMOUNT: </span><span class="key">{{ (transactions[batchParamIndex]?.amount | number:'1.0-6')
+      <span *ngIf="parameters && transactions.length > 1" class="flex-row"
+        style="margin: 0 0rem 1rem 1rem;width: calc(100% - 2rem);"><span class="key">TRANSFER AMOUNT: </span><span
+          class="key">{{ (transactions[batchParamIndex]?.amount | number:'1.0-6')
           }}</span></span>
       <div *ngIf="parameters && parameters?.entrypoint" class="flex-row"
         style="margin: 0 0rem 2rem 1rem;width: calc(100% - 2rem);"><span class="key">CONTRACT CALL: </span><span
@@ -98,13 +103,11 @@
           <div class="flex-row">
             <div class="flex-column">
               <label class="label">Gas limit</label>
-              <input type="text" class="text" [placeholder]="getTotalDefaultGas() || '0'"
-                [(ngModel)]="customGasLimit">
+              <input type="text" class="text" [placeholder]="getTotalDefaultGas() || '0'" [(ngModel)]="customGasLimit">
             </div>
             <div class="flex-column">
               <label class="label">Fee</label>
-              <input type="text" class="text" [placeholder]="getTotalFee() || '0'"
-                [(ngModel)]="customFee">
+              <input type="text" class="text" [placeholder]="getTotalFee() || '0'" [(ngModel)]="customFee">
             </div>
           </div>
           <div class="flex-row">
@@ -124,7 +127,8 @@
       <div class="flex-column bottom" [style.margin]="parameters ? '2rem 0 0 0' : ''">
         <span [style.visibility]="!pwdInvalid ? 'hidden' : ''" [style.margin]="!pwdInvalid ? '0' : ''"
           class="label danger">{{ this.pwdInvalid }}</span>
-        <span *ngIf="!walletService.isLedgerWallet() && !walletService.isTorusWallet()" class="label">ENTER YOUR PASSWORD TO CONFIRM:</span>
+        <span *ngIf="!walletService.isLedgerWallet() && !walletService.isTorusWallet()" class="label">ENTER YOUR
+          PASSWORD TO CONFIRM:</span>
         <input *ngIf="!walletService.isLedgerWallet() && !walletService.isTorusWallet()" [(ngModel)]="password"
           autocomplete="current-password" placeholder="Password" class="text password" type="password"
           (input)="this.pwdInvalid = ''" (change)="this.pwdInvalid = ''" (keydown.enter)='inject()'>

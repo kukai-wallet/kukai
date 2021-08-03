@@ -216,6 +216,22 @@
       @include m.multiply("font-size", 1);
       color: v.$base-font-color-secondary;
     }
+
+    & .torus-name {
+      justify-content: flex-start;
+      @include m.multiply("font-size", 1.5);
+      font-weight: 500;
+      position: relative;
+      left: -2.55rem;
+      top: 0;
+
+      & .verifier-logo {
+        object-fit: unset;
+        width: 2rem;
+        height: 2rem;
+        margin: 0 0.5rem 0 0;
+      }
+    }
   }
 
   & .divider {
@@ -465,6 +481,11 @@
         & .address {
           font-size: 1.5rem;
           font-family: "Roboto Mono";
+          margin: 0.5rem 0 0 0;
+        }
+
+        & .torus-name {
+          left: 0;
           margin: 0.5rem 0 0 0;
         }
       }
