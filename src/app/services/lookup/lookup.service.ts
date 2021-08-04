@@ -181,12 +181,12 @@ export class LookupService {
   }
   resolve(party: any): any {
     this.initCheck();
-    const { x, y } = this.indexTop(party.address);
+    const { x, y } = this.indexTop(party?.address);
     if (x !== -1 && y !== -1) {
       return { name: this.records[x].data[y].name, lookupType: this.records[x].data[y].lookupType, address: party.address };
-    } else if (party.alias) {
+    } else if (party?.alias) {
       return { name: party.alias, lookupType: LookupType.Alias, address: party.address };
     }
-    return { address: party.address };
+    return { address: party?.address };
   }
 }

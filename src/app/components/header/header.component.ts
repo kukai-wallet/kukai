@@ -76,24 +76,6 @@ export class HeaderComponent implements OnInit {
     this.lookupService.clear();
     this.router.navigate(['']);
   }
-  getUsername() {
-    if (this.walletService.wallet instanceof TorusWallet) {
-      return this.walletService.wallet.displayName();
-    } else if (this.activeAccount) {
-      const party = this.lookupService.resolve({ address: this.activeAccount.address });
-      if (party?.name) {
-        return party.name;
-      }
-    }
-    return '';
-  }
-  getVerifier() {
-    if (this.walletService.wallet instanceof TorusWallet) {
-      return this.walletService.wallet.verifier;
-    } else {
-      return 'domain';
-    }
-  }
   copy() {
     copy(this.activeAccount.address);
     const copyToClipboard = this.translate.instant(

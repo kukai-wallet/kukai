@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { LookupService, LookupType } from '../../../../services/lookup/lookup.service';
+import { TorusWallet } from '../../../../services/wallet/wallet';
+import { WalletService } from '../../../../services/wallet/wallet.service';
+import { LookupService } from '../../../../services/lookup/lookup.service';
 import { DropdownComponent } from '../dropdown.component';
 
 @Component({
@@ -10,11 +12,27 @@ import { DropdownComponent } from '../dropdown.component';
 })
 export class AccountDropdownComponent extends DropdownComponent implements OnInit {
 
-  LookupType = LookupType;
-
-  constructor(public router: Router, public lookupService: LookupService) { super(); }
+  constructor(public router: Router, public lookupService: LookupService, private walletService: WalletService) { super(); }
 
   ngOnInit(): void {
   }
 
+  getUsername(address: string) {
+    if (this.walletService.wallet instanceof TorusWallet) {
+      return this.walletService.wallet.displayName();
+    } else  {
+      const party = this.lookupService.resolve({ address: address || this.current?.address });
+      if (party?.name) {
+        return party.name;
+      }
+    }
+    return '';
+  }
+  getVerifier() {
+    if (this.walletService.wallet instanceof TorusWallet) {
+      return this.walletService.wallet.verifier;
+    } else {
+      return 'domain';
+    }
+  }
 }

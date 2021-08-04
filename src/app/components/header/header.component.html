@@ -7,8 +7,6 @@
     <img class="icon" src="../../../assets/img/header-logo.svg" />
   </a>
   <div *ngIf="router.url.indexOf('/account/') === 0" class="flex-row right">
-    <div *ngIf="getUsername(); let displayName" class="flex-row torus-name"><img class="verifier-logo"
-      src="../../../assets/img/{{ getVerifier() }}-logo.svg">&nbsp;{{ displayName }}</div>
     <div class="flex-column left">
       <app-ui-dropdown-account [list]="accounts" [current]="activeAccount"></app-ui-dropdown-account>
       <div class="delegation">
@@ -68,8 +66,6 @@
   <div *ngIf="router.url.indexOf('/account/') > -1" class="flex-row center">
       <app-ui-dropdown-account [list]="accounts" [current]="activeAccount" style="width: 100%;">
       </app-ui-dropdown-account>
-      <div *ngIf="getUsername(); let displayName" class="flex-row torus-name"><img class="verifier-logo"
-        src="../../../assets/img/{{ getVerifier() }}-logo.svg">&nbsp;{{ displayName }}</div>
   </div>
   <div class="hamburger-dropdown" (click)="toggleDropdown('.mobile .hamburger-dropdown .hamburger-dropdown-content')">
     <img class="button icon-db" src="../../../assets//img/hamburger.svg" />

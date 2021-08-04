@@ -1,11 +1,15 @@
-<div *ngIf="router.url.indexOf('/account/') > -1" class="flex-row dropdown" [class.expanded]="isOpen" [id]="ecmpId"><input
-    [placeholder]="current?.shortAddress()" readonly (click)="toggleDropdown()"><img
-    class="button icon-db" src="../../../assets/img/down-arrow.svg" (click)="toggleDropdown()" />
+<div *ngIf="router.url.indexOf('/account/') > -1" class="flex-row dropdown" [class.expanded]="isOpen" [id]="ecmpId">
+  <div class="flex-row currentAddress" [style.cursor]="getUsername() ? 'text' : ''"
+    (click)="!getUsername() ? toggleDropdown() : undefined"><img *ngIf="!!getUsername()" class="logo"
+      src="../../../../assets/img/{{ getVerifier() }}-logo.svg" /><span class="address">{{
+      getUsername() || "&nbsp;&nbsp;&nbsp;&nbsp;" + current?.shortAddress() }}</span><img *ngIf="!getUsername()"
+      class="button icon-db" src="../../../../assets/img/down-arrow.svg" />
+  </div>
   <div class="flex-column dropdown-content">
     <ng-container *ngFor="let account of list">
       <a routerLink="/account/{{account?.address}}" [class.selected]="account?.address === current?.address"
         (click)="toggleDropdown()">
-        {{ lookupService.resolve(account?.address)?.lookupType === LookupType.TezosDomains ? lookupService.resolve(account?.address)?.alias : account?.shortAddress() }}
+        {{ getUsername(account?.address) || account?.shortAddress() }}
       </a>
     </ng-container>
   </div>
