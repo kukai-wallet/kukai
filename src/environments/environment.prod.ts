@@ -37,7 +37,7 @@ export const CONSTANTS: Constants = {
     'Minterpop': {
       address: ["KT1AaaBSo5AE6Eo8fpEN5xhCD4w3kHStafxk"],
       thumbnailUrl: "https://minterpop.com/_next/static/images/logo-ac73543744326030947adf91a3dad06c.svg",
-      link: "https://minterpop.com/", shouldDisplayLink: true, category: "collectibles"
+      link: "https://minterpop.com/", shouldDisplayLink: false, category: "collectibles"
     },
     'Kalamint': {
       address: ["KT1EpGgjQs73QfFJs9z7m1Mxm5MTnpC2tqse"],
@@ -47,7 +47,7 @@ export const CONSTANTS: Constants = {
     'Interpop Comics': {
       address: ["KT1UxMVVrK2pbYYEtwes1zKYdpYnzoZ6yPKC"],
       thumbnailUrl: "https://dev.interpopcomics.com/interpop_logo.png",
-      link: "https://interpopcomics.com/", shouldDisplayLink: true, category: "collectibles"
+      link: "https://interpopcomics.com/", shouldDisplayLink: false, category: "collectibles"
     },
     'Bazaar Market': {
       address: ["KT1PKvHNWuWDNVDtqjDha4AostLrGDu4G1jy"],
