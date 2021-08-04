@@ -145,6 +145,7 @@ export class TokenBalancesService {
   }
 
   isNFT(asset: TokenResponseType): boolean {
+    if (!asset) { return false;}
     if (CONSTANTS.MAINNET) {
       return !CONSTANTS.NFT_CONTRACT_OVERRIDES.includes(`${asset.contractAddress}:${asset.id}`);
     } else {

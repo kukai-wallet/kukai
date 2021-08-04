@@ -87,7 +87,7 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
   ngOnChanges(changes: SimpleChanges): void {
     if (changes?.prepareRequest?.currentValue) {
       this.reset(true);
-      this.tokenTransfer = changes.prepareRequest.currentValue.tokenTransfer;
+      this.tokenTransfer = changes.prepareRequest.currentValue.tokenTransfer ?? null;
       this.token = this.tokenService.getAsset(this.tokenTransfer);
       this.isNFT = this.tokenBalancesService.isNFT(this.token);
       this.activeAccount = changes.prepareRequest.currentValue.account;
@@ -119,6 +119,7 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
     this.hideAmount = false;
     this.simSemaphore = 0;
 
+    this.tokenTransfer = null;
     this.token = null;
     this.isNFT = null;
     this.accountDropdownIsOpen = false;
