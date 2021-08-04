@@ -44,10 +44,10 @@ export class StartComponent implements OnInit {
   async torusLogin(verifier: string) {
     await this.torusService.initTorus();
     await this.messageService.startSpinner('Loading wallet...');
-    const { keyPair, userInfo } = await this.mockLogin();
-    // const { keyPair, userInfo } = await this.torusService.loginTorus(verifier).catch(async (e) =>
-    //   await this.messageService.stopSpinner()
-    // );
+    // const { keyPair, userInfo } = await this.mockLogin();
+    const { keyPair, userInfo } = await this.torusService.loginTorus(verifier).catch(async (e) =>
+      await this.messageService.stopSpinner()
+    );
     console.log('login done');
     if (keyPair) {
       await this.importService
