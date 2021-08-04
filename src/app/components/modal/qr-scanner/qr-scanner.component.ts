@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { BeaconService } from '../../../services/beacon/beacon.service';
 import QrScanner from 'qr-scanner';
 import { DeeplinkService } from '../../../services/deeplink/deeplink.service';
-import { CONSTANTS as _CONSTANTS } from '../../../../environments/environment';
+import { CONSTANTS as _CONSTANTS, environment } from '../../../../environments/environment';
 import { MessageService } from '../../../services/message/message.service';
 import { ModalComponent } from '../modal.component';
 
@@ -13,6 +13,7 @@ import { ModalComponent } from '../modal.component';
 })
 export class QrScannerComponent extends ModalComponent implements OnInit {
   readonly CONSTANTS = _CONSTANTS;
+  readonly env = environment;
   constructor(
     private beaconService: BeaconService,
     private deeplinkService: DeeplinkService,
