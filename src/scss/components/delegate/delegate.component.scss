@@ -277,19 +277,19 @@
   }
 }
 
-@media (min-width: v.$middle-limit) {
+@media (min-width: v.$layout-break-2) {
   .delegate-page .content .manual > .delegate {
     width: 59.5rem;
   }
 }
 
-@media (max-width: v.$middle-limit) {
+@media (max-width: v.$layout-break-2) {
   .delegate-page .content {
-    max-width: v.$lower-limit;
+    max-width: v.$layout-break-2;
   }
 }
 
-@media (max-width: v.$lower-limit) {
+@media (max-width: v.$layout-break-5) {
   .delegate-page .content .manual > .delegate {
     & a {
       left: 0;

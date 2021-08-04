@@ -6,6 +6,18 @@
     #{$property}: f.multiply($base, 1) + $postfix;
   }
   @media (max-width: v.$lower-limit) {
-    #{$property}: f.multiply($base, 0) + $postfix;
+    #{$property}: f.multiply($base, v.$font-offset-mobile) + $postfix;
   }
+}
+
+@mixin ellipsis() {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@mixin base-relative {
+  position: relative;
+  top: 0;
+  left: 0;
 }

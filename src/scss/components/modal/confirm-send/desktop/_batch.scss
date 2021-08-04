@@ -1,0 +1,33 @@
+@mixin confirm-send-batch {
+  &.batch {
+    & .top {
+      & .left {
+        width: 23%;
+      }
+
+      & .right {
+        width: calc(77% - 1rem);
+      }
+    }
+
+    & .from {
+      & .left {
+        width: 23%;
+      }
+
+      & .right {
+        width: calc(77% - 1rem);
+      }
+    }
+
+    & .to {
+      & .left {
+        width: 23%;
+      }
+
+      & .right {
+        width: calc(77% - 1rem);
+      }
+    }
+  }
+}

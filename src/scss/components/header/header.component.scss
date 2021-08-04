@@ -1,6 +1,21 @@
 @use '../../abstracts/variables'as v;
 @use '../../abstracts/mixins'as m;
 
+%icon {
+  margin-right: 1rem;
+  border: v.$border-width-thin solid v.$base-color-lightened-5;
+  width: 2rem;
+  height: 2rem;
+  padding: calc(0.5rem + 1px);
+  border-radius: v.$border-radius-hard;
+
+  & img {
+    width: 100%;
+    height: auto;
+    object-fit: scale-down;
+  }
+}
+
 :host {
   height: 10rem;
   width: 100%;
@@ -87,9 +102,7 @@
             justify-content: flex-start;
 
             & > .address {
-              white-space: nowrap;
-              overflow: hidden;
-              text-overflow: ellipsis;
+              @include m.ellipsis;
               color: v.$base-font-color-secondary;
 
               & > span {
@@ -153,16 +166,8 @@
       }
 
       & .icon {
-        margin-right: 1rem;
-        border: v.$border-width-thin solid v.$base-color-lightened-5;
-        width: 2rem;
-        height: 2rem;
-        padding: calc(0.5rem + 1px);
-        border-radius: v.$border-radius-hard;
-        position: relative;
-        top: 0;
-        left: 0;
-        cursor: pointer;
+        @extend %icon;
+        @include m.base-relative;
 
         &:last-of-type {
           margin-right: 0;
@@ -223,12 +228,7 @@
   }
 
   & .copy {
-    margin-right: 1rem;
-    border: v.$border-width-thin solid v.$base-color-lightened-5;
-    width: 2rem;
-    height: 2rem;
-    padding: 0.5rem;
-    border-radius: v.$border-radius-hard;
+    @extend %icon;
 
     & img {
       width: 100%;
@@ -318,7 +318,7 @@
   }
 }
 
-@media (max-width: v.$lower-limit) {
+@media (max-width: v.$layout-break-5) {
   .top-container.mobile.default .brand-logo .icon {
     height: 75% !important;
   }
@@ -329,39 +329,5 @@
 
   .top-container.mobile {
     display: flex;
-  }
-}
-
-a.logo {
-  margin: 2.25rem 2rem 1rem;
-  width: 5.6875rem;
-  height: 1.75rem;
-}
-
-#header-list {
-  display: flex;
-  @include m.multiply("font-size", 0.875);
-  color: rgba(255, 255, 255, 0.8);
-  vertical-align: bottom;
-  text-align: right;
-  line-height: 1rem;
-  padding: 0 2rem;
-  align-items: center;
-  width: 100%;
-
-  & > .left {
-    padding: 0 0.125rem;
-    text-align: left;
-    color: white;
-    background-color: #cc0000;
-    font-weight: 600;
-  }
-
-  & > .main {
-    flex-grow: 1;
-  }
-
-  &.invert {
-    color: rgba(0, 0, 0, 0.8);
   }
 }

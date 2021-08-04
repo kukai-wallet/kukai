@@ -1,5 +1,6 @@
 @use '../../abstracts/variables'as v;
 @use '../../abstracts/mixins' as m;
+@use './confirm-send/mixins' as cs;
 
 .kukai-modal {
   position: absolute;
@@ -22,9 +23,7 @@
     border-radius: v.$border-radius-hard;
     padding: 2rem;
     min-width: 32rem;
-    position: relative;
-    top: 0;
-    left: 0;
+    @include m.base-relative;
     margin: 5rem 0 0 0;
     overflow-x: hidden;
 
@@ -55,28 +54,24 @@
 
       .title {
         @include m.multiply('font-size',1.875);
+        @include m.ellipsis;
         width: 70%;
         font-weight: 500;
         text-align: center;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
       }
     }
 
     & .label {
+      @include m.multiply('font-size',1);
       margin: 1rem;
       letter-spacing: 0.02em;
       font-weight: 500;
       color: #3e4855;
       text-transform: uppercase;
-      @include m.multiply('font-size',1);
     }
 
     & .seperator {
-      position: relative;
-      top: 0;
-      left: 0;
+      @include m.base-relative;
       height: 1px;
       background-color: v.$border-color;
       left: -2rem;
@@ -172,7 +167,7 @@
 
     @import './prepare-send.scss';
 
-    @import './confirm-send.scss';
+    @include cs.confirm-send;
 
     @import './permission-request.scss';
 
@@ -201,9 +196,8 @@
 
     & button.confirm {
       width: 50%;
-      height: 4.5rem;
+      height: 4rem;
       border-radius: v.$border-radius-hard;
-      @include m.multiply("font-size", 1.125);
     }
   }
 }

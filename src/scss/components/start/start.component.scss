@@ -91,8 +91,6 @@
 
     & .top {
       justify-content: center;
-      width: calc(100% - 11%);
-      padding: 0 0 0 11%;
 
       & > * {
         margin: 2rem 0;
@@ -135,36 +133,31 @@
         .reddit,
         & > .google img {
           border-radius: v.$border-radius-hardest;
-          width: 3.5rem;
-          height: 3.5rem;
+          background-color: v.$base-end-color;
+          box-shadow: v.$box-shadow;
           cursor: pointer;
+          &:hover {
+            filter: invert(0.05);
+          }
         }
 
         .facebook,
         .twitter,
         .reddit {
-          margin: 0 0 0 2rem;
+          width: 3.5rem;
+          height: 3.5rem;
           padding: 0.75rem;
-        }
-
-        .facebook,
-        .twitter,
-        .reddit,
-        & > .google {
-          background-color: v.$base-end-color;
-          box-shadow: v.$box-shadow;
-          &:hover {
-            filter: invert(0.05);
-          }
+          margin: 0 0 0 1rem;
         }
 
         & > .google {
           border: v.$border-width-thin solid v.$border-color;
           border-radius: v.$border-radius-hardest;
           min-width: 27rem;
-          height: 6rem;
+          height: 5rem;
           color: v.$base-font-color;
           padding: 0 1rem 0 2rem;
+          background-color: v.$base-end-color;
 
           & > span {
             padding: 1rem 0;
@@ -229,7 +222,7 @@
   }
 }
 
-@media (max-width: 171em) {
+@media (max-width: v.$layout-break-1) {
   #wrapper {
     & .left,
     & .right {
@@ -241,36 +234,11 @@
         @include m.multiply("font-size", 2);
         line-height: 3rem;
       }
-
-      & .login {
-        & .social {
-          justify-content: flex-start;
-
-          & .facebook,
-          & .twitter,
-          & .reddit {
-            margin: 0 0 0 1rem;
-          }
-
-          & .facebook,
-          & .twitter,
-          & .reddit {
-            width: 3.5rem;
-            height: 3.5rem;
-            padding: 0.75rem;
-          }
-
-          & .google {
-            min-width: 28rem;
-            height: 5rem;
-          }
-        }
-      }
     }
   }
 }
 
-@media (max-width: calc(#{v.$lower-limit} + 20em)) and (max-aspect-ratio: 1/1), (max-width: v.$lower-limit) {
+@media (max-width: v.$layout-break-3) and (max-aspect-ratio: 1/1), (max-width: v.$layout-break-5) {
   :host {
     & .bottom {
       display: flex !important;
@@ -408,7 +376,7 @@
   }
 }
 
-@media (max-width: v.$lower-limit) {
+@media (max-width: v.$layout-break-5) {
   :host {
     & #wrapper {
       & .left,
@@ -424,7 +392,7 @@
   }
 }
 
-@media (max-width: calc(#{v.$lower-limit} - 20em)) {
+@media (max-width: v.$layout-break-6) {
   :host {
     & .is-mobile {
       display: none;
@@ -432,7 +400,7 @@
   }
 }
 
-@media (max-aspect-ratio: 3/2) and (min-width: calc(#{v.$lower-limit} + 20em)) {
+@media (max-aspect-ratio: 3/2) and (min-width: v.$layout-break-3) {
   :host {
     & #wrapper {
       max-height: calc((100vw / 3) * 2);

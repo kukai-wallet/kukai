@@ -1,3 +1,4 @@
+
 // generic color constants
 $base-color: #000 !default;
 $base-color-lightened-1: #4a5d75 !default;
@@ -29,13 +30,33 @@ $border-radius-hard: calc(#{$border-radius} * 2) !default;
 $border-radius-hardest: calc(#{$border-radius} * 10) !default;
 $border-color: #aaa3;
 
+$border-width-thin: 0.125rem;
 $border-width: 0.1875rem;
 $border-width-thin: calc((#{$border-width} / 3) * 2);
 $border-width-thick: calc((#{$border-width} / 3) * 4);
 
 // @media constants
+
+// Defaults
 $lower-limit: 63em;
 $middle-limit: 127em;
 $upper-limit: 255em;
 
-$offset: 1.2;
+// Font Breaks
+$font-break-0: 255em;
+$font-break-1: 127em;
+$font-break-2: 102em;
+$font-break-3: 77em;
+$font-break-4: 63em;
+
+// Layout Breaks
+$layout-break-0: 253em;
+$layout-break-1: 173em;
+$layout-break-2: 123em;
+$layout-break-3: 83em;
+$layout-break-4: 73em;
+$layout-break-5: 63em;
+$layout-break-6: 43em;
+
+// Offsets
+$font-offset-mobile: 1.2;

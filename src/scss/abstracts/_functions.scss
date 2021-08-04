@@ -1,9 +1,5 @@
 @use '../abstracts/variables'as v;
 
-@function multiply($base, $is-mobile) {
-  @if $is-mobile == 0 {
-    @return #{v.$offset * $base};
-  } @else {
-    @return #{$base};
-  }
+@function multiply($base, $multiplier) {
+  @return #{$base * $multiplier};
 }

@@ -37,7 +37,7 @@
   }
 }
 
-@media (max-width: calc(#{v.$middle-limit} - 50em)) {
+@media (max-width: v.$layout-break-4) {
   .wrapper {
     align-items: center;
     flex-flow: column wrap;

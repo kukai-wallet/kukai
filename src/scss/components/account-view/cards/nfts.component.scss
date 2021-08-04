@@ -104,9 +104,7 @@
         width: 90%;
 
         & .title {
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
+          @include m.ellipsis;
           max-width: calc(100% - 8.75rem);
           cursor: pointer;
         }
@@ -256,7 +254,7 @@
   }
 }
 
-@media (max-width: calc(#{v.$lower-limit} - 20em)) {
+@media (max-width: v.$layout-break-6) {
   .nfts .collection {
     & .body .token {
       width: 100%;

@@ -97,7 +97,7 @@ export const CONSTANTS: Constants = {
       link: "", shouldDisplayLink: false
     },
     'InterpopComics': {
-      name: "InterpopComics",
+      name: "Interpop Comics",
       address: ["KT1KG5XcKeUtFWvQBkeiTe5vjvrAya8VsQFi"],
       thumbnailUrl: "https://dev.interpopcomics.com/interpop_logo.png",
       link: "https://dev.interpopcomics.com/", shouldDisplayLink: true

@@ -19,9 +19,7 @@
     color: v.$base-font-color;
     font-weight: 500;
     width: calc(100% - 8rem);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    @include m.ellipsis;
   }
 
   & .top,

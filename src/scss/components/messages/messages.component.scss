@@ -15,7 +15,7 @@
   }
 }
 
-@media(max-width: v.$lower-limit) {
+@media(max-width: v.$layout-break-5) {
   :host {
     & .msg-container {
       top: 1rem;

@@ -7,7 +7,7 @@
   justify-content: flex-start;
   align-items: center;
   flex-direction: column;
-  min-height: calc(100vh - 21rem);
+  min-height: calc(100vh - 10rem);
 
     & a .back {
       background-color: v.$base-background-color;
@@ -155,10 +155,9 @@
   }
 }
 
-@media screen and (max-width: 37.5rem) {
+@media screen and (max-width: v.$layout-break-6) {
 
   :host {
-
     & div.settings>table>tbody>tr>th:last-child,
     & div.settings>table>tbody>tr>td:last-child {
       padding-left: 0rem;
@@ -167,6 +166,5 @@
     & button {
       white-space: normal;
     }
-
   }
 }

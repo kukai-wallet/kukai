@@ -8,27 +8,6 @@
   @include top-container;
 }
 
-.pending,
-.nfts {
-  & .head {
-    padding: 1rem 2rem 0 2rem;
-    border-radius: v.$border-radius;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-    background-color: v.$base-end-color;
-    border-bottom: 2px solid #0000;
-
-    & .left {
-      justify-content: flex-start;
-
-      & .title {
-        @include m.multiply('font-size',1.5);
-        margin-right: 1rem;
-      }
-    }
-  }
-}
-
 .pending {
 
   transition: 0.15s height;

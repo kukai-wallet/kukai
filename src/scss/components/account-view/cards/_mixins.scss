@@ -1,3 +1,4 @@
+
 @use '../../../abstracts/variables' as v;
 @use '../../../abstracts/mixins' as m;
 
@@ -12,7 +13,7 @@
 
   & h1 {
     @include m.multiply('font-size',1.875);
-    font-weight: 400;
+    font-weight: 500;
   }
 }
 
@@ -36,7 +37,7 @@
     width: 100%;
   }
 
-  @media (max-width: v.$lower-limit) {
+  @media (max-width: v.$layout-break-5) {
     :host {
       width: 100%;
       margin: 0;
@@ -53,28 +54,6 @@
       border-radius: v.$border-radius;
       background-color: v.$base-end-color;
       box-shadow: v.$box-shadow;
-    }
-  }
-
-  %button {
-    padding: 1rem 1.5rem;
-    border-radius: v.$border-radius-hard;
-    @include m.multiply('font-size',1.0);
-    font-weight: 600;
-  }
-
-  .button {
-    &-primary {
-      background-color: v.$base-blue-color-lightened;
-      color: v.$base-end-color;
-      @extend %button;
-
-      &-inverted {
-        background-color: v.$base-end-color;
-        color: v.$base-blue-color-lightened;
-        border: v.$border-width-thin solid v.$base-blue-color-lightened;
-        @extend %button;
-      }
     }
   }
 }
