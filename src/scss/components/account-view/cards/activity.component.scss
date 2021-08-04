@@ -66,7 +66,7 @@
       position: absolute;
       left: 0;
       bottom: 0;
-      height: 0.3rem;
+      height: 0;
       width: 100%;
     }
 
@@ -74,6 +74,7 @@
       background-color: v.$base-color-lightened-5;
 
       &:after {
+        height: 0.3rem;
         background-color: v.$base-color-lightened-1;
       }
     }
@@ -86,23 +87,28 @@
       background-color: v.$base-end-color;
 
       &:after {
+        height: 0.3rem;
         background-color: v.$base-green-color;
       }
     }
 
     &.failed {
       &:after {
+        height: 0.3rem;
         background-color: v.$base-red-color;
+      }
+      & .title,
+      & .title .failed {
+        color: v.$base-red-color;
+      }
+      & .title .failed {
+        @include m.multiply("font-size", 1.25);
       }
     }
 
     & .title {
       @include m.multiply("font-size", 1.5);
       margin-bottom: 0.5rem;
-      & .failed {
-        color: v.$base-red-color;
-        @include m.multiply("font-size", 1.25);
-      }
     }
 
     & .address {
