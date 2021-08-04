@@ -96,7 +96,8 @@ export const CONSTANTS: Constants = {
       thumbnailUrl: "https://tezotopia.web.app/static/media/tezotopia-logo.bf94c3f8.png",
       link: "", shouldDisplayLink: false
     },
-    'Interpop Comics': {
+    'InterpopComics': {
+      name: "InterpopComics",
       address: ["KT1KG5XcKeUtFWvQBkeiTe5vjvrAya8VsQFi"],
       thumbnailUrl: "https://dev.interpopcomics.com/interpop_logo.png",
       link: "https://dev.interpopcomics.com/", shouldDisplayLink: true
