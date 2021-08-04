@@ -26,7 +26,8 @@
           </span>
         </ng-template>
         <div *ngSwitchCase="'sent'" class="sent"
-          [class]="activity.status === 0 ? 'unconfirmed' : isNew(activity.timestamp) ? 'new' : 'confirmed'" [class.failed]="activity.status === -1">
+          [class]="activity.status === 0 ? 'unconfirmed' : isNew(activity.timestamp) ? 'new' : 'confirmed'"
+          [class.failed]="activity.status === -1">
           <div class="flex-column">
             <div class="flex-row title">
               <ng-container *ngIf="activity?.amount !== '0'; else zeroCall">
@@ -38,7 +39,8 @@
                   *ngIf="!!getCounterparty(activity)?.lookupType && getCounterparty(activity)?.lookupType !== 'domain'"
                   src="../../../../assets/img/{{ LookupType[getCounterparty(activity)?.lookupType].toLowerCase() }}-logo.svg" />{{
                 getCounterparty(activity)?.name || getCounterparty(activity)?.address || 'Burn'
-                }}</span>
+                }}<img class="copy" src="../../../../assets/img/copy-icon.svg"
+                  (click)="copy(getCounterparty(activity)?.address)" /></span>
               <span *ngIf="activity.status !== 0" class="time">
                 <a href="{{ explorerURL(activity.hash) }}" target="_blank">
                   {{ activity.timestamp | timeAgo:trigger }}
@@ -49,7 +51,8 @@
           </div>
         </div>
         <div *ngSwitchCase="'received'" class="received"
-          [class]="activity.status === 0 ? 'unconfirmed' : isNew(activity.timestamp) ? 'new' : 'confirmed'" [class.failed]="activity.status === -1">
+          [class]="activity.status === 0 ? 'unconfirmed' : isNew(activity.timestamp) ? 'new' : 'confirmed'"
+          [class.failed]="activity.status === -1">
           <div class="flex-column">
             <div class="flex-row title">
               <ng-container *ngIf="activity?.amount !== '0'">
@@ -60,7 +63,8 @@
                   *ngIf="!!getCounterparty(activity)?.lookupType && getCounterparty(activity)?.lookupType !== 'domain'"
                   src="../../../../assets/img/{{ LookupType[getCounterparty(activity)?.lookupType].toLowerCase() }}-logo.svg" />{{
                 getCounterparty(activity)?.name || getCounterparty(activity)?.address || ''
-                }}</span>
+                }}<img class="copy" src="../../../../assets/img/copy-icon.svg"
+                (click)="copy(getCounterparty(activity)?.address)" /></span>
               <span *ngIf="activity.status !== 0" class="time">
                 <a href="{{ explorerURL(activity.hash) }}" target="_blank">
                   {{ activity.timestamp | timeAgo:trigger }}
@@ -71,7 +75,8 @@
           </div>
         </div>
         <div *ngSwitchCase="'delegated'" class="delegated"
-          [class]="activity.status === 0 ? 'unconfirmed' : isNew(activity.timestamp) ? 'new' : 'confirmed'" [class.failed]="activity.status === -1">
+          [class]="activity.status === 0 ? 'unconfirmed' : isNew(activity.timestamp) ? 'new' : 'confirmed'"
+          [class.failed]="activity.status === -1">
           <div class="flex-column">
             <div class="flex-row title">
               Staked
@@ -82,7 +87,8 @@
                   src="../../../../assets/img/{{ LookupType[getCounterparty(activity)?.lookupType].toLowerCase() }}-logo.svg" />{{
                 getCounterparty(activity)?.name ||
                 getCounterparty(activity)?.address || ''
-                }}</span>
+                }}<img class="copy" src="../../../../assets/img/copy-icon.svg"
+                (click)="copy(getCounterparty(activity)?.address)" /></span>
               <span *ngIf="activity.status !== 0" class="time">
                 <a href="{{ explorerURL(activity.hash) }}" target="_blank">
                   {{ activity.timestamp | timeAgo:trigger }}
@@ -93,7 +99,8 @@
           </div>
         </div>
         <div *ngSwitchCase="'undelegated'" class="delegated"
-          [class]="activity.status === 0 ? 'unconfirmed' : isNew(activity.timestamp) ? 'new' : 'confirmed'" [class.failed]="activity.status === -1">
+          [class]="activity.status === 0 ? 'unconfirmed' : isNew(activity.timestamp) ? 'new' : 'confirmed'"
+          [class.failed]="activity.status === -1">
           <div class="flex-column">
             <div class="flex-row title">
               Unstaked
@@ -104,7 +111,8 @@
                   src="../../../../assets/img/{{ LookupType[getCounterparty(activity)?.lookupType].toLowerCase() }}-logo.svg" />{{
                 getCounterparty(activity)?.name ||
                 getCounterparty(activity)?.address || '(none)'
-                }}</span>
+                }}<img class="copy" src="../../../../assets/img/copy-icon.svg"
+                (click)="copy(getCounterparty(activity)?.address)" /></span>
               <span *ngIf="activity.status !== 0" class="time">
                 <a href="{{ explorerURL(activity.hash) }}" target="_blank">
                   {{ activity.timestamp | timeAgo:trigger }}
@@ -115,7 +123,8 @@
           </div>
         </div>
         <div *ngSwitchCase="'origination'" class="origination"
-          [class]="activity.status === 0 ? 'unconfirmed' : isNew(activity.timestamp) ? 'new' : 'confirmed'" [class.failed]="activity.status === -1">
+          [class]="activity.status === 0 ? 'unconfirmed' : isNew(activity.timestamp) ? 'new' : 'confirmed'"
+          [class.failed]="activity.status === -1">
           <div class="flex-column">
             <div class="flex-row title">
               <ng-container *ngIf="activity?.amount !== '0'">
@@ -127,7 +136,8 @@
             <div class="flex-row"><span class="flex-row address">Originated contract:<img
                   *ngIf="!!getCounterparty(activity)?.lookupType && getCounterparty(activity)?.lookupType !== 'domain'"
                   src="../../../../assets/img/{{ LookupType[getCounterparty(activity)?.lookupType].toLowerCase() }}-logo.svg" />{{
-                getCounterparty(activity)?.name || getCounterparty(activity)?.address }}</span>
+                getCounterparty(activity)?.name || getCounterparty(activity)?.address }}<img class="copy" src="../../../../assets/img/copy-icon.svg"
+                (click)="copy(getCounterparty(activity)?.address)" /></span>
               <span *ngIf="activity.status !== 0" class="time">
                 <a href="{{ explorerURL(activity.hash) }}" target="_blank">
                   {{ activity.timestamp | timeAgo:trigger }}

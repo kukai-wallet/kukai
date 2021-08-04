@@ -7,6 +7,7 @@ import { CONSTANTS } from '../../../../environments/environment';
 import { ActivityService } from '../../../services/activity/activity.service';
 import { TokenService } from '../../../services/token/token.service';
 import { LookupType } from '../../../services/lookup/lookup.service';
+import copy from 'copy-to-clipboard';
 
 @Component({
   selector: 'app-activity',
@@ -77,5 +78,12 @@ export class ActivityComponent implements OnInit {
 
   isNew(ts) {
     return (this.currTimeStamp - ts) < (60000 * 3);
+  }
+  copy(address: string) {
+    copy(address);
+    const copyToClipboard = this.translate.instant(
+      'OVERVIEWCOMPONENT.COPIEDTOCLIPBOARD'
+    );
+    this.messageService.add(address + ' ' + copyToClipboard, 5);
   }
 }
