@@ -217,7 +217,7 @@ button {
   }
 }
 
-@media (max-width: calc(#{v.$middle-limit} - 50em)) {
+@media (max-width: calc(#{v.$middle-limit} - 45em)) {
   html {
     font-size: 60%;
   }
