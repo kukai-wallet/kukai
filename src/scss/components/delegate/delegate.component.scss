@@ -320,6 +320,8 @@
     display: flex;
     height: 10rem;
     justify-content: flex-start;
+    padding: 0 2rem;
+    width: calc(100% - 4rem);
 
     & .props {
       flex-wrap: wrap;
