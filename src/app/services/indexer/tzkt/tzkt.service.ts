@@ -237,29 +237,13 @@ export class TzktService implements Indexer {
           // possible snake_case to camelCase conversion; depending on future BCD updates
           const rawData = JSON.parse(JSON.stringify(data));
           this.flattern(data);
-          const metadata: any = {};
+          let metadata: any = {};
           for (const a of keys) {
             if (typeof data[a.key] === a.type) {
               metadata[a.key] = data[a.key];
             }
           }
-          if (metadata.displayUri) {
-            metadata.displayUri = await this.uriToUrl(metadata.displayUri);
-          }
-          if (metadata.thumbnailUri) {
-            metadata.thumbnailUri = await this.uriToUrl(metadata.thumbnailUri);
-          }
-          try { // Exceptions
-            if (metadata?.isBooleanAmount === undefined && typeof data?.isBooleanAmount === 'string' && data?.isBooleanAmount === 'true') { // mandala
-              metadata.isBooleanAmount = true;
-            }
-            if (!metadata.displayUri && data?.symbol === 'OBJKT') { // hicetnunc
-              if (['image/png', 'image/jpg', 'image/jpeg'].includes(rawData.formats[0].mimeType)) {
-                metadata.displayUri = await this.uriToUrl(rawData.formats[0].uri);
-                delete metadata.thumbnailUri;
-              }
-            }
-          } catch (e) { }
+          metadata = { ...metadata, ...(await this.resolveAssetUris(data)) };
           return metadata;
         }
         console.log(`No token metadata found for ${contractAddress}:${id}`);
@@ -291,7 +275,31 @@ export class TzktService implements Indexer {
       }
     }
   }
-  async uriToUrl(uri: string): Promise<string> {
+  async resolveAssetUris(data: any): Promise<any> {
+    const metadata: any = {};
+    const rawData = JSON.parse(JSON.stringify(data));
+    metadata.displayUri = await this.uriToUrl(data.displayUri, 'raw');
+    metadata.thumbnailUri = await this.uriToUrl(data.thumbnailUri, 'raw');
+    try {
+      // Exceptions
+      if (data?.isBooleanAmount === undefined && typeof data?.isBooleanAmount === "string" && data?.isBooleanAmount === "true"
+      ) {
+        // mandala
+        metadata.isBooleanAmount = true;
+      }
+      if (!data.displayUri && data?.symbol === "OBJKT") {
+        // hicetnunc
+        if (["image/png", "image/jpg", "image/jpeg"].includes(rawData.formats[0].mimeType)) {
+          metadata.displayUri = await this.uriToUrl(
+            rawData.formats[0].uri,
+            'raw'
+          );
+        }
+      }
+    } catch (e) { }
+    return metadata;
+  }
+  async uriToUrl(uri: string, size: string = 'raw'): Promise<string> {
     if (!uri || uri.length < 8) {
       return '';
     }
@@ -303,13 +311,14 @@ export class TzktService implements Indexer {
     } else if (!CONSTANTS.MAINNET && (uri.startsWith('http://localhost') || uri.startsWith('http://127.0.0.1'))) {
       url = uri;
     }
-    const cacheUrl = await this.fetchApi(`https://www.tezos.help/api/img-proxy/?url=${url}`);
+    const cacheUrl = await this.fetchApi(`https://img.kukai.network/info?size=${size}&src=${url}`);
     return cacheUrl ? cacheUrl : '';
   }
   async fetchApi(url: string): Promise<any> {
     return fetch(url)
-      .then(response => response.json())
-      .then(data => data).catch(() => url.substring(url.indexOf('https://cloudflare-ipfs.com')));
+      .then((response) => response.json())
+      .then((data) => `https://img.kukai.network/${data.Filename}.${data.Extension}`)
+      .catch(() => url.substring(url.indexOf("https://cloudflare-ipfs.com")));
   }
   async getTokenBalancesUsingPromiseAll(address: string) {
     // get total number of tokens
