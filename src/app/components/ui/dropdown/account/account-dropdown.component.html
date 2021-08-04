@@ -1,14 +1,20 @@
 <div *ngIf="router.url.indexOf('/account/') > -1" class="flex-row dropdown" [class.expanded]="isOpen" [id]="ecmpId">
   <div class="flex-row currentAddress" (click)="toggleDropdown()"><img *ngIf="!!getUsername()" class="logo"
       src="../../../../assets/img/{{ getVerifier() }}-logo.svg" /><span class="address">{{
-      getUsername() || "&nbsp;&nbsp;&nbsp;&nbsp;" + current?.shortAddress() }}</span><img *ngIf="!getUsername()"
-      class="button icon-db" src="../../../../assets/img/down-arrow.svg" />
+      getUsername() || "&nbsp;&nbsp;&nbsp;&nbsp;" + current?.shortAddress() }}</span><img class="button icon-db"
+      src="../../../../assets/img/down-arrow.svg" />
   </div>
   <div class="flex-column dropdown-content">
     <ng-container *ngFor="let account of list">
       <a routerLink="/account/{{account?.address}}" [class.selected]="account?.address === current?.address"
         (click)="toggleDropdown()">
-        <ng-container *ngIf="getUsername(account?.address)">{{ getUsername(account?.address) }}<br/>{{ account?.shortAddress() }}</ng-container>
+        <ng-container *ngIf="getUsername(account?.address)">
+          <div class="flex-row alias"><img class="logo"
+              src="../../../../assets/img/{{ getVerifier() }}-logo.svg" /><span>{{
+              getUsername(account?.address) }}</span></div>
+          <br />{{
+          account?.shortAddress() }}
+        </ng-container>
         <ng-container *ngIf="!getUsername(account?.address)">{{ account?.shortAddress() }}</ng-container>
       </a>
     </ng-container>

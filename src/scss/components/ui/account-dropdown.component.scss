@@ -74,7 +74,7 @@
     }
 
     & a {
-      color: #2c323a;
+      color: v.$base-font-color;
       padding: 0.75rem 1.875rem;
       text-decoration: none;
       display: block;
@@ -86,6 +86,19 @@
 
       &.selected {
         background: v.$base-color-lightened-6;
+      }
+
+      & .alias {
+        justify-content: flex-start;
+
+        & img {
+          height: 1rem;
+          margin: 0 0.5rem 0 0;
+        }
+
+        & span {
+          color: v.$base-font-color;
+        }
       }
     }
   }
