@@ -231,10 +231,10 @@ export class TzktService implements Indexer {
           { key: 'series', type: 'string' }
         ];
         // should always be 1
+        mutableConvertObjectPropertiesSnakeToCamel(data);
         assert(data, `cannot find token_id ${id} for contract: ${contractAddress}`);
         if (data?.token_id === Number(id) || data.tokenId === Number(id)) {
           // possible snake_case to camelCase conversion; depending on future BCD updates
-          mutableConvertObjectPropertiesSnakeToCamel(data);
           const rawData = JSON.parse(JSON.stringify(data));
           this.flattern(data);
           const metadata: any = {};
@@ -333,6 +333,9 @@ export class TzktService implements Indexer {
 
 export function mutableConvertObjectPropertiesSnakeToCamel(data: Object) {
   for (const key in data) {
+    if(key.charAt(0).toLowerCase() !== key.charAt(0)) {
+      data[key.charAt(0).toLowerCase() + key.slice(1)] = data[key];
+    }
     if (key.indexOf('_') !== -1) {
       const aryCamelKey = [];
       for (let i = 0; i < key.length; i++) {
