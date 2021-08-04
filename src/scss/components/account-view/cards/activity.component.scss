@@ -60,16 +60,20 @@
   .origination {
     position: relative;
     overflow: hidden;
+
+    &:after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 0.3rem;
+      width: 100%;
+    }
+
     &.unconfirmed {
       background-color: v.$base-color-lightened-5;
 
       &:after {
-        content: "";
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        height: 0.3rem;
-        width: 100%;
         background-color: v.$base-color-lightened-1;
       }
     }
@@ -82,13 +86,13 @@
       background-color: v.$base-end-color;
 
       &:after {
-        content: "";
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        height: 0.3rem;
-        width: 100%;
         background-color: v.$base-green-color;
+      }
+    }
+
+    &.failed {
+      &:after {
+        background-color: v.$base-red-color;
       }
     }
 

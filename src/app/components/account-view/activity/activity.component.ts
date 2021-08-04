@@ -6,6 +6,7 @@ import { MessageService } from '../../../services/message/message.service';
 import { CONSTANTS } from '../../../../environments/environment';
 import { ActivityService } from '../../../services/activity/activity.service';
 import { TokenService } from '../../../services/token/token.service';
+import { LookupType } from '../../../services/lookup/lookup.service';
 
 @Component({
   selector: 'app-activity',
@@ -24,6 +25,7 @@ export class ActivityComponent implements OnInit {
   trigger = true;
   @Input() activity: any;
   @Input() account: Account;
+  LookupType = LookupType;
   ngOnInit(): void {
     setInterval(() => { this.trigger = !this.trigger; this.currTimeStamp = (new Date()).getTime()}, 1000);
     this.currTimeStamp = (new Date()).getTime();
