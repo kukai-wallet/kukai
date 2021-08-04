@@ -125,6 +125,14 @@
       align-items: center;
       position: relative;
 
+      &.desktop {
+        display: flex;
+      }
+
+      &.mobile {
+        display: none;
+      }
+
       &:last-child {
         border-bottom: none;
       }
@@ -145,6 +153,8 @@
 
       & .name {
         width: 10rem;
+        font-weight: 500;
+        font-size: 1.125rem;
       }
 
       & .address {
@@ -296,5 +306,52 @@
 
   .delegate-page .content .list button {
     width: 8rem;
+    padding: 1rem;
+    color: v.$base-blue-color-lightened;
+    background-color: v.$base-background-color;
+    border: v.$border-width solid v.$base-blue-color-lightened;
+  }
+
+  .delegate-page .content .delegate.desktop {
+    display: none;
+  }
+
+  .delegate-page .content .delegate.mobile {
+    display: flex;
+    height: 10rem;
+    justify-content: flex-start;
+
+    & .props {
+      flex-wrap: wrap;
+      height: 8rem;
+      width: calc(100% - 0rem);
+      justify-content: center;
+      align-content: start;
+
+      & .logo {
+        width: 7rem;
+        margin: 0 2rem 0 1rem;
+      }
+
+      & .name {
+        font-size: 2.5rem;
+        font-weight: 500;
+        width: auto;
+      }
+
+      & .fee,
+      & .freespace,
+      & .estROI {
+        font-size: 1.5rem;
+        font-weight: 500;
+        width: auto;
+        display: block;
+        color: v.$base-font-color-secondary;
+
+        & b {
+          color: v.$base-font-color;
+        }
+      }
+    }
   }
 }

@@ -5,7 +5,9 @@
         <a [routerLink]="'/account/' + activeAccount?.address"><button class="flex-row back"><img
               src="../../../../../assets/img/left-arrow.svg">BACK</button></a>
         <h1>Staking</h1>
-        <div class="flex-row toolbar"><span class="button blue" (click)="toggleCustom()">Enter Custom Baker</span><span *ngIf="!delegates?.length" class="button blue" (click)="    this.delegateService.getDelegates()">Reload</span></div>
+        <div class="flex-row toolbar"><span class="button blue" (click)="toggleCustom()">Enter Custom Baker</span><span
+            *ngIf="!delegates?.length" class="button blue" (click)="this.delegateService.getDelegates()">Reload</span>
+        </div>
         <ng-container *ngIf="isShowingCustom">
           <span>Address or domain of a registered baker</span>
           <div class="custom">
@@ -18,15 +20,30 @@
     </div>
     <div class="flex-column list">
       <ng-container *ngFor="let delegate of delegates">
-        <div class="flex-row delegate">
+        <div class="flex-row delegate desktop">
           <img class="logo" [src]="delegate.logo ? delegate.logo : ''" />
           <span class="name">{{ delegate.name }}</span>
           <span class="fee">SPLIT:&nbsp;<b class="value">{{ toPercent(delegate?.fee) }}</b></span>
           <span class="freespace">SPACE:&nbsp;<b class="value">{{ round(delegate?.freeSpace) }}</b></span>
           <span class="estROI">EST REWARDS:&nbsp;<b class="value">{{ toPercent(delegate?.estimatedRoi) }}</b></span>
-          <button class="button" (click)="stake(delegate)">STAKE</button>
+          <button class="button" (click)="stake(delegate)">{{ delegate?.address ===
+            activeAccount?.delegate ? 'UNSTAKE' : 'STAKE' }}</button>
+        </div>
+        <div class="flex-row delegate mobile">
+          <div class="flex-column props">
+            <img class="logo" [src]="delegate.logo ? delegate.logo : ''" />
+            <span class="name">{{ delegate.name }}</span>
+            <span class="fee">SPLIT:&nbsp;<b class="value">{{ toPercent(delegate?.fee) }}</b></span>
+            <span class="freespace">SPACE:&nbsp;<b class="value">{{ round(delegate?.freeSpace) }}</b></span>
+            <span class="estROI">EST REWARDS:&nbsp;<b class="value">{{ toPercent(delegate?.estimatedRoi) }}</b></span>
+          </div>
+          <button class="button" (click)="stake(delegate)">{{ delegate?.address ===
+            activeAccount?.delegate ? 'UNSTAKE' : 'STAKE' }}</button>
         </div>
       </ng-container>
     </div>
   </div>
 </div>
+
+
+<!-- "tz1ZcTRk5uxD86EFEn1vvNffWWqJy7q5eVhc" -->

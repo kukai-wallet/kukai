@@ -31,7 +31,9 @@ export class DelegatePageComponent implements OnInit {
     });
 
     this.delegateService.delegates.subscribe((d) => {
-      this.delegates = this.filter(d);
+      console.log(d)
+      console.log(this.activeAccount);
+      this.delegates = this.filter(d).sort((x,y) => (x.address === this.activeAccount.delegate ? -1 : y === this.activeAccount.delegate ? 1 : 0));
     })
   }
 
