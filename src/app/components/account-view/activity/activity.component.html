@@ -26,13 +26,13 @@
           </span>
         </ng-template>
         <div *ngSwitchCase="'sent'" class="sent"
-          [class]="activity.status === 0 ? 'unconfirmed' : isNew(activity.timestamp) ? 'new' : 'confirmed'" [class.failed]="true">
+          [class]="activity.status === 0 ? 'unconfirmed' : isNew(activity.timestamp) ? 'new' : 'confirmed'" [class.failed]="activity.status === -1">
           <div class="flex-column">
             <div class="flex-row title">
               <ng-container *ngIf="activity?.amount !== '0'; else zeroCall">
                 {{ '- ' + printAmount(activity) }}</ng-container>
               <ng-template #zeroCall>{{ sentKind(activity) }}</ng-template>
-              <span class="failed" *ngIf="true">Error</span>
+              <span class="failed" *ngIf="activity.status === -1">Error</span>
             </div>
             <div class="flex-row"><span class="flex-row address">Sent to:<img
                   *ngIf="!!getCounterparty(activity)?.lookupType && getCounterparty(activity)?.lookupType !== 'domain'"
