@@ -133,5 +133,15 @@
 @media (max-width: v.$lower-limit) {
   :host {
     width: 50%;
+
+    & .dropdown .dropdown-content {
+      width: calc(100% + 10rem);
+      top: 4.78rem;
+      left: -6rem;
+
+      & a {
+        font-size: 1.5rem;
+      }
+    }
   }
 }
