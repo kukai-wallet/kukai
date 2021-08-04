@@ -31,7 +31,7 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      width: calc(100% - 3rem);
+      width: calc(100% - 5rem);
       font-weight: 500;
     }
 
@@ -89,6 +89,7 @@
       }
 
       & .alias {
+        width: 100%;
         justify-content: flex-start;
 
         & img {
@@ -98,7 +99,13 @@
 
         & span {
           color: v.$base-font-color;
+          font-weight: 500;
         }
+      }
+
+      & > span {
+        margin: 0 0 0 1.5rem;
+        width: calc(100% - 1.5rem);
       }
     }
   }
@@ -126,9 +133,5 @@
 @media (max-width: v.$lower-limit) {
   :host {
     width: 50%;
-
-    & .dropdown .dropdown-content a {
-      font-size: 2.25rem;
-    }
   }
 }

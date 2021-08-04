@@ -12,8 +12,8 @@
           <div class="flex-row alias"><img class="logo"
               src="../../../../assets/img/{{ getVerifier() }}-logo.svg" /><span>{{
               getUsername(account?.address) }}</span></div>
-          <br />{{
-          account?.shortAddress() }}
+          <br /><span>{{
+            account?.shortAddress() }}</span>
         </ng-container>
         <ng-container *ngIf="!getUsername(account?.address)">{{ account?.shortAddress() }}</ng-container>
       </a>
