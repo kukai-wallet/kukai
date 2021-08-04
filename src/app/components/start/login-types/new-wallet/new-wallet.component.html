@@ -16,8 +16,8 @@
   </div>
   <div *ngIf="activePanel==2" class="flex-column body">
     <h1>Verify your seed</h1>
-    <p class="description"><b>Fill in the&nbsp;{{ formatVerifyDescription(MNEMONIC.verify[0] + 1) }}</b>&nbsp;to verify
-      your seed backup</p>
+    <p class="description">{{ MNEMONIC.verify.length ? 'Fill in the ' + formatVerifyDescription(MNEMONIC.verify[0] + 1) + ' to verify
+      your seed backup' : 'Recovery Words (seed) have been verified' }}</p>
     <progress max="{{ MNEMONIC.wordsToVerify }}"
       value="{{ MNEMONIC.wordsToVerify - MNEMONIC.verify.length }}"></progress>
     <div *ngIf="MNEMONIC.verify.length" class="flex-row word-verify">
