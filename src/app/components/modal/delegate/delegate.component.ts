@@ -9,11 +9,11 @@ import { LedgerService } from '../../../services/ledger/ledger.service';
 import { LedgerWallet, Account, ImplicitAccount, OriginatedAccount, TorusWallet } from '../../../services/wallet/wallet';
 import { MessageService } from '../../../services/message/message.service';
 import { TezosDomainsService } from '../../../services/tezos-domains/tezos-domains.service';
-import Big from 'big.js';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ModalComponent } from '../modal.component';
 import { Subscription } from 'rxjs';
 import { SubjectService } from '../../../services/subject/subject.service';
+import Big from 'big.js';
 
 @Component({
   selector: 'app-delegate',
@@ -60,7 +60,8 @@ export class DelegateComponent extends ModalComponent implements OnInit, OnChang
     private ledgerService: LedgerService,
     private messageService: MessageService,
     private tezosDomains: TezosDomainsService,
-    private subjectService: SubjectService
+    private subjectService: SubjectService,
+    private router: Router
   ) {
     super();
   }
@@ -170,9 +171,10 @@ export class DelegateComponent extends ModalComponent implements OnInit, OnChang
             const metadata = { delegate: this.getDelegate(), opHash: ans.payload.opHash };
             this.coordinatorService.boost(this.activeAccount.address, metadata);
           } else if (this.walletService.isLedgerWallet()) {
-            this.requestLedgerSignature();
+            await this.requestLedgerSignature();
           }
           this.closeModal();
+          this.router.navigate([`/account/${this.activeAccount.address}`]);
         } else {
           console.log('Delegation error id ', ans.payload.msg);
           this.messageService.addError(ans.payload.msg, 0);
