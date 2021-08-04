@@ -1,6 +1,5 @@
 <div *ngIf="router.url.indexOf('/account/') > -1" class="flex-row dropdown" [class.expanded]="isOpen" [id]="ecmpId">
-  <div class="flex-row currentAddress" [style.cursor]="getUsername() ? 'text' : ''"
-    (click)="!getUsername() ? toggleDropdown() : undefined"><img *ngIf="!!getUsername()" class="logo"
+  <div class="flex-row currentAddress" (click)="toggleDropdown()"><img *ngIf="!!getUsername()" class="logo"
       src="../../../../assets/img/{{ getVerifier() }}-logo.svg" /><span class="address">{{
       getUsername() || "&nbsp;&nbsp;&nbsp;&nbsp;" + current?.shortAddress() }}</span><img *ngIf="!getUsername()"
       class="button icon-db" src="../../../../assets/img/down-arrow.svg" />
@@ -9,7 +8,8 @@
     <ng-container *ngFor="let account of list">
       <a routerLink="/account/{{account?.address}}" [class.selected]="account?.address === current?.address"
         (click)="toggleDropdown()">
-        {{ getUsername(account?.address) || account?.shortAddress() }}
+        <ng-container *ngIf="getUsername(account?.address)">{{ getUsername(account?.address) }}<br/>{{ account?.shortAddress() }}</ng-container>
+        <ng-container *ngIf="!getUsername(account?.address)">{{ account?.shortAddress() }}</ng-container>
       </a>
     </ng-container>
   </div>
