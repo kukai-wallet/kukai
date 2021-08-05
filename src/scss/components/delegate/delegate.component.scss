@@ -95,7 +95,7 @@
             }
           }
         }
-        
+
         & .button {
           margin: 0 0 0 2rem;
         }
@@ -260,8 +260,7 @@
       margin: 0.5rem 0 0 0;
     }
 
-    & input,
-    & button.confirm {
+    & input {
       width: auto;
       padding: 0 4rem;
       height: 4rem;
@@ -269,6 +268,10 @@
 
     & button.confirm {
       width: 50%;
+      height: 4.5rem;
+      border-radius: v.$border-radius-hardest;
+      padding: 0 2rem;
+      font-size: 1.125rem;
     }
   }
 }
