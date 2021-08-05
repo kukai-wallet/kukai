@@ -1,7 +1,7 @@
-<div *ngIf="router.url.indexOf('/account/') > -1" class="flex-row dropdown" [class.expanded]="isOpen" [id]="ecmpId">
-  <div class="flex-row currentAddress" (click)="toggleDropdown()"><img *ngIf="!!getUsername()" class="logo"
+<div *ngIf="router.url.indexOf('/account/') > -1" class="flex-row dropdown" [class.expanded]="isOpen" [style.cursor]="['', 'domain'].includes(getVerifier()) ? '' : 'text'" [id]="ecmpId">
+  <div class="flex-row currentAddress" (click)="['', 'domain'].includes(getVerifier()) ? toggleDropdown() : ''"><img *ngIf="!!getUsername()" class="logo"
       src="../../../../assets/img/{{ getVerifier() }}-logo.svg" /><span class="address">{{
-      getUsername() || "&nbsp;&nbsp;&nbsp;&nbsp;" + current?.shortAddress() }}</span><img class="button icon-db"
+      getUsername() || "&nbsp;&nbsp;&nbsp;&nbsp;" + current?.shortAddress() }}</span><img *ngIf="['', 'domain'].includes(getVerifier())" class="button icon-db"
       src="../../../../assets/img/down-arrow.svg" />
   </div>
   <div class="flex-column dropdown-content">
