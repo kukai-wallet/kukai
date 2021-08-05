@@ -2,11 +2,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
 
-@font-face {
-  font-family: 'Gilroy';
-  src: url(../../../src/assets/fonts/Gilroy-Extrabold.woff2) format('woff2');
-}
-
 %base-button {
   outline: none;
   border: none;
@@ -217,12 +212,3 @@ button {
     font-size: 48%;
   }
 }
-
-// input zoom prevention fallback
-// @media screen and (-webkit-min-device-pixel-ratio:0) { 
-//   select,
-//   textarea,
-//   input {
-//     font-size: 16px;
-//   }
-// }
