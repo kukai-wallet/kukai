@@ -90,6 +90,9 @@ export class HeaderComponent implements OnInit {
   newAccount() {
     ModalComponent.currentModel.next({ name: 'new-implicit', data: null });
   }
+  receive() {
+    ModalComponent.currentModel.next({ name: 'receive', data: { address: this.activeAccount.address }});
+  }
 
   async getDelegateName(address: string) {
     return address ? (await this.delegateService.resolveDelegateByAddress(address))?.name ?? address.substring(0, 7) + '...' + address.substring(address.length - 5, address.length -1) : address;

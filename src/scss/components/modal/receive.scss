@@ -1,7 +1,11 @@
 & .receive {
   justify-content: center;
   align-items: center;
-  margin: 0;
+  margin: 1rem 0 0 0;
+
+  & .label {
+    @include m.multiply("font-size", 1.125);
+  }
 
   img.qr-icon {
     width: 1rem;
