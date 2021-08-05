@@ -43,7 +43,7 @@
 
       & h1 {
         text-align: center;
-        @include m.multiply("font-size", 4);
+        @include m.multiply("font-size", 3);
         font-weight: 500;
         margin: 0 0 4rem 0;
       }
@@ -71,7 +71,7 @@
         border: v.$border-width-thin solid rgba(132, 152, 177, 0.2);
         padding: 1rem;
         width: 100%;
-        max-width: calc(100% - 2rem);
+        max-width: calc(50% - 2rem);
         margin-bottom: 4rem;
         text-align: center;
         @include m.multiply("font-size", 1.125);
@@ -97,15 +97,11 @@
 
       & .description {
         margin: 2rem 0 2rem 0;
-        @include m.multiply("font-size", 1.5);
+        @include m.multiply("font-size", 1);
         text-transform: uppercase;
-        font-weight: 500;
-
-        & .faucet span {
-          @include m.multiply("font-size", 1.25);
-        }
+        font-weight: 600;
         & span {
-          @include m.multiply("font-size", 1.5);
+          @include m.multiply("font-size", 1);
           text-transform: uppercase;
           font-weight: 600;
         }
@@ -216,13 +212,14 @@
       }
 
       & #wordInput {
+        @include m.multiply("font-size", 2);
         width: auto;
+        max-width: calc(100% - 2rem);
         padding: 1rem;
         background-color: #eaedef;
         border: v.$border-width solid #ccc;
         text-align: center;
         color: black;
-        @include m.multiply("font-size", 2);
         border-radius: v.$border-radius-hard;
       }
 
