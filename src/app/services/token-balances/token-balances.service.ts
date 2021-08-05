@@ -43,9 +43,6 @@ export class TokenBalancesService {
     private subjectService: SubjectService,
     private messageService: MessageService
   ) {
-    combineLatest([this.walletService.activeAccount, this.walletService.walletUpdated, this.subjectService.metadataUpdated, this.activityService.tokenBalanceUpdated]).pipe(debounceTime(1000)).subscribe(([a, b, c, d]) => {
-      this.messageService.stopSpinner();
-    });
     combineLatest([this.walletService.activeAccount, this.walletService.walletUpdated, this.subjectService.metadataUpdated, this.activityService.tokenBalanceUpdated]).pipe(debounceTime(200)).subscribe(([a, b, c, d]) => {
       if (this.activeAccount !== a) {
         this.activeAccount = a;
