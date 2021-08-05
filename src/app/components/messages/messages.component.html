@@ -1,8 +1,6 @@
 <div class='msg-container'>
   <div *ngFor="let message of messageService.messages ; let i = index">
-    <app-alert [message]="message" [index]="i" class="alert" [class]="'alert alert-'+message.type">
+    <app-alert [message]="message" [index]="i" class="flex-row alert" [class]="'alert alert-'+message.type">
     </app-alert>
-    <!-- <app-alert class="alert" [class]="'alert-'+message.type" [dismissOnTimeout]="message.timeout">
-    </app-alert> -->
   </div>
 </div>

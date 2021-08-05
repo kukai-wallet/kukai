@@ -5,7 +5,7 @@
 
   span {
     font-style: normal;
-    font-weight: 500;
+    font-weight: 400;
     @include m.multiply('font-size',1.5);
     color: inherit;
   }
