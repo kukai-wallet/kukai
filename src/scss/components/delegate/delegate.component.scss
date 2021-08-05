@@ -170,8 +170,16 @@
         width: 12rem;
       }
 
-      & button {
+      & button,
+      & .current {
         width: 10rem;
+      }
+
+      & .current {
+        text-align: center;
+        @include m.multiply("font-size", 1.25);
+        font-weight: 500;
+        letter-spacing: 0.02em;
       }
     }
 

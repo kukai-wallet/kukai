@@ -26,8 +26,8 @@
           <span class="fee">SPLIT:&nbsp;<b class="value">{{ toPercent(delegate?.fee) }}</b></span>
           <span class="freespace">SPACE:&nbsp;<b class="value">{{ round(delegate?.freeSpace) }}</b></span>
           <span class="estROI">EST REWARDS:&nbsp;<b class="value">{{ toPercent(delegate?.estimatedRoi) }}</b></span>
-          <button class="button" (click)="stake(delegate)">{{ delegate?.address ===
-            activeAccount?.delegate ? 'UNSTAKE' : 'STAKE' }}</button>
+          <button *ngIf="delegate?.address !== activeAccount?.delegate" class="button" (click)="stake(delegate)">STAKE</button>
+          <span class="current" *ngIf="delegate?.address === activeAccount?.delegate">CURRENT</span>
         </div>
         <div class="flex-row delegate mobile">
           <div class="flex-column props">
@@ -37,8 +37,8 @@
             <span class="freespace">SPACE:&nbsp;<b class="value">{{ round(delegate?.freeSpace) }}</b></span>
             <span class="estROI">EST REWARDS:&nbsp;<b class="value">{{ toPercent(delegate?.estimatedRoi) }}</b></span>
           </div>
-          <button class="button" (click)="stake(delegate)">{{ delegate?.address ===
-            activeAccount?.delegate ? 'UNSTAKE' : 'STAKE' }}</button>
+          <button *ngIf="delegate?.address !== activeAccount?.delegate" class="button" (click)="stake(delegate)">STAKE</button>
+          <span class="current" *ngIf="delegate?.address === activeAccount?.delegate">CURRENT</span>
         </div>
       </ng-container>
     </div>
@@ -46,4 +46,4 @@
 </div>
 
 
-<!-- "tz1SwJwrKe8H1yi6KnYKCYkVHPApJRnZcHsa" -->
+<!-- "tz1go7f6mEQfT2xX2LuHAqgnRGN6c2zHPf5c" -->

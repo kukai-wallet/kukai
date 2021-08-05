@@ -95,6 +95,6 @@ export class HeaderComponent implements OnInit {
   }
 
   async getDelegateName(address: string) {
-    return address ? (await this.delegateService.resolveDelegateByAddress(address))?.name ?? address.substring(0, 7) + '...' + address.substring(address.length - 5, address.length -1) : address;
+    return address ? (await this.delegateService.resolveDelegateByAddress(address))?.name ?? address.substring(0, 7) + '...' + address.substring(address.length - 4, address.length) : address;
   }
 }
