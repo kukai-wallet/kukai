@@ -24,12 +24,12 @@
 
     & .logo {
       height: 1.5rem;
-      margin: 0 0.5rem 0 0;
+      margin: 0 1rem 0 0;
     }
 
     & .address {
       @include m.ellipsis;
-      width: calc(100% - 5rem);
+      width: calc(100% - 4rem);
       font-weight: 500;
     }
 

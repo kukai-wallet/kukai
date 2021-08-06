@@ -284,7 +284,7 @@
   }
 }
 
-@media (min-width: v.$layout-break-2) {
+@media (min-width: v.$layout-break-5) {
   .delegate-page .content .manual > .delegate {
     width: 59.5rem;
   }
@@ -297,68 +297,67 @@
 }
 
 @media (max-width: v.$layout-break-5) {
-  .delegate-page .content .manual > .delegate {
-    & a {
-      left: 0;
+  .delegate-page .content .manual > .delegate a {
+    left: 0;
+  }
+
+  .delegate-page .content .list {
+    & .freespace {
+      display: none;
+    }
+    & .fee {
+      width: 6rem;
+    }
+    button {
+      width: 8rem;
+      padding: 1rem;
+      color: v.$base-blue-color-lightened;
+      background-color: v.$base-background-color;
+      border: v.$border-width solid v.$base-blue-color-lightened;
     }
   }
 
-  .delegate-page .content .list .freespace {
-    display: none;
-  }
+  .delegate-page .content .delegate {
+    &.desktop {
+      display: none;
+    }
+    &.mobile {
+      display: flex;
+      height: 10rem;
+      justify-content: flex-start;
+      padding: 0 2rem;
+      width: calc(100% - 4rem);
 
-  .delegate-page .content .list .fee {
-    width: 6rem;
-  }
+      & .props {
+        flex-wrap: wrap;
+        height: 8rem;
+        width: calc(100% - 0rem);
+        justify-content: center;
+        align-content: start;
 
-  .delegate-page .content .list button {
-    width: 8rem;
-    padding: 1rem;
-    color: v.$base-blue-color-lightened;
-    background-color: v.$base-background-color;
-    border: v.$border-width solid v.$base-blue-color-lightened;
-  }
+        & .logo {
+          width: 7rem;
+          margin: 0 2rem 0 1rem;
+        }
 
-  .delegate-page .content .delegate.desktop {
-    display: none;
-  }
+        & .name {
+          font-size: 2.5rem;
+          font-weight: 500;
+          width: auto;
+        }
 
-  .delegate-page .content .delegate.mobile {
-    display: flex;
-    height: 10rem;
-    justify-content: flex-start;
-    padding: 0 2rem;
-    width: calc(100% - 4rem);
+        & .fee,
+        & .freespace,
+        & .estROI {
+          font-size: 1.5rem;
+          font-weight: 500;
+          width: auto;
+          display: block;
+          color: v.$base-font-color-secondary;
 
-    & .props {
-      flex-wrap: wrap;
-      height: 8rem;
-      width: calc(100% - 0rem);
-      justify-content: center;
-      align-content: start;
-
-      & .logo {
-        width: 7rem;
-        margin: 0 2rem 0 1rem;
-      }
-
-      & .name {
-        font-size: 2.5rem;
-        font-weight: 500;
-        width: auto;
-      }
-
-      & .fee,
-      & .freespace,
-      & .estROI {
-        font-size: 1.5rem;
-        font-weight: 500;
-        width: auto;
-        display: block;
-        color: v.$base-font-color-secondary;
-
-        & b {
-          color: v.$base-font-color;
+          & b {
+            color: v.$base-font-color;
+          }
         }
       }
     }
