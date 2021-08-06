@@ -1,6 +1,14 @@
 @use '../../abstracts/variables'as v;
 @use '../../abstracts/mixins' as m;
 
+$base-font-color: v.$base-font-color;
+$base-end-color: v.$base-end-color;
+$base-color-lightened-5: v.$base-color-lightened-5;
+$base-color-lightened-6: v.$base-color-lightened-6;
+$base-color-lightened-7: v.$base-color-lightened-7;
+$border-width: v.$border-width;
+$border-color: v.$border-color;
+
 .dropdown {
   min-width: 11.5rem;
   width: 0%;
@@ -12,7 +20,7 @@
   right: 2px;
   cursor: pointer;
   font-size: 1em;
-  border: v.$border-width solid v.$base-color-lightened-6;
+  border: $border-width solid $base-color-lightened-6;
   border-radius: v.$border-radius-hard;
   transition: 0.25s border-radius;
   padding: 0 0.5rem;
@@ -28,7 +36,7 @@
     text-transform: uppercase;
     border: none;
     font-weight: 600;
-    color: v.$base-font-color;
+    color: $base-font-color;
     height: 100%;
     margin: 0;
     font-size: 0.875rem;
@@ -50,7 +58,7 @@
   }
 
   & .dropdown-content {
-    background: v.$base-end-color;
+    background: $base-end-color;
     position: absolute;
     display: none;
     z-index: 1;
@@ -78,11 +86,11 @@
       cursor: pointer;
 
       &:hover {
-        background: v.$base-color-lightened-7;
+        background: $base-color-lightened-7;
       }
 
       &.selected {
-        background: v.$base-color-lightened-6;
+        background: $base-color-lightened-6;
       }
     }
   }

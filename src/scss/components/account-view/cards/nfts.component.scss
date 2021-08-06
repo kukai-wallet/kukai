@@ -2,6 +2,17 @@
 @use '../../../abstracts/mixins' as m;
 @import "./mixins";
 
+$base-font-color: v.$base-font-color;
+$base-end-color: v.$base-end-color;
+$base-blue-color-lightened: v.$base-blue-color-lightened;
+$base-color-lightened-1: v.$base-color-lightened-1;
+$base-color-lightened-2: v.$base-color-lightened-2;
+$base-color-lightened-5: v.$base-color-lightened-5;
+$base-color-lightened-7: v.$base-color-lightened-7;
+$border-color-dark-only: v.$border-color-dark-only;
+$border-width: v.$border-width;
+$border-color: v.$border-color;
+
 @include base;
 
 .top-container {
@@ -19,16 +30,16 @@
         height: 1.15rem;
         padding: 0.5rem 0rem;
         border-radius: v.$border-radius-hard;
-        border: v.$border-width solid v.$base-color-lightened-5;
+        border: $border-width solid $base-color-lightened-5;
       }
 
       & .icon-grey {
         margin-left: 1.5rem;
         width: 4rem;
         padding: 0.5rem 0.5rem;
-        background-color: v.$base-color-lightened-7;
+        background-color: $base-color-lightened-7;
         border-radius: v.$border-radius-hard;
-        border: v.$border-width solid v.$base-color-lightened-5;
+        border: $border-width solid $base-color-lightened-5;
         justify-content: center;
         @include m.multiply("font-size", 1.15);
       }
@@ -41,7 +52,7 @@
   & .head {
     padding: 1.5rem 2.5rem 1.5rem 1.875rem;
     border-radius: v.$border-radius;
-    background-color: v.$base-end-color;
+    background-color: $base-end-color;
 
     & .left {
       justify-content: flex-start;
@@ -69,7 +80,7 @@
     transition: 0.15s height;
     margin: 0 0 2rem 0;
     border-radius: v.$border-radius;
-    border: v.$border-width solid v.$border-color-dark-only;
+    border: $border-width solid $border-color-dark-only;
 
     &.expanded {
       height: auto;
@@ -79,7 +90,7 @@
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
         box-shadow: unset;
-        border-bottom: 3px solid #aaa3;
+        border-bottom: $border-width solid $border-color;
 
         & .right {
           & .toggle img {
@@ -121,10 +132,10 @@
           @include m.multiply("font-size", 1);
           padding: 0.25rem;
           width: 2rem;
-          background-color: v.$base-color-lightened-5;
+          background-color: $base-color-lightened-5;
           border-radius: v.$border-radius-hard;
           text-align: center;
-          color: v.$base-color-lightened-1;
+          color: $base-color-lightened-1;
           font-weight: 500;
         }
       }
@@ -143,9 +154,9 @@
             font-weight: 600;
             width: 10rem;
             justify-content: center;
-            border: v.$border-width solid;
-            color: v.$base-blue-color-lightened !important;
-            border-color: v.$base-blue-color-lightened !important;
+            border: $border-width solid;
+            color: $base-blue-color-lightened !important;
+            border-color: $base-blue-color-lightened !important;
             background-color: transparent;
           }
         }
@@ -160,7 +171,7 @@
       border-radius: v.$border-radius;
       border-top-left-radius: 0;
       border-top-right-radius: 0;
-      background-color: v.$base-end-color;
+      background-color: $base-end-color;
 
       &.expanded {
         overflow-y: auto;
@@ -195,8 +206,8 @@
             align-items: center;
             justify-content: center;
             font-weight: 600;
-            background-color: v.$base-color-lightened-5;
-            color: v.$base-font-color;
+            background-color: $base-color-lightened-5;
+            color: $base-font-color;
           }
         }
 
@@ -221,7 +232,7 @@
       height: 100%;
       max-height: 78.5rem;
       padding: 0 0.75rem 0 0;
-      background-color: v.$base-end-color;
+      background-color: $base-end-color;
     }
 
     & > .scroll {
@@ -233,7 +244,7 @@
       border-radius: 1rem;
       border-top-left-radius: 0;
       border-top-right-radius: 0;
-      background-color: v.$base-end-color;
+      background-color: $base-end-color;
       z-index: 0;
       position: relative;
       top: -1rem;
@@ -260,7 +271,7 @@
     & .body .token {
       width: 100%;
       padding: 1rem 0;
-      border-bottom: 2px solid v.$border-color;
+      border-bottom: 2px solid $border-color;
 
       &:last-child {
         border-bottom: none;

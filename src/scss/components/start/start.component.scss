@@ -1,6 +1,15 @@
 @use '../../abstracts/variables'as v;
 @use '../../abstracts/mixins' as m;
 
+$base-font-color: v.$base-font-color;
+$base-font-color-secondary: v.$base-font-color-secondary;
+$base-end-color: v.$base-end-color;
+$base-color-lightened-5: v.$base-color-lightened-5;
+$base-color-lightened-6: v.$base-color-lightened-6;
+$border-width: v.$border-width;
+$border-color: v.$border-color;
+$base-background-color: v.$base-background-color;
+
 %bg {
   width: 85%;
   height: 85%;
@@ -15,12 +24,12 @@
   width: 100vw !important;
   height: 45.5vh;
   border-top: 1.5rem solid #d6dbe3;
-  background-color: v.$base-color-lightened-6;
+  background-color: $base-color-lightened-6;
   z-index: -100;
   background: linear-gradient(
     180deg,
-    v.$base-color-lightened-5,
-    v.$base-background-color
+    $base-color-lightened-5,
+    $base-background-color
   );
 }
 
@@ -62,7 +71,7 @@
 
     & h1 {
       @include m.multiply("font-size", 7);
-      color: v.$base-font-color;
+      color: $base-font-color;
       font-weight: 500;
     }
 
@@ -113,11 +122,11 @@
 
       & > span {
         @include m.multiply("font-size", 3);
-        color: v.$base-font-color;
+        color: $base-font-color;
 
         &:last-of-type {
           @include m.multiply("font-size", 2);
-          color: v.$base-font-color;
+          color: $base-font-color;
         }
       }
 
@@ -133,7 +142,7 @@
         .reddit,
         & > .google img {
           border-radius: v.$border-radius-hardest;
-          background-color: v.$base-end-color;
+          background-color: $base-end-color;
           box-shadow: v.$box-shadow;
           cursor: pointer;
           &:hover {
@@ -151,13 +160,13 @@
         }
 
         & > .google {
-          border: v.$border-width solid v.$border-color;
+          border: $border-width solid $border-color;
           border-radius: v.$border-radius-hardest;
           min-width: 27rem;
           height: 5rem;
-          color: v.$base-font-color;
+          color: $base-font-color;
           padding: 0 1rem 0 2rem;
-          background-color: v.$base-end-color;
+          background-color: $base-end-color;
 
           & > span {
             padding: 1rem 0;
@@ -180,7 +189,7 @@
         & input,
         & .signin {
           height: 100%;
-          border: v.$border-width solid v.$border-color;
+          border: $border-width solid $border-color;
           border-radius: v.$border-radius-hardest;
         }
 
@@ -194,8 +203,8 @@
         & .signin {
           width: 12rem;
           height: 5rem;
-          background-color: v.$base-background-color;
-          color: v.$base-font-color-secondary;
+          background-color: $base-background-color;
+          color: $base-font-color-secondary;
           @include m.multiply("font-size", 1.5);
           margin: 0 0 0 2rem;
         }
@@ -291,7 +300,7 @@
 
         & .top h1 {
           @include m.multiply("font-size", 6);
-          color: v.$base-font-color;
+          color: $base-font-color;
           font-weight: 500;
         }
 
@@ -299,7 +308,7 @@
           @include m.multiply("font-size", 2.5);
           font-weight: 400;
           line-height: 4rem;
-          color: v.$base-font-color-secondary;
+          color: $base-font-color-secondary;
         }
 
         & > div {

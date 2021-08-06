@@ -1,6 +1,16 @@
 @use '../../abstracts/variables'as v;
 @use '../../abstracts/mixins' as m;
 
+$base-font-color: v.$base-font-color;
+$base-font-color-secondary: v.$base-font-color-secondary;
+$base-end-color: v.$base-end-color;
+$base-blue-color: v.$base-blue-color;
+$base-blue-color-lightened: v.$base-blue-color-lightened;
+$base-color-lightened-4: v.$base-color-lightened-4;
+$border-width: v.$border-width;
+$border-color: v.$border-color;
+$base-background-color: v.$base-background-color;
+
 :host {
   display: flex;
   flex-flow: column nowrap;
@@ -8,7 +18,7 @@
   min-height: calc(100vh - 20rem);
   justify-content: flex-start;
   align-items: center;
-  background-color: v.$base-background-color;
+  background-color: $base-background-color;
 
   .card {
     max-width: v.$layout-break-4;
@@ -22,10 +32,10 @@
       position: absolute;
       top: 1rem;
       left: -0;
-      background-color: v.$base-background-color;
-      border: v.$border-width solid v.$base-color-lightened-4;
+      background-color: $base-background-color;
+      border: $border-width solid $border-color;
       border-radius: v.$border-radius-hardest;
-      color: v.$base-font-color;
+      color: $base-font-color;
       @include m.multiply("font-size", 1);
       font-weight: 500;
       padding: 0.75rem 1.25rem;
@@ -39,7 +49,7 @@
     & .body {
       align-items: center;
       width: 100%;
-      color: v.$base-font-color;
+      color: $base-font-color;
 
       & h1 {
         text-align: center;
@@ -59,7 +69,7 @@
         }
 
         & a {
-          color: v.$base-blue-color-lightened;
+          color: $base-blue-color-lightened;
         }
       }
 
@@ -68,7 +78,7 @@
       input[type="password"],
       .input-file {
         border-radius: v.$border-radius-hardest;
-        border: v.$border-width solid rgba(132, 152, 177, 0.2);
+        border: $border-width solid rgba(132, 152, 177, 0.2);
         padding: 1rem;
         width: 100%;
         max-width: calc(50% - 2rem);
@@ -91,7 +101,7 @@
       & .seed-blur {
         @include m.multiply("font-size", 2);
         text-align: center;
-        color: v.$base-font-color;
+        color: $base-font-color;
         letter-spacing: 0.02em;
       }
 
@@ -113,7 +123,7 @@
       }
 
       & .whitebox {
-        background-color: v.$base-end-color;
+        background-color: $base-end-color;
         box-shadow: v.$box-shadow;
         padding: 3rem;
         margin: 0 0 4rem 0;
@@ -129,7 +139,7 @@
 
         & .seed-blur,
         & .seed-blur span {
-          color: v.$base-blue-color;
+          color: $base-blue-color;
           font-weight: 500;
           margin: 0;
           @include m.multiply("font-size", 1.5);
@@ -153,7 +163,7 @@
         height: 4.5rem;
         border-radius: v.$border-radius-hardest;
         margin: 0 0 4rem 0;
-        background-color: v.$base-blue-color-lightened;
+        background-color: $base-blue-color-lightened;
         padding: 0 2rem;
 
         &.disabled {
@@ -173,18 +183,18 @@
 
       & progress::-webkit-progress-bar,
       & progress {
-        background-color: v.$base-color-lightened-4;
+        background-color: $base-color-lightened-4;
         border-radius: v.$border-radius;
         width: 100%;
       }
 
       & progress {
-        color: v.$base-blue-color;
+        color: $base-blue-color;
         border-radius: v.$border-radius-hard;
 
         &::-moz-progress-bar,
         &::-webkit-progress-value {
-          background-color: v.$base-blue-color !important;
+          background-color: $base-blue-color !important;
           border-radius: v.$border-radius-hard;
         }
       }
@@ -217,7 +227,7 @@
         max-width: calc(100% - 2rem);
         padding: 1rem;
         background-color: #eaedef;
-        border: v.$border-width solid #ccc;
+        border: $border-width solid #ccc;
         text-align: center;
         color: black;
         border-radius: v.$border-radius-hard;
@@ -245,7 +255,7 @@
       }
 
       .import-options {
-        border-bottom: 1px solid v.$border-color;
+        border-bottom: 1px solid $border-color;
 
         & > span {
           width: 30%;
@@ -253,11 +263,11 @@
           cursor: pointer;
           text-transform: uppercase;
           font-weight: 600;
-          color: v.$base-font-color-secondary;
+          color: $base-font-color-secondary;
           letter-spacing: 0.06em;
 
           &.selected {
-            color: v.$base-blue-color-lightened;
+            color: $base-blue-color-lightened;
             @include m.base-relative;
             margin: 0;
             padding: 2rem 0 calc(2rem + 1px) 0;
@@ -270,7 +280,7 @@
               left: 0;
               height: 3px;
               width: 100%;
-              background-color: v.$base-blue-color-lightened;
+              background-color: $base-blue-color-lightened;
             }
           }
         }
@@ -293,7 +303,7 @@
         padding: 1rem 2.5rem;
 
         &.loaded {
-          background-color: v.$base-end-color;
+          background-color: $base-end-color;
           box-shadow: v.$box-shadow;
         }
 
@@ -304,7 +314,7 @@
 
         & .filename {
           @include m.ellipsis;
-          color: v.$base-blue-color-lightened;
+          color: $base-blue-color-lightened;
           align-items: center;
           display: block;
           max-width: 100%;
@@ -394,7 +404,7 @@
         width: 0.75rem;
         height: 0.75rem;
         margin: 0.5rem;
-        background-color: v.$base-color-lightened-4;
+        background-color: $base-color-lightened-4;
         border-radius: v.$border-radius-hardest;
         transition: 0.5s width, 0.5s height, margin 0.5s;
 
@@ -402,7 +412,7 @@
           width: 1.25rem;
           height: 1.25rem;
           margin: 0;
-          background-color: v.$base-blue-color-lightened;
+          background-color: $base-blue-color-lightened;
         }
       }
     }

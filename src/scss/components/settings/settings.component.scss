@@ -1,6 +1,12 @@
 @use '../../abstracts/variables' as v;
 @use '../../abstracts/mixins' as m;
 
+$base-font-color: v.$base-font-color;
+$base-color-lightened-4: v.$base-color-lightened-4;
+$border-width: v.$border-width;
+$border-color: v.$border-color;
+$base-background-color: v.$base-background-color;
+
 :host {
   width: 100%;
   display: flex;
@@ -10,10 +16,10 @@
   min-height: calc(100vh - 10rem);
 
     & a .back {
-      background-color: v.$base-background-color;
-      border: v.$border-width solid v.$base-color-lightened-4;
+      background-color: $base-background-color;
+      border: v.$border-width solid $base-color-lightened-4;
       border-radius: v.$border-radius-hardest;
-      color: v.$base-font-color;
+      color: $base-font-color;
       @include m.multiply('font-size',1);
       font-weight: 500;
       padding: 0.75rem 1.25rem;
@@ -39,7 +45,7 @@
       font-style: normal;
       display: flex;
       align-items: center;
-      color: v.$base-font-color;
+      color: $base-font-color;
     }
 
     &>h3 {
@@ -79,7 +85,7 @@
         @include m.multiply('font-size',1.5);
         line-height: 1rem;
         align-items: center;
-        color: v.$base-font-color;
+        color: $base-font-color;
         opacity: 0.8;
       }
     }

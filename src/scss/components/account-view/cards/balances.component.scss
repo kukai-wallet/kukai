@@ -2,6 +2,14 @@
 @use '../../../abstracts/mixins' as m;
 @import './mixins';
 
+$base-font-color: v.$base-font-color;
+$base-end-color: v.$base-end-color;
+$base-font-color-secondary: v.$base-font-color-secondary;
+$base-blue-color-lightened: v.$base-blue-color-lightened;
+$border-color-dark-only: v.$border-color-dark-only;
+$border-width: v.$border-width;
+$border-color: v.$border-color;
+
 @include base;
 
 .top-container {
@@ -23,14 +31,14 @@
   overflow: hidden;
   overflow-y: auto;
   border-radius: v.$border-radius;
-  background-color: v.$base-end-color;
+  background-color: $base-end-color;
   padding: 1rem 0rem 1rem 2rem;
-  border: v.$border-width solid v.$border-color-dark-only;
+  border: $border-width solid $border-color-dark-only;
 
   & .balance {
     align-items: flex-start;
     padding: 1rem 0;
-    border-bottom: 2px solid v.$border-color;
+    border-bottom: 2px solid $border-color;
     margin-right: 1rem;
 
     &:first-child .left .icon  {
@@ -60,7 +68,7 @@
         height: 3.5rem;
         margin-right: 1rem;
         border-radius: v.$border-radius-hardest;
-        border: v.$border-width solid v.$border-color;
+        border: $border-width solid $border-color;
       }
 
       & .title {
@@ -83,7 +91,7 @@
         }
 
         & .price-usd {
-          color: v.$base-font-color-secondary;
+          color: $base-font-color-secondary;
           @include m.multiply('font-size',1);
           font-weight: 500;
         }
@@ -103,7 +111,7 @@
         margin-right: 0.5rem;
         padding: 0.5rem;
         border-radius: v.$border-radius-hard;
-        border: v.$border-width solid v.$border-color;
+        border: v.$border-width solid $border-color;
         object-fit: scale-down;
       }
     }

@@ -2,6 +2,20 @@
 @use '../../../abstracts/mixins' as m;
 @import "./mixins";
 
+$base-font-color: v.$base-font-color;
+$base-font-color-secondary: v.$base-font-color-secondary;
+$base-blue-color-lightened: v.$base-blue-color-lightened;
+$base-color-lightened-1: v.$base-color-lightened-1;
+$base-color-lightened-2: v.$base-color-lightened-2;
+$base-red-color: v.$base-red-color;
+$base-green-color: v.$base-green-color;
+$border-color-dark-only: v.$border-color-dark-only;
+$border-radius: v.$border-radius;
+$border-width: v.$border-width;
+$event-unconfirmed: v.$base-color-lightened-5;
+$event-confirmed: v.$base-color-lightened-6;
+$event-new: v.$base-end-color;
+
 @include base;
 
 .top-container {
@@ -20,7 +34,7 @@
       font-weight: normal;
       @include m.multiply("font-size", 1);
       line-height: 1rem;
-      color: v.$base-font-color-secondary;
+      color: $base-font-color-secondary;
       text-decoration: none;
     }
   }
@@ -33,9 +47,9 @@
     height: 100%;
     margin-top: 1rem;
     padding: 1rem 2rem;
-    border-radius: v.$border-radius;
+    border-radius: $border-radius;
     background-color: transparent;
-    border: v.$border-width solid v.$border-color-dark-only;
+    border: $border-width solid $border-color-dark-only;
 
     & > img {
       padding-bottom: 1.125rem;
@@ -72,35 +86,35 @@
     }
 
     &.unconfirmed {
-      background-color: v.$event-unconfirmed;
+      background-color: $event-unconfirmed;
 
       &:after {
         height: 0.3rem;
-        background-color: v.$base-color-lightened-1;
+        background-color: $base-color-lightened-1;
       }
     }
 
     &.confirmed {
-      background-color: v.$event-confirmed;
+      background-color: $event-confirmed;
     }
 
     &.new {
-      background-color: v.$event-new;
+      background-color: $event-new;
 
       &:after {
         height: 0.3rem;
-        background-color: v.$base-green-color;
+        background-color: $base-green-color;
       }
     }
 
     &.failed {
       &:after {
         height: 0.3rem;
-        background-color: v.$base-red-color;
+        background-color: $base-red-color;
       }
       & .title,
       & .title .failed {
-        color: v.$base-red-color;
+        color: $base-red-color;
       }
       & .title .failed {
         @include m.multiply("font-size", 1.25);
@@ -113,7 +127,7 @@
     }
 
     & .address {
-      color: v.$base-color-lightened-2;
+      color: $base-color-lightened-2;
       width: calc(100%);
       justify-content: flex-start;
       @include m.multiply("font-size", 1);
@@ -132,9 +146,9 @@
     & .time {
       width: 9rem;
       text-align: right;
-      color: v.$base-font-color;
+      color: $base-font-color;
       & a {
-        color: v.$base-font-color;
+        color: $base-font-color;
       }
       & a:hover {
         text-decoration: underline;
@@ -144,7 +158,7 @@
 
   & .received {
     &.confirmed .title {
-      color: v.$base-blue-color-lightened;
+      color: $base-blue-color-lightened;
     }
   }
 }

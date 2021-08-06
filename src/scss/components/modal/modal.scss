@@ -2,6 +2,13 @@
 @use '../../abstracts/mixins' as m;
 @use './confirm-send/mixins' as cs;
 
+$base-font-color: v.$base-font-color;
+$base-font-color-secondary: v.$base-font-color-secondary;
+$base-end-color: v.$base-end-color;
+$border-color-dark-only: v.$border-color-dark-only;
+$border-width: v.$border-width;
+$border-color: v.$border-color;
+
 .kukai-modal {
   position: absolute;
   top: 0;
@@ -16,7 +23,7 @@
   & .content {
     justify-content: center;
     align-items: center;
-    background-color: v.$base-end-color;
+    background-color: $base-end-color;
     width: auto;
     height: auto;
     max-width: 85vw;
@@ -26,7 +33,7 @@
     @include m.base-relative;
     margin: 5rem 0 0 0;
     overflow-x: hidden;
-    border: v.$border-width solid v.$border-color-dark-only;
+    border: v.$border-width solid $border-color-dark-only;
 
     & .close {
       display: flex;
@@ -36,7 +43,7 @@
       position: absolute;
       width: calc(3rem - 6px);
       height: calc(3rem - 6px);
-      border: v.$border-width solid v.$border-color;
+      border: v.$border-width solid $border-color;
       border-radius: v.$border-radius-hardest;
 
       & .x {
@@ -74,7 +81,7 @@
     & .seperator {
       @include m.base-relative;
       height: 1px;
-      background-color: v.$border-color;
+      background-color: $border-color;
       left: -2rem;
       width: calc(100% + 4rem);
     }
@@ -82,8 +89,8 @@
     & input:not([type=checkbox]) {
       height: 4rem;
       width: calc(100% - 2rem);
-      background-color: v.$base-end-color;
-      border: v.$border-width solid v.$border-color;
+      background-color: $base-end-color;
+      border: v.$border-width solid $border-color;
       border-radius: v.$border-radius-hardest;
       @include m.multiply('font-size',1.25);
 
@@ -99,7 +106,7 @@
     }
 
     & .key {
-      color: v.$base-font-color-secondary;
+      color: $base-font-color-secondary;
       text-transform: uppercase;
       letter-spacing: 0.02em;
 
@@ -109,7 +116,7 @@
     }
 
     & .value {
-      color: v.$base-font-color;
+      color: $base-font-color;
       @include m.multiply('font-size',1.25);
     }
 
@@ -119,7 +126,7 @@
       margin: 1rem 0;
 
       span {
-        color: v.$base-font-color-secondary;
+        color: $base-font-color-secondary;
         text-transform: uppercase;
         @include m.multiply('font-size',1);
       }

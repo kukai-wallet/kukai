@@ -1,8 +1,11 @@
 @use 'sass:string' as string;
 @use 'sass:math' as math;
-@function transform-dark-mode($hex, $mod: 1) {
+@function theme-transform($hex, $theme: "default", $mod: 1) {
   $hex: str-slice(string.quote(#{$hex}), 2);
   $darkHex: "#";
+  @if($theme == "default") {
+    @return (string.unquote("#" + $hex));
+  }
   @for $i from 1 through str-length($hex) {
     $i: str-slice($hex, $i, $i);
     @if ($i == "0") {
@@ -39,7 +42,7 @@
       $i: 15;
     }
     $i: (15 - math.round($i * $mod));
-    @debug $i;
+    // @debug $i;
     @if ($i == 15) {
       $i: "F";
     } @else if ($i == 14) {
