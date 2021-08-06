@@ -84,7 +84,7 @@
           }}</span></span>
       <div *ngIf="parameters && parameters?.entrypoint" class="flex-row contract-call"><span class="key">CONTRACT CALL: </span><span
           class="key">{{ parameters?.entrypoint }}</span></div>
-      <app-ui-toggle-advanced *ngIf="externalReq" [default]="false" (stateChange)="advancedForm = $event">
+      <app-ui-toggle-advanced style="width: 13rem;" *ngIf="externalReq" [default]="false" (stateChange)="advancedForm = $event">
       </app-ui-toggle-advanced>
       <div *ngIf="advancedForm" class="advanced-form">
         <ng-container *ngIf="parameters">

@@ -7,7 +7,7 @@
     <div class="flex-column sign-expr">
       <p class="previewAttention">An application has requested you sign an expression.</p>
       <p class="previewAttention warning">Warning! Only sign if you understand the expression or trust the source.</p>
-      <app-ui-toggle-advanced [default]="false" (stateChange)="advancedForm = $event"></app-ui-toggle-advanced>
+      <app-ui-toggle-advanced style="width: 13rem;" [default]="false" (stateChange)="advancedForm = $event"></app-ui-toggle-advanced>
       <textarea *ngIf="advancedForm" rows="10" readonly>{{ payload }}</textarea>
       <div class="seperator"></div>
       <div class="flex-column bottom">

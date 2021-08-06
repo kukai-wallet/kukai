@@ -7,7 +7,7 @@
     <p class="description">You need to open the Tezos Wallet app on your Ledger device and set the derivation path.</p>
     <input type="text" class="text" [disabled]="!isHDDerivationPathCustom" [(ngModel)]="path"
       value="'44\'/1729\'/0\'/0\''">
-    <app-ui-toggle-advanced [default]="false" [text]="'Use custom HD derivation path:'"
+    <app-ui-toggle-advanced style="width: 13rem;" [default]="false" [text]="'Use custom HD derivation path:'"
       (stateChange)="setDefaultPath($event)"></app-ui-toggle-advanced>
       <br/><br/><br/>
     <button class="button next" (click)="getPk()">Connect</button>

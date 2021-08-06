@@ -41,7 +41,7 @@
           [placeholder]="'Seed Words (required)'"></textarea>
       </ng-container>
       <ng-container *ngIf="importOption === 1">
-        <app-ui-toggle-advanced [default]="false" (stateChange)="advancedForm = $event"></app-ui-toggle-advanced>
+        <app-ui-toggle-advanced style="width: 13rem;" [default]="false" (stateChange)="advancedForm = $event"></app-ui-toggle-advanced>
         <br /><br />
         <div *ngIf="advancedForm" class="flex-row-wrap import-option-1">
           <div class="flex-column">

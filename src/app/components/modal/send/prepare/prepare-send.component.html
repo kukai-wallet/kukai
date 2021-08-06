@@ -52,7 +52,7 @@
             placeholder="address1 amount1 ; &#10;address2 amount2 ; &#10;address3 ..."></textarea>
         </div>
         <div class="flex-row">
-          <app-ui-toggle-advanced [default]="false" (stateChange)="advancedForm = $event"></app-ui-toggle-advanced>
+          <app-ui-toggle-advanced style="width: 13rem;" [default]="false" (stateChange)="advancedForm = $event"></app-ui-toggle-advanced>
           <button [style.visibility]="!isNFT && advancedForm ? '' : 'hidden'" class="small multiple-destinations"
             (click)="toggleDestination()">
             <ng-container *ngIf="!this.isMultipleDestinations">Multiple transactions</ng-container>

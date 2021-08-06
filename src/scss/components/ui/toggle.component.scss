@@ -5,6 +5,7 @@
   min-width: 12rem;
   justify-content: center;
   margin: 0 0 0 1rem;
+  width: 100%;
 
   & * {
     -webkit-tap-highlight-color:  rgba(255, 255, 255, 0); 
@@ -12,7 +13,6 @@
 
   & .switch-container {
     display: flex;
-    justify-content: flex-start;
     align-items: center;
     flex-direction: row;
     width: 100%;
