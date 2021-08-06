@@ -2,6 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import * as QRCode from 'qrcode';
 import { MessageService } from '../../../services/message/message.service';
 import { ModalComponent } from '../modal.component';
+import copy from 'copy-to-clipboard';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-receive',
@@ -9,7 +11,7 @@ import { ModalComponent } from '../modal.component';
   styleUrls: ['../../../../scss/components/modal/modal.scss']
 })
 export class ReceiveComponent extends ModalComponent implements OnInit {
-  activeAddress: String;
+  activeAddress: string;
   showReceiveFormat = {
     btnOutline: true,
     dropdownItem: false,
@@ -18,7 +20,8 @@ export class ReceiveComponent extends ModalComponent implements OnInit {
   name = 'receive';
 
   constructor(
-    private messageService: MessageService
+    private messageService: MessageService,
+    private translate: TranslateService,
   ) {
     super();
   }
@@ -39,5 +42,12 @@ export class ReceiveComponent extends ModalComponent implements OnInit {
     QRCode.toCanvas(document.getElementById('canvas'), this.activeAddress, { errorCorrectionLevel: 'H', scaleFactor: 2, color: { light: '#FCFCFC' } }, function (err, canvas) {
       if (err) { throw err; }
     });
+  }
+  copy() {
+    copy(this.activeAddress);
+    const copyToClipboard = this.translate.instant(
+      'OVERVIEWCOMPONENT.COPIEDTOCLIPBOARD'
+    );
+    this.messageService.add(this.activeAddress + ' ' + copyToClipboard, 5);
   }
 }

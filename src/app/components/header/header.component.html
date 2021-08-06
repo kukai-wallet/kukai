@@ -29,7 +29,7 @@
       <div class="icon receive" (click)="receive()">
         <img class="button" src="../../../assets/img/qr.svg" />
         <div class="tooltip">
-          <div class="description">RECEIVE</div>
+          <div class="description">ADDRESS QR</div>
         </div>
       </div>
       <div *ngIf="walletService.isHdWallet()" class="icon" (click)="newAccount()">
@@ -94,7 +94,7 @@
         <img class="icon" src="../../../assets/img/add.svg" /><span>Add Account</span>
       </div>
       <div class="flex-row button" (click)="receive()">
-        <img class="icon" src="../../../assets/img/qr.svg" /><span>Receive</span>
+        <img class="icon" src="../../../assets/img/qr.svg" /><span>Address QR</span>
       </div>
       <div class="flex-row button" [routerLink]="'/account/' + activeAccount?.address + '/settings'">
         <img class="icon settings" src="../../../assets/img/cog.svg" /><span>Settings</span>
