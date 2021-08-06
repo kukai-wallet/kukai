@@ -90,11 +90,11 @@
             }}</span>
         </div>
       </div>
-      <div *ngIf="walletService.isHdWallet()" class="flex-row button" (click)="newAccount()">
-        <img class="icon" src="../../../assets/img/add.svg" /><span>Add Account</span>
-      </div>
       <div class="flex-row button" (click)="receive()">
         <img class="icon" src="../../../assets/img/qr.svg" /><span>Address QR</span>
+      </div>
+      <div *ngIf="walletService.isHdWallet()" class="flex-row button" (click)="newAccount()">
+        <img class="icon" src="../../../assets/img/add.svg" /><span>Add Account</span>
       </div>
       <div class="flex-row button" [routerLink]="'/account/' + activeAccount?.address + '/settings'">
         <img class="icon settings" src="../../../assets/img/cog.svg" /><span>Settings</span>
