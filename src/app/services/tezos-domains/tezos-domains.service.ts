@@ -17,7 +17,7 @@ export class TezosDomainsService {
     const options = { caching: { enabled: false } };
     this.client = new TaquitoTezosDomainsClient({
       tezos: tezosToolkit,
-      network: <'mainnet' | 'edonet' | 'florencenet'>CONSTANTS.NETWORK,
+      network: <'mainnet' | 'florencenet' | 'granadanet'>CONSTANTS.NETWORK,
       ...options
     });
   }

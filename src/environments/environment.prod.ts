@@ -44,7 +44,7 @@ export const CONSTANTS: Constants = {
       tokens: {
         0: {
           name: 'Kolibri DAO',
-          symbol: 'kUSD',
+          symbol: 'kDAO',
           decimals: 18,
           description: '',
           displayUrl: '../../../assets/img/tokens/kdao.png',
