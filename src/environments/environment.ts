@@ -18,6 +18,11 @@ export const CONSTANTS: Constants = {
   NODE_URL: 'https://api.tez.ie/rpc/florencenet',
   BLOCK_EXPLORER_URL: 'https://florencenet.tzkt.io',
   ALLOWED_EMBED_ORIGINS: [],
+  HARD_LIMITS: {
+    hard_gas_limit_per_operation: 1040000,
+    hard_gas_limit_per_block: 5200000,
+    hard_storage_limit_per_operation: 60000,
+  },
   ASSETS: {
     'KT1FCMQk44tEP9fm9n5JJEhkSk1TW3XQdaWH': {
       kind: 'FA1.2',

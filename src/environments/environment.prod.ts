@@ -22,6 +22,11 @@ export const CONSTANTS: Constants = {
     'https://interpopcomics.com',
     'https://www.interpopcomics.com'
   ],
+  HARD_LIMITS: {
+    hard_gas_limit_per_operation: 1040000,
+    hard_gas_limit_per_block: 5200000,
+    hard_storage_limit_per_operation: 60000,
+  },
   ASSETS: {
     'KT1K9gCRgaLRFKTErYt1wVxA3Frb9FjasjTV': { // kUSD
       kind: 'FA1.2',
@@ -44,7 +49,7 @@ export const CONSTANTS: Constants = {
       tokens: {
         0: {
           name: 'Kolibri DAO',
-          symbol: 'kUSD',
+          symbol: 'kDAO',
           decimals: 18,
           description: '',
           displayUrl: '../../../assets/img/tokens/kdao.png',

@@ -117,6 +117,11 @@ export interface Constants {
   NODE_URL: string;
   BLOCK_EXPLORER_URL: string;
   ALLOWED_EMBED_ORIGINS: string[];
+  HARD_LIMITS: {
+    hard_gas_limit_per_operation: number,
+    hard_gas_limit_per_block: number,
+    hard_storage_limit_per_operation: number,
+  },
   ASSETS: Record<string, ContractType>;
   CONTRACT_OVERRIDES: Record<string, ContractOverrideType>;
 }
