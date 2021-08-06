@@ -9,8 +9,6 @@ import { CONSTANTS } from '../../../environments/environment';
 import { ContractOverrideType, ContractsOverrideType } from '../token/token.service';
 
 const httpOptions = { headers: { 'Content-Type': 'application/json' } };
-const hardGasLimit = 1040000;
-const hardStorageLimit = 60000;
 const extraGas = 80;
 @Injectable()
 export class EstimateService {
@@ -84,8 +82,8 @@ export class EstimateService {
     if (!this.hash) { return null; }
     const simulation = {
       fee: 0,
-      gasLimit: hardGasLimit,
-      storageLimit: hardStorageLimit
+      gasLimit: Math.min(CONSTANTS.HARD_LIMITS.hard_gas_limit_per_operation, Math.floor(CONSTANTS.HARD_LIMITS.hard_gas_limit_per_block / (operations.length + 1))),
+      storageLimit: CONSTANTS.HARD_LIMITS.hard_storage_limit_per_operation
     };
     for (const tx of operations) {
       console.log(tx);
@@ -182,7 +180,7 @@ export class EstimateService {
       }
     }
     const storageUsage = Math.round(burn / Number(this.costPerByte));
-    if (gasUsage < 0 || gasUsage > hardGasLimit || storageUsage < 0 || storageUsage > hardStorageLimit) {
+    if (gasUsage < 0 || gasUsage > CONSTANTS.HARD_LIMITS.hard_gas_limit_per_operation || storageUsage < 0 || storageUsage > CONSTANTS.HARD_LIMITS.hard_storage_limit_per_operation) {
       throw new Error('InvalidUsageCalculation');
     }
     const customUsage = this.getUsageException(content, op);
