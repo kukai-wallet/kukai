@@ -35,6 +35,7 @@
     padding: 1rem 2rem;
     border-radius: v.$border-radius;
     background-color: transparent;
+    border: v.$border-width solid v.$border-color-dark-only;
 
     & > img {
       padding-bottom: 1.125rem;

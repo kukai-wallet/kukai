@@ -18,14 +18,14 @@ button {
 
     &:not(.tez) {
       background-color: transparent;
-      border-color: v.$base-color-lightened-5;
+      border-color: v.$border-color;
     }
 
     & span {
       @include m.multiply('font-size',1.25);
       margin: 0 1rem 0 0.25rem;
       font-weight: 500;
-      color: v.$base-end-color;
+      color: v.$base-end-color-static;
     }
 
     & img {

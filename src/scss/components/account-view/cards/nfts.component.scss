@@ -69,6 +69,7 @@
     transition: 0.15s height;
     margin: 0 0 2rem 0;
     border-radius: v.$border-radius;
+    border: v.$border-width solid v.$border-color-dark-only;
 
     &.expanded {
       height: auto;
@@ -220,7 +221,7 @@
       height: 100%;
       max-height: 78.5rem;
       padding: 0 0.75rem 0 0;
-      background-color: #fff;
+      background-color: v.$base-end-color;
     }
 
     & > .scroll {
@@ -232,7 +233,7 @@
       border-radius: 1rem;
       border-top-left-radius: 0;
       border-top-right-radius: 0;
-      background-color: #fff;
+      background-color: v.$base-end-color;
       z-index: 0;
       position: relative;
       top: -1rem;

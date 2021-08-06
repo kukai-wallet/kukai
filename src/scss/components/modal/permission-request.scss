@@ -37,7 +37,7 @@
     font-weight: normal;
     @include m.multiply('font-size',1);
     letter-spacing: 0.16px;
-    color: #000000;
+    color: v.$base-color;
     padding-left: 1rem;
     padding-right: 1rem;
     border: 0;

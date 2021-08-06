@@ -108,7 +108,7 @@ input {
   height: calc(2.5rem - 4px);
   padding: 0 0 0 2rem;
   border-radius: v.$border-radius-hard;
-  background-color: #fff;
+  background-color: v.$base-end-color;
 }
 
 h1 {
@@ -118,7 +118,7 @@ h1 {
 textarea {
   border: v.$border-width-thin solid v.$border-color;
   border-radius: v.$border-radius;
-  background-color: #fff;
+  background-color: v.$base-end-color;
 }
 
 .noselection {

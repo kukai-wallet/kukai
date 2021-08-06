@@ -59,10 +59,10 @@
       @include m.multiply('font-size',1.125, 'em !important');
       font-weight: 500;
       &.key {
-        color: #b9bfc7 !important;
+        color: v.$base-color-lightened-3 !important;
         font-size: 1em !important;
         &.active {
-          color: #b9bfc7 !important;
+          color: v.$base-color-lightened-3 !important;
 
           & .round {
             -webkit-transform: translateX(1.5rem);

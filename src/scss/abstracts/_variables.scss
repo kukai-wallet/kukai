@@ -1,22 +1,25 @@
+@use './functions-private'as f;
 
 // generic color constants
-$base-color: #000 !default;
-$base-color-lightened-1: #4a5d75 !default;
-$base-color-lightened-2: #98a0ab !default;
-$base-color-lightened-3: #b9bfc7 !default;
-$base-color-lightened-4: #c1cdd5 !default;
-$base-color-lightened-5: #dae1e6 !default;
-$base-color-lightened-6: #e3e7eb !default;
-$base-color-lightened-7: #f3f5f7 !default;
-$base-end-color: #fff !default;
-$base-background-color: #ebedf0 !default; //ebedf0 - alt for start page
+$base-color-static: #000 !default;
+$base-color: f.transform-dark-mode(#000) !default;
+$base-color-lightened-1: f.transform-dark-mode(#4a5d75, 0.25) !default;
+$base-color-lightened-2: f.transform-dark-mode(#98a0ab, 0.25) !default;
+$base-color-lightened-3: f.transform-dark-mode(#b9bfc7) !default;
+$base-color-lightened-4: f.transform-dark-mode(#c1cdd5) !default;
+$base-color-lightened-5: f.transform-dark-mode(#dae1e6) !default;
+$base-color-lightened-6: f.transform-dark-mode(#e3e7eb) !default;
+$base-color-lightened-7: f.transform-dark-mode(#f3f5f7) !default;
+$base-end-color-static: #fff !default;
+$base-end-color: f.transform-dark-mode(#fff) !default;
+$base-background-color: f.transform-dark-mode(#ebedf0) !default; //ebedf0 - alt for start page
 $base-blue-color: #5963ff !default;
 $base-blue-color-lightened: #7178e3 !default;
 $base-blue-color-alt: #37a9fa !default;
 $base-red-color: #eb4e39 !default;
 $base-green-color: #c4ec7d !default;
-$base-font-color: #3e4855 !default;
-$base-font-color-secondary: #98a0ab !default;
+$base-font-color: f.transform-dark-mode(#3e4855, 0.25) !default;
+$base-font-color-secondary: f.transform-dark-mode(#98a0ab, 0.75) !default;
 
 $advanced-color: #e6eaef !important;
 
@@ -29,6 +32,7 @@ $border-radius: 1.0rem !default;
 $border-radius-hard: calc(#{$border-radius} * 2) !default;
 $border-radius-hardest: calc(#{$border-radius} * 10) !default;
 $border-color: #f0f1f2;
+$border-color-dark-only: f.transform-dark-mode(#00000000);
 $border-width-thin: 0.125rem;
 $border-width: 0.1875rem;
 $border-width-thin: calc((#{$border-width} / 3) * 2);

@@ -1,3 +1,4 @@
+@use '../abstracts/variables'as v;
 body {
     background-color: #F4F4F4;
 }
@@ -33,7 +34,7 @@ textarea {
   outline: none;
   resize: none;
   font-weight: 400;
-  color: #3e4855;
+  color: v.$base-font-color;
 }
 
 th {

@@ -26,6 +26,7 @@
     @include m.base-relative;
     margin: 5rem 0 0 0;
     overflow-x: hidden;
+    border: v.$border-width solid v.$border-color-dark-only;
 
     & .close {
       display: flex;

@@ -23,10 +23,9 @@
   overflow: hidden;
   overflow-y: auto;
   border-radius: v.$border-radius;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
   background-color: v.$base-end-color;
   padding: 1rem 0rem 1rem 2rem;
+  border: v.$border-width solid v.$border-color-dark-only;
 
   & .balance {
     align-items: flex-start;
