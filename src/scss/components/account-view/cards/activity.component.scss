@@ -71,7 +71,7 @@
     }
 
     &.unconfirmed {
-      background-color: v.$base-color-lightened-5;
+      background-color: v.$event-unconfirmed;
 
       &:after {
         height: 0.3rem;
@@ -80,11 +80,11 @@
     }
 
     &.confirmed {
-      background-color: v.$base-color-lightened-6;
+      background-color: v.$event-confirmed;
     }
 
     &.new {
-      background-color: v.$base-end-color;
+      background-color: v.$event-new;
 
       &:after {
         height: 0.3rem;

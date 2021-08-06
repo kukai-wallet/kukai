@@ -19,7 +19,7 @@
         height: 1.15rem;
         padding: 0.5rem 0rem;
         border-radius: v.$border-radius-hard;
-        border: v.$border-width-thin solid v.$base-color-lightened-5;
+        border: v.$border-width solid v.$base-color-lightened-5;
       }
 
       & .icon-grey {
@@ -28,7 +28,7 @@
         padding: 0.5rem 0.5rem;
         background-color: v.$base-color-lightened-7;
         border-radius: v.$border-radius-hard;
-        border: v.$border-width-thin solid v.$base-color-lightened-5;
+        border: v.$border-width solid v.$base-color-lightened-5;
         justify-content: center;
         @include m.multiply("font-size", 1.15);
       }
@@ -142,7 +142,7 @@
             font-weight: 600;
             width: 10rem;
             justify-content: center;
-            border: v.$border-width-thin solid;
+            border: v.$border-width solid;
             color: v.$base-blue-color-lightened !important;
             border-color: v.$base-blue-color-lightened !important;
             background-color: transparent;

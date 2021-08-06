@@ -23,7 +23,7 @@
       top: 1rem;
       left: -0;
       background-color: v.$base-background-color;
-      border: v.$border-width-thin solid v.$base-color-lightened-4;
+      border: v.$border-width solid v.$base-color-lightened-4;
       border-radius: v.$border-radius-hardest;
       color: v.$base-font-color;
       @include m.multiply("font-size", 1);
@@ -68,7 +68,7 @@
       input[type="password"],
       .input-file {
         border-radius: v.$border-radius-hardest;
-        border: v.$border-width-thin solid rgba(132, 152, 177, 0.2);
+        border: v.$border-width solid rgba(132, 152, 177, 0.2);
         padding: 1rem;
         width: 100%;
         max-width: calc(50% - 2rem);
@@ -343,7 +343,7 @@
         &-wrapper {
           width: 100%;
           justify-content: space-between;
-          border: v.$border-width-thin dashed #3333;
+          border: v.$border-width dashed #3333;
           border-radius: v.$border-radius;
           margin: 0 0 4rem 0;
           height: 7rem;

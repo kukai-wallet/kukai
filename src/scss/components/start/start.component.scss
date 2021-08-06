@@ -151,7 +151,7 @@
         }
 
         & > .google {
-          border: v.$border-width-thin solid v.$border-color;
+          border: v.$border-width solid v.$border-color;
           border-radius: v.$border-radius-hardest;
           min-width: 27rem;
           height: 5rem;
@@ -180,7 +180,7 @@
         & input,
         & .signin {
           height: 100%;
-          border: v.$border-width-thin solid v.$border-color;
+          border: v.$border-width solid v.$border-color;
           border-radius: v.$border-radius-hardest;
         }
 

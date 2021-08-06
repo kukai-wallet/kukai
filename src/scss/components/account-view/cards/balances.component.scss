@@ -61,7 +61,7 @@
         height: 3.5rem;
         margin-right: 1rem;
         border-radius: v.$border-radius-hardest;
-        border: v.$border-width-thin solid v.$base-color-lightened-5;
+        border: v.$border-width solid v.$border-color;
       }
 
       & .title {
@@ -104,7 +104,7 @@
         margin-right: 0.5rem;
         padding: 0.5rem;
         border-radius: v.$border-radius-hard;
-        border: v.$border-width-thin solid v.$base-color-lightened-6;
+        border: v.$border-width solid v.$border-color;
         object-fit: scale-down;
       }
     }
