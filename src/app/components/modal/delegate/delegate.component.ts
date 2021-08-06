@@ -201,7 +201,6 @@ export class DelegateComponent extends ModalComponent implements OnInit, OnChang
       if (signature) {
         const signedOp = op + signature;
         this.sendResponse.payload.signedOperation = signedOp;
-        console.log(this.sendResponse);
         this.ledgerError = '';
       } else {
         this.ledgerError = 'Failed to sign operation';

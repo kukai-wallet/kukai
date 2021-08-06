@@ -3,6 +3,7 @@ import { WalletService } from '../../services/wallet/wallet.service';
 import { MessageService } from '../../services/message/message.service';
 import { Subscription } from 'rxjs';
 import { SubjectService } from '../../services/subject/subject.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-permission-request',
@@ -17,7 +18,8 @@ export class PermissionRequestComponent implements OnInit, OnChanges {
   constructor(
     public walletService: WalletService,
     private messageService: MessageService,
-    private subjectService: SubjectService
+    private subjectService: SubjectService,
+    private router: Router
   ) { }
   ngOnInit(): void {
     if (this.walletService.wallet) {
@@ -46,6 +48,7 @@ export class PermissionRequestComponent implements OnInit, OnChanges {
     const pk = this.walletService.wallet.getImplicitAccount(this.selectedAccount).pk;
     this.permissionResponse.emit(pk);
     this.reset();
+    this.router.navigate([`/account/${this.selectedAccount}`]);
   }
   reset() {
     document.body.style.marginRight = '';
