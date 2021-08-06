@@ -10,6 +10,10 @@
     margin: 0.5rem 0;
   }
 
+  & .danger {
+    margin-top: 1rem;
+  }
+
   & .advanced-form {
     margin: 1rem 0 0 0;
 
@@ -26,6 +30,10 @@
       width: calc(100% - 3rem);
       height: 3.5rem;
       align-self: center;
+    }
+
+    & textarea {
+      width: 100%;
     }
 
     & .tabs-container {

@@ -8,6 +8,10 @@
 
     @include b.confirm-send-mobile-batch;
 
+    & .transfer-amount, & .contract-call {
+      width: calc(100% - 2rem);
+    }
+
     & .divider {
       & span {
         border-bottom: 3px solid v.$border-color;

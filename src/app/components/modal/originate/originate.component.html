@@ -29,7 +29,7 @@
             <span class="tab" [class.active]="activeTab === 1" (click)="activeTab = 1">Storage</span>
           </div>
         </div>
-        <textarea style="width: 100%" rows="10" readonly>{{ getScript() }}</textarea>
+        <textarea rows="10" readonly>{{ getScript() }}</textarea>
         <ng-container *ngIf="!(walletService.isLedgerWallet() && !ledgerError)">
           <div class="flex-row">
             <div class="flex-column">
@@ -57,7 +57,7 @@
           </div>
         </ng-container>
       </div>
-      <span *ngIf="formInvalid" style="margin-top: 1rem" class="danger margin">
+      <span *ngIf="formInvalid" class="danger margin">
         {{ formInvalid }}
       </span>
       <div class="row-group" style="margin: 1.25rem 0 1.5rem;">

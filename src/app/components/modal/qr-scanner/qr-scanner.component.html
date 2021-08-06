@@ -14,7 +14,7 @@
         </video>
         <p class="no-cam" *ngIf="!qrScanner">No camera detected</p>
       </div>
-      <input *ngIf="!env.production" type="text" [(ngModel)]="manualInput" class="text" style="margin-top: 2rem"
+      <input *ngIf="!env.production" type="text" [(ngModel)]="manualInput" class="text"
         (paste)="handlePaste($event)" placeholder="...or paste pairing string here">
     </div>
   </div>

@@ -30,6 +30,14 @@
       }
     }
 
+    & .transfer-amount {
+      margin: 0 0 1rem 1rem;
+    }
+
+    & .contract-call {
+      margin: 0 0 2rem 1rem;
+    }
+
     & .top,
     & .to {
       height: auto;

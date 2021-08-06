@@ -65,8 +65,7 @@
               {{ transaction.meta?.alias }}</span>
             <span class="flex-row single-to" [class.default]="transactions.length === 1"
               [class.selectable]="transactions.length > 1 && parameters"
-              [class.active]="batchParamIndex === i && transactions.length > 1 && parameters"><span
-                style="font-family: 'Roboto Mono';">{{
+              [class.active]="batchParamIndex === i && transactions.length > 1 && parameters"><span>{{
                 transaction?.destination
                 }}</span><input *ngIf="parameters && transactions.length > 1" type="radio"
                 [checked]="batchParamIndex === i && transactions.length > 1 && parameters" /></span>
@@ -80,12 +79,10 @@
       </div>
       <br />
       <br />
-      <span *ngIf="parameters && transactions.length > 1" class="flex-row"
-        style="margin: 0 0rem 1rem 1rem;width: calc(100% - 2rem);"><span class="key">TRANSFER AMOUNT: </span><span
+      <span *ngIf="parameters && transactions.length > 1" class="flex-row transfer-amount"><span class="key">TRANSFER AMOUNT: </span><span
           class="key">{{ (transactions[batchParamIndex]?.amount | number:'1.0-6')
           }}</span></span>
-      <div *ngIf="parameters && parameters?.entrypoint" class="flex-row"
-        style="margin: 0 0rem 2rem 1rem;width: calc(100% - 2rem);"><span class="key">CONTRACT CALL: </span><span
+      <div *ngIf="parameters && parameters?.entrypoint" class="flex-row contract-call"><span class="key">CONTRACT CALL: </span><span
           class="key">{{ parameters?.entrypoint }}</span></div>
       <app-ui-toggle-advanced *ngIf="externalReq" [default]="false" (stateChange)="advancedForm = $event">
       </app-ui-toggle-advanced>

@@ -297,6 +297,11 @@
           box-shadow: v.$box-shadow;
         }
 
+        & .body {
+          width: calc(100% - 5rem);
+          justify-content:flex-start
+        }
+
         & .filename {
           @include m.ellipsis;
           color: v.$base-blue-color-lightened;

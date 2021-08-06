@@ -1,6 +1,6 @@
 <div class="selectable main-container">
   <div class="top-container-activity">
-    <h1 style="float:left">Recent Activity</h1>
+    <h1>Recent Activity</h1>
     <div class="right">
       <a class="view-all" href="{{ explorerURL(account.address) }}" target="_blank">View in Explorer</a>
       <!-- <img class="button icon" src="../../../../assets/img/info.svg" /> -->
@@ -148,7 +148,7 @@
           </div>
         </div>
         <div *ngSwitchDefault>
-          <div style="padding-left: 0.75rem">
+          <div>
             <div class="line"><span class="black">{{ getType(activity) | titlecase }}</span>
               <span *ngIf="activity.status !== 0" class="time">
                 <a href="{{ explorerURL(activity.hash) }}" target="_blank">
