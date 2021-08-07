@@ -78,7 +78,7 @@ $base-background-color: v.$base-background-color;
       input[type="password"],
       .input-file {
         border-radius: v.$border-radius-hardest;
-        border: $border-width solid rgba(132, 152, 177, 0.2);
+        border: $border-width solid v.$border-color;
         padding: 1rem;
         width: 100%;
         max-width: calc(50% - 2rem);
