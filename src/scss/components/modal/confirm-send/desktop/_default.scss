@@ -2,6 +2,15 @@
 @use '../../../../abstracts/variables'as v;
 @use './batch' as b;
 
+$base-font-color: v.$base-font-color;
+$base-font-color-secondary: v.$base-font-color-secondary;
+$base-end-color: v.$base-end-color;
+$base-red-color: v.$base-red-color;
+$base-blue-color-lightened: v.$base-blue-color-lightened;
+$base-color-lightened-5: v.$base-color-lightened-5;
+$base-color-lightened-7: v.$base-color-lightened-7;
+$border-color: v.$border-color;
+
 @mixin confirm-send-default {
   .confirm-send {
     margin: 2rem 0 0 0;
@@ -48,7 +57,7 @@
     & .top {
       align-items: flex-start;
       flex-wrap: wrap;
-      background-color: v.$base-color-lightened-7;
+      background-color: $base-color-lightened-7;
       border-radius: v.$border-radius;
       height: auto;
       padding: 2rem;
@@ -61,7 +70,7 @@
 
       & table {
         width: 100%;
-        color: v.$base-font-color-secondary;
+        color: $base-font-color-secondary;
         margin: 0 0 4rem 0;
       }
 
@@ -69,7 +78,7 @@
         width: 10rem;
         height: 10rem;
         object-fit: cover;
-        background-color: v.$base-end-color;
+        background-color: $base-end-color;
         border-radius: v.$border-radius;
         box-shadow: v.$box-shadow-dark;
 
@@ -78,7 +87,7 @@
           height: 3rem;
           box-shadow: unset;
           border-radius: v.$border-radius-hard;
-          border: v.$border-width solid v.$base-color-lightened-5;
+          border: v.$border-width solid $base-color-lightened-5;
         }
       }
 
@@ -99,7 +108,7 @@
 
         & .key {
           text-align: center;
-          color: v.$base-font-color;
+          color: $base-font-color;
           margin: 0.35rem 0 1rem 0;
           font-weight: 500;
         }
@@ -189,12 +198,12 @@
       & .domain {
         @include m.multiply("font-size", 1.5);
         font-weight: 500;
-        color: v.$base-font-color;
+        color: $base-font-color;
       }
 
       & .address {
         @include m.multiply("font-size", 1);
-        color: v.$base-font-color-secondary;
+        color: $base-font-color-secondary;
       }
 
       & .torus-name {
@@ -216,7 +225,7 @@
 
     & .divider {
       & span {
-        border-bottom: 3px solid v.$border-color;
+        border-bottom: 3px solid $border-color;
 
         &:first-child {
           width: 12%;
@@ -248,7 +257,7 @@
 
         & span {
           margin: 0.5rem 0 0 0;
-          color: v.$base-blue-color-lightened;
+          color: $base-blue-color-lightened;
           font-weight: 500;
         }
       }
@@ -266,7 +275,7 @@
 
           &::-webkit-scrollbar-track {
             margin: 0;
-            background-color: v.$base-end-color;
+            background-color: $base-end-color;
           }
         }
 
@@ -291,7 +300,7 @@
           justify-content: center;
 
           & .single-to {
-            color: v.$base-font-color-secondary;
+            color: $base-font-color-secondary;
             @include m.multiply("font-size", 1.125);
             font-weight: 400;
             cursor: pointer;
@@ -318,7 +327,7 @@
               margin: 0;
 
               & span {
-                color: v.$base-blue-color-lightened;
+                color: $base-blue-color-lightened;
               }
             }
 
@@ -367,10 +376,10 @@
         cursor: pointer;
         @include m.multiply("font-size", 1.25);
         font-weight: 400;
-        color: v.$base-font-color-secondary;
+        color: $base-font-color-secondary;
 
         &.active {
-          color: v.$base-blue-color-lightened;
+          color: $base-blue-color-lightened;
           font-weight: 600;
           text-decoration: underline;
         }
@@ -394,7 +403,7 @@
     }
 
     & .bottom {
-      border-top: 2px solid v.$border-color;
+      border-top: 2px solid $border-color;
       margin: 0;
 
       & .label {
@@ -404,7 +413,7 @@
       }
 
       & .danger {
-        color: v.$base-red-color;
+        color: $base-red-color;
         margin: 1rem 1rem 0rem 1rem;
       }
     }

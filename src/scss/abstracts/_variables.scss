@@ -1,6 +1,6 @@
 @use './functions-private'as f;
 
-$current-theme: "default" !global;
+$current-theme: "default";
 
 // generic color constants
 $base-color-static: #000 !default;
