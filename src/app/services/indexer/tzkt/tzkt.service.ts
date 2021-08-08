@@ -141,7 +141,7 @@ export class TzktService implements Indexer {
         }
       }).filter(obj => obj));
     const unknownTokenIds: string[] = [];
-    const tokenTxs = await fetch(`${this.bcd}/tokens/${this.network}/transfers/${address}?max=20&start=0`)
+    const tokenTxs = await fetch(`${this.bcd}/tokens/${this.network}/transfers/${address}?size=10&start=0`)
       .then(response => response.json())
       .then(data => data.transfers.map(tx => {
         const tokenId = `${tx.contract}:${tx.token_id}`;
@@ -329,7 +329,7 @@ export class TzktService implements Indexer {
     const totalPromises = Math.floor(tokenTotal / this.BCD_TOKEN_QUERY_SIZE) + Number((tokenTotal % this.BCD_TOKEN_QUERY_SIZE) !== 0);
     const aryTokenFetchUrl: Promise<Response>[] = [];
     for (let i = 0; i < totalPromises; i++) {
-      const url = `${this.bcd}/account/${this.network}/${address}/token_balances?max=${this.BCD_TOKEN_QUERY_SIZE}&offset=${this.BCD_TOKEN_QUERY_SIZE * i}&hide_empty=true`;
+      const url = `${this.bcd}/account/${this.network}/${address}/token_balances?size=${this.BCD_TOKEN_QUERY_SIZE}&offset=${this.BCD_TOKEN_QUERY_SIZE * i}&hide_empty=true`;
       aryTokenFetchUrl.push(fetch(url));
     }
     const aryTokenResults = await Promise.all(aryTokenFetchUrl);
