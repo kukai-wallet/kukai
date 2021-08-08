@@ -181,6 +181,9 @@ export abstract class Account {
     }
     return '';
   }
+  getTokenBalances(): Token[] {
+    return this.tokens;
+  }
   updateTokenBalance(tokenId: string, balance: string) {
     if (this.tokens.length) {
       for (let i = 0; i < this.tokens.length; i++) {

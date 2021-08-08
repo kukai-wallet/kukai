@@ -27,7 +27,7 @@ export class TzktService implements Indexer {
   readonly network = CONSTANTS.NETWORK.replace('edonet', 'edo2net');
   public readonly bcd = 'https://api.better-call.dev/v1';
   public readonly tzkt = `https://api.${this.network}.tzkt.io/v1`;
-  readonly BCD_TOKEN_QUERY_SIZE = 10;
+  readonly BCD_TOKEN_QUERY_SIZE: number = 50;
   constructor() { }
   async getContractAddresses(pkh: string): Promise<any> {
     return fetch(`https://api.${this.network}.tzkt.io/v1/operations/originations?contractManager=${pkh}`)
@@ -322,15 +322,14 @@ export class TzktService implements Indexer {
   }
   async getTokenBalancesUsingPromiseAll(address: string) {
     // get total number of tokens
-    const tokenCount = await (await fetch(`${this.bcd}/account/${this.network}/${address}/count`)).json();
+    const tokenCount = await (await fetch(`${this.bcd}/account/${this.network}/${address}/count?hide_empty=true`)).json();
     const tokenTotal = Object.keys(tokenCount).map(key => tokenCount[key]).reduce((a, b) => a + b, 0);
 
     // Use Promise.All to get all token balances
-    const querySizeMax = this.BCD_TOKEN_QUERY_SIZE ?? 10;
-    const totalPromises = Math.floor(tokenTotal / querySizeMax) + Number((tokenTotal % querySizeMax) !== 0);
+    const totalPromises = Math.floor(tokenTotal / this.BCD_TOKEN_QUERY_SIZE) + Number((tokenTotal % this.BCD_TOKEN_QUERY_SIZE) !== 0);
     const aryTokenFetchUrl: Promise<Response>[] = [];
     for (let i = 0; i < totalPromises; i++) {
-      const url = `${this.bcd}/account/${this.network}/${address}/token_balances?max=${querySizeMax}&offset=${querySizeMax * i}`;
+      const url = `${this.bcd}/account/${this.network}/${address}/token_balances?max=${this.BCD_TOKEN_QUERY_SIZE}&offset=${this.BCD_TOKEN_QUERY_SIZE * i}&hide_empty=true`;
       aryTokenFetchUrl.push(fetch(url));
     }
     const aryTokenResults = await Promise.all(aryTokenFetchUrl);
@@ -342,7 +341,7 @@ export class TzktService implements Indexer {
 
 export function mutableConvertObjectPropertiesSnakeToCamel(data: Object) {
   for (const key in data) {
-    if(key.charAt(0).toLowerCase() !== key.charAt(0)) {
+    if (key.charAt(0).toLowerCase() !== key.charAt(0)) {
       data[key.charAt(0).toLowerCase() + key.slice(1)] = data[key];
     }
     if (key.indexOf('_') !== -1) {

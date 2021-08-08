@@ -12,7 +12,7 @@ import { BehaviorSubject } from 'rxjs';
 @Injectable()
 export class ActivityService {
   confirmedOp = new Subject<string>();
-  maxTransactions = 10;
+  readonly maxTransactions = 10;
   public tokenBalanceUpdated = new BehaviorSubject(null);
   constructor(
     private walletService: WalletService,
@@ -64,10 +64,18 @@ export class ActivityService {
   }
   async updateTokenBalances(account, tokens) {
     if (tokens && tokens.length) {
+      const idsWithBalance: string[] = [];
       for (const token of tokens) {
         const tokenId = `${token.contract}:${token.token_id}`;
+        idsWithBalance.push(tokenId);
         if (tokenId) {
           account.updateTokenBalance(tokenId, token.balance.toString());
+        }
+      }
+      const currentTokenIds = account.getTokenBalances().map((token) => { return token.tokenId });
+      for (const tokenId of currentTokenIds) {
+        if (!idsWithBalance.includes(tokenId)) {
+          account.updateTokenBalance(tokenId, '0');
         }
       }
       this.tokenBalanceUpdated.next(true);
