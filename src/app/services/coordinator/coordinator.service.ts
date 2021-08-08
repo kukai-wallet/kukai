@@ -11,6 +11,7 @@ import { TokenService } from '../token/token.service';
 import { LookupService } from '../lookup/lookup.service';
 import { CONSTANTS } from '../../../environments/environment';
 import { SubjectService } from '../subject/subject.service';
+import { TokenBalancesService } from '../token-balances/token-balances.service';
 
 export interface ScheduleData {
   pkh: string;
@@ -40,6 +41,7 @@ export class CoordinatorService {
     private delegateService: DelegateService,
     private operationService: OperationService,
     private tokenService: TokenService,
+    private tokenBalancesService: TokenBalancesService,
     private lookupService: LookupService,
     private subjectService: SubjectService
   ) {
@@ -64,11 +66,13 @@ export class CoordinatorService {
     if (!this.tzrateInterval) {
       console.log('Start scheduler XTZ');
       this.tzrateService.getTzrate();
+      this.tokenBalancesService.getMarkets();
       this.lookupService.recheckWalletAddresses(false);
       this.tzrateInterval = setInterval(
         () => {
           this.tzrateService.getTzrate();
           this.lookupService.recheckWalletAddresses(true);
+          this.tokenBalancesService.getMarkets();
         },
         this.defaultDelayPrice
       );

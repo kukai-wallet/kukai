@@ -13,6 +13,7 @@ import { MessageService } from '../message/message.service';
 
 interface TokenWithBalance extends TokenResponseType {
   balance: string;
+  price: string;
 }
 interface ContractWithImg {
   name: string;
@@ -22,16 +23,11 @@ interface ContractWithImg {
 }
 type ContractsWithBalance = Record<string, ContractWithImg>;
 
-enum UPDATE_TYPE {
-  "ACCOUNT_UPDATED" = 0,
-  "METADATA_UPDATED" = 1,
-  "TOKENBALANCE_UPDATED" = 2
-}
-
 @Injectable({
   providedIn: 'root'
 })
 export class TokenBalancesService {
+  markets: any[] = [];
   balances: TokenWithBalance[] = [];
   nfts: ContractsWithBalance = null;
   activeAccount: Account = null;
@@ -109,6 +105,7 @@ export class TokenBalancesService {
         nfts['unknown'] = temp;
       }
       this.balances = balances;
+      this.mergeMarket(this.balances);
       this.nfts = nfts;
 
       if (this._thumbnailsToCreate.length) {
@@ -142,11 +139,26 @@ export class TokenBalancesService {
   }
 
   isNFT(asset: TokenResponseType): boolean {
-    if (!asset) { return false;}
+    if (!asset) { return false; }
     if (CONSTANTS.MAINNET) {
       return !CONSTANTS.NFT_CONTRACT_OVERRIDES.includes(`${asset.contractAddress}:${asset.id}`);
     } else {
       return (asset?.isBooleanAmount || asset?.decimals == 0) && !CONSTANTS.NFT_CONTRACT_OVERRIDES.includes(`${asset.contractAddress}`) ? true : false;
     }
+  }
+
+  getMarkets() {
+    fetch('https://api.teztools.io/v1/prices').then((response) => response.json()).then(r => {this.markets = r.contracts; console.log(r)});
+  }
+
+  mergeMarket(balances) {
+    Object.keys(balances).forEach(key => {
+      let token = undefined;
+      const sym = balances[key]?.symbol;
+      if ((token = this.markets?.find((token) => token?.symbol.toUpperCase() === sym))) {
+        balances[key].price = token?.currentPrice;
+         !!token?.logo_url ? (balances[key].displayUrl = balances[key].thumbnailUrl = token?.thumbnailUri) : null;
+      }
+    });
   }
 }
