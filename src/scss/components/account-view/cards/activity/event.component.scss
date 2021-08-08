@@ -1,6 +1,5 @@
-@use '../../../abstracts/variables'as v;
-@use '../../../abstracts/mixins' as m;
-@import "./mixins";
+@use '../../../../abstracts/variables'as v;
+@use '../../../../abstracts/mixins' as m;
 
 $base-font-color: v.$base-font-color;
 $base-font-color-secondary: v.$base-font-color-secondary;
@@ -16,36 +15,12 @@ $event-unconfirmed: v.$base-color-lightened-5;
 $event-confirmed: v.$base-color-lightened-6;
 $event-new: v.$base-end-color;
 
-@include base;
-
-.top-container {
-  @include top-container;
-
-  &-activity {
-    @include top-container;
-    & .right {
-      @include top-container-right;
-    }
-
-    & a.view-all {
-      float: right;
-      margin: 0;
-      font-style: normal;
-      font-weight: normal;
-      @include m.multiply("font-size", 1);
-      line-height: 1rem;
-      color: $base-font-color-secondary;
-      text-decoration: none;
-    }
-  }
-}
-
-#operations-container {
+:host {
   & > div {
     display: flex;
     flex-direction: row;
     height: 100%;
-    margin-top: 1rem;
+    margin: 0 0 1rem 0;
     padding: 1rem 2rem;
     border-radius: $border-radius;
     background-color: transparent;

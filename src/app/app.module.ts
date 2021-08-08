@@ -45,6 +45,7 @@ import { ConnectLedgerComponent } from './components/start/login-types/connect-l
 import { FooterComponent } from './components/footer/footer.component';
 import { AccountViewComponent } from './components/account-view/account-view.component';
 import { ActivityComponent } from './components/account-view/activity/activity.component';
+import { EventComponent } from './components/account-view/activity/event/event.component';
 import { NftsComponent } from './components/account-view/nfts/nfts.component';
 import { PendingComponent } from './components/account-view/pending/pending.component';
 import { BalancesComponent } from './components/account-view/balances/balances.component';
@@ -96,6 +97,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     FooterComponent,
     AccountViewComponent,
     ActivityComponent,
+    EventComponent,
     NftsComponent,
     PendingComponent,
     BalancesComponent,
