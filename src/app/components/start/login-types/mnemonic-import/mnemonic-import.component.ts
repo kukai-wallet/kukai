@@ -1,5 +1,5 @@
 import { Component, OnInit, HostBinding, Input } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core'; // Multiple instances created ?
 import { ImportService } from '../../../../services/import/import.service';
 import { MessageService } from '../../../../services/message/message.service';
@@ -7,6 +7,7 @@ import { WalletService } from '../../../../services/wallet/wallet.service';
 import { ExportService } from '../../../../services/export/export.service';
 import { InputValidationService } from '../../../../services/input-validation/input-validation.service';
 import { utils, hd } from '@tezos-core-tools/crypto-utils';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-mnemonic-import-wallet',
@@ -46,7 +47,14 @@ export class MnemonicImportComponent implements OnInit {
     private walletService: WalletService,
     private exportService: ExportService,
     private inputValidationService: InputValidationService
-  ) { }
+  ) {
+    this.router.events
+    .pipe(filter(e => e instanceof NavigationEnd && e.url.startsWith('/import')))
+    .subscribe(() => {
+     const navigation  = this.router.getCurrentNavigation();
+     this.importOption = navigation.extras?.state?.option ? navigation.extras.state.option : 0;
+    });
+  }
 
   ngOnInit() {
     this.checkBrowser();
