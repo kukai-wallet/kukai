@@ -31,13 +31,10 @@ export class EventComponent implements OnInit, OnChanges {
     setInterval(() => { this.trigger = !this.trigger }, 1000);
   }
   ngOnChanges(changes: SimpleChanges) {
-    console.log(changes, this.fresh)
     if(changes.activity.currentValue.status === 1 && (new Date()).getTime() - 60000 < changes.activity.currentValue.timestamp && this.fresh === undefined) {
       this.fresh = true;
-      console.log(this.fresh)
       setTimeout(() => {
         this.fresh = false;
-        console.log(this.fresh)
       }, 20000);
     }
   }

@@ -23,7 +23,7 @@
       <ng-container *ngFor="let tokenBalance of this.tokenBalancesService.balances; trackBy: trackToken">
         <div class="flex-row balance">
           <div class="flex-row left">
-            <img class="icon" [src]="tokenBalance?.thumbnailUrl || tokenBalance?.displayUrl || ''" />
+            <app-asset class="icon" [meta]="tokenBalance?.thumbnailUrl || tokenBalance?.displayUrl" ></app-asset>
             <div class="flex-row title">{{tokenBalance?.symbol}}</div>
             <div class="flex-column prices">
               <div class="price">{{tokenBalance?.balance}}</div>

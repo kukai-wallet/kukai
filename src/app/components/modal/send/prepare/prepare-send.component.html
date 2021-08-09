@@ -7,7 +7,7 @@
     <div class="flex-column prepare-send">
       <div *ngIf="!this.isMultipleDestinations" class="flex-column top">
         <div *ngIf="token?.thumbnailUrl || token?.displayUrl" class="flex-row token">
-          <img [src]="token?.thumbnailUrl || token?.displayUrl" />
+          <app-asset class="icon" [meta]="token?.thumbnailUrl || token?.displayUrl"></app-asset>
           <span class="title">{{token?.name}}</span>
         </div>
         <span *ngIf="!token?.isBooleanAmount" class="flex-row label title">ENTER {{!isNFT ? 'AMOUNT' :

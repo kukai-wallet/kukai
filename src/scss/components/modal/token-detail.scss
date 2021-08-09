@@ -22,13 +22,16 @@
       margin: 0 1rem 0 0;
 
       &.expanded {
+        background-color: #000000f3;
         position: fixed;
         top: 0;
         left: 0;
         width: 100vw;
         height: 100vh;
         max-width: unset;
+        max-height: unset;
         margin: 0;
+        z-index: 10000;
 
         & img:not(.close) {
           position: absolute;

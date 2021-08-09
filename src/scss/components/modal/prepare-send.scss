@@ -50,10 +50,10 @@
       height: auto;
       margin: 0.6rem 0 1rem 0.6rem;
 
-      & img {
+      & .icon {
         width: 6rem;
         height: 6rem;
-        object-fit: cover;
+        overflow: hidden;
         background-color: v.$base-end-color;
         border-radius: v.$border-radius;
         box-shadow: v.$box-shadow-dark;

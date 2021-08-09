@@ -131,9 +131,6 @@ textarea {
   &.selected {
     @extend %base-button-selected;
   }
-  &:hover {
-    filter: invert(0.05);
-  }
 }
 
 button {

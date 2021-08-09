@@ -1,7 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Account } from '../../../../services/wallet/wallet';
-import { TokenService } from '../../../../services/token/token.service';
-import { SubjectService } from '../../../../services/subject/subject.service';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-basic-button',

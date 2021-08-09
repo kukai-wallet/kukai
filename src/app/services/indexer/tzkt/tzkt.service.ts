@@ -285,8 +285,8 @@ export class TzktService implements Indexer {
   async resolveAssetUris(data: any): Promise<any> {
     const metadata: any = {};
     const rawData = JSON.parse(JSON.stringify(data));
-    metadata.displayUri = await this.uriToUrl(data.displayUri, 'raw');
-    metadata.thumbnailUri = await this.uriToUrl(data.thumbnailUri, 'raw');
+    metadata.displayUri = await this.uriToUrl(data.displayUri);
+    metadata.thumbnailUri = await this.uriToUrl(data.thumbnailUri);
     try {
       // Exceptions
       if (data?.isBooleanAmount === undefined && typeof data?.isBooleanAmount === "string" && data?.isBooleanAmount === "true"
@@ -298,15 +298,14 @@ export class TzktService implements Indexer {
         // hicetnunc
         if (["image/png", "image/jpg", "image/jpeg"].includes(rawData.formats[0].mimeType)) {
           metadata.displayUri = await this.uriToUrl(
-            rawData.formats[0].uri,
-            'raw'
+            rawData.formats[0].uri
           );
         }
       }
     } catch (e) { }
     return metadata;
   }
-  async uriToUrl(uri: string, size: string = 'raw'): Promise<string> {
+  async uriToUrl(uri: string): Promise<string> {
     if (!uri || uri.length < 8) {
       return '';
     }
@@ -318,14 +317,13 @@ export class TzktService implements Indexer {
     } else if (!CONSTANTS.MAINNET && (uri.startsWith('http://localhost') || uri.startsWith('http://127.0.0.1'))) {
       url = uri;
     }
-    const cacheUrl = await this.fetchApi(`https://img.kukai.network/info?size=${size}&src=${url}`);
-    return cacheUrl ? cacheUrl : '';
+    const cacheMeta = await this.fetchApi(`https://backend.kukai.network/file/info?src=${url}`);
+    return cacheMeta ? cacheMeta : '';
   }
   async fetchApi(url: string): Promise<any> {
     return fetch(url)
       .then((response) => response.json())
-      .then((data) => `https://img.kukai.network/${data.Filename}.${data.Extension}`)
-      .catch(() => url.substring(url.indexOf("https://cloudflare-ipfs.com")));
+      .then((data) => data);
   }
   async getTokenBalancesUsingPromiseAll(address: string) {
     // get total number of tokens

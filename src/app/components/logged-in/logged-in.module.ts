@@ -23,6 +23,7 @@ import { ConfirmSendEmbedComponent } from '../../components/embedded/confirm-sen
 import { SignExprEmbedComponent } from '../../components/embedded/sign-expr/sign-expr.component';
 import { AdvancedToggleComponent } from '../ui/button/toggle/advanced/advanced.component';
 import { PrepareSendDropdownComponent } from '../ui/dropdown/prepare-send/prepare-send-dropdown.component';
+import { AssetComponent } from '../ui/asset/asset.component';
 import { TokenBalancesService } from '../../services/token-balances/token-balances.service';
 
 @NgModule({
@@ -45,7 +46,8 @@ import { TokenBalancesService } from '../../services/token-balances/token-balanc
     AdvancedToggleComponent,
     ConfirmSendEmbedComponent,
     SignExprEmbedComponent,
-    PrepareSendDropdownComponent
+    PrepareSendDropdownComponent,
+    AssetComponent
   ],
   imports: [
     CommonModule,
@@ -57,7 +59,8 @@ import { TokenBalancesService } from '../../services/token-balances/token-balanc
     AdvancedToggleComponent,
     SendComponent,
     ConfirmSendEmbedComponent,
-    SignExprEmbedComponent
+    SignExprEmbedComponent,
+    AssetComponent
   ],
   providers: [
     EstimateService,

@@ -35,7 +35,8 @@
                 <ng-container *ngFor="let token of this.tokenBalancesService.nfts[key]?.tokens; trackBy: trackToken">
                   <div class="flex-row token" (click)="viewToken(token)">
                     <div class="img-wrapper">
-                      <img class="icon" [src]="token?.thumbnailUrl || token?.displayUrl" />
+                      <app-asset class="icon" [meta]="token?.thumbnailUrl || token?.displayUrl" ></app-asset>
+                      <!-- <img class="icon" [src]="token?.thumbnailUrl || token?.displayUrl" /> -->
                       <div *ngIf="Number.parseInt(this.token?.balance) > 1" class="balance">{{
                         this.token?.balance }}</div>
                     </div>
@@ -61,7 +62,8 @@
               *ngFor="let token of this.tokenBalancesService.nfts[key]?.tokens; let i = index; trackBy: trackToken">
               <div class="flex-row token" (click)="viewToken(token)">
                 <div class="img-wrapper">
-                  <img class="icon" [src]="token?.thumbnailUrl || token?.displayUrl" />
+                  <app-asset class="icon" [meta]="token?.thumbnailUrl || token?.displayUrl" ></app-asset>
+                  <!-- <img class="icon" [src]="token?.thumbnailUrl || token?.displayUrl" /> -->
                   <div *ngIf="Number.parseInt(this.token?.balance) > 1" class="balance">{{
                     this.token?.balance }}</div>
                 </div>

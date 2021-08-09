@@ -189,7 +189,9 @@ $border-color: v.$border-color;
             width: 8rem;
             height: 8rem;
             margin-right: 1.25rem;
+            overflow: hidden;
             object-fit: cover;
+            display: block;
             box-shadow: v.$box-shadow-dark;
             border-radius: v.$border-radius;
           }

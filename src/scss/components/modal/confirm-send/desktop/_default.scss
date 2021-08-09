@@ -77,7 +77,7 @@ $border-color: v.$border-color;
       & .token-image {
         width: 10rem;
         height: 10rem;
-        object-fit: cover;
+        overflow: hidden;
         background-color: $base-end-color;
         border-radius: v.$border-radius;
         box-shadow: v.$box-shadow-dark;
