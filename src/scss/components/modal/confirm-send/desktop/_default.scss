@@ -308,6 +308,7 @@ $border-color: v.$border-color;
             margin: 0 0 1.25rem 0;
 
             & span {
+              color: $base-font-color-secondary;
               font-size: 1rem;
             }
 
@@ -315,7 +316,7 @@ $border-color: v.$border-color;
               font-weight: 400;
             }
 
-            &.active {
+            &.active span {
               font-weight: 500;
               color: v.$base-font-color;
             }

@@ -63,8 +63,7 @@
               [class.selectable]="transactions.length > 1 && parameters"
               [class.active]="batchParamIndex === i && transactions.length > 1 && parameters"><span>{{
                 transaction?.destination
-                }}</span><input *ngIf="parameters && transactions.length > 1" type="radio"
-                [checked]="batchParamIndex === i && transactions.length > 1 && parameters" /></span>
+                }}</span></span>
             <p class="previewAttention" *ngIf="tokenTransfer && transaction?.destination.slice(0, 3) === 'KT1'">
               Warning:
               Verify the contract can manage tokens</p>
