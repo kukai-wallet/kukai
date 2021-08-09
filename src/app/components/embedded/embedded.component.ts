@@ -80,7 +80,7 @@ export class EmbeddedComponent implements OnInit {
           this.origin = this.walletService.wallet.origin;
           this.subjectService.origin.next(this.origin);
           this.activeAccount = this.walletService.wallet.implicitAccounts[0];
-          this.coordinatorService.startAll();
+          this.coordinatorService.start(this.activeAccount.address, this.coordinatorService.defaultDelayActivity);
           this.subscribeToConfirmedOps();
         }
       }
@@ -314,7 +314,7 @@ export class EmbeddedComponent implements OnInit {
         .then((success: boolean) => {
           if (success) {
             this.activeAccount = this.walletService.wallet.implicitAccounts[0];
-            this.coordinatorService.startAll();
+            this.coordinatorService.start(this.activeAccount.address, this.coordinatorService.defaultDelayActivity);
             this.subscribeToConfirmedOps();
           }
         });

@@ -30,10 +30,6 @@ export class AccountViewComponent implements OnInit {
   isMobile = false;
   @Input() activity: any;
   ngOnInit(): void {
-    if (this.walletService.wallet) {
-      this.coordinatorService.startAll();
-    }
-
     this.walletService.activeAccount.subscribe(activeAccount => {
       this.account = activeAccount;
     });

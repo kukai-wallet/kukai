@@ -6,10 +6,9 @@ import { Account } from '../wallet/wallet';
 import Big from 'big.js';
 import { CONSTANTS } from '../../../environments/environment';
 import { decode } from "blurhash";
-import { BehaviorSubject, combineLatest } from 'rxjs';
-import { debounceTime, filter } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 import { SubjectService } from '../subject/subject.service';
-import { MessageService } from '../message/message.service';
 
 interface TokenWithBalance extends TokenResponseType {
   balance: string;
@@ -36,8 +35,7 @@ export class TokenBalancesService {
     private tokenService: TokenService,
     private activityService: ActivityService,
     private walletService: WalletService,
-    private subjectService: SubjectService,
-    private messageService: MessageService
+    private subjectService: SubjectService
   ) {
     combineLatest([this.walletService.activeAccount, this.walletService.walletUpdated, this.subjectService.metadataUpdated, this.activityService.tokenBalanceUpdated]).pipe(debounceTime(200)).subscribe(([a, b, c, d]) => {
       if (this.activeAccount !== a) {

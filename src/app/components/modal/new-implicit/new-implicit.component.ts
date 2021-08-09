@@ -46,7 +46,7 @@ export class NewImplicitComponent extends ModalComponent implements OnInit {
       this.messageService.startSpinner('Creating new account');
       const pkh = await this.walletService.incrementAccountIndex(this.password);
       if (pkh) {
-        this.coordinatorService.start(pkh);
+        this.coordinatorService.start(pkh, this.coordinatorService.defaultDelayActivity);
         this.closeModal();
         this.router.navigateByUrl(`/account/${pkh}`)
       } else {

@@ -23,6 +23,7 @@ import { ConfirmSendEmbedComponent } from '../../components/embedded/confirm-sen
 import { SignExprEmbedComponent } from '../../components/embedded/sign-expr/sign-expr.component';
 import { AdvancedToggleComponent } from '../ui/button/toggle/advanced/advanced.component';
 import { PrepareSendDropdownComponent } from '../ui/dropdown/prepare-send/prepare-send-dropdown.component';
+import { TokenBalancesService } from '../../services/token-balances/token-balances.service';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import { PrepareSendDropdownComponent } from '../ui/dropdown/prepare-send/prepar
     SignExprEmbedComponent
   ],
   providers: [
-    EstimateService
+    EstimateService,
+    TokenBalancesService
   ]
 })
 export class LoggedInModule { }

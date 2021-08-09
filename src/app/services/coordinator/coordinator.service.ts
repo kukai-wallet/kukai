@@ -12,6 +12,7 @@ import { LookupService } from '../lookup/lookup.service';
 import { CONSTANTS } from '../../../environments/environment';
 import { SubjectService } from '../subject/subject.service';
 import { TokenBalancesService } from '../token-balances/token-balances.service';
+import { interval } from 'rxjs';
 
 export interface ScheduleData {
   pkh: string;
@@ -30,8 +31,9 @@ export class CoordinatorService {
   scheduler: Map<string, any> = new Map<string, any>(); // pkh + delay
   defaultDelayActivity = CONSTANTS.MAINNET ? 60000 : 30000; // 60/30s
   shortDelayActivity = 5000; // 5s
-  tzrateInterval: any;
+  longDelayActivity = 120000; // 2m
   defaultDelayPrice = 300000; // 5m
+  tzrateInterval: any;
   accounts: Account[];
   constructor(
     private activityService: ActivityService,
@@ -49,51 +51,47 @@ export class CoordinatorService {
       if (!!o) {
         this.stopAll();
       }
-    })
-  }
-  startAll() {
-    if (this.walletService.wallet) {
-      this.accounts = this.walletService.wallet.getAccounts();
-      for (let i = 0; i < this.accounts.length; i++) {
-        this.start(this.accounts[i].address);
+    });
+    this.walletService.activeAccount.subscribe(activeAccount => {
+      if (this.walletService.wallet) {
+        this.accounts = this.walletService.wallet.getAccounts();
+        this.accounts.forEach(({ address }) => {
+          if(address === activeAccount.address) {
+            this.start(activeAccount.address, this.defaultDelayActivity);
+          } else {
+            this.start(address, this.longDelayActivity);
+          }
+        });
+        this.startXTZ();
       }
-      this.startXTZ();
-    } else {
-      console.log('no wallet found');
-    }
+    })
   }
   startXTZ() {
     if (!this.tzrateInterval) {
       console.log('Start scheduler XTZ');
-      this.tzrateService.getTzrate();
-      this.tokenBalancesService.getMarkets();
-      this.lookupService.recheckWalletAddresses(false);
-      this.tzrateInterval = setInterval(
-        () => {
-          this.tzrateService.getTzrate();
-          this.lookupService.recheckWalletAddresses(true);
-          this.tokenBalancesService.getMarkets();
-        },
-        this.defaultDelayPrice
-      );
+      const cb = () => {
+        this.tzrateService.getTzrate();
+        this.tokenBalancesService.getMarkets();
+        this.lookupService.recheckWalletAddresses(true);
+      }
+      this.tzrateInterval = interval(this.defaultDelayPrice).subscribe(() => cb());
     }
   }
-  async start(pkh: string) {
+  async start(pkh: string, delay: number) {
     if (pkh && !this.scheduler.get(pkh)) {
       this.accounts = this.walletService.wallet.getAccounts();
       console.log('Start scheduler ' + this.scheduler.size + ' ' + pkh);
       const scheduleData: ScheduleData = {
         pkh: pkh,
         state: State.UpToDate,
-        interval: setInterval(
-          () => this.update(pkh),
-          this.defaultDelayActivity
-        ),
+        interval: interval(this.defaultDelayActivity).subscribe(() => this.update(pkh)),
         stateCounter: 0,
       };
       this.scheduler.set(pkh, scheduleData);
       this.update(pkh);
       this.updateAccountData(pkh);
+    } else if(pkh && this.scheduler.get(pkh)) {
+      this.setDelay(pkh, delay);
     }
   }
   async boost(pkh: string, metadata: any = null) {
@@ -104,7 +102,7 @@ export class CoordinatorService {
         this.addUnconfirmedOperations(pkh, metadata);
       }
       if (!this.scheduler.get(pkh)) {
-        await this.start(pkh);
+        await this.start(pkh, this.defaultDelayActivity);
       }
       if (this.scheduler.get(pkh).state !== State.Wait) {
         this.changeState(pkh, State.Wait);
@@ -175,8 +173,7 @@ export class CoordinatorService {
       },
       err => console.log('Error in update()', err),
       () => {
-        console.log(`account[${this.accounts.findIndex((a) => a.address === pkh)}][${
-          typeof this.scheduler.get(pkh)?.state !== 'undefined' ? this.scheduler.get(pkh).state : '*'}]: <<`);
+        console.log(`account[${this.accounts.findIndex((a) => a.address === pkh)}][${typeof this.scheduler.get(pkh)?.state !== 'undefined' ? this.scheduler.get(pkh).state : '*'}]: <<`);
       }
     );
   }
@@ -187,11 +184,8 @@ export class CoordinatorService {
       this.updateAccountData(pkh);
     }
     if (newState === State.Wait || newState === State.Updating) {
-      clearInterval(scheduleData.interval);
-      scheduleData.interval = setInterval(
-        () => this.update(pkh),
-        this.shortDelayActivity
-      );
+      scheduleData.interval.unsubscribe();
+      scheduleData.interval = interval(this.shortDelayActivity).subscribe(() => this.update(pkh))
     }
     scheduleData.stateCounter++;
     this.scheduler.set(pkh, scheduleData);
@@ -199,9 +193,9 @@ export class CoordinatorService {
   setDelay(pkh: string, time: number) {
     const scheduleData: ScheduleData = this.scheduler.get(pkh);
     if (scheduleData.interval) {
-      clearInterval(scheduleData.interval);
+      scheduleData.interval.unsubscribe();
     }
-    scheduleData.interval = setInterval(() => this.update(pkh), time);
+    scheduleData.interval = interval(time).subscribe(() => this.update(pkh))
     this.scheduler.set(pkh, scheduleData);
   }
   stopAll() {
@@ -212,8 +206,10 @@ export class CoordinatorService {
           this.stop(account.address);
         }
       }
-      clearInterval(this.tzrateInterval);
-      this.tzrateInterval = null;
+      if(this.tzrateInterval) {
+        this.tzrateInterval.unsubscribe();
+        this.tzrateInterval = null;
+      }
     }
   }
   async stop(pkh) {
@@ -221,7 +217,7 @@ export class CoordinatorService {
       'Stop scheduler ' + this.accounts.findIndex((a) => a.address === pkh)
     );
     if (this.scheduler.get(pkh)) {
-      clearInterval(this.scheduler.get(pkh).interval);
+      this.scheduler.get(pkh).interval.unsubscribe();
       this.scheduler.get(pkh).interval = null;
       this.scheduler.delete(pkh);
     }

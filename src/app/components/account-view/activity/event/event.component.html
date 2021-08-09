@@ -1,4 +1,4 @@
-<div [class]="getType(activity).replace('undelegated', 'delegated')" [class.new]="fresh" [class.unconfirmed]="activity.status === 0" [class.confirmed]="!fresh && activity.status === 1"
+<div [class]="getType(activity).replace('undelegated', 'delegated')" [class.unconfirmed]="activity.status === 0" [class.confirmed]="activity.status === 1" [class.new]="fresh && activity.status === 1"
   [class.failed]="activity.status === -1">
   <div class="flex-column">
     <div class="flex-row title">

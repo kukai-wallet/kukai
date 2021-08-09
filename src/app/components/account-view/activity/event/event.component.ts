@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Account, Activity } from '../../../../services/wallet/wallet';
 import { TimeAgoPipe } from '../../../../pipes/time-ago.pipe';
 import { TranslateService } from '@ngx-translate/core';
@@ -14,7 +14,7 @@ import copy from 'copy-to-clipboard';
   templateUrl: './event.component.html',
   styleUrls: ['../../../../../scss/components/account-view/cards/activity/event.component.scss'],
 })
-export class EventComponent implements OnInit {
+export class EventComponent implements OnInit, OnChanges {
   public LookupType = LookupType
   public fresh = undefined;
   constructor(
@@ -29,10 +29,15 @@ export class EventComponent implements OnInit {
   @Input() account: Account;
   ngOnInit(): void {
     setInterval(() => { this.trigger = !this.trigger }, 1000);
-    if (this.activity.status === 1 && (new Date()).getTime() - 60000 < this.activity.timestamp) {
+  }
+  ngOnChanges(changes: SimpleChanges) {
+    console.log(changes, this.fresh)
+    if(changes.activity.currentValue.status === 1 && (new Date()).getTime() - 60000 < changes.activity.currentValue.timestamp && this.fresh === undefined) {
       this.fresh = true;
+      console.log(this.fresh)
       setTimeout(() => {
         this.fresh = false;
+        console.log(this.fresh)
       }, 20000);
     }
   }

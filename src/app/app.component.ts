@@ -36,9 +36,6 @@ export class AppComponent implements OnInit {
     this.checkEmbedded();
     if (!this.embedded) {
       this.walletService.loadStoredWallet();
-      if (this.walletService.wallet) {
-        this.coordinatorService.startAll();
-      }
     }
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
