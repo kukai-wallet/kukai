@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { Account, ImplicitAccount, TorusWallet } from '../../../services/wallet/wallet';
+import { WalletService } from '../../../services/wallet/wallet.service';
 import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from '../../../services/message/message.service';
 import { TokenService } from '../../../services/token/token.service';
@@ -28,7 +29,8 @@ export class NftsComponent implements OnInit, AfterViewInit {
     public messageService: MessageService,
     public tokenService: TokenService,
     public tokenBalancesService: TokenBalancesService,
-    private subjectService: SubjectService
+    private subjectService: SubjectService,
+    private walletService: WalletService
   ) { }
   @Input() activity: any;
   @Input() account;
@@ -59,7 +61,7 @@ export class NftsComponent implements OnInit, AfterViewInit {
     ModalComponent.currentModel.next({ name: 'token-detail', data: token });
   }
   shouldDisplayLink(option: DisplayLinkOption) {
-    if (option === 0 || (option === 1 && this.account?.type === "TorusWallet")) {
+    if (option === 0 || (option === 1 && this.walletService.wallet instanceof TorusWallet)) {
       return true;
     }
     return false;
