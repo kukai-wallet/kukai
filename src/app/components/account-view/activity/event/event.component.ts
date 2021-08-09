@@ -69,7 +69,20 @@ export class EventComponent implements OnInit {
     return `../../../../assets/img/${LookupType[this.getCounterparty(this.activity)?.lookupType].toLowerCase().replace('tezosdomains', 'domain')}-logo.svg`;
   }
   printAmount(activity: Activity): string {
-    return this.tokenService.formatAmount(activity.tokenId, activity.amount.toString());
+    switch (this.getType(activity).toLowerCase()) {
+      case 'sent':
+        return '- ' + this.tokenService.formatAmount(activity.tokenId, activity.amount.toString());
+      case 'received':
+        return '+ ' + this.tokenService.formatAmount(activity.tokenId, activity.amount.toString());
+      case 'delegated':
+        return 'Staked';
+      case 'undelegated':
+        return 'Unstaked';
+      case 'origination':
+        return '- ' + this.tokenService.formatAmount(activity.tokenId, activity.amount.toString());
+      default:
+        return '';
+    }
   }
   sentKind(activity): string {
     if (activity.entrypoint) {
@@ -85,6 +98,20 @@ export class EventComponent implements OnInit {
   }
   receivedKind(activity): string {
     return (activity.tokenId && activity.source.address && (activity.tokenId.split(':')[0] === activity.source.address)) ? 'Minted' : 'Received';
+  }
+  getAddressPrefix(type: string) {
+    switch (type.toLowerCase()) {
+      case 'sent':
+        return 'Sent to:';
+      case 'received':
+        return this.receivedKind(this.activity) + ' from:';
+      case 'delegated':
+        return 'to:';
+      case 'undelegated':
+        return 'to:';
+      case 'origination':
+        return 'Originated contract:';
+    }
   }
   copy(address: string) {
     copy(address);

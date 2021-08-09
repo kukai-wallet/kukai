@@ -51,6 +51,10 @@ $event-new: v.$base-end-color;
     position: relative;
     overflow: hidden;
 
+    & br {
+      display: none;
+    }
+
     &:after {
       content: "";
       position: absolute;
@@ -105,7 +109,11 @@ $event-new: v.$base-end-color;
       color: $base-color-lightened-2;
       width: calc(100%);
       justify-content: flex-start;
-      @include m.multiply("font-size", 1);
+      @include m.multiply("font-size", 1.125);
+
+      & .value {
+        justify-content: flex-start;
+      }
 
       & img {
         width: 1rem;
@@ -134,6 +142,20 @@ $event-new: v.$base-end-color;
   & .received {
     &.confirmed .title {
       color: $base-blue-color-lightened;
+    }
+  }
+}
+
+@media (max-width: v.$layout-break-5) {
+  :host {
+    & .sent,
+    & .delegated,
+    & .received,
+    & .origination {
+      & .address {
+        flex-direction: column;
+        align-items: flex-start;
+      }
     }
   }
 }
