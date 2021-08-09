@@ -8,7 +8,7 @@
     <div class="flex-column token-info">
       <div class="flex-row data">
         <div class="flex-column img-wrapper" [class]="imageExpanded ? 'expanded' : ''">
-          <app-asset class="button" [class.sd]="imageExpanded" [meta]="token?.displayUrl || token?.thumbnailUrl" [size]="imageExpanded ? 'raw' : '150x150'" (click)="expandImage()"></app-asset>
+          <app-asset class="button" [class.sd]="imageExpanded" [meta]="token?.displayUrl || token?.thumbnailUrl" [size]="imageExpanded ? 'raw' : '300x300'" (click)="expandImage()"></app-asset>
           <img *ngIf="imageExpanded" class="flex-row button close" (click)="expandImage()"
             src="../../../assets/img/close-btn-x.png" />
         </div>

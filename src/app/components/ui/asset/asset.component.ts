@@ -1,5 +1,6 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import mimes from 'mime-db/db.json'
+import { CachedAssetResponse } from '../../../interfaces';
 
 @Component({
   selector: 'app-asset',
@@ -9,9 +10,9 @@ import mimes from 'mime-db/db.json'
 
 export class AssetComponent implements OnInit, OnChanges {
 
-  @Input() meta;
+  @Input() meta: CachedAssetResponse | string;
   @Input() size = '150x150';
-  @Input() src = undefined;
+  src = undefined;
   baseUrl = 'https://backend.kukai.network/file';
   mimeType = 'image/*';
 
@@ -27,9 +28,11 @@ export class AssetComponent implements OnInit, OnChanges {
     }
   }
   evaluate() {
-    if (this.meta?.Status === 'ok') {
-      this.mimeType = Object.keys(mimes).filter(key => !!mimes[key]?.extensions?.length).find((key) => mimes[key].extensions.includes(this.meta?.Extension));
-      this.src = `${this.baseUrl}/${this.meta.Filename}_${this.size}.${this.meta.Extension}`;
+    if ((this.meta as CachedAssetResponse)?.Status === 'ok') {
+      this.mimeType = Object.keys(mimes).filter(key => !!mimes[key]?.extensions?.length).find((key) => mimes[key].extensions.includes((this.meta as CachedAssetResponse)?.Extension));
+      this.src = `${this.baseUrl}/${(this.meta as CachedAssetResponse).Filename}_${this.size}.${(this.meta as CachedAssetResponse).Extension}`;
+    } else if(typeof(this.meta) === 'string') {
+      this.src = this.meta;
     } else if(!this.src) {
       this.mimeType = 'image/*';
       this.src = '../../../../assets/img/question-mark.svg';

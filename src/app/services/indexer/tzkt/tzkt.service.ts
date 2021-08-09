@@ -4,6 +4,7 @@ import { Indexer } from '../indexer.service';
 import * as cryptob from 'crypto-browserify';
 import { WalletObject, Activity } from '../../wallet/wallet';
 import assert from 'assert';
+import { CachedAssetResponse } from '../../../interfaces';
 
 interface TokenMetadata {
   name: string;
@@ -305,9 +306,9 @@ export class TzktService implements Indexer {
     } catch (e) { }
     return metadata;
   }
-  async uriToUrl(uri: string): Promise<string> {
+  async uriToUrl(uri: string): Promise<CachedAssetResponse | null> {
     if (!uri || uri.length < 8) {
-      return '';
+      return null;
     }
     let url = '';
     if (uri.startsWith('ipfs://')) {
@@ -318,7 +319,7 @@ export class TzktService implements Indexer {
       url = uri;
     }
     const cacheMeta = await this.fetchApi(`https://backend.kukai.network/file/info?src=${url}`);
-    return cacheMeta ? cacheMeta : '';
+    return cacheMeta ? cacheMeta : null;
   }
   async fetchApi(url: string): Promise<any> {
     return fetch(url)

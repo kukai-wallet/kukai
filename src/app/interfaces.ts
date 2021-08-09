@@ -113,6 +113,12 @@ export enum DisplayLinkOption {
   None,
 }
 
+export interface CachedAssetResponse {
+  Status: string;
+  Filename: string;
+  Extension: string;
+}
+
 export interface Constants {
   NAME: string;
   TEZOS_DOMAIN: {
