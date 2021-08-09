@@ -92,7 +92,7 @@ export class AccountViewComponent implements OnInit {
 
   @HostListener('window:resize', ['$event'])
   getScreenSize(event?) {
-    if (window.innerWidth < 1201) {
+    if (window.innerWidth < 1169) {
       this.isMobile = true;
     } else {
       this.isMobile = false

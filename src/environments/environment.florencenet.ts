@@ -2,7 +2,7 @@
 // The build system defaults to the dev environment which uses `environment.ts`, but if you do
 // `ng build --env=prod` then `environment.prod.ts` will be used instead.
 // The list of which env maps to which file can be found in `.angular-cli.json`.
-import { Constants } from '../app/interfaces';
+import { Constants, DisplayLinkOption } from '../app/interfaces';
 
 export const environment = {
   production: false
@@ -22,85 +22,85 @@ export const CONSTANTS: Constants = {
     'Eli': {
       address: ["KT1DgT2VViqZR5qt9bzXZnmbAsPkdad8fxrc"],
       thumbnailUrl: "https://cloudflare-ipfs.com/ipfs/QmXJHCoidLgxcf4Sbi3UvasEtFTbzVme6f7ztSQ6tJFXTr",
-      link: "", shouldDisplayLink: false
+      link: "", shouldDisplayLink: DisplayLinkOption.None
     },
     'USDtz': {
       address: ["KT1FCMQk44tEP9fm9n5JJEhkSk1TW3XQdaWH"],
       thumbnailUrl: "../../../assets/img/tokens/usdtz.png",
-      link: "", shouldDisplayLink: false
+      link: "", shouldDisplayLink: DisplayLinkOption.None
     },
     'tzBTC': {
       address: ["KT1CUg39jQF8mV6nTMqZxjUUZFuz1KXowv3K"],
       thumbnailUrl: "../../../assets/img/tokens/tzbtc.png",
-      link: "", shouldDisplayLink: false
+      link: "", shouldDisplayLink: DisplayLinkOption.None
     },
     'MFIL': {
       address: ["KT1MGe5wY9FugXvsjin4SnQFEU7yM1FFBF9U"],
       thumbnailUrl: "../../../assets/img/tokens/mfil.jfif",
-      link: "", shouldDisplayLink: false
+      link: "", shouldDisplayLink: DisplayLinkOption.None
     },
     'kUSD': {
       address: ["KT1RXpLtz22YgX24QQhxKVyKvtKZFaAVtTB9"],
       thumbnailUrl: "../../../assets/img/tokens/kusd.png",
-      link: "", shouldDisplayLink: false
+      link: "", shouldDisplayLink: DisplayLinkOption.None
     },
     'OpenMinter': {
       address: ["KT1DzPX2SHnviWURFUfD5NQ9FcHQVmYFuPYu"],
       thumbnailUrl: "../../../assets/img/tokens/minter.svg",
-      link: "", shouldDisplayLink: false
+      link: "", shouldDisplayLink: DisplayLinkOption.None
     },
     'PixelPotus': {
       address: ["KT1D1S7KywvhzrTWHBo9MWUn5x3R9vxBmbio"],
       thumbnailUrl: "https://www.pixelpotus.com/img/eagle-right.d1840b0b.png",
-      link: "https://pixelpotus-frontend-172tineil-pixelpotus.vercel.app/", shouldDisplayLink: true
+      link: "https://pixelpotus-frontend-172tineil-pixelpotus.vercel.app/", shouldDisplayLink: DisplayLinkOption.All, category: "collectibles"
     },
     'MysteryMap': {
       address: ["KT1MktwJ9ud6i57e4NKzBkwweEArVsMobHrU"],
       thumbnailUrl: "",
-      link: "", shouldDisplayLink: false
+      link: "", shouldDisplayLink: DisplayLinkOption.None
     },
     'SpicySwap': {
       address: ["KT1QzkVVgUYMTvwnyRwGttM8zTg5CyuHKxQH", "KT1HEzZQV9B85HZnGpDgaZtZNk4ZXbLRuBii"],
       thumbnailUrl: "https://miro.medium.com/max/1950/1*P4W6alVA28NnbBy9CfJOpg.png",
-      link: "", shouldDisplayLink: false
+      link: "", shouldDisplayLink: DisplayLinkOption.None
     },
     'Truesy': {
       address: ["KT1TVA93qdPyhKXXgi5rN4XphJZBh4PgARb5", "KT1Dwucgeaa9bgFi3Ds16Q1VAgpapXPhMZ5Q"],
       thumbnailUrl: "../../../assets/img/spinner/truesy.svg",
-      link: "https://www.truesy.com/", shouldDisplayLink: false
+      link: "https://www.truesy.com/", shouldDisplayLink: DisplayLinkOption.None
     },
     "MinterPop": {
       address: ['KT1M2TMFrF1gbr64a7ySE3Cvt5BjZqQLKE6s'],
       thumbnailUrl: 'https://minterpop.vercel.app/_next/static/images/logo-ac73543744326030947adf91a3dad06c.svg',
-      link: "https://minterpop.vercel.app/", shouldDisplayLink: true
+      link: "https://minterpop.vercel.app/", shouldDisplayLink: DisplayLinkOption.DirectAuth, category: "collectibles"
     },
     "MinterPopDev": {
       name: 'MinterPop Dev',
       address: ['KT1AzVpQRrQNNQU4x1KGUS3E6P96yZYjQfbS'],
       thumbnailUrl: 'https://minterpop.vercel.app/_next/static/images/logo-ac73543744326030947adf91a3dad06c.svg',
-      link: "https://minterpop-dev.vercel.app/", shouldDisplayLink: true
+      link: "https://minterpop-dev.vercel.app/", shouldDisplayLink: DisplayLinkOption.DirectAuth, category: "collectibles"
     },
     'PixelPotusv2': {
       name: 'PixelPotus v2',
       address: ["KT1AorRGJvDkbpa8ap6setUGMCNm21bpp8qe"],
       thumbnailUrl: "https://www.pixelpotus.com/img/eagle-right.d1840b0b.png",
-      link: "https://pixelpotus-frontend-r7y63b2h9-pixelpotus.vercel.app/", shouldDisplayLink: true
+      link: "https://pixelpotus-frontend-r7y63b2h9-pixelpotus.vercel.app/", shouldDisplayLink: DisplayLinkOption.All, category: "collectibles"
     },
     'Kalamint': {
       address: ["KT1DEJEcfiMUWYjn1ZCTbbLokRcP26sx2pTH"],
       thumbnailUrl: "https://testnet.kalamint.io/static/media/logo.2681f48f.svg",
-      link: "https://testnet.kalamint.io/", shouldDisplayLink: true
+      link: "https://testnet.kalamint.io/", shouldDisplayLink: DisplayLinkOption.All, category: "marketplaces"
     },
     'Tezotopia': {
       address: ["KT1G1V5hS6ghW95GsUV2ZbEfEHENAvq3zTMn"],
       thumbnailUrl: "https://tezotopia.web.app/static/media/tezotopia-logo.bf94c3f8.png",
-      link: "", shouldDisplayLink: false
+      link: "", shouldDisplayLink: DisplayLinkOption.None
     },
     'InterpopComics': {
       name: "Interpop Comics",
       address: ["KT1KG5XcKeUtFWvQBkeiTe5vjvrAya8VsQFi"],
       thumbnailUrl: "https://dev.interpopcomics.com/interpop_logo.png",
-      link: "https://dev.interpopcomics.com/", shouldDisplayLink: true
+      link: "https://dev.interpopcomics.com/", shouldDisplayLink: DisplayLinkOption.DirectAuth, category: "collectibles"
     }
   },
   ASSETS: {

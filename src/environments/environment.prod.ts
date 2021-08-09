@@ -1,4 +1,4 @@
-import { Constants } from './../app/interfaces';
+import { Constants, DisplayLinkOption } from './../app/interfaces';
 
 export const environment = {
   production: true
@@ -27,69 +27,69 @@ export const CONSTANTS: Constants = {
       name: 'Hic et Nunc (HEN)',
       address: ["KT1AFA2mwNUMNd4SsujE1YYp29vd8BZejyKW", "KT1RJ6PbjHpwc3M5rw5s2Nbmefwbuwbdxton", "KT1M2JnD1wsg7w2B4UXJXtKQPuDUpU2L7cJH"],
       thumbnailUrl: "https://dashboard-assets.dappradar.com/document/7357/hicetnunc-dapp-marketplaces-tezos-logo-166x166_88a66b54787c555ea5237fa002586ae5.png",
-      link: "https://www.hicetnunc.xyz/", shouldDisplayLink: true, category: "marketplaces"
+      link: "https://www.hicetnunc.xyz/", shouldDisplayLink: DisplayLinkOption.All, category: "marketplaces"
     },
     'QuipuSwap': {
       address: [],
       thumbnailUrl: "https://dashboard-assets.dappradar.com/document/7360/quipuswap-dapp-exchanges-tezos-logo-166x166_f8f472a49e3f3d6b591a13dbd979a857.png",
-      link: "https://quipuswap.com/", shouldDisplayLink: true, category: "exchanges"
+      link: "https://quipuswap.com/", shouldDisplayLink: DisplayLinkOption.All, category: "exchanges"
     },
     'Minterpop': {
       address: ["KT1AaaBSo5AE6Eo8fpEN5xhCD4w3kHStafxk"],
       thumbnailUrl: "https://minterpop.com/_next/static/images/logo-ac73543744326030947adf91a3dad06c.svg",
-      link: "https://minterpop.com/", shouldDisplayLink: false, category: "collectibles"
+      link: "https://minterpop.com/", shouldDisplayLink: DisplayLinkOption.DirectAuth, category: "collectibles"
     },
     'Kalamint': {
       address: ["KT1EpGgjQs73QfFJs9z7m1Mxm5MTnpC2tqse"],
       thumbnailUrl: "https://dashboard-assets.dappradar.com/document/7358/kalamint-dapp-marketplaces-tezos-logo-166x166_3157752c764b72d1e7759b1b005b07d7.png",
-      link: "https://kalamint.io/", shouldDisplayLink: true, category: "marketplaces"
+      link: "https://kalamint.io/", shouldDisplayLink: DisplayLinkOption.All, category: "marketplaces"
     },
     'Interpop Comics': {
       address: ["KT1UxMVVrK2pbYYEtwes1zKYdpYnzoZ6yPKC"],
       thumbnailUrl: "https://dev.interpopcomics.com/interpop_logo.png",
-      link: "https://interpopcomics.com/", shouldDisplayLink: false, category: "collectibles"
+      link: "https://interpopcomics.com/", shouldDisplayLink: DisplayLinkOption.DirectAuth, category: "collectibles"
     },
     'Bazaar Market': {
       address: ["KT1PKvHNWuWDNVDtqjDha4AostLrGDu4G1jy"],
       thumbnailUrl: "https://dashboard-assets.dappradar.com/document/7444/bazaarmarket-dapp-marketplaces-tezos-logo-166x166_eeff309690a4abe4d06e78922012d985.png",
-      link: "https://bazaarnft.xyz/", shouldDisplayLink: true, category: "marketplaces"
+      link: "https://bazaarnft.xyz/", shouldDisplayLink: DisplayLinkOption.All, category: "marketplaces"
     },
     'TzColors': {
       address: ["KT1FyaDqiMQWg7Exo7VUiXAgZbd2kCzo3d4s"],
       thumbnailUrl: "https://dashboard-assets.dappradar.com/document/7361/tzcolors-dapp-marketplaces-tezos-logo-166x166_4731835687c8ad06edf1d8c140905e12.png",
-      link: "https://www.tzcolors.io/", shouldDisplayLink: true, category: "collectibles"
+      link: "https://www.tzcolors.io/", shouldDisplayLink: DisplayLinkOption.All, category: "collectibles"
     },
     'PixelPotus': {
       name: 'Pixel Potus',
       address: ["KT1WGDVRnff4rmGzJUbdCRAJBmYt12BrPzdD"],
       thumbnailUrl: "https://www.pixelpotus.com/img/eagle-right.d1840b0b.png",
-      link: "https://www.pixelpotus.com/", shouldDisplayLink: true, category: "collectibles"
+      link: "https://www.pixelpotus.com/", shouldDisplayLink: DisplayLinkOption.All, category: "collectibles"
     },
     'SalsaDaoTacoshop': {
       name: 'SalsaDao Tacoshop & Casino',
       address: ["KT1UmxSSUQ5716tRa2RLNSAkiSG6TWbzZ7GL", "KT1JYWuC4eWqYkNC1Sh6BiD89vZzytVoV2Ae", "KT1NvPaecvj8g7SbDs8E5s2jxbEBKHxZssP1", "KT1LhNu3v6rCa3Ura3bompAAJZD9io5VRaWZ", "KT1VHd7ysjnvxEzwtjBAmYAmasvVCfPpSkiG"],
       thumbnailUrl: "https://dashboard-assets.dappradar.com/document/7837/salsadao-dapp-other-tezos-logo-166x166_d4625f93b4fa3858c32b15b36c99617e.png",
-      link: "https://tezostaco.shop/#/", shouldDisplayLink: false, category: "collectibles"
+      link: "https://tezostaco.shop/#/", shouldDisplayLink: DisplayLinkOption.None, category: "collectibles"
     },
     "Truesy": {
       address: ["KT197APGtQ8mk2svRSpDkqXLzHedRtkJ7Hjr", "KT1CTqQ4vg2zyG1AQmDLVeJ473ueoy2Rw8t1", "KT1QE4nZiAXbpuDCu4P5QTNibQSx6FFW3y2W", "KT1QbzLyzwXB9JTevvjT3B24BzgWfMzFfBHt"],
       thumbnailUrl: "https://wallet.kukai.app/assets/img/spinner/truesy.svg",
-      link: "", shouldDisplayLink: false
+      link: "", shouldDisplayLink: DisplayLinkOption.None
     },
     "NBA": {
       address: ["KT1LqKWDtzUh4CXNqfJQMcATv4PdZxBjPJjH"],
       thumbnailUrl: "",
-      link: "", shouldDisplayLink: false
+      link: "", shouldDisplayLink: DisplayLinkOption.None
     },
     "BUA": {
       address: ["KT1WN9yWqV9pEm1ANR56ExJZbnVukWN31fTY", "KT1WBXFKW1sozV7ZLBHvw5eks6Pb8KSoVmLq", "KT1KWNNBtb7z8pejNUNigaRWSTkTQL4DEcf8", "KT1D6CNSXcftRTArCF73Jpsh95dwgEwAy6qZ", "KT1R87j2qFxtPZE3EmmeSoubg2mZkk3j4X8y", "KT1HRCc359qXshgMpBygY3VwqTnV7fc7nYfp", "KT1MU8Pb9DFjnVpEULyWDrqPLjedZPNHFrEN", "KT1FPfsRVWVju2mH1r2iFg5jfzWj7RDCb6ia", "KT19AqSn4m3NtvztPXuETjCzoQ75bKDd1Pyi", "KT1PcYxsFmXuoxcJpcfRSCcQQeSDLERSMzsW", "KT1KSYCk8zjdhgzDDRsmb2ygAfanjBx25Wto"],
       thumbnailUrl: "../../../assets/img/tokens/bua.png",
-      link: "", shouldDisplayLink: false
+      link: "", shouldDisplayLink: DisplayLinkOption.None
     },
     'OpenMinter': {
       address: ["KT1QcxwB4QyPKfmSwjH1VRxa6kquUjeDWeEy"],
       thumbnailUrl: "https://openminter.com/static/media/header-logo.a9dd48a8.svg",
-      link: "", shouldDisplayLink: false
+      link: "", shouldDisplayLink: DisplayLinkOption.None
     }
   },
   ASSETS: {

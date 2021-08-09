@@ -21,28 +21,28 @@ $border-color: v.$border-color;
   &-nfts {
     @include top-container;
 
+    & .icon {
+      margin-left: 1.5rem;
+      width: 2.15rem;
+      height: 1.15rem;
+      padding: 0.5rem 0rem;
+      border-radius: v.$border-radius-hard;
+      border: $border-width solid $base-color-lightened-5;
+    }
+
+    & .icon-grey {
+      margin-left: 1.5rem;
+      width: auto;
+      padding: 0.5rem 1.5rem;
+      background-color: $base-color-lightened-7;
+      border-radius: v.$border-radius-hard;
+      border: $border-width solid $base-color-lightened-5;
+      justify-content: center;
+      @include m.multiply("font-size", 1.15);
+    }
+
     & .right {
       @include top-container-right;
-
-      & .icon {
-        margin-left: 1.5rem;
-        width: 2.15rem;
-        height: 1.15rem;
-        padding: 0.5rem 0rem;
-        border-radius: v.$border-radius-hard;
-        border: $border-width solid $base-color-lightened-5;
-      }
-
-      & .icon-grey {
-        margin-left: 1.5rem;
-        width: 4rem;
-        padding: 0.5rem 0.5rem;
-        background-color: $base-color-lightened-7;
-        border-radius: v.$border-radius-hard;
-        border: $border-width solid $base-color-lightened-5;
-        justify-content: center;
-        @include m.multiply("font-size", 1.15);
-      }
     }
   }
 }
@@ -74,7 +74,61 @@ $border-color: v.$border-color;
 .nfts {
   width: 100%;
 
+  & .discover {
+    width: calc(50% - 5rem);
+    padding: 2rem;
+    margin: 0rem 0rem 2rem 0rem;
+    background-color: #fff;
+    border-radius: v.$border-radius;
+    box-shadow: v.$box-shadow;
+    position: relative;
+
+    & .category {
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: v.$border-radius-hard;
+      letter-spacing: 0.02em;
+      background-color: v.$base-color-lightened-5;
+      color: v.$base-color-lightened-1;
+      width: fit-content;
+      align-self: flex-end;
+      position: absolute;
+      top: 2rem;
+      right: 2rem;
+      z-index: 10;
+    }
+
+    & img.cover {
+      object-fit: scale-down;
+      width: calc(100% - 4rem);
+      height: 12rem;
+      padding: 2rem;
+    }
+
+    & .bottom {
+      & .title {
+        font-size: 2rem;
+        letter-spacing: 0.06em;
+      }
+      & a.link-to-app {
+        & button {
+          padding: 1rem 1.5rem;
+          border-radius: calc(1rem * 2);
+          @include m.multiply("font-size", 1);
+          font-weight: 600;
+          width: 10rem;
+          justify-content: center;
+          border: v.$border-width-thin solid;
+          color: v.$base-blue-color-lightened !important;
+          border-color: v.$base-blue-color-lightened !important;
+          background-color: transparent;
+        }
+      }
+    }
+  }
+
   & .collection {
+    width: 100%;
     min-height: 7rem;
     height: 0;
     transition: 0.15s height;
@@ -145,20 +199,6 @@ $border-color: v.$border-color;
           transition: 0.25s transform;
           width: 1rem;
           transform: rotate(0deg);
-        }
-        & a.link-to-app {
-          & button {
-            padding: 1rem 1.5rem;
-            border-radius: calc(1rem * 2);
-            @include m.multiply("font-size", 1);
-            font-weight: 600;
-            width: 10rem;
-            justify-content: center;
-            border: $border-width solid;
-            color: $base-blue-color-lightened !important;
-            border-color: $base-blue-color-lightened !important;
-            background-color: transparent;
-          }
         }
       }
     }
@@ -268,15 +308,23 @@ $border-color: v.$border-color;
   }
 }
 
-@media (max-width: v.$layout-break-6) {
-  .nfts .collection {
-    & .body .token {
-      width: 100%;
-      padding: 1rem 0;
-      border-bottom: 2px solid $border-color;
+@media (max-width: v.$layout-break-5) {
+  .nfts {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: initial;
+    & .discover {
+      width: calc(100% - 4rem);
+    }
+    & .collection {
+      & .body .token {
+        width: 100%;
+        padding: 1rem 0;
+        border-bottom: 2px solid $border-color;
 
-      &:last-child {
-        border-bottom: none;
+        &:last-child {
+          border-bottom: none;
+        }
       }
     }
   }

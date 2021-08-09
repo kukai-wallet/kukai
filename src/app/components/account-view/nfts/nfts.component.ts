@@ -1,11 +1,14 @@
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
-import { Account, ImplicitAccount } from '../../../services/wallet/wallet';
+import { Account, ImplicitAccount, TorusWallet } from '../../../services/wallet/wallet';
 import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from '../../../services/message/message.service';
 import { TokenService } from '../../../services/token/token.service';
 import { CONSTANTS } from '../../../../environments/environment';
 import { ModalComponent } from '../../modal/modal.component';
 import { TokenBalancesService } from '../../../services/token-balances/token-balances.service';
+import { SubjectService } from '../../../services/subject/subject.service';
+import { DisplayLinkOption } from '../../../interfaces';
+import { last } from 'rxjs/operators';
 
 @Component({
   selector: 'app-nfts',
@@ -13,20 +16,33 @@ import { TokenBalancesService } from '../../../services/token-balances/token-bal
   styleUrls: ['../../../../scss/components/account-view/cards/nfts.component.scss'],
 })
 export class NftsComponent implements OnInit, AfterViewInit {
+  DisplayLinkOption = DisplayLinkOption;
   Object = Object;
   Number = Number;
-  contracts = {};
-  filter: string = 'APP';
+  nfts = {};
+  isDiscover: boolean = true;
+  filter: string = 'APPS';
   contractAliases = CONSTANTS.CONTRACT_ALIASES;
   constructor(
     public translate: TranslateService,
     public messageService: MessageService,
     public tokenService: TokenService,
-    public tokenBalancesService: TokenBalancesService
+    public tokenBalancesService: TokenBalancesService,
+    private subjectService: SubjectService
   ) { }
   @Input() activity: any;
-  @Input() account: Account;
+  @Input() account;
   ngOnInit(): void {
+    this.subjectService.nftsUpdated.subscribe(nfts => {
+      if (!Object.keys(this.nfts)?.length && Object.keys(nfts)?.length) {
+        this.filter = 'APP';
+        this.isDiscover = false;
+      }
+      this.nfts = nfts;
+    });
+    this.subjectService.nftsUpdated.pipe(last()).subscribe(nfts => {
+      this.nfts = nfts;
+    });
   }
   ngAfterViewInit() {
   }
@@ -41,6 +57,12 @@ export class NftsComponent implements OnInit, AfterViewInit {
   }
   viewToken(token) {
     ModalComponent.currentModel.next({ name: 'token-detail', data: token });
+  }
+  shouldDisplayLink(option: DisplayLinkOption) {
+    if (option === 0 || (option === 1 && this.account?.type === "TorusWallet")) {
+      return true;
+    }
+    return false;
   }
   trackToken(index: number, token: any) {
     return token?.id ? token.contractAddress + ':' + token?.id + ':' + token?.balance : null;

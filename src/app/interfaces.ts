@@ -106,6 +106,13 @@ export interface DefaultTransactionParams {
     storageLimit: number;
   }[];
 }
+
+export enum DisplayLinkOption {
+  All,
+  DirectAuth,
+  None,
+}
+
 export interface Constants {
   NAME: string;
   TEZOS_DOMAIN: {
@@ -119,6 +126,6 @@ export interface Constants {
   ALLOWED_EMBED_ORIGINS: string[];
   ASSETS: Record<string, ContractType>;
   CONTRACT_OVERRIDES: Record<string, ContractOverrideType>;
-  CONTRACT_ALIASES: Record<string, { name?: string, address: string[], thumbnailUrl: string, link: string, shouldDisplayLink: boolean, category?: string }>;
+  CONTRACT_ALIASES: Record<string, { name?: string, address: string[], thumbnailUrl: string, link: string, shouldDisplayLink: DisplayLinkOption, category?: string }>;
   NFT_CONTRACT_OVERRIDES: string[];
 }

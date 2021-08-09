@@ -9,7 +9,6 @@
       <div class="flex-row data">
         <div class="flex-column img-wrapper" [class]="imageExpanded ? 'expanded' : ''">
           <app-asset class="button" [class.sd]="imageExpanded" [meta]="token?.displayUrl || token?.thumbnailUrl" [size]="imageExpanded ? 'raw' : '150x150'" (click)="expandImage()"></app-asset>
-          <!-- <img class="button" [src]="token?.displayUrl || token?.thumbnailUrl" (click)="expandImage()" /> -->
           <img *ngIf="imageExpanded" class="flex-row button close" (click)="expandImage()"
             src="../../../assets/img/close-btn-x.png" />
         </div>
@@ -40,8 +39,6 @@
               </div>
             </div>
           </div>
-          <!-- <div class="flex-column bottom">
-          </div> -->
         </div>
       </div>
       <div *ngIf="token.decimals !== undefined" class="flex-row button more-info" [class]="moreInfo ? 'open' : ''"

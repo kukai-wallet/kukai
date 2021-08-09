@@ -114,6 +114,7 @@ export class TokenBalancesService {
         });
         this._thumbnailsToCreate = [];
       }
+      this.subjectService.nftsUpdated.next(this.nfts);
     }
   }
   getContractAlias(address: string) {
