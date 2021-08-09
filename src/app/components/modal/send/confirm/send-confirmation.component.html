@@ -9,11 +9,7 @@
       <div class="flex-row top">
         <div class="flex-column left">
           <span *ngIf="!tokenBalanceService.isNFT(token)" class="key">SEND AMOUNT:</span>
-          <app-asset class="token-image" [class.balance]="!tokenBalanceService.isNFT(token)" [meta]="token?.thumbnailUrl || token?.displayUrl"></app-asset>
-          <!-- <img class="token-image"
-            [src]="token?.thumbnailUrl || token?.displayUrl || '../../../assets/img/tezos-xtz-logo.svg'"
-            [style.object-fit]="token?.displayUrl?.indexOf('.svg') === -1 || token?.thumbnailUrl?.indexOf('.svg') === -1 ? 'cover' : 'scale-down'"
-            [class.balance]="!tokenBalanceService.isNFT(token)"> -->
+          <app-asset class="token-image" [class.balance]="!tokenBalanceService.isNFT(token)" [meta]="token?.thumbnailUrl || token?.displayUrl" [src]="!token?.thumbnailUrl && !token?.displayUrl ? '../../../assets/img/tezos-xtz-logo.svg' : undefined" [class.sd]="!tokenBalanceService.isNFT(token)"></app-asset>
         </div>
         <div class="flex-column right">
           <span class="amount-tez value">{{ formatAmount(token, totalAmount(),
@@ -38,7 +34,6 @@
           </div>
         </div>
       </div>
-      <!--*ngIf="this.walletService.wallet.verifier" -->
       <div class="flex-row from">
         <div class="flex-column left">
           <span class="key">FROM: </span>

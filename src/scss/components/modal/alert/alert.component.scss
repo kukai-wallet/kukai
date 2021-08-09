@@ -152,7 +152,7 @@
     color: v.$base-end-color;
     background-color: v.$base-red-color;
     border-color: v.$base-red-color;
-    flex-flow: row-reverse;
+    flex-flow: row;
 
     & .close {
       fill: v.$base-red-color;
