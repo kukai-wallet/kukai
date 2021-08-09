@@ -157,8 +157,12 @@ export class TzktService implements Indexer {
             }
           }
           const index = ops.findIndex((op: any) => op.hash === tx.hash && op.counter === tx.counter);
+          let hiddenOp;
           if (index !== -1) {
+            hiddenOp = ops[index];
+            if (hiddenOp?.entrypoint && hiddenOp.entrypoint === 'transfer') {
             ops.splice(index, 1); // Hide token transfer invokation
+            }
           }
           const activity: Activity = {
             type: 'transaction',
@@ -180,6 +184,9 @@ export class TzktService implements Indexer {
     const operations = ops.concat(tokenTxs).sort(
       function (a: any, b: any) {
         if (b.timestamp - a.timestamp === 0 && a.counter && b.counter) {
+          if (b.counter - a.counter === 0) {
+            return b.entrypoint ? -1 : 1;
+          }
           return b.counter - a.counter;
         }
         return b.timestamp - a.timestamp;

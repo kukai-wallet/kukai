@@ -73,6 +73,9 @@ export class EventComponent implements OnInit {
   }
   sentKind(activity): string {
     if (activity.entrypoint) {
+      if (activity.amount !== '0') {
+        return `- ${this.printAmount(activity)}, Call ${activity.entrypoint}`;
+      }
       return `Call ${activity.entrypoint}`;
     }
     return '0';
