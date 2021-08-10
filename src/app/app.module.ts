@@ -158,6 +158,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     TorusService,
     EmbeddedAuthService,
     SubjectService,
+    TokenBalancesService,
 
     // Pipes
     ErrorHandlingPipe,

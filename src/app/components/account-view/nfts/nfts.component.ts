@@ -36,9 +36,11 @@ export class NftsComponent implements OnInit, AfterViewInit {
   @Input() account;
   ngOnInit(): void {
     this.subjectService.nftsUpdated.subscribe(nfts => {
-      if (!Object.keys(this.nfts)?.length && Object.keys(nfts)?.length) {
+      if (Object.keys(nfts)?.length) {
         this.filter = 'APP';
         this.isDiscover = false;
+      } else {
+        this.isDiscover = true;
       }
       this.nfts = nfts;
     });

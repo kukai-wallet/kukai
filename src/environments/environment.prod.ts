@@ -60,7 +60,7 @@ export const CONSTANTS: Constants = {
       link: "https://www.tzcolors.io/", shouldDisplayLink: DisplayLinkOption.All, category: "collectibles"
     },
     'PixelPotus': {
-      name: 'Pixel Potus',
+      name: 'PixelPotus',
       address: ["KT1WGDVRnff4rmGzJUbdCRAJBmYt12BrPzdD"],
       thumbnailUrl: "https://www.pixelpotus.com/img/eagle-right.d1840b0b.png",
       link: "https://www.pixelpotus.com/", shouldDisplayLink: DisplayLinkOption.All, category: "collectibles"

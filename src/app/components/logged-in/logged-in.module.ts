@@ -24,7 +24,6 @@ import { SignExprEmbedComponent } from '../../components/embedded/sign-expr/sign
 import { AdvancedToggleComponent } from '../ui/button/toggle/advanced/advanced.component';
 import { PrepareSendDropdownComponent } from '../ui/dropdown/prepare-send/prepare-send-dropdown.component';
 import { AssetComponent } from '../ui/asset/asset.component';
-import { TokenBalancesService } from '../../services/token-balances/token-balances.service';
 
 @NgModule({
   declarations: [
@@ -63,8 +62,7 @@ import { TokenBalancesService } from '../../services/token-balances/token-balanc
     AssetComponent
   ],
   providers: [
-    EstimateService,
-    TokenBalancesService
+    EstimateService
   ]
 })
 export class LoggedInModule { }

@@ -69,12 +69,13 @@ export class CoordinatorService {
   startXTZ() {
     if (!this.tzrateInterval) {
       console.log('Start scheduler XTZ');
-      const cb = () => {
+      const update = () => {
         this.tzrateService.getTzrate();
         this.tokenBalancesService.getMarkets();
         this.lookupService.recheckWalletAddresses(true);
       }
-      this.tzrateInterval = interval(this.defaultDelayPrice).subscribe(() => cb());
+      this.tzrateInterval = interval(this.defaultDelayPrice).subscribe(() => update());
+      update();
     }
   }
   async start(pkh: string, delay: number) {

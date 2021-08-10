@@ -37,6 +37,7 @@ export class TokenBalancesService {
     private walletService: WalletService,
     private subjectService: SubjectService
   ) {
+    console.log("here")
     combineLatest([this.walletService.activeAccount, this.walletService.walletUpdated, this.subjectService.metadataUpdated, this.activityService.tokenBalanceUpdated]).pipe(debounceTime(200)).subscribe(([a, b, c, d]) => {
       if (this.activeAccount !== a) {
         this.activeAccount = a;
@@ -103,8 +104,8 @@ export class TokenBalancesService {
         nfts['unknown'] = temp;
       }
       this.balances = balances;
-      this.mergeMarket(this.balances);
       this.nfts = nfts;
+      this.mergeMarket();
 
       if (this._thumbnailsToCreate.length) {
         this._thumbnailsToCreate.forEach(({ contractAlias, address }) => {
@@ -147,16 +148,16 @@ export class TokenBalancesService {
   }
 
   getMarkets() {
-    fetch('https://api.teztools.io/v1/prices').then((response) => response.json()).then(r => {this.markets = r.contracts; console.log(r)});
+    fetch('https://api.teztools.io/v1/prices').then((response) => response.json()).then(r => {this.markets = [...r.contracts]; this.mergeMarket(); console.log(r)});
   }
 
-  mergeMarket(balances) {
-    Object.keys(balances).forEach(key => {
+  mergeMarket() {
+    Object.keys(this.balances).forEach(key => {
       let token = undefined;
-      const sym = balances[key]?.symbol;
-      if ((token = this.markets?.find((token) => token?.symbol.toUpperCase() === sym))) {
-        balances[key].price = token?.currentPrice;
-         !!token?.logo_url ? (balances[key].displayUrl = balances[key].thumbnailUrl = token?.thumbnailUri) : null;
+      const addr = this.balances[key]?.contractAddress;
+      if ((token = this.markets?.find((token) => token?.tokenAddress === addr))) {
+        this.balances[key].price = token?.currentPrice;
+         !!token?.logo_url ? (this.balances[key].displayUrl = this.balances[key].thumbnailUrl = token?.thumbnailUri) : null;
       }
     });
   }
