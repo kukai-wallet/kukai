@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, HostListener, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, HostListener, SimpleChanges, OnChanges } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { WalletService } from '../../services/wallet/wallet.service';
 import { Account, TorusWallet } from '../../services/wallet/wallet';
@@ -17,7 +17,7 @@ import { SubjectService } from '../../services/subject/subject.service';
   templateUrl: './header.component.html',
   styleUrls: ['../../../scss/components/header/header.component.scss']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnChanges {
   window = window;
   document = document;
   @Input() activeAccount: Account;
@@ -44,7 +44,7 @@ export class HeaderComponent implements OnInit {
     this.router.events
       .pipe(filter((evt) => evt instanceof NavigationEnd))
       .subscribe(async (r: NavigationEnd) => {
-
+        document.body.scrollTop = 0;
         if (!(this.accounts?.length > 0) && r.url.indexOf('/account/') === 0) {
           this.router.navigateByUrl('/');
         } else if ((this.accounts?.length > 0 && r.url.indexOf('/account') === 0) || (this.accounts?.length > 0 && r.url.indexOf('/account') !== 0)) {

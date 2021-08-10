@@ -9,7 +9,6 @@ import { Location } from '@angular/common';
 import { TorusService } from '../../services/torus/torus.service';
 import { MessageService } from '../../services/message/message.service';
 import { ImportService } from '../../services/import/import.service';
-import { ModalComponent } from '../modal/modal.component';
 
 @Component({
   selector: 'app-start',
@@ -17,6 +16,7 @@ import { ModalComponent } from '../modal/modal.component';
   styleUrls: ['../../../scss/components/start/start.component.scss']
 })
 export class StartComponent implements OnInit {
+
   constructor(
     private walletService: WalletService,
     public translate: TranslateService,
@@ -29,7 +29,6 @@ export class StartComponent implements OnInit {
     private location: Location
   ) {
   }
-  animationActive = true;
 
   async ngOnInit() {
     this.route.queryParams
