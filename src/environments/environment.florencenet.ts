@@ -113,9 +113,10 @@ export const CONSTANTS: Constants = {
           symbol: 'USDtz',
           decimals: 6,
           description: 'USDtz is a Tezos on-chain stablecoin pegged to the value of the United States Dollar.',
-          displayUrl: '../../../assets/img/tokens/usdtz.png',
-          thumbnailUrl: '../../../assets/img/tokens/usdtz.png',
-          shouldPreferSymbol: true
+          displayAsset: '../../../assets/img/tokens/usdtz.png',
+          thumbnailAsset: '../../../assets/img/tokens/usdtz.png',
+          shouldPreferSymbol: true,
+          status: 1
         }
       }
     },
@@ -128,10 +129,11 @@ export const CONSTANTS: Constants = {
           symbol: 'tzBTC',
           decimals: 8,
           description: '',
-          displayUrl: '../../../assets/img/tokens/tzbtc.png',
-          thumbnailUrl: '../../../assets/img/tokens/tzbtc.png',
+          displayAsset: '../../../assets/img/tokens/tzbtc.png',
+          thumbnailAsset: '../../../assets/img/tokens/tzbtc.png',
           isTransferable: false,
-          isBooleanAmount: false
+          isBooleanAmount: false,
+          status: 1
         }
       }
     },
@@ -144,10 +146,11 @@ export const CONSTANTS: Constants = {
           symbol: 'MFIL',
           decimals: 0,
           description: 'This certificate verifies that the holder of its private key attended, contributed and completed the Tezos Israel and Madfish Solution Workshop on December 7th to the 9th, 2020. The certificate holder utilized skills in smart contract development and tokenization to build, test and deploy a token on the Tezos blockchain.',
-          displayUrl: '../../../assets/img/tokens/mfil.jfif',
-          thumbnailUrl: '../../../assets/img/tokens/mfil.jfif',
+          displayAsset: '../../../assets/img/tokens/mfil.jfif',
+          thumbnailAsset: '../../../assets/img/tokens/mfil.jfif',
           isTransferable: false,
-          isBooleanAmount: true
+          isBooleanAmount: true,
+          status: 1
         }
       }
     },
@@ -160,9 +163,10 @@ export const CONSTANTS: Constants = {
           symbol: 'kUSD',
           decimals: 18,
           description: 'Kolibri is a Tezos based stablecoin built on Collateralized Debt Positions (CDPs) known as Ovens.',
-          displayUrl: '../../../assets/img/tokens/kusd.png',
-          thumbnailUrl: '../../../assets/img/tokens/kusd.png',
-          shouldPreferSymbol: true
+          displayAsset: '../../../assets/img/tokens/kusd.png',
+          thumbnailAsset: '../../../assets/img/tokens/kusd.png',
+          shouldPreferSymbol: true,
+          status: 1
         }
       }
     },
@@ -175,10 +179,11 @@ export const CONSTANTS: Constants = {
           symbol: '',
           decimals: 0,
           description: 'You can keep my face',
-          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmZwSEXcagB1SGtbbncSDxMwAe6haf1xyFKMUwpMwvMAEc',
-          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmXJHCoidLgxcf4Sbi3UvasEtFTbzVme6f7ztSQ6tJFXTr',
+          displayAsset: 'https://cloudflare-ipfs.com/ipfs/QmZwSEXcagB1SGtbbncSDxMwAe6haf1xyFKMUwpMwvMAEc',
+          thumbnailAsset: 'https://cloudflare-ipfs.com/ipfs/QmXJHCoidLgxcf4Sbi3UvasEtFTbzVme6f7ztSQ6tJFXTr',
           shouldPreferSymbol: false,
-          isBooleanAmount: true
+          isBooleanAmount: true,
+          status: 1
         }
       }
     },
@@ -191,10 +196,11 @@ export const CONSTANTS: Constants = {
           symbol: '',
           decimals: 0,
           description: 'I had a pretty intense year both personally and artistically, something between dream and frenzy. Things I was expecting for a long time happened suddenly and I feel like everything is blooming right now. It’s funny because the artwork itself is blooming while you’re watching it.',
-          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmaN5STTo5TS5ittfMVFPmQSsS3z4JdNQfpMJNJtsCNsYZ',
-          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmaN5STTo5TS5ittfMVFPmQSsS3z4JdNQfpMJNJtsCNsYZ',
+          displayAsset: 'https://cloudflare-ipfs.com/ipfs/QmaN5STTo5TS5ittfMVFPmQSsS3z4JdNQfpMJNJtsCNsYZ',
+          thumbnailAsset: 'https://cloudflare-ipfs.com/ipfs/QmaN5STTo5TS5ittfMVFPmQSsS3z4JdNQfpMJNJtsCNsYZ',
           shouldPreferSymbol: false,
-          isBooleanAmount: true
+          isBooleanAmount: true,
+          status: 1
         }
       }
     },
@@ -207,10 +213,11 @@ export const CONSTANTS: Constants = {
           symbol: '',
           decimals: 0,
           description: 'This piece was the first time I painted something inspired by the city that I’ve called home for my whole life. Miami. \nWhen I was considering the composition for this piece, I kept coming back to that famous saying, “the whole is greater than the sum of its parts.”\nSo if you asked me, what makes Miami, “Miami”? It’s the Miami skyline. It’s the palm trees that line the streets. It’s the boats parked on the dock. It’s the lifeguard towers spread along the beaches. It’s the ocean’s waves. And it’s the weather. The bipolar weather represented in the woman carrying an umbrella. First it’s sunny, then it rains, then it’s sunny again.\nMiami wouldn’t be “Miami” without all these features incorporated together that make up the vibrant city that it is. And so much more.',
-          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmPfQcyyjqAATqjtpVH9YCUxKH8fasUYZGoaSR4BwyMiu5',
-          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmPfQcyyjqAATqjtpVH9YCUxKH8fasUYZGoaSR4BwyMiu5',
+          displayAsset: 'https://cloudflare-ipfs.com/ipfs/QmPfQcyyjqAATqjtpVH9YCUxKH8fasUYZGoaSR4BwyMiu5',
+          thumbnailAsset: 'https://cloudflare-ipfs.com/ipfs/QmPfQcyyjqAATqjtpVH9YCUxKH8fasUYZGoaSR4BwyMiu5',
           shouldPreferSymbol: false,
-          isBooleanAmount: true
+          isBooleanAmount: true,
+          status: 1
         }
       }
     }
@@ -263,3 +270,4 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1G1V5hS6ghW95GsUV2ZbEfEHENAvq3zTMn',
   'KT1DEJEcfiMUWYjn1ZCTbbLokRcP26sx2pTH'
 ];
+export const BLACKLISTED_TOKEN_CONTRACTS = []

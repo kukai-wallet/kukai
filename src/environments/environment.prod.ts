@@ -102,9 +102,10 @@ export const CONSTANTS: Constants = {
           symbol: 'kUSD',
           decimals: 18,
           description: 'Kolibri is a Tezos based stablecoin built on Collateralized Debt Positions (CDPs) known as Ovens.',
-          displayUrl: '../../../assets/img/tokens/kusd.png',
-          thumbnailUrl: '../../../assets/img/tokens/kusd.png',
-          shouldPreferSymbol: true
+          displayAsset: '../../../assets/img/tokens/kusd.png',
+          thumbnailAsset: '../../../assets/img/tokens/kusd.png',
+          shouldPreferSymbol: true,
+          status: 1
         }
       }
     },
@@ -117,9 +118,10 @@ export const CONSTANTS: Constants = {
           symbol: 'kDAO',
           decimals: 18,
           description: '',
-          displayUrl: '../../../assets/img/tokens/kdao.png',
-          thumbnailUrl: '../../../assets/img/tokens/kdao.png',
-          shouldPreferSymbol: true
+          displayAsset: '../../../assets/img/tokens/kdao.png',
+          thumbnailAsset: '../../../assets/img/tokens/kdao.png',
+          shouldPreferSymbol: true,
+          status: 1
         }
       }
     },
@@ -132,9 +134,10 @@ export const CONSTANTS: Constants = {
           symbol: 'USDtz',
           decimals: 6,
           description: 'USDtz is a Tezos on-chain stablecoin pegged to the value of the United States Dollar.',
-          displayUrl: '../../../assets/img/tokens/usdtz.png',
-          thumbnailUrl: '../../../assets/img/tokens/usdtz.png',
-          shouldPreferSymbol: true
+          displayAsset: '../../../assets/img/tokens/usdtz.png',
+          thumbnailAsset: '../../../assets/img/tokens/usdtz.png',
+          shouldPreferSymbol: true,
+          status: 1
         }
       }
     },
@@ -147,9 +150,10 @@ export const CONSTANTS: Constants = {
           symbol: 'uUSD',
           decimals: 12,
           description: '',
-          displayUrl: '../../../assets/img/tokens/uusd.png',
-          thumbnailUrl: '../../../assets/img/tokens/uusd.png',
-          shouldPreferSymbol: true
+          displayAsset: '../../../assets/img/tokens/uusd.png',
+          thumbnailAsset: '../../../assets/img/tokens/uusd.png',
+          shouldPreferSymbol: true,
+          status: 1
         }
       }
     },
@@ -162,9 +166,10 @@ export const CONSTANTS: Constants = {
           symbol: 'YOU',
           decimals: 12,
           description: '',
-          displayUrl: '../../../assets/img/tokens/you.png',
-          thumbnailUrl: '../../../assets/img/tokens/you.png',
-          shouldPreferSymbol: true
+          displayAsset: '../../../assets/img/tokens/you.png',
+          thumbnailAsset: '../../../assets/img/tokens/you.png',
+          shouldPreferSymbol: true,
+          status: 1
         }
       }
     },
@@ -177,9 +182,10 @@ export const CONSTANTS: Constants = {
           symbol: 'tzBTC',
           decimals: 8,
           description: 'tzBTC delivers the power of Bitcoin as a token on the Tezos blockchain.',
-          displayUrl: '../../../assets/img/tokens/tzbtc.png',
-          thumbnailUrl: '../../../assets/img/tokens/tzbtc.png',
-          shouldPreferSymbol: true
+          displayAsset: '../../../assets/img/tokens/tzbtc.png',
+          thumbnailAsset: '../../../assets/img/tokens/tzbtc.png',
+          shouldPreferSymbol: true,
+          status: 1
         }
       }
     },
@@ -192,9 +198,10 @@ export const CONSTANTS: Constants = {
           symbol: 'ETHtz',
           decimals: 18,
           description: 'ETHtz is Ethereum wrapped in the Tezos FA 2.0 token standard.',
-          displayUrl: '../../../assets/img/tokens/ethtz.png',
-          thumbnailUrl: '../../../assets/img/tokens/ethtz.png',
-          shouldPreferSymbol: true
+          displayAsset: '../../../assets/img/tokens/ethtz.png',
+          thumbnailAsset: '../../../assets/img/tokens/ethtz.png',
+          shouldPreferSymbol: true,
+          status: 1
         }
       }
     },
@@ -207,9 +214,10 @@ export const CONSTANTS: Constants = {
           symbol: 'wXTZ',
           decimals: 6,
           description: 'Wrapped Tezos by StakerDAO, a fully collateralized representation of XTZ.',
-          displayUrl: '../../../assets/img/tokens/wxtz.png',
-          thumbnailUrl: '../../../assets/img/tokens/wxtz.png',
-          shouldPreferSymbol: true
+          displayAsset: '../../../assets/img/tokens/wxtz.png',
+          thumbnailAsset: '../../../assets/img/tokens/wxtz.png',
+          shouldPreferSymbol: true,
+          status: 1
         }
       }
     },
@@ -222,10 +230,11 @@ export const CONSTANTS: Constants = {
           symbol: 'MFIL',
           decimals: 0,
           description: 'This certificate verifies that the holder of its private key attended, contributed and completed the Tezos Israel and Madfish Solution Workshop on December 7th to the 9th, 2020. The certificate holder utilized skills in smart contract development and tokenization to build, test and deploy a token on the Tezos blockchain.',
-          displayUrl: '../../../assets/img/tokens/mfil.jfif',
-          thumbnailUrl: '../../../assets/img/tokens/mfil.jfif',
+          displayAsset: '../../../assets/img/tokens/mfil.jfif',
+          thumbnailAsset: '../../../assets/img/tokens/mfil.jfif',
           isTransferable: false,
-          isBooleanAmount: true
+          isBooleanAmount: true,
+          status: 1
         }
       }
     },
@@ -238,11 +247,12 @@ export const CONSTANTS: Constants = {
           symbol: 'hDAO',
           decimals: 6,
           description: '',
-          displayUrl: '../../../assets/img/tokens/hdao.png',
-          thumbnailUrl: '../../../assets/img/tokens/hdao.png',
+          displayAsset: '../../../assets/img/tokens/hdao.png',
+          thumbnailAsset: '../../../assets/img/tokens/hdao.png',
           isTransferable: true,
           isBooleanAmount: false,
-          shouldPreferSymbol: true
+          shouldPreferSymbol: true,
+          status: 1
         }
       }
     },
@@ -255,10 +265,11 @@ export const CONSTANTS: Constants = {
           symbol: '',
           decimals: 0,
           description: 'A recreation of Die Ideale by Piet Mondrian painted with brush strokes of gemstones and precious metals. The work comprises various iconic jewelry styles and pieces from diamond tennis chains, loose gemstones, timepieces and rope chains among numerous others. The work was assembled and designed by artist Rachel Goatlely in partnership with Greg Yüna who crafted and designed the jewelry pieces used.',
-          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmSEtUcV9HuvLdcZbyxVK23TNoyCouf5cpsb1JwoWZffeK',
-          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmbxKzdmd9uWT9AYTmzJNDabvRmC916XkqXeuycoHH2dTC',
+          displayAsset: 'https://cloudflare-ipfs.com/ipfs/QmSEtUcV9HuvLdcZbyxVK23TNoyCouf5cpsb1JwoWZffeK',
+          thumbnailAsset: 'https://cloudflare-ipfs.com/ipfs/QmbxKzdmd9uWT9AYTmzJNDabvRmC916XkqXeuycoHH2dTC',
           shouldPreferSymbol: false,
-          isBooleanAmount: true
+          isBooleanAmount: true,
+          status: 1
         }
       }
     },
@@ -271,10 +282,11 @@ export const CONSTANTS: Constants = {
           symbol: '',
           decimals: 0,
           description: 'A recreation of The Kiss by Gustav Klimt painted with brush strokes of gemstones and precious metals. The work comprises various iconic jewelry styles and pieces from diamond tennis chains, loose gemstones, timepieces and rope chains among numerous others. The work was assembled and designed by artist Rachel Goatlely in partnership with Greg Yüna who crafted and designed the jewelry pieces used.',
-          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmWeiSKjS3tXLemcdRSEV8wZMwpx71kQ9dJcpxo2BmUonh',
-          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmQTTxZ4eveDM65Lu7W2pKv1hGJjbsj66ZBfhPkiKBW3kT',
+          displayAsset: 'https://cloudflare-ipfs.com/ipfs/QmWeiSKjS3tXLemcdRSEV8wZMwpx71kQ9dJcpxo2BmUonh',
+          thumbnailAsset: 'https://cloudflare-ipfs.com/ipfs/QmQTTxZ4eveDM65Lu7W2pKv1hGJjbsj66ZBfhPkiKBW3kT',
           shouldPreferSymbol: false,
-          isBooleanAmount: true
+          isBooleanAmount: true,
+          status: 1
         }
       }
     },
@@ -287,10 +299,11 @@ export const CONSTANTS: Constants = {
           symbol: '',
           decimals: 0,
           description: 'This Taco NFT was inspired by and minted for Austin, Texas on Taco Tuesday, May 4th, 2021, to help push the Clean NFT movement forward. Enjoy your taco or send it to a friend to help spread the word about Clean NFTs on Tezos.',
-          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmYbWkagqQyQ4bJhWWWSGaCLNGP1czbPgD2PLmJ4aVmtGR',
-          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmYbWkagqQyQ4bJhWWWSGaCLNGP1czbPgD2PLmJ4aVmtGR',
+          displayAsset: 'https://cloudflare-ipfs.com/ipfs/QmYbWkagqQyQ4bJhWWWSGaCLNGP1czbPgD2PLmJ4aVmtGR',
+          thumbnailAsset: 'https://cloudflare-ipfs.com/ipfs/QmYbWkagqQyQ4bJhWWWSGaCLNGP1czbPgD2PLmJ4aVmtGR',
           shouldPreferSymbol: false,
-          isBooleanAmount: true
+          isBooleanAmount: true,
+          status: 1
         }
       }
     },
@@ -303,10 +316,11 @@ export const CONSTANTS: Constants = {
           symbol: '',
           decimals: 0,
           description: 'Turtle wears fancy outfit',
-          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmVbriNfu2Xw1miWadT1zwC8BN36cGHMNBxd3TpzE5tLje',
-          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/Qmat9rrmybBzuYgaVgFQvG9iaKkg96Y5u1EovihGxp9J8H',
+          displayAsset: 'https://cloudflare-ipfs.com/ipfs/QmVbriNfu2Xw1miWadT1zwC8BN36cGHMNBxd3TpzE5tLje',
+          thumbnailAsset: 'https://cloudflare-ipfs.com/ipfs/Qmat9rrmybBzuYgaVgFQvG9iaKkg96Y5u1EovihGxp9J8H',
           shouldPreferSymbol: false,
-          isBooleanAmount: true
+          isBooleanAmount: true,
+          status: 1
         }
       }
     },
@@ -319,10 +333,11 @@ export const CONSTANTS: Constants = {
           symbol: '',
           decimals: 0,
           description: 'Laa-Laa dancing',
-          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmZLutyj5jABYvt4ekU1Pq6hCZRBf8C9FwKVeZYHy7Zfv7',
-          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmZLutyj5jABYvt4ekU1Pq6hCZRBf8C9FwKVeZYHy7Zfv7',
+          displayAsset: 'https://cloudflare-ipfs.com/ipfs/QmZLutyj5jABYvt4ekU1Pq6hCZRBf8C9FwKVeZYHy7Zfv7',
+          thumbnailAsset: 'https://cloudflare-ipfs.com/ipfs/QmZLutyj5jABYvt4ekU1Pq6hCZRBf8C9FwKVeZYHy7Zfv7',
           shouldPreferSymbol: false,
-          isBooleanAmount: true
+          isBooleanAmount: true,
+          status: 1
         }
       }
     },
@@ -335,10 +350,11 @@ export const CONSTANTS: Constants = {
           symbol: '',
           decimals: 0,
           description: 'Lebrun dunks on Washington Wizards',
-          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmRHvJRqJYMqbFfoKd1tXYkaxaKJcoao7VijT6yMDM67ud',
-          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmRHvJRqJYMqbFfoKd1tXYkaxaKJcoao7VijT6yMDM67ud',
+          displayAsset: 'https://cloudflare-ipfs.com/ipfs/QmRHvJRqJYMqbFfoKd1tXYkaxaKJcoao7VijT6yMDM67ud',
+          thumbnailAsset: 'https://cloudflare-ipfs.com/ipfs/QmRHvJRqJYMqbFfoKd1tXYkaxaKJcoao7VijT6yMDM67ud',
           shouldPreferSymbol: false,
-          isBooleanAmount: true
+          isBooleanAmount: true,
+          status: 1
         }
       }
     },
@@ -351,10 +367,11 @@ export const CONSTANTS: Constants = {
           symbol: '',
           decimals: 0,
           description: 'The stars and sky dance in the tempestuous night. El Guitarrista joins in the nocturnal symphony of the cosmos. He plays, the sky dances—a dalliance that lasts until the dawn.',
-          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmNym5CYDeSTneeL9oSzcGZ5QfUzYjPv97EYpK92LneNav',
-          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmTaWdJxu8vaqgr3XAJ92TsX6d6aPpxo6qjyANNedMX4vK',
+          displayAsset: 'https://cloudflare-ipfs.com/ipfs/QmNym5CYDeSTneeL9oSzcGZ5QfUzYjPv97EYpK92LneNav',
+          thumbnailAsset: 'https://cloudflare-ipfs.com/ipfs/QmTaWdJxu8vaqgr3XAJ92TsX6d6aPpxo6qjyANNedMX4vK',
           shouldPreferSymbol: false,
-          isBooleanAmount: true
+          isBooleanAmount: true,
+          status: 1
         }
       }
     },
@@ -367,10 +384,11 @@ export const CONSTANTS: Constants = {
           symbol: '',
           decimals: 0,
           description: 'The stars and sky dance in the tempestuous night. El Guitarrista joins in the nocturnal symphony of the cosmos. He plays, the sky dances—a dalliance that lasts until the dawn.',
-          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmTaWdJxu8vaqgr3XAJ92TsX6d6aPpxo6qjyANNedMX4vK',
-          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmTaWdJxu8vaqgr3XAJ92TsX6d6aPpxo6qjyANNedMX4vK',
+          displayAsset: 'https://cloudflare-ipfs.com/ipfs/QmTaWdJxu8vaqgr3XAJ92TsX6d6aPpxo6qjyANNedMX4vK',
+          thumbnailAsset: 'https://cloudflare-ipfs.com/ipfs/QmTaWdJxu8vaqgr3XAJ92TsX6d6aPpxo6qjyANNedMX4vK',
           shouldPreferSymbol: false,
-          isBooleanAmount: true
+          isBooleanAmount: true,
+          status: 1
         }
       }
     },
@@ -383,10 +401,11 @@ export const CONSTANTS: Constants = {
           symbol: '',
           decimals: 0,
           description: 'The Piano Man, hypnotized in atmospheric space, ensconced in smoke, translates emotions musically—melancholy, sorrow, passion, and love. We see him through the lens of our own fleshly perceptions. He is a reflection, a mirror, a teacher…',
-          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmUceK52RXegM9Uj1KrojSdmaiDvSNPG4cwrrQNHP7FrGp',
-          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmXk9udjsm4ErhpBPv4W3tX8q7Zm7m6NiKVcBaztdCV3Xs',
+          displayAsset: 'https://cloudflare-ipfs.com/ipfs/QmUceK52RXegM9Uj1KrojSdmaiDvSNPG4cwrrQNHP7FrGp',
+          thumbnailAsset: 'https://cloudflare-ipfs.com/ipfs/QmXk9udjsm4ErhpBPv4W3tX8q7Zm7m6NiKVcBaztdCV3Xs',
           shouldPreferSymbol: false,
-          isBooleanAmount: true
+          isBooleanAmount: true,
+          status: 1
         }
       }
     },
@@ -399,10 +418,11 @@ export const CONSTANTS: Constants = {
           symbol: '',
           decimals: 0,
           description: 'The Piano Man, hypnotized in atmospheric space, ensconced in smoke, translates emotions musically—melancholy, sorrow, passion, and love. We see him through the lens of our own fleshly perceptions. He is a reflection, a mirror, a teacher…',
-          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmXk9udjsm4ErhpBPv4W3tX8q7Zm7m6NiKVcBaztdCV3Xs',
-          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmXk9udjsm4ErhpBPv4W3tX8q7Zm7m6NiKVcBaztdCV3Xs',
+          displayAsset: 'https://cloudflare-ipfs.com/ipfs/QmXk9udjsm4ErhpBPv4W3tX8q7Zm7m6NiKVcBaztdCV3Xs',
+          thumbnailAsset: 'https://cloudflare-ipfs.com/ipfs/QmXk9udjsm4ErhpBPv4W3tX8q7Zm7m6NiKVcBaztdCV3Xs',
           shouldPreferSymbol: false,
-          isBooleanAmount: true
+          isBooleanAmount: true,
+          status: 1
         }
       }
     },
@@ -415,10 +435,11 @@ export const CONSTANTS: Constants = {
           symbol: '',
           decimals: 0,
           description: "DJ MONA LISA is the amalgamation of one of the most recognizable images from 15th century Florence, blended and mixed with BUA’s classic, iconographic pop culture DJ painting. Her flirtatious smile might make you wonder what DJ Mona is mixing up on the 1's & 2's.",
-          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmQTdKE183LWB33VmJQPEZMtEGg3JMFF2dgtLfezgUANeq',
-          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmQzfvT6tPTdECds6Q11NpYcAf9pcjUHqmCBZ9NDjJMotM',
+          displayAsset: 'https://cloudflare-ipfs.com/ipfs/QmQTdKE183LWB33VmJQPEZMtEGg3JMFF2dgtLfezgUANeq',
+          thumbnailAsset: 'https://cloudflare-ipfs.com/ipfs/QmQzfvT6tPTdECds6Q11NpYcAf9pcjUHqmCBZ9NDjJMotM',
           shouldPreferSymbol: false,
-          isBooleanAmount: true
+          isBooleanAmount: true,
+          status: 1
         }
       }
     },
@@ -431,10 +452,11 @@ export const CONSTANTS: Constants = {
           symbol: '',
           decimals: 0,
           description: "DJ MONA LISA is the amalgamation of one of the most recognizable images from 15th century Florence, blended and mixed with BUA’s classic, iconographic pop culture DJ painting. Her flirtatious smile might make you wonder what DJ Mona is mixing up on the 1's & 2's.",
-          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmQzfvT6tPTdECds6Q11NpYcAf9pcjUHqmCBZ9NDjJMotM',
-          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmQzfvT6tPTdECds6Q11NpYcAf9pcjUHqmCBZ9NDjJMotM',
+          displayAsset: 'https://cloudflare-ipfs.com/ipfs/QmQzfvT6tPTdECds6Q11NpYcAf9pcjUHqmCBZ9NDjJMotM',
+          thumbnailAsset: 'https://cloudflare-ipfs.com/ipfs/QmQzfvT6tPTdECds6Q11NpYcAf9pcjUHqmCBZ9NDjJMotM',
           shouldPreferSymbol: false,
-          isBooleanAmount: true
+          isBooleanAmount: true,
+          status: 1
         }
       }
     },
@@ -447,10 +469,11 @@ export const CONSTANTS: Constants = {
           symbol: '',
           decimals: 0,
           description: 'The Block is a home we all belong to. A place to come where warmth embraces and the light is always on. The birds and brownstones syncopate with the urban landscape, indicative of the unspoken language between the wild and tamed on The Block.',
-          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmVvFrcxoJjbtAJVxoLhvHxnG1jdAc5E69Lp6a42A3VFfS',
-          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmRAWffkFZdeLFWmLoVuLqTqW3D8yq4hPZroGfGkLDd6Dz',
+          displayAsset: 'https://cloudflare-ipfs.com/ipfs/QmVvFrcxoJjbtAJVxoLhvHxnG1jdAc5E69Lp6a42A3VFfS',
+          thumbnailAsset: 'https://cloudflare-ipfs.com/ipfs/QmRAWffkFZdeLFWmLoVuLqTqW3D8yq4hPZroGfGkLDd6Dz',
           shouldPreferSymbol: false,
-          isBooleanAmount: true
+          isBooleanAmount: true,
+          status: 1
         }
       }
     },
@@ -463,10 +486,11 @@ export const CONSTANTS: Constants = {
           symbol: '',
           decimals: 0,
           description: 'The Block is a home we all belong to. A place to come where warmth embraces and the light is always on. The birds and brownstones syncopate with the urban landscape, indicative of the unspoken language between the wild and tamed on The Block.',
-          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmRAWffkFZdeLFWmLoVuLqTqW3D8yq4hPZroGfGkLDd6Dz',
-          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmRAWffkFZdeLFWmLoVuLqTqW3D8yq4hPZroGfGkLDd6Dz',
+          displayAsset: 'https://cloudflare-ipfs.com/ipfs/QmRAWffkFZdeLFWmLoVuLqTqW3D8yq4hPZroGfGkLDd6Dz',
+          thumbnailAsset: 'https://cloudflare-ipfs.com/ipfs/QmRAWffkFZdeLFWmLoVuLqTqW3D8yq4hPZroGfGkLDd6Dz',
           shouldPreferSymbol: false,
-          isBooleanAmount: true
+          isBooleanAmount: true,
+          status: 1
         }
       }
     },
@@ -479,10 +503,11 @@ export const CONSTANTS: Constants = {
           symbol: '',
           decimals: 0,
           description: 'A year ago the world stopped. Trumpet Man cries and mourns for the city he belongs to.  Trumpet man’s musical notes give us hope.  He delicately conducts his magic in an architectural symphony. The coolness of the monochromatic palette is complemented by the warm yellow windows that illuminate his horn.',
-          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmemuQ5X6stcbFQgR79rjBU3oxbzRGLgjMiehSh244c5kM',
-          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmUZNJ3Ez4QZfyEkpKHK4BwQj5jskuvt3pfJRsQSskyW2G',
+          displayAsset: 'https://cloudflare-ipfs.com/ipfs/QmemuQ5X6stcbFQgR79rjBU3oxbzRGLgjMiehSh244c5kM',
+          thumbnailAsset: 'https://cloudflare-ipfs.com/ipfs/QmUZNJ3Ez4QZfyEkpKHK4BwQj5jskuvt3pfJRsQSskyW2G',
           shouldPreferSymbol: false,
-          isBooleanAmount: true
+          isBooleanAmount: true,
+          status: 1
         }
       }
     },
@@ -495,10 +520,11 @@ export const CONSTANTS: Constants = {
           symbol: '',
           decimals: 0,
           description: 'A year ago the world stopped. Trumpet Man cries and mourns for the city he belongs to.  Trumpet man’s musical notes give us hope.  He delicately conducts his magic in an architectural symphony. The coolness of the monochromatic palette is complemented by the warm yellow windows that illuminate his horn.',
-          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmUZNJ3Ez4QZfyEkpKHK4BwQj5jskuvt3pfJRsQSskyW2G',
-          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmUZNJ3Ez4QZfyEkpKHK4BwQj5jskuvt3pfJRsQSskyW2G',
+          displayAsset: 'https://cloudflare-ipfs.com/ipfs/QmUZNJ3Ez4QZfyEkpKHK4BwQj5jskuvt3pfJRsQSskyW2G',
+          thumbnailAsset: 'https://cloudflare-ipfs.com/ipfs/QmUZNJ3Ez4QZfyEkpKHK4BwQj5jskuvt3pfJRsQSskyW2G',
           shouldPreferSymbol: false,
-          isBooleanAmount: true
+          isBooleanAmount: true,
+          status: 1
         }
       }
     },
@@ -511,10 +537,11 @@ export const CONSTANTS: Constants = {
           symbol: '',
           decimals: 0,
           description: "DJ MONA LISA is the amalgamation of one of the most recognizable images from 15th century Florence, blended and mixed with BUA’s classic, iconographic pop culture DJ painting. Her flirtatious smile might make you wonder what DJ Mona is mixing up on the 1's & 2's.",
-          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmQzfvT6tPTdECds6Q11NpYcAf9pcjUHqmCBZ9NDjJMotM',
-          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmQzfvT6tPTdECds6Q11NpYcAf9pcjUHqmCBZ9NDjJMotM',
+          displayAsset: 'https://cloudflare-ipfs.com/ipfs/QmQzfvT6tPTdECds6Q11NpYcAf9pcjUHqmCBZ9NDjJMotM',
+          thumbnailAsset: 'https://cloudflare-ipfs.com/ipfs/QmQzfvT6tPTdECds6Q11NpYcAf9pcjUHqmCBZ9NDjJMotM',
           shouldPreferSymbol: false,
-          isBooleanAmount: true
+          isBooleanAmount: true,
+          status: 1
         }
       }
     },
@@ -527,10 +554,11 @@ export const CONSTANTS: Constants = {
           symbol: '',
           decimals: 0,
           description: "",
-          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmTdRF1uNMQhkHqqrQstiwtZzfsUd39wMUzqCTJSQmE8ef',
-          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmXATeW5cS1dMHymiHay1HQrhrixSRuAVjPedB2nYg3cAq',
+          displayAsset: 'https://cloudflare-ipfs.com/ipfs/QmTdRF1uNMQhkHqqrQstiwtZzfsUd39wMUzqCTJSQmE8ef',
+          thumbnailAsset: 'https://cloudflare-ipfs.com/ipfs/QmXATeW5cS1dMHymiHay1HQrhrixSRuAVjPedB2nYg3cAq',
           shouldPreferSymbol: false,
-          isBooleanAmount: true
+          isBooleanAmount: true,
+          status: 1
         }
       }
     },
@@ -543,10 +571,11 @@ export const CONSTANTS: Constants = {
           symbol: '',
           decimals: 0,
           description: "It’s hard to tell this is even the same song. The first time I heard this, I didn’t know what song it was. Then I heard the second version and figured it out. Oh, and the bridge at the end…. What the hell was I thinking?",
-          displayUrl: 'https://cloudflare-ipfs.com/ipfs/Qmauf5qn3gq8dTpQZNVT6iruzuYuAscp7ns2bg6Pe39wdp',
-          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/Qmauf5qn3gq8dTpQZNVT6iruzuYuAscp7ns2bg6Pe39wdp',
+          displayAsset: 'https://cloudflare-ipfs.com/ipfs/Qmauf5qn3gq8dTpQZNVT6iruzuYuAscp7ns2bg6Pe39wdp',
+          thumbnailAsset: 'https://cloudflare-ipfs.com/ipfs/Qmauf5qn3gq8dTpQZNVT6iruzuYuAscp7ns2bg6Pe39wdp',
           shouldPreferSymbol: false,
-          isBooleanAmount: true
+          isBooleanAmount: true,
+          status: 1
         }
       }
     },
@@ -559,10 +588,11 @@ export const CONSTANTS: Constants = {
           symbol: '',
           decimals: 0,
           description: "from the Pump Up the Valuum demo collection. Recorded in 1999. What’s cool about this version is that there’s an octave chord part that we never put on the album. The sound isn’t that great, but Smelly rips and Mel’s octaves are really cool. My vocals…… ugh… Photo by Lisa Johnson",
-          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmdyEUPQZnF8XKoxAGtidUgLz4AMtBSLFGo7MV3C5r1hsY',
-          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmdyEUPQZnF8XKoxAGtidUgLz4AMtBSLFGo7MV3C5r1hsY',
+          displayAsset: 'https://cloudflare-ipfs.com/ipfs/QmdyEUPQZnF8XKoxAGtidUgLz4AMtBSLFGo7MV3C5r1hsY',
+          thumbnailAsset: 'https://cloudflare-ipfs.com/ipfs/QmdyEUPQZnF8XKoxAGtidUgLz4AMtBSLFGo7MV3C5r1hsY',
           shouldPreferSymbol: false,
-          isBooleanAmount: true
+          isBooleanAmount: true,
+          status: 1
         }
       }
     },
@@ -575,10 +605,11 @@ export const CONSTANTS: Constants = {
           symbol: '',
           decimals: 0,
           description: "I wrote this in 1999 and clearly I couldn’t decide if it was going to be a fast song or a slow song. I don’t know what the hell I was singing about either. Just place holder lyrics, but I think they sound kind of sweet. I think it would have been better slow…. Oh well. Photo by Krousky.",
-          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmeoazGDgUdykHWWVG99bd1ifVUzpVq6wZcrv7toLbehqM',
-          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmeoazGDgUdykHWWVG99bd1ifVUzpVq6wZcrv7toLbehqM',
+          displayAsset: 'https://cloudflare-ipfs.com/ipfs/QmeoazGDgUdykHWWVG99bd1ifVUzpVq6wZcrv7toLbehqM',
+          thumbnailAsset: 'https://cloudflare-ipfs.com/ipfs/QmeoazGDgUdykHWWVG99bd1ifVUzpVq6wZcrv7toLbehqM',
           shouldPreferSymbol: false,
-          isBooleanAmount: true
+          isBooleanAmount: true,
+          status: 1
         }
       }
     },
@@ -591,10 +622,11 @@ export const CONSTANTS: Constants = {
           symbol: '',
           decimals: 0,
           description: "",
-          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmWFUrVwyexUcNPsCgQriHLZ4ea5oXBomjyddrcRxJJeqC',
-          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmWFUrVwyexUcNPsCgQriHLZ4ea5oXBomjyddrcRxJJeqC',
+          displayAsset: 'https://cloudflare-ipfs.com/ipfs/QmWFUrVwyexUcNPsCgQriHLZ4ea5oXBomjyddrcRxJJeqC',
+          thumbnailAsset: 'https://cloudflare-ipfs.com/ipfs/QmWFUrVwyexUcNPsCgQriHLZ4ea5oXBomjyddrcRxJJeqC',
           shouldPreferSymbol: false,
-          isBooleanAmount: true
+          isBooleanAmount: true,
+          status: 1
         }
       }
     },
@@ -607,10 +639,11 @@ export const CONSTANTS: Constants = {
           symbol: '',
           decimals: 0,
           description: "",
-          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmSsRt6PXMii8uCC6mNhMHfcwPuYJEDtK7JG5avEuJypTz',
-          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmSsRt6PXMii8uCC6mNhMHfcwPuYJEDtK7JG5avEuJypTz',
+          displayAsset: 'https://cloudflare-ipfs.com/ipfs/QmSsRt6PXMii8uCC6mNhMHfcwPuYJEDtK7JG5avEuJypTz',
+          thumbnailAsset: 'https://cloudflare-ipfs.com/ipfs/QmSsRt6PXMii8uCC6mNhMHfcwPuYJEDtK7JG5avEuJypTz',
           shouldPreferSymbol: false,
-          isBooleanAmount: true
+          isBooleanAmount: true,
+          status: 1
         }
       }
     },
@@ -623,10 +656,11 @@ export const CONSTANTS: Constants = {
           symbol: '',
           decimals: 0,
           description: "Recorded in 2009- What is the deal with me and that lame bridge. Stop it! At least I got a better hold on the verse, and I started to write the cool guitar riff. I actually wish I would of kept the rhythm at 2:20. Whoops. Photo by Jonathon Weiner",
-          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmcU5pmCwcwvHaArZLaabF5PTnbqpCoUr67ywgga796rAU',
-          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmcU5pmCwcwvHaArZLaabF5PTnbqpCoUr67ywgga796rAU',
+          displayAsset: 'https://cloudflare-ipfs.com/ipfs/QmcU5pmCwcwvHaArZLaabF5PTnbqpCoUr67ywgga796rAU',
+          thumbnailAsset: 'https://cloudflare-ipfs.com/ipfs/QmcU5pmCwcwvHaArZLaabF5PTnbqpCoUr67ywgga796rAU',
           shouldPreferSymbol: false,
-          isBooleanAmount: true
+          isBooleanAmount: true,
+          status: 1
         }
       }
     },
@@ -639,10 +673,11 @@ export const CONSTANTS: Constants = {
           symbol: '',
           decimals: 0,
           description: "This NFT was created to share our love of travel, and how music has been the catalyst for us to explore mother earth, enabling us to give back and serve the communities on our journey. The sights and sounds and people and colors we encounter when we travel and how it connects us and brings us together.\nCreated by the Room Service International (RSI) team, Rahmi Halaby & Julio Galvez, exclusively for Truesy. Photography by Rahmi Halaby, Joshua Lang, TESIBE and The Whooligan.\nMusic: Humanity’s Universal Language\nMusic produced by The Whooligan.",
-          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmavbVoEMaNGrkCxG1Eem1JMoE4A7zw5zN6z7mJd3EpQun',
-          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmavbVoEMaNGrkCxG1Eem1JMoE4A7zw5zN6z7mJd3EpQun',
+          displayAsset: 'https://cloudflare-ipfs.com/ipfs/QmavbVoEMaNGrkCxG1Eem1JMoE4A7zw5zN6z7mJd3EpQun',
+          thumbnailAsset: 'https://cloudflare-ipfs.com/ipfs/QmavbVoEMaNGrkCxG1Eem1JMoE4A7zw5zN6z7mJd3EpQun',
           shouldPreferSymbol: false,
-          isBooleanAmount: true
+          isBooleanAmount: true,
+          status: 1
         }
       }
     },
@@ -655,10 +690,11 @@ export const CONSTANTS: Constants = {
           symbol: '',
           decimals: 0,
           description: "I had a pretty intense year both personally and artistically, something between dream and frenzy. Things I was expecting for a long time happened suddenly and I feel like everything is blooming right now. It’s funny because the artwork itself is blooming while you’re watching it.",
-          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmaN5STTo5TS5ittfMVFPmQSsS3z4JdNQfpMJNJtsCNsYZ',
-          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmaN5STTo5TS5ittfMVFPmQSsS3z4JdNQfpMJNJtsCNsYZ',
+          displayAsset: 'https://cloudflare-ipfs.com/ipfs/QmaN5STTo5TS5ittfMVFPmQSsS3z4JdNQfpMJNJtsCNsYZ',
+          thumbnailAsset: 'https://cloudflare-ipfs.com/ipfs/QmaN5STTo5TS5ittfMVFPmQSsS3z4JdNQfpMJNJtsCNsYZ',
           shouldPreferSymbol: false,
-          isBooleanAmount: true
+          isBooleanAmount: true,
+          status: 1
         }
       }
     },
@@ -671,10 +707,11 @@ export const CONSTANTS: Constants = {
           symbol: '',
           decimals: 0,
           description: "From an early age, I was exposed to ballet. My mother would bring me to the studio and I would sit and watch in awe as the dancers practiced for hours upon hours.\nI was taken by the beauty of the female body, the movements, balance, and more than anything, the commitment it takes to be a successful ballerina. I also saw the frustration, tears, anxiety, joy and many other emotions that are displayed backstage.\nA recurring theme in this work parallels the social media era we are living in today. Just like the ballerinas who hide the pain, anxiety, and tears on stage, many people portray a perfect life on social media, but behind closed doors, are dealing with life’s issues.\nThe Dancer is a celebration of women, their strength, perseverance, and beauty, reinforces the idea of hard work and dedication, and serves as a constant reminder to spread love and be there for the ones you love, as you don’t always know what’s going on backstage.",
-          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmcLELkXz39Sqrn1wHMasbDygjxTvuB44Zqpg9ubnrWP9M',
-          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmcLELkXz39Sqrn1wHMasbDygjxTvuB44Zqpg9ubnrWP9M',
+          displayAsset: 'https://cloudflare-ipfs.com/ipfs/QmcLELkXz39Sqrn1wHMasbDygjxTvuB44Zqpg9ubnrWP9M',
+          thumbnailAsset: 'https://cloudflare-ipfs.com/ipfs/QmcLELkXz39Sqrn1wHMasbDygjxTvuB44Zqpg9ubnrWP9M',
           shouldPreferSymbol: false,
-          isBooleanAmount: true
+          isBooleanAmount: true,
+          status: 1
         }
       }
     },
@@ -687,10 +724,11 @@ export const CONSTANTS: Constants = {
           symbol: '',
           decimals: 0,
           description: "This piece was the first time I painted something inspired by the city that I’ve called home for my whole life. Miami. \nWhen I was considering the composition for this piece, I kept coming back to that famous saying, “the whole is greater than the sum of its parts.”\nSo if you asked me, what makes Miami, “Miami”? It’s the Miami skyline. It’s the palm trees that line the streets. It’s the boats parked on the dock. It’s the lifeguard towers spread along the beaches. It’s the ocean’s waves. And it’s the weather. The bipolar weather represented in the woman carrying an umbrella. First it’s sunny, then it rains, then it’s sunny again.\nMiami wouldn’t be “Miami” without all these features incorporated together that make up the vibrant city that it is. And so much more.",
-          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmPfQcyyjqAATqjtpVH9YCUxKH8fasUYZGoaSR4BwyMiu5',
-          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmPfQcyyjqAATqjtpVH9YCUxKH8fasUYZGoaSR4BwyMiu5',
+          displayAsset: 'https://cloudflare-ipfs.com/ipfs/QmPfQcyyjqAATqjtpVH9YCUxKH8fasUYZGoaSR4BwyMiu5',
+          thumbnailAsset: 'https://cloudflare-ipfs.com/ipfs/QmPfQcyyjqAATqjtpVH9YCUxKH8fasUYZGoaSR4BwyMiu5',
           shouldPreferSymbol: false,
-          isBooleanAmount: true
+          isBooleanAmount: true,
+          status: 1
         }
       }
     },
@@ -716,3 +754,4 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1EpGgjQs73QfFJs9z7m1Mxm5MTnpC2tqse',//Kalamint
   'KT1BA9igcUcgkMT4LEEQzwURsdMpQayfb6i4'//turtle
 ];
+export const BLACKLISTED_TOKEN_CONTRACTS = []

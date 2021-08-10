@@ -4,7 +4,7 @@ import { Indexer } from '../indexer.service';
 import * as cryptob from 'crypto-browserify';
 import { WalletObject, Activity } from '../../wallet/wallet';
 import assert from 'assert';
-import { CachedAssetResponse } from '../../../interfaces';
+import { Asset, CachedAsset } from '../../token/token.service';
 
 interface TokenMetadata {
   name: string;
@@ -286,8 +286,8 @@ export class TzktService implements Indexer {
   async resolveAssetUris(data: any): Promise<any> {
     const metadata: any = {};
     const rawData = JSON.parse(JSON.stringify(data));
-    metadata.displayUri = await this.uriToUrl(data.displayUri);
-    metadata.thumbnailUri = await this.uriToUrl(data.thumbnailUri);
+    metadata.displayUri = await this.uriToAsset(data.displayUri);
+    metadata.thumbnailUri = await this.uriToAsset(data.thumbnailUri);
     try {
       // Exceptions
       if (data?.isBooleanAmount === undefined && typeof data?.isBooleanAmount === "string" && data?.isBooleanAmount === "true"
@@ -295,20 +295,23 @@ export class TzktService implements Indexer {
         // mandala
         metadata.isBooleanAmount = true;
       }
-      if (!data.displayUri && data?.symbol === "OBJKT") {
-        // hicetnunc
-        if (["image/png", "image/jpg", "image/jpeg"].includes(rawData.formats[0].mimeType)) {
-          metadata.displayUri = await this.uriToUrl(
+      if (data?.symbol === "OBJKT") {
+        if (!data.displayUri) {
+          // hicetnunc
+          metadata.displayUri = await this.uriToAsset(
             rawData.formats[0].uri
           );
+        }
+        if (metadata?.displayUri) {
+          metadata.thumbnailUri = '';
         }
       }
     } catch (e) { }
     return metadata;
   }
-  async uriToUrl(uri: string): Promise<CachedAssetResponse | null> {
+  async uriToAsset(uri: string): Promise<Asset> {
     if (!uri || uri.length < 8) {
-      return null;
+      return '';
     }
     let url = '';
     if (uri.startsWith('ipfs://')) {
@@ -319,12 +322,24 @@ export class TzktService implements Indexer {
       url = uri;
     }
     const cacheMeta = await this.fetchApi(`https://backend.kukai.network/file/info?src=${url}`);
-    return cacheMeta ? cacheMeta : null;
+    return cacheMeta ? cacheMeta : '';
   }
-  async fetchApi(url: string): Promise<any> {
+  async fetchApi(url: string): Promise<Asset> {
     return fetch(url)
       .then((response) => response.json())
-      .then((data) => data);
+      .then((data) => {
+        if (data?.Status === 'ok' && data.Filename && data.Extension) {
+          const asset: CachedAsset  = {
+            filename: data.Filename,
+            extension: data.Extension
+          }
+          if (asset.extension !== 'unknown') {
+            return asset;
+          }
+          console.warn(url, data);
+        }
+        return '';
+      });
   }
   async getTokenBalancesUsingPromiseAll(address: string) {
     // get total number of tokens

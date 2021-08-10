@@ -20,7 +20,7 @@
       <div class="flex-column collection" [class]="filter === key ? 'expanded' : ''" [id]="key" [style.display]="!isDiscover && filter === 'APP' ? '' : 'none'">
         <div class="flex-row head" (click)="toggleDropdown('#' + key)">
           <div class="flex-row left">
-            <img class="icon" [src]="this.nfts[key]?.thumbnailUrl || this.nfts[key]?.displayUrl" />
+            <img class="icon" [src]="this.nfts[key]?.thumbnailUrl" />
             <div class="title">
               {{ this.nfts[key]?.name }}
             </div>
@@ -35,7 +35,7 @@
             <ng-container *ngFor="let token of this.nfts[key]?.tokens; trackBy: trackToken">
               <div class="flex-row token" (click)="viewToken(token)">
                 <div class="img-wrapper">
-                  <app-asset class="icon" [meta]="token?.thumbnailUrl || token?.displayUrl"></app-asset>
+                  <app-asset class="icon" [meta]="token?.thumbnailAsset || token?.displayAsset"></app-asset>
                   <div *ngIf="Number.parseInt(token?.balance) > 1" class="balance">{{
                     token?.balance }}</div>
                 </div>
@@ -59,7 +59,7 @@
           <ng-container *ngFor="let token of this.nfts[key]?.tokens; let i = index; trackBy: trackToken">
             <div class="flex-row token" (click)="viewToken(token)">
               <div class="img-wrapper">
-                <app-asset class="icon" [meta]="token?.thumbnailUrl || token?.displayUrl"></app-asset>
+                <app-asset class="icon" [meta]="token?.thumbnailAsset || token?.displayAsset"></app-asset>
                 <div *ngIf="Number.parseInt(token?.balance) > 1" class="balance">{{
                   token?.balance }}</div>
               </div>

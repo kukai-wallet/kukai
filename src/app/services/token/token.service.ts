@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CONSTANTS } from '../../../environments/environment';
+import { CONSTANTS, TRUSTED_TOKEN_CONTRACTS, BLACKLISTED_TOKEN_CONTRACTS } from '../../../environments/environment';
 import { IndexerService } from '../indexer/indexer.service';
 import Big from 'big.js';
 import { SubjectService } from '../subject/subject.service';
@@ -8,8 +8,8 @@ export interface TokenResponseType {
   contractAddress: string;
   id: number;
   decimals: number;
-  displayUrl: string;
-  thumbnailUrl: string;
+  displayAsset: Asset;
+  thumbnailAsset: Asset;
   name: string;
   symbol: string;
   description: string;
@@ -19,7 +19,15 @@ export interface TokenResponseType {
   isBooleanAmount?: boolean;
   shouldPreferSymbol?: boolean;
   series?: string;
+  status: Status;
 }
+export type Asset = string | CachedAsset;
+
+export interface CachedAsset {
+  filename: string;
+  extension: string;
+}
+
 export type ContractsType = Record<string, ContractType>;
 export type ContractType = FA12 | FA2;
 export type ContractsOverrideType = Record<string, ContractOverrideType>;
@@ -30,17 +38,23 @@ export interface ContractOverrideType {
 export interface TokensInterface {
   category: string;
 }
+enum Status {
+  Rejected = -1,
+  Pending = 0,
+  Approved = 1
+}
 export interface TokenData {
   name: string;
   symbol: string;
   decimals: number;
   description: string;
-  displayUrl: string;
-  thumbnailUrl: string;
+  displayAsset: string;
+  thumbnailAsset: string;
   isTransferable?: boolean;
   isBooleanAmount?: boolean;
   shouldPreferSymbol?: boolean;
   series?: string;
+  status: Status;
 }
 export interface FA12 extends TokensInterface {
   kind: 'FA1.2';
@@ -58,7 +72,7 @@ export interface FA2 extends TokensInterface {
 
 export class TokenService {
   readonly AUTO_DISCOVER: boolean = true;
-  readonly version: string = '1.0.9';
+  readonly version: string = '1.0.10';
   private contracts: ContractsType = {};
   private exploredIds: Record<string, { firstCheck: number, lastCheck: number, counter: number }> = {};
   readonly storeKey = 'tokenMetadata';
@@ -81,7 +95,7 @@ export class TokenService {
     const contract: ContractType = this.contracts[contractAddress];
     if (id > -1) {
       if (contract) {
-        let token = contract.tokens[id];
+        let token: TokenResponseType = contract.tokens[id];
         if (!token) { // check ranges
           const ids = Object.keys(contract.tokens);
           for (const idx of ids) {
@@ -100,6 +114,10 @@ export class TokenService {
           }
         }
         if (token) {
+          if (CONSTANTS.MAINNET && token.status < 1 || token.status < 0) {
+            token.thumbnailAsset = '';
+            token.displayAsset = '';
+          }
           return {
             kind: contract.kind,
             category: contract.category,
@@ -168,11 +186,12 @@ export class TokenService {
           symbol: metadata.symbol ? metadata.symbol : '',
           decimals: Number(metadata.decimals),
           description: metadata.description ? metadata.description : '',
-          displayUrl: metadata.displayUri,
-          thumbnailUrl: metadata.thumbnailUri,
+          displayAsset: metadata.displayUri,
+          thumbnailAsset: metadata.thumbnailUri,
           isTransferable: metadata?.isTransferable ? metadata.isTransferable : true,
           isBooleanAmount: metadata?.isBooleanAmount ? metadata.isBooleanAmount : false,
-          series: metadata.series ? metadata.series : undefined
+          series: metadata.series ? metadata.series : undefined,
+          status: TRUSTED_TOKEN_CONTRACTS.includes(contractAddress) ? 1 : 0
         };
         contract.tokens[id] = token;
         this.addAsset(contractAddress, contract);
@@ -225,13 +244,14 @@ export class TokenService {
       contractAddress,
       id,
       decimals: 0,
-      displayUrl: '../../../assets/img/question-mark.svg',
-      thumbnailUrl: '../../../assets/img/question-mark.svg',
+      displayAsset: '',
+      thumbnailAsset: '',
       name: '[Unknown token]',
       symbol: '',
       description: '',
       category: '',
       kind: 'FA2',
+      status: 0
     };
   }
   saveMetadata() {
@@ -248,6 +268,16 @@ export class TokenService {
         if (metadata?.contracts) {
           const contractAddresses = Object.keys(metadata.contracts);
           for (const address of contractAddresses) {
+            for (const id of Object.keys(metadata.contracts[address].tokens)) {
+              if (metadata.contracts[address].tokens[id]?.status === 0) {
+                if (TRUSTED_TOKEN_CONTRACTS.includes(address)) {
+                  metadata.contracts[address].tokens[id].status = 1; // flip status if it have been marked as trusted
+                }
+                if (BLACKLISTED_TOKEN_CONTRACTS.includes(address)) {
+                  metadata.contracts[address].tokens[id].status = -1;
+                }
+              }
+            }
             this.addAsset(address, metadata.contracts[address]);
           }
         }

@@ -17,7 +17,7 @@ export class TokenDetail extends ModalComponent implements OnInit {
   autoOverflow = false;
   descOverflow = false;
   name = "token-detail";
-  blacklistMeta = ['name', 'kind', 'displayUrl', 'thumbnailUrl', 'rawUrl', 'isTransferable', 'isBooleanAmount', 'balance', 'category', 'symbol', 'decimals'];
+  readonly blacklistMeta = ['name', 'kind', 'displayAsset', 'thumbnailAsset', 'rawUrl', 'isTransferable', 'isBooleanAmount', 'balance', 'category', 'symbol', 'decimals'];
 
   constructor(
     private walletService: WalletService,
