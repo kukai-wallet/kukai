@@ -9,7 +9,7 @@ import { ModalComponent } from '../../modal/modal.component';
 import { TokenBalancesService } from '../../../services/token-balances/token-balances.service';
 import { SubjectService } from '../../../services/subject/subject.service';
 import { DisplayLinkOption } from '../../../interfaces';
-import { last } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-nfts',
@@ -21,7 +21,7 @@ export class NftsComponent implements OnInit, AfterViewInit {
   Object = Object;
   Number = Number;
   nfts = {};
-  isDiscover: boolean = false;
+  isDiscover: boolean = true;
   filter: string = 'APP';
   contractAliases = CONSTANTS.CONTRACT_ALIASES;
   constructor(
@@ -36,12 +36,14 @@ export class NftsComponent implements OnInit, AfterViewInit {
   @Input() account;
   ngOnInit(): void {
     this.subjectService.nftsUpdated.subscribe(nfts => {
-      this.nfts = nfts;
-    });
-    this.subjectService.nftsUpdated.pipe(last()).subscribe(nfts => {
       if (!Object.keys(nfts)?.length) {
         this.isDiscover = true;
+      } else {
+        this.isDiscover = false;
       }
+      this.nfts = nfts;
+    });
+    this.subjectService.nftsUpdated.pipe(take(1)).subscribe(nfts => {
       this.nfts = nfts;
     });
   }
