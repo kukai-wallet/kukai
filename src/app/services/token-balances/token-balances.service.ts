@@ -37,7 +37,6 @@ export class TokenBalancesService {
     private walletService: WalletService,
     private subjectService: SubjectService
   ) {
-    console.log("here")
     combineLatest([this.walletService.activeAccount, this.walletService.walletUpdated, this.subjectService.metadataUpdated, this.activityService.tokenBalanceUpdated]).pipe(debounceTime(200)).subscribe(([a, b, c, d]) => {
       if (this.activeAccount !== a) {
         this.activeAccount = a;
@@ -148,7 +147,7 @@ export class TokenBalancesService {
   }
 
   getMarkets() {
-    fetch('https://api.teztools.io/v1/prices').then((response) => response.json()).then(r => {this.markets = [...r.contracts]; this.mergeMarket(); console.log(r)});
+    fetch('https://api.teztools.io/v1/prices').then((response) => response.json()).then(r => {this.markets = [...r.contracts]; this.mergeMarket();});
   }
 
   mergeMarket() {
