@@ -9,7 +9,7 @@
       <div class="flex-row top">
         <div class="flex-column left">
           <span *ngIf="!tokenBalanceService.isNFT(token)" class="key">SEND AMOUNT:</span>
-          <app-asset class="token-image" [class.balance]="!tokenBalanceService.isNFT(token)" [meta]="token?.thumbnailUrl || token?.displayUrl || '../../../assets/img/tezos-xtz-logo.svg'" [class.sd]="!tokenBalanceService.isNFT(token)"></app-asset>
+          <app-asset class="token-image" [class.balance]="!tokenBalanceService.isNFT(token)" [meta]="token ? token.thumbnailUrl || token.displayUrl : '../../../assets/img/tezos-xtz-logo.svg'" [class.sd]="!token"></app-asset>
         </div>
         <div class="flex-column right">
           <span class="amount-tez value">{{ formatAmount(token, totalAmount(),
