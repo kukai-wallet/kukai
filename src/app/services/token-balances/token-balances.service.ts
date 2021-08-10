@@ -155,7 +155,7 @@ export class TokenBalancesService {
       let token = undefined;
       const addr = this.balances[key]?.contractAddress;
       if ((token = this.markets?.find((token) => token?.tokenAddress === addr))) {
-        this.balances[key].price = token?.currentPrice;
+        this.balances[key].price = token?.currentPrice * parseFloat(this.balances[key].balance);
          !!token?.logo_url ? (this.balances[key].displayUrl = this.balances[key].thumbnailUrl = token?.thumbnailUri) : null;
       }
     });
