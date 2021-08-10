@@ -87,6 +87,7 @@ $event-new: v.$base-end-color;
     }
 
     &.failed {
+      background-color: $event-confirmed;
       &:after {
         height: 0.3rem;
         background-color: $base-red-color;

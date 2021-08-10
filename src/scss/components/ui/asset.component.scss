@@ -9,7 +9,7 @@
     object-fit: cover;
   }
 
-  &.sd {
+  &.sd, &.pd {
     display: flex;
     flex-flow: column nowrap;
     justify-content: center;
@@ -22,5 +22,11 @@
       width: auto;
       height: 85%;
     }
+  }
+
+  &.pd img {
+    width: calc(100% - 1rem);
+    height: calc(100% - 1rem);
+    padding: 0.5rem;
   }
 }

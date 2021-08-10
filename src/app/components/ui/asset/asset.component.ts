@@ -23,17 +23,16 @@ export class AssetComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes?.size?.currentValue !== changes?.size?.previousValue) {
-      this.evaluate();
-    }
+    this.evaluate();
   }
   evaluate() {
+    this.src = undefined;
     if ((this.meta as CachedAssetResponse)?.Status === 'ok') {
       this.mimeType = Object.keys(mimes).filter(key => !!mimes[key]?.extensions?.length).find((key) => mimes[key].extensions.includes((this.meta as CachedAssetResponse)?.Extension));
       this.src = `${this.baseUrl}/${(this.meta as CachedAssetResponse).Filename}_${this.size}.${(this.meta as CachedAssetResponse).Extension}`;
-    } else if(typeof(this.meta) === 'string') {
+    } else if (typeof (this.meta) === 'string') {
       this.src = this.meta;
-    } else if(!this.src) {
+    } else if (!this.src) {
       this.mimeType = 'image/*';
       this.src = '../../../../assets/img/question-mark.svg';
     }
