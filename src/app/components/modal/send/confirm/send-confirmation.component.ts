@@ -57,7 +57,7 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
   name = 'confirm-send';
   token = null;
   domain = undefined;
-  
+
   constructor(
     private translate: TranslateService,
     public tokenService: TokenService,
@@ -455,16 +455,28 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
       event.preventDefault();
       return false;
     } else if (charCode === 46) {
-      const meta = this.token ? this.token : null;
-      if (this[input].includes('.') ||
+      const meta = this.token ?? null;
+      if (input.includes('.') ||
         (input === 'amount' && meta?.decimals == 0)) {
         event.preventDefault();
         return false;
-      } else if (this[input].length === 0) {
-        this[input] = '0' + this[input];
+      } else if (input.length === 0) {
+        input = '0' + input;
       }
     }
     return true;
+  }
+  sanitizeNumberInput(e) {
+    e.target.value = e.target.value.replace(/[^0-9\.]/g, '');
+    if((e.target.value.match(/\./g) || []).length > 1) {
+      const tmp = e.target.value.split('');
+      tmp.splice(tmp.lastIndexOf('.'), 1);
+      e.target.value = tmp.join('');
+
+    }
+    if (e.target.value.charAt(0) === '.') {
+      e.target.value = '0' + e.target.value;
+    }
   }
   closeModalAction(emit: string = null) {
     ModalComponent.currentModel.next({ name: '', data: null });

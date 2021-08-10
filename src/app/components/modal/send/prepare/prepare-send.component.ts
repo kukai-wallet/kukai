@@ -251,6 +251,18 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
       strict checks that
     2. create basic transaction array
   */
+  sanitizeNumberInput(e) {
+    e.target.value = e.target.value.replace(/[^0-9\.]/g, '');
+    if((e.target.value.match(/\./g) || []).length > 1) {
+      const tmp = e.target.value.split('');
+      tmp.splice(tmp.lastIndexOf('.'), 1);
+      e.target.value = tmp.join('');
+
+    }
+    if (e.target.value.charAt(0) === '.') {
+      e.target.value = '0' + e.target.value;
+    }
+  }
   updateDefaultValues(e?: any) {
     const val = e?.target.value.trim();
     if (val) {
@@ -573,12 +585,12 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
       return false;
     } else if (charCode === 46) {
       const meta = this.token ?? null;
-      if (this[input].includes('.') ||
+      if (input.includes('.') ||
         (input === 'amount' && meta?.decimals == 0)) {
         event.preventDefault();
         return false;
-      } else if (this[input].length === 0) {
-        this[input] = '0' + this[input];
+      } else if (input.length === 0) {
+        input = '0' + input;
       }
     }
     return true;

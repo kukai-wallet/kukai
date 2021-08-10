@@ -64,12 +64,12 @@
         <div class="flex-row">
           <div class="flex-column">
             <label class="label">Gas limit</label>
-            <input type="text" class="text" placeholder={{this.defaultTransactionParams.gas.toString()}}
+            <input type="text" class="text" (input)="sanitizeNumberInput($event)" (paste)="sanitizeNumberInput($event)" placeholder={{this.defaultTransactionParams.gas.toString()}}
               [(ngModel)]="customGasLimit">
           </div>
           <div class="flex-column">
             <label class="label">Fee</label>
-            <input type="text" (input)="updateMaxAmount()" (paste)="updateMaxAmount()" class="text"
+            <input type="text" (input)="updateMaxAmount()" (paste)="keyPressNumbersDecimal($event, 'customFee'); updateMaxAmount()" class="text"
               (keypress)="keyPressNumbersDecimal($event, 'customFee')"
               placeholder={{this.defaultTransactionParams.fee.toString()}} [(ngModel)]="customFee">
           </div>
@@ -77,7 +77,7 @@
         <div class="flex-row">
           <div class="flex-column">
             <label class="label">Storage limit</label>
-            <input type="text" (input)="updateMaxAmount()" (paste)="updateMaxAmount()" class="text"
+            <input type="text" (input)="sanitizeNumberInput($event); updateMaxAmount()" (paste)="sanitizeNumberInput($event); updateMaxAmount()" class="text"
               placeholder={{this.defaultTransactionParams.storage.toString()}} [(ngModel)]="customStorageLimit">
           </div>
           <div class="flex-column">
