@@ -3,7 +3,8 @@
 
 :host {
   & img,
-  & video {
+  & video,
+  & #modelCanvas {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -17,7 +18,8 @@
     width: 100%;
     height: 100%;
     & video,
-    & img {
+    & img,
+    & #modelCanvas {
       object-fit: scale-down;
       width: auto;
       height: 85%;

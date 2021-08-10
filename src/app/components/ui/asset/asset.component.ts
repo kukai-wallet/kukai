@@ -25,10 +25,13 @@ export class AssetComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     this.evaluate();
   }
-  evaluate() {
+  async evaluate() {
     this.src = undefined;
     if ((this.meta as CachedAssetResponse)?.Status === 'ok') {
       this.mimeType = Object.keys(mimes).filter(key => !!mimes[key]?.extensions?.length).find((key) => mimes[key].extensions.includes((this.meta as CachedAssetResponse)?.Extension));
+      if(this.mimeType.startsWith('model/') && !(window as any)?.__THREE__) {
+        await this.modelInit();
+      }
       this.src = `${this.baseUrl}/${(this.meta as CachedAssetResponse).Filename}_${this.size}.${(this.meta as CachedAssetResponse).Extension}`;
     } else if (typeof (this.meta) === 'string') {
       this.src = this.meta;
@@ -36,5 +39,12 @@ export class AssetComponent implements OnInit, OnChanges {
       this.mimeType = 'image/*';
       this.src = '../../../../assets/img/question-mark.svg';
     }
+  }
+
+  async modelInit() {
+    await fetch('https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js').then(response => response.blob()).then(async blob => {
+      const script = document.createElement('script');
+      document.querySelector('head').appendChild(script.appendChild(document.createTextNode(await blob.text())));
+    });
   }
 }
