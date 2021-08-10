@@ -10,9 +10,9 @@
           <app-asset class="icon" [meta]="token?.thumbnailUrl || token?.displayUrl"></app-asset>
           <span class="title">{{token?.name}}</span>
         </div>
-        <span *ngIf="!token?.isBooleanAmount" class="flex-row label title">ENTER {{!isNFT ? 'AMOUNT' :
+        <span *ngIf="!this.token || !(this.token?.isBooleanAmount || this.token?.balance == 1)" class="flex-row label title">ENTER {{!isNFT ? 'AMOUNT' :
           'QUANTITY'}}:</span>
-        <div *ngIf="!token?.isBooleanAmount" class="flex-row amount">
+        <div *ngIf="!this.token || !(this.token?.isBooleanAmount || this.token?.balance == 1)" class="flex-row amount">
           <input #amountInput [placeholder]="token?.decimals == 0 ? '0' : '0.00'" [(ngModel)]="amount"
             (mousedown)="sendMax = false; default" (input)="amountChange()"
             (keypress)="keyPressNumbersDecimal($event, 'amount')" (change)="amountChange()"
