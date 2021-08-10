@@ -47,6 +47,11 @@ $border-color: v.$border-color;
   }
 }
 
+:host {
+  grid-area: nft;
+  grid-row: 1 / 3;
+}
+
 .pending,
 .nfts {
   & .head {
@@ -308,7 +313,13 @@ $border-color: v.$border-color;
   }
 }
 
-@media (max-width: v.$layout-break-5) {
+@media (max-width: v.$layout-break-4) {
+  :host {
+    grid-row: unset;
+  }
+}
+
+@media (max-width: v.$layout-break-6) {
   .nfts {
     flex-direction: column;
     flex-wrap: nowrap;

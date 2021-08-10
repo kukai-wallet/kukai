@@ -26,6 +26,10 @@ $border-color: v.$border-color;
   }
 }
 
+:host {
+  grid-area: balance;
+}
+
 .balances {
   max-height: 38rem;
   overflow: hidden;

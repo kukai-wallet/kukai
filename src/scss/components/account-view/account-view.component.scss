@@ -11,6 +11,7 @@
 .wrapper {
   width: 100%;
   margin-bottom: 2rem;
+  align-items: center;
 
   & .desktop, & .mobile {
       display: flex;
@@ -24,36 +25,23 @@
     display: none;
   }
 
-  & .desktop>div, & .mobile>div {
-    width: 49%;
-    max-width: 2080px;
-    margin: 0 4% 0 1.5%;
-  
-    &:nth-child(odd) {
-      width: 37%;
-      max-width: 768px;
-      margin: 0 1.5% 0 4%;
-    }
+  &>div {
+    display: grid;
+    grid-template-columns: 36% 60%;
+    grid-template-rows: auto;
+    grid-column-gap: 4%;
+    grid-template-areas: 
+    "balance nft" 
+    "activity .";
+    width: 92%;
   }
 }
 
 @media (max-width: v.$layout-break-4) {
-  .wrapper {
-    align-items: center;
-    flex-flow: column wrap;
-    width: 100%;
-
-    & .desktop>div, & .mobile>div {
-      width: 100%;
-      align-items: center;
-      max-width: unset;
-      margin: 0;
-    
-      &:nth-child(odd) {
-        width: 100%;
-        max-width: unset;
-        margin: 0;
-      }
-    }
+  .wrapper>div {
+    display: grid;
+    grid-template-columns: 100%;
+    grid-column-gap: 0;
+    grid-template-areas: "balance" "nft" "activity";
   }
 }

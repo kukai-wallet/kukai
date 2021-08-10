@@ -1,14 +1,8 @@
-<div class="wrapper" *ngIf="account">
-  <div class="desktop">
-    <div class="flex-column">
-      <app-balances [account]="account"></app-balances>
-      <app-nfts *ngIf="isMobile" [account]="account"></app-nfts>
-      <app-activity *ngIf="!isMobile" [account]="account"></app-activity>
-    </div>
-    <div class="flex-column">
-      <app-nfts *ngIf="!isMobile" [account]="account"></app-nfts>
-      <app-activity *ngIf="isMobile" [account]="account"></app-activity>
-    </div>
+<div class="flex-column wrapper" *ngIf="account">
+  <div class="grid">
+    <app-balances [account]="account"></app-balances>
+    <app-nfts [account]="account"></app-nfts>
+    <app-activity [account]="account"></app-activity>
   </div>
 </div>
-<app-token-detail *ngIf="true"></app-token-detail>
+<app-token-detail></app-token-detail>

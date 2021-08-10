@@ -43,8 +43,7 @@ export class AssetComponent implements OnInit, OnChanges {
 
   async modelInit() {
     await fetch('https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js').then(response => response.blob()).then(async blob => {
-      const script = document.createElement('script');
-      document.querySelector('head').appendChild(script.appendChild(document.createTextNode(await blob.text())));
+      document.querySelector('head').appendChild(document.createElement('script').appendChild(document.createTextNode(await blob.text())));
     });
   }
 }

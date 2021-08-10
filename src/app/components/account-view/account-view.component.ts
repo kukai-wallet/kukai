@@ -5,7 +5,6 @@ import { TimeAgoPipe } from '../../pipes/time-ago.pipe';
 import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from '../../services/message/message.service';
 import * as copy from 'copy-to-clipboard';
-import { CoordinatorService } from '../../services/coordinator/coordinator.service';
 import { CONSTANTS } from '../../../environments/environment';
 import { ActivityService } from '../../services/activity/activity.service';
 import { TokenService } from '../../services/token/token.service';
@@ -22,7 +21,6 @@ export class AccountViewComponent implements OnInit {
     public translate: TranslateService,
     public messageService: MessageService,
     public timeAgoPipe: TimeAgoPipe,
-    private coordinatorService: CoordinatorService,
     private activityService: ActivityService,
     public tokenService: TokenService
   ) { this.getScreenSize(); }
