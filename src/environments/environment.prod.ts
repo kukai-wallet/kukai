@@ -645,7 +645,151 @@ export const CONSTANTS: Constants = {
           shouldPreferSymbol: false
         }
       }
-    }
+    },
+    'KT1TiZo26gLemMeYKfwvkyPUgtsmBQn2jJKG': {
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        '0-2': {
+          name: 'A Family United',
+          symbol: '',
+          decimals: 0,
+          description: "Home is where love resides, memories are made, family belong and laughter never ends. In this piece there is a father, mother, and new born daughter united as one. There is no perfect family but there is always love, that’s why I wanted to intertwine the family all together and not make each family member so visible. Then there are two things you should give your child, that is roots as you can see in the form of plants and flowers on this piece and and wings to let them fly on their own, so that is portrayed by the birds in the piece. As for home, home is where the family is.",
+          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmeYLdRoZGM8XA5uVN1J3VKr5KSyer8J9ZkpqNEdxfEJFj',
+          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmeYLdRoZGM8XA5uVN1J3VKr5KSyer8J9ZkpqNEdxfEJFj',
+          shouldPreferSymbol: false,
+          isBooleanAmount: true
+        }
+      }
+    },
+    'KT1ADPE1xgeJ5SoEdgPNyMgHZCs9g6U1XAbn': {
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        '0-2': {
+          name: 'Moving in Depths',
+          symbol: '',
+          decimals: 0,
+          description: "This photograph represents the freedom, fluidity, and energetic weight held in both my chest and larger transition as a trans person. Having access to this piece will be maintaining a bookmark in this snapshot of time, one where I am at the crux of young adulthood, rising out of a childhood where things were much more painful. My chest represents the commitment to my own heart I had to make to arrive where I am at—autonomous, understanding, happy, and grateful within my identity. ",
+          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmYHJCxTAfF6bJt1PhtF4916h98YJESmFj98mcb2tUQCZx',
+          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmSs2PU4yfxpp82iePm8uqybXAB45U6ghx2ZpKmjtvptvG',
+          shouldPreferSymbol: false,
+          isBooleanAmount: true
+        }
+      }
+    },
+    'KT1DH6RzXfguw2iZ1QYfsWD3DWQVufXT4uBy': {
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        '0-2': {
+          name: 'Charlie\'s Smile',
+          symbol: '',
+          decimals: 0,
+          description: "Charlie and I met in April of 2020, as COVID was raging in NYC. After spending 6 months in lock-down, we left NYC on a whim in search of something different. We settled into an upstate cottage secluded on the side of a mountain, where we are surrounded by nature and have no neighbors in sight. Here, we are free to be ourselves, even if that means being naked in the garden. Recently, Charlie slipped and fell on the wet grass and I quickly doused him with the garden hose and snapped this shot, which to me captures the absurdity and joy of everyday moments in love. It’s moments like these that remind us just how fortunate we are to have found each other. And how privileged we are to live as proud members of the gay community, tending to a garden—albeit nude—just as any other \"normal\" couple would.",
+          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmS1T7CG1zWHKZkFTmE5uz5QJBc4sSQANxNv2bav6THikz',
+          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmVhY5yPR9RnYuFSMpCFwAPRavphxmvJxMKjsLpxVTkZ1g',
+          shouldPreferSymbol: false,
+          isBooleanAmount: true
+        }
+      }
+    },
+    'KT195iiQjZzC89oT7DqTzkiUyV2WYLswm7bD': {
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        '0-8': {
+          name: 'Artwork by Cheetah',
+          symbol: '',
+          decimals: 0,
+          description: "Before arriving at Save the Chimps, Cheetah lived alone in a steel cage at a research laboratory. In 2002, this intelligent, artistic chimp was rescued by Save the Chimps and he now enjoys time with his friend Timmy, eating craisins and painting whenever the muse strikes.",
+          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmTYByK2rYBsY2zzBJuhL3pyJ5Gq5MgNQnCWdDMt5Un3U8',
+          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmYcnw5vBTJ4giPbWyxM86ei59tRmPfoVW4UQ356sAHPzB',
+          shouldPreferSymbol: false,
+          isBooleanAmount: true
+        }
+      }
+    },
+    'KT1F87r2a9iMqVZGAZ2y5syvpv63prJXQegm': {
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        '0-6': {
+          name: 'Artwork by Tootie',
+          symbol: '',
+          decimals: 0,
+          description: "Tootie was rescued in 2016 from a private owner but previously lived a dreadful, difficult life as a TV “performer.” Today, Tootie charms chimps and caregivers alike with his non-stop desire to play!",
+          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmX5CRn7nBMEXBfszud42ghULtJG4ynr3Lnkot8KvdU4WY',
+          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmNfpaHrKSuq6ngWcEDJhgBVuw7EzKPH8an9XnQhKThK3D',
+          shouldPreferSymbol: false,
+          isBooleanAmount: true
+        }
+      }
+    },
+    'KT1CTvbmnj4TNcphsdNrR3dppSkcZDLNXXD9': {
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        '0': {
+          name: 'Artwork by Clay',
+          symbol: '',
+          decimals: 0,
+          description: "Clay was born in 1987 at a research laboratory, where he was used in various experimental lab tests. Clay, like Cheetah, was rescued and arrived at Save the Chimps in 2002. Loving and playful, Clay adores loud toys and games of tug-of-war.",
+          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmYAAHHLJwxiUHPNECFyhLQaE3XeKNN4M8u2xYrZ1YxJ9J',
+          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmdzUbUzJRcjUz1p2w1PzfQfxLeXA3CbPb17BoQyR72zvh',
+          shouldPreferSymbol: false,
+          isBooleanAmount: true
+        }
+      }
+    },
+    'KT1Lvi1eR8yBYP3W6LYo9aV4JHXesDbFUpc4': {
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        '0-450': {
+          name: 'Consume Me',
+          symbol: '',
+          decimals: 0,
+          description: "Sara Shakeel—the multi-hyphenate artist, creative director, collaborator, and influencer—has not only cultivated a globally-recognizable aesthetic, but has garnered a cult following amongst celebrities, brands, and press. Her flair for all things crystal, glitter, and stardust has caught the attention of industry juggernauts and amassed a community of over a million followers on Instagram alone.",
+          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmSCLKmMVuVGboiEbg7thmjJCUmoRmgMEmtcf5DkfwhbD7',
+          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmSCLKmMVuVGboiEbg7thmjJCUmoRmgMEmtcf5DkfwhbD7',
+          shouldPreferSymbol: false,
+          isBooleanAmount: true
+        }
+      }
+    },
+    'KT19R4QgY7m6jagCbbAYhWrrF8ZRayxXpJgp': {
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        '0-8': {
+          name: 'Captivate Me',
+          symbol: '',
+          decimals: 0,
+          description: "Azéde Jean-Pierre returns to fashion this fall with a new AJP collection after taking a two-year hiatus to work with notable philanthropic organizations in Haiti. A Forbes 30 Under 30 alum and a highly creative independent thinker, she has more than 10 years of experience in apparel design, leading design development and creating highly original concepts for both startups and Fortune 500 companies.",
+          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmUYMgCYPedo9MpYCKndtNSwYm9yMZf9YgMKpd1pnuSkyk',
+          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmUYMgCYPedo9MpYCKndtNSwYm9yMZf9YgMKpd1pnuSkyk',
+          shouldPreferSymbol: false,
+          isBooleanAmount: true
+        }
+      }
+    },
+    'Take Me': {
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        '0-2': {
+          name: 'Take Me',
+          symbol: '',
+          decimals: 0,
+          description: "Nina Kraviz is an internationally renowned Siberian electronic music artist, known for her critically acclaimed discography and DJ mixes. Hailed as “DJ of the Year” by Mixmag and one of Billboard’s “25 Female DJs You Need to Know,” Nina's creative and strong personality, unique music style, and constant pursuit of deeper feeling makes her one of the most standout international music talents.",
+          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmP4e7NRxgXVJEzi6FPvE5YwbZCayregCnGuUrjc3YZgHB',
+          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmP4e7NRxgXVJEzi6FPvE5YwbZCayregCnGuUrjc3YZgHB',
+          shouldPreferSymbol: false,
+          isBooleanAmount: true
+        }
+      }
+    },
   },
   CONTRACT_OVERRIDES: {
     // hice et nunc
