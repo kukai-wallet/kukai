@@ -163,11 +163,15 @@
       }
 
       & .freespace {
-        width: 10rem;
+        width: 12rem;
       }
 
       & .estROI {
         width: 12rem;
+      }
+
+      & .accuracy {
+        width: 14rem;
       }
 
       & button,
@@ -286,7 +290,7 @@
 
 @media (min-width: v.$layout-break-5) {
   .delegate-page .content .manual > .delegate {
-    width: 59.5rem;
+    width: 77rem;
   }
 }
 
