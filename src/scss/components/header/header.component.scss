@@ -36,6 +36,7 @@ $base-background-color: v.$base-background-color;
   display: flex;
   flex-direction: column;
   background-color: $base-background-color;
+  align-items: center;
 
   & .brand-logo {
     text-decoration: none;
@@ -82,9 +83,10 @@ $base-background-color: v.$base-background-color;
 
 .top-container.desktop {
   height: 100%;
-  width: calc(89%);
-  padding: 0 5.5%;
+  width: calc(100% - 240px);
+  padding: 0 120px;
   flex-wrap: wrap;
+  max-width: 2560px;
 
   &.default {
     background-color: $base-end-color;
@@ -332,7 +334,7 @@ $base-background-color: v.$base-background-color;
   }
 }
 
-@media (max-width: v.$layout-break-5) {
+@media (max-width: v.$layout-break-3) and (max-aspect-ratio: 1/1), (max-width: v.$layout-break-5) {
   .top-container.mobile.default .brand-logo .icon {
     height: 75% !important;
   }

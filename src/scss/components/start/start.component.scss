@@ -20,7 +20,7 @@ $base-background-color: v.$base-background-color;
 %ribbon {
   position: absolute;
   bottom: 0;
-  left: -100%;
+  left: -50vw;
   width: 100vw !important;
   height: 45.5vh;
   border-top: 1.5rem solid #d6dbe3;
@@ -64,10 +64,12 @@ $base-background-color: v.$base-background-color;
 
   & .left,
   & .right {
-    width: 50%;
     height: 100%;
     position: relative;
     z-index: 100;
+    width: calc(50% - 120px);
+    padding: 0 0 0 120px;
+    max-width: 1280px;
 
     & h1 {
       @include m.multiply("font-size", 7);
@@ -94,8 +96,7 @@ $base-background-color: v.$base-background-color;
 
     & .top,
     & .login {
-      width: calc(100% - 11%);
-      padding: 0 0 0 11%;
+      width: 100%;
     }
 
     & .top {
@@ -217,8 +218,7 @@ $base-background-color: v.$base-background-color;
     align-items: flex-end;
     position: relative;
     z-index: 0;
-    width: calc(50vw - 4rem);
-    padding: 0 4rem 0 0;
+    padding: 0 120px 0 0;
   }
 
   & #bg {
@@ -288,6 +288,7 @@ $base-background-color: v.$base-background-color;
         width: 100%;
         height: 100%;
         align-items: center;
+        padding: 0;
 
         & .top h1,
         & .top h3 {
