@@ -38,14 +38,25 @@ export class MessageService {
       timeout: seconds * 1000
     });
   }
-  addSuccess(message: string, seconds: number = this.defaultTime) {
+  addSuccess(message: string, seconds: number = this.defaultTime, ref: string = '') {
+    if (ref) {
+      console.log('ref set', ref);
+    }
     const type = 'success';
     console.log(type + ': ' + message);
     this.messages.push({
       type: type,
       msg: message,
-      timeout: seconds * 1000
+      timeout: seconds * 1000,
+      ref
     });
+  }
+  modify(newMessage: string, ref: string) {
+    for (const message of this.messages) {
+      if (message.ref === ref) {
+        message.msg = newMessage;
+      }
+    }
   }
   emailNotify(email: string, amount: string) {
     console.log(email);

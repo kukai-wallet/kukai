@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { WalletService } from '../wallet/wallet.service';
 import { of, Observable, from as fromPromise, Subject } from 'rxjs';
-import { flatMap } from 'rxjs/operators';
+import { flatMap} from 'rxjs/operators';
+import { delay, takeUntil} from 'rxjs/operators'
 import { Activity, Account } from '../wallet/wallet';
 import { MessageService } from '../message/message.service';
 import { LookupService } from '../lookup/lookup.service';
 import { IndexerService } from '../indexer/indexer.service';
 import { TokenService } from '../token/token.service';
 import { BehaviorSubject } from 'rxjs';
+import { SubjectService } from '../subject/subject.service';
 
 @Injectable()
 export class ActivityService {
@@ -19,7 +21,8 @@ export class ActivityService {
     private messageService: MessageService,
     private lookupService: LookupService,
     private indexerService: IndexerService,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private subjectService: SubjectService
   ) { }
   updateTransactions(pkh): Observable<any> {
     try {
@@ -96,8 +99,6 @@ export class ActivityService {
           this.walletService.storeWallet();
           if (oldState !== '') { // Exclude inital loading
             this.promptNewActivities(account, oldActivities, operations);
-          } else {
-            console.log('# Excluded ' + counter);
           }
           for (const activity of operations) {
             const counterParty = this.getCounterparty(activity, account, false);
@@ -127,7 +128,17 @@ export class ActivityService {
               this.messageService.addSuccess(account.shortAddress() + ': Sent ' + this.tokenService.formatAmount(activity.tokenId, activity.amount.toString()));
             }
             if (account.address === activity.destination.address) {
-              this.messageService.addSuccess(account.shortAddress() + ': Received ' + this.tokenService.formatAmount(activity.tokenId, activity.amount.toString()));
+              this.messageService.addSuccess((account.shortAddress() + ': Received ' + this.tokenService.formatAmount(activity.tokenId, activity.amount.toString())).replace('[Unknown token]', 'Token'), undefined, activity.tokenId);
+              if (activity.tokenId && this.tokenService.getAsset(activity.tokenId) === null) { // unknown token
+                this.subjectService.metadataUpdated.pipe(takeUntil(of(true).pipe(delay(8000)))).subscribe((token: any) => { // unsub after 8s
+                  if (token?.contractAddress && token.id !== undefined) {
+                    const tokenId = token.contractAddress + ':' + token.id.toString();
+                    if (activity.tokenId === tokenId) {
+                      this.messageService.modify(account.shortAddress() + ': Received ' + this.tokenService.formatAmount(activity.tokenId, activity.amount.toString()), tokenId);
+                    };
+                  }
+                });
+              }
             }
           } else if (activity.type === 'delegation') {
             this.messageService.addSuccess(account.shortAddress() + ': Delegate updated');

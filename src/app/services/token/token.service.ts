@@ -203,7 +203,7 @@ export class TokenService {
         contract.tokens[id] = token;
         this.addAsset(contractAddress, contract);
         this.saveMetadata();
-        this.subjectService.metadataUpdated.next({contractAddress, token});
+        this.subjectService.metadataUpdated.next({contractAddress, id, token});
       }
     }
   }
