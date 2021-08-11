@@ -44,7 +44,8 @@ export const CONSTANTS: Constants = {
       thumbnailUrl: "https://dashboard-assets.dappradar.com/document/7358/kalamint-dapp-marketplaces-tezos-logo-166x166_3157752c764b72d1e7759b1b005b07d7.png",
       link: "https://kalamint.io/", shouldDisplayLink: DisplayLinkOption.All, category: "marketplaces"
     },
-    'Interpop Comics': {
+    'InterpopComics': {
+      name: 'Interpop Comics',
       address: ["KT1UxMVVrK2pbYYEtwes1zKYdpYnzoZ6yPKC"],
       thumbnailUrl: "https://dev.interpopcomics.com/interpop_logo.png",
       link: "https://interpopcomics.com/", shouldDisplayLink: DisplayLinkOption.DirectAuth, category: "collectibles"
