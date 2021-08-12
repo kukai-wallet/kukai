@@ -154,8 +154,8 @@ $base-background-color: v.$base-background-color;
         .facebook,
         .twitter,
         .reddit {
-          width: 3.5rem;
-          height: 3.5rem;
+          width: 4rem;
+          height: 4rem;
           padding: 0.75rem;
           margin: 0 0 0 1rem;
         }
@@ -164,7 +164,7 @@ $base-background-color: v.$base-background-color;
           border: $border-width solid $border-color;
           border-radius: v.$border-radius-hardest;
           min-width: 27rem;
-          height: 5rem;
+          height: 6rem;
           color: $base-font-color;
           padding: 0 1rem 0 2rem;
           background-color: $base-end-color;
