@@ -52,9 +52,11 @@ export class MessageService {
     });
   }
   modify(newMessage: string, ref: string) {
-    for (const message of this.messages) {
-      if (message.ref === ref) {
-        message.msg = newMessage;
+    if (ref) {
+      for (const message of this.messages) {
+        if (message.ref === ref) {
+          message.msg = newMessage;
+        }
       }
     }
   }

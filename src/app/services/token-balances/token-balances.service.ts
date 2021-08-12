@@ -19,6 +19,7 @@ interface ContractWithImg {
   thumbnailUrl: string;
   visitUrl: string;
   tokens: TokenWithBalance[];
+  hidden?: boolean;
 }
 type ContractsWithBalance = Record<string, ContractWithImg>;
 
@@ -79,7 +80,15 @@ export class TokenBalancesService {
       }
     } else {
       if (nfts['unknown'] === undefined) {
-        nfts['unknown'] = { name: 'Unknown tokens', thumbnailUrl: '../../../assets/img/question-mark.svg', tokens: [] };
+        const hidden = (this.nfts !== null);
+        nfts['unknown'] = { name: 'Unknown tokens', thumbnailUrl: '../../../assets/img/question-mark.svg', tokens: [], hidden };
+        if (hidden) {
+          setTimeout(() => {
+            if (this.nfts['unknown'] !== undefined) {
+              this.nfts['unknown'].hidden = false;
+            }
+          }, 10000)
+        }
       }
       const placeholder = this.tokenService.getPlaceholderToken(token.tokenId);
       placeholder.name = `${placeholder.contractAddress.slice(0, 8)}... (${placeholder.id.toString()})`;
@@ -147,7 +156,7 @@ export class TokenBalancesService {
   }
 
   getMarkets() {
-    fetch('https://api.teztools.io/v1/prices').then((response) => response.json()).then(r => {this.markets = [...r.contracts]; this.mergeMarket();});
+    fetch('https://api.teztools.io/v1/prices').then((response) => response.json()).then(r => { this.markets = [...r.contracts]; this.mergeMarket(); });
   }
 
   mergeMarket() {

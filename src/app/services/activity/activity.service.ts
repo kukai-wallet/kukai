@@ -128,13 +128,14 @@ export class ActivityService {
               this.messageService.addSuccess(account.shortAddress() + ': Sent ' + this.tokenService.formatAmount(activity.tokenId, activity.amount.toString()));
             }
             if (account.address === activity.destination.address) {
-              this.messageService.addSuccess((account.shortAddress() + ': Received ' + this.tokenService.formatAmount(activity.tokenId, activity.amount.toString())).replace('[Unknown token]', 'Token'), undefined, activity.tokenId);
+              const ref = activity.tokenId ? (Date.now()).toString() + activity.tokenId : '';
+              this.messageService.addSuccess((account.shortAddress() + ': Received ' + this.tokenService.formatAmount(activity.tokenId, activity.amount.toString())).replace('[Unknown token]', 'Token'), undefined, ref);
               if (activity.tokenId && this.tokenService.getAsset(activity.tokenId) === null) { // unknown token
                 this.subjectService.metadataUpdated.pipe(takeUntil(of(true).pipe(delay(8000)))).subscribe((token: any) => { // unsub after 8s
                   if (token?.contractAddress && token.id !== undefined) {
                     const tokenId = token.contractAddress + ':' + token.id.toString();
                     if (activity.tokenId === tokenId) {
-                      this.messageService.modify(account.shortAddress() + ': Received ' + this.tokenService.formatAmount(activity.tokenId, activity.amount.toString()), tokenId);
+                      this.messageService.modify(account.shortAddress() + ': Received ' + this.tokenService.formatAmount(activity.tokenId, activity.amount.toString()), ref);
                     };
                   }
                 });
