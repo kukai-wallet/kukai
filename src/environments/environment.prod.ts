@@ -753,6 +753,14 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1UxMVVrK2pbYYEtwes1zKYdpYnzoZ6yPKC',//Comic app
   'KT1AaaBSo5AE6Eo8fpEN5xhCD4w3kHStafxk',//Minterpop
   'KT1EpGgjQs73QfFJs9z7m1Mxm5MTnpC2tqse',//Kalamint
-  'KT1BA9igcUcgkMT4LEEQzwURsdMpQayfb6i4'//turtle
+  'KT1BA9igcUcgkMT4LEEQzwURsdMpQayfb6i4',//turtle
+  'KT1PKvHNWuWDNVDtqjDha4AostLrGDu4G1jy',//Bazaar Market
+  'KT1WGDVRnff4rmGzJUbdCRAJBmYt12BrPzdD',//PixelPotus
+  'KT1FyaDqiMQWg7Exo7VUiXAgZbd2kCzo3d4s',//TzColors
+  'KT1EVXyKLk4MSAfsSqyLVSTsRHYG9fXFHnwe',//Uanon 1
+  'KT1SFDJHTVMnfvc72E4vUt4Rpy9xvGKt1xSw',//Uanon 2
+  'KT1UmxSSUQ5716tRa2RLNSAkiSG6TWbzZ7GL',//SalsaDao Tacos 2
+  'KT1JYWuC4eWqYkNC1Sh6BiD89vZzytVoV2Ae',//SalsaDao Tacos 3
+  'KT1NvPaecvj8g7SbDs8E5s2jxbEBKHxZssP1',//SalsaDao BuildTaco
 ];
 export const BLACKLISTED_TOKEN_CONTRACTS = []
