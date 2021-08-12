@@ -11,8 +11,8 @@ $base-green-color: v.$base-green-color;
 $border-color-dark-only: v.$border-color-dark-only;
 $border-radius: v.$border-radius;
 $border-width: v.$border-width;
-$event-unconfirmed: v.$base-color-lightened-5;
-$event-confirmed: v.$base-color-lightened-6;
+$event-unconfirmed: #dae1e6;
+$event-confirmed: #e3e7eb;
 $event-new: v.$base-end-color;
 
 :host {

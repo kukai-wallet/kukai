@@ -52,8 +52,8 @@
 
   &.alert-info {
     color: v.$base-font-color;
-    background-color: #e2e3ff;
-    border-color: #e2e3ff;
+    background-color: #e2e4ff;
+    border-color: #e2e4ff;
   }
 
 
@@ -79,12 +79,12 @@
 
   &.alert-primary {
     color: v.$base-font-color;
-    background-color: #e2e3ff;
-    border-color: #e2e3ff
+    background-color: #e2e4ff;
+    border-color: #e2e4ff
   }
 
   &.alert-primary hr {
-    border-top-color: #e2e3ff
+    border-top-color: #e2e4ff
   }
 
   &.alert-primary &.alert-link {
@@ -93,12 +93,12 @@
 
   &.alert-secondary {
     color: v.$base-font-color;
-    background-color: #e2e3ff;
-    border-color: #e2e3ff
+    background-color: #e2e4ff;
+    border-color: #e2e4ff
   }
 
   &.alert-secondary hr {
-    border-top-color: #e2e3ff
+    border-top-color: #e2e4ff
   }
 
   &.alert-secondary &.alert-link {
@@ -107,15 +107,15 @@
 
   &.alert-success {
     color: v.$base-font-color;
-    background-color: #e2e3ff;
-    border-color: #e2e3ff;
+    background-color: #e2e4ff;
+    border-color: #e2e4ff;
     & .close {
-      fill: #e2e3ff;
+      fill: #e2e4ff;
     }
   }
 
   &.alert-success hr {
-    border-top-color: #e2e3ff;
+    border-top-color: #e2e4ff;
   }
 
   &.alert-success &.alert-link {
@@ -123,7 +123,7 @@
   }
 
   &.alert-info hr {
-    border-top-color: #e2e3ff
+    border-top-color: #e2e4ff
   }
 
   &.alert-info &.alert-link {
@@ -169,12 +169,12 @@
 
   &.alert-light {
     color: v.$base-font-color;
-    background-color: #e2e3ff;
-    border-color: #e2e3ff;
+    background-color: #e2e4ff;
+    border-color: #e2e4ff;
   }
 
   &.alert-light hr {
-    border-top-color: #e2e3ff;
+    border-top-color: #e2e4ff;
   }
 
   &.alert-light &.alert-link {
@@ -183,16 +183,16 @@
 
   &.alert-dark {
     color: v.$base-font-color;
-    background-color: #e2e3ff;
-    border-color: #e2e3ff;
+    background-color: #e2e4ff;
+    border-color: #e2e4ff;
 
     & .close {
-      fill: #e2e3ff;
+      fill: #e2e4ff;
     }
   }
 
   &.alert-dark hr {
-    border-top-color: #e2e3ff;
+    border-top-color: #e2e4ff;
   }
 
   &.alert-dark .alert-link {

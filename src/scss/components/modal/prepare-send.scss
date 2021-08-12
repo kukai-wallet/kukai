@@ -1,6 +1,17 @@
 @use '../../abstracts/mixins' as m;
 @use '../../abstracts/variables'as v;
 
+$base-font-color: v.$base-font-color;
+$base-font-color-secondary: v.$base-font-color-secondary;
+$base-end-color: v.$base-end-color;
+$base-red-color: v.$base-red-color;
+$base-blue-color-lightened: v.$base-blue-color-lightened;
+$base-color-lightened-3: v.$base-color-lightened-3;
+$base-color-lightened-7: v.$base-color-lightened-7;
+$border-width: v.$border-width;
+$border-color: v.$border-color;
+$base-background-color: v.$base-background-color;
+
 & .prepare-send {
   margin: 2rem 0 0 0;
   height: auto;
@@ -9,14 +20,14 @@
 
   & textarea {
     border-radius: v.$border-radius-hard;
-    border: v.$border-width solid v.$border-color;
+    border: $border-width solid $border-color;
     padding: 2rem;
     margin: 1rem 0;
   }
 
   & .title {
     @include m.multiply('font-size',1);
-    color: v.$base-font-color;
+    color: $base-font-color;
     font-weight: 500;
     width: calc(100% - 8rem);
     @include m.ellipsis;
@@ -31,7 +42,7 @@
   }
 
   & .top {
-    background-color: v.$base-color-lightened-7;
+    background-color: $base-color-lightened-7;
     align-items: flex-start;
     padding: 0.75rem 1rem 1rem 1rem;
 
@@ -54,13 +65,13 @@
         width: 6rem;
         height: 6rem;
         overflow: hidden;
-        background-color: v.$base-end-color;
+        background-color: $base-end-color;
         border-radius: v.$border-radius;
         box-shadow: v.$box-shadow-dark;
       }
 
       & .title {
-        color: v.$base-font-color;
+        color: $base-font-color;
         @include m.multiply('font-size',1.5);
         font-weight: 500;
         margin: 0 0 0 1rem;
@@ -84,7 +95,7 @@
         height: 2.75rem;
         background-color: transparent;
         color: #666;
-        border: v.$border-width solid v.$border-color;
+        border: $border-width solid $border-color;
         padding: 0 1rem;
         font-weight: 600;
         font-size: 1rem;
@@ -95,7 +106,7 @@
       width: calc(100% - 4px);
       height: 1.25rem;
       padding: 0;
-      color: v.$base-color-lightened-3;
+      color: $base-color-lightened-3;
 
       & .amount {
 
@@ -112,12 +123,12 @@
 
     & .from {
       width: 100%;
-      border-top: 2px solid v.$border-color;
+      border-top: 2px solid $border-color;
       padding: 1rem 0 0 0;
       margin: 1rem 0 0 0;
 
       &>p {
-        color: v.$base-font-color-secondary;
+        color: $base-font-color-secondary;
       }
     }
   }
@@ -152,9 +163,9 @@
   & .multiple-destinations {
     padding: 1rem;
     width: 17rem;
-    background-color: v.$base-end-color;
-    color: v.$base-font-color-secondary;
-    border: v.$border-width solid v.$border-color;
+    background-color: $base-end-color;
+    color: $base-font-color-secondary;
+    border: $border-width solid $border-color;
     font-size: 1rem;
     margin: 1rem 0 0 0;
   }
@@ -187,7 +198,7 @@
     }
 
     & .danger {
-      color: v.$base-red-color;
+      color: $base-red-color;
     }
   }
 }
