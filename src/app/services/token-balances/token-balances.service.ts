@@ -80,7 +80,7 @@ export class TokenBalancesService {
       }
     } else {
       if (nfts['unknown'] === undefined) {
-        const hidden = (this.nfts !== null);
+        const hidden = (this.nfts !== null && this.nfts['unknown'] === undefined);
         nfts['unknown'] = { name: 'Unknown tokens', thumbnailUrl: '../../../assets/img/question-mark.svg', tokens: [], hidden };
         if (hidden) {
           setTimeout(() => {
