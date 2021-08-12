@@ -89,7 +89,7 @@ body * {
 *::-webkit-scrollbar-thumb {
   background-color: v.$base-color-lightened-3;
   border-radius: v.$border-radius;
-  border: v.$border-width-thin solid v.$base-color-lightened-3;
+  border: v.$border-width solid v.$base-color-lightened-3;
 }
 
 html {
@@ -117,7 +117,7 @@ h1 {
 }
 
 textarea {
-  border: v.$border-width-thin solid v.$border-color;
+  border: v.$border-width solid v.$border-color;
   border-radius: v.$border-radius;
   background-color: v.$base-end-color;
 }

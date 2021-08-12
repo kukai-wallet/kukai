@@ -32,10 +32,9 @@ $border-radius-hard: calc(#{$border-radius} * 2) !default;
 $border-radius-hardest: calc(#{$border-radius} * 10) !default;
 $border-color: #eff0f1;
 $border-color-dark-only: f.theme-transform(#00000000, $current-theme);
-$border-width-thin: 0.125rem;
-$border-width: 0.1875rem;
-$border-width-thin: calc((#{$border-width} / 3) * 2);
-$border-width-thick: calc((#{$border-width} / 3) * 4);
+$border-width: 0.125rem;
+$border-width-thin: calc((#{$border-width} / 2) * 3);
+$border-width-thick: calc((#{$border-width} / 2) * 3);
 
 // @media constants
 

@@ -91,6 +91,7 @@ $base-background-color: v.$base-background-color;
   &.default {
     background-color: $base-end-color;
     border-bottom: 2px solid $border-color;
+    max-width: unset;
   }
 
   & > .right {
