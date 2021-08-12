@@ -219,7 +219,7 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
       return `${Big(amount).div(10 ** (baseUnit ? 6 : 0)).toFixed()} tez`;
     } else {
       if (token) {
-        if (!token.symbol) {
+        if (this.tokenBalanceService.isNFT(token)) {
           return `${token.name}`;
         } else {
           return `${Big(amount).div(10 ** (baseUnit ? token.decimals : 0)).toFixed()} ${token.symbol}`;
