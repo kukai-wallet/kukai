@@ -28,6 +28,7 @@ type ContractsWithBalance = Record<string, ContractWithImg>;
 })
 export class TokenBalancesService {
   markets: any[] = [];
+  xtzUsdRate: number;
   balances: TokenWithBalance[] = [];
   nfts: ContractsWithBalance = null;
   activeAccount: Account = null;
@@ -156,17 +157,19 @@ export class TokenBalancesService {
   }
 
   getMarkets() {
-    fetch('https://api.teztools.io/v1/prices').then((response) => response.json()).then(r => { this.markets = [...r.contracts]; this.mergeMarket(); });
+    fetch('https://api.teztools.io/v1/prices').then((response) => response.json()).then(r => { this.xtzUsdRate = r.xtzusdValue; this.markets = [...r.contracts]; this.mergeMarket(); });
   }
 
   mergeMarket() {
-    Object.keys(this.balances).forEach(key => {
-      let token = undefined;
-      const addr = this.balances[key]?.contractAddress;
-      if ((token = this.markets?.find((token) => token?.tokenAddress === addr))) {
-        this.balances[key].price = token?.currentPrice * parseFloat(this.balances[key].balance);
-         !!token?.logo_url ? (this.balances[key].displayUrl = this.balances[key].thumbnailUrl = token?.thumbnailUri) : null;
-      }
-    });
+    if (this.xtzUsdRate) {
+      Object.keys(this.balances).forEach(key => {
+        let token = undefined;
+        const addr = this.balances[key]?.contractAddress;
+        if ((token = this.markets?.find((token) => token?.tokenAddress === addr))) {
+          this.balances[key].price = token?.currentPrice * parseFloat(this.balances[key].balance) * this.xtzUsdRate;
+          !!token?.logo_url ? (this.balances[key].displayUrl = this.balances[key].thumbnailUrl = token?.thumbnailUri) : null;
+        }
+      });
+    }
   }
 }
