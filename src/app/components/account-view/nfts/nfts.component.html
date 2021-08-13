@@ -16,9 +16,9 @@
   </div>
   <div class="flex-row-wrap nfts">
     <!-- loop through contracts -->
-    <ng-container *ngFor="let key of Object.keys(this.nfts)">
-      <div *ngIf="!this.nfts[key]?.hidden" class="flex-column collection" [class]="filter === key ? 'expanded' : ''" [id]="key" [style.display]="!isDiscover && filter === 'APP' ? '' : 'none'">
-        <div class="flex-row head" (click)="toggleDropdown('#' + key)">
+    <ng-container *ngFor="let key of Object.keys(this.nfts); let i = index">
+      <div class="flex-column collection" [class]="filter === key ? 'expanded' : ''" [id]="sanitizeKey(key, i)" [style.display]="!isDiscover && filter === 'APP' ? '' : 'none'">
+        <div class="flex-row head" (click)="toggleDropdown(sanitizeKey('#' + key, i))">
           <div class="flex-row left">
             <img class="icon" [src]="this.nfts[key]?.thumbnailUrl" />
             <div class="title">

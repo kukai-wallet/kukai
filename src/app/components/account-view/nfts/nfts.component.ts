@@ -67,6 +67,10 @@ export class NftsComponent implements OnInit, AfterViewInit {
     }
     return false;
   }
+  // in time break into subcomp with ecmpId = this.constructor['ɵcmp'].id; for id
+  sanitizeKey(key: string, i: number) {
+    return key.replace(/ /g, '') + i;
+  }
   trackToken(index: number, token: any) {
     return token?.id ? token.contractAddress + ':' + token?.id + ':' + token?.balance : null;
   }
