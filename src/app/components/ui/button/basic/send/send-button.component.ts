@@ -7,7 +7,7 @@ import { BasicButtonComponent } from '../basic.component';
 @Component({
   selector: 'app-send-button',
   templateUrl: './send-button.component.html',
-  styleUrls: ['../../../../../../scss/components/ui/send.component.scss']
+  styleUrls: ['../../../../../../scss/components/ui/button/send.component.scss']
 })
 
 export class SendButtonComponent extends BasicButtonComponent implements OnInit {

@@ -5,7 +5,7 @@ import { Asset, CachedAsset } from '../../../services/token/token.service';
 @Component({
   selector: 'app-asset',
   templateUrl: './asset.component.html',
-  styleUrls: ['../../../../scss/components/ui/asset.component.scss']
+  styleUrls: ['../../../../scss/components/ui/asset/asset.component.scss']
 })
 
 export class AssetComponent implements OnInit, OnChanges, AfterViewInit {

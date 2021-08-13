@@ -8,7 +8,7 @@ import { DropdownComponent } from '../dropdown.component';
 @Component({
   selector: 'app-ui-dropdown-account',
   templateUrl: './account-dropdown.component.html',
-  styleUrls: ['../../../../../scss/components/ui/account-dropdown.component.scss']
+  styleUrls: ['../../../../../scss/components/ui/dropdown/account-dropdown.component.scss']
 })
 export class AccountDropdownComponent extends DropdownComponent implements OnInit {
 

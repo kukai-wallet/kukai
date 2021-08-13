@@ -6,7 +6,7 @@ import { DropdownComponent } from '../dropdown.component';
 @Component({
   selector: 'app-ui-dropdown-prepare-send',
   templateUrl: './prepare-send-dropdown.component.html',
-  styleUrls: ['../../../../../scss/components/ui/prepare-send-dropdown.component.scss']
+  styleUrls: ['../../../../../scss/components/ui/dropdown/prepare-send-dropdown.component.scss']
 })
 export class PrepareSendDropdownComponent extends DropdownComponent implements OnInit {
 
