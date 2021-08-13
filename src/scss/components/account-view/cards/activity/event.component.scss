@@ -107,10 +107,13 @@ $event-new: v.$base-end-color;
     }
 
     & .address {
-      color: $base-font-color-secondary;
-      width: calc(100%);
+      width: 100%;
       justify-content: flex-start;
       @include m.multiply("font-size", 1.125);
+
+      & .prefix, & .value {
+        color: $base-font-color-secondary;
+      }
 
       & .value {
         justify-content: flex-start;
