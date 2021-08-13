@@ -88,11 +88,11 @@ $border-color: v.$border-color;
       & .prices {
         width: 35%;
         height: 3rem;
-        font-weight: 500;
 
         & .price {
           @include m.multiply('font-size',1.5);
           margin-bottom: 0.25rem;
+          font-weight: 500;
         }
 
         & .price-usd {

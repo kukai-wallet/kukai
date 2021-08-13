@@ -27,7 +27,7 @@ $border-color: v.$border-color;
     width: auto;
     height: auto;
     max-width: 85vw;
-    border-radius: v.$border-radius-hard;
+    border-radius: v.$border-radius;
     padding: 2rem;
     min-width: 32rem;
     @include m.base-relative;

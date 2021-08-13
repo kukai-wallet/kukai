@@ -185,6 +185,7 @@ $border-color: v.$border-color;
           height: 3.5rem;
           border-radius: 0.5rem;
           margin-right: 1rem;
+          object-fit: contain;
         }
 
         & .count {

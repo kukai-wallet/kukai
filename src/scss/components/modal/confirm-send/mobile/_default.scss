@@ -10,7 +10,8 @@ $border-color: v.$border-color;
 
     @include b.confirm-send-mobile-batch;
 
-    & .transfer-amount, & .contract-call {
+    & .transfer-amount,
+    & .contract-call {
       width: calc(100% - 2rem);
     }
 
@@ -32,16 +33,20 @@ $border-color: v.$border-color;
       width: calc(100% - 4rem);
 
       & .left {
-        width: 33%;
-        align-items: flex-start;
+        width: 26%;
 
         & .key {
-          text-align: left;
+          text-align: center;
         }
       }
 
       & .right {
-        width: calc(69% - 2rem);
+        width: calc(74% - 2rem);
+      }
+
+      & .token-image.balance {
+        width: 4rem;
+        height: 4rem;
       }
     }
 
