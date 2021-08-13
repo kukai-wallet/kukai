@@ -34,7 +34,7 @@ $border-color: #eff0f1;
 $border-color-dark-only: f.theme-transform(#00000000, $current-theme);
 $border-width: 0.125rem;
 $border-width-thin: calc((#{$border-width} / 2) * 3);
-$border-width-thick: calc((#{$border-width} / 2) * 3);
+$border-width-thick: calc((#{$border-width} / 2) * 4);
 
 // @media constants
 

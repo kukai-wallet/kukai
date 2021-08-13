@@ -108,9 +108,9 @@ export class EventComponent implements OnInit, OnChanges {
       case 'received':
         return this.receivedKind(this.activity) + ' from:';
       case 'delegated':
-        return 'to:';
+        return 'To:';
       case 'undelegated':
-        return 'to:';
+        return 'To:';
       case 'origination':
         return 'Originated contract:';
     }
