@@ -51,10 +51,6 @@ $event-new: v.$base-end-color;
     position: relative;
     overflow: hidden;
 
-    & br {
-      display: none;
-    }
-
     &:after {
       content: "";
       position: absolute;
@@ -117,7 +113,7 @@ $event-new: v.$base-end-color;
 
       & .value {
         justify-content: flex-start;
-        font-family: "Roboto Mono";
+        font-family: "Roboto Mono", "Roboto";
         @include m.multiply("font-size", 1);
       }
 

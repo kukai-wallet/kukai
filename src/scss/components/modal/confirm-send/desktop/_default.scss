@@ -203,6 +203,7 @@ $border-color: v.$border-color;
 
       & .address {
         @include m.multiply("font-size", 1);
+        font-family: "Roboto Mono", "Roboto";
         color: $base-font-color-secondary;
       }
 
@@ -329,13 +330,8 @@ $border-color: v.$border-color;
 
               & span {
                 color: $base-blue-color-lightened;
+                font-family: "Roboto Mono", "Roboto";
               }
-            }
-
-            & input[type="radio"] {
-              width: 2rem;
-              height: 1rem;
-              transform: scale(1.25);
             }
           }
 
