@@ -46,6 +46,8 @@ export class ActivityService {
         if (account.state !== counter) {
           if (data.tokens) {
             this.updateTokenBalances(account, data.tokens);
+          } else {
+            this.updateTokenBalances(account, []);
           }
           return this.getAllTransactions(account, counter);
         } else {
@@ -66,7 +68,7 @@ export class ActivityService {
     }
   }
   async updateTokenBalances(account, tokens) {
-    if (tokens && tokens.length) {
+    if (Array.isArray(tokens)) {
       const idsWithBalance: string[] = [];
       for (const token of tokens) {
         const tokenId = `${token.contract}:${token.token_id}`;
