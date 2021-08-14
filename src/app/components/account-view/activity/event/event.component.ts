@@ -17,7 +17,6 @@ import copy from 'copy-to-clipboard';
 export class EventComponent implements OnInit, OnChanges {
   public LookupType = LookupType
   public fresh = undefined;
-  public type = "";
   constructor(
     public translate: TranslateService,
     public messageService: MessageService,
@@ -29,7 +28,6 @@ export class EventComponent implements OnInit, OnChanges {
   @Input() activity: any;
   @Input() account: Account;
   ngOnInit(): void {
-    this.type = this.getType(this.activity).toLowerCase();
     setInterval(() => { this.trigger = !this.trigger }, 1000);
   }
   ngOnChanges(changes: SimpleChanges) {
@@ -40,20 +38,20 @@ export class EventComponent implements OnInit, OnChanges {
       }, 20000);
     }
   }
-  getType(transaction: Activity): string {
-    if (transaction.type !== 'transaction') {
-      if (transaction.type === 'delegation') {
-        if (transaction.destination.address) {
+  getType(): string {
+    if (this.activity.type !== 'transaction') {
+      if (this.activity.type === 'delegation') {
+        if (this.activity.destination.address) {
           return 'delegated';
         } else {
           return 'undelegated';
         }
       } else {
-        return transaction.type;
+        return this.activity.type;
       }
     } else {
       let operationType = '';
-      if (transaction.source.address === this.account.address) {
+      if (this.activity.source.address === this.account.address) {
         operationType = 'sent';
       } else {
         operationType = 'received';
@@ -73,7 +71,7 @@ export class EventComponent implements OnInit, OnChanges {
     return `../../../../assets/img/${LookupType[this.getCounterparty(this.activity)?.lookupType].toLowerCase().replace('tezosdomains', 'domain')}-logo.svg`;
   }
   printAmount(): string {
-    switch (this.type) {
+    switch (this.getType()) {
       case 'sent':
         return this.tokenService.formatAmount(this.activity.tokenId, this.activity.amount.toString());
       case 'received':
