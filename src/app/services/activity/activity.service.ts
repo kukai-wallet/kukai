@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { WalletService } from '../wallet/wallet.service';
 import { of, Observable, from as fromPromise, Subject } from 'rxjs';
-import { flatMap} from 'rxjs/operators';
-import { delay, takeUntil} from 'rxjs/operators'
+import { flatMap } from 'rxjs/operators';
+import { delay, takeUntil } from 'rxjs/operators'
 import { Activity, Account } from '../wallet/wallet';
 import { MessageService } from '../message/message.service';
 import { LookupService } from '../lookup/lookup.service';
@@ -95,7 +95,24 @@ export class ActivityService {
         this.handleUnknownTokenIds(resp.unknownTokenIds);
         if (Array.isArray(operations)) {
           const oldActivities = account.activities;
-          account.activities = operations;
+          const unconfirmedOps = [];
+          if (oldActivities && oldActivities.length) {
+            for (let op of oldActivities) {
+              if (op.status === 0) {
+                let save = true;
+                for (const opNew of operations) {
+                  if (opNew.hash === op.hash) {
+                    save = false;
+                    break;
+                  }
+                }
+                if (save) {
+                  unconfirmedOps.push(op);
+                }
+              }
+            }
+          }
+          account.activities = unconfirmedOps.concat(operations);
           const oldState = account.state;
           account.state = counter;
           this.walletService.storeWallet();

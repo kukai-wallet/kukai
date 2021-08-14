@@ -13,6 +13,7 @@ import { CONSTANTS } from '../../../environments/environment';
 import { SubjectService } from '../subject/subject.service';
 import { TokenBalancesService } from '../token-balances/token-balances.service';
 import { interval } from 'rxjs';
+import { SignalService } from '../indexer/signal/signal.service';
 
 export interface ScheduleData {
   pkh: string;
@@ -45,7 +46,8 @@ export class CoordinatorService {
     private tokenService: TokenService,
     private tokenBalancesService: TokenBalancesService,
     private lookupService: LookupService,
-    private subjectService: SubjectService
+    private subjectService: SubjectService,
+    private signalService: SignalService
   ) {
     this.subjectService.logout.subscribe((o) => {
       if (!!o) {
@@ -105,6 +107,7 @@ export class CoordinatorService {
       if (!this.scheduler.get(pkh)) {
         await this.start(pkh, this.defaultDelayActivity);
       }
+      this.signalService.subscribeToAccount(pkh);
       if (this.scheduler.get(pkh).state !== State.Wait) {
         this.changeState(pkh, State.Wait);
         this.update(pkh);
