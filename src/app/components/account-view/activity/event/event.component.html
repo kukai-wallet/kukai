@@ -2,8 +2,8 @@
   [class.failed]="activity.status === -1">
   <div class="flex-column">
     <div class="flex-row title">
-      <ng-container *ngIf="!activity.entrypoint; else callEntrypoint">
-        {{ printAmount(activity) }}</ng-container>
+      <ng-container *ngIf="!activity.entrypoint; else callEntrypoint"><img *ngIf="type === 'sent'" src="../../../../assets/img/up-arrow-black.svg" /><img *ngIf="type === 'received'" src="../../../../assets/img/up-arrow.svg" style="transform: rotate(45deg)" />&nbsp;
+        {{ printAmount() }}</ng-container>
       <ng-template #callEntrypoint>{{ sentKind(activity) }}</ng-template>
       <span class="failed" *ngIf="activity.status === -1">Error</span>
     </div>
@@ -12,8 +12,9 @@
         getCounterparty(activity)?.name || getCounterparty(activity)?.address || ''
         }}<img class="copy" src="../../../../assets/img/copy-icon.svg"
           (click)="copy(getCounterparty(activity)?.address)" /></span></div>
-      <span *ngIf="activity.status !== 0" class="time">
-        <a href="{{ explorerURL(activity.hash) }}" target="_blank">
+      <span class="flex-row time">
+        <img [src]="fresh && activity.status === 1 ? '../../../../assets/img/event-new.png' : activity.status === 1 ? '../../../../assets/img/event-confirmed.png' : activity.status === 0 ? '../../../../assets/img/event-unconfirmed.png' : activity.status === -1 ? '../../../../assets/img/event-error.png' : '../../../../assets/img/event-unconfirmed.png'"/>
+        <a *ngIf="activity.status !== 0" href="{{ explorerURL(activity.hash) }}" target="_blank">
           {{ activity.timestamp | timeAgo:trigger }}
         </a>
       </span>

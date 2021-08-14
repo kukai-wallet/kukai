@@ -100,6 +100,7 @@ $event-new: v.$base-end-color;
     & .title {
       @include m.multiply("font-size", 1.5);
       margin-bottom: 0.5rem;
+      justify-content: flex-start;
     }
 
     & .address {
@@ -107,7 +108,8 @@ $event-new: v.$base-end-color;
       justify-content: flex-start;
       @include m.multiply("font-size", 1.125);
 
-      & .prefix, & .value {
+      & .prefix,
+      & .value {
         color: $base-font-color-secondary;
       }
 
@@ -132,6 +134,12 @@ $event-new: v.$base-end-color;
       width: 9rem;
       text-align: right;
       color: $base-font-color;
+      justify-content: flex-end;
+      & img {
+        width: 1rem;
+        height: 1rem;
+        margin: 0 0.5rem 0 0;
+      }
       & a {
         color: $base-font-color;
       }

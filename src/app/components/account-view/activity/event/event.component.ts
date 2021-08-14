@@ -17,6 +17,7 @@ import copy from 'copy-to-clipboard';
 export class EventComponent implements OnInit, OnChanges {
   public LookupType = LookupType
   public fresh = undefined;
+  public type = "";
   constructor(
     public translate: TranslateService,
     public messageService: MessageService,
@@ -28,6 +29,7 @@ export class EventComponent implements OnInit, OnChanges {
   @Input() activity: any;
   @Input() account: Account;
   ngOnInit(): void {
+    this.type = this.getType(this.activity).toLowerCase();
     setInterval(() => { this.trigger = !this.trigger }, 1000);
   }
   ngOnChanges(changes: SimpleChanges) {
@@ -70,18 +72,18 @@ export class EventComponent implements OnInit, OnChanges {
   getEventIcon() {
     return `../../../../assets/img/${LookupType[this.getCounterparty(this.activity)?.lookupType].toLowerCase().replace('tezosdomains', 'domain')}-logo.svg`;
   }
-  printAmount(activity: Activity): string {
-    switch (this.getType(activity).toLowerCase()) {
+  printAmount(): string {
+    switch (this.type) {
       case 'sent':
-        return '- ' + this.tokenService.formatAmount(activity.tokenId, activity.amount.toString());
+        return this.tokenService.formatAmount(this.activity.tokenId, this.activity.amount.toString());
       case 'received':
-        return '+ ' + this.tokenService.formatAmount(activity.tokenId, activity.amount.toString());
+        return this.tokenService.formatAmount(this.activity.tokenId, this.activity.amount.toString());
       case 'delegated':
         return 'Staked';
       case 'undelegated':
         return 'Unstaked';
       case 'origination':
-        return '- ' + this.tokenService.formatAmount(activity.tokenId, activity.amount.toString());
+        return '- ' + this.tokenService.formatAmount(this.activity.tokenId, this.activity.amount.toString());
       default:
         return '';
     }
@@ -89,7 +91,7 @@ export class EventComponent implements OnInit, OnChanges {
   sentKind(activity): string {
     if (activity.entrypoint) {
       if (activity.amount !== '0') {
-        return `${this.printAmount(activity)}, Call ${activity.entrypoint}`;
+        return `${this.printAmount()}, Call ${activity.entrypoint}`;
       }
       return `Call ${activity.entrypoint}`;
     }

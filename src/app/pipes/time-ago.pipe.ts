@@ -41,25 +41,25 @@ export class TimeAgoPipe implements PipeTransform {
         }
         switch (key) {
           case 'years':
-            output = `${diff[key]} ${diff[key] === 1 ? year : years}`;
+            output = `${diff[key]}${diff[key] === 1 ? year : years}`;
             break;
           case 'months':
-            output = output + `${diff[key]} ${diff[key] === 1 ? month : months}`;
+            output = output + `${diff[key]}${diff[key] === 1 ? month : months}`;
             break;
           case 'days':
-            output = output + `${diff[key]} ${diff[key] === 1 ? day : days}`;
+            output = output + `${diff[key]}${diff[key] === 1 ? day : days}`;
             break;
           case 'hours':
-            output = output + `${diff[key]} ${diff[key] === 1 ? hr : hrs}`;
+            output = output + `${diff[key]}${diff[key] === 1 ? hr : hrs}`;
             break;
           case 'minutes':
-            output = output + `${diff[key]} ${diff[key] === 1 ? mn : mns}`;
+            output = output + `${diff[key]}${diff[key] === 1 ? mn : mns}`;
             break;
           case 'seconds':
             if (!diff.minutes && diff.seconds < 30) {
               output = now;
             } else if (diff.minutes < 2) {
-              output = output + `${diff[key]} ${diff[key] === 1 ? sec : secs}`;
+              output = output + `${diff[key]}${diff[key] === 1 ? sec : secs}`;
             }
             break;
         }
