@@ -1,4 +1,4 @@
-<img #asset *ngIf="mimeType?.startsWith('image/')" [attr.data-src]="src" />
+<img #asset *ngIf="mimeType?.startsWith('image/')" [attr.data-src]="dataSrc" [src]="src" />
 <video #asset *ngIf="mimeType?.startsWith('video/')" [attr.data-src]="src"></video>
 <model-viewer #asset *ngIf="mimeType?.startsWith('model/')" id="modelCanvas" auto-rotate rotation-per-second="30deg"
   [attr.data-src]="src"></model-viewer>

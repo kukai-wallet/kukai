@@ -1,3 +1,4 @@
+
 import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import mimes from 'mime-db/db.json'
 import { Asset, CachedAsset } from '../../../services/token/token.service';
@@ -12,7 +13,8 @@ export class AssetComponent implements OnInit, OnChanges, AfterViewInit {
   @ViewChild('asset') asset;
   @Input() meta: Asset;
   @Input() size = '150x150';
-  src = undefined;
+  dataSrc = undefined;
+  src = '../../../../assets/img/loader.svg';
   readonly baseUrl = 'https://backend.kukai.network/file';
   mimeType = 'image/*';
 
@@ -33,20 +35,26 @@ export class AssetComponent implements OnInit, OnChanges, AfterViewInit {
 
   ngAfterViewInit() {
     this.lazyLoad();
+    this.asset.nativeElement.onerror = this.onError;
+  }
+
+  onError() {
+    this.src = '../../../../assets/img/question-circle.svg';
   }
 
   async evaluate() {
-    this.src = undefined;
+    this.dataSrc = undefined;
+    this.src = '../../../../assets/img/loader.svg';
     this.mimeType = 'image/*';
     if (typeof (this.meta) === 'object') {
       this.mimeType = Object.keys(mimes).filter(key => !!mimes[key]?.extensions?.length).find((key) => mimes[key].extensions.includes((this.meta as CachedAsset)?.extension));
-      this.src = `${this.baseUrl}/${this.meta.filename}_${this.size}.${this.meta.extension}`;
+      this.dataSrc = `${this.baseUrl}/${this.meta.filename}_${this.size}.${this.meta.extension}`;
     } else if (typeof (this.meta) === 'string' && this.meta) {
-      this.src = this.meta;
+      this.dataSrc = this.meta;
     } else if (!this.meta) {
       console.log('No meta', this.meta);
       this.mimeType = 'image/*';
-      this.src = '../../../../assets/img/question-mark.svg';
+      this.dataSrc = '../../../../assets/img/question-circle.svg';
     }
   }
 
@@ -62,7 +70,7 @@ export class AssetComponent implements OnInit, OnChanges, AfterViewInit {
         if (entry.isIntersecting) {
           const lazyAsset = entry.target as HTMLImageElement | HTMLVideoElement;
           //console.log("lazy loading ", lazyAsset)
-          lazyAsset.src = lazyAsset.dataset.src;
+          this.src = this.dataSrc;
           this.obs.unobserve(lazyAsset);
         }
       })
