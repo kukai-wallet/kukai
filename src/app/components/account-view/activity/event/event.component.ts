@@ -126,4 +126,3 @@ export class EventComponent implements OnInit, OnChanges {
     this.messageService.add(address + ' ' + copyToClipboard, 5);
   }
 }
-
