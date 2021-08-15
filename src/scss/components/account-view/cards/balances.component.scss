@@ -74,6 +74,7 @@ $border-color: v.$border-color;
         overflow: hidden;
         border-radius: v.$border-radius-hardest;
         border: $border-width solid $border-color;
+        cursor: pointer;
       }
 
       & .title {
@@ -83,6 +84,7 @@ $border-color: v.$border-color;
         height: 3rem;
         align-items: flex-start;
         letter-spacing: 0.02em;
+        cursor: pointer;
       }
 
       & .prices {

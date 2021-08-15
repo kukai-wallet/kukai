@@ -7,6 +7,7 @@ import { TokenService } from '../../../services/token/token.service';
 import { CONSTANTS } from '../../../../environments/environment';
 import { WalletService } from '../../../services/wallet/wallet.service';
 import { TokenBalancesService } from '../../../services/token-balances/token-balances.service';
+import { ModalComponent } from '../../modal/modal.component';
 
 @Component({
   selector: 'app-balances',
@@ -29,6 +30,9 @@ export class BalancesComponent implements OnInit {
   ) {
   }
   ngOnInit(): void {
+  }
+  viewToken(token) {
+    ModalComponent.currentModel.next({ name: 'token-detail', data: token });
   }
   trackToken(index: number, token: any) {
     return token?.contractAddress ? token.contractAddress + ':' + token?.id + ':' + token?.balance : null;

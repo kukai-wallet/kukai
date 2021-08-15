@@ -9,10 +9,10 @@
     <div class="flex-column balances">
       <div class="flex-row balance">
         <div class="flex-row left">
-          <img class="icon" src="../../../../assets/img/tezos-xtz-logo.svg" />
-          <div class="flex-row title">Tezos</div>
+          <img class="icon" src="../../../../assets/img/tezos-xtz-logo.svg" (click)="viewToken({ name: 'Tezos', balance: account?.balanceXTZ, price: account?.balanceUSD })" />
+          <div class="flex-row title" (click)="viewToken({ name: 'Tezos', balance: account?.balanceXTZ, price: account?.balanceUSD })">Tezos</div>
           <div class="flex-column prices">
-            <div *ngIf="account" class="price">{{this.account?.balanceXTZ / 1000000 | number: '1.0-6'}}</div>
+            <div class="price">{{account?.balanceXTZ / 1000000 | number: '1.0-6'}}</div>
             <div class="price-usd">{{ account?.balanceUSD ? '$' + (account.balanceUSD | number: '1.2-2') : '$0.00' }}</div>
           </div>
         </div>
@@ -23,8 +23,8 @@
       <ng-container *ngFor="let tokenBalance of this.tokenBalancesService.balances; trackBy: trackToken">
         <div class="flex-row balance">
           <div class="flex-row left">
-            <app-asset class="icon" [meta]="tokenBalance?.thumbnailAsset || tokenBalance?.displayAsset" [class.pd]="!(tokenBalance?.thumbnailAsset || tokenBalance?.displayAsset)"></app-asset>
-            <div class="flex-row title">{{tokenBalance?.symbol}}</div>
+            <app-asset class="icon" [meta]="tokenBalance?.thumbnailAsset || tokenBalance?.displayAsset" [class.pd]="!(tokenBalance?.thumbnailAsset || tokenBalance?.displayAsset)" (click)="viewToken(tokenBalance)"></app-asset>
+            <div class="flex-row title" (click)="viewToken(tokenBalance)">{{tokenBalance?.symbol}}</div>
             <div class="flex-column prices">
               <div class="price">{{tokenBalance?.balance}}</div>
               <div class="price-usd">{{ tokenBalance?.price && tokenBalance.price >= 0.005 ? '$' + (tokenBalance.price | number:'1.2-2') : '—' }}</div>
