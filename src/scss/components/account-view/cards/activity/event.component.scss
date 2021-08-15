@@ -89,10 +89,10 @@ $event-new: v.$base-end-color;
         background-color: $base-red-color;
       }
       & .title,
-      & .title .failed {
+      & .failed {
         color: $base-red-color;
       }
-      & .title .failed {
+      & .failed {
         @include m.multiply("font-size", 1.25);
       }
     }
@@ -100,7 +100,10 @@ $event-new: v.$base-end-color;
     & .title {
       @include m.multiply("font-size", 1.5);
       margin-bottom: 0.5rem;
-      justify-content: flex-start;
+
+      & img {
+        margin: 0 0.5rem 0 0;
+      }
     }
 
     & .address {
@@ -131,17 +134,17 @@ $event-new: v.$base-end-color;
     }
 
     & .time {
-      width: 9rem;
       text-align: right;
       color: $base-font-color;
       justify-content: flex-end;
       & img {
         width: 1rem;
         height: 1rem;
-        margin: 0 0.5rem 0 0;
+        margin: 0 0 0 0.5rem;
       }
       & a {
         color: $base-font-color;
+        white-space: nowrap;
       }
       & a:hover {
         text-decoration: underline;

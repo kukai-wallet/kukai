@@ -49,6 +49,7 @@ import { EventComponent } from './components/account-view/activity/event/event.c
 import { NftsComponent } from './components/account-view/nfts/nfts.component';
 import { PendingComponent } from './components/account-view/pending/pending.component';
 import { BalancesComponent } from './components/account-view/balances/balances.component';
+import { BalanceTokenComponent } from './components/account-view/balances/token/balance-token.component';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { AgreementComponent } from './components/agreement/agreement.component';
 import { TermsOfUseComponent } from './components/agreement/terms-of-use/terms-of-use.component';
@@ -101,6 +102,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     NftsComponent,
     PendingComponent,
     BalancesComponent,
+    BalanceTokenComponent,
     SpinnerComponent,
     AgreementComponent,
     TermsOfUseComponent,

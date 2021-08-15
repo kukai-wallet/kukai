@@ -70,6 +70,9 @@ export class EventComponent implements OnInit, OnChanges {
   getEventIcon() {
     return `../../../../assets/img/${LookupType[this.getCounterparty(this.activity)?.lookupType].toLowerCase().replace('tezosdomains', 'domain')}-logo.svg`;
   }
+  getEventStatusIcon() {
+    return this.fresh && this.activity.status === 1 ? '../../../../assets/img/event-new.png' : this.activity.status === 1 ? '../../../../assets/img/event-confirmed.png' : this.activity.status === 0 ? '../../../../assets/img/event-unconfirmed.png' : this.activity.status === -1 ? '../../../../assets/img/event-error.png' : this.activity.status === 0.5 ? '../../../../../assets/img/feeLoader.gif' : '../../../../assets/img/event-unconfirmed.png'
+  }
   printAmount(): string {
     switch (this.getType()) {
       case 'sent':
