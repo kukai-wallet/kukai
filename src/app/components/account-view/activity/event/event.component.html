@@ -1,35 +1,40 @@
-<div [class]="getType().replace('undelegated', 'delegated')" [class.unconfirmed]="activity.status === 0 || activity.status === 0.5" [class.confirmed]="activity.status === 1" [class.new]="fresh && activity.status === 1"
-  [class.failed]="activity.status === -1">
-  <div class="flex-column">
+
+<div [class]="getType().replace('undelegated', 'delegated')"
+[class.unconfirmed]="activity.status === 0 || activity.status === 0.5" [class.confirmed]="activity.status === 1"
+[class.new]="fresh && activity.status === 1" [class.failed]="activity.status === -1">
+<div class="flex-column">
+  <div class="flex-row">
     <div class="flex-row title">
-      <ng-container *ngIf="!activity.entrypoint; else callEntrypoint"><img *ngIf="getType() === 'sent'" src="../../../../assets/img/up-arrow-black.svg" style="transform: rotate(45deg)" /><img *ngIf="getType() === 'received'" src="../../../../assets/img/up-arrow.svg" style="transform: rotate(135deg)" />&nbsp;
+      <ng-container *ngIf="!activity.entrypoint; else callEntrypoint"><img *ngIf="getType() === 'sent'"
+          src="../../../../assets/img/up-arrow-black.svg" style="transform: rotate(45deg)" /><img
+          *ngIf="getType() === 'received'" src="../../../../assets/img/up-arrow.svg"
+          style="transform: rotate(135deg)" />
         {{ printAmount() }}</ng-container>
       <ng-template #callEntrypoint>{{ sentKind(activity) }}</ng-template>
-      <span class="failed" *ngIf="activity.status === -1">Error</span>
     </div>
-    <div class="flex-row"><div class="flex-row-wrap address"><span class="prefix">{{ getAddressPrefix(getType()) }}&nbsp;</span><span class="flex-row value"><img
-          *ngIf="!!getCounterparty(activity)?.lookupType && getCounterparty(activity)?.lookupType !== 5" [src]="getEventIcon()" />{{
+    <span class="failed" *ngIf="activity.status === -1">Error</span>
+  </div>
+  <div class="flex-row">
+    <div class="flex-row-wrap address"><span class="prefix">{{ getAddressPrefix(getType()) }}&nbsp;</span><span
+        class="flex-row value"><img
+          *ngIf="!!getCounterparty(activity)?.lookupType && getCounterparty(activity)?.lookupType !== 5"
+          [src]="getEventIcon()" />{{
         getCounterparty(activity)?.name || getCounterparty(activity)?.address || ''
         }}<img class="copy" src="../../../../assets/img/copy-icon.svg"
           (click)="copy(getCounterparty(activity)?.address)" /></span></div>
-      <span class="flex-row time">
-        <img [src]="fresh && activity.status === 1 ? '../../../../assets/img/event-new.png' : activity.status === 1 ? '../../../../assets/img/event-confirmed.png' : activity.status === 0 ? '../../../../assets/img/event-unconfirmed.png' : activity.status === -1 ? '../../../../assets/img/event-error.png' : activity.status === 0.5 ? '../../../../../assets/img/feeLoader.gif' : '../../../../assets/img/event-unconfirmed.png'"/>
-        <a *ngIf="activity.status !== 0" href="{{ explorerURL(activity.hash) }}" target="_blank">
-          <ng-container *ngIf="activity.status !== 0.5; else halfConfirmed">
-            {{ activity.timestamp | timeAgo:trigger }}
-          </ng-container>
-          <ng-template #halfConfirmed>
-            Confirmed
-          </ng-template>
-        </a>
+    <span class="flex-row time">
+      <a *ngIf="activity.status !== 0" href="{{ explorerURL(activity.hash) }}" target="_blank">
+        <ng-container *ngIf="activity.status !== 0.5; else halfConfirmed">
+          {{ activity.timestamp | timeAgo:trigger }}
+        </ng-container>
         <ng-template #halfConfirmed>
-          <img style="width: 0.875rem; height: 0.875rem; padding-top: 0.125rem;" src="../../../../../assets/img/feeLoader.gif">
-          <a href="{{ explorerURL(activity.hash) }}" target="_blank">
-            Confirmed
-          </a>
+          Confirmed
         </ng-template>
-      </span>
+      </a>
       <ng-container *ngIf="activity.status === 0">Unconfirmed</ng-container>
-    </div>
+      <img
+        [src]="getEventStatusIcon()" />
+    </span>
   </div>
+</div>
 </div>
