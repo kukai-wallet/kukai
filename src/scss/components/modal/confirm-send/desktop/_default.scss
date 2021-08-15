@@ -9,7 +9,19 @@ $base-red-color: v.$base-red-color;
 $base-blue-color-lightened: v.$base-blue-color-lightened;
 $base-color-lightened-5: v.$base-color-lightened-5;
 $base-color-lightened-7: v.$base-color-lightened-7;
-$border-color: v.$border-color;
+$border-width: v.$border-width;
+$border-color: #e6eaef;
+
+.Rectangle_1532 {
+  background-color: rgba(132, 152, 177, 0.2);
+  position: absolute;
+  left: 840px;
+  top: 333px;
+  width: 420px;
+  height: 2px;
+  z-index: 573;
+}
+
 
 @mixin confirm-send-default {
   .confirm-send {
@@ -124,7 +136,7 @@ $border-color: v.$border-color;
           padding: 0 0 0.5rem 0;
           @include m.multiply("font-size", 1.5);
           font-weight: 600;
-          border-bottom: 3px solid v.$border-color;
+          border-bottom: $border-width solid #dde2e9;
         }
 
         & .items {

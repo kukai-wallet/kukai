@@ -2,31 +2,31 @@
   &.batch {
     & .top {
       & .left {
-        width: 23%;
+        width: 25%;
       }
 
       & .right {
-        width: calc(77% - 1rem);
+        width: calc(75% - 1rem);
       }
     }
 
     & .from {
       & .left {
-        width: 23%;
+        width: 25%;
       }
 
       & .right {
-        width: calc(77% - 1rem);
+        width: calc(75% - 1rem);
       }
     }
 
     & .to {
       & .left {
-        width: 23%;
+        width: 25%;
       }
 
       & .right {
-        width: calc(77% - 1rem);
+        width: calc(75% - 1rem);
       }
     }
   }
