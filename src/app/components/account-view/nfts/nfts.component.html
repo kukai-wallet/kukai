@@ -2,8 +2,8 @@
   <div class="flex-row top-container-nfts">
     <div class="flex-row">
       <h1>{{ !isDiscover ? 'NFT / Collectibles' : 'Discover Apps' }}</h1>
-      <span class="flex-row button icon-grey" [class.selected]="isDiscover === 'DISCOVER'"
-        (click)="isDiscover = !isDiscover">{{ !isDiscover ? 'DISCOVER' : 'My NFTs' }}</span>
+      <span class="flex-row button icon-grey discover" [class.selected]="isDiscover === 'DISCOVER'"
+        (click)="isDiscover = !isDiscover">{{ !isDiscover ? 'DISCOVER' : 'NFT / COLLECTIBLES' }}</span>
     </div>
     <div class="flex-row right">
       <ng-container *ngIf="this.nfts && Object.keys(this.nfts).length > 0 && !isDiscover">
