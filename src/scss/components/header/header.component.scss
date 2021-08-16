@@ -49,21 +49,6 @@ $base-background-color: v.$base-background-color;
     }
   }
 
-  & .network {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    padding: 0.5rem 0;
-    @include m.multiply("font-size", 1.25);
-    font-weight: 500;
-    color: $base-end-color;
-    z-index: 5000;
-    text-align: center;
-    background-color: $base-red-color;
-    transition: 0.25s box-shadow;
-  }
-
   & .torus-name {
     position: absolute;
     bottom: 1rem;

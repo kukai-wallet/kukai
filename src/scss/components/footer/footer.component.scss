@@ -1,14 +1,8 @@
 @use '../../abstracts/mixins' as m;
 @use '../../abstracts/variables' as v;
 
-:host {
-  height: 8rem;
-  margin: 2rem 0 0 0;
-  width: 100%;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+:host.initial div.foot-container {
+  position: initial;
 }
 :host.hide {
   visibility: hidden;
@@ -17,9 +11,19 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
-  height: 100%;
   flex-direction: column;
+  height: 8rem;
+  margin: 2rem 0 0 0;
+  width: 100vw;
+  overflow: hidden;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+@media (max-width: v.$layout-break-3) and (max-aspect-ratio: 1/1), (max-width: v.$layout-break-5) {
+  :host div.foot-container {
+    position: initial;
+  }
 }
 #follow {
   height: 5rem;

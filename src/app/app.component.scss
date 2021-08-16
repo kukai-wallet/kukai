@@ -1,4 +1,19 @@
+@use '../scss/abstracts/variables'as v;
+@use '../scss/abstracts/mixins'as m;
+
 :host {
   width: 100vw;
   min-height: 100vh;
+
+  & .network {
+    width: 100vw;
+    padding: 0.5rem 0;
+    @include m.multiply("font-size", 1.25);
+    font-weight: 500;
+    color: v.$base-end-color;
+    z-index: 5000;
+    text-align: center;
+    background-color: v.$base-red-color;
+    transition: 0.25s box-shadow;
+  }
 }
