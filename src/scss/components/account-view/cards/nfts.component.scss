@@ -172,6 +172,7 @@ $box-shadow: 0px 4px 6px #3332;
 
       & > .scroll {
         top: 0rem;
+        display: flex;
       }
     }
 
@@ -308,6 +309,7 @@ $box-shadow: 0px 4px 6px #3332;
       z-index: 0;
       position: relative;
       top: -1rem;
+      display: none;
     }
 
     &.scroll .body {
