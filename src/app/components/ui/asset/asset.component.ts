@@ -39,7 +39,7 @@ export class AssetComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   onError() {
-    this.src = '../../../../assets/img/question-circle.svg';
+    this.src = '../../../../assets/img/question-mark.png';
   }
 
   async evaluate() {
@@ -54,7 +54,7 @@ export class AssetComponent implements OnInit, OnChanges, AfterViewInit {
     } else if (!this.meta) {
       console.log('No meta', this.meta);
       this.mimeType = 'image/*';
-      this.dataSrc = '../../../../assets/img/question-circle.svg';
+      this.dataSrc = '../../../../assets/img/question-mark.png';
     }
   }
 
