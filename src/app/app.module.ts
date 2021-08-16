@@ -62,6 +62,7 @@ import { AlertComponent } from './components/modal/alert/alert.component';
 import { SpinnerLegacyComponent } from './components/spinner/legacy/spinner-legacy.component';
 import { SpinnerNewComponent } from './components/spinner/new/spinner-new.component';
 import { AccountDropdownComponent } from './components/ui/dropdown/account/account-dropdown.component';
+import { MobileMenuDropdownComponent } from './components/ui/dropdown/mobile-menu/mobile-menu.component';
 import { P404Component } from './components/error/404.component';
 import { P500Component } from './components/error/500.component';
 
@@ -112,6 +113,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     SpinnerLegacyComponent,
     SpinnerNewComponent,
     AccountDropdownComponent,
+    MobileMenuDropdownComponent,
     SpinnerLegacyComponent,
 
     // Modals
