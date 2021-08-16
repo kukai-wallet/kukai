@@ -8,12 +8,15 @@ import { CONSTANTS } from '../../../../../environments/environment';
   styleUrls: ['../../../../../scss/components/account-view/cards/balances/balance-token.component.scss'],
 })
 export class BalanceTokenComponent implements OnInit {
+  String = String;
   @Input() token = null;
   @Input() account;
   contractAliases = CONSTANTS.CONTRACT_ALIASES;
 
   constructor() { }
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    console.log(this.token)
+  }
 
   getBalance() {
     return !this.token ? this.account?.balanceXTZ / 1000000 : this.token?.balance;
