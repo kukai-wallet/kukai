@@ -251,16 +251,20 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
       strict checks that
     2. create basic transaction array
   */
-  sanitizeNumberInput(e) {
-    e.target.value = e.target.value.replace(/[^0-9\.]/g, '');
-    if((e.target.value.match(/\./g) || []).length > 1) {
-      const tmp = e.target.value.split('');
-      tmp.splice(tmp.lastIndexOf('.'), 1);
-      e.target.value = tmp.join('');
-
-    }
-    if (e.target.value.charAt(0) === '.') {
-      e.target.value = '0' + e.target.value;
+  sanitizeNumberInput(e, type = '') {
+    console.dir(this.token?.decimals, e.target)
+    if (['gas', 'storage'].includes(type) || (type === 'amount' && this.token?.decimals == 0)) {
+      e.target.value = e.target.value.replace(/[^0-9]/g, '');
+    } else {
+      e.target.value = e.target.value.replace(/[^0-9\.]/g, '');
+      if ((e.target.value.match(/\./g) || []).length > 1) {
+        const tmp = e.target.value.split('');
+        tmp.splice(tmp.lastIndexOf('.'), 1);
+        e.target.value = tmp.join('');
+      }
+      if (e.target.value.charAt(0) === '.') {
+        e.target.value = '0' + e.target.value;
+      }
     }
   }
   updateDefaultValues(e?: any) {
@@ -575,25 +579,6 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
       return '2';
     }
     return '1.5';
-  }
-  // Only Numbers with Decimals
-  keyPressNumbersDecimal(event, input) {
-    const charCode = (event.which) ? event.which : event.keyCode;
-    if (charCode !== 46 && charCode > 31
-      && (charCode < 48 || charCode > 57)) {
-      event.preventDefault();
-      return false;
-    } else if (charCode === 46) {
-      const meta = this.token ?? null;
-      if (input.includes('.') ||
-        (input === 'amount' && meta?.decimals == 0)) {
-        event.preventDefault();
-        return false;
-      } else if (input.length === 0) {
-        input = '0' + input;
-      }
-    }
-    return true;
   }
 
   dropdownResponse(data) {

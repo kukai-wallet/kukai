@@ -23,6 +23,9 @@
     & .to {
       & .left {
         width: 25%;
+        & span {
+          margin: 0;
+        }
       }
 
       & .right {

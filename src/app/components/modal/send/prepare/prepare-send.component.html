@@ -14,8 +14,7 @@
           'QUANTITY'}}:</span>
         <div *ngIf="!this.token || !(this.token?.isBooleanAmount || this.token?.balance == 1)" class="flex-row amount">
           <input #amountInput [placeholder]="token?.decimals == 0 ? '0' : '0.00'" [(ngModel)]="amount"
-            (mousedown)="sendMax = false; default" (input)="amountChange()"
-            (keypress)="keyPressNumbersDecimal($event, 'amount')" (change)="amountChange()"
+            (mousedown)="sendMax = false; default" (input)="sanitizeNumberInput($event, 'amount'); amountChange()" (paste)="sanitizeNumberInput($event, 'amount')" (change)="amountChange()"
             [disabled]="isMultipleDestinations" />
           <button *ngIf="!this.isMultipleDestinations" tabindex=-1 class="small" [class.max]="sendMax"
             (click)="sendEntireBalance($event)">MAX</button>
@@ -64,20 +63,19 @@
         <div class="flex-row">
           <div class="flex-column">
             <label class="label">Gas limit</label>
-            <input type="text" class="text" (input)="sanitizeNumberInput($event)" (paste)="sanitizeNumberInput($event)" placeholder={{this.defaultTransactionParams.gas.toString()}}
+            <input type="text" class="text" (input)="sanitizeNumberInput($event, 'gas')" (paste)="sanitizeNumberInput($event, 'gas')" placeholder={{this.defaultTransactionParams.gas.toString()}}
               [(ngModel)]="customGasLimit">
           </div>
           <div class="flex-column">
             <label class="label">Fee</label>
-            <input type="text" (input)="updateMaxAmount()" (paste)="keyPressNumbersDecimal($event, 'customFee'); updateMaxAmount()" class="text"
-              (keypress)="keyPressNumbersDecimal($event, 'customFee')"
+            <input type="text" (input)="sanitizeNumberInput($event); updateMaxAmount()" (paste)="sanitizeNumberInput($event); updateMaxAmount()" class="text"
               placeholder={{this.defaultTransactionParams.fee.toString()}} [(ngModel)]="customFee">
           </div>
         </div>
         <div class="flex-row">
           <div class="flex-column">
             <label class="label">Storage limit</label>
-            <input type="text" (input)="sanitizeNumberInput($event); updateMaxAmount()" (paste)="sanitizeNumberInput($event); updateMaxAmount()" class="text"
+            <input type="text" (input)="sanitizeNumberInput($event, 'storage'); updateMaxAmount()" (paste)="sanitizeNumberInput($event, 'storage'); updateMaxAmount()" class="text"
               placeholder={{this.defaultTransactionParams.storage.toString()}} [(ngModel)]="customStorageLimit">
           </div>
           <div class="flex-column">

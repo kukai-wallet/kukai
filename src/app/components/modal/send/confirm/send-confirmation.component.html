@@ -100,20 +100,20 @@
           <div class="flex-row">
             <div class="flex-column">
               <label class="label">Gas limit</label>
-              <input type="text" class="text" (keypress)="sanitizeNumberInput()" (paste)="sanitizeNumberInput()"
+              <input type="text" class="text" (input)="sanitizeNumberInput($event, 'gas')" (paste)="sanitizeNumberInput($event, 'gas')"
                 [placeholder]="getTotalDefaultGas() || '0'" [(ngModel)]="customGasLimit">
             </div>
             <div class="flex-column">
               <label class="label">Fee</label>
               <input type="text" class="text" [placeholder]="getTotalFee() || '0'"
-                (paste)="keyPressNumbersDecimal($event, 'customFee');"
-                (keypress)="keyPressNumbersDecimal($event, 'customFee');" [(ngModel)]="customFee">
+                (paste)="sanitizeNumberInput($event)"
+                (input)="sanitizeNumberInput($event)" [(ngModel)]="customFee">
             </div>
           </div>
           <div class="flex-row">
             <div class="flex-column">
               <label class="label">Storage limit</label>
-              <input type="text" class="text" (keypress)="sanitizeNumberInput()" (paste)="sanitizeNumberInput()"
+              <input type="text" class="text" (input)="sanitizeNumberInput($event, 'storage')" (paste)="sanitizeNumberInput($event, 'storage')"
                 [placeholder]="getTotalDefaultStorage() || '0'" [(ngModel)]="customStorageLimit">
             </div>
             <div class="flex-column">
