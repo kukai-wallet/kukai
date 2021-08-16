@@ -1,0 +1,13 @@
+<div class="flex-row balance" [style.border]="!token ? 'none' : ''" [style.padding]="!token ? '2rem 0.5rem 1rem 2rem' : ''">
+  <div class="flex-row left">
+    <app-asset class="icon" [meta]="!token ? '../../../../assets/img/tezos-xtz-logo.svg' : token?.thumbnailAsset || token?.displayAsset" [class.pd]="!(token?.thumbnailAsset || token?.displayAsset)" [class.sd]="!token" (click)="viewToken()"></app-asset>
+    <div class="flex-row title" (click)="viewToken()">{{!token ? 'Tezos' : token.symbol}}</div>
+    <div class="flex-column prices">
+      <div class="price">{{ getBalance() }}</div>
+      <div class="price-usd">{{ getBalanceFiat() ? '$' + (getBalanceFiat() | number:'1.2-2') : '—' }}</div>
+    </div>
+  </div>
+  <div class="flex-row right">
+    <app-send-button [activeAccount]="account" [tokenTransfer]="!token ? null : token?.contractAddress + ':' + token?.id" [symbol]="!token ? 'tez' : token?.symbol"></app-send-button>
+  </div>
+</div>
