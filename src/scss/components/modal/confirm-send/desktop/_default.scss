@@ -142,6 +142,10 @@ $border-color: #e6eaef;
           & .fiat {
             width: auto;
             margin: 0;
+
+            & .value {
+              color: $base-font-color-secondary;
+            }
           }
         }
 
