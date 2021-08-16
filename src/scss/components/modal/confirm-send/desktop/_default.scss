@@ -22,7 +22,6 @@ $border-color: #e6eaef;
   z-index: 573;
 }
 
-
 @mixin confirm-send-default {
   .confirm-send {
     margin: 2rem 0 0 0;
@@ -36,7 +35,7 @@ $border-color: #e6eaef;
         @include m.multiply("font-size", 1.25);
       }
 
-      .value {
+      & .value {
         @include m.multiply("font-size", 1.25);
       }
     }
@@ -46,7 +45,7 @@ $border-color: #e6eaef;
         @include m.multiply("font-size", 1.25);
       }
 
-      .value {
+      & .value {
         @include m.multiply("font-size", 1.625);
       }
     }
@@ -131,15 +130,32 @@ $border-color: #e6eaef;
         height: 100%;
         justify-content: flex-start;
 
-        & .amount-tez {
+        & .amount {
           margin: 0 0 1rem 0;
           padding: 0 0 0.5rem 0;
-          @include m.multiply("font-size", 1.5);
-          font-weight: 600;
           border-bottom: $border-width solid #dde2e9;
+          & .tez {
+            @include m.multiply("font-size", 1.5);
+            font-weight: 600;
+          }
+
+          & .fiat {
+            width: auto;
+            margin: 0;
+          }
         }
 
         & .items {
+          & .key {
+            @include m.multiply("font-size", 1);
+            text-transform: unset;
+  
+            & .value {
+              font-size: 1rem;
+              font-weight: 500;
+            }
+          }
+
           & .key.amount-quantity {
             font-weight: 500;
             color: v.$base-font-color;
@@ -147,15 +163,6 @@ $border-color: #e6eaef;
             & .value {
               font-weight: 500;
               font-size: 1.5rem;
-            }
-          }
-
-          & .key {
-            @include m.multiply("font-size", 1);
-            text-transform: unset;
-
-            & .value {
-              font-size: 1rem;
             }
           }
         }

@@ -9,19 +9,22 @@
       <div class="flex-row top">
         <div class="flex-column left">
           <span *ngIf="!tokenBalanceService.isNFT(token)" class="key">SEND AMOUNT:</span>
-          <app-asset class="token-image" [class.balance]="!tokenBalanceService.isNFT(token)" [meta]="token ? token.thumbnailAsset || token.displayAsset : '../../../assets/img/tezos-xtz-logo.svg'" [class.sd]="!token"></app-asset>
+          <app-asset class="token-image" [class.balance]="!tokenBalanceService.isNFT(token)"
+            [meta]="token ? token.thumbnailAsset || token.displayAsset : '../../../assets/img/tezos-xtz-logo.svg'"
+            [class.sd]="!token"></app-asset>
         </div>
         <div class="flex-column right">
-          <span class="amount-tez value">{{ formatAmount(token, totalAmount(),
-            false)
-            }}</span>
-          <div class="flex-column items">
-            <ng-container *ngIf="!tokenTransfer"><span class="amount-usd key">USD: <span class="value">{{'$' +
+          <span class="flex-row amount"><span class="tez value">{{ formatAmount(token, totalAmount(),
+              false)
+              }}</span>
+            <ng-container *ngIf="!tokenTransfer"><span class="fiat key">USD: <span class="value">{{'$' +
                   (totalAmount()
                   *
                   walletService.wallet.XTZrate | number:'1.2-2')
                   }}</span></span>
             </ng-container>
+          </span>
+          <div class="flex-column items">
             <span *ngIf="tokenBalanceService.isNFT(token)" class="key amount-quantity">QUANTITY:&nbsp;&nbsp;<span
                 class="value">{{ getQuantity(totalAmount())
                 }}</span></span>
@@ -51,7 +54,8 @@
       </div>
       <div class="flex-row to">
         <div class="flex-column left">
-          <span class="key" [style.margin]="transactions.length === 1 ? '0.125rem 0 0 0' : ''">SEND TO<ng-container *ngIf="parameters">&nbsp;BATCH</ng-container>: </span>
+          <span class="key" [style.margin]="transactions.length === 1 ? '0.125rem 0 0 0' : ''">SEND TO<ng-container
+              *ngIf="parameters && transactions?.length > 1">&nbsp;BATCH</ng-container>: </span>
         </div>
         <div class="flex-column right">
           <div *ngFor="let transaction of transactions | slice:0:showAll; index as i"
@@ -74,12 +78,13 @@
       </div>
       <br />
       <br />
-      <span *ngIf="parameters && transactions.length > 1" class="flex-row transfer-amount"><span class="key">TRANSFER AMOUNT: </span><span
-          class="key">{{ (transactions[batchParamIndex]?.amount | number:'1.0-6')
+      <span *ngIf="parameters && transactions.length > 1" class="flex-row transfer-amount"><span class="key">TRANSFER
+          AMOUNT: </span><span class="key">{{ (transactions[batchParamIndex]?.amount | number:'1.0-6')
           }}</span></span>
-      <div *ngIf="parameters && parameters?.entrypoint" class="flex-row contract-call"><span class="key">CONTRACT CALL: </span><span
-          class="key">{{ parameters?.entrypoint }}</span></div>
-      <app-ui-toggle-advanced style="width: 13rem;" *ngIf="externalReq" [default]="false" (stateChange)="advancedForm = $event">
+      <div *ngIf="parameters && parameters?.entrypoint" class="flex-row contract-call"><span class="key">CONTRACT CALL:
+        </span><span class="key">{{ parameters?.entrypoint }}</span></div>
+      <app-ui-toggle-advanced style="width: 13rem;" *ngIf="externalReq" [default]="false"
+        (stateChange)="advancedForm = $event">
       </app-ui-toggle-advanced>
       <div *ngIf="advancedForm" class="advanced-form">
         <ng-container *ngIf="parameters">
@@ -95,18 +100,21 @@
           <div class="flex-row">
             <div class="flex-column">
               <label class="label">Gas limit</label>
-              <input type="text" class="text" (keypress)="sanitizeNumberInput()" (paste)="sanitizeNumberInput()" [placeholder]="getTotalDefaultGas() || '0'" [(ngModel)]="customGasLimit">
+              <input type="text" class="text" (keypress)="sanitizeNumberInput()" (paste)="sanitizeNumberInput()"
+                [placeholder]="getTotalDefaultGas() || '0'" [(ngModel)]="customGasLimit">
             </div>
             <div class="flex-column">
               <label class="label">Fee</label>
-              <input type="text" class="text" [placeholder]="getTotalFee() || '0'" (paste)="keyPressNumbersDecimal($event, 'customFee');" (keypress)="keyPressNumbersDecimal($event, 'customFee');" [(ngModel)]="customFee">
+              <input type="text" class="text" [placeholder]="getTotalFee() || '0'"
+                (paste)="keyPressNumbersDecimal($event, 'customFee');"
+                (keypress)="keyPressNumbersDecimal($event, 'customFee');" [(ngModel)]="customFee">
             </div>
           </div>
           <div class="flex-row">
             <div class="flex-column">
               <label class="label">Storage limit</label>
-              <input type="text" class="text" (keypress)="sanitizeNumberInput()" (paste)="sanitizeNumberInput()" [placeholder]="getTotalDefaultStorage() || '0'"
-                [(ngModel)]="customStorageLimit">
+              <input type="text" class="text" (keypress)="sanitizeNumberInput()" (paste)="sanitizeNumberInput()"
+                [placeholder]="getTotalDefaultStorage() || '0'" [(ngModel)]="customStorageLimit">
             </div>
             <div class="flex-column">
               <label class="label">Max storage cost</label>
