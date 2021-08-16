@@ -22,6 +22,7 @@
           }}<img class="copy" src="../../../../assets/img/copy-icon.svg"
             (click)="copy(getCounterparty(activity)?.address)" /></span></div>
       <span class="flex-row time">
+        <img [src]="getEventStatusIcon()" />
         <a *ngIf="activity.status !== 0" href="{{ explorerURL(activity.hash) }}" target="_blank">
           <ng-container *ngIf="activity.status !== 0.5; else halfConfirmed">
             {{ activity.timestamp | timeAgo:trigger }}
@@ -31,7 +32,6 @@
           </ng-template>
         </a>
         <ng-container *ngIf="activity.status === 0">Unconfirmed</ng-container>
-        <img [src]="getEventStatusIcon()" />
       </span>
     </div>
   </div>
