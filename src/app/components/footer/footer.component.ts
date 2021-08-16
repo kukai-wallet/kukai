@@ -16,21 +16,5 @@ export class FooterComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.path = this.location.path();
-    this.setFooter();
-    this.router.events.subscribe((event: Event) => {
-      if (event instanceof NavigationEnd) {
-        this.setFooter();
-      }
-    });
-  }
-  setFooter() {
-    const altFooter = ['/terms-of-use', '/privacy-policy', '/settings'];
-    this.path = this.location.path();
-    if (altFooter.includes(this.path)) {
-      this.darkText = true;
-    } else {
-      this.darkText = false;
-    }
   }
 }

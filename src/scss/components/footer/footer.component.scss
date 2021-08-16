@@ -1,6 +1,12 @@
 @use '../../abstracts/mixins' as m;
 @use '../../abstracts/variables' as v;
 
+:host {
+  & .mobile {
+    display: none;
+  }
+}
+
 :host.initial div.foot-container {
   position: initial;
 }
@@ -47,10 +53,10 @@
 }
 .dark #follow span,
 div.foot-container.dark > div.links > div.low > a {
-  color: #0003 !important;
+  color: v.$base-font-color;
 }
 .dark img {
-  filter: invert(40%);
+  filter: invert(100%);
 }
 #follow a {
   position: relative;
@@ -69,7 +75,7 @@ div.foot-container > div.links {
 }
 div.foot-container > div.links a {
   font-size: 0.5rem;
-  color: rgba(256, 256, 256, 0.6);
+  color: v.$base-font-color;
   margin-left: 1rem;
 }
 div.foot-container > div.links a:hover {
@@ -77,7 +83,7 @@ div.foot-container > div.links a:hover {
   background-color: #5963ff;
 }
 div.foot-container.dark > div.links a:hover {
-  color: #0003 !important;
+  color: v.$base-font-color;
   background-color: inherit;
 }
 div.foot-container > div.links > div {
@@ -107,11 +113,17 @@ div.foot-container > div.links > div.low {
 }
 #follow img:hover,
 div.foot-container > div.links a.docs img:hover {
-  filter: invert(25%) sepia(800%) saturate(2878%) hue-rotate(180deg);
+  filter: invert(25%) saturate(2878%) hue-rotate(180deg);
 }
 
-// @media (max-width: v.$lower-limit) {
-//   :host {
-//     padding: 0 2rem;
-//   }
-// }
+@media (max-width: v.$lower-limit) {
+  :host {
+    & .desktop {
+      display: none;
+    }
+
+    & .mobile {
+      display: inline-block;
+    }
+  }
+}
