@@ -12,6 +12,7 @@ $base-color-lightened-7: v.$base-color-lightened-7;
 $border-color-dark-only: v.$border-color-dark-only;
 $border-width: v.$border-width;
 $border-color: v.$border-color;
+$box-shadow: 0px 4px 6px #3332;
 
 @include base;
 
@@ -39,6 +40,17 @@ $border-color: v.$border-color;
       border: $border-width solid $base-color-lightened-5;
       justify-content: center;
       @include m.multiply("font-size", 1.15);
+    }
+
+    & .discover {
+      box-shadow: $box-shadow;
+      color: $base-blue-color-lightened;
+      background-color: $base-end-color;
+      border: none;
+      @include m.multiply("font-size", 1);
+      padding: 0.5rem 1.25rem;
+      letter-spacing: 0.02em;
+      font-weight: 500;
     }
 
     & .right {
@@ -160,6 +172,7 @@ $border-color: v.$border-color;
 
       & > .scroll {
         top: 0rem;
+        display: flex;
       }
     }
 
@@ -296,6 +309,7 @@ $border-color: v.$border-color;
       z-index: 0;
       position: relative;
       top: -1rem;
+      display: none;
     }
 
     &.scroll .body {

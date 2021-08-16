@@ -11,14 +11,14 @@ import { TokenBalancesService } from '../../../services/token-balances/token-bal
 export class BalancesComponent implements OnInit {
   Object = Object;
   @Input() account: Account;
-  tokenTezos = { symbol: 'tez', thumbnailAsset: '../../../../assets/img/tezos-xtz-logo.svg', displayAsset: '../../../../assets/img/tezos-xtz-logo.svg'};
   contractAliases = CONSTANTS.CONTRACT_ALIASES;
 
   constructor(
     public tokenBalancesService: TokenBalancesService
-  ) {}
-  
-  ngOnInit(): void {}
+  ) {
+  }
+  ngOnInit(): void {
+  }
   trackToken(index: number, token: any) {
     return token?.contractAddress ? token.contractAddress + ':' + token?.id + ':' + token?.balance : null;
   }

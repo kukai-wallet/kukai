@@ -200,7 +200,7 @@ export abstract class Account {
       }
     }
     if (tokenId.length > 37 && balance && balance !== '0' && balance.slice(0, 1) !== '-') {
-      this.tokens.push({ tokenId, balance});
+      this.tokens.unshift({ tokenId, balance});
     }
   }
 }

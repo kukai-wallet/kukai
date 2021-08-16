@@ -6,8 +6,8 @@
     </div>
   </div>
   <div class="scroll-wrapper">
+    <app-balance-token [account]="account"></app-balance-token>
     <div class="flex-column balances">
-      <app-balance-token [account]="account" [token]="tokenTezos"></app-balance-token>
       <ng-container *ngFor="let tokenBalance of this.tokenBalancesService.balances; trackBy: trackToken">
         <app-balance-token [account]="account" [token]="tokenBalance"></app-balance-token>
       </ng-container>

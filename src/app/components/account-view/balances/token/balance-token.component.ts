@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ModalComponent } from '../../../../components/modal/modal.component';
 import { CONSTANTS } from '../../../../../environments/environment';
 
 @Component({
@@ -7,7 +8,7 @@ import { CONSTANTS } from '../../../../../environments/environment';
   styleUrls: ['../../../../../scss/components/account-view/cards/balances/balance-token.component.scss'],
 })
 export class BalanceTokenComponent implements OnInit {
-  @Input() token;
+  @Input() token = null;
   @Input() account;
   contractAliases = CONSTANTS.CONTRACT_ALIASES;
 
@@ -15,11 +16,16 @@ export class BalanceTokenComponent implements OnInit {
   ngOnInit(): void {}
 
   getBalance() {
-    return this.token.symbol === 'tez' ? this.account?.balanceXTZ / 1000000 : this.token?.balance;
+    return !this.token ? this.account?.balanceXTZ / 1000000 : this.token?.balance;
   }
 
   getBalanceFiat() {
-    return this.token.symbol === 'tez' ? this.account?.balanceUSD || undefined : this.token?.price && this.token.price >= 0.005 ? this.token.price : undefined;
+    return !this.token  ? this.account?.balanceUSD || undefined : this.token?.price && this.token.price >= 0.005 ? this.token.price : undefined;
+  }
+  viewToken() {
+    if(!!this.token) {
+      ModalComponent.currentModel.next({ name: 'token-detail', data: this.token });
+    }
   }
 }
 

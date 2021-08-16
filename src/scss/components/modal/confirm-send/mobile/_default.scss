@@ -2,7 +2,7 @@
 @use '../../../../abstracts/variables'as v;
 @use './batch' as b;
 
-$border-color: v.$border-color;
+$border-color: #e6eaef;
 
 @mixin confirm-send-mobile-default {
   .confirm-send {

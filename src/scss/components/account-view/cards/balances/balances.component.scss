@@ -1,6 +1,6 @@
 @use '../../../../abstracts/variables'as v;
 @use '../../../../abstracts/mixins' as m;
-@import '../mixins';
+@import "../mixins";
 
 $base-font-color: v.$base-font-color;
 $base-end-color: v.$base-end-color;
@@ -36,6 +36,6 @@ $border-color: v.$border-color;
   overflow-y: auto;
   border-radius: v.$border-radius;
   background-color: $base-end-color;
-  padding: 1rem 0rem 1rem 2rem;
+  padding: 0rem 0.5rem 1rem 2rem;
   border: $border-width solid $border-color-dark-only;
 }

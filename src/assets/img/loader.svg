@@ -48,3 +48,4 @@
     <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1s" begin="0s" repeatCount="indefinite"/>
   </rect>
 </g>
+</svg>
