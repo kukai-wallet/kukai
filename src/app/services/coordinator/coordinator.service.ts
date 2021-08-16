@@ -58,7 +58,7 @@ export class CoordinatorService {
       if (this.walletService.wallet) {
         this.accounts = this.walletService.wallet.getAccounts();
         this.accounts.forEach(({ address }) => {
-          if(address === activeAccount.address) {
+          if(address === activeAccount?.address) {
             this.start(activeAccount.address, this.defaultDelayActivity);
           } else {
             this.start(address, this.longDelayActivity);

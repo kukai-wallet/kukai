@@ -6,7 +6,7 @@
     </div>
     <div class="flex-column prepare-send">
       <div *ngIf="!this.isMultipleDestinations" class="flex-column top">
-        <div *ngIf="token?.thumbnailAsset || token?.displayAsset" class="flex-row token">
+        <div *ngIf="isNFT && token?.thumbnailAsset || token?.displayAsset" class="flex-row token">
           <app-asset class="icon" [meta]="token?.thumbnailAsset || token?.displayAsset"></app-asset>
           <span class="title">{{token?.name}}</span>
         </div>

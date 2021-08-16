@@ -126,6 +126,9 @@ $box-shadow: 0px 4px 6px #3332;
       & .title {
         font-size: 2rem;
         letter-spacing: 0.06em;
+        white-space: pre-wrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
       }
       & a.link-to-app {
         & button {

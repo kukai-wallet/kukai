@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, Event, NavigationEnd } from '@angular/router';
 import { WalletService } from './services/wallet/wallet.service';
-import { CoordinatorService } from './services/coordinator/coordinator.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Location } from '@angular/common';
 import { CONSTANTS as _CONSTANTS } from '../environments/environment';
@@ -16,8 +15,7 @@ export class AppComponent implements OnInit {
   embedded = false;
   constructor(
     private walletService: WalletService,
-    private coordinatorService: CoordinatorService,
-    private router: Router,
+    public router: Router,
     public translate: TranslateService,
     private location: Location
 

@@ -15,7 +15,7 @@ $base-background-color: v.$base-background-color;
   display: flex;
   flex-flow: column nowrap;
   padding: 5rem 0;
-  min-height: calc(100vh - 20rem);
+  min-height: calc(100vh - 32.5rem);
   justify-content: flex-start;
   align-items: center;
   background-color: $base-background-color;
@@ -33,10 +33,10 @@ $base-background-color: v.$base-background-color;
       top: 1rem;
       left: -0;
       background-color: $base-background-color;
-      border: $border-width solid $border-color;
+      border: v.$border-width solid $base-color-lightened-4;
       border-radius: v.$border-radius-hardest;
       color: $base-font-color;
-      @include m.multiply("font-size", 1);
+      @include m.multiply('font-size',1);
       font-weight: 500;
       padding: 0.75rem 1.25rem;
 
@@ -89,7 +89,7 @@ $base-background-color: v.$base-background-color;
 
       & textarea {
         height: 12rem;
-        border-radius: v.$border-radius-hard;
+        border-radius: v.$border-radius;
       }
 
       & .seed-word {
