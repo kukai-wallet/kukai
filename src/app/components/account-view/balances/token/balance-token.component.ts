@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalComponent } from '../../../../components/modal/modal.component';
 import { CONSTANTS } from '../../../../../environments/environment';
+import {Big } from 'big.js';
 
 @Component({
   selector: 'app-balance-token',
@@ -19,7 +20,7 @@ export class BalanceTokenComponent implements OnInit {
   }
 
   getBalance() {
-    return !this.token ? this.account?.balanceXTZ / 1000000 : this.token?.balance;
+    return !this.token ? Big(this.account?.balanceXTZ).div(1000000).toFixed() : this.token?.balance;
   }
 
   getBalanceFiat() {
