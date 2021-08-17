@@ -133,13 +133,15 @@ export class ActivityService {
   }
   promptNewActivities(account: Account, oldActivities: Activity[], newActivities: Activity[]) {
     for (const activity of newActivities) {
-      const index = oldActivities.findIndex((a) => a.hash === activity.hash);
+      const index = oldActivities.findIndex((a) => a.hash === activity.hash && a.status === 1);
       if (index === -1) {
         const now = (new Date()).getTime();
         const timeDiff = now - (activity?.timestamp ? activity.timestamp : now);
         if (timeDiff < 1800000) { // 1/2 hour
           if (activity.hash) {
-            this.subjectService.confirmedOp.next(activity.hash);
+            setTimeout(() => {
+              this.subjectService.confirmedOp.next(activity.hash);
+            }, 0);
           }
           if (activity.type === 'transaction') {
             if (account.address === activity.source.address) {
