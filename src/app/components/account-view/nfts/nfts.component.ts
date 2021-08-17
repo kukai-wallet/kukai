@@ -10,6 +10,7 @@ import { TokenBalancesService } from '../../../services/token-balances/token-bal
 import { SubjectService } from '../../../services/subject/subject.service';
 import { DisplayLinkOption } from '../../../interfaces';
 import { take } from 'rxjs/operators';
+import Big from 'big.js';
 
 @Component({
   selector: 'app-nfts',
@@ -72,6 +73,9 @@ export class NftsComponent implements OnInit, AfterViewInit {
   // in time break into subcomp with ecmpId = this.constructor['ɵcmp'].id; for id
   sanitizeKey(key: string, i: number) {
     return key.replace(/ /g, '') + i;
+  }
+  formatBalance(token) {
+    return Big(token.balance).div(10 ** parseInt(token.decimals)).toFixed();
   }
   trackToken(index: number, token: any) {
     return token?.id ? token.contractAddress + ':' + token?.id + ':' + token?.balance : null;
