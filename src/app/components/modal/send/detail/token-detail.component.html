@@ -23,22 +23,6 @@
                 {{ token?.name }}
               </div>
             </div>
-            <div class="flex-column key-value">
-              <div class="key">
-                balance
-              </div>
-              <div class="value">
-                {{ (getBalance() | number:'1.0-' + (token?.decimals || '6')) }}
-              </div>
-            </div>
-            <div *ngIf="!isNFT" class="flex-column key-value">
-              <div class="key">
-                price usd
-              </div>
-              <div class="value">
-                {{ getBalanceFiat() ? '$' + (getBalanceFiat() | number:'1.2-2') : '—' }}
-              </div>
-            </div>
             <div *ngIf="!isNFT && token?.symbol" class="flex-column key-value desc">
               <div class="key">
                 symbol
@@ -47,7 +31,7 @@
                 {{ token?.symbol }}
               </div>
             </div>
-            <div *ngIf="!isNFT && token?.decimals" class="flex-column key-value desc">
+            <div *ngIf="!isNFT && !!token?.decimals" class="flex-column key-value desc">
               <div class="key">
                 decimals
               </div>
