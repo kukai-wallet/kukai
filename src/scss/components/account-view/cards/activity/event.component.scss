@@ -68,7 +68,12 @@ $event-new: v.$base-end-color;
         background-color: $base-color-lightened-1;
       }
     }
-
+    &.half_confirmed {
+      background-color: $event-new;
+      & .getting-balance {
+        color: $base-font-color;
+      }
+    }
     &.confirmed {
       background-color: $event-confirmed;
     }

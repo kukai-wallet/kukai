@@ -13,7 +13,6 @@ import { SubjectService } from '../subject/subject.service';
 
 @Injectable()
 export class ActivityService {
-  confirmedOp = new Subject<string>();
   readonly maxTransactions = 10;
   public tokenBalanceUpdated = new BehaviorSubject(null);
   constructor(
@@ -98,7 +97,7 @@ export class ActivityService {
           const unconfirmedOps = [];
           if (oldActivities && oldActivities.length) {
             for (let op of oldActivities) {
-              if (op.status === 0) {
+              if (op.status === 0 || op.status === 0.5) {
                 let save = true;
                 for (const opNew of operations) {
                   if (opNew.hash === op.hash) {
@@ -135,12 +134,12 @@ export class ActivityService {
   promptNewActivities(account: Account, oldActivities: Activity[], newActivities: Activity[]) {
     for (const activity of newActivities) {
       const index = oldActivities.findIndex((a) => a.hash === activity.hash);
-      if (index === -1 || (index !== -1 && oldActivities[index].status === 0)) {
+      if (index === -1) {
         const now = (new Date()).getTime();
         const timeDiff = now - (activity?.timestamp ? activity.timestamp : now);
-        if (timeDiff < 3600000) { // 1 hour
+        if (timeDiff < 1800000) { // 1/2 hour
           if (activity.hash) {
-            this.confirmedOp.next(activity.hash);
+            this.subjectService.confirmedOp.next(activity.hash);
           }
           if (activity.type === 'transaction') {
             if (account.address === activity.source.address) {

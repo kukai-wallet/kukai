@@ -8,6 +8,7 @@ import { TokenService } from '../../../../services/token/token.service';
 import { CONSTANTS } from '../../../../../environments/environment';
 import { LookupType } from '../../../../services/lookup/lookup.service';
 import copy from 'copy-to-clipboard';
+import { SubjectService } from '../../../../services/subject/subject.service';
 
 @Component({
   selector: 'app-event',
@@ -22,22 +23,25 @@ export class EventComponent implements OnInit, OnChanges {
     public messageService: MessageService,
     public timeAgoPipe: TimeAgoPipe,
     private activityService: ActivityService,
-    public tokenService: TokenService
+    public tokenService: TokenService,
+    private subjectService: SubjectService
   ) { }
   trigger = true;
-  @Input() activity: any;
+  @Input() activity: Activity;
   @Input() account: Account;
   ngOnInit(): void {
     setInterval(() => { this.trigger = !this.trigger }, 1000);
+    this.subjectService.confirmedOp.subscribe((opHash) => {
+      if (opHash === this.activity.hash && this.fresh === undefined) {
+        this.fresh = true;
+        setTimeout(() => {
+          this.fresh = false;
+        }, 20000);
+      }
+    })
+
   }
-  ngOnChanges(changes: SimpleChanges) {
-    if(changes?.activity?.currentValue?.status === 1 && (new Date()).getTime() - 60000 < changes?.activity?.currentValue?.timestamp && this.fresh === undefined) {
-      this.fresh = true;
-      setTimeout(() => {
-        this.fresh = false;
-      }, 20000);
-    }
-  }
+  ngOnChanges(changes: SimpleChanges) {}
   getType(): string {
     if (this.activity.type !== 'transaction') {
       if (this.activity.type === 'delegation') {

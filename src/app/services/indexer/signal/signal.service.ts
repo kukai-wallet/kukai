@@ -3,26 +3,35 @@ import { HubConnectionBuilder } from '@microsoft/signalr';
 import { CONSTANTS } from '../../../../environments/environment';
 import { WalletService } from '../../wallet/wallet.service';
 import { Account } from '../../wallet/wallet';
+import { ActivityService } from '../../activity/activity.service';
+import { OperationService } from '../../operation/operation.service';
+import { BalanceService } from '../../balance/balance.service';
+import { DelegateService } from '../../delegate/delegate.service';
 @Injectable({
   providedIn: 'root'
 })
 export class SignalService {
   connection: any = null;
   constructor(
-    private walletService: WalletService
+    private walletService: WalletService,
+    private activityService: ActivityService,
+    private operationService: OperationService,
+    private balanceService: BalanceService,
+    private delegateService: DelegateService
   ) {
     this.connection = new HubConnectionBuilder()
       .withUrl(`https://api.${CONSTANTS.NETWORK}.tzkt.io/v1/events`)
       .build();
     this.connection.on("operations", (msg) => {
-      console.log('msg', msg);
       for (const op of msg.data) {
         if (op?.status === 'applied') {
+          console.log("%csignalR msg", "color: green;", op);
           const sender: string = op?.sender?.address ?? '';
           const target: string = op?.target?.address ?? '';
           const opHash: string = op?.hash ?? '';
-          this.confirmStatus(opHash, sender, op.timestamp);
-          this.confirmStatus(opHash, target, op.timestamp);
+          const invoke: boolean = !!op?.parameter;
+          this.confirmStatus(opHash, sender, op.timestamp, invoke);
+          this.confirmStatus(opHash, target, op.timestamp, invoke);
         }
       }
     });
@@ -31,20 +40,39 @@ export class SignalService {
       await this.start();
     });
   }
-  confirmStatus(opHash: string, address: string, timestamp: string) {
-    if (opHash && address) {
+  confirmStatus(opHash: string, address: string, timestamp: string, invoke: boolean) {
+    if (opHash && address && this.walletService.wallet) {
       if (this.walletService.wallet) {
         const account: Account = this.walletService.wallet.getAccount(address);
         if (account) {
-          account.activities.forEach((activity) => {
-            if (activity.hash === opHash && activity.status === 0) {
-              activity.status = 0.5;
-              activity.timestamp = (new Date(timestamp)).getTime();
+          for (let i in account.activities) {
+            if (account.activities[i].hash === opHash && account.activities[i].status === 0) {
+              account.activities[i].timestamp = (new Date(timestamp)).getTime();
+              if (invoke) {
+                account.activities[i].status = 0.5;
+              } else {
+                account.activities[i].status = 1;
+                this.activityService.promptNewActivities(account, [], [account.activities[i]]);
+                this.updateAccountData(address);
+              }
             }
-          })
+          }
         }
       }
     }
+  }
+  updateAccountData(pkh: string) {
+    this.operationService.getAccount(pkh).subscribe((ans: any) => {
+      if (ans.success) {
+        this.balanceService.updateAccountBalance(
+          this.walletService.wallet?.getAccount(pkh),
+          Number(ans.payload.balance)
+        );
+        const acc = this.walletService.wallet?.getAccount(pkh);
+        this.delegateService.handleDelegateResponse(acc, ans.payload.delegate);
+      } else {
+      }
+    });
   }
   async start() {
     try {

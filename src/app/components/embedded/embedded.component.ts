@@ -348,7 +348,7 @@ export class EmbeddedComponent implements OnInit {
     this.ophashSubscription.unsubscribe();
   }
   subscribeToConfirmedOps() {
-    this.ophashSubscription = this.activityService.confirmedOp.subscribe((opHash) => {
+    this.ophashSubscription = this.subjectService.confirmedOp.subscribe((opHash) => {
       if (this.pendingOps.includes(opHash)) {
         this.sendResponse({
           type: ResponseTypes.trackResponse,

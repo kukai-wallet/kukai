@@ -56,7 +56,7 @@ export class TimeAgoPipe implements PipeTransform {
             output = output + `${diff[key]}${diff[key] === 1 ? mn : mns}`;
             break;
           case 'seconds':
-            if (!diff.minutes && diff.seconds < 30) {
+            if (!diff.minutes && diff.seconds < 60) {
               output = now;
             } else if (diff.minutes < 2) {
               output = output + `${diff[key]}${diff[key] === 1 ? sec : secs}`;
