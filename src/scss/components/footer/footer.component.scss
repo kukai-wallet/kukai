@@ -126,4 +126,14 @@ div.foot-container > div.links a.docs img:hover {
       display: inline-block;
     }
   }
+
+  div.foot-container > div.links > div:last-child > a.docs {
+    margin: 0 1rem;
+  }
+  div.foot-container > div.links > div.left.low {
+    justify-content: flex-start;
+  }
+  div.foot-container > div.links > div.low {
+    justify-content: flex-end;
+  }
 }
