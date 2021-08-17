@@ -3,6 +3,7 @@
 
 .delegate-page {
   align-items: center;
+  min-height: calc(100vh - 22.5rem);
 
   & input {
     height: 2rem;
@@ -16,7 +17,7 @@
   & .content {
     width: 100%;
     max-width: v.$middle-limit;
-    height: calc(100vh - 22.5rem);
+    height: auto;
 
     & .manual {
       margin: 4rem 0 0 0;
