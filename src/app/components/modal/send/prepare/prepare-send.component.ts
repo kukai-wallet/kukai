@@ -147,7 +147,7 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
   }
   getAssetName(short = true): string {
     if (this.tokenTransfer) {
-      return this.token.symbol ?? this.token.name;
+      return this.token?.symbol ?? this.token?.name ?? 'Unknown';
     } else {
       return !this.prepareRequest.symbol ? 'tez' : this.prepareRequest.symbol;
     }

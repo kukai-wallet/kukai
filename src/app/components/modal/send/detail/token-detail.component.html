@@ -8,7 +8,8 @@
     <div class="flex-column token-info">
       <div class="flex-row data">
         <div class="flex-column img-wrapper" [class]="imageExpanded ? 'expanded' : ''">
-          <app-asset class="button sd-only" [meta]="!token ? '../../../assets/img/tezos-xtz-logo.svg' : token?.displayAsset || token?.thumbnailAsset"
+          <app-asset class="button sd-only"
+            [meta]="!token ? '../../../assets/img/tezos-xtz-logo.svg' : token?.displayAsset || token?.thumbnailAsset"
             [size]="imageExpanded ? 'raw' : '600x600'" (click)="expandImage()"></app-asset>
           <img *ngIf="imageExpanded" class="flex-row button close" (click)="expandImage()"
             src="../../../assets/img/close-btn-x.png" />
@@ -86,10 +87,12 @@
         </ng-container>
       </div>
     </div>
-      <div class="seperator"></div>
-      <div class="flex-column bottom">
-        <app-send-button [override]="true" [activeAccount]="activeAccount" [tokenTransfer]="!token ? null : token['contractAddress']+':'+token['id']" [symbol]="!token ? 'tez' : token?.symbol">
-        </app-send-button>
-      </div>
+    <div *ngIf="!!token?.status" class="seperator"></div>
+    <div *ngIf="!!token?.status" class="flex-column bottom">
+      <app-send-button [override]="true" [activeAccount]="activeAccount"
+        [tokenTransfer]="!token ? null : token['contractAddress']+':'+token['id']"
+        [symbol]="!token ? 'tez' : token?.symbol">
+      </app-send-button>
+    </div>
   </div>
 </div>
