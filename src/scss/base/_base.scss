@@ -100,8 +100,8 @@ html,
 body {
   background-color: v.$base-background-color;
   overflow: scroll;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
 }
 
 input {
