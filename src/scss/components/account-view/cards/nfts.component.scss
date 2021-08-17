@@ -235,6 +235,7 @@ $box-shadow: 0px 4px 6px #3332;
       border-top-right-radius: 0;
       background-color: $base-end-color;
       justify-content: flex-start;
+      width: 100%;
 
       &.expanded {
         overflow-y: auto;
