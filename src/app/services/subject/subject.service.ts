@@ -19,6 +19,7 @@ interface MetadataUpdated {
 
 export class SubjectService {
   public metadataUpdated = new BehaviorSubject<MetadataUpdated>(null);
+  public markets = new BehaviorSubject<any>([]);
   public confirmedOp = new Subject<string>();
   public prepareTokenTransfer = new Subject<PrepareTokenTransfer>();
   public nftsUpdated = new BehaviorSubject<any>({});

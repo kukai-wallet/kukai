@@ -11,7 +11,7 @@ import { TokenService } from '../token/token.service';
 import { LookupService } from '../lookup/lookup.service';
 import { CONSTANTS } from '../../../environments/environment';
 import { SubjectService } from '../subject/subject.service';
-import { TokenBalancesService } from '../token-balances/token-balances.service';
+import { TeztoolsService } from '../indexer/teztools/teztools.service';
 import { interval } from 'rxjs';
 import { SignalService } from '../indexer/signal/signal.service';
 
@@ -44,7 +44,7 @@ export class CoordinatorService {
     private delegateService: DelegateService,
     private operationService: OperationService,
     private tokenService: TokenService,
-    private tokenBalancesService: TokenBalancesService,
+    private teztoolsService: TeztoolsService,
     private lookupService: LookupService,
     private subjectService: SubjectService,
     private signalService: SignalService
@@ -73,7 +73,7 @@ export class CoordinatorService {
       console.log('Start scheduler XTZ');
       const update = () => {
         this.tzrateService.getTzrate();
-        this.tokenBalancesService.getMarkets();
+        this.teztoolsService.getMarkets();
         this.lookupService.recheckWalletAddresses(true);
       }
       this.tzrateInterval = interval(this.defaultDelayPrice).subscribe(() => update());

@@ -9,6 +9,7 @@ import { decode } from "blurhash";
 import { combineLatest } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { SubjectService } from '../subject/subject.service';
+import { TeztoolsService } from '../indexer/teztools/teztools.service';
 
 interface TokenWithBalance extends TokenResponseType {
   balance: string;
@@ -27,7 +28,6 @@ type ContractsWithBalance = Record<string, ContractWithImg>;
   providedIn: 'root'
 })
 export class TokenBalancesService {
-  markets: any[] = [];
   xtzUsdRate: number;
   balances: TokenWithBalance[] = [];
   nfts: ContractsWithBalance = null;
@@ -37,8 +37,14 @@ export class TokenBalancesService {
     private tokenService: TokenService,
     private activityService: ActivityService,
     private walletService: WalletService,
-    private subjectService: SubjectService
+    private subjectService: SubjectService,
+    private teztoolsService: TeztoolsService
   ) {
+    this.subjectService.markets.subscribe((markets) => {
+      if (markets) {
+        this.mergeMarket();
+      }
+    })
     combineLatest([this.walletService.activeAccount, this.walletService.walletUpdated, this.subjectService.metadataUpdated, this.activityService.tokenBalanceUpdated]).pipe(debounceTime(200)).subscribe(([a, b, c, d]) => {
       if (this.activeAccount !== a) {
         this.activeAccount = a;
@@ -150,26 +156,19 @@ export class TokenBalancesService {
   isNFT(asset: TokenResponseType): boolean {
     if (!asset) { return false; }
     if (CONSTANTS.MAINNET) {
-      return !CONSTANTS.NFT_CONTRACT_OVERRIDES.includes(`${asset.contractAddress}:${asset.id}`);
+      return !(CONSTANTS.NFT_CONTRACT_OVERRIDES.includes(`${asset.contractAddress}:${asset.id}`) || this.teztoolsService.defiTokens.includes(`${asset.contractAddress}:${asset.id}`));
     } else {
       return (asset?.isBooleanAmount || asset?.decimals == 0) && !CONSTANTS.NFT_CONTRACT_OVERRIDES.includes(`${asset.contractAddress}`) ? true : false;
     }
   }
-
-  getMarkets() {
-    fetch('https://api.teztools.io/v1/prices').then((response) => response.json()).then(r => { this.xtzUsdRate = r.xtzusdValue; this.markets = [...r.contracts]; this.mergeMarket(); });
-  }
-
   mergeMarket() {
-    if (this.xtzUsdRate) {
-      Object.keys(this.balances).forEach(key => {
-        let token = undefined;
-        const addr = this.balances[key]?.contractAddress;
-        if ((token = this.markets?.find((token) => token?.tokenAddress === addr))) {
-          this.balances[key].price = token?.currentPrice * parseFloat(this.balances[key].balance) * this.xtzUsdRate;
-          !!token?.logo_url ? (this.balances[key].displayUrl = this.balances[key].thumbnailUrl = token?.thumbnailUri) : null;
-        }
-      });
-    }
+    Object.keys(this.balances).forEach(key => {
+      let token = undefined;
+      const tokenId: string = `${this.balances[key]?.contractAddress}:${this.balances[key]?.id}`;
+      if (token = this.subjectService.markets.value.find(t => t?.tokenId === tokenId)) {
+        this.balances[key].price = token?.usdValue * parseFloat(this.balances[key].balance);
+        !!token?.logo_url ? (this.balances[key].displayUrl = this.balances[key].thumbnailUrl = token?.thumbnailUri) : null;
+      }
+    });
   }
 }

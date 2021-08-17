@@ -3,6 +3,7 @@ import { CONSTANTS, TRUSTED_TOKEN_CONTRACTS, BLACKLISTED_TOKEN_CONTRACTS } from 
 import { IndexerService } from '../indexer/indexer.service';
 import Big from 'big.js';
 import { SubjectService } from '../subject/subject.service';
+import { TeztoolsService } from '../indexer/teztools/teztools.service';
 
 export interface TokenResponseType {
   contractAddress: string;
@@ -78,7 +79,8 @@ export class TokenService {
   readonly storeKey = 'tokenMetadata';
   constructor(
     public indexerService: IndexerService,
-    private subjectService: SubjectService
+    private subjectService: SubjectService,
+    private teztoolsService: TeztoolsService
   ) {
     this.contracts = CONSTANTS.ASSETS;
     this.loadMetadata();
@@ -198,7 +200,7 @@ export class TokenService {
           isTransferable: metadata?.isTransferable ? metadata.isTransferable : true,
           isBooleanAmount: metadata?.isBooleanAmount ? metadata.isBooleanAmount : false,
           series: metadata.series ? metadata.series : undefined,
-          status: TRUSTED_TOKEN_CONTRACTS.includes(contractAddress) || CONSTANTS.NFT_CONTRACT_OVERRIDES.includes(tokenId) ? 1 : 0
+          status: TRUSTED_TOKEN_CONTRACTS.includes(contractAddress) || CONSTANTS.NFT_CONTRACT_OVERRIDES.includes(tokenId) || this.teztoolsService.defiTokens.includes(tokenId) ? 1 : 0
         };
         contract.tokens[id] = token;
         this.addAsset(contractAddress, contract);
@@ -277,7 +279,7 @@ export class TokenService {
           for (const address of contractAddresses) {
             for (const id of Object.keys(metadata.contracts[address].tokens)) {
               if (metadata.contracts[address].tokens[id]?.status === 0) {
-                if (TRUSTED_TOKEN_CONTRACTS.includes(address) || CONSTANTS.NFT_CONTRACT_OVERRIDES.includes(`${address}:${id}`)) {
+                if (TRUSTED_TOKEN_CONTRACTS.includes(address) || CONSTANTS.NFT_CONTRACT_OVERRIDES.includes(`${address}:${id}`) || this.teztoolsService.defiTokens.includes(`${address}:${id}`)) {
                   metadata.contracts[address].tokens[id].status = 1; // flip status if it have been marked as trusted
                 }
                 if (BLACKLISTED_TOKEN_CONTRACTS.includes(address)) {
