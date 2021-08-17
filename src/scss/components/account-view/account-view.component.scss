@@ -13,32 +13,33 @@
   margin-bottom: 2rem;
   align-items: center;
 
-  & .desktop, & .mobile {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      width: calc(100% - 4rem);
-      padding: 0 2rem;
+  & .desktop,
+  & .mobile {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: calc(100% - 4rem);
+    padding: 0 2rem;
   }
 
   & .mobile {
     display: none;
   }
 
-  &>div {
+  & > div {
     display: grid;
-    grid-template-columns: 36% 60%;
+    grid-template-columns: minmax(auto, 768px) minmax(auto, 1792px);
     grid-template-rows: auto;
     grid-column-gap: 4%;
-    grid-template-areas: 
-    "balance nft" 
-    "activity .";
-    width: 92%;
+    grid-template-areas:
+      "balance nft"
+      "activity .";
+    max-width: 92%;
   }
 }
 
 @media (max-width: v.$layout-break-4) {
-  .wrapper>div {
+  .wrapper > div {
     display: grid;
     grid-template-columns: 100%;
     grid-column-gap: 0;
