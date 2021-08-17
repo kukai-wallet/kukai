@@ -16,7 +16,6 @@ export class BalanceTokenComponent implements OnInit {
 
   constructor() { }
   ngOnInit(): void {
-    console.log(this.token)
   }
 
   getBalance() {
