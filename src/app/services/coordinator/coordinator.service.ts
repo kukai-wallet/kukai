@@ -265,7 +265,7 @@ export class CoordinatorService {
         account.activities.unshift(transaction);
         account = this.walletService.wallet?.getAccount(op.destination);
         if (account) {
-          account.activities.unshift(transaction);
+          account.activities.unshift({...transaction});
         }
       }
     } else if (metadata.delegate !== undefined) {
