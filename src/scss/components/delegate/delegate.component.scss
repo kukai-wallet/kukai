@@ -16,7 +16,7 @@
   & .content {
     width: 100%;
     max-width: v.$middle-limit;
-    height: 100%;
+    height: calc(100vh - 22.5rem);
 
     & .manual {
       margin: 4rem 0 0 0;
