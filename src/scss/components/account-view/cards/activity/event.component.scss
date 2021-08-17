@@ -121,6 +121,10 @@ $event-new: v.$base-end-color;
         color: $base-font-color-secondary;
       }
 
+      & .prefix {
+        @include m.multiply("font-size", 1.125, "rem", 1.3);
+      }
+
       & .value {
         justify-content: flex-start;
         font-family: "Roboto Mono", "Roboto";
@@ -150,6 +154,7 @@ $event-new: v.$base-end-color;
       & a {
         color: $base-font-color;
         white-space: nowrap;
+        @include m.multiply("font-size", 1.125, "rem", 1.2);
       }
       & a:hover {
         text-decoration: underline;

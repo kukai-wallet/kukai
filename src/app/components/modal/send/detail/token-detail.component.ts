@@ -20,7 +20,7 @@ export class TokenDetail extends ModalComponent implements OnInit {
   descOverflow = false;
   isNFT = false;
   name = "token-detail";
-  readonly blacklistMeta = ['name', 'kind', 'displayAsset', 'thumbnailAsset', 'rawUrl', 'isTransferable', 'isBooleanAmount', 'balance', 'category', 'symbol', 'decimals', 'status'];
+  readonly blacklistMeta = ['name', 'kind', 'displayAsset', 'thumbnailAsset', 'rawUrl', 'isTransferable', 'isBooleanAmount', 'balance', 'category', 'symbol', 'decimals', 'status', 'shouldPreferSymbol', 'price'];
 
   constructor(
     private walletService: WalletService,

@@ -59,7 +59,7 @@ $border-color: v.$border-color;
 
       & .price-usd {
         color: $base-font-color-secondary;
-        @include m.multiply('font-size',1);
+        @include m.multiply("font-size", 1, "rem", 1.3);
         font-weight: 500;
       }
     }

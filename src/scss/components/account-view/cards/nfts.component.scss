@@ -287,6 +287,7 @@ $box-shadow: 0px 4px 6px #3332;
           }
 
           & .issue {
+            color: rgb(132, 152, 177);
             @include m.multiply("font-size", 1);
           }
         }
