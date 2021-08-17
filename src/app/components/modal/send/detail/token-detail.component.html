@@ -39,6 +39,22 @@
                 {{ token?.price && token.price >= 0.005 ? '$' + (token.price | number:'1.2-2') : '—' }}
               </div>
             </div>
+            <div *ngIf="!isNFT && token?.symbol" class="flex-column key-value desc">
+              <div class="key">
+                symbol
+              </div>
+              <div class="value">
+                {{ token?.symbol }}
+              </div>
+            </div>
+            <div *ngIf="!isNFT && token?.decimals" class="flex-column key-value desc">
+              <div class="key">
+                decimals
+              </div>
+              <div class="value">
+                {{ token?.decimals }}
+              </div>
+            </div>
             <div *ngIf="token?.description" class="flex-column key-value desc">
               <div class="key">
                 description
