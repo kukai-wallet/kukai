@@ -1,4 +1,4 @@
-<button *ngIf="symbol; else detailButton" class="flex-row button button-primary with-image" [class]="symbol === 'tez' ? 'tez' : ''"
+<button *ngIf="symbol && !override; else detailButton" class="flex-row button button-primary with-image" [class]="symbol === 'tez' ? 'tez' : ''"
   (click)="prepareTransaction()">
   <ng-container *ngIf="symbol === 'tez'"><span>SEND</span></ng-container><img
     [src]="symbol === 'tez' ? '../../../../assets/img/up-arrow-white.svg' : '../../../../assets/img/up-arrow.svg'" />

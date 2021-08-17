@@ -31,9 +31,7 @@ export class BalanceTokenComponent implements OnInit {
     return !this.token ? this.account?.balanceUSD || undefined : this.token?.price && this.token.price >= 0.005 ? this.token.price : undefined;
   }
   viewToken() {
-    if (!!this.token) {
-      ModalComponent.currentModel.next({ name: 'token-detail', data: this.token });
-    }
+    ModalComponent.currentModel.next({ name: 'token-detail', data: this.token });
   }
 }
 

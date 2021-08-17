@@ -8,7 +8,7 @@
     <div class="flex-column token-info">
       <div class="flex-row data">
         <div class="flex-column img-wrapper" [class]="imageExpanded ? 'expanded' : ''">
-          <app-asset class="button" [class.sd]="imageExpanded" [meta]="token?.displayAsset || token?.thumbnailAsset"
+          <app-asset class="button" [class.sd]="imageExpanded" [meta]="!token ? '../../../assets/img/tezos-xtz-logo.svg' : token?.thumbnailAsset || token?.displayAsset"
             [size]="imageExpanded ? 'raw' : '300x300'" (click)="expandImage()"></app-asset>
           <img *ngIf="imageExpanded" class="flex-row button close" (click)="expandImage()"
             src="../../../assets/img/close-btn-x.png" />
@@ -23,20 +23,20 @@
                 {{ token?.name }}
               </div>
             </div>
-            <div *ngIf="token?.balance" class="flex-column key-value">
+            <div class="flex-column key-value">
               <div class="key">
                 balance
               </div>
               <div class="value">
-                {{ token?.balance }}
+                {{ (getBalance() | number:'1.0-' + (token?.decimals || '6')) }}
               </div>
             </div>
-            <div *ngIf="token?.price" class="flex-column key-value">
+            <div *ngIf="!isNFT" class="flex-column key-value">
               <div class="key">
                 price usd
               </div>
               <div class="value">
-                {{ token?.price && token.price >= 0.005 ? '$' + (token.price | number:'1.2-2') : '—' }}
+                {{ getBalanceFiat() ? '$' + (getBalanceFiat() | number:'1.2-2') : '—' }}
               </div>
             </div>
             <div *ngIf="!isNFT && token?.symbol" class="flex-column key-value desc">
@@ -74,12 +74,12 @@
           </div>
         </div>
       </div>
-      <div *ngIf="token.decimals !== undefined" class="flex-row button more-info" [class]="moreInfo ? 'open' : ''"
+      <div *ngIf="!!token" class="flex-row button more-info" [class]="moreInfo ? 'open' : ''"
         (click)="expand()">
         <span>{{ moreInfo ? 'LESS' : 'MORE' }} INFO</span><img src="../../../assets/img/chevron-down.svg" />
       </div>
-      <div
-        [style.maxHeight]="moreInfo || token.decimals === undefined ? (3.25 * Object.keys(tokenFiltered).length) + 'rem' : ''"
+      <div *ngIf="!!token"
+        [style.maxHeight]="moreInfo ? (3.25 * Object.keys(tokenFiltered).length) + 'rem' : ''"
         [style.overflowY]="autoOverflow ? 'auto' : ''" class="flex-column meta-more">
         <ng-container *ngFor="let key of Object.keys(tokenFiltered)">
           <div *ngIf="key === 'contractAddress'" class="flex-column key-value">
@@ -102,13 +102,10 @@
         </ng-container>
       </div>
     </div>
-    <ng-container *ngIf="token.decimals !== undefined">
       <div class="seperator"></div>
       <div class="flex-column bottom">
-        <app-send-button *ngIf="token.decimals !== undefined" [activeAccount]="activeAccount"
-          [tokenTransfer]="token['contractAddress']+':'+token['id']">
+        <app-send-button [override]="true" [activeAccount]="activeAccount" [tokenTransfer]="!token ? null : token['contractAddress']+':'+token['id']" [symbol]="!token ? 'tez' : token?.symbol">
         </app-send-button>
       </div>
-    </ng-container>
   </div>
 </div>

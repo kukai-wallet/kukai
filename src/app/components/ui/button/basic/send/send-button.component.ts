@@ -14,6 +14,7 @@ export class SendButtonComponent extends BasicButtonComponent implements OnInit 
   @Input() activeAccount: Account;
   @Input() tokenTransfer: string;
   @Input() symbol: string;
+  @Input() override = false;
   asset = null;
   constructor(
     public tokenService: TokenService,
