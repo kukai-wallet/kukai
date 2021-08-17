@@ -3,7 +3,7 @@
     <app-asset class="icon" [meta]="!token ? '../../../../assets/img/tezos-xtz-logo.svg' : token?.thumbnailAsset || token?.displayAsset" [class.pd]="!(token?.thumbnailAsset || token?.displayAsset)" [class.sd]="!token" (click)="viewToken()"></app-asset>
     <div class="flex-row title" (click)="viewToken()">{{!token ? 'Tezos' : token.symbol}}</div>
     <div class="flex-column prices">
-      <div class="price">{{ getBalance() }}</div>
+      <div class="price">{{ (getBalance() | number:'1.0-' + (token?.decimals || '6')) }}</div>
       <div class="price-usd">{{ getBalanceFiat() ? '$' + (getBalanceFiat() | number:'1.2-2') : '—' }}</div>
     </div>
   </div>
