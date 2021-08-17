@@ -27,6 +27,14 @@
     }
   }
 
+  &.sd-only {
+    & video,
+    & img,
+    & #modelCanvas {
+      object-fit: scale-down;
+    }
+  }
+
   &.pd img {
     width: calc(100% - 1rem);
     height: calc(100% - 1rem);

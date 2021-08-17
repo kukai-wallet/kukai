@@ -8,8 +8,8 @@
     <div class="flex-column token-info">
       <div class="flex-row data">
         <div class="flex-column img-wrapper" [class]="imageExpanded ? 'expanded' : ''">
-          <app-asset class="button" [class.sd]="imageExpanded" [meta]="!token ? '../../../assets/img/tezos-xtz-logo.svg' : token?.thumbnailAsset || token?.displayAsset"
-            [size]="imageExpanded ? 'raw' : '300x300'" (click)="expandImage()"></app-asset>
+          <app-asset class="button sd-only" [meta]="!token ? '../../../assets/img/tezos-xtz-logo.svg' : token?.displayAsset || token?.thumbnailAsset"
+            [size]="imageExpanded ? 'raw' : '600x600'" (click)="expandImage()"></app-asset>
           <img *ngIf="imageExpanded" class="flex-row button close" (click)="expandImage()"
             src="../../../assets/img/close-btn-x.png" />
         </div>

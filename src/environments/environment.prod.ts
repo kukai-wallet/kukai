@@ -92,11 +92,11 @@ export const CONSTANTS: Constants = {
       thumbnailUrl: "https://openminter.com/static/media/header-logo.a9dd48a8.svg",
       link: "", shouldDisplayLink: DisplayLinkOption.None
     },
-    'Alchememist': {
-      address: ["KT1W4wh1qDc2g22DToaTfnCtALLJ7jHn38Xc", "KT1Em3sjKdHo3Fo9Az4EusZXQbkgsdZHkQkF"],
-      thumbnailUrl: "https://cloudflare-ipfs.com/ipfs/QmPmD4kdh8d2fxaHeHy7BTwmcYxhz3eA6nFeGJXHmNnSex",
-      link: "https://auctions.alchememist.com/", shouldDisplayLink: DisplayLinkOption.All, category: "collectibles"
-    }
+    // 'Alchememist': {
+    //   address: ["KT1W4wh1qDc2g22DToaTfnCtALLJ7jHn38Xc", "KT1Em3sjKdHo3Fo9Az4EusZXQbkgsdZHkQkF"],
+    //   thumbnailUrl: "https://cloudflare-ipfs.com/ipfs/QmPmD4kdh8d2fxaHeHy7BTwmcYxhz3eA6nFeGJXHmNnSex",
+    //   link: "https://auctions.alchememist.com/", shouldDisplayLink: DisplayLinkOption.None, category: "collectibles"
+    // }
   },
   ASSETS: {
     'KT1K9gCRgaLRFKTErYt1wVxA3Frb9FjasjTV': { // kUSD
