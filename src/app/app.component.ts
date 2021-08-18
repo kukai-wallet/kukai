@@ -106,7 +106,7 @@ export class AppComponent implements OnInit {
   @HostListener('touchmove', ['$event'])
   touchmove(e) {
     this.previous = this.current;
-    this.current = e.touches[0].pageY;
+    this.current = e.changedTouches[0].pageY;
       if (this.previous > this.current && !!this.container && this.container?.scrollTop >= (this.container.scrollHeight - this.container.clientHeight) && !this.post) {
         this.container.style.overflowY = 'hidden';
         this.container.scrollTop = this.container.scrollHeight - this.container.clientHeight;
