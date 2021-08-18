@@ -22,6 +22,7 @@
         margin: 0 0 1rem 0;
         color: v.$base-font-color;
         font-weight: 600;
+        @include m.multiply('font-size',1.125);
       }
 
       & .fee-space {
@@ -29,6 +30,7 @@
         & .fee {
           color: v.$base-font-color;
           font-weight: 600;
+          @include m.multiply('font-size',1);
 
           & span {
             color: v.$base-font-color-secondary;
@@ -40,6 +42,7 @@
           margin: 0 0 0 2rem;
           color: v.$base-font-color;
           font-weight: 600;
+          @include m.multiply('font-size',1);
 
           & span {
             color: v.$base-font-color-secondary;
