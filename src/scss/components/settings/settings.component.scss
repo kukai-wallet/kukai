@@ -23,6 +23,7 @@ $base-background-color: v.$base-background-color;
     @include m.multiply('font-size', 1);
     font-weight: 500;
     padding: 0.75rem 1.25rem;
+    margin: 0 0 0 0.5rem;
 
     & img {
       height: 1rem;
@@ -33,7 +34,7 @@ $base-background-color: v.$base-background-color;
   & div.settings {
     min-height: calc(100% - 8rem);
     padding: 4rem 0 8rem 0;
-    max-width: v.$lower-limit;
+    max-width: 100em;
     width: 100%;
 
     & #rescan {
@@ -103,6 +104,10 @@ $base-background-color: v.$base-background-color;
     width: 100%;
   }
 
+  & table {
+    table-layout:fixed;
+  }
+
   & thead>tr {
     border-bottom: 1px solid #0002;
     border-top: 1px solid #0002;
@@ -114,6 +119,7 @@ $base-background-color: v.$base-background-color;
       &:last-child {
         color: #FF5959;
         opacity: 1;
+        text-align: right;
 
         &>span:hover {
           text-decoration: underline;
@@ -126,7 +132,9 @@ $base-background-color: v.$base-background-color;
   & table th,
   & table td {
     @include m.multiply('font-size', 1.5);
-    line-height: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     padding: 1rem 0.25rem;
   }
 
