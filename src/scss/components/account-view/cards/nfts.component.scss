@@ -301,6 +301,7 @@ $box-shadow: 0px 4px 6px #3332;
       max-height: 114.5rem;
       padding: 0 0.75rem 0 0;
       background-color: $base-end-color;
+      width: calc(100% - 0.75rem);
     }
 
     & > .scroll {
