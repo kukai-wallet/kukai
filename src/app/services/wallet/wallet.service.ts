@@ -323,7 +323,6 @@ export class WalletService {
     } else {
       console.log('Outdated storage id');
     }
-
     this.walletUpdated.next(null);
   }
   getLocalStorageId() {

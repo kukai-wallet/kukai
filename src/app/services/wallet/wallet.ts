@@ -152,17 +152,18 @@ export abstract class Account {
   balanceUSD: number | null;
   delegate: string;
   state: string;
-  activities: Activity[];
-  tokens: Token[] = [];
+  activities: Activity[] | null;
+  tokens: Token[] | null;
   pkh: string;
   pk: string;
   address: string;
   constructor(pkh: string, pk: string, address: string) {
     this.balanceXTZ = null;
     this.balanceUSD = null;
+    this.activities = null;
+    this.tokens = null;
     this.delegate = '';
     this.state = '';
-    this.activities = [];
     this.pkh = pkh;
     this.pk = pk;
     this.address = address;
@@ -172,7 +173,7 @@ export abstract class Account {
     return this.address.slice(0, 7) + '...' + this.address.slice(-4);
   }
   getTokenBalance(tokenId: string): string {
-    if (this.tokens.length) {
+    if (this.tokens?.length) {
       for (const token of this.tokens) {
         if (tokenId === token.tokenId) {
           return token.balance;
@@ -182,10 +183,13 @@ export abstract class Account {
     return '';
   }
   getTokenBalances(): Token[] {
-    return this.tokens;
+    return this.tokens ?? [];
   }
   updateTokenBalance(tokenId: string, balance: string) {
-    if (this.tokens.length) {
+    if (!this.tokens) {
+      this.tokens = [];
+    }
+    if (tokenId && this.tokens.length) {
       for (let i = 0; i < this.tokens.length; i++) {
         if (tokenId === this.tokens[i].tokenId) {
           if (this.tokens[i].balance !== balance) {

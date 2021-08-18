@@ -18,13 +18,35 @@ interface MetadataUpdated {
 })
 
 export class SubjectService {
-  public metadataUpdated = new BehaviorSubject<MetadataUpdated>(null);
-  public markets = new BehaviorSubject<any>([]);
-  public confirmedOp = new Subject<string>();
-  public prepareTokenTransfer = new Subject<PrepareTokenTransfer>();
-  public nftsUpdated = new BehaviorSubject<any>({});
-  public origin = new Subject<string>();
-  public beaconResponse = new Subject<boolean>();
-  public logout = new Subject<boolean>();
-  constructor() { }
+  public metadataUpdated: BehaviorSubject<MetadataUpdated>;
+  public markets: BehaviorSubject<any>;
+  public confirmedOp: Subject<string>;
+  public prepareTokenTransfer: Subject<PrepareTokenTransfer>;
+  public nftsUpdated: BehaviorSubject<any>;
+  public origin: Subject<string>;
+  public beaconResponse: Subject<boolean>;
+  public logout: Subject<boolean>;
+  constructor() {
+    this.init();
+    this.logout.subscribe(o => {
+      if (o) {
+        this.reset();
+      }
+    })
+  }
+  init() {
+    this.metadataUpdated = new BehaviorSubject<MetadataUpdated>(null);
+    this.markets = new BehaviorSubject<any>([]);
+    this.confirmedOp = new Subject<string>();
+    this.prepareTokenTransfer = new Subject<PrepareTokenTransfer>();
+    this.nftsUpdated = new BehaviorSubject<any>(undefined);
+    this.origin = new Subject<string>();
+    this.beaconResponse = new Subject<boolean>();
+    this.logout = new Subject<boolean>();
+  }
+  reset() {
+    this.metadataUpdated.next(null);
+    this.markets.next([]);
+    this.nftsUpdated.next(undefined);
+  }
 }

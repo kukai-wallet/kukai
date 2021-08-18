@@ -45,7 +45,7 @@ export class TokenBalancesService {
         this.mergeMarket();
       }
     })
-    combineLatest([this.walletService.activeAccount, this.walletService.walletUpdated, this.subjectService.metadataUpdated, this.activityService.tokenBalanceUpdated]).pipe(debounceTime(200)).subscribe(([a, b, c, d]) => {
+    combineLatest([this.walletService.activeAccount, this.subjectService.metadataUpdated, this.activityService.tokenBalanceUpdated]).subscribe(([a, b, c]) => {
       if (this.activeAccount !== a) {
         this.activeAccount = a;
       }
@@ -105,33 +105,32 @@ export class TokenBalancesService {
   }
 
   reload(type: number = undefined) {
-    if (this.activeAccount) {
-      const balances: TokenWithBalance[] = [];
-      const nfts: ContractsWithBalance = {};
-      for (let token of this.activeAccount.tokens) {
-        if (token.balance && token.balance !== '0') {
-          this.resolveAsset(token, balances, nfts);
-        }
+    if (!this.activeAccount?.tokens) { return; }
+    const balances: TokenWithBalance[] = [];
+    const nfts: ContractsWithBalance = {};
+    for (let token of this.activeAccount.tokens) {
+      if (token.balance && token.balance !== '0') {
+        this.resolveAsset(token, balances, nfts);
       }
-      if (nfts['unknown']) { // property last
-        const temp = nfts['unknown'];
-        delete nfts['unknown'];
-        nfts['unknown'] = temp;
-      }
-      this.balances = balances;
-      this.nfts = nfts;
-      this.mergeMarket();
-
-      if (this._thumbnailsToCreate.length) {
-        this._thumbnailsToCreate.forEach(({ contractAlias, address }) => {
-          if (!this.nfts[contractAlias].thumbnailUrl) {
-            this.nfts[contractAlias].thumbnailUrl = this.getThumbnailUrl(address);
-          }
-        });
-        this._thumbnailsToCreate = [];
-      }
-      this.subjectService.nftsUpdated.next(this.nfts);
     }
+    if (nfts['unknown']) { // property last
+      const temp = nfts['unknown'];
+      delete nfts['unknown'];
+      nfts['unknown'] = temp;
+    }
+    this.balances = balances;
+    this.nfts = nfts;
+    this.mergeMarket();
+
+    if (this._thumbnailsToCreate.length) {
+      this._thumbnailsToCreate.forEach(({ contractAlias, address }) => {
+        if (!this.nfts[contractAlias].thumbnailUrl) {
+          this.nfts[contractAlias].thumbnailUrl = this.getThumbnailUrl(address);
+        }
+      });
+      this._thumbnailsToCreate = [];
+    }
+    this.subjectService.nftsUpdated.next(this.nfts);
   }
   getContractAlias(address: string) {
     const keys = Object.keys(CONSTANTS.CONTRACT_ALIASES);

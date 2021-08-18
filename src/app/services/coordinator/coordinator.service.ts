@@ -164,11 +164,11 @@ export class CoordinatorService {
           }
         }
         const acc = this.walletService.wallet?.getAccount(pkh);
-        if (acc && acc.activities.length) {
+        if (acc?.activities?.length) {
           const latestActivity = acc.activities[0];
           if (latestActivity.status === 0) {
             const age = new Date().getTime() - new Date(latestActivity.timestamp).getTime();
-            if (age > 3000000) { // 50m
+            if (age > 1800000) { // 30m
               acc.activities.shift();
               this.walletService.storeWallet();
             }

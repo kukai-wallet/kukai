@@ -50,6 +50,18 @@ export class ActivityService {
           }
           return this.getAllTransactions(account, counter);
         } else {
+          if (!account.state) {
+            if (!account.activities || !account.tokens) {
+              if (!account.activities) {
+                account.activities = [];
+              }
+              if (!account.tokens) {
+                account.tokens = [];
+              }
+              this.updateTokenBalances(account, []);
+              this.walletService.storeWallet();
+            }
+          }
           return of({
             upToDate: true,
             balance: data?.balance ? data.balance : 0
@@ -69,22 +81,26 @@ export class ActivityService {
   async updateTokenBalances(account, tokens) {
     if (Array.isArray(tokens)) {
       const idsWithBalance: string[] = [];
-      for (const token of tokens) {
-        const tokenId = `${token.contract}:${token.token_id}`;
-        idsWithBalance.push(tokenId);
-        if (tokenId) {
-          account.updateTokenBalance(tokenId, token.balance.toString());
+      if (!tokens.length) {
+        account.updateTokenBalance('', '');
+      } else {
+        for (const token of tokens) {
+          const tokenId = `${token.contract}:${token.token_id}`;
+          idsWithBalance.push(tokenId);
+          if (tokenId) {
+            account.updateTokenBalance(tokenId, token.balance.toString());
+          }
         }
-      }
-      const currentTokenIds = account.getTokenBalances().map((token) => { return token.tokenId });
-      for (const tokenId of currentTokenIds) {
-        if (!idsWithBalance.includes(tokenId)) {
-          account.updateTokenBalance(tokenId, '0');
+        const currentTokenIds = account.getTokenBalances().map((token) => { return token.tokenId });
+        for (const tokenId of currentTokenIds) {
+          if (!idsWithBalance.includes(tokenId)) {
+            account.updateTokenBalance(tokenId, '0');
+          }
         }
       }
       this.tokenBalanceUpdated.next(true);
+      this.walletService.storeWallet();
     }
-    this.walletService.storeWallet();
   }
   getAllTransactions(account: Account, counter: string): Observable<any> {
     const knownTokenIds: string[] = this.tokenService.knownTokenIds();
@@ -122,8 +138,6 @@ export class ActivityService {
             const counterParty = this.getCounterparty(activity, account, false);
             this.lookupService.check(counterParty);
           }
-        } else {
-          console.log(operations);
         }
         return of({
           upToDate: false

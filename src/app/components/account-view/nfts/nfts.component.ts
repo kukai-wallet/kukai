@@ -9,7 +9,6 @@ import { ModalComponent } from '../../modal/modal.component';
 import { TokenBalancesService } from '../../../services/token-balances/token-balances.service';
 import { SubjectService } from '../../../services/subject/subject.service';
 import { DisplayLinkOption } from '../../../interfaces';
-import { take } from 'rxjs/operators';
 import Big from 'big.js';
 
 @Component({
@@ -21,9 +20,8 @@ export class NftsComponent implements OnInit, AfterViewInit {
   DisplayLinkOption = DisplayLinkOption;
   Object = Object;
   Number = Number;
-  nfts = {};
-  isDiscover: boolean = true;
-  initCanary = false;
+  nfts = undefined;
+  isDiscover: boolean = false;
   filter: string = 'APP';
   contractAliases = CONSTANTS.CONTRACT_ALIASES;
   constructor(
@@ -33,27 +31,26 @@ export class NftsComponent implements OnInit, AfterViewInit {
     public tokenBalancesService: TokenBalancesService,
     private subjectService: SubjectService,
     private walletService: WalletService
-  ) { }
+  ) {
+    this.subjectService.logout.subscribe(o => {
+      if (o) {
+        this.nfts = undefined;
+        this.isDiscover = false;
+      }
+    })
+  }
   @Input() activity: any;
   @Input() account;
   ngOnInit(): void {
     this.subjectService.nftsUpdated.subscribe(nfts => {
-      if(!this.initCanary) {
-        if (Object.keys(nfts)?.length) {
-          this.isDiscover = false;
-          this.initCanary = true;
-        }
-      }
-      this.nfts = nfts;
-    });
-    this.subjectService.nftsUpdated.pipe(take(1)).subscribe(nfts => {
+      this.isDiscover = !(nfts && !!Object.keys(nfts)?.length);
       this.nfts = nfts;
     });
   }
   ngAfterViewInit() {
   }
   displayTokenCard(): boolean {
-    return (this.account instanceof ImplicitAccount) || (this.account?.tokens?.length > 0);
+    return this.nfts !== undefined;
   }
   toggleDropdown(sel) {
     const elem = [].slice.call(document.querySelectorAll(`.nfts .collection`));

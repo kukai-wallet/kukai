@@ -7,11 +7,14 @@
     </div>
   </div>
   <div class="selectable" id="operations-container" *ngIf="this.translate.store.translations.en">
-    <ng-container *ngIf="!account.activities.length">
-      <div class="line"><span>No transactions yet</span></div>
+    <ng-container *ngIf="account.activities; else loading">
+      <ng-container *ngIf="!account.activities.length">
+        <div class="line"><span>No activity yet</span></div>
+      </ng-container>
+      <ng-container *ngFor="let activity of account.activities | slice:0:10; trackBy: trackEvent">
+        <app-event [activity]="activity" [account]="account"></app-event>
+      </ng-container>
     </ng-container>
-    <ng-container *ngFor="let activity of account.activities | slice:0:10; trackBy: trackEvent">
-      <app-event [activity]="activity" [account]="account"></app-event>
-    </ng-container>
+    <ng-template #loading>Loading activity...</ng-template>
   </div>
 </div>
