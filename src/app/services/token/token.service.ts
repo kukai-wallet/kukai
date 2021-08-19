@@ -21,6 +21,7 @@ export interface TokenResponseType {
   shouldPreferSymbol?: boolean;
   series?: string;
   status: Status;
+  isUnknownToken?: boolean;
 }
 export type Asset = string | CachedAsset;
 
@@ -260,7 +261,8 @@ export class TokenService {
       description: '',
       category: '',
       kind: 'FA2',
-      status: 0
+      status: 0,
+      isUnknownToken: true
     };
   }
   saveMetadata() {

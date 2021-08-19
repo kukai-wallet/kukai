@@ -87,8 +87,8 @@
         </ng-container>
       </div>
     </div>
-    <div *ngIf="!!token?.status" class="seperator"></div>
-    <div *ngIf="!!token?.status" class="flex-column bottom">
+    <div *ngIf="!token?.isUnknownToken" class="seperator"></div>
+    <div *ngIf="!token?.isUnknownToken" class="flex-column bottom">
       <app-send-button [override]="true" [activeAccount]="activeAccount"
         [tokenTransfer]="!token ? null : token['contractAddress']+':'+token['id']"
         [symbol]="!token ? 'tez' : token?.symbol">
