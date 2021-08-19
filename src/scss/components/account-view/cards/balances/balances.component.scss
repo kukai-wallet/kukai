@@ -40,10 +40,10 @@ $border-color: v.$border-color;
   border: $border-width solid $border-color-dark-only;
 }
 
-// @media (max-width: v.$layout-break-5) {
-//   :host {
-//     & .balances {
-//       max-height: unset;
-//     }
-//   }
-// }
+@media (max-width: v.$layout-break-5) {
+  :host {
+    & .balances {
+      max-height: unset;
+    }
+  }
+}
