@@ -40,7 +40,7 @@
 #follow span {
   font-style: normal;
   font-weight: 500;
-  font-size: 0.75rem;
+  font-size: 0.6875rem;
   line-height: 1rem;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -53,10 +53,10 @@
 }
 .dark #follow span,
 div.foot-container.dark > div.links > div.low > a {
-  color: v.$base-font-color;
+  color: v.$base-font-color-secondary;
 }
 .dark img {
-  filter: invert(100%);
+  filter: invert(70%);
 }
 #follow a {
   position: relative;
@@ -75,7 +75,7 @@ div.foot-container > div.links {
 }
 div.foot-container > div.links a {
   font-size: 0.5rem;
-  color: v.$base-font-color;
+  color: v.$base-font-color-secondary;
   margin-left: 1rem;
 }
 div.foot-container > div.links a:hover {
@@ -83,7 +83,7 @@ div.foot-container > div.links a:hover {
   background-color: #5963ff;
 }
 div.foot-container.dark > div.links a:hover {
-  color: v.$base-font-color;
+  color: v.$base-font-color-secondary;
   background-color: inherit;
 }
 div.foot-container > div.links > div {
@@ -99,7 +99,7 @@ div.foot-container > div.links > div.since > a {
 div.foot-container > div.links > div:last-child > a.docs {
   margin: 0 1rem 1rem auto;
   float: right;
-  font-size: 0.75rem;
+  font-size: 0.5rem;
 }
 div.foot-container > div.links > div.low {
   padding-top: 0.625rem;
