@@ -35,7 +35,7 @@ $base-background-color: v.$base-background-color;
     min-height: calc(100% - 8rem);
     padding: 4rem 0 8rem 0;
     max-width: 100em;
-    width: 100%;
+    width: 85%;
 
     & #rescan {
       margin: 2rem 0 0 0;
@@ -190,7 +190,6 @@ $base-background-color: v.$base-background-color;
   :host {
     div.settings {
       padding: 4rem 2rem 8rem 2rem;
-      width: calc(100% - 4rem);
 
       & div.handler {
         align-items: center;
