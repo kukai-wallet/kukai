@@ -70,8 +70,18 @@ $event-new: v.$base-end-color;
     }
     &.half_confirmed {
       background-color: $event-new;
-      & .getting-balance {
-        color: $base-font-color;
+      & .updating-balances {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        & img {
+          width: 1.125rem;
+          height: 1.125rem;
+          margin-right: 0.5rem;
+        }
+        & span {
+          color: $base-font-color;
+        }
       }
     }
     &.confirmed {

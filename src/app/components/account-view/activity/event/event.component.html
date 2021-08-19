@@ -14,8 +14,10 @@
         </ng-template>
       </div>
       <span class="failed" *ngIf="activity.status === -1">Error</span>
-      <span class="getting-balance" *ngIf="activity.status === 0.5"><img class="spinner"
-          src="../../../../../assets/img/feeLoader.gif"> Updating balances</span>
+      <div class="updating-balances" *ngIf="activity.status === 0.5">
+        <img class="spinner" src="../../../../../assets/img/feeLoader.gif">
+        <span>Updating balances</span>
+      </div>
     </div>
     <div class="flex-row">
       <div class="flex-row-wrap address"><span class="prefix">{{ getAddressPrefix(getType()) }}&nbsp;</span><span
