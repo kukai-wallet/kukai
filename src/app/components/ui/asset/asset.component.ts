@@ -52,7 +52,6 @@ export class AssetComponent implements OnInit, OnChanges, AfterViewInit {
     } else if (typeof (this.meta) === 'string' && this.meta) {
       this.dataSrc = this.meta;
     } else if (!this.meta) {
-      console.log('No meta', this.meta);
       this.mimeType = 'image/*';
       this.dataSrc = '../../../../assets/img/question-mark.svg';
     }
