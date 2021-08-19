@@ -169,6 +169,19 @@ $event-new: v.$base-end-color;
   }
 }
 
+@media (max-width: v.$layout-break-3) {
+  :host {
+    & .sent,
+    & .delegated,
+    & .received,
+    & .origination {
+      & .time {
+        align-self: flex-end;
+      }
+    }
+  }
+}
+
 @media (max-width: v.$layout-break-5) {
   :host {
     & .sent,
@@ -180,8 +193,10 @@ $event-new: v.$base-end-color;
         align-items: flex-start;
       }
 
-      & .time img {
-        display: none;
+      & .time {
+        img {
+          display: none;
+        }
       }
     }
   }
