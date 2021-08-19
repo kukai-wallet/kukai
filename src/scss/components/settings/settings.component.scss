@@ -39,7 +39,8 @@ $base-background-color: v.$base-background-color;
 
     & #rescan {
       margin: 2rem 0 0 0;
-      max-width: 50%;
+      max-width: 65%;
+      align-self: flex-end;
     }
 
     &>h3,
@@ -78,6 +79,7 @@ $base-background-color: v.$base-background-color;
   & div.handler {
     display: flex;
     margin: 0 1rem;
+    flex-direction: row;
 
     &>div:first-child {
       flex-grow: 1;
@@ -115,15 +117,16 @@ $base-background-color: v.$base-background-color;
 
     &>th {
       color: #2C323A44;
+      text-align: left;
 
       &:last-child {
-        color: #FF5959;
-        opacity: 1;
         text-align: right;
 
         &>span:hover {
           text-decoration: underline;
           cursor: pointer;
+          color: v.$base-red-color;
+          font-weight: 500
         }
       }
     }
@@ -192,7 +195,8 @@ $base-background-color: v.$base-background-color;
       padding: 4rem 2rem 8rem 2rem;
 
       & div.handler {
-        align-items: center;
+        flex-direction: column;
+        align-items: flex-start;
 
         & h4 {
           line-height: inherit;
@@ -200,7 +204,7 @@ $base-background-color: v.$base-background-color;
       }
 
       & #rescan {
-        align-self: center;
+        align-self: flex-start;
       }
     }
   }
