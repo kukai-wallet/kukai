@@ -1,18 +1,21 @@
-<div [class]="getType().replace('undelegated', 'delegated')"
-  [class.unconfirmed]="activity.status === 0" [class.half_confirmed]="activity.status === 0.5" [class.confirmed]="activity.status === 1"
+<div [class]="getType().replace('undelegated', 'delegated')" [class.unconfirmed]="activity.status === 0"
+  [class.half_confirmed]="activity.status === 0.5" [class.confirmed]="activity.status === 1"
   [class.new]="fresh && activity.status === 1" [class.failed]="activity.status === -1">
   <div class="flex-column">
     <div class="flex-row">
       <div class="flex-row title">
-        <ng-container *ngIf="!activity.entrypoint; else callEntrypoint"><img *ngIf="getType() === 'sent'"
-            src="../../../../assets/img/up-arrow-black.svg" style="transform: rotate(45deg)" /><img
-            *ngIf="getType() === 'received'" src="../../../../assets/img/up-arrow.svg"
-            style="transform: rotate(135deg)" />
+        <ng-container *ngIf="!activity.entrypoint; else callEntrypoint"><img
+            *ngIf="getType() === 'sent'" src="../../../../assets/img/up-arrow-black.svg"
+            style="transform: rotate(45deg)" /><img *ngIf="getType() === 'received'"
+            src="../../../../assets/img/up-arrow.svg" style="transform: rotate(135deg)" />
           {{ printAmount() }}</ng-container>
-        <ng-template #callEntrypoint>{{ sentKind(activity) }}</ng-template>
+        <ng-template #callEntrypoint><img *ngIf="activity.amount !== '0'"
+            src="../../../../assets/img/up-arrow-black.svg" style="transform: rotate(45deg)" />{{ sentKind(activity) }}
+        </ng-template>activity.amount
       </div>
       <span class="failed" *ngIf="activity.status === -1">Error</span>
-      <span class="getting-balance" *ngIf="activity.status === 0.5"><img class="spinner" src="../../../../../assets/img/feeLoader.gif"> Updating balances</span>
+      <span class="getting-balance" *ngIf="activity.status === 0.5"><img class="spinner"
+          src="../../../../../assets/img/feeLoader.gif"> Updating balances</span>
     </div>
     <div class="flex-row">
       <div class="flex-row-wrap address"><span class="prefix">{{ getAddressPrefix(getType()) }}&nbsp;</span><span
