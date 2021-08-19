@@ -88,7 +88,7 @@ export class EventComponent implements OnInit, OnChanges {
       case 'undelegated':
         return 'Unstaked';
       case 'origination':
-        return '- ' + this.tokenService.formatAmount(this.activity.tokenId, this.activity.amount.toString());
+        return this.tokenService.formatAmount(this.activity.tokenId, this.activity.amount.toString());
       default:
         return '';
     }
