@@ -91,43 +91,4 @@ export class AppComponent implements OnInit {
     window.localStorage.setItem('languagePreference', lang);
     this.translate.use(lang);
   }
-
-  @HostListener('touchstart', ['$event'])
-  touchstart(e) {
-    this.container = e.target.closest('.nfts .scroll .body, .scroll-wrapper .balances');
-    if(!!this.container) {
-      this.container.style.overflowY = '';
-    }
-    this.post = false;
-    this.previous = 0;
-    this.current = e.touches[0].pageY;
-  }
-
-  @HostListener('touchmove', ['$event'])
-  touchmove(e) {
-    this.previous = this.current;
-    this.current = e.changedTouches[0].pageY;
-      if (this.previous > this.current && !!this.container && this.container?.scrollTop >= (this.container.scrollHeight - this.container.clientHeight)) {
-        this.container.style.overflowY = 'hidden';
-        this.container.scrollTop = this.container.scrollHeight - this.container.clientHeight;
-        document.body.scrollTop += (this.previous - this.current);
-        this.post = true;
-      } else if (this.previous < this.current && !!this.container && this.container?.scrollTop <= 0) {
-        this.container.style.overflowY = 'hidden';
-        this.container.scrollTop = -1;
-        document.body.scrollTop += (this.previous - this.current);
-        this.post = true;
-      } else {
-        if(!!this.container && this.post) {
-          document.body.scrollTop += (this.previous - this.current);
-        }
-    }
-  }
-
-  @HostListener('touchend', ['$event'])
-  touchend(e) {
-    if(!!this.container) {
-      this.container.style.overflowY = '';
-    }
-  }
 }
