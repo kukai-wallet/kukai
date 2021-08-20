@@ -27,7 +27,7 @@ $box-shadow: 0px 12px 24px #3331 !default;
 $box-shadow-dark: 0px 6px 12px #3333 !default;
 
 // border constant
-$border-radius: 15px !default;
+$border-radius: 0.9375rem !default;
 $border-radius-hard: calc(#{$border-radius} * 2) !default;
 $border-radius-hardest: calc(#{$border-radius} * 10) !default;
 $border-color: #eff0f1;
