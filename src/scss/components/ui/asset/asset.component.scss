@@ -2,6 +2,8 @@
 @use '../../../abstracts/mixins' as m;
 
 :host {
+  width: 100%;
+  height: 100%;
   & img,
   & video,
   & #modelCanvas {
@@ -10,7 +12,8 @@
     object-fit: cover;
   }
 
-  &.sd, &.pd {
+  &.sd,
+  &.pd {
     display: flex;
     flex-flow: column nowrap;
     justify-content: center;
