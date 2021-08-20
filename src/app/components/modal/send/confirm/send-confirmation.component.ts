@@ -139,6 +139,7 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
   }
   setParametersFormat(id: number) {
     this.parametersFormat = id;
+    this.parametersDisplay = this.parametersTextboxDisplay()
   }
   beaconTokenTransfer(op: any) {
     if (op.parameters && this.tokenService.isKnownTokenContract(op.destination)) {
