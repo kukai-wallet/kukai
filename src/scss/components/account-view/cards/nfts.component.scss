@@ -345,13 +345,8 @@ $box-shadow: 0px 4px 6px #3332;
   }
 }
 
-@media (max-width: v.$layout-break-4) {
-  :host {
-    grid-row: unset;
-  }
-}
 
-@media (max-width: v.$layout-break-3) {
+@media (max-width: v.$layout-break-2) {
   .nfts {
     & .discover {
       width: calc(100% - 4rem);
@@ -360,10 +355,16 @@ $box-shadow: 0px 4px 6px #3332;
 }
 
 @media (max-width: v.$layout-break-4) {
+  :host {
+    grid-row: unset;
+  }
+}
+
+@media (max-width: v.$layout-break-4) {
   .nfts {
     flex-direction: row;
     & .discover {
-      width: calc(50% - 4rem);
+      width: calc(50% - 6rem);
     }
   }
 }
