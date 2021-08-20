@@ -40,7 +40,7 @@
 #follow span {
   font-style: normal;
   font-weight: 500;
-  font-size: 0.6875rem;
+  @include m.multiply('font-size', 0.6875);
   line-height: 1rem;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -64,7 +64,7 @@ div.foot-container.dark > div.links > div.low > a {
   opacity: 0.8;
   -webkit-opacity: 0.8;
   -khtml-opacity: 0.8;
-  font-size: 0.75rem;
+  @include m.multiply('font-size', 0.75, "rem", 1.5);
 }
 div.foot-container > div.links {
   display: flex;
@@ -74,7 +74,7 @@ div.foot-container > div.links {
   z-index: 0;
 }
 div.foot-container > div.links a {
-  font-size: 0.5rem;
+  @include m.multiply('font-size', 0.5, "rem", 1.5);
   color: v.$base-font-color-secondary;
   margin-left: 1rem;
 }
@@ -99,7 +99,7 @@ div.foot-container > div.links > div.since > a {
 div.foot-container > div.links > div:last-child > a.docs {
   margin: 0 1rem 1rem auto;
   float: right;
-  font-size: 0.5rem;
+  @include m.multiply('font-size', 0.5, "rem", 1.5);
 }
 div.foot-container > div.links > div.low {
   padding-top: 0.625rem;
