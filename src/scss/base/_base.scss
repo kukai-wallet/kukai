@@ -3,6 +3,15 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
 // @import url("https://use.typekit.net/cad8baf.css"); test for font-weight against psd
 
+%noselection {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 %base-button {
   outline: none;
   border: none;
@@ -15,6 +24,7 @@
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.06em;
+  @extend %noselection;
 
   img {
     height: 1rem;
@@ -53,15 +63,6 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1.5rem;
-}
-
-%noselection {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
 }
 
 * {
