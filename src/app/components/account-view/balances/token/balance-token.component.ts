@@ -9,7 +9,7 @@ import { Big } from 'big.js';
   styleUrls: ['../../../../../scss/components/account-view/cards/balances/balance-token.component.scss'],
 })
 export class BalanceTokenComponent implements OnInit {
-  String = String;
+  Number = Number;
   @Input() token = null;
   @Input() account;
   contractAliases = CONSTANTS.CONTRACT_ALIASES;
