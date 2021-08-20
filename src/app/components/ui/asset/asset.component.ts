@@ -26,8 +26,8 @@ export class AssetComponent implements OnInit, OnChanges, AfterViewInit {
     this.evaluate();
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    this.evaluate();
+  async ngOnChanges(changes: SimpleChanges) {
+    await this.evaluate();
     if (this.asset?.nativeElement) {
       this.lazyLoad();
     }
