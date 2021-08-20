@@ -91,9 +91,4 @@ export class AppComponent implements OnInit {
     window.localStorage.setItem('languagePreference', lang);
     this.translate.use(lang);
   }
-
-  @HostListener('touchend', ['$event'])
-  touchEnd(e) {
-    e.preventDefault();
-  }
 }
