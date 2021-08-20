@@ -18,7 +18,7 @@
     <!-- loop through contracts -->
     <ng-container *ngFor="let key of Object.keys(this.nfts); let i = index">
       <div class="flex-column collection" [class]="filter === key ? 'expanded' : ''" [id]="sanitizeKey(key, i)" [style.display]="!isDiscover && filter === 'APP' ? '' : 'none'">
-        <div class="flex-row head noselection" (click)="toggleDropdown(sanitizeKey('#' + key, i))">
+        <div class="flex-row head" (click)="toggleDropdown(sanitizeKey('#' + key, i))">
           <div class="flex-row left">
             <img class="icon" [src]="this.nfts[key]?.thumbnailUrl" />
             <div class="title">
@@ -57,7 +57,7 @@
       <div class="flex-row body">
         <ng-container *ngFor="let key of Object.keys(this.nfts)">
           <ng-container *ngFor="let token of this.nfts[key]?.tokens; let i = index; trackBy: trackToken">
-            <div class="flex-row token noselection" (click)="viewToken(token)">
+            <div class="flex-row token" (click)="viewToken(token)">
               <div class="img-wrapper">
                 <app-asset class="icon" [meta]="token?.thumbnailAsset || token?.displayAsset"></app-asset>
                 <div *ngIf="Number.parseInt(token?.balance) > 1" class="balance">{{
