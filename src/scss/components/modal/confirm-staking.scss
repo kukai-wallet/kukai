@@ -1,5 +1,9 @@
 & .confirm-staking {
 
+  & .label {
+    color: v.$base-font-color-secondary
+  }
+
   & .head {
     margin: 1rem 0;
     padding: 2rem;
