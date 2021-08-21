@@ -60,7 +60,7 @@ export class NftsComponent implements OnInit, AfterViewInit {
     } else {
       elem.forEach(coll => { if (coll.classList.contains('expanded')) { coll.classList.remove('expanded'); } });
       c.classList.add('expanded');
-        if (window.innerWidth < 1169) {
+        if (window.innerWidth < 1169 && 462 < parseFloat(window.getComputedStyle(c).getPropertyValue('height').replace('px', ''))) {
           document.body.scroll(0, c.offsetTop - 25);
         }
     }
