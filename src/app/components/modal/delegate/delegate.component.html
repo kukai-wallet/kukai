@@ -31,8 +31,9 @@
         <input *ngIf="!walletService.isLedgerWallet() && !walletService.isTorusWallet()" [(ngModel)]="password"
           placeholder="Password" autocomplete="current-password" class="text password" type="password"
           (input)="this.pwdValid = ''" (change)="this.pwdValid = ''" (keydown.enter)='inject()'>
-        <button *ngIf="walletService.isLedgerWallet() && ledgerError; else elseBlock" class="confirm"
-          (click)="ledgerSign()">Sign with Ledger</button>
+        <button class="confirm" *ngIf="walletService.isLedgerWallet() && ledgerError; else elseBlock"
+          (click)="ledgerRetry()">Sign with
+          Ledger</button>
         <ng-template #elseBlock>
           <span *ngIf="this.pwdValid" class="label danger">{{ this.pwdValid }}</span>
           <button class="confirm" (click)="inject()"
