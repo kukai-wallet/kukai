@@ -2,14 +2,14 @@
   <div class="content">
     <div class="flex-column top">
       <div class="flex-row button close" (click)="closeModalAction()"><img class="x" src="../../../assets/img/close-btn-x.png" /></div>
-      <h1 class="title">Confirm Staker</h1>
+      <h1 class="title">Confirm Staking</h1>
     </div>
     <div class="flex-column confirm-staking">
       <div class="flex-row head">
         <img *ngIf="delegate?.logo" [src]="delegate.logo" />
         <div class="flex-column data">
           <span class="name">{{ delegate?.name ? delegate.name : getDelegate() }}</span>
-          <div class="flex-row fee-space"><span class="fee"><span>STAKER FEE:</span>&nbsp;{{ delegate.fee ? toPercent(delegate.fee) : 'UNKNOWN' }}</span><span
+          <div class="flex-row fee-space"><span class="fee"><span>SPLIT:</span>&nbsp;{{ delegate?.fee ? toPercent(delegate.fee) : 'UNKNOWN' }}</span><span
               *ngIf="delegate?.freeSpace" class="space"><span>SPACE:</span>&nbsp;{{ round(delegate.freeSpace) }}</span>
           </div>
         </div>
