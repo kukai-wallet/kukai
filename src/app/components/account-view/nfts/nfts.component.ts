@@ -55,8 +55,15 @@ export class NftsComponent implements OnInit, AfterViewInit {
   toggleDropdown(sel) {
     const elem = [].slice.call(document.querySelectorAll(`.nfts .collection`));
     const c = document.querySelector(sel);
-    c.classList.toggle('expanded');
-    elem.forEach(token => { if (!c.classList.contains('expanded')) { token.querySelector('.body').scrollTop = 0; } else { if(window.innerWidth < 1169) { document.body.scroll(0, document.querySelector(sel).offsetTop - 25); }} });
+    if (c.classList.contains('expanded')) {
+      c.classList.remove('expanded');
+    } else {
+      elem.forEach(coll => { if (coll.classList.contains('expanded')) { coll.classList.remove('expanded'); } });
+      c.classList.add('expanded');
+        if (window.innerWidth < 1169) {
+          document.body.scroll(0, c.offsetTop - 25);
+        }
+    }
   }
   viewToken(token) {
     ModalComponent.currentModel.next({ name: 'token-detail', data: token });
