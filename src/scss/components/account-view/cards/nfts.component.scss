@@ -1,5 +1,5 @@
 @use '../../../abstracts/variables'as v;
-@use '../../../abstracts/mixins' as m;
+@use '../../../abstracts/mixins'as m;
 @import "./mixins";
 
 $base-font-color: v.$base-font-color;
@@ -77,9 +77,11 @@ $box-shadow: 0px 4px 6px #3332;
       & .title {
         @include m.multiply("font-size", 1.75);
         margin-right: 1rem;
+
         & a {
           color: black;
         }
+
         & a:hover {
           text-decoration: underline;
         }
@@ -131,9 +133,11 @@ $box-shadow: 0px 4px 6px #3332;
         overflow: hidden;
         width: 50%;
       }
+
       & a.link-to-app {
         & button {
-          width: auto;;
+          width: auto;
+          ;
           padding: 1rem 2rem;
           border-radius: calc(1rem * 2);
           @include m.multiply("font-size", 1);
@@ -174,9 +178,13 @@ $box-shadow: 0px 4px 6px #3332;
         }
       }
 
-      & > .scroll {
+      &>.scroll {
         top: 0rem;
         display: flex;
+      }
+
+      & .body {
+        overflow-y: scroll;
       }
     }
 
@@ -228,7 +236,7 @@ $box-shadow: 0px 4px 6px #3332;
 
     & .body {
       overflow-x: hidden;
-      overflow-y: auto;
+      overflow-y: hidden;
       flex-wrap: wrap;
       height: 100%;
       padding: 0 2rem;
@@ -239,10 +247,6 @@ $box-shadow: 0px 4px 6px #3332;
       justify-content: flex-start;
       width: calc(100% - 4rem);
 
-      &.expanded {
-        overflow-y: auto;
-      }
-
       & .token {
         width: calc(32% - 2rem);
         justify-content: flex-start;
@@ -251,6 +255,7 @@ $box-shadow: 0px 4px 6px #3332;
 
         & .img-wrapper {
           position: relative;
+
           & .icon {
             width: 8rem;
             height: 8rem;
@@ -306,7 +311,7 @@ $box-shadow: 0px 4px 6px #3332;
       width: calc(100% - 0.75rem);
     }
 
-    & > .scroll {
+    &>.scroll {
       max-height: 52rem;
       flex-wrap: wrap;
       padding: 0.5rem;
@@ -363,6 +368,7 @@ $box-shadow: 0px 4px 6px #3332;
 @media (max-width: v.$layout-break-4) {
   .nfts {
     flex-direction: row;
+
     & .discover {
       width: calc(50% - 6rem);
     }
@@ -374,9 +380,11 @@ $box-shadow: 0px 4px 6px #3332;
     flex-direction: column;
     flex-wrap: nowrap;
     align-items: initial;
+
     & .discover {
       width: calc(100% - 4rem);
     }
+
     & .collection {
       & .body .token {
         width: 100%;

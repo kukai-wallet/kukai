@@ -22,9 +22,6 @@
         <div class="label">Fee <span class="label" style="margin: 0; text-transform: lowercase;">(tez)</span></div>
         <input [(ngModel)]="fee" class="text fee" type="text" />
       </ng-container>
-      <ng-container *ngIf="!getDelegate()" class="preview">
-        <span>Withdraw delegation</span>
-      </ng-container>
       <div class="seperator"></div>
       <div class="flex-column bottom">
         <div *ngIf="!walletService.isLedgerWallet() && !walletService.isTorusWallet()" class="label">ENTER YOUR PASSWORD TO CONFIRM</div>
