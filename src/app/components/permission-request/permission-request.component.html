@@ -13,7 +13,7 @@
       <p style="font-size: 1.25rem">Select an account the permissions should be applied to:</p>
       <select class="select-css" [(ngModel)]="selectedAccount">
         <ng-container *ngFor="let acc of walletService.wallet.implicitAccounts">
-          <option value="{{ acc.address }}">{{ acc.pkh }}</option>
+          <option value="{{ acc.address }}">{{ acc.shortAddress() }}</option>
         </ng-container>
       </select>
       <div class="seperator"></div>

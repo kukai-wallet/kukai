@@ -253,6 +253,10 @@ $box-shadow: 0px 4px 6px #3332;
         padding: 1rem;
         cursor: pointer;
 
+        &:last-of-type {
+          border-bottom: none;
+        }
+
         & .img-wrapper {
           position: relative;
 

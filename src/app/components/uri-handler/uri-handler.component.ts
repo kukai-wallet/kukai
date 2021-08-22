@@ -25,7 +25,11 @@ export class UriHandlerComponent implements OnInit {
     private deeplinkService: DeeplinkService,
     private inputValidationService: InputValidationService,
     private subjectService: SubjectService
-  ) { }
+  ) {
+    this.walletService.activeAccount.subscribe((activeAccount) => {
+      this.activeAccount = activeAccount;
+    });
+  }
   permissionRequest: PermissionResponseInput = null;
   operationRequest: any = null;
   signRequest: any = null;
@@ -174,7 +178,7 @@ export class UriHandlerComponent implements OnInit {
       await this.beaconService.rejectOnUnknown(message);
       return false;
     }
-    this.activeAccount = this.walletService.wallet.getImplicitAccount(message.sourceAddress);
+    this.activeAccount = this.activeAccount ?? this.walletService.wallet.getImplicitAccount(message.sourceAddress);
     return true;
   }
   private invalidOptionals(op: any): boolean {
@@ -220,7 +224,7 @@ export class UriHandlerComponent implements OnInit {
       await this.beaconService.rejectOnUnknown(message);
       return false;
     }
-    this.activeAccount = this.walletService.wallet.getImplicitAccount(message.sourceAddress);
+    this.activeAccount = this.activeAccount ?? this.walletService.wallet.getImplicitAccount(message.sourceAddress);
     return true;
   }
   invalidParameters(parameters: any): boolean {

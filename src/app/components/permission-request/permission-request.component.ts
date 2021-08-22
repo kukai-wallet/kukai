@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 })
 export class PermissionRequestComponent implements OnInit, OnChanges {
   @Input() permissionRequest: any;
+  @Input() activeAccount;
   @Output() permissionResponse = new EventEmitter();
   syncSub: Subscription;
   selectedAccount: string;
@@ -23,7 +24,7 @@ export class PermissionRequestComponent implements OnInit, OnChanges {
   ) { }
   ngOnInit(): void {
     if (this.walletService.wallet) {
-      this.selectedAccount = this.walletService.wallet.implicitAccounts[0]?.address;
+      this.selectedAccount = this.activeAccount?.address ?? this.walletService.wallet.implicitAccounts[0]?.address;
     }
   }
   ngOnChanges(changes: SimpleChanges): void {
@@ -32,6 +33,7 @@ export class PermissionRequestComponent implements OnInit, OnChanges {
       document.body.style.marginRight = scrollBarWidth.toString();
       document.body.style.overflow = 'hidden';
       this.messageService.removeBeaconMsg(true);
+      this.selectedAccount = this.activeAccount?.address ?? this.walletService.wallet.implicitAccounts[0]?.address;
       this.syncSub = this.subjectService.beaconResponse.subscribe((response) => {
         if (response) {
           this.permissionResponse.emit('silent');

@@ -33,7 +33,6 @@ $border-color: v.$border-color;
 .balances {
   max-height: 38rem;
   overflow: hidden;
-  overflow-y: auto;
   border-radius: v.$border-radius;
   background-color: $base-end-color;
   padding: 0rem 0.5rem 1rem 2rem;
