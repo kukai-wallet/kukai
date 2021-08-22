@@ -22,6 +22,7 @@ export class NftsComponent implements OnInit, AfterViewInit {
   Number = Number;
   nfts = undefined;
   isDiscover: boolean = false;
+  isInitLoad: boolean = true;
   filter: string = 'APP';
   contractAliases = CONSTANTS.CONTRACT_ALIASES;
   constructor(
@@ -43,7 +44,12 @@ export class NftsComponent implements OnInit, AfterViewInit {
   @Input() account;
   ngOnInit(): void {
     this.subjectService.nftsUpdated.subscribe(nfts => {
-      this.isDiscover = !(nfts && !!Object.keys(nfts)?.length);
+      if(!this.isInitLoad) {
+        if (Object.keys(nfts)?.length) {
+          this.isDiscover = !(nfts && !!Object.keys(nfts)?.length);
+          this.isInitLoad = true;
+        }
+      }
       this.nfts = nfts;
     });
   }
