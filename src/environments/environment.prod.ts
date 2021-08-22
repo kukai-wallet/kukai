@@ -22,6 +22,11 @@ export const CONSTANTS: Constants = {
     'https://interpopcomics.com',
     'https://www.interpopcomics.com'
   ],
+  HARD_LIMITS: {
+    hard_gas_limit_per_operation: 1040000,
+    hard_gas_limit_per_block: 5200000,
+    hard_storage_limit_per_operation: 60000
+  },
   CONTRACT_ALIASES: {
     'hen': {
       name: 'Hic et Nunc (HEN)',
@@ -738,6 +743,24 @@ export const CONSTANTS: Constants = {
         }
       }
     },
+    'KT1BA9igcUcgkMT4LEEQzwURsdMpQayfb6i4': {
+      kind: 'FA2',
+      category: '',
+      tokens: {
+        66: {
+          name: 'The Non-Friendly Turtle #2',
+          symbol: 'Tezos',
+          decimals: 0,
+          description: 'NFTs are changing everything...but what exactly is an NFT? A Non-Friendly Turtle? Discover how Tezos is changing NFTs, and collect your own at Tezos.com/NFTgallery.',
+          displayAsset: 'https://cloudflare-ipfs.com/ipfs/QmTmSjweqQrba5WGRUxB4u5WEbwktQBQekioi9K7Kkos6x',
+          thumbnailAsset: '../../../assets/img/tokens/unknown-token.png',
+          isBooleanAmount: false,
+          isTransferable: true,
+          shouldPreferSymbol: false,
+          status: 1
+        }
+      }
+    }
   },
   CONTRACT_OVERRIDES: {
     // hice et nunc
@@ -759,7 +782,9 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1DKBvxiwDR7qazNuuxCxY2AaXnoytmDE7H',//Mandala v2
   'KT1UxMVVrK2pbYYEtwes1zKYdpYnzoZ6yPKC',//Comic app
   'KT1AaaBSo5AE6Eo8fpEN5xhCD4w3kHStafxk',//Minterpop
-  'KT1EpGgjQs73QfFJs9z7m1Mxm5MTnpC2tqse',//Kalamint
+  'KT1EpGgjQs73QfFJs9z7m1Mxm5MTnpC2tqse',//Kalamint NFT
+  'KT1A5P4ejnLix13jtadsfV9GCnXLMNnab8UT',//Kalamint token
+  'KT1ViVwoVfGSCsDaxjwoovejm1aYSGz7s2TZ',//Teztopia
   'KT1BA9igcUcgkMT4LEEQzwURsdMpQayfb6i4',//turtle
   'KT1PKvHNWuWDNVDtqjDha4AostLrGDu4G1jy',//Bazaar Market
   'KT1WGDVRnff4rmGzJUbdCRAJBmYt12BrPzdD',//PixelPotus
