@@ -14,7 +14,7 @@ $border-color: v.$border-color;
   & .balance {
     border: none;
     padding: 2rem 3rem 2rem 2rem;
-    box-shadow: none;
+    box-shadow: 0px 4px 8px #3333;
     z-index: 1000;
     width: calc(100% - 4rem);
     position: relative;
@@ -24,7 +24,7 @@ $border-color: v.$border-color;
     border-bottom: 2px solid $border-color;
   }
   &.no-box .balance {
-    box-shadow: 0px 4px 8px #3333 !important;
+    box-shadow: none !important;
     border-bottom: 2px solid $border-color !important;
   }
 }

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, HostListener, Input, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, Input, OnInit } from '@angular/core';
 import { Account } from '../../../services/wallet/wallet';
 import { CONSTANTS } from '../../../../environments/environment';
 import { TokenBalancesService } from '../../../services/token-balances/token-balances.service';
@@ -8,7 +8,7 @@ import { TokenBalancesService } from '../../../services/token-balances/token-bal
   templateUrl: './balances.component.html',
   styleUrls: ['../../../../scss/components/account-view/cards/balances/balances.component.scss'],
 })
-export class BalancesComponent implements OnInit, AfterViewInit {
+export class BalancesComponent implements OnInit, AfterViewChecked {
   Object = Object;
   @Input() account: Account;
   contractAliases = CONSTANTS.CONTRACT_ALIASES;
@@ -17,18 +17,25 @@ export class BalancesComponent implements OnInit, AfterViewInit {
     public tokenBalancesService: TokenBalancesService
   ) {
   }
-  ngOnInit(): void {
-  }
-  ngAfterViewInit() {
-    const wrap = document.querySelector('.balances') as HTMLElement;
-    wrap.addEventListener('scroll', (e) => {
-      if(wrap.scrollTop > 0) {
+  e(wrap?) {
+    wrap = wrap ?? document.querySelector('.scroll-wrapper .balances') as HTMLElement;
+    if(!!wrap) {
+      if (wrap.scrollTop > 0 || parseFloat(window.getComputedStyle(wrap).maxHeight.replace('px', '')) > parseFloat(window.getComputedStyle(wrap).height.replace('px', ''))) {
         document.querySelector('.scroll-wrapper .tez').classList.add('no-box');
       } else {
         document.querySelector('.scroll-wrapper .tez').classList.remove('no-box');
       }
-
-    });
+    }
+  }
+  ngOnInit(): void {
+    setTimeout(() => {
+      this.e(document.querySelector('.scroll-wrapper .balances'));
+    }, 30000);
+  }
+  ngAfterViewChecked() {
+    const wrap = document.querySelector('.scroll-wrapper .balances') as HTMLElement;
+    wrap.addEventListener('scroll', this.e);
+    this.e(wrap);
   }
   trackToken(index: number, token: any) {
     return token?.contractAddress ? token.contractAddress + ':' + token?.id + ':' + token?.balance : null;
