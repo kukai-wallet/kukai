@@ -1,4 +1,4 @@
-<div class="flex-row balance" [style.border]="!token ? 'none' : ''" [style.padding]="!token ? '2rem 0.5rem 2rem 2rem' : ''">
+<div class="flex-row balance">
   <div class="flex-row left">
     <app-asset class="icon" [meta]="!token ? '../../../../assets/img/tezos-xtz-logo.svg' : token?.thumbnailAsset || token?.displayAsset" [class.pd]="!(token?.thumbnailAsset || token?.displayAsset)" [class.sd]="!token" (click)="viewToken()"></app-asset>
     <div class="flex-row title" (click)="viewToken()">{{!token ? 'Tezos' : token.symbol}}</div>

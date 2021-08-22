@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { ModalComponent } from '../../../../components/modal/modal.component';
 import { CONSTANTS } from '../../../../../environments/environment';
 import { Big } from 'big.js';
