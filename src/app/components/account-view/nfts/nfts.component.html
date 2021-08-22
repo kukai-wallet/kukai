@@ -16,6 +16,7 @@
   </div>
   <div class="flex-row-wrap nfts">
     <!-- loop through contracts -->
+    <ng-container *ngIf="!Object.keys(nfts)?.length && !isDiscover"><span>There are no NFTs in this account</span></ng-container>
     <ng-container *ngFor="let key of Object.keys(this.nfts); let i = index">
       <div class="flex-column collection" [class]="filter === key ? 'expanded' : ''" [id]="sanitizeKey(key, i)" [style.display]="!isDiscover && filter === 'APP' ? '' : 'none'">
         <div class="flex-row head" (click)="toggleDropdown(sanitizeKey('#' + key, i))">
