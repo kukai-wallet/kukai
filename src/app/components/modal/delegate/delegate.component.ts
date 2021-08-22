@@ -110,6 +110,9 @@ export class DelegateComponent extends ModalComponent implements OnInit, OnChang
       this.storedDelegate = this.toPkh;
       this.toPkh = data.address;
       this.delegate = data;
+      if (this.walletService.isLedgerWallet()) {
+        this.ledgerError = '?';
+      }
       if (this.beaconMode) {
         this.syncSub = this.subjectService.beaconResponse.subscribe((response) => {
           if (response) {
