@@ -9,20 +9,30 @@ $border-color-dark-only: v.$border-color-dark-only;
 $border-width: v.$border-width;
 $border-color: v.$border-color;
 
-:host.tez .balance {
-  border: none;
-  padding: 2rem 3rem 2rem 2rem;
-  box-shadow: 0px 4px 8px #3333;
-  z-index: 1000;
-  width: calc(100% - 4rem);
-  position: relative;
-  top: 0;
-  left: 0;
-  z-index: 0;
+:host.tez {
+
+  & .balance {
+    border: none;
+    padding: 2rem 3rem 2rem 2rem;
+    box-shadow: none;
+    z-index: 1000;
+    width: calc(100% - 4rem);
+    position: relative;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    border-bottom: 2px solid $border-color;
+  }
+  &.no-box .balance {
+    box-shadow: 0px 4px 8px #3333 !important;
+    border-bottom: 2px solid $border-color !important;
+  }
 }
 
-:host.first .balance {
-  border-top: none !important;
+:host.first {
+  & .balance {
+    border-top: none !important;
+  }
 }
 
 .balance {
