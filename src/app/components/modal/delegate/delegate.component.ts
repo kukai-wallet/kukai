@@ -32,7 +32,6 @@ export class DelegateComponent extends ModalComponent implements OnInit, OnChang
   @Input() operationRequest: any;
   @Output() operationResponse = new EventEmitter();
   activeAccount: Account;
-  implicitAccounts;
   toPkh: string;
   storedDelegate: string;
   delegate = null;
@@ -43,8 +42,6 @@ export class DelegateComponent extends ModalComponent implements OnInit, OnChang
   formInvalid = '';
   sendResponse: any;
   ledgerError = '';
-  delegates = [];
-  address = '';
   syncSub: Subscription;
   advanced = false;
 
@@ -68,14 +65,10 @@ export class DelegateComponent extends ModalComponent implements OnInit, OnChang
 
   ngOnInit() {
     if (this.walletService.wallet) {
-      this.init();
-      this.address = this.route.snapshot.paramMap.get('address');
-
       let address = this.route.snapshot.paramMap.get('address');
       if (this.walletService.addressExists(address)) {
         this.activeAccount = this.walletService.wallet.getAccount(address);
       }
-
       this.walletService.activeAccount.subscribe(activeAccount => {
         this.activeAccount = activeAccount;
       });
@@ -96,9 +89,6 @@ export class DelegateComponent extends ModalComponent implements OnInit, OnChang
         }
       }
     }
-  }
-  init() {
-    this.implicitAccounts = this.walletService.wallet.implicitAccounts;
   }
 
   open(data) {

@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { WalletService } from '../../services/wallet/wallet.service';
 import { DelegateService } from '../../services/delegate/delegate.service';
 import { ModalComponent } from '../modal/modal.component';
+import { InputValidationService } from '../../services/input-validation/input-validation.service';
+import { MessageService } from '../../services/message/message.service';
 
 
 @Component({
@@ -13,13 +15,15 @@ import { ModalComponent } from '../modal/modal.component';
 export class DelegatePageComponent implements OnInit {
   delegates = [];
   activeAccount = null;
-  customAddress = "";
+  customAddress: string = '';
   isShowingCustom = false;
 
   constructor(
     public delegateService: DelegateService,
     public router: Router,
-    public walletService: WalletService
+    public walletService: WalletService,
+    public inputValidationService: InputValidationService,
+    private messageServcie: MessageService
   ) {
   }
 
@@ -51,8 +55,12 @@ export class DelegatePageComponent implements OnInit {
     }
     return [];
   }
-  stake(delegate) {
-    ModalComponent.currentModel.next({ name: 'delegate-confirm', data: delegate });
+  stake(delegate: any) {
+    if (delegate.address === '' || this.inputValidationService.address(delegate.address)) {
+      ModalComponent.currentModel.next({ name: 'delegate-confirm', data: delegate });
+    } else {
+      this.messageServcie.addError(`Invalid baker address: ${delegate?.address}`);
+    }
   }
 
   round(val): string {
