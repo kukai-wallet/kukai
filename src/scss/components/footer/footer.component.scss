@@ -26,7 +26,7 @@
   bottom: 0;
   left: 0;
 }
-@media (max-width: v.$layout-break-3) and (max-aspect-ratio: 1/1), (max-width: v.$layout-break-5), (max-height: 924px) {
+@media (max-height: 54em) and (min-width: v.$layout-break-3), (max-aspect-ratio: 1/1) {
   :host div.foot-container {
     position: initial;
   }

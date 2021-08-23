@@ -19,12 +19,12 @@ export class BalancesComponent implements OnInit, AfterViewChecked {
   }
   e(wrap) {
     if(!!wrap) {
-      if (wrap.scrollTop > 0 || parseInt(window.getComputedStyle(wrap).maxHeight.replace('px', '')) > parseInt(wrap.scrollHeight)) {
+      if (wrap.scrollTop > 0 || this.tokenBalancesService?.balances?.length > 5) {
         document.querySelector('.scroll-wrapper .tez').classList.add('no-box');
       } else {
         document.querySelector('.scroll-wrapper .tez').classList.remove('no-box');
       }
-      parseFloat(window.getComputedStyle(wrap).maxHeight.replace('px', '')) > wrap.scrollHeight ? wrap.style.overflowY = '' : wrap.style.overflowY = 'auto';
+      this.tokenBalancesService?.balances?.length <= 5 ? wrap.style.overflowY = '' : wrap.style.overflowY = 'auto';
     }
   }
   ngOnInit(): void {
