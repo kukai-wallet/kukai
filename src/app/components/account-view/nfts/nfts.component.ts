@@ -21,8 +21,8 @@ export class NftsComponent implements OnInit, AfterViewInit {
   Object = Object;
   Number = Number;
   nfts = undefined;
-  isDiscover: boolean = false;
-  isInitLoad: boolean = true;
+  isDiscover: boolean = true;
+  isInitLoad: boolean = false;
   filter: string = 'APP';
   contractAliases = CONSTANTS.CONTRACT_ALIASES;
   constructor(
@@ -33,6 +33,15 @@ export class NftsComponent implements OnInit, AfterViewInit {
     private subjectService: SubjectService,
     private walletService: WalletService
   ) {
+    this.subjectService.nftsUpdated.subscribe(nfts => {
+      if(!this.isInitLoad) {
+        if (nfts && Object.keys(nfts)?.length) {
+          this.isDiscover = false;
+          this.isInitLoad = true;
+        }
+      }
+      this.nfts = nfts;
+    });
     this.subjectService.logout.subscribe(o => {
       if (o) {
         this.nfts = undefined;
@@ -42,17 +51,7 @@ export class NftsComponent implements OnInit, AfterViewInit {
   }
   @Input() activity: any;
   @Input() account;
-  ngOnInit(): void {
-    this.subjectService.nftsUpdated.subscribe(nfts => {
-      if(!this.isInitLoad) {
-        if (Object.keys(nfts)?.length) {
-          this.isDiscover = !(nfts && !!Object.keys(nfts)?.length);
-          this.isInitLoad = true;
-        }
-      }
-      this.nfts = nfts;
-    });
-  }
+  ngOnInit(): void {}
   ngAfterViewInit() {
   }
   displayTokenCard(): boolean {

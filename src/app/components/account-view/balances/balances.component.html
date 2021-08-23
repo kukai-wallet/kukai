@@ -6,7 +6,7 @@
     </div>
   </div>
   <div class="scroll-wrapper">
-    <app-balance-token [account]="account" class="tez"></app-balance-token>
+    <app-balance-token [account]="account" class="tez no-box"></app-balance-token>
     <div *ngIf="!!this.tokenBalancesService?.balances?.length" class="flex-column balances">
       <ng-container *ngFor="let tokenBalance of this.tokenBalancesService.balances; let i = index; trackBy: trackToken">
         <app-balance-token [account]="account" [token]="tokenBalance" [class.first]="i === 0"></app-balance-token>
