@@ -104,7 +104,7 @@ div.foot-container > div.links > div.since > a {
   padding: 0;
 }
 div.foot-container > div.links > div:last-child > a.docs {
-  margin: 0 1rem 0 auto;
+  margin: 0 0.5rem 0 auto;
   float: right;
   @include m.multiply('font-size', 0.75, "rem", 1.35);
 }
