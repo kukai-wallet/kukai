@@ -245,7 +245,7 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
   }
   async inject() {
     if (this.walletService.isLedgerWallet()) {
-      this.broadCastLedgerTransaction();
+      await this.broadCastLedgerTransaction();
       this.sendResponse = null;
       ModalComponent.currentModel.next({ name: '', data: null });
     } else {
@@ -285,6 +285,8 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
         if (ans.success === true) {
           console.log('Transaction successful ', ans);
           if (ans.payload.opHash) {
+            document.body.style.marginRight = '0.5rem !important';
+            document.body.style.overflowY = 'hidden !important';
             await this.messageService.stopSpinner();
             this.operationResponse.emit(ans.payload.opHash);
             const metadata = { transactions: this.transactions, opHash: ans.payload.opHash, tokenTransfer: this.tokenTransfer };
@@ -298,6 +300,8 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
               }
             }
           } else if (this.walletService.wallet instanceof LedgerWallet) {
+            document.body.style.marginRight = '0.5rem !important';
+            document.body.style.overflowY = 'hidden !important';
             await this.requestLedgerSignature();
             return;
           }
