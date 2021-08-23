@@ -55,10 +55,11 @@ export const CONSTANTS: Constants = {
       thumbnailUrl: "https://dev.interpopcomics.com/interpop_logo.png",
       link: "https://interpopcomics.com/", shouldDisplayLink: DisplayLinkOption.DirectAuth, category: "collectibles"
     },
-    'Bazaar Market': {
-      address: ["KT1PKvHNWuWDNVDtqjDha4AostLrGDu4G1jy"],
-      thumbnailUrl: "https://dashboard-assets.dappradar.com/document/7444/bazaarmarket-dapp-marketplaces-tezos-logo-166x166_eeff309690a4abe4d06e78922012d985.png",
-      link: "https://bazaarnft.xyz/", shouldDisplayLink: DisplayLinkOption.All, category: "marketplaces"
+    'TezosCampaigns': {
+      name: 'Tezos Campaigns',
+      address: ["KT1BA9igcUcgkMT4LEEQzwURsdMpQayfb6i4", "KT1JXZPcfEnxswdzYLox1LeALWTkSm1nsdhp"],
+      thumbnailUrl: "",
+      link: "", shouldDisplayLink: DisplayLinkOption.None, category: "collectibles"
     },
     'TzColors': {
       address: ["KT1FyaDqiMQWg7Exo7VUiXAgZbd2kCzo3d4s"],
@@ -71,36 +72,47 @@ export const CONSTANTS: Constants = {
       thumbnailUrl: "https://www.pixelpotus.com/img/eagle-right.d1840b0b.png",
       link: "https://www.pixelpotus.com/", shouldDisplayLink: DisplayLinkOption.All, category: "collectibles"
     },
+    'Tezotopia': {
+      address: ["KT1ViVwoVfGSCsDaxjwoovejm1aYSGz7s2TZ"],
+      thumbnailUrl: "https://tezotopia.web.app/static/media/tezotopia-logo.bf94c3f8.png",
+      link: "https://app.tezotopia.com/marketplace/artifacts", shouldDisplayLink: DisplayLinkOption.All, category: "collectibles"
+    },
+    'Alchememist': {
+      address: ["KT1W4wh1qDc2g22DToaTfnCtALLJ7jHn38Xc", "KT1Em3sjKdHo3Fo9Az4EusZXQbkgsdZHkQkF"],
+      thumbnailUrl: "https://cloudflare-ipfs.com/ipfs/QmPmD4kdh8d2fxaHeHy7BTwmcYxhz3eA6nFeGJXHmNnSex",
+      link: "https://auctions.alchememist.com/", shouldDisplayLink: DisplayLinkOption.None, category: "collectibles"
+    },
     'SalsaDaoTacoshop': {
       name: 'SalsaDao Tacoshop & Casino',
       address: ["KT1UmxSSUQ5716tRa2RLNSAkiSG6TWbzZ7GL", "KT1JYWuC4eWqYkNC1Sh6BiD89vZzytVoV2Ae", "KT1NvPaecvj8g7SbDs8E5s2jxbEBKHxZssP1", "KT1LhNu3v6rCa3Ura3bompAAJZD9io5VRaWZ", "KT1VHd7ysjnvxEzwtjBAmYAmasvVCfPpSkiG"],
       thumbnailUrl: "https://dashboard-assets.dappradar.com/document/7837/salsadao-dapp-other-tezos-logo-166x166_d4625f93b4fa3858c32b15b36c99617e.png",
       link: "https://tezostaco.shop/#/", shouldDisplayLink: DisplayLinkOption.None, category: "collectibles"
     },
-    "Truesy": {
-      address: ["KT197APGtQ8mk2svRSpDkqXLzHedRtkJ7Hjr", "KT1CTqQ4vg2zyG1AQmDLVeJ473ueoy2Rw8t1", "KT1QE4nZiAXbpuDCu4P5QTNibQSx6FFW3y2W", "KT1QbzLyzwXB9JTevvjT3B24BzgWfMzFfBHt"],
+    'BazaarMarket': {
+      name: 'Bazaar Market',
+      address: ["KT1PKvHNWuWDNVDtqjDha4AostLrGDu4G1jy"],
+      thumbnailUrl: "https://dashboard-assets.dappradar.com/document/7444/bazaarmarket-dapp-marketplaces-tezos-logo-166x166_eeff309690a4abe4d06e78922012d985.png",
+      link: "https://bazaarnft.xyz/", shouldDisplayLink: DisplayLinkOption.All, category: "marketplaces"
+    },
+    'Truesy': {
+      address: ["KT1PvfewvyW7zxWHSHCivkeJRFyrHNjE3xDr", "KT1LfsA9WzzGX7jkhovSTVnZZoBQQNcpvatQ", "KT1WAxpXZ8hvyoXy47YogdNURArGkFy4k3To", "KT1CGHpbtxvPRX6HF4mVQo48Rb5z2aYVnvB6", "KT1FCCDtoG71hJb4KiUegpCqGr1GDG3YyY7g", "KT1K1vBSP5MyKfBBpyHEjmCHTuYeugid4Tqn", "KT1UQaoRqLgFvsTwprgsGXj84DT9Wm5jC7tY", "KT1Gba7KnVXB563kxmk4mgKUQ4ujP8yFbQfr", "KT1RbCvEFWCJXUswKxWrH9wxgu88hMm8YEZz", "KT1AGcbS4TyquQjQsa4fwce3FjLZv2UpGMse", "KT1KJNPUsHrjhN9iUJMz7DL3WkTcibhGrxse", "KT1WN9yWqV9pEm1ANR56ExJZbnVukWN31fTY", "KT1WBXFKW1sozV7ZLBHvw5eks6Pb8KSoVmLq", "KT1KWNNBtb7z8pejNUNigaRWSTkTQL4DEcf8", "KT1D6CNSXcftRTArCF73Jpsh95dwgEwAy6qZ", "KT1R87j2qFxtPZE3EmmeSoubg2mZkk3j4X8y", "KT1HRCc359qXshgMpBygY3VwqTnV7fc7nYfp", "KT1MU8Pb9DFjnVpEULyWDrqPLjedZPNHFrEN", "KT1FPfsRVWVju2mH1r2iFg5jfzWj7RDCb6ia", "KT19AqSn4m3NtvztPXuETjCzoQ75bKDd1Pyi", "KT1PcYxsFmXuoxcJpcfRSCcQQeSDLERSMzsW", "KT1KSYCk8zjdhgzDDRsmb2ygAfanjBx25Wto", "KT1LqKWDtzUh4CXNqfJQMcATv4PdZxBjPJjH", "KT197APGtQ8mk2svRSpDkqXLzHedRtkJ7Hjr", "KT1CTqQ4vg2zyG1AQmDLVeJ473ueoy2Rw8t1", "KT1QE4nZiAXbpuDCu4P5QTNibQSx6FFW3y2W", "KT1QbzLyzwXB9JTevvjT3B24BzgWfMzFfBHt"],
       thumbnailUrl: "https://wallet.kukai.app/assets/img/spinner/truesy.svg",
       link: "", shouldDisplayLink: DisplayLinkOption.None
     },
-    "NBA": {
-      address: ["KT1LqKWDtzUh4CXNqfJQMcATv4PdZxBjPJjH"],
-      thumbnailUrl: "",
-      link: "", shouldDisplayLink: DisplayLinkOption.None
-    },
-    "BUA": {
-      address: ["KT1WN9yWqV9pEm1ANR56ExJZbnVukWN31fTY", "KT1WBXFKW1sozV7ZLBHvw5eks6Pb8KSoVmLq", "KT1KWNNBtb7z8pejNUNigaRWSTkTQL4DEcf8", "KT1D6CNSXcftRTArCF73Jpsh95dwgEwAy6qZ", "KT1R87j2qFxtPZE3EmmeSoubg2mZkk3j4X8y", "KT1HRCc359qXshgMpBygY3VwqTnV7fc7nYfp", "KT1MU8Pb9DFjnVpEULyWDrqPLjedZPNHFrEN", "KT1FPfsRVWVju2mH1r2iFg5jfzWj7RDCb6ia", "KT19AqSn4m3NtvztPXuETjCzoQ75bKDd1Pyi", "KT1PcYxsFmXuoxcJpcfRSCcQQeSDLERSMzsW", "KT1KSYCk8zjdhgzDDRsmb2ygAfanjBx25Wto"],
-      thumbnailUrl: "../../../assets/img/tokens/bua.png",
-      link: "", shouldDisplayLink: DisplayLinkOption.None
-    },
+    // "NBA": {
+    //   address: ["KT1LqKWDtzUh4CXNqfJQMcATv4PdZxBjPJjH"],
+    //   thumbnailUrl: "",
+    //   link: "", shouldDisplayLink: DisplayLinkOption.None
+    // },
+    // "BUA": {
+    //   address: ["KT1WN9yWqV9pEm1ANR56ExJZbnVukWN31fTY", "KT1WBXFKW1sozV7ZLBHvw5eks6Pb8KSoVmLq", "KT1KWNNBtb7z8pejNUNigaRWSTkTQL4DEcf8", "KT1D6CNSXcftRTArCF73Jpsh95dwgEwAy6qZ", "KT1R87j2qFxtPZE3EmmeSoubg2mZkk3j4X8y", "KT1HRCc359qXshgMpBygY3VwqTnV7fc7nYfp", "KT1MU8Pb9DFjnVpEULyWDrqPLjedZPNHFrEN", "KT1FPfsRVWVju2mH1r2iFg5jfzWj7RDCb6ia", "KT19AqSn4m3NtvztPXuETjCzoQ75bKDd1Pyi", "KT1PcYxsFmXuoxcJpcfRSCcQQeSDLERSMzsW", "KT1KSYCk8zjdhgzDDRsmb2ygAfanjBx25Wto"],
+    //   thumbnailUrl: "../../../assets/img/tokens/bua.png",
+    //   link: "", shouldDisplayLink: DisplayLinkOption.None
+    // },
     'OpenMinter': {
       address: ["KT1QcxwB4QyPKfmSwjH1VRxa6kquUjeDWeEy"],
       thumbnailUrl: "https://openminter.com/static/media/header-logo.a9dd48a8.svg",
       link: "", shouldDisplayLink: DisplayLinkOption.None
-    },
-    'Alchememist': {
-      address: ["KT1W4wh1qDc2g22DToaTfnCtALLJ7jHn38Xc", "KT1Em3sjKdHo3Fo9Az4EusZXQbkgsdZHkQkF"],
-      thumbnailUrl: "https://cloudflare-ipfs.com/ipfs/QmPmD4kdh8d2fxaHeHy7BTwmcYxhz3eA6nFeGJXHmNnSex",
-      link: "https://auctions.alchememist.com/", shouldDisplayLink: DisplayLinkOption.None, category: "collectibles"
     }
   },
   ASSETS: {
@@ -774,7 +786,7 @@ export const CONSTANTS: Constants = {
   ]
 };
 export const TRUSTED_TOKEN_CONTRACTS = [
-  'KT1Em3sjKdHo3Fo9Az4EusZXQbkgsdZHkQkF',
+  'KT1Em3sjKdHo3Fo9Az4EusZXQbkgsdZHkQkF',//alchememist giveaway
   'KT1RJ6PbjHpwc3M5rw5s2Nbmefwbuwbdxton',//hicetnunc
   'KT1M2JnD1wsg7w2B4UXJXtKQPuDUpU2L7cJH',//hicetnunc-legacy
   'KT1W4wh1qDc2g22DToaTfnCtALLJ7jHn38Xc',//alchememist
