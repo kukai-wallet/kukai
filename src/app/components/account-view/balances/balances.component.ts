@@ -19,7 +19,7 @@ export class BalancesComponent implements OnInit, AfterViewChecked {
   }
   e(wrap) {
     if(!!wrap) {
-      if (wrap.scrollTop > 0 || this.tokenBalancesService?.balances?.length > 5) {
+      if (wrap.scrollTop > 0 || this.tokenBalancesService?.balances?.length <= 5) {
         document.querySelector('.scroll-wrapper .tez').classList.add('no-box');
       } else {
         document.querySelector('.scroll-wrapper .tez').classList.remove('no-box');
