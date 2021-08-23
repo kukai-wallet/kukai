@@ -765,7 +765,7 @@ export const CONSTANTS: Constants = {
           decimals: 0,
           description: 'NFTs are changing everything...but what exactly is an NFT? A Non-Friendly Turtle? Discover how Tezos is changing NFTs, and collect your own at Tezos.com/NFTgallery.',
           displayAsset: 'https://cloudflare-ipfs.com/ipfs/QmTmSjweqQrba5WGRUxB4u5WEbwktQBQekioi9K7Kkos6x',
-          thumbnailAsset: '../../../assets/img/question-mark.svg',
+          thumbnailAsset: '../../../assets/img/unknown-token-grayscale.svg',
           isBooleanAmount: false,
           isTransferable: true,
           shouldPreferSymbol: false,
