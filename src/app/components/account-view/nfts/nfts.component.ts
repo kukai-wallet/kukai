@@ -21,8 +21,8 @@ export class NftsComponent implements OnInit, AfterViewInit {
   Object = Object;
   Number = Number;
   nfts = undefined;
-  isDiscover: boolean = true;
-  isInitLoad: boolean = false;
+  isDiscover: boolean = false;
+  isInitLoad: boolean = true;
   filter: string = 'APP';
   contractAliases = CONSTANTS.CONTRACT_ALIASES;
   constructor(
@@ -34,10 +34,10 @@ export class NftsComponent implements OnInit, AfterViewInit {
     private walletService: WalletService
   ) {
     this.subjectService.nftsUpdated.subscribe(nfts => {
-      if(!this.isInitLoad) {
-        if (nfts && Object.keys(nfts)?.length) {
-          this.isDiscover = false;
-          this.isInitLoad = true;
+      if(this.isInitLoad) {
+        if (!(nfts && Object.keys(nfts)?.length)) {
+          this.isDiscover = true;
+          this.isInitLoad = false;
         }
       }
       this.nfts = nfts;
