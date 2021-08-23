@@ -32,7 +32,7 @@
   }
 }
 #follow {
-  height: 5rem;
+  height: 100%;
   width: 11rem;
   text-align: center;
   justify-content: center;
@@ -54,6 +54,7 @@
 .dark #follow span,
 div.foot-container.dark > div.links > div.low > a {
   color: v.$base-font-color-secondary;
+  margin: 0 0.5rem;
 }
 .dark img {
   filter: invert(70%);
@@ -66,17 +67,21 @@ div.foot-container.dark > div.links > div.low > a {
   -khtml-opacity: 0.8;
   @include m.multiply('font-size', 0.75, "rem", 1.5);
 }
+
+:host div.foot-container #since {
+  width: 100%;
+}
+
 div.foot-container > div.links {
   display: flex;
   justify-content: space-between;
   width: 100%;
-  height: auto;
+  height: 100%;
   z-index: 0;
 }
 div.foot-container > div.links a {
-  @include m.multiply('font-size', 0.5, "rem", 1.5);
+  @include m.multiply('font-size', 0.75, "rem", 1.35);
   color: v.$base-font-color-secondary;
-  margin-left: 1rem;
 }
 div.foot-container > div.links a:hover {
   color: white;
@@ -90,22 +95,23 @@ div.foot-container > div.links > div {
   width: 34%;
 }
 div.foot-container > div.links > div.since {
+  align-items: center !important;
   width: auto;
+  height: calc(100% - 2rem);
 }
 div.foot-container > div.links > div.since > a {
   margin: 0;
   padding: 0;
 }
 div.foot-container > div.links > div:last-child > a.docs {
-  margin: 0 1rem 1rem auto;
+  margin: 0 1rem 0 auto;
   float: right;
-  @include m.multiply('font-size', 0.5, "rem", 1.5);
+  @include m.multiply('font-size', 0.75, "rem", 1.35);
 }
 div.foot-container > div.links > div.low {
-  padding-top: 0.625rem;
-  align-items: flex-start;
+  align-items: flex-end;
   justify-content: flex-start;
-  margin: 0 0 1rem 0;
+  height: calc(100% - 2rem);
 }
 #tg {
   margin-left: 1.5rem;
