@@ -20,9 +20,9 @@ export class BalancesComponent implements OnInit, AfterViewChecked {
   e(wrap) {
     if(!!wrap) {
       if (wrap.scrollTop > 0 || this.tokenBalancesService?.balances?.length <= 5) {
-        document.querySelector('.scroll-wrapper .tez').classList.add('no-box');
-      } else {
         document.querySelector('.scroll-wrapper .tez').classList.remove('no-box');
+      } else {
+        document.querySelector('.scroll-wrapper .tez').classList.add('no-box');
       }
       this.tokenBalancesService?.balances?.length <= 5 ? wrap.style.overflowY = '' : wrap.style.overflowY = 'auto';
     }
