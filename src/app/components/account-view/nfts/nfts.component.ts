@@ -35,9 +35,11 @@ export class NftsComponent implements OnInit, AfterViewInit {
   ) {
     this.subjectService.nftsUpdated.subscribe(nfts => {
       if(this.isInitLoad) {
-        if (!(nfts && Object.keys(nfts)?.length)) {
+        if (!nfts || !Object.keys(nfts)?.length) {
           this.isDiscover = true;
+        } else {
           this.isInitLoad = false;
+          this.isDiscover = false;
         }
       }
       this.nfts = nfts;
