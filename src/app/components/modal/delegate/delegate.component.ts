@@ -22,21 +22,17 @@ import Big from 'big.js';
 })
 export class DelegateComponent extends ModalComponent implements OnInit, OnChanges {
   domainPendingLookup = false;
-  activeView = 0;
-  recommendedFee = 0.0004;
-  revealFee = 0;
-  pkhFee = 0.0004;
-  ktFee = 0.0008;
+  defaultFee = 0.0004;
+  readonly pkhFee = 0.0004;
+  readonly ktFee = 0.0008;
   @ViewChild('toPkhInput') toPkhView: ElementRef;
   @Input() beaconMode = false;
   @Input() operationRequest: any;
   @Output() operationResponse = new EventEmitter();
   activeAccount: Account;
   toPkh: string;
-  storedDelegate: string;
   delegate = null;
-  fee: string;
-  storedFee: string;
+  fee: string = '';
   password: string;
   pwdValid: string;
   formInvalid = '';
@@ -94,10 +90,7 @@ export class DelegateComponent extends ModalComponent implements OnInit, OnChang
   open(data) {
     if (this.walletService.wallet) {
       this.clearForm(true);
-      this.checkReveal();
-      if (!this.fee) { this.fee = this.recommendedFee.toString(); }
-      this.storedFee = this.fee;
-      this.storedDelegate = this.toPkh;
+      this.estimateDefaultFee();
       this.toPkh = data.address;
       this.delegate = data;
       if (this.walletService.isLedgerWallet()) {
@@ -145,29 +138,29 @@ export class DelegateComponent extends ModalComponent implements OnInit, OnChang
   async ledgerSign() {
     const keys = await this.walletService.getKeys('');
     if (keys) {
+      this.messageService.startSpinner('');
       this.sendDelegation(keys);
     }
   }
 
   async sendDelegation(keys: KeyPair) {
-    let fee = this.fee;
-    if (!fee) {
-      fee = '0';
-    }
-    this.operationService.delegate(this.activeAccount.address, this.getDelegate(), Number(fee), keys).subscribe(
+    let fee = this.getFee();
+    console.log(JSON.stringify(this.fee), JSON.stringify(this.defaultFee));
+    console.warn(JSON.stringify(fee));
+    this.operationService.delegate(this.activeAccount.address, this.toPkh, Number(fee), keys).subscribe(
       async (ans: any) => {
         this.sendResponse = ans;
         console.log(JSON.stringify(ans));
         if (ans.success === true) {
           if (ans.payload.opHash) {
             this.operationResponse.emit(ans.payload.opHash);
-            const metadata = { delegate: this.getDelegate(), opHash: ans.payload.opHash };
+            const metadata = { delegate: this.toPkh, opHash: ans.payload.opHash };
             this.coordinatorService.boost(this.activeAccount.address, metadata);
+            this.closeModal();
+            this.router.navigate([`/account/${this.activeAccount.address}`]);
           } else if (this.walletService.isLedgerWallet()) {
-            await this.requestLedgerSignature();
+            this.requestLedgerSignature();
           }
-          this.closeModal();
-          this.router.navigate([`/account/${this.activeAccount.address}`]);
         } else {
           console.log('Delegation error id ', ans.payload.msg);
           this.messageService.addError(ans.payload.msg, 0);
@@ -206,8 +199,11 @@ export class DelegateComponent extends ModalComponent implements OnInit, OnChang
       ((ans: any) => {
         this.sendResponse = ans;
         if (ans.success && this.activeAccount.address) {
-          const metadata = { delegate: this.getDelegate(), opHash: ans.payload.opHash };
+          this.operationResponse.emit(ans.payload.opHash);
+          const metadata = { delegate: this.toPkh, opHash: ans.payload.opHash };
           this.coordinatorService.boost(this.activeAccount.address, metadata);
+          this.closeModal();
+          this.router.navigate([`/account/${this.activeAccount.address}`]);
         } else {
           this.messageService.addError(this.sendResponse.payload.msg, 0);
           this.operationResponse.emit('broadcast_error');
@@ -222,36 +218,19 @@ export class DelegateComponent extends ModalComponent implements OnInit, OnChang
       })
     );
   }
-  checkReveal() {
-    console.log('check reveal ' + this.activeAccount.pkh);
+  estimateDefaultFee() {
     this.operationService.isRevealed(this.activeAccount.pkh)
       .subscribe((revealed: boolean) => {
-        if (!revealed) {
-          this.revealFee = 0.0002;
-        } else {
-          this.revealFee = 0;
+        const revealFee = revealed ? 0 : 0.0002;
+        if (this.activeAccount instanceof ImplicitAccount) {
+          this.defaultFee = Number(new Big(revealFee).plus(this.pkhFee));
+        } else if (this.activeAccount instanceof OriginatedAccount) {
+          this.defaultFee = Number(new Big(revealFee).plus(this.ktFee));
         }
-        this.checkSource();
       });
   }
-  checkSource() {
-    if (this.activeAccount instanceof ImplicitAccount) {
-      this.recommendedFee = Number(new Big(this.revealFee).plus(this.pkhFee));
-    } else if (this.activeAccount instanceof OriginatedAccount) {
-      this.recommendedFee = Number(new Big(this.revealFee).plus(this.ktFee));
-    }
-  }
-  getFee() {
-    if (this.fee) {
-      return this.fee;
-    }
-    return this.storedFee;
-  }
-  getDelegate() {
-    if (this.toPkh) {
-      return this.toPkh;
-    }
-    return this.storedDelegate;
+  getFee(): string {
+    return (this.fee !== '') ? this.fee : this.defaultFee.toString()
   }
   clearForm(init: boolean = false) {
     if (!init && this.syncSub) {
@@ -260,12 +239,15 @@ export class DelegateComponent extends ModalComponent implements OnInit, OnChang
     }
     this.toPkh = '';
     this.fee = '';
+    this.defaultFee = 0.0004;
     this.password = '';
     this.pwdValid = '';
     this.formInvalid = '';
     this.sendResponse = '';
     this.ledgerError = '';
     this.domainPendingLookup = false;
+    this.delegate = null;
+    this.advanced = false;
   }
   async invalidInput(): Promise<string> {
     // if it is a tezos-domain

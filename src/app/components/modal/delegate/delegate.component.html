@@ -7,7 +7,7 @@
     <div class="flex-column confirm-staking">
       <div class="flex-row head">
         <img *ngIf="delegate?.logo" [src]="delegate.logo" />
-        <div class="flex-column data" *ngIf="delegate?.name ? delegate.name : getDelegate(); let delegateDisplayName; else undelegate">
+        <div class="flex-column data" *ngIf="delegate?.name ? delegate.name : toPkh; let delegateDisplayName; else undelegate">
           <span class="name">{{ delegateDisplayName }}</span>
           <div class="flex-row fee-space"><span class="fee"><span>SPLIT:</span>&nbsp;{{ delegate?.fee ? toPercent(delegate.fee) : 'UNKNOWN' }}</span><span
               *ngIf="delegate?.freeSpace" class="space"><span>SPACE:</span>&nbsp;{{ round(delegate.freeSpace) }}</span>
@@ -25,7 +25,7 @@
       <br/>
       <ng-container *ngIf="advanced">
         <div class="label">Fee <span class="label" style="margin: 0; text-transform: lowercase;">(tez)</span></div>
-        <input [(ngModel)]="fee" class="text fee" type="text" />
+        <input [(ngModel)]="fee" class="text fee" type="text" placeholder="{{defaultFee}}" [disabled]="walletService.isLedgerWallet() && sendResponse?.payload?.signedOperation"/>
       </ng-container>
       <div class="seperator"></div>
       <div class="flex-column bottom">
