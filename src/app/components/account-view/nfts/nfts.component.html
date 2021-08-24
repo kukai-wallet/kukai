@@ -54,7 +54,7 @@
         </div>
       </div>
     </ng-container>
-    <div class="flex-column collection scroll" [style.display]="!isDiscover && filter === 'ALL' ? '' : 'none'">
+    <div class="flex-column collection scroll all" [style.display]="!isDiscover && filter === 'ALL' ? '' : 'none'">
       <div class="flex-row body">
         <ng-container *ngFor="let key of Object.keys(this.nfts)">
           <ng-container *ngFor="let token of this.nfts[key]?.tokens; let i = index; trackBy: trackToken">
