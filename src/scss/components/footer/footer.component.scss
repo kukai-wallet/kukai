@@ -1,5 +1,5 @@
-@use '../../abstracts/mixins' as m;
-@use '../../abstracts/variables' as v;
+@use '../../abstracts/mixins'as m;
+@use '../../abstracts/variables'as v;
 
 :host {
   & .mobile {
@@ -10,33 +10,39 @@
 :host.initial div.foot-container {
   position: initial;
 }
+
 :host.hide {
   visibility: hidden;
 }
+
 :host div.foot-container {
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-direction: column;
   height: 8rem;
-  margin: 2rem 0 0 0;
-  width: 100vw;
+  margin: 2rem 1rem 0 1rem;
+  width: calc(100vw - 2rem);
   overflow: hidden;
   position: absolute;
   bottom: 0;
   left: 0;
 }
-@media (max-height: 54em) and (min-width: v.$layout-break-3), (max-aspect-ratio: 1/1) {
+
+@media (max-height: 54em) and (min-width: v.$layout-break-3),
+(max-aspect-ratio: 1/1) {
   :host div.foot-container {
     position: initial;
   }
 }
+
 #follow {
   height: 100%;
   width: 11rem;
   text-align: center;
   justify-content: center;
 }
+
 #follow span {
   font-style: normal;
   font-weight: 500;
@@ -51,14 +57,17 @@
   vertical-align: top;
   width: 100%;
 }
+
 .dark #follow span,
-div.foot-container.dark > div.links > div.low > a {
+div.foot-container.dark>div.links>div.low>a {
   color: v.$base-font-color-secondary;
   margin: 0 0.5rem;
 }
+
 .dark img {
   filter: invert(70%);
 }
+
 #follow a {
   position: relative;
   top: 0.24rem;
@@ -72,53 +81,63 @@ div.foot-container.dark > div.links > div.low > a {
   width: 100%;
 }
 
-div.foot-container > div.links {
+div.foot-container>div.links {
   display: flex;
   justify-content: space-between;
   width: 100%;
   height: 100%;
   z-index: 0;
 }
-div.foot-container > div.links a {
+
+div.foot-container>div.links a {
   @include m.multiply('font-size', 0.75, "rem", 1.35);
   color: v.$base-font-color-secondary;
 }
-div.foot-container > div.links a:hover {
+
+div.foot-container>div.links a:hover {
   color: white;
   background-color: #5963ff;
 }
-div.foot-container.dark > div.links a:hover {
+
+div.foot-container.dark>div.links a:hover {
   color: v.$base-font-color-secondary;
   background-color: inherit;
 }
-div.foot-container > div.links > div {
+
+div.foot-container>div.links>div {
   width: 34%;
 }
-div.foot-container > div.links > div.since {
+
+div.foot-container>div.links>div.since {
   align-items: center !important;
   width: auto;
   height: calc(100% - 2rem);
 }
-div.foot-container > div.links > div.since > a {
+
+div.foot-container>div.links>div.since>a {
   margin: 0;
   padding: 0;
 }
-div.foot-container > div.links > div:last-child > a.docs {
+
+div.foot-container>div.links>div:last-child>a.docs {
   margin: 0 0.5rem 0 auto;
   float: right;
   @include m.multiply('font-size', 0.75, "rem", 1.35);
 }
-div.foot-container > div.links > div.low {
+
+div.foot-container>div.links>div.low {
   align-items: flex-end;
   justify-content: flex-start;
   height: calc(100% - 2rem);
 }
+
 #tg {
   margin-left: 1.5rem;
   margin-right: 1.5rem;
 }
+
 #follow img:hover,
-div.foot-container > div.links a.docs img:hover {
+div.foot-container>div.links a.docs img:hover {
   filter: invert(25%) saturate(2878%) hue-rotate(180deg);
 }
 
@@ -133,13 +152,15 @@ div.foot-container > div.links a.docs img:hover {
     }
   }
 
-  div.foot-container > div.links > div:last-child > a.docs {
+  div.foot-container>div.links>div:last-child>a.docs {
     margin: 0 1rem;
   }
-  div.foot-container > div.links > div.left.low {
+
+  div.foot-container>div.links>div.left.low {
     justify-content: flex-start;
   }
-  div.foot-container > div.links > div.low {
+
+  div.foot-container>div.links>div.low {
     justify-content: flex-end;
   }
 }
