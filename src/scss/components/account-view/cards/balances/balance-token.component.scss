@@ -21,11 +21,11 @@ $border-color: v.$border-color;
     top: 0;
     left: 0;
     z-index: 0;
-    border-bottom: 2px solid $border-color;
+    border-bottom: none;
   }
   &.no-box .balance {
     box-shadow: none !important;
-    border-bottom: 2px solid $border-color !important;
+    border-bottom: 2px solid $border-color;
   }
 }
 
