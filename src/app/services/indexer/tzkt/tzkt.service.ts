@@ -306,6 +306,9 @@ export class TzktService implements Indexer {
           metadata.thumbnailUri = '';
         }
       }
+      if (!metadata.displayUri && !metadata.thumbnailUri && rawData?.icon) {
+        metadata.thumbnailUri = await this.uriToAsset(rawData?.icon); // Plenty + HEH
+      }
     } catch (e) { }
     return metadata;
   }
