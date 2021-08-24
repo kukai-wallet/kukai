@@ -129,7 +129,6 @@ export class TokenBalancesService {
   }
   orderedNfts(nfts: ContractsWithBalance): ContractsWithBalance {
     const _nfts: ContractsWithBalance = {};
-    let keys = Object.keys(nfts);
     const aliases = Object.keys(CONSTANTS.CONTRACT_ALIASES);
     for (let alias of aliases) {
       if (nfts[alias]) {
@@ -137,7 +136,7 @@ export class TokenBalancesService {
         delete nfts[alias];
       }
     }
-    keys = Object.keys(nfts);
+    const keys = Object.keys(nfts);
     for (let key of keys) {
       if (key !== 'unknown') {
         _nfts[key] = nfts[key];
