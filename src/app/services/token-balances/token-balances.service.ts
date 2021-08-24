@@ -113,13 +113,8 @@ export class TokenBalancesService {
         this.resolveAsset(token, balances, nfts);
       }
     }
-    if (nfts['unknown']) { // property last
-      const temp = nfts['unknown'];
-      delete nfts['unknown'];
-      nfts['unknown'] = temp;
-    }
     this.balances = balances;
-    this.nfts = nfts;
+    this.nfts = this.orderedNfts(nfts);
     this.mergeMarket();
 
     if (this._thumbnailsToCreate.length) {
@@ -131,6 +126,29 @@ export class TokenBalancesService {
       this._thumbnailsToCreate = [];
     }
     this.subjectService.nftsUpdated.next(this.nfts);
+  }
+  orderedNfts(nfts: ContractsWithBalance): ContractsWithBalance {
+    const _nfts: ContractsWithBalance = {};
+    let keys = Object.keys(nfts);
+    const aliases = Object.keys(CONSTANTS.CONTRACT_ALIASES);
+    for (let alias of aliases) {
+      if (nfts[alias]) {
+        _nfts[alias] = nfts[alias];
+        delete nfts[alias];
+      }
+    }
+    keys = Object.keys(nfts);
+    for (let key of keys) {
+      if (key !== 'unknown') {
+        _nfts[key] = nfts[key];
+        delete nfts[key];
+      }
+    }
+    if (nfts['unknown']) { // property last
+      _nfts['unknown'] = nfts['unknown'];
+      delete nfts['unknown'];
+    }
+    return _nfts;
   }
   getContractAlias(address: string) {
     const keys = Object.keys(CONSTANTS.CONTRACT_ALIASES);
