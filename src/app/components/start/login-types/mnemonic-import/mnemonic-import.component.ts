@@ -1,5 +1,5 @@
-import { Component, OnInit, HostBinding, Input } from '@angular/core';
-import { NavigationEnd, NavigationStart, Router } from '@angular/router';
+import { Component, OnInit, HostBinding, Input, OnDestroy } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core'; // Multiple instances created ?
 import { ImportService } from '../../../../services/import/import.service';
 import { MessageService } from '../../../../services/message/message.service';
@@ -8,13 +8,14 @@ import { ExportService } from '../../../../services/export/export.service';
 import { InputValidationService } from '../../../../services/input-validation/input-validation.service';
 import { utils, hd } from '@tezos-core-tools/crypto-utils';
 import { filter } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-mnemonic-import-wallet',
   templateUrl: './mnemonic-import.component.html',
   styleUrls: ['../../../../../scss/components/start/login.component.scss']
 })
-export class MnemonicImportComponent implements OnInit {
+export class MnemonicImportComponent implements OnInit, OnDestroy {
   @HostBinding('class.tacos') showTacos = false;
   @Input('keyStore') keyStore;
   MIN_PWD_LENGTH = 9;
@@ -36,8 +37,9 @@ export class MnemonicImportComponent implements OnInit {
   fileName = '';
   showWrongFileUploadMsg: false;
   firefox = false;
-
   advancedForm = false;
+
+  private subscriptions: Subscription = new Subscription();
 
   constructor(
     private translate: TranslateService,
@@ -48,16 +50,20 @@ export class MnemonicImportComponent implements OnInit {
     private exportService: ExportService,
     private inputValidationService: InputValidationService
   ) {
-    this.router.events
+    this.subscriptions.add(this.router.events
     .pipe(filter(e => e instanceof NavigationEnd && e.url.startsWith('/import')))
     .subscribe(() => {
      const navigation  = this.router.getCurrentNavigation();
      this.importOption = navigation.extras?.state?.option ? navigation.extras.state.option : 0;
-    });
+    }));
   }
 
   ngOnInit() {
     this.checkBrowser();
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 
   checkBrowser() {
@@ -77,28 +83,28 @@ export class MnemonicImportComponent implements OnInit {
       this.passphrase = this.email + this.password;
     }
     if (!this.inputValidationService.mnemonics(this.mnemonic)) {
-      this.translate
+      this.subscriptions.add(this.translate
         .get('MNEMONICIMPORTCOMPONENT.INVALIDMNEMONIC')
-        .subscribe((res: string) => this.messageService.addWarning(res, 10));
+        .subscribe((res: string) => this.messageService.addWarning(res, 10)));
     } else if (
       this.importOption === 2 &&
       !this.inputValidationService.email(this.email)
     ) {
-      this.translate.get('MNEMONICIMPORTCOMPONENT.INVALIDEMAIL').subscribe(
+      this.subscriptions.add(this.translate.get('MNEMONICIMPORTCOMPONENT.INVALIDEMAIL').subscribe(
         (res: string) => this.messageService.addWarning(res, 10) // 'Invalid email!'
-      );
+      ));
     } else if (this.importOption === 2 && !this.password) {
-      this.translate.get('MNEMONICIMPORTCOMPONENT.INVALIDPASSWORD').subscribe(
+      this.subscriptions.add(this.translate.get('MNEMONICIMPORTCOMPONENT.INVALIDPASSWORD').subscribe(
         (res: string) => this.messageService.addWarning(res, 10) // 'Invalid password!'
-      );
+      ));
     } else if (!this.inputValidationService.passphrase(this.passphrase)) {
-      this.translate.get('MNEMONICIMPORTCOMPONENT.INVALIDPASSPHRASE').subscribe(
+      this.subscriptions.add(this.translate.get('MNEMONICIMPORTCOMPONENT.INVALIDPASSPHRASE').subscribe(
         (res: string) => this.messageService.addWarning(res, 10) // 'Invalid passphrase!'
-      );
+      ));
     } else if (this.pkh && !this.inputValidationService.address(this.pkh)) {
-      this.translate.get('MNEMONICIMPORTCOMPONENT.INVALIDPKH').subscribe(
+      this.subscriptions.add(this.translate.get('MNEMONICIMPORTCOMPONENT.INVALIDPKH').subscribe(
         (res: string) => this.messageService.addWarning(res, 10) // 'Invalid public key hash!'
-      );
+      ));
     } else {
       let pkh = '';
       if (this.pkh) {
@@ -115,13 +121,13 @@ export class MnemonicImportComponent implements OnInit {
       }
       if (this.pkh && pkh !== this.pkh) {
         if (this.importOption === 2) {
-          this.translate
+          this.subscriptions.add(this.translate
             .get('MNEMONICIMPORTCOMPONENT.INVALIDEMAILPASSWORD')
-            .subscribe((res: string) => this.messageService.addWarning(res, 5));
+            .subscribe((res: string) => this.messageService.addWarning(res, 5)));
         } else {
-          this.translate
+          this.subscriptions.add(this.translate
             .get('MNEMONICIMPORTCOMPONENT.INVALIDPASSPHRASE')
-            .subscribe((res: string) => this.messageService.addWarning(res, 5));
+            .subscribe((res: string) => this.messageService.addWarning(res, 5)));
         }
       } else {
         this.activePanel++;
@@ -154,14 +160,14 @@ export class MnemonicImportComponent implements OnInit {
 
   validPwd(): boolean {
     if (!this.inputValidationService.password(this.pwd1)) {
-      this.translate.get('MNEMONICIMPORTCOMPONENT.PASSWORDWEAK').subscribe(
+      this.subscriptions.add(this.translate.get('MNEMONICIMPORTCOMPONENT.PASSWORDWEAK').subscribe(
         (res: string) => this.messageService.addWarning(res, 10) // 'Password is too weak!'
-      );
+      ));
       return false;
     } else if (this.pwd1 !== this.pwd2) {
-      this.translate.get('MNEMONICIMPORTCOMPONENT.NOMATCHPASSWORDS').subscribe(
+      this.subscriptions.add(this.translate.get('MNEMONICIMPORTCOMPONENT.NOMATCHPASSWORDS').subscribe(
         (res: string) => this.messageService.addWarning(res, 10) // Passwords don't match!
-      );
+      ));
       return false;
     } else {
       return true;
@@ -194,9 +200,9 @@ export class MnemonicImportComponent implements OnInit {
     }
     this.wallet = null;
     this.router.navigate([`/account/`]);
-    this.translate
+    this.subscriptions.add(this.translate
       .get('MNEMONICIMPORTCOMPONENT.WALLETREADY')
-      .subscribe((res: string) => this.messageService.addSuccess(res));
+      .subscribe((res: string) => this.messageService.addSuccess(res)));
   }
   /* Keystore handling */
   importPreCheck(keyFile: string) {
@@ -278,9 +284,9 @@ export class MnemonicImportComponent implements OnInit {
       return false;
     } else if (!this.validateFile(fileToUpload.name)) {
       let fileNotSupported = '';
-      this.translate
+      this.subscriptions.add(this.translate
         .get('IMPORTCOMPONENT.FILENOTSUPPORTED')
-        .subscribe((res: string) => (fileNotSupported = res));
+        .subscribe((res: string) => (fileNotSupported = res)));
       this.messageService.add(fileNotSupported);
 
       console.log('Selected file format is not supported');
@@ -309,7 +315,7 @@ export class MnemonicImportComponent implements OnInit {
       };
     }
   }
-  validateFile(name: String) {
+  validateFile(name: string) {
     const ext = name.substring(name.lastIndexOf('.') + 1);
     if (ext.toLowerCase() === 'tez' || ext.toLowerCase() === 'json') {
       return true;

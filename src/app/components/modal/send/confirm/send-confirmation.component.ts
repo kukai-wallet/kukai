@@ -1,4 +1,4 @@
-import { EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { EventEmitter, Input, OnChanges, OnDestroy, Output } from '@angular/core';
 import { Component, OnInit, SimpleChanges } from '@angular/core';
 import { FullyPreparedTransaction, PrepareRequest } from '../../../send/interfaces';
 import { TokenService } from '../../../../services/token/token.service';
@@ -26,7 +26,7 @@ import { SubjectService } from '../../../../services/subject/subject.service';
   templateUrl: './send-confirmation.component.html',
   styleUrls: ['../../../../../scss/components/modal/modal.scss']
 })
-export class ConfirmSendComponent extends ModalComponent implements OnInit, OnChanges {
+export class ConfirmSendComponent extends ModalComponent implements OnInit, OnChanges, OnDestroy {
   @Input() confirmRequest: PrepareRequest = null;
   @Output() operationResponse = new EventEmitter();
   syncSub: Subscription;
@@ -57,6 +57,8 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
   name = 'confirm-send';
   token = null;
   domain = undefined;
+
+  private subscriptions: Subscription = new Subscription();
 
   constructor(
     private translate: TranslateService,
@@ -99,6 +101,9 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
         });
       }
     }
+  }
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
   open(data: any) {
     this.customFee = data?.customFee;
@@ -279,7 +284,7 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
   }
   async sendTransaction(keys: KeyPair) {
     const txs: FullyPreparedTransaction[] = this.opsWithCustomLimits();
-    this.operationService.transfer(this.activeAccount.address, txs, Number(this.getTotalFee()), keys, this.tokenTransfer).subscribe(
+    this.subscriptions.add(this.operationService.transfer(this.activeAccount.address, txs, Number(this.getTotalFee()), keys, this.tokenTransfer).subscribe(
       async (ans: any) => {
         this.sendResponse = ans;
         if (ans.success === true) {
@@ -322,7 +327,7 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
         }
         this.reset();
       },
-    );
+    ));
   }
   opsWithCustomLimits(): FullyPreparedTransaction[] {
     let extraGas: number = 0;
@@ -375,7 +380,7 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
     }
   }
   async broadCastLedgerTransaction() {
-    this.operationService.broadcast(this.sendResponse.payload.signedOperation).subscribe(
+    this.subscriptions.add(this.operationService.broadcast(this.sendResponse.payload.signedOperation).subscribe(
       (async (ans: any) => {
         this.sendResponse = ans;
         if (ans.success && this.activeAccount) {
@@ -395,7 +400,7 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
         console.log('ans: ' + JSON.stringify(ans));
         this.reset();
       })
-    );
+    ));
   }
   async torusNotification(transaction: FullyPreparedTransaction) {
     if (transaction.meta) {

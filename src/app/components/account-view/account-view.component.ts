@@ -1,4 +1,4 @@
-import { Component, HostListener, Input, OnInit } from '@angular/core';
+import { Component, HostListener, Input, OnDestroy, OnInit } from '@angular/core';
 import { Account, Activity, ImplicitAccount } from '../../services/wallet/wallet';
 import { WalletService } from '../../services/wallet/wallet.service';
 import { TimeAgoPipe } from '../../pipes/time-ago.pipe';
@@ -8,14 +8,16 @@ import * as copy from 'copy-to-clipboard';
 import { CONSTANTS } from '../../../environments/environment';
 import { ActivityService } from '../../services/activity/activity.service';
 import { TokenService } from '../../services/token/token.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-account-view',
   templateUrl: './account-view.component.html',
   styleUrls: ['../../../scss/components/account-view/account-view.component.scss'],
 })
-export class AccountViewComponent implements OnInit {
+export class AccountViewComponent implements OnInit, OnDestroy {
   account: Account;
+  private subscriptions: Subscription = new Subscription();
   constructor(
     private walletService: WalletService,
     public translate: TranslateService,
@@ -28,10 +30,13 @@ export class AccountViewComponent implements OnInit {
   isMobile = false;
   @Input() activity: any;
   ngOnInit(): void {
-    this.walletService.activeAccount.subscribe(activeAccount => {
+    this.subscriptions.add(this.walletService.activeAccount.subscribe(activeAccount => {
       this.account = activeAccount;
-    });
+    }));
     setInterval(() => this.trigger = !this.trigger, 1000);
+  }
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
   getType(transaction: Activity): string {
     if (transaction.type !== 'transaction') {

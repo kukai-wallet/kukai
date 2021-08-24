@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
 import { KeyPair, DefaultTransactionParams } from '../../../interfaces';
 import { WalletService } from '../../../services/wallet/wallet.service';
 import { CoordinatorService } from '../../../services/coordinator/coordinator.service';
@@ -27,7 +27,7 @@ const zeroTxParams: DefaultTransactionParams = {
   templateUrl: './originate.component.html',
   styleUrls: ['../../../../scss/components/modal/modal.scss']
 })
-export class OriginateComponent extends ModalComponent implements OnInit, OnChanges {
+export class OriginateComponent extends ModalComponent implements OnInit, OnChanges, OnDestroy {
   readonly beaconMode = true;
   @Input() operationRequest: any;
   @Output() operationResponse = new EventEmitter();
@@ -55,6 +55,8 @@ export class OriginateComponent extends ModalComponent implements OnInit, OnChan
   activeTab = 0;
 
   name = 'originate';
+
+  private subscriptions: Subscription = new Subscription();
 
   constructor(
     private walletService: WalletService,
@@ -94,6 +96,9 @@ export class OriginateComponent extends ModalComponent implements OnInit, OnChan
         }
       }
     }
+  }
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
   openModal() {
     if (this.walletService.wallet) {
@@ -249,7 +254,7 @@ export class OriginateComponent extends ModalComponent implements OnInit, OnChan
   }
   async sendOrigination(keys: KeyPair) {
     //this.fee = '';
-    this.operationService.originate(this.getOrigination(), this.getTotalFee(), keys).subscribe(
+    this.subscriptions.add(this.operationService.originate(this.getOrigination(), this.getTotalFee(), keys).subscribe(
       async (ans: any) => {
         this.sendResponse = ans;
         if (ans.success === true) {
@@ -274,7 +279,7 @@ export class OriginateComponent extends ModalComponent implements OnInit, OnChan
         console.log('Error Message ', JSON.stringify(err));
         this.ledgerError = 'Failed to create operation';
       }
-    );
+    ));
   }
   async requestLedgerSignature() {
     if (this.walletService.wallet instanceof LedgerWallet) {
@@ -297,7 +302,7 @@ export class OriginateComponent extends ModalComponent implements OnInit, OnChan
   }
   async broadCastLedgerTransaction() {
     this.messageService.startSpinner('Broadcasting operation');
-    this.operationService.broadcast(this.sendResponse.payload.signedOperation).subscribe(
+    this.subscriptions.add(this.operationService.broadcast(this.sendResponse.payload.signedOperation).subscribe(
       ((ans: any) => {
         this.sendResponse = ans;
         if (ans.success && this.activeAccount.address) {
@@ -315,7 +320,7 @@ export class OriginateComponent extends ModalComponent implements OnInit, OnChan
         this.messageService.addError(error, 0);
         this.operationResponse.emit('broadcast_error');
       })
-    );
+    ));
   }
   clearForm() {
     this.defaultTransactionParams = zeroTxParams;

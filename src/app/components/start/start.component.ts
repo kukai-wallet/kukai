@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { WalletService } from '../../services/wallet/wallet.service';
@@ -9,13 +9,16 @@ import { Location } from '@angular/common';
 import { TorusService } from '../../services/torus/torus.service';
 import { MessageService } from '../../services/message/message.service';
 import { ImportService } from '../../services/import/import.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-start',
   templateUrl: './start.component.html',
   styleUrls: ['../../../scss/components/start/start.component.scss']
 })
-export class StartComponent implements OnInit {
+export class StartComponent implements OnInit, OnDestroy {
+
+  private subscriptions: Subscription = new Subscription();
 
   constructor(
     private walletService: WalletService,
@@ -31,16 +34,20 @@ export class StartComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.route.queryParams
+    this.subscriptions.add(this.route.queryParams
       .filter(params => params.type)
       .subscribe(params => {
         this.deeplinkService.set(params);
         this.location.replaceState('');
       }
-      );
+      ));
     if (!this.walletService.wallet) {
       this.torusService.initTorus();
     }
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 
   async torusLogin(verifier: string) {

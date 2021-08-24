@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { Account, Activity } from '../../../../services/wallet/wallet';
 import { TimeAgoPipe } from '../../../../pipes/time-ago.pipe';
 import { TranslateService } from '@ngx-translate/core';
@@ -9,15 +9,17 @@ import { CONSTANTS } from '../../../../../environments/environment';
 import { LookupType } from '../../../../services/lookup/lookup.service';
 import copy from 'copy-to-clipboard';
 import { SubjectService } from '../../../../services/subject/subject.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-event',
   templateUrl: './event.component.html',
   styleUrls: ['../../../../../scss/components/account-view/cards/activity/event.component.scss'],
 })
-export class EventComponent implements OnInit, OnChanges {
+export class EventComponent implements OnInit, OnChanges, OnDestroy {
   public LookupType = LookupType
   public fresh = undefined;
+  private subscriptions: Subscription = new Subscription();
   constructor(
     public translate: TranslateService,
     public messageService: MessageService,
@@ -31,17 +33,19 @@ export class EventComponent implements OnInit, OnChanges {
   @Input() account: Account;
   ngOnInit(): void {
     setInterval(() => { this.trigger = !this.trigger }, 1000);
-    this.subjectService.confirmedOp.subscribe((opHash) => {
+    this.subscriptions.add(this.subjectService.confirmedOp.subscribe((opHash) => {
       if (opHash === this.activity.hash && this.fresh === undefined) {
         this.fresh = true;
         setTimeout(() => {
           this.fresh = false;
         }, 20000);
       }
-    })
-
+    }));
   }
   ngOnChanges(changes: SimpleChanges) {}
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
+  }
   getType(): string {
     if (this.activity.type !== 'transaction') {
       if (this.activity.type === 'delegation') {

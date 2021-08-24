@@ -1,4 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { MessageService } from '../../services/message/message.service';
 import { SubjectService } from '../../services/subject/subject.service';
 
@@ -7,9 +8,10 @@ import { SubjectService } from '../../services/subject/subject.service';
   templateUrl: './spinner.component.html',
   styleUrls: ['./spinner.component.scss']
 })
-export class SpinnerComponent implements OnInit {
+export class SpinnerComponent implements OnInit, OnDestroy {
   @Input() embedded: boolean;
   logo = 'default';
+  private subscriptions: Subscription = new Subscription();
   constructor(
     public messageService: MessageService,
     private subjectService: SubjectService
@@ -27,5 +29,8 @@ export class SpinnerComponent implements OnInit {
         this.logo = 'default';
       }
     });
+  }
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 }

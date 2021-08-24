@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, HostListener, SimpleChanges, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges, OnChanges, OnDestroy } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { WalletService } from '../../services/wallet/wallet.service';
 import { Account, TorusWallet } from '../../services/wallet/wallet';
@@ -11,19 +11,21 @@ import { TranslateService } from '@ngx-translate/core';
 import { ModalComponent } from '../modal/modal.component';
 import { DelegateService } from '../../services/delegate/delegate.service';
 import { SubjectService } from '../../services/subject/subject.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['../../../scss/components/header/header.component.scss']
 })
-export class HeaderComponent implements OnInit, OnChanges {
+export class HeaderComponent implements OnInit, OnChanges, OnDestroy {
   window = window;
   document = document;
   @Input() activeAccount: Account;
   accounts: Account[];
   delegateName = '';
   readonly CONSTANTS = _CONSTANTS;
+  private subscriptions: Subscription = new Subscription();
   constructor(
     public router: Router,
     public walletService: WalletService,
@@ -35,13 +37,13 @@ export class HeaderComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit(): void {
-    this.walletService.walletUpdated.subscribe(async () => {
+    this.subscriptions.add(this.walletService.walletUpdated.subscribe(async () => {
       this.accounts = this.walletService.wallet?.getAccounts();
       this.delegateName = await this.getDelegateName(this.activeAccount?.delegate);
-    });
+    }));
     this.accounts = this.walletService.wallet?.getAccounts();
 
-    this.router.events
+    this.subscriptions.add(this.router.events
       .pipe(filter((evt) => evt instanceof NavigationEnd))
       .subscribe(async (r: NavigationEnd) => {
         document.body.scrollTop = 0;
@@ -60,13 +62,17 @@ export class HeaderComponent implements OnInit, OnChanges {
           }
           this.delegateName = await this.getDelegateName(this.activeAccount?.delegate);
         }
-      });
+      }));
   }
 
   async ngOnChanges(changes: SimpleChanges): Promise<void> {
     if (changes?.activeAccount?.currentValue) {
       this.delegateName = await this.getDelegateName(changes?.activeAccount?.currentValue.delegate);
     }
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 
   logout() {

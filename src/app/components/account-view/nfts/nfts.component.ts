@@ -1,5 +1,5 @@
-import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
-import { Account, ImplicitAccount, TorusWallet } from '../../../services/wallet/wallet';
+import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { TorusWallet } from '../../../services/wallet/wallet';
 import { WalletService } from '../../../services/wallet/wallet.service';
 import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from '../../../services/message/message.service';
@@ -10,13 +10,14 @@ import { TokenBalancesService } from '../../../services/token-balances/token-bal
 import { SubjectService } from '../../../services/subject/subject.service';
 import { DisplayLinkOption } from '../../../interfaces';
 import Big from 'big.js';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-nfts',
   templateUrl: './nfts.component.html',
   styleUrls: ['../../../../scss/components/account-view/cards/nfts.component.scss'],
 })
-export class NftsComponent implements OnInit, AfterViewInit {
+export class NftsComponent implements OnInit, AfterViewInit, OnDestroy {
   DisplayLinkOption = DisplayLinkOption;
   Object = Object;
   Number = Number;
@@ -25,6 +26,7 @@ export class NftsComponent implements OnInit, AfterViewInit {
   isInitLoad: boolean = true;
   filter: string = 'APP';
   contractAliases = CONSTANTS.CONTRACT_ALIASES;
+  private subscriptions: Subscription = new Subscription();
   constructor(
     public translate: TranslateService,
     public messageService: MessageService,
@@ -33,7 +35,7 @@ export class NftsComponent implements OnInit, AfterViewInit {
     private subjectService: SubjectService,
     private walletService: WalletService
   ) {
-    this.subjectService.nftsUpdated.subscribe(nfts => {
+    this.subscriptions.add(this.subjectService.nftsUpdated.subscribe(nfts => {
       if(this.isInitLoad) {
         if (!nfts || !Object.keys(nfts)?.length) {
           this.isDiscover = true;
@@ -43,18 +45,21 @@ export class NftsComponent implements OnInit, AfterViewInit {
         }
       }
       this.nfts = nfts;
-    });
-    this.subjectService.logout.subscribe(o => {
+    }));
+    this.subscriptions.add(this.subjectService.logout.subscribe(o => {
       if (o) {
         this.nfts = undefined;
         this.isDiscover = false;
       }
-    })
+    }));
   }
   @Input() activity: any;
   @Input() account;
-  ngOnInit(): void {}
+  ngOnInit(): void { }
   ngAfterViewInit() {
+  }
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
   displayTokenCard(): boolean {
     return this.nfts !== undefined;
@@ -67,9 +72,9 @@ export class NftsComponent implements OnInit, AfterViewInit {
     } else {
       elem.forEach(coll => { if (coll.classList.contains('expanded')) { coll.classList.remove('expanded'); } });
       c.classList.add('expanded');
-        if (window.innerWidth < 1169 && 462 < parseFloat(window.getComputedStyle(c).getPropertyValue('height').replace('px', ''))) {
-          document.body.scroll(0, c.offsetTop - 25);
-        }
+      if (window.innerWidth < 1169 && 462 < parseFloat(window.getComputedStyle(c).getPropertyValue('height').replace('px', ''))) {
+        document.body.scroll(0, c.offsetTop - 25);
+      }
     }
   }
   viewToken(token) {

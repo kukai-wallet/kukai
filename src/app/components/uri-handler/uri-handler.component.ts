@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MessageService } from '../../services/message/message.service';
 import { WalletClient, BeaconMessageType, PermissionScope, PermissionResponseInput, OperationResponseInput } from '@airgap/beacon-sdk';
 import { WalletService } from '../../services/wallet/wallet.service';
@@ -7,17 +7,17 @@ import { Account } from '../../services/wallet/wallet';
 import { BeaconService } from '../../services/beacon/beacon.service';
 import { DeeplinkService } from '../../services/deeplink/deeplink.service';
 import { assertMichelsonData } from '@taquito/michel-codec';
-import { valueDecoder } from '@taquito/local-forging/dist/lib/michelson/codec';
-import { Uint8ArrayConsumer } from '@taquito/local-forging/dist/lib/uint8array-consumer';
 import { InputValidationService } from '../../services/input-validation/input-validation.service';
 import { HostListener } from '@angular/core';
 import { SubjectService } from '../../services/subject/subject.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-uri-handler',
   templateUrl: './uri-handler.component.html'
 })
-export class UriHandlerComponent implements OnInit {
+export class UriHandlerComponent implements OnInit, OnDestroy {
+  private subscriptions: Subscription = new Subscription();
   constructor(
     public messageService: MessageService,
     public walletService: WalletService,
@@ -26,9 +26,9 @@ export class UriHandlerComponent implements OnInit {
     private inputValidationService: InputValidationService,
     private subjectService: SubjectService
   ) {
-    this.walletService.activeAccount.subscribe((activeAccount) => {
+    this.subscriptions.add(this.walletService.activeAccount.subscribe((activeAccount) => {
       this.activeAccount = activeAccount;
-    });
+    }));
   }
   permissionRequest: PermissionResponseInput = null;
   operationRequest: any = null;
@@ -42,6 +42,9 @@ export class UriHandlerComponent implements OnInit {
     if (this.walletService.wallet) {
       this.init();
     }
+  }
+  ngOnDestroy() {
+this.subscriptions.unsubscribe();
   }
   async init() {
     const pairingString = this.deeplinkService.popPairingJson();

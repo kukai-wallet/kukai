@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { WalletService } from '../wallet/wallet.service';
-import { of, Observable, from as fromPromise, Subject } from 'rxjs';
+import { of, Observable, from as fromPromise } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 import { delay, takeUntil } from 'rxjs/operators'
 import { Activity, Account } from '../wallet/wallet';

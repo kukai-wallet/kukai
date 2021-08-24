@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, ElementRef, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, Output, EventEmitter, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
 import { KeyPair } from '../../../interfaces';
 import { WalletService } from '../../../services/wallet/wallet.service';
 import { CoordinatorService } from '../../../services/coordinator/coordinator.service';
@@ -20,7 +20,7 @@ import Big from 'big.js';
   templateUrl: './delegate.component.html',
   styleUrls: ['../../../../scss/components/modal/modal.scss']
 })
-export class DelegateComponent extends ModalComponent implements OnInit, OnChanges {
+export class DelegateComponent extends ModalComponent implements OnInit, OnChanges, OnDestroy {
   domainPendingLookup = false;
   defaultFee = 0.0004;
   readonly pkhFee = 0.0004;
@@ -42,6 +42,8 @@ export class DelegateComponent extends ModalComponent implements OnInit, OnChang
   advanced = false;
 
   name = 'delegate-confirm';
+
+  private subscriptions: Subscription = new Subscription();
 
   constructor(
     private route: ActivatedRoute,
@@ -65,9 +67,9 @@ export class DelegateComponent extends ModalComponent implements OnInit, OnChang
       if (this.walletService.addressExists(address)) {
         this.activeAccount = this.walletService.wallet.getAccount(address);
       }
-      this.walletService.activeAccount.subscribe(activeAccount => {
+      this.subscriptions.add(this.walletService.activeAccount.subscribe(activeAccount => {
         this.activeAccount = activeAccount;
-      });
+      }));
     }
   }
   ngOnChanges(changes: SimpleChanges): void {
@@ -85,6 +87,10 @@ export class DelegateComponent extends ModalComponent implements OnInit, OnChang
         }
       }
     }
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 
   open(data) {
@@ -145,7 +151,7 @@ export class DelegateComponent extends ModalComponent implements OnInit, OnChang
 
   async sendDelegation(keys: KeyPair) {
     let fee = this.getFee();
-    this.operationService.delegate(this.activeAccount.address, this.toPkh, Number(fee), keys).subscribe(
+    this.subscriptions.add(this.operationService.delegate(this.activeAccount.address, this.toPkh, Number(fee), keys).subscribe(
       async (ans: any) => {
         this.sendResponse = ans;
         console.log(JSON.stringify(ans));
@@ -170,7 +176,7 @@ export class DelegateComponent extends ModalComponent implements OnInit, OnChang
         console.log('Error Message ', JSON.stringify(err));
         this.ledgerError = 'Failed to create operation';
       }
-    );
+    ));
   }
   async requestLedgerSignature() {
     if (this.walletService.wallet instanceof LedgerWallet) {
@@ -217,7 +223,7 @@ export class DelegateComponent extends ModalComponent implements OnInit, OnChang
     );
   }
   estimateDefaultFee() {
-    this.operationService.isRevealed(this.activeAccount.pkh)
+    this.subscriptions.add(this.operationService.isRevealed(this.activeAccount.pkh)
       .subscribe((revealed: boolean) => {
         const revealFee = revealed ? 0 : 0.0002;
         if (this.activeAccount instanceof ImplicitAccount) {
@@ -225,7 +231,7 @@ export class DelegateComponent extends ModalComponent implements OnInit, OnChang
         } else if (this.activeAccount instanceof OriginatedAccount) {
           this.defaultFee = Number(new Big(revealFee).plus(this.ktFee));
         }
-      });
+      }));
   }
   getFee(): string {
     return (this.fee !== '') ? this.fee : this.defaultFee.toString()

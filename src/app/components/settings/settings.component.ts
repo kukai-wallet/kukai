@@ -1,19 +1,21 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, OnDestroy } from '@angular/core';
 import { BeaconService } from '../../services/beacon/beacon.service';
 import { WalletService } from '../../services/wallet/wallet.service';
 import { Router } from '@angular/router';
 import { TokenService } from '../../services/token/token.service';
 import { MessageService } from '../../services/message/message.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
   styleUrls: ['../../../scss/components/settings/settings.component.scss']
 })
-export class SettingsComponent implements OnInit {
+export class SettingsComponent implements OnInit, OnDestroy {
   implicitAccounts = [];
   wideAccounts = false;
   activeAccount = null;
+  private subscriptions: Subscription = new Subscription();
   constructor(
     public beaconService: BeaconService,
     private messageService: MessageService,
@@ -28,9 +30,12 @@ export class SettingsComponent implements OnInit {
       this.onResize();
     }
 
-    this.walletService.activeAccount.subscribe(activeAccount => {
+    this.subscriptions.add(this.walletService.activeAccount.subscribe(activeAccount => {
       this.activeAccount = activeAccount;
-    });
+    }));
+  }
+  ngOnDestroy() {
+
   }
   accountAvailable(pkh: string): boolean {
     const index = this.implicitAccounts.findIndex((impAcc: any) => impAcc.pkh === pkh);

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
 import { Account } from '../../services/wallet/wallet';
 import { PrepareRequest, ConfirmRequest, FullyPreparedTransaction, PartiallyPreparedTransaction, TemplateRequest, TemplateFee } from './interfaces';
 import { Template } from 'kukai-embed';
@@ -12,13 +12,14 @@ import { WalletService } from '../../services/wallet/wallet.service';
 import { CoordinatorService } from '../../services/coordinator/coordinator.service';
 import { CONSTANTS } from '../../../environments/environment';
 import { SubjectService } from '../../services/subject/subject.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-send',
   templateUrl: './send.component.html'
 })
 
-export class SendComponent implements OnInit, OnChanges {
+export class SendComponent implements OnInit, OnChanges, OnDestroy {
   @Input() activeAccount: Account;
   @Input() tokenTransfer: string;
   @Input() operationRequest: string;
@@ -29,6 +30,7 @@ export class SendComponent implements OnInit, OnChanges {
   templateRequest: TemplateRequest = null;
   symbol: string;
   readonly thresholdUSD = 50;
+  private subscriptions: Subscription = new Subscription();
   constructor(
     public tokenService: TokenService,
     private estimateService: EstimateService,
@@ -40,17 +42,20 @@ export class SendComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit() {
-    this.subjectService.prepareTokenTransfer.subscribe(t => {
+    this.subscriptions.add(this.subjectService.prepareTokenTransfer.subscribe(t => {
       this.prepareRequest = t;
       this.tokenTransfer = t?.tokenTransfer;
       this.activeAccount = t?.account;
       this.symbol = t?.symbol;
-    });
+    }));
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes?.operationRequest?.currentValue) {
       this.checkOpReq(changes.operationRequest.currentValue);
     }
+  }
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
   private async checkOpReq(opReq: any) {
     if (opReq.operationDetails) {
@@ -241,7 +246,7 @@ export class SendComponent implements OnInit, OnChanges {
       this.operationResponse.emit('FAILED_TO_SIGN');
       return;
     }
-    this.operationService.transfer(this.activeAccount.address, ops, Number(ops[ops.length - 1].fee), keys, '').subscribe(
+    this.subscriptions.add(this.operationService.transfer(this.activeAccount.address, ops, Number(ops[ops.length - 1].fee), keys, '').subscribe(
       async (ans: any) => {
         if (ans.success === true) {
           console.log('Transaction successful ', ans);
@@ -266,6 +271,6 @@ export class SendComponent implements OnInit, OnChanges {
         console.log(err);
         this.operationResponse.emit('UNKNOWN_ERROR');
       },
-    );
+    ));
   }
 }

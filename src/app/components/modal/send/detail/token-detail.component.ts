@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ModalComponent } from '../../modal.component';
 import { WalletService } from '../../../../services/wallet/wallet.service';
 import { TokenBalancesService } from '../../../../services/token-balances/token-balances.service';
 import { Big } from 'big.js';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-token-detail',
   templateUrl: './token-detail.component.html',
   styleUrls: ['../../../../../scss/components/modal/modal.scss']
 })
-export class TokenDetail extends ModalComponent implements OnInit {
+export class TokenDetail extends ModalComponent implements OnInit, OnDestroy {
   Object = Object;
   token = null;
   tokenFiltered = {};
@@ -21,16 +22,20 @@ export class TokenDetail extends ModalComponent implements OnInit {
   isNFT = false;
   name = "token-detail";
   readonly blacklistMeta = ['name', 'kind', 'displayAsset', 'thumbnailAsset', 'rawUrl', 'isTransferable', 'isBooleanAmount', 'balance', 'category', 'symbol', 'decimals', 'status', 'shouldPreferSymbol', 'price', 'isUnknownToken'];
-
+  private subscriptions: Subscription = new Subscription();
   constructor(
     private walletService: WalletService,
     private tokenBalancesService: TokenBalancesService
   ) { super(); }
 
   ngOnInit(): void {
-    this.walletService.activeAccount.subscribe(activeAccount => {
+    this.subscriptions.add(this.walletService.activeAccount.subscribe(activeAccount => {
       this.activeAccount = activeAccount;
-    });
+    }));
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 
   open(data) {
