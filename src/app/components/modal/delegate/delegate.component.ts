@@ -145,8 +145,6 @@ export class DelegateComponent extends ModalComponent implements OnInit, OnChang
 
   async sendDelegation(keys: KeyPair) {
     let fee = this.getFee();
-    console.log(JSON.stringify(this.fee), JSON.stringify(this.defaultFee));
-    console.warn(JSON.stringify(fee));
     this.operationService.delegate(this.activeAccount.address, this.toPkh, Number(fee), keys).subscribe(
       async (ans: any) => {
         this.sendResponse = ans;
