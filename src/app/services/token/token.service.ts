@@ -50,8 +50,8 @@ export interface TokenData {
   symbol: string;
   decimals: number;
   description: string;
-  displayAsset: string;
-  thumbnailAsset: string;
+  displayAsset: Asset;
+  thumbnailAsset: Asset;
   isTransferable?: boolean;
   isBooleanAmount?: boolean;
   shouldPreferSymbol?: boolean;
@@ -179,7 +179,7 @@ export class TokenService {
   }
   async searchMetadata(contractAddress: string, id: number) {
     const tokenId = `${contractAddress}:${id}`;
-    if (this.explore(tokenId)) {
+    if (!this.isKnownTokenId(tokenId) && this.explore(tokenId)) {
       console.log(`Searching for tokenId: ${tokenId}`);
       const metadata = await this.indexerService.getTokenMetadata(contractAddress, id);
       if (metadata &&

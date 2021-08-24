@@ -5,7 +5,7 @@ import { WalletService } from '../wallet/wallet.service';
 import { Account } from '../wallet/wallet';
 import Big from 'big.js';
 import { CONSTANTS } from '../../../environments/environment';
-import { decode } from "blurhash";
+import { decode } from 'blurhash';
 import { combineLatest } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { SubjectService } from '../subject/subject.service';

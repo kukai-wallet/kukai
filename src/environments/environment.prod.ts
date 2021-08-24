@@ -322,8 +322,11 @@ export const CONSTANTS: Constants = {
           symbol: '',
           decimals: 0,
           description: 'This Taco NFT was inspired by and minted for Austin, Texas on Taco Tuesday, May 4th, 2021, to help push the Clean NFT movement forward. Enjoy your taco or send it to a friend to help spread the word about Clean NFTs on Tezos.',
-          displayAsset: 'https://cloudflare-ipfs.com/ipfs/QmYbWkagqQyQ4bJhWWWSGaCLNGP1czbPgD2PLmJ4aVmtGR',
-          thumbnailAsset: 'https://cloudflare-ipfs.com/ipfs/QmYbWkagqQyQ4bJhWWWSGaCLNGP1czbPgD2PLmJ4aVmtGR',
+          displayAsset: {
+            filename: 'qobfstoafqyvjgu6fgrxlpozxefuo4',
+            extension: 'jpeg'
+          },
+          thumbnailAsset: '',
           shouldPreferSymbol: false,
           isBooleanAmount: true,
           status: 1
@@ -764,8 +767,11 @@ export const CONSTANTS: Constants = {
           symbol: 'Tezos',
           decimals: 0,
           description: 'NFTs are changing everything...but what exactly is an NFT? A Non-Friendly Turtle? Discover how Tezos is changing NFTs, and collect your own at Tezos.com/NFTgallery.',
-          displayAsset: 'https://cloudflare-ipfs.com/ipfs/QmTmSjweqQrba5WGRUxB4u5WEbwktQBQekioi9K7Kkos6x',
-          thumbnailAsset: '../../../assets/img/unknown-token-grayscale.svg',
+          displayAsset: {
+            filename: 'imqcyvlfj4dptvjcclhkzjqwjxqvzo',
+            extension: 'gif'
+          },
+          thumbnailAsset: '',
           isBooleanAmount: false,
           isTransferable: true,
           shouldPreferSymbol: false,
