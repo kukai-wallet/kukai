@@ -19,12 +19,16 @@ export class BalancesComponent implements OnInit, AfterViewChecked {
   }
   e(wrap) {
     if(!!wrap) {
-      if (this.tokenBalancesService?.balances?.length <= 5) {
+      if (wrap.scrollTop < 1 || this.tokenBalancesService?.balances?.length <= 5) {
         document.querySelector('.scroll-wrapper .tez').classList.add('no-box');
-        wrap.style.overflowY = ''
       } else {
         document.querySelector('.scroll-wrapper .tez').classList.remove('no-box');
-        wrap.style.overflowY = 'auto';
+      }
+
+      if(this.tokenBalancesService?.balances?.length > 4) {
+        wrap.style.overflowY = 'auto'
+      } else {
+        wrap.style.overflowY = '';
       }
     }
   }
