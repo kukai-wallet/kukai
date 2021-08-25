@@ -93,7 +93,7 @@ $box-shadow: 0px 4px 6px #3332;
 .nfts {
   width: 100%;
 
-  & .discover {
+  &>.discover {
     width: calc(50% - 5rem);
     padding: 2rem;
     margin: 0rem 0rem 2rem 0rem;
@@ -371,7 +371,7 @@ $box-shadow: 0px 4px 6px #3332;
 
 @media (max-width: v.$layout-break-3) {
   .nfts {
-    & .discover {
+    &>.discover {
       width: calc(100% - 4rem);
     }
   }
@@ -386,7 +386,7 @@ $box-shadow: 0px 4px 6px #3332;
   .nfts {
     flex-direction: row;
 
-    & .discover {
+    &>.discover {
       width: calc(50% - 5rem);
     }
     & .collection {
@@ -404,7 +404,7 @@ $box-shadow: 0px 4px 6px #3332;
     flex-wrap: nowrap;
     align-items: initial;
 
-    & .discover {
+    &>.discover {
       width: calc(100% - 4rem);
     }
 
