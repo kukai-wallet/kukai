@@ -34,6 +34,7 @@ $border-color: #e6eaef;
 
       & .left {
         width: 26%;
+        min-height: 8rem;
 
         & .key {
           text-align: center;
@@ -44,9 +45,14 @@ $border-color: #e6eaef;
         width: calc(74% - 2rem);
       }
 
-      & .token-image.balance {
-        width: 4rem;
-        height: 4rem;
+      & .token-image {
+        width: 8rem;
+        height: 8rem;
+
+        &.balance {
+          width: 4rem;
+          height: 4rem;
+        }
       }
     }
 
@@ -98,6 +104,12 @@ $border-color: #e6eaef;
 
           & .single-to {
             margin: 0.5rem 0 0 0;
+
+            &.default {
+              & span {
+                margin: 0.5rem 0 0 0;
+              }
+            }
 
             & span {
               font-family: "Roboto Mono";

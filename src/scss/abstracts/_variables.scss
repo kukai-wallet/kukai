@@ -21,6 +21,7 @@ $base-red-color: #eb4e39 !default;
 $base-green-color: #86cf2d !default;
 $base-font-color: f.theme-transform(#3e4855, $current-theme, 0.25) !default;
 $base-font-color-secondary: f.theme-transform(#98a0ab, $current-theme, 0.75) !default;
+$base-font-color-secondary-half: f.theme-transform(#6B7480, $current-theme, 0.75) !default;
 
 // box shadow constants
 $box-shadow: 0px 12px 24px #3331 !default;
