@@ -100,6 +100,7 @@ $border-color: #e6eaef;
         &.balance {
           width: 3rem;
           height: 3rem;
+          position: initial;
           box-shadow: unset;
           border-radius: v.$border-radius-hardest;
           border: v.$border-width solid $base-color-lightened-5;
@@ -120,7 +121,6 @@ $border-color: #e6eaef;
         height: auto;
         justify-content: space-between;
         align-items: center;
-        min-height: 10rem;
         position: relative;
 
         & .key {
@@ -159,6 +159,10 @@ $border-color: #e6eaef;
           & .key {
             @include m.multiply("font-size", 1);
             text-transform: unset;
+
+            &:last-of-type {
+              margin: 0;
+            }
 
             & .value {
               @include m.multiply("font-size", 1);
