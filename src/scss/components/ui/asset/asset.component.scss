@@ -43,4 +43,27 @@
     height: calc(100% - 1rem);
     padding: 0.5rem;
   }
+
+  &.discover {
+    & video,
+    & img,
+    & #modelCanvas {
+      object-fit: scale-down;
+      width: calc(100% - 4rem);
+      height: 12rem;
+      padding: 2rem;
+    }
+  }
+
+  &.nfts-head-thumbnail {
+    width: 3.5rem;
+    height: 3.5rem;
+    margin-right: 1rem;
+    & video,
+    & img,
+    & #modelCanvas {
+      border-radius: 0.5rem;
+      object-fit: contain;
+    }
+  }
 }

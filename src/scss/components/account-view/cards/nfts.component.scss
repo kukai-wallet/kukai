@@ -42,7 +42,7 @@ $box-shadow: 0px 4px 6px #3332;
       @include m.multiply("font-size", 1.15);
     }
 
-    & .discover {
+    & span.discover {
       box-shadow: $box-shadow;
       color: $base-blue-color-lightened;
       background-color: $base-end-color;

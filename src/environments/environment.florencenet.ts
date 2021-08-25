@@ -15,7 +15,7 @@ export const CONSTANTS: Constants = {
   },
   NETWORK: 'florencenet',
   MAINNET: false,
-  NODE_URL: 'https://api.tez.ie/rpc/florencenet',
+  NODE_URL: 'https://florencenet.api.tez.ie',
   BLOCK_EXPLORER_URL: 'https://florencenet.tzkt.io',
   ALLOWED_EMBED_ORIGINS: [],
   HARD_LIMITS: {
@@ -76,19 +76,31 @@ export const CONSTANTS: Constants = {
     },
     "MinterPop": {
       address: ['KT1M2TMFrF1gbr64a7ySE3Cvt5BjZqQLKE6s'],
-      thumbnailUrl: 'https://minterpop.vercel.app/_next/static/images/logo-ac73543744326030947adf91a3dad06c.svg',
+      thumbnailUrl: "../../../assets/img/tokens/MinterPop_Logo_icononly-color.svg",
+      // thumbnailUrl: {
+      //   filename: 'u4tdtnfwszmavwllohvxnhm6x6udvp',
+      //   extension: 'svg'
+      // },
       link: "https://minterpop.vercel.app/", shouldDisplayLink: DisplayLinkOption.DirectAuth, category: "collectibles"
     },
     "MinterPopDev": {
       name: 'MinterPop Dev',
       address: ['KT1AzVpQRrQNNQU4x1KGUS3E6P96yZYjQfbS'],
-      thumbnailUrl: 'https://minterpop.vercel.app/_next/static/images/logo-ac73543744326030947adf91a3dad06c.svg',
+      thumbnailUrl: "../../../assets/img/tokens/MinterPop_Logo_icononly-color.svg",
+      // thumbnailUrl: {
+      //   filename: 'u4tdtnfwszmavwllohvxnhm6x6udvp',
+      //   extension: 'svg'
+      // },
       link: "https://minterpop-dev.vercel.app/", shouldDisplayLink: DisplayLinkOption.DirectAuth, category: "collectibles"
     },
     'PixelPotusv2': {
       name: 'PixelPotus v2',
       address: ["KT1AorRGJvDkbpa8ap6setUGMCNm21bpp8qe"],
       thumbnailUrl: "https://www.pixelpotus.com/img/eagle-right.d1840b0b.png",
+      // thumbnailUrl: {
+      //   filename: '5oqkhgoiie2dqyylrvk47spwt4webt',
+      //   extension: 'png'
+      // },
       link: "https://pixelpotus-frontend-r7y63b2h9-pixelpotus.vercel.app/", shouldDisplayLink: DisplayLinkOption.All, category: "collectibles"
     },
     'Kalamint': {
@@ -104,7 +116,11 @@ export const CONSTANTS: Constants = {
     'InterpopComics': {
       name: "Interpop Comics",
       address: ["KT1KG5XcKeUtFWvQBkeiTe5vjvrAya8VsQFi"],
-      thumbnailUrl: "https://dev.interpopcomics.com/interpop_logo.png",
+      thumbnailUrl: "../../../assets/img/tokens/INTERPOP_FINAL_ICON.svg",
+      // thumbnailUrl: {
+      //   filename: '2fl5x5wifmqwbsd6d4axz5wrxwlpqv',
+      //   extension: 'svg'
+      // },
       link: "https://dev.interpopcomics.com/", shouldDisplayLink: DisplayLinkOption.DirectAuth, category: "collectibles"
     }
   },

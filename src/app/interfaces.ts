@@ -1,5 +1,5 @@
 import { Activity } from './services/wallet/wallet';
-import { ContractOverrideType, ContractType } from './services/token/token.service';
+import { Asset, ContractOverrideType, ContractType } from './services/token/token.service';
 
 export { Activity };
 
@@ -131,6 +131,6 @@ export interface Constants {
   },
   ASSETS: Record<string, ContractType>;
   CONTRACT_OVERRIDES: Record<string, ContractOverrideType>;
-  CONTRACT_ALIASES: Record<string, { name?: string, address: string[], thumbnailUrl: string, link: string, shouldDisplayLink: DisplayLinkOption, category?: string }>;
+  CONTRACT_ALIASES: Record<string, { name?: string, address: string[], thumbnailUrl: Asset, link: string, shouldDisplayLink: DisplayLinkOption, category?: string }>;
   NFT_CONTRACT_OVERRIDES: string[];
 }

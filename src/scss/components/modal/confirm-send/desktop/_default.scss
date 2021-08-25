@@ -225,7 +225,7 @@ $border-color: #e6eaef;
       }
 
       & .address {
-        @include m.multiply("font-size", 1);
+        @include m.multiply("font-size", 1, "rem", 1.3);
         font-family: "Roboto Mono", "Roboto";
         color: $base-font-color-secondary;
       }
@@ -333,7 +333,7 @@ $border-color: #e6eaef;
 
             & span {
               color: $base-font-color-secondary;
-              font-size: 1rem;
+              @include m.multiply("font-size", 1, "rem", 1.3);
             }
 
             &:not(.scroll) {

@@ -153,7 +153,13 @@ $base-background-color: v.$base-background-color;
           height: 100%;
           justify-content: center;
           border-radius: v.$border-radius;
-          backdrop-filter: blur(15px);
+          background-color: #fff;
+        }
+        @supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
+          & .seed-blur {
+            background-color: rgba(0,0,0,0);
+            backdrop-filter: blur(15px);
+          }
         }
       }
 

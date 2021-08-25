@@ -2,10 +2,10 @@
 @use '../abstracts/variables'as v;
 
 @mixin multiply($property, $base, $postfix: 'rem', $override: 0) {
-  @media (min-width: v.$lower-limit) {
+  @media (min-width: v.$layout-break-5) {
     #{$property}: f.multiply($base, 1) + $postfix;
   }
-  @media (max-width: v.$lower-limit) {
+  @media (max-width: v.$layout-break-5) {
     @if $override != 0 {
       #{$property}: f.multiply($base, $override) + $postfix; 
     } @else {

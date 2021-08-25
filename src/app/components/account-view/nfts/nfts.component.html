@@ -21,7 +21,7 @@
       <div class="flex-column collection" [class]="filter === key ? 'expanded' : ''" [id]="sanitizeKey(key, i)" [style.display]="!isDiscover && filter === 'APP' ? '' : 'none'">
         <div class="flex-row head" (click)="toggleDropdown(sanitizeKey('#' + key, i))">
           <div class="flex-row left">
-            <img class="icon" [src]="this.nfts[key]?.thumbnailUrl" />
+            <app-asset class="nfts-head-thumbnail" [meta]="this.nfts[key]?.thumbnailUrl"></app-asset>
             <div class="title">
               {{ this.nfts[key]?.name }}
             </div>
@@ -81,7 +81,7 @@
       <ng-container *ngIf="shouldDisplayLink(contractAliases[key]?.shouldDisplayLink)">
         <div class="flex-column discover" [style.display]="isDiscover ? '' : 'none'">
           <div class="category">{{ contractAliases[key]?.category }}</div>
-          <img class="cover" [src]="contractAliases[key]?.thumbnailUrl" />
+          <app-asset class="discover" [size]="'raw'" [meta]="contractAliases[key]?.thumbnailUrl"></app-asset>
           <div class="flex-row bottom">
             <div class="title">{{ contractAliases[key]?.name || key }}</div>
             <a [href]="contractAliases[key]?.link || '/'" target="_blank" class="link-to-app">

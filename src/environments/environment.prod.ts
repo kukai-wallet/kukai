@@ -39,10 +39,14 @@ export const CONSTANTS: Constants = {
       thumbnailUrl: "https://dashboard-assets.dappradar.com/document/7360/quipuswap-dapp-exchanges-tezos-logo-166x166_f8f472a49e3f3d6b591a13dbd979a857.png",
       link: "https://quipuswap.com/", shouldDisplayLink: DisplayLinkOption.All, category: "exchanges"
     },
-    'Minterpop': {
-      address: ["KT1AaaBSo5AE6Eo8fpEN5xhCD4w3kHStafxk"],
-      thumbnailUrl: "https://minterpop.com/_next/static/images/logo-ac73543744326030947adf91a3dad06c.svg",
-      link: "https://minterpop.com/", shouldDisplayLink: DisplayLinkOption.DirectAuth, category: "collectibles"
+    "MinterPop": {
+      address: ['KT1AaaBSo5AE6Eo8fpEN5xhCD4w3kHStafxk'],
+      thumbnailUrl: "../../../assets/img/tokens/MinterPop_Logo_icononly-color.svg",
+      // thumbnailUrl: {
+      //   filename: 'u4tdtnfwszmavwllohvxnhm6x6udvp',
+      //   extension: 'svg'
+      // },
+      link: "https://minterpop.vercel.app/", shouldDisplayLink: DisplayLinkOption.DirectAuth, category: "collectibles"
     },
     'Kalamint': {
       address: ["KT1EpGgjQs73QfFJs9z7m1Mxm5MTnpC2tqse"],
@@ -50,10 +54,19 @@ export const CONSTANTS: Constants = {
       link: "https://kalamint.io/", shouldDisplayLink: DisplayLinkOption.All, category: "marketplaces"
     },
     'InterpopComics': {
-      name: 'Interpop Comics',
+      name: "Interpop Comics",
       address: ["KT1UxMVVrK2pbYYEtwes1zKYdpYnzoZ6yPKC"],
-      thumbnailUrl: "https://dev.interpopcomics.com/interpop_logo.png",
-      link: "https://interpopcomics.com/", shouldDisplayLink: DisplayLinkOption.DirectAuth, category: "collectibles"
+      thumbnailUrl: "../../../assets/img/tokens/INTERPOP_FINAL_ICON.svg",
+      // thumbnailUrl: {
+      //   filename: '2fl5x5wifmqwbsd6d4axz5wrxwlpqv',
+      //   extension: 'svg'
+      // },
+      link: "https://dev.interpopcomics.com/", shouldDisplayLink: DisplayLinkOption.DirectAuth, category: "collectibles"
+    },
+    'Bazaar Market': {
+      address: ["KT1PKvHNWuWDNVDtqjDha4AostLrGDu4G1jy"],
+      thumbnailUrl: "https://dashboard-assets.dappradar.com/document/7444/bazaarmarket-dapp-marketplaces-tezos-logo-166x166_eeff309690a4abe4d06e78922012d985.png",
+      link: "https://bazaarnft.xyz/", shouldDisplayLink: DisplayLinkOption.All, category: "marketplaces"
     },
     'TezosCampaigns': {
       name: 'Tezos Campaigns',
