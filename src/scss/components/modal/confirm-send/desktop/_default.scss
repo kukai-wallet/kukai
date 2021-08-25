@@ -161,7 +161,7 @@ $border-color: #e6eaef;
             text-transform: unset;
 
             & .value {
-              @include m.multiply("font-size", 1, "rem", 1.5);
+              @include m.multiply("font-size", 1);
               font-weight: 500;
               color: $base-font-color-secondary-half;
             }

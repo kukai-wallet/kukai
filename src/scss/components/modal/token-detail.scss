@@ -30,6 +30,7 @@
         height: 100vh;
         max-width: unset;
         max-height: unset;
+        max-height: -webkit-fill-available;
         margin: 0;
         z-index: 10000;
 
