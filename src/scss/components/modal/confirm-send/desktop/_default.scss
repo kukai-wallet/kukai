@@ -97,7 +97,7 @@ $border-color: #e6eaef;
           width: 3rem;
           height: 3rem;
           box-shadow: unset;
-          border-radius: v.$border-radius-hard;
+          border-radius: v.$border-radius-hardest;
           border: v.$border-width solid $base-color-lightened-5;
         }
       }
@@ -155,7 +155,7 @@ $border-color: #e6eaef;
             text-transform: unset;
   
             & .value {
-              font-size: 1rem;
+              @include m.multiply("font-size", 1, "rem", 1.5);
               font-weight: 500;
             }
           }
