@@ -125,19 +125,23 @@ $box-shadow: 0px 4px 6px #3332;
     }
 
     & .bottom {
+      flex-wrap: wrap;
+      justify-content: center;
       & .title {
+        text-align: center;
         font-size: 2rem;
         letter-spacing: 0.06em;
         white-space: pre;
         text-overflow: ellipsis;
         overflow: hidden;
-        width: 50%;
+        width: 100%;
+        margin: 0 0 1rem 0;
       }
 
       & a.link-to-app {
+        width: 50%;
         & button {
-          width: auto;
-          ;
+          width: 100%;
           padding: 1rem 2rem;
           border-radius: calc(1rem * 2);
           @include m.multiply("font-size", 1);
