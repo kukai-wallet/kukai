@@ -239,7 +239,7 @@ $box-shadow: 0px 4px 6px #3332;
       overflow-y: hidden;
       flex-wrap: wrap;
       height: 100%;
-      padding: 0 2rem;
+      padding: 0 1.75rem;
       border-radius: v.$border-radius;
       border-top-left-radius: 0;
       border-top-right-radius: 0;
@@ -315,6 +315,7 @@ $box-shadow: 0px 4px 6px #3332;
       width: calc(100% - 0.75rem);
       &.all .body {
         overflow-y: auto;
+        padding: 1rem 1.875rem;
       }
     }
 
