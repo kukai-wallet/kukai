@@ -72,12 +72,13 @@
         position: absolute;
         bottom: 0.5rem;
         right: 0.5rem;
-        width: 2rem;
-        height: 2rem;
-        background-color: #fffd;
-        padding: 0.25rem;
-        border-radius: 6rem;
+        width: 2.25rem;
+        height: 2.25rem;
+        background-color: #fff;
+        padding: 0.5rem;
+        border-radius: 8rem;
         cursor: pointer;
+        filter: invert(1) opacity(0.7);
       }
     }
 
