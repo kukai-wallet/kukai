@@ -1,7 +1,7 @@
 <div *ngIf="isOpen" class="flex-column kukai-modal">
   <div class="content">
     <div class="flex-column top">
-      <div class="flex-row button close" (click)="close()"><img class="x" src="../../../assets/img/close-btn-x.png" />
+      <div class="flex-row button close" (click)="close()"><img class="x" src="../../../../../assets/img/close-btn-x.png" />
       </div>
       <h1 class="title">Token Info</h1>
     </div>
@@ -12,8 +12,8 @@
             [meta]="!token ? '../../../assets/img/tezos-xtz-logo.svg' : token?.displayAsset || token?.thumbnailAsset"
             [size]="imageExpanded ? 'raw' : '600x600'" (click)="expandImage()"></app-asset>
           <img *ngIf="imageExpanded" class="flex-row button close" (click)="expandImage()"
-            src="../../../assets/img/close-btn-x.png" />
-            <img *ngIf="!imageExpanded" class="expand" src="../../../../assets/img/expand.png" (click)="expandImage()" />
+            src="../../../../../assets/img/close-btn-x.png" />
+            <img *ngIf="!imageExpanded" class="expand" src="../../../../../assets/img/expand.png" (click)="expandImage()" />
         </div>
         <div class="flex-column meta">
           <div class="flex-column top">

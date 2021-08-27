@@ -60,6 +60,12 @@
         top: 1rem;
         right: 1rem;
         filter: invert(1) brightness(20);
+        width: calc(3rem - 6px);
+        height: calc(3rem - 6px);
+        padding: 0.5rem;
+        object-fit: scale-down;
+        border: none;
+        border-radius: unset;
       }
 
       & img.expand {
