@@ -28,21 +28,24 @@ $base-background-color: v.$base-background-color;
     align-items: center;
     @include m.base-relative;
 
-    & a .back {
-      position: absolute;
-      top: 1rem;
-      left: -0;
-      background-color: $base-background-color;
-      border: v.$border-width solid $base-color-lightened-4;
-      border-radius: v.$border-radius-hardest;
-      color: $base-font-color;
-      @include m.multiply('font-size',1);
-      font-weight: 500;
-      padding: 0.75rem 1.25rem;
+    & a {
+      text-decoration: none;
+      & .back {
+        position: absolute;
+        top: 1rem;
+        left: -0;
+        background-color: $base-background-color;
+        border: v.$border-width solid $base-color-lightened-4;
+        border-radius: v.$border-radius-hardest;
+        color: $base-font-color;
+        @include m.multiply("font-size", 1);
+        font-weight: 500;
+        padding: 0.75rem 1.25rem;
 
-      & img {
-        height: 1rem;
-        margin: 0 1rem 0 0;
+        & img {
+          height: 1rem;
+          margin: 0 1rem 0 0;
+        }
       }
     }
 
@@ -157,7 +160,7 @@ $base-background-color: v.$base-background-color;
         }
         @supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
           & .seed-blur {
-            background-color: rgba(0,0,0,0);
+            background-color: rgba(0, 0, 0, 0);
             backdrop-filter: blur(15px);
           }
         }
@@ -315,7 +318,7 @@ $base-background-color: v.$base-background-color;
 
         & .body {
           width: calc(100% - 5rem);
-          justify-content:flex-start
+          justify-content: flex-start;
         }
 
         & .filename {

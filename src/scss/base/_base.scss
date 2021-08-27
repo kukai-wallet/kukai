@@ -124,6 +124,12 @@ textarea {
   background-color: v.$base-end-color;
 }
 
+BR,
+br {
+  height: 0;
+  margin: 0.625rem 0;
+}
+
 .noselection {
   @extend %noselection;
 }

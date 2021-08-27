@@ -15,19 +15,22 @@ $base-background-color: v.$base-background-color;
   flex-direction: column;
   min-height: calc(100vh - 22.5rem);
 
-  & a .back {
-    background-color: $base-background-color;
-    border: v.$border-width solid $base-color-lightened-4;
-    border-radius: v.$border-radius-hardest;
-    color: $base-font-color;
-    @include m.multiply('font-size', 1);
-    font-weight: 500;
-    padding: 0.75rem 1.25rem;
-    margin: 0 0 0 0.5rem;
+  & a {
+    text-decoration: none;
+    & .back {
+      background-color: $base-background-color;
+      border: v.$border-width solid $base-color-lightened-4;
+      border-radius: v.$border-radius-hardest;
+      color: $base-font-color;
+      @include m.multiply("font-size", 1);
+      font-weight: 500;
+      padding: 0.75rem 1.25rem;
+      margin: 0 0 0 0.5rem;
 
-    & img {
-      height: 1rem;
-      margin: 0 1rem 0 0;
+      & img {
+        height: 1rem;
+        margin: 0 1rem 0 0;
+      }
     }
   }
 
@@ -43,18 +46,18 @@ $base-background-color: v.$base-background-color;
       align-self: flex-end;
     }
 
-    &>h3,
-    &>h4 {
+    & > h3,
+    & > h4 {
       font-style: normal;
       display: flex;
       align-items: center;
       color: $base-font-color;
     }
 
-    &>h3 {
+    & > h3 {
       margin: 2.5rem 0 1rem 1rem;
       font-weight: bold;
-      @include m.multiply('font-size', 2.25);
+      @include m.multiply("font-size", 2.25);
       line-height: 1.5rem;
 
       &:first-child {
@@ -65,11 +68,11 @@ $base-background-color: v.$base-background-color;
     & h4 {
       margin: 2.5rem 0 0;
       font-weight: 400;
-      @include m.multiply('font-size', 1.5);
+      @include m.multiply("font-size", 1.5);
       line-height: 1.5rem;
     }
 
-    &>div.seperator {
+    & > div.seperator {
       height: 1px;
       background: #0001;
       width: 100%;
@@ -81,12 +84,12 @@ $base-background-color: v.$base-background-color;
     margin: 0 1rem;
     flex-direction: row;
 
-    &>div:first-child {
+    & > div:first-child {
       flex-grow: 1;
 
       & p {
         margin-top: 0.25rem;
-        @include m.multiply('font-size', 1.5);
+        @include m.multiply("font-size", 1.5);
         line-height: 1rem;
         align-items: center;
         color: $base-font-color;
@@ -107,26 +110,26 @@ $base-background-color: v.$base-background-color;
   }
 
   & table {
-    table-layout:fixed;
+    table-layout: fixed;
   }
 
-  & thead>tr {
+  & thead > tr {
     border-bottom: 1px solid #0002;
     border-top: 1px solid #0002;
     width: 100%;
 
-    &>th {
-      color: #2C323A44;
+    & > th {
+      color: #2c323a44;
       text-align: left;
 
       &:last-child {
         text-align: right;
 
-        &>span:hover {
+        & > span:hover {
           text-decoration: underline;
           cursor: pointer;
           color: v.$base-red-color;
-          font-weight: 500
+          font-weight: 500;
         }
       }
     }
@@ -134,7 +137,7 @@ $base-background-color: v.$base-background-color;
 
   & table th,
   & table td {
-    @include m.multiply('font-size', 1.5);
+    @include m.multiply("font-size", 1.5);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -151,7 +154,7 @@ $base-background-color: v.$base-background-color;
     padding-right: 1rem;
   }
 
-  & table>tbody>tr>td {
+  & table > tbody > tr > td {
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
 
@@ -165,7 +168,7 @@ $base-background-color: v.$base-background-color;
     }
   }
 
-  & table>tbody>tr:first-child>td {
+  & table > tbody > tr:first-child > td {
     padding-top: 1rem;
   }
 
@@ -175,11 +178,9 @@ $base-background-color: v.$base-background-color;
 }
 
 @media screen and (max-width: v.$layout-break-6) {
-
   :host {
-
-    & div.settings>table>tbody>tr>th:last-child,
-    & div.settings>table>tbody>tr>td:last-child {
+    & div.settings > table > tbody > tr > th:last-child,
+    & div.settings > table > tbody > tr > td:last-child {
       padding-left: 0rem;
     }
 
