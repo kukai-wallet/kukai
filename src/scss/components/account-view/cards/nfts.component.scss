@@ -300,6 +300,7 @@ $box-shadow: 0px 4px 6px #3332;
             margin-right: 1rem;
             overflow: hidden;
             text-overflow: ellipsis;
+            max-height: 7rem;
           }
 
           & .series {
@@ -362,16 +363,16 @@ $box-shadow: 0px 4px 6px #3332;
   }
 }
 
-@media (max-width: v.$layout-break-225) {
-  .nfts {
-    & .collection {
-      & .body .token {
-        width: calc(100% - 2rem);
-        border-bottom: 2px solid $border-color;
-      }
-    }
-  }
-}
+// @media (max-width: v.$layout-break-275) {
+//   .nfts {
+//     & .collection {
+//       & .body .token {
+//         width: calc(100% - 2rem);
+//         border-bottom: 2px solid $border-color;
+//       }
+//     }
+//   }
+// }
 
 @media (max-width: v.$layout-break-3) {
   .nfts {
@@ -397,6 +398,8 @@ $box-shadow: 0px 4px 6px #3332;
       & .body .token {
         width: calc(50% - 2rem);
         border-bottom: none;
+        @include m.multiply("font-size", 1.5);
+        max-height: 8rem;
       }
     }
   }

@@ -207,9 +207,15 @@ button {
   }
 }
 
+@media (max-width: v.$font-break-25) {
+  html {
+    font-size: 62.5%;
+  }
+}
+
 @media (max-width: v.$font-break-3) {
   html {
-    font-size: 60%;
+    font-size: 57.5%;
   }
 }
 

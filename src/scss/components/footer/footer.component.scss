@@ -29,8 +29,7 @@
   left: 0;
 }
 
-@media (max-height: 54em) and (min-width: v.$layout-break-3),
-(max-aspect-ratio: 1/1) {
+@media (max-aspect-ratio: 1 / 1), (min-aspect-ratio: 20 / 10), (max-height: 752px) {
   :host div.foot-container {
     position: initial;
   }
@@ -56,9 +55,9 @@
   -khtml-opacity: 0.8;
   vertical-align: top;
   width: 100%;
+  color: v.$base-font-color-secondary;
 }
 
-.dark #follow span,
 div.foot-container.dark>div.links>div.low>a {
   color: v.$base-font-color-secondary;
   margin: 0 0.5rem;
