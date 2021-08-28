@@ -139,7 +139,7 @@ $box-shadow: 0px 4px 6px #3332;
       }
 
       & a.link-to-app {
-        width: 30%;
+        width: fit-content;
         & button {
           width: 100%;
           padding: 1rem 2rem;
