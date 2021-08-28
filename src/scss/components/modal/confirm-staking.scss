@@ -1,4 +1,5 @@
 & .confirm-staking {
+  width: 32rem;
 
   & .label {
     color: v.$base-font-color-secondary
@@ -68,6 +69,7 @@
       color: v.$base-red-color;
       font-weight: 500;
       margin: 0 1rem 1rem 1rem;
+      align-self: flex-start;
     }
   }
 }

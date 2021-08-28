@@ -13,16 +13,6 @@ $base-color-lightened-7: v.$base-color-lightened-7;
 $border-width: v.$border-width;
 $border-color: #e6eaef;
 
-.Rectangle_1532 {
-  background-color: rgba(132, 152, 177, 0.2);
-  position: absolute;
-  left: 840px;
-  top: 333px;
-  width: 420px;
-  height: 2px;
-  z-index: 573;
-}
-
 @mixin confirm-send-default {
   .confirm-send {
     margin: 2rem 0 0 0;
@@ -447,6 +437,7 @@ $border-color: #e6eaef;
         height: auto;
         color: $base-red-color;
         margin: 1rem 1rem 0rem 1rem;
+        align-self: flex-start;
       }
     }
   }
