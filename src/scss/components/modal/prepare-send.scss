@@ -193,6 +193,7 @@ $base-background-color: v.$base-background-color;
     margin: 0;
 
     & .danger {
+      align-self: flex-start;
       color: $base-red-color;
     }
   }
