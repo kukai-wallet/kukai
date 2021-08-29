@@ -85,7 +85,7 @@ export class ActivityService {
           const oldState = account.state;
           account.state = counter;
           this.walletService.storeWallet();
-          if (oldState !== '') { // Exclude inital loading
+          if (oldState !== '') { // Exclude initial loading
             this.promptNewActivities(account, oldActivities, operations);
           } else {
             console.log('# Excluded ' + counter);
