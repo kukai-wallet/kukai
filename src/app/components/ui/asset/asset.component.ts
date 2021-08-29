@@ -15,9 +15,12 @@ export class AssetComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() meta: Asset;
   @Input() size = '150x150';
   @Output() loaded = new EventEmitter(null);
+  @Input() controls = false;
+  @Input() autoplay = false;
+  @Input() muted = false;
+  @Input() offset = '0.0';
   dataSrc = undefined;
-  src = '../../../../assets/img/loader.svg';
-  preSrc = '';
+  preSrc = '../../../../assets/img/loader.svg';
   postSrc = '../../../../assets/img/loader.svg';
   readonly baseUrl = 'https://backend.kukai.network/file';
   mimeType = 'image/*';
@@ -49,13 +52,13 @@ export class AssetComponent implements OnInit, OnChanges, AfterViewInit {
     this.loaded.emit();
   }
 
-  onError() {
-    this.src = '../../../../assets/img/unknown-token-grayscale.svg';
+  onError(e) {
+    this.postSrc = '../../../../assets/img/unknown-token-grayscale.svg';
   }
 
   async evaluate() {
     this.dataSrc = undefined;
-    this.src = this.postSrc = '../../../../assets/img/loader.svg';
+    this.postSrc = '../../../../assets/img/loader.svg';
     this.mimeType = 'image/*';
     if (typeof (this.meta) === 'object') {
       this.mimeType = Object.keys(mimes).filter(key => !!mimes[key]?.extensions?.length).find((key) => mimes[key].extensions.includes((this.meta as CachedAsset)?.extension));
@@ -83,7 +86,7 @@ export class AssetComponent implements OnInit, OnChanges, AfterViewInit {
           if (lazyAsset instanceof HTMLImageElement) {
             this.preSrc = this.dataSrc;
           } else {
-            this.src = this.dataSrc;
+            this.postSrc = this.dataSrc;
           }
           this.obs.unobserve(lazyAsset);
         }

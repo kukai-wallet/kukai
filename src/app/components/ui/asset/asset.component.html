@@ -1,6 +1,6 @@
 <img #asset *ngIf="mimeType?.startsWith('image/')" [src]="postSrc" />
 <img #asset #preImage *ngIf="mimeType?.startsWith('image/')" style="visibility: none; width: 0; height: 0;"
   [attr.data-src]="dataSrc" [src]="preSrc" />
-<video #asset *ngIf="mimeType?.startsWith('video/')" [attr.data-src]="src"></video>
+  <video #asset *ngIf="mimeType?.startsWith('video/')" [controls]="controls" [autoplay]="autoplay" [muted]="muted" [attr.data-src]="dataSrc" [attr.data-src]="dataSrc" [src]="postSrc + '#t=' + offset"></video>
 <model-viewer #asset *ngIf="mimeType?.startsWith('model/')" id="modelCanvas" auto-rotate rotation-per-second="30deg"
-  [attr.data-src]="src"></model-viewer>
+  [attr.data-src]="postSrc"></model-viewer>
