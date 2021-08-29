@@ -29,7 +29,7 @@
   left: 0;
 }
 
-@media (max-aspect-ratio: 1 / 1), (min-aspect-ratio: 20 / 10), (max-height: 752px) {
+@media (max-aspect-ratio: 1 / 1), (min-aspect-ratio: 20 / 10), (max-height: 752px), (max-width: v.$layout-break-5) {
   :host div.foot-container {
     position: initial;
   }

@@ -78,6 +78,8 @@ $base-background-color: v.$base-background-color;
     background-color: $base-end-color;
     border-bottom: 2px solid $border-color;
     max-width: unset;
+    width: calc(100% - 8%);
+    padding: 0 4%;
   }
 
   & > .right {
