@@ -20,6 +20,7 @@ export class TokenDetail extends ModalComponent implements OnInit, OnDestroy {
   autoOverflow = false;
   descOverflow = false;
   isNFT = false;
+  assetLoaded = false;
   name = "token-detail";
   readonly blacklistMeta = ['name', 'kind', 'displayAsset', 'thumbnailAsset', 'rawUrl', 'isTransferable', 'isBooleanAmount', 'balance', 'category', 'symbol', 'decimals', 'status', 'shouldPreferSymbol', 'price', 'isUnknownToken'];
   private subscriptions: Subscription = new Subscription();
@@ -70,6 +71,7 @@ export class TokenDetail extends ModalComponent implements OnInit, OnDestroy {
     this.moreInfo = false;
     this.imageExpanded = false;
     this.descOverflow = false;
+    this.assetLoaded = false;
   }
 
   getBalance() {

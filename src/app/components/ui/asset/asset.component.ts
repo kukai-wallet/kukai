@@ -1,5 +1,5 @@
 
-import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import mimes from 'mime-db/db.json'
 import { Asset, CachedAsset } from '../../../services/token/token.service';
 
@@ -14,6 +14,7 @@ export class AssetComponent implements OnInit, OnChanges, AfterViewInit {
   @ViewChild('preImage') preImage;
   @Input() meta: Asset;
   @Input() size = '150x150';
+  @Output() loaded = new EventEmitter(null);
   dataSrc = undefined;
   src = '../../../../assets/img/loader.svg';
   preSrc = '';
@@ -45,6 +46,7 @@ export class AssetComponent implements OnInit, OnChanges, AfterViewInit {
 
   onLoad() {
     this.postSrc = this.preSrc;
+    this.loaded.emit();
   }
 
   onError() {
