@@ -4,7 +4,8 @@ export type WalletObject =
   | LegacyWalletV3
   | LedgerWallet
   | HdWallet
-  | TorusWallet;
+  | TorusWallet
+  | WatchWallet;
 
 export class Wallet {
   totalBalanceXTZ: number | null;
@@ -140,6 +141,12 @@ export class EmbeddedTorusWallet extends TorusWallet {
     }
 }
 export class LedgerWallet extends Wallet {
+  constructor() {
+    super();
+  }
+}
+
+export class WatchWallet extends Wallet {
   constructor() {
     super();
   }

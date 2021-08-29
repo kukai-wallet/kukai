@@ -9,12 +9,14 @@ import {
   HdWallet,
   LedgerWallet,
   TorusWallet,
-  EmbeddedTorusWallet
+  EmbeddedTorusWallet,
+  WatchWallet
 } from '../wallet/wallet';
 import { hd, utils } from '@tezos-core-tools/crypto-utils';
 import { EncryptionService } from '../encryption/encryption.service';
 import { TorusService } from '../torus/torus.service';
 import { IndexerService } from '../indexer/indexer.service';
+import { OperationService } from '../operation/operation.service';
 
 @Injectable()
 export class ImportService {
@@ -24,6 +26,7 @@ export class ImportService {
     private indexerService: IndexerService,
     private encryptionService: EncryptionService,
     private torusService: TorusService,
+    private operationService: OperationService
   ) { }
   pwdRequired(json: string) {
     const walletData = JSON.parse(json);
@@ -158,6 +161,18 @@ export class ImportService {
       return this.ledgerImport(pk, derivationPath);
     } else if (verifierDetails) {
       return this.torusImport(pk, verifierDetails, sk, instanceId);
+    }
+  }
+  async watch(pkh: string) {
+    if (this.operationService.validAddress(pkh)) {
+      const pk = await this.operationService.getManager(pkh).toPromise();
+      if (pk) {
+        this.walletService.initStorage();
+        this.walletService.wallet = new WatchWallet();
+        this.walletService.addImplicitAccount(pk);
+      } else {
+        console.error('Public key not found');
+      }
     }
   }
   async ledgerImport(pk: string, derivationPath: string) {

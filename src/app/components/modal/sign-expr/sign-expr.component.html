@@ -12,11 +12,11 @@
       <div class="seperator"></div>
       <div class="flex-column bottom">
         <span *ngIf="this.pwdInvalid" class="danger margin">{{ this.pwdInvalid }}</span>
-        <input *ngIf="!walletService.isLedgerWallet() && !walletService.isTorusWallet()" [(ngModel)]="password"
+        <input *ngIf="walletService.isPwdWallet()" [(ngModel)]="password"
           autocomplete="current-password" placeholder="Password" class="text password" type="password"
           (input)="this.pwdInvalid = ''" (change)="this.pwdInvalid = ''" (keydown.enter)='sign()'>
-          <button class="purple confirm" (click)="sign()">
-            {{ walletService.isLedgerWallet() ? 'Sign with Ledger' : 'Sign'}}</button>
+        <button class="purple confirm" (click)="sign()" [disabled]="walletService.isWatchWallet()">
+          {{ walletService.isLedgerWallet() ? 'Sign with Ledger' : 'Sign'}}</button>
       </div>
     </div>
   </div>

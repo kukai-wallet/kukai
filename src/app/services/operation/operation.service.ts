@@ -72,8 +72,8 @@ export class OperationService {
               .pipe(flatMap((preApplyResult: any) => {
                 console.log(JSON.stringify(preApplyResult));
                 return this.postRpc('injection/operation', JSON.stringify(sopbytes)).pipe(flatMap((final: any) => {
-                    return this.opCheck(final);
-                  }));
+                  return this.opCheck(final);
+                }));
               }));
           }));
       })).pipe(catchError(err => this.errHandler(err)));
@@ -579,6 +579,12 @@ export class OperationService {
       )).pipe(catchError(err => {
         return of(true);
       })); // conservative action
+  }
+  getManager(pkh: string): Observable<string> {
+    return this.getRpc(`chains/main/blocks/head/context/contracts/${pkh}/manager_key`)
+      .pipe(flatMap((pk: string) => {
+        return of(pk ?? '');
+      }));
   }
   getAccount(pkh: string): Observable<any> {
     return this.getRpc(`chains/main/blocks/head/context/contracts/${pkh}`)
@@ -1278,13 +1284,13 @@ export class OperationService {
       }
     }));
   }
-  getRpc(path: string, payload: any = {}, retries: number = 2): Observable<any> {
-    return this.http.get(`${this.nodeURL}/${path}`, payload).pipe(flatMap(res => {
+  getRpc(path: string, retries: number = 2): Observable<any> {
+    return this.http.get(`${this.nodeURL}/${path}`).pipe(flatMap(res => {
       return of(res);
     })).pipe(catchError(err => {
       if (retries > 0 && err.name === 'HttpErrorResponse' && err.statusText === 'Unknown Error') {
         console.warn('Retry', path);
-        return this.postRpc(path, payload, --retries);
+        return this.getRpc(path, --retries);
       } else {
         throw err;
       }

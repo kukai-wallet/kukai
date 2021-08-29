@@ -35,10 +35,22 @@ export class StartComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     this.subscriptions.add(this.route.queryParams
-      .filter(params => params.type)
-      .subscribe(params => {
-        this.deeplinkService.set(params);
-        this.location.replaceState('');
+      .subscribe(async params => {
+        if (params?.type) {
+          this.deeplinkService.set(params);
+          this.location.replaceState('');
+        } else if (params?.devtool === 'watch') {
+          const address = prompt("Enter watch address");
+          if (address) {
+            try {
+              await this.importService.watch(address);
+              this.messageService.startSpinner();
+              this.router.navigate([`/account/${address}`]);
+            } finally {
+              this.messageService.stopSpinner();
+            }
+          }
+        }
       }
       ));
     if (!this.walletService.wallet) {

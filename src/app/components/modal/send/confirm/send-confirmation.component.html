@@ -127,17 +127,19 @@
       <div class="flex-column bottom" [style.margin]="parameters ? '2rem 0 0 0' : ''">
         <span [style.visibility]="!pwdInvalid ? 'hidden' : ''" [style.margin]="!pwdInvalid ? '0' : ''"
           class="label danger">{{ this.pwdInvalid }}</span>
-        <span *ngIf="!walletService.isLedgerWallet() && !walletService.isTorusWallet()" class="label">ENTER YOUR
-          PASSWORD TO CONFIRM:</span>
-        <input *ngIf="!walletService.isLedgerWallet() && !walletService.isTorusWallet()" [(ngModel)]="password"
-          autocomplete="current-password" placeholder="Password" class="text password" type="password"
-          (input)="this.pwdInvalid = ''" (change)="this.pwdInvalid = ''" (keydown.enter)='inject()'>
+        <ng-container *ngIf="walletService.isPwdWallet()">
+          <span class="label">ENTER YOUR
+            PASSWORD TO CONFIRM:</span>
+          <input [(ngModel)]="password"
+            autocomplete="current-password" placeholder="Password" class="text password" type="password"
+            (input)="this.pwdInvalid = ''" (change)="this.pwdInvalid = ''" (keydown.enter)='inject()'>
+        </ng-container>
         <button class="confirm" *ngIf="walletService.isLedgerWallet() && ledgerError; else elseBlock"
           (click)="ledgerRetry()">Sign with
           Ledger</button>
         <ng-template #elseBlock>
           <button class="confirm" (click)="inject()"
-            [disabled]="walletService.isLedgerWallet() && (!sendResponse || !sendResponse.payload || !sendResponse.payload.signedOperation)">
+            [disabled]="(walletService.isLedgerWallet() && (!sendResponse || !sendResponse.payload || !sendResponse.payload.signedOperation)) || walletService.isWatchWallet()">
             {{ walletService.isLedgerWallet() ? 'Broadcast' : 'Confirm'}}</button>
         </ng-template>
       </div>

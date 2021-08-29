@@ -12,6 +12,7 @@ import {
   TorusWallet,
   EmbeddedTorusWallet,
   OriginatedAccount,
+  WatchWallet
 } from './wallet';
 import { EncryptionService } from '../encryption/encryption.service';
 import { OperationService } from '../operation/operation.service';
@@ -264,6 +265,12 @@ export class WalletService {
   isEmbeddedTorusWallet(): boolean {
     return this.wallet instanceof EmbeddedTorusWallet;
   }
+  isWatchWallet(): boolean {
+    return this.wallet instanceof WatchWallet;
+  }
+  isPwdWallet(): boolean {
+    return (!this.isTorusWallet() && !this.isLedgerWallet() && !this.isWatchWallet());
+  }
   exportKeyStoreInit(
     type: WalletType,
     encryptedSeed: string,
@@ -315,6 +322,8 @@ export class WalletService {
         type = 'EmbeddedTorusWallet';
       } else if (this.wallet instanceof TorusWallet) {
         type = 'TorusWallet';
+      } else if (this.wallet instanceof WatchWallet) {
+        type = 'WatchWallet';
       }
       this.getStorage().setItem(
         (this.wallet instanceof EmbeddedTorusWallet) ? this.wallet.instanceId : this.storeKey,
@@ -390,6 +399,8 @@ export class WalletService {
         this.wallet = new EmbeddedTorusWallet(wd.verifier, wd.id, wd.name, wd.origin, wd.sk, wd.instanceId);
         this.torusService.initTorus();
         break;
+      case 'WatchWallet':
+        this.wallet = new WatchWallet();
       default:
     }
     this.wallet.XTZrate = wd.XTZrate;
