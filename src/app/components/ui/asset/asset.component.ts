@@ -11,10 +11,13 @@ import { Asset, CachedAsset } from '../../../services/token/token.service';
 
 export class AssetComponent implements OnInit, OnChanges, AfterViewInit {
   @ViewChild('asset') asset;
+  @ViewChild('preImage') preImage;
   @Input() meta: Asset;
   @Input() size = '150x150';
   dataSrc = undefined;
   src = '../../../../assets/img/loader.svg';
+  preSrc = '';
+  postSrc = '../../../../assets/img/loader.svg';
   readonly baseUrl = 'https://backend.kukai.network/file';
   mimeType = 'image/*';
 
@@ -35,7 +38,13 @@ export class AssetComponent implements OnInit, OnChanges, AfterViewInit {
 
   ngAfterViewInit() {
     this.lazyLoad();
-    this.asset.nativeElement.onerror = this.onError;
+    this.asset.nativeElement.onerror = this.onError.bind(this);
+    this.preImage.nativeElement.onerror = this.onError.bind(this);
+    this.preImage.nativeElement.onload = this.onLoad.bind(this);
+  }
+
+  onLoad() {
+    this.postSrc = this.preSrc;
   }
 
   onError() {
@@ -44,7 +53,7 @@ export class AssetComponent implements OnInit, OnChanges, AfterViewInit {
 
   async evaluate() {
     this.dataSrc = undefined;
-    this.src = '../../../../assets/img/loader.svg';
+    this.src = this.postSrc = '../../../../assets/img/loader.svg';
     this.mimeType = 'image/*';
     if (typeof (this.meta) === 'object') {
       this.mimeType = Object.keys(mimes).filter(key => !!mimes[key]?.extensions?.length).find((key) => mimes[key].extensions.includes((this.meta as CachedAsset)?.extension));
@@ -69,7 +78,11 @@ export class AssetComponent implements OnInit, OnChanges, AfterViewInit {
         if (entry.isIntersecting) {
           const lazyAsset = entry.target as HTMLImageElement | HTMLVideoElement;
           //console.log("lazy loading ", lazyAsset)
-          this.src = this.dataSrc;
+          if (lazyAsset instanceof HTMLImageElement) {
+            this.preSrc = this.dataSrc;
+          } else {
+            this.src = this.dataSrc;
+          }
           this.obs.unobserve(lazyAsset);
         }
       })
