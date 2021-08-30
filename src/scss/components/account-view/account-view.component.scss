@@ -28,7 +28,7 @@
 
   & > div {
     display: grid;
-    grid-template-columns: minmax(auto, 768px) minmax(auto, 1792px);
+    grid-template-columns: minmax(auto, 768px) minmax(calc(73em - 8%), 1792px);
     grid-template-rows: auto;
     grid-column-gap: 4%;
     grid-template-areas:
@@ -40,7 +40,7 @@
 
 @media (max-width: v.$layout-break-2) {
   .wrapper > div {
-    grid-template-columns: minmax(450px, 35%) minmax(auto, 1792px);
+    grid-template-columns: minmax(450px, 35%) minmax(calc(73em - 8%), 1792px);
   }
 }
 
