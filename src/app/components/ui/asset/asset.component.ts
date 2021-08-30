@@ -1,6 +1,7 @@
 
 import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import mimes from 'mime-db/db.json'
+import { throwError } from 'rxjs';
 import { Asset, CachedAsset } from '../../../services/token/token.service';
 
 @Component({
@@ -19,15 +20,18 @@ export class AssetComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() autoplay = false;
   @Input() muted = false;
   @Input() offset = '0.0';
-  dataSrc = undefined;
-  preSrc = '../../../../assets/img/loader.svg';
-  postSrc = '../../../../assets/img/loader.svg';
   readonly baseUrl = 'https://backend.kukai.network/file';
+  readonly loaderUrl = 'assets/img/loader.svg';
+  readonly unknownUrl = 'assets/img/unknown-token-grayscale.svg';
+  dataSrc = undefined;
+  preSrc = this.loaderUrl;
+  postSrc = this.loaderUrl;
   mimeType = 'image/*';
 
   obs: IntersectionObserver;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
     this.evaluate();
@@ -41,24 +45,33 @@ export class AssetComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.lazyLoad();
     this.asset.nativeElement.onerror = this.onError.bind(this);
+    this.asset.nativeElement.onload = this.onLoad.bind(this);
     this.preImage.nativeElement.onerror = this.onError.bind(this);
     this.preImage.nativeElement.onload = this.onLoad.bind(this);
+    this.lazyLoad();
   }
 
-  onLoad() {
-    this.postSrc = this.preSrc;
-    this.loaded.emit();
+  isEqualUrl() {
+    return (typeof (this.meta) === 'string' && this.meta === this.dataSrc || typeof (this.meta) === 'object' && `${this.baseUrl}/${this.meta.filename}_${this.size}.${this.meta.extension}` === this.dataSrc);
+  }
+
+  onLoad(e) {
+    if (e?.target?.id === 'preImage') {
+      this.postSrc = this.preSrc;
+    } else if (e?.target?.id === 'postImage' && e?.target?.src.indexOf(this.loaderUrl) === -1 && e?.target?.src.indexOf(this.unknownUrl) === -1) {
+      this.loaded.emit();
+    }
   }
 
   onError(e) {
-    this.postSrc = '../../../../assets/img/unknown-token-grayscale.svg';
+    this.postSrc = this.unknownUrl;
   }
 
   async evaluate() {
+    if(this.isEqualUrl()) { return; }
     this.dataSrc = undefined;
-    this.postSrc = '../../../../assets/img/loader.svg';
+    this.postSrc = this.loaderUrl;
     this.mimeType = 'image/*';
     if (typeof (this.meta) === 'object') {
       this.mimeType = Object.keys(mimes).filter(key => !!mimes[key]?.extensions?.length).find((key) => mimes[key].extensions.includes((this.meta as CachedAsset)?.extension));
@@ -67,7 +80,7 @@ export class AssetComponent implements OnInit, OnChanges, AfterViewInit {
       this.dataSrc = this.meta;
     } else if (!this.meta) {
       this.mimeType = 'image/*';
-      this.dataSrc = '../../../../assets/img/unknown-token-grayscale.svg';
+      this.dataSrc = this.unknownUrl;
     }
   }
 

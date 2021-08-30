@@ -1,19 +1,24 @@
 <div *ngIf="isOpen" class="flex-column kukai-modal">
   <div class="content">
     <div class="flex-column top">
-      <div class="flex-row button close" (click)="close()"><img class="x" src="../../../../../assets/img/close-btn-x.png" />
+      <div class="flex-row button close" (click)="close()"><img class="x"
+          src="../../../../../assets/img/close-btn-x.png" />
       </div>
       <h1 class="title">Token Info</h1>
     </div>
     <div class="flex-column token-info">
       <div class="flex-row data">
         <div class="flex-column img-wrapper" [class]="imageExpanded ? 'expanded' : ''">
-          <app-asset class="flex-row button sd-only"
+          <app-asset [style.display]="imageExpanded ? 'none' : ''" class="flex-row button sd-only"
             [meta]="!token ? '../../../assets/img/tezos-xtz-logo.svg' : token?.displayAsset || token?.thumbnailAsset"
-            [size]="imageExpanded ? 'raw' : '600x600'" (click)="expandImage()" (loaded)="assetLoaded = true"></app-asset>
+            [size]="'600x600'" (click)="expandImage()" (loaded)="assetLoaded = true"></app-asset>
+          <app-asset [style.display]="!imageExpanded ? 'none' : ''" class="flex-row button sd-only"
+            [meta]="!token ? '../../../assets/img/tezos-xtz-logo.svg' : token?.displayAsset || token?.thumbnailAsset"
+            [size]="'raw'" (click)="expandImage()"></app-asset>
           <img *ngIf="imageExpanded" class="flex-row button close" (click)="expandImage()"
             src="../../../../../assets/img/close-btn-x.png" />
-            <img *ngIf="!imageExpanded && assetLoaded" class="expand" src="../../../../../assets/img/expand.png" (click)="expandImage()" />
+          <img *ngIf="!imageExpanded && assetLoaded" class="expand" src="../../../../../assets/img/expand.png"
+            (click)="expandImage()" />
         </div>
         <div class="flex-column meta">
           <div class="flex-column top">
@@ -60,12 +65,10 @@
           </div>
         </div>
       </div>
-      <div *ngIf="!!token" class="flex-row button more-info" [class]="moreInfo ? 'open' : ''"
-        (click)="expand()">
+      <div *ngIf="!!token" class="flex-row button more-info" [class]="moreInfo ? 'open' : ''" (click)="expand()">
         <span>{{ moreInfo ? 'LESS' : 'MORE' }} INFO</span><img src="../../../assets/img/chevron-down.svg" />
       </div>
-      <div *ngIf="!!token"
-        [style.maxHeight]="moreInfo ? (3.25 * Object.keys(tokenFiltered).length) + 'rem' : ''"
+      <div *ngIf="!!token" [style.maxHeight]="moreInfo ? (3.25 * Object.keys(tokenFiltered).length) + 'rem' : ''"
         [style.overflowY]="autoOverflow ? 'auto' : ''" class="flex-column meta-more">
         <ng-container *ngFor="let key of Object.keys(tokenFiltered)">
           <div *ngIf="key === 'contractAddress'" class="flex-column key-value">
