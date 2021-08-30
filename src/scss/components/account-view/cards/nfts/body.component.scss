@@ -79,7 +79,7 @@ $box-shadow: 0px 4px 6px #3332;
         margin-right: 1rem;
         overflow: hidden;
         text-overflow: ellipsis;
-        max-height: 7rem;
+        @include m.multiply("max-height", 6, "rem", 0.85714);
       }
 
       & .series {

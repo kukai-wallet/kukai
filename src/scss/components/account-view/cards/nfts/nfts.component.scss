@@ -238,80 +238,6 @@ $box-shadow: 0px 4px 6px #3332;
       }
     }
 
-    & .body {
-      overflow-x: hidden;
-      overflow-y: hidden;
-      flex-wrap: wrap;
-      height: 100%;
-      padding: 0 1.75rem;
-      border-radius: v.$border-radius;
-      border-top-left-radius: 0;
-      border-top-right-radius: 0;
-      background-color: $base-end-color;
-      justify-content: flex-start;
-      width: calc(100% - 4rem);
-
-      & .token {
-        width: calc(32% - 2rem);
-        justify-content: flex-start;
-        padding: 1rem;
-        cursor: pointer;
-
-        &:last-of-type {
-          border-bottom: none;
-        }
-
-        & .img-wrapper {
-          position: relative;
-
-          & .icon {
-            width: 8rem;
-            height: 8rem;
-            margin-right: 1.25rem;
-            overflow: hidden;
-            object-fit: cover;
-            display: block;
-            box-shadow: v.$box-shadow-dark;
-            border-radius: v.$border-radius;
-          }
-
-          & .balance {
-            position: absolute;
-            bottom: 0.675rem;
-            left: 0.5rem;
-            padding: 0.5rem;
-            width: auto;
-            height: 0.5rem;
-            border-radius: 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            background-color: $base-color-lightened-5;
-            color: $base-font-color;
-          }
-        }
-
-        & .right {
-          width: calc(100% - 9.25rem);
-
-          & .title {
-            @include m.multiply("font-size", 1.75);
-            margin-right: 1rem;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-height: 6rem;
-          }
-
-          & .series {
-            color: rgb(132, 152, 177);
-            @include m.multiply("font-size", 1);
-            margin: 0.3125rem 0 0 0;
-          }
-        }
-      }
-    }
-
     &.scroll {
       height: 100%;
       max-height: 114.5rem;
@@ -337,12 +263,6 @@ $box-shadow: 0px 4px 6px #3332;
       top: -1rem;
       display: none;
     }
-
-    &.scroll .body {
-      overflow-x: hidden;
-      padding: 1rem 1rem 1rem 2rem;
-      border-radius: v.$border-radius;
-    }
   }
 
   & #unknown .body .token .img-wrapper .icon {
@@ -350,16 +270,6 @@ $box-shadow: 0px 4px 6px #3332;
     width: 6rem;
     height: 6rem;
     padding: 1rem;
-  }
-}
-
-@media (max-width: v.$layout-break-1) {
-  .nfts {
-    & .collection {
-      & .body .token {
-        width: calc(50% - 2rem);
-      }
-    }
   }
 }
 
@@ -394,14 +304,6 @@ $box-shadow: 0px 4px 6px #3332;
     &>.discover {
       width: calc(50% - 5rem);
     }
-    & .collection {
-      & .body .token {
-        width: calc(50% - 2rem);
-        border-bottom: none;
-        @include m.multiply("font-size", 1.5);
-        max-height: 8rem;
-      }
-    }
   }
 }
 
@@ -413,18 +315,6 @@ $box-shadow: 0px 4px 6px #3332;
 
     &>.discover {
       width: calc(100% - 4rem);
-    }
-
-    & .collection {
-      & .body .token {
-        width: 100%;
-        padding: 1rem 0;
-        border-bottom: 2px solid $border-color;
-
-        &:last-child {
-          border-bottom: none;
-        }
-      }
     }
   }
 }
