@@ -49,9 +49,9 @@ export class TokenBalancesService {
       if (this.activeAccount !== a) {
         this.activeAccount = a;
       }
-      this.reload(null);
+      this.reload();
     });
-    this.reload(null);
+    this.reload();
     this.subjectService.logout.subscribe((o) => {
       if (!!o) {
         this.destroy();
@@ -103,8 +103,7 @@ export class TokenBalancesService {
       nfts['unknown'].tokens.push(placeholder);
     }
   }
-
-  reload(type: number = undefined) {
+  reload() {
     if (!this.activeAccount?.tokens) { return; }
     const balances: TokenWithBalance[] = [];
     const nfts: ContractsWithBalance = {};

@@ -19,6 +19,9 @@ export class SignalService {
     private balanceService: BalanceService,
     private delegateService: DelegateService
   ) {
+    this.init();
+  }
+  async init() {
     this.connection = new HubConnectionBuilder()
       .withUrl(`https://api.${CONSTANTS.NETWORK}.tzkt.io/v1/events`)
       .build();
