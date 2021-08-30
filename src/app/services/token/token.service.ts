@@ -80,7 +80,6 @@ export class TokenService {
   readonly storeKey = 'tokenMetadata';
   queue = [];
   workers = 0;
-  ts: any;
   constructor(
     public indexerService: IndexerService,
     private subjectService: SubjectService,
@@ -190,13 +189,9 @@ export class TokenService {
     }
   }
   async startWorker() {
-    if (!this.workers) {
-      this.ts = (new Date()).getTime();
-    } 
     this.workers++;
     while (this.queue.length) {
       const tokenId = this.queue.shift();
-      console.log(`[${this.queue.length}] Searching metadata for tokenId: ${tokenId}`);
       try {
         const a = tokenId.split(':');
         const contractAddress = a[0];
@@ -208,10 +203,6 @@ export class TokenService {
       } catch (e) { }
     }
     this.workers--;
-    if (!this.workers) {
-      const s = Math.round(((new Date()).getTime() - this.ts) / 1000);
-      console.log(`Metadata scanning took ${s} seconds`);
-    }
   }
   handleMetadata(metadata: any, contractAddress: string, id: number) {
     const tokenId = `${contractAddress}:${id}`;
