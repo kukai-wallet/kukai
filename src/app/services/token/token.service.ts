@@ -80,6 +80,7 @@ export class TokenService {
   readonly storeKey = 'tokenMetadata';
   queue = [];
   workers = 0;
+  ts: any;
   constructor(
     public indexerService: IndexerService,
     private subjectService: SubjectService,
@@ -183,12 +184,15 @@ export class TokenService {
     const tokenId = `${contractAddress}:${id}`;
     if (!this.isKnownTokenId(tokenId) && this.explore(tokenId) && !this.queue.includes(tokenId)) {
       this.queue.push(tokenId);
-      if (this.workers < 8) {
+      if (this.workers < 64) {
         this.startWorker();
       }
     }
   }
   async startWorker() {
+    if (!this.workers) {
+      this.ts = (new Date()).getTime();
+    } 
     this.workers++;
     while (this.queue.length) {
       const tokenId = this.queue.shift();
@@ -204,6 +208,10 @@ export class TokenService {
       } catch (e) { }
     }
     this.workers--;
+    if (!this.workers) {
+      const s = Math.round(((new Date()).getTime() - this.ts) / 1000);
+      console.log(`Metadata scanning took ${s} seconds`);
+    }
   }
   handleMetadata(metadata: any, contractAddress: string, id: number) {
     const tokenId = `${contractAddress}:${id}`;
