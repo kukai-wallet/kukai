@@ -38,11 +38,13 @@ export class NftsBodyComponent implements OnInit, AfterViewInit, OnDestroy {
   ) {}
   ngOnInit(): void { }
   ngAfterViewInit() {
-    this.body?.nativeElement.addEventListener('scroll', (e) => {
+    const cb = (e) => {
       if(e?.target?.scrollTop >= (e?.target?.scrollHeight - e?.target?.clientHeight)) {
         this.sliceEnd += 30;
       }
-    });
+    };
+    this.body?.nativeElement.addEventListener('scroll', cb);
+    this.body?.nativeElement.addEventListener('touchmove', cb);
   }
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
