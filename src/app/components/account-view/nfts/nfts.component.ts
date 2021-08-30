@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, HostListener, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { TorusWallet } from '../../../services/wallet/wallet';
 import { WalletService } from '../../../services/wallet/wallet.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -17,7 +17,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './nfts.component.html',
   styleUrls: ['../../../../scss/components/account-view/cards/nfts/nfts.component.scss'],
 })
-export class NftsComponent implements OnInit, AfterViewInit, OnDestroy {
+export class NftsComponent implements OnInit, OnDestroy {
   DisplayLinkOption = DisplayLinkOption;
   Object = Object;
   Number = Number;
@@ -58,8 +58,6 @@ export class NftsComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() activity: any;
   @Input() account;
   ngOnInit(): void { }
-  ngAfterViewInit() {
-  }
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
   }
@@ -76,13 +74,10 @@ export class NftsComponent implements OnInit, AfterViewInit, OnDestroy {
       elem.forEach(coll => { if (coll.classList.contains('expanded')) { coll.classList.remove('expanded'); } });
       c.classList.add('expanded');
       this.filter = sel.substring(1);
-      if (window.innerWidth < 1169 && 462 < parseFloat(window.getComputedStyle(c).getPropertyValue('height').replace('px', ''))) {
+      if (window.innerWidth < 1024) {
         document.body.scroll(0, c.offsetTop - 25);
       }
     }
-  }
-  viewToken(token) {
-    ModalComponent.currentModel.next({ name: 'token-detail', data: token });
   }
   shouldDisplayLink(option: DisplayLinkOption) {
     if (option === 0 || (option === 1 && this.walletService.wallet instanceof TorusWallet)) {
@@ -90,14 +85,7 @@ export class NftsComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     return false;
   }
-  // in time break into subcomp with ecmpId = this.constructor['ɵcmp'].id; for id
   sanitizeKey(key: string, i: number) {
     return key.replace(/ /g, '') + i;
-  }
-  formatBalance(token) {
-    return Big(token.balance).div(10 ** parseInt(token.decimals)).toFixed();
-  }
-  trackToken(index: number, token: any) {
-    return token?.id ? token.contractAddress + ':' + token?.id + ':' + token?.balance : null;
   }
 }

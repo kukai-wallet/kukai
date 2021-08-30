@@ -1,13 +1,10 @@
-import { AfterViewInit, Component, HostListener, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { TorusWallet } from '../../../../services/wallet/wallet';
-import { WalletService } from '../../../../services/wallet/wallet.service';
+import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from '../../../../services/message/message.service';
 import { TokenService } from '../../../../services/token/token.service';
 import { CONSTANTS } from '../../../../../environments/environment';
 import { ModalComponent } from '../../../modal/modal.component';
 import { TokenBalancesService } from '../../../../services/token-balances/token-balances.service';
-import { SubjectService } from '../../../../services/subject/subject.service';
 import { DisplayLinkOption } from '../../../../interfaces';
 import Big from 'big.js';
 import { Subscription } from 'rxjs';
@@ -17,7 +14,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './body.component.html',
   styleUrls: ['../../../../../scss/components/account-view/cards/nfts/body.component.scss'],
 })
-export class NftsBodyComponent implements OnInit, AfterViewInit, OnDestroy {
+export class NftsBodyComponent implements OnInit, AfterViewInit {
   DisplayLinkOption = DisplayLinkOption;
   Object = Object;
   Number = Number;
@@ -27,14 +24,11 @@ export class NftsBodyComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() account;
   contractAliases = CONSTANTS.CONTRACT_ALIASES;
   sliceEnd = 30;
-  private subscriptions: Subscription = new Subscription();
   constructor(
     public translate: TranslateService,
     public messageService: MessageService,
     public tokenService: TokenService,
-    public tokenBalancesService: TokenBalancesService,
-    private subjectService: SubjectService,
-    private walletService: WalletService
+    public tokenBalancesService: TokenBalancesService
   ) {}
   ngOnInit(): void { }
   ngAfterViewInit() {
@@ -45,9 +39,6 @@ export class NftsBodyComponent implements OnInit, AfterViewInit, OnDestroy {
     };
     this.body?.nativeElement.addEventListener('scroll', cb);
     this.body?.nativeElement.addEventListener('touchmove', cb);
-  }
-  ngOnDestroy() {
-    this.subscriptions.unsubscribe();
   }
   viewToken(token) {
     ModalComponent.currentModel.next({ name: 'token-detail', data: token });
