@@ -1,6 +1,6 @@
-@use '../../../abstracts/variables'as v;
-@use '../../../abstracts/mixins'as m;
-@import "./mixins";
+@use '../../../../abstracts/variables'as v;
+@use '../../../../abstracts/mixins'as m;
+@import "../mixins";
 
 $base-font-color: v.$base-font-color;
 $base-end-color: v.$base-end-color;

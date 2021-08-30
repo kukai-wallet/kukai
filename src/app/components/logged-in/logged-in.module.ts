@@ -24,6 +24,7 @@ import { SignExprEmbedComponent } from '../../components/embedded/sign-expr/sign
 import { AdvancedToggleComponent } from '../ui/button/toggle/advanced/advanced.component';
 import { PrepareSendDropdownComponent } from '../ui/dropdown/prepare-send/prepare-send-dropdown.component';
 import { AssetComponent } from '../ui/asset/asset.component';
+import { NftsBodyComponent } from '../account-view/nfts/body/body.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { AssetComponent } from '../ui/asset/asset.component';
     ConfirmSendEmbedComponent,
     SignExprEmbedComponent,
     PrepareSendDropdownComponent,
-    AssetComponent
+    AssetComponent,
+    NftsBodyComponent
   ],
   imports: [
     CommonModule,
@@ -59,7 +61,8 @@ import { AssetComponent } from '../ui/asset/asset.component';
     SendComponent,
     ConfirmSendEmbedComponent,
     SignExprEmbedComponent,
-    AssetComponent
+    AssetComponent,
+    NftsBodyComponent
   ],
   providers: [
     EstimateService

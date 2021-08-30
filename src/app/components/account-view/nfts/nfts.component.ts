@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, HostListener, Input, OnDestroy, OnInit } from '@angular/core';
 import { TorusWallet } from '../../../services/wallet/wallet';
 import { WalletService } from '../../../services/wallet/wallet.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -15,13 +15,14 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-nfts',
   templateUrl: './nfts.component.html',
-  styleUrls: ['../../../../scss/components/account-view/cards/nfts.component.scss'],
+  styleUrls: ['../../../../scss/components/account-view/cards/nfts/nfts.component.scss'],
 })
 export class NftsComponent implements OnInit, AfterViewInit, OnDestroy {
   DisplayLinkOption = DisplayLinkOption;
   Object = Object;
   Number = Number;
   nfts = undefined;
+  tokens = [];
   isDiscover: boolean = false;
   isInitLoad: boolean = true;
   filter: string = 'APP';
@@ -45,6 +46,7 @@ export class NftsComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       }
       this.nfts = nfts;
+      this.tokens = nfts ? Object.keys(nfts).map((key: any) => nfts[key]?.tokens).flat() : [];
     }));
     this.subscriptions.add(this.subjectService.logout.subscribe(o => {
       if (o) {
