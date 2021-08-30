@@ -8,7 +8,7 @@
     <div class="flex-row right">
       <ng-container *ngIf="this.nfts && Object.keys(this.nfts).length > 0 && !isDiscover">
         <span class="flex-row button icon-grey" [class.selected]="filter === 'ALL'" (click)="filter = 'ALL'">ALL</span>
-        <span class="flex-row button icon-grey" [class.selected]="filter === 'APP'" (click)="filter = 'APP'">APP</span>
+        <span class="flex-row button icon-grey" [class.selected]="filter !== 'ALL'" (click)="filter = ''">APP</span>
       </ng-container>
       <!-- <img class="button icon" src="../../../../assets/img/filter.svg" />
       <img class="button icon" src="../../../../assets/img/info.svg" /> -->
@@ -16,9 +16,11 @@
   </div>
   <div class="flex-row-wrap nfts">
     <!-- loop through contracts -->
-    <ng-container *ngIf="!Object.keys(nfts)?.length && !isDiscover"><span>There are no NFTs in this account</span></ng-container>
+    <ng-container *ngIf="!Object.keys(nfts)?.length && !isDiscover"><span>There are no NFTs in this account</span>
+    </ng-container>
     <ng-container *ngFor="let key of Object.keys(this.nfts); let i = index">
-      <div class="flex-column collection" [class]="filter === key ? 'expanded' : ''" [id]="sanitizeKey(key, i)" [style.display]="!isDiscover && filter === 'APP' ? '' : 'none'">
+      <div class="flex-column collection" [id]="sanitizeKey(key, i)"
+        [style.display]="!isDiscover && filter !== 'ALL' ? '' : 'none'">
         <div class="flex-row head" (click)="toggleDropdown(sanitizeKey('#' + key, i))">
           <div class="flex-row left">
             <app-asset class="nfts-head-thumbnail" [meta]="this.nfts[key]?.thumbnailUrl"></app-asset>
@@ -32,23 +34,23 @@
           </div>
         </div>
         <div class="flex-column scroll">
-          <div class="flex-row body">
-            <ng-container *ngFor="let token of this.nfts[key]?.tokens; trackBy: trackToken">
-              <div class="flex-row token" (click)="viewToken(token)">
-                <div class="img-wrapper">
-                  <app-asset class="icon" [meta]="token?.thumbnailAsset || token?.displayAsset"></app-asset>
-                  <div *ngIf="Number.parseInt(token?.balance) > 1" class="balance">{{
-                    formatBalance(token) }}</div>
-                </div>
-                <div class="flex-column right">
-                  <div class="title">
-                    {{token?.name}}
+          <div *ngIf="filter === sanitizeKey(key, i)" class="flex-row body">
+              <ng-container *ngFor="let token of this.nfts[key]?.tokens; trackBy: trackToken">
+                <div class="flex-row token" (click)="viewToken(token)">
+                  <div class="img-wrapper">
+                    <app-asset class="icon" [meta]="token?.thumbnailAsset || token?.displayAsset"></app-asset>
+                    <div *ngIf="Number.parseInt(token?.balance) > 1" class="balance">{{
+                      formatBalance(token) }}</div>
                   </div>
-                  <div *ngIf="token?.series" class="series">
-                    {{ token?.series }}
+                  <div class="flex-column right">
+                    <div class="title">
+                      {{token?.name}}
+                    </div>
+                    <div *ngIf="token?.series" class="series">
+                      {{ token?.series }}
+                    </div>
                   </div>
                 </div>
-              </div>
             </ng-container>
           </div>
         </div>
