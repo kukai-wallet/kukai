@@ -92,6 +92,6 @@ export class AssetComponent implements OnInit, OnChanges, AfterViewInit {
         }
       })
     });
-    this.obs.observe(this.asset.nativeElement);
+    this.obs.observe(this.asset?.nativeElement);
   }
 }
