@@ -74,12 +74,10 @@ export class NftsComponent implements OnInit, AfterViewInit, OnDestroy {
       elem.forEach(coll => { if (coll.classList.contains('expanded')) { coll.classList.remove('expanded'); } });
       c.classList.add('expanded');
       this.filter = sel.substring(1);
-      console.log(this.filter)
       if (window.innerWidth < 1169 && 462 < parseFloat(window.getComputedStyle(c).getPropertyValue('height').replace('px', ''))) {
         document.body.scroll(0, c.offsetTop - 25);
       }
     }
-    console.log(this.nfts);
   }
   viewToken(token) {
     ModalComponent.currentModel.next({ name: 'token-detail', data: token });
