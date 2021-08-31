@@ -825,5 +825,6 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1UmxSSUQ5716tRa2RLNSAkiSG6TWbzZ7GL',//SalsaDao Tacos 2
   'KT1JYWuC4eWqYkNC1Sh6BiD89vZzytVoV2Ae',//SalsaDao Tacos 3
   'KT1NvPaecvj8g7SbDs8E5s2jxbEBKHxZssP1',//SalsaDao BuildTaco
+  'KT1LHHLso8zQWQWg1HUukajdxxbkGfNoHjh6'//Tezzardz
 ];
 export const BLACKLISTED_TOKEN_CONTRACTS = []
