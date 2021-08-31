@@ -4,6 +4,7 @@ import { MessageService } from '../../services/message/message.service';
 import { Subscription } from 'rxjs';
 import { SubjectService } from '../../services/subject/subject.service';
 import { Router } from '@angular/router';
+import { BeaconService } from '../../services/beacon/beacon.service';
 
 @Component({
   selector: 'app-permission-request',
@@ -20,7 +21,8 @@ export class PermissionRequestComponent implements OnInit, OnChanges {
     public walletService: WalletService,
     private messageService: MessageService,
     private subjectService: SubjectService,
-    private router: Router
+    private router: Router,
+    private beaconService: BeaconService
   ) { }
   ngOnInit(): void {
     if (this.walletService.wallet) {
@@ -68,5 +70,17 @@ export class PermissionRequestComponent implements OnInit, OnChanges {
       return 'Request operation signing';
     }
     return scope;
+  }
+  cachedIcon(permissionRequest): any {
+    if (permissionRequest) {
+      for (const app of this.beaconService.peers) {
+        if (permissionRequest.senderId === app.senderId) {
+          if (app.cachedIcon) {
+            return app.cachedIcon;
+          }
+        }
+      }
+    }
+    return '';
   }
 }

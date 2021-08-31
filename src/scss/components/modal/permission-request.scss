@@ -4,7 +4,17 @@
 & .permission-request {
   margin: 2rem 0 0 0;
   align-items: center;
-
+  & .app-icon {
+    margin-bottom: 2rem;
+    width: 7rem;
+    height: 7rem;
+    & video,
+    & img,
+    & #modelCanvas {
+      border-radius: 0.5rem;
+      object-fit: contain;
+    }
+  }
   & p,
   & li {
     @include m.multiply('font-size',2);
