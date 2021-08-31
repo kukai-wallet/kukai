@@ -1,20 +1,21 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TorusWallet } from '../../../../services/wallet/wallet';
-import { WalletService } from '../../../../services/wallet/wallet.service';
 import { LookupService } from '../../../../services/lookup/lookup.service';
+import { WalletService } from '../../../../services/wallet/wallet.service';
 import { DropdownComponent } from '../dropdown.component';
 
 @Component({
-  selector: 'app-ui-dropdown-account',
-  templateUrl: './account-dropdown.component.html',
+  selector: 'app-ui-dropdown-permission-request',
+  templateUrl: './permission-request.component.html',
   styleUrls: ['../../../../../scss/components/ui/dropdown/account-dropdown.component.scss']
 })
-export class AccountDropdownComponent extends DropdownComponent implements OnInit {
+export class PermissionRequestDropdownComponent extends DropdownComponent implements OnInit {
 
   constructor(public router: Router, public lookupService: LookupService, private walletService: WalletService) { super(); }
 
   ngOnInit(): void {
+    this.selection = this.current;
   }
 
   getUsername(address: string) {
@@ -34,5 +35,10 @@ export class AccountDropdownComponent extends DropdownComponent implements OnIni
     } else {
       return 'domain';
     }
+  }
+
+  toggleDropdown() {
+    this.dropdownResponse.emit(this.selection)
+    this.isOpen = !this.isOpen;
   }
 }

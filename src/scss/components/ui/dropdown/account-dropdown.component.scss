@@ -13,6 +13,11 @@ $border-color: v.$border-color;
   display: block;
   position: relative;
 
+  &.pr-request {
+    width: 100%;
+    margin: 1rem 0;
+  }
+
   & * {
     -webkit-tap-highlight-color: #fff0;
   }
@@ -79,7 +84,7 @@ $border-color: v.$border-color;
       border-bottom: 1px solid #0004;
     }
 
-    & a {
+    & .option {
       color: v.$base-font-color;
       padding: 0.75rem 1.875rem;
       text-decoration: none;
@@ -145,7 +150,7 @@ $border-color: v.$border-color;
       top: 4.78rem;
       left: -6rem;
 
-      & a {
+      & .option {
         font-size: 1.5rem;
       }
     }

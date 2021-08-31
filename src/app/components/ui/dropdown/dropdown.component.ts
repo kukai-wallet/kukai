@@ -9,6 +9,7 @@ export class DropdownComponent implements OnInit {
   @Input() list: any[];
   @Input() current: any;
   @Output() dropdownResponse = new EventEmitter();
+  selection: any;
   ecmpId = this.constructor['ɵcmp'].id;
   isOpen = false;
   constructor() { }

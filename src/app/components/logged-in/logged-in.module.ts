@@ -11,6 +11,7 @@ import { ActivateComponent } from '../../components/activate/activate.component'
 import { NewImplicitComponent } from '../../components/modal/new-implicit/new-implicit.component';
 import { UriHandlerComponent } from '../../components/uri-handler/uri-handler.component';
 import { PermissionRequestComponent } from '../../components/permission-request/permission-request.component';
+import { PermissionRequestDropdownComponent } from '../../components/ui/dropdown/permission-request/permission-request.component';
 import { SettingsComponent } from '../../components/settings/settings.component';
 import { QrScannerComponent } from '../../components/modal/qr-scanner/qr-scanner.component';
 import { SignExprComponent } from '../../components/modal/sign-expr/sign-expr.component';
@@ -36,6 +37,7 @@ import { NftsBodyComponent } from '../account-view/nfts/body/body.component';
     NewImplicitComponent,
     UriHandlerComponent,
     PermissionRequestComponent,
+    PermissionRequestDropdownComponent,
     SettingsComponent,
     QrScannerComponent,
     SignExprComponent,
@@ -62,7 +64,9 @@ import { NftsBodyComponent } from '../account-view/nfts/body/body.component';
     ConfirmSendEmbedComponent,
     SignExprEmbedComponent,
     AssetComponent,
-    NftsBodyComponent
+    NftsBodyComponent,
+    PermissionRequestComponent,
+    PermissionRequestDropdownComponent,
   ],
   providers: [
     EstimateService
