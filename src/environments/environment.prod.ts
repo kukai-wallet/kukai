@@ -667,5 +667,6 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1EpGgjQs73QfFJs9z7m1Mxm5MTnpC2tqse',//Kalamint NFT
   'KT1A5P4ejnLix13jtadsfV9GCnXLMNnab8UT',//Kalamint token
   'KT1ViVwoVfGSCsDaxjwoovejm1aYSGz7s2TZ',//Teztopia
-  'KT1BA9igcUcgkMT4LEEQzwURsdMpQayfb6i4'//turtle
+  'KT1BA9igcUcgkMT4LEEQzwURsdMpQayfb6i4',//turtle
+  'KT1LHHLso8zQWQWg1HUukajdxxbkGfNoHjh6'//tezzardz
 ];
