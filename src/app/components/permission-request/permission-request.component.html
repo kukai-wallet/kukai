@@ -7,11 +7,11 @@
     <div class="seperator"></div>
     <div class="flex-column permission-request">
       <ng-container *ngIf="cachedIcon(permissionRequest); let cachedIcon;"><app-asset class="app-icon" [meta]="cachedIcon"></app-asset></ng-container>
-      <h4>{{ permissionRequest.appMetadata.name }} wants the following permissions:</h4>
+      <h4>Permissions requests:</h4>
       <div class="flex-row-wrap requests">
         <span *ngFor="let scope of permissionRequest.scopes">{{ scopeToText(scope) }}</span>
       </div>
-      <h6>Permissions apply to account:</h6>
+      <h6>Apply To Account:</h6>
       <app-ui-dropdown-permission-request [list]="accounts" [current]="activeAccount" (dropdownResponse)="selectedAccount = $event" style="width: 100%;align-self: center;"></app-ui-dropdown-permission-request>
       <div class="seperator"></div>
       <div class="flex-column bottom">
