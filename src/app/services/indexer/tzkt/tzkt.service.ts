@@ -207,6 +207,9 @@ export class TzktService implements Indexer {
     const tokenMetadata = fetch(`${this.bcd}/contract/${this.network}/${contractAddress}/tokens?token_id=${id}&offset=0`)
       .then(response => response.json())
       .then(async datas => {
+        if (datas.length === 0) {
+          datas = [await (await fetch(`https://backend.kukai.network/metadata/mainnet/tokenInfo/${contractAddress}/${id}`)).json()];
+        }
         const keys = [
           { key: 'name', type: 'string' },
           { key: 'decimals', type: 'number' },
@@ -222,7 +225,7 @@ export class TzktService implements Indexer {
         // should always be 1
         assert(datas.length === 1, `cannot find token_id ${id} for contract: ${contractAddress}`);
         for (const data of datas) {
-          if (data?.token_id === Number(id)) {
+          if (data?.token_id === Number(id) || data?.tokenId === Number(id)) {
             // possible snake_case to camelCase conversion; depending on future BCD updates
             mutableConvertObjectPropertiesSnakeToCamel(data);
             const rawData = JSON.parse(JSON.stringify(data));
@@ -255,6 +258,7 @@ export class TzktService implements Indexer {
         console.log(`No token metadata found for ${contractAddress}:${id}`);
         return {};
       }).catch(e => {
+        console.warn(e);
         return {};
       });
     const ans = await Promise.all([tokenMetadata, tokenKind])
