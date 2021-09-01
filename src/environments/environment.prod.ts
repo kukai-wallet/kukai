@@ -101,12 +101,6 @@ export const CONSTANTS: Constants = {
       thumbnailUrl: "https://dashboard-assets.dappradar.com/document/7837/salsadao-dapp-other-tezos-logo-166x166_d4625f93b4fa3858c32b15b36c99617e.png",
       link: "https://tezostaco.shop/#/", shouldDisplayLink: DisplayLinkOption.None, category: "collectibles"
     },
-    'BazaarMarket': {
-      name: 'Bazaar Market',
-      address: ["KT1PKvHNWuWDNVDtqjDha4AostLrGDu4G1jy"],
-      thumbnailUrl: "https://dashboard-assets.dappradar.com/document/7444/bazaarmarket-dapp-marketplaces-tezos-logo-166x166_eeff309690a4abe4d06e78922012d985.png",
-      link: "https://bazaarnft.xyz/", shouldDisplayLink: DisplayLinkOption.All, category: "marketplaces"
-    },
     'Truesy': {
       address: ["KT1PvfewvyW7zxWHSHCivkeJRFyrHNjE3xDr", "KT1LfsA9WzzGX7jkhovSTVnZZoBQQNcpvatQ", "KT1WAxpXZ8hvyoXy47YogdNURArGkFy4k3To", "KT1CGHpbtxvPRX6HF4mVQo48Rb5z2aYVnvB6", "KT1FCCDtoG71hJb4KiUegpCqGr1GDG3YyY7g", "KT1K1vBSP5MyKfBBpyHEjmCHTuYeugid4Tqn", "KT1UQaoRqLgFvsTwprgsGXj84DT9Wm5jC7tY", "KT1Gba7KnVXB563kxmk4mgKUQ4ujP8yFbQfr", "KT1RbCvEFWCJXUswKxWrH9wxgu88hMm8YEZz", "KT1AGcbS4TyquQjQsa4fwce3FjLZv2UpGMse", "KT1KJNPUsHrjhN9iUJMz7DL3WkTcibhGrxse", "KT1WN9yWqV9pEm1ANR56ExJZbnVukWN31fTY", "KT1WBXFKW1sozV7ZLBHvw5eks6Pb8KSoVmLq", "KT1KWNNBtb7z8pejNUNigaRWSTkTQL4DEcf8", "KT1D6CNSXcftRTArCF73Jpsh95dwgEwAy6qZ", "KT1R87j2qFxtPZE3EmmeSoubg2mZkk3j4X8y", "KT1HRCc359qXshgMpBygY3VwqTnV7fc7nYfp", "KT1MU8Pb9DFjnVpEULyWDrqPLjedZPNHFrEN", "KT1FPfsRVWVju2mH1r2iFg5jfzWj7RDCb6ia", "KT19AqSn4m3NtvztPXuETjCzoQ75bKDd1Pyi", "KT1PcYxsFmXuoxcJpcfRSCcQQeSDLERSMzsW", "KT1KSYCk8zjdhgzDDRsmb2ygAfanjBx25Wto", "KT1LqKWDtzUh4CXNqfJQMcATv4PdZxBjPJjH", "KT197APGtQ8mk2svRSpDkqXLzHedRtkJ7Hjr", "KT1CTqQ4vg2zyG1AQmDLVeJ473ueoy2Rw8t1", "KT1QE4nZiAXbpuDCu4P5QTNibQSx6FFW3y2W", "KT1QbzLyzwXB9JTevvjT3B24BzgWfMzFfBHt"],
       thumbnailUrl: "https://wallet.kukai.app/assets/img/spinner/truesy.svg",
