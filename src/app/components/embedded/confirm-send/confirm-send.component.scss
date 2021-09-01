@@ -308,10 +308,9 @@ button {
       border-radius: $border-radius-hardest;
       font-size: 1.25rem;
 
-      &.password,
-      &.text {
+      &.text,
+      &.password {
         width: calc(100% - 2rem);
-        margin: 0 0 2rem 0;
       }
     }
 
@@ -537,7 +536,6 @@ button {
           &.password,
           &.text {
             width: calc(100% - 2rem);
-            margin: 0 0 2rem 0;
           }
         }
     

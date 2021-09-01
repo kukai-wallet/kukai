@@ -31,6 +31,7 @@
       <div class="flex-column bottom">
         <ng-container *ngIf="walletService.isPwdWallet()">
           <div class="label">ENTER YOUR PASSWORD TO CONFIRM</div>
+          <span *ngIf="this.pwdValid" class="label danger">{{ this.pwdValid }}</span>
           <input [(ngModel)]="password"
             placeholder="Password" autocomplete="current-password" class="text password" type="password"
             (input)="this.pwdValid = ''" (change)="this.pwdValid = ''" (keydown.enter)='inject()'>
@@ -38,7 +39,6 @@
         <button class="confirm" *ngIf="walletService.isLedgerWallet() && ledgerError; else elseBlock"
           (click)="ledgerSign()">Sign with Ledger</button>
         <ng-template #elseBlock>
-          <span *ngIf="this.pwdValid" class="label danger">{{ this.pwdValid }}</span>
           <button class="confirm" (click)="inject()"
             [disabled]="(walletService.isLedgerWallet() && (!sendResponse || !sendResponse.payload || !sendResponse.payload.signedOperation)) || walletService.isWatchWallet()">
             {{ walletService.isLedgerWallet() ? 'Broadcast' : 'Confirm'}}</button>

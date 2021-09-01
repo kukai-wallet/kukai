@@ -1,4 +1,4 @@
-@use '../../abstracts/mixins' as m;
+@use '../../abstracts/mixins'as m;
 @use '../../abstracts/variables'as v;
 
 $base-font-color: v.$base-font-color;
@@ -26,7 +26,7 @@ $base-background-color: v.$base-background-color;
   }
 
   & .title {
-    @include m.multiply('font-size',1);
+    @include m.multiply('font-size', 1);
     color: $base-font-color;
     font-weight: 500;
     width: calc(100% - 8rem);
@@ -72,7 +72,7 @@ $base-background-color: v.$base-background-color;
 
       & .title {
         color: $base-font-color;
-        @include m.multiply('font-size',1.5);
+        @include m.multiply('font-size', 1.5);
         font-weight: 500;
         margin: 0 0 0 1.5rem;
       }
@@ -82,6 +82,7 @@ $base-background-color: v.$base-background-color;
       width: 100%;
       position: relative;
       margin: 0 0 1rem 0;
+
       & input {
         width: calc(100% - 2rem);
         height: 3.5rem;
@@ -114,6 +115,7 @@ $base-background-color: v.$base-background-color;
         &-fee {
           color: #6c7a8d;
           font-weight: 500;
+
           &>span {
             color: #b9bfc7;
           }
@@ -195,6 +197,10 @@ $base-background-color: v.$base-background-color;
     & .danger {
       align-self: flex-start;
       color: $base-red-color;
+    }
+
+    & button.confirm {
+      margin: 0;
     }
   }
 }

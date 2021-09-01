@@ -94,10 +94,9 @@ $border-color: v.$border-color;
       border-radius: v.$border-radius-hardest;
       @include m.multiply('font-size',1.25);
 
-      &.password,
-      &.text {
+      &.text,
+      &.password {
         width: calc(100% - 2rem);
-        margin: 0 0 2rem 0;
       }
     }
 
@@ -209,5 +208,6 @@ $border-color: v.$border-color;
     border-radius: v.$border-radius-hardest;
     padding: 0 2rem;
     font-size: 1.125rem;
+    margin: 2rem 0 0 0;
   }
 }
