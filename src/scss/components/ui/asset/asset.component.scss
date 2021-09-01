@@ -66,4 +66,16 @@
       object-fit: contain;
     }
   }
+
+  &.app-icon {
+    margin: 0 0 2rem 0;
+    width: 7rem;
+    height: auto;
+    & video,
+    & img,
+    & #modelCanvas {
+      border-radius: 0.5rem;
+      object-fit: contain;
+    }
+  }
 }

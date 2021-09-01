@@ -16,6 +16,23 @@ $border-color: v.$border-color;
   &.pr-request {
     width: 100%;
     margin: 1rem 0;
+
+    & .currentAddress {
+      width: calc(100% - 1rem);
+      padding: 0 0 0 1rem;
+      background-color: transparent;
+      border: $border-width solid $base-color-lightened-7;
+    }
+
+    & .icon-db {
+      top: calc(0.685rem + #{$border-width});
+      right: 0.75rem;
+    }
+
+    & .dropdown-content {
+      width: 100%;
+      top: 4rem;
+    }
   }
 
   & * {

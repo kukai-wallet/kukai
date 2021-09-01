@@ -12,7 +12,7 @@
         <span *ngFor="let scope of permissionRequest.scopes">{{ scopeToText(scope) }}</span>
       </div>
       <h6>Permissions apply to account:</h6>
-      <app-ui-dropdown-permission-request [list]="accounts" [current]="activeAccount" (dropdownResponse)="selectedAccount = $event" style="width: 100%"></app-ui-dropdown-permission-request>
+      <app-ui-dropdown-permission-request [list]="accounts" [current]="activeAccount" (dropdownResponse)="selectedAccount = $event" style="width: 100%;align-self: center;"></app-ui-dropdown-permission-request>
       <div class="seperator"></div>
       <div class="flex-column bottom">
         <button class="blue confirm" (click)="grantPermissions()">Approve</button>
