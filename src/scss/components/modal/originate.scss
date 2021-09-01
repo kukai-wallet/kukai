@@ -5,9 +5,19 @@
 
   margin: 2rem 0 0 0;
   height: auto;
+  width: 36rem;
 
   & .seperator, span {
     margin: 0.5rem 0;
+  }
+
+  & .from {
+    text-transform: none;
+    font-family: 'Roboto Mono';
+  }
+
+  & .value {
+    text-transform: none;
   }
 
   & .danger {
@@ -33,7 +43,8 @@
     }
 
     & textarea {
-      width: 100%;
+      width: calc(100% - 2rem);
+      padding: 1rem;
     }
 
     & .tabs-container {

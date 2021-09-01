@@ -15,13 +15,12 @@
       <div class="flex-row">
         <span class="key">FEE:&nbsp;</span><span class="value">{{ this.getTotalFee() }} tez</span>
       </div>
-      <div class="seperator"></div>
       <div class="flex-row">
         <span class="key">MAX STORAGE COST:&nbsp;</span><span class="value">{{ getTotalBurn() }} tez</span>
       </div>
       <div class="seperator"></div>
       <br/>
-      <app-ui-toggle-advanced [default]="false" (stateChange)="advancedForm = $event"></app-ui-toggle-advanced>
+      <app-ui-toggle-advanced style="width: min-content" [default]="false" (stateChange)="advancedForm = $event"></app-ui-toggle-advanced>
       <div *ngIf="advancedForm" class="advanced-form">
         <div class="tabs-container">
           <div class="flex-row tabs">
@@ -60,7 +59,7 @@
       <span *ngIf="formInvalid" class="danger margin">
         {{ formInvalid }}
       </span>
-      <div class="row-group" style="margin: 1.25rem 0 1.5rem;">
+      <div class="flex-column bottom">
         <ng-container *ngIf="walletService.isPwdWallet()">
           <input [(ngModel)]="password"
           placeholder="Password" autocomplete="current-password" class="text password" type="password"
