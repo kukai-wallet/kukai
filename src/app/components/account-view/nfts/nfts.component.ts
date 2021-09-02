@@ -9,7 +9,6 @@ import { ModalComponent } from '../../modal/modal.component';
 import { TokenBalancesService } from '../../../services/token-balances/token-balances.service';
 import { SubjectService } from '../../../services/subject/subject.service';
 import { DisplayLinkOption } from '../../../interfaces';
-import Big from 'big.js';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -52,6 +51,8 @@ export class NftsComponent implements OnInit, OnDestroy {
       if (o) {
         this.nfts = undefined;
         this.isDiscover = false;
+        this.tokens = [];
+        this.isInitLoad = false;
       }
     }));
     this.subscriptions.add(this.walletService.activeAccount.subscribe(activeAccount => {

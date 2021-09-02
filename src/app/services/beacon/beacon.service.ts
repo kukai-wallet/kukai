@@ -44,7 +44,7 @@ export class BeaconService {
     await this.client.addPeer(pairInfo, force);
     this.syncBeaconState();
     this.messageService.removeBeaconMsg();
-    if (pairInfo.icon) {
+    if (pairInfo.icon && pairInfo.icon.startsWith('https://')) {
       this.cacheIcon(pairInfo);
     }
   }
