@@ -5,6 +5,7 @@ import TransportWebHID from '@ledgerhq/hw-transport-webhid';
 import Tezos from '@obsidiansystems/hw-app-xtz';
 import { OperationService } from '../operation/operation.service';
 import { MessageService } from '../message/message.service';
+import { ConditionalExpr } from '@angular/compiler';
 
 @Injectable()
 export class LedgerService {
@@ -38,9 +39,9 @@ export class LedgerService {
   }
   private useWebHID(): boolean {
     try {
-      const isMac = navigator.platform.indexOf('Mac') > -1;
-      const isChrome = (navigator as any).userAgentData?.brands?.some(b => b.brand === 'Google Chrome');
-      return (isMac && isChrome);
+      const isUnix = navigator.platform.indexOf('Mac') > -1|| navigator.platform.indexOf('Linux') > -1;
+      const isChrome = (navigator as any).userAgentData?.brands?.some(b => (b.brand === 'Google Chrome' || 'Chromium') && (parseInt(b.version, 10) > 89));
+      return (isUnix && isChrome);
     } catch (e) {
       return false;
     }
