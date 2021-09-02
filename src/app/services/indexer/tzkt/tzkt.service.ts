@@ -5,6 +5,9 @@ import * as cryptob from 'crypto-browserify';
 import { WalletObject, Activity } from '../../wallet/wallet';
 import assert from 'assert';
 import { Asset, CachedAsset } from '../../token/token.service';
+import { TezosToolkit } from '@taquito/taquito';
+import { Tzip12Module, tzip12 } from '@taquito/tzip12';
+import { Handler, IpfsHttpHandler, MetadataProvider } from '@taquito/tzip16'
 
 interface TokenMetadata {
   name: string;
@@ -29,7 +32,13 @@ export class TzktService implements Indexer {
   public readonly bcd = 'https://api.better-call.dev/v1';
   public readonly tzkt = `https://api.${this.network}.tzkt.io/v1`;
   readonly BCD_TOKEN_QUERY_SIZE: number = 50;
-  constructor() { }
+  Tezos: TezosToolkit;
+  constructor() {
+    this.Tezos = new TezosToolkit(CONSTANTS.NODE_URL);
+    const customHandler = new Map<string, Handler>([['ipfs', new IpfsHttpHandler('cloudflare-ipfs.com')]]);
+    const customMetadataProvider = new MetadataProvider(customHandler);
+    this.Tezos.addExtension(new Tzip12Module(customMetadataProvider));
+  }
   async getContractAddresses(pkh: string): Promise<any> {
     return fetch(`https://api.${this.network}.tzkt.io/v1/operations/originations?contractManager=${pkh}`)
       .then(response => response.json())
@@ -162,7 +171,7 @@ export class TzktService implements Indexer {
           if (index !== -1) {
             hiddenOp = ops[index];
             if (hiddenOp?.entrypoint && hiddenOp.entrypoint === 'transfer') {
-            ops.splice(index, 1); // Hide token transfer invokation
+              ops.splice(index, 1); // Hide token transfer invokation
             }
           }
           const activity: Activity = {
@@ -223,9 +232,14 @@ export class TzktService implements Indexer {
       }).catch(e => {
         return null;
       });
-    const tokenMetadata = fetch(`https://backend.kukai.network/metadata/${this.network}/tokenInfo/${contractAddress}/${id}`)
+    const tokenMetadata = fetch(`${this.bcd}/contract/${this.network}/${contractAddress}/tokens?token_id=${id}&offset=0`)
       .then(response => response.json())
       .then(async data => {
+        if (data.length === 0) {
+          data = await this.getTokenMetadataWithTaquito(contractAddress, id);
+        } else {
+          data = data[0];
+        }
         const keys = [
           { key: 'name', type: 'string' },
           { key: 'decimals', type: 'number' },
@@ -268,6 +282,24 @@ export class TzktService implements Indexer {
         return merged;
       });
     return ans ? ans : null;
+  }
+  async getTokenMetadataWithTaquito(contractAddress, id) {
+    const contract = await this.Tezos.contract.at(contractAddress, tzip12)
+    const metadata: any = await contract.tzip12().getTokenMetadata(Number(id));
+    mutableConvertObjectPropertiesSnakeToCamel(metadata)
+    // add extras to mimic bcd response
+    const firstClassProps = ['tokenId', 'symbol', 'decimals', 'name', 'description', 'artifactUri', 'displayUri', 'thumbnailUri', 'externalUri', 'isTransferable', 'isBooleanAmount', 'shouldPreferSymbol', 'creators', 'tags', 'formats', 'extras'];
+    if (metadata?.extras === undefined) {
+      metadata.extras = {};
+    }
+    const keys = Object.keys(metadata);
+    for (const key of keys) {
+      if (!firstClassProps.includes(key)) {
+        metadata.extras[key] = metadata[key];
+        delete metadata[key];
+      }
+    }
+    return metadata;
   }
   private flattern(obj: any): any {
     const keys = Object.keys(obj);
@@ -332,7 +364,7 @@ export class TzktService implements Indexer {
       .then((response) => response.json())
       .then((data) => {
         if (data?.Status === 'ok' && data.Filename && data.Extension) {
-          const asset: CachedAsset  = {
+          const asset: CachedAsset = {
             filename: data.Filename,
             extension: data.Extension
           }
