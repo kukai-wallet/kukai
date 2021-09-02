@@ -91,4 +91,8 @@ export class NftsComponent implements OnInit, OnDestroy {
   sanitizeKey(key: string, i: number) {
     return key.replace(/ /g, '') + i;
   }
+
+  reset() {
+    [].slice.call(document.querySelectorAll(`.nfts .collection`)).forEach(coll => { if (coll.classList.contains('expanded')) { coll.classList.remove('expanded'); } });
+  }
 }

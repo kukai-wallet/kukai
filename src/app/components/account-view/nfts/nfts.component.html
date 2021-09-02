@@ -7,8 +7,8 @@
     </div>
     <div class="flex-row right">
       <ng-container *ngIf="this.nfts && Object.keys(this.nfts).length > 0 && !isDiscover">
-        <span class="flex-row button icon-grey" [class.selected]="filter === 'ALL'" (click)="filter = 'ALL'">ALL</span>
-        <span class="flex-row button icon-grey" [class.selected]="filter !== 'ALL'" (click)="filter = ''">APP</span>
+        <span class="flex-row button icon-grey" [class.selected]="filter === 'ALL'" (click)="filter = 'ALL'; reset()">ALL</span>
+        <span class="flex-row button icon-grey" [class.selected]="filter !== 'ALL'" (click)="filter = ''; reset()">APP</span>
       </ng-container>
       <!-- <img class="button icon" src="../../../../assets/img/filter.svg" />
       <img class="button icon" src="../../../../assets/img/info.svg" /> -->
