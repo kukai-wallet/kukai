@@ -4,6 +4,9 @@ import { Indexer } from '../indexer.service';
 import * as cryptob from 'crypto-browserify';
 import { WalletObject, Activity } from '../../wallet/wallet';
 import assert from 'assert';
+import { TezosToolkit } from '@taquito/taquito';
+import { Tzip12Module, tzip12 } from '@taquito/tzip12';
+import { Handler, IpfsHttpHandler, MetadataProvider } from '@taquito/tzip16'
 
 interface TokenMetadata {
   name: string;
@@ -27,7 +30,13 @@ export class TzktService implements Indexer {
   readonly network = CONSTANTS.NETWORK.replace('edonet', 'edo2net');
   public readonly bcd = 'https://api.better-call.dev/v1';
   readonly BCD_TOKEN_QUERY_SIZE = 10;
-  constructor() { }
+  Tezos: TezosToolkit;
+  constructor() {
+    this.Tezos = new TezosToolkit(CONSTANTS.NODE_URL);
+    const customHandler = new Map<string, Handler>([['ipfs', new IpfsHttpHandler('cloudflare-ipfs.com')]]);
+    const customMetadataProvider = new MetadataProvider(customHandler);
+    this.Tezos.addExtension(new Tzip12Module(customMetadataProvider));
+  }
   async getContractAddresses(pkh: string): Promise<any> {
     return fetch(`https://api.${this.network}.tzkt.io/v1/operations/originations?contractManager=${pkh}`)
       .then(response => response.json())
@@ -208,7 +217,7 @@ export class TzktService implements Indexer {
       .then(response => response.json())
       .then(async datas => {
         if (datas.length === 0) {
-          datas = [await (await fetch(`https://backend.kukai.network/metadata/mainnet/tokenInfo/${contractAddress}/${id}`)).json()];
+          datas = [await this.getTokenMetadataWithTaquito(contractAddress, id)];
         }
         const keys = [
           { key: 'name', type: 'string' },
@@ -284,6 +293,24 @@ export class TzktService implements Indexer {
         delete obj[key];
       }
     }
+  }
+  async getTokenMetadataWithTaquito(contractAddress, id) {
+    const contract = await this.Tezos.contract.at(contractAddress, tzip12)
+    const metadata: any = await contract.tzip12().getTokenMetadata(Number(id));
+    mutableConvertObjectPropertiesSnakeToCamel(metadata)
+    // add extras to mimic bcd response
+    const firstClassProps = ['tokenId', 'symbol', 'decimals', 'name', 'description', 'artifactUri', 'displayUri', 'thumbnailUri', 'externalUri', 'isTransferable', 'isBooleanAmount', 'shouldPreferSymbol', 'creators', 'tags', 'formats', 'extras'];
+    if (metadata?.extras === undefined) {
+      metadata.extras = {};
+    }
+    const keys = Object.keys(metadata);
+    for (const key of keys) {
+      if (!firstClassProps.includes(key)) {
+        metadata.extras[key] = metadata[key];
+        delete metadata[key];
+      }
+    }
+    return metadata;
   }
   async uriToUrl(uri: string): Promise<string> {
     if (!uri || uri.length < 8) {
