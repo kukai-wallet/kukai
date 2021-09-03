@@ -31,41 +31,33 @@ export const CONSTANTS: Constants = {
     'hen': {
       name: 'Hic et Nunc (HEN)',
       address: ["KT1AFA2mwNUMNd4SsujE1YYp29vd8BZejyKW", "KT1RJ6PbjHpwc3M5rw5s2Nbmefwbuwbdxton", "KT1M2JnD1wsg7w2B4UXJXtKQPuDUpU2L7cJH"],
-      thumbnailUrl: "https://dashboard-assets.dappradar.com/document/7357/hicetnunc-dapp-marketplaces-tezos-logo-166x166_88a66b54787c555ea5237fa002586ae5.png",
+      thumbnailUrl: "../../../assets/img/alias/minterpop.hen",
       link: "https://www.hicetnunc.xyz/", shouldDisplayLink: DisplayLinkOption.All, category: "marketplaces"
     },
     'QuipuSwap': {
       address: [],
-      thumbnailUrl: "https://dashboard-assets.dappradar.com/document/7360/quipuswap-dapp-exchanges-tezos-logo-166x166_f8f472a49e3f3d6b591a13dbd979a857.png",
+      thumbnailUrl: "../../../assets/img/alias/quipu.svg",
       link: "https://quipuswap.com/", shouldDisplayLink: DisplayLinkOption.All, category: "exchanges"
     },
     "MinterPop": {
       address: ['KT1AaaBSo5AE6Eo8fpEN5xhCD4w3kHStafxk'],
-      thumbnailUrl: "../../../assets/img/tokens/MinterPop_Logo_icononly-color.svg",
-      // thumbnailUrl: {
-      //   filename: 'u4tdtnfwszmavwllohvxnhm6x6udvp',
-      //   extension: 'svg'
-      // },
-      link: "https://minterpop.vercel.app/", shouldDisplayLink: DisplayLinkOption.DirectAuth, category: "collectibles"
+      thumbnailUrl: "../../../assets/img/alias/minterpop.svg",
+      link: "https://minterpop.vercel.app", shouldDisplayLink: DisplayLinkOption.DirectAuth, category: "collectibles"
     },
     'Kalamint': {
       address: ["KT1EpGgjQs73QfFJs9z7m1Mxm5MTnpC2tqse"],
-      thumbnailUrl: "https://dashboard-assets.dappradar.com/document/7358/kalamint-dapp-marketplaces-tezos-logo-166x166_3157752c764b72d1e7759b1b005b07d7.png",
+      thumbnailUrl: "../../../assets/img/alias/kalamint.png",
       link: "https://kalamint.io/", shouldDisplayLink: DisplayLinkOption.All, category: "marketplaces"
     },
     'InterpopComics': {
       name: "Interpop Comics",
       address: ["KT1UxMVVrK2pbYYEtwes1zKYdpYnzoZ6yPKC"],
-      thumbnailUrl: "../../../assets/img/tokens/INTERPOP_FINAL_ICON.svg",
-      // thumbnailUrl: {
-      //   filename: '2fl5x5wifmqwbsd6d4axz5wrxwlpqv',
-      //   extension: 'svg'
-      // },
+      thumbnailUrl: "../../../assets/img/alias/interpop.svg",
       link: "https://dev.interpopcomics.com/", shouldDisplayLink: DisplayLinkOption.DirectAuth, category: "collectibles"
     },
     'Bazaar Market': {
       address: ["KT1PKvHNWuWDNVDtqjDha4AostLrGDu4G1jy"],
-      thumbnailUrl: "https://dashboard-assets.dappradar.com/document/7444/bazaarmarket-dapp-marketplaces-tezos-logo-166x166_eeff309690a4abe4d06e78922012d985.png",
+      thumbnailUrl: "../../../assets/img/alias/bazaar.png",
       link: "https://bazaarnft.xyz/", shouldDisplayLink: DisplayLinkOption.All, category: "marketplaces"
     },
     'TezosCampaigns': {
@@ -76,49 +68,39 @@ export const CONSTANTS: Constants = {
     },
     'TzColors': {
       address: ["KT1FyaDqiMQWg7Exo7VUiXAgZbd2kCzo3d4s"],
-      thumbnailUrl: "https://dashboard-assets.dappradar.com/document/7361/tzcolors-dapp-marketplaces-tezos-logo-166x166_4731835687c8ad06edf1d8c140905e12.png",
+      thumbnailUrl: "../../../assets/img/alias/tzcolors.png",
       link: "https://www.tzcolors.io/", shouldDisplayLink: DisplayLinkOption.All, category: "collectibles"
     },
     'PixelPotus': {
       name: 'PixelPotus',
       address: ["KT1WGDVRnff4rmGzJUbdCRAJBmYt12BrPzdD"],
-      thumbnailUrl: "https://www.pixelpotus.com/img/eagle-right.d1840b0b.png",
+      thumbnailUrl: "../../../assets/img/alias/pixelpotus.png",
       link: "https://www.pixelpotus.com/", shouldDisplayLink: DisplayLinkOption.All, category: "collectibles"
     },
     'Tezotopia': {
       address: ["KT1ViVwoVfGSCsDaxjwoovejm1aYSGz7s2TZ"],
-      thumbnailUrl: "https://tezotopia.web.app/static/media/tezotopia-logo.bf94c3f8.png",
+      thumbnailUrl: "../../../assets/img/alias/tezotopia.png",
       link: "https://app.tezotopia.com/marketplace/artifacts", shouldDisplayLink: DisplayLinkOption.All, category: "collectibles"
     },
     'Alchememist': {
       address: ["KT1W4wh1qDc2g22DToaTfnCtALLJ7jHn38Xc", "KT1Em3sjKdHo3Fo9Az4EusZXQbkgsdZHkQkF"],
-      thumbnailUrl: "https://cloudflare-ipfs.com/ipfs/QmPmD4kdh8d2fxaHeHy7BTwmcYxhz3eA6nFeGJXHmNnSex",
+      thumbnailUrl: "../../../assets/img/alias/alchememist.jfif",
       link: "https://auctions.alchememist.com/", shouldDisplayLink: DisplayLinkOption.None, category: "collectibles"
     },
     'SalsaDaoTacoshop': {
       name: 'SalsaDao Tacoshop & Casino',
       address: ["KT1UmxSSUQ5716tRa2RLNSAkiSG6TWbzZ7GL", "KT1JYWuC4eWqYkNC1Sh6BiD89vZzytVoV2Ae", "KT1NvPaecvj8g7SbDs8E5s2jxbEBKHxZssP1", "KT1LhNu3v6rCa3Ura3bompAAJZD9io5VRaWZ", "KT1VHd7ysjnvxEzwtjBAmYAmasvVCfPpSkiG"],
-      thumbnailUrl: "https://dashboard-assets.dappradar.com/document/7837/salsadao-dapp-other-tezos-logo-166x166_d4625f93b4fa3858c32b15b36c99617e.png",
+      thumbnailUrl: "../../../assets/img/alias/salsadao.png",
       link: "https://tezostaco.shop/#/", shouldDisplayLink: DisplayLinkOption.None, category: "collectibles"
     },
     'Truesy': {
       address: ["KT1PvfewvyW7zxWHSHCivkeJRFyrHNjE3xDr", "KT1LfsA9WzzGX7jkhovSTVnZZoBQQNcpvatQ", "KT1WAxpXZ8hvyoXy47YogdNURArGkFy4k3To", "KT1CGHpbtxvPRX6HF4mVQo48Rb5z2aYVnvB6", "KT1FCCDtoG71hJb4KiUegpCqGr1GDG3YyY7g", "KT1K1vBSP5MyKfBBpyHEjmCHTuYeugid4Tqn", "KT1UQaoRqLgFvsTwprgsGXj84DT9Wm5jC7tY", "KT1Gba7KnVXB563kxmk4mgKUQ4ujP8yFbQfr", "KT1RbCvEFWCJXUswKxWrH9wxgu88hMm8YEZz", "KT1AGcbS4TyquQjQsa4fwce3FjLZv2UpGMse", "KT1KJNPUsHrjhN9iUJMz7DL3WkTcibhGrxse", "KT1WN9yWqV9pEm1ANR56ExJZbnVukWN31fTY", "KT1WBXFKW1sozV7ZLBHvw5eks6Pb8KSoVmLq", "KT1KWNNBtb7z8pejNUNigaRWSTkTQL4DEcf8", "KT1D6CNSXcftRTArCF73Jpsh95dwgEwAy6qZ", "KT1R87j2qFxtPZE3EmmeSoubg2mZkk3j4X8y", "KT1HRCc359qXshgMpBygY3VwqTnV7fc7nYfp", "KT1MU8Pb9DFjnVpEULyWDrqPLjedZPNHFrEN", "KT1FPfsRVWVju2mH1r2iFg5jfzWj7RDCb6ia", "KT19AqSn4m3NtvztPXuETjCzoQ75bKDd1Pyi", "KT1PcYxsFmXuoxcJpcfRSCcQQeSDLERSMzsW", "KT1KSYCk8zjdhgzDDRsmb2ygAfanjBx25Wto", "KT1LqKWDtzUh4CXNqfJQMcATv4PdZxBjPJjH", "KT197APGtQ8mk2svRSpDkqXLzHedRtkJ7Hjr", "KT1CTqQ4vg2zyG1AQmDLVeJ473ueoy2Rw8t1", "KT1QE4nZiAXbpuDCu4P5QTNibQSx6FFW3y2W", "KT1QbzLyzwXB9JTevvjT3B24BzgWfMzFfBHt"],
-      thumbnailUrl: "https://wallet.kukai.app/assets/img/spinner/truesy.svg",
+      thumbnailUrl: "../../../assets/img/spinner/truesy.svg",
       link: "", shouldDisplayLink: DisplayLinkOption.None
     },
-    // "NBA": {
-    //   address: ["KT1LqKWDtzUh4CXNqfJQMcATv4PdZxBjPJjH"],
-    //   thumbnailUrl: "",
-    //   link: "", shouldDisplayLink: DisplayLinkOption.None
-    // },
-    // "BUA": {
-    //   address: ["KT1WN9yWqV9pEm1ANR56ExJZbnVukWN31fTY", "KT1WBXFKW1sozV7ZLBHvw5eks6Pb8KSoVmLq", "KT1KWNNBtb7z8pejNUNigaRWSTkTQL4DEcf8", "KT1D6CNSXcftRTArCF73Jpsh95dwgEwAy6qZ", "KT1R87j2qFxtPZE3EmmeSoubg2mZkk3j4X8y", "KT1HRCc359qXshgMpBygY3VwqTnV7fc7nYfp", "KT1MU8Pb9DFjnVpEULyWDrqPLjedZPNHFrEN", "KT1FPfsRVWVju2mH1r2iFg5jfzWj7RDCb6ia", "KT19AqSn4m3NtvztPXuETjCzoQ75bKDd1Pyi", "KT1PcYxsFmXuoxcJpcfRSCcQQeSDLERSMzsW", "KT1KSYCk8zjdhgzDDRsmb2ygAfanjBx25Wto"],
-    //   thumbnailUrl: "../../../assets/img/tokens/bua.png",
-    //   link: "", shouldDisplayLink: DisplayLinkOption.None
-    // },
     'OpenMinter': {
       address: ["KT1QcxwB4QyPKfmSwjH1VRxa6kquUjeDWeEy"],
-      thumbnailUrl: "https://openminter.com/static/media/header-logo.a9dd48a8.svg",
+      thumbnailUrl: "../../../assets/img/alias/openminter.svg",
       link: "", shouldDisplayLink: DisplayLinkOption.None
     }
   },
@@ -329,8 +311,8 @@ export const CONSTANTS: Constants = {
           symbol: '',
           decimals: 0,
           description: 'This Taco NFT was inspired by and minted for Austin, Texas on Taco Tuesday, May 4th, 2021, to help push the Clean NFT movement forward. Enjoy your taco or send it to a friend to help spread the word about Clean NFTs on Tezos.',
-          displayAsset: {
-            filename: 'qobfstoafqyvjgu6fgrxlpozxefuo4',
+          displayAsset: {// ipfs://QmYbWkagqQyQ4bJhWWWSGaCLNGP1czbPgD2PLmJ4aVmtGR
+            filename: 'cpyxxjpnsmhpttzcm66cj4bkceq6li',
             extension: 'jpeg'
           },
           thumbnailAsset: '',
@@ -774,8 +756,8 @@ export const CONSTANTS: Constants = {
           symbol: 'Tezos',
           decimals: 0,
           description: 'NFTs are changing everything...but what exactly is an NFT? A Non-Friendly Turtle? Discover how Tezos is changing NFTs, and collect your own at Tezos.com/NFTgallery.',
-          displayAsset: {
-            filename: 'imqcyvlfj4dptvjcclhkzjqwjxqvzo',
+          displayAsset: {// ipfs://QmTmSjweqQrba5WGRUxB4u5WEbwktQBQekioi9K7Kkos6x
+            filename: 'ioqq2cioaynduzip4aox3wzc2akvly',
             extension: 'gif'
           },
           thumbnailAsset: '',
