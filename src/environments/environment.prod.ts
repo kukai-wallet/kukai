@@ -31,12 +31,12 @@ export const CONSTANTS: Constants = {
     'hen': {
       name: 'Hic et Nunc (HEN)',
       address: ["KT1AFA2mwNUMNd4SsujE1YYp29vd8BZejyKW", "KT1RJ6PbjHpwc3M5rw5s2Nbmefwbuwbdxton", "KT1M2JnD1wsg7w2B4UXJXtKQPuDUpU2L7cJH"],
-      thumbnailUrl: "../../../assets/img/alias/minterpop.hen",
+      thumbnailUrl: "../../../assets/img/alias/hen.png",
       link: "https://www.hicetnunc.xyz/", shouldDisplayLink: DisplayLinkOption.All, category: "marketplaces"
     },
     'QuipuSwap': {
       address: [],
-      thumbnailUrl: "../../../assets/img/alias/quipu.svg",
+      thumbnailUrl: "../../../assets/img/alias/quipu.png",
       link: "https://quipuswap.com/", shouldDisplayLink: DisplayLinkOption.All, category: "exchanges"
     },
     "MinterPop": {
