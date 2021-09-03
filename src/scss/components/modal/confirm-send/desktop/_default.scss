@@ -19,6 +19,10 @@ $border-color: #e6eaef;
     width: 38rem;
     height: auto;
 
+    &.image .top .left {
+      min-height: 10rem;
+    }
+
     @include b.confirm-send-batch;
 
     & .amount-fee {
@@ -131,7 +135,7 @@ $border-color: #e6eaef;
           padding: 0 0 0.5rem 0;
           border-bottom: $border-width solid #dde2e9;
           & .tez {
-            @include m.multiply("font-size", 1.5);
+            font-size: 1.5rem;
             font-weight: 600;
           }
 
@@ -170,31 +174,6 @@ $border-color: #e6eaef;
               font-size: 1.5rem;
             }
           }
-        }
-      }
-
-      &.image {
-        align-items: center;
-        padding: 1rem;
-        width: calc(100% - 2rem);
-        & .left {
-          width: auto;
-          height: auto;
-          justify-content: space-between;
-          align-items: center;
-        }
-
-        & .right {
-          height: 100%;
-          justify-content: center;
-          width: calc(67% - 0.5rem);
-          margin: 0 1rem 0 0;
-        }
-
-        & .token-image {
-          width: 7.5rem;
-          height: 7.5rem;
-          margin: 0;
         }
       }
     }

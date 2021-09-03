@@ -15,6 +15,10 @@ $border-color: #e6eaef;
       width: calc(100% - 2rem);
     }
 
+    &.image .top .left {
+      min-height: 8rem;
+    }
+
     & .divider {
       & span {
         border-bottom: 3px solid $border-color;
@@ -34,7 +38,6 @@ $border-color: #e6eaef;
 
       & .left {
         width: 26%;
-        min-height: 8rem;
 
         & .key {
           text-align: center;
