@@ -102,6 +102,11 @@ export const CONSTANTS: Constants = {
       address: ["KT1QcxwB4QyPKfmSwjH1VRxa6kquUjeDWeEy"],
       thumbnailUrl: "../../../assets/img/alias/openminter.svg",
       link: "", shouldDisplayLink: DisplayLinkOption.None
+    },
+    'Tezzardz': {
+      address: ["KT1LHHLso8zQWQWg1HUukajdxxbkGfNoHjh6"],
+      thumbnailUrl: "../../../assets/img/alias/tezzardz.png",
+      link: "", shouldDisplayLink: DisplayLinkOption.None
     }
   },
   ASSETS: {
