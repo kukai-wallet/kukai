@@ -56,6 +56,7 @@ export class NftsComponent implements OnInit, OnDestroy {
       }
     }));
     this.subscriptions.add(this.walletService.activeAccount.subscribe(activeAccount => {
+      this.closeAllDropdowns();
       this.isInitLoad = true;
     }));
   }
@@ -75,7 +76,7 @@ export class NftsComponent implements OnInit, OnDestroy {
       c.classList.remove('expanded');
       this.filter = '';
     } else {
-      elem.forEach(coll => { if (coll.classList.contains('expanded')) { coll.classList.remove('expanded'); } });
+      this.closeAllDropdowns();
       c.classList.add('expanded');
       this.filter = sel.substring(1);
       if (window.innerWidth < 1024) {
@@ -93,7 +94,7 @@ export class NftsComponent implements OnInit, OnDestroy {
     return key.replace(/ /g, '') + i;
   }
 
-  reset() {
+  closeAllDropdowns() {
     [].slice.call(document.querySelectorAll(`.nfts .collection`)).forEach(coll => { if (coll.classList.contains('expanded')) { coll.classList.remove('expanded'); } });
   }
 }
