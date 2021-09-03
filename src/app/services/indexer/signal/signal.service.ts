@@ -7,6 +7,8 @@ import { ActivityService } from '../../activity/activity.service';
 import { OperationService } from '../../operation/operation.service';
 import { BalanceService } from '../../balance/balance.service';
 import { DelegateService } from '../../delegate/delegate.service';
+import { timeout } from 'rxjs/operators';
+import { of } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
@@ -38,10 +40,10 @@ export class SignalService {
         }
       }
     });
-    this.start();
     this.connection.onclose(async () => {
       await this.start();
     });
+    this.start();
   }
   confirmStatus(opHash: string, address: string, timestamp: string, invoke: boolean) {
     if (opHash && address && this.walletService.wallet) {
@@ -77,15 +79,43 @@ export class SignalService {
       }
     });
   }
+
   async start() {
     try {
-      await this.connection.start();
-      console.log("%cSignalR Connected!", "color:green;");
+        if(!!this.connection?.start) {
+          await this.connection?.start();
+          console.log("%cSignalR Connected!", "color:green;");
+        } else {
+          setTimeout(() => {
+            this.start();
+          }, 5000);
+        }
     } catch (err) {
-      console.log(err);
-      setTimeout(this.start, 5000);
+        console.log(err);
+        setTimeout(() => {
+          this.start();
+        }, 5000);
     }
-  };
+}
+
+  // async start() {
+  //   console.log("here");
+  //   await this.connection?.stop()
+  //   try {
+  //     if (!(await this.connection?.start())) {
+  //       setTimeout(async () => {
+  //         await this.start();
+  //       }, 5000);
+  //     } else {
+  //       console.log("%cSignalR Connected!", "color:green;");
+  //     }
+  //   } catch (err) {
+  //     console.log(err);
+  //     setTimeout(async () => {
+  //       await this.start();
+  //     }, 5000);
+  //   }
+  // };
   async subscribeToAccount(address: string) {
     console.log('Listen to: ' + address);
     await this.connection.invoke("SubscribeToOperations", { address, types: 'transaction,delegation,origination' });
