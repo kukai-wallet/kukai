@@ -235,6 +235,9 @@ export class TzktService implements Indexer {
     const tokenMetadata = fetch(`${this.bcd}/contract/${this.network}/${contractAddress}/tokens?token_id=${id}&offset=0`)
       .then(response => response.json())
       .then(async data => {
+        if (data?.length && data[0]?.name === 'Unknown') {
+          data = [];
+        }
         if (data.length === 0) {
           data = await this.getTokenMetadataWithTaquito(contractAddress, id);
         } else {
