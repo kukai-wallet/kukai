@@ -73,6 +73,21 @@ export const CONSTANTS: Constants = {
         }
       }
     },
+    'KT1BzmcWWUV1dnGF58AZ67GySwsniPL2PKYq': {
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        0: {
+          name: 'BTCtez',
+          symbol: 'BTCtz',
+          decimals: 8,
+          description: 'BTCtz is a Tezos on-chain stablecoin pegged to the value of Bitcoin.',
+          displayUrl: '../../../assets/img/tokens/btctz.png',
+          thumbnailUrl: '../../../assets/img/tokens/btctz.png',
+          shouldPreferSymbol: true
+        }
+      }
+    },
     'KT1XRPEPXbZK25r3Htzp2o1x7xdMMmfocKNW': { // uUSD
       kind: 'FA2',
       category: 'finance',
@@ -643,6 +658,17 @@ export const CONSTANTS: Constants = {
           isBooleanAmount: false,
           isTransferable: true,
           shouldPreferSymbol: false
+        },
+        69: {
+          name: 'Bear Pawtrait',
+          symbol: 'Tezos',
+          decimals: 0,
+          description: 'NFTs are changing everything...but what exactly is an NFT? A Nice Foliage Trim? Discover how Tezos is changing NFTs.',
+          displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmW9RfyhsMxZLoJjLRFUSZ2SEjVSwu6TjcqEnH8ephzWtU',
+          thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmW9RfyhsMxZLoJjLRFUSZ2SEjVSwu6TjcqEnH8ephzWtU',
+          isBooleanAmount: false,
+          isTransferable: true,
+          shouldPreferSymbol: false
         }
       }
     }
@@ -668,5 +694,6 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1A5P4ejnLix13jtadsfV9GCnXLMNnab8UT',//Kalamint token
   'KT1ViVwoVfGSCsDaxjwoovejm1aYSGz7s2TZ',//Teztopia
   'KT1BA9igcUcgkMT4LEEQzwURsdMpQayfb6i4',//turtle
-  'KT1LHHLso8zQWQWg1HUukajdxxbkGfNoHjh6'//tezzardz
+  'KT1LHHLso8zQWQWg1HUukajdxxbkGfNoHjh6',//tezzardz
+  'KT1DeFSmknfCG5TveB5DSvrg34hqLcqETNuF'//TwitZ
 ];
