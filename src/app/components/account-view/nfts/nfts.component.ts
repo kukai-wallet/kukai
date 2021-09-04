@@ -56,7 +56,6 @@ export class NftsComponent implements OnInit, OnDestroy {
       }
     }));
     this.subscriptions.add(this.walletService.activeAccount.subscribe(activeAccount => {
-      this.closeAllDropdowns();
       this.isInitLoad = true;
     }));
   }
@@ -71,14 +70,12 @@ export class NftsComponent implements OnInit, OnDestroy {
   }
   toggleDropdown(sel) {
     const elem = [].slice.call(document.querySelectorAll(`.nfts .collection`));
-    const c = document.querySelector(sel);
-    if (c.classList.contains('expanded')) {
-      c.classList.remove('expanded');
+    const c = document.querySelector('#' + sel) as HTMLElement;
+    if (this.filter === sel) {
       this.filter = '';
     } else {
-      this.closeAllDropdowns();
-      c.classList.add('expanded');
-      this.filter = sel.substring(1);
+      this.filter = '';
+      this.filter = sel;
       if (window.innerWidth < 1024) {
         document.body.scroll(0, c.offsetTop - 25);
       }
@@ -90,11 +87,11 @@ export class NftsComponent implements OnInit, OnDestroy {
     }
     return false;
   }
-  sanitizeKey(key: string, i: number) {
-    return key.replace(/ /g, '') + i;
+  sanitizeKey(key: string) {
+    return key.replace(/ /g, '');
   }
 
-  closeAllDropdowns() {
-    [].slice.call(document.querySelectorAll(`.nfts .collection`)).forEach(coll => { if (coll.classList.contains('expanded')) { coll.classList.remove('expanded'); } });
+  trackContract(index: number, contract: any) {
+    return contract;
   }
 }

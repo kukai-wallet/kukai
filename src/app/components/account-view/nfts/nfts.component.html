@@ -18,10 +18,10 @@
     <!-- loop through contracts -->
     <ng-container *ngIf="!Object.keys(nfts)?.length && !isDiscover"><span>There are no NFTs in this account</span>
     </ng-container>
-    <ng-container *ngFor="let key of Object.keys(this.nfts); let i = index">
-      <div class="flex-column collection" [id]="sanitizeKey(key, i)"
+    <ng-container *ngFor="let key of Object.keys(this.nfts); let i = index; trackBy:trackContract">
+      <div class="flex-column collection" [class.expanded]="filter === sanitizeKey(key)" [id]="sanitizeKey(key)"
         [style.display]="!isDiscover && filter !== 'ALL' ? '' : 'none'">
-        <div class="flex-row head" (click)="toggleDropdown(sanitizeKey('#' + key, i))">
+        <div class="flex-row head" (click)="toggleDropdown(sanitizeKey(key))">
           <div class="flex-row left">
             <app-asset class="nfts-head-thumbnail" [meta]="this.nfts[key]?.thumbnailUrl"></app-asset>
             <div class="title">
@@ -34,7 +34,7 @@
           </div>
         </div>
         <div class="flex-column scroll">
-          <app-nfts-body [token]="token" [isDisplaying]="filter === sanitizeKey(key, i)" [tokens]="this.nfts[key]?.tokens"></app-nfts-body>
+          <app-nfts-body [token]="token" [isDisplaying]="filter === sanitizeKey(key)" [tokens]="this.nfts[key]?.tokens"></app-nfts-body>
         </div>
       </div>
     </ng-container>
