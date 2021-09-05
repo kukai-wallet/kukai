@@ -62,6 +62,8 @@ export const CONSTANTS: Constants = {
     'Bazaar Market': {
       address: ["KT1PKvHNWuWDNVDtqjDha4AostLrGDu4G1jy"],
       thumbnailUrl: "../../../assets/img/alias/bazaar.png",
+      backgroundColor: "#4a9fd5",
+      discoverUrl: "../../../assets/img/alias/bazaar.svg",
       link: "https://bazaarnft.xyz/", shouldDisplayLink: DisplayLinkOption.All, category: ["marketplaces"]
     },
     'TezosCampaigns': {
