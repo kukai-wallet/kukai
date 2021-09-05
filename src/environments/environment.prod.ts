@@ -36,8 +36,9 @@ export const CONSTANTS: Constants = {
     },
     'QuipuSwap': {
       address: [],
-      thumbnailUrl: "../../../assets/img/alias/quipu.png",
-      link: "https://quipuswap.com/", shouldDisplayLink: DisplayLinkOption.All, category: ["exchanges"]
+      thumbnailUrl: "../../../assets/img/alias/quipuswap_logo.jpeg",
+      discoverUrl: "../../../assets/img/alias/quipuswap-discover.jpeg",
+      link: "https://quipuswap.com/", shouldDisplayLink: DisplayLinkOption.All, category: ["exchanges"], backgroundColor: '#222d47'
     },
     "MinterPop": {
       address: ['KT1AaaBSo5AE6Eo8fpEN5xhCD4w3kHStafxk'],
@@ -67,6 +68,13 @@ export const CONSTANTS: Constants = {
       thumbnailUrl: "",
       link: "", shouldDisplayLink: DisplayLinkOption.None, category: ["collectibles"]
     },
+    'TezosDomains': {
+      name: 'Tezos Domains',
+      address: [],
+      thumbnailUrl: "",
+      discoverUrl: "../../../assets/img/alias/tezosdomains-discover.png",
+      link: "https://better-call.dev/dapps/tezosdomains", shouldDisplayLink: DisplayLinkOption.All, category: ["collectibles"]
+    },
     'TzColors': {
       address: ["KT1FyaDqiMQWg7Exo7VUiXAgZbd2kCzo3d4s"],
       thumbnailUrl: "../../../assets/img/alias/tzcolors.png",
@@ -81,6 +89,7 @@ export const CONSTANTS: Constants = {
     'Tezotopia': {
       address: ["KT1ViVwoVfGSCsDaxjwoovejm1aYSGz7s2TZ"],
       thumbnailUrl: "../../../assets/img/alias/tezotopia.png",
+      discoverUrl: "../../../assets/img/alias/tezotopia-discover.png",
       link: "https://app.tezotopia.com/marketplace/artifacts", shouldDisplayLink: DisplayLinkOption.All, category: ["collectibles"]
     },
     'Alchememist': {

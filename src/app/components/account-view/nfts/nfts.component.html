@@ -46,7 +46,7 @@
         <div class="flex-column discover" [style.display]="isDiscover ? '' : 'none'">
           <div class="flex-row top">{{ getContractAlias(contractAliases[key]?.category) || '' }}</div>
           <div class="flex-column middle" [style.backgroundColor]="contractAliases[key]?.backgroundColor">
-            <app-asset class="discover" [size]="'raw'" [meta]="contractAliases[key]?.thumbnailUrl"></app-asset>
+            <app-asset class="discover" [size]="'raw'" [meta]="contractAliases[key]?.discoverUrl || contractAliases[key]?.thumbnailUrl"></app-asset>
           </div>
           <div class="flex-row bottom">
             <div class="flex-column left">
