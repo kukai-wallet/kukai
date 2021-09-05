@@ -106,7 +106,7 @@ export const CONSTANTS: Constants = {
     'Kalamint': {
       address: ["KT1DEJEcfiMUWYjn1ZCTbbLokRcP26sx2pTH"],
       thumbnailUrl: "https://testnet.kalamint.io/static/media/logo.2681f48f.svg",
-      link: "https://testnet.kalamint.io/", shouldDisplayLink: DisplayLinkOption.All, category: ["marketplaces"]
+      link: "https://testnet.kalamint.io/", shouldDisplayLink: DisplayLinkOption.All, category: ["marketplaces"], backgroundColor: '#0ab688'
     },
     'Tezotopia': {
       address: ["KT1G1V5hS6ghW95GsUV2ZbEfEHENAvq3zTMn"],

@@ -31,8 +31,8 @@ export const CONSTANTS: Constants = {
     'hen': {
       name: 'Hic et Nunc (HEN)',
       address: ["KT1AFA2mwNUMNd4SsujE1YYp29vd8BZejyKW", "KT1RJ6PbjHpwc3M5rw5s2Nbmefwbuwbdxton", "KT1M2JnD1wsg7w2B4UXJXtKQPuDUpU2L7cJH"],
-      thumbnailUrl: "../../../assets/img/alias/hen.png",
-      link: "https://www.hicetnunc.xyz/", shouldDisplayLink: DisplayLinkOption.All, category: ["marketplaces"]
+      thumbnailUrl: "../../../assets/img/alias/hen.svg",
+      link: "https://www.hicetnunc.xyz/", shouldDisplayLink: DisplayLinkOption.All, category: ["marketplaces"], backgroundColor: 'black'
     },
     'QuipuSwap': {
       address: [],
@@ -46,8 +46,9 @@ export const CONSTANTS: Constants = {
     },
     'Kalamint': {
       address: ["KT1EpGgjQs73QfFJs9z7m1Mxm5MTnpC2tqse"],
-      thumbnailUrl: "../../../assets/img/alias/kalamint.png",
-      link: "https://kalamint.io/", shouldDisplayLink: DisplayLinkOption.All, category: ["marketplaces"]
+      thumbnailUrl: "../../../assets/img/alias/kalamint.svg",
+      link: "https://kalamint.io/", shouldDisplayLink: DisplayLinkOption.All, category: ["marketplaces"],
+      backgroundColor: '#0ab688'
     },
     'InterpopComics': {
       name: "Interpop Comics",
