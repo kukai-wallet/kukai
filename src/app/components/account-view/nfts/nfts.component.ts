@@ -69,7 +69,6 @@ export class NftsComponent implements OnInit, OnDestroy {
     return this.nfts !== undefined;
   }
   toggleDropdown(sel) {
-    const elem = [].slice.call(document.querySelectorAll(`.nfts .collection`));
     const c = document.querySelector('#' + sel) as HTMLElement;
     if (this.filter === sel) {
       this.filter = '';
@@ -93,5 +92,9 @@ export class NftsComponent implements OnInit, OnDestroy {
 
   trackContract(index: number, contract: any) {
     return contract;
+  }
+
+  getContractAlias(category) {
+    return category?.join(' · ');
   }
 }

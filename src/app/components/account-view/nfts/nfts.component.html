@@ -44,13 +44,20 @@
     <ng-container *ngFor="let key of Object.keys(contractAliases)">
       <ng-container *ngIf="shouldDisplayLink(contractAliases[key]?.shouldDisplayLink)">
         <div class="flex-column discover" [style.display]="isDiscover ? '' : 'none'">
-          <div class="category">{{ contractAliases[key]?.category }}</div>
-          <app-asset class="discover" [size]="'raw'" [meta]="contractAliases[key]?.thumbnailUrl"></app-asset>
+          <div class="flex-row top">{{ getContractAlias(contractAliases[key]?.category) || '' }}</div>
+          <div class="flex-column middle">
+            <app-asset class="discover" [size]="'raw'" [meta]="contractAliases[key]?.thumbnailUrl"></app-asset>
+          </div>
           <div class="flex-row bottom">
-            <div class="title">{{ contractAliases[key]?.name || key }}</div>
-            <a [href]="contractAliases[key]?.link || '/'" target="_blank" class="link-to-app">
-              <button class="flex-row button">GO TO APP</button>
-            </a>
+            <div class="flex-column left">
+              <div class="title">{{ contractAliases[key]?.name || key }}</div>
+              <div  class="description">{{ contractAliases[key]?.description }}</div>
+            </div>
+            <div class="flex-column right">
+              <a [href]="contractAliases[key]?.link || '/'" target="_blank" class="link-to-app">
+                <button class="flex-row button">GO <img src="assets/img/discover-right-angle.svg" /></button>
+              </a>
+            </div>
           </div>
         </div>
       </ng-container>

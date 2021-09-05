@@ -49,9 +49,8 @@
     & img,
     & #modelCanvas {
       object-fit: scale-down;
-      width: calc(100% - 4rem);
-      height: 12rem;
-      padding: 2rem;
+      width: 100%;
+      height: 100%;
     }
   }
 

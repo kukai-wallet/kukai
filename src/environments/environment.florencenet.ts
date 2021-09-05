@@ -57,7 +57,7 @@ export const CONSTANTS: Constants = {
     'PixelPotus': {
       address: ["KT1D1S7KywvhzrTWHBo9MWUn5x3R9vxBmbio"],
       thumbnailUrl: "https://www.pixelpotus.com/img/eagle-right.d1840b0b.png",
-      link: "https://pixelpotus-frontend-172tineil-pixelpotus.vercel.app/", shouldDisplayLink: DisplayLinkOption.All, category: "collectibles"
+      link: "https://pixelpotus-frontend-172tineil-pixelpotus.vercel.app/", shouldDisplayLink: DisplayLinkOption.All, category: ["collectibles"]
     },
     'MysteryMap': {
       address: ["KT1MktwJ9ud6i57e4NKzBkwweEArVsMobHrU"],
@@ -81,7 +81,7 @@ export const CONSTANTS: Constants = {
       //   filename: 'u4tdtnfwszmavwllohvxnhm6x6udvp',
       //   extension: 'svg'
       // },
-      link: "https://minterpop.vercel.app/", shouldDisplayLink: DisplayLinkOption.DirectAuth, category: "collectibles"
+      link: "https://minterpop.vercel.app/", shouldDisplayLink: DisplayLinkOption.DirectAuth, category: ["collectibles"]
     },
     "MinterPopDev": {
       name: 'MinterPop Dev',
@@ -91,7 +91,7 @@ export const CONSTANTS: Constants = {
       //   filename: 'u4tdtnfwszmavwllohvxnhm6x6udvp',
       //   extension: 'svg'
       // },
-      link: "https://minterpop-dev.vercel.app/", shouldDisplayLink: DisplayLinkOption.DirectAuth, category: "collectibles"
+      link: "https://minterpop-dev.vercel.app/", shouldDisplayLink: DisplayLinkOption.DirectAuth, category: ["collectibles"]
     },
     'PixelPotusv2': {
       name: 'PixelPotus v2',
@@ -101,12 +101,12 @@ export const CONSTANTS: Constants = {
       //   filename: '5oqkhgoiie2dqyylrvk47spwt4webt',
       //   extension: 'png'
       // },
-      link: "https://pixelpotus-frontend-r7y63b2h9-pixelpotus.vercel.app/", shouldDisplayLink: DisplayLinkOption.All, category: "collectibles"
+      link: "https://pixelpotus-frontend-r7y63b2h9-pixelpotus.vercel.app/", shouldDisplayLink: DisplayLinkOption.All, category: ["collectibles"]
     },
     'Kalamint': {
       address: ["KT1DEJEcfiMUWYjn1ZCTbbLokRcP26sx2pTH"],
       thumbnailUrl: "https://testnet.kalamint.io/static/media/logo.2681f48f.svg",
-      link: "https://testnet.kalamint.io/", shouldDisplayLink: DisplayLinkOption.All, category: "marketplaces"
+      link: "https://testnet.kalamint.io/", shouldDisplayLink: DisplayLinkOption.All, category: ["marketplaces"]
     },
     'Tezotopia': {
       address: ["KT1G1V5hS6ghW95GsUV2ZbEfEHENAvq3zTMn"],
@@ -121,7 +121,7 @@ export const CONSTANTS: Constants = {
       //   filename: '2fl5x5wifmqwbsd6d4axz5wrxwlpqv',
       //   extension: 'svg'
       // },
-      link: "https://dev.interpopcomics.com/", shouldDisplayLink: DisplayLinkOption.DirectAuth, category: "collectibles"
+      link: "https://dev.interpopcomics.com/", shouldDisplayLink: DisplayLinkOption.DirectAuth, category: ["collectibles"]
     }
   },
   ASSETS: {
