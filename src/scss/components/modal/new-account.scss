@@ -17,4 +17,10 @@
     @include m.multiply('font-size',1.25);
     margin: 0 0 2rem 0;
   }
+
+  & button.confirm {
+    width: 50%;
+    margin: 0;
+    align-self: center;
+  }
 }

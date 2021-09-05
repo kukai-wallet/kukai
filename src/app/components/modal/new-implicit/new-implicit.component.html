@@ -11,10 +11,10 @@
       <input #pwdInput [(ngModel)]="password" class="text password" autocomplete="current-password"
         placeholder="Password" type="password" (input)="this.errorMsg = ''" (change)="this.errorMsg = ''" (keydown.enter)="addPkh()">
       <span *ngIf="this.errorMsg" class="danger margin">{{ this.errorMsg }}</span>
-    </div>
-    <div class="seperator"></div>
-    <div class="flex-column bottom">
-      <button class="confirm" (click)="addPkh()">Confirm</button>
+      <div class="seperator"></div>
+      <div class="flex-column bottom">
+        <button class="confirm" (click)="addPkh()">Confirm</button>
+      </div>
     </div>
   </div>
 </div>
