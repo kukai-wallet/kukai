@@ -36,7 +36,7 @@ export class MnemonicImportComponent implements OnInit, OnDestroy {
   Downloaded = false;
   fileName = '';
   showWrongFileUploadMsg: false;
-  firefox = false;
+  browser = 'unknown';
   advancedForm = false;
 
   private subscriptions: Subscription = new Subscription();
@@ -59,22 +59,12 @@ export class MnemonicImportComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.checkBrowser();
   }
 
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
   }
 
-  checkBrowser() {
-    try {
-      if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
-        this.firefox = true;
-      }
-    } catch (e) {
-      console.warn(e);
-    }
-  }
   retrieve() {
     if (this.mnemonic) {
       this.mnemonic = this.mnemonic.toLowerCase().replace(/(\r\n|\n|\r)/gm, ' ').trim();

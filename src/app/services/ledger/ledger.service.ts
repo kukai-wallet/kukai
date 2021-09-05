@@ -39,7 +39,7 @@ export class LedgerService {
   }
   private useWebHID(): boolean {
     try {
-      const isUnix = navigator.platform.indexOf('Mac') > -1|| navigator.platform.indexOf('Linux') > -1;
+      const isUnix = navigator.platform.indexOf('Mac') > -1 || navigator.platform.indexOf('Linux') > -1;
       const isChrome = (navigator as any).userAgentData?.brands?.some(b => (b.brand === 'Google Chrome' || 'Chromium') && (parseInt(b.version, 10) > 89));
       return (isUnix && isChrome);
     } catch (e) {

@@ -10,6 +10,6 @@
     <app-ui-toggle-advanced style="width: 24rem;" [default]="false" [text]="'Use custom HD derivation path:'"
       (stateChange)="setDefaultPath($event)"></app-ui-toggle-advanced>
       <br/><br/><br/>
-    <button class="button next" (click)="getPk()">Connect</button>
+    <button class="button next" (click)="getPk()" [disabled]="browser === 'safari'">{{ browser !== 'safari' ? 'Connect' : 'Ledger support with Safari is currently unavailable' }}</button>
   </div>
 </div>

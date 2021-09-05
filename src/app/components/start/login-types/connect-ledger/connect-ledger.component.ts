@@ -18,6 +18,7 @@ export class ConnectLedgerComponent implements OnInit {
   path: string;
   pendingLedgerConfirmation = false;
   isHDDerivationPathCustom = false;
+  browser = 'unknown';
 
   constructor(
     private router: Router,
@@ -29,6 +30,20 @@ export class ConnectLedgerComponent implements OnInit {
 
   ngOnInit() {
     this.path = this.defaultText;
+    this.checkBrowser();
+  }
+  checkBrowser() {
+    try {
+      if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
+        this.browser = 'firefox';
+      } else if((navigator as any)?.userAgentData?.brands?.some(b => (b.brand === 'Google Chrome' || 'Chromium'))) {
+        this.browser = 'chromium';
+      } else if((navigator as any)?.userAgent.toLowerCase().indexOf('safari') > -1 && navigator.platform.indexOf('Mac') === -1) {
+        this.browser = 'safari';
+      }
+    } catch (e) {
+      console.warn(e);
+    }
   }
   async getPk() {
     const path: string = this.path.replace(this.defaultText, this.defaultPath);

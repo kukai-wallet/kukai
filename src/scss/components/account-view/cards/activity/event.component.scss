@@ -12,7 +12,7 @@ $border-color-dark-only: v.$border-color-dark-only;
 $border-radius: v.$border-radius;
 $border-width: v.$border-width;
 $event-unconfirmed: #dae1e6;
-$event-confirmed: #e3e7eb;
+$event-confirmed: v.$base-color-lightened-65;
 $event-new: v.$base-end-color;
 
 :host {
