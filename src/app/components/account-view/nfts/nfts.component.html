@@ -54,7 +54,7 @@
               <div class="description">{{ contractAliases[key]?.description }}</div>
             </div>
             <div class="flex-column right">
-              <a [href]="contractAliases[key]?.link || '/'" target="_blank" class="link-to-app">
+              <a rel="noreferrer" [href]="contractAliases[key]?.link || '/'" target="_blank" class="link-to-app">
                 <button class="flex-row button">GO <img src="assets/img/discover-right-angle.svg" /></button>
               </a>
             </div>
