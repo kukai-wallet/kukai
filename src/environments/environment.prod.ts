@@ -32,13 +32,15 @@ export const CONSTANTS: Constants = {
       name: 'Hic et Nunc (HEN)',
       address: ["KT1AFA2mwNUMNd4SsujE1YYp29vd8BZejyKW", "KT1RJ6PbjHpwc3M5rw5s2Nbmefwbuwbdxton", "KT1M2JnD1wsg7w2B4UXJXtKQPuDUpU2L7cJH"],
       thumbnailUrl: "../../../assets/img/alias/hen.svg",
-      link: "https://www.hicetnunc.xyz/", shouldDisplayLink: DisplayLinkOption.All, category: ["marketplaces"], backgroundColor: 'black'
+      link: "https://www.hicetnunc.xyz/", shouldDisplayLink: DisplayLinkOption.All, category: ["marketplaces"], backgroundColor: 'black',
+      description: "The largest independent artist-friendly NFT Marketplace"
     },
     'QuipuSwap': {
       address: [],
       thumbnailUrl: "../../../assets/img/alias/quipuswap_logo.jpeg",
       discoverUrl: "../../../assets/img/alias/quipuswap-discover.jpeg",
-      link: "https://quipuswap.com/", shouldDisplayLink: DisplayLinkOption.All, category: ["exchanges"], backgroundColor: '#222d47'
+      link: "https://quipuswap.com/", shouldDisplayLink: DisplayLinkOption.All, category: ["exchanges"], backgroundColor: '#222d47',
+      description: "A decentralized exchange on Tezos"
     },
     "MinterPop": {
       address: ['KT1AaaBSo5AE6Eo8fpEN5xhCD4w3kHStafxk'],

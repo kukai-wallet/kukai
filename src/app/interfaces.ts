@@ -131,6 +131,6 @@ export interface Constants {
   },
   ASSETS: Record<string, ContractType>;
   CONTRACT_OVERRIDES: Record<string, ContractOverrideType>;
-  CONTRACT_ALIASES: Record<string, { name?: string, address: string[], thumbnailUrl: Asset, discoverUrl?: string, link: string, shouldDisplayLink: DisplayLinkOption, category?: string[], backgroundColor?: string }>;
+  CONTRACT_ALIASES: Record<string, { name?: string, address: string[], thumbnailUrl: Asset, discoverUrl?: string, link: string, shouldDisplayLink: DisplayLinkOption, category?: string[], backgroundColor?: string, description?: string }>;
   NFT_CONTRACT_OVERRIDES: string[];
 }
