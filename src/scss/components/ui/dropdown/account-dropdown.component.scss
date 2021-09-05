@@ -7,6 +7,7 @@ $base-color-lightened-6: v.$base-color-lightened-6;
 $base-color-lightened-7: #f2f4f7;
 $border-width: v.$border-width;
 $border-color: v.$border-color;
+$box-shadow-dark: v.$box-shadow-dark;
 
 
 .dropdown {
@@ -87,8 +88,10 @@ $border-color: v.$border-color;
     display: none;
     z-index: 100;
     overflow: hidden;
-    width: calc(100% - 1rem);
+    width: calc(100% - 1rem + 2px);
     top: 3.78rem;
+    border: 1px solid $base-color-lightened-6;
+    box-shadow: $box-shadow-dark;
 
     &.right {
       margin-top: -1.1rem;
@@ -105,7 +108,6 @@ $border-color: v.$border-color;
       color: v.$base-font-color;
       padding: 0.75rem 1.875rem;
       text-decoration: none;
-      display: block;
       cursor: pointer;
 
       &:hover {
