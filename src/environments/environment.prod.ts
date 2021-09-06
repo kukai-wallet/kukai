@@ -796,6 +796,18 @@ export const CONSTANTS: Constants = {
           isTransferable: true,
           shouldPreferSymbol: false,
           status: 1
+        },
+        69: {
+          name: 'Bear Pawtrait',
+          symbol: 'Tezos',
+          decimals: 0,
+          description: 'NFTs are changing everything...but what exactly is an NFT? A Nice Foliage Trim? Discover how Tezos is changing NFTs.',
+          displayAsset: 'https://cloudflare-ipfs.com/ipfs/QmW9RfyhsMxZLoJjLRFUSZ2SEjVSwu6TjcqEnH8ephzWtU',
+          thumbnailAsset: 'https://cloudflare-ipfs.com/ipfs/QmW9RfyhsMxZLoJjLRFUSZ2SEjVSwu6TjcqEnH8ephzWtU',
+          isBooleanAmount: false,
+          isTransferable: true,
+          shouldPreferSymbol: false,
+          status: 1
         }
       }
     }
