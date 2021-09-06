@@ -118,26 +118,34 @@ $event-new: v.$base-end-color;
 
       & img {
         margin: 0 0.5rem 0 0;
+        width: 1.5rem;
+        height: auto;
+      }
+
+      & .dot {
+        height: 1rem;
+        width: 1rem;
+        margin: 0 1rem 0 0;
+        background-color: $base-font-color;
+        border-radius: $border-radius;
+        display: inline-block;
       }
     }
 
     & .address {
       width: 100%;
       justify-content: flex-start;
+      font-family: "Roboto Mono", "Roboto";
       @include m.multiply("font-size", 1.125);
-
-      & .prefix,
-      & .value {
-        color: $base-font-color-secondary;
-      }
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      display: inline-block;
+      color: $base-font-color-secondary;
+      margin: 0 0 0 2.25rem;
 
       & .prefix {
-        @include m.multiply("font-size", 1.125, "rem", 1.3);
-      }
-
-      & .value {
-        justify-content: flex-start;
-        font-family: "Roboto Mono", "Roboto";
+        color: $base-font-color-secondary;
         @include m.multiply("font-size", 1.125);
       }
 
@@ -156,10 +164,12 @@ $event-new: v.$base-end-color;
       text-align: right;
       color: $base-font-color;
       justify-content: flex-end;
+      width: 11rem;
+      display: block;
       & img {
         width: 1rem;
         height: 1rem;
-        margin: 0 0.5rem 0 0;
+        margin: 0 0.25rem 0 0;
       }
       & a {
         color: $base-font-color;
