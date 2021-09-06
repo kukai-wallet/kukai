@@ -68,7 +68,8 @@ export const CONSTANTS: Constants = {
     },
     'Kalamint': {
         address: ["KT1EpGgjQs73QfFJs9z7m1Mxm5MTnpC2tqse"],
-        thumbnailUrl: "../../../assets/img/alias/kalamint.svg",
+        thumbnailUrl: "../../../assets/img/alias/kalamint-thumbnail.png",
+        discoverUrl: "../../../assets/img/alias/kalamint.svg",
         link: "https://kalamint.io/", shouldDisplayLink: DisplayLinkOption.All, category: ["marketplace"],
         backgroundColor: '#0ab688',
         description: "Create, sell and collect NFTs"
