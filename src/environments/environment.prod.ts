@@ -33,69 +33,79 @@ export const CONSTANTS: Constants = {
       address: ["KT1AFA2mwNUMNd4SsujE1YYp29vd8BZejyKW", "KT1RJ6PbjHpwc3M5rw5s2Nbmefwbuwbdxton", "KT1M2JnD1wsg7w2B4UXJXtKQPuDUpU2L7cJH"],
       thumbnailUrl: "../../../assets/img/alias/hen.png",
       discoverUrl: "../../../assets/img/alias/hen.svg",
-      link: "https://www.hicetnunc.xyz/", shouldDisplayLink: DisplayLinkOption.All, category: ["marketplaces"], backgroundColor: 'black',
-      description: "The largest independent artist-friendly NFT Marketplace"
+      link: "https://www.hicetnunc.xyz/", shouldDisplayLink: DisplayLinkOption.All, category: ["marketplace"], backgroundColor: 'black',
+      description: "Largest independent artist-friendly NFT Marketplace"
     },
     'QuipuSwap': {
       address: [],
       thumbnailUrl: "../../../assets/img/alias/quipuswap_logo.jpeg",
       discoverUrl: "../../../assets/img/alias/quipuswap-discover.jpeg",
-      link: "https://quipuswap.com/", shouldDisplayLink: DisplayLinkOption.All, category: ["exchanges"], backgroundColor: '#222d47',
+      link: "https://quipuswap.com/", shouldDisplayLink: DisplayLinkOption.All, category: ["exchange"], backgroundColor: '#222d47',
       description: "A decentralized exchange on Tezos"
     },
     "MinterPop": {
       address: ['KT1AaaBSo5AE6Eo8fpEN5xhCD4w3kHStafxk'],
       thumbnailUrl: "../../../assets/img/alias/minterpop.svg",
-      link: "https://minterpop.vercel.app", shouldDisplayLink: DisplayLinkOption.DirectAuth, category: ["collectibles"]
+      discoverUrl: "../../../assets/img/alias/minterpop-discover.png",
+      link: "https://minterpop.com/", shouldDisplayLink: DisplayLinkOption.All, category: ["collectibles"],
+      description: "Curated NFT art and collectibles marketplace"
     },
-    'Kalamint': {
-      address: ["KT1EpGgjQs73QfFJs9z7m1Mxm5MTnpC2tqse"],
-      thumbnailUrl: "../../../assets/img/alias/kalamint.svg",
-      link: "https://kalamint.io/", shouldDisplayLink: DisplayLinkOption.All, category: ["marketplaces"],
-      backgroundColor: '#0ab688'
+    'TezosDomains': {
+        name: 'Tezos Domains',
+        address: ["KT1GBZmSxmnKJXGMdMLbugPfLyUPmuLSMwKS"],
+        thumbnailUrl: "",
+        discoverUrl: "../../../assets/img/alias/tezosdomains-discover.png",
+        link: "https://tezos.domains/", shouldDisplayLink: DisplayLinkOption.All, category: ["identity"],
+        description: "Friendly names on Tezos"
     },
     'InterpopComics': {
       name: "Interpop Comics",
       address: ["KT1UxMVVrK2pbYYEtwes1zKYdpYnzoZ6yPKC"],
       thumbnailUrl: "../../../assets/img/alias/interpop.svg",
-      link: "https://dev.interpopcomics.com/", shouldDisplayLink: DisplayLinkOption.DirectAuth, category: ["collectibles"]
+      discoverUrl: "../../../assets/img/alias/interpop-discover.png",
+      link: "https://interpopcomics.com/", shouldDisplayLink: DisplayLinkOption.All, category: ["collectibles"],
+      description: "Digitally native comics as NFTs"
+    },
+    'Kalamint': {
+        address: ["KT1EpGgjQs73QfFJs9z7m1Mxm5MTnpC2tqse"],
+        thumbnailUrl: "../../../assets/img/alias/kalamint.svg",
+        link: "https://kalamint.io/", shouldDisplayLink: DisplayLinkOption.All, category: ["marketplace"],
+        backgroundColor: '#0ab688',
+        description: "Create, sell and collect NFTs"
+    },
+    'PixelPotus': {
+        name: 'PixelPotus',
+        address: ["KT1WGDVRnff4rmGzJUbdCRAJBmYt12BrPzdD"],
+        thumbnailUrl: "../../../assets/img/alias/pixelpotus.png",
+        link: "https://www.pixelpotus.com/", shouldDisplayLink: DisplayLinkOption.All, category: ["game", "collectibles"],
+        description: "Collectibles game with FREE daily NFTs"
+    },
+    'TzColors': {
+        address: ["KT1FyaDqiMQWg7Exo7VUiXAgZbd2kCzo3d4s"],
+        thumbnailUrl: "../../../assets/img/alias/tzcolors.png",
+        link: "https://www.tzcolors.io/", shouldDisplayLink: DisplayLinkOption.All, category: ["collectibles"],
+        description: "Unique colors as NFT tokens on Tezos"
+    },
+    'Tezotopia': {
+        address: ["KT1ViVwoVfGSCsDaxjwoovejm1aYSGz7s2TZ"],
+        thumbnailUrl: "../../../assets/img/alias/tezotopia.png",
+        discoverUrl: "../../../assets/img/alias/tezotopia-discover.png",
+        link: "https://app.tezotopia.com/marketplace/artifacts", shouldDisplayLink: DisplayLinkOption.All, category: ["game", "collectibles"],
+        description: "Battle, earn, win prizes plus NFT yield farming"
     },
     'Bazaar Market': {
       address: ["KT1PKvHNWuWDNVDtqjDha4AostLrGDu4G1jy"],
       thumbnailUrl: "../../../assets/img/alias/bazaar.png",
       backgroundColor: "#4a9fd5",
       discoverUrl: "../../../assets/img/alias/bazaar.svg",
-      link: "https://bazaarnft.xyz/", shouldDisplayLink: DisplayLinkOption.All, category: ["marketplaces"]
+      link: "https://bazaarnft.xyz/", shouldDisplayLink: DisplayLinkOption.All, category: ["marketplace"],
+      description: "Create and mint NFTs guilt-free"
     },
     'TezosCampaigns': {
       name: 'Tezos Campaigns',
       address: ["KT1BA9igcUcgkMT4LEEQzwURsdMpQayfb6i4", "KT1JXZPcfEnxswdzYLox1LeALWTkSm1nsdhp"],
-      thumbnailUrl: "",
+      thumbnailUrl: "../../../assets/img/alias/tezos-campaigns-thumbnail.jpeg",
       link: "", shouldDisplayLink: DisplayLinkOption.None, category: ["collectibles"]
-    },
-    'TezosDomains': {
-      name: 'Tezos Domains',
-      address: [],
-      thumbnailUrl: "",
-      discoverUrl: "../../../assets/img/alias/tezosdomains-discover.png",
-      link: "https://better-call.dev/dapps/tezosdomains", shouldDisplayLink: DisplayLinkOption.All, category: ["collectibles"]
-    },
-    'TzColors': {
-      address: ["KT1FyaDqiMQWg7Exo7VUiXAgZbd2kCzo3d4s"],
-      thumbnailUrl: "../../../assets/img/alias/tzcolors.png",
-      link: "https://www.tzcolors.io/", shouldDisplayLink: DisplayLinkOption.All, category: ["collectibles"]
-    },
-    'PixelPotus': {
-      name: 'PixelPotus',
-      address: ["KT1WGDVRnff4rmGzJUbdCRAJBmYt12BrPzdD"],
-      thumbnailUrl: "../../../assets/img/alias/pixelpotus.png",
-      link: "https://www.pixelpotus.com/", shouldDisplayLink: DisplayLinkOption.All, category: ["collectibles"]
-    },
-    'Tezotopia': {
-      address: ["KT1ViVwoVfGSCsDaxjwoovejm1aYSGz7s2TZ"],
-      thumbnailUrl: "../../../assets/img/alias/tezotopia.png",
-      discoverUrl: "../../../assets/img/alias/tezotopia-discover.png",
-      link: "https://app.tezotopia.com/marketplace/artifacts", shouldDisplayLink: DisplayLinkOption.All, category: ["collectibles"]
     },
     'Alchememist': {
       address: ["KT1W4wh1qDc2g22DToaTfnCtALLJ7jHn38Xc", "KT1Em3sjKdHo3Fo9Az4EusZXQbkgsdZHkQkF"],
