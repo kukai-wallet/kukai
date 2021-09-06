@@ -218,7 +218,7 @@ export class ErrorHandlingPipe implements PipeTransform {
       id: 'proto.alpha.gas_limit_too_high',
     },
     {
-      msg: 'No manager operations are allowed on an empty account. Make sure you have enought balance.',
+      msg: 'No manager operations are allowed on an empty account. Make sure you have enough balance.',
       id: 'proto.alpha.implicit.empty_implicit_contract',
     },
     {
@@ -559,7 +559,7 @@ export class ErrorHandlingPipe implements PipeTransform {
     {
       msg:
         'The block being validated does not include the required minimum number of endorsements for this priority.',
-      id: 'proto.alpha.operation.not_enought_endorsements_for_priority',
+      id: 'proto.alpha.operation.not_enough_endorsements_for_priority',
     },
     {
       msg:
