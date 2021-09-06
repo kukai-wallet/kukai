@@ -50,42 +50,39 @@ export class TzktService implements Indexer {
     const tokens = [];
     const unknownTokenIds = [];
     const aryTokens: any[] = await this.getTokenBalancesUsingPromiseAll(address);
-    return fetch(`${this.bcd}/account/${this.network}/${address}`)
-      .then(response => response.json())
-      .then(data => {
-        if (data) {
-          // inject aryTokens result back into where tokens property used to be
-          data.tokens = aryTokens;
-          if (data?.tokens?.length) {
-            for (const token of data.tokens) {
-              tokens.push(token);
-              if (!knownTokenIds.includes(`${token.contract}:${token.token_id}`)) {
-                unknownTokenIds.push(`${token.contract}:${token.token_id}`);
-              }
-            }
-          }
-          tokens.sort(
-            function (a: any, b: any) {
-              if (`${a.contract}:${a.token_id}` < `${b.contract}:${b.token_id}`) {
-                return -1;
-              } else {
-                return 1;
-              }
-            }
-          );
-          const payload: string =
-            (data.balance ? data.balance : '') +
-            (data.last_action ? data.last_action : '') +
-            (tokens ? JSON.stringify(tokens) : '');
-          const input = Buffer.from(payload);
-          const hash = cryptob.createHash('md5').update(input, 'base64').digest('hex');
-          if (payload && (payload !== '0001-01-01T00:00:00Z[]') && payload !== '[]') {
-            const balance = data?.balance !== undefined ? data.balance : 0;
-            return { counter: hash, unknownTokenIds, tokens, balance };
+    const data = await (await fetch(`${this.bcd}/account/${this.network}/${address}`)).json();
+    if (data) {
+      // inject aryTokens result back into where tokens property used to be
+      data.tokens = aryTokens;
+      if (data?.tokens?.length) {
+        for (const token of data.tokens) {
+          tokens.push(token);
+          if (!knownTokenIds.includes(`${token.contract}:${token.token_id}`)) {
+            unknownTokenIds.push(`${token.contract}:${token.token_id}`);
           }
         }
-        return { counter: '', unknownTokenIds, tokens };
-      });
+      }
+      tokens.sort(
+        function (a: any, b: any) {
+          if (`${a.contract}:${a.token_id}` < `${b.contract}:${b.token_id}`) {
+            return -1;
+          } else {
+            return 1;
+          }
+        }
+      );
+      const payload: string =
+        (data.balance ? data.balance : '') +
+        (data.last_action ? data.last_action : '') +
+        (tokens ? JSON.stringify(tokens) : '');
+      const input = Buffer.from(payload);
+      const hash = cryptob.createHash('md5').update(input, 'base64').digest('hex');
+      if (payload && (payload !== '0001-01-01T00:00:00Z[]') && payload !== '[]') {
+        const balance = data?.balance !== undefined ? data.balance : 0;
+        return { counter: hash, unknownTokenIds, tokens, balance };
+      }
+    }
+    return { counter: '', unknownTokenIds, tokens };
   }
   async isUsedAccount(address: string): Promise<boolean> {
     const accountInfo = await (await fetch(`${this.bcd}/account/${this.network}/${address}`)).json();
