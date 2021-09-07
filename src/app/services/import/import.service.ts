@@ -170,6 +170,7 @@ export class ImportService {
         this.walletService.initStorage();
         this.walletService.wallet = new WatchWallet();
         this.walletService.addImplicitAccount(pk);
+        this.findContracts(this.walletService.wallet.implicitAccounts[0].pkh);
       } else {
         console.error('Public key not found');
       }

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { TokenResponseType, TokenService } from '../token/token.service';
 import { ActivityService } from '../activity/activity.service';
 import { WalletService } from '../wallet/wallet.service';
-import { Account } from '../wallet/wallet';
+import { Account, OriginatedAccount } from '../wallet/wallet';
 import Big from 'big.js';
 import { CONSTANTS } from '../../../environments/environment';
 import { decode } from 'blurhash';
@@ -124,7 +124,11 @@ export class TokenBalancesService {
       });
       this._thumbnailsToCreate = [];
     }
-    this.subjectService.nftsUpdated.next(this.nfts);
+    if (this.activeAccount instanceof OriginatedAccount) {
+      this.subjectService.nftsUpdated.next(undefined);
+    } else {
+      this.subjectService.nftsUpdated.next(this.nfts);
+    }
   }
   orderedNfts(nfts: ContractsWithBalance): ContractsWithBalance {
     const _nfts: ContractsWithBalance = {};

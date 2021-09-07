@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { TorusWallet } from '../../../services/wallet/wallet';
+import { Account, TorusWallet } from '../../../services/wallet/wallet';
 import { WalletService } from '../../../services/wallet/wallet.service';
 import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from '../../../services/message/message.service';
@@ -27,6 +27,7 @@ export class NftsComponent implements OnInit, OnDestroy {
   isInitLoad: boolean = true;
   filter: string = 'APP';
   contractAliases = Object.keys(CONSTANTS.CONTRACT_ALIASES).map((key: any) => ({key: key, ...(CONSTANTS.CONTRACT_ALIASES[key])}));
+  activeAddress: string = '';
   private subscriptions: Subscription = new Subscription();
   constructor(
     public translate: TranslateService,
@@ -37,6 +38,11 @@ export class NftsComponent implements OnInit, OnDestroy {
     private walletService: WalletService
   ) {
     this.subscriptions.add(this.subjectService.nftsUpdated.subscribe(nfts => {
+      const activeAddress = this.walletService.activeAccount.getValue()?.address;
+      if (activeAddress !== this.activeAddress) {
+        this.activeAddress = activeAddress;
+        this.reset();
+      }
       if(this.isInitLoad) {
         if (!nfts || !Object.keys(nfts)?.length) {
           this.isDiscover = true;
@@ -52,15 +58,16 @@ export class NftsComponent implements OnInit, OnDestroy {
     }));
     this.subscriptions.add(this.subjectService.logout.subscribe(o => {
       if (o) {
-        this.nfts = undefined;
-        this.isDiscover = false;
-        this.tokens = [];
-        this.isInitLoad = false;
+        this.reset();
+        this.activeAddress = '';
       }
     }));
     this.subscriptions.add(this.walletService.activeAccount.subscribe(activeAccount => {
-      this.isInitLoad = true;
-      this.filter = 'APP';
+      const activeAddress = activeAccount?.address;
+      if (activeAddress !== this.activeAddress) {
+        this.activeAddress = activeAddress;
+        this.reset();
+      }
     }));
   }
   @Input() activity: any;
@@ -102,5 +109,12 @@ export class NftsComponent implements OnInit, OnDestroy {
 
   getContractAlias(category) {
     return category?.join(' · ');
+  }
+  reset() {
+    this.nfts = undefined;
+    this.isDiscover = false;
+    this.tokens = [];
+    this.isInitLoad = true;
+    this.filter = 'APP';
   }
 }

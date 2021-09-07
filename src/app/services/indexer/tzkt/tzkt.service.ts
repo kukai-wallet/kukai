@@ -49,8 +49,8 @@ export class TzktService implements Indexer {
   async accountInfo(address: string, knownTokenIds: string[]): Promise<any> {
     const tokens = [];
     const unknownTokenIds = [];
-    const aryTokens: any[] = await this.getTokenBalancesUsingPromiseAll(address);
     const data = await (await fetch(`${this.bcd}/account/${this.network}/${address}`)).json();
+    const aryTokens: any[] = address.startsWith('tz') ? await this.getTokenBalancesUsingPromiseAll(address) : [];
     if (data) {
       // inject aryTokens result back into where tokens property used to be
       data.tokens = aryTokens;
