@@ -53,7 +53,6 @@ $box-shadow: 0px 4px 6px #3332;
     width: calc(50% - 2rem);
     border-bottom: none;
     @include m.multiply("font-size", 1.5);
-    max-height: 8rem;
   }
 }
 
