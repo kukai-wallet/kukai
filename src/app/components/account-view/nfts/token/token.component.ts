@@ -29,9 +29,7 @@ export class NftsTokenComponent implements OnInit, OnChanges {
   ngOnInit(): void {
   }
   ngOnChanges(changes: SimpleChanges) {
-    console.log(changes);
-    if(changes.token.previousValue?.balance > -1 && changes.token.currentValue?.balance > -1 && (changes.token.currentValue?.balance !== changes.token.previousValue?.balance)) {
-      console.log("change");
+    if(changes.token.previousValue?.balance > -1 && changes.token.currentValue?.balance > -1 && (changes.token.currentValue?.balance != changes.token.previousValue?.balance)) {
       this.isNew = true;
     }
   }

@@ -78,7 +78,6 @@ export class AssetComponent implements OnInit, OnChanges, AfterViewInit {
     if (typeof (this.meta) === 'object') {
       this.mimeType = Object.keys(mimes).filter(key => !!mimes[key]?.extensions?.length).find((key) => mimes[key].extensions.includes((this.meta as CachedAsset)?.extension));
       this.dataSrc = `${this.baseUrl}/${this.meta.filename}_${this.size}.${this.meta.extension}`;
-      console.log("viewed");
     } else if (typeof (this.meta) === 'string' && this.meta) {
       this.dataSrc = this.meta;
     } else if (!this.meta) {

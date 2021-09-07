@@ -1,5 +1,5 @@
 <div class="flex-row token" [class.new]="isNew" (click)="viewToken(token)">
-  <div *ngIf="isNew" class="dot"></div>
+  <div class="dot"></div>
   <div class="img-wrapper">
     <app-asset class="icon" (inView)="balanceChangeTimer()" [meta]="token?.thumbnailAsset || token?.displayAsset"></app-asset>
     <div *ngIf="Number.parseInt(token?.balance) > 1" class="balance">{{

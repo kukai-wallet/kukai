@@ -21,11 +21,12 @@ export class NftsComponent implements OnInit, OnDestroy {
   Object = Object;
   Number = Number;
   nfts = undefined;
+  nftsArray = [];
   tokens = [];
   isDiscover: boolean = false;
   isInitLoad: boolean = true;
   filter: string = 'APP';
-  contractAliases = CONSTANTS.CONTRACT_ALIASES;
+  contractAliases = Object.keys(CONSTANTS.CONTRACT_ALIASES).map((key: any) => ({key: key, ...(CONSTANTS.CONTRACT_ALIASES[key])}));
   private subscriptions: Subscription = new Subscription();
   constructor(
     public translate: TranslateService,
@@ -44,7 +45,9 @@ export class NftsComponent implements OnInit, OnDestroy {
           this.isDiscover = false;
         }
       }
+      console.log("here");
       this.nfts = nfts;
+      this.nftsArray = nfts ? Object.keys(nfts).map((key: any) => ({key: key, ...(nfts[key])})) : [];
       this.tokens = nfts ? Object.keys(nfts).map((key: any) => nfts[key]?.tokens).flat() : [];
     }));
     this.subscriptions.add(this.subjectService.logout.subscribe(o => {
@@ -62,7 +65,9 @@ export class NftsComponent implements OnInit, OnDestroy {
   }
   @Input() activity: any;
   @Input() account;
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    console.log(this.nfts)
+  }
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
   }
@@ -88,11 +93,11 @@ export class NftsComponent implements OnInit, OnDestroy {
     return false;
   }
   sanitizeKey(key: string) {
-    return key.replace(/ /g, '');
+    return key?.replace(/ /g, '');
   }
 
-  trackContract(index: number, contract: any) {
-    return contract;
+  trackContract(index: number, key: any) {
+    return key;
   }
 
   getContractAlias(category) {
