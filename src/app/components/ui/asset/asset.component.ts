@@ -15,6 +15,7 @@ export class AssetComponent implements OnInit, OnChanges, AfterViewInit {
   @ViewChild('preImage') preImage;
   @Input() meta: Asset;
   @Input() size = '150x150';
+  @Output() inView = new EventEmitter(null);
   @Output() loaded = new EventEmitter(null);
   @Input() controls = false;
   @Input() autoplay = false;
@@ -27,6 +28,7 @@ export class AssetComponent implements OnInit, OnChanges, AfterViewInit {
   preSrc = this.loaderUrl;
   postSrc = this.loaderUrl;
   mimeType = 'image/*';
+  viewed = false;
 
   obs: IntersectionObserver;
 
@@ -69,13 +71,14 @@ export class AssetComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   async evaluate() {
-    if(this.isEqualUrl()) { return; }
+    if (this.isEqualUrl()) { return; }
     this.dataSrc = undefined;
     this.postSrc = this.loaderUrl;
     this.mimeType = 'image/*';
     if (typeof (this.meta) === 'object') {
       this.mimeType = Object.keys(mimes).filter(key => !!mimes[key]?.extensions?.length).find((key) => mimes[key].extensions.includes((this.meta as CachedAsset)?.extension));
       this.dataSrc = `${this.baseUrl}/${this.meta.filename}_${this.size}.${this.meta.extension}`;
+      console.log("viewed");
     } else if (typeof (this.meta) === 'string' && this.meta) {
       this.dataSrc = this.meta;
     } else if (!this.meta) {
@@ -96,12 +99,14 @@ export class AssetComponent implements OnInit, OnChanges, AfterViewInit {
         if (entry.isIntersecting) {
           const lazyAsset = entry.target as HTMLImageElement | HTMLVideoElement;
           //console.log("lazy loading ", lazyAsset)
-          if (lazyAsset instanceof HTMLImageElement) {
-            this.preSrc = this.dataSrc;
-          } else {
-            this.postSrc = this.dataSrc;
+          if (!this.viewed) {
+            if (lazyAsset instanceof HTMLImageElement) {
+              this.preSrc = this.dataSrc;
+            } else {
+              this.postSrc = this.dataSrc;
+            }
           }
-          this.obs.unobserve(lazyAsset);
+          this.inView.emit();
         }
       })
     });

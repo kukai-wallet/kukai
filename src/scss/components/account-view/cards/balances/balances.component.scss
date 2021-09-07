@@ -38,11 +38,3 @@ $border-color: v.$border-color;
   padding: 0rem 0.5rem 0rem 2rem;
   border: $border-width solid $border-color-dark-only;
 }
-
-// @media (max-width: v.$layout-break-5) {
-  // :host {
-  //   & .balances {
-  //     max-height: 2000px;
-  //   }
-  // }
-//}

@@ -8,6 +8,7 @@ import { TokenBalancesService } from '../../../../services/token-balances/token-
 import { DisplayLinkOption } from '../../../../interfaces';
 import Big from 'big.js';
 import { Subscription } from 'rxjs';
+import { NftsTokenComponent } from '../token/token.component';
 
 @Component({
   selector: 'app-nfts-body',
@@ -24,13 +25,15 @@ export class NftsBodyComponent implements OnInit, AfterViewInit {
   @Input() account;
   contractAliases = CONSTANTS.CONTRACT_ALIASES;
   sliceEnd = 30;
+  obs: IntersectionObserver;
   constructor(
     public translate: TranslateService,
     public messageService: MessageService,
     public tokenService: TokenService,
     public tokenBalancesService: TokenBalancesService
   ) {}
-  ngOnInit(): void { }
+  ngOnInit(): void {
+  }
   ngAfterViewInit() {
     const cb = (e) => {
       if(this.body?.nativeElement?.scrollTop >= (this.body?.nativeElement?.scrollHeight - this.body?.nativeElement?.clientHeight - 5)) {
@@ -40,13 +43,7 @@ export class NftsBodyComponent implements OnInit, AfterViewInit {
     this.body?.nativeElement.addEventListener('scroll', cb);
     this.body?.nativeElement.addEventListener('touchmove', cb);
   }
-  viewToken(token) {
-    ModalComponent.currentModel.next({ name: 'token-detail', data: token });
-  }
-  formatBalance(token) {
-    return Big(token.balance).div(10 ** parseInt(token.decimals)).toFixed();
-  }
   trackToken(index: number, token: any) {
-    return token?.id ? token.contractAddress + ':' + token?.id + ':' + token?.balance : null;
+    return token?.id ? token.contractAddress + ':' + token?.id : null;
   }
 }

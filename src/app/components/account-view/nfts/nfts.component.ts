@@ -57,6 +57,7 @@ export class NftsComponent implements OnInit, OnDestroy {
     }));
     this.subscriptions.add(this.walletService.activeAccount.subscribe(activeAccount => {
       this.isInitLoad = true;
+      this.filter = 'APP';
     }));
   }
   @Input() activity: any;

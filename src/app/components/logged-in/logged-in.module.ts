@@ -26,6 +26,7 @@ import { AdvancedToggleComponent } from '../ui/button/toggle/advanced/advanced.c
 import { PrepareSendDropdownComponent } from '../ui/dropdown/prepare-send/prepare-send-dropdown.component';
 import { AssetComponent } from '../ui/asset/asset.component';
 import { NftsBodyComponent } from '../account-view/nfts/body/body.component';
+import { NftsTokenComponent } from '../account-view/nfts/token/token.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { NftsBodyComponent } from '../account-view/nfts/body/body.component';
     SignExprEmbedComponent,
     PrepareSendDropdownComponent,
     AssetComponent,
-    NftsBodyComponent
+    NftsBodyComponent,
+    NftsTokenComponent
   ],
   imports: [
     CommonModule,
@@ -65,6 +67,7 @@ import { NftsBodyComponent } from '../account-view/nfts/body/body.component';
     SignExprEmbedComponent,
     AssetComponent,
     NftsBodyComponent,
+    NftsTokenComponent,
     PermissionRequestComponent,
     PermissionRequestDropdownComponent,
   ],

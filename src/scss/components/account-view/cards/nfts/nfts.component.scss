@@ -21,6 +21,48 @@ $box-shadow: 0px 4px 6px #3332;
 
   &-nfts {
     @include top-container;
+    margin-bottom: 0;
+    & .toggle {
+      width: 50rem;
+      max-width: 64%;
+      height: 100%;
+      background: linear-gradient(180deg, transparent 0% 50%, #e6eaef 50% 100%);
+
+      & h1 {
+        width: 100%;
+        text-align: center;
+        height: 100%;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.875rem;
+        cursor: pointer;
+
+        &:first-of-type {
+          border-top-left-radius: 2rem;
+          border-top-right-radius: 2rem;
+          border-bottom-right-radius: 0;
+          background-color: #e6eaef;
+        }
+        &.selected:first-of-type {
+          border-top-left-radius: 2rem;
+          border-top-right-radius: 2rem;
+          border-bottom-right-radius: 2rem;
+          background-color: $base-color-lightened-7;
+        }
+        &:last-of-type {
+          border-top-left-radius: 2rem;
+          border-top-right-radius: 2rem;
+          border-bottom-left-radius: 0rem;
+          background-color: #e6eaef;
+        }
+        &.selected:last-of-type {
+          border-top-left-radius: 2rem;
+          border-top-right-radius: 2rem;
+          border-bottom-left-radius: 2rem;
+          background-color: $base-color-lightened-7;
+        }
+      }
+    }
 
     & .icon {
       margin-left: 1.5rem;
@@ -91,7 +133,15 @@ $box-shadow: 0px 4px 6px #3332;
 }
 
 .nfts {
-  width: 100%;
+  width: calc(100% - 3rem);
+  padding: 1.5rem;
+  background-color: #e6eaef;
+  border-radius: 2rem;
+  border-top-left-radius: 0;
+
+  &.d {
+    border-top-left-radius: 2rem;
+  }
 
   & > .discover {
     width: calc(50% - 1rem);
@@ -160,43 +210,6 @@ $box-shadow: 0px 4px 6px #3332;
         }
       }
     }
-
-    // & .category {
-    //   border: none;
-    //   padding: 0.5rem 1rem;
-    //   border-radius: v.$border-radius-hard;
-    //   letter-spacing: 0.02em;
-    //   background-color: v.$base-color-lightened-5;
-    //   color: v.$base-color-lightened-1;
-    //   width: fit-content;
-    //   align-self: flex-end;
-    //   position: absolute;
-    //   top: 2rem;
-    //   right: 2rem;
-    //   z-index: 10;
-    // }
-
-    // & img.cover {
-    //   object-fit: scale-down;
-    //   width: calc(100% - 4rem);
-    //   height: 12rem;
-    //   padding: 2rem;
-    // }
-
-    // & .bottom {
-    //   flex-wrap: wrap;
-    //   justify-content: center;
-    //   & .title {
-    //     text-align: center;
-    //     font-size: 2rem;
-    //     letter-spacing: 0.06em;
-    //     white-space: pre;
-    //     text-overflow: ellipsis;
-    //     overflow: hidden;
-    //     width: 100%;
-    //     margin: 0 0 1rem 0;
-    //   }
-    // }
   }
 
   & .collection {
@@ -244,7 +257,7 @@ $box-shadow: 0px 4px 6px #3332;
 
       & .left {
         justify-content: flex-start;
-        width: 90%;
+        width: 100%;
 
         & .title {
           @include m.ellipsis;
@@ -259,10 +272,13 @@ $box-shadow: 0px 4px 6px #3332;
           margin-right: 1rem;
           object-fit: contain;
         }
+      }
 
+      & .right {
         & .count {
           @include m.multiply("font-size", 1);
           padding: 0.375rem 0.75rem;
+          margin: 0 1rem 0 0;
           width: auto;
           height: auto;
           background-color: $base-color-lightened-5;
@@ -271,9 +287,6 @@ $box-shadow: 0px 4px 6px #3332;
           color: $base-color-lightened-1;
           font-weight: 500;
         }
-      }
-
-      & .right {
         & .toggle img {
           transition: 0.25s transform;
           width: 1rem;
@@ -309,6 +322,10 @@ $box-shadow: 0px 4px 6px #3332;
     }
   }
 
+  & #unknown {
+    margin: 0;
+  }
+
   & #unknown .body .token .img-wrapper .icon {
     box-shadow: none;
     width: 6rem;
@@ -317,21 +334,10 @@ $box-shadow: 0px 4px 6px #3332;
   }
 }
 
-// @media (max-width: v.$layout-break-275) {
-//   .nfts {
-//     & .collection {
-//       & .body .token {
-//         width: calc(100% - 2rem);
-//         border-bottom: 2px solid $border-color;
-//       }
-//     }
-//   }
-// }
-
 @media (max-width: calc(#{v.$layout-break-4} + 5em)) {
   .nfts {
     & > .discover {
-      width: calc(100% - 1rem);
+      width: 100%;
     }
   }
 }
@@ -357,7 +363,7 @@ $box-shadow: 0px 4px 6px #3332;
     align-items: initial;
 
     & > .discover {
-      width: calc(100% - 1rem);
+      width: 100%;
     }
   }
 }

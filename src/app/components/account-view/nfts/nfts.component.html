@@ -1,9 +1,8 @@
 <div class="main-container" *ngIf="displayTokenCard()">
   <div class="flex-row top-container-nfts">
-    <div class="flex-row">
-      <h1>{{ !isDiscover ? 'NFT / Collectibles' : 'Discover Apps' }}</h1>
-      <span class="flex-row button icon-grey discover" [class.selected]="isDiscover === 'DISCOVER'"
-        (click)="isDiscover = !isDiscover">{{ !isDiscover ? 'DISCOVER' : 'NFT / COLLECTIBLES' }}</span>
+    <div class="flex-row toggle">
+      <h1 class="flex-row" [class.selected]="isDiscover" (click)="isDiscover = false">{{ 'NFT / Collectibles' }}</h1>
+      <h1 class="flex-row" [class.selected]="!isDiscover" (click)="isDiscover = true">{{ 'Discover' }}</h1>
     </div>
     <div class="flex-row right">
       <ng-container *ngIf="this.nfts && Object.keys(this.nfts).length > 0 && !isDiscover">
@@ -14,7 +13,7 @@
       <img class="button icon" src="../../../../assets/img/info.svg" /> -->
     </div>
   </div>
-  <div class="flex-row-wrap nfts">
+  <div class="flex-row-wrap nfts" [class.d]="isDiscover">
     <!-- loop through contracts -->
     <ng-container *ngIf="!Object.keys(nfts)?.length && !isDiscover"><span>There are no NFTs in this account</span>
     </ng-container>
@@ -27,19 +26,19 @@
             <div class="title">
               {{ this.nfts[key]?.name }}
             </div>
-            <div class="count">{{ this.nfts[key]?.tokens?.length }}</div>
           </div>
           <div class="flex-row right">
+            <div class="count">{{ this.nfts[key]?.tokens?.length }}</div>
             <div class="flex-row button toggle"><img src="../../../../assets/img/caret-left.svg" /></div>
           </div>
         </div>
         <div class="flex-column scroll">
-          <app-nfts-body [token]="token" [isDisplaying]="filter === sanitizeKey(key)" [tokens]="this.nfts[key]?.tokens"></app-nfts-body>
+          <app-nfts-body [isDisplaying]="filter === sanitizeKey(key)" [tokens]="this.nfts[key]?.tokens"></app-nfts-body>
         </div>
       </div>
     </ng-container>
     <div class="flex-column collection scroll all" [style.display]="!isDiscover && filter === 'ALL' ? '' : 'none'">
-      <app-nfts-body [token]="token" [isDisplaying]="!isDiscover && filter === 'ALL'" [tokens]="tokens"></app-nfts-body>
+      <app-nfts-body [isDisplaying]="!isDiscover && filter === 'ALL'" [tokens]="tokens"></app-nfts-body>
     </div>
     <ng-container *ngFor="let key of Object.keys(contractAliases)">
       <ng-container *ngIf="shouldDisplayLink(contractAliases[key]?.shouldDisplayLink)">
