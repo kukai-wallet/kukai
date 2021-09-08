@@ -152,7 +152,7 @@ button {
     overflow-y: auto;
 
     & .close {
-      top: -0.25rem;
+      top: -0.75em;
       right: 0;
       position: absolute;
       width: 3rem;
@@ -245,6 +245,7 @@ button {
       font-size: 1rem;
       color: $base-font-color-secondary;
       font-weight: 500;
+      margin: 0.5rem 0;
 
       &.amount {
         font-weight: 600;
@@ -386,8 +387,6 @@ button {
         overflow-y: auto;
     
         & .close {
-          top: 0;
-          font-size: 95%;
           width: 3em !important;
           height: 3em !important;
         }
@@ -399,7 +398,7 @@ button {
     
           & .title {
             margin: 0 0 1rem 0;
-            font-size: 2em;
+            font-size: 2rem;
           }
         }
     
@@ -430,13 +429,13 @@ button {
     
           & .name {
             font-weight: 600;
-            font-size: 1.25em;
+            font-size: 1.25rem;
             color: $base-font-color;
           }
     
           & .address {
             font-weight: 500;
-            font-size: 1em;
+            font-size: 1rem;
             color: $base-font-color-secondary;
             font-style: italic;
           }
@@ -444,8 +443,8 @@ button {
     
         & .token-image {
           margin: 0 0 0 1rem;
-          width: 8em;
-          height: 8em;
+          width: 8rem;
+          height: 8rem;
           object-fit: scale-down;
         }
     
@@ -456,7 +455,7 @@ button {
     
         & .asset-name {
           margin: 1rem 0 0 0;
-          font-size: 1.5em;
+          font-size: 1.5rem;
           color: $base-font-color;
           font-weight: 600;
           width: 80%;
@@ -467,19 +466,19 @@ button {
         }
     
         & .default-text {
-          font-size: 1em;
+          font-size: 1rem;
           color: $base-font-color-secondary;
           font-weight: 500;
     
           &.amount {
             font-weight: 600;
-            font-size: 2.25em;
+            font-size: 2.25rem;
             color: $base-font-color;
             margin: -0.5rem 0 0 0;
           }
     
           &.more-info {
-            font-size: 1.25em;
+            font-size: 1.25rem;
             color: $base-font-color;
             font-weight: 500;
             text-align: center;
@@ -494,7 +493,7 @@ button {
             }
       
             img {
-              height: 1.75em;
+              height: 1.75rem;
               width: auto;
             }
       
@@ -552,8 +551,8 @@ button {
             width: calc(100% - 4rem);
             text-transform: uppercase;
             font-weight: 800;
-            font-size: 1.25em;
-            height: 4em;
+            font-size: 1.25rem;
+            height: 4rem;
           }
         }
     

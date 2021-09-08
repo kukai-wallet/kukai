@@ -96,7 +96,7 @@
 
 
 <div *ngIf="active && template === 'default'" class="kukai-template">
-  <div *ngIf="templateRequest.template" class="card">
+  <div *ngIf="templateRequest.template" class="flex-column card">
     <H1>You are about to<BR><b
         *ngIf="templateRequest.template.action; else defaultAction">{{templateRequest.template.action}}</b>
       <ng-template #defaultAction><b>send</b></ng-template>

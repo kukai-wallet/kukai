@@ -7,4 +7,4 @@
 <app-messages *ngIf="!embedded"></app-messages>
 <app-spinner [embedded]="embedded"></app-spinner>
 <app-agreement *ngIf="!embedded"></app-agreement>
-<app-footer [class.initial]="router.url !== '/'"></app-footer>
+<app-footer *ngIf="!embedded" [class.initial]="router.url !== '/'"></app-footer>

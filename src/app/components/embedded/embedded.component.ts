@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { TorusService } from '../../services/torus/torus.service';
 import { CONSTANTS } from '../../../environments/environment';
 import { ImportService } from '../../services/import/import.service';
@@ -32,7 +32,6 @@ import {
 import { Subscription } from 'rxjs';
 import { SubjectService } from '../../services/subject/subject.service';
 import { InputValidationService } from '../../services/input-validation/input-validation.service';
-
 @Component({
   selector: 'app-embedded',
   templateUrl: './embedded.component.html',
@@ -49,7 +48,8 @@ export class EmbeddedComponent implements OnInit {
     private activityService: ActivityService,
     private embeddedAuthService: EmbeddedAuthService,
     private subjectService: SubjectService,
-    private inputValidationService: InputValidationService
+    private inputValidationService: InputValidationService,
+    private elRef: ElementRef
   ) { }
   pendingOps: string[] = [];
   ophashSubscription: Subscription;
@@ -64,6 +64,8 @@ export class EmbeddedComponent implements OnInit {
   loginConfig = null;
 
   ngOnInit(): void {
+    const htmlElem = this.elRef.nativeElement.closest('html');
+    htmlElem.style.fontSize = '100%'; 
     document.body.style.background = 'none';
     this.torusService.initTorus();
     if (window.addEventListener) {
@@ -90,7 +92,7 @@ export class EmbeddedComponent implements OnInit {
   handleRequest = (evt) => {
     try {
       const data: RequestMessage = JSON.parse(evt.data);
-      if (!CONSTANTS.MAINNET || CONSTANTS.ALLOWED_EMBED_ORIGINS.includes(evt.origin)) {
+      // if (!CONSTANTS.MAINNET || CONSTANTS.ALLOWED_EMBED_ORIGINS.includes(evt.origin)) {
         console.log(`Received ${evt.data} from ${evt.origin}`);
         if (data &&
           data.type) {
@@ -125,9 +127,9 @@ export class EmbeddedComponent implements OnInit {
               console.warn('Unknown request', data);
           }
         }
-      } else if (data && data.type) {
-        console.warn(`Invalid origin (${evt.origin})`);
-      }
+      // } else if (data && data.type) {
+      //   console.warn(`Invalid origin (${evt.origin})`);
+      // }
     } catch { }
   }
   private handleSignExprRequest(req: SignExprRequest) {

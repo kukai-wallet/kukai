@@ -42,7 +42,7 @@ div.direct-auth-login > div.header img {
 }
 div.direct-auth-login H2 {
   margin: 0rem 0 0.5rem;
-  @include m.multiply('font-size',1rem);
+  @include m.multiply('font-size', 1);
   line-height: 1.3125rem;
   text-align: center;
   vertical-align: top;
