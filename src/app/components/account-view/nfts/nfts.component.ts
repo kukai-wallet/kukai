@@ -26,7 +26,7 @@ export class NftsComponent implements OnInit, OnDestroy {
   isDiscover: boolean = false;
   isInitLoad: boolean = true;
   filter: string = 'APP';
-  contractAliases = Object.keys(CONSTANTS.CONTRACT_ALIASES).map((key: any) => ({key: key, ...(CONSTANTS.CONTRACT_ALIASES[key])}));
+  contractAliases = Object.keys(CONSTANTS.CONTRACT_ALIASES).map((key: any) => ({key, ...(CONSTANTS.CONTRACT_ALIASES[key])}));
   activeAddress: string = '';
   private subscriptions: Subscription = new Subscription();
   constructor(
@@ -51,9 +51,8 @@ export class NftsComponent implements OnInit, OnDestroy {
           this.isDiscover = false;
         }
       }
-      console.log("here");
       this.nfts = nfts;
-      this.nftsArray = nfts ? Object.keys(nfts).map((key: any) => ({key: key, ...(nfts[key])})) : [];
+      this.nftsArray = nfts ? Object.keys(nfts).map((key: any) => ({key, ...(nfts[key])})) : [];
       this.tokens = nfts ? Object.keys(nfts).map((key: any) => nfts[key]?.tokens).flat() : [];
     }));
     this.subscriptions.add(this.subjectService.logout.subscribe(o => {
@@ -73,7 +72,6 @@ export class NftsComponent implements OnInit, OnDestroy {
   @Input() activity: any;
   @Input() account;
   ngOnInit(): void {
-    console.log(this.nfts)
   }
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
@@ -114,6 +112,7 @@ export class NftsComponent implements OnInit, OnDestroy {
     this.nfts = undefined;
     this.isDiscover = false;
     this.tokens = [];
+    this.nftsArray = [];
     this.isInitLoad = true;
     this.filter = 'APP';
   }

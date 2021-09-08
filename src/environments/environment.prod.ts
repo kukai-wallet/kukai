@@ -37,6 +37,7 @@ export const CONSTANTS: Constants = {
       description: "Largest independent artist-friendly NFT Marketplace"
     },
     'QuipuSwap': {
+      name: "QuipuSwap",
       address: [],
       thumbnailUrl: "../../../assets/img/alias/quipuswap_logo.jpeg",
       discoverUrl: "../../../assets/img/alias/quipuswap-discover.jpeg",
@@ -44,6 +45,7 @@ export const CONSTANTS: Constants = {
       description: "A decentralized exchange on Tezos"
     },
     "MinterPop": {
+      name: "Minter Pop",
       address: ['KT1AaaBSo5AE6Eo8fpEN5xhCD4w3kHStafxk'],
       thumbnailUrl: "../../../assets/img/alias/minterpop.svg",
       discoverUrl: "../../../assets/img/alias/minterpop-discover.png",
@@ -67,6 +69,7 @@ export const CONSTANTS: Constants = {
       description: "Digitally native comics as NFTs"
     },
     'Kalamint': {
+        name: "Kalamint",
         address: ["KT1EpGgjQs73QfFJs9z7m1Mxm5MTnpC2tqse"],
         thumbnailUrl: "../../../assets/img/alias/kalamint-thumbnail.png",
         discoverUrl: "../../../assets/img/alias/kalamint.svg",
@@ -82,12 +85,14 @@ export const CONSTANTS: Constants = {
         description: "Collectibles game with FREE daily NFTs"
     },
     'TzColors': {
+      name: "Tz Colors",
         address: ["KT1FyaDqiMQWg7Exo7VUiXAgZbd2kCzo3d4s"],
         thumbnailUrl: "../../../assets/img/alias/tzcolors.png",
         link: "https://www.tzcolors.io/", shouldDisplayLink: DisplayLinkOption.All, category: ["collectibles"],
         description: "Unique colors as NFT tokens on Tezos"
     },
     'Tezotopia': {
+      name: "Tezotopia",
         address: ["KT1ViVwoVfGSCsDaxjwoovejm1aYSGz7s2TZ"],
         thumbnailUrl: "../../../assets/img/alias/tezotopia.png",
         discoverUrl: "../../../assets/img/alias/tezotopia-discover.png",
@@ -95,6 +100,7 @@ export const CONSTANTS: Constants = {
         description: "Battle, earn, win prizes plus NFT yield farming"
     },
     'Bazaar Market': {
+      name: "Bazaar Market",
       address: ["KT1PKvHNWuWDNVDtqjDha4AostLrGDu4G1jy"],
       thumbnailUrl: "../../../assets/img/alias/bazaar.png",
       backgroundColor: "#4a9fd5",
@@ -109,6 +115,7 @@ export const CONSTANTS: Constants = {
       link: "", shouldDisplayLink: DisplayLinkOption.None, category: ["collectibles"]
     },
     'Alchememist': {
+      name: "Alchememist",
       address: ["KT1W4wh1qDc2g22DToaTfnCtALLJ7jHn38Xc", "KT1Em3sjKdHo3Fo9Az4EusZXQbkgsdZHkQkF"],
       thumbnailUrl: "../../../assets/img/alias/alchememist.jfif",
       link: "https://auctions.alchememist.com/", shouldDisplayLink: DisplayLinkOption.None, category: ["collectibles"]
@@ -120,16 +127,19 @@ export const CONSTANTS: Constants = {
       link: "https://tezostaco.shop/#/", shouldDisplayLink: DisplayLinkOption.None, category: ["collectibles"]
     },
     'Truesy': {
+      name: "Truesy",
       address: ["KT1PvfewvyW7zxWHSHCivkeJRFyrHNjE3xDr", "KT1LfsA9WzzGX7jkhovSTVnZZoBQQNcpvatQ", "KT1WAxpXZ8hvyoXy47YogdNURArGkFy4k3To", "KT1CGHpbtxvPRX6HF4mVQo48Rb5z2aYVnvB6", "KT1FCCDtoG71hJb4KiUegpCqGr1GDG3YyY7g", "KT1K1vBSP5MyKfBBpyHEjmCHTuYeugid4Tqn", "KT1UQaoRqLgFvsTwprgsGXj84DT9Wm5jC7tY", "KT1Gba7KnVXB563kxmk4mgKUQ4ujP8yFbQfr", "KT1RbCvEFWCJXUswKxWrH9wxgu88hMm8YEZz", "KT1AGcbS4TyquQjQsa4fwce3FjLZv2UpGMse", "KT1KJNPUsHrjhN9iUJMz7DL3WkTcibhGrxse", "KT1WN9yWqV9pEm1ANR56ExJZbnVukWN31fTY", "KT1WBXFKW1sozV7ZLBHvw5eks6Pb8KSoVmLq", "KT1KWNNBtb7z8pejNUNigaRWSTkTQL4DEcf8", "KT1D6CNSXcftRTArCF73Jpsh95dwgEwAy6qZ", "KT1R87j2qFxtPZE3EmmeSoubg2mZkk3j4X8y", "KT1HRCc359qXshgMpBygY3VwqTnV7fc7nYfp", "KT1MU8Pb9DFjnVpEULyWDrqPLjedZPNHFrEN", "KT1FPfsRVWVju2mH1r2iFg5jfzWj7RDCb6ia", "KT19AqSn4m3NtvztPXuETjCzoQ75bKDd1Pyi", "KT1PcYxsFmXuoxcJpcfRSCcQQeSDLERSMzsW", "KT1KSYCk8zjdhgzDDRsmb2ygAfanjBx25Wto", "KT1LqKWDtzUh4CXNqfJQMcATv4PdZxBjPJjH", "KT197APGtQ8mk2svRSpDkqXLzHedRtkJ7Hjr", "KT1CTqQ4vg2zyG1AQmDLVeJ473ueoy2Rw8t1", "KT1QE4nZiAXbpuDCu4P5QTNibQSx6FFW3y2W", "KT1QbzLyzwXB9JTevvjT3B24BzgWfMzFfBHt"],
       thumbnailUrl: "../../../assets/img/spinner/truesy.svg",
       link: "", shouldDisplayLink: DisplayLinkOption.None
     },
     'OpenMinter': {
+      name: "OpenMinter",
       address: ["KT1QcxwB4QyPKfmSwjH1VRxa6kquUjeDWeEy"],
       thumbnailUrl: "../../../assets/img/alias/openminter.svg",
       link: "", shouldDisplayLink: DisplayLinkOption.None
     },
     'Tezzardz': {
+      name: "Tezzardz",
       address: ["KT1LHHLso8zQWQWg1HUukajdxxbkGfNoHjh6"],
       thumbnailUrl: "../../../assets/img/alias/tezzardz.png",
       link: "", shouldDisplayLink: DisplayLinkOption.None

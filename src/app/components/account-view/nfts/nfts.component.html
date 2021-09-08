@@ -42,7 +42,7 @@
     </div>
     <ng-container *ngFor="let contractAlias of contractAliases">
       <ng-container *ngIf="shouldDisplayLink(contractAlias?.shouldDisplayLink)">
-        <div class="flex-column discover" [style.display]="isDiscover ? '' : 'none'">
+        <a class="flex-column discover" rel="noreferrer" [href]="contractAlias?.link || '/'" target="_blank" [style.display]="isDiscover ? '' : 'none'">
           <div class="flex-row top">{{ getContractAlias(contractAlias?.category) || '' }}</div>
           <div class="flex-column middle" [style.backgroundColor]="contractAlias?.backgroundColor">
             <app-asset class="discover" [size]="'raw'" [meta]="contractAlias?.discoverUrl || contractAlias?.thumbnailUrl"></app-asset>
@@ -53,12 +53,12 @@
               <div class="description">{{ contractAlias?.description }}</div>
             </div>
             <div class="flex-column right">
-              <a rel="noreferrer" [href]="contractAlias?.link || '/'" target="_blank" class="link-to-app">
+              <a class="link-to-app">
                 <button class="flex-row button">GO <img src="assets/img/discover-right-angle.svg" /></button>
               </a>
             </div>
           </div>
-        </div>
+        </a>
       </ng-container>
     </ng-container>
   </div>

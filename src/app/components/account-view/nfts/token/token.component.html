@@ -1,4 +1,4 @@
-<div class="flex-row token" [class.new]="isNew" (click)="viewToken(token)">
+<div class="flex-row token" (click)="viewToken(token)">
   <div class="dot"></div>
   <div class="img-wrapper">
     <app-asset class="icon" (inView)="balanceChangeTimer()" [meta]="token?.thumbnailAsset || token?.displayAsset"></app-asset>

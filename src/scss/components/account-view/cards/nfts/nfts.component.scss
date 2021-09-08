@@ -154,10 +154,11 @@ $box-shadow: 0px 4px 6px #3332;
     & .top {
       padding: 1.5rem;
       width: calc(100% - 3rem);
-      font-size: 1rem;
+      @include m.multiply("font-size", 1);
       text-transform: uppercase;
       color: v.$base-font-color-secondary;
       font-size: 500;
+      letter-spacing: 0.02rem;
     }
 
     & .middle {
@@ -183,7 +184,7 @@ $box-shadow: 0px 4px 6px #3332;
         & .description {
           margin: 0.5rem 0 0 0;
           color: #8498b1;
-          font-size: 1rem;
+          @include m.multiply("font-size", 1);
           font-weight: 500;
           letter-spacing: 0.02rem;
         }
@@ -349,6 +350,12 @@ $box-shadow: 0px 4px 6px #3332;
     & > .discover {
       width: calc(50% - 1rem);
     }
+  }
+}
+
+@media (max-width: v.$layout-break-5) {
+  .link-to-app {
+    display: none;
   }
 }
 
