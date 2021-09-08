@@ -53,12 +53,12 @@ export const CONSTANTS: Constants = {
       description: "Curated NFT art and collectibles marketplace"
     },
     'TezosDomains': {
-        name: 'Tezos Domains',
-        address: ["KT1GBZmSxmnKJXGMdMLbugPfLyUPmuLSMwKS"],
-        thumbnailUrl: "",
-        discoverUrl: "../../../assets/img/alias/tezosdomains-discover.png",
-        link: "https://tezos.domains/", shouldDisplayLink: DisplayLinkOption.All, category: ["identity"],
-        description: "Friendly names on Tezos"
+      name: 'Tezos Domains',
+      address: ["KT1GBZmSxmnKJXGMdMLbugPfLyUPmuLSMwKS"],
+      thumbnailUrl: "",
+      discoverUrl: "../../../assets/img/alias/tezosdomains-discover.png",
+      link: "https://tezos.domains/", shouldDisplayLink: DisplayLinkOption.All, category: ["identity"],
+      description: "Friendly names on Tezos"
     },
     'InterpopComics': {
       name: "Interpop Comics",
@@ -69,35 +69,35 @@ export const CONSTANTS: Constants = {
       description: "Digitally native comics as NFTs"
     },
     'Kalamint': {
-        name: "Kalamint",
-        address: ["KT1EpGgjQs73QfFJs9z7m1Mxm5MTnpC2tqse"],
-        thumbnailUrl: "../../../assets/img/alias/kalamint-thumbnail.png",
-        discoverUrl: "../../../assets/img/alias/kalamint.svg",
-        link: "https://kalamint.io/", shouldDisplayLink: DisplayLinkOption.All, category: ["marketplace"],
-        backgroundColor: '#0ab688',
-        description: "Create, sell and collect NFTs"
+      name: "Kalamint",
+      address: ["KT1EpGgjQs73QfFJs9z7m1Mxm5MTnpC2tqse"],
+      thumbnailUrl: "../../../assets/img/alias/kalamint-thumbnail.png",
+      discoverUrl: "../../../assets/img/alias/kalamint.svg",
+      link: "https://kalamint.io/", shouldDisplayLink: DisplayLinkOption.All, category: ["marketplace"],
+      backgroundColor: '#0ab688',
+      description: "Create, sell and collect NFTs"
     },
     'PixelPotus': {
-        name: 'PixelPotus',
-        address: ["KT1WGDVRnff4rmGzJUbdCRAJBmYt12BrPzdD"],
-        thumbnailUrl: "../../../assets/img/alias/pixelpotus.png",
-        link: "https://www.pixelpotus.com/", shouldDisplayLink: DisplayLinkOption.All, category: ["game", "collectibles"],
-        description: "Collectibles game with FREE daily NFTs"
+      name: 'PixelPotus',
+      address: ["KT1WGDVRnff4rmGzJUbdCRAJBmYt12BrPzdD"],
+      thumbnailUrl: "../../../assets/img/alias/pixelpotus.png",
+      link: "https://www.pixelpotus.com/", shouldDisplayLink: DisplayLinkOption.All, category: ["game", "collectibles"],
+      description: "Collectibles game with FREE daily NFTs"
     },
     'TzColors': {
       name: "Tz Colors",
-        address: ["KT1FyaDqiMQWg7Exo7VUiXAgZbd2kCzo3d4s"],
-        thumbnailUrl: "../../../assets/img/alias/tzcolors.png",
-        link: "https://www.tzcolors.io/", shouldDisplayLink: DisplayLinkOption.All, category: ["collectibles"],
-        description: "Unique colors as NFT tokens on Tezos"
+      address: ["KT1FyaDqiMQWg7Exo7VUiXAgZbd2kCzo3d4s"],
+      thumbnailUrl: "../../../assets/img/alias/tzcolors.png",
+      link: "https://www.tzcolors.io/", shouldDisplayLink: DisplayLinkOption.All, category: ["collectibles"],
+      description: "Unique colors as NFT tokens on Tezos"
     },
     'Tezotopia': {
       name: "Tezotopia",
-        address: ["KT1ViVwoVfGSCsDaxjwoovejm1aYSGz7s2TZ"],
-        thumbnailUrl: "../../../assets/img/alias/tezotopia.png",
-        discoverUrl: "../../../assets/img/alias/tezotopia-discover.png",
-        link: "https://app.tezotopia.com/marketplace/artifacts", shouldDisplayLink: DisplayLinkOption.All, category: ["game", "collectibles"],
-        description: "Battle, earn, win prizes plus NFT yield farming"
+      address: ["KT1ViVwoVfGSCsDaxjwoovejm1aYSGz7s2TZ"],
+      thumbnailUrl: "../../../assets/img/alias/tezotopia.png",
+      discoverUrl: "../../../assets/img/alias/tezotopia-discover.png",
+      link: "https://app.tezotopia.com/marketplace/artifacts", shouldDisplayLink: DisplayLinkOption.All, category: ["game", "collectibles"],
+      description: "Battle, earn, win prizes plus NFT yield farming"
     },
     'Bazaar Market': {
       name: "Bazaar Market",

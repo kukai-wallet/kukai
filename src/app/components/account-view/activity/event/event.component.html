@@ -23,13 +23,13 @@
       </div>
     </div>
     <div class="flex-row">
-      <div class="flex-row address"><img
+      <div class="flex-row-wrap address"><img
           *ngIf="!!getCounterparty(activity)?.lookupType && getCounterparty(activity)?.lookupType !== 5"
           [src]="getEventIcon()" />
-        <span class="prefix">{{ getAddressPrefix(getType()) }}&nbsp;</span>{{
+        <span class="prefix">{{ getAddressPrefix(getType()) }}&nbsp;</span><span class="value">{{
         getCounterparty(activity)?.name || getCounterparty(activity)?.address || ''
         }}<img class="copy" src="../../../../assets/img/copy-icon.svg"
-          (click)="copy(getCounterparty(activity)?.address)" />
+          (click)="copy(getCounterparty(activity)?.address)" /></span>
       </div>
       <span class="time">
         <img [src]="getEventStatusIcon()" />

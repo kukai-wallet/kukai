@@ -21,7 +21,7 @@ $event-new: v.$base-end-color;
     flex-direction: row;
     height: 100%;
     margin: 0 0 1rem 0;
-    padding: 1rem 2rem;
+    padding: 1rem;
     border-radius: $border-radius;
     background-color: transparent;
     border: $border-width solid $border-color-dark-only;
@@ -135,12 +135,6 @@ $event-new: v.$base-end-color;
     & .address {
       width: 100%;
       justify-content: flex-start;
-      font-family: "Roboto Mono", "Roboto";
-      @include m.multiply("font-size", 1.125);
-      text-overflow: ellipsis;
-      overflow: hidden;
-      white-space: nowrap;
-      display: inline-block;
       color: $base-font-color-secondary;
       margin: 0 0 0 2.25rem;
 
@@ -149,10 +143,18 @@ $event-new: v.$base-end-color;
         @include m.multiply("font-size", 1.125);
       }
 
+      & span.value {
+        font-family: "Roboto Mono", "Roboto";
+        @include m.multiply("font-size", 1.125);
+        text-overflow: ellipsis;
+        overflow: hidden;
+        display: inline-block;
+      }
+
       & img {
         width: 1rem;
         height: 1rem;
-        margin: 0 0.25rem 0 0;
+        margin: 0 0.25rem;
       }
 
       & .copy {
