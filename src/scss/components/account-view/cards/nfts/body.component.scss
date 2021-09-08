@@ -31,7 +31,7 @@ $box-shadow: 0px 4px 6px #3332;
   max-height: 50rem;
 
   & .token {
-    width: 100%;
+    width: calc(32% - 1rem);;
     justify-content: flex-start;
     padding: 1rem;
     cursor: pointer;
