@@ -91,6 +91,8 @@ export class AppComponent implements OnInit, OnDestroy {
   checkEmbedded() {
     const path = this.location.path();
     this.embedded = path.startsWith('/embedded');
+    const bg = this.embedded ? 'none' : '#f8f9fa';
+    document.documentElement.style.setProperty('--background-color', bg);
   }
   setLanguage(lang) {
     window.localStorage.setItem('languagePreference', lang);

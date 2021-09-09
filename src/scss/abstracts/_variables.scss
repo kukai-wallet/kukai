@@ -15,7 +15,7 @@ $base-color-lightened-65: f.theme-transform(#f3f5f7, $current-theme) !default;
 $base-color-lightened-7: f.theme-transform(#f8f9fa, $current-theme) !default;
 $base-end-color-static: #fff !default;
 $base-end-color: f.theme-transform(#fff, $current-theme) !default;
-$base-background-color: f.theme-transform(#f8f9fa, $current-theme) !default; //ebedf0 - alt for start page
+$base-background-color: var(--background-color);//f.theme-transform(#f8f9fa, $current-theme) !default; //ebedf0 - alt for start page
 $base-blue-color: #5963ff !default;
 $base-blue-color-lightened: #7178e3 !default;
 $base-red-color: #eb4e39 !default;
