@@ -92,7 +92,7 @@ export class EmbeddedComponent implements OnInit {
   handleRequest = (evt) => {
     try {
       const data: RequestMessage = JSON.parse(evt.data);
-      // if (!CONSTANTS.MAINNET || CONSTANTS.ALLOWED_EMBED_ORIGINS.includes(evt.origin)) {
+      if (!CONSTANTS.MAINNET || CONSTANTS.ALLOWED_EMBED_ORIGINS.includes(evt.origin)) {
         console.log(`Received ${evt.data} from ${evt.origin}`);
         if (data &&
           data.type) {
@@ -127,9 +127,9 @@ export class EmbeddedComponent implements OnInit {
               console.warn('Unknown request', data);
           }
         }
-      // } else if (data && data.type) {
-      //   console.warn(`Invalid origin (${evt.origin})`);
-      // }
+      } else if (data && data.type) {
+        console.warn(`Invalid origin (${evt.origin})`);
+      }
     } catch { }
   }
   private handleSignExprRequest(req: SignExprRequest) {
