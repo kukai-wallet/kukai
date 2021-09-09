@@ -102,7 +102,7 @@ export class NftsComponent implements OnInit, OnDestroy {
   }
 
   trackContract(index: number, key: any) {
-    return key;
+    return index;
   }
 
   getContractAlias(category) {
