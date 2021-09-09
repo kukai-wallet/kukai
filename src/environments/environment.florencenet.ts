@@ -76,7 +76,7 @@ export const CONSTANTS: Constants = {
     },
     "MinterPop": {
       address: ['KT1M2TMFrF1gbr64a7ySE3Cvt5BjZqQLKE6s'],
-      thumbnailUrl: "../../../assets/img/tokens/MinterPop_Logo_icononly-color.svg",
+      thumbnailUrl: "../../../assets/img/alias/minterpop.svg",
       // thumbnailUrl: {
       //   filename: 'u4tdtnfwszmavwllohvxnhm6x6udvp',
       //   extension: 'svg'
@@ -86,7 +86,7 @@ export const CONSTANTS: Constants = {
     "MinterPopDev": {
       name: 'MinterPop Dev',
       address: ['KT1AzVpQRrQNNQU4x1KGUS3E6P96yZYjQfbS'],
-      thumbnailUrl: "../../../assets/img/tokens/MinterPop_Logo_icononly-color.svg",
+      thumbnailUrl: "../../../assets/img/alias/minterpop.svg",
       // thumbnailUrl: {
       //   filename: 'u4tdtnfwszmavwllohvxnhm6x6udvp',
       //   extension: 'svg'
@@ -111,7 +111,7 @@ export const CONSTANTS: Constants = {
     },
     'Tezotopia': {
       address: ["KT1G1V5hS6ghW95GsUV2ZbEfEHENAvq3zTMn"],
-      thumbnailUrl: "https://tezotopia.web.app/static/media/tezotopia-logo.bf94c3f8.png",
+      thumbnailUrl: "../../../assets/img/alias/tezotopia.png",
       link: "", shouldDisplayLink: DisplayLinkOption.None
     },
     'InterpopComics': {
