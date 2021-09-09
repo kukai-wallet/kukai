@@ -11,14 +11,14 @@ import { DisplayLinkOption } from '../../../../interfaces';
   templateUrl: './body.component.html',
   styleUrls: ['../../../../../scss/components/account-view/cards/nfts/body.component.scss'],
 })
-export class NftsBodyComponent implements OnInit, OnChanges, AfterViewInit {
+export class NftsBodyComponent implements /*OnInit, OnChanges, */AfterViewInit {
   DisplayLinkOption = DisplayLinkOption;
   Object = Object;
   Number = Number;
   @ViewChild('body') body;
   @Input() isDisplaying;
   @Input() tokens;
-  tokensToDisplay = [];
+  //tokensToDisplay = [];
   contractAliases = CONSTANTS.CONTRACT_ALIASES;
   sliceEnd = 30;
   obs: IntersectionObserver;
@@ -28,6 +28,7 @@ export class NftsBodyComponent implements OnInit, OnChanges, AfterViewInit {
     public tokenService: TokenService,
     public tokenBalancesService: TokenBalancesService
   ) {}
+  /* Dead code
   ngOnInit(): void {
     this.tokensToDisplay = this.tokens.slice(0, this.sliceEnd);
   }
@@ -35,7 +36,7 @@ export class NftsBodyComponent implements OnInit, OnChanges, AfterViewInit {
     if(this.isDisplaying) {
       this.tokensToDisplay = this.tokens.slice(0, this.sliceEnd);
     }
-  }
+  }*/
   ngAfterViewInit() {
     const cb = (e) => {
       if(this.body?.nativeElement?.scrollTop >= (this.body?.nativeElement?.scrollHeight - this.body?.nativeElement?.clientHeight - 5)) {
