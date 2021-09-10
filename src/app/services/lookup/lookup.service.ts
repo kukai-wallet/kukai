@@ -185,6 +185,7 @@ export class LookupService {
     if (x !== -1 && y !== -1) {
       return { name: this.records[x].data[y].name, lookupType: this.records[x].data[y].lookupType, address: party.address };
     } else if (party?.alias) {
+      this.add(party.address, party.alias, LookupType.Alias)
       return { name: party.alias, lookupType: LookupType.Alias, address: party.address };
     }
     return { address: party?.address };

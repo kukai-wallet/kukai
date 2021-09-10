@@ -73,7 +73,11 @@ export class EventComponent implements OnInit, OnChanges, OnDestroy {
     return `${baseURL}/${hash}`;
   }
   getCounterparty(transaction) {
-    return this.activityService.getCounterparty(transaction, this.account);
+    const c = this.activityService.getCounterparty(transaction, this.account);
+    if (!c.name) {
+      c.name = `${c.address.slice(0, 7)}...${c.address.slice(-4)}`;
+    }
+    return c;
   }
   getEventIcon() {
     return `../../../../assets/img/${LookupType[this.getCounterparty(this.activity)?.lookupType].toLowerCase().replace('tezosdomains', 'domain')}-logo.svg`;
