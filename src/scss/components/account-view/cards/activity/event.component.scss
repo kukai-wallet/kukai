@@ -185,8 +185,12 @@ $event-new: v.$base-end-color;
   }
 
   & .received {
-    &.confirmed .title {
-      color: $base-blue-color-lightened;
+    &.unconfirmed,
+    &.half-confirmed,
+    &.confirmed {
+      .title {
+        color: $base-blue-color-lightened;
+      }
     }
   }
 }
