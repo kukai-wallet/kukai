@@ -103,6 +103,7 @@ textarea {
   border-color: $border-color;
   border-radius: $border-radius;
   font-size: 1em;
+  box-sizing: border-box;
 }
 
 button {
