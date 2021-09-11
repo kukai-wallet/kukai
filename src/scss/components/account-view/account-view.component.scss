@@ -53,3 +53,8 @@
     width: 100%;
   }
 }
+@media (max-width: calc(#{v.$layout-break-6} - 5em)) {
+  .wrapper > div {
+    max-width: 100%;
+  }
+}

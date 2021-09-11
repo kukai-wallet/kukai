@@ -43,7 +43,6 @@
       margin: 0;
     }
   }
-
   .main-container {
     margin-top: 4rem;
     border-radius: 0.75rem;
@@ -55,6 +54,13 @@
       background-color: v.$base-end-color;
       box-shadow: v.$box-shadow;
       overflow: hidden;
+    }
+  }
+  @media (max-width: calc(#{v.$layout-break-6} - 5em)) {
+    .main-container {
+      margin-right: auto;
+      margin-left: auto;
+      max-width: 92%;
     }
   }
 }

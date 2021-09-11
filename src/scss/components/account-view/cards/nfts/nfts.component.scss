@@ -359,6 +359,15 @@ $box-shadow: 0px 4px 6px #3332;
 }
 
 @media (max-width: calc(#{v.$layout-break-6} - 5em)) {
+  .main-container {
+    max-width: 100%;
+  }
+  .top-container-nfts {
+    margin-right: 4.35%;
+  }
+  .top-container-nfts .toggle H1 > span {
+    display: none;
+  }
   .nfts {
     flex-direction: column;
     flex-wrap: nowrap;

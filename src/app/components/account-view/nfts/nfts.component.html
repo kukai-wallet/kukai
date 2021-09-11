@@ -1,7 +1,7 @@
 <div class="main-container" *ngIf="displayTokenCard()">
   <div class="flex-row top-container-nfts">
     <div class="flex-row toggle">
-      <h1 class="flex-row" [class.selected]="isDiscover" (click)="isDiscover = false">{{ 'NFT / Collectibles' }}</h1>
+      <h1 class="flex-row" [class.selected]="isDiscover" (click)="isDiscover = false">NFT<span> / Collectibles</span></h1>
       <h1 class="flex-row" [class.selected]="!isDiscover" (click)="isDiscover = true">{{ 'Discover' }}</h1>
     </div>
     <div class="flex-row right">
