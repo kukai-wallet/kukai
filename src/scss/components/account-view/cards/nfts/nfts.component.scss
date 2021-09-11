@@ -15,6 +15,7 @@ $border-color: v.$border-color;
 $box-shadow: 0px 4px 6px #3332;
 
 @include base;
+
 .top-container {
   @include top-container;
 
@@ -358,12 +359,6 @@ $box-shadow: 0px 4px 6px #3332;
 }
 
 @media (max-width: calc(#{v.$layout-break-6} - 5em)) {
-  .main-container {
-    margin: 0 -4.35%;
-  }
-  .top-container-nfts {
-    margin-right: 4.35%;
-  }
   .nfts {
     flex-direction: column;
     flex-wrap: nowrap;
