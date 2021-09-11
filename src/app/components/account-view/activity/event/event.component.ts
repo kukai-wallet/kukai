@@ -75,7 +75,7 @@ export class EventComponent implements OnInit, OnChanges, OnDestroy {
   getCounterparty(transaction) {
     const c = this.activityService.getCounterparty(transaction, this.account);
     if (!c.name) {
-      c.name = `${c.address.slice(0, 7)}...${c.address.slice(-4)}`;
+      c.name = c.address ? `${c.address.slice(0, 7)}...${c.address.slice(-4)}` : '—';
     }
     return c;
   }

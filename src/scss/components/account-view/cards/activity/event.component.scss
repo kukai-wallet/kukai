@@ -122,12 +122,10 @@ $event-new: v.$base-end-color;
         height: auto;
       }
 
-      & .dot {
+      & .blank {
         height: 1rem;
         width: 1rem;
         margin: 0 1rem 0 0;
-        background-color: $base-font-color;
-        border-radius: $border-radius;
         display: inline-block;
       }
     }

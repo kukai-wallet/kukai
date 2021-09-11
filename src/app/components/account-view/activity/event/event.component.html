@@ -10,11 +10,18 @@
               style="transform: rotate(45deg)" />
             <img *ngSwitchCase="'received'" src="../../../../assets/img/up-arrow.svg"
               style="transform: rotate(135deg)" />
-            <img *ngSwitchCase="'delegated'" src="../../../../assets/img/tilda.svg" />
-            <div *ngSwitchDefault class="dot"></div>
+            <div *ngSwitchDefault class="blank"></div>
           </ng-container>{{ printAmount() }}
         </ng-container>
-        <ng-template #callEntrypoint><div class="dot"></div>{{ sentKind(activity) }}</ng-template>
+        <ng-template #callEntrypoint>
+          <ng-container *ngIf="zeroSent(activity); else notZero">
+            <div class="blank"></div>
+          </ng-container>
+          <ng-template #notZero>
+            <img src="../../../../assets/img/up-arrow-black.svg" style="transform: rotate(45deg)" />
+          </ng-template>
+          {{ sentKind(activity) }}
+        </ng-template>
       </div>
       <span class="failed" *ngIf="activity.status === -1">Error</span>
       <div class="updating-balances" *ngIf="activity.status === 0.5">
@@ -26,10 +33,10 @@
       <div class="flex-row-wrap address"><img
           *ngIf="!!getCounterparty(activity)?.lookupType && getCounterparty(activity)?.lookupType !== 5"
           [src]="getEventIcon()" />
-        <span class="prefix">{{ getAddressPrefix(getType()) }}&nbsp;</span><span class="value">{{
-        getCounterparty(activity)?.name || getCounterparty(activity)?.address || ''
-        }}<img class="copy" src="../../../../assets/img/copy-icon.svg"
-          (click)="copy(getCounterparty(activity)?.address)" /></span>
+        <span class="prefix">{{ getAddressPrefix(getType()) }}&nbsp;</span><span class="value">
+          {{getCounterparty(activity)?.name || getCounterparty(activity)?.address || ''}}
+          <img class="copy" src="../../../../assets/img/copy-icon.svg"
+            (click)="copy(getCounterparty(activity)?.address)" /></span>
       </div>
       <span class="time">
         <img [src]="getEventStatusIcon()" />
