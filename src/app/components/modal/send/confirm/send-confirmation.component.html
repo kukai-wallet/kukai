@@ -124,7 +124,7 @@
           </div>
         </ng-container>
       </div>
-      <div class="flex-column bottom" [style.margin]="parameters ? '2rem 0 0 0' : ''">
+      <div class="flex-column bottom">
         <span [style.visibility]="!pwdInvalid ? 'hidden' : ''" [style.margin]="!pwdInvalid ? '0' : ''"
           class="label danger">{{ this.pwdInvalid }}</span>
         <ng-container *ngIf="walletService.isPwdWallet()">
