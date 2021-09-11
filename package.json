@@ -51,6 +51,7 @@
     "@toruslabs/fetch-node-details": "^2.7.0",
     "@toruslabs/torus-direct-web-sdk": "^4.14.1",
     "@toruslabs/torus.js": "^2.4.1",
+    "@types/w3c-web-hid": "^1.0.2",
     "aes-js": "^3.1.2",
     "big.js": "^5.2.2",
     "bip39": "^3.0.2",
