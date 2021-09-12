@@ -1,5 +1,5 @@
 <div #body [style.display]="!isDisplaying ? 'none' : ''" class="flex-row body">
-  <ng-container *ngFor="let token of tokens; trackBy:trackToken">
+  <ng-container *ngFor="let token of tokensToDisplay; trackBy:trackToken">
     <app-nfts-token class="token" [token]="token"></app-nfts-token>
   </ng-container>
 </div>
