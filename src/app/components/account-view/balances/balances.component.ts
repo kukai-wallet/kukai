@@ -39,7 +39,7 @@ export class BalancesComponent implements OnInit, AfterViewChecked {
     this.e(wrap);
   }
   trackToken(index: number, token: any) {
-    return index;
+    return token?.contractAddress ? token.contractAddress + ':' + token?.id + ':' + token?.balance : index;
   }
 }
 
