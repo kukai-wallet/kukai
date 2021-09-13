@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { TokenService } from '../../services/token/token.service';
 import { MessageService } from '../../services/message/message.service';
 import { Subscription } from 'rxjs';
+import { CoordinatorService } from '../../services/coordinator/coordinator.service';
 
 @Component({
   selector: 'app-settings',
@@ -21,7 +22,9 @@ export class SettingsComponent implements OnInit, OnDestroy {
     private messageService: MessageService,
     private walletService: WalletService,
     private router: Router,
-    private tokenService: TokenService) { }
+    private tokenService: TokenService,
+    private coordinatorService: CoordinatorService
+    ) { }
 
   ngOnInit(): void {
     if (this.walletService.wallet) {
@@ -57,6 +60,14 @@ export class SettingsComponent implements OnInit, OnDestroy {
   }
   rescan() {
     this.tokenService.resetCounters();
-    this.messageService.add('Scanning for token metadata...');
+    this.messageService.add('Scanning for token metadata. This may take a couple of minutes.');
+    this.coordinatorService.update(this.activeAccount.address);
+    this.router.navigate([`/account/${this.activeAccount.address}`]);
+  }
+  rescanAll() {
+    this.tokenService.resetAllMetadata();
+    this.messageService.add('Rescanning all token metadata. This may take a couple of minutes.');
+    this.coordinatorService.update(this.activeAccount.address);
+    this.router.navigate([`/account/${this.activeAccount.address}`]);
   }
 }

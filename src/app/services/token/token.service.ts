@@ -262,6 +262,13 @@ export class TokenService {
       this.saveMetadata();
     }
   }
+  resetAllMetadata() {
+    this.exploredIds = {};
+    this.contracts = {};
+    this.saveMetadata();
+    this.loadMetadata();
+    this.subjectService.metadataUpdated.next(null);
+  }
   searchTimeMs(tokenId: string) {
     if (this.exploredIds[tokenId]) {
       const token = this.exploredIds[tokenId];
