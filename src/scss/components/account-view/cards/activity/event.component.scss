@@ -135,6 +135,7 @@ $event-new: v.$base-end-color;
       justify-content: flex-start;
       color: $base-font-color-secondary;
       margin: 0 0 0 2.125rem;
+      height: 1.5rem;
 
       & .prefix {
         color: $base-font-color-secondary;
@@ -143,11 +144,10 @@ $event-new: v.$base-end-color;
       }
 
       & div.value {
-        font-family: "Roboto Mono", "Roboto";
         @include m.multiply("font-size", 1.125);
         text-overflow: ellipsis;
         overflow: hidden;
-        align-items: center;
+        align-items: flex-end;
       }
 
       & img {
@@ -159,6 +159,7 @@ $event-new: v.$base-end-color;
       & .copy {
         cursor: pointer;
         margin: 0 0.5rem;
+        align-self: center;
       }
     }
 

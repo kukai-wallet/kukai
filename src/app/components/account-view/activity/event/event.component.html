@@ -33,7 +33,7 @@
       <div class="flex-row-wrap address"><img
           *ngIf="!!getCounterparty(activity)?.lookupType && getCounterparty(activity)?.lookupType !== 5"
           [src]="getEventIcon()" />
-        <span class="prefix">{{ getAddressPrefix(getType()) }}&nbsp;</span><div class="value">{{getCounterparty(activity)?.name || getCounterparty(activity)?.address || ''}}<img class="copy" src="../../../../assets/img/copy-icon.svg" (click)="copy(getCounterparty(activity)?.address)" /></div>
+        <span class="prefix">{{ getAddressPrefix(getType()) }}&nbsp;</span><div class="flex-row value">{{getCounterparty(activity)?.name || getCounterparty(activity)?.address || ''}}<img class="copy" src="../../../../assets/img/copy-icon.svg" (click)="copy(getCounterparty(activity)?.address)" /></div>
       </div>
       <span class="flex-row time">
         <img [src]="getEventStatusIcon()" />
