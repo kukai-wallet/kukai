@@ -2,7 +2,7 @@
   <div class="dot"></div>
   <div class="img-wrapper">
     <app-asset class="icon" (inView)="balanceChangeTimer()" [meta]="token?.thumbnailAsset || token?.displayAsset"></app-asset>
-    <div *ngIf="Number.parseInt(token?.balance) > 1" class="balance">{{
+    <div *ngIf="Number.parseInt(token?.balance) > 1" class="balance">x{{
       formatBalance(token) }}</div>
   </div>
   <div class="flex-column right">
