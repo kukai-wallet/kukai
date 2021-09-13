@@ -60,13 +60,13 @@ export class SettingsComponent implements OnInit, OnDestroy {
   }
   rescan() {
     this.tokenService.resetCounters();
-    this.messageService.add('Scanning for token metadata. This may take a couple of minutes.');
+    this.messageService.add('Scanning for token metadata...');
     this.coordinatorService.update(this.activeAccount.address);
     this.router.navigate([`/account/${this.activeAccount.address}`]);
   }
   rescanAll() {
     this.tokenService.resetAllMetadata();
-    this.messageService.add('Rescanning all token metadata. This may take a couple of minutes.');
+    this.messageService.add('Rescanning all token metadata...');
     this.coordinatorService.update(this.activeAccount.address);
     this.router.navigate([`/account/${this.activeAccount.address}`]);
   }

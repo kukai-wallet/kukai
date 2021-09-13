@@ -40,10 +40,13 @@ $base-background-color: v.$base-background-color;
     max-width: 100em;
     width: 85%;
 
-    & #rescan {
+    & .rescan {
       margin: 2rem 0 0 0;
       max-width: 65%;
       align-self: flex-end;
+    }
+    button#all {
+      background-color: #eb4e39;
     }
 
     & > h3,
@@ -204,7 +207,7 @@ $base-background-color: v.$base-background-color;
         }
       }
 
-      & #rescan {
+      & .rescan {
         align-self: flex-start;
       }
     }
