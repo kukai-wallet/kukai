@@ -135,7 +135,7 @@ $event-new: v.$base-end-color;
       justify-content: flex-start;
       color: $base-font-color-secondary;
       margin: 0 0 0 2.125rem;
-      height: 1.5rem;
+      height: 1.25rem;
 
       & .prefix {
         color: $base-font-color-secondary;
@@ -218,10 +218,15 @@ $event-new: v.$base-end-color;
       & .address {
         flex-direction: column;
         align-items: flex-start;
+        width: auto;
 
         & .prefix {
-          width: 100%;
+          width: auto;
           justify-content: flex-start;
+        }
+
+        & div.value {
+          align-items: flex-start;
         }
       }
 
