@@ -33,12 +33,9 @@
       <div class="flex-row-wrap address"><img
           *ngIf="!!getCounterparty(activity)?.lookupType && getCounterparty(activity)?.lookupType !== 5"
           [src]="getEventIcon()" />
-        <span class="prefix">{{ getAddressPrefix(getType()) }}&nbsp;</span><span class="value">
-          {{getCounterparty(activity)?.name || getCounterparty(activity)?.address || ''}}
-          <img class="copy" src="../../../../assets/img/copy-icon.svg"
-            (click)="copy(getCounterparty(activity)?.address)" /></span>
+        <span class="prefix">{{ getAddressPrefix(getType()) }}&nbsp;</span><div class="value">{{getCounterparty(activity)?.name || getCounterparty(activity)?.address || ''}}<img class="copy" src="../../../../assets/img/copy-icon.svg" (click)="copy(getCounterparty(activity)?.address)" /></div>
       </div>
-      <span class="time">
+      <span class="flex-row time">
         <img [src]="getEventStatusIcon()" />
         <a *ngIf="activity.status !== 0" href="{{ explorerURL(activity.hash) }}" target="_blank">
           <ng-container *ngIf="activity.status !== 0.5; else halfConfirmed">

@@ -77,6 +77,7 @@ export class EventComponent implements OnInit, OnChanges, OnDestroy {
     if (!c.name) {
       c.name = c.address ? `${c.address.slice(0, 7)}...${c.address.slice(-4)}` : '—';
     }
+    c.name.trim();
     return c;
   }
   getEventIcon() {
