@@ -1276,7 +1276,7 @@ export class OperationService {
     return this.http.post(`${this.nodeURL}/${path}`, payload, httpOptions).pipe(flatMap(res => {
       return of(res);
     })).pipe(catchError(err => {
-      if (retries > 0 && err.name === 'HttpErrorResponse' && err.statusText === 'Unknown Error') {
+      if (retries > 0 && err?.name === 'HttpErrorResponse') {
         console.warn('Retry', path);
         return this.postRpc(path, payload, --retries);
       } else {
@@ -1288,7 +1288,7 @@ export class OperationService {
     return this.http.get(`${this.nodeURL}/${path}`).pipe(flatMap(res => {
       return of(res);
     })).pipe(catchError(err => {
-      if (retries > 0 && err.name === 'HttpErrorResponse' && err.statusText === 'Unknown Error') {
+      if (retries > 0 && err?.name === 'HttpErrorResponse') {
         console.warn('Retry', path);
         return this.getRpc(path, --retries);
       } else {
