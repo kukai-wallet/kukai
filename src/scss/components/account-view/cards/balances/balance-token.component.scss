@@ -22,10 +22,12 @@ $border-color: v.$border-color;
     left: 0;
     z-index: 0;
     border-bottom: none;
+    margin: 0;
   }
   &.no-box .balance {
     box-shadow: none !important;
     border-bottom: 2px solid $border-color;
+    margin: 0 0 -2px 0;
   }
 }
 
