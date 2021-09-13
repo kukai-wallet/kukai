@@ -58,7 +58,8 @@ export const CONSTANTS: Constants = {
       thumbnailUrl: "",
       discoverUrl: "../../../assets/img/alias/tezosdomains-discover.png",
       link: "https://tezos.domains/", shouldDisplayLink: DisplayLinkOption.All, category: ["identity"],
-      description: "Friendly names on Tezos"
+      description: "Friendly names on Tezos",
+      backgroundColor: '#f1f4f8'
     },
     'InterpopComics': {
       name: "Interpop Comics",
@@ -66,7 +67,8 @@ export const CONSTANTS: Constants = {
       thumbnailUrl: "../../../assets/img/alias/interpop.svg",
       discoverUrl: "../../../assets/img/alias/interpop-discover.png",
       link: "https://interpopcomics.com/", shouldDisplayLink: DisplayLinkOption.All, category: ["collectibles"],
-      description: "Digitally native comics as NFTs"
+      description: "Digitally native comics as NFTs",
+      backgroundColor: '#5f8394'
     },
     'Kalamint': {
       name: "Kalamint",
@@ -82,7 +84,8 @@ export const CONSTANTS: Constants = {
       address: ["KT1WGDVRnff4rmGzJUbdCRAJBmYt12BrPzdD"],
       thumbnailUrl: "../../../assets/img/alias/pixelpotus.png",
       link: "https://www.pixelpotus.com/", shouldDisplayLink: DisplayLinkOption.All, category: ["game", "collectibles"],
-      description: "Collectibles game with FREE daily NFTs"
+      description: "Collectibles game with FREE daily NFTs",
+      backgroundColor: '#c7b299'
     },
     'TzColors': {
       name: "Tz Colors",
@@ -97,7 +100,8 @@ export const CONSTANTS: Constants = {
       thumbnailUrl: "../../../assets/img/alias/tezotopia.png",
       discoverUrl: "../../../assets/img/alias/tezotopia-discover.png",
       link: "https://app.tezotopia.com/marketplace/artifacts", shouldDisplayLink: DisplayLinkOption.All, category: ["game", "collectibles"],
-      description: "Battle, earn, win prizes plus NFT yield farming"
+      description: "Battle, earn, win prizes plus NFT yield farming",
+      backgroundColor: '#000'
     },
     'Bazaar Market': {
       name: "Bazaar Market",
