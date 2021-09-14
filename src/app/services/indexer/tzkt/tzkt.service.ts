@@ -236,7 +236,13 @@ export class TzktService implements Indexer {
           data = [];
         }
         if (data.length === 0) {
-          data = await this.getTokenMetadataWithTaquito(contractAddress, id);
+          try {
+            data = await this.getTokenMetadataWithTaquito(contractAddress, id);
+            console.log(`Fallback on Taquito metadata (${contractAddress}:${id})`, data);
+          } catch (e) {
+            console.log(`No metadata found for: ${contractAddress}:${id}`);
+            throw e;
+          }
         } else {
           data = data[0];
         }
@@ -356,7 +362,7 @@ export class TzktService implements Indexer {
     } else if (!CONSTANTS.MAINNET && (uri.startsWith('http://localhost') || uri.startsWith('http://127.0.0.1'))) {
       url = uri;
     }
-    const cacheMeta = await this.fetchApi(`https://backend.kukai.network/file/info?src=${url}`);
+    const cacheMeta = url ? await this.fetchApi(`https://backend.kukai.network/file/info?src=${url}`) : '';
     return cacheMeta ? cacheMeta : '';
   }
   async fetchApi(url: string): Promise<Asset> {
