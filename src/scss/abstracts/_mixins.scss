@@ -1,15 +1,14 @@
-@use '../abstracts/functions' as f;
-@use '../abstracts/variables'as v;
+@use './variables' as v;
 
 @mixin multiply($property, $base, $postfix: 'rem', $override: 0, $breakpoint: v.$layout-break-5) {
   @media (min-width: $breakpoint) {
-    #{$property}: f.multiply($base, 1) + $postfix;
+    #{$property}: #{($base * 1) + $postfix};
   }
   @media (max-width: $breakpoint) {
     @if $override != 0 {
-      #{$property}: f.multiply($base, $override) + $postfix; 
+      #{$property}: #{($base * $override) + $postfix}; 
     } @else {
-      #{$property}: f.multiply($base, v.$font-offset-mobile) + $postfix;
+      #{$property}: #{($base * v.$font-offset-mobile) + $postfix};
     }
   }
 }

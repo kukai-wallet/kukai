@@ -5,8 +5,16 @@ $current-theme: "default";
 // generic color constants
 $base-color-static: #000 !default;
 $base-color: f.theme-transform(#000) !default;
-$base-color-lightened-1: f.theme-transform(#4a5d75, $current-theme, 0.25) !default;
-$base-color-lightened-2: f.theme-transform(#98a0ab, $current-theme, 0.25) !default;
+$base-color-lightened-1: f.theme-transform(
+  #4a5d75,
+  $current-theme,
+  0.25
+) !default;
+$base-color-lightened-2: f.theme-transform(
+  #98a0ab,
+  $current-theme,
+  0.25
+) !default;
 $base-color-lightened-3: f.theme-transform(#b9bfc7, $current-theme) !default;
 $base-color-lightened-4: f.theme-transform(#c1cdd5, $current-theme) !default;
 $base-color-lightened-5: f.theme-transform(#dae1e6, $current-theme) !default;
@@ -15,14 +23,24 @@ $base-color-lightened-65: f.theme-transform(#f3f5f7, $current-theme) !default;
 $base-color-lightened-7: f.theme-transform(#f8f9fa, $current-theme) !default;
 $base-end-color-static: #fff !default;
 $base-end-color: f.theme-transform(#fff, $current-theme) !default;
-$base-background-color: var(--background-color);//f.theme-transform(#f8f9fa, $current-theme) !default; //ebedf0 - alt for start page
+$base-background-color: var(
+  --background-color
+); //f.theme-transform(#f8f9fa, $current-theme) !default; //ebedf0 - alt for start page
 $base-blue-color: #5963ff !default;
 $base-blue-color-lightened: #7178e3 !default;
 $base-red-color: #eb4e39 !default;
 $base-green-color: #86cf2d !default;
 $base-font-color: f.theme-transform(#3e4855, $current-theme, 0.25) !default;
-$base-font-color-secondary: f.theme-transform(#98a0ab, $current-theme, 0.75) !default;
-$base-font-color-secondary-half: f.theme-transform(#6B7480, $current-theme, 0.75) !default;
+$base-font-color-secondary: f.theme-transform(
+  #98a0ab,
+  $current-theme,
+  0.75
+) !default;
+$base-font-color-secondary-half: f.theme-transform(
+  #6b7480,
+  $current-theme,
+  0.75
+) !default;
 
 // box shadow constants
 $box-shadow: 0px 12px 24px #3331 !default;
