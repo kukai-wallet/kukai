@@ -23,7 +23,7 @@ export class SubjectService {
   public confirmedOp: Subject<string>;
   public prepareTokenTransfer: Subject<PrepareTokenTransfer>;
   public nftsUpdated: BehaviorSubject<any>;
-  public origin: Subject<string>;
+  public origin: BehaviorSubject<string>;
   public beaconResponse: Subject<boolean>;
   public logout: Subject<boolean>;
   constructor() {
@@ -40,7 +40,7 @@ export class SubjectService {
     this.confirmedOp = new Subject<string>();
     this.prepareTokenTransfer = new Subject<PrepareTokenTransfer>();
     this.nftsUpdated = new BehaviorSubject<any>(undefined);
-    this.origin = new Subject<string>();
+    this.origin = new BehaviorSubject<string>(null);
     this.beaconResponse = new Subject<boolean>();
     this.logout = new Subject<boolean>();
   }

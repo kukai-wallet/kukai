@@ -3,7 +3,7 @@ import { TemplateRequest, TemplateFee, FullyPreparedTransaction } from '../../se
 import { Template, BaseTemplate } from 'kukai-embed';
 import { WalletService } from '../../../services/wallet/wallet.service';
 import { MessageService } from '../../../services/message/message.service';
-import { take } from 'rxjs/operators';
+import { SubjectService } from '../../../services/subject/subject.service';
 
 @Component({
   selector: 'app-confirm-send-embed',
@@ -18,11 +18,15 @@ export class ConfirmSendEmbedComponent implements OnInit, OnChanges {
   active = false;
   showMore = false;
   template = 'default';
-  constructor(public walletService: WalletService, public messageService: MessageService) { }
+  constructor(
+    public walletService: WalletService,
+    public messageService: MessageService,
+    private subjectService: SubjectService
+    ) { }
 
   ngOnInit(): void {
-    this.messageService.origin.pipe(take(1)).subscribe((origin) => {
-      if (!!origin && origin.indexOf('interpop') !== -1) { // (m)interpop
+    this.subjectService.origin.subscribe((origin) => {
+      if (origin && origin.indexOf('interpop') !== -1) { // (m)interpop
         this.template = 'minterpop';
       } else {
         this.template = 'default';
