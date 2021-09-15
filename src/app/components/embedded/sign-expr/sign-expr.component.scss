@@ -102,7 +102,7 @@ textarea {
   border: 2px solid;
   border-color: $border-color;
   border-radius: $border-radius;
-  font-size: 1em;
+  font-size: 1rem;
   box-sizing: border-box;
 }
 
@@ -157,19 +157,19 @@ button {
     height: auto;
     border-radius: $border-radius-hard;
     padding: 2rem;
-    width: 38em;
+    max-width: 90%;
     position: relative;
     margin: 5rem 0 0 0;
     overflow-x: hidden;
     overflow-y: auto;
 
     & .close {
-      top: -0.125em;
+      top: -0.125rem;
       right: 0;
       font-size: 95%;
       position: absolute;
-      width: 3em;
-      height: 3em;
+      width: 3rem;
+      height: 3rem;
       padding: 0.25rem;
       border: 2px solid $border-color;
       border-radius: $border-radius-hardest;
@@ -184,7 +184,7 @@ button {
       align-items: center;
 
       .title {
-        font-size: 2em;
+        font-size: 2rem;
         width: 70%;
         font-weight: 500;
         text-align: center;
@@ -240,12 +240,12 @@ button {
     }
 
     & .more-info {
-      font-size: 1.25em;
+      font-size: 1.25rem;
       color: $base-font-color;
       font-weight: 500;
       text-align: center;
       margin: 1em 0 0 0;
-      width: 8em;
+      width: 8rem;
       cursor: pointer;
 
       span {
@@ -323,7 +323,7 @@ button {
 
     & button.confirm {
       width: 100%;
-      height: 3em;
+      height: 3rem;
     }
 
     & .footer {
