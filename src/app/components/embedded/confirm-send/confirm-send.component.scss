@@ -145,7 +145,7 @@ button {
     height: auto;
     border-radius: $border-radius-hard;
     padding: 2rem;
-    width: 38rem;
+    max-width: calc(100% - 6rem);
     position: relative;
     margin: 5rem 0 0 0;
     overflow-x: hidden;
@@ -218,7 +218,7 @@ button {
     }
 
     & .token-image {
-      margin: 0 0 0 1rem;
+      margin: 0 0 1rem 1rem;
       width: 8rem;
       height: 8rem;
       object-fit: scale-down;
@@ -379,7 +379,7 @@ button {
         height: auto;
         border-radius: $border-radius-hard;
         padding: 1rem 2rem 2rem 2rem;
-        max-width: 90%;
+        max-width: calc(100% - 6rem);
         position: relative;
         margin: 5rem 0 0 0;
         overflow-x: hidden;
@@ -441,7 +441,7 @@ button {
         }
     
         & .token-image {
-          margin: 0 0 0 1rem;
+          margin: 0 0 1rem 1rem;
           width: 8rem;
           height: 8rem;
           object-fit: scale-down;
