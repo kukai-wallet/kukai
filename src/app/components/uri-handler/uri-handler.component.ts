@@ -181,7 +181,7 @@ this.subscriptions.unsubscribe();
       await this.beaconService.rejectOnUnknown(message);
       return false;
     }
-    this.activeAccount = this.activeAccount ?? this.walletService.wallet.getImplicitAccount(message.sourceAddress);
+    this.activeAccount = this.walletService.wallet.getImplicitAccount(message.sourceAddress);
     return true;
   }
   private invalidOptionals(op: any): boolean {
@@ -227,7 +227,7 @@ this.subscriptions.unsubscribe();
       await this.beaconService.rejectOnUnknown(message);
       return false;
     }
-    this.activeAccount = this.activeAccount ?? this.walletService.wallet.getImplicitAccount(message.sourceAddress);
+    this.activeAccount = this.walletService.wallet.getImplicitAccount(message.sourceAddress);
     return true;
   }
   invalidParameters(parameters: any): boolean {
