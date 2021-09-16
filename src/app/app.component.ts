@@ -95,7 +95,6 @@ export class AppComponent implements OnInit, OnDestroy {
     document.documentElement.style.setProperty('--background-color', bg);
     if(!!this.embedded) {
       const resize = () => {
-        console.log(document.body.clientWidth)
         if(document.body.clientWidth < 450) {
           document.documentElement.style.fontSize = '55%'; 
         } else if(document.body.clientWidth < 540) {
@@ -103,7 +102,6 @@ export class AppComponent implements OnInit, OnDestroy {
         } else if(document.body.clientWidth < 650) {
           document.documentElement.style.fontSize = '87.5%'; 
         } else {
-          console.log("here")
           document.documentElement.style.fontSize = '100%';
         }
       }
