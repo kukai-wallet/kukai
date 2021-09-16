@@ -93,6 +93,21 @@ export class AppComponent implements OnInit, OnDestroy {
     this.embedded = path.startsWith('/embedded');
     const bg = this.embedded ? 'none' : '#f8f9fa';
     document.documentElement.style.setProperty('--background-color', bg);
+    if(!!this.embedded) {
+      const resize = () => {
+        if(document.body.clientWidth < 450) {
+          document.documentElement.style.fontSize = '55%'; 
+        } else if(document.body.clientWidth < 540) {
+          document.documentElement.style.fontSize = '75%'; 
+        } else if(document.body.clientWidth < 650) {
+          document.documentElement.style.fontSize = '87.5%'; 
+        } else {
+          document.documentElement.style.fontSize = '100%';
+        }
+      }
+      window.addEventListener('resize', resize);
+      resize();
+    }
   }
   setLanguage(lang) {
     window.localStorage.setItem('languagePreference', lang);

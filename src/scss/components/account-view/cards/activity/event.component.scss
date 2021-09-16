@@ -11,6 +11,7 @@ $base-green-color: v.$base-green-color;
 $border-color-dark-only: v.$border-color-dark-only;
 $border-radius: v.$border-radius;
 $border-width: v.$border-width;
+$box-shadow: v.$box-shadow;
 $event-unconfirmed: #dae1e6;
 $event-confirmed: v.$base-color-lightened-65;
 $event-new: v.$base-end-color;
@@ -48,6 +49,7 @@ $event-new: v.$base-end-color;
   .origination {
     position: relative;
     overflow: hidden;
+    box-shadow: $box-shadow;
 
     &:after {
       content: "";
