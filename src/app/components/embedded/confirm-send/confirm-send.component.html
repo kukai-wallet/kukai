@@ -1,4 +1,4 @@
-<div *ngIf="active && template === 'minterpop'" class="flex-column kukai-modal">
+<div *ngIf="active && template === 'default'" class="flex-column kukai-modal">
   <div class="content">
     <div class="flex-column top">
       <img class="flex-row button close" (click)="cancel()" src="../../../../assets/img/add-minterpop.svg" />
@@ -95,7 +95,7 @@
 </div>
 
 
-<div *ngIf="active && template === 'default'" class="kukai-template">
+<div *ngIf="active && template === 'minterpop'" class="kukai-template">
   <div *ngIf="templateRequest.template" class="flex-column card">
     <H1>You are about to<BR><b
         *ngIf="templateRequest.template.action; else defaultAction">{{templateRequest.template.action}}</b>

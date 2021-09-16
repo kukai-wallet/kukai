@@ -20,6 +20,7 @@ import { Subscription } from 'rxjs';
 })
 
 export class SendComponent implements OnInit, OnChanges, OnDestroy {
+  @Input() embedded: boolean;
   @Input() activeAccount: Account;
   @Input() tokenTransfer: string;
   @Input() operationRequest: string;
