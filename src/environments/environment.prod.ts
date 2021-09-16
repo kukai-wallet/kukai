@@ -182,6 +182,21 @@ export const CONSTANTS: Constants = {
         }
       }
     },
+    'KT1JkoE42rrMBP9b2oDhbx6EUr26GcySZMUH': { // kDAO
+      kind: 'FA1.2',
+      category: 'finance',
+      tokens: {
+        0: {
+          name: 'Kolibri DAO',
+          symbol: 'kDAO',
+          decimals: 18,
+          description: '',
+          displayUrl: '../../../assets/img/tokens/kdao.png',
+          thumbnailUrl: '../../../assets/img/tokens/kdao.png',
+          shouldPreferSymbol: true
+        }
+      }
+    },
     'KT1LN4LPSqTMS7Sd2CJw4bbDGRkMv2t68Fy9': { // USDtz
       kind: 'FA1.2',
       category: 'finance',
@@ -227,6 +242,51 @@ export const CONSTANTS: Constants = {
           thumbnailAsset: '../../../assets/img/tokens/you.png',
           shouldPreferSymbol: true,
           status: 1
+        }
+      }
+    },
+    'KT1BzmcWWUV1dnGF58AZ67GySwsniPL2PKYq': {
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        0: {
+          name: 'BTCtez',
+          symbol: 'BTCtz',
+          decimals: 8,
+          description: 'BTCtz is a Tezos on-chain stablecoin pegged to the value of Bitcoin.',
+          displayUrl: '../../../assets/img/tokens/btctz.png',
+          thumbnailUrl: '../../../assets/img/tokens/btctz.png',
+          shouldPreferSymbol: true
+        }
+      }
+    },
+    'KT1XRPEPXbZK25r3Htzp2o1x7xdMMmfocKNW': { // uUSD
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        0: {
+          name: 'Youves uUSD',
+          symbol: 'uUSD',
+          decimals: 12,
+          description: '',
+          displayUrl: '../../../assets/img/tokens/uusd.png',
+          thumbnailUrl: '../../../assets/img/tokens/uusd.png',
+          shouldPreferSymbol: true
+        }
+      }
+    },
+    'KT1Xobej4mc6XgEjDoJoHtTKgbD1ELMvcQuL': { // YOU
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        0: {
+          name: 'youves YOU Governance',
+          symbol: 'YOU',
+          decimals: 12,
+          description: '',
+          displayUrl: '../../../assets/img/tokens/you.png',
+          thumbnailUrl: '../../../assets/img/tokens/you.png',
+          shouldPreferSymbol: true
         }
       }
     },
