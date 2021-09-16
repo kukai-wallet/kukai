@@ -3,9 +3,7 @@ import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { WalletService } from '../../services/wallet/wallet.service';
 import { ActivatedRoute } from '@angular/router';
-import { DeeplinkService } from '../../services/deeplink/deeplink.service';
 import 'rxjs/add/operator/filter';
-import { Location } from '@angular/common';
 import { TorusService } from '../../services/torus/torus.service';
 import { MessageService } from '../../services/message/message.service';
 import { ImportService } from '../../services/import/import.service';
@@ -27,9 +25,7 @@ export class StartComponent implements OnInit, OnDestroy {
     private importService: ImportService,
     private messageService: MessageService,
     private router: Router,
-    private route: ActivatedRoute,
-    private deeplinkService: DeeplinkService,
-    private location: Location
+    private route: ActivatedRoute
   ) {
   }
 

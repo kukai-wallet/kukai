@@ -29,6 +29,8 @@ export class HeaderComponent implements OnInit, OnChanges, OnDestroy {
   private subscriptions: Subscription = new Subscription();
   constructor(
     public router: Router,
+    private route: ActivatedRoute,
+    private deeplinkService: DeeplinkService,
     public walletService: WalletService,
     public lookupService: LookupService,
     private messageService: MessageService,
@@ -48,6 +50,10 @@ export class HeaderComponent implements OnInit, OnChanges, OnDestroy {
     this.subscriptions.add(this.route.queryParams
       .subscribe(async params => {
         if (params?.type) {
+<<<<<<< HEAD
+=======
+          console.log("here");
+>>>>>>> 81c692de (fix: deeplink start & loggedin)
           this.deeplinkService.set(params);
         }
       }));
