@@ -4,12 +4,11 @@ import {
   TorusWallet,
   ImplicitAccount
 } from '../../../services/wallet/wallet';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-card',
   templateUrl: './card.component.html',
-  styleUrls: ['./card.component.scss']
+  styleUrls: ['../../../../scss/components/embedded//card/card.component.scss']
 })
 export class CardComponent implements OnInit {
   @Input() activeAccount: ImplicitAccount;

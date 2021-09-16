@@ -1,0 +1,45 @@
+<div class="main-container">
+  <div class="top-container">
+    <h1>Tokens Pending Approval</h1>
+  </div>
+  <div>
+    <div class="flex-column pending">
+      <div class="flex-row head">
+        <div class="flex-row left">
+          <span class="count">2</span>
+          <span class="title">Pending Tokens</span>
+        </div>
+        <div class="flex-row right">
+          <div class="flex-row button toggle" (click)="toggleDropdown()"><img src="../../../../assets/img/caret-left.svg" /></div>
+        </div>
+      </div>
+      <div class="flex-column body">
+        <div class="flex-row token">
+          <div class="flex-row left">
+            <div class="icon">
+            </div>
+            <div class="flex-column right">
+              <div class="title">
+                Festival of Lights 2021 (CN)
+              </div>
+              <div class="issue">
+                #16
+              </div>
+            </div>
+          </div>
+          <div class="flex-row right">
+            <div class="button button-primary-inverted reject">
+              REJECT
+            </div>
+            <div class="button button-primary approve">
+              APPROVE
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ng-template #noTokens>
+      <span class="no-tokens">No tokens found</span>
+    </ng-template>
+  </div>
+</div>

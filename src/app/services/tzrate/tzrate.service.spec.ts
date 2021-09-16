@@ -113,23 +113,5 @@ describe('[ TzrateService ]', () => {
 			});
 		});
 	});
-	/*
-	describe('> Handle Network Errors', () => {
-		const mockErrorResponse = { status: 404, statusText: 'Bad Request' };
-		const data = 'Invalid request parameters';
-		let errResponse: string;
-
-		beforeEach(() => {
-			// tslint:disable-next-line:max-line-length
-			errResponse = 'Failed to get xtz price from CMC: {"headers":{"normalizedNames":{},"lazyUpdate":null,"headers":{}},"status":0,
-				"statusText":"Unknown Error","url":"https://api.coinmarketcap.com/v1/ticker/tezos/","ok":false,"name":"HttpErrorResponse",
-				"message":"Http failure response for https://api.coinmarketcap.com/v1/ticker/tezos/: 0 ","error":{"isTrusted":false}}';
-			service.getTzrate();
-			const failedreq = httpMock.expectOne(apiUrl).error(new ErrorEvent('network error'));
-		});
-
-		it('should log error message if ticker is unavailable', () => {
-			expect(console.log).toHaveBeenCalledWith(errResponse);
-		});
-	});*/
+	/* eslint-disable-next-line , , , , , ,  */
 });

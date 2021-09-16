@@ -1,0 +1,5 @@
+@use '../abstracts/variables'as v;
+
+@function multiply($base, $multiplier) {
+  @return #{$base * $multiplier};
+}

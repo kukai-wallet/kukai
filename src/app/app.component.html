@@ -1,5 +1,10 @@
+<div *ngIf="!CONSTANTS.MAINNET && !embedded" class="network"
+  [style.boxShadow]="document?.body.scrollTop !== 0 ? '0 2px 10px #3333' : ''">
+  {{ CONSTANTS.NETWORK.toUpperCase() }} VERSION
+</div>
+<app-header *ngIf="!embedded"></app-header>
 <router-outlet></router-outlet>
 <app-messages *ngIf="!embedded"></app-messages>
 <app-spinner [embedded]="embedded"></app-spinner>
 <app-agreement *ngIf="!embedded"></app-agreement>
-<app-footer *ngIf="!embedded"></app-footer>
+<app-footer *ngIf="!embedded" [class.initial]="router.url !== '/'"></app-footer>

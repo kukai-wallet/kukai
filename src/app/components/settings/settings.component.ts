@@ -1,33 +1,44 @@
-import { Component, OnInit, HostListener } from '@angular/core';
-import { MessageService } from '../../services/message/message.service';
+import { Component, OnInit, HostListener, OnDestroy } from '@angular/core';
 import { BeaconService } from '../../services/beacon/beacon.service';
 import { WalletService } from '../../services/wallet/wallet.service';
 import { Router } from '@angular/router';
 import { TokenService } from '../../services/token/token.service';
+import { MessageService } from '../../services/message/message.service';
+import { Subscription } from 'rxjs';
+import { CoordinatorService } from '../../services/coordinator/coordinator.service';
 
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
-  styleUrls: ['./settings.component.scss']
+  styleUrls: ['../../../scss/components/settings/settings.component.scss']
 })
-export class SettingsComponent implements OnInit {
+export class SettingsComponent implements OnInit, OnDestroy {
   implicitAccounts = [];
   wideAccounts = false;
+  activeAccount = null;
+  private subscriptions: Subscription = new Subscription();
   constructor(
     public beaconService: BeaconService,
     private messageService: MessageService,
     private walletService: WalletService,
     private router: Router,
-    private tokenService: TokenService) { }
+    private tokenService: TokenService,
+    private coordinatorService: CoordinatorService
+    ) { }
 
   ngOnInit(): void {
     if (this.walletService.wallet) {
       this.implicitAccounts = this.walletService.wallet.getImplicitAccounts();
       this.beaconService.syncBeaconState();
       this.onResize();
-    } else {
-      this.router.navigate(['']);
     }
+
+    this.subscriptions.add(this.walletService.activeAccount.subscribe(activeAccount => {
+      this.activeAccount = activeAccount;
+    }));
+  }
+  ngOnDestroy() {
+
   }
   accountAvailable(pkh: string): boolean {
     const index = this.implicitAccounts.findIndex((impAcc: any) => impAcc.pkh === pkh);
@@ -50,5 +61,13 @@ export class SettingsComponent implements OnInit {
   rescan() {
     this.tokenService.resetCounters();
     this.messageService.add('Scanning for token metadata...');
+    this.coordinatorService.update(this.activeAccount.address);
+    this.router.navigate([`/account/${this.activeAccount.address}`]);
+  }
+  rescanAll() {
+    this.tokenService.resetAllMetadata();
+    this.messageService.add('Rescanning all token metadata...');
+    this.coordinatorService.update(this.activeAccount.address);
+    this.router.navigate([`/account/${this.activeAccount.address}`]);
   }
 }

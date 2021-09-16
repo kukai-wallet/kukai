@@ -1,25 +1,27 @@
 import { Injectable } from '@angular/core';
 import { WalletService } from '../wallet/wallet.service';
-import { of, Observable, from as fromPromise, Subject } from 'rxjs';
+import { of, Observable, from as fromPromise } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
-import { Activity, Account, ImplicitAccount } from '../wallet/wallet';
+import { delay, takeUntil } from 'rxjs/operators'
+import { Activity, Account } from '../wallet/wallet';
 import { MessageService } from '../message/message.service';
 import { LookupService } from '../lookup/lookup.service';
 import { IndexerService } from '../indexer/indexer.service';
-import Big from 'big.js';
-import { CONSTANTS } from '../../../environments/environment';
 import { TokenService } from '../token/token.service';
+import { BehaviorSubject } from 'rxjs';
+import { SubjectService } from '../subject/subject.service';
 
 @Injectable()
 export class ActivityService {
-  confirmedOp = new Subject<string>();
-  maxTransactions = 10;
+  readonly maxTransactions = 10;
+  public tokenBalanceUpdated = new BehaviorSubject(null);
   constructor(
     private walletService: WalletService,
     private messageService: MessageService,
     private lookupService: LookupService,
     private indexerService: IndexerService,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private subjectService: SubjectService
   ) { }
   updateTransactions(pkh): Observable<any> {
     try {
@@ -43,9 +45,23 @@ export class ActivityService {
         if (account.state !== counter) {
           if (data.tokens) {
             this.updateTokenBalances(account, data.tokens);
+          } else {
+            this.updateTokenBalances(account, []);
           }
           return this.getAllTransactions(account, counter);
         } else {
+          if (!account.state) {
+            if (!account.activities || !account.tokens) {
+              if (!account.activities) {
+                account.activities = [];
+              }
+              if (!account.tokens) {
+                account.tokens = [];
+              }
+              this.updateTokenBalances(account, []);
+              this.walletService.storeWallet();
+            }
+          }
           return of({
             upToDate: true,
             balance: data?.balance ? data.balance : 0
@@ -63,15 +79,28 @@ export class ActivityService {
     }
   }
   async updateTokenBalances(account, tokens) {
-    if (tokens && tokens.length) {
-      for (const token of tokens) {
-        const tokenId = `${token.contract}:${token.token_id}`;
-        if (tokenId) {
-          account.updateTokenBalance(tokenId, token.balance.toString());
+    if (Array.isArray(tokens)) {
+      const idsWithBalance: string[] = [];
+      if (!tokens.length) {
+        account.updateTokenBalance('', '');
+      } else {
+        for (const token of tokens) {
+          const tokenId = `${token.contract}:${token.token_id}`;
+          idsWithBalance.push(tokenId);
+          if (tokenId) {
+            account.updateTokenBalance(tokenId, token.balance.toString());
+          }
+        }
+        const currentTokenIds = account.getTokenBalances().map((token) => { return token.tokenId });
+        for (const tokenId of currentTokenIds) {
+          if (!idsWithBalance.includes(tokenId)) {
+            account.updateTokenBalance(tokenId, '0');
+          }
         }
       }
+      this.tokenBalanceUpdated.next(true);
+      this.walletService.storeWallet();
     }
-    this.walletService.storeWallet();
   }
   getAllTransactions(account: Account, counter: string): Observable<any> {
     const knownTokenIds: string[] = this.tokenService.knownTokenIds();
@@ -81,21 +110,34 @@ export class ActivityService {
         this.handleUnknownTokenIds(resp.unknownTokenIds);
         if (Array.isArray(operations)) {
           const oldActivities = account.activities;
-          account.activities = operations;
+          const unconfirmedOps = [];
+          if (oldActivities && oldActivities.length) {
+            for (let op of oldActivities) {
+              if (op.status === 0 || op.status === 0.5) {
+                let save = true;
+                for (const opNew of operations) {
+                  if (opNew.hash === op.hash) {
+                    save = false;
+                    break;
+                  }
+                }
+                if (save) {
+                  unconfirmedOps.push(op);
+                }
+              }
+            }
+          }
+          account.activities = unconfirmedOps.concat(operations);
           const oldState = account.state;
           account.state = counter;
           this.walletService.storeWallet();
           if (oldState !== '') { // Exclude inital loading
             this.promptNewActivities(account, oldActivities, operations);
-          } else {
-            console.log('# Excluded ' + counter);
           }
           for (const activity of operations) {
             const counterParty = this.getCounterparty(activity, account, false);
             this.lookupService.check(counterParty);
           }
-        } else {
-          console.log(operations);
         }
         return of({
           upToDate: false
@@ -105,20 +147,33 @@ export class ActivityService {
   }
   promptNewActivities(account: Account, oldActivities: Activity[], newActivities: Activity[]) {
     for (const activity of newActivities) {
-      const index = oldActivities.findIndex((a) => a.hash === activity.hash);
-      if (index === -1 || (index !== -1 && oldActivities[index].status === 0)) {
+      const index = oldActivities.findIndex((a) => a.hash === activity.hash && a.status === 1);
+      if (index === -1) {
         const now = (new Date()).getTime();
         const timeDiff = now - (activity?.timestamp ? activity.timestamp : now);
-        if (timeDiff < 3600000) { // 1 hour
+        if (timeDiff < 1800000) { // 1/2 hour
           if (activity.hash) {
-            this.confirmedOp.next(activity.hash);
+            setTimeout(() => {
+              this.subjectService.confirmedOp.next(activity.hash);
+            }, 0);
           }
           if (activity.type === 'transaction') {
             if (account.address === activity.source.address) {
               this.messageService.addSuccess(account.shortAddress() + ': Sent ' + this.tokenService.formatAmount(activity.tokenId, activity.amount.toString()));
             }
             if (account.address === activity.destination.address) {
-              this.messageService.addSuccess(account.shortAddress() + ': Received ' + this.tokenService.formatAmount(activity.tokenId, activity.amount.toString()));
+              const ref = activity.tokenId ? (Date.now()).toString() + activity.tokenId : '';
+              this.messageService.addSuccess((account.shortAddress() + ': Received ' + this.tokenService.formatAmount(activity.tokenId, activity.amount.toString())).replace('[Unknown token]', 'Token'), undefined, ref);
+              if (activity.tokenId && this.tokenService.getAsset(activity.tokenId) === null) { // unknown token
+                this.subjectService.metadataUpdated.pipe(takeUntil(of(true).pipe(delay(8000)))).subscribe((token: any) => { // unsub after 8s
+                  if (token?.contractAddress && token.id !== undefined) {
+                    const tokenId = token.contractAddress + ':' + token.id.toString();
+                    if (activity.tokenId === tokenId) {
+                      this.messageService.modify(account.shortAddress() + ': Received ' + this.tokenService.formatAmount(activity.tokenId, activity.amount.toString()), ref);
+                    };
+                  }
+                });
+              }
             }
           } else if (activity.type === 'delegation') {
             this.messageService.addSuccess(account.shortAddress() + ': Delegate updated');
@@ -151,7 +206,7 @@ export class ActivityService {
       }
     } else if (transaction.type === 'origination') {
       if (account.address === transaction.source.address) {
-        counterParty = transaction.destination;
+        counterParty = transaction.destination ? transaction.destination : { address: '' };
       } else {
         counterParty = transaction.source;
       }

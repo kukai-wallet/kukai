@@ -1,26 +1,26 @@
 import { Activity } from './services/wallet/wallet';
-import { ContractOverrideType, ContractType } from './services/token/token.service';
+import { Asset, ContractOverrideType, ContractType } from './services/token/token.service';
 
 export { Activity };
 
 export interface KeyPair {
-  sk: string|null;
-  pk: string|null;
+  sk: string | null;
+  pk: string | null;
   pkh: string;
 }
 export interface Wallet {
-seed: null|string;
-salt: null|string;
-pk?: string;
-encryptionVersion: number|null;
-type: WalletType;
-balance: Balance;
-XTZrate: number | null;
-accounts: Account[];
-derivationPath?: string;
+  seed: null | string;
+  salt: null | string;
+  pk?: string;
+  encryptionVersion: number | null;
+  type: WalletType;
+  balance: Balance;
+  XTZrate: number | null;
+  accounts: Account[];
+  derivationPath?: string;
 }
 export interface Account {
-pkh: string|null;
+  pkh: string | null;
   delegate: string;
   balance: Balance;
   numberOfActivites: number;
@@ -106,6 +106,13 @@ export interface DefaultTransactionParams {
     storageLimit: number;
   }[];
 }
+
+export enum DisplayLinkOption {
+  All,
+  DirectAuth,
+  None,
+}
+
 export interface Constants {
   NAME: string;
   TEZOS_DOMAIN: {
@@ -124,4 +131,6 @@ export interface Constants {
   },
   ASSETS: Record<string, ContractType>;
   CONTRACT_OVERRIDES: Record<string, ContractOverrideType>;
+  CONTRACT_ALIASES: Record<string, { name?: string, address: string[], thumbnailUrl: Asset, discoverUrl?: string, link: string, shouldDisplayLink: DisplayLinkOption, category?: string[], backgroundColor?: string, description?: string }>;
+  NFT_CONTRACT_OVERRIDES: string[];
 }

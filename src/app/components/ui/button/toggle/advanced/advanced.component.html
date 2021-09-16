@@ -1,0 +1,11 @@
+<div class="flex-row advanced">
+  <div class="flex-row switch-container">
+    <span class="value">{{ text }}&nbsp;&nbsp;<span class="key" [class]="state ? 'active' : ''">{{ state ? ' ON' : 'OFF'
+        }}</span>&nbsp;&nbsp;</span>
+    <label class="flex-row switch">
+      <span class="slider" [class]="state ? 'active' : ''" (click)="toggle()">
+        <span class="round"></span>
+      </span>
+    </label>
+  </div>
+</div>

@@ -14,11 +14,14 @@ export class IndexerService {
   constructor(
     public tzktService: TzktService
   ) {}
+  async isUsedAccount(address: string): Promise<boolean> {
+    return this.tzktService.isUsedAccount(address);
+  }
   async getContractAddresses(address: string): Promise<any> {
     return this.tzktService.getContractAddresses(address);
   }
-  async accountInfo(address: string, knownTokenIds: string[] = [], init: boolean = false): Promise<any> {
-    return this.tzktService.accountInfo(address, knownTokenIds, init);
+  async accountInfo(address: string, knownTokenIds: string[] = []): Promise<any> {
+    return this.tzktService.accountInfo(address, knownTokenIds);
   }
   async getOperations(address: string, knownTokenIds: string[], wallet: WalletObject): Promise<any> {
     return this.tzktService.getOperations(address, knownTokenIds, wallet);

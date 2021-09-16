@@ -1,59 +1,42 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import { Account, Activity, ImplicitAccount, OriginatedAccount } from '../../services/wallet/wallet';
+import { Component, HostListener, Input, OnDestroy, OnInit } from '@angular/core';
+import { Account, Activity, ImplicitAccount } from '../../services/wallet/wallet';
 import { WalletService } from '../../services/wallet/wallet.service';
 import { TimeAgoPipe } from '../../pipes/time-ago.pipe';
 import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from '../../services/message/message.service';
 import * as copy from 'copy-to-clipboard';
-import { filter } from 'rxjs/internal/operators/filter';
-import { CoordinatorService } from '../../services/coordinator/coordinator.service';
 import { CONSTANTS } from '../../../environments/environment';
-import { LookupService } from '../../services/lookup/lookup.service';
 import { ActivityService } from '../../services/activity/activity.service';
-import Big from 'big.js';
-import { TokenService, TokenResponseType } from '../../services/token/token.service';
+import { TokenService } from '../../services/token/token.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-account-view',
   templateUrl: './account-view.component.html',
-  styleUrls: ['./account-view.component.scss'],
+  styleUrls: ['../../../scss/components/account-view/account-view.component.scss'],
 })
-export class AccountViewComponent implements OnInit {
+export class AccountViewComponent implements OnInit, OnDestroy {
   account: Account;
+  private subscriptions: Subscription = new Subscription();
   constructor(
-    private route: ActivatedRoute,
     private walletService: WalletService,
     public translate: TranslateService,
     public messageService: MessageService,
     public timeAgoPipe: TimeAgoPipe,
-    private router: Router,
-    private coordinatorService: CoordinatorService,
-    private lookupService: LookupService,
     private activityService: ActivityService,
     public tokenService: TokenService
-  ) { }
+  ) { this.getScreenSize(); }
   trigger = true;
+  isMobile = false;
   @Input() activity: any;
   ngOnInit(): void {
-    if (!this.walletService.wallet) {
-      this.router.navigate(['']);
-    } else {
-      this.coordinatorService.startAll();
-      let address = this.route.snapshot.paramMap.get('address');
-      if (this.walletService.addressExists(address)) {
-        this.account = this.walletService.wallet.getAccount(address);
-      }
-      this.router.events
-        .pipe(filter((evt) => evt instanceof NavigationEnd))
-        .subscribe(() => {
-          address = this.route.snapshot.paramMap.get('address');
-          if (this.walletService.wallet && this.walletService.addressExists(address)) {
-            this.account = this.walletService.wallet.getAccount(address);
-          }
-        });
-      setInterval(() => this.trigger = !this.trigger, 1000);
-    }
+    this.subscriptions.add(this.walletService.activeAccount.subscribe(activeAccount => {
+      this.account = activeAccount;
+    }));
+    setInterval(() => this.trigger = !this.trigger, 1000);
+  }
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
   getType(transaction: Activity): string {
     if (transaction.type !== 'transaction') {
@@ -109,5 +92,13 @@ export class AccountViewComponent implements OnInit {
   displayTokenCard(): boolean {
     return (this.account instanceof ImplicitAccount) || (this.account?.tokens?.length > 0);
   }
-}
 
+  @HostListener('window:resize', ['$event'])
+  getScreenSize(event?) {
+    if (window.innerWidth < 1169) {
+      this.isMobile = true;
+    } else {
+      this.isMobile = false
+    }
+  }
+}

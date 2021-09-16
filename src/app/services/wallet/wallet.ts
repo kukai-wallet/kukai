@@ -4,7 +4,8 @@ export type WalletObject =
   | LegacyWalletV3
   | LedgerWallet
   | HdWallet
-  | TorusWallet;
+  | TorusWallet
+  | WatchWallet;
 
 export class Wallet {
   totalBalanceXTZ: number | null;
@@ -145,6 +146,12 @@ export class LedgerWallet extends Wallet {
   }
 }
 
+export class WatchWallet extends Wallet {
+  constructor() {
+    super();
+  }
+}
+
 // Accounts
 
 export abstract class Account {
@@ -152,17 +159,18 @@ export abstract class Account {
   balanceUSD: number | null;
   delegate: string;
   state: string;
-  activities: Activity[];
-  tokens: Token[] = [];
+  activities: Activity[] | null;
+  tokens: Token[] | null;
   pkh: string;
   pk: string;
   address: string;
   constructor(pkh: string, pk: string, address: string) {
     this.balanceXTZ = null;
     this.balanceUSD = null;
+    this.activities = null;
+    this.tokens = null;
     this.delegate = '';
     this.state = '';
-    this.activities = [];
     this.pkh = pkh;
     this.pk = pk;
     this.address = address;
@@ -172,7 +180,7 @@ export abstract class Account {
     return this.address.slice(0, 7) + '...' + this.address.slice(-4);
   }
   getTokenBalance(tokenId: string): string {
-    if (this.tokens.length) {
+    if (this.tokens?.length) {
       for (const token of this.tokens) {
         if (tokenId === token.tokenId) {
           return token.balance;
@@ -181,8 +189,14 @@ export abstract class Account {
     }
     return '';
   }
+  getTokenBalances(): Token[] {
+    return this.tokens ?? [];
+  }
   updateTokenBalance(tokenId: string, balance: string) {
-    if (this.tokens.length) {
+    if (!this.tokens || !tokenId) {
+      this.tokens = [];
+    }
+    if (tokenId && this.tokens.length) {
       for (let i = 0; i < this.tokens.length; i++) {
         if (tokenId === this.tokens[i].tokenId) {
           if (this.tokens[i].balance !== balance) {
@@ -197,7 +211,7 @@ export abstract class Account {
       }
     }
     if (tokenId.length > 37 && balance && balance !== '0' && balance.slice(0, 1) !== '-') {
-      this.tokens.push({ tokenId, balance});
+      this.tokens.unshift({ tokenId, balance});
     }
   }
 }
@@ -241,6 +255,7 @@ export class Activity {
   };
   fee?: string;
   hash: string;
+  counter?: number;
   timestamp: number | null;
   tokenId?: string;
   entrypoint?: string;

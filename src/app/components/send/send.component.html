@@ -1,8 +1,3 @@
-<ng-container *ngIf="!headless">
-  <button *ngIf="!tokenTransfer" class="purple open" (click)="prepareTransaction()">Send</button>
-  <span class="token-send" *ngIf="tokenTransfer && !tokenService.getAsset(tokenTransfer).nonTransferable" (click)="prepareTransaction()">Send</span>
-</ng-container>
-
-<app-prepare-send [prepareRequest]="prepareRequest" (prepareResponse)="handlePrepareResponse($event)"></app-prepare-send>
-<app-confirm-send [headlessMode]="headless" [confirmRequest]="confirmRequest" (operationResponse)="handleConfirmResponse($event)"></app-confirm-send>
-<app-confirm-send-embed [templateRequest]="templateRequest" (isApproved)="handleTemplateApproval($event)" [activeAccount]="activeAccount"></app-confirm-send-embed>
+<app-prepare-send *ngIf="!embedded" [prepareRequest]="prepareRequest" (prepareResponse)="handlePrepareResponse($event)"></app-prepare-send>
+<app-confirm-send [confirmRequest]="confirmRequest" (operationResponse)="handleConfirmResponse($event)"></app-confirm-send>
+<app-confirm-send-embed *ngIf="embedded" [templateRequest]="templateRequest" (isApproved)="handleTemplateApproval($event)" [activeAccount]="activeAccount"></app-confirm-send-embed>

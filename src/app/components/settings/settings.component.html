@@ -1,17 +1,17 @@
-<app-header [settings]=true></app-header>
-<div class="settings">
-  <H3>Connect with dApps</H3>
+<div class="flex-column settings">
+  <a><button class="flex-row back" [routerLink]="'/account/' + activeAccount?.address"><img src="../../../../../assets/img/left-arrow.svg">BACK</button></a>
+  <h3>Connect with dApps</h3>
   <div class="seperator"></div>
-  <div class="handler">
+  <div class="flex-column handler">
     <div>
-      <h4>Scan a QR code</h4>
-      <p>Connect to dApps on <u>another device</u> by scanning a QR code.</p>
+      <h4>Connect to dApps on <u>another device</u> by scanning a QR code.</h4>
     </div>
-    <div>
+    <div class="scan-button">
       <app-qr-scanner></app-qr-scanner>
     </div>
   </div>
-  <H3>Peers</H3>
+  <h3>Peers</h3>
+  <div class="seperator"></div>
   <table *ngIf="beaconService.peers.length">
     <thead>
       <tr>
@@ -28,7 +28,8 @@
       </tr>
     </tbody>
   </table>
-  <H3>Permissions</H3>
+  <h3>Permissions</h3>
+  <div class="seperator"></div>
   <table *ngIf="beaconService.permissions.length">
     <thead>
       <tr>
@@ -46,6 +47,8 @@
       </tr>
     </tbody>
   </table>
-  <H3>Tokens</H3>
-  <button (click)="rescan()">Rescan unknown tokens</button>
+  <h3>Tokens</h3>
+  <div class="seperator"></div>
+  <button class="rescan" (click)="rescan()">Rescan unknown tokens</button>
+  <button id="all" class="rescan" (click)="rescanAll()">Clear all token metadata</button>
 </div>

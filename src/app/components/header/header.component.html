@@ -1,62 +1,73 @@
-<div id="top-container">
-  <a routerLink="/accounts" class="logo">
-    <img *ngIf="!settings" id="logo" src="../../../assets/img/kukai-logo.svg">
-    <img *ngIf="settings" id="logo" src="../../../assets/img/kukai-logo2.svg">
+<div class="flex-row top-container desktop" [class]="router.url.indexOf('/account') === 0 ? 'default' : ''">
+  <a routerLink="/" class="flex-row brand-logo">
+    <img class="icon" src="../../../assets/img/header-logo.svg" />
   </a>
-  <div class="middle">
-    <ng-container *ngIf="!activeAccount">
-      <ng-container *ngIf="settings">
-        <a class="accounts light" routerLink="/accounts">
-          Accounts
-        </a>
-        <img src="../../../assets/img/slash2.svg">
-        <span>Settings</span>
-      </ng-container>
-      <ng-container *ngIf="!settings">
-        <a class="accounts solo" routerLink="/accounts">
-          Accounts
-        </a>
-      </ng-container>
-    </ng-container>
-    <ng-container *ngIf="activeAccount">
-      <a class="accounts" routerLink="/accounts">
-        Accounts
-      </a>
-      <img src="../../../assets/img/slash.svg">
-      <div class="dropdown">
-        <div class="dropbtn"><span>{{ activeAccount.shortAddress() }}</span><img
-            src="../../../assets/img/chevron-down.svg"></div>
-        <div class="dropdown-content">
-          <ng-container *ngFor="let impAcc of impAccs">
-            <a routerLink="/account/{{impAcc.address}}" [class.selected]="impAcc.address === activeAccount.address">
-              {{ impAcc.shortAddress() }}
-            </a>
-            <ng-container *ngFor="let origAcc of impAcc.originatedAccounts">
-              <a routerLink="/account/{{origAcc.address}}" [class.selected]="origAcc.address === activeAccount.address">
-                {{ origAcc.shortAddress() }}
-              </a>
-            </ng-container>
-          </ng-container>
+  <div *ngIf="router.url.indexOf('/account/') === 0" class="flex-row right">
+    <div class="flex-column left">
+      <app-ui-dropdown-account [list]="accounts" [current]="activeAccount"></app-ui-dropdown-account>
+      <div class="delegation">
+        <div class="flex-row outside-container" *ngIf="!beaconMode">
+          <div class="flex-row button" routerLink="/account/{{activeAccount?.address}}/stakers">
+            <span *ngIf="!activeAccount?.delegate">STAKING: <span class="choose">NOT
+                STAKED</span></span>
+            <span *ngIf="activeAccount?.delegate" class="address">STAKING: <span>{{ delegateName }}</span></span>
+          </div>
         </div>
       </div>
-    </ng-container>
-  </div>
-  <div class="dropdown right">
-    <div id="menu" class="dropbtn">
-      <img src="../../../assets/img/user.svg">
     </div>
-    <div class="dropdown-content right">
-      <a routerLink="/settings">Settings</a>
-      <a (click)="logout()">Logout</a>
+    <div class="flex-row right">
+      <div class="button icon" (click)="copy()">
+        <img src="../../../assets/img/copy.svg" />
+        <div class="tooltip">
+          <div class="description">COPY ADDRESS</div>
+        </div>
+      </div>
+      <div class="button icon receive" (click)="receive()">
+        <img src="../../../assets/img/qr.svg" />
+        <div class="tooltip">
+          <div class="description">ADDRESS QR</div>
+        </div>
+      </div>
+      <div *ngIf="walletService.isHdWallet()" class="button icon" (click)="newAccount()">
+        <img src="../../../assets/img/add.svg" />
+        <div class="tooltip">
+          <div class="description">ADD ACCOUNT</div>
+        </div>
+      </div>
+      <div class="button icon settings" [routerLink]="'/account/' + activeAccount?.address + '/settings'">
+        <img src="../../../assets/img/settings.svg" />
+        <div class="tooltip">
+          <div class="description">SETTINGS</div>
+        </div>
+      </div>
+      <div class="button icon" (click)="logout()">
+        <img src="../../../assets/img/logout.svg" />
+        <div class="tooltip">
+          <div class="description">SIGN OUT</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="router.url.indexOf('/account/') !== 0" class="flex-row right">
+    <div class="right">
+      <span *ngIf="router.url.indexOf('/import') === 0 || router.url === '/'" routerLink="/import/" class="button"
+        [class.selected]="router.url.indexOf('/import') === 0">Import Wallet</span>
+      <span *ngIf="router.url.indexOf('/new-wallet') === 0 || router.url === '/'" routerLink="/new-wallet/"
+        class="button" [class.selected]="router.url.indexOf('/new-wallet') === 0">Create New Wallet</span>
+      <span *ngIf="router.url.indexOf('/connect-ledger') === 0 || router.url === '/'" routerLink="/connect-ledger/"
+        class="button" [class.selected]="router.url.indexOf('/connect-ledger') === 0">Connect Ledger</span>
+      <span *ngIf="router.url.indexOf('/activate') === 0" routerLink="/activate/" class="button"
+        [class.selected]="router.url.indexOf('/activate') === 0">Activate</span>
     </div>
   </div>
 </div>
-<div id="header-list" [class.invert]="settings">
-  <div class="left" *ngIf="!CONSTANTS.MAINNET">
-    {{ CONSTANTS.NETWORK.toUpperCase() }} VERSION
+<div class="flex-row top-container mobile" [class]="router.url.indexOf('/account') === 0 ? 'default' : ''">
+  <a routerLink="/" class="flex-row brand-logo">
+    <img class="icon" src="../../../assets/img/header-logo.svg" />
+  </a>
+  <div *ngIf="router.url.indexOf('/account/') > -1" class="flex-row center">
+    <app-ui-dropdown-account [list]="accounts" [current]="activeAccount" style="width: 100%;">
+    </app-ui-dropdown-account>
   </div>
-  <div class="main">
-    <ng-container *ngIf="getUsername(); let displayName"><img class="verifier-logo"
-        src="../../../assets/img/{{ getVerifier() }}-logo.svg">&nbsp;{{ displayName }}</ng-container>
-  </div>
+  <app-ui-mobile-menu [activeAccount]="activeAccount" [delegateName]="delegateName" [newAccount]="newAccount" [receive]="receive" [copy]="this.copy" [logout]="logout"></app-ui-mobile-menu>
 </div>

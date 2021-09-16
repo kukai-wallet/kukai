@@ -9,40 +9,31 @@ import { MessageService } from '../message/message.service';
 @Injectable()
 export class LedgerService {
   transport: any;
-  errorMessage = 'U2F or WebHID browser support is needed for Ledger';
   constructor(
     private operationService: OperationService,
     private messageService: MessageService
   ) { }
   async setTransport() {
     if (!this.transport) {
-      if (this.useWebHID()) {
-        console.log('Trying to use WebHID for transport...');
-        try {
-          this.transport = await TransportWebHID.create();
-          console.log('Transport is now set to use WebHID!');
-        } catch (e) {
-          console.error(e);
-          console.warn('Couldn\'t use WebHID for transport!');
-        }
-      } else {
-        try {
-          this.transport = await TransportU2F.create();
-          console.log('Transport is now set to use U2F!');
-        } catch (e) {
-          console.error(e);
-          console.log('Couldn\'t use U2F for transport!');
-        }
+      console.log('Trying to use WebHID for transport...');
+      try {
+        this.transport = await TransportWebHID.create();
+        console.log('Transport is now set to use WebHID!');
+      } catch (e) {
+        this.transport = null;
+        console.warn('Couldn\'t set WebHID as transport!');
+        console.error(e);
       }
     }
-  }
-  private useWebHID(): boolean {
-    try {
-      const isMac = navigator.platform.indexOf('Mac') > -1;
-      const isChrome = (navigator as any).userAgentData?.brands?.some(b => b.brand === 'Google Chrome');
-      return (isMac && isChrome);
-    } catch (e) {
-      return false;
+    if (!this.transport) {
+      try {
+        this.transport = await TransportU2F.create();
+        console.warn('Transport is now set to use U2F!');
+      } catch (e) {
+        this.transport = null;
+        console.log('Couldn\'t set U2F as transport!');
+        console.error(e);
+      }
     }
   }
   async transportCheck() {
@@ -50,7 +41,8 @@ export class LedgerService {
       await this.setTransport();
     }
     if (!this.transport) {
-      this.messageService.addError(this.errorMessage);
+      this.messageService.addError('Failed to set transport. Please make sure your browser supports WebHID or U2F');
+      throw new Error('NO_TRANSPORT_FOUND');
     }
   }
   async getPublicAddress(path: string) {

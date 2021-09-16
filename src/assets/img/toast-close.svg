@@ -1,0 +1,17 @@
+<svg version="1.2" baseProfile="tiny-ps" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 33 32" width="33" height="32">
+	<title>Wallet</title>
+	<style>
+		tspan { white-space:pre }
+		.shp0 { fill: #ffffff } 
+		.shp1 { fill: transparent } 
+	</style>
+	<g id="Wallet">
+		<g id="Notifications">
+			<g id="1">
+				<g id="Close Button">
+					<path id="Rectangle 13" class="shp1" d="M22.46 10.54C23.18 11.25 23.18 12.41 22.46 13.12L14.12 21.46C13.41 22.18 12.25 22.18 11.54 21.46C10.82 20.75 10.82 19.59 11.54 18.88L19.88 10.54C20.59 9.82 21.75 9.82 22.46 10.54ZM14.12 10.54L22.46 18.88C23.18 19.59 23.18 20.75 22.46 21.46C21.75 22.18 20.59 22.18 19.88 21.46L11.54 13.12C10.82 12.41 10.82 11.25 11.54 10.54C12.25 9.82 13.41 9.82 14.12 10.54Z" />
+				</g>
+			</g>
+		</g>
+	</g>
+</svg>

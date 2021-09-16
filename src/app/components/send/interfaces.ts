@@ -3,6 +3,7 @@ import { Template } from 'kukai-embed';
 export interface PrepareRequest {
   account: Account;
   tokenTransfer: string;
+  symbol: string;
 }
 export interface TemplateRequest {
   template: Template;
@@ -20,6 +21,7 @@ export interface ConfirmRequest {
   account: Account;
   tokenTransfer: string;
   transactions: FullyPreparedTransaction[];
+  externalReq: boolean
 }
 export interface PartiallyPreparedTransaction {
   kind: 'transaction';

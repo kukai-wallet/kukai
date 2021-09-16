@@ -1,37 +1,35 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MessageService } from '../../services/message/message.service';
-import { WalletClient, BeaconMessageType, PermissionScope, PermissionResponseInput, P2PPairingRequest, BeaconErrorType, BeaconResponseInputMessage, BeaconMessage, OperationResponseInput } from '@airgap/beacon-sdk';
+import { WalletClient, BeaconMessageType, PermissionScope, PermissionResponseInput, OperationResponseInput } from '@airgap/beacon-sdk';
 import { WalletService } from '../../services/wallet/wallet.service';
 import { CONSTANTS } from '../../../environments/environment';
-import { Account, ImplicitAccount, OriginatedAccount } from '../../services/wallet/wallet';
-import { Location } from '@angular/common';
+import { Account } from '../../services/wallet/wallet';
 import { BeaconService } from '../../services/beacon/beacon.service';
 import { DeeplinkService } from '../../services/deeplink/deeplink.service';
-import { emitMicheline, assertMichelsonData } from '@taquito/michel-codec';
-import { valueDecoder } from '@taquito/local-forging/dist/lib/michelson/codec';
-import { Uint8ArrayConsumer } from '@taquito/local-forging/dist/lib/uint8array-consumer';
+import { assertMichelsonData } from '@taquito/michel-codec';
 import { InputValidationService } from '../../services/input-validation/input-validation.service';
-import Big from 'big.js';
-import { PartiallyPreparedTransaction } from '../send/interfaces';
 import { HostListener } from '@angular/core';
+import { SubjectService } from '../../services/subject/subject.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-uri-handler',
-  templateUrl: './uri-handler.component.html',
-  styleUrls: ['./uri-handler.component.scss']
+  templateUrl: './uri-handler.component.html'
 })
-export class UriHandlerComponent implements OnInit {
+export class UriHandlerComponent implements OnInit, OnDestroy {
+  private subscriptions: Subscription = new Subscription();
   constructor(
-    private route: ActivatedRoute,
     public messageService: MessageService,
     public walletService: WalletService,
-    private location: Location,
     private beaconService: BeaconService,
     private deeplinkService: DeeplinkService,
     private inputValidationService: InputValidationService,
-    private router: Router
-  ) { }
+    private subjectService: SubjectService
+  ) {
+    this.subscriptions.add(this.walletService.activeAccount.subscribe((activeAccount) => {
+      this.activeAccount = activeAccount;
+    }));
+  }
   permissionRequest: PermissionResponseInput = null;
   operationRequest: any = null;
   signRequest: any = null;
@@ -44,6 +42,9 @@ export class UriHandlerComponent implements OnInit {
     if (this.walletService.wallet) {
       this.init();
     }
+  }
+  ngOnDestroy() {
+this.subscriptions.unsubscribe();
   }
   async init() {
     const pairingString = this.deeplinkService.popPairingJson();
@@ -180,7 +181,7 @@ export class UriHandlerComponent implements OnInit {
       await this.beaconService.rejectOnUnknown(message);
       return false;
     }
-    this.activeAccount = this.walletService.wallet.getImplicitAccount(message.sourceAddress);
+    this.activeAccount = this.activeAccount ?? this.walletService.wallet.getImplicitAccount(message.sourceAddress);
     return true;
   }
   private invalidOptionals(op: any): boolean {
@@ -226,7 +227,7 @@ export class UriHandlerComponent implements OnInit {
       await this.beaconService.rejectOnUnknown(message);
       return false;
     }
-    this.activeAccount = this.walletService.wallet.getImplicitAccount(message.sourceAddress);
+    this.activeAccount = this.activeAccount ?? this.walletService.wallet.getImplicitAccount(message.sourceAddress);
     return true;
   }
   invalidParameters(parameters: any): boolean {
@@ -248,6 +249,11 @@ export class UriHandlerComponent implements OnInit {
     if (opHash?.error) {
       opHash = opHash.error;
     }
+    if(!this.operationRequest) {
+      return;
+    }
+    console.log("hash", opHash);
+    console.log("operationRequest", this.operationRequest);
     if (!opHash) {
       await this.beaconService.rejectOnUserAbort(this.operationRequest);
     } else if (opHash === 'broadcast_error') {
@@ -315,7 +321,7 @@ export class UriHandlerComponent implements OnInit {
         break;
       case 'beacon:request-response':
         if (ev.newValue) {
-          this.messageService.beaconResponse.next(true);
+          this.subjectService.beaconResponse.next(true);
           this.beaconService.syncBeaconState();
           this.changeFavicon();
         }

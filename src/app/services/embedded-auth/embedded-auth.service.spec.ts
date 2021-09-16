@@ -9,6 +9,7 @@ import { InputValidationService } from '../input-validation/input-validation.ser
 import { ErrorHandlingPipe } from '../../pipes/error-handling.pipe';
 import { http_imports, translate_imports } from '../../../../spec/helpers/service.helper';
 import { WalletObject } from '../wallet/wallet';
+import { CONSTANTS } from '../../../environments/environment';
 
 describe('EmbeddedAuthService', () => {
   let service: EmbeddedAuthService;
@@ -42,6 +43,7 @@ describe('EmbeddedAuthService', () => {
   describe('> Authenticate', async () => {
 		beforeEach(() => {
       spyOn(Date, 'now').and.returnValue(1616770407005);
+      spyOn(service, '_network').and.returnValue('edonet');
     });
     it('should sign authentication message', async () => {
       const resp = await service.authenticate({id: '123e4567-e89b-12d3-a456-426614174000', nonce: '32174589748'}, 'https://test.com');
