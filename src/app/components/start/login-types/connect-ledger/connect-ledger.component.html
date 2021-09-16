@@ -1,0 +1,15 @@
+<div class="flex-column card">
+  <a routerLink="/"><button class="flex-row back"><img src="../../../../../assets/img/left-arrow.svg">BACK</button></a>
+  <div class="flex-column body">
+    <h1>Connect your Ledger</h1>
+    <p class="description">Keep the private keys safely on your Ledger device and use Kukai to access the Tezos
+      blockchain.</p>
+    <p class="description">You need to open the Tezos Wallet app on your Ledger device and set the derivation path.</p>
+    <input type="text" class="text" [disabled]="!isHDDerivationPathCustom" [(ngModel)]="path"
+      value="'44\'/1729\'/0\'/0\''">
+    <app-ui-toggle-advanced style="width: 24rem;" [default]="false" [text]="'Use custom HD derivation path:'"
+      (stateChange)="setDefaultPath($event)"></app-ui-toggle-advanced>
+      <br/><br/><br/>
+    <button class="button next" (click)="getPk()" [disabled]="browser === 'safari'">{{ browser !== 'safari' ? 'Connect' : 'Ledger support with Safari is currently unavailable' }}</button>
+  </div>
+</div>

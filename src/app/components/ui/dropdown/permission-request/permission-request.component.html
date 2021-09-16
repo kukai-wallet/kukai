@@ -1,0 +1,24 @@
+<div class="flex-row dropdown pr-request" [class.expanded]="isOpen" [id]="ecmpId">
+  <div class="flex-row currentAddress" (click)="toggleDropdown()"><img
+      *ngIf="!!getUsername(selection?.address)" class="logo" src="../../../../assets/img/{{ getVerifier() }}-logo.svg" /><span
+      class="address">{{
+      getUsername(selection?.address) || "&nbsp;&nbsp;&nbsp;&nbsp;" + selection?.address }}</span><img
+      *ngIf="['', 'domain'].includes(getVerifier())" class="button icon-db"
+      src="../../../../assets/img/down-arrow.svg" />
+  </div>
+  <div class="flex-column dropdown-content">
+    <ng-container *ngFor="let account of list">
+      <div class="option" [class.selected]="account?.address === current?.address"
+        (click)="selection = account; toggleDropdown()">
+        <ng-container *ngIf="getUsername(account?.address)">
+          <div class="flex-row alias"><img class="logo"
+              src="../../../../assets/img/{{ getVerifier() }}-logo.svg" /><span>{{
+              getUsername(account?.address) }}</span></div>
+          <br /><span>{{
+            account?.address }}</span>
+        </ng-container>
+        <ng-container *ngIf="!getUsername(account?.address)">{{ account?.address }}</ng-container>
+      </div>
+    </ng-container>
+  </div>
+</div>

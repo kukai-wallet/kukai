@@ -1,0 +1,40 @@
+@use '../../../../abstracts/variables'as v;
+@use '../../../../abstracts/mixins' as m;
+@import "../mixins";
+
+$base-font-color: v.$base-font-color;
+$base-end-color: v.$base-end-color;
+$base-font-color-secondary: v.$base-font-color-secondary;
+$base-blue-color-lightened: v.$base-blue-color-lightened;
+$border-color-dark-only: v.$border-color-dark-only;
+$border-width: v.$border-width;
+$border-color: v.$border-color;
+
+@include base;
+
+.top-container {
+  @include top-container;
+
+  &-balances {
+    @include top-container;
+
+    & .right {
+      @include top-container-right;
+      position: relative;
+      z-index: 0;
+    }
+  }
+}
+
+:host {
+  grid-area: balance;
+}
+
+.balances {
+  max-height: 39rem;
+  overflow: hidden;
+  border-radius: v.$border-radius;
+  background-color: $base-end-color;
+  padding: 0rem 0.5rem 0rem 2rem;
+  border: $border-width solid $border-color-dark-only;
+}

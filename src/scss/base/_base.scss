@@ -1,0 +1,229 @@
+@use '../abstracts/variables' as v;
+@use '../abstracts/mixins' as m;
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
+// @import url("https://use.typekit.net/cad8baf.css"); test for font-weight against psd
+
+%noselection {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+%base-button {
+  outline: none;
+  border: none;
+  border-radius: v.$border-radius-hard;
+  background-color: v.$base-blue-color-lightened;
+  color: v.$base-end-color;
+  padding: 1rem 2rem;
+  font-size: 1.25rem;
+  cursor: pointer;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  @extend %noselection;
+
+  img {
+    height: 1rem;
+  }
+}
+
+%base-button-selected {
+  font-weight: 600 !important;
+  color: v.$base-blue-color-lightened;
+  border-color: v.$base-blue-color-lightened !important;
+}
+
+%flex {
+  display: flex;
+}
+
+%row {
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+%column {
+  flex-direction: column;
+}
+
+%wrap {
+  flex-wrap: wrap;
+}
+
+%nowrap {
+  flex-wrap: nowrap;
+}
+
+%grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: v.$base-color-lightened-3;
+  font-family: "Roboto", serif;
+  -webkit-tap-highlight-color: #fff0 !important; 
+}
+
+body * {
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+
+*::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+*::-webkit-scrollbar-track {
+  background: v.$base-color-lightened-6;
+  margin: 1.5rem 0;
+  border-radius: v.$border-radius;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: v.$base-color-lightened-3;
+  border-radius: v.$border-radius;
+  border: v.$border-width solid v.$base-color-lightened-3;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: none;
+}
+
+html,
+body {
+  background-color: v.$base-background-color;
+  overflow: scroll;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+}
+
+input {
+  text-align: left;
+  height: calc(2.5rem - 4px);
+  padding: 0 0 0 2rem;
+  border-radius: v.$border-radius-hard;
+  background-color: v.$base-end-color;
+}
+
+h1 {
+  font-weight: 500;
+}
+
+textarea {
+  border: v.$border-width solid v.$border-color;
+  border-radius: v.$border-radius;
+  background-color: v.$base-end-color;
+}
+
+BR,
+br {
+  height: 0;
+  margin: 0.625rem 0;
+}
+
+.noselection {
+  @extend %noselection;
+}
+
+.button {
+  cursor: pointer;
+  &.selected {
+    @extend %base-button-selected;
+  }
+}
+
+button {
+  @extend %base-button;
+  &.selected {
+    @extend %base-button-selected;
+  }
+  &:hover {
+    filter: invert(0.05);
+  }
+}
+
+.block {
+  display: block;
+}
+
+.inline {
+  display: inline-block;
+}
+
+.flex {
+  @extend %flex;
+
+  &-row {
+    @extend %flex;
+    @extend %row;
+
+    &-wrap {
+      @extend %flex;
+      @extend %row;
+      @extend %wrap;
+    }
+  }
+
+  &-column {
+    @extend %flex;
+    @extend %column;
+
+    &-wrap {
+      @extend %flex;
+      @extend %column;
+      @extend %wrap;
+    }
+  }
+}
+
+.grid {
+  @extend %grid;
+}
+
+
+@media (max-width: v.$font-break-0) {
+  html {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: v.$font-break-1) {
+  html {
+    font-size: 80%;
+  }
+}
+
+@media (max-width: v.$font-break-2) {
+  html {
+    font-size: 75%;
+  }
+}
+
+@media (max-width: v.$font-break-25) {
+  html {
+    font-size: 62.5%;
+  }
+}
+
+@media (max-width: v.$font-break-3) {
+  html {
+    font-size: 57.5%;
+  }
+}
+
+@media (max-width: v.$font-break-4) {
+  html {
+    font-size: 48%;
+  }
+}

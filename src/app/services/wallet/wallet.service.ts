@@ -12,17 +12,22 @@ import {
   TorusWallet,
   EmbeddedTorusWallet,
   OriginatedAccount,
+  WatchWallet
 } from './wallet';
 import { EncryptionService } from '../encryption/encryption.service';
 import { OperationService } from '../operation/operation.service';
 import { TorusService } from '../torus/torus.service';
 import { utils, hd } from '@tezos-core-tools/crypto-utils';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class WalletService {
   storeKey = 'kukai-wallet';
   storageId = 0;
   wallet: WalletObject;
+
+  activeAccount = new BehaviorSubject(null);
+  walletUpdated = new BehaviorSubject(null);
 
   constructor(
     private encryptionService: EncryptionService,
@@ -100,7 +105,6 @@ export class WalletService {
         3
       );
     } else if (this.wallet instanceof LedgerWallet) {
-      console.log(this.wallet);
       const keyPair: KeyPair = {
         sk: null,
         pk: this.wallet.implicitAccounts[0].pk,
@@ -203,7 +207,7 @@ export class WalletService {
   }*/
   addressExists(address: string): boolean {
     return (
-      this.wallet.getAccounts().findIndex((a) => a.address === address) !== -1
+      this.wallet?.getAccounts().findIndex((a) => a.address === address) !== -1
     );
   }
   async incrementAccountIndex(password: string): Promise<string> {
@@ -261,6 +265,12 @@ export class WalletService {
   isEmbeddedTorusWallet(): boolean {
     return this.wallet instanceof EmbeddedTorusWallet;
   }
+  isWatchWallet(): boolean {
+    return this.wallet instanceof WatchWallet;
+  }
+  isPwdWallet(): boolean {
+    return (!this.isTorusWallet() && !this.isLedgerWallet() && !this.isWatchWallet());
+  }
   exportKeyStoreInit(
     type: WalletType,
     encryptedSeed: string,
@@ -312,6 +322,8 @@ export class WalletService {
         type = 'EmbeddedTorusWallet';
       } else if (this.wallet instanceof TorusWallet) {
         type = 'TorusWallet';
+      } else if (this.wallet instanceof WatchWallet) {
+        type = 'WatchWallet';
       }
       this.getStorage().setItem(
         (this.wallet instanceof EmbeddedTorusWallet) ? this.wallet.instanceId : this.storeKey,
@@ -320,6 +332,7 @@ export class WalletService {
     } else {
       console.log('Outdated storage id');
     }
+    this.walletUpdated.next(null);
   }
   getLocalStorageId() {
     const walletData = this.wallet instanceof EmbeddedTorusWallet ? sessionStorage.getItem(this.wallet.instanceId) : localStorage.getItem(this.storeKey);
@@ -341,7 +354,6 @@ export class WalletService {
         this.storageId = parsedWalletData.localStorageId;
         const wd = parsedWalletData.data;
         this.deserializeStoredWallet(wd, parsedWalletData.type);
-        console.log(this.wallet);
       } else {
         console.log('couldnt load a wallet');
         this.clearWallet(instanceId);
@@ -387,6 +399,8 @@ export class WalletService {
         this.wallet = new EmbeddedTorusWallet(wd.verifier, wd.id, wd.name, wd.origin, wd.sk, wd.instanceId);
         this.torusService.initTorus();
         break;
+      case 'WatchWallet':
+        this.wallet = new WatchWallet();
       default:
     }
     this.wallet.XTZrate = wd.XTZrate;
@@ -404,12 +418,8 @@ export class WalletService {
       impAcc.balanceUSD = implicit.balanceUSD;
       impAcc.balanceXTZ = implicit.balanceXTZ;
       impAcc.delegate = implicit.delegate;
-      if (implicit.activitiesCounter) { // prevent storage from breaking (1.11)
-        impAcc.state = implicit.activitiesCounter.toString();
-      } else {
-        impAcc.state = implicit.state;
-      }
-      impAcc.activities = this.activityMigration(implicit.activities);
+      impAcc.state = implicit.state;
+      impAcc.activities = implicit.activities;
       if (implicit.tokens) {
         impAcc.tokens = implicit.tokens;
       }
@@ -422,27 +432,12 @@ export class WalletService {
         origAcc.balanceUSD = originated.balanceUSD;
         origAcc.balanceXTZ = originated.balanceXTZ;
         origAcc.delegate = originated.delegate;
-        if (originated.activitiesCounter) { // prevent storage from breaking (1.11)
-          origAcc.state = originated.activitiesCounter.toString();
-        } else {
-          origAcc.state = originated.state;
-        }
-        origAcc.activities = this.activityMigration(originated.activities);
+        origAcc.state = originated.state;
+        origAcc.activities = originated.activities;
         impAcc.originatedAccounts.push(origAcc);
       }
       this.wallet.implicitAccounts.push(impAcc);
     }
-  }
-  activityMigration(activities: any[]): Activity[] { // prevent storage from breaking (1.11)
-    return activities.map(activity => {
-      if (activity.source.address === undefined) {
-        activity.source = { address: activity.source };
-      }
-      if (activity.destination.address === undefined) {
-        activity.destination = { address: activity.destination };
-      }
-      return activity;
-    });
   }
   private getStorage() {
     return this.isEmbeddedTorusWallet() ? sessionStorage : localStorage;

@@ -1,0 +1,107 @@
+@mixin confirm-send-mobile-batch {
+  &.batch {
+    width: 32rem;
+
+    & .divider {
+      display: none;
+    }
+
+    & .top,
+    & .to,
+    & .from {
+      padding: 2rem 0;
+      margin: 0 0 0 -2rem;
+      border-radius: 0;
+      width: calc(100% + 4rem);
+    }
+
+    & .top {
+      & .left {
+        width: 40%;
+      }
+
+      & .right {
+        width: calc(60% - 2rem);
+        margin: 0 2rem 0 0;
+      }
+
+      &.image {
+        align-items: center;
+        padding: 1rem;
+        width: calc(100% + 2rem);
+        & .left {
+          width: auto;
+          height: auto;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        & .right {
+          height: 100%;
+          justify-content: center;
+          width: calc(67% - 2rem);
+          margin: 0 2rem 0 0;
+        }
+
+        & .token-image {
+          width: 8rem;
+          height: 8rem;
+          margin: 0 0 0 1.5rem;
+        }
+      }
+    }
+
+    & .from {
+      & .left {
+        width: auto;
+        margin: 0 0 0 3rem;
+      }
+
+      & .right {
+        width: 67%;
+
+        & .address {
+          margin: 0.5rem 0 0 3rem;
+        }
+      }
+    }
+
+    & .to {
+      flex-direction: column;
+      align-items: center;
+      & .left,
+      .right {
+        width: calc(100% - 2rem);
+        & .torus-to {
+          left: 0;
+        }
+      }
+
+      & .left {
+        align-items: flex-start;
+        width: 35%;
+        align-self: flex-start;
+        margin: 0 0 1rem 0;
+
+        & .key {
+          text-align: center;
+          margin: 0.5rem 0 0 3rem;
+        }
+      }
+
+      & .right {
+        width: calc(100% - 6rem);
+        & .transaction {
+          width: 100%;
+          & .single-to {
+            margin: 0.5rem 0;
+            width: 100%;
+            & span {
+              font-size: 1.375rem;
+            }
+          }
+        }
+      }
+    }
+  }
+}

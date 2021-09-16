@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
-import { CONSTANTS, TRUSTED_TOKEN_CONTRACTS } from '../../../environments/environment';
+import { CONSTANTS, TRUSTED_TOKEN_CONTRACTS, BLACKLISTED_TOKEN_CONTRACTS } from '../../../environments/environment';
 import { IndexerService } from '../indexer/indexer.service';
 import Big from 'big.js';
+import { SubjectService } from '../subject/subject.service';
+import { TeztoolsService } from '../indexer/teztools/teztools.service';
 
 export interface TokenResponseType {
   contractAddress: string;
   id: number;
   decimals: number;
-  displayUrl: string;
-  thumbnailUrl: string;
+  displayAsset: Asset;
+  thumbnailAsset: Asset;
   name: string;
   symbol: string;
   description: string;
@@ -18,7 +20,16 @@ export interface TokenResponseType {
   isBooleanAmount?: boolean;
   shouldPreferSymbol?: boolean;
   series?: string;
+  status: Status;
+  isUnknownToken?: boolean;
 }
+export type Asset = string | CachedAsset;
+
+export interface CachedAsset {
+  filename: string;
+  extension: string;
+}
+
 export type ContractsType = Record<string, ContractType>;
 export type ContractType = FA12 | FA2;
 export type ContractsOverrideType = Record<string, ContractOverrideType>;
@@ -29,17 +40,23 @@ export interface ContractOverrideType {
 export interface TokensInterface {
   category: string;
 }
+enum Status {
+  Rejected = -1,
+  Pending = 0,
+  Approved = 1
+}
 export interface TokenData {
   name: string;
   symbol: string;
   decimals: number;
   description: string;
-  displayUrl: string;
-  thumbnailUrl: string;
+  displayAsset: Asset;
+  thumbnailAsset: Asset;
   isTransferable?: boolean;
   isBooleanAmount?: boolean;
   shouldPreferSymbol?: boolean;
   series?: string;
+  status: Status;
 }
 export interface FA12 extends TokensInterface {
   kind: 'FA1.2';
@@ -57,12 +74,16 @@ export interface FA2 extends TokensInterface {
 
 export class TokenService {
   readonly AUTO_DISCOVER: boolean = true;
-  readonly version: string = '1.0.9';
+  readonly version: string = '1.0.10';
   private contracts: ContractsType = {};
   private exploredIds: Record<string, { firstCheck: number, lastCheck: number, counter: number }> = {};
   readonly storeKey = 'tokenMetadata';
+  queue = [];
+  workers = 0;
   constructor(
-    public indexerService: IndexerService
+    public indexerService: IndexerService,
+    private subjectService: SubjectService,
+    private teztoolsService: TeztoolsService
   ) {
     this.contracts = CONSTANTS.ASSETS;
     this.loadMetadata();
@@ -79,7 +100,7 @@ export class TokenService {
     const contract: ContractType = this.contracts[contractAddress];
     if (id > -1) {
       if (contract) {
-        let token = contract.tokens[id];
+        let token: TokenResponseType = contract.tokens[id];
         if (!token) { // check ranges
           const ids = Object.keys(contract.tokens);
           for (const idx of ids) {
@@ -98,6 +119,17 @@ export class TokenService {
           }
         }
         if (token) {
+          if (CONSTANTS.MAINNET && token.status < 1 || token.status < 0) {
+            return {
+              kind: contract.kind,
+              category: contract.category,
+              id,
+              contractAddress,
+              ...token,
+              thumbnailAsset: '',
+              displayAsset: '',
+            };
+          }
           return {
             kind: contract.kind,
             category: contract.category,
@@ -128,6 +160,9 @@ export class TokenService {
     }
     return tokenIds;
   }
+  isCategoryType(address, regex: RegExp): boolean {
+    return regex.test(this.contracts[address]?.category);
+  }
   isKnownTokenContract(address: string): boolean {
     return (this.contracts[address] !== undefined);
   }
@@ -146,42 +181,56 @@ export class TokenService {
   }
   async searchMetadata(contractAddress: string, id: number) {
     const tokenId = `${contractAddress}:${id}`;
-    if (this.explore(tokenId)) {
-      console.log(`Searching for tokenId: ${tokenId}`);
-      const metadata = await this.indexerService.getTokenMetadata(contractAddress, id);
-      if (metadata &&
-        (metadata.name || metadata.symbol) &&
-        (!isNaN(metadata.decimals) && metadata.decimals >= 0)
-      ) {
-        const contract: ContractType = {
-          kind: metadata.tokenType ? metadata.tokenType : 'FA2',
-          category: metadata.tokenCategory ? metadata.tokenCategory : '',
-          tokens: {}
-        };
-        const defaultImg = '../../../assets/img/tokens/unknown-token.png';
-        let displayUrl = (metadata.displayUri && TRUSTED_TOKEN_CONTRACTS.includes(contractAddress)) ? metadata.displayUri : defaultImg;
-        let thumbnailUrl = (metadata.thumbnailUri && TRUSTED_TOKEN_CONTRACTS.includes(contractAddress)) ? metadata.thumbnailUri : defaultImg;
-        if (displayUrl === defaultImg && thumbnailUrl !== defaultImg) {
-          displayUrl = thumbnailUrl;
-        }
-        if (displayUrl !== defaultImg && thumbnailUrl === defaultImg) {
-          thumbnailUrl = displayUrl;
-        }
-        const token: TokenData = {
-          name: metadata.name ? metadata.name : '',
-          symbol: metadata.symbol ? metadata.symbol : '',
-          decimals: Number(metadata.decimals),
-          description: metadata.description ? metadata.description : '',
-          displayUrl,
-          thumbnailUrl,
-          isTransferable: metadata?.isTransferable ? metadata.isTransferable : true,
-          isBooleanAmount: metadata?.isBooleanAmount ? metadata.isBooleanAmount : false,
-          series: metadata.series ? metadata.series : undefined
-        };
-        contract.tokens[id] = token;
-        this.addAsset(contractAddress, contract);
-        this.saveMetadata();
+    if (!this.isKnownTokenId(tokenId) && this.explore(tokenId) && !this.queue.includes(tokenId)) {
+      this.queue.push(tokenId);
+      if (this.workers < 64) {
+        this.startWorker();
       }
+    }
+  }
+  async startWorker() {
+    this.workers++;
+    while (this.queue.length) {
+      const tokenId = this.queue.shift();
+      try {
+        const a = tokenId.split(':');
+        const contractAddress = a[0];
+        const id = Number(a[1]);
+        if (!this.isKnownTokenId(tokenId)) {
+          const metadata = await this.indexerService.getTokenMetadata(contractAddress, id);
+          this.handleMetadata(metadata, contractAddress, id);
+        }
+      } catch (e) { }
+    }
+    this.workers--;
+  }
+  handleMetadata(metadata: any, contractAddress: string, id: number) {
+    const tokenId = `${contractAddress}:${id}`;
+    if (metadata &&
+      (metadata.name || metadata.symbol) &&
+      (!isNaN(metadata.decimals) && metadata.decimals >= 0)
+    ) {
+      const contract: ContractType = {
+        kind: metadata.tokenType ? metadata.tokenType : 'FA2',
+        category: metadata.tokenCategory ? metadata.tokenCategory : '',
+        tokens: {}
+      };
+      const token: TokenData = {
+        name: metadata.name ? metadata.name : '',
+        symbol: metadata.symbol ? metadata.symbol : '',
+        decimals: Number(metadata.decimals),
+        description: metadata.description ? metadata.description : '',
+        displayAsset: metadata.displayUri,
+        thumbnailAsset: metadata.thumbnailUri,
+        isTransferable: metadata?.isTransferable ? metadata.isTransferable : true,
+        isBooleanAmount: metadata?.isBooleanAmount ? metadata.isBooleanAmount : false,
+        series: metadata.series ? metadata.series : undefined,
+        status: TRUSTED_TOKEN_CONTRACTS.includes(contractAddress) || CONSTANTS.NFT_CONTRACT_OVERRIDES.includes(tokenId) || this.teztoolsService.defiTokens.includes(tokenId) ? 1 : 0
+      };
+      contract.tokens[id] = token;
+      this.addAsset(contractAddress, contract);
+      this.saveMetadata();
+      this.subjectService.metadataUpdated.next({ contractAddress, id, token });
     }
   }
   explore(tokenId: string): boolean {
@@ -213,6 +262,13 @@ export class TokenService {
       this.saveMetadata();
     }
   }
+  resetAllMetadata() {
+    this.exploredIds = {};
+    this.contracts = {};
+    this.saveMetadata();
+    this.loadMetadata();
+    this.subjectService.metadataUpdated.next(null);
+  }
   searchTimeMs(tokenId: string) {
     if (this.exploredIds[tokenId]) {
       const token = this.exploredIds[tokenId];
@@ -228,13 +284,15 @@ export class TokenService {
       contractAddress,
       id,
       decimals: 0,
-      displayUrl: '../../../assets/img/tokens/unknown-token.png',
-      thumbnailUrl: '../../../assets/img/tokens/unknown-token.png',
+      displayAsset: '',
+      thumbnailAsset: '',
       name: '[Unknown token]',
       symbol: '',
       description: '',
       category: '',
       kind: 'FA2',
+      status: 0,
+      isUnknownToken: true
     };
   }
   saveMetadata() {
@@ -251,6 +309,16 @@ export class TokenService {
         if (metadata?.contracts) {
           const contractAddresses = Object.keys(metadata.contracts);
           for (const address of contractAddresses) {
+            for (const id of Object.keys(metadata.contracts[address].tokens)) {
+              if (metadata.contracts[address].tokens[id]?.status === 0) {
+                if (TRUSTED_TOKEN_CONTRACTS.includes(address) || CONSTANTS.NFT_CONTRACT_OVERRIDES.includes(`${address}:${id}`) || this.teztoolsService.defiTokens.includes(`${address}:${id}`)) {
+                  metadata.contracts[address].tokens[id].status = 1; // flip status if it have been marked as trusted
+                }
+                if (BLACKLISTED_TOKEN_CONTRACTS.includes(address)) {
+                  metadata.contracts[address].tokens[id].status = -1;
+                }
+              }
+            }
             this.addAsset(address, metadata.contracts[address]);
           }
         }
@@ -279,6 +347,9 @@ export class TokenService {
       if (token) {
         if ((!token.shouldPreferSymbol && token.name) || !token.symbol) {
           if (token.isBooleanAmount) {
+            if (parseInt(amount) > 1) {
+              return `${amount} ${token.name}`;
+            }
             return `${token.name}`;
           } else {
             return `${Big(amount).div(10 ** (baseUnit ? token.decimals : 0)).toFixed()} ${token.name}`;

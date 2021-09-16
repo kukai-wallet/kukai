@@ -1,0 +1,100 @@
+@use '../../../abstracts/variables' as v;
+@use '../../../abstracts/mixins' as m;
+
+$base-font-color: v.$base-font-color;
+$base-end-color: v.$base-end-color;
+$base-blue-color-lightened: v.$base-blue-color-lightened;
+$base-color-lightened-3: v.$base-color-lightened-3;
+$base-color-lightened-5: v.$base-color-lightened-5;
+$advanced-color: #e6eaef;
+$border-width: v.$border-width;
+$border-color: v.$border-color;
+
+.advanced {
+  min-width: 12rem;
+  justify-content: center;
+  margin: 0 0 0 1rem;
+  width: 100%;
+
+  & * {
+    -webkit-tap-highlight-color: #fff0; 
+  }
+
+  & .switch-container {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    width: 100%;
+    height: 1rem;
+
+    & .switch {
+      & .slider {
+        @include m.base-relative;
+        cursor: pointer;
+        right: 0;
+        bottom: 0;
+        background-color: $base-end-color;
+        border: v.$border-width solid $advanced-color;
+        border-radius: v.$border-radius-hardest;
+        transition: 0.4s;
+        width: 3.5rem;
+        height: 2rem;
+
+        &.active {
+          & .round {
+            -webkit-transform: translateX(1.5rem);
+            -ms-transform: translateX(1.5rem);
+            transform: translateX(1.5rem);
+            background-color: $base-blue-color-lightened;
+          }
+        }
+
+        & .round {
+          position: absolute;
+          content: "";
+          height: 1.25rem;
+          width: 1.25rem;
+          left: 0.375rem;
+          bottom: 0.375rem;
+          background-color: $border-color;
+          transition: 0.25s all;
+          border-radius: v.$border-radius-hardest;
+        }
+      }
+    }
+
+    & span {
+      margin: 0;
+      @include m.multiply('font-size',1.125, 'em !important');
+      font-weight: 500;
+      &.key {
+        color: $base-color-lightened-3 !important;
+        font-size: 1em !important;
+        &.active {
+          color: $base-color-lightened-3 !important;
+
+          & .round {
+            -webkit-transform: translateX(1.5rem);
+            -ms-transform: translateX(1.5rem);
+            transform: translateX(1.5rem);
+            background-color: $base-blue-color-lightened;
+          }
+        }
+      }
+
+      &.value {
+        color: #6c7a8d !important;
+        @include m.multiply('font-size',1.125, 'em !important');
+      }
+    }
+  }
+}
+
+@media not all and (min-resolution:.001dpcm) { 
+  @supports (-webkit-appearance:none) {
+    .advanced .switch-container .switch .slider:before {
+      left: 0.3rem;
+      bottom: 0.3rem;
+    }
+  }
+}

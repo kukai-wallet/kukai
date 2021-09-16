@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { TorusService } from '../../services/torus/torus.service';
 import { CONSTANTS } from '../../../environments/environment';
 import { ImportService } from '../../services/import/import.service';
 import { KeyPair } from '../../interfaces';
 import { WalletService } from '../../services/wallet/wallet.service';
-import { PartialTezosTransactionOperation, TezosOperationType } from '@airgap/beacon-sdk';
-import { EmbeddedTorusWallet, ImplicitAccount, TorusWallet } from '../../services/wallet/wallet';
+import { PartialTezosTransactionOperation } from '@airgap/beacon-sdk';
+import { EmbeddedTorusWallet, ImplicitAccount } from '../../services/wallet/wallet';
 import { CoordinatorService } from '../../services/coordinator/coordinator.service';
 import { utils, common } from '@tezos-core-tools/crypto-utils';
 import { ActivatedRoute } from '@angular/router';
@@ -20,12 +20,9 @@ import {
   OperationResponse,
   LogoutRequest,
   TrackRequest,
-  TrackResponse,
   LoginRequest,
   OperationRequest,
   AuthRequest,
-  AuthResponse,
-  Init,
   CardRequest,
   CardResponse,
   SignExprRequest,
@@ -33,13 +30,12 @@ import {
   LoginConfig
 } from 'kukai-embed';
 import { Subscription } from 'rxjs';
-import { MessageService } from '../../services/message/message.service';
+import { SubjectService } from '../../services/subject/subject.service';
 import { InputValidationService } from '../../services/input-validation/input-validation.service';
-
 @Component({
   selector: 'app-embedded',
   templateUrl: './embedded.component.html',
-  styleUrls: ['./embedded.component.scss']
+  styleUrls: ['../../../scss/components/embedded/embedded.component.scss']
 })
 export class EmbeddedComponent implements OnInit {
   constructor(
@@ -51,8 +47,9 @@ export class EmbeddedComponent implements OnInit {
     private lookupService: LookupService,
     private activityService: ActivityService,
     private embeddedAuthService: EmbeddedAuthService,
-    private messageService: MessageService,
-    private inputValidationService: InputValidationService
+    private subjectService: SubjectService,
+    private inputValidationService: InputValidationService,
+    private elRef: ElementRef
   ) { }
   pendingOps: string[] = [];
   ophashSubscription: Subscription;
@@ -67,6 +64,8 @@ export class EmbeddedComponent implements OnInit {
   loginConfig = null;
 
   ngOnInit(): void {
+    const htmlElem = this.elRef.nativeElement.closest('html');
+    htmlElem.style.fontSize = '100%'; 
     document.body.style.background = 'none';
     this.torusService.initTorus();
     if (window.addEventListener) {
@@ -81,9 +80,9 @@ export class EmbeddedComponent implements OnInit {
         this.walletService.loadStoredWallet(params.instanceId);
         if (this.walletService.wallet instanceof EmbeddedTorusWallet) {
           this.origin = this.walletService.wallet.origin;
-          this.messageService.origin.next(this.origin);
+          this.subjectService.origin.next(this.origin);
           this.activeAccount = this.walletService.wallet.implicitAccounts[0];
-          this.coordinatorService.startAll();
+          this.coordinatorService.start(this.activeAccount.address, this.coordinatorService.defaultDelayActivity);
           this.subscribeToConfirmedOps();
         }
       }
@@ -98,7 +97,7 @@ export class EmbeddedComponent implements OnInit {
         if (data &&
           data.type) {
           this.origin = evt.origin;
-          this.messageService.origin.next(this.origin);
+          this.subjectService.origin.next(this.origin);
           switch (data.type) {
             case RequestTypes.loginRequest:
               this.handleLoginRequest(data);
@@ -317,7 +316,7 @@ export class EmbeddedComponent implements OnInit {
         .then((success: boolean) => {
           if (success) {
             this.activeAccount = this.walletService.wallet.implicitAccounts[0];
-            this.coordinatorService.startAll();
+            this.coordinatorService.start(this.activeAccount.address, this.coordinatorService.defaultDelayActivity);
             this.subscribeToConfirmedOps();
           }
         });
@@ -344,14 +343,14 @@ export class EmbeddedComponent implements OnInit {
     return common.base58encode(utils.mnemonicToEntropy(utils.generateMnemonic(15)), new Uint8Array([]));
   }
   private logout(instanceId: string) {
-    this.coordinatorService.stopAll();
+    this.subjectService.logout.next(true);
     this.walletService.clearWallet(instanceId);
     this.lookupService.clear();
     this.activeAccount = null;
     this.ophashSubscription.unsubscribe();
   }
   subscribeToConfirmedOps() {
-    this.ophashSubscription = this.activityService.confirmedOp.subscribe((opHash) => {
+    this.ophashSubscription = this.subjectService.confirmedOp.subscribe((opHash) => {
       if (this.pendingOps.includes(opHash)) {
         this.sendResponse({
           type: ResponseTypes.trackResponse,

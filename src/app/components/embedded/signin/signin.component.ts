@@ -6,7 +6,7 @@ import { TorusService } from '../../../services/torus/torus.service';
 @Component({
   selector: 'app-signin',
   templateUrl: './signin.component.html',
-  styleUrls: ['./signin.component.scss']
+  styleUrls: ['../../../../scss/components/embedded/signin/signin.component.scss']
 })
 export class SigninComponent implements OnInit, OnChanges {
   constructor(

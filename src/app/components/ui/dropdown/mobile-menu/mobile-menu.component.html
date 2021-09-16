@@ -1,0 +1,53 @@
+<div class="hamburger-dropdown" [class.expanded]="isOpen" [id]="ecmpId">
+  <img class="button icon-db" src="../../../../assets/img/hamburger.svg" (click)="toggleDropdown()" />
+  <div *ngIf="router.url.indexOf('/account/') === 0" class="flex-column mobile dropdown-content">
+    <div class="flex-row-wrap account-content">
+      <div *ngIf="router.url.indexOf('/account/') === 0" class="flex-column button" (click)="copy();toggleDropdown()">
+        <div class="img-wrapper">
+          <img class="icon" src="../../../../assets/img/copy-blue.svg" />
+        </div>
+        <span>COPY</span>
+      </div>
+      <div class="flex-column button" (click)="receive();toggleDropdown()">
+        <div class="img-wrapper">
+          <img class="icon" src="../../../../assets/img/qr-blue.svg" />
+        </div>
+        <span>QR</span>
+      </div>
+      <div *ngIf="walletService.isHdWallet()" class="flex-column button" (click)="newAccount();toggleDropdown()">
+        <div class="img-wrapper">
+          <img class="icon" src="../../../../assets/img/add-blue.svg" />
+        </div>
+        <span>ADD</span>
+      </div>
+    </div>
+    <div class="flex-row button delegation" routerLink="/account/{{activeAccount?.address}}/stakers" (click)="toggleDropdown()">
+      <div *ngIf="!activeAccount?.delegate" class="flex-row">
+        <span class="flex-row">STAKING:</span><span class="choose">NOT
+          STAKING</span>
+      </div>
+      <div *ngIf="activeAccount?.delegate" class="flex-row">
+        <span>STAKING</span>
+        <span class="flex-row address">{{ delegateName
+          }}</span>
+      </div>
+    </div>
+    <div class="flex-row button" [routerLink]="'/account/' + activeAccount?.address + '/settings'" (click)="toggleDropdown()">
+      <img class="icon settings" src="../../../../assets/img/cog.svg" /><span>SETTINGS</span>
+    </div>
+    <div class="flex-row button" (click)="logout();toggleDropdown()">
+      <img class="icon" src="../../../../assets/img/sign-out-alt.svg" /><span>LOGOUT</span>
+    </div>
+  </div>
+  <div *ngIf="router.url.indexOf('/account/') !== 0" class="flex-column mobile dropdown-content">
+    <div routerLink="/import/" class="flex-row button" (click)="toggleDropdown()">
+      <span>Import Wallet</span>
+    </div>
+    <div routerLink="/new-wallet/" class="flex-row button" (click)="toggleDropdown()">
+      <span>Create New Wallet</span>
+    </div>
+    <div routerLink="/connect-ledger/" class="flex-row button" (click)="toggleDropdown()">
+      <span>Connect Ledger</span>
+    </div>
+  </div>
+</div>

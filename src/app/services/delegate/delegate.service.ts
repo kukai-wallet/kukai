@@ -2,22 +2,23 @@ import { Injectable } from '@angular/core';
 import { WalletService } from '../wallet/wallet.service';
 import { OperationService } from '../operation/operation.service';
 import { Account } from '../wallet/wallet';
+import { CONSTANTS } from '../../../environments/environment';
+import { BehaviorSubject } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 @Injectable()
 export class DelegateService {
+
+  private readonly network = CONSTANTS.NETWORK.replace('edonet', 'edo2net');
+  public readonly bcd = 'https://api.baking-bad.org/v2';
+  public readonly tzkt = `https://staging.api.${this.network}.tzkt.io/v1`;
+  public delegates = new BehaviorSubject<any>([]);
+
   constructor(
     private walletService: WalletService,
     private operationService: OperationService
-  ) {}
-  getDelegates() {
-    if (
-      this.walletService.wallet &&
-      this.walletService.wallet.implicitAccounts
-    ) {
-      for (const account of this.walletService.wallet.getAccounts()) {
-        this.getDelegate(account);
-      }
-    }
+  ) {
+    this.getDelegates();
   }
   getDelegate(account: Account) {
     this.operationService.getDelegate(account.address).subscribe(
@@ -43,5 +44,14 @@ export class DelegateService {
         this.walletService.storeWallet();
       }
     }
+  }
+  getDelegates(): void {
+    fetch(`${this.bcd}/bakers`).then((response) => response.json()).then((d) => this.delegates.next(d));
+  }
+
+  resolveDelegateByAddress(address: string): Promise<any> {
+    return new Promise(resolve => {
+      this.delegates.pipe(take(1)).subscribe(d => resolve(d?.find(d => d?.address === address)));
+    });
   }
 }

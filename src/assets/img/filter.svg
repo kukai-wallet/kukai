@@ -1,0 +1,12 @@
+<svg version="1.2" baseProfile="tiny-ps" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 15" width="18" height="15">
+	<title>1</title>
+	<style>
+		tspan { white-space:pre }
+		.shp0 { fill: #4a5d75 } 
+	</style>
+	<g id="1">
+		<g id="NFT">
+			<path id="Shape 3" class="shp0" d="M17.66 0L0.34 0C0.06 0 -0.1 0.32 0.07 0.55L6.22 8.52C6.38 8.72 6.46 8.96 6.46 9.21L6.46 12.16C6.46 12.58 6.69 12.96 7.05 13.16L10.35 14.94C10.43 14.98 10.51 15 10.6 15C10.87 15 11.13 14.78 11.13 14.47L11.13 9.25C11.13 8.99 11.22 8.73 11.38 8.53L17.92 0.55C18.1 0.33 17.95 0 17.66 0" />
+		</g>
+	</g>
+</svg>

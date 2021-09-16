@@ -38,12 +38,15 @@ export class EmbeddedAuthService {
       purpose: 'authentication',
       currentTime: Math.floor(Date.now() / 1000).toString(), // UNIX timestamp
       nonce,
-      network: CONSTANTS.NETWORK,
+      network: this._network(),
       publicKey,
       address,
       domain
     };
     return `Tezos Signed Message: ${JSON.stringify(authPayload)}`;
+  }
+  _network(): string {
+    return CONSTANTS.NETWORK;
   }
   private signMessage(message: string, sk: string): string {
     const parser = new Parser();

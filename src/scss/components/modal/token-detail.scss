@@ -1,0 +1,104 @@
+& .token-info {
+  height: calc(100% - 11rem);
+  margin: 2rem 0 0 0;
+  max-width: 50rem;
+
+  & .data {
+    justify-content: flex-start;
+    align-items: center;
+    max-height: 48rem;
+    height: auto;
+    margin: 0 0 2rem 0;
+    padding: 2rem;
+    background-color: v.$base-color-lightened-7;
+    border-radius: v.$border-radius-hard;
+
+    & .img-wrapper {
+      max-width: 24rem;
+      max-height: 48rem;
+      width: 100%;
+      height: 100%;
+      justify-content: center;
+      margin: 0 1rem 0 0;
+      position: relative;
+
+      &.expanded {
+        background-color: #000000f3;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        max-width: unset;
+        max-height: unset;
+        max-height: -webkit-fill-available;
+        margin: 0;
+        z-index: 10000;
+
+        & img:not(.close) {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100vw;
+          height: 100vh;
+          background-color: #333e;
+          z-index: 2000;
+          cursor: unset;
+          max-height: unset;
+        }
+      }
+
+      & img:not(.close) {
+        max-width: 100%;
+        max-height: 32rem;
+        object-fit: scale-down;
+        object-position: center;
+      }
+
+      & img.close {
+        z-index: 5000;
+        top: 1rem;
+        right: 1rem;
+        filter: invert(1) brightness(20);
+        width: calc(3rem - 6px);
+        height: calc(3rem - 6px);
+        padding: 0.5rem;
+        object-fit: scale-down;
+        border: none;
+        border-radius: unset;
+      }
+
+      & img.expand {
+        position: absolute;
+        bottom: 0.5rem;
+        right: 0.5rem;
+        width: 1.75rem;
+        height: 1.75rem;
+        background-color: #999;
+        padding: 0.5rem;
+        border-radius: 8rem;
+        cursor: pointer;
+        filter: invert(1) opacity(0.8);
+        z-index: 1;
+      }
+    }
+
+    & .meta {
+      max-width: 24rem;
+      max-height: 48rem;
+      width: 100%;
+      height: 100%;
+      justify-content: space-between;
+      margin: 0 0 0 1rem;
+      align-self: flex-start;
+
+      & .top {
+        & .desc .value {
+          max-height: 12rem;
+          overflow-y: auto;
+          padding: 0 1rem 0 0;
+        }
+      }
+    }
+  }
+}

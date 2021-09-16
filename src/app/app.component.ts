@@ -1,24 +1,28 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router, Event, NavigationEnd } from '@angular/router';
 import { WalletService } from './services/wallet/wallet.service';
-import { CoordinatorService } from './services/coordinator/coordinator.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Location } from '@angular/common';
+import { CONSTANTS as _CONSTANTS } from '../environments/environment';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  // // tslint:disable-next-line
-  // selector: 'body',
-  // template: '<router-outlet></router-outlet>'
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
+  readonly CONSTANTS = _CONSTANTS;
   embedded = false;
+  previous = 0;
+  current = 0;
+  diff = 0;
+  container = null;
+  post = false;
+  private subscriptions: Subscription = new Subscription();
   constructor(
     private walletService: WalletService,
-    private coordinatorService: CoordinatorService,
-    private router: Router,
+    public router: Router,
     public translate: TranslateService,
     private location: Location
 
@@ -27,29 +31,29 @@ export class AppComponent implements OnInit {
     // this language will be used as a fallback when a translation isn't found in the current language
     translate.setDefaultLang('en');
 
-      // the lang to use, if the lang isn't available, it will use the current loader to get them
-      const languagePreference = window.localStorage.getItem('languagePreference');
-      const browserLang = translate.getBrowserLang();
-      translate.use('en');
+    // the lang to use, if the lang isn't available, it will use the current loader to get them
+    const languagePreference = window.localStorage.getItem('languagePreference');
+    const browserLang = translate.getBrowserLang();
+    translate.use('en');
   }
 
   ngOnInit() {
     this.checkEmbedded();
     if (!this.embedded) {
       this.walletService.loadStoredWallet();
-      if (this.walletService.wallet) {
-        this.coordinatorService.startAll();
-      }
     }
-    this.router.events.subscribe((event: Event) => {
+    this.subscriptions.add(this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
         this.checkEmbedded();
         window.scrollTo(0, 0);
       }
-    });
+    }));
     if (!this.embedded) {
       window.addEventListener('storage', (e) => { this.handleStorageEvent(e); });
     }
+  }
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
   private handleStorageEvent(e: StorageEvent) {
     if (e.key === 'kukai-wallet' && !this.embedded) {
@@ -87,6 +91,23 @@ export class AppComponent implements OnInit {
   checkEmbedded() {
     const path = this.location.path();
     this.embedded = path.startsWith('/embedded');
+    const bg = this.embedded ? 'none' : '#f8f9fa';
+    document.documentElement.style.setProperty('--background-color', bg);
+    if(!!this.embedded) {
+      const resize = () => {
+        if(document.body.clientWidth < 450) {
+          document.documentElement.style.fontSize = '55%'; 
+        } else if(document.body.clientWidth < 540) {
+          document.documentElement.style.fontSize = '75%'; 
+        } else if(document.body.clientWidth < 650) {
+          document.documentElement.style.fontSize = '87.5%'; 
+        } else {
+          document.documentElement.style.fontSize = '100%';
+        }
+      }
+      window.addEventListener('resize', resize);
+      resize();
+    }
   }
   setLanguage(lang) {
     window.localStorage.setItem('languagePreference', lang);

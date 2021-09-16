@@ -1,0 +1,129 @@
+@use '../../../../abstracts/mixins' as m;
+@use '../../../../abstracts/variables'as v;
+@use './batch' as b;
+
+$border-color: #e6eaef;
+
+@mixin confirm-send-mobile-default {
+  .confirm-send {
+    width: 33rem;
+
+    @include b.confirm-send-mobile-batch;
+
+    & .transfer-amount,
+    & .contract-call {
+      width: calc(100% - 2rem);
+    }
+
+    &.image .top .left {
+      min-height: 8rem;
+    }
+
+    & .divider {
+      & span {
+        border-bottom: 3px solid $border-color;
+
+        &:first-child {
+          width: 12%;
+        }
+
+        &:last-child {
+          width: 45%;
+        }
+      }
+    }
+
+    & .top {
+      width: calc(100% - 4rem);
+
+      & .left {
+        width: 26%;
+
+        & .key {
+          text-align: center;
+        }
+      }
+
+      & .right {
+        width: calc(74% - 2rem);
+      }
+
+      & .token-image {
+        width: 8rem;
+        height: 8rem;
+
+        &.balance {
+          width: 4rem;
+          height: 4rem;
+        }
+      }
+    }
+
+    & .from {
+      padding: 1rem 2rem;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+
+      & .left {
+        width: 31%;
+        align-items: flex-start;
+      }
+
+      & .right {
+        width: 100%;
+
+        & .address {
+          font-family: "Roboto Mono";
+          margin: 0.5rem 0 0 0;
+        }
+
+        & .torus-name {
+          left: 0;
+          margin: 0.5rem 0 0 0;
+        }
+      }
+    }
+
+    & .to {
+      padding: 2rem;
+      width: calc(100% - 4rem);
+      flex-direction: column;
+
+      & .left {
+        width: 31%;
+        height: auto;
+        align-items: flex-start;
+      }
+
+      & .right {
+        width: 100%;
+
+        & .transaction {
+          & .torus-to {
+            left: 0;
+            margin: 0.5rem 0 0 0;
+          }
+
+          & .single-to {
+            margin: 0.5rem 0 0 0;
+
+            &.default {
+              & span {
+                margin: 0.5rem 0 0 0;
+              }
+            }
+
+            & span {
+              font-family: "Roboto Mono";
+            }
+          }
+        }
+      }
+    }
+
+    & .bottom {
+      width: 100%;
+    }
+  }
+}

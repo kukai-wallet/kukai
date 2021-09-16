@@ -1,0 +1,11 @@
+@use '../../../abstracts/mixins' as m;
+@use '../../../abstracts/variables'as v;
+@use './desktop/default' as d;
+@use './mobile/default' as md;
+
+@mixin confirm-send {
+  @include d.confirm-send-default;
+  @media (max-width: v.$layout-break-6) {
+    @include md.confirm-send-mobile-default;
+  }
+}

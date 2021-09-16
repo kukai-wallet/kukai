@@ -1,0 +1,123 @@
+@use '../../../abstracts/variables'as v;
+@use '../../../abstracts/mixins' as m;
+@import './mixins';
+
+@include base;
+
+.top-container {
+  @include top-container;
+}
+
+.pending {
+
+  transition: 0.15s height;
+  min-height: 4rem;
+  height: 0rem;
+
+  &.expanded {
+    height: 15rem;
+
+    & .head {
+      border-color: v.$border-color;
+      padding: 1rem 2rem 1rem 2rem;
+
+      & .right {
+        & .toggle img {
+          transform: rotate(0deg);
+        }
+      }
+    }
+
+    & body {
+      box-shadow: v.$box-shadow;
+    }
+
+    & .tokens .token {
+      padding: 1rem 0 0 0;
+    }
+  }
+
+  & .head {
+    transition: 0.3s border-color, 0.3s padding;
+    box-shadow: 0px 20px 25px #8883;
+
+    & .left {
+      justify-content: flex-start;
+
+      & .count {
+        @include m.multiply('font-size',1.5);
+        margin-right: 0.5rem;
+        text-align: center;
+      }
+
+      & .title {
+        @include m.multiply('font-size',1.5);
+        margin-right: 1rem;
+      }
+    }
+
+    & .right {
+      & .toggle img {
+        transition: 0.25s transform;
+        width: 1rem;
+        transform: rotate(90deg);
+        height: 3rem;
+      }
+    }
+  }
+
+  & .body {
+    overflow: hidden;
+    flex-wrap: wrap;
+    padding: 0 1rem 1rem 1rem;
+    border-radius: v.$border-radius;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    background-color: v.$base-end-color;
+
+    &.expanded {
+      overflow-y: auto;
+    }
+
+    & .token {
+      width: 100%;
+      justify-content: flex-start;
+      padding: 1rem 0 0 0;
+      transition: 0.3s padding;
+
+      & .left {
+        width: 100%;
+        justify-content: flex-start;
+
+        & .icon {
+          width: 8rem;
+          height: 8rem;
+          background-color: #5963ff;
+          margin-right: 1.25rem;
+        }
+
+        & .right {
+          width: calc(100% - 10rem);
+
+          & .title {
+            @include m.multiply('font-size',1.5);
+          }
+
+          & .issue {
+            @include m.multiply('font-size',1);
+          }
+
+        }
+      }
+
+      & .right {
+        width: 100%;
+        justify-content: flex-end;
+
+        .reject {
+          margin-right: 1rem;
+        }
+      }
+    }
+  }
+}

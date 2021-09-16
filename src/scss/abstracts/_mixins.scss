@@ -1,0 +1,26 @@
+@use './variables' as v;
+
+@mixin multiply($property, $base, $postfix: 'rem', $override: 0, $breakpoint: v.$layout-break-5) {
+  @media (min-width: $breakpoint) {
+    #{$property}: #{($base * 1) + $postfix};
+  }
+  @media (max-width: $breakpoint) {
+    @if $override != 0 {
+      #{$property}: #{($base * $override) + $postfix}; 
+    } @else {
+      #{$property}: #{($base * v.$font-offset-mobile) + $postfix};
+    }
+  }
+}
+
+@mixin ellipsis() {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@mixin base-relative {
+  position: relative;
+  top: 0;
+  left: 0;
+}

@@ -1,9 +1,5 @@
 import { Injectable } from '@angular/core';
-
-import { TranslateService } from '@ngx-translate/core';  // Multiple instances created ?
-
 import { WalletService } from '../wallet/wallet.service';
-import { MessageService } from '../message/message.service';
 import { TzrateService } from '../tzrate/tzrate.service';
 import { OperationService } from '../operation/operation.service';
 import { Account } from '../wallet/wallet';
@@ -11,9 +7,7 @@ import { Account } from '../wallet/wallet';
 @Injectable()
 export class BalanceService {
   constructor(
-    private translate: TranslateService,
     private walletService: WalletService,
-    private messageService: MessageService,
     private tzrateService: TzrateService,
     private operationService: OperationService
   ) { }

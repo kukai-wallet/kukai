@@ -82,7 +82,7 @@ describe('[ ImportService ]', () => {
 		}
 	};
 //	let isJson: boolean = true;
-// tslint:disable-next-line:max-line-length
+// eslint-disable-next-line max-len
 //	let walletJson: string = JSON.stringify({"provider": "Kukai","version": 1,"walletType": 0,"pkh": "tz1WzGiA46TxyZdUHGJgUYHaR5HyUyH8Rssn","encryptedSeed": "66746740b4b925d2a336744339b31bf4850357a01a7d309e79604fe95fc11dd6", iv:});
 	const seedkey = 'edskReZHRkGSEGDAKtrNWTo6Kd4L9tv7QwDEbAxBLqQKBavhBfTUzYy7BEgELbPW5LJUN4X1YZqAdmbiJXhRgsFtbBbsJWwS6Y';
 	const publickey = 'edpkv5PQ1dkf5avSEEPCn5oUe9cYmkbpbizuEo4SpybauNfSQ9Umyh';

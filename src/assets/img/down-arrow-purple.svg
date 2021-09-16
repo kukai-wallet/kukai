@@ -1,0 +1,18 @@
+<svg version="1.2" baseProfile="tiny-ps" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" width="30" height="30">
+	<title>1</title>
+	<style>
+		tspan { white-space:pre }
+		.shp0 { fill: #7178e3 } 
+		.shp1 { fill: #ffffff } 
+	</style>
+	<g id="1">
+		<g id="Header">
+			<g id="Accounts">
+				<g id="Arrow Down">
+					<path id="Ellipse 2" class="shp0" d="M15 0C23.28 0 30 6.72 30 15C30 23.28 23.28 30 15 30C6.72 30 0 23.28 0 15C0 6.72 6.72 0 15 0Z" />
+					<path id="Rectangle 4" class="shp1" d="M10.93 11.17L17.83 18.07L15 20.9L8.1 14L10.93 11.17ZM19.07 11.17L21.9 14L15 20.9L12.17 18.07L19.07 11.17Z" />
+				</g>
+			</g>
+		</g>
+	</g>
+</svg>

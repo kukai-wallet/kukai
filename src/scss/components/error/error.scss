@@ -1,0 +1,24 @@
+@use '../../../scss/abstracts/variables' as v;
+@use '../../../scss/abstracts/mixins'as m;
+
+#error {
+  height: calc(100vh - 10rem);
+  background: v.$base-blue-color;
+  justify-content: center;
+  align-items: center;
+
+  & h1 {
+    color: v.$base-end-color;
+    @include m.multiply('font-size',8rem);
+    line-height: 8rem;
+  }
+
+  & h4 {
+    color: v.$base-end-color;
+    @include m.multiply('font-size',2rem);
+  }
+
+  & p {
+    color: v.$base-end-color;
+  }
+}

@@ -4,7 +4,6 @@ import * as AES from 'aes-js';
 import * as scrypt from 'scryptsy';
 import * as cryptob from 'crypto-browserify';
 import * as forge from 'node-forge';
-import { rejects } from 'assert';
 declare const Buffer;
 @Injectable()
 export class EncryptionService {

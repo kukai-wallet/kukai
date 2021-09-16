@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { MessageService } from '../../services/message/message.service';
 import { WalletClient, BeaconMessageType, PermissionResponseInput, SignPayloadResponseInput, P2PPairingRequest, BeaconErrorType, BEACON_VERSION, ErrorResponse, getSenderId } from '@airgap/beacon-sdk';
 import { ExtendedP2PPairingResponse } from '@airgap/beacon-sdk/dist/cjs/types/P2PPairingResponse';
-import { CONSTANTS } from '../../../environments/environment';
-
+import { Asset } from '../token/token.service';
+import { TzktService } from '../indexer/tzkt/tzkt.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -12,7 +12,8 @@ export class BeaconService {
   peers = [];
   permissions = [];
   constructor(
-    private messageService: MessageService
+    private messageService: MessageService,
+    private tzktService: TzktService
   ) {}
   preNotifyPairing(pairInfoJson: string) {
     const pairInfo: P2PPairingRequest = JSON.parse(pairInfoJson);
@@ -43,7 +44,26 @@ export class BeaconService {
     await this.client.addPeer(pairInfo, force);
     this.syncBeaconState();
     this.messageService.removeBeaconMsg();
-
+    if (pairInfo.icon && pairInfo.icon.startsWith('https://')) {
+      this.cacheIcon(pairInfo);
+    }
+  }
+  async cacheIcon(pairInfo: any) {
+    const key = 'beacon:communication-peers-wallet';
+    const asset: Asset = await this.tzktService.fetchApi(`https://backend.kukai.network/file/info?src=${pairInfo.icon}`);
+    const json = localStorage.getItem(key);
+    if (!json || !asset) { return; }
+    const peers = JSON.parse(json);
+    if (peers) {
+      for (const peer of peers) {
+        if (peer.icon === pairInfo.icon) {
+          peer.cachedIcon = asset;
+          break;
+        }
+      }
+      localStorage.setItem(key, JSON.stringify(peers))
+      this.syncBeaconState();
+    }
   }
   async syncBeaconState() {
     this.peers = await this.getPeers();
@@ -79,6 +99,9 @@ export class BeaconService {
   }
   async getPermissions(): Promise<any> {
     return await this.client.getPermissions();
+  }
+  async getAppMetadataList(): Promise<any> {
+    return await this.client.getAppMetadataList();
   }
   async rejectOnPermission(message: any) {
     await this.respondWithError(BeaconErrorType.NOT_GRANTED_ERROR, message);

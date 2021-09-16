@@ -1,18 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MessageService } from '../../services/message/message.service';
 import { OperationService } from '../../services/operation/operation.service';
 import { InputValidationService } from '../../services/input-validation/input-validation.service';
 import { TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-activate',
   templateUrl: './activate.component.html',
-  styleUrls: ['./activate.component.scss']
+  styleUrls: ['../../../scss/components/start/login.component.scss']
 })
-export class ActivateComponent implements OnInit {
+export class ActivateComponent implements OnInit, OnDestroy {
   pkh: string;
   secret: string;
   formInvalid = '';
+  private subscriptions: Subscription = new Subscription();
   constructor(
     private messageService: MessageService,
     private operationService: OperationService,
@@ -22,6 +24,9 @@ export class ActivateComponent implements OnInit {
 
   ngOnInit() {
   }
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
+  }
   activate() {
     this.formInvalid = this.checkInput();
     if (!this.formInvalid) {
@@ -29,17 +34,17 @@ export class ActivateComponent implements OnInit {
       const secret = this.secret;
       this.pkh = '';
       this.secret = '';
-      this.operationService.activate(pkh, secret).subscribe(
+      this.subscriptions.add(this.operationService.activate(pkh, secret).subscribe(
         (ans: any) => {
           if (ans.success) {
             if (ans.payload.opHash) {
-              this.translate.get('ACTIVATECOMPONENT.ACTIVATESUCCESS').subscribe(
+              this.subscriptions.add(this.translate.get('ACTIVATECOMPONENT.ACTIVATESUCCESS').subscribe(
                 (res: string) => this.messageService.addSuccess(res)  // 'Activation successfully broadcasted to the blockchain!'
-              );
+              ));
             } else {
-              this.translate.get('ACTIVATECOMPONENT.RETRIEVEFAIL').subscribe(
+              this.subscriptions.add(this.translate.get('ACTIVATECOMPONENT.RETRIEVEFAIL').subscribe(
                 (res: string) => this.messageService.addWarning(res)  // Could not retrieve an operation hash
-              );
+              ));
             }
           } else {
             let errorMessage = '';
@@ -53,7 +58,7 @@ export class ActivateComponent implements OnInit {
           }
         },
         err => {
-          this.translate.get('ACTIVATECOMPONENT.ACTIVATEFAIL').subscribe(
+          this.subscriptions.add(this.translate.get('ACTIVATECOMPONENT.ACTIVATEFAIL').subscribe(
             (res: string) => {
               let errorMessage = '';
               const activateFailed = res;
@@ -64,10 +69,10 @@ export class ActivateComponent implements OnInit {
               }
               this.messageService.addError(errorMessage);
             }  // 'Failed to activate wallet!'
-          );
+          ));
           console.log(JSON.stringify(err));
         }
-      );
+      ));
     }
   }
   checkInput(): string {

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { WalletType, KeyPair } from './../../interfaces';
+import { KeyPair } from './../../interfaces';
 import { WalletService } from '../wallet/wallet.service';
 import { CoordinatorService } from '../coordinator/coordinator.service';
 import {
@@ -9,12 +9,14 @@ import {
   HdWallet,
   LedgerWallet,
   TorusWallet,
-  EmbeddedTorusWallet
+  EmbeddedTorusWallet,
+  WatchWallet
 } from '../wallet/wallet';
 import { hd, utils } from '@tezos-core-tools/crypto-utils';
 import { EncryptionService } from '../encryption/encryption.service';
 import { TorusService } from '../torus/torus.service';
 import { IndexerService } from '../indexer/indexer.service';
+import { OperationService } from '../operation/operation.service';
 
 @Injectable()
 export class ImportService {
@@ -24,6 +26,7 @@ export class ImportService {
     private indexerService: IndexerService,
     private encryptionService: EncryptionService,
     private torusService: TorusService,
+    private operationService: OperationService
   ) { }
   pwdRequired(json: string) {
     const walletData = JSON.parse(json);
@@ -132,17 +135,11 @@ export class ImportService {
     this.walletService.initStorage();
     if (this.walletService.wallet instanceof HdWallet) {
       let index = 0;
-      let state = 'X';
-      while (state) {
+      let isUsedAccount: boolean = true;
+      while (isUsedAccount) {
         keys = hd.keyPairFromAccountIndex(seed, index);
-        const accountInfo = await this.indexerService
-          .accountInfo(keys.pkh, undefined, true);
-          state = accountInfo.counter;
-          console.log(accountInfo);
-        if (!state && accountInfo.unknownTokenIds?.length) {
-          state = 'X';
-        }
-        if (state || index === 0) {
+        isUsedAccount = await this.indexerService.isUsedAccount(keys.pkh);
+        if (isUsedAccount || index === 0) {
           this.walletService.addImplicitAccount(
             keys.pk,
             index++
@@ -164,6 +161,19 @@ export class ImportService {
       return this.ledgerImport(pk, derivationPath);
     } else if (verifierDetails) {
       return this.torusImport(pk, verifierDetails, sk, instanceId);
+    }
+  }
+  async watch(pkh: string) {
+    if (this.operationService.validAddress(pkh)) {
+      const pk = await this.operationService.getManager(pkh).toPromise();
+      if (pk) {
+        this.walletService.initStorage();
+        this.walletService.wallet = new WatchWallet();
+        this.walletService.addImplicitAccount(pk);
+        this.findContracts(this.walletService.wallet.implicitAccounts[0].pkh);
+      } else {
+        console.error('Public key not found');
+      }
     }
   }
   async ledgerImport(pk: string, derivationPath: string) {

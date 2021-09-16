@@ -1,0 +1,269 @@
+@use '../../abstracts/variables'as v;
+@use '../../abstracts/mixins'as m;
+
+$base-font-color: v.$base-font-color;
+$base-font-color-secondary: v.$base-font-color-secondary;
+$base-end-color: v.$base-end-color;
+$base-red-color: v.$base-red-color;
+$base-blue-color: v.$base-blue-color;
+$base-blue-color-lightened: v.$base-blue-color-lightened;
+$base-color-lightened-2: v.$base-color-lightened-2;
+$base-color-lightened-5: v.$base-color-lightened-5;
+$base-color-lightened-6: v.$base-color-lightened-6;
+$border-color-dark-only: v.$border-color-dark-only;
+$border-width: v.$border-width;
+$border-width-thick: v.$border-width-thick;
+$border-color: v.$border-color;
+$base-background-color: v.$base-background-color;
+
+%icon {
+  margin-right: 1rem;
+  border: $border-width solid $border-color;
+  width: 2rem;
+  height: 2rem;
+  padding: calc(0.5rem + 1px);
+  border-radius: v.$border-radius-hard;
+
+  & img {
+    width: 100%;
+    height: auto;
+    object-fit: scale-down;
+  }
+}
+
+:host {
+  height: 10rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: $base-background-color;
+  align-items: center;
+
+  & .brand-logo {
+    text-decoration: none;
+    height: 4rem;
+
+    & .icon {
+      width: auto;
+      height: 100%;
+    }
+  }
+
+  & .torus-name {
+    position: absolute;
+    bottom: 1rem;
+    right: 0;
+    width: auto;
+    justify-content: flex-start;
+    height: 1.375rem;
+    color: $base-font-color;
+    font-weight: 500;
+
+    & img {
+      width: auto;
+      height: 100%;
+      margin: 0 0.25rem 0 0;
+    }
+  }
+}
+
+.top-container.desktop {
+  height: 100%;
+  width: calc(100% - 240px);
+  padding: 0 120px;
+  flex-wrap: wrap;
+  max-width: 2560px;
+
+  &.default {
+    background-color: $base-end-color;
+    border-bottom: 2px solid $border-color;
+    max-width: unset;
+    width: calc(100% - 8%);
+    padding: 0 4%;
+  }
+
+  & > .right {
+    height: 100%;
+    position: relative;
+
+    & > .left {
+      width: 22rem;
+      height: 100%;
+      justify-content: flex-end;
+      position: relative;
+      top: -0.25rem;
+      left: 0;
+
+      & > .delegation {
+        text-align: center;
+        padding: 0.75rem 1rem 1rem 2rem;
+        width: 18rem;
+
+        & .outside-container {
+          width: 100%;
+
+          & > div {
+            width: 100%;
+            justify-content: flex-start;
+
+            & > .address {
+              @include m.ellipsis;
+              color: $base-font-color-secondary;
+
+              & > span {
+                color: $base-font-color;
+              }
+            }
+          }
+        }
+
+        & .choose {
+          color: $base-red-color;
+          font-weight: 500;
+          cursor: pointer;
+        }
+
+        & .change {
+          color: $base-blue-color;
+          font-weight: 500;
+          cursor: pointer;
+        }
+      }
+
+      & input {
+        @include m.multiply("font-size", 1);
+        width: calc(100% - 5rem);
+        height: 2rem;
+        padding: 0.6rem 0 0.6rem 2rem;
+        background-color: $base-end-color;
+        border-radius: v.$border-radius;
+        border: $border-width solid $base-color-lightened-5;
+        border-radius: 2rem;
+        transition: 0.25s border-radius;
+        text-align: left;
+      }
+
+      & .icon-db {
+        width: calc(2rem - 2px);
+        height: calc(2rem - 2px);
+        position: absolute;
+        top: 13px;
+        right: calc(3.5rem + 2px);
+        background-color: $base-end-color;
+        border-radius: v.$border-radius;
+        transform: rotate(0deg);
+        transition: 0.25s transform, 0.25s border-radius;
+        border: none;
+      }
+    }
+
+    & > .right {
+      & > span {
+        @include m.multiply("font-size", 1.35);
+        margin: 0 0 0 4rem;
+        color: $base-color-lightened-2;
+        cursor: pointer;
+
+        &:hover,
+        &.selected {
+          color: $base-blue-color;
+        }
+      }
+
+      & .icon {
+        @extend %icon;
+        @include m.base-relative;
+
+        &:last-of-type {
+          margin-right: 0;
+        }
+
+        &:hover {
+          & .tooltip {
+            display: flex;
+          }
+        }
+
+        & .tooltip {
+          position: absolute;
+          top: 3.5rem;
+          left: -3rem;
+          background-color: $base-background-color;
+          width: auto;
+          min-width: 8rem;
+          height: 1rem;
+          padding: 0.5rem;
+          justify-content: center;
+          align-items: center;
+          border-radius: v.$border-radius-hard;
+          display: none;
+          box-shadow: v.$box-shadow;
+        }
+
+        & img {
+          width: 100%;
+          height: auto;
+          object-fit: unset;
+        }
+
+        &.settings {
+          margin-left: 2rem;
+        }
+
+        &:last-child {
+          & img {
+            margin: 0 0 0 0.25rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+.top-container.mobile {
+  height: 100%;
+  width: calc(89%);
+  padding: 0 5.5%;
+  flex-wrap: wrap;
+  display: none;
+  position: relative;
+
+  &.default {
+    background-color: $base-end-color;
+  }
+
+  & .copy {
+    @extend %icon;
+
+    & img {
+      width: 100%;
+      height: auto;
+      object-fit: scale-down;
+    }
+  }
+
+  & .center {
+    position: relative;
+    width: 50%;
+    justify-content: center;
+
+    & .torus-name {
+      bottom: -2.25rem;
+      left: 1rem;
+    }
+  }
+}
+
+@media (max-width: v.$layout-break-3) and (max-aspect-ratio: 1/1), (max-width: v.$layout-break-5) {
+  .top-container.mobile.default .brand-logo .icon {
+    height: 75% !important;
+  }
+
+  .top-container.desktop {
+    display: none;
+  }
+
+  .top-container.mobile {
+    display: flex;
+  }
+}

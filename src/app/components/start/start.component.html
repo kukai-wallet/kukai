@@ -1,90 +1,34 @@
-<div id="wrapper">
-  <div>
-    <div class="top-container">
-      <div class="logo-holder">
-        <object class="logo" data="../../../assets/img/logo-start.svg" type="image/svg+xml"></object>
-        <p>Kukai is a Tezos web wallet based on three principles: Security, Community and Reliability.</p>
-      </div>
-      <div id="mobile-menu-container">
-        <a routerLink="/import/" class="menu-item">
-          <div class="content">
-            <H1>Import wallet</H1>
-            <div class="icon">
-              <img src="../../../assets/img/import-wallet.svg">
-            </div>
-          </div>
-        </a>
-        <a routerLink="/new-wallet/" class="menu-item">
-          <div class="content">
-            <H1>New wallet</H1>
-            <div class="icon">
-              <img src="../../../assets/img/new-wallet.svg">
-            </div>
-          </div>
-        </a>
-        <a routerLink="/connect-ledger/" class="menu-item">
-          <div class="content">
-            <H1>Connect Ledger</H1>
-            <div class="icon">
-              <img src="../../../assets/img/ledger-wallet.svg">
-            </div>
-          </div>
-        </a>
-        <a routerLink="/direct-auth/" class="menu-item">
-          <div class="content">
-            <H1>DirectAuth</H1>
-            <div class="icon">
-              <img src="../../../assets/img/circle.svg">
-            </div>
-          </div>
-        </a>
-      </div>
-      <div class="monk-holder" [class.animationActive]="animationActive">
-        <object class="monk" data="../../../assets/img/monk.svg" type="image/svg+xml"></object>
-        <object class="monk-shadow" data="../../../assets/img/shadow.svg" type="image/svg+xml"></object>
-      </div>
+<div class="flex-row" id="wrapper">
+  <div class="flex-column left">
+    <div class="flex-column top">
+      <h1>A Secure Home&nbsp;<br class="is-mobile" />for your Digital Assets</h1>
+      <h3>Manage your digital assets and seamlessly&nbsp;<br class="is-mobile" />connect with experiences and apps on Tezos.</h3>
     </div>
-    <div id="menu-container">
-      <a routerLink="/import/" class="menu-item">
-        <div class="icon">
-          <img src="../../../assets/img/import-wallet.svg">
+    <div class="flex-column bottom">
+      <img src="../../../assets/img/landing-hero.png" id="bg-mobile">
+      <div id="ribbon-mobile"></div>
+    </div>
+    <div class="flex-column login">
+      <span>Sign in with social:</span>
+      <div class="flex-row social">
+        <button class="flex-row google" (click)="torusLogin('google')"><img
+            src="../../../assets/img/google-logo.svg">&nbsp;<span>CONTINUE WITH
+            GOOGLE</span></button>
+        <div class="flex-row torus">
+          <img class="facebook" src="../../../assets/img/facebook-logo.svg" (click)="torusLogin('facebook')">
+          <img class="twitter" src="../../../assets//img/twitter-logo.svg" (click)="torusLogin('twitter')">
+          <img class="reddit" src="../../../assets/img/reddit-logo.svg" (click)="torusLogin('reddit')">
         </div>
-        <div class="content">
-          <H1>Import wallet</H1>
-          <p>Import an existing wallet using your encrypted keystore file, seed words or fundraiser credentials</p>
-        </div>
-      </a>
-      <a routerLink="/new-wallet/" class="menu-item">
-        <div class="icon">
-          <img src="../../../assets/img/new-wallet.svg">
-        </div>
-        <div class="content">
-          <H1>New wallet</H1>
-          <p>Create a new HD wallet on the Tezos blockchain and safely record your seed words to backup your accounts</p>
-        </div>
-      </a>
-      <a routerLink="/connect-ledger/" class="menu-item">
-        <div class="icon">
-          <img src="../../../assets/img/ledger-wallet.svg">
-        </div>
-        <div class="content">
-          <H1>Connect Ledger</H1>
-          <p>Keep your private keys safely on your Ledger device and use Kukai to access your wallet</p>
-        </div>
-      </a>
-      <a routerLink="/direct-auth/" class="menu-item">
-        <div class="icon">
-          <img src="../../../assets/img/circle.svg">
-        </div>
-        <div class="content">
-          <H1>DirectAuth</H1>
-          <p>One-Click login with your Google, Reddit or Twitter account</p>
-        </div>
-      </a>
+      </div>
+      <!-- <span>OR CONTINUE WITH EMAIL:</span>
+      <div class="flex-row email">
+        <input type=email placeholder="Your email">
+        <button class="signin">SIGN IN</button>
+      </div> -->
     </div>
   </div>
-</div>
-<div class="bottom-container">
-  <img class="blue-wave" src="../../../assets/img/blue-wave.svg">
-  <div></div>
+  <div class="flex-column right">
+    <img src="../../../assets/img/landing-hero.png" id="bg">
+    <div id="ribbon"></div>
+  </div>
 </div>

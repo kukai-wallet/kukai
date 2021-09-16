@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-logged-in',
-  templateUrl: './logged-in.component.html',
-  styleUrls: ['./logged-in.component.scss']
+  templateUrl: './logged-in.component.html'
 })
 export class LoggedInComponent implements OnInit {
 

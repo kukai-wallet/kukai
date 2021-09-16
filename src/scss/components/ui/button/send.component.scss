@@ -1,0 +1,48 @@
+@use '../../../abstracts/variables'as v;
+@use '../../../abstracts/mixins' as m;
+
+$border-color: v.$border-color;
+
+:host {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+button {
+  &.with-image {
+    width: auto;
+    padding: 1rem;
+    border: v.$border-width solid transparent;
+    border-radius: v.$border-radius-hardest;
+
+    &:not(.tez) {
+      background-color: transparent;
+      border-color: $border-color;
+    }
+
+    & span {
+      @include m.multiply('font-size',1.25);
+      margin: 0 1rem 0 0.25rem;
+      font-weight: 500;
+      color: v.$base-end-color-static;
+    }
+
+    & img {
+      width: 1.5rem;
+      height: 1.5rem;
+      transform: rotate(45deg);
+    }
+
+    &.tez {
+      padding: 1rem
+    }
+  }
+
+  &.detail {
+    width: 50%;
+    height: 4rem;
+  }
+}
