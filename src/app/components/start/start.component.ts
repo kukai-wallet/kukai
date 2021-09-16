@@ -36,10 +36,7 @@ export class StartComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     this.subscriptions.add(this.route.queryParams
       .subscribe(async params => {
-        if (params?.type) {
-          this.deeplinkService.set(params);
-          this.location.replaceState('');
-        } else if (params?.devtool === 'watch') {
+        if (params?.devtool === 'watch') {
           const address = prompt("Enter watch address");
           if (address) {
             try {
