@@ -75,6 +75,7 @@ import { ErrorHandlingPipe } from './pipes/error-handling.pipe';
 import { DelegatorNamePipe } from './pipes/delegator-name.pipe';
 import { TruncatePipe } from './pipes/truncate.pipe';
 import { TimeAgoPipe } from './pipes/time-ago.pipe';
+import { DeeplinkService } from './services/deeplink/deeplink.service';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -163,6 +164,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     EmbeddedAuthService,
     SubjectService,
     TokenBalancesService,
+    DeeplinkService,
 
     // Pipes
     ErrorHandlingPipe,

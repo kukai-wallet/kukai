@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, SimpleChanges, OnChanges, OnDestroy } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd, Route, ActivatedRoute } from '@angular/router';
 import { WalletService } from '../../services/wallet/wallet.service';
 import { Account, TorusWallet } from '../../services/wallet/wallet';
 import { LookupService } from '../../services/lookup/lookup.service';
@@ -12,6 +12,7 @@ import { ModalComponent } from '../modal/modal.component';
 import { DelegateService } from '../../services/delegate/delegate.service';
 import { SubjectService } from '../../services/subject/subject.service';
 import { Subscription } from 'rxjs';
+import { DeeplinkService } from '../../services/deeplink/deeplink.service';
 
 @Component({
   selector: 'app-header',
@@ -33,7 +34,9 @@ export class HeaderComponent implements OnInit, OnChanges, OnDestroy {
     private messageService: MessageService,
     private translate: TranslateService,
     private delegateService: DelegateService,
-    private subjectService: SubjectService
+    private subjectService: SubjectService,
+    private deeplinkService: DeeplinkService,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
@@ -42,7 +45,12 @@ export class HeaderComponent implements OnInit, OnChanges, OnDestroy {
       this.delegateName = await this.getDelegateName(this.activeAccount?.delegate);
     }));
     this.accounts = this.walletService.wallet?.getAccounts();
-
+    this.subscriptions.add(this.route.queryParams
+      .subscribe(async params => {
+        if (params?.type) {
+          this.deeplinkService.set(params);
+        }
+      }));
     this.subscriptions.add(this.router.events
       .pipe(filter((evt) => evt instanceof NavigationEnd))
       .subscribe(async (r: NavigationEnd) => {
