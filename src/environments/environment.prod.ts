@@ -100,8 +100,7 @@ export const CONSTANTS: Constants = {
       thumbnailUrl: "../../../assets/img/alias/tezotopia.png",
       discoverUrl: "../../../assets/img/alias/tezotopia-discover.png",
       link: "https://app.tezotopia.com/marketplace/artifacts", shouldDisplayLink: DisplayLinkOption.All, category: ["game", "collectibles"],
-      description: "Battle, earn, win prizes plus NFT yield farming",
-      backgroundColor: '#000'
+      description: "Battle, earn, win prizes plus NFT yield farming"
     },
     'Bazaar Market': {
       name: "Bazaar Market",
