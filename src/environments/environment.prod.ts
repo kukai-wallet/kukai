@@ -230,6 +230,22 @@ export const CONSTANTS: Constants = {
         }
       }
     },
+    'KT1BzmcWWUV1dnGF58AZ67GySwsniPL2PKYq': {
+      kind: 'FA2',
+      category: 'finance',
+      tokens: {
+        0: {
+          name: 'BTCtez',
+          symbol: 'BTCtz',
+          decimals: 8,
+          description: 'BTCtz is a Tezos on-chain stablecoin pegged to the value of Bitcoin.',
+          displayAsset: '../../../assets/img/tokens/btctz.png',
+          thumbnailAsset: '../../../assets/img/tokens/btctz.png',
+          shouldPreferSymbol: true,
+          status: 1
+        }
+      }
+    },
     'KT1PWx2mnDueood7fEmfbBDKx1D9BAnnXitn': { // tzBTC
       kind: 'FA1.2',
       category: 'finance',

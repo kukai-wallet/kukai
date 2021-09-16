@@ -277,6 +277,7 @@ export class TzktService implements Indexer {
         console.log(`No token metadata found for ${contractAddress}:${id}`);
         return {};
       }).catch(e => {
+        console.warn(e);
         return {};
       });
     const ans = await Promise.all([tokenMetadata, tokenKind])
