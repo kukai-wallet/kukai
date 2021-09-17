@@ -36,9 +36,7 @@ export class HeaderComponent implements OnInit, OnChanges, OnDestroy {
     private messageService: MessageService,
     private translate: TranslateService,
     private delegateService: DelegateService,
-    private subjectService: SubjectService,
-    private deeplinkService: DeeplinkService,
-    private route: ActivatedRoute
+    private subjectService: SubjectService
   ) { }
 
   ngOnInit(): void {
@@ -50,10 +48,6 @@ export class HeaderComponent implements OnInit, OnChanges, OnDestroy {
     this.subscriptions.add(this.route.queryParams
       .subscribe(async params => {
         if (params?.type) {
-<<<<<<< HEAD
-=======
-          console.log("here");
->>>>>>> 81c692de (fix: deeplink start & loggedin)
           this.deeplinkService.set(params);
         }
       }));
