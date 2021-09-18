@@ -40,12 +40,13 @@ export class NftsBodyComponent implements OnInit, OnChanges, AfterViewInit {
     const cb = (e) => {
       if(this.body?.nativeElement?.scrollTop >= (this.body?.nativeElement?.scrollHeight - this.body?.nativeElement?.clientHeight - 5)) {
         this.sliceEnd += 30;
+        this.tokensToDisplay = this.tokens.slice(0, this.sliceEnd);
       }
     };
     this.body?.nativeElement.addEventListener('scroll', cb);
     this.body?.nativeElement.addEventListener('touchmove', cb);
   }
   trackToken(index: number, token: any) {
-    return token?.contractAddress + ':' + token?.id;
+    return token?.contractAddress ? token?.contractAddress + ':' + token?.id : index;
   }
 }

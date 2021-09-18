@@ -50,11 +50,11 @@
   </div>
   <div *ngIf="router?.url?.indexOf('/account/') !== 0" class="flex-row right">
     <div class="right">
-      <span *ngIf="router?.url?.indexOf('/import') === 0 || router.url === '/' || router.url.startsWith('/?type')" routerLink="/import/" class="button"
+      <span *ngIf="router.url.indexOf('/import') === 0 || router.url === '/' || router.url.startsWith('/?type')" routerLink="/import/" class="button"
         [class.selected]="router.url.indexOf('/import') === 0">Import Wallet</span>
-      <span *ngIf="router?.url?.indexOf('/new-wallet') === 0 || router.url === '/' || router.url.startsWith('/?type')" routerLink="/new-wallet/"
+      <span *ngIf="router.url.indexOf('/new-wallet') === 0 || router.url === '/' || router.url.startsWith('/?type')" routerLink="/new-wallet/"
         class="button" [class.selected]="router.url.indexOf('/new-wallet') === 0">Create New Wallet</span>
-      <span *ngIf="router?.url?.indexOf('/connect-ledger') === 0 || router.url === '/' || router.url.startsWith('/?type')" routerLink="/connect-ledger/"
+      <span *ngIf="router.url.indexOf('/connect-ledger') === 0 || router.url === '/' || router.url.startsWith('/?type')" routerLink="/connect-ledger/"
         class="button" [class.selected]="router.url.indexOf('/connect-ledger') === 0">Connect Ledger</span>
       <span *ngIf="router.url.indexOf('/activate') === 0" routerLink="/activate/" class="button"
         [class.selected]="router.url.indexOf('/activate') === 0">Activate</span>

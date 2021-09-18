@@ -29,14 +29,14 @@ export class HeaderComponent implements OnInit, OnChanges, OnDestroy {
   private subscriptions: Subscription = new Subscription();
   constructor(
     public router: Router,
+    private route: ActivatedRoute,
+    private deeplinkService: DeeplinkService,
     public walletService: WalletService,
     public lookupService: LookupService,
     private messageService: MessageService,
     private translate: TranslateService,
     private delegateService: DelegateService,
-    private subjectService: SubjectService,
-    private deeplinkService: DeeplinkService,
-    private route: ActivatedRoute
+    private subjectService: SubjectService
   ) { }
 
   ngOnInit(): void {
