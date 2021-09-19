@@ -92,6 +92,9 @@ $box-shadow-dark: v.$box-shadow-dark;
     top: 3.78rem;
     border: 1px solid $base-color-lightened-6;
     box-shadow: $box-shadow-dark;
+    overflow-x: hidden;
+    max-height: 14rem;
+    overflow-y: auto;
 
     &.right {
       margin-top: -1.1rem;

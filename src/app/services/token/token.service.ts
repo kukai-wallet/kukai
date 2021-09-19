@@ -77,6 +77,7 @@ export class TokenService {
   readonly version: string = '1.0.10';
   private contracts: ContractsType = {};
   private exploredIds: Record<string, { firstCheck: number, lastCheck: number, counter: number }> = {};
+  private pendingSave = null;
   readonly storeKey = 'tokenMetadata';
   queue = [];
   workers = 0;
@@ -259,13 +260,13 @@ export class TokenService {
       for (const id of ids) {
         this.exploredIds[id].counter = 0;
       }
-      this.saveMetadata();
+      this.saveMetadata(true);
     }
   }
   resetAllMetadata() {
     this.exploredIds = {};
     this.contracts = {};
-    this.saveMetadata();
+    this.saveMetadata(true);
     this.loadMetadata();
     this.subjectService.metadataUpdated.next(null);
   }
@@ -295,7 +296,19 @@ export class TokenService {
       isUnknownToken: true
     };
   }
-  saveMetadata() {
+  saveMetadata(force = false) {
+    if (force) {
+      this._saveMetadata();
+      return;
+    }
+    if (!this.pendingSave) {
+      this.pendingSave = setTimeout(() => {
+        this.pendingSave = null;
+        this._saveMetadata();
+      }, 1000);
+    }
+  }
+  private _saveMetadata() {
     localStorage.setItem(
       this.storeKey,
       JSON.stringify({ contracts: this.contracts, exploredIds: this.exploredIds, version: this.version })
