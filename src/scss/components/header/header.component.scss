@@ -41,7 +41,7 @@ $base-background-color: v.$base-background-color;
 
   & .brand-logo {
     text-decoration: none;
-    height: 4rem;
+    height: 6rem;
 
     & .icon {
       width: auto;
@@ -256,7 +256,7 @@ $base-background-color: v.$base-background-color;
 
 @media (max-width: v.$layout-break-3) and (max-aspect-ratio: 1/1), (max-width: v.$layout-break-5) {
   .top-container.mobile.default .brand-logo .icon {
-    height: 75% !important;
+    height: 95% !important;
   }
 
   .top-container.desktop {

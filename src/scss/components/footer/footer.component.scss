@@ -39,7 +39,7 @@
   height: 100%;
   width: 11rem;
   text-align: center;
-  justify-content: center;
+  justify-content: space-around;
 }
 
 #follow span {
@@ -130,10 +130,6 @@ div.foot-container>div.links>div.low {
   height: calc(100% - 2rem);
 }
 
-#tg {
-  margin-left: 1.5rem;
-  margin-right: 1.5rem;
-}
 
 #follow img:hover,
 div.foot-container>div.links a.docs img:hover {

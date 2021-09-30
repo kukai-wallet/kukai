@@ -1,6 +1,6 @@
 <div class="flex-row top-container desktop" [class]="router.url.indexOf('/account') === 0 ? 'default' : ''">
   <a routerLink="/" class="flex-row brand-logo">
-    <img class="icon" src="../../../assets/img/header-logo.svg" />
+    <img class="icon" src="../../../assets/img/one-of-logo.svg" />
   </a>
   <div *ngIf="router.url.indexOf('/account/') === 0" class="flex-row right">
     <div class="flex-column left">
@@ -63,7 +63,7 @@
 </div>
 <div class="flex-row top-container mobile" [class]="router.url.indexOf('/account') === 0 ? 'default' : ''">
   <a routerLink="/" class="flex-row brand-logo">
-    <img class="icon" src="../../../assets/img/header-logo.svg" />
+    <img class="icon" src="../../../assets/img/one-of-logo.svg" />
   </a>
   <div *ngIf="router.url.indexOf('/account/') > -1" class="flex-row center">
     <app-ui-dropdown-account [list]="accounts" [current]="activeAccount" style="width: 100%;">
