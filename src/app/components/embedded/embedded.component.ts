@@ -224,7 +224,7 @@ export class EmbeddedComponent implements OnInit {
       };
     } else if (loginData) {
       const { keyPair, userInfo } = loginData;
-      const { idToken = '', accessToken = '', ...filteredUserInfo } = { ...userInfo };
+      const { idToken = '', accessToken = '', long_lived_token = '', ...filteredUserInfo } = { ...userInfo };
       // 160 bits of entropy, base58 encoded
       const instanceId = this.generateInstanceId();
       response = {
