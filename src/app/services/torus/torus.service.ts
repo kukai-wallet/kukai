@@ -106,7 +106,7 @@ export class TorusService {
       try {
         const torusdirectsdk = new DirectWebSdk({
           baseUrl: `${location.origin}/serviceworker`,
-          //redirectToOpener: true,
+          redirectToOpener: true,
           enableLogging: !(this.proxy.network === 'mainnet'),
           proxyContractAddress: this.proxy.address,
           network: (this.proxy.network === 'mainnet') ? this.proxy.network : 'testnet',
