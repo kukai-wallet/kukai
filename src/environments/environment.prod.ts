@@ -18,6 +18,7 @@ export const CONSTANTS: Constants = {
     'https://www.truesy.com',
     'https://playwithbrio.com',
     'https://www.playwithbrio.com',
+    'https://production.playwithbrio.com',
     'https://minterpop.com',
     'https://interpopcomics.com',
     'https://www.interpopcomics.com'

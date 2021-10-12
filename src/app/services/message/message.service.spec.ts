@@ -21,7 +21,7 @@ describe('[ MessageService ]', () => {
 	const infomsg = { type: 'info', msg: 'informational message', timeout: seconds * 1000 };
 	const errormsg = { type: 'danger', msg: 'error message', timeout: seconds * 1000 };
 	const warningmsg = { type: 'warning', msg: 'warning message', timeout: seconds * 1000 };
-	const successmsg = { type: 'success', msg: 'success message', timeout: seconds * 1000 };
+	const successmsg = { type: 'success', msg: 'success message', timeout: seconds * 1000, ref: '' };
 
 	beforeEach(() => {
     	TestBed.configureTestingModule({

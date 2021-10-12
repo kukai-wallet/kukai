@@ -262,7 +262,7 @@ describe('[ ImportService ]', () => {
 			});
 			beforeEach(() => {
 				spyOn(indexer, 'getContractAddresses').and.callFake(async function() { return []; });
-				spyOn(indexer, 'accountInfo').and.callFake(async function() { return (numberOfAccounts-- > 0) ? {counter: 'X'} : {counter: ''}; });
+				spyOn(indexer, 'isUsedAccount').and.callFake(async function() { return (numberOfAccounts-- > 0) ? true : false; });
 			});
 			it('should import HD wallet', async () => {
 				const success = await service.importWalletFromJson(JSON.stringify(hd.keyStore), hd.password);
