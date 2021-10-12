@@ -51,8 +51,8 @@ describe('EstimateService', () => {
         }],
         fee: 0.003991,
         burn: 0.06425,
-        gas: 11980,
-        storage: 86,
+        gas: 35939,
+        storage: 257,
         reveal: false
       };
       const callback = (res) => {
