@@ -148,13 +148,13 @@ export const CONSTANTS: Constants = {
       thumbnailUrl: "../../../assets/img/alias/tezzardz.png",
       link: "", shouldDisplayLink: DisplayLinkOption.None
     },
-    "Art Cardz": {
+    "ArtCardz": {
       name: "Art Cardz",
       address: ['KT1LbLNTTPoLgpumACCBFJzBEHDiEUqNxz5C'],
       thumbnailUrl: "../../../assets/img/alias/artcardz.png",
       discoverUrl: "../../../assets/img/alias/artcardz.png",
       link: "https://artcardz.xyz/", shouldDisplayLink: DisplayLinkOption.None, category: ["collectibles"],
-      description: "Art Cardz is a collection of 1,250 generative artworks on the Tezos blockchain, where minters control the generative algorithm by combining different cardz.
+      description: "Art Cardz is a collection of 1,250 generative artworks on the Tezos blockchain, where minters control the generative algorithm by combining different cardz."
     }
   },
   ASSETS: {
