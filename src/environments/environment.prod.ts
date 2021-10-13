@@ -147,6 +147,14 @@ export const CONSTANTS: Constants = {
       address: ["KT1LHHLso8zQWQWg1HUukajdxxbkGfNoHjh6"],
       thumbnailUrl: "../../../assets/img/alias/tezzardz.png",
       link: "", shouldDisplayLink: DisplayLinkOption.None
+    },
+    "Art Cardz": {
+      name: "Art Cardz",
+      address: ['KT1LbLNTTPoLgpumACCBFJzBEHDiEUqNxz5C'],
+      thumbnailUrl: "../../../assets/img/alias/artcardz.png",
+      discoverUrl: "../../../assets/img/alias/artcardz.png",
+      link: "https://artcardz.xyz/", shouldDisplayLink: DisplayLinkOption.All, category: ["collectibles"],
+      description: "Art Cardz is a collection of 1,250 generative artworks on the Tezos blockchain, where minters control the generative algorithm by combining different cardz.
     }
   },
   ASSETS: {
@@ -874,6 +882,7 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1UmxSSUQ5716tRa2RLNSAkiSG6TWbzZ7GL',//SalsaDao Tacos 2
   'KT1JYWuC4eWqYkNC1Sh6BiD89vZzytVoV2Ae',//SalsaDao Tacos 3
   'KT1NvPaecvj8g7SbDs8E5s2jxbEBKHxZssP1',//SalsaDao BuildTaco
-  'KT1LHHLso8zQWQWg1HUukajdxxbkGfNoHjh6'//Tezzardz
+  'KT1LHHLso8zQWQWg1HUukajdxxbkGfNoHjh6',//Tezzardz
+  'KT1LbLNTTPoLgpumACCBFJzBEHDiEUqNxz5C'//ArtCardz
 ];
 export const BLACKLISTED_TOKEN_CONTRACTS = []
