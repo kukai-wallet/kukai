@@ -15,7 +15,6 @@ export const CONSTANTS: Constants = {
   NODE_URL: 'https://mainnet.kukai.network',
   BLOCK_EXPLORER_URL: 'https://tzkt.io',
   ALLOWED_EMBED_ORIGINS: [
-    'https://www.truesy.com',
     'https://playwithbrio.com',
     'https://www.playwithbrio.com',
     'https://production.playwithbrio.com',
