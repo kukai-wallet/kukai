@@ -155,6 +155,13 @@ export const CONSTANTS: Constants = {
       thumbnailUrl: "../../../assets/img/alias/tezzardz.png",
       link: "", shouldDisplayLink: DisplayLinkOption.None
     },
+    "ArtCardz": {
+      name: "Art Cardz",
+      address: ['KT1LbLNTTPoLgpumACCBFJzBEHDiEUqNxz5C'],
+      thumbnailUrl: "../../../assets/img/alias/artcardz.png",
+      discoverUrl: "../../../assets/img/alias/artcardz.png",
+      link: "https://artcardz.xyz/", shouldDisplayLink: DisplayLinkOption.None, category: ["collectibles"],
+    },
     'PRJKTNEON': {
         name: "PRJKTNEON",
         address: ["KT1VbHpQmtkA3D4uEbbju26zS8C42M5AGNjZ", "KT1H8sxNSgnkCeZsij4z76pkXu8BCZNvPZEx"],
@@ -888,6 +895,7 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1JYWuC4eWqYkNC1Sh6BiD89vZzytVoV2Ae',//SalsaDao Tacos 3
   'KT1NvPaecvj8g7SbDs8E5s2jxbEBKHxZssP1',//SalsaDao BuildTaco
   'KT1LHHLso8zQWQWg1HUukajdxxbkGfNoHjh6',//Tezzardz
+  'KT1LbLNTTPoLgpumACCBFJzBEHDiEUqNxz5C',//Art Cardz
   'KT1VbHpQmtkA3D4uEbbju26zS8C42M5AGNjZ',//PRJKTNEON
   'KT1H8sxNSgnkCeZsij4z76pkXu8BCZNvPZEx',//PRJKTNEON FILES
 ];
