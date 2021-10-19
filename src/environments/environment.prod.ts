@@ -15,7 +15,6 @@ export const CONSTANTS: Constants = {
   NODE_URL: 'https://mainnet.kukai.network',
   BLOCK_EXPLORER_URL: 'https://tzkt.io',
   ALLOWED_EMBED_ORIGINS: [
-    'https://www.truesy.com',
     'https://playwithbrio.com',
     'https://www.playwithbrio.com',
     'https://production.playwithbrio.com',
@@ -44,6 +43,14 @@ export const CONSTANTS: Constants = {
       discoverUrl: "../../../assets/img/alias/quipuswap-discover.jpeg",
       link: "https://quipuswap.com/", shouldDisplayLink: DisplayLinkOption.All, category: ["exchange"], backgroundColor: '#222d47',
       description: "A decentralized exchange on Tezos"
+    },
+    'Objkt': {
+        name: "objkt.com",
+        address: [],
+        thumbnailUrl: "../../../assets/img/alias/objktcom.svg",
+        discoverUrl: "../../../assets/img/alias/objktcom.svg",
+        link: "https://objkt.com/", shouldDisplayLink: DisplayLinkOption.All, category: ["exchange"],
+        description: "The best Tezos NFTs all in one place"
     },
     "MinterPop": {
       name: "Minter Pop",
@@ -109,7 +116,7 @@ export const CONSTANTS: Constants = {
       thumbnailUrl: "../../../assets/img/alias/bazaar.png",
       backgroundColor: "#4a9fd5",
       discoverUrl: "../../../assets/img/alias/bazaar.svg",
-      link: "https://bazaarnft.xyz/", shouldDisplayLink: DisplayLinkOption.All, category: ["marketplace"],
+      link: "https://bazaarnft.xyz/", shouldDisplayLink: DisplayLinkOption.None, category: ["marketplace"],
       description: "Create and mint NFTs guilt-free"
     },
     'TezosCampaigns': {
@@ -147,6 +154,19 @@ export const CONSTANTS: Constants = {
       address: ["KT1LHHLso8zQWQWg1HUukajdxxbkGfNoHjh6"],
       thumbnailUrl: "../../../assets/img/alias/tezzardz.png",
       link: "", shouldDisplayLink: DisplayLinkOption.None
+    },
+    "ArtCardz": {
+      name: "Art Cardz",
+      address: ['KT1LbLNTTPoLgpumACCBFJzBEHDiEUqNxz5C'],
+      thumbnailUrl: "../../../assets/img/alias/artcardz.png",
+      discoverUrl: "../../../assets/img/alias/artcardz.png",
+      link: "https://artcardz.xyz/", shouldDisplayLink: DisplayLinkOption.None, category: ["collectibles"],
+    },
+    'PRJKTNEON': {
+        name: "PRJKTNEON",
+        address: ["KT1VbHpQmtkA3D4uEbbju26zS8C42M5AGNjZ", "KT1H8sxNSgnkCeZsij4z76pkXu8BCZNvPZEx"],
+        thumbnailUrl: "../../../assets/img/alias/prjktneon.png",
+        link: "", shouldDisplayLink: DisplayLinkOption.None
     }
   },
   ASSETS: {
@@ -874,6 +894,9 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1UmxSSUQ5716tRa2RLNSAkiSG6TWbzZ7GL',//SalsaDao Tacos 2
   'KT1JYWuC4eWqYkNC1Sh6BiD89vZzytVoV2Ae',//SalsaDao Tacos 3
   'KT1NvPaecvj8g7SbDs8E5s2jxbEBKHxZssP1',//SalsaDao BuildTaco
-  'KT1LHHLso8zQWQWg1HUukajdxxbkGfNoHjh6'//Tezzardz
+  'KT1LHHLso8zQWQWg1HUukajdxxbkGfNoHjh6',//Tezzardz
+  'KT1LbLNTTPoLgpumACCBFJzBEHDiEUqNxz5C',//Art Cardz
+  'KT1VbHpQmtkA3D4uEbbju26zS8C42M5AGNjZ',//PRJKTNEON
+  'KT1H8sxNSgnkCeZsij4z76pkXu8BCZNvPZEx',//PRJKTNEON FILES
 ];
 export const BLACKLISTED_TOKEN_CONTRACTS = []

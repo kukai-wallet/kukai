@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300" viewBox="0 0 300 300">
+  <defs>
+    <style>
+      .cls-1 {
+        font-size: 620.075px;
+        font-family: "Helvetica Neue";
+        font-weight: 700;
+        font-style: italic;
+        text-transform: uppercase;
+      }
+    </style>
+  </defs>
+  <text id="Q" class="cls-1" transform="translate(0 270.231) scale(0.591)">Q</text>
+</svg>
