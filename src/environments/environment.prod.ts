@@ -167,7 +167,13 @@ export const CONSTANTS: Constants = {
         address: ["KT1VbHpQmtkA3D4uEbbju26zS8C42M5AGNjZ", "KT1H8sxNSgnkCeZsij4z76pkXu8BCZNvPZEx"],
         thumbnailUrl: "../../../assets/img/alias/prjktneon.png",
         link: "", shouldDisplayLink: DisplayLinkOption.None
-    }
+    },
+    'NEONZ': {
+      name: "NEONZ",
+      address: ["KT1MsdyBSAMQwzvDH4jt2mxUKJvBSWZuPoRJ"],
+      thumbnailUrl: "../../../assets/img/alias/neonz.jpg",
+      link: "https://neonz.xyz", shouldDisplayLink: DisplayLinkOption.None
+  }
   },
   ASSETS: {
     'KT1K9gCRgaLRFKTErYt1wVxA3Frb9FjasjTV': { // kUSD
