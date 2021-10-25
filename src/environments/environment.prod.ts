@@ -167,6 +167,12 @@ export const CONSTANTS: Constants = {
         address: ["KT1VbHpQmtkA3D4uEbbju26zS8C42M5AGNjZ", "KT1H8sxNSgnkCeZsij4z76pkXu8BCZNvPZEx"],
         thumbnailUrl: "../../../assets/img/alias/prjktneon.png",
         link: "", shouldDisplayLink: DisplayLinkOption.None
+    },
+    'NEONZ': {
+        name: "NEONZ",
+        address: ["KT1MsdyBSAMQwzvDH4jt2mxUKJvBSWZuPoRJ"],
+        thumbnailUrl: "../../../assets/img/alias/neonz.jpg",
+        link: "https://neonz.xyz", shouldDisplayLink: DisplayLinkOption.None
     }
   },
   ASSETS: {
@@ -898,5 +904,6 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1LbLNTTPoLgpumACCBFJzBEHDiEUqNxz5C',//Art Cardz
   'KT1VbHpQmtkA3D4uEbbju26zS8C42M5AGNjZ',//PRJKTNEON
   'KT1H8sxNSgnkCeZsij4z76pkXu8BCZNvPZEx',//PRJKTNEON FILES
+  'KT1MsdyBSAMQwzvDH4jt2mxUKJvBSWZuPoRJ'//NEONZ
 ];
 export const BLACKLISTED_TOKEN_CONTRACTS = []
