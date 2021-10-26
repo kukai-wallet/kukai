@@ -173,6 +173,12 @@ export const CONSTANTS: Constants = {
         address: ["KT1MsdyBSAMQwzvDH4jt2mxUKJvBSWZuPoRJ"],
         thumbnailUrl: "../../../assets/img/alias/neonz.jpg",
         link: "https://neonz.xyz", shouldDisplayLink: DisplayLinkOption.None
+    },
+    'GOGOs': {
+        name: "GOGOs",
+        address: ["KT1SyPgtiXTaEfBuMZKviWGNHqVrBBEjvtfQ"],
+        thumbnailUrl: "../../../assets/img/alias/gogo.jpg",
+        link: "https://gogos.tez.page/", shouldDisplayLink: DisplayLinkOption.None
     }
   },
   ASSETS: {
