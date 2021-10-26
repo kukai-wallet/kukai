@@ -179,6 +179,12 @@ export const CONSTANTS: Constants = {
         address: ["KT1SyPgtiXTaEfBuMZKviWGNHqVrBBEjvtfQ"],
         thumbnailUrl: "../../../assets/img/alias/gogo.jpg",
         link: "https://gogos.tez.page/", shouldDisplayLink: DisplayLinkOption.None
+    },
+    'HashThreePoints': {
+        name: "Hash Three Points",
+        address: ["KT1Fxz4V3LaUcVFpvF8pAAx8G3Z4H7p7hhDg"],
+        thumbnailUrl: "../../../assets/img/alias/hashthreepoints.png",
+        link: "https://h3p.deconcept.com/", shouldDisplayLink: DisplayLinkOption.None
     }
   },
   ASSETS: {
@@ -911,6 +917,7 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1VbHpQmtkA3D4uEbbju26zS8C42M5AGNjZ',//PRJKTNEON
   'KT1H8sxNSgnkCeZsij4z76pkXu8BCZNvPZEx',//PRJKTNEON FILES
   'KT1MsdyBSAMQwzvDH4jt2mxUKJvBSWZuPoRJ',//NEONZ
-  'KT1SyPgtiXTaEfBuMZKviWGNHqVrBBEjvtfQ'//GOGOs
+  'KT1SyPgtiXTaEfBuMZKviWGNHqVrBBEjvtfQ',//GOGOs
+  'KT1Fxz4V3LaUcVFpvF8pAAx8G3Z4H7p7hhDg' //Hash Three Points
 ];
 export const BLACKLISTED_TOKEN_CONTRACTS = []
