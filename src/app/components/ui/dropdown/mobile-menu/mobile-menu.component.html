@@ -3,19 +3,19 @@
   <div *ngIf="router.url.indexOf('/account/') === 0" class="flex-column mobile dropdown-content">
     <div class="flex-row-wrap account-content">
       <div *ngIf="router.url.indexOf('/account/') === 0" class="flex-column button" (click)="copy();toggleDropdown()">
-        <div class="img-wrapper">
+        <div class="wrapper">
           <img class="icon" src="../../../../assets/img/copy-blue.svg" />
         </div>
         <span>COPY</span>
       </div>
       <div class="flex-column button" (click)="receive();toggleDropdown()">
-        <div class="img-wrapper">
+        <div class="wrapper">
           <img class="icon" src="../../../../assets/img/qr-blue.svg" />
         </div>
         <span>QR</span>
       </div>
       <div *ngIf="walletService.isHdWallet()" class="flex-column button" (click)="newAccount();toggleDropdown()">
-        <div class="img-wrapper">
+        <div class="wrapper">
           <img class="icon" src="../../../../assets/img/add-blue.svg" />
         </div>
         <span>ADD</span>

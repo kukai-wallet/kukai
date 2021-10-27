@@ -125,9 +125,9 @@ export class TokenBalancesService {
       this._thumbnailsToCreate = [];
     }
     if (this.activeAccount instanceof OriginatedAccount) {
-      this.subjectService.nftsUpdated.next(undefined);
+      this.subjectService.nftsUpdated.next({ nfts: this.nfts, balances: this.balances});
     } else {
-      this.subjectService.nftsUpdated.next(this.nfts);
+      this.subjectService.nftsUpdated.next({ nfts: this.nfts, balances: this.balances});
     }
   }
   orderedNfts(nfts: ContractsWithBalance): ContractsWithBalance {

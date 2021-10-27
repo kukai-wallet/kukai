@@ -1,0 +1,373 @@
+@use '../../../../abstracts/variables'as v;
+@use '../../../../abstracts/mixins' as m;
+
+.delegate-page {
+  align-items: center;
+  min-height: calc(100vh - 22.5rem);
+
+  & input {
+    @include m.multiply("font-size", 1);
+    height: 2rem;
+    border: 1px solid v.$base-color-lightened-4;
+    border-radius: v.$border-radius-hard;
+    padding: 0 0 0 1rem;
+    width: calc(100% - 1rem);
+  }
+
+  & .content {
+    width: 100%;
+    max-width: v.$middle-break;
+    height: auto;
+
+    & .manual {
+      margin: 4rem 0 0 0;
+      align-items: center;
+      top: 10rem;
+      left: 0;
+      width: 100%;
+
+      & .top {
+        padding: 2rem;
+        width: calc(100% - 4rem);
+      }
+
+      & label {
+        @include m.multiply("font-size", 1.5);
+      }
+
+      & input {
+        width: 29rem;
+        height: 3rem;
+        margin: 0.5rem 0 0 0;
+      }
+
+      & .delegate {
+        width: 90%;
+        justify-content: center;
+        align-items: flex-start;
+
+        & .toolbar {
+          width: 100%;
+          margin: 0;
+        }
+
+        & > *:not(a) {
+          width: 100%;
+        }
+
+        & h1 {
+          text-align: center;
+          @include m.multiply("font-size", 3);
+          margin: 0 0 4rem 0;
+        }
+
+        & span {
+          @include m.multiply("font-size", 1.125);
+
+          &.blue {
+            margin: 0 0 0.5rem 0;
+            color: v.$base-blue-color;
+            height: auto;
+          }
+        }
+
+        & a {
+          position: absolute;
+          top: 0rem;
+          left: 0rem;
+          margin: 1.5rem 0rem 1.5rem 0rem;
+          text-decoration: none;
+
+          & button {
+            width: auto;
+            &.back {
+              @include m.multiply("font-size", 1.25);
+              background-color: v.$base-background-color;
+              border: v.$border-width solid v.$base-color-lightened-4;
+              border-radius: v.$border-radius-hardest;
+              color: v.$base-font-color;
+              font-weight: 500;
+              padding: 0.75rem 1.25rem;
+              width: auto;
+
+              & img {
+                height: 1rem;
+                margin: 0 1rem 0 0;
+              }
+            }
+          }
+        }
+
+        & .button {
+          margin: 0 0 0 2rem;
+        }
+      }
+    }
+
+    & .list {
+      display: flex;
+      flex-flow: column nowrap;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      overflow-y: auto;
+      align-items: center;
+    }
+
+    & .delegate {
+      text-align: left;
+      padding: 1rem 0;
+      border-bottom: 2px solid #aaa3;
+      width: auto;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+
+      &.desktop {
+        display: flex;
+      }
+
+      &.mobile {
+        display: none;
+      }
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      & > * {
+        margin-right: 1rem;
+        width: 20rem;
+
+        & .value {
+          @include m.multiply("font-size", 1.25);
+        }
+      }
+
+      & .logo {
+        width: 4rem;
+        margin: 0 2rem 0 1rem;
+      }
+
+      & .name {
+        width: 10rem;
+        font-weight: 500;
+        font-size: 1.125rem;
+      }
+
+      & .address {
+        width: 25rem;
+        font-family: "Roboto Mono";
+      }
+
+      & .fee {
+        width: 8rem;
+      }
+
+      & .freespace {
+        width: 12rem;
+      }
+
+      & .estROI {
+        width: 12rem;
+      }
+
+      & .accuracy {
+        width: 14rem;
+      }
+
+      & button,
+      & .current {
+        width: 10rem;
+      }
+
+      & .current {
+        @include m.multiply("font-size", 1.25);
+        text-align: center;
+        font-weight: 500;
+        letter-spacing: 0.02em;
+      }
+    }
+
+    & .confirm {
+      height: 8rem;
+      padding: 0 2rem;
+      border-top: 2px solid v.$border-color;
+      justify-content: space-evenly;
+
+      & button {
+        height: 3rem;
+        width: 8rem;
+      }
+    }
+  }
+}
+
+.confirmation-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #0006;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+
+  & .content {
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    background-color: v.$base-end-color;
+    width: 100%;
+    height: auto;
+    max-width: v.$lower-break;
+    border-radius: v.$border-radius-hard;
+    padding: 2rem 0;
+
+    & p {
+      width: 100%;
+      padding: 0 0 0 7rem;
+    }
+
+    & .icon {
+      top: 0;
+      left: 0;
+      position: absolute;
+      width: 2rem;
+      height: 2rem;
+      padding: 1.5rem;
+    }
+
+    & h1 {
+      @include m.multiply("font-size", 4);
+      text-align: center;
+      font-weight: 500;
+      margin: 0 0 4rem 0;
+    }
+
+    & span {
+      color: v.$base-font-color;
+    }
+
+    & .value {
+      @include m.multiply("font-size", 1.25);
+      color: v.$base-font-color-secondary;
+    }
+
+    & .preview > * {
+      margin: 0 0 2rem 0;
+    }
+
+    & input {
+      @include m.multiply("font-size", 1);
+      height: 2rem;
+      border: v.$border-width solid v.$base-color-lightened-4;
+      border-radius: v.$border-radius-hard;
+      padding: 0 0 0 1rem;
+      width: calc(100% - 1rem);
+      color: v.$base-font-color;
+    }
+
+    & .staker,
+    & .fee {
+      margin: 0.5rem 0 0 0;
+    }
+
+    & input {
+      width: auto;
+      padding: 0 4rem;
+      height: 4rem;
+    }
+
+    & button.confirm {
+      width: 50%;
+      height: 4.5rem;
+      border-radius: v.$border-radius-hardest;
+      padding: 0 2rem;
+      font-size: 1.125rem;
+    }
+  }
+}
+
+@media (min-width: v.$layout-break-5) {
+  .delegate-page .content .manual > .delegate {
+    width: 77rem;
+  }
+}
+
+@media (max-width: v.$layout-break-2) {
+  .delegate-page .content {
+    max-width: v.$layout-break-2;
+  }
+}
+
+@media (max-width: v.$layout-break-5) {
+  .delegate-page .content .manual > .delegate a {
+    left: 0;
+  }
+
+  .delegate-page .content .list {
+    & .freespace {
+      display: none;
+    }
+    & .fee {
+      width: 6rem;
+    }
+    button {
+      width: 8rem;
+      padding: 1rem;
+      color: v.$base-blue-color-lightened;
+      background-color: v.$base-background-color;
+      border: v.$border-width solid v.$base-blue-color-lightened;
+    }
+  }
+
+  .delegate-page .content .delegate {
+    &.desktop {
+      display: none;
+    }
+    &.mobile {
+      display: flex;
+      height: 10rem;
+      justify-content: flex-start;
+      padding: 0 2rem;
+      width: calc(100% - 4rem);
+
+      & .props {
+        flex-wrap: wrap;
+        height: 9rem;
+        width: 100%;
+        justify-content: center;
+        align-content: flex-start;
+
+        & .logo {
+          width: 7rem;
+          height: 7rem;
+          padding: 1rem 0;
+          margin: 0 2rem 0 1rem;
+        }
+
+        & .name {
+          font-size: 2.5rem;
+          font-weight: 500;
+          width: auto;
+        }
+
+        & .fee,
+        & .freespace,
+        & .estROI {
+          font-size: 1.5rem;
+          font-weight: 500;
+          width: auto;
+          display: block;
+          color: v.$base-font-color-secondary;
+
+          & b {
+            color: v.$base-font-color;
+          }
+        }
+      }
+    }
+  }
+}

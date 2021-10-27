@@ -32,6 +32,7 @@ export class TzktService implements Indexer {
   public readonly bcd = 'https://api.better-call.dev/v1';
   public readonly tzkt = `https://api.${this.network}.tzkt.io/v1`;
   readonly BCD_TOKEN_QUERY_SIZE: number = 50;
+  tokenKindCache: Record<string, { kind: string, timestamp: number }> = {};
   Tezos: TezosToolkit;
   constructor() {
     this.Tezos = new TezosToolkit(CONSTANTS.NODE_URL);
@@ -216,20 +217,34 @@ export class TzktService implements Indexer {
     }
     return '';
   }
-  async getTokenMetadata(contractAddress, id): Promise<TokenMetadata> {
-    const tokenKind = fetch(`${this.bcd}/contract/${this.network}/${contractAddress}`)
-      .then(response => response.json())
-      .then(data => {
-        if (data?.tags?.includes('fa2')) {
-          return 'FA2';
-        } else if (data?.tags.includes('fa1-2')) {
-          return 'FA1.2';
+  async getTokenMetadata(contractAddress, id, counter): Promise<TokenMetadata> {
+    // cache token kind
+    const tokenKind: Promise<any> = new Promise(async (resolve) => {
+      let kind;
+      const now = new Date().getTime();
+      if (this.tokenKindCache[contractAddress] && (now - this.tokenKindCache[contractAddress].timestamp) < 1800000) {
+        // get from cache
+        kind = this.tokenKindCache[contractAddress].kind;
+      } else {
+        kind = await fetch(`${this.bcd}/contract/${this.network}/${contractAddress}`)
+          .then(response => response.json())
+          .then(data => {
+            if (data?.tags?.includes('fa2')) {
+              return 'FA2';
+            } else if (data?.tags.includes('fa1-2')) {
+              return 'FA1.2';
+            }
+            return null;
+          }).catch(e => {
+            return null;
+          });
+        if (kind) {
+          this.tokenKindCache[contractAddress] = { kind, timestamp: new Date().getTime() };
         }
-        return null;
-      }).catch(e => {
-        return null;
-      });
-    const tokenMetadata = fetch(`${this.bcd}/contract/${this.network}/${contractAddress}/tokens?token_id=${id}&offset=0`)
+      }
+      resolve(kind);
+    });
+    const tokenMetadata: Promise<any> = fetch(`${this.bcd}/contract/${this.network}/${contractAddress}/tokens?token_id=${id}&offset=0`)
       .then(response => response.json())
       .then(async data => {
         if (data?.length && data[0]?.name === 'Unknown') {
@@ -271,7 +286,7 @@ export class TzktService implements Indexer {
               metadata[a.key] = data[a.key];
             }
           }
-          metadata = { ...metadata, ...(await this.resolveAssetUris(data)) };
+          metadata = { ...metadata, ...(await this.resolveAssetUris(data, counter)) };
           return metadata;
         }
         console.log(`No token metadata found for ${contractAddress}:${id}`);
@@ -322,11 +337,15 @@ export class TzktService implements Indexer {
       }
     }
   }
-  async resolveAssetUris(data: any): Promise<any> {
+  async resolveAssetUris(data: any, counter: number): Promise<any> {
     const metadata: any = {};
     const rawData = JSON.parse(JSON.stringify(data));
-    metadata.displayUri = await this.uriToAsset(data.displayUri);
-    metadata.thumbnailUri = await this.uriToAsset(data.thumbnailUri);
+    metadata.displayUri = await this.uriToAsset(data.displayUri, counter);
+    if (data.displayUri && data.thumbnailUri && data.displayUri === data.thumbnailUri) {
+      metadata.thumbnailUri = metadata.displayUri;
+    } else {
+      metadata.thumbnailUri = await this.uriToAsset(data.thumbnailUri, counter);
+    }
     try {
       // Exceptions
       if (data?.isBooleanAmount === undefined && typeof data?.isBooleanAmount === "string" && data?.isBooleanAmount === "true"
@@ -337,21 +356,19 @@ export class TzktService implements Indexer {
       if (data?.symbol === "OBJKT") {
         if (!data.displayUri) {
           // hicetnunc
-          metadata.displayUri = await this.uriToAsset(
-            rawData.formats[0].uri
-          );
+          metadata.displayUri = await this.uriToAsset(rawData.formats[0].uri, counter);
         }
         if (metadata?.displayUri) {
           metadata.thumbnailUri = '';
         }
       }
       if (!metadata.displayUri && !metadata.thumbnailUri && rawData?.icon) {
-        metadata.thumbnailUri = await this.uriToAsset(rawData?.icon); // Plenty + HEH
+        metadata.thumbnailUri = await this.uriToAsset(rawData?.icon, counter); // Plenty + HEH
       }
     } catch (e) { }
     return metadata;
   }
-  async uriToAsset(uri: string): Promise<Asset> {
+  async uriToAsset(uri: string, counter: number): Promise<Asset> {
     if (!uri || uri.length < 8) {
       return '';
     }
@@ -363,10 +380,11 @@ export class TzktService implements Indexer {
     } else if (!CONSTANTS.MAINNET && (uri.startsWith('http://localhost') || uri.startsWith('http://127.0.0.1'))) {
       url = uri;
     }
-    const cacheMeta = url ? await this.fetchApi(`https://backend.kukai.network/file/info?src=${url}`) : '';
+    const suffix = counter ? `&retry=${counter}` : ''; // bypass cache
+    const cacheMeta = url ? await this.fetchApi(`https://backend.kukai.network/file/info?src=${url}${suffix}`, counter) : '';
     return cacheMeta ? cacheMeta : '';
   }
-  async fetchApi(url: string): Promise<Asset> {
+  async fetchApi(url: string, counter: number = 0): Promise<Asset> {
     return fetch(url)
       .then((response) => response.json())
       .then((data) => {
@@ -379,6 +397,9 @@ export class TzktService implements Indexer {
             return asset;
           }
           console.warn(url, data);
+        } else {
+          if (!counter || counter < 5)
+            throw new Error(data?.Error || data);
         }
         return '';
       });

@@ -1,0 +1,423 @@
+@use '../../../../abstracts/mixins' as m;
+@use '../../../../abstracts/variables'as v;
+@use './batch' as b;
+
+$base-font-color: v.$base-font-color;
+$base-font-color-secondary: v.$base-font-color-secondary;
+$base-font-color-secondary-half: v.$base-font-color-secondary-half;
+$base-end-color: v.$base-end-color;
+$base-red-color: v.$base-red-color;
+$base-blue-color-lightened: v.$base-blue-color-lightened;
+$base-color-lightened-5: v.$base-color-lightened-5;
+$base-color-lightened-7: v.$base-color-lightened-7;
+$border-width: v.$border-width;
+$border-color: #e6eaef;
+
+@mixin confirm-send-default {
+  .confirm-send {
+    margin: 2rem 0 0 0;
+    width: 38rem;
+    height: auto;
+
+    &.image .top .left {
+      min-height: 10rem;
+    }
+
+    @include b.confirm-send-batch;
+
+    & .amount-fee {
+      &.key {
+        @include m.multiply("font-size", 1.25);
+      }
+
+      & .value {
+        @include m.multiply("font-size", 1.25);
+      }
+    }
+
+    & .amount-quantity {
+      &.key {
+        @include m.multiply("font-size", 1.25);
+      }
+
+      & .value {
+        @include m.multiply("font-size", 1.625);
+      }
+    }
+
+    & .transfer-amount {
+      margin: 0 1rem 1rem 1rem;
+    }
+
+    & .contract-call {
+      margin: 0 1rem 2rem 1rem;
+    }
+
+    & .top,
+    & .to {
+      height: auto;
+      border-radius: v.$border-radius;
+      padding: 2rem;
+    }
+
+    & .top {
+      align-items: flex-start;
+      flex-wrap: wrap;
+      background-color: $base-color-lightened-7;
+      border-radius: v.$border-radius;
+      height: auto;
+      padding: 2rem;
+
+      & .key {
+        width: 100%;
+        text-align: left;
+        margin: 0 0 0.5rem 0;
+      }
+
+      & table {
+        width: 100%;
+        color: $base-font-color-secondary;
+        margin: 0 0 4rem 0;
+      }
+
+      & .token-image {
+        width: 10rem;
+        height: 10rem;
+        overflow: hidden;
+        background-color: $base-end-color;
+        border-radius: v.$border-radius;
+        box-shadow: v.$box-shadow-dark;
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        &.balance {
+          width: 3rem;
+          height: 3rem;
+          position: initial;
+          box-shadow: unset;
+          border-radius: v.$border-radius-hardest;
+          border: v.$border-width solid $base-color-lightened-5;
+        }
+      }
+
+      & .bottom {
+        height: 100%;
+        justify-content: space-evenly;
+
+        & span {
+          padding: 0.75rem 0 0 0;
+        }
+      }
+
+      & .left {
+        width: 30%;
+        height: auto;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+
+        & .key {
+          text-align: center;
+          color: $base-font-color;
+          margin: 0.35rem 0 1rem 0;
+          font-weight: 500;
+        }
+      }
+
+      & .right {
+        width: 64%;
+        height: 100%;
+        justify-content: flex-start;
+
+        & .amount {
+          margin: 0 0 1rem 0;
+          padding: 0 0 0.5rem 0;
+          border-bottom: $border-width solid #dde2e9;
+          & .tez {
+            font-size: 1.5rem;
+            font-weight: 600;
+          }
+
+          & .fiat {
+            width: auto;
+            margin: 0;
+
+            & .value {
+              color: $base-font-color-secondary;
+            }
+          }
+        }
+
+        & .items {
+          & .key {
+            @include m.multiply("font-size", 1);
+            text-transform: unset;
+
+            &:last-of-type {
+              margin: 0;
+            }
+
+            & .value {
+              @include m.multiply("font-size", 1);
+              font-weight: 500;
+              color: $base-font-color-secondary-half;
+            }
+          }
+
+          & .key.amount-quantity {
+            font-weight: 500;
+            color: v.$base-font-color;
+
+            & .value {
+              font-weight: 500;
+              font-size: 1.5rem;
+            }
+          }
+        }
+      }
+    }
+
+    & .from {
+      margin-top: 1rem;
+      padding: 1rem 2rem;
+
+      & .left {
+        width: 30%;
+        height: auto;
+        align-items: center;
+
+        & .key {
+          font-weight: 500;
+        }
+      }
+
+      & .right {
+        width: 64%;
+        height: auto;
+        justify-content: space-between;
+      }
+
+      & .domain {
+        @include m.multiply("font-size", 1.5);
+        font-weight: 500;
+        color: $base-font-color;
+      }
+
+      & .address {
+        @include m.multiply("font-size", 1, "rem", 1.3, v.$layout-break-6);
+        font-family: "Roboto Mono", "Roboto";
+        color: $base-font-color-secondary;
+      }
+
+      & .torus-name {
+        @include m.multiply("font-size", 1.5);
+        justify-content: flex-start;
+        font-weight: 500;
+        position: relative;
+        left: -2.55rem;
+        top: 0;
+
+        & .verifier-logo {
+          object-fit: unset;
+          width: 2rem;
+          height: 2rem;
+          margin: 0 0.5rem 0 0;
+        }
+      }
+    }
+
+    & .divider {
+      & span {
+        border-bottom: 3px solid $border-color;
+
+        &:first-child {
+          width: 12%;
+        }
+
+        &:last-child {
+          width: 75%;
+        }
+      }
+
+      & img {
+        width: 2rem;
+        height: auto;
+        border: none;
+        object-fit: scale-down;
+      }
+    }
+
+    & .to {
+      padding: 2rem;
+      margin: 1rem 0 0 0;
+      align-items: flex-start;
+      background-color: #7178e333;
+
+      & .left {
+        width: 30%;
+        height: auto;
+        align-items: center;
+
+        & span {
+          margin: 0.25rem 0 0 0;
+          color: $base-blue-color-lightened;
+          font-weight: 500;
+        }
+      }
+
+      & .right {
+        width: 64%;
+        height: auto;
+        justify-content: space-between;
+
+        & .scroll {
+          max-height: 5rem;
+          overflow-x: hidden;
+          overflow-y: auto;
+          padding: 0 1rem 0 0;
+
+          &::-webkit-scrollbar-track {
+            margin: 0;
+            background-color: $base-end-color;
+          }
+        }
+
+        & .torus-to {
+          justify-content: flex-start;
+          @include m.multiply("font-size", 1.5);
+          font-weight: 500;
+          position: relative;
+          left: -2.55rem;
+          top: 0;
+
+          & .icon {
+            object-fit: unset;
+            width: 2rem;
+            height: 2rem;
+            margin: 0 0.5rem 0 0;
+          }
+        }
+
+        & .transaction {
+          width: 100%;
+          justify-content: center;
+
+          & .single-to {
+            @include m.multiply("font-size", 1.125);
+            color: $base-font-color-secondary;
+            font-weight: 400;
+            cursor: pointer;
+            width: 100%;
+            margin: 0 0 1.25rem 0;
+
+            & span {
+              @include m.multiply("font-size", 1, "rem", 1.3, v.$layout-break-6);
+              color: $base-font-color-secondary;
+            }
+
+            &:not(.scroll) {
+              font-weight: 400;
+            }
+
+            &.active span {
+              font-weight: 500;
+              color: v.$base-font-color;
+            }
+
+            &.default {
+              font-weight: 400;
+              font-size: 1rem;
+              cursor: unset;
+              margin: 0;
+
+              & span {
+                color: $base-blue-color-lightened;
+                font-family: "Roboto Mono", "Roboto";
+              }
+            }
+          }
+
+          & .previewAttention {
+            color: v.$base-red-color;
+            font-weight: 500;
+          }
+        }
+
+        & .show-all {
+          margin: 1rem 0 0 0;
+          text-transform: uppercase;
+          font-weight: 500;
+          color: #6c7a8d;
+        }
+      }
+    }
+
+    & .advanced-form {
+      margin: 1rem 0 0 0;
+
+      & > div {
+        width: 100%;
+
+        & > div {
+          width: 50%;
+        }
+      }
+
+      & input {
+        margin: 0 0 1rem 0;
+        width: calc(100% - 3rem);
+        height: 3.5rem;
+        align-self: center;
+      }
+
+      & li.tab {
+        @include m.multiply("font-size", 1.25);
+        appearance: auto;
+        cursor: pointer;
+        font-weight: 400;
+        color: $base-font-color-secondary;
+
+        &.active {
+          color: $base-blue-color-lightened;
+          font-weight: 600;
+          text-decoration: underline;
+        }
+      }
+
+      & ul.tabs {
+        width: calc(100% - 2rem);
+        padding: 0;
+        margin: 1rem 0 0.5rem 1rem;
+        list-style-type: none;
+      }
+
+      & td.txAmount {
+        text-align: right;
+      }
+
+      & textarea {
+        padding: 1rem;
+        width: calc(100% - 2rem);
+      }
+    }
+
+    & .bottom {
+      border-top: 2px solid $border-color;
+      margin: 2rem 0 0;
+
+      & .label {
+        height: 1.25rem;
+        margin: 1rem;
+        align-self: flex-start;
+      }
+
+      & .danger {
+        height: auto;
+        color: $base-red-color;
+        margin: 1rem 1rem 0rem 1rem;
+        align-self: flex-start;
+      }
+    }
+  }
+}

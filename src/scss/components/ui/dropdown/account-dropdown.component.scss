@@ -1,18 +1,25 @@
-@use '../../../abstracts/variables'as v;
-@use '../../../abstracts/mixins' as m;
+@use "../../../abstracts/variables" as v;
+@use "../../../abstracts/mixins" as m;
 
 $base-font-color: v.$base-font-color;
 $base-end-color: v.$base-end-color;
+$base-color-lightened-5: v.$base-color-lightened-5;
 $base-color-lightened-6: v.$base-color-lightened-6;
-$base-color-lightened-7: #f2f4f7;
+$base-color-lightened-65: v.$base-color-lightened-65;
+$base-color-lightened-7: v.$base-color-lightened-7;
+$base-blue-color-lightened: v.$base-blue-color-lightened;
 $border-width: v.$border-width;
 $border-color: v.$border-color;
+$border-radius-hard: v.$border-radius-hard;
+$box-shadow: v.$box-shadow;
 $box-shadow-dark: v.$box-shadow-dark;
-
+$border-color-dark-only: v.$border-color-dark-only;
+$border-width-dark-only: v.$border-width-dark-only;
 
 .dropdown {
   display: block;
   position: relative;
+  margin: 0 0.5rem 0 0;
 
   &.pr-request {
     width: 100%;
@@ -21,18 +28,24 @@ $box-shadow-dark: v.$box-shadow-dark;
     & .currentAddress {
       width: calc(100% - 1rem);
       padding: 0 0 0 1rem;
-      background-color: transparent;
-      border: $border-width solid $base-color-lightened-7;
+      border: $border-width solid $border-color-dark-only;
     }
 
     & .icon-db {
       top: calc(0.685rem + #{$border-width});
-      right: 0.75rem;
+      right: 0.5rem;
     }
 
     & .dropdown-content {
+      top: 0rem;
       width: 100%;
-      top: 4rem;
+      border: 0 solid $border-color-dark-only;
+    }
+    &.expanded {
+      & .dropdown-content {
+        top: 4rem;
+        border: $border-width solid $border-color-dark-only;
+      }
     }
   }
 
@@ -44,17 +57,19 @@ $box-shadow-dark: v.$box-shadow-dark;
     @include m.multiply("font-size", 1.15);
     width: calc(100% - 2rem);
     padding: 0 0 0 1rem;
-    background-color: $base-color-lightened-7;
+    background-color: $base-color-lightened-65;
     border-radius: v.$border-radius-hard;
-    border: none;
+    border: $border-width solid $border-color-dark-only;
     transition: 0.25s border-radius;
-    height: 3.375rem;
+    height: calc(3.375rem - #{$border-width});
     cursor: pointer;
     font-weight: 500;
     justify-content: flex-start;
 
     & .logo {
       height: 1.5rem;
+      width: 1.5rem;
+      object-fit: cover;
       margin: 0 1rem 0 0;
     }
 
@@ -73,8 +88,8 @@ $box-shadow-dark: v.$box-shadow-dark;
     width: 2rem;
     height: 2rem;
     position: absolute;
-    top: 0.685rem;
-    right: 1.75rem;
+    top: calc(0.685rem + #{$border-width} / 2);
+    right: 1.5rem;
     background-color: $base-color-lightened-7;
     border-radius: v.$border-radius-hard;
     transform: rotate(0deg);
@@ -87,14 +102,24 @@ $box-shadow-dark: v.$box-shadow-dark;
     position: absolute;
     display: none;
     z-index: 100;
-    overflow: hidden;
-    width: calc(100% - 1rem + 2px);
-    top: 3.78rem;
-    border: 1px solid $base-color-lightened-6;
+    width: calc((100% - 1rem) + var(--border-width) * 2);
+    top: 3.375rem;
+    left: 0;
+    border: none;
     box-shadow: $box-shadow-dark;
-    overflow-x: hidden;
-    max-height: 14rem;
-    overflow-y: auto;
+    overflow: hidden;
+    max-height: 15rem;
+    $box-shadow-dark: $box-shadow-dark;
+    border-bottom-left-radius: $border-radius-hard;
+    border-bottom-right-radius: $border-radius-hard;
+
+    & .body {
+      overflow: hidden;
+      overflow-y: auto;
+      &::-webkit-scrollbar-track {
+        margin: 0 0 0rem 0;
+      }
+    }
 
     &.right {
       margin-top: -1.1rem;
@@ -109,16 +134,17 @@ $box-shadow-dark: v.$box-shadow-dark;
 
     & .option {
       color: v.$base-font-color;
-      padding: 0.75rem 1.875rem;
+      padding: 0.75rem 1.125rem 0.75rem calc(4rem - #{$border-width});
       text-decoration: none;
       cursor: pointer;
+      background: $base-end-color;
 
       &:hover {
-        background: $base-color-lightened-7;
+        background: $base-color-lightened-6;
       }
 
       &.selected {
-        background: $base-color-lightened-6;
+        background: $base-color-lightened-5;
       }
 
       & .alias {
@@ -127,18 +153,27 @@ $box-shadow-dark: v.$box-shadow-dark;
 
         & img {
           height: 1rem;
-          margin: 0 0.5rem 0 0;
+          margin: 0 0.5rem 0 -1.5rem;
         }
 
         & span {
+          @include m.multiply("font-size", 1.15);
           color: $base-font-color;
-          font-weight: 500;
         }
       }
 
       & > span {
-        margin: 0 0 0 1.5rem;
-        width: calc(100% - 1.5rem);
+        width: 100%;
+      }
+    }
+    & .show-all {
+      box-shadow: $box-shadow;
+      width: 100%;
+      position: sticky;
+      bottom: 0;
+      left: 0;
+      & span {
+        color: $base-blue-color-lightened;
       }
     }
   }
@@ -151,6 +186,9 @@ $box-shadow-dark: v.$box-shadow-dark;
 
     & .currentAddress {
       border-top-left-radius: v.$border-radius-hard;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+      box-shadow: $box-shadow-dark;
     }
 
     & .icon-db {
@@ -168,7 +206,7 @@ $box-shadow-dark: v.$box-shadow-dark;
     width: 50%;
 
     & .dropdown .dropdown-content {
-      width: calc(100% + 10rem);
+      width: calc(100% + 6rem);
       top: 4.78rem;
       left: -3rem;
 

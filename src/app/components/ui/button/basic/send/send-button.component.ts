@@ -21,10 +21,10 @@ export class SendButtonComponent extends BasicButtonComponent implements OnInit 
     private subjectService: SubjectService
   ) { super(); }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.asset = this.tokenService.getAsset(this.tokenTransfer)
   }
-  prepareTransaction() {
+  prepareTransaction(): void {
     this.subjectService.prepareTokenTransfer.next({ account: this.activeAccount, tokenTransfer: this.tokenTransfer, symbol: this.symbol });
   }
 }

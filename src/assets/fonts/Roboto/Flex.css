@@ -1,0 +1,6 @@
+@font-face {
+  font-family: 'Roboto-Flex';
+  src: url('./Flex.ttf') format('truetype');
+  font-weight: 100 1200;
+  font-stretch: 10% 150%;
+}

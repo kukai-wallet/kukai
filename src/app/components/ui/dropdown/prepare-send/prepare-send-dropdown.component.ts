@@ -18,7 +18,7 @@ export class PrepareSendDropdownComponent extends DropdownComponent implements O
   ngOnInit(): void {
   }
 
-  toggleDropdown() {
+  toggleDropdown(): void {
     this.dropdownResponse.emit({ torusVerifierName: this.torusVerifierName, torusVerifier: this.torusVerifier  })
     this.isOpen = !this.isOpen;
   }

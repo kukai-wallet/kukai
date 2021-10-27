@@ -10,7 +10,7 @@
     padding: 0.5rem 0;
     @include m.multiply("font-size", 1.25);
     font-weight: 500;
-    color: v.$base-end-color;
+    color: #fff;
     z-index: 5000;
     text-align: center;
     background-color: v.$base-red-color;

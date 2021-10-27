@@ -7,7 +7,7 @@
       src="../../../../assets/img/down-arrow.svg" />
   </div>
   <div class="flex-column dropdown-content">
-    <ng-container *ngFor="let account of list">
+    <ng-container *ngFor="let account of options">
       <div class="option" [class.selected]="account?.address === current?.address"
         (click)="selection = account; toggleDropdown()">
         <ng-container *ngIf="getUsername(account?.address)">

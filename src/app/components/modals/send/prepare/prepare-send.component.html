@@ -1,0 +1,98 @@
+<div *ngIf="isOpen" class="flex-column kukai-modal">
+  <div class="content">
+    <div class="flex-column top">
+      <div class="flex-row button close" (click)="closeModalAction()"><img class="x" src="../../../assets/img/close-btn-x.png" /></div>
+      <h1 class="title">{{ !isNFT ? getTitle() : 'Send Token'}}</h1>
+    </div>
+    <div class="flex-column prepare-send">
+      <div *ngIf="!this.isMultipleDestinations" class="flex-column top">
+        <div *ngIf="isNFT" class="flex-row token">
+          <app-asset class="asset" [meta]="token?.thumbnailAsset || token?.displayAsset"></app-asset>
+          <span class="title">{{token?.name}}</span>
+        </div>
+        <span *ngIf="!this.token || !(this.token?.isBooleanAmount || this.token?.balance == 1)" class="flex-row label title">ENTER {{!isNFT ? 'AMOUNT' :
+          'QUANTITY'}}:</span>
+        <div *ngIf="!this.token || !(this.token?.isBooleanAmount || this.token?.balance == 1)" class="flex-row amount">
+          <input #amountInput [placeholder]="token?.decimals == 0 ? '0' : '0.00'" [(ngModel)]="amount"
+            (mousedown)="sendMax = false; default" (input)="sanitizeNumberInput($event, 'amount'); amountChange()" (paste)="sanitizeNumberInput($event, 'amount')" (change)="amountChange()"
+            [disabled]="isMultipleDestinations" />
+          <button *ngIf="!this.isMultipleDestinations" tabindex=-1 class="small" [class.max]="sendMax"
+            (click)="sendEntireBalance($event)">MAX</button>
+        </div>
+        <div class="flex-row fees">
+          <span *ngIf="!tokenTransfer" class="amount-usd">
+            <span>USD:&nbsp;</span>{{'$' + (getTotalAmount() * walletService.wallet.XTZrate | number:'1.2-2' || '0.00') }}
+          </span>
+          <span class="amount-fee"><span>FEE{{ getTotalBurn() > 0 ? ' & STORAGE COST' : ''}}:&nbsp;</span><img
+              *ngIf="simSemaphore" src="../../../../assets/img/feeLoader.gif">{{ getTotalCost() != 0 ? (getTotalCost() |
+            number:'1.0-6') + ' tez' : '--'
+            }}</span>
+        </div>
+      </div>
+      <div class="to">
+        <div *ngIf="!this.isMultipleDestinations" class="flex-column">
+          <span class="label title">SEND TO:</span>
+          <div class="address">
+            <app-ui-dropdown-prepare-send [torusVerifier]="torusVerifier" [torusVerifierName]="torusVerifierName"
+              (dropdownResponse)="dropdownResponse($event)"></app-ui-dropdown-prepare-send>
+            <input type="text" placeholder="Recipient" class="text" (input)="updateDefaultValues($event)"
+              (change)="toPkhChange()" [(ngModel)]="toPkh">
+          </div>
+          <div class="flex-row address-display">
+            <span [style.display]="!torusPendingLookup && torusLookupAddress ? '' : 'none'">{{ torusLookupAddress
+              }}</span><span [style.display]="torusPendingLookup ? '' : 'none'"><img
+                src="../../../../assets/img/feeLoader.gif"></span>
+          </div>
+        </div>
+        <div *ngIf="this.isMultipleDestinations" class="flex-column">
+          <label class="label">Addresses and amounts <span class="batchInfo">{{ batchSpace() }}</span></label>
+          <textarea type="text" class="text" (input)="updateDefaultValues()" rows="3"
+            [(ngModel)]="toMultipleDestinationsString"
+            placeholder="address1 amount1 ; &#10;address2 amount2 ; &#10;address3 ..."></textarea>
+        </div>
+        <div class="flex-row">
+          <app-ui-toggle-advanced style="width: 13rem;" [default]="false" (stateChange)="advancedForm = $event"></app-ui-toggle-advanced>
+          <button [style.visibility]="!isNFT && advancedForm ? '' : 'hidden'" class="small multiple-destinations"
+            (click)="toggleDestination()">
+            <ng-container *ngIf="!this.isMultipleDestinations">Multiple transactions</ng-container>
+            <ng-container *ngIf="this.isMultipleDestinations">Single transaction</ng-container>
+          </button>
+        </div>
+      </div>
+      <div *ngIf="advancedForm" class="flex-column advanced-form">
+        <div class="flex-row">
+          <div class="flex-column">
+            <label class="label">Gas limit</label>
+            <input type="text" class="text" (input)="sanitizeNumberInput($event, 'gas')" (paste)="sanitizeNumberInput($event, 'gas')" placeholder={{this.defaultTransactionParams.gas.toString()}}
+              [(ngModel)]="customGasLimit">
+          </div>
+          <div class="flex-column">
+            <label class="label">Fee</label>
+            <input type="text" (input)="sanitizeNumberInput($event); updateMaxAmount()" (paste)="sanitizeNumberInput($event); updateMaxAmount()" class="text"
+              placeholder={{this.defaultTransactionParams.fee.toString()}} [(ngModel)]="customFee">
+          </div>
+        </div>
+        <div class="flex-row">
+          <div class="flex-column">
+            <label class="label">Storage limit</label>
+            <input type="text" (input)="sanitizeNumberInput($event, 'storage'); updateMaxAmount()" (paste)="sanitizeNumberInput($event, 'storage'); updateMaxAmount()" class="text"
+              placeholder={{this.defaultTransactionParams.storage.toString()}} [(ngModel)]="customStorageLimit">
+          </div>
+          <div class="flex-column">
+            <label class="label">Max storage cost</label>
+            <input type="text" class="text read-only" [value]="burnAmount() ? burnAmount() : '0 tez'" tabindex=-1
+              readonly>
+          </div>
+        </div>
+      </div>
+      <br />
+      <div class="seperator"></div>
+      <div class="flex-column bottom">
+        <span [style.visibility]="!formInvalid ? 'hidden' : ''" class="label danger">
+          {{ formInvalid }}
+        </span>
+        <button class="confirm" (click)="preview()">Preview</button>
+      </div>
+    </div>
+  </div>
+</div>
