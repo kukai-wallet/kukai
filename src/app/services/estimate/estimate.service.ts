@@ -130,7 +130,7 @@ export class EstimateService {
           console.log(JSON.stringify(dtp));
           return of(dtp);
         })).toPromise();
-      } else if (typeof result.success === 'boolean' && result.success === false) {
+      } else if (typeof result?.success === 'boolean' && result.success === false) {
         console.log(result);
         throw new Error(result.payload.msg);
       }

@@ -1,81 +1,79 @@
-@use './functions-private'as f;
+$theme: var(--theme);
+/* Color */
+$base-color-static: var(--base-color-static);
+$base-color: var(--base-color);
+$base-color-lightened-1: var(--base-color-lightened-1);
+$base-color-lightened-2: var(--base-color-lightened-2);
+$base-color-lightened-3: var(--base-color-lightened-3);
+$base-color-lightened-4: var(--base-color-lightened-4);
+$base-color-lightened-5: var(--base-color-lightened-5);
+$base-color-lightened-6: var(--base-color-lightened-6);
+$base-color-lightened-65: var(--base-color-lightened-65);
+$base-color-lightened-675: var(--base-color-lightened-675);
+$base-color-lightened-7: var(--base-color-lightened-7);
+$base-end-color-static: var(--base-end-color-static);
+$base-end-color: var(--base-end-color);
+$base-background-color: var(--base-background-color);
+$base-background-color-alert: var(--base-background-color-alert);
+$base-blue-color: var(--base-blue-color);
+$base-blue-color-lightened: var(--base-blue-color-lightened);
+$base-red-color: var(--base-red-color);
+$base-green-color: var(--base-green-color);
+$base-font-color: var(--base-font-color);
+$base-font-color-secondary: var(--base-font-color-secondary);
+$base-font-color-secondary-half: var(--base-font-color-secondary-half);
 
-$current-theme: "default";
+/* Box Shadow */
 
-// generic color constants
-$base-color-static: #000 !default;
-$base-color: f.theme-transform(#000) !default;
-$base-color-lightened-1: f.theme-transform(
-  #4a5d75,
-  $current-theme,
-  0.25
-) !default;
-$base-color-lightened-2: f.theme-transform(
-  #98a0ab,
-  $current-theme,
-  0.25
-) !default;
-$base-color-lightened-3: f.theme-transform(#b9bfc7, $current-theme) !default;
-$base-color-lightened-4: f.theme-transform(#c1cdd5, $current-theme) !default;
-$base-color-lightened-5: f.theme-transform(#dae1e6, $current-theme) !default;
-$base-color-lightened-6: f.theme-transform(#e6eaef, $current-theme) !default;
-$base-color-lightened-65: f.theme-transform(#f3f5f7, $current-theme) !default;
-$base-color-lightened-7: f.theme-transform(#f8f9fa, $current-theme) !default;
-$base-end-color-static: #fff !default;
-$base-end-color: f.theme-transform(#fff, $current-theme) !default;
-$base-background-color: var(
-  --background-color
-); //f.theme-transform(#f8f9fa, $current-theme) !default; //ebedf0 - alt for start page
-$base-blue-color: #5963ff !default;
-$base-blue-color-lightened: #7178e3 !default;
-$base-red-color: #eb4e39 !default;
-$base-green-color: #86cf2d !default;
-$base-font-color: f.theme-transform(#3e4855, $current-theme, 0.25) !default;
-$base-font-color-secondary: f.theme-transform(
-  #98a0ab,
-  $current-theme,
-  0.75
-) !default;
-$base-font-color-secondary-half: f.theme-transform(
-  #6b7480,
-  $current-theme,
-  0.75
-) !default;
+$base-box-shadow-color: var(--base-box-shadow-color);
+$base-box-shadow-color-dark: var(--base-box-shadow-color-dark);
 
-// box shadow constants
-$box-shadow: 0px 4px 12px #33333322 !default;
-$box-shadow-dark: 0px 6px 12px #3333 !default;
+$box-shadow: var(--box-shadow);
+$box-shadow-top: var(--box-shadow-top);
+$box-shadow-right: var(--box-shadow-right);
+$box-shadow-bottom: var(--box-shadow-bottom);
+$box-shadow-left: var(--box-shadow-left);
+$box-shadow-dark: var(--box-shadow-dark);
 
-// border constant
-$border-radius: 0.9375rem !default;
-$border-radius-hard: calc(#{$border-radius} * 2) !default;
-$border-radius-hardest: calc(#{$border-radius} * 10) !default;
-$border-color: #eff0f1;
-$border-color-dark-only: f.theme-transform(#00000000, $current-theme);
-$border-width: 0.1875rem;
-$border-width-thin: calc((#{$border-width} / 3) * 4);
-$border-width-thick: calc(#{$border-width} * 2);
+/* Border */
+$border-radius: var(--border-radius);
+$border-radius-hard: var(--border-radius-hard);
+$border-radius-hardest: var(--border-radius-hardest);
+$border-color: var(--border-color);
+$border-color-dark-only: var(--border-color-dark-only);
+$border-width: var(--border-width);
+$border-width-thin: var(--border-width-thin);
+$border-width-thick: var(--border-width-thick);
+$border-width-dark-only: var(--border-width-dark-only);
 
-// @media constants
+/* Filter */
+$base-filter-brightness-5: var(--base-filter-brightness-5);
+$base-filter-contrast-1: var(--base-filter-contrast-1);
+$base-filter-invert-1: var(--base-filter-invert-1);
+$base-filter-contrast-invert-00: var(--base-filter-contrast-invert-00);
+$base-filter-contrast-invert-01: var(--base-filter-contrast-invert-01);
+$base-filter-contrast-invert-10: var(--base-filter-contrast-invert-10);
+$base-filter-contrast-invert-11: var(--base-filter-contrast-invert-11);
 
-// Defaults
-$lower-limit: 63em;
-$middle-limit: 127em;
-$upper-limit: 255em;
+/* @media */
 
-// Font Breaks
-$font-break-0: 255em;
-$font-break-1: 127em;
+/* Default Break */
+$lower-break: 63em;
+$middle-break: 127em;
+$upper-break: 255em;
+
+/* Font Break */
+$font-break-0: 253em;
+$font-break-1: 123em;
 $font-break-2: 102em;
-$font-break-25: 93em;
-$font-break-3: 83.5em;
-$font-break-4: 63em;
+$font-break-3: 93em;
+$font-break-4: 83em;
+$font-break-5: 63em;
 
-// Layout Breaks
+/* Layout Break */
 $layout-break-0: 253em;
 $layout-break-1: 173em;
 $layout-break-2: 123em;
-$layout-break-275: 93em;
 $layout-break-3: 83em;
 $layout-break-4: 73em;
 $layout-break-5: 63em;
@@ -83,3 +81,7 @@ $layout-break-6: 43em;
 
 // Offsets
 $font-offset-mobile: 1.2;
+
+$compactness: var(--compactness);
+
+$isMobile: var(--is-mobile);

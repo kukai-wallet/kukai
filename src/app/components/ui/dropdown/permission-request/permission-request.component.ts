@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { TorusWallet } from '../../../../services/wallet/wallet';
 import { LookupService } from '../../../../services/lookup/lookup.service';
@@ -10,15 +10,22 @@ import { DropdownComponent } from '../dropdown.component';
   templateUrl: './permission-request.component.html',
   styleUrls: ['../../../../../scss/components/ui/dropdown/account-dropdown.component.scss']
 })
-export class PermissionRequestDropdownComponent extends DropdownComponent implements OnInit {
+export class PermissionRequestDropdownComponent extends DropdownComponent implements OnInit, OnChanges {
 
   constructor(public router: Router, public lookupService: LookupService, private walletService: WalletService) { super(); }
 
   ngOnInit(): void {
     this.selection = this.current;
+    this.list = this.options;
   }
 
-  getUsername(address: string) {
+  ngOnChanges(changes: SimpleChanges): void {
+    if(changes.options && changes.options.currentValue !== changes.options.previousValue) {
+      this.list = this.options;
+    }
+  }
+
+  getUsername(address: string): string {
     if (this.walletService.wallet instanceof TorusWallet) {
       return this.walletService.wallet.displayName();
     } else  {
@@ -29,7 +36,7 @@ export class PermissionRequestDropdownComponent extends DropdownComponent implem
     }
     return '';
   }
-  getVerifier() {
+  getVerifier(): string {
     if (this.walletService.wallet instanceof TorusWallet) {
       return this.walletService.wallet.verifier;
     } else {
@@ -37,8 +44,8 @@ export class PermissionRequestDropdownComponent extends DropdownComponent implem
     }
   }
 
-  toggleDropdown() {
-    this.dropdownResponse.emit(this.selection)
+  toggleDropdown(): void {
+    this.dropdownResponse.emit(this.selection);
     this.isOpen = !this.isOpen;
   }
 }

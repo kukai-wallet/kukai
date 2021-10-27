@@ -1,0 +1,98 @@
+@use '../../../../../../abstracts/variables'as v;
+@use '../../../../../../abstracts/mixins'as m;
+@import "../mixins";
+
+$base-font-color: v.$base-font-color;
+$base-end-color: v.$base-end-color;
+$base-blue-color-lightened: v.$base-blue-color-lightened;
+$base-red-color: v.$base-red-color;
+$base-color-lightened-1: v.$base-color-lightened-1;
+$base-color-lightened-2: v.$base-color-lightened-2;
+$base-color-lightened-5: v.$base-color-lightened-5;
+$base-color-lightened-6: v.$base-color-lightened-6;
+$base-color-lightened-7: v.$base-color-lightened-7;
+$border-color-dark-only: v.$border-color-dark-only;
+$border-radius: v.$border-radius;
+$border-width: v.$border-width;
+$border-color: v.$border-color;
+$box-shadow: 0px 4px 6px #3332;
+$comapactness: v.$compactness;
+
+.token {
+  position: relative;
+  padding: 0.5rem;
+  border-radius: $border-radius;
+  width: 100%;
+
+  &.new {
+    background-color: #f8f8fe;
+
+    & .dot {
+      display: inline-block;
+    }
+  }
+
+  & .dot {
+    position: absolute;
+    top: -0.25rem;
+    right: -0.25rem;
+    height: 1rem;
+    width: 1rem;
+    background-color: $base-red-color;
+    border-radius: $border-radius;
+    display: none;
+  }
+
+  & .wrapper {
+    position: relative;
+
+    & .asset {
+      width: calc(8rem * #{$comapactness});
+      height: calc(8rem * #{$comapactness});
+      margin-right: 1.25rem;
+      overflow: hidden;
+      object-fit: cover;
+      display: block;
+      box-shadow: v.$box-shadow-dark;
+      border-radius: v.$border-radius;
+    }
+
+    & .balance {
+      position: absolute;
+      bottom: 0.675rem;
+      left: 0.5rem;
+      padding: 0.25rem 0.675rem;
+      width: auto;
+      height: auto;
+      border-radius: $border-radius;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.125rem;
+      font-weight: 600;
+      background-color: $base-color-lightened-5;
+      color: $base-font-color;
+    }
+  }
+
+  & .right {
+    width: calc(100% - 9.25rem);
+
+    & .title {
+      @include m.multiply("font-size", 1.75);
+      @include m.multiply("max-height", 6, "rem", 0.85714);
+      @include m.ellipsis();
+      white-space: normal;
+    }
+
+    & .series {
+      @include m.multiply("font-size", 1);
+      color: rgb(132, 152, 177);
+      margin: 0.3125rem 0 0 0;
+    }
+  }
+
+  &:last-of-type {
+    border-bottom: none;
+  }
+}

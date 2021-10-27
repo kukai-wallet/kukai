@@ -14,6 +14,7 @@ import { Subscription } from 'rxjs';
 export class AppComponent implements OnInit, OnDestroy {
   readonly CONSTANTS = _CONSTANTS;
   embedded = false;
+  isMobile = false;
   previous = 0;
   current = 0;
   diff = 0;
@@ -51,8 +52,21 @@ export class AppComponent implements OnInit, OnDestroy {
     if (!this.embedded) {
       window.addEventListener('storage', (e) => { this.handleStorageEvent(e); });
     }
+
+    const e = () => {
+      const brk = getComputedStyle(document.documentElement)
+        .getPropertyValue('--layout-break-5');
+      if (parseFloat(brk.replace(/[a-zA-Z]/g, '')) * 16 > document.documentElement.clientWidth) {
+        document.documentElement.style.setProperty('--is-mobile', "1");
+      } else {
+        document.documentElement.style.setProperty('--is-mobile', "0");
+      }
+
+    }
+    window.addEventListener('resize', e);
+    e();
   }
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
   private handleStorageEvent(e: StorageEvent) {
@@ -92,15 +106,15 @@ export class AppComponent implements OnInit, OnDestroy {
     const path = this.location.path();
     this.embedded = path.startsWith('/embedded');
     const bg = this.embedded ? 'none' : '#f8f9fa';
-    document.documentElement.style.setProperty('--background-color', bg);
-    if(!!this.embedded) {
+    if (!!this.embedded) {
+      document.documentElement.style.setProperty('--base-background-color', bg); // recheck
       const resize = () => {
-        if(document.body.clientWidth < 450) {
-          document.documentElement.style.fontSize = '55%'; 
-        } else if(document.body.clientWidth < 540) {
-          document.documentElement.style.fontSize = '75%'; 
-        } else if(document.body.clientWidth < 650) {
-          document.documentElement.style.fontSize = '87.5%'; 
+        if (document.body.clientWidth < 450) {
+          document.documentElement.style.fontSize = '55%';
+        } else if (document.body.clientWidth < 540) {
+          document.documentElement.style.fontSize = '75%';
+        } else if (document.body.clientWidth < 650) {
+          document.documentElement.style.fontSize = '87.5%';
         } else {
           document.documentElement.style.fontSize = '100%';
         }

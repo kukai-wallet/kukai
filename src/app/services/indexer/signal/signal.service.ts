@@ -120,7 +120,7 @@ export class SignalService {
     console.log('Listen to: ' + address);
     await this.connection.invoke("SubscribeToOperations", { address, types: 'transaction,delegation,origination' });
   }
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     try {
       this.connection.stop();
       console.log("%cSignalR Disconnected!", "color:red;");

@@ -28,6 +28,15 @@ export const CONSTANTS: Constants = {
     hard_storage_limit_per_operation: 60000
   },
   CONTRACT_ALIASES: {
+    'mclarenracing': {
+      name: 'McLaren Racing Collective',
+      address: ['KT1PEGqt5rMmHpyaMXc8RFTFkkAUDrzSFRWk'],
+      thumbnailUrl: '../../../assets/img/alias/mclaren-thumbnail.png',
+      discoverUrl: '../../../assets/img/alias/mclaren-discover.png',
+      link: 'https://mclarenracingcollective.com', shouldDisplayLink: DisplayLinkOption.All, category: ["collectibles"],
+      description: 'Collect & Build a digital MCL35M F1 CAR',
+      backgroundColor: 'black'
+    },
     'hen': {
       name: 'Hic et Nunc (HEN)',
       address: ["KT1AFA2mwNUMNd4SsujE1YYp29vd8BZejyKW", "KT1RJ6PbjHpwc3M5rw5s2Nbmefwbuwbdxton", "KT1M2JnD1wsg7w2B4UXJXtKQPuDUpU2L7cJH"],
@@ -916,6 +925,7 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1LbLNTTPoLgpumACCBFJzBEHDiEUqNxz5C',//Art Cardz
   'KT1VbHpQmtkA3D4uEbbju26zS8C42M5AGNjZ',//PRJKTNEON
   'KT1H8sxNSgnkCeZsij4z76pkXu8BCZNvPZEx',//PRJKTNEON FILES
+  'KT1PEGqt5rMmHpyaMXc8RFTFkkAUDrzSFRWk',//mclaren
   'KT1MsdyBSAMQwzvDH4jt2mxUKJvBSWZuPoRJ',//NEONZ
   'KT1SyPgtiXTaEfBuMZKviWGNHqVrBBEjvtfQ',//GOGOs
   'KT1Fxz4V3LaUcVFpvF8pAAx8G3Z4H7p7hhDg' //Hash Three Points

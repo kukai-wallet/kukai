@@ -1,11 +1,11 @@
 @use './variables' as v;
 
-@mixin multiply($property, $base, $postfix: 'rem', $override: 0, $breakpoint: v.$layout-break-5) {
+@mixin multiply($property, $base, $postfix: 'rem', $override: -1, $breakpoint: v.$layout-break-5) {
   @media (min-width: $breakpoint) {
     #{$property}: #{($base * 1) + $postfix};
   }
   @media (max-width: $breakpoint) {
-    @if $override != 0 {
+    @if $override != -1 {
       #{$property}: #{($base * $override) + $postfix}; 
     } @else {
       #{$property}: #{($base * v.$font-offset-mobile) + $postfix};

@@ -1,0 +1,34 @@
+<div #viewRef class="flex-column list">
+  <a *ngFor="let account of list" class="flex-row option" [class.selected]="account?.address === current?.address"
+    routerLink="/account/{{account?.address}}" (click)="closeModal()">
+    <div class="flex-column left">
+      <ng-container *ngIf="getUsername(account?.address)">
+        <div class="flex-row alias"><img class="logo" src="../../../../assets/img/{{ getVerifier() }}-logo.svg" /><span
+            class="name">{{
+            getUsername(account?.address) }}</span><img class="copy" src="../../../../assets/img/copy-icon.svg"
+            (click)="this.copy($event, account?.address); false" /></div>
+        <span class="addr">{{
+          !isMobile ? account?.address : account?.shortAddress() }}</span>
+      </ng-container>
+      <ng-container *ngIf="!getUsername(account?.address)">
+        <div class="flex-row"><span class="addr default">{{
+            !isMobile ? account?.address : account?.shortAddress() }}</span><img class="copy"
+            src="../../../../assets/img/copy-icon.svg" (click)="this.copy($event, account?.address); false" /></div>
+      </ng-container>
+    </div>
+    <div class="flex-column balances">
+      <div class="balance-tez">{{ (getBalance(account) | number: '1.0-6' | removeComma) }} tez</div>
+      <div class="balance-fiat">{{ '$' + (getBalanceFiat(account) | number:'1.2-2' | removeComma)
+        }}</div>
+    </div>
+  </a>
+  <div class="flex-row total-balances">
+    <h3>TOTAL:</h3>
+    <div class="flex-column">
+      <div class="balance-tez">{{ (getTotalBalance() | number: '1.0-6' | removeComma) + ' tez' }}
+      </div>
+      <div class="balance-fiat">{{ '$' + (getTotalFiat() | number:'1.2-2' | removeComma) }}
+      </div>
+    </div>
+  </div>
+</div>

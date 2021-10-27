@@ -1,0 +1,13 @@
+<app-search-bar *ngIf="tokens?.length > 12 && searchable" style="width: 100%" [placeholder]="'Search'"
+  [matchCount]="tokensToDisplay?.filtered.length || 0" [itemCount]="tokensToDisplay?.raw.length || 0"
+  (onInput)="updateFilter($event)"></app-search-bar>
+<div class="scroll-wrapper">
+  <div #body [style.display]="!isDisplaying ? 'none' : ''" class="body">
+    <ng-container *ngFor="let token of tokensToDisplay.loaded; trackBy:trackToken">
+      <app-nfts-token class="token" [token]="token"></app-nfts-token>
+    </ng-container>
+    <ng-container *ngIf="filter !== '.*' && !tokensToDisplay.filtered.length">
+      No Matches Found
+    </ng-container>
+  </div>
+</div>

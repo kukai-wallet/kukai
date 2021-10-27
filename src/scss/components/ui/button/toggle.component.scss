@@ -5,7 +5,9 @@ $base-font-color: v.$base-font-color;
 $base-end-color: v.$base-end-color;
 $base-blue-color-lightened: v.$base-blue-color-lightened;
 $base-color-lightened-3: v.$base-color-lightened-3;
+$base-color-lightened-4: v.$base-color-lightened-4;
 $base-color-lightened-5: v.$base-color-lightened-5;
+$base-color-lightened-6: v.$base-color-lightened-6;
 $advanced-color: #e6eaef;
 $border-width: v.$border-width;
 $border-color: v.$border-color;
@@ -56,7 +58,7 @@ $border-color: v.$border-color;
           width: 1.25rem;
           left: 0.375rem;
           bottom: 0.375rem;
-          background-color: $border-color;
+          background-color: $base-color-lightened-4;
           transition: 0.25s all;
           border-radius: v.$border-radius-hardest;
         }
@@ -64,15 +66,14 @@ $border-color: v.$border-color;
     }
 
     & span {
-      margin: 0;
       @include m.multiply('font-size',1.125, 'em !important');
+      margin: 0;
       font-weight: 500;
       &.key {
         color: $base-color-lightened-3 !important;
         font-size: 1em !important;
         &.active {
           color: $base-color-lightened-3 !important;
-
           & .round {
             -webkit-transform: translateX(1.5rem);
             -ms-transform: translateX(1.5rem);
@@ -83,8 +84,8 @@ $border-color: v.$border-color;
       }
 
       &.value {
-        color: #6c7a8d !important;
         @include m.multiply('font-size',1.125, 'em !important');
+        color: #6c7a8d !important;
       }
     }
   }

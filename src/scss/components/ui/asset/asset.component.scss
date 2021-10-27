@@ -1,6 +1,8 @@
 @use '../../../abstracts/variables'as v;
 @use '../../../abstracts/mixins' as m;
 
+$compactness: v.$compactness;
+
 :host {
   width: 100%;
   height: 100%;
@@ -55,8 +57,8 @@
   }
 
   &.nfts-head-thumbnail {
-    width: 3.5rem;
-    height: 3.5rem;
+    width: calc(3.5rem * #{$compactness});
+    height: calc(3.5rem * #{$compactness});
     margin-right: 1rem;
     & video,
     & img,

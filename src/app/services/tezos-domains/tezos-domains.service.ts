@@ -10,6 +10,8 @@ import { CONSTANTS } from '../../../environments/environment';
 })
 export class TezosDomainsService {
   private client: TaquitoTezosDomainsClient;
+  private queue = [];
+  pending = false;
   constructor() {
 
     const tezosToolkit = new TezosToolkit(CONSTANTS.NODE_URL);
@@ -17,7 +19,7 @@ export class TezosDomainsService {
     const options = { caching: { enabled: false } };
     this.client = new TaquitoTezosDomainsClient({
       tezos: tezosToolkit,
-      network: <'mainnet' | 'florencenet' | 'granadanet'>CONSTANTS.NETWORK,
+      network: <'mainnet' | 'granadanet'>CONSTANTS.NETWORK,
       ...options
     });
   }
@@ -28,8 +30,57 @@ export class TezosDomainsService {
     }
     return { pkh: address };
   }
-  async getDomainFromAddress(pkh: string) {
-    const domain = await this.client.resolver.resolveAddressToName(pkh);
-    return domain;
+  async getDomainFromAddress(address: string): Promise<string> {
+    if (!this.pending) {
+      this.pending = true;
+      this.collect();
+    }
+    return new Promise((resolve, reject) => {
+      this.queue.push({address, resolve, reject});
+    });
+  }
+  async collect() {
+    setTimeout(async () => {
+      this.pending = false;
+      const queue = this.queue;
+      this.queue = [];
+      const addresses = queue.map(q => {
+        return q.address;
+      });
+      const items = await this.getDomainFromAddresses(addresses).catch(e => {
+        for (const q of queue) {
+          q.reject(e);
+          throw e;
+        }
+      });
+      while (queue.length) {
+        const promise = queue.shift();
+        if (items[promise.address]) {
+          promise.resolve(items[promise.address]);
+        } else {
+          promise.resolve('');
+        }
+      }
+    }, 100);
+  }
+  async getDomainFromAddresses(addresses: any) {
+    const baseUrl = CONSTANTS.MAINNET ? 'https://api.tezos.domains/graphql' : `https://${CONSTANTS.NETWORK}-api.tezos.domains/graphql`;
+    const req = {
+      query: `{reverseRecords(where: {address: {in: ${JSON.stringify(addresses)}}}) {items {address domain: domain {id, name}}}}`
+    }
+    const response = await (await fetch(baseUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(req)
+    })).json();
+    const r = {};
+    for (const item of response.data.reverseRecords.items) {
+      if (item?.address && item?.domain?.name) {
+        r[item.address] = item.domain.name;
+      }
+    }
+    return r;
   }
 }

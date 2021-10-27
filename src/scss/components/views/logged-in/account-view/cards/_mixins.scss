@@ -1,0 +1,66 @@
+
+@use '../../../../../abstracts/variables' as v;
+@use '../../../../../abstracts/mixins' as m;
+
+@mixin top-container {
+  margin-top: 0.5rem;
+  margin-bottom: 0.25rem;
+  height: 4.5rem;
+  width: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  & h1 {
+    @include m.multiply('font-size',1.875);
+    font-weight: 400;
+  }
+}
+
+@mixin top-container-right {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  & .icon {
+    margin-left: 1.5rem;
+    width: 2.15rem;
+    height: 1.15rem;
+    padding: 0.5rem 0rem;
+    border-radius: v.$border-radius-hard;
+    border: v.$border-width solid v.$base-color-lightened-5;
+  }
+}
+
+@mixin base {
+  :host {
+    width: 100%;
+  }
+
+  @media (max-width: v.$layout-break-5) {
+    :host {
+      width: 100%;
+      margin: 0;
+    }
+  }
+  .main-container {
+    margin-top: 4rem;
+    border-radius: v.$border-radius;
+    height: calc(100% - 4rem);
+
+    & .scroll-wrapper {
+      padding: 0 0.75rem 0 0;
+      border-radius: v.$border-radius;
+      background-color: transparent;
+      box-shadow: v.$box-shadow;
+      overflow: hidden;
+    }
+  }
+  @media (max-width: calc(#{v.$layout-break-6} - 5em)) {
+    .main-container {
+      margin-right: auto;
+      margin-left: auto;
+      max-width: calc(100% - 3rem);
+    }
+  }
+}
