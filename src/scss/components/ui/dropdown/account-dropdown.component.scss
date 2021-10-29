@@ -32,19 +32,29 @@ $border-width-dark-only: v.$border-width-dark-only;
     }
 
     & .icon-db {
-      top: calc(0.685rem + #{$border-width});
       right: 0.5rem;
     }
 
     & .dropdown-content {
       top: 0rem;
-      width: 100%;
+      width: calc(100% + #{$border-width} * 2);
       border: 0 solid $border-color-dark-only;
+      position: relative;
+      max-height: 15rem;
+      overflow-y: auto;
+      margin: 0 0 2.5rem 0;
+
+      &::-webkit-scrollbar-track {
+        margin: 0 0 1.5rem 0;
+      }
+
+      & .option {
+        padding: 0.75rem 1.125rem 0.75rem 2.375rem;
+      }
     }
     &.expanded {
       & .dropdown-content {
-        top: 4rem;
-        border: $border-width solid $border-color-dark-only;
+        border: $border-width-dark-only solid $border-color-dark-only;
       }
     }
   }
@@ -138,6 +148,7 @@ $border-width-dark-only: v.$border-width-dark-only;
       text-decoration: none;
       cursor: pointer;
       background: $base-end-color;
+      @include m.multiply("font-size", 1.15);
 
       &:hover {
         background: $base-color-lightened-6;
@@ -205,7 +216,7 @@ $border-width-dark-only: v.$border-width-dark-only;
   :host {
     width: 50%;
 
-    & .dropdown .dropdown-content {
+    & .dropdown:not(.pr-request) .dropdown-content {
       width: calc(100% + 6rem);
       top: 4.78rem;
       left: -3rem;
