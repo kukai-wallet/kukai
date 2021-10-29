@@ -173,7 +173,9 @@ export class LookupService {
         x = i;
         for (let j = 0; j < this.records[i].data.length; j++) {
           if (this.records[i].data[j].lookupType < y || y === -1) {
-            y = j;
+            if (this.records[i].data[j].lookupType !== LookupType.TezosDomains || this.records[i].data[j].name) { // skip empty domain records
+              y = j;
+            }
           }
         }
       }
