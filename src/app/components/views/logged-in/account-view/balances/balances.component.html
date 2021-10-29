@@ -1,0 +1,31 @@
+<div class="main-container">
+  <div class="flex-row top-container-balances">
+    <h1>Balances</h1>
+    <div class="flex-row button right">
+      <!-- <div class="icon-text">FUND YOUR ACCOUNT</div><img class="icon-grey" src="../../../assets/img/add.svg" /> -->
+    </div>
+  </div>
+  <div class="scroll-wrapper">
+    <app-balance-token [account]="account" class="tez no-box"></app-balance-token>
+    <div *ngIf="!!this.tokenBalancesService?.balances?.length" class="flex-column balances">
+      <ng-container *ngFor="let balance of balances; let i = index; trackBy: trackToken">
+        <app-balance-token [account]="account" [token]="balance" [class.first]="i === 0"></app-balance-token>
+      </ng-container>
+    </div>
+    <div class="flex-row total-balances no-box">
+      <div class="flex-row left">
+        <h3>TOTAL VALUE:</h3>
+        <h1>{{ !!totalBalances && isFiat ? '$' + (totalBalances | number: '1.2-2' | removeComma) : '' }}{{ !!totalBalances && !isFiat ? (totalBalances | number: '1.0-6' | removeComma) + ' tez' : '' }}{{ !totalBalances ? '—' : '' }}</h1>
+      </div>
+      <div class="flex-row" (click)="toggleTotalBalances()">
+        <span class="fiat" [class.selected]="isFiat">
+          {{ 'usd' }}
+        </span>
+        <span class="sep">&nbsp;{{ '|' }}&nbsp;</span>
+        <span class="tez" [class.selected]="!isFiat">
+          {{ 'tez' }}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

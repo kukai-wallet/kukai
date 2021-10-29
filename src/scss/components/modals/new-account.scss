@@ -1,0 +1,26 @@
+@use '../../abstracts/mixins' as m;
+
+& .new-account {
+  margin: 2rem 0 0 0;
+
+  & .value {
+    margin: 0 0 2rem 0;
+  }
+
+  & .label {
+    margin: 0 0 1rem 0;
+    text-align: center;
+  }
+
+  & input {
+    @include m.multiply('font-size',1.25);
+    width: calc(100% - 2rem);
+    margin: 0 0 2rem 0;
+  }
+
+  & button.confirm {
+    width: 50%;
+    margin: 0;
+    align-self: center;
+  }
+}

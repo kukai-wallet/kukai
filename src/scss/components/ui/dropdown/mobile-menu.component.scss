@@ -37,10 +37,10 @@ $border-color: v.$border-color;
     }
 
     & span {
+      @include m.multiply("font-size", 1.25);
       letter-spacing: 0.06em;
       font-weight: 500;
       color: $base-font-color;
-      @include m.multiply("font-size", 1.25);
     }
 
     & .account-content {
@@ -48,7 +48,7 @@ $border-color: v.$border-color;
       background-color: #f3f4f8;
       justify-content: space-evenly;
 
-      & .img-wrapper {
+      & .wrapper {
         width: 3rem;
         height: 3rem;
         padding: 1rem;
@@ -68,11 +68,11 @@ $border-color: v.$border-color;
     }
 
     & > div:not(.account-content) {
+      @include m.multiply("font-size", 2);
       padding: 1rem 2rem;
       border-bottom: 2px solid $border-color;
       height: 4rem;
       background-color: $base-end-color;
-      @include m.multiply("font-size", 2);
 
       &:last-child {
         border-bottom: none;

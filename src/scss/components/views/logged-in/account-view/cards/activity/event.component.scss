@@ -1,0 +1,210 @@
+@use "../../../../../../abstracts/variables" as v;
+@use "../../../../../../abstracts/mixins" as m;
+
+$base-font-color: v.$base-font-color;
+$base-font-color-secondary: v.$base-font-color-secondary;
+$base-blue-color-lightened: v.$base-blue-color-lightened;
+$base-color-lightened-1: v.$base-color-lightened-1;
+$base-color-lightened-2: v.$base-color-lightened-2;
+$base-red-color: v.$base-red-color;
+$base-green-color: v.$base-green-color;
+$border-color-dark-only: v.$border-color-dark-only;
+$border-width-dark-only: v.$border-width-dark-only;
+$border-radius: v.$border-radius;
+$border-width: v.$border-width;
+$box-shadow: v.$box-shadow;
+$event-unconfirmed: v.$base-color-lightened-6;
+$event-confirmed: v.$base-color-lightened-65;
+$event-new: v.$base-end-color;
+
+:host {
+  & > div {
+    height: 100%;
+    margin: 0 0 1rem 0;
+    padding: 1rem;
+    border-radius: $border-radius;
+    background-color: transparent;
+    border: $border-width-dark-only solid $border-color-dark-only;
+
+    & > img {
+      padding-bottom: 1.125rem;
+    }
+
+    &:first-child {
+      margin-top: 0;
+    }
+
+    & > div {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  & .sent,
+  .delegated,
+  .received,
+  .origination {
+    position: relative;
+    overflow: hidden;
+    box-shadow: $box-shadow;
+
+    &:after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 0;
+      width: 100%;
+    }
+
+    &.unconfirmed {
+      background-color: $event-unconfirmed;
+
+      &:after {
+        height: 0.1875rem;
+        background-color: $base-color-lightened-1;
+      }
+    }
+    &.half_confirmed {
+      background-color: $event-new;
+      & .updating-balances {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        & img {
+          width: 1.125rem;
+          height: 1.125rem;
+          margin-right: 0.5rem;
+        }
+        & span {
+          color: $base-font-color;
+        }
+      }
+    }
+    &.confirmed {
+      background-color: $event-confirmed;
+    }
+
+    &.new {
+      background-color: $event-new;
+
+      &:after {
+        height: 0.1875rem;
+        background-color: $base-green-color;
+      }
+    }
+
+    &.failed {
+      background-color: $event-confirmed;
+      &:after {
+        height: 0.1875rem;
+        background-color: $base-red-color;
+      }
+      & .title,
+      & .failed {
+        color: $base-red-color;
+      }
+      & .failed {
+        @include m.multiply("font-size", 1.25);
+      }
+    }
+
+    & .title {
+      @include m.multiply("font-size", 1.5);
+      margin-bottom: 0.5rem;
+
+      & img {
+        margin: 0 0.5rem 0 0;
+        width: 1.5rem;
+        height: auto;
+      }
+
+      & .blank {
+        height: 1rem;
+        width: 1rem;
+        margin: 0 1rem 0 0;
+        display: inline-block;
+      }
+    }
+
+    & .top, .bottom {
+      width: 100%;
+    }
+
+    & .bottom {
+      justify-content: flex-end;
+      align-items: flex-start;
+    }
+
+    & .address {
+      width: calc(100% - 11.125rem);
+      color: $base-font-color-secondary;
+      margin: 0 0 0 2.125rem;
+      justify-content: flex-start;
+
+      & .event-icon {
+        margin: 0 0.25rem 0 0;
+      }
+
+      & .prefix {
+        @include m.multiply("font-size", 1.125);
+        color: $base-font-color-secondary;
+        align-self: flex-end;
+      }
+
+      & div.value {
+        @include m.multiply("font-size", 1.125);
+        @include m.ellipsis;
+        color: $base-font-color-secondary;
+        white-space: pre;
+        align-items: flex-end;
+        display: inline-block;
+        max-width: 100%;
+      }
+
+      & img {
+        width: 1rem;
+        height: 1rem;
+        margin: 0 0.25rem;
+      }
+
+      & .copy {
+        cursor: pointer;
+        margin: 0 0.5rem;
+        align-self: center;
+      }
+    }
+
+    & .time {
+      text-align: right;
+      color: $base-font-color;
+      justify-content: flex-end;
+      width: 11rem;
+      height: 1.25rem;
+
+      & img {
+        width: 1rem;
+        height: 1rem;
+        margin: 0 0.375rem 0 0;
+      }
+      & a.status, div.status {
+        @include m.multiply("font-size", 1.125, "rem", 1.2);
+        color: $base-font-color;
+        white-space: nowrap;
+      }
+      & a:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  & .received {
+    &.unconfirmed,
+    &.half-confirmed,
+    &.confirmed {
+      .title {
+        color: $base-blue-color-lightened;
+      }
+    }
+  }
+}

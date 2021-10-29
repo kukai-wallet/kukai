@@ -1,6 +1,7 @@
 @use '../../../abstracts/variables'as v;
 @use '../../../abstracts/mixins' as m;
 
+$base-blue-color: v.$base-blue-color;
 $border-color: v.$border-color;
 
 :host {
@@ -37,12 +38,14 @@ button {
     }
 
     &.tez {
-      padding: 1rem
+      padding: 1rem;
+      color: $base-blue-color;
     }
   }
 
   &.detail {
     width: 50%;
     height: 4rem;
+    color: v.$base-end-color-static;
   }
 }

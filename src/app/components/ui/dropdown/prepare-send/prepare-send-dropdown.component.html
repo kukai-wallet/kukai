@@ -13,10 +13,12 @@
       Tezos Domains
     </a>
     <ng-container *ngFor="let key of torusService.verifierMapKeys">
-      <a [class.selected]="torusVerifierName === torusService.verifierMap[key].name"
-        (click)="torusVerifier = key; torusVerifierName = torusService.verifierMap[key].name">
-        {{ torusService.verifierMap[key].name }}
-      </a>
+      <ng-container *ngIf="torusService.verifierMap[key].lookups">
+        <a [class.selected]="torusVerifierName === torusService.verifierMap[key].name"
+          (click)="torusVerifier = key; torusVerifierName = torusService.verifierMap[key].name">
+          {{ torusService.verifierMap[key].name }}
+        </a>
+      </ng-container>
     </ng-container>
   </div>
 </div>

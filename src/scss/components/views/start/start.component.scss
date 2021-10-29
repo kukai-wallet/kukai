@@ -1,0 +1,396 @@
+@use '../../../abstracts/variables'as v;
+@use '../../../abstracts/mixins' as m;
+
+$base-font-color: v.$base-font-color;
+$base-font-color-secondary: v.$base-font-color-secondary;
+$base-end-color: v.$base-end-color;
+$base-color-lightened-5: v.$base-color-lightened-5;
+$base-color-lightened-6: v.$base-color-lightened-6;
+$border-width: v.$border-width;
+$border-color: v.$border-color;
+$base-background-color: v.$base-background-color;
+
+%bg {
+  width: 85%;
+  height: 85%;
+  object-fit: contain;
+  object-position: right;
+}
+
+%ribbon {
+  position: absolute;
+  bottom: 0;
+  left: -50vw;
+  width: 100vw !important;
+  height: 45.5vh;
+  border-top: 1.5rem solid #d6dbe3;
+  background-color: $base-color-lightened-6;
+  z-index: -100;
+  background: linear-gradient(
+    180deg,
+    $base-color-lightened-5,
+    $base-background-color
+  );
+}
+
+:host {
+  width: 100%;
+  min-height: calc(100vh - 12.5rem);
+  height: 60rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+
+  & .is-mobile {
+    display: block;
+  }
+
+  & #ribbon {
+    @extend %ribbon;
+
+    &-mobile {
+      @extend %ribbon;
+      display: none;
+    }
+  }
+}
+
+#wrapper {
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  position: relative;
+
+  & .left,
+  & .right {
+    height: 100%;
+    position: relative;
+    z-index: 100;
+    width: calc(50% - 120px);
+    padding: 0 0 0 120px;
+    max-width: 1280px;
+
+    & h1 {
+      @include m.multiply("font-size", 7);
+      color: $base-font-color;
+      font-weight: 500;
+    }
+
+    & h3 {
+      @include m.multiply("font-size", 3);
+      font-weight: 400;
+      line-height: 4.5rem;
+      color: #6c7a8d;
+    }
+
+    & > div {
+      width: 100%;
+      height: 52%;
+      justify-content: center;
+
+      &:last-child {
+        height: 48%;
+      }
+    }
+
+    & .top,
+    & .login {
+      width: 100%;
+    }
+
+    & .top {
+      justify-content: center;
+
+      & > * {
+        margin: 2rem 0;
+      }
+    }
+
+    & .bottom {
+      display: none;
+      position: relative;
+      align-items: center;
+    }
+
+    & .login {
+      position: relative;
+      top: -4rem;
+
+      & > * {
+        margin: 1rem 0;
+      }
+
+      & > span {
+        @include m.multiply("font-size", 3, "rem", 0.5);
+        color: $base-font-color;
+
+        &:last-of-type {
+          @include m.multiply("font-size", 2, "rem", .925);
+          color: $base-font-color;
+        }
+      }
+
+      & .social {
+        justify-content: flex-start;
+
+        & .torus {
+          width: fit-content;
+        }
+
+        .facebook,
+        .twitter,
+        .reddit,
+        & > .google img {
+          border-radius: v.$border-radius-hardest;
+          background-color: $base-end-color;
+          box-shadow: v.$box-shadow;
+          cursor: pointer;
+          &:hover {
+            filter: invert(0.05);
+          }
+        }
+
+        .facebook,
+        .twitter,
+        .reddit {
+          width: 4rem;
+          height: 4rem;
+          padding: 0.75rem;
+          margin: 0 0 0 1rem;
+        }
+
+        & > .google {
+          border: $border-width solid $base-end-color;
+          border-radius: v.$border-radius-hardest;
+          min-width: 27rem;
+          height: calc(5.5rem - #{$border-width});
+          color: $base-font-color;
+          padding: 0 1rem 0 2rem;
+          background-color: $base-end-color;
+          box-shadow: v.$box-shadow;
+
+          & > span {
+            @include m.multiply("font-size", 1.375);
+            padding: 1rem 0;
+            font-weight: 600;
+            width: 100%;
+          }
+
+          & img {
+            width: 2rem;
+            height: 2rem;
+          }
+        }
+      }
+
+      & .email {
+        height: 4rem;
+        justify-content: flex-start;
+
+        & input,
+        & .signin {
+          height: 100%;
+          border: $border-width solid $border-color;
+          border-radius: v.$border-radius-hardest;
+        }
+
+        & input {
+          width: 55%;
+          text-align: left;
+          padding: 0.5rem 0 0.5rem 2rem;
+          @include m.multiply("font-size", 2);
+        }
+
+        & .signin {
+          width: 12rem;
+          height: 5rem;
+          background-color: $base-background-color;
+          color: $base-font-color-secondary;
+          @include m.multiply("font-size", 1.5);
+          margin: 0 0 0 2rem;
+        }
+      }
+    }
+  }
+
+  & .right {
+    justify-content: center;
+    align-items: flex-end;
+    position: relative;
+    z-index: 0;
+    padding: 0 120px 0 0;
+  }
+
+  & #bg {
+    @extend %bg;
+
+    &-mobile {
+      @extend %bg;
+      display: none;
+    }
+  }
+}
+
+@media (max-width: v.$layout-break-1) {
+  #wrapper {
+    & .left,
+    & .right {
+      & h1 {
+        @include m.multiply("font-size", 4.5);
+      }
+
+      & h3 {
+        @include m.multiply("font-size", 2);
+        line-height: 3rem;
+      }
+    }
+  }
+}
+
+@media (max-width: v.$layout-break-3) and (max-aspect-ratio: 1/1), (max-width: v.$layout-break-5) {
+  :host {
+    & .bottom {
+      display: flex !important;
+    }
+
+    & #ribbon {
+      display: none;
+    }
+
+    & #ribbon-mobile {
+      left: 0;
+      display: block;
+      height: 48%;
+    }
+
+    height: unset;
+
+    #wrapper {
+      width: 100%;
+      height: auto;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 0 0 0;
+
+      #bg {
+        display: none;
+
+        &-mobile {
+          display: block;
+          width: 75% !important;
+          height: 100% !important;
+          max-width: 70rem;
+        }
+      }
+
+      & .left,
+      & .right {
+        width: 100%;
+        height: 100%;
+        align-items: center;
+        padding: 0;
+
+        & .top h1,
+        & .top h3 {
+          width: 100%;
+          text-align: center;
+          font-weight: 400;
+          margin: 2rem;
+          width: calc(100% - 4rem);
+        }
+
+        & .top h1 {
+          font-size: 5.65rem;
+          font-weight: 500;
+          line-height: 7.25rem;
+        }
+
+        & .top h3 {
+          font-size: 2.85rem;
+          font-weight: 400;
+          line-height: 4.5rem;
+          color: $base-font-color-secondary;
+        }
+
+        & > div {
+          width: 100%;
+          height: 100%;
+          justify-content: center;
+        }
+
+        & .top,
+        & .login {
+          flex-direction: column;
+          width: 100%;
+          padding: 0;
+          height: auto;
+
+          & .email {
+            justify-content: center;
+          }
+        }
+
+        & .top {
+          justify-content: flex-end;
+          width: 100%;
+          padding: 0;
+
+          & > * {
+            margin: 2rem 0;
+          }
+        }
+
+        & .login {
+          position: unset;
+          top: unset;
+
+          & > span {
+            @include m.multiply("font-size", 2);
+            text-align: center;
+            font-weight: 500;
+          }
+
+          & .social {
+            flex-direction: column;
+            align-items: center;
+            height: 15rem;
+            justify-content: flex-start;
+
+            & .google {
+              margin: 0 0 2rem 0;
+              min-width: 29rem;
+              height: 6rem;
+
+              & > img {
+                width: 2.5rem;
+                height: 2.5rem;
+              }
+            }
+
+            & .facebook,
+            & .twitter,
+            & .reddit {
+              width: 4.5rem;
+              height: 4.5rem;
+              padding: 0.75rem;
+              margin: 0 0 0 2rem;
+            }
+
+            & .facebook {
+              margin: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-aspect-ratio: 3/2) and (min-width: v.$layout-break-3) {
+  :host {
+    & #wrapper {
+      max-height: calc((100vw / 3) * 2);
+    }
+  }
+}

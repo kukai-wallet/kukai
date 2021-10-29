@@ -1,0 +1,472 @@
+@use '../../../abstracts/variables'as v;
+@use '../../../abstracts/mixins' as m;
+
+$base-font-color: v.$base-font-color;
+$base-font-color-secondary: v.$base-font-color-secondary;
+$base-end-color: v.$base-end-color;
+$base-blue-color: v.$base-blue-color;
+$base-blue-color-lightened: v.$base-blue-color-lightened;
+$base-color-lightened-4: v.$base-color-lightened-4;
+$border-width: v.$border-width;
+$border-color: v.$border-color;
+$base-background-color: v.$base-background-color;
+
+:host {
+  display: flex;
+  flex-flow: column nowrap;
+  padding: 5rem 0;
+  min-height: calc(100vh - 30rem);
+  justify-content: flex-start;
+  align-items: center;
+  background-color: $base-background-color;
+
+  .card {
+    @include m.base-relative;
+    max-width: v.$layout-break-4;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+
+    & a {
+      text-decoration: none;
+      & .back {
+        @include m.multiply("font-size", 1);
+        position: absolute;
+        top: 1rem;
+        left: -0;
+        background-color: $base-background-color;
+        border: v.$border-width solid $base-color-lightened-4;
+        border-radius: v.$border-radius-hardest;
+        color: $base-font-color;
+        font-weight: 500;
+        padding: 0.75rem 1.25rem;
+
+        & img {
+          height: 1rem;
+          margin: 0 1rem 0 0;
+        }
+      }
+    }
+
+    & .body {
+      align-items: center;
+      width: 100%;
+      color: $base-font-color;
+
+      & h1 {
+        @include m.multiply("font-size", 3);
+        text-align: center;
+        font-weight: 500;
+        margin: 0 0 4rem 0;
+      }
+
+      & span {
+        @include m.multiply("font-size", 1.125);
+        margin: 0 0 2rem 0;
+
+        &.label {
+          letter-spacing: 0.02em;
+          font-weight: 600;
+          text-transform: uppercase;
+        }
+
+        & a {
+          color: $base-blue-color-lightened;
+        }
+      }
+
+      & textarea,
+      input.text,
+      input[type="password"],
+      .input-file {
+        @include m.multiply("font-size", 1.125);
+        border-radius: v.$border-radius-hardest;
+        border: $border-width solid v.$border-color;
+        padding: 1rem;
+        width: 100%;
+        max-width: calc(50% - 2rem);
+        margin-bottom: 4rem;
+        text-align: center;
+      }
+
+      & textarea {
+        height: 12rem;
+        border-radius: v.$border-radius;
+      }
+
+      & .seed-word {
+        margin: 0 0 2.5rem 0;
+      }
+
+      & .description,
+      & .whitebox,
+      & .seed-blur {
+        @include m.multiply("font-size", 2);
+        text-align: center;
+        color: $base-font-color;
+        letter-spacing: 0.02em;
+      }
+
+      & .description {
+        @include m.multiply("font-size", 1);
+        margin: 2rem 0 2rem 0;
+        text-transform: uppercase;
+        font-weight: 600;
+        & span {
+          @include m.multiply("font-size", 1);
+          text-transform: uppercase;
+          font-weight: 600;
+        }
+
+        &.red {
+          @include m.multiply("font-size", 1.5);
+          color: red;
+        }
+      }
+
+      & .whitebox {
+        background-color: $base-end-color;
+        box-shadow: v.$box-shadow;
+        padding: 3rem;
+        margin: 0 0 4rem 0;
+        border-radius: v.$border-radius;
+        position: relative;
+        top: 0;
+        left: 0;
+
+        &.final .description {
+          margin: 0;
+          text-transform: none;
+        }
+
+        & .seed-blur,
+        & .seed-blur span {
+          @include m.multiply("font-size", 1.5);
+          color: $base-blue-color;
+          font-weight: 500;
+          margin: 0;
+        }
+
+        & .seed-blur {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          justify-content: center;
+          border-radius: v.$border-radius;
+          background-color: #fff;
+        }
+        @supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
+          & .seed-blur {
+            background-color: rgba(0, 0, 0, 0);
+            backdrop-filter: blur(15px);
+          }
+        }
+      }
+
+      & .next {
+        @include m.multiply("font-size", 1.125);
+        width: 50%;
+        height: 4.5rem;
+        border-radius: v.$border-radius-hardest;
+        margin: 0 0 4rem 0;
+        background-color: $base-blue-color-lightened;
+        padding: 0 2rem;
+
+        &.disabled {
+          display: none;
+        }
+      }
+
+      & progress[value] {
+        -webkit-appearance: none;
+        appearance: none;
+        border: none;
+        width: 100%;
+        height: 0.5rem;
+        margin: 0 0 4rem 0;
+        border-radius: 4px;
+      }
+
+      & progress::-webkit-progress-bar,
+      & progress {
+        background-color: $base-color-lightened-4;
+        border-radius: v.$border-radius;
+        width: 100%;
+      }
+
+      & progress {
+        color: $base-blue-color;
+        border-radius: v.$border-radius-hard;
+
+        &::-moz-progress-bar,
+        &::-webkit-progress-value {
+          background-color: $base-blue-color !important;
+          border-radius: v.$border-radius-hard;
+        }
+      }
+
+      & .word-verify {
+        @include m.multiply("font-size", 2);
+        width: 100%;
+        padding: 1rem;
+        margin: 0 0 4rem 0;
+
+        & .word-input {
+          max-width: 50%;
+        }
+
+        & .word-hint,
+        .word-input {
+          justify-content: center;
+          align-items: center;
+        }
+      }
+
+      & .word-hint {
+        width: 12rem;
+        text-align: center;
+      }
+
+      & #wordInput {
+        @include m.multiply("font-size", 2);
+        width: auto;
+        max-width: calc(100% - 2rem);
+        padding: 1rem;
+        background-color: #eaedef;
+        border: $border-width solid #ccc;
+        text-align: center;
+        color: black;
+        border-radius: v.$border-radius-hard;
+      }
+
+      & input[type="password"] {
+        width: 100%;
+        max-width: calc(50% - 2rem);
+
+        &:first-of-type {
+          margin: 0 0 2rem 0;
+        }
+      }
+
+      & .strength {
+        @include m.multiply("font-size", 1);
+        margin: 0 0 2rem 0;
+      }
+
+      .import-options {
+        @include m.multiply("font-size", 2);
+        width: 100%;
+        margin: 0 0 4rem 0;
+        align-items: flex-end;
+      }
+
+      .import-options {
+        border-bottom: 1px solid $border-color;
+
+        & > span {
+          width: 30%;
+          text-align: center;
+          cursor: pointer;
+          text-transform: uppercase;
+          font-weight: 600;
+          color: $base-font-color-secondary;
+          letter-spacing: 0.06em;
+
+          &.selected {
+            @include m.base-relative;
+            color: $base-blue-color-lightened;
+            margin: 0;
+            padding: 2rem 0 calc(2rem + 1px) 0;
+            top: 1px;
+
+            &:after {
+              content: "";
+              position: absolute;
+              bottom: 0;
+              left: 0;
+              height: 3px;
+              width: 100%;
+              background-color: $base-blue-color-lightened;
+            }
+          }
+        }
+      }
+
+      & input#file {
+        display: none;
+      }
+
+      & .input-file {
+        @include m.multiply("font-size", 2);
+        width: 100%;
+        max-width: calc(100% - 6rem);
+        margin: 0.5rem;
+        border: none;
+        justify-content: space-between;
+        border-radius: v.$border-radius;
+        height: calc(100% - 3rem);
+        background-color: #e5e9ed;
+        padding: 1rem 2.5rem;
+
+        &.loaded {
+          background-color: $base-end-color;
+          box-shadow: v.$box-shadow;
+        }
+
+        & .body {
+          width: calc(100% - 5rem);
+          justify-content: flex-start;
+        }
+
+        & .filename {
+          @include m.ellipsis;
+          color: $base-blue-color-lightened;
+          align-items: center;
+          display: block;
+          max-width: 100%;
+
+          & img {
+            padding: 0 0.5rem 0.25rem 0;
+          }
+        }
+
+        & .b {
+          position: relative;
+          top: 0;
+          left: 0;
+
+          &::after {
+            content: "";
+            width: 100%;
+            height: 2px;
+            background-color: #d3d9e0;
+            position: absolute;
+            top: 2rem;
+            left: 0;
+          }
+        }
+
+        & img {
+          width: 1.75rem;
+          height: 1.75rem;
+          object-fit: scale-down;
+        }
+
+        & span {
+          margin: 0;
+        }
+
+        &-wrapper {
+          width: 100%;
+          justify-content: space-between;
+          border: v.$border-width dashed #3333;
+          border-radius: v.$border-radius;
+          margin: 0 0 4rem 0;
+          height: 7rem;
+        }
+      }
+
+      & .import-option-1 {
+        justify-content: center;
+        & input {
+          max-width: calc(100% - 2rem);
+        }
+
+        & > div {
+          width: calc(50% - 2rem);
+          height: 10rem;
+          justify-content: space-between;
+          align-items: center;
+          padding: 0 1rem;
+
+          & span {
+            text-align: center;
+            text-transform: uppercase;
+          }
+        }
+      }
+
+      & .radios {
+        width: 100%;
+        max-width: 40rem;
+
+        & span {
+          margin: 0;
+        }
+
+        & input {
+          width: 2rem;
+          height: 2rem;
+          margin: 0 1rem 0 0;
+        }
+      }
+    }
+
+    & .step-counter {
+      width: 16rem;
+      height: auto;
+
+      & .dot {
+        width: 0.75rem;
+        height: 0.75rem;
+        margin: 0.5rem;
+        background-color: $base-color-lightened-4;
+        border-radius: v.$border-radius-hardest;
+        transition: 0.5s width, 0.5s height, margin 0.5s;
+
+        &.selected {
+          width: 1.25rem;
+          height: 1.25rem;
+          margin: 0;
+          background-color: $base-blue-color-lightened;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: v.$layout-break-5) {
+  :host {
+    & .card {
+      padding: 0 2rem;
+      width: calc(100% - 4rem);
+
+      & .body {
+        textarea,
+        input.text,
+        input[type="password"],
+        .input-file {
+          max-width: unset;
+          width: calc(100% - 4rem);
+        }
+
+        & .input-file {
+          max-width: unset;
+          width: calc(100% - 6rem);
+        }
+
+        & .import-option-1 {
+          flex-direction: column;
+
+          & > div {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+          }
+          & > div.radios {
+            margin: 0 0 2rem 0;
+            width: 85%;
+          }
+        }
+      }
+
+      & a .back {
+        position: unset;
+        margin: 0 0 4rem 0;
+      }
+    }
+  }
+}

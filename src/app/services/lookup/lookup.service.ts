@@ -38,11 +38,13 @@ export class LookupService {
     }
   }
   add(address: string, name: string, lookupType: LookupType) {
-    console.log('#name', name);
+    console.log('#name ' + name, lookupType);
     const { x, y } = this.index(address, lookupType);
     if (x !== -1) {
       if (y === -1) {
         this.records[x].data.push({ name, lookupType });
+      } else if (lookupType === LookupType.TezosDomains) {
+        this.records[x].data[y] = { name, lookupType };
       }
     } else {
       this.records.push({ address, data: [{ name, lookupType }] });
@@ -96,8 +98,7 @@ export class LookupService {
           return;
         }
         this.pendingLookups[address]--;
-        console.log(address + ' -> ' + domain);
-        if (domain) {
+        if (domain || domain === '') {
           this.add(address, domain, LookupType.TezosDomains);
         } else {
           this.mark(address);
@@ -185,10 +186,8 @@ export class LookupService {
     if (x !== -1 && y !== -1) {
       return { name: this.records[x].data[y].name, lookupType: this.records[x].data[y].lookupType, address: party.address };
     } else if (party?.alias) {
-      setTimeout(() => {
-        this.add(party.address, party.alias, LookupType.Alias)
-      },0);
-      return { name: party.alias, lookupType: LookupType.Alias, address: party.address };
+      this.add(party.address, party.alias, LookupType.Alias);
+      return this.resolve(party);
     }
     return { address: party?.address };
   }

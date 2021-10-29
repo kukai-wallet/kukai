@@ -1,0 +1,57 @@
+@use '../../abstracts/mixins' as m;
+@use '../../abstracts/variables'as v;
+
+$base-color-lightened-7: v.$base-color-lightened-7;
+
+& .permission-request {
+  margin: 2rem 0 0 0;
+  width: 36rem;
+  align-items: center;
+
+  & .requests {
+    margin: 2rem 0;
+    padding: 2rem;
+    width: calc(100% - 4rem);
+    background-color: $base-color-lightened-7;
+    border-radius: v.$border-radius;
+    
+    & span {
+      @include m.multiply("font-size", 1);
+      color: v.$base-font-color-secondary-half;
+      text-transform: uppercase;
+      font-weight: 500;
+
+      &:before {
+        @include m.multiply("height", 1.375);
+        content: "◆";
+        margin: 0 0.5rem 0 0;
+      }
+    }
+  }
+
+  & h4 {
+    @include m.multiply("font-size", 1.375);
+    color: v.$base-font-color;
+    font-weight: 500;
+  }
+
+  & h6 {
+    @include m.multiply("font-size", 1);
+    text-transform: uppercase;
+    color: v.$base-font-color-secondary;
+    font-weight: 500;
+  }
+
+  & .seperator {
+    left: 0;
+  }
+
+  & .bottom {
+    width: 100%;
+
+    & .confirm {
+      width: 50%;
+      margin: 0;
+    }
+  }
+}

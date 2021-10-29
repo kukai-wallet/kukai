@@ -1,7 +1,6 @@
 
 import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import mimes from 'mime-db/db.json'
-import { throwError } from 'rxjs';
 import { Asset, CachedAsset } from '../../../services/token/token.service';
 
 @Component({
@@ -11,8 +10,10 @@ import { Asset, CachedAsset } from '../../../services/token/token.service';
 })
 
 export class AssetComponent implements OnInit, OnChanges, AfterViewInit {
-  @ViewChild('asset') asset;
   @ViewChild('preImage') preImage;
+  @ViewChild('postImage') postImage;
+  @ViewChild('video') video;
+  @ViewChild('model') model;
   @Input() meta: Asset;
   @Input() size = '150x150';
   @Output() inView = new EventEmitter(null);
@@ -35,30 +36,30 @@ export class AssetComponent implements OnInit, OnChanges, AfterViewInit {
   constructor() {
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.evaluate();
   }
 
-  async ngOnChanges(changes: SimpleChanges) {
+  async ngOnChanges(changes: SimpleChanges): Promise<void> {
     await this.evaluate();
-    if (this.asset?.nativeElement) {
+    if (this.preImage?.nativeElement || this.video?.nativeElement || this.model?.nativeElement) {
       this.lazyLoad();
     }
   }
 
-  ngAfterViewInit() {
-    this.asset.nativeElement.onerror = this.onError.bind(this);
-    this.asset.nativeElement.onload = this.onLoad.bind(this);
+  ngAfterViewInit(): void {
     this.preImage.nativeElement.onerror = this.onError.bind(this);
     this.preImage.nativeElement.onload = this.onLoad.bind(this);
+    this.postImage.nativeElement.onerror = this.onError.bind(this);
+    this.postImage.nativeElement.onload = this.onLoad.bind(this);
     this.lazyLoad();
   }
 
-  isEqualUrl() {
+  isEqualUrl(): boolean {
     return (typeof (this.meta) === 'string' && this.meta === this.dataSrc || typeof (this.meta) === 'object' && `${this.baseUrl}/${this.meta.filename}_${this.size}.${this.meta.extension}` === this.dataSrc);
   }
 
-  onLoad(e) {
+  onLoad(e): void {
     if (e?.target?.id === 'preImage') {
       this.postSrc = this.preSrc;
     } else if (e?.target?.id === 'postImage' && e?.target?.src.indexOf(this.loaderUrl) === -1 && e?.target?.src.indexOf(this.unknownUrl) === -1) {
@@ -66,11 +67,11 @@ export class AssetComponent implements OnInit, OnChanges, AfterViewInit {
     }
   }
 
-  onError(e) {
+  onError(e): void {
     this.postSrc = this.unknownUrl;
   }
 
-  async evaluate() {
+  async evaluate(): Promise<void> {
     if (this.isEqualUrl()) { return; }
     this.dataSrc = undefined;
     this.postSrc = this.loaderUrl;
@@ -86,13 +87,13 @@ export class AssetComponent implements OnInit, OnChanges, AfterViewInit {
     }
   }
 
-  async modelInit() {
+  async modelInit(): Promise<void> {
     await fetch('https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js').then(response => response.blob()).then(async blob => {
       document.querySelector('head').appendChild(document.createElement('script').appendChild(document.createTextNode(await blob.text())));
     });
   }
 
-  lazyLoad() {
+  lazyLoad(): void {
     this.obs = new IntersectionObserver((entries, _) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
@@ -107,8 +108,10 @@ export class AssetComponent implements OnInit, OnChanges, AfterViewInit {
           }
           this.inView.emit();
         }
-      })
+      });
     });
-    this.obs.observe(this.asset?.nativeElement);
+    if(this.postImage?.nativeElement) {
+      this.obs.observe(this.postImage?.nativeElement);
+    }
   }
 }

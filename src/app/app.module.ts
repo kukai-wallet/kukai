@@ -33,49 +33,49 @@ import { TokenBalancesService } from './services/token-balances/token-balances.s
 import { SubjectService } from './services/subject/subject.service';
 
 // View components
-import { StartComponent } from './components/start/start.component';
-import { NewWalletComponent } from './components/start/login-types/new-wallet/new-wallet.component';
-import { MnemonicImportComponent } from './components/start/login-types/mnemonic-import/mnemonic-import.component';
+import { StartComponent } from './components/views/start/start.component';
+import { NewWalletComponent } from './components/views/start/login-types/new-wallet/new-wallet.component';
+import { MnemonicImportComponent } from './components/views/start/login-types/mnemonic-import/mnemonic-import.component';
 import { CoordinatorService } from './services/coordinator/coordinator.service';
 import { OperationService } from './services/operation/operation.service';
-import { MessagesComponent } from './components/messages/messages.component';
-import { ModalComponent } from './components/modal/modal.component';
-import { HeaderComponent } from './components/header/header.component';
-import { ConnectLedgerComponent } from './components/start/login-types/connect-ledger/connect-ledger.component';
-import { FooterComponent } from './components/footer/footer.component';
-import { AccountViewComponent } from './components/account-view/account-view.component';
-import { ActivityComponent } from './components/account-view/activity/activity.component';
-import { EventComponent } from './components/account-view/activity/event/event.component';
-import { NftsComponent } from './components/account-view/nfts/nfts.component';
-import { PendingComponent } from './components/account-view/pending/pending.component';
-import { BalancesComponent } from './components/account-view/balances/balances.component';
-import { BalanceTokenComponent } from './components/account-view/balances/token/balance-token.component';
-import { SpinnerComponent } from './components/spinner/spinner.component';
-import { AgreementComponent } from './components/agreement/agreement.component';
-import { TermsOfUseComponent } from './components/agreement/terms-of-use/terms-of-use.component';
-import { PrivacyPolicyComponent } from './components/agreement/privacy-policy/privacy-policy.component';
-import { EmbeddedComponent } from './components/embedded/embedded.component';
-import { SigninComponent } from './components/embedded/signin/signin.component';
-import { CardComponent } from './components/embedded/card/card.component';
+import { MessagesComponent } from './components/ui/messages/messages.component';
+import { ModalComponent } from './components/modals/modal.component';
+import { HeaderComponent } from './components/views/layouts/header/header.component';
+import { ConnectLedgerComponent } from './components/views/start/login-types/connect-ledger/connect-ledger.component';
+import { FooterComponent } from './components/views/layouts/footer/footer.component';
+import { AccountViewComponent } from './components/views/logged-in/account-view/account-view.component';
+import { ActivityComponent } from './components/views/logged-in/account-view/activity/activity.component';
+import { EventComponent } from './components/views/logged-in/account-view/activity/event/event.component';
+import { NftsComponent } from './components/views/logged-in/account-view/nfts/nfts.component';
+import { PendingComponent } from './components/views/logged-in/account-view/pending/pending.component';
+import { BalancesComponent } from './components/views/logged-in/account-view/balances/balances.component';
+import { BalanceTokenComponent } from './components/views/logged-in/account-view/balances/token/balance-token.component';
+import { SpinnerComponent } from './components/ui/spinner/spinner.component';
+import { AgreementComponent } from './components/views/start/agreement/agreement.component';
+import { TermsOfUseComponent } from './components/views/start/agreement/terms-of-use/terms-of-use.component';
+import { PrivacyPolicyComponent } from './components/views/start/agreement/privacy-policy/privacy-policy.component';
+import { EmbeddedComponent } from './components/views/embedded/embedded.component';
+import { SigninComponent } from './components/views/embedded/signin/signin.component';
+import { CardComponent } from './components/views/embedded/card/card.component';
 import { SendButtonComponent } from './components/ui/button/basic/send/send-button.component';
-import { TokenDetail } from './components/modal/send/detail/token-detail.component';
-import { AlertComponent } from './components/modal/alert/alert.component';
-import { SpinnerLegacyComponent } from './components/spinner/legacy/spinner-legacy.component';
-import { SpinnerNewComponent } from './components/spinner/new/spinner-new.component';
+import { TokenDetail } from './components/modals/send/detail/token-detail.component';
+import { AlertComponent } from './components/modals/alert/alert.component';
+import { SpinnerLegacyComponent } from './components/ui/spinner/legacy/spinner-legacy.component';
+import { SpinnerNewComponent } from './components/ui/spinner/new/spinner-new.component';
 import { AccountDropdownComponent } from './components/ui/dropdown/account/account-dropdown.component';
 import { MobileMenuDropdownComponent } from './components/ui/dropdown/mobile-menu/mobile-menu.component';
-import { P404Component } from './components/error/404.component';
-import { P500Component } from './components/error/500.component';
+import { P404Component } from './components/views/error/404.component';
+import { P500Component } from './components/views/error/500.component';
 
 // Modules
-import { LoggedInModule } from './components/logged-in/logged-in.module';
+import { LoggedInModule } from './components/views/logged-in/logged-in.module';
 
 // Pipes
 import { ErrorHandlingPipe } from './pipes/error-handling.pipe';
-import { DelegatorNamePipe } from './pipes/delegator-name.pipe';
 import { TruncatePipe } from './pipes/truncate.pipe';
 import { TimeAgoPipe } from './pipes/time-ago.pipe';
 import { DeeplinkService } from './services/deeplink/deeplink.service';
+import { RemoveCommaPipe } from './pipes/remove-comma.pipe';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -125,7 +125,6 @@ export function HttpLoaderFactory(http: HttpClient) {
 
     // Pipes
     ErrorHandlingPipe,
-    DelegatorNamePipe,
     TruncatePipe,
     TimeAgoPipe
   ],
@@ -168,9 +167,9 @@ export function HttpLoaderFactory(http: HttpClient) {
 
     // Pipes
     ErrorHandlingPipe,
-    DelegatorNamePipe,
     TruncatePipe,
-    TimeAgoPipe
+    TimeAgoPipe,
+    RemoveCommaPipe
   ],
   bootstrap: [AppComponent]
 })

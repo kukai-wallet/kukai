@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { of, Observable, from as fromPromise } from 'rxjs';
-import { catchError, flatMap, timeout } from 'rxjs/operators';
+import { of, Observable, MonoTypeOperatorFunction, from as fromPromise, iif, throwError } from 'rxjs';
+import { catchError, retryWhen, flatMap, timeout, delay as delayOperator, debounceTime, concatMap } from 'rxjs/operators';
 import { Buffer } from 'buffer';
 import { blake2b } from 'blakejs';
 import { sign as naclSign } from 'tweetnacl';
@@ -1272,28 +1272,27 @@ export class OperationService {
     }
     return null;
   }
-  postRpc(path: string, payload: any, retries: number = 2): Observable<any> {
-    return this.http.post(`${this.nodeURL}/${path}`, payload, httpOptions).pipe(flatMap(res => {
-      return of(res);
-    })).pipe(catchError(err => {
-      if (retries > 0 && err?.name === 'HttpErrorResponse') {
-        console.warn('Retry', path);
-        return this.postRpc(path, payload, --retries);
-      } else {
-        throw err;
-      }
-    }));
+  postRpc(path: string, payload: any): Observable<any> {
+    return this.http.post(`${this.nodeURL}/${path}`, payload, httpOptions).pipe(this.retryPipeline(path))
   }
-  getRpc(path: string, retries: number = 2): Observable<any> {
-    return this.http.get(`${this.nodeURL}/${path}`).pipe(flatMap(res => {
-      return of(res);
-    })).pipe(catchError(err => {
-      if (retries > 0 && err?.name === 'HttpErrorResponse') {
-        console.warn('Retry', path);
-        return this.getRpc(path, --retries);
-      } else {
-        throw err;
+  getRpc(path: string): Observable<any> {
+    return this.http.get(`${this.nodeURL}/${path}`).pipe(this.retryPipeline(path))
+  }
+  private retryPipeline(path: string, retries: number = 3): MonoTypeOperatorFunction<unknown> {
+    const retryWithWarning = (i, e) => {
+      if (i < retries) {
+        console.warn(`Retry ${i + 1}: ${path}`, e);
       }
-    }));
+      return of(e).pipe(delayOperator(250))
+    };
+    return retryWhen(errors => errors.pipe(
+      concatMap((e, i) =>
+        iif(
+          () => (i >= retries || !(e?.name === 'HttpErrorResponse')),
+          throwError(e),
+          retryWithWarning(i, e)
+        )
+      )
+    ));
   }
 }

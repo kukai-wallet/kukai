@@ -1,0 +1,8 @@
+<div class="flex-row" [id]="ecmpId">
+  <div class="flex-row search-bar" [class.active]="isActive" [class.has-value]="hasValue">
+    <img class="search-button" src="assets/img/search.svg" (click)="searchButtonClicked()" />
+    <input #input type="text" [(ngModel)]="searchText" [placeholder]="placeholderText" (focus)="onFocus()" (keydown)="onKeydown($event)" />
+    <div *ngIf="isActive && hasValue" class="flex-row match-count"><span>{{ matchCount + ' matches' }}</span></div>
+  </div>
+  <div *ngIf="!hasValue" class="flex-row item-count"><span>{{ '(' + itemCount + ')' }}</span></div>
+</div>

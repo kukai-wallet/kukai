@@ -1,0 +1,124 @@
+@use "../../../../../../abstracts/variables" as v;
+@use "../../../../../../abstracts/mixins" as m;
+@import "../mixins";
+
+$base-font-color: v.$base-font-color;
+$base-end-color: v.$base-end-color;
+$base-background-color: v.$base-background-color;
+$base-font-color-secondary: v.$base-font-color-secondary;
+$base-blue-color: v.$base-blue-color;
+$base-blue-color-lightened: v.$base-blue-color-lightened;
+$base-color-lightened-675: v.$base-color-lightened-675;
+$border-color-dark-only: v.$border-color-dark-only;
+$border-width-dark-only: v.$border-width-dark-only;
+$border-width: v.$border-width;
+$border-color: v.$border-color;
+$layout-break-5: v.$layout-break-5;
+
+@include base;
+
+.top-container {
+  @include top-container;
+
+  &-balances {
+    @include top-container;
+
+    & .right {
+      @include top-container-right;
+      position: relative;
+      z-index: 0;
+    }
+  }
+}
+
+:host {
+  grid-area: balance;
+
+  & .main-container .scroll-wrapper {
+    padding: 0;
+    border: $border-width-dark-only solid $border-color-dark-only;
+    position: relative;
+    z-index: 0;
+    background-color: $base-end-color;
+  }
+}
+
+.balances {
+  max-height: 38.5rem;
+  overflow: hidden;
+  padding: 0rem 0.75rem 0rem 2rem;
+  width: calc(100% - 3.625rem);
+  background-color: transparent;
+  padding: 0rem calc(0.5rem + #{$border-width}) 0rem 2rem;
+  border: none;
+}
+
+.total-balances {
+  height: 6rem;
+  border-radius: 0.9375rem;
+  background-color: $base-color-lightened-675;
+  box-shadow: 0px -4px 8px #3333;
+  padding: 0rem 2rem;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-top: $border-width solid transparent;
+  position: relative;
+  z-index: 1;
+  width: calc(100% - 4rem);
+
+  &.no-box {
+    box-shadow: none !important;
+    border-color: $border-color;
+  }
+
+  & .left {
+    height: 2.125rem;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: calc(100% - 6rem);
+  }
+
+  & h1 {
+    @include m.multiply("font-size", 1.875);
+    color: $base-blue-color-lightened;
+    position: relative;
+    cursor: pointer;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: pre;
+    width: calc(100% - 13rem);
+  }
+
+  & h3 {
+    letter-spacing: 0.06em;
+    @include m.multiply("font-size", 1.25);
+    font-weight: 500;
+    color: $base-font-color-secondary;
+    width: 13rem;
+  }
+
+  & .sep {
+    @include m.multiply("font-size", 1.5);
+    font-weight: 800;
+    color: $border-color;
+    cursor: pointer;
+  }
+
+  & .fiat,
+  & .tez {
+    @include m.multiply("font-size", 1.5);
+    font-weight: 300;
+    color: $base-font-color-secondary;
+    cursor: pointer;
+
+    &.selected {
+      color: $base-blue-color-lightened;
+    }
+  }
+}
+
+@media (max-width: $layout-break-5) {
+  .total-balances .left {
+    align-items: center;
+  }
+}

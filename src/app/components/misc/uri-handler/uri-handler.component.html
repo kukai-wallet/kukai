@@ -1,0 +1,14 @@
+<app-send [embedded]="false" (operationResponse)="operationResponse($event)" [activeAccount]=selectedAccount
+  [operationRequest]="operationRequest"></app-send>
+<app-delegate (operationResponse)="operationResponse($event)" [beaconMode]=true [operationRequest]=operationRequest>
+</app-delegate>
+<app-originate (operationResponse)="operationResponse($event)" [operationRequest]=operationRequest
+  [activeAccount]=selectedAccount></app-originate>
+<app-permission-request (permissionResponse)="permissionResponse($event)" [permissionRequest]="permissionRequest"
+  [activeAccount]=activeAccount>
+</app-permission-request>
+<app-sign-expr (signResponse)="signResponse($event)" [signRequest]="signRequest" [activeAccount]=selectedAccount>
+</app-sign-expr>
+<app-account-list [title]="'Accounts'" [activeAccount]="activeAccount"></app-account-list>
+<app-new-implicit></app-new-implicit>
+<app-receive></app-receive>

@@ -86,7 +86,7 @@ export class TokenService {
     private subjectService: SubjectService,
     private teztoolsService: TeztoolsService
   ) {
-    this.contracts = CONSTANTS.ASSETS;
+    this.contracts = JSON.parse(JSON.stringify(CONSTANTS.ASSETS));
     this.loadMetadata();
     this.saveMetadata();
   }
@@ -182,7 +182,7 @@ export class TokenService {
   }
   async searchMetadata(contractAddress: string, id: number) {
     const tokenId = `${contractAddress}:${id}`;
-    if (!this.isKnownTokenId(tokenId) && this.explore(tokenId) && !this.queue.includes(tokenId)) {
+    if (!this.isKnownTokenId(tokenId) && !this.queue.includes(tokenId) && this.explore(tokenId)) {
       this.queue.push(tokenId);
       if (this.workers < 64) {
         this.startWorker();
@@ -198,7 +198,7 @@ export class TokenService {
         const contractAddress = a[0];
         const id = Number(a[1]);
         if (!this.isKnownTokenId(tokenId)) {
-          const metadata = await this.indexerService.getTokenMetadata(contractAddress, id);
+          const metadata = await this.indexerService.getTokenMetadata(contractAddress, id, this.getCounter(tokenId));
           this.handleMetadata(metadata, contractAddress, id);
         }
       } catch (e) { }
@@ -254,6 +254,9 @@ export class TokenService {
       return true;
     }
   }
+  private getCounter(tokenId: string) {
+    return this.exploredIds[tokenId].counter;
+  }
   resetCounters() {
     const ids = Object.keys(this.exploredIds);
     if (ids) {
@@ -265,7 +268,7 @@ export class TokenService {
   }
   resetAllMetadata() {
     this.exploredIds = {};
-    this.contracts = {};
+    this.contracts = JSON.parse(JSON.stringify(CONSTANTS.ASSETS));
     this.saveMetadata(true);
     this.loadMetadata();
     this.subjectService.metadataUpdated.next(null);

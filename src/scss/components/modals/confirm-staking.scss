@@ -1,0 +1,75 @@
+& .confirm-staking {
+  width: 32rem;
+
+  & .label {
+    color: v.$base-font-color-secondary
+  }
+
+  & .head {
+    margin: 1rem 0;
+    padding: 2rem;
+    background-color: v.$base-color-lightened-5;
+    border-radius: v.$border-radius;
+
+    & img {
+      width: 5rem;
+      height: 5rem;
+    }
+
+    & .data {
+      height: 5rem;
+      justify-content: center;
+      width: 100%;
+      align-items: flex-start;
+      margin: 0 0 0 2rem;
+
+      & .name {
+        @include m.multiply('font-size',1.125);
+        margin: 0 0 1rem 0;
+        color: v.$base-font-color;
+        font-weight: 600;
+      }
+
+      & .fee-space {
+
+        & .fee {
+          @include m.multiply('font-size',1);
+          color: v.$base-font-color;
+          font-weight: 600;
+
+          & span {
+            color: v.$base-font-color-secondary;
+            font-weight: 600;
+          }
+        }
+
+        & .space {
+          @include m.multiply('font-size',1);
+          margin: 0 0 0 2rem;
+          color: v.$base-font-color;
+          font-weight: 600;
+
+          & span {
+            color: v.$base-font-color-secondary;
+            font-weight: 600;
+          }
+        }
+      }
+    }
+  }
+
+  & .bottom {
+    margin: 1rem 0 0 0;
+    & .text.password {
+      width: calc(100% - 2.5rem);
+      margin: 0;
+    }
+
+    & span.label.danger {
+      color: v.$base-red-color;
+      font-weight: 500;
+      margin: 0 1rem 1rem 1rem;
+      align-self: flex-start;
+    }
+  }
+}

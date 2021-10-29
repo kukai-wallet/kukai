@@ -1,0 +1,86 @@
+@use "../../../abstracts/variables" as v;
+@use "../../../abstracts/mixins" as m;
+
+$base-font-color-secondary: v.$base-font-color-secondary;
+$base-color-lightened-7: v.$base-color-lightened-7;
+$base-color-lightened-675: v.$base-color-lightened-675;
+$base-color-lightened-65: v.$base-color-lightened-65;
+$border-width: v.$border-width;
+$border-color: v.$border-color;
+$border-radius-hardest: v.$border-radius-hardest;
+$base-filter-invert-1: v.$base-filter-invert-1;
+$base-bg: #d0d8e1;
+
+:host {
+  width: 100%;
+  position: relative;
+  display: inline-block;
+}
+
+.search-bar {
+  border-radius: $border-radius-hardest;
+  border: 0 solid transparent;
+  position: relative;
+  height: 4rem;
+  width: 0%;
+  background-color: $base-bg;
+  max-width: 48.5rem;
+  transition: 150ms width linear, 150ms border-color linear;
+
+  img.search-button {
+    width: 2rem;
+    height: 2rem;
+    padding: 1rem;
+    border-radius: $border-radius-hardest;
+    position: absolute;
+    z-index: 2;
+    background-color: $base-bg;
+    cursor: pointer;
+  }
+  input {
+    width: calc(100% - 14rem);
+    height: 100%;
+    padding: 0rem 0.5rem 0rem 0;
+    font-size: 1.75rem;
+    border: none;
+    background-color: transparent;
+    z-index: 1;
+    border-radius: 0;
+    position: absolute;
+    top: 0;
+    left: 5rem;
+  }
+  &.active {
+    width: calc(100% - 5rem);
+    & img.search-button {
+      padding: calc(1rem - #{$border-width});
+    }
+    border: $border-width solid $base-font-color-secondary;
+    height: calc(4rem - #{$border-width} * 2);
+  }
+  &.has-value {
+    width: 100%;
+  }
+}
+
+.match-count {
+  position: absolute;
+  top: 0;
+  right: 1.5rem;
+  z-index: 4;
+  height: 100%;
+  & span {
+    font-weight: 500;
+    font-size: 1.25rem;
+    color: $base-font-color-secondary;
+  }
+}
+
+.item-count {
+  height: 100%;
+  & span {
+    font-weight: 500;
+    font-size: 1.25rem;
+    color: $base-font-color-secondary;
+  }
+}

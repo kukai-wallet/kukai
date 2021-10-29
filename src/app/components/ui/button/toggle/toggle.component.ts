@@ -16,9 +16,8 @@ export class ToggleComponent implements OnInit {
     this.state = this.default;
   }
 
-  toggle() {
+  toggle(): void {
     this.state = !this.state;
     this.stateChange.emit(this.state);
   }
-
 }

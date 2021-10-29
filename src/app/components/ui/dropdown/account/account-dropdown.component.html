@@ -1,22 +1,30 @@
-<div *ngIf="router.url.indexOf('/account/') > -1" class="flex-row dropdown" [class.expanded]="isOpen" [style.cursor]="['', 'domain'].includes(getVerifier()) ? '' : 'text'" [id]="ecmpId">
-  <div class="flex-row currentAddress" (click)="['', 'domain'].includes(getVerifier()) ? toggleDropdown() : ''"><img *ngIf="!!getUsername(current?.address)" class="logo"
+<div *ngIf="router.url.indexOf('/account/') > -1" class="flex-row dropdown" [class.expanded]="isOpen"
+  [style.cursor]="['', 'domain'].includes(getVerifier()) ? '' : 'text'" [id]="ecmpId">
+  <div class="flex-row currentAddress" (click)="['', 'domain'].includes(getVerifier()) ? toggleDropdown() : ''"><img
+      *ngIf="!!getUsername(current?.address)" class="logo"
       src="../../../../assets/img/{{ getVerifier() }}-logo.svg" /><span class="address">{{
-      getUsername(current?.address) || "&nbsp;&nbsp;&nbsp;&nbsp;" + current?.shortAddress() }}</span><img *ngIf="['', 'domain'].includes(getVerifier())" class="button icon-db"
+      getUsername(current?.address) || "&nbsp;&nbsp;&nbsp;&nbsp;" + current?.shortAddress() }}</span><img
+      *ngIf="['', 'domain'].includes(getVerifier())" class="button icon-db"
       src="../../../../assets/img/down-arrow.svg" />
   </div>
   <div class="flex-column dropdown-content">
-    <ng-container *ngFor="let account of list">
-      <a class="option" routerLink="/account/{{account?.address}}" [class.selected]="account?.address === current?.address"
-        (click)="toggleDropdown()">
-        <ng-container *ngIf="getUsername(account?.address)">
-          <div class="flex-row alias"><img class="logo"
-              src="../../../../assets/img/{{ getVerifier() }}-logo.svg" /><span>{{
-              getUsername(account?.address) }}</span></div>
-          <br /><span>{{
-            account?.shortAddress() }}</span>
-        </ng-container>
-        <ng-container *ngIf="!getUsername(account?.address)">{{ account?.shortAddress() }}</ng-container>
-      </a>
-    </ng-container>
+    <div class="flex-column body">
+      <ng-container *ngFor="let account of list; trackBy: trackAccount">
+        <a class="option" routerLink="/account/{{account?.address}}"
+          [class.selected]="account?.address === current?.address"
+          [style.padding]="!getUsername(current?.address) ? '0.75rem 1.125rem 0.75rem calc(2.5rem - var(--border-width))' : ''"
+          (click)="toggleDropdown()">
+          <ng-container *ngIf="getUsername(account?.address)">
+            <div class="flex-row alias"><img class="logo"
+                src="../../../../assets/img/{{ getVerifier() }}-logo.svg" /><span>{{
+                getUsername(account?.address) }}</span></div>
+          </ng-container>
+          <ng-container *ngIf="!getUsername(account?.address)">{{ account?.shortAddress() }}</ng-container>
+        </a>
+      </ng-container>
+    </div>
+    <div *ngIf="list?.length > 1" class="option show-all" [style.padding]="!getUsername(current?.address) ? '0.75rem 1.125rem 0.75rem calc(2.5rem - var(--border-width))' : ''" (click)="showAll()">
+      <span>Show All</span>
+    </div>
   </div>
 </div>
