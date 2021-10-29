@@ -20,7 +20,7 @@ export class QrScannerComponent extends ModalComponent implements OnInit {
     private messageService: MessageService
   ) {
     super();
-   }
+  }
   @ViewChild('videoPlayer') videoplayer: ElementRef;
   qrScanner: QrScanner;
   manualInput = '';
@@ -29,7 +29,7 @@ export class QrScannerComponent extends ModalComponent implements OnInit {
   ngOnInit(): void {
   }
   openModal(): void {
-    ModalComponent.currentModel.next({name:this.name, data:null});
+    ModalComponent.currentModel.next({ name: this.name, data: null });
     this.scan();
   }
   async scan(): Promise<void> {
@@ -40,9 +40,9 @@ export class QrScannerComponent extends ModalComponent implements OnInit {
       this.qrScanner = new QrScanner(this.videoplayer.nativeElement, result => this.handleQrCode(result));
       await this.qrScanner.start();
       if (!this.isOpen) {
-          this.qrScanner.stop();
-          this.qrScanner.destroy();
-          this.qrScanner = null;
+        this.qrScanner.stop();
+        this.qrScanner.destroy();
+        this.qrScanner = null;
       }
     } else {
       console.warn('no camera found');
@@ -59,14 +59,16 @@ export class QrScannerComponent extends ModalComponent implements OnInit {
     this.closeModal();
   }
   handlePaste(ev: ClipboardEvent): void {
-    const pairingString = ev?.clipboardData?.getData('text');
-    const pairingInfo = pairingString ? this.deeplinkService.QRtoPairingJson(pairingString) : '';
-    if (pairingInfo) {
-      this.beaconService.preNotifyPairing(pairingInfo);
-      this.beaconService.addPeer(pairingInfo);
-      this.closeModal();
-    } else {
-      this.messageService.addError('Invalid Base58 checksum!');
+    if (!this.env.production) {
+      const pairingString = ev?.clipboardData?.getData('text');
+      const pairingInfo = pairingString ? this.deeplinkService.QRtoPairingJson(pairingString) : '';
+      if (pairingInfo) {
+        this.beaconService.preNotifyPairing(pairingInfo);
+        this.beaconService.addPeer(pairingInfo);
+        this.closeModal();
+      } else {
+        this.messageService.addError('Invalid Base58 checksum!');
+      }
     }
   }
   closeModal(): void {
@@ -76,8 +78,7 @@ export class QrScannerComponent extends ModalComponent implements OnInit {
       this.qrScanner.destroy();
       this.qrScanner = null;
     }
-    ModalComponent.currentModel.next({name:'', data:null});
+    ModalComponent.currentModel.next({ name: '', data: null });
     this.manualInput = '';
   }
-
 }
