@@ -194,6 +194,12 @@ export const CONSTANTS: Constants = {
         address: ["KT1Fxz4V3LaUcVFpvF8pAAx8G3Z4H7p7hhDg"],
         thumbnailUrl: "../../../assets/img/alias/hashthreepoints.png",
         link: "https://h3p.deconcept.com/", shouldDisplayLink: DisplayLinkOption.None
+    },
+    'TheMoments': {
+        name: "The Moments",
+        address: ["KT1CNHwTyjFrKnCstRoMftyFVwoNzF6Xxhpy"],
+        thumbnailUrl: "../../../assets/img/alias/themoments.jpeg",
+        link: "https://themoments.xyz/", shouldDisplayLink: DisplayLinkOption.None
     }
   },
   ASSETS: {
@@ -928,6 +934,7 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1PEGqt5rMmHpyaMXc8RFTFkkAUDrzSFRWk',//mclaren
   'KT1MsdyBSAMQwzvDH4jt2mxUKJvBSWZuPoRJ',//NEONZ
   'KT1SyPgtiXTaEfBuMZKviWGNHqVrBBEjvtfQ',//GOGOs
-  'KT1Fxz4V3LaUcVFpvF8pAAx8G3Z4H7p7hhDg' //Hash Three Points
+  'KT1Fxz4V3LaUcVFpvF8pAAx8G3Z4H7p7hhDg',//Hash Three Points
+  'KT1CNHwTyjFrKnCstRoMftyFVwoNzF6Xxhpy'//The Moments
 ];
 export const BLACKLISTED_TOKEN_CONTRACTS = []
