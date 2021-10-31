@@ -54,12 +54,12 @@ export const CONSTANTS: Constants = {
       description: "A decentralized exchange on Tezos"
     },
     'Objkt': {
-        name: "objkt.com",
-        address: [],
-        thumbnailUrl: "../../../assets/img/alias/objktcom.svg",
-        discoverUrl: "../../../assets/img/alias/objktcom.svg",
-        link: "https://objkt.com/", shouldDisplayLink: DisplayLinkOption.All, category: ["marketplace"],
-        description: "The best Tezos NFTs all in one place"
+      name: "objkt.com",
+      address: [],
+      thumbnailUrl: "../../../assets/img/alias/objktcom.svg",
+      discoverUrl: "../../../assets/img/alias/objktcom.svg",
+      link: "https://objkt.com/", shouldDisplayLink: DisplayLinkOption.All, category: ["marketplace"],
+      description: "The best Tezos NFTs all in one place"
     },
     "MinterPop": {
       name: "Minter Pop",
@@ -172,34 +172,40 @@ export const CONSTANTS: Constants = {
       link: "https://artcardz.xyz/", shouldDisplayLink: DisplayLinkOption.None, category: ["collectibles"],
     },
     'PRJKTNEON': {
-        name: "PRJKTNEON",
-        address: ["KT1VbHpQmtkA3D4uEbbju26zS8C42M5AGNjZ", "KT1H8sxNSgnkCeZsij4z76pkXu8BCZNvPZEx"],
-        thumbnailUrl: "../../../assets/img/alias/prjktneon.png",
-        link: "", shouldDisplayLink: DisplayLinkOption.None
+      name: "PRJKTNEON",
+      address: ["KT1VbHpQmtkA3D4uEbbju26zS8C42M5AGNjZ", "KT1H8sxNSgnkCeZsij4z76pkXu8BCZNvPZEx"],
+      thumbnailUrl: "../../../assets/img/alias/prjktneon.png",
+      link: "", shouldDisplayLink: DisplayLinkOption.None
     },
     'NEONZ': {
-        name: "NEONZ",
-        address: ["KT1MsdyBSAMQwzvDH4jt2mxUKJvBSWZuPoRJ"],
-        thumbnailUrl: "../../../assets/img/alias/neonz.jpg",
-        link: "https://neonz.xyz", shouldDisplayLink: DisplayLinkOption.None
+      name: "NEONZ",
+      address: ["KT1MsdyBSAMQwzvDH4jt2mxUKJvBSWZuPoRJ"],
+      thumbnailUrl: "../../../assets/img/alias/neonz.jpg",
+      link: "https://neonz.xyz", shouldDisplayLink: DisplayLinkOption.None
     },
     'GOGOs': {
-        name: "GOGOs",
-        address: ["KT1SyPgtiXTaEfBuMZKviWGNHqVrBBEjvtfQ"],
-        thumbnailUrl: "../../../assets/img/alias/gogo.jpg",
-        link: "https://gogos.tez.page/", shouldDisplayLink: DisplayLinkOption.None
+      name: "GOGOs",
+      address: ["KT1SyPgtiXTaEfBuMZKviWGNHqVrBBEjvtfQ"],
+      thumbnailUrl: "../../../assets/img/alias/gogo.jpg",
+      link: "https://gogos.tez.page/", shouldDisplayLink: DisplayLinkOption.None
     },
     'HashThreePoints': {
-        name: "Hash Three Points",
-        address: ["KT1Fxz4V3LaUcVFpvF8pAAx8G3Z4H7p7hhDg"],
-        thumbnailUrl: "../../../assets/img/alias/hashthreepoints.png",
-        link: "https://h3p.deconcept.com/", shouldDisplayLink: DisplayLinkOption.None
+      name: "Hash Three Points",
+      address: ["KT1Fxz4V3LaUcVFpvF8pAAx8G3Z4H7p7hhDg"],
+      thumbnailUrl: "../../../assets/img/alias/hashthreepoints.png",
+      link: "https://h3p.deconcept.com/", shouldDisplayLink: DisplayLinkOption.None
     },
     'TheMoments': {
-        name: "The Moments",
-        address: ["KT1CNHwTyjFrKnCstRoMftyFVwoNzF6Xxhpy"],
-        thumbnailUrl: "../../../assets/img/alias/themoments.jpeg",
-        link: "https://themoments.xyz/", shouldDisplayLink: DisplayLinkOption.None
+      name: "The Moments",
+      address: ["KT1CNHwTyjFrKnCstRoMftyFVwoNzF6Xxhpy"],
+      thumbnailUrl: "../../../assets/img/alias/themoments.jpeg",
+      link: "https://themoments.xyz/", shouldDisplayLink: DisplayLinkOption.None
+    },
+    'randomlycommonskeles': {
+      name: "randomly common skeles",
+      address: ["KT1HZVd9Cjc2CMe3sQvXgbxhpJkdena21pih"],
+      thumbnailUrl: "../../../assets/img/alias/commonskeles.jpg",
+      link: "https://commonskeles.xyz/", shouldDisplayLink: DisplayLinkOption.None
     }
   },
   ASSETS: {
@@ -935,6 +941,7 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1MsdyBSAMQwzvDH4jt2mxUKJvBSWZuPoRJ',//NEONZ
   'KT1SyPgtiXTaEfBuMZKviWGNHqVrBBEjvtfQ',//GOGOs
   'KT1Fxz4V3LaUcVFpvF8pAAx8G3Z4H7p7hhDg',//Hash Three Points
-  'KT1CNHwTyjFrKnCstRoMftyFVwoNzF6Xxhpy'//The Moments
+  'KT1CNHwTyjFrKnCstRoMftyFVwoNzF6Xxhpy',//The Moments
+  'KT1HZVd9Cjc2CMe3sQvXgbxhpJkdena21pih'//randomly common skeles
 ];
 export const BLACKLISTED_TOKEN_CONTRACTS = []
