@@ -7,7 +7,8 @@ import assert from 'assert';
 import { Asset, CachedAsset } from '../../token/token.service';
 import { TezosToolkit } from '@taquito/taquito';
 import { Tzip12Module, tzip12 } from '@taquito/tzip12';
-import { Handler, IpfsHttpHandler, MetadataProvider } from '@taquito/tzip16'
+import { Handler, IpfsHttpHandler, MetadataProvider } from '@taquito/tzip16';
+import Big from 'big.js';
 
 interface TokenMetadata {
   name: string;
@@ -244,7 +245,13 @@ export class TzktService implements Indexer {
       }
       resolve(kind);
     });
-    const tokenMetadata: Promise<any> = fetch(`${this.bcd}/contract/${this.network}/${contractAddress}/tokens?token_id=${id}&offset=0`)
+    let bcdId: string;// skeles hotfix
+    if (contractAddress === 'KT1HZVd9Cjc2CMe3sQvXgbxhpJkdena21pih') {
+      const map = require('../../../../assets/js/KT1HZVd9Cjc2CMe3sQvXgbxhpJkdena21pih.json');
+      bcdId = map[id];
+      bcdId = bcdId ? Big(bcdId).mod(Big(2).pow(64)).toFixed() : undefined;
+    }
+    const tokenMetadata: Promise<any> = fetch(`${this.bcd}/contract/${this.network}/${contractAddress}/tokens?token_id=${bcdId ?? id}&offset=0`)
       .then(response => response.json())
       .then(async data => {
         if (data?.length && data[0]?.name === 'Unknown') {
@@ -276,7 +283,7 @@ export class TzktService implements Indexer {
         // should always be 1
         mutableConvertObjectPropertiesSnakeToCamel(data);
         assert(data, `cannot find token_id ${id} for contract: ${contractAddress}`);
-        if (data?.token_id === Number(id) || data.tokenId === Number(id)) {
+        if (data?.token_id === Number(id) || data.tokenId === Number(id) || data.tokenId > Number.MAX_SAFE_INTEGER) {
           // possible snake_case to camelCase conversion; depending on future BCD updates
           const rawData = JSON.parse(JSON.stringify(data));
           this.flattern(data);
@@ -306,8 +313,13 @@ export class TzktService implements Indexer {
     return ans ? ans : null;
   }
   async getTokenMetadataWithTaquito(contractAddress, id) {
-    const contract = await this.Tezos.contract.at(contractAddress, tzip12)
-    const metadata: any = await contract.tzip12().getTokenMetadata(Number(id));
+    const contract = await this.Tezos.contract.at(contractAddress, tzip12);
+    let stringId: any; // skeles hotfix
+    if (contractAddress === 'KT1HZVd9Cjc2CMe3sQvXgbxhpJkdena21pih') {
+      const map = require('../../../../assets/js/KT1HZVd9Cjc2CMe3sQvXgbxhpJkdena21pih.json');
+      stringId = map[id] as any;
+    }
+    const metadata: any = await contract.tzip12().getTokenMetadata(stringId ?? Number(id));
     mutableConvertObjectPropertiesSnakeToCamel(metadata)
     // add extras to mimic bcd response
     const firstClassProps = ['tokenId', 'symbol', 'decimals', 'name', 'description', 'artifactUri', 'displayUri', 'thumbnailUri', 'externalUri', 'isTransferable', 'isBooleanAmount', 'shouldPreferSymbol', 'creators', 'tags', 'formats', 'extras'];
