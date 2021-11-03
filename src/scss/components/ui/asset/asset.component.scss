@@ -50,9 +50,16 @@ $compactness: v.$compactness;
     & video,
     & img,
     & #modelCanvas {
-      object-fit: scale-down;
       width: 100%;
       height: 100%;
+    }
+  }
+
+  &.discover:not(.zoom) {
+    & video,
+    & img,
+    & #modelCanvas {
+      object-fit: scale-down;
     }
   }
 
