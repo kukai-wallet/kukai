@@ -45,7 +45,7 @@
         <a class="flex-column discover" rel="noreferrer" [href]="contractAlias?.link || '/'" target="_blank" [style.display]="isDiscover ? '' : 'none'">
           <div class="flex-row top">{{ getContractAlias(contractAlias?.category) || '' }}</div>
           <div class="flex-column middle" [style.backgroundColor]="contractAlias?.backgroundColor">
-            <app-asset class="discover" [size]="'raw'" [meta]="contractAlias?.discoverUrl || contractAlias?.thumbnailUrl"></app-asset>
+            <app-asset class="discover" [class.zoom]="contractAlias?.zoomDiscoverImg" [size]="'raw'" [meta]="contractAlias?.discoverUrl || contractAlias?.thumbnailUrl"></app-asset>
           </div>
           <div class="flex-row bottom">
             <div class="flex-column left">

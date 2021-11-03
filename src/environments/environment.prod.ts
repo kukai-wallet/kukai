@@ -32,7 +32,7 @@ export const CONSTANTS: Constants = {
       name: "randomly common skeles",
       address: ["KT1HZVd9Cjc2CMe3sQvXgbxhpJkdena21pih"],
       thumbnailUrl: "../../../assets/img/alias/commonskeles.jpg",
-      discoverUrl: "../../../assets/img/alias/skele-grid-discover.jpg",
+      discoverUrl: "../../../assets/img/alias/skele-grid-discover.jpg", zoomDiscoverImg: true,
       link: "https://objkt.com/collection/rcs", shouldDisplayLink: DisplayLinkOption.All, category: ["collectibles"],
       description: "randomly generated skeleton .gifs by john karel : )"
     },
