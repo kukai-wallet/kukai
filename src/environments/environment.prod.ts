@@ -33,7 +33,7 @@ export const CONSTANTS: Constants = {
       address: ["KT1HZVd9Cjc2CMe3sQvXgbxhpJkdena21pih"],
       thumbnailUrl: "../../../assets/img/alias/commonskeles.jpg",
       discoverUrl: "../../../assets/img/alias/skele-grid-discover.jpg", zoomDiscoverImg: true,
-      link: "https://objkt.com/collection/rcs", shouldDisplayLink: DisplayLinkOption.All, category: ["collectibles"],
+      link: "https://commonskeles.xyz", shouldDisplayLink: DisplayLinkOption.All, category: ["collectibles"],
       description: "randomly generated skeleton .gifs by john karel : )"
     },
     'mclarenracing': {
