@@ -28,6 +28,14 @@ export const CONSTANTS: Constants = {
     hard_storage_limit_per_operation: 60000
   },
   CONTRACT_ALIASES: {
+    'randomlycommonskeles': {
+      name: "randomly common skeles",
+      address: ["KT1HZVd9Cjc2CMe3sQvXgbxhpJkdena21pih"],
+      thumbnailUrl: "../../../assets/img/alias/commonskeles.jpg",
+      discoverUrl: "../../../assets/img/alias/skele-grid-discover.jpg",
+      link: "https://objkt.com/collection/rcs", shouldDisplayLink: DisplayLinkOption.All, category: ["collectibles"],
+      description: "randomly generated skeleton .gifs by john karel : )"
+    },
     'mclarenracing': {
       name: 'McLaren Racing Collective',
       address: ['KT1PEGqt5rMmHpyaMXc8RFTFkkAUDrzSFRWk'],
@@ -200,12 +208,6 @@ export const CONSTANTS: Constants = {
       address: ["KT1CNHwTyjFrKnCstRoMftyFVwoNzF6Xxhpy"],
       thumbnailUrl: "../../../assets/img/alias/themoments.jpeg",
       link: "https://themoments.xyz/", shouldDisplayLink: DisplayLinkOption.None
-    },
-    'randomlycommonskeles': {
-      name: "randomly common skeles",
-      address: ["KT1HZVd9Cjc2CMe3sQvXgbxhpJkdena21pih"],
-      thumbnailUrl: "../../../assets/img/alias/commonskeles.jpg",
-      link: "https://commonskeles.xyz/", shouldDisplayLink: DisplayLinkOption.None
     }
   },
   ASSETS: {
