@@ -73,7 +73,7 @@ $layout-break-5: v.$layout-break-5;
 
   & .left {
     height: 2.125rem;
-    align-items: flex-start;
+    align-items: center;
     justify-content: flex-start;
     width: calc(100% - 6rem);
   }
@@ -91,7 +91,7 @@ $layout-break-5: v.$layout-break-5;
 
   & h3 {
     letter-spacing: 0.06em;
-    @include m.multiply("font-size", 1.25);
+    @include m.multiply("font-size", 1.375);
     font-weight: 500;
     color: $base-font-color-secondary;
     width: 13rem;
@@ -114,11 +114,5 @@ $layout-break-5: v.$layout-break-5;
     &.selected {
       color: $base-blue-color-lightened;
     }
-  }
-}
-
-@media (max-width: $layout-break-5) {
-  .total-balances .left {
-    align-items: center;
   }
 }
