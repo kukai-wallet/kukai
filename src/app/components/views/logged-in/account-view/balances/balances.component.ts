@@ -82,7 +82,7 @@ export class BalancesComponent implements OnInit, AfterViewChecked, OnDestroy {
   }
 
   calcTotalBalances(): void {
-    this.totalBalances = this.isFiat ? this.balances.reduce((prev, balance) => prev + parseFloat(balance?.price), 0) + this.account?.balanceUSD : this.balances.reduce((prev, balance) => prev + parseFloat(balance?.price), 0) / this.walletService.wallet.XTZrate + parseFloat(Big(this.account?.balanceXTZ ?? 0).div(1000000).toFixed());
+    this.totalBalances = this.isFiat ? this.balances.reduce((prev, balance) => prev + parseFloat(balance?.price ?? 0), 0) + this.account?.balanceUSD : this.balances.reduce((prev, balance) => prev + parseFloat(balance?.price ?? 0), 0) / this.walletService.wallet.XTZrate + parseFloat(Big(this.account?.balanceXTZ ?? 0).div(1000000).toFixed());
   }
 }
 

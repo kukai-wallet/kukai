@@ -100,8 +100,8 @@ export class NftsComponent implements OnInit, OnDestroy {
     return key?.replace(/ /g, '');
   }
 
-  trackContract(index: number, key: any) {
-    return key?.key ? key.key + ':' + index : index;
+  trackContract(index: number, contract: any) {
+    return contract?.key ? contract.key : index;
   }
 
   getContractAlias(category): string {
