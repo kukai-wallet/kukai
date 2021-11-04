@@ -40,11 +40,11 @@
 
 @media (max-width: v.$layout-break-2) {
   .wrapper > div {
-    grid-template-columns: minmax(500px, 35%) minmax(calc(63em - 500px), 1792px);
+    grid-template-columns: minmax(400px, 35%) minmax(calc(63em - 400px), 1792px);
   }
 }
 
-@media (max-width: v.$layout-break-4) {
+@media (max-width: v.$layout-break-5) {
   .wrapper > div {
     display: grid;
     grid-template-columns: 100%;

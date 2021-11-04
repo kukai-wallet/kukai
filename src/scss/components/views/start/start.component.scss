@@ -237,6 +237,22 @@ $base-background-color: v.$base-background-color;
     & .left,
     & .right {
       & h1 {
+        @include m.multiply("font-size", 5.5);
+      }
+
+      & h3 {
+        @include m.multiply("font-size", 2.875);
+        line-height: 4rem;
+      }
+    }
+  }
+}
+
+@media (max-width: v.$layout-break-2) {
+  #wrapper {
+    & .left,
+    & .right {
+      & h1 {
         @include m.multiply("font-size", 4.5);
       }
 

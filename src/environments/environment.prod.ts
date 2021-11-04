@@ -28,14 +28,6 @@ export const CONSTANTS: Constants = {
     hard_storage_limit_per_operation: 60000
   },
   CONTRACT_ALIASES: {
-    'randomlycommonskeles': {
-      name: "randomly common skeles",
-      address: ["KT1HZVd9Cjc2CMe3sQvXgbxhpJkdena21pih"],
-      thumbnailUrl: "../../../assets/img/alias/commonskeles.jpg",
-      discoverUrl: "../../../assets/img/alias/skele-grid-discover.jpg", zoomDiscoverImg: true,
-      link: "https://commonskeles.xyz", shouldDisplayLink: DisplayLinkOption.All, category: ["collectibles"],
-      description: "randomly generated skeleton .gifs by john karel : )"
-    },
     'mclarenracing': {
       name: 'McLaren Racing Collective',
       address: ['KT1PEGqt5rMmHpyaMXc8RFTFkkAUDrzSFRWk'],
@@ -44,6 +36,14 @@ export const CONSTANTS: Constants = {
       link: 'https://mclarenracingcollective.com', shouldDisplayLink: DisplayLinkOption.All, category: ["collectibles"],
       description: 'Collect & Build a digital MCL35M F1 CAR',
       backgroundColor: 'black'
+    },
+    'randomlycommonskeles': {
+      name: "randomly common skeles",
+      address: ["KT1HZVd9Cjc2CMe3sQvXgbxhpJkdena21pih"],
+      thumbnailUrl: "../../../assets/img/alias/commonskeles.jpg",
+      discoverUrl: "../../../assets/img/alias/skele-grid-discover.jpg", zoomDiscoverImg: true,
+      link: "https://objkt.com/collection/rcs", shouldDisplayLink: DisplayLinkOption.All, category: ["collectibles"],
+      description: "randomly generated skeleton .gifs by john karel : )"
     },
     'hen': {
       name: 'Hic et Nunc (HEN)',
