@@ -39,6 +39,8 @@
     "@ngx-translate/core": "11.0.1",
     "@ngx-translate/http-loader": "4.0.0",
     "@obsidiansystems/hw-app-xtz": "^4.72.3",
+    "@sentry/angular": "^6.14.0",
+    "@sentry/tracing": "^6.14.0",
     "@taquito/local-forging": "^10.1.0",
     "@taquito/michel-codec": "^10.1.0",
     "@taquito/rpc": "^10.1.0",
