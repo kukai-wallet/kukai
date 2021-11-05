@@ -85,7 +85,7 @@ $comapactness: v.$compactness;
       @include m.multiply("font-size", 1.75);
       @include m.ellipsis();
       white-space: normal;
-      max-height: 6rem;
+      max-height: 10rem;
     }
 
     & .series {
@@ -104,6 +104,6 @@ $comapactness: v.$compactness;
 
 @media (max-width: v.$layout-break-5) {
   .token .right .title {
-    max-height: 5rem;
+    max-height: 8rem;
   }
 }

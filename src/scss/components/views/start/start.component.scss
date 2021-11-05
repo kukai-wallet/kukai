@@ -1,5 +1,5 @@
-@use '../../../abstracts/variables'as v;
-@use '../../../abstracts/mixins' as m;
+@use "../../../abstracts/variables" as v;
+@use "../../../abstracts/mixins" as m;
 
 $base-font-color: v.$base-font-color;
 $base-font-color-secondary: v.$base-font-color-secondary;
@@ -11,10 +11,12 @@ $border-color: v.$border-color;
 $base-background-color: v.$base-background-color;
 
 %bg {
-  width: 85%;
-  height: 85%;
+  width: auto;
+  height: 50rem;
   object-fit: contain;
   object-position: right;
+  position: relative;
+  top: 1.5rem;
 }
 
 %ribbon {
@@ -22,7 +24,7 @@ $base-background-color: v.$base-background-color;
   bottom: 0;
   left: -50vw;
   width: 100vw !important;
-  height: 45.5vh;
+  height: 46% !important;
   border-top: 1.5rem solid #d6dbe3;
   background-color: $base-color-lightened-6;
   z-index: -100;
@@ -35,10 +37,10 @@ $base-background-color: v.$base-background-color;
 
 :host {
   width: 100%;
-  min-height: calc(100vh - 12.5rem);
-  height: 60rem;
+  min-height: calc(100vw / 2 - 18rem);
+  height: calc(100vh - 18rem);
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
   flex-direction: column;
 
@@ -60,6 +62,7 @@ $base-background-color: v.$base-background-color;
   width: 100%;
   height: 100%;
   justify-content: center;
+  align-items: flex-start;
   position: relative;
 
   & .left,
@@ -67,30 +70,31 @@ $base-background-color: v.$base-background-color;
     height: 100%;
     position: relative;
     z-index: 100;
-    width: calc(50% - 120px);
-    padding: 0 0 0 120px;
-    max-width: 1280px;
+    width: calc(50% - 90px);
+    padding: 0 0 0 90px;
+    max-width: 53rem;
+    justify-content: center;
 
     & h1 {
-      @include m.multiply("font-size", 7);
+      font-size: 435%;
       color: $base-font-color;
       font-weight: 500;
     }
 
     & h3 {
-      @include m.multiply("font-size", 3);
+      font-size: 200%;
       font-weight: 400;
-      line-height: 4.5rem;
+      line-height: 3rem;
       color: #6c7a8d;
     }
 
     & > div {
       width: 100%;
-      height: 52%;
+      height: 50%;
       justify-content: center;
 
       &:last-child {
-        height: 48%;
+        height: 40%;
       }
     }
 
@@ -101,6 +105,10 @@ $base-background-color: v.$base-background-color;
 
     & .top {
       justify-content: center;
+      height: calc(50% - 8rem);
+      justify-content: flex-end;
+      position: relative;
+      top: 1rem;
 
       & > * {
         margin: 2rem 0;
@@ -115,7 +123,9 @@ $base-background-color: v.$base-background-color;
 
     & .login {
       position: relative;
-      top: -4rem;
+      top: 8rem;
+      height: calc(50% - 8rem);
+      justify-content: flex-start;
 
       & > * {
         margin: 1rem 0;
@@ -126,7 +136,7 @@ $base-background-color: v.$base-background-color;
         color: $base-font-color;
 
         &:last-of-type {
-          @include m.multiply("font-size", 2, "rem", .925);
+          @include m.multiply("font-size", 2, "rem", 0.925);
           color: $base-font-color;
         }
       }
@@ -219,11 +229,12 @@ $base-background-color: v.$base-background-color;
     align-items: flex-end;
     position: relative;
     z-index: 0;
-    padding: 0 120px 0 0;
+    padding: 0 90px 0 0;
   }
 
   & #bg {
     @extend %bg;
+    max-height: 75vh;
 
     &-mobile {
       @extend %bg;
@@ -232,39 +243,28 @@ $base-background-color: v.$base-background-color;
   }
 }
 
-@media (max-width: v.$layout-break-1) {
-  #wrapper {
+@media (min-width: v.$layout-break-3) {
+  .qrapper {
     & .left,
     & .right {
-      & h1 {
-        @include m.multiply("font-size", 5.5);
-      }
+      height: 100%;
+      position: relative;
+      z-index: 100;
+      width: calc(50% - 360px);
+    }
 
-      & h3 {
-        @include m.multiply("font-size", 2.875);
-        line-height: 4rem;
-      }
+    & .left {
+      padding: 0 0 0 180px;
+    }
+
+    & .right {
+      padding: 0 180px 0 0;
     }
   }
 }
 
-@media (max-width: v.$layout-break-2) {
-  #wrapper {
-    & .left,
-    & .right {
-      & h1 {
-        @include m.multiply("font-size", 4.5);
-      }
-
-      & h3 {
-        @include m.multiply("font-size", 2);
-        line-height: 3rem;
-      }
-    }
-  }
-}
-
-@media (max-width: v.$layout-break-3) and (max-aspect-ratio: 1/1), (max-width: v.$layout-break-5) {
+@media (max-width: v.$layout-break-3) and (max-aspect-ratio: 1/1),
+  (max-width: v.$layout-break-5) {
   :host {
     & .bottom {
       display: flex !important;
@@ -277,7 +277,7 @@ $base-background-color: v.$base-background-color;
     & #ribbon-mobile {
       left: 0;
       display: block;
-      height: 48%;
+      height: 44% !important;
     }
 
     height: unset;
@@ -306,6 +306,11 @@ $base-background-color: v.$base-background-color;
         height: 100%;
         align-items: center;
         padding: 0;
+        max-width: unset;
+
+        & .top {
+          align-items: center;
+        }
 
         & .top h1,
         & .top h3 {
@@ -317,9 +322,9 @@ $base-background-color: v.$base-background-color;
         }
 
         & .top h1 {
-          font-size: 5.65rem;
+          font-size: 5.6rem;
           font-weight: 500;
-          line-height: 7.25rem;
+          line-height: 7.2rem;
         }
 
         & .top h3 {
@@ -327,6 +332,8 @@ $base-background-color: v.$base-background-color;
           font-weight: 400;
           line-height: 4.5rem;
           color: $base-font-color-secondary;
+          margin: 2rem 2rem 5rem 2rem;
+          max-width: 80rem;
         }
 
         & > div {
@@ -403,10 +410,8 @@ $base-background-color: v.$base-background-color;
   }
 }
 
-@media (max-aspect-ratio: 3/2) and (min-width: v.$layout-break-3) {
+@media (max-height: 719px) {
   :host {
-    & #wrapper {
-      max-height: calc((100vw / 3) * 2);
-    }
+    min-height: calc(100vw / 1.75 - 18rem);
   }
 }

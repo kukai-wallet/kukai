@@ -117,6 +117,10 @@ $compactness: v.$compactness;
 :host {
   grid-area: nft;
   grid-row: 1 / 10;
+
+  & .main-container {
+    height: auto;
+  }
 }
 
 .pending,
@@ -157,17 +161,24 @@ $compactness: v.$compactness;
   }
 
   &.d {
+    padding: 1.5rem;
     border-top-left-radius: inherit;
+    display: grid;
+    grid-template-columns: repeat(2, calc(50% - 1rem));
+    grid-template-rows: auto;
+    grid-auto-rows: 1fr;
+    grid-gap: 2rem;
+    height: 100%;
   }
 
   & > .discover {
-    width: calc(50% - 0.5rem - (#{$border-width} * 2));
-    margin: 0rem 0rem 2rem 0rem;
+    width: 100%;
     background-color: $base-end-color;
     border: $border-width-dark-only solid $border-color-dark-only;
     border-radius: v.$border-radius;
     box-shadow: v.$box-shadow;
     position: relative;
+    height: 100%;
 
     & .top {
       @include m.multiply("font-size", 1);
@@ -215,6 +226,7 @@ $compactness: v.$compactness;
       & .right {
         width: min-content;
         align-self: center;
+        margin: 0 0 0 1rem;
         & a.link-to-app {
           width: fit-content;
           & button {
@@ -355,17 +367,11 @@ $compactness: v.$compactness;
   }
 }
 
-@media (max-width: calc(#{v.$layout-break-3} - 10.75em)) {
+@media (max-width: calc(#{v.$layout-break-4} + 10em)) {
   .nfts {
-    & > .discover {
-      width: 100%;
+    &.d {
+      grid-template-columns: repeat(1, 100%);
     }
-  }
-}
-
-@media (max-width: v.$layout-break-4) {
-  .nfts {
-    flex-direction: row;
   }
 }
 
@@ -373,8 +379,19 @@ $compactness: v.$compactness;
   :host {
     grid-row: unset;
   }
-  .nfts > .discover {
-    width: calc(50% - 1rem);
+
+  .nfts {
+    flex-direction: row;
+
+    &.d {
+      grid-template-columns: repeat(2, calc(50% - 1rem));
+    }
+  }
+}
+
+@media (max-width: v.$layout-break-5) {
+  :host {
+    grid-row: unset;
   }
   .link-to-app {
     display: none;
@@ -395,6 +412,10 @@ $compactness: v.$compactness;
     flex-direction: column;
     flex-wrap: nowrap;
     align-items: initial;
+
+    &.d {
+      grid-template-columns: repeat(1, 100%);
+    }
 
     & > .discover {
       width: 100%;
