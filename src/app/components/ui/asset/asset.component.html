@@ -1,4 +1,4 @@
-<img #postImage *ngIf="mimeType?.startsWith('image/')" [src]="postSrc" id="postImage" [style.objectFit]="postSrc.indexOf(loaderUrl) > -1 ? 'scale-down' : ''" />
+<img #postImage *ngIf="mimeType?.startsWith('image/')" [src]="postSrc" id="postImage" [style.objectFit]="postSrc.indexOf(loaderUrl) > -1 ? 'scale-down' : ''"/>
 <img #preImage *ngIf="mimeType?.startsWith('image/')" style="display: none" [attr.data-src]="dataSrc" [src]="preSrc"
   id="preImage" />
 <video #video *ngIf="mimeType?.startsWith('video/')" [controls]="controls" [autoplay]="autoplay" [muted]="muted"
