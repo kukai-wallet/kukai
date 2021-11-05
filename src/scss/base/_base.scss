@@ -197,36 +197,36 @@ button {
 
 @media (max-width: v.$font-break-0) {
   html {
-    font-size: 16px;
+    font-size: 100%;
   }
 }
 
 @media (max-width: v.$font-break-1) {
   html {
+    font-size: 90%;
+  }
+}
+
+@media (max-width: v.$font-break-2) {
+  html {
     font-size: 80%;
   }
 }
 
-// @media (max-width: v.$font-break-2) {
-//   html {
-//     font-size: 75%;
-//   }
-// }
-
-// @media (max-width: v.$font-break-3) {
-//   html {
-//     font-size: 62.5%;
-//   }
-// }
-
 @media (max-width: v.$font-break-3) {
   html {
-    font-size: 57.5%;
+    font-size: 70%;
+  }
+}
+
+@media (max-width: v.$font-break-4) {
+  html {
+    font-size: 60%;
   }
 }
 
 @media (max-width: v.$font-break-5) {
   html {
-    font-size: 48%;
+    font-size: 50%;
   }
 }

@@ -21,7 +21,7 @@
   justify-content: space-between;
   flex-direction: column;
   height: 8rem;
-  margin: 2rem 1rem 0 1rem;
+  margin: 0 1rem;
   width: calc(100vw - 2rem);
   overflow: hidden;
   position: absolute;
@@ -30,7 +30,7 @@
   z-index: 1000;
 }
 
-@media (max-aspect-ratio: 1 / 1), (min-aspect-ratio: 20 / 10), (max-height: 752px), (max-width: v.$layout-break-5) {
+@media (max-aspect-ratio: 1 / 1), (min-aspect-ratio: 2 / 3), (max-height: 752px), (max-width: v.$layout-break-5) {
   :host div.foot-container {
     position: initial;
   }
