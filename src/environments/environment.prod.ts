@@ -208,6 +208,12 @@ export const CONSTANTS: Constants = {
       address: ["KT1CNHwTyjFrKnCstRoMftyFVwoNzF6Xxhpy"],
       thumbnailUrl: "../../../assets/img/alias/themoments.jpeg",
       link: "https://themoments.xyz/", shouldDisplayLink: DisplayLinkOption.None
+    },
+    'TacoNFT': {
+      name: "TacoNFT",
+      address: ["KT1Mf8Pqn6NMt8VGuVaySohvSvQQpvcM37eZ", "KT1BkStQej7MwnkWhCV2tUanETeN25zc7ADe"],
+      thumbnailUrl: "../../../assets/img/alias/taconft.png",
+      link: "https://taconft.xyz/", shouldDisplayLink: DisplayLinkOption.None
     }
   },
   ASSETS: {
@@ -944,6 +950,8 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1SyPgtiXTaEfBuMZKviWGNHqVrBBEjvtfQ',//GOGOs
   'KT1Fxz4V3LaUcVFpvF8pAAx8G3Z4H7p7hhDg',//Hash Three Points
   'KT1CNHwTyjFrKnCstRoMftyFVwoNzF6Xxhpy',//The Moments
-  'KT1HZVd9Cjc2CMe3sQvXgbxhpJkdena21pih'//randomly common skeles
+  'KT1HZVd9Cjc2CMe3sQvXgbxhpJkdena21pih',//randomly common skeles
+  'KT1BkStQej7MwnkWhCV2tUanETeN25zc7ADe',//TacoNFT premint tokens
+  'KT1Mf8Pqn6NMt8VGuVaySohvSvQQpvcM37eZ'//TacoNFT
 ];
 export const BLACKLISTED_TOKEN_CONTRACTS = []
