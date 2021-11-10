@@ -208,6 +208,14 @@ export const CONSTANTS: Constants = {
       address: ["KT1CNHwTyjFrKnCstRoMftyFVwoNzF6Xxhpy"],
       thumbnailUrl: "../../../assets/img/alias/themoments.jpeg",
       link: "https://themoments.xyz/", shouldDisplayLink: DisplayLinkOption.None
+    },
+    'HOLLOWS': {
+      name: "HOLLOWS",
+      address: ["KT1Ak8AFA54waFVMyPXNE925cUaQjFEqxuYN"],
+      thumbnailUrl: "../../../assets/img/alias/hollows.jpg",
+      link: "https://hollowsnft.xyz/",
+      shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"]
     }
   },
   ASSETS: {
@@ -944,6 +952,7 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1SyPgtiXTaEfBuMZKviWGNHqVrBBEjvtfQ',//GOGOs
   'KT1Fxz4V3LaUcVFpvF8pAAx8G3Z4H7p7hhDg',//Hash Three Points
   'KT1CNHwTyjFrKnCstRoMftyFVwoNzF6Xxhpy',//The Moments
-  'KT1HZVd9Cjc2CMe3sQvXgbxhpJkdena21pih'//randomly common skeles
+  'KT1HZVd9Cjc2CMe3sQvXgbxhpJkdena21pih',//randomly common skeles
+  'KT1Ak8AFA54waFVMyPXNE925cUaQjFEqxuYN'//HOLLOWS
 ];
 export const BLACKLISTED_TOKEN_CONTRACTS = []
