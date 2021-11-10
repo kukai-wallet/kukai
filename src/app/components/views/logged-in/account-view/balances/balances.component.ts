@@ -39,7 +39,7 @@ export class BalancesComponent implements OnInit, AfterViewChecked, OnDestroy {
       this.balances = p?.balances ?? this.tokenBalancesService?.balances;
       this.calcTotalBalances();
     }));
-    this.subscriptions.add(merge([this.walletService.activeAccount, this.subjectService.nftsUpdated, this.walletService.walletUpdated]).subscribe(() => {
+    this.subscriptions.add(this.walletService.walletUpdated.subscribe(() => {
       this.balances = this.tokenBalancesService?.balances;
       this.calcTotalBalances();
     }));
