@@ -26,8 +26,10 @@ export class TorusService {
         typeOfLogin: 'google',
         clientId: '952872982551-od475jfe3ach7dghacin634rbkcqhpll.apps.googleusercontent.com',
         verifier: 'kukai-google',
+        subVerifier: 'web-kukai',
         caseSensitiveVerifierID: false,
-        lookups: true
+        lookups: true,
+        aggregated: true
       },
       [REDDIT]: {
         name: 'Reddit',
@@ -173,13 +175,26 @@ export class TorusService {
         jwtParams.login_hint = verifierId;
         console.log('login_hint: ' + verifierId);
       }
-      const { typeOfLogin, clientId, verifier } = this.verifierMap[selectedVerifier];
-      const loginDetails = await this.torus.triggerLogin({
+      const { typeOfLogin, clientId, verifier, aggregated } = this.verifierMap[selectedVerifier];
+      const loginDetails = aggregated ? await this.torus.triggerAggregateLogin({
+        aggregateVerifierType: 'single_id_verifier',
+        verifierIdentifier: verifier,
+        subVerifierDetailsArray: [
+          {
+            clientId,
+            typeOfLogin: typeOfLogin,
+            verifier: this.verifierMap[selectedVerifier].subVerifier
+          }
+        ]
+      }) : await this.torus.triggerLogin({
         verifier,
         typeOfLogin,
         clientId,
         jwtParams
       });
+      if (aggregated) {
+        loginDetails.userInfo = loginDetails.userInfo[0];
+      }
       const keyPair = this.operationService.spPrivKeyToKeyPair(loginDetails.privateKey);
       console.log('DirectAuth KeyPair', keyPair);
       console.log('DirectAuth UserInfo', loginDetails.userInfo);
