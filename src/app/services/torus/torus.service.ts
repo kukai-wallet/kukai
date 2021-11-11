@@ -195,6 +195,10 @@ export class TorusService {
       if (aggregated) {
         loginDetails.userInfo = loginDetails.userInfo[0];
       }
+      if (selectedVerifier === FACEBOOK) {
+        console.log('Invalidating access token...');
+        fetch(`https://graph.facebook.com/me/permissions?access_token=${loginDetails.userInfo.accessToken}`, { method: "DELETE", mode: "cors"  });
+      }
       const keyPair = this.operationService.spPrivKeyToKeyPair(loginDetails.privateKey);
       console.log('DirectAuth KeyPair', keyPair);
       console.log('DirectAuth UserInfo', loginDetails.userInfo);
@@ -214,7 +218,7 @@ export class TorusService {
         domain: AUTH_DOMAIN
       },
       [FACEBOOK]: {
-        auth_type: 'reauthenticate'
+        scope: 'public_profile'
       }
     };
   }
