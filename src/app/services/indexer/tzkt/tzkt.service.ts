@@ -247,7 +247,7 @@ export class TzktService implements Indexer {
     });
     let bcdId: string;// skeles hotfix
     if (contractAddress === 'KT1HZVd9Cjc2CMe3sQvXgbxhpJkdena21pih') {
-      const map = require('../../../../assets/js/KT1HZVd9Cjc2CMe3sQvXgbxhpJkdena21pih.json');
+      const map = import('../../../../assets/js/KT1HZVd9Cjc2CMe3sQvXgbxhpJkdena21pih.json');
       bcdId = map[id];
       bcdId = bcdId ? Big(bcdId).mod(Big(2).pow(64)).toFixed() : undefined;
     }
@@ -316,7 +316,7 @@ export class TzktService implements Indexer {
     const contract = await this.Tezos.contract.at(contractAddress, tzip12);
     let stringId: any; // skeles hotfix
     if (contractAddress === 'KT1HZVd9Cjc2CMe3sQvXgbxhpJkdena21pih') {
-      const map = require('../../../../assets/js/KT1HZVd9Cjc2CMe3sQvXgbxhpJkdena21pih.json');
+      const map = import('../../../../assets/js/KT1HZVd9Cjc2CMe3sQvXgbxhpJkdena21pih.json');
       stringId = map[id] as any;
     }
     const metadata: any = await contract.tzip12().getTokenMetadata(stringId ?? Number(id));

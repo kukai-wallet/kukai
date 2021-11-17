@@ -11,6 +11,7 @@ const REDDIT = 'reddit';
 const TWITTER = 'twitter';
 const FACEBOOK = 'facebook';
 const AUTH_DOMAIN = 'https://dev-0li4gssz.eu.auth0.com';
+const AUTH_DOMAIN_MAINNET = 'https://kukai.eu.auth0.com';
 @Injectable({
   providedIn: 'root'
 })
@@ -26,16 +27,20 @@ export class TorusService {
         typeOfLogin: 'google',
         clientId: '952872982551-od475jfe3ach7dghacin634rbkcqhpll.apps.googleusercontent.com',
         verifier: 'kukai-google',
+        subVerifier: 'web-kukai',
         caseSensitiveVerifierID: false,
-        lookups: true
+        lookups: true,
+        aggregated: true
       },
       [REDDIT]: {
         name: 'Reddit',
-        typeOfLogin: 'reddit',
-        clientId: 'H0nhRv1leU9pGQ',
+        typeOfLogin: 'jwt',
+        clientId: '7xLcBa3xd4VTmlGbClU3qXeBZGta3OvM',
         verifier: 'tezos-reddit-testnet',
+        subVerifier: 'web-kukai',
         caseSensitiveVerifierID: false,
-        lookups: true
+        lookups: true,
+        aggregated: true
       },
       [TWITTER]: {
         name: 'Twitter',
@@ -64,11 +69,13 @@ export class TorusService {
       },
       [REDDIT]: {
         name: 'Reddit',
-        typeOfLogin: 'reddit',
-        clientId: 'YivAW_t3iCp9QA',
+        typeOfLogin: 'jwt',
+        clientId: 'zyQ9tnKfdg3VNyj6MGhZq4dHbBzbmEvl',
         verifier: 'tezos-reddit',
+        subVerifier: 'web-kukai',
         caseSensitiveVerifierID: false,
-        lookups: true
+        lookups: true,
+        aggregated: true
       },
       [TWITTER]: {
         name: 'Twitter',
@@ -173,15 +180,36 @@ export class TorusService {
         jwtParams.login_hint = verifierId;
         console.log('login_hint: ' + verifierId);
       }
-      const { typeOfLogin, clientId, verifier } = this.verifierMap[selectedVerifier];
-      const loginDetails = await this.torus.triggerLogin({
+      const { typeOfLogin, clientId, verifier, aggregated } = this.verifierMap[selectedVerifier];
+      const loginDetails = aggregated ? await this.torus.triggerAggregateLogin({
+        aggregateVerifierType: 'single_id_verifier',
+        verifierIdentifier: verifier,
+        subVerifierDetailsArray: [
+          {
+            clientId,
+            typeOfLogin: typeOfLogin,
+            verifier: this.verifierMap[selectedVerifier].subVerifier,
+            jwtParams
+          }
+        ]
+      }) : await this.torus.triggerLogin({
         verifier,
         typeOfLogin,
         clientId,
         jwtParams
       });
+      if (aggregated) {
+        loginDetails.userInfo = loginDetails.userInfo[0];
+      }
+      if (selectedVerifier === FACEBOOK) {
+        console.log('Invalidating access token...');
+        fetch(`https://graph.facebook.com/me/permissions?access_token=${loginDetails.userInfo.accessToken}`, { method: "DELETE", mode: "cors"  });
+      }
       const keyPair = this.operationService.spPrivKeyToKeyPair(loginDetails.privateKey);
       console.log('DirectAuth KeyPair', keyPair);
+      if (loginDetails?.userInfo?.typeOfLogin === 'jwt') {
+        loginDetails.userInfo.typeOfLogin = selectedVerifier;
+      }
       console.log('DirectAuth UserInfo', loginDetails.userInfo);
       return { keyPair, userInfo: loginDetails.userInfo };
     } catch (e) {
@@ -199,7 +227,12 @@ export class TorusService {
         domain: AUTH_DOMAIN
       },
       [FACEBOOK]: {
-        auth_type: 'reauthenticate'
+        scope: 'public_profile'
+      },
+      [REDDIT]: {
+        domain: CONSTANTS.MAINNET ? AUTH_DOMAIN_MAINNET : AUTH_DOMAIN,
+        connection: "Reddit",
+        verifierIdField: "name",
       }
     };
   }

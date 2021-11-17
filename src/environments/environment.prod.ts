@@ -50,7 +50,7 @@ export const CONSTANTS: Constants = {
       address: ["KT1AFA2mwNUMNd4SsujE1YYp29vd8BZejyKW", "KT1RJ6PbjHpwc3M5rw5s2Nbmefwbuwbdxton", "KT1M2JnD1wsg7w2B4UXJXtKQPuDUpU2L7cJH"],
       thumbnailUrl: "../../../assets/img/alias/hen.png",
       discoverUrl: "../../../assets/img/alias/hen.svg",
-      link: "https://www.hicetnunc.xyz/", shouldDisplayLink: DisplayLinkOption.All, category: ["marketplace"], backgroundColor: 'black',
+      link: "https://hen.teztools.io", shouldDisplayLink: DisplayLinkOption.All, category: ["marketplace"], backgroundColor: 'black',
       description: "Largest independent artist-friendly NFT Marketplace"
     },
     'QuipuSwap': {
@@ -216,6 +216,12 @@ export const CONSTANTS: Constants = {
       link: "https://hollowsnft.xyz/",
       shouldDisplayLink: DisplayLinkOption.None,
       category: ["collectibles"]
+    },
+    'TacoNFT': {
+      name: "TacoNFT",
+      address: ["KT1Mf8Pqn6NMt8VGuVaySohvSvQQpvcM37eZ", "KT1BkStQej7MwnkWhCV2tUanETeN25zc7ADe"],
+      thumbnailUrl: "../../../assets/img/alias/taconft.png",
+      link: "https://taconft.xyz/", shouldDisplayLink: DisplayLinkOption.None
     }
   },
   ASSETS: {
@@ -953,6 +959,8 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1Fxz4V3LaUcVFpvF8pAAx8G3Z4H7p7hhDg',//Hash Three Points
   'KT1CNHwTyjFrKnCstRoMftyFVwoNzF6Xxhpy',//The Moments
   'KT1HZVd9Cjc2CMe3sQvXgbxhpJkdena21pih',//randomly common skeles
-  'KT1Ak8AFA54waFVMyPXNE925cUaQjFEqxuYN'//HOLLOWS
+  'KT1Ak8AFA54waFVMyPXNE925cUaQjFEqxuYN',//HOLLOWS
+  'KT1BkStQej7MwnkWhCV2tUanETeN25zc7ADe',//TacoNFT premint tokens
+  'KT1Mf8Pqn6NMt8VGuVaySohvSvQQpvcM37eZ'//TacoNFT
 ];
 export const BLACKLISTED_TOKEN_CONTRACTS = []

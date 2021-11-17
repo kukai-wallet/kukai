@@ -1213,7 +1213,7 @@ export class OperationService {
   getFA2Transaction(from: string, to: string, amount: string, id: number) {
     let stringId: string; // skeles hotfix
     if (id > Number.MAX_SAFE_INTEGER) {
-      const map = require('../../../assets/js/KT1HZVd9Cjc2CMe3sQvXgbxhpJkdena21pih.json');
+      const map = import('../../../assets/js/KT1HZVd9Cjc2CMe3sQvXgbxhpJkdena21pih.json');
       stringId = map[id] as any;
     }
     return {

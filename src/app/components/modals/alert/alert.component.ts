@@ -42,18 +42,18 @@ export class AlertComponent implements OnInit {
   }
   mailtoFormat(message: any): string {
     const subject = encodeURI(this.subject);
-    const body = this.encodedBody(message.amount, 'Google', `https://${this.getHostName()}/direct-auth\n\n`);
+    const body = this.encodedBody(message.amount, 'Google', `https://${this.getHostName()}\n\n`);
     return `mailto:${message.email}?subject=${subject}&body=${body}`;
   }
   redditPmFormat(message: any): string {
     // https://www.reddit.com/message/compose?to=USERNAME&subject=SUBJECT&message=MESSAGE
     const subject = encodeURI(this.subject);
-    const body = this.encodedBody(`${message.amount}`, 'Reddit', `[kukai.app](https://${this.getHostName()}/direct-auth)`);
+    const body = this.encodedBody(`${message.amount}`, 'Reddit', `[kukai.app](https://${this.getHostName()})`);
     return `https://www.reddit.com/message/compose?to=${message.username}&subject=${subject}&message=${body}`;
   }
   twitterPmFormat(message: any): string {
     // https://twitter.com/messages/compose?recipient_id=USER_ID&text=MESSAGE
-    const body = this.encodedBody(message.amount, 'Twitter', `https://${this.getHostName()}/direct-auth`);
+    const body = this.encodedBody(message.amount, 'Twitter', `https://${this.getHostName()}`);
     return `https://twitter.com/messages/compose?recipient_id=${message.twitterId}&text=${body}`;
   }
   encodedBody(amount: string, accountType: string, url: string): string {
