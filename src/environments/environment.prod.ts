@@ -222,6 +222,14 @@ export const CONSTANTS: Constants = {
       address: ["KT1Mf8Pqn6NMt8VGuVaySohvSvQQpvcM37eZ", "KT1BkStQej7MwnkWhCV2tUanETeN25zc7ADe"],
       thumbnailUrl: "../../../assets/img/alias/taconft.png",
       link: "https://taconft.xyz/", shouldDisplayLink: DisplayLinkOption.None
+    },
+    'fx(hash)': {
+      name: "fx(hash)",
+      address: ["KT1KEa8z6vWXDJrVqtMrAeDVzsvxat3kHaCE"],
+      thumbnailUrl: "../../../assets/img/alias/fxhash.jpg",
+      discoverUrl: "../../../assets/img/alias/fxhash-discover.png", zoomDiscoverImg: true,
+      link: "https://www.fxhash.xyz", shouldDisplayLink: DisplayLinkOption.All, category: ["marketplace"], backgroundColor: 'black',
+      description: "Open platform to create and collect generative NFTs on the tezos blockchain",
     }
   },
   ASSETS: {
@@ -961,6 +969,7 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1HZVd9Cjc2CMe3sQvXgbxhpJkdena21pih',//randomly common skeles
   'KT1Ak8AFA54waFVMyPXNE925cUaQjFEqxuYN',//HOLLOWS
   'KT1BkStQej7MwnkWhCV2tUanETeN25zc7ADe',//TacoNFT premint tokens
-  'KT1Mf8Pqn6NMt8VGuVaySohvSvQQpvcM37eZ'//TacoNFT
+  'KT1Mf8Pqn6NMt8VGuVaySohvSvQQpvcM37eZ',//TacoNFT
+  'KT1KEa8z6vWXDJrVqtMrAeDVzsvxat3kHaCE'//fx(hash)
 ];
 export const BLACKLISTED_TOKEN_CONTRACTS = []
