@@ -81,6 +81,10 @@ $border-color: #e6eaef;
         & .torus-name {
           left: 0;
           margin: 0.5rem 0 0 0;
+
+          & .verifier-logo {
+            margin: 0.25rem 0.5rem 0 3rem;
+          }
         }
       }
     }
