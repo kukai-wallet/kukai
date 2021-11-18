@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import DirectWebSdk from '@toruslabs/torus-direct-web-sdk';
+import DirectWebSdk from '@toruslabs/customauth';
 import FetchNodeDetails from '@toruslabs/fetch-node-details';
 import TorusUtils from '@toruslabs/torus.js';
 import { OperationService } from '../../services/operation/operation.service';
@@ -233,6 +233,7 @@ export class TorusService {
         domain: CONSTANTS.MAINNET ? AUTH_DOMAIN_MAINNET : AUTH_DOMAIN,
         connection: "Reddit",
         verifierIdField: "name",
+        isVerifierIdCaseSensitive: false
       }
     };
   }
