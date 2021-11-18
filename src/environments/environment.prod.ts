@@ -227,7 +227,8 @@ export const CONSTANTS: Constants = {
       name: "Chop Sumo",
       address: ["KT1Wm4Cegd7wW6MYxEhg6AH5iFX48y65nWvv"],
       thumbnailUrl: "../../../assets/img/alias/chopsumo.png",
-      link: "https://chopsumo.xyz", shouldDisplayLink: DisplayLinkOption.None
+      link: "https://chopsumo.xyz", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"]
     }
   },
   ASSETS: {
