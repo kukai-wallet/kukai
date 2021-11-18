@@ -229,6 +229,14 @@ export const CONSTANTS: Constants = {
       thumbnailUrl: "../../../assets/img/alias/chopsumo.png",
       link: "https://chopsumo.xyz", shouldDisplayLink: DisplayLinkOption.None,
       category: ["collectibles"]
+    },
+    'CUBEHEADs': {
+      name: "CUBE HEADs",
+      address: ["KT1XHyDd8ScUteYRWNocHgwZtj2BwBcoCZZo"],
+      thumbnailUrl: "../../../assets/img/alias/cubeheads.png",
+      link: "", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"],
+      description: "CUBE HEAD is a collection of collectibles, each made with a unique cube character set"
     }
   },
   ASSETS: {
