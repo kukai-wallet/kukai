@@ -222,6 +222,12 @@ export const CONSTANTS: Constants = {
       address: ["KT1Mf8Pqn6NMt8VGuVaySohvSvQQpvcM37eZ", "KT1BkStQej7MwnkWhCV2tUanETeN25zc7ADe"],
       thumbnailUrl: "../../../assets/img/alias/taconft.png",
       link: "https://taconft.xyz/", shouldDisplayLink: DisplayLinkOption.None
+    },
+    'ChopSumo': {
+      name: "Chop Sumo",
+      address: ["KT1Wm4Cegd7wW6MYxEhg6AH5iFX48y65nWvv"],
+      thumbnailUrl: "../../../assets/img/alias/chopsumo.png",
+      link: "https://chopsumo.xyz", shouldDisplayLink: DisplayLinkOption.None
     }
   },
   ASSETS: {
