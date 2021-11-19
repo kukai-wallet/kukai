@@ -237,6 +237,14 @@ export const CONSTANTS: Constants = {
       link: "", shouldDisplayLink: DisplayLinkOption.None,
       category: ["collectibles"],
       description: "CUBE HEAD is a collection of collectibles, each made with a unique cube character set"
+    },
+    'CyberGeckoGang': {
+      name: "Gecko",
+      address: ["KT1CwSgYmZewFazZsW348RAQYn1nthiGP3Qa"],
+      thumbnailUrl: "../../../assets/img/alias/gecko.png",
+      link: "https://cybergeckogang.xyz", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"],
+      description: "Cyber Gecko Gang is a limited collection of smug geckos programmatically, randomly generated on the Tezos blockchain"
     }
   },
   ASSETS: {
