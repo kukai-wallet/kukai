@@ -14,14 +14,6 @@ export const CONSTANTS: Constants = {
   MAINNET: true,
   NODE_URL: 'https://mainnet.kukai.network',
   BLOCK_EXPLORER_URL: 'https://tzkt.io',
-  ALLOWED_EMBED_ORIGINS: [
-    'https://playwithbrio.com',
-    'https://www.playwithbrio.com',
-    'https://production.playwithbrio.com',
-    'https://minterpop.com',
-    'https://interpopcomics.com',
-    'https://www.interpopcomics.com'
-  ],
   HARD_LIMITS: {
     hard_gas_limit_per_operation: 1040000,
     hard_gas_limit_per_block: 5200000,
