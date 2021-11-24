@@ -123,7 +123,6 @@ export interface Constants {
   MAINNET: boolean;
   NODE_URL: string;
   BLOCK_EXPLORER_URL: string;
-  ALLOWED_EMBED_ORIGINS: string[];
   HARD_LIMITS: {
     hard_gas_limit_per_operation: number,
     hard_gas_limit_per_block: number,

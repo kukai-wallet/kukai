@@ -17,7 +17,6 @@ export const CONSTANTS: Constants = {
   MAINNET: false,
   NODE_URL: 'https://florencenet.api.tez.ie',
   BLOCK_EXPLORER_URL: 'https://florencenet.tzkt.io',
-  ALLOWED_EMBED_ORIGINS: [],
   HARD_LIMITS: {
     hard_gas_limit_per_operation: 1040000,
     hard_gas_limit_per_block: 5200000,

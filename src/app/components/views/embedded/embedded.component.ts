@@ -32,12 +32,59 @@ import {
 import { Subscription } from 'rxjs';
 import { SubjectService } from '../../../services/subject/subject.service';
 import { InputValidationService } from '../../../services/input-validation/input-validation.service';
+enum Permission {
+  LOGIN = 'login',
+  OPERATIONS = 'operations',
+  MICHELINE = 'micheline'
+}
+interface Permissions {
+  origins: string[],
+  permissions: {
+    [Permission.LOGIN]: boolean,
+    [Permission.OPERATIONS]: boolean,
+    [Permission.MICHELINE]: boolean
+  }
+}
 @Component({
   selector: 'app-embedded',
   templateUrl: './embedded.component.html',
   styleUrls: ['../../../../scss/components/views/embedded/embedded.component.scss']
 })
 export class EmbeddedComponent implements OnInit {
+  readonly permissionMatrix: Record<string, Permissions> = {
+    brio: {
+      origins: ['https://playwithbrio.com', 'https://www.playwithbrio.com', 'https://production.playwithbrio.com'],
+      permissions: {
+        login: true,
+        operations: true,
+        micheline: true
+      }
+    },
+    minterpop: {
+      origins: ['https://minterpop.com'],
+      permissions: {
+        login: true,
+        operations: true,
+        micheline: true
+      }
+    },
+    interpop: {
+      origins: ['https://interpopcomics.com', 'https://www.interpopcomics.com'],
+      permissions: {
+        login: true,
+        operations: true,
+        micheline: true
+      }
+    },
+    humanMachine: {
+      origins: ['https://human-machine.io'],
+      permissions: {
+        login: true,
+        operations: false,
+        micheline: false
+      }
+    }
+  };
   constructor(
     private torusService: TorusService,
     private importService: ImportService,
@@ -93,7 +140,7 @@ export class EmbeddedComponent implements OnInit {
   handleRequest = (evt) => {
     try {
       const data: RequestMessage = JSON.parse(evt.data);
-      if (!CONSTANTS.MAINNET || CONSTANTS.ALLOWED_EMBED_ORIGINS.includes(evt.origin)) {
+      if (this.hasPermission(null, evt.origin)) {
         console.log(`Received ${evt.data} from ${evt.origin}`);
         if (data &&
           data.type) {
@@ -129,11 +176,16 @@ export class EmbeddedComponent implements OnInit {
           }
         }
       } else if (data && data.type) {
-        console.warn(`Invalid origin (${evt.origin})`);
+        console.error(`Invalid origin (${evt.origin})`);
       }
     } catch { }
   }
   private handleSignExprRequest(req: SignExprRequest) {
+    if (!this.hasPermission(Permission.MICHELINE)) {
+      const response: ResponseMessage = { type: ResponseTypes.signExprResponse, failed: true, error: 'NO_PERMISSION' };
+      this.sendResponse(response);
+      return;
+    }
     if (this.walletService.wallet instanceof EmbeddedTorusWallet && req.expr) {
       if (req.expr.slice(0, 2) === '0x') {
         req.expr = req.expr.slice(2);
@@ -141,14 +193,14 @@ export class EmbeddedComponent implements OnInit {
       if (this.inputValidationService.isMichelineExpr(req.expr)) {
         this.signRequest = { payload: req.expr, title: req.title, description: req.description };
       } else {
-        this.sendResponse({ type: ResponseTypes.loginResponse, failed: true, error: 'INVALID_PARAMETERS' });
+        this.sendResponse({ type: ResponseTypes.signExprResponse, failed: true, error: 'INVALID_PARAMETERS' });
       }
     } else {
       let response: ResponseMessage;
       if (!(this.walletService.wallet instanceof EmbeddedTorusWallet)) {
-        response = { type: ResponseTypes.loginResponse, failed: true, error: 'NO_WALLET_FOUND' };
+        response = { type: ResponseTypes.signExprResponse, failed: true, error: 'NO_WALLET_FOUND' };
       } else {
-        response = { type: ResponseTypes.loginResponse, failed: true, error: 'INVALID_PARAMETERS' };
+        response = { type: ResponseTypes.signExprResponse, failed: true, error: 'INVALID_PARAMETERS' };
       }
       this.sendResponse(response);
     }
@@ -164,6 +216,11 @@ export class EmbeddedComponent implements OnInit {
     this.sendResponse(resp);
   }
   private handleLoginRequest(req: LoginRequest) {
+    if (!this.hasPermission(Permission.LOGIN)) {
+      const response: ResponseMessage = { type: ResponseTypes.loginResponse, failed: true, error: 'NO_PERMISSION' };
+      this.sendResponse(response);
+      return;
+    }
     if (this.activeAccount) {
       const response: ResponseMessage = { type: ResponseTypes.loginResponse, failed: true, error: 'ALREADY_LOGGED_IN' };
       this.sendResponse(response);
@@ -178,6 +235,11 @@ export class EmbeddedComponent implements OnInit {
     }
   }
   private handleOperationRequest(req: OperationRequest) {
+    if (!this.hasPermission(Permission.OPERATIONS)) {
+      const response: ResponseMessage = { type: ResponseTypes.operationResponse, failed: true, error: 'NO_PERMISSION' };
+      this.sendResponse(response);
+      return;
+    }
     if (this.walletService.wallet instanceof EmbeddedTorusWallet && req.operations) {
       if (this.isValidOperation(req.operations)) {
         this.template = req.ui ? req.ui : null;
@@ -253,6 +315,11 @@ export class EmbeddedComponent implements OnInit {
     }, 10);
   }
   async handleAuthRequest(authReq: AuthRequest) {
+    if (!this.hasPermission(Permission.LOGIN)) {
+      const response: ResponseMessage = { type: ResponseTypes.loginResponse, failed: true, error: 'NO_PERMISSION' };
+      this.sendResponse(response);
+      return;
+    }
     this.embeddedAuthService.authenticate(authReq, this.origin).then((authResponse: any) => {
       this.sendResponse({
         type: ResponseTypes.authResponse,
@@ -366,5 +433,27 @@ export class EmbeddedComponent implements OnInit {
         }
       }
     });
+  }
+  private normalizeTemplate(template: any): any {
+    if (template?.descriptions) {
+      for (let i in template.descriptions) {
+        if (typeof template.descriptions[i] === 'string') {
+          template.descriptions[i] = { text: template.descriptions[i] };
+        }
+      }
+    }
+    return template;
+  }
+  private hasPermission(permission: Permission, origin: string = this.origin): boolean {
+    if (!CONSTANTS.MAINNET) {
+      return true;
+    }
+    const keys = Object.keys(this.permissionMatrix);
+    for (const key of keys) {
+      if (this.permissionMatrix[key].origins.includes(origin)) {
+        return permission ? this.permissionMatrix[key].permissions[permission] : !!this.permissionMatrix[key].permissions;
+      }
+    }
+    return false;
   }
 }
