@@ -29,7 +29,7 @@ interface TokenMetadata {
   providedIn: 'root'
 })
 export class TzktService implements Indexer {
-  readonly network = CONSTANTS.NETWORK.replace('edonet', 'edo2net');
+  readonly network = CONSTANTS.NETWORK.replace('hangzhounet', 'hangzhou2net');
   public readonly bcd = 'https://api.better-call.dev/v1';
   public readonly tzkt = `https://api.${this.network}.tzkt.io/v1`;
   readonly BCD_TOKEN_QUERY_SIZE: number = 50;

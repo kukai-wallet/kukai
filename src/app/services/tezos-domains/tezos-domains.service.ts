@@ -19,7 +19,7 @@ export class TezosDomainsService {
     const options = { caching: { enabled: false } };
     this.client = new TaquitoTezosDomainsClient({
       tezos: tezosToolkit,
-      network: <'mainnet' | 'granadanet'>CONSTANTS.NETWORK,
+      network: <'mainnet' | 'granadanet' | 'hangzhounet'>CONSTANTS.NETWORK,
       ...options
     });
   }
