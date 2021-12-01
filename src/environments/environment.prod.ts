@@ -227,6 +227,13 @@ export const CONSTANTS: Constants = {
       thumbnailUrl: "../../../assets/img/alias/chopsumo.png",
       link: "https://chopsumo.xyz", shouldDisplayLink: DisplayLinkOption.None,
       category: ["collectibles"]
+    },
+    'ZIGGURATS': {
+      name: "ZIGGURATS",
+      address: ["KT1PNcZQkJXMQ2Mg92HG1kyrcu3auFX5pfd8"],
+      thumbnailUrl: "../../../assets/img/alias/ziggurats.png",
+      link: "https://ziggurats.xyz", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"]
     }
   },
   ASSETS: {
@@ -968,6 +975,7 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1BkStQej7MwnkWhCV2tUanETeN25zc7ADe',//TacoNFT premint tokens
   'KT1Mf8Pqn6NMt8VGuVaySohvSvQQpvcM37eZ',//TacoNFT
   'KT1DuZFNv6JwwA7kS8RXvoQiANm3L4dfn6qP',//0xC0FACE
-  'KT1Wm4Cegd7wW6MYxEhg6AH5iFX48y65nWvv'//ChopSumo
+  'KT1Wm4Cegd7wW6MYxEhg6AH5iFX48y65nWvv',//ChopSumo
+  'KT1PNcZQkJXMQ2Mg92HG1kyrcu3auFX5pfd8'//ZIGGURATS
 ];
 export const BLACKLISTED_TOKEN_CONTRACTS = []
