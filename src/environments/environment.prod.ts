@@ -221,6 +221,7 @@ export const CONSTANTS: Constants = {
       thumbnailUrl: "../../../assets/img/alias/0xC0FACE-thumb.jpg",
       link: '', shouldDisplayLink: DisplayLinkOption.None
     },
+<<<<<<< HEAD
     'CyberGeckoGang': {
       name: "Cyber Gecko Gang",
       address: ["KT1CwSgYmZewFazZsW348RAQYn1nthiGP3Qa"],
@@ -228,6 +229,14 @@ export const CONSTANTS: Constants = {
       link: "https://cybergeckogang.xyz", shouldDisplayLink: DisplayLinkOption.None,
       category: ["collectibles"],
       description: "Cyber Gecko Gang is a limited collection of smug geckos programmatically, randomly generated on the Tezos blockchain"
+=======
+    'ChopSumo': {
+      name: "Chop Sumo",
+      address: ["KT1Wm4Cegd7wW6MYxEhg6AH5iFX48y65nWvv"],
+      thumbnailUrl: "../../../assets/img/alias/chopsumo.png",
+      link: "https://chopsumo.xyz", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"]
+>>>>>>> staging
     }
   },
   ASSETS: {
@@ -969,6 +978,7 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1BkStQej7MwnkWhCV2tUanETeN25zc7ADe',//TacoNFT premint tokens
   'KT1Mf8Pqn6NMt8VGuVaySohvSvQQpvcM37eZ',//TacoNFT
   'KT1DuZFNv6JwwA7kS8RXvoQiANm3L4dfn6qP',//0xC0FACE
+  'KT1Wm4Cegd7wW6MYxEhg6AH5iFX48y65nWvv',//ChopSumo
   'KT1CwSgYmZewFazZsW348RAQYn1nthiGP3Qa'//Cyber Gecko Gang
 ];
 export const BLACKLISTED_TOKEN_CONTRACTS = []
