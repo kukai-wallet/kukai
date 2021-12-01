@@ -220,6 +220,13 @@ export const CONSTANTS: Constants = {
       address: ["KT1DuZFNv6JwwA7kS8RXvoQiANm3L4dfn6qP"],
       thumbnailUrl: "../../../assets/img/alias/0xC0FACE-thumb.jpg",
       link: '', shouldDisplayLink: DisplayLinkOption.None
+    },
+    'ChopSumo': {
+      name: "Chop Sumo",
+      address: ["KT1Wm4Cegd7wW6MYxEhg6AH5iFX48y65nWvv"],
+      thumbnailUrl: "../../../assets/img/alias/chopsumo.png",
+      link: "https://chopsumo.xyz", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"]
     }
   },
   ASSETS: {
@@ -960,6 +967,7 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1Ak8AFA54waFVMyPXNE925cUaQjFEqxuYN',//HOLLOWS
   'KT1BkStQej7MwnkWhCV2tUanETeN25zc7ADe',//TacoNFT premint tokens
   'KT1Mf8Pqn6NMt8VGuVaySohvSvQQpvcM37eZ',//TacoNFT
-  'KT1DuZFNv6JwwA7kS8RXvoQiANm3L4dfn6qP'//0xC0FACE
+  'KT1DuZFNv6JwwA7kS8RXvoQiANm3L4dfn6qP',//0xC0FACE
+  'KT1Wm4Cegd7wW6MYxEhg6AH5iFX48y65nWvv'//ChopSumo
 ];
 export const BLACKLISTED_TOKEN_CONTRACTS = []
