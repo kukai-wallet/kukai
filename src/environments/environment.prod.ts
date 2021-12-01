@@ -221,7 +221,13 @@ export const CONSTANTS: Constants = {
       thumbnailUrl: "../../../assets/img/alias/0xC0FACE-thumb.jpg",
       link: '', shouldDisplayLink: DisplayLinkOption.None
     },
-<<<<<<< HEAD
+    'ChopSumo': {
+      name: "Chop Sumo",
+      address: ["KT1Wm4Cegd7wW6MYxEhg6AH5iFX48y65nWvv"],
+      thumbnailUrl: "../../../assets/img/alias/chopsumo.png",
+      link: "https://chopsumo.xyz", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"]
+    },
     'CyberGeckoGang': {
       name: "Cyber Gecko Gang",
       address: ["KT1CwSgYmZewFazZsW348RAQYn1nthiGP3Qa"],
@@ -229,14 +235,6 @@ export const CONSTANTS: Constants = {
       link: "https://cybergeckogang.xyz", shouldDisplayLink: DisplayLinkOption.None,
       category: ["collectibles"],
       description: "Cyber Gecko Gang is a limited collection of smug geckos programmatically, randomly generated on the Tezos blockchain"
-=======
-    'ChopSumo': {
-      name: "Chop Sumo",
-      address: ["KT1Wm4Cegd7wW6MYxEhg6AH5iFX48y65nWvv"],
-      thumbnailUrl: "../../../assets/img/alias/chopsumo.png",
-      link: "https://chopsumo.xyz", shouldDisplayLink: DisplayLinkOption.None,
-      category: ["collectibles"]
->>>>>>> staging
     }
   },
   ASSETS: {
