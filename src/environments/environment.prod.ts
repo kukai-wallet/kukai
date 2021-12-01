@@ -14,14 +14,6 @@ export const CONSTANTS: Constants = {
   MAINNET: true,
   NODE_URL: 'https://mainnet.kukai.network',
   BLOCK_EXPLORER_URL: 'https://tzkt.io',
-  ALLOWED_EMBED_ORIGINS: [
-    'https://playwithbrio.com',
-    'https://www.playwithbrio.com',
-    'https://production.playwithbrio.com',
-    'https://minterpop.com',
-    'https://interpopcomics.com',
-    'https://www.interpopcomics.com'
-  ],
   HARD_LIMITS: {
     hard_gas_limit_per_operation: 1040000,
     hard_gas_limit_per_block: 5200000,
@@ -222,6 +214,12 @@ export const CONSTANTS: Constants = {
       address: ["KT1Mf8Pqn6NMt8VGuVaySohvSvQQpvcM37eZ", "KT1BkStQej7MwnkWhCV2tUanETeN25zc7ADe"],
       thumbnailUrl: "../../../assets/img/alias/taconft.png",
       link: "https://taconft.xyz/", shouldDisplayLink: DisplayLinkOption.None
+    },
+    '0xC0FACE': {
+      name: "0xC0FACE COLLECTION",
+      address: ["KT1DuZFNv6JwwA7kS8RXvoQiANm3L4dfn6qP"],
+      thumbnailUrl: "../../../assets/img/alias/0xC0FACE-thumb.jpg",
+      link: '', shouldDisplayLink: DisplayLinkOption.None
     },
     'ChopSumo': {
       name: "Chop Sumo",
@@ -968,6 +966,7 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1HZVd9Cjc2CMe3sQvXgbxhpJkdena21pih',//randomly common skeles
   'KT1Ak8AFA54waFVMyPXNE925cUaQjFEqxuYN',//HOLLOWS
   'KT1BkStQej7MwnkWhCV2tUanETeN25zc7ADe',//TacoNFT premint tokens
-  'KT1Mf8Pqn6NMt8VGuVaySohvSvQQpvcM37eZ'//TacoNFT
+  'KT1Mf8Pqn6NMt8VGuVaySohvSvQQpvcM37eZ',//TacoNFT
+  'KT1DuZFNv6JwwA7kS8RXvoQiANm3L4dfn6qP'//0xC0FACE
 ];
 export const BLACKLISTED_TOKEN_CONTRACTS = []

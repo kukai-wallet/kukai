@@ -17,7 +17,6 @@ export const CONSTANTS: Constants = {
   MAINNET: false,
   NODE_URL: 'https://api.tez.ie/rpc/granadanet',
   BLOCK_EXPLORER_URL: 'https://granadanet.tzkt.io',
-  ALLOWED_EMBED_ORIGINS: [],
   HARD_LIMITS: {
     hard_gas_limit_per_operation: 1040000,
     hard_gas_limit_per_block: 5200000,
