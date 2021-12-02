@@ -232,8 +232,11 @@ export const CONSTANTS: Constants = {
       name: "ZIGGURATS",
       address: ["KT1PNcZQkJXMQ2Mg92HG1kyrcu3auFX5pfd8"],
       thumbnailUrl: "../../../assets/img/alias/ziggurats.png",
-      link: "https://ziggurats.xyz", shouldDisplayLink: DisplayLinkOption.None,
-      category: ["collectibles"]
+      discoverUrl: "../../../assets/img/alias/ziggurats-discover.png",
+      link: "https://ziggurats.xyz", shouldDisplayLink: DisplayLinkOption.All,
+      category: ["collectibles"],
+      backgroundColor: '#000',
+      description: "Generative mixtape + art by Mike Shinoda"
     }
   },
   ASSETS: {
