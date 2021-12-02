@@ -20,6 +20,16 @@ export const CONSTANTS: Constants = {
     hard_storage_limit_per_operation: 60000
   },
   CONTRACT_ALIASES: {
+    'ZIGGURATS': {
+      name: "ZIGGURATS",
+      address: ["KT1PNcZQkJXMQ2Mg92HG1kyrcu3auFX5pfd8"],
+      thumbnailUrl: "../../../assets/img/alias/ziggurats.png",
+      discoverUrl: "../../../assets/img/alias/ziggurats-discover.png",
+      link: "https://ziggurats.xyz", shouldDisplayLink: DisplayLinkOption.All,
+      category: ["collectibles"],
+      backgroundColor: '#000',
+      description: "Generative mixtape + art by Mike Shinoda"
+    },
     'mclarenracing': {
       name: 'McLaren Racing Collective',
       address: ['KT1PEGqt5rMmHpyaMXc8RFTFkkAUDrzSFRWk'],
@@ -226,13 +236,6 @@ export const CONSTANTS: Constants = {
       address: ["KT1Wm4Cegd7wW6MYxEhg6AH5iFX48y65nWvv"],
       thumbnailUrl: "../../../assets/img/alias/chopsumo.png",
       link: "https://chopsumo.xyz", shouldDisplayLink: DisplayLinkOption.None,
-      category: ["collectibles"]
-    },
-    'ZIGGURATS': {
-      name: "ZIGGURATS",
-      address: ["KT1PNcZQkJXMQ2Mg92HG1kyrcu3auFX5pfd8"],
-      thumbnailUrl: "../../../assets/img/alias/ziggurats.png",
-      link: "https://ziggurats.xyz", shouldDisplayLink: DisplayLinkOption.None,
       category: ["collectibles"]
     }
   },
