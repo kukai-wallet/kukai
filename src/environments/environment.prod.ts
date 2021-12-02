@@ -20,6 +20,16 @@ export const CONSTANTS: Constants = {
     hard_storage_limit_per_operation: 60000
   },
   CONTRACT_ALIASES: {
+    'ZIGGURATS': {
+      name: "ZIGGURATS",
+      address: ["KT1PNcZQkJXMQ2Mg92HG1kyrcu3auFX5pfd8"],
+      thumbnailUrl: "../../../assets/img/alias/ziggurats.png",
+      discoverUrl: "../../../assets/img/alias/ziggurats-discover.png",
+      link: "https://ziggurats.xyz", shouldDisplayLink: DisplayLinkOption.All,
+      category: ["collectibles"],
+      backgroundColor: '#000',
+      description: "Generative mixtape + art by Mike Shinoda"
+    },
     'mclarenracing': {
       name: 'McLaren Racing Collective',
       address: ['KT1PEGqt5rMmHpyaMXc8RFTFkkAUDrzSFRWk'],
@@ -977,6 +987,7 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1Mf8Pqn6NMt8VGuVaySohvSvQQpvcM37eZ',//TacoNFT
   'KT1DuZFNv6JwwA7kS8RXvoQiANm3L4dfn6qP',//0xC0FACE
   'KT1Wm4Cegd7wW6MYxEhg6AH5iFX48y65nWvv',//ChopSumo
-  'KT1CwSgYmZewFazZsW348RAQYn1nthiGP3Qa'//Cyber Gecko Gang
+  'KT1CwSgYmZewFazZsW348RAQYn1nthiGP3Qa',//Cyber Gecko Gang
+  'KT1PNcZQkJXMQ2Mg92HG1kyrcu3auFX5pfd8'//ZIGGURATS
 ];
 export const BLACKLISTED_TOKEN_CONTRACTS = []
