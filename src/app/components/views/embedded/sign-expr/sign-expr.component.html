@@ -1,4 +1,4 @@
-<div *ngIf="signRequest" class="flex-column kukai-modal">
+<div *ngIf="signRequest && payload && !template" class="flex-column kukai-modal">
   <div class="content">
     <div class="flex-column top">
       <img class="flex-row button close" (click)="rejectSigning()" src="../../../../assets/img/add-minterpop.svg" />
@@ -23,3 +23,4 @@
     </div>
   </div>
 </div>
+<app-sign-expr-template *ngIf="signRequest && payload && template" [req]="{payload: payload, template: template, activeAccount: activeAccount}" (isApproved)="handleTemplateApproval($event)"></app-sign-expr-template>

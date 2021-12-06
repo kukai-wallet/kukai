@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
-import { Account } from '../../../services/wallet/wallet';
+import { Account, EmbeddedTorusWallet } from '../../../services/wallet/wallet';
 import { PrepareRequest, ConfirmRequest, FullyPreparedTransaction, PartiallyPreparedTransaction, TemplateRequest, TemplateFee } from './interfaces';
 import { Template } from 'kukai-embed';
 import { TokenService } from '../../../services/token/token.service';
@@ -61,6 +61,12 @@ export class SendComponent implements OnInit, OnChanges, OnDestroy {
   private async checkOpReq(opReq: any): Promise<void | {kind, desstination, amount, parameters, gasRecommendation, storageRecommendation}> {
     if (opReq.operationDetails) {
       opReq = opReq.operationDetails;
+    }
+    if (this.walletService.wallet instanceof EmbeddedTorusWallet &&
+      !this.walletService.wallet?.sk && this.template?.silent
+    ) {
+      this.operationResponse.emit('invalid_parameters');
+      return;
     }
     if (opReq[0].kind === 'transaction') {
       const txs: PartiallyPreparedTransaction[] = opReq.map(tx => {

@@ -174,6 +174,9 @@ export class TorusService {
     );
   }
   async loginTorus(selectedVerifier: string, verifierId = ''): Promise<any> {
+    if (!CONSTANTS.MAINNET && document?.location?.host === 'localhost:4200') {
+      return this.mockLogin(selectedVerifier); // mock locally
+    }
     try {
       const jwtParams: any = this._loginToConnectionMap()[selectedVerifier] || {};
       if (verifierId && selectedVerifier === GOOGLE) {
@@ -203,7 +206,7 @@ export class TorusService {
       }
       if (selectedVerifier === FACEBOOK) {
         console.log('Invalidating access token...');
-        fetch(`https://graph.facebook.com/me/permissions?access_token=${loginDetails.userInfo.accessToken}`, { method: "DELETE", mode: "cors"  });
+        fetch(`https://graph.facebook.com/me/permissions?access_token=${loginDetails.userInfo.accessToken}`, { method: "DELETE", mode: "cors" });
       }
       const keyPair = this.operationService.spPrivKeyToKeyPair(loginDetails.privateKey);
       console.log('DirectAuth KeyPair', keyPair);
@@ -236,5 +239,22 @@ export class TorusService {
         isVerifierIdCaseSensitive: false
       }
     };
+  }
+  private async mockLogin(typeOfLogin: string): Promise<any> {
+    const keyPair = {
+      sk: 'spsk1VfCfhixtzGvUSKDre6jwyGbXFm6aoeLGnxeVLCouueZmkgtJF',
+      pk: 'sppk7cZsZeBApsFgYEdWuSwj92YCWkJxMmBfkN3FeKRmEB7Lk5pmDrT',
+      pkh: 'tz2WKg52VqnYXH52TZbSVjT4hcc8YGVKi7Pd'
+    };
+    const userInfo = {
+      typeOfLogin,
+      verifierId: typeOfLogin !== 'google' ? 'MockUser' : 'mock@user.com',
+      name: typeOfLogin !== 'twitter' ? 'Mock User' : '@MockUser'
+    };
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({ keyPair, userInfo });
+      }, 1000);
+    });
   }
 }

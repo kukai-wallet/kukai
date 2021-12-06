@@ -83,6 +83,14 @@ export class EmbeddedComponent implements OnInit {
         operations: false,
         micheline: false
       }
+    },
+    ubisoft: {
+      origins: ['*.ubisoft.com'],
+      permissions: {
+        login: true,
+        operations: false,
+        micheline: true
+      }
     }
   };
   constructor(
@@ -108,11 +116,11 @@ export class EmbeddedComponent implements OnInit {
   template = null;
   operationRequests = null;
   signRequest = null;
-  loginConfig = null;
+  loginConfig: LoginConfig = null;
 
   ngOnInit(): void {
     const htmlElem = this.elRef.nativeElement.closest('html');
-    htmlElem.style.fontSize = '100%'; 
+    htmlElem.style.fontSize = '100%';
     document.body.style.background = 'none';
     this.torusService.initTorus();
     if (window.addEventListener) {
@@ -191,7 +199,7 @@ export class EmbeddedComponent implements OnInit {
         req.expr = req.expr.slice(2);
       }
       if (this.inputValidationService.isMichelineExpr(req.expr)) {
-        this.signRequest = { payload: req.expr, title: req.title, description: req.description };
+        this.signRequest = { payload: req.expr, ui: this.normalizeTemplate(req?.ui) };
       } else {
         this.sendResponse({ type: ResponseTypes.signExprResponse, failed: true, error: 'INVALID_PARAMETERS' });
       }
@@ -211,7 +219,7 @@ export class EmbeddedComponent implements OnInit {
     if (response && typeof response === 'string' && response.length > 95 && response.slice(0, 5) === 'spsig') {
       resp = { type: ResponseTypes.signExprResponse, failed: false, signature: response };
     } else {
-      resp = { type: ResponseTypes.signExprResponse, failed: true, error: 'ABORTED_BY_USER'};
+      resp = { type: ResponseTypes.signExprResponse, failed: true, error: 'ABORTED_BY_USER' };
     }
     this.sendResponse(resp);
   }
@@ -242,7 +250,7 @@ export class EmbeddedComponent implements OnInit {
     }
     if (this.walletService.wallet instanceof EmbeddedTorusWallet && req.operations) {
       if (this.isValidOperation(req.operations)) {
-        this.template = req.ui ? req.ui : null;
+        this.template = req.ui ? this.normalizeTemplate(req.ui) : null;
         this.operationRequests = req.operations;
       } else {
         this.operationRequests = null;
@@ -276,7 +284,7 @@ export class EmbeddedComponent implements OnInit {
       this.noWalletError();
     }
   }
-  loginResponse(loginData: any) {
+  async loginResponse(loginData: any) {
     let response: ResponseMessage;
     let toImport: any;
     if (loginData === 'dismiss') {
@@ -299,10 +307,20 @@ export class EmbeddedComponent implements OnInit {
         failed: false
       };
       toImport = { keyPair, userInfo, instanceId };
+      if (this.loginConfig?.authParams) {
+        try {
+          response.authResponse = await this.embeddedAuthService.authenticate(this.loginConfig.authParams, this.origin, keyPair);
+        } catch (e) {
+          console.error(e);
+          response = { type: ResponseTypes.loginResponse, failed: true, error: e?.message };
+          toImport = undefined;
+        }
+      }
     } else {
       this.dismiss = null;
       response = { type: ResponseTypes.loginResponse, failed: true, error: 'ABORTED_BY_USER' };
     }
+    const loginConfig = this.loginConfig;
     if (this.dismiss === null) {
       this.login = false;
       this.loginConfig = null;
@@ -310,6 +328,9 @@ export class EmbeddedComponent implements OnInit {
     setTimeout(() => {
       this.sendResponse(response);
       if (toImport) {
+        if (loginConfig?.strictAuth) {
+          toImport.keyPair.sk = '';
+        }
         this.importAccount(toImport.keyPair, toImport.userInfo, toImport.instanceId);
       }
     }, 10);
@@ -448,11 +469,17 @@ export class EmbeddedComponent implements OnInit {
     if (!CONSTANTS.MAINNET) {
       return true;
     }
-    const keys = Object.keys(this.permissionMatrix);
-    for (const key of keys) {
-      if (this.permissionMatrix[key].origins.includes(origin)) {
-        return permission ? this.permissionMatrix[key].permissions[permission] : !!this.permissionMatrix[key].permissions;
+    try {
+      const keys = Object.keys(this.permissionMatrix);
+      for (const key of keys) {
+        for (const allowedOrigin of this.permissionMatrix[key].origins) {
+          if (allowedOrigin.startsWith('*.') ? origin.endsWith(allowedOrigin.slice(1)) : origin === allowedOrigin) {
+            return permission ? this.permissionMatrix[key].permissions[permission] : !!this.permissionMatrix[key].permissions;
+          }
+        }
       }
+    } catch (e) {
+      console.error(e);
     }
     return false;
   }

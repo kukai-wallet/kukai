@@ -1,0 +1,52 @@
+<div *ngIf="req" class="flex-column kukai-modal">
+  <div class="content">
+    <div class="flex-column top">
+      <img class="flex-row button close" (click)="cancel()" src="../../../../assets/img/add-minterpop.svg" />
+      <h1 class="title">{{req.template.action || 'Confirmation'}}</h1>
+    </div>
+    <div class="seperator"></div>
+    <div class="flex-column confirm-send">
+        <div *ngIf="req.template.descriptions[0].text" class="asset-name">{{ req.template.descriptions[0].text }}</div>
+        <div class="flex-row transaction">
+          <div class="flex-column left">
+            <span *ngIf="req.template.descriptions[1].text" class="default-text">{{ req.template.descriptions[1].text }}</span>
+            <span *ngIf="req.template.descriptions[2]" class="default-text amount">{{ req.template.descriptions[2].text }}</span>
+            <span *ngIf="req.template.descriptions[3]" class="default-text">{{ req.template.descriptions[3].text }}</span>
+            <span class="default-text">From:</span>
+            <div class="flex-row torus" *ngIf="this.walletService.wallet.verifier">
+              <img class="icon" src="../../../assets/img/{{ this.walletService.wallet.verifier }}-logo.svg">
+              <div class="flex-column">
+                <span class="name">{{ this.walletService.wallet.displayName() }}</span><span class="address">{{
+                  req.activeAccount.address }}</span>
+              </div>
+            </div>
+            <span *ngIf="!this.walletService.wallet.verifier" class="default-text single-to">{{ req.activeAccount.address
+              }}</span>
+          </div>
+          <div *ngIf="req.template.descriptions[0]?.imgUrl" class="flex-column right">
+            <img class="token-image" [src]="req.template.descriptions[0]?.imgUrl" />
+          </div>
+        </div>
+      <br />
+      <div class="seperator"></div>
+      <div class="flex-column bottom">
+        <div class="flex-row default-text more-info" [class]="showMore ? 'open' : ''" (click)="showMore = !showMore">{{ !showMore ?
+          'Show More' : 'Show Less' }}<img src="../../../../assets/img/dropdown-minterpop.svg"></div>
+        <div *ngIf="showMore && req.payload" class="info">
+          <textarea style="width: 100%; padding: 0.5rem" rows=10>{{req.payload}}</textarea>
+        </div>
+      </div>
+      <br />
+      <div class="flex-row buttons">
+        <button (click)="approve()">
+          <ng-container *ngIf="req.template.button; else defaultButtonText">
+            {{req.template.button}}</ng-container>
+          <ng-template #defaultButtonText>Send</ng-template>
+        </button>
+      </div>
+      <div class="footer">
+        <span>Powered by</span><img class="logo" src="../../../../assets/img/header-logo-grey.svg">
+      </div>
+    </div>
+  </div>
+</div> 

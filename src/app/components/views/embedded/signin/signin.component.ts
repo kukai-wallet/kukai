@@ -42,7 +42,6 @@ export class SigninComponent implements OnInit, OnChanges {
   async login(typeOfLogin: string) {
     try {
       this.messageService.startSpinner('Loading wallet...');
-      // const loginData = await this.mockLogin(); // Mock locally
       const loginData = await this.torusService.loginTorus(typeOfLogin);
       if (!loginData?.keyPair) {
         throw new Error('Login failed');
@@ -54,22 +53,5 @@ export class SigninComponent implements OnInit, OnChanges {
     } catch {
       await this.messageService.stopSpinner();
     }
-  }
-  private async mockLogin(): Promise<any> {
-    const keyPair = {
-      sk: 'spsk1VfCfhixtzGvUSKDre6jwyGbXFm6aoeLGnxeVLCouueZmkgtJF',
-      pk: 'sppk7cZsZeBApsFgYEdWuSwj92YCWkJxMmBfkN3FeKRmEB7Lk5pmDrT',
-      pkh: 'tz2WKg52VqnYXH52TZbSVjT4hcc8YGVKi7Pd'
-    };
-    const userInfo = {
-      typeOfLogin: 'google',
-      verifierId: 'mock.user@gmail.com',
-      name: 'Mock User'
-    };
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve({ keyPair, userInfo });
-      }, 2000);
-    });
   }
 }

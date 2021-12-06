@@ -32,6 +32,7 @@ import { AccountListBodyComponent } from '../../modals/account-list/body/body.co
 import { ListComponent } from '../../ui/generic/list.component';
 import { SearchBarComponent } from '../../ui/search/search.component';
 import { RemoveCommaPipe } from '../../../pipes/remove-comma.pipe';
+import { ExprTemplateComponent } from '../embedded/sign-expr/template/template.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import { RemoveCommaPipe } from '../../../pipes/remove-comma.pipe';
     AccountListBodyComponent,
     ListComponent,
     SearchBarComponent,
-    RemoveCommaPipe
+    RemoveCommaPipe,
+    ExprTemplateComponent
   ],
   imports: [
     CommonModule,
@@ -84,7 +86,8 @@ import { RemoveCommaPipe } from '../../../pipes/remove-comma.pipe';
     AccountListComponent,
     AccountListBodyComponent,
     SearchBarComponent,
-    RemoveCommaPipe
+    RemoveCommaPipe,
+    ExprTemplateComponent
   ],
   providers: [
     EstimateService,

@@ -81,7 +81,7 @@
       </div>
       <br />
       <div class="flex-row buttons">
-        <button (click)="approve()">
+        <button (click)="approve()" [disabled]="templateRequest?.partialOps?.length !== 1">
           <ng-container *ngIf="templateRequest.template.button; else defaultButtonText">
             {{templateRequest.template.button}}</ng-container>
           <ng-template #defaultButtonText>Send</ng-template>
