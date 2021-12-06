@@ -68,6 +68,7 @@ export const CONSTANTS: Constants = {
       address: [],
       thumbnailUrl: "../../../assets/img/alias/objktcom.svg",
       discoverUrl: "../../../assets/img/alias/objktcom.svg",
+      symbol: "OBJKTCOM",
       link: "https://objkt.com/", shouldDisplayLink: DisplayLinkOption.All, category: ["marketplace"],
       description: "The best Tezos NFTs all in one place"
     },
