@@ -66,7 +66,7 @@ export class TokenBalancesService {
     const asset: TokenResponseType = this.tokenService.getAsset(token.tokenId);
     if (asset) {
       if (this.isNFT(asset)) { // token balance or NFT?
-        const contractAlias = this.getContractAlias(asset.contractAddress) ?? asset.contractAddress;
+        const contractAlias = this.getContractAlias(asset) ?? asset.contractAddress;
         if (nfts[contractAlias] === undefined) {
           const CONTRACT_ALIASES = CONSTANTS.CONTRACT_ALIASES[(contractAlias as string)];
           if (!CONTRACT_ALIASES?.thumbnailUrl) {
@@ -152,10 +152,11 @@ export class TokenBalancesService {
     }
     return _nfts;
   }
-  getContractAlias(address: string) {
+  getContractAlias(asset: TokenResponseType) {
     const keys = Object.keys(CONSTANTS.CONTRACT_ALIASES);
     for (const key of keys) {
-      if (CONSTANTS.CONTRACT_ALIASES[key].address.includes(address)) {
+      if (CONSTANTS.CONTRACT_ALIASES[key].address.includes(asset.contractAddress) ||
+          CONSTANTS.CONTRACT_ALIASES[key].symbol === asset.symbol) {
         return key;
       }
     }
