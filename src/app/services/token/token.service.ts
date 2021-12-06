@@ -120,17 +120,6 @@ export class TokenService {
           }
         }
         if (token) {
-          if (CONSTANTS.MAINNET && token.status < 1 || token.status < 0) {
-            return {
-              kind: contract.kind,
-              category: contract.category,
-              id,
-              contractAddress,
-              ...token,
-              thumbnailAsset: '',
-              displayAsset: '',
-            };
-          }
           return {
             kind: contract.kind,
             category: contract.category,
