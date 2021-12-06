@@ -79,14 +79,12 @@ export class WalletService {
   async getKeys(pwd: string, pkh?: string): Promise<KeyPair> {
     let seed;
     if (this.wallet instanceof LegacyWalletV1) {
-      console.log('v1');
       seed = await this.encryptionService.decrypt(
         this.wallet.encryptedSeed,
         pwd,
         this.wallet.salt,
         1
       );
-      console.log('done');
     } else if (this.wallet instanceof LegacyWalletV2) {
       seed = await this.encryptionService.decrypt(
         this.wallet.encryptedSeed,
@@ -111,9 +109,9 @@ export class WalletService {
         pkh: this.wallet.implicitAccounts[0].pkh,
       };
       return keyPair;
-    } else if (this.wallet instanceof EmbeddedTorusWallet) {
-      return this.operationService.spPrivKeyToKeyPair(this.wallet.sk);
-    } else if (this.wallet instanceof TorusWallet) {
+    } else if (this.wallet instanceof EmbeddedTorusWallet && this.wallet?.sk) {
+        return this.operationService.spPrivKeyToKeyPair(this.wallet.sk);
+    } else if (this.wallet instanceof TorusWallet || (this.wallet instanceof EmbeddedTorusWallet && !this.wallet?.sk)) {
       const keyPair = await this.torusService.getTorusKeyPair(this.wallet.verifier, this.wallet.id);
       if (this.wallet.getImplicitAccount(keyPair.pkh)) {
         return keyPair;

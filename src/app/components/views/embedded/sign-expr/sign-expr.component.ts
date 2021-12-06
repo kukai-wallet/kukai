@@ -23,6 +23,7 @@ export class SignExprEmbedComponent implements OnInit, OnChanges {
   password = '';
   pwdInvalid = '';
   payload = '';
+  template = null;
   description = null;
   isMessage = false;
   showMore = false;
@@ -40,11 +41,11 @@ export class SignExprEmbedComponent implements OnInit, OnChanges {
       const scrollBarWidth = window.innerWidth - document.body.offsetWidth;
       document.body.style.marginRight = scrollBarWidth.toString();
       document.body.style.overflow = 'hidden';
+      this.template = this.signRequest.ui;
       this.isMessage = this.inputValidationService.isMessageSigning(this.signRequest.payload);
       const value = valueDecoder(Uint8ArrayConsumer.fromHexString(this.signRequest.payload.slice(2)));
       const payload = emitMicheline(value, { indent: '  ', newline: '\n' });
       this.payload = this.isMessage ? value.string : payload;
-      this.description = this.signRequest?.description ? this.signRequest?.description.substring(0, 104).trim() + (this.signRequest?.description.length > 104 ? '...' : '') : null;
     }
   }
   async sign() {
@@ -98,8 +99,16 @@ export class SignExprEmbedComponent implements OnInit, OnChanges {
     this.pwdInvalid = '';
     this.payload = '';
     this.isMessage = false;
+    this.template = null;
   }
   toggle() {
     this.showMore = !this.showMore;
+  }
+  handleTemplateApproval(t) {
+    if (t) {
+      this.sign();
+    } else {
+      this.rejectSigning();
+    }
   }
 }

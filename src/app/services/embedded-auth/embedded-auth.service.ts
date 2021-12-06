@@ -15,24 +15,27 @@ export class EmbeddedAuthService {
     private walletService: WalletService,
     private operationService: OperationService
   ) { }
-  async authenticate(authReq: any, origin: string): Promise<{ message: string, signature: string }> {
+  async authenticate(authReq: any, origin: string, keyPair: KeyPair = null): Promise<{ message: string, signature: string }> {
     if (!origin) {
       throw new Error('NO_DOMAIN_FOUND');
-    } else if (!authReq?.id) {
-      throw new Error('MISSING_REQUEST_ID');
-    } else if (!authReq.nonce) {
-      throw new Error('MISSING_NONCE');
-    } else if (!this.walletService?.wallet || !this.walletService.isEmbeddedTorusWallet()) {
+    } else if ((!this.walletService?.wallet || !this.walletService.isEmbeddedTorusWallet()) && !keyPair) {
       throw new Error('NO_WALLET_FOUND');
     }
-    const keys: KeyPair = await this.walletService.getKeys('', this.walletService.wallet.implicitAccounts[0].pkh).catch(e => {
-      throw new Error('NO_KEYS_FOUND');
-    });
-    const authMessage: string = this.createAuthMessage(authReq.id, authReq.nonce, origin, keys.pk, keys.pkh);
-    const signature = this.signMessage(authMessage, keys.sk);
+    if (!keyPair) {
+      keyPair = await this.walletService.getKeys('', this.walletService.wallet.implicitAccounts[0].pkh).catch(e => {
+        throw new Error('NO_KEYS_FOUND');
+      });
+    }
+    const authMessage: string = this.createAuthMessage(authReq?.id, authReq?.nonce, origin, keyPair.pk, keyPair.pkh);
+    const signature = this.signMessage(authMessage, keyPair.sk);
     return { message: authMessage, signature };
   }
-  private createAuthMessage(requestId: string, nonce: string, domain: string, publicKey: string, address: string): string {
+  private createAuthMessage(requestId: string = '', nonce: string = '', domain: string, publicKey: string, address: string): string {
+    if (typeof requestId !== 'string') {
+      throw new Error('INVALID_REQUEST_ID');
+    } else if (typeof nonce !== 'string') {
+      throw new Error('INVALID_NONCE');
+    }
     const authPayload: any = {
       requestId,
       purpose: 'authentication',
@@ -43,6 +46,12 @@ export class EmbeddedAuthService {
       address,
       domain
     };
+    if (!requestId) {
+      delete authPayload.requestId;
+    }
+    if (!nonce) {
+      delete authPayload.nonce;
+    }
     return `Tezos Signed Message: ${JSON.stringify(authPayload)}`;
   }
   _network(): string {
