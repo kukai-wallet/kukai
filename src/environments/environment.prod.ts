@@ -245,6 +245,14 @@ export const CONSTANTS: Constants = {
       link: "https://cybergeckogang.xyz", shouldDisplayLink: DisplayLinkOption.None,
       category: ["collectibles"],
       description: "Cyber Gecko Gang is a limited collection of smug geckos programmatically, randomly generated on the Tezos blockchain"
+    },
+    'YourCryptoMom': {
+      name: "Your Crypto Mom",
+      address: ["KT1AYP8jy46BJ9U17wbrvTSKsdgFiwLuvoVo"],
+      thumbnailUrl: "../../../assets/img/alias/cryptomom.jpeg",
+      link: "https://yourcryptomom.com", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"],
+      description: "Your Crypto mom is a tribute to every mom in the world. Every art is unique."
     }
   },
   ASSETS: {
@@ -988,6 +996,7 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1DuZFNv6JwwA7kS8RXvoQiANm3L4dfn6qP',//0xC0FACE
   'KT1Wm4Cegd7wW6MYxEhg6AH5iFX48y65nWvv',//ChopSumo
   'KT1CwSgYmZewFazZsW348RAQYn1nthiGP3Qa',//Cyber Gecko Gang
-  'KT1PNcZQkJXMQ2Mg92HG1kyrcu3auFX5pfd8'//ZIGGURATS
+  'KT1PNcZQkJXMQ2Mg92HG1kyrcu3auFX5pfd8',//ZIGGURATS
+  'KT1AYP8jy46BJ9U17wbrvTSKsdgFiwLuvoVo'//Your Crypto Mom
 ];
 export const BLACKLISTED_TOKEN_CONTRACTS = []
