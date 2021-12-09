@@ -20,6 +20,25 @@ export const CONSTANTS: Constants = {
     hard_storage_limit_per_operation: 60000
   },
   CONTRACT_ALIASES: {
+    'OneOf': {
+      name: "OneOf",
+      address: ["KT1Up463qVJqtW5KF7dQZz5SsWMiS32GtBrw"],
+      thumbnailUrl: "../../../assets/img/alias/oneof.png",
+      discoverUrl: "../../../assets/img/alias/oneof-discover.svg",
+      link: "https://www.oneof.com/", shouldDisplayLink: DisplayLinkOption.All,
+      category: ["music", "collectibles"],
+      backgroundColor: '#000',
+      description: "A green NFT platform for the music community"
+    },
+    'OneOfGloGang': {
+        name: "OneOf - GloGang",
+        address: ["KT1Fv8TsEeafDhZXsHCyxFas96YDhXpdmUmz"],
+        thumbnailUrl: "../../../assets/img/alias/glogang.jpg",
+        link: "https://www.oneof.com/GloGang", shouldDisplayLink: DisplayLinkOption.None,
+        category: ["music", "collectibles"],
+        backgroundColor: '#000',
+        description: "Genesis collection by Chief Keef and ColorfulMula"
+    },
     'ZIGGURATS': {
       name: "ZIGGURATS",
       address: ["KT1PNcZQkJXMQ2Mg92HG1kyrcu3auFX5pfd8"],
@@ -225,7 +244,7 @@ export const CONSTANTS: Constants = {
       thumbnailUrl: "../../../assets/img/alias/taconft.png",
       link: "https://taconft.xyz/", shouldDisplayLink: DisplayLinkOption.None
     },
-    '0xC0FACE': {
+    'C0FACE': {
       name: "0xC0FACE COLLECTION",
       address: ["KT1DuZFNv6JwwA7kS8RXvoQiANm3L4dfn6qP"],
       thumbnailUrl: "../../../assets/img/alias/0xC0FACE-thumb.jpg",
@@ -245,6 +264,21 @@ export const CONSTANTS: Constants = {
       link: "https://cybergeckogang.xyz", shouldDisplayLink: DisplayLinkOption.None,
       category: ["collectibles"],
       description: "Cyber Gecko Gang is a limited collection of smug geckos programmatically, randomly generated on the Tezos blockchain"
+    },
+    'CUBEHEADS': {
+        name: "CUBE HEAD",
+        address: ["KT1XHyDd8ScUteYRWNocHgwZtj2BwBcoCZZo", "KT1SioBPZ6HB4J1cL3jZYBv3WZPydxfswz4k", "KT1HVjodj7Wh1Z92vVgowZwu3PU2A6ZqbmQv"],
+        thumbnailUrl: "../../../assets/img/alias/cubeheads.png",
+        link: "", shouldDisplayLink: DisplayLinkOption.None,
+        category: ["collectibles"],
+        description: "Collections made with a unique cube character set"
+    },
+    'fxhash': {
+        name: "fx(hash)",
+        address: ["KT1KEa8z6vWXDJrVqtMrAeDVzsvxat3kHaCE"],
+        thumbnailUrl: "../../../assets/img/alias/fxhash.jpg",
+        link: "https://www.fxhash.xyz", shouldDisplayLink: DisplayLinkOption.None, category: ["marketplace"], backgroundColor: 'black',
+        description: "Open generative NFT platform on Tezos",
     }
   },
   ASSETS: {
@@ -988,6 +1022,12 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1DuZFNv6JwwA7kS8RXvoQiANm3L4dfn6qP',//0xC0FACE
   'KT1Wm4Cegd7wW6MYxEhg6AH5iFX48y65nWvv',//ChopSumo
   'KT1CwSgYmZewFazZsW348RAQYn1nthiGP3Qa',//Cyber Gecko Gang
-  'KT1PNcZQkJXMQ2Mg92HG1kyrcu3auFX5pfd8'//ZIGGURATS
+  'KT1PNcZQkJXMQ2Mg92HG1kyrcu3auFX5pfd8',//ZIGGURATS
+  'KT1Up463qVJqtW5KF7dQZz5SsWMiS32GtBrw',//OneOf
+  'KT1Fv8TsEeafDhZXsHCyxFas96YDhXpdmUmz',//GloGang
+  'KT1XHyDd8ScUteYRWNocHgwZtj2BwBcoCZZo',//Cubeheads
+  'KT1SioBPZ6HB4J1cL3jZYBv3WZPydxfswz4k',//AK1RA
+  'KT1HVjodj7Wh1Z92vVgowZwu3PU2A6ZqbmQv',//basqubes
+  'KT1KEa8z6vWXDJrVqtMrAeDVzsvxat3kHaCE'//fx(hash)
 ];
 export const BLACKLISTED_TOKEN_CONTRACTS = []
