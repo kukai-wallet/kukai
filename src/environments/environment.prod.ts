@@ -279,6 +279,14 @@ export const CONSTANTS: Constants = {
         thumbnailUrl: "../../../assets/img/alias/fxhash.jpg",
         link: "https://www.fxhash.xyz", shouldDisplayLink: DisplayLinkOption.None, category: ["marketplace"], backgroundColor: 'black',
         description: "Open generative NFT platform on Tezos",
+    },
+    'FormallyVerified': {
+        name: "Formally Verified",
+        address: ["KT1Lk3fKhyFMVSdDGcqKKetqsVw3t5sHBXb8"],
+        thumbnailUrl: "../../../assets/img/alias/formally-verified.png",
+        link: "https://formallyverified.xyz", shouldDisplayLink: DisplayLinkOption.None,
+        category: ["badges"],
+        description: "Formally Verified is a contract for digital badges proving that someone has attended an event.",
     }
   },
   ASSETS: {
@@ -1028,6 +1036,7 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1XHyDd8ScUteYRWNocHgwZtj2BwBcoCZZo',//Cubeheads
   'KT1SioBPZ6HB4J1cL3jZYBv3WZPydxfswz4k',//AK1RA
   'KT1HVjodj7Wh1Z92vVgowZwu3PU2A6ZqbmQv',//basqubes
-  'KT1KEa8z6vWXDJrVqtMrAeDVzsvxat3kHaCE'//fx(hash)
+  'KT1KEa8z6vWXDJrVqtMrAeDVzsvxat3kHaCE',//fx(hash)
+  'KT1Lk3fKhyFMVSdDGcqKKetqsVw3t5sHBXb8' //Formally Verified
 ];
 export const BLACKLISTED_TOKEN_CONTRACTS = []
