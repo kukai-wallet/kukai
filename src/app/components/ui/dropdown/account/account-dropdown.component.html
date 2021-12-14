@@ -10,7 +10,7 @@
   <div class="flex-column dropdown-content">
     <div class="flex-column body">
       <ng-container *ngFor="let account of list; trackBy: trackAccount">
-        <a class="option" routerLink="/account/{{account?.address}}"
+        <a class="option" routerLink="/account/{{account?.address}}{{postfix}}"
           [class.selected]="account?.address === current?.address"
           [style.padding]="!getUsername(current?.address) ? '0.75rem 1.125rem 0.75rem calc(2.5rem - var(--border-width))' : ''"
           (click)="toggleDropdown()">

@@ -262,7 +262,7 @@ export class TzktService implements Indexer {
             data = await this.getTokenMetadataWithTaquito(contractAddress, id);
             console.log(`Fallback on Taquito metadata (${contractAddress}:${id})`, data);
           } catch (e) {
-            console.log(`No metadata found for: ${contractAddress}:${id}`);
+            console.log(`No metadata found for: ${contractAddress}:${id}`, e);
             throw e;
           }
         } else {
@@ -319,8 +319,20 @@ export class TzktService implements Indexer {
       const map = import('../../../../assets/js/KT1HZVd9Cjc2CMe3sQvXgbxhpJkdena21pih.json');
       stringId = map[id] as any;
     }
-    const metadata: any = await contract.tzip12().getTokenMetadata(stringId ?? Number(id));
-    mutableConvertObjectPropertiesSnakeToCamel(metadata)
+    let metadata: any;
+    if (['KT1TnVQhjxeNvLutGvzwZvYtC7vKRpwPWhc6'].includes(contractAddress)) {// nl hotfix
+      const contract = await this.Tezos.contract.at(contractAddress);
+      const storage: any = await contract.storage();
+      const parsed_uri = storage.token_metadata_uri.replace('{tokenId}', id);
+      const response = await (await fetch(parsed_uri)).json();
+      if (response) {
+        response.tokenId = id;
+        metadata = response;
+      }
+    } else {
+      metadata = await contract.tzip12().getTokenMetadata(stringId ?? Number(id));
+    }
+    mutableConvertObjectPropertiesSnakeToCamel(metadata);
     // add extras to mimic bcd response
     const firstClassProps = ['tokenId', 'symbol', 'decimals', 'name', 'description', 'artifactUri', 'displayUri', 'thumbnailUri', 'externalUri', 'isTransferable', 'isBooleanAmount', 'shouldPreferSymbol', 'creators', 'tags', 'formats', 'extras'];
     if (metadata?.extras === undefined) {

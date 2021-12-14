@@ -20,6 +20,14 @@ export const CONSTANTS: Constants = {
     hard_storage_limit_per_operation: 60000
   },
   CONTRACT_ALIASES: {
+    'UbisoftQuartz': {
+      name: "Ubisoft Quartz",
+      address: ["KT1TnVQhjxeNvLutGvzwZvYtC7vKRpwPWhc6"],
+      thumbnailUrl: "assets/img/alias/Kukai-UbisoftQuartz-ProfilPic-white-thumbnail.png",
+      discoverUrl: "assets/img/alias/logoquartz-h-white-color-beta-discover.svg",
+      link: "https://quartz.ubisoft.com/", shouldDisplayLink: DisplayLinkOption.All, category: ["games", "collectibles"], backgroundColor: 'black',
+      description: "The first Ubisoft NFTs playable in a HD game",
+    },
     'OneOf': {
       name: "OneOf",
       address: ["KT1Up463qVJqtW5KF7dQZz5SsWMiS32GtBrw"],
@@ -1045,6 +1053,7 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1HVjodj7Wh1Z92vVgowZwu3PU2A6ZqbmQv',//basqubes
   'KT1KEa8z6vWXDJrVqtMrAeDVzsvxat3kHaCE',//fx(hash)
   'KT1Lk3fKhyFMVSdDGcqKKetqsVw3t5sHBXb8',//Formally Verified
-  'KT1UvePjsyA1dAViNu8JMiDmDm1as1PT8ZQs'// BoomerPunks
+  'KT1UvePjsyA1dAViNu8JMiDmDm1as1PT8ZQs',// BoomerPunks
+  'KT1TnVQhjxeNvLutGvzwZvYtC7vKRpwPWhc6'// Ubisoft Quartz
 ];
 export const BLACKLISTED_TOKEN_CONTRACTS = []

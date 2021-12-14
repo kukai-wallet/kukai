@@ -1,6 +1,6 @@
 <div #viewRef class="flex-column list">
   <a *ngFor="let account of list" class="flex-row option" [class.selected]="account?.address === current?.address"
-    routerLink="/account/{{account?.address}}" (click)="closeModal()">
+    routerLink="/account/{{account?.address}}{{postfix}}" (click)="closeModal()">
     <div class="flex-column left">
       <ng-container *ngIf="getUsername(account?.address)">
         <div class="flex-row alias"><img class="logo" src="../../../../assets/img/{{ getVerifier() }}-logo.svg" /><span
