@@ -262,8 +262,7 @@ export class TzktService implements Indexer {
             data = await this.getTokenMetadataWithTaquito(contractAddress, id);
             console.log(`Fallback on Taquito metadata (${contractAddress}:${id})`, data);
           } catch (e) {
-            console.error(e);
-            console.log(`No metadata found for: ${contractAddress}:${id}`);
+            console.log(`No metadata found for: ${contractAddress}:${id}`, e);
             throw e;
           }
         } else {
@@ -321,7 +320,7 @@ export class TzktService implements Indexer {
       stringId = map[id] as any;
     }
     let metadata: any;
-    if (['KT1L4bfiyqsqLJU3p1PyPxn1pqBSND5vfjNi'].includes(contractAddress)) {// nl hotfix
+    if (['KT1TnVQhjxeNvLutGvzwZvYtC7vKRpwPWhc6'].includes(contractAddress)) {// nl hotfix
       const contract = await this.Tezos.contract.at(contractAddress);
       const storage: any = await contract.storage();
       const parsed_uri = storage.token_metadata_uri.replace('{tokenId}', id);
