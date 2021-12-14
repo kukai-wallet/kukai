@@ -6,6 +6,7 @@ import { ModalComponent } from '../../../modals/modal.component';
 import { InputValidationService } from '../../../../services/input-validation/input-validation.service';
 import { MessageService } from '../../../../services/message/message.service';
 import { Subscription } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 
 @Component({
@@ -14,7 +15,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['../../../../../scss/components/views/logged-in/delegate/delegate.component.scss']
 })
 export class DelegatePageComponent implements OnInit, OnDestroy {
-  delegates = [];
+  delegates;
   activeAccount = null;
   customAddress: string = '';
   isShowingCustom = false;
@@ -27,18 +28,21 @@ export class DelegatePageComponent implements OnInit, OnDestroy {
     public inputValidationService: InputValidationService,
     private messageServcie: MessageService
   ) {
-  }
-
-  ngOnInit(): void {
     this.subscriptions.add(this.walletService.activeAccount.subscribe(activeAccount => {
       if (this.activeAccount !== activeAccount) {
         this.activeAccount = activeAccount;
+        this.subscriptions.add(this.delegateService.delegates.pipe(take(1)).subscribe((d) => {
+          this.delegates = this.filter(d).sort((x,y) => (x.address === this.activeAccount?.delegate ? -1 : y === this.activeAccount?.delegate ? 1 : 0));
+        }));
       }
     }));
 
     this.subscriptions.add(this.delegateService.delegates.subscribe((d) => {
       this.delegates = this.filter(d).sort((x,y) => (x.address === this.activeAccount?.delegate ? -1 : y === this.activeAccount?.delegate ? 1 : 0));
     }));
+  }
+
+  ngOnInit(): void {
   }
 
   ngOnDestroy(): void {

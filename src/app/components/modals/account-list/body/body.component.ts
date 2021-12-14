@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from "@angular/core";
-import { Router } from "@angular/router";
+import { NavigationEnd, Router } from "@angular/router";
 import { TorusWallet } from "../../../../services/wallet/wallet";
 import { LookupService } from "../../../../services/lookup/lookup.service";
 import { WalletService } from "../../../../services/wallet/wallet.service";
@@ -11,6 +11,7 @@ import { MessageService } from "../../../../services/message/message.service";
 import { TranslateService } from "@ngx-translate/core";
 import Big from "big.js";
 import { RemoveCommaPipe } from "../../../../pipes/remove-comma.pipe";
+import { filter } from "rxjs/operators";
 
 @Component({
   selector: "app-account-list-body",
@@ -18,6 +19,7 @@ import { RemoveCommaPipe } from "../../../../pipes/remove-comma.pipe";
   styleUrls: ["../../../../../scss/components/modals/account-list.scss"],
 })
 export class AccountListBodyComponent extends ListComponent implements OnInit, AfterViewInit, OnDestroy {
+  postfix = '';
   isMobile = false;
   @ViewChild('viewRef') viewRef: ElementRef;
   preSelectedAccount: string;
@@ -32,6 +34,12 @@ export class AccountListBodyComponent extends ListComponent implements OnInit, A
     public removeCommaPipe: RemoveCommaPipe
   ) {
     super();
+    this.subscriptions.add(this.router.events
+      .pipe(filter((evt) => evt instanceof NavigationEnd))
+      .subscribe(async (r: NavigationEnd) => {
+        let accountAddress = r.url.substr(r.url.indexOf('/account/') + 9);
+        this.postfix = !!accountAddress.substring(36) ? accountAddress.substring(36) : '';
+      }));
   }
 
   ngOnInit(): void {
