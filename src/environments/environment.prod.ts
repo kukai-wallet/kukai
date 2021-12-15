@@ -279,7 +279,8 @@ export const CONSTANTS: Constants = {
       thumbnailUrl: "../../../assets/img/alias/cryptomom.jpeg",
       link: "https://yourcryptomom.com", shouldDisplayLink: DisplayLinkOption.None,
       category: ["collectibles"],
-      description: "Your Crypto mom is a tribute to every mom in the world. Every art is unique.",
+      description: "Your Crypto mom is a tribute to every mom in the world. Every art is unique."
+    },
     'CUBEHEADS': {
         name: "CUBE HEAD",
         address: ["KT1XHyDd8ScUteYRWNocHgwZtj2BwBcoCZZo", "KT1SioBPZ6HB4J1cL3jZYBv3WZPydxfswz4k", "KT1HVjodj7Wh1Z92vVgowZwu3PU2A6ZqbmQv"],
