@@ -273,6 +273,13 @@ export const CONSTANTS: Constants = {
       category: ["collectibles"],
       description: "Cyber Gecko Gang is a limited collection of smug geckos programmatically, randomly generated on the Tezos blockchain"
     },
+    'YourCryptoMom': {
+      name: "Your Crypto Mom",
+      address: ["KT1AYP8jy46BJ9U17wbrvTSKsdgFiwLuvoVo"],
+      thumbnailUrl: "../../../assets/img/alias/cryptomom.jpeg",
+      link: "https://yourcryptomom.com", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"],
+      description: "Your Crypto mom is a tribute to every mom in the world. Every art is unique.",
     'CUBEHEADS': {
         name: "CUBE HEAD",
         address: ["KT1XHyDd8ScUteYRWNocHgwZtj2BwBcoCZZo", "KT1SioBPZ6HB4J1cL3jZYBv3WZPydxfswz4k", "KT1HVjodj7Wh1Z92vVgowZwu3PU2A6ZqbmQv"],
@@ -1039,6 +1046,7 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1Wm4Cegd7wW6MYxEhg6AH5iFX48y65nWvv',//ChopSumo
   'KT1CwSgYmZewFazZsW348RAQYn1nthiGP3Qa',//Cyber Gecko Gang
   'KT1PNcZQkJXMQ2Mg92HG1kyrcu3auFX5pfd8',//ZIGGURATS
+  'KT1AYP8jy46BJ9U17wbrvTSKsdgFiwLuvoVo',//Your Crypto Mom
   'KT1Up463qVJqtW5KF7dQZz5SsWMiS32GtBrw',//OneOf
   'KT1Fv8TsEeafDhZXsHCyxFas96YDhXpdmUmz',//GloGang
   'KT1XHyDd8ScUteYRWNocHgwZtj2BwBcoCZZo',//Cubeheads
