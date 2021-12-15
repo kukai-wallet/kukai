@@ -302,6 +302,13 @@ export const CONSTANTS: Constants = {
         link: "https://formallyverified.xyz", shouldDisplayLink: DisplayLinkOption.None,
         category: ["badges"],
         description: "Formally Verified is a contract for digital badges proving that someone has attended an event.",
+    },
+    'BoomerPunks': {
+      name: "BoomerPunks",
+      address: ["KT1UvePjsyA1dAViNu8JMiDmDm1as1PT8ZQs"],
+      thumbnailUrl: "../../../assets/img/alias/boomerpunks.png",
+      link: "https://nft.angentur-boomer.de", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"]
     }
   },
   ASSETS: {
@@ -1053,7 +1060,8 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1SioBPZ6HB4J1cL3jZYBv3WZPydxfswz4k',//AK1RA
   'KT1HVjodj7Wh1Z92vVgowZwu3PU2A6ZqbmQv',//basqubes
   'KT1KEa8z6vWXDJrVqtMrAeDVzsvxat3kHaCE',//fx(hash)
-  'KT1Lk3fKhyFMVSdDGcqKKetqsVw3t5sHBXb8', //Formally Verified
-  'KT1TnVQhjxeNvLutGvzwZvYtC7vKRpwPWhc6' // Ubisoft Quartz
+  'KT1Lk3fKhyFMVSdDGcqKKetqsVw3t5sHBXb8',//Formally Verified
+  'KT1UvePjsyA1dAViNu8JMiDmDm1as1PT8ZQs',// BoomerPunks
+  'KT1TnVQhjxeNvLutGvzwZvYtC7vKRpwPWhc6'// Ubisoft Quartz
 ];
 export const BLACKLISTED_TOKEN_CONTRACTS = []
