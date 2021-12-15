@@ -273,6 +273,14 @@ export const CONSTANTS: Constants = {
       category: ["collectibles"],
       description: "Cyber Gecko Gang is a limited collection of smug geckos programmatically, randomly generated on the Tezos blockchain"
     },
+    'YourCryptoMom': {
+      name: "Your Crypto Mom",
+      address: ["KT1AYP8jy46BJ9U17wbrvTSKsdgFiwLuvoVo"],
+      thumbnailUrl: "../../../assets/img/alias/cryptomom.jpeg",
+      link: "https://yourcryptomom.com", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"],
+      description: "Your Crypto mom is a tribute to every mom in the world. Every art is unique."
+    },
     'CUBEHEADS': {
         name: "CUBE HEAD",
         address: ["KT1XHyDd8ScUteYRWNocHgwZtj2BwBcoCZZo", "KT1SioBPZ6HB4J1cL3jZYBv3WZPydxfswz4k", "KT1HVjodj7Wh1Z92vVgowZwu3PU2A6ZqbmQv"],
@@ -295,6 +303,13 @@ export const CONSTANTS: Constants = {
         link: "https://formallyverified.xyz", shouldDisplayLink: DisplayLinkOption.None,
         category: ["badges"],
         description: "Formally Verified is a contract for digital badges proving that someone has attended an event.",
+    },
+    'BoomerPunks': {
+      name: "BoomerPunks",
+      address: ["KT1UvePjsyA1dAViNu8JMiDmDm1as1PT8ZQs"],
+      thumbnailUrl: "../../../assets/img/alias/boomerpunks.png",
+      link: "https://nft.angentur-boomer.de", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"]
     }
   },
   ASSETS: {
@@ -1039,13 +1054,15 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1Wm4Cegd7wW6MYxEhg6AH5iFX48y65nWvv',//ChopSumo
   'KT1CwSgYmZewFazZsW348RAQYn1nthiGP3Qa',//Cyber Gecko Gang
   'KT1PNcZQkJXMQ2Mg92HG1kyrcu3auFX5pfd8',//ZIGGURATS
+  'KT1AYP8jy46BJ9U17wbrvTSKsdgFiwLuvoVo',//Your Crypto Mom
   'KT1Up463qVJqtW5KF7dQZz5SsWMiS32GtBrw',//OneOf
   'KT1Fv8TsEeafDhZXsHCyxFas96YDhXpdmUmz',//GloGang
   'KT1XHyDd8ScUteYRWNocHgwZtj2BwBcoCZZo',//Cubeheads
   'KT1SioBPZ6HB4J1cL3jZYBv3WZPydxfswz4k',//AK1RA
   'KT1HVjodj7Wh1Z92vVgowZwu3PU2A6ZqbmQv',//basqubes
   'KT1KEa8z6vWXDJrVqtMrAeDVzsvxat3kHaCE',//fx(hash)
-  'KT1Lk3fKhyFMVSdDGcqKKetqsVw3t5sHBXb8', //Formally Verified
-  'KT1TnVQhjxeNvLutGvzwZvYtC7vKRpwPWhc6' // Ubisoft Quartz
+  'KT1Lk3fKhyFMVSdDGcqKKetqsVw3t5sHBXb8',//Formally Verified
+  'KT1UvePjsyA1dAViNu8JMiDmDm1as1PT8ZQs',// BoomerPunks
+  'KT1TnVQhjxeNvLutGvzwZvYtC7vKRpwPWhc6'// Ubisoft Quartz
 ];
 export const BLACKLISTED_TOKEN_CONTRACTS = []
