@@ -21,7 +21,8 @@
               "src/assets",
               "src/favicon.ico",
               "src/favicon-attention.ico",
-              "src/serviceworker"
+              "src/serviceworker",
+              "src/_headers"
             ],
             "styles": [
               "src/scss/styles.scss"
