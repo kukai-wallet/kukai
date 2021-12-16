@@ -1071,6 +1071,7 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1KEa8z6vWXDJrVqtMrAeDVzsvxat3kHaCE',//fx(hash)
   'KT1Lk3fKhyFMVSdDGcqKKetqsVw3t5sHBXb8',//Formally Verified
   'KT1UvePjsyA1dAViNu8JMiDmDm1as1PT8ZQs',// BoomerPunks
-  'KT1TnVQhjxeNvLutGvzwZvYtC7vKRpwPWhc6'// Ubisoft Quartz
+  'KT1TnVQhjxeNvLutGvzwZvYtC7vKRpwPWhc6',// Ubisoft Quartz
+  'KT1AFxcFeTyrgmULfBwvo9oCSkTwi5TZb2hm'//Pixel Panda
 ];
 export const BLACKLISTED_TOKEN_CONTRACTS = []
