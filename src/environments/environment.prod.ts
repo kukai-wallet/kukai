@@ -310,7 +310,15 @@ export const CONSTANTS: Constants = {
       thumbnailUrl: "../../../assets/img/alias/boomerpunks.png",
       link: "https://nft.angentur-boomer.de", shouldDisplayLink: DisplayLinkOption.None,
       category: ["collectibles"]
-    }
+    },
+    'PixelPanda': {
+      name: "Pixel Panda",
+      address: ["KT1AFxcFeTyrgmULfBwvo9oCSkTwi5TZb2hm"],
+      thumbnailUrl: "../../../assets/img/alias/panda.jpeg",
+      link: "https://pixelpanda.xyz", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"],
+      description: "Pixel Panda is an army of 3000 randomly generated Pixelated FuRRballs on Tezos blockchain by AK creations",
+    },
   },
   ASSETS: {
     'KT1K9gCRgaLRFKTErYt1wVxA3Frb9FjasjTV': { // kUSD
