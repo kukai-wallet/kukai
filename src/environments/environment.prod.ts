@@ -310,6 +310,14 @@ export const CONSTANTS: Constants = {
       thumbnailUrl: "../../../assets/img/alias/boomerpunks.png",
       link: "https://nft.angentur-boomer.de", shouldDisplayLink: DisplayLinkOption.None,
       category: ["collectibles"]
+    },
+    'CyberKidzClub': {
+      name: "CyberKidz Club",
+      address: ["KT1DuZFNv6JwwA7kS8RXvoQiANm3L4dfn6qP"],
+      thumbnailUrl: "../../../assets/img/alias/cyberkidzclub.png",
+      link: "https://cyberkidzclub.xyz", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"],
+      description: "In 2420, only 6666 kids survived the destruction of the global ecosystem caused by the excessive minting of dirty NFTs on proof of work blockchains. CyberKidz Club.",
     }
   },
   ASSETS: {
@@ -1063,6 +1071,7 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1KEa8z6vWXDJrVqtMrAeDVzsvxat3kHaCE',//fx(hash)
   'KT1Lk3fKhyFMVSdDGcqKKetqsVw3t5sHBXb8',//Formally Verified
   'KT1UvePjsyA1dAViNu8JMiDmDm1as1PT8ZQs',// BoomerPunks
-  'KT1TnVQhjxeNvLutGvzwZvYtC7vKRpwPWhc6'// Ubisoft Quartz
+  'KT1TnVQhjxeNvLutGvzwZvYtC7vKRpwPWhc6',// Ubisoft Quartz
+  'KT1DuZFNv6JwwA7kS8RXvoQiANm3L4dfn6qP'//CyberKidz Club
 ];
 export const BLACKLISTED_TOKEN_CONTRACTS = []
