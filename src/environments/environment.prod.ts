@@ -311,6 +311,14 @@ export const CONSTANTS: Constants = {
       link: "https://nft.angentur-boomer.de", shouldDisplayLink: DisplayLinkOption.None,
       category: ["collectibles"]
     },
+    'PixelPanda': {
+      name: "Pixel Panda",
+      address: ["KT1AFxcFeTyrgmULfBwvo9oCSkTwi5TZb2hm"],
+      thumbnailUrl: "../../../assets/img/alias/panda.jpeg",
+      link: "https://pixelpanda.xyz", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"],
+      description: "Pixel Panda is an army of 3000 randomly generated Pixelated FuRRballs on Tezos blockchain by AK creations",
+    },
     'CyberKidzClub': {
       name: "CyberKidz Club",
       address: ["KT1DuZFNv6JwwA7kS8RXvoQiANm3L4dfn6qP"],
@@ -1072,6 +1080,7 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1Lk3fKhyFMVSdDGcqKKetqsVw3t5sHBXb8',//Formally Verified
   'KT1UvePjsyA1dAViNu8JMiDmDm1as1PT8ZQs',// BoomerPunks
   'KT1TnVQhjxeNvLutGvzwZvYtC7vKRpwPWhc6',// Ubisoft Quartz
+  'KT1AFxcFeTyrgmULfBwvo9oCSkTwi5TZb2hm',//Pixel Panda
   'KT1DuZFNv6JwwA7kS8RXvoQiANm3L4dfn6qP'//CyberKidz Club
 ];
 export const BLACKLISTED_TOKEN_CONTRACTS = []
