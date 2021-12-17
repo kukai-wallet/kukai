@@ -8,7 +8,7 @@
         <ng-container [ngSwitch]="getType()?.replace('undelegated', 'delegated')">
           <img *ngSwitchCase="'sent'" [src]="activity.status === -1 ? '../../../../assets/img/up-arrow-red.svg' : '../../../../assets/img/up-arrow-black.svg'"
             style="transform: rotate(45deg)" />
-          <img *ngSwitchCase="'received'" [src]="activity.status === -1 ? '../../../../assets/img/up-arrow-red.svg' : '../../../../assets/img/up-arrow-black.svg'" style="transform: rotate(135deg)" />
+          <img *ngSwitchCase="'received'" [src]="activity.status === -1 ? '../../../../assets/img/up-arrow-red.svg' : '../../../../assets/img/up-arrow.svg'" style="transform: rotate(135deg)" />
           <div *ngSwitchDefault class="blank"></div>
         </ng-container>{{ printAmount() }}
       </ng-container>
