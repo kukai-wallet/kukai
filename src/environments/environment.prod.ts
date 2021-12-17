@@ -309,7 +309,7 @@ export const CONSTANTS: Constants = {
       address: ["KT1UvePjsyA1dAViNu8JMiDmDm1as1PT8ZQs"],
       thumbnailUrl: "../../../assets/img/alias/boomerpunks.png",
       link: "https://nft.angentur-boomer.de", shouldDisplayLink: DisplayLinkOption.None,
-      category: ["collectibles"],
+      category: ["collectibles"]
     },
     'CyberKidz Club': {
       name: "CyberKidz Club",
