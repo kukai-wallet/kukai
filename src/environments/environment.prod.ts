@@ -326,6 +326,14 @@ export const CONSTANTS: Constants = {
       link: "https://cyberkidzclub.xyz", shouldDisplayLink: DisplayLinkOption.None,
       category: ["collectibles"],
       description: "In 2420, only 6666 kids survived the destruction of the global ecosystem caused by the excessive minting of dirty NFTs on proof of work blockchains. CyberKidz Club.",
+    },
+    'SkratzBasqTribute': {
+      name: "Skratz Basq",
+      address: ["KT1LaGxGqGCE7wRRP6NpZ9CSwq78y5PS6udh"],
+      thumbnailUrl: "../../../assets/img/alias/skratbasq.jpeg",
+      link: "https://houseofskratz.com", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"],
+      description: "Skratz Basq Tribute from https://houseofskratz.com.",
     }
   },
   ASSETS: {
@@ -1081,6 +1089,7 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1UvePjsyA1dAViNu8JMiDmDm1as1PT8ZQs',// BoomerPunks
   'KT1TnVQhjxeNvLutGvzwZvYtC7vKRpwPWhc6',// Ubisoft Quartz
   'KT1AFxcFeTyrgmULfBwvo9oCSkTwi5TZb2hm',//Pixel Panda
-  'KT1DuZFNv6JwwA7kS8RXvoQiANm3L4dfn6qP'//CyberKidz Club
+  'KT1DuZFNv6JwwA7kS8RXvoQiANm3L4dfn6qP',//CyberKidz Club
+  'KT1LaGxGqGCE7wRRP6NpZ9CSwq78y5PS6udh'//Skratz Basq
 ];
 export const BLACKLISTED_TOKEN_CONTRACTS = []
