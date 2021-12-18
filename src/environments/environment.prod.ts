@@ -330,7 +330,7 @@ export const CONSTANTS: Constants = {
     'SkratzBasqTribute': {
       name: "Skratz Basq",
       address: ["KT1LaGxGqGCE7wRRP6NpZ9CSwq78y5PS6udh"],
-      thumbnailUrl: "../../../assets/img/alias/skratbasq.jpeg",
+      thumbnailUrl: "../../../assets/img/alias/skratz.jpeg",
       link: "https://houseofskratz.com", shouldDisplayLink: DisplayLinkOption.None,
       category: ["collectibles"],
       description: "Skratz Basq Tribute from https://houseofskratz.com.",
