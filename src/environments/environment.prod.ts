@@ -334,6 +334,14 @@ export const CONSTANTS: Constants = {
       link: "https://houseofskratz.com", shouldDisplayLink: DisplayLinkOption.None,
       category: ["collectibles"],
       description: "Skratz Basq Tribute from https://houseofskratz.com.",
+    },
+    'TezApeGang': {
+      name: "TezApeGang",
+      address: ["KT1FReMp4U1KipyH53xXUnnjtdRQZaLnQpUj"],
+      thumbnailUrl: "../../../assets/img/alias/tezapegang.png",
+      link: "https://tezapegang.xyz", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"],
+      description: "TezApeGang is a collection of 6969 Apes living on the Tezos Blockchain. With Ape staking feature and DAO from Day1.",
     }
   },
   ASSETS: {
@@ -1090,6 +1098,7 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1TnVQhjxeNvLutGvzwZvYtC7vKRpwPWhc6',// Ubisoft Quartz
   'KT1AFxcFeTyrgmULfBwvo9oCSkTwi5TZb2hm',//Pixel Panda
   'KT1DuZFNv6JwwA7kS8RXvoQiANm3L4dfn6qP',//CyberKidz Club
-  'KT1LaGxGqGCE7wRRP6NpZ9CSwq78y5PS6udh'//Skratz Basq
+  'KT1LaGxGqGCE7wRRP6NpZ9CSwq78y5PS6udh',//Skratz Basq
+  'KT1FReMp4U1KipyH53xXUnnjtdRQZaLnQpUj'//TezApeGang
 ];
 export const BLACKLISTED_TOKEN_CONTRACTS = []
