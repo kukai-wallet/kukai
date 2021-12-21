@@ -327,6 +327,14 @@ export const CONSTANTS: Constants = {
       category: ["collectibles"],
       description: "In 2420, only 6666 kids survived the destruction of the global ecosystem caused by the excessive minting of dirty NFTs on proof of work blockchains. CyberKidz Club.",
     },
+    'SkratzBasqTribute': {
+      name: "Skratz Basq",
+      address: ["KT1LaGxGqGCE7wRRP6NpZ9CSwq78y5PS6udh"],
+      thumbnailUrl: "../../../assets/img/alias/skratz.jpeg",
+      link: "https://houseofskratz.com", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"],
+      description: "Skratz Basq Tribute from https://houseofskratz.com.",
+    },
     'TezApeGang': {
       name: "TezApeGang",
       address: ["KT1FReMp4U1KipyH53xXUnnjtdRQZaLnQpUj"],
@@ -334,6 +342,12 @@ export const CONSTANTS: Constants = {
       link: "https://tezapegang.xyz", shouldDisplayLink: DisplayLinkOption.None,
       category: ["collectibles"],
       description: "TezApeGang is a collection of 6969 Apes living on the Tezos Blockchain. With Ape staking feature and DAO from Day1.",
+    },
+    'rarible': {
+      name: "Rarible",
+      address: ["KT18pVpRXKPY2c4U2yFEGSH3ZnhB2kL8kwXS"],
+      thumbnailUrl: "../../../assets/img/alias/rarible.png",
+      link: "https://rarible.com", shouldDisplayLink: DisplayLinkOption.None
     }
   },
   ASSETS: {
@@ -1090,6 +1104,8 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1TnVQhjxeNvLutGvzwZvYtC7vKRpwPWhc6',// Ubisoft Quartz
   'KT1AFxcFeTyrgmULfBwvo9oCSkTwi5TZb2hm',//Pixel Panda
   'KT1DuZFNv6JwwA7kS8RXvoQiANm3L4dfn6qP',//CyberKidz Club
-  'KT1FReMp4U1KipyH53xXUnnjtdRQZaLnQpUj'//TezApeGang
+  'KT1LaGxGqGCE7wRRP6NpZ9CSwq78y5PS6udh',//Skratz Basq
+  'KT1FReMp4U1KipyH53xXUnnjtdRQZaLnQpUj',//TezApeGang
+  'KT18pVpRXKPY2c4U2yFEGSH3ZnhB2kL8kwXS'//Rarible
 ];
 export const BLACKLISTED_TOKEN_CONTRACTS = []
