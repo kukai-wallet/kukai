@@ -327,13 +327,13 @@ export const CONSTANTS: Constants = {
       category: ["collectibles"],
       description: "In 2420, only 6666 kids survived the destruction of the global ecosystem caused by the excessive minting of dirty NFTs on proof of work blockchains. CyberKidz Club.",
     },
-    'SkratzBasqTribute': {
-      name: "Skratz Basq",
-      address: ["KT1LaGxGqGCE7wRRP6NpZ9CSwq78y5PS6udh"],
+    'SkratzTribute': {
+      name: "Skratz Tributes",
+      address: ["KT1LaGxGqGCE7wRRP6NpZ9CSwq78y5PS6udh", "KT1R5SsFitVz8Zxc27NNPxeBogBFK2upfndF"],
       thumbnailUrl: "../../../assets/img/alias/skratz.jpeg",
       link: "https://houseofskratz.com", shouldDisplayLink: DisplayLinkOption.None,
       category: ["collectibles"],
-      description: "Skratz Basq Tribute from https://houseofskratz.com.",
+      description: "Skratz Tribute from https://houseofskratz.com.",
     },
     'TezApeGang': {
       name: "TezApeGang",
@@ -1105,6 +1105,7 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1AFxcFeTyrgmULfBwvo9oCSkTwi5TZb2hm',//Pixel Panda
   'KT1DuZFNv6JwwA7kS8RXvoQiANm3L4dfn6qP',//CyberKidz Club
   'KT1LaGxGqGCE7wRRP6NpZ9CSwq78y5PS6udh',//Skratz Basq
+  'KT1R5SsFitVz8Zxc27NNPxeBogBFK2upfndF',//Skratz Neonz
   'KT1FReMp4U1KipyH53xXUnnjtdRQZaLnQpUj',//TezApeGang
   'KT18pVpRXKPY2c4U2yFEGSH3ZnhB2kL8kwXS'//Rarible
 ];
