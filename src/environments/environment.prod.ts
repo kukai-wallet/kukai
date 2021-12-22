@@ -356,7 +356,7 @@ export const CONSTANTS: Constants = {
       link: "https://thetransmission.xyz", shouldDisplayLink: DisplayLinkOption.None,
       category: ["game", "collectibles"],
       backgroundColor: "#0d0d1a",
-      description: "A Crypto-Techno-Horror Adventure. 666 fully algo-generated residents take part in missions to uncover the mystery of The Transmisson.",
+      description: "A Crypto-Techno-Horror Adventure. 666 fully algo-generated residents take part in missions to uncover the mystery of The Transmission.",
     },
   },
   ASSETS: {
