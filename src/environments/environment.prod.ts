@@ -348,7 +348,16 @@ export const CONSTANTS: Constants = {
       address: ["KT18pVpRXKPY2c4U2yFEGSH3ZnhB2kL8kwXS"],
       thumbnailUrl: "../../../assets/img/alias/rarible.png",
       link: "https://rarible.com", shouldDisplayLink: DisplayLinkOption.None
-    }
+    },
+    'The Transmission': {
+      name: "The Transmission",
+      address: ["KT1LikBSDucbAfYLN9Uxosh4V2SNRrbQwfrJ","KT1A93CFh7JhYcJFhJqwHskVPFzQJgSRmLW7","KT1BwNPvwjYm7bLEzt93MWDTb6pE8xsac9c1","KT1FivwAmg7oB6mDSKnkRfvi32wL8TQAsfHz","KT1P5zodzq7DtfQkdbHz65WhtQYMwmEXNitP"],
+      thumbnailUrl: "../../../assets/img/alias/transmission.png",
+      link: "https://thetransmission.xyz", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["game", "collectibles"],
+      backgroundColor: "#0d0d1a",
+      description: "A Crypto-Techno-Horror Adventure. 666 fully algo-generated residents take part in missions to uncover the mystery of The Transmisson.",
+    },
   },
   ASSETS: {
     'KT1K9gCRgaLRFKTErYt1wVxA3Frb9FjasjTV': { // kUSD
@@ -1106,6 +1115,11 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1DuZFNv6JwwA7kS8RXvoQiANm3L4dfn6qP',//CyberKidz Club
   'KT1LaGxGqGCE7wRRP6NpZ9CSwq78y5PS6udh',//Skratz Basq
   'KT1FReMp4U1KipyH53xXUnnjtdRQZaLnQpUj',//TezApeGang
-  'KT18pVpRXKPY2c4U2yFEGSH3ZnhB2kL8kwXS'//Rarible
+  'KT18pVpRXKPY2c4U2yFEGSH3ZnhB2kL8kwXS',//Rarible
+  "KT1LikBSDucbAfYLN9Uxosh4V2SNRrbQwfrJ", //Transmission Residents
+  "KT1A93CFh7JhYcJFhJqwHskVPFzQJgSRmLW7", //Transmission Valley Video
+  "KT1BwNPvwjYm7bLEzt93MWDTb6pE8xsac9c1", //Transmission Items
+  "KT1FivwAmg7oB6mDSKnkRfvi32wL8TQAsfHz", //Transmission Merch
+  "KT1P5zodzq7DtfQkdbHz65WhtQYMwmEXNitP", //Transmission Extras
 ];
 export const BLACKLISTED_TOKEN_CONTRACTS = []
