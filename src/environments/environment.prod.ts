@@ -358,6 +358,15 @@ export const CONSTANTS: Constants = {
       backgroundColor: "#0d0d1a",
       description: "A Crypto-Techno-Horror Adventure. 666 fully algo-generated residents take part in missions to uncover the mystery of The Transmission.",
     },
+    'Platypoos': {
+      name: "Platypoos",
+      address: ["KT1D394hqndjvTcFgrmUYBxwrzUTNtzrZ5ox"],
+      thumbnailUrl: "../../../assets/img/alias/platypoo.jpg",
+      link: "https://objkt.com/collection/KT1D394hqndjvTcFgrmUYBxwrzUTNtzrZ5ox", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"],
+      backgroundColor: "black",
+      description: "aka P.Poos, 250, super rare, totally worthless",
+    }
   },
   ASSETS: {
     'KT1K9gCRgaLRFKTErYt1wVxA3Frb9FjasjTV': { // kUSD
@@ -1122,5 +1131,6 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   "KT1BwNPvwjYm7bLEzt93MWDTb6pE8xsac9c1", //Transmission Items
   "KT1FivwAmg7oB6mDSKnkRfvi32wL8TQAsfHz", //Transmission Merch
   "KT1P5zodzq7DtfQkdbHz65WhtQYMwmEXNitP", //Transmission Extras
+  "KT1D394hqndjvTcFgrmUYBxwrzUTNtzrZ5ox" //Platypoos
 ];
 export const BLACKLISTED_TOKEN_CONTRACTS = []
