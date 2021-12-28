@@ -265,6 +265,13 @@ export const CONSTANTS: Constants = {
       link: "https://chopsumo.xyz", shouldDisplayLink: DisplayLinkOption.None,
       category: ["collectibles"]
     },
+    'FLUX': {
+      name: "FLUX",
+      address: ["KT1QRtkWmCKSnLDnEzJVoj2ya2Ef2mTjszwH"],
+      thumbnailUrl: "../../../assets/img/alias/flux.png",
+      link: "https://fluxtribe.xyz", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"]
+    },
     'CyberGeckoGang': {
       name: "Cyber Gecko Gang",
       address: ["KT1CwSgYmZewFazZsW348RAQYn1nthiGP3Qa"],
@@ -1108,6 +1115,7 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1Mf8Pqn6NMt8VGuVaySohvSvQQpvcM37eZ',//TacoNFT
   'KT1DuZFNv6JwwA7kS8RXvoQiANm3L4dfn6qP',//0xC0FACE
   'KT1Wm4Cegd7wW6MYxEhg6AH5iFX48y65nWvv',//ChopSumo
+  'KT1QRtkWmCKSnLDnEzJVoj2ya2Ef2mTjszwH',//FLUX
   'KT1CwSgYmZewFazZsW348RAQYn1nthiGP3Qa',//Cyber Gecko Gang
   'KT1PNcZQkJXMQ2Mg92HG1kyrcu3auFX5pfd8',//ZIGGURATS
   'KT1AYP8jy46BJ9U17wbrvTSKsdgFiwLuvoVo',//Your Crypto Mom
