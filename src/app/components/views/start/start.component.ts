@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { WalletService } from '../../../services/wallet/wallet.service';
@@ -14,9 +14,15 @@ import { Subscription } from 'rxjs';
   templateUrl: './start.component.html',
   styleUrls: ['../../../../scss/components/views/start/start.component.scss']
 })
-export class StartComponent implements OnInit, OnDestroy {
+export class StartComponent implements OnInit, AfterViewInit, OnDestroy {
+
+  @ViewChild('canvas') canvas;
 
   isMobile = false;
+
+  c;
+  ctx;
+  dots: any[] = [];
 
   private subscriptions: Subscription = new Subscription();
 
@@ -57,6 +63,11 @@ export class StartComponent implements OnInit, OnDestroy {
     }
     window.addEventListener('resize', e);
     e();
+  }
+
+  async ngAfterViewInit() {
+    await this.initCanvas();
+    window.requestAnimationFrame(() => this.draw());
   }
 
   ngOnDestroy(): void {
@@ -104,5 +115,64 @@ export class StartComponent implements OnInit, OnDestroy {
         resolve({ keyPair, userInfo });
       }, 2000);
     });
+  }
+
+  async initCanvas() {
+    this.c = this.canvas.nativeElement;
+    this.recalculateCanvasDimensions();
+    this.c.style.pointerEvents = "none";
+    this.ctx = this.c.getContext("2d");
+    this.dots = [];
+    for (let i = 0; i < 1024; ++i) {
+      this.dots.push({ dot: [Math.random() * parseFloat(this.c.width), Math.random() * parseFloat(this.c.height), Math.random() * 1 + 1, 0, 2 * Math.PI, true], vx: 0, vy: 1.25 })
+    }
+  }
+
+  recalculateCanvasDimensions() {
+    this.c.width = window.innerWidth;
+    this.c.height = window.innerHeight;
+  }
+
+  draw() {
+    const maxV = 2.5;
+    this.ctx.clearRect(0, 0, this.c.width, this.c.height);
+    let randvx = (Math.random() * 0.4) - 0.2;
+    let randvy = (Math.random() * 0.5) - 0.2;
+    for (let i = 0; i < this.dots.length; ++i) {
+      if (5 * (this.dots.length / 8) === i) {
+        randvx = (Math.random() * 0.4) - 0.2;
+        randvy = (Math.random() * 0.5) - 0.25;
+      }
+      let randvx2 = (Math.random() * 0.1) - 0.05;
+      let randvy2 = (Math.random() * 0.1) - 0.05;
+      this.ctx.fillStyle = `#fff`;
+      this.ctx.beginPath();
+      this.dots[i].vx = this.dots[i].vx + randvx + randvx2;
+      this.dots[i].vy = this.dots[i].vy + randvy + randvy2;
+      const v = Math.sqrt(this.dots[i].vx ** 2 + this.dots[i].vy ** 2);
+      if (v > maxV) {
+        const factor = maxV / v;
+        this.dots[i].vx *= factor;
+        this.dots[i].vy *= factor;
+      }
+      this.dots[i].dot[1] = this.dots[i].dot[1] + this.dots[i].vy;
+      this.dots[i].dot[0] = this.dots[i].dot[0] + this.dots[i].vx;
+      if (this.dots[i].dot[1] > parseFloat(this.c.height)) {
+        this.dots[i].dot[1] = 0;
+      } else if (this.dots[i].dot[1] < 0.0) {
+        this.dots[i].dot[1] = parseFloat(this.c.height);
+      }
+      if (this.dots[i].dot[0] > parseFloat(this.c.width)) {
+        this.dots[i].dot[0] = 0;
+      } else if (this.dots[i].dot[0] < 0.0) {
+        this.dots[i].dot[0] = parseFloat(this.c.width);
+      }
+      this.ctx.arc(...Object.values(this.dots[i].dot));
+      this.ctx.closePath();
+      this.ctx.fill();
+    }
+    setTimeout(() => {
+      window.requestAnimationFrame(() => this.draw());
+    }, 33);
   }
 }
