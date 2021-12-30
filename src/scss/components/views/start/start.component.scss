@@ -43,6 +43,7 @@ $base-background-color: v.$base-background-color;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  background-color: $base-color-lightened-6;
 
   & .is-mobile {
     display: block;
@@ -243,6 +244,20 @@ $base-background-color: v.$base-background-color;
   }
 }
 
+.canvas-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100%;
+  background-color: transparent;
+  z-index: 90;
+  & canvas {
+    width: 100%;
+    height: 100%;
+  }
+}
+
 @media (min-width: v.$layout-break-3) {
   .qrapper {
     & .left,
@@ -266,6 +281,12 @@ $base-background-color: v.$base-background-color;
 @media (max-width: v.$layout-break-3) and (max-aspect-ratio: 1/1),
   (max-width: v.$layout-break-5) {
   :host {
+
+    .canvas-wrapper {
+      z-index: 99;
+      z-index: 90;
+    }
+
     & .bottom {
       display: flex !important;
     }
