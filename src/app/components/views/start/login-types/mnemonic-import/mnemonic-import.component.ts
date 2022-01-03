@@ -65,6 +65,15 @@ export class MnemonicImportComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
+  clickPassword(e) {
+    e.target.removeAttribute("readonly");
+    e.target.focus();
+  }
+
+  blurPassword(e) {
+    e.target.setAttribute("readonly", true);
+  }
+
   retrieve(): void {
     if (this.mnemonic) {
       this.mnemonic = this.mnemonic.toLowerCase().replace(/(\r\n|\n|\r)/gm, ' ').trim();
