@@ -67,7 +67,7 @@ this.subscriptions.unsubscribe();
     const src: string = active ? 'favicon-attention.ico' : 'favicon.ico';
     document.getElementById('favicon').setAttribute('href', src);
   }
-  /* https://docs.walletbeacon.io/beacon/03.getting-started-wallet.html#setup */
+  /* https://github.com/airgap-it/beacon-sdk/blob/master/src/clients/wallet-client/WalletClient.ts */
   connectApp = async (): Promise<void> => {
     if (!this.beaconService.client) {
       this.beaconService.client = new WalletClient({ name: 'Kukai Wallet' });
