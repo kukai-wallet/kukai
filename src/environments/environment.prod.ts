@@ -329,7 +329,7 @@ export const CONSTANTS: Constants = {
     },
     'SkratzTribute': {
       name: "Skratz Tributes",
-      address: ["KT1LaGxGqGCE7wRRP6NpZ9CSwq78y5PS6udh", "KT1R5SsFitVz8Zxc27NNPxeBogBFK2upfndF", "KT1Pr6rNNzyRirHCiTn7CWpP7off6sH8M3HU", "KT1UQhWV1Q2ArnDkWPoYgk4Kbm4dgE2BS7G8", "KT1AWUzFdNwZn7YprZitR6Q6eUuVmfUG1HMP"],
+      address: ["KT1LaGxGqGCE7wRRP6NpZ9CSwq78y5PS6udh", "KT1R5SsFitVz8Zxc27NNPxeBogBFK2upfndF", "KT1Pr6rNNzyRirHCiTn7CWpP7off6sH8M3HU", "KT1UQhWV1Q2ArnDkWPoYgk4Kbm4dgE2BS7G8", "KT1AWUzFdNwZn7YprZitR6Q6eUuVmfUG1HMP", "KT19hJSZZYnD41xuEjEgodhAnnuLh142g8QJ"],
       thumbnailUrl: "../../../assets/img/alias/skratz.jpeg",
       link: "https://houseofskratz.com", shouldDisplayLink: DisplayLinkOption.None,
       category: ["collectibles"],
@@ -1118,6 +1118,7 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1Pr6rNNzyRirHCiTn7CWpP7off6sH8M3HU',//Skratz Gogos
   'KT1UQhWV1Q2ArnDkWPoYgk4Kbm4dgE2BS7G8',//Skratz x Jawnz
   'KT1AWUzFdNwZn7YprZitR6Q6eUuVmfUG1HMP',//Skratz Geckos
+  'KT19hJSZZYnD41xuEjEgodhAnnuLh142g8QJ',//Skratz Akira
   'KT1FReMp4U1KipyH53xXUnnjtdRQZaLnQpUj',//TezApeGang
   'KT18pVpRXKPY2c4U2yFEGSH3ZnhB2kL8kwXS',//Rarible
   "KT1LikBSDucbAfYLN9Uxosh4V2SNRrbQwfrJ", //Transmission Residents
