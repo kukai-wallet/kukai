@@ -311,6 +311,13 @@ export const CONSTANTS: Constants = {
       link: "https://nft.angentur-boomer.de", shouldDisplayLink: DisplayLinkOption.None,
       category: ["collectibles"]
     },
+    'BoomerPunksV2': {
+      name: "New Year's BoomerPunks",
+      address: ["KT1WLLNJ6ouSrVoAC789FniwdSnVjqGZELJa"],
+      thumbnailUrl: "../../../assets/img/alias/boomerpunks2.png",
+      link: "https://nft.angentur-boomer.de", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"]
+    },
     'PixelPanda': {
       name: "Pixel Panda",
       address: ["KT1AFxcFeTyrgmULfBwvo9oCSkTwi5TZb2hm"],
@@ -1119,6 +1126,7 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1KEa8z6vWXDJrVqtMrAeDVzsvxat3kHaCE',//fx(hash)
   'KT1Lk3fKhyFMVSdDGcqKKetqsVw3t5sHBXb8',//Formally Verified
   'KT1UvePjsyA1dAViNu8JMiDmDm1as1PT8ZQs',// BoomerPunks
+  'KT1WLLNJ6ouSrVoAC789FniwdSnVjqGZELJa',// BoomerPunks v2
   'KT1TnVQhjxeNvLutGvzwZvYtC7vKRpwPWhc6',// Ubisoft Quartz
   'KT1AFxcFeTyrgmULfBwvo9oCSkTwi5TZb2hm',//Pixel Panda
   'KT1DuZFNv6JwwA7kS8RXvoQiANm3L4dfn6qP',//CyberKidz Club
