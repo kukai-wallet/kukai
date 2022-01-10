@@ -96,7 +96,7 @@ export class EmbeddedComponent implements OnInit {
       }
     },
     gap: {
-      origins: ['https://*.gap.com'],
+      origins: ['*.gap.com'],
       permissions: {
         login: true,
         operations: true,
