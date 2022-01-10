@@ -3,20 +3,28 @@
     <div class="header">
       <img (click)="abort()" class="abort" src="../../../assets/img/x.svg">
     </div>
-    <H2>Sign in with one of the<BR>following providers:</H2>
-    <div class="login-options" [class.vertically]="loginConfig.buttonsVertically" [class.horizontally]="!loginConfig.buttonsVertically" *ngIf="torusService && torusService.verifierMapKeys">
-      <ng-container *ngFor="let key of loginOptions">
-        <div *ngIf="!loginConfig.buttonsVertically" class="login-option" (click)="login(key)">
-          <img src="../../../../assets/img/torus-login/{{ key }}-color.svg" width="24">
-        </div>
-        <div *ngIf="loginConfig.buttonsVertically" class="login-option" (click)="login(key)">
-          <img src="../../../../assets/img/torus-login/{{ key }}-color.svg" width="24"><span>Sign in with {{ key | titlecase }}</span>
-        </div>
-        <!--<div *ngIf="loginConfig.buttonsVertically" class="login-option" (click)="login(key)">
-          <img src="../../../../assets/img/torus-login/{{ key }}-wide.svg" width="219">
-        </div>-->
-      </ng-container>
-    </div>
+    <ng-container *ngIf="this.queueTimeVisible">
+      <H2>You have been placed in a queue</H2>
+      <p style="text-align: center">Time remaining: {{this.queueTimeVisible}}</p>
+    </ng-container>
+    <ng-container *ngIf="this.queueTimeVisible === 0 && this.queueTime === 0">
+      <H2>Sign in with one of the<BR>following providers:</H2>
+      <div class="login-options" [class.vertically]="loginConfig.buttonsVertically"
+        [class.horizontally]="!loginConfig.buttonsVertically" *ngIf="torusService && torusService.verifierMapKeys">
+        <ng-container *ngFor="let key of loginOptions">
+          <div *ngIf="!loginConfig.buttonsVertically" class="login-option" (click)="login(key)">
+            <img src="../../../../assets/img/torus-login/{{ key }}-color.svg" width="24">
+          </div>
+          <div *ngIf="loginConfig.buttonsVertically" class="login-option" (click)="login(key)">
+            <img src="../../../../assets/img/torus-login/{{ key }}-color.svg" width="24"><span>Sign in with {{ key |
+              titlecase }}</span>
+          </div>
+          <!--<div *ngIf="loginConfig.buttonsVertically" class="login-option" (click)="login(key)">
+              <img src="../../../../assets/img/torus-login/{{ key }}-wide.svg" width="219">
+            </div>-->
+        </ng-container>
+      </div>
+    </ng-container>
   </div>
   <div class="footer">
     <span>Powered by</span><img class="logo" src="../../../../assets/img/header-logo-grey.svg">

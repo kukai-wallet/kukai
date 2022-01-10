@@ -48,7 +48,7 @@
             <span class="label"><b>If your seed words are protected by a passphrase, it needs to be entered
                 here</b></span>
             <input class="text" type="password" name="passphrase" autocomplete="one-time-code" [(ngModel)]="passphrase"
-              [placeholder]="'Passphrase (optional)'">
+              [placeholder]="'Passphrase (optional)'" readonly="true" (click)="clickPassword($event)" (blur)="blurPassword($event)">
           </div>
           <div class="flex-column">
             <span class="label"><b>Provide the public key hash<br /> to verify your passphrase is correct</b></span>
@@ -71,7 +71,7 @@
         <input class="text" type="text" [(ngModel)]="email" [placeholder]="'Email (required)'">
         <span class="label">The password you chose during the fundraiser</span>
         <input class="text" type="password" name="tge-password" autocomplete="one-time-code" [(ngModel)]="password"
-          [placeholder]="'Password (required)'">
+          [placeholder]="'Password (required)'" readonly="true" (click)="clickPassword($event)" (blur)="blurPassword($event)">
         <span class="label">Provide the public key hash to verify your email and password are correct</span>
         <input type="text" class="text" [(ngModel)]="pkh" [placeholder]="'tz1... (recomended)'">
       </ng-container>

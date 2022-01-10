@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import DirectWebSdk from '@toruslabs/customauth';
+import DirectWebSdk from 'customauth';
 import FetchNodeDetails from '@toruslabs/fetch-node-details';
 import TorusUtils from '@toruslabs/torus.js';
 import { OperationService } from '../../services/operation/operation.service';
@@ -173,8 +173,8 @@ export class TorusService {
       }
     );
   }
-  async loginTorus(selectedVerifier: string, verifierId = ''): Promise<any> {
-    if (!CONSTANTS.MAINNET && document?.location?.host === 'localhost:4200') {
+  async loginTorus(selectedVerifier: string, verifierId = '', skipTorusKey = false): Promise<any> {
+    if (!CONSTANTS.MAINNET && document?.location?.host === 'localhost:4200' && selectedVerifier !== 'google' && selectedVerifier !== 'twitter') {
       return this.mockLogin(selectedVerifier); // mock locally
     }
     try {
@@ -194,12 +194,14 @@ export class TorusService {
             verifier: this.verifierMap[selectedVerifier].subVerifier,
             jwtParams
           }
-        ]
+        ],
+        skipTorusKey
       }) : await this.torus.triggerLogin({
         verifier,
         typeOfLogin,
         clientId,
-        jwtParams
+        jwtParams,
+        skipTorusKey
       });
       if (aggregated) {
         loginDetails.userInfo = loginDetails.userInfo[0];
@@ -208,7 +210,7 @@ export class TorusService {
         console.log('Invalidating access token...');
         fetch(`https://graph.facebook.com/me/permissions?access_token=${loginDetails.userInfo.accessToken}`, { method: "DELETE", mode: "cors" });
       }
-      const keyPair = this.operationService.spPrivKeyToKeyPair(loginDetails.privateKey);
+      const keyPair = (skipTorusKey && !loginDetails?.privateKey) ? { pk: '', pkh: '' } : this.operationService.spPrivKeyToKeyPair(loginDetails.privateKey);
       console.log('DirectAuth KeyPair', keyPair);
       if (loginDetails?.userInfo?.typeOfLogin === 'jwt') {
         loginDetails.userInfo.typeOfLogin = selectedVerifier;

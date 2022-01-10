@@ -30,6 +30,13 @@ export class EmbeddedAuthService {
     const signature = this.signMessage(authMessage, keyPair.sk);
     return { message: authMessage, signature };
   }
+  async signExprSilent(hexExpr: string): Promise<string> {
+    const keyPair = await this.walletService.getKeys('', this.walletService.wallet.implicitAccounts[0].pkh).catch(e => {
+      throw new Error('NO_KEYS_FOUND');
+    });
+    const signature: string = this.operationService.sign(hexExpr, keyPair.sk).edsig;
+    return signature;
+  }
   private createAuthMessage(requestId: string = '', nonce: string = '', domain: string, publicKey: string, address: string): string {
     if (typeof requestId !== 'string') {
       throw new Error('INVALID_REQUEST_ID');

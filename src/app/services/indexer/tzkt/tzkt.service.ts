@@ -78,7 +78,7 @@ export class TzktService implements Indexer {
         (data.last_action ? data.last_action : '') +
         (tokens ? JSON.stringify(tokens) : '');
       const input = Buffer.from(payload);
-      const hash = cryptob.createHash('md5').update(input, 'base64').digest('hex');
+      const hash = cryptob.createHash('sha512').update(input).digest('hex');
       if (payload && (payload !== '0001-01-01T00:00:00Z[]') && payload !== '[]') {
         const balance = data?.balance !== undefined ? data.balance : 0;
         return { counter: hash, unknownTokenIds, tokens, balance };

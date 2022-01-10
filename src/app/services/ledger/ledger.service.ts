@@ -49,6 +49,9 @@ export class LedgerService {
     await this.transportCheck();
     const xtz = new Tezos(this.transport);
     const result = await xtz.getAddress(path, true)
+      .then(res => {
+        return this.sanitize(res, true);
+      })
       .catch(e => {
         if (e.message) {
           this.messageService.addError(e.message);
@@ -66,18 +69,22 @@ export class LedgerService {
     }
     await this.transportCheck();
     const xtz = new Tezos(this.transport);
-    let result;
     console.log('op', op);
-    result = await xtz.signOperation(path, op)
+    const result = await xtz.signOperation(path, op)
+      .then(res => {
+        return this.sanitize(res, false);
+      })
       .catch(e => {
         console.warn(e);
         this.messageService.addError(e, 0);
+        return null;
       });
     console.log(JSON.stringify(result));
-    if (result && result.signature) {
+    if (result?.signature) {
       return result.signature;
+    } else {
+      return null;
     }
-    return null;
   }
   async signHash(hash: string, path: string) {
     if (hash.length !== 64) {
@@ -85,15 +92,30 @@ export class LedgerService {
     }
     await this.transportCheck();
     const xtz = new Tezos(this.transport);
-    let result;
-    result = await xtz.signHash(path, hash)
+    const result = await xtz.signHash(path, hash)
+      .then(res => {
+        return this.sanitize(res, false);
+      })
       .catch(e => {
+        console.warn(e);
         this.messageService.addError(e, 0);
+        return null;
       });
     console.log(JSON.stringify(result));
-    if (result && result.signature) {
+    if (result?.signature) {
       return result.signature;
+    } else {
+      return null;
     }
-    return null;
+  }
+  private sanitize(res: any, getPk: boolean) {
+    res = JSON.parse(JSON.stringify(res));
+    if (getPk && typeof res?.publicKey !== 'string') {
+      throw Error("Invalid pk")
+    }
+    if (!getPk && typeof res?.signature !== 'string') {
+      throw Error("Invalid signature")
+    }
+    return res;
   }
 }

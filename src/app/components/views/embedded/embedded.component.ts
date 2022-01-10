@@ -27,7 +27,8 @@ import {
   CardResponse,
   SignExprRequest,
   SignExprResponse,
-  LoginConfig
+  LoginConfig,
+  LoginPrio
 } from 'kukai-embed';
 import { Subscription } from 'rxjs';
 import { SubjectService } from '../../../services/subject/subject.service';
@@ -35,14 +36,16 @@ import { InputValidationService } from '../../../services/input-validation/input
 enum Permission {
   LOGIN = 'login',
   OPERATIONS = 'operations',
-  MICHELINE = 'micheline'
+  MICHELINE = 'micheline',
+  MICHELINE_SILENT = 'micheline_silent'
 }
 interface Permissions {
   origins: string[],
   permissions: {
     [Permission.LOGIN]: boolean,
     [Permission.OPERATIONS]: boolean,
-    [Permission.MICHELINE]: boolean
+    [Permission.MICHELINE]: boolean,
+    [Permission.MICHELINE_SILENT]?: boolean
   }
 }
 @Component({
@@ -91,6 +94,15 @@ export class EmbeddedComponent implements OnInit {
         operations: false,
         micheline: true
       }
+    },
+    gap: {
+      origins: ['https://*.gap.com'],
+      permissions: {
+        login: true,
+        operations: true,
+        micheline: true,
+        micheline_silent: true
+      }
     }
   };
   constructor(
@@ -117,6 +129,8 @@ export class EmbeddedComponent implements OnInit {
   operationRequests = null;
   signRequest = null;
   loginConfig: LoginConfig = null;
+  queueMode: LoginPrio = null;
+  currentInstanceId = '';
 
   ngOnInit(): void {
     const htmlElem = this.elRef.nativeElement.closest('html');
@@ -133,16 +147,18 @@ export class EmbeddedComponent implements OnInit {
       .filter(params => params.instanceId)
       .subscribe(params => {
         this.walletService.loadStoredWallet(params.instanceId);
+        this.currentInstanceId = params.instanceId;
         if (this.walletService.wallet instanceof EmbeddedTorusWallet) {
           this.origin = this.walletService.wallet.origin;
           this.subjectService.origin.next(this.origin);
-          this.activeAccount = this.walletService.wallet.implicitAccounts[0];
-          this.coordinatorService.startXTZ();
-          this.coordinatorService.start(this.activeAccount.address, this.coordinatorService.defaultDelayActivity);
-          this.subscribeToConfirmedOps();
+          if (this.walletService.wallet?.implicitAccounts[0]) {
+            this.activeAccount = this.walletService.wallet.implicitAccounts[0];
+            this.coordinatorService.startXTZ();
+            this.coordinatorService.start(this.activeAccount.address, this.coordinatorService.defaultDelayActivity);
+            this.subscribeToConfirmedOps();
+          }
         }
-      }
-      );
+      });
     window.parent.window.postMessage(JSON.stringify({ type: ResponseTypes.initComplete, failed: false }), this.origin || '*');
   }
   handleRequest = (evt) => {
@@ -194,18 +210,26 @@ export class EmbeddedComponent implements OnInit {
       this.sendResponse(response);
       return;
     }
-    if (this.walletService.wallet instanceof EmbeddedTorusWallet && req.expr) {
+    if (this.walletService.wallet instanceof EmbeddedTorusWallet && this.walletService.wallet.implicitAccounts[0] && req.expr) {
       if (req.expr.slice(0, 2) === '0x') {
         req.expr = req.expr.slice(2);
       }
       if (this.inputValidationService.isMichelineExpr(req.expr)) {
-        this.signRequest = { payload: req.expr, ui: this.normalizeTemplate(req?.ui) };
+        if (req?.ui?.silent && this.hasPermission(Permission.MICHELINE_SILENT)) {
+          this.embeddedAuthService.signExprSilent(req.expr).then(signature => {
+            this.signResponse(signature);
+          }).catch(e => {
+            this.sendResponse({ type: ResponseTypes.signExprResponse, failed: true, error: e.message ? e.message : 'UNKNOWN_ERROR' });
+          });
+        } else {
+          this.signRequest = { payload: req.expr, ui: this.normalizeTemplate(req?.ui) };
+        }
       } else {
         this.sendResponse({ type: ResponseTypes.signExprResponse, failed: true, error: 'INVALID_PARAMETERS' });
       }
     } else {
       let response: ResponseMessage;
-      if (!(this.walletService.wallet instanceof EmbeddedTorusWallet)) {
+      if (!(this.walletService.wallet instanceof EmbeddedTorusWallet) || !this.walletService.wallet.implicitAccounts[0]) {
         response = { type: ResponseTypes.signExprResponse, failed: true, error: 'NO_WALLET_FOUND' };
       } else {
         response = { type: ResponseTypes.signExprResponse, failed: true, error: 'INVALID_PARAMETERS' };
@@ -229,8 +253,12 @@ export class EmbeddedComponent implements OnInit {
       this.sendResponse(response);
       return;
     }
-    if (this.activeAccount) {
+    this.queueMode = req?.config.customPrio ? req?.config.customPrio : null;
+    if (this.activeAccount || (this.queueMode === 'low' && this.walletService.wallet)) {
       const response: ResponseMessage = { type: ResponseTypes.loginResponse, failed: true, error: 'ALREADY_LOGGED_IN' };
+      this.sendResponse(response);
+    } else if (this.queueMode === 'high' && !this.walletService.wallet) {
+      const response: ResponseMessage = { type: ResponseTypes.loginResponse, failed: true, error: 'NO_WALLET_FOUND' };
       this.sendResponse(response);
     } else {
       if (req?.config?.customSpinnerDismissal) {
@@ -248,7 +276,7 @@ export class EmbeddedComponent implements OnInit {
       this.sendResponse(response);
       return;
     }
-    if (this.walletService.wallet instanceof EmbeddedTorusWallet && req.operations) {
+    if (this.walletService.wallet instanceof EmbeddedTorusWallet && this.walletService.wallet.implicitAccounts[0] && req.operations) {
       if (this.isValidOperation(req.operations)) {
         this.template = req.ui ? this.normalizeTemplate(req.ui) : null;
         this.operationRequests = req.operations;
@@ -296,8 +324,13 @@ export class EmbeddedComponent implements OnInit {
     } else if (loginData) {
       const { keyPair, userInfo } = loginData;
       const { idToken = '', accessToken = '', long_lived_token = '', ...filteredUserInfo } = { ...userInfo };
-      // 160 bits of entropy, base58 encoded
-      const instanceId = this.generateInstanceId();
+      let instanceId;
+      if (this.walletService.wallet && this.walletService.wallet instanceof EmbeddedTorusWallet && keyPair?.pk && !this.walletService.wallet.implicitAccounts[0] && this.currentInstanceId) {
+        instanceId = this.currentInstanceId;
+      } else {
+        // 160 bits of entropy, base58 encoded
+        instanceId = this.generateInstanceId();
+      }
       response = {
         type: ResponseTypes.loginResponse,
         instanceId,
@@ -399,7 +432,7 @@ export class EmbeddedComponent implements OnInit {
     window.parent.window.postMessage(JSON.stringify(resp), this.origin);
   }
   private async importAccount(keyPair: KeyPair, userInfo: any, instanceId: string) {
-    if (keyPair) {
+    if (keyPair?.pk) {
       await this.importService
         .importWalletFromPk(keyPair.pk, '', { verifier: userInfo.typeOfLogin, id: userInfo.verifierId, name: userInfo.name, embedded: true, origin: this.origin }, keyPair.sk, instanceId)
         .then((success: boolean) => {
@@ -410,7 +443,11 @@ export class EmbeddedComponent implements OnInit {
             this.subscribeToConfirmedOps();
           }
         });
+    } else if (keyPair?.pk === '') { // login without keys
+      await this.importService
+        .importWalletFromPk(keyPair.pk, '', { verifier: userInfo.typeOfLogin, id: userInfo.verifierId, name: userInfo.name, embedded: true, origin: this.origin }, '', instanceId);
     }
+    this.currentInstanceId = instanceId;
   }
   private isValidOperation(transactions: PartialTezosTransactionOperation[]): boolean {
     try {
@@ -437,7 +474,10 @@ export class EmbeddedComponent implements OnInit {
     this.walletService.clearWallet(instanceId);
     this.lookupService.clear();
     this.activeAccount = null;
-    this.ophashSubscription.unsubscribe();
+    if (this.ophashSubscription) {
+      this.ophashSubscription.unsubscribe();
+    }
+    this.currentInstanceId = '';
   }
   subscribeToConfirmedOps() {
     this.ophashSubscription = this.subjectService.confirmedOp.subscribe((opHash) => {
