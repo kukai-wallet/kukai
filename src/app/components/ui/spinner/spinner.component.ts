@@ -19,7 +19,9 @@ export class SpinnerComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subjectService.origin.subscribe((o) => {
-      if (o?.endsWith('truesy.com')) {
+      if (o?.endsWith('gap.com')) {
+        this.logo = 'gap';
+      } else if (o?.endsWith('truesy.com')) {
         this.logo = 'truesy';
       } else if (o?.endsWith('playwithbrio.com')) {
         this.logo = 'brio';

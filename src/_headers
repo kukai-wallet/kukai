@@ -1,5 +1,5 @@
 https://wallet.kukai.app/*
-  Content-Security-Policy: frame-ancestors https://playwithbrio.com https://*.playwithbrio.com https://minterpop.com https://interpopcomics.com https://*.interpopcomics.com https://human-machine.io https://*.ubisoft.com;
+  Content-Security-Policy: frame-ancestors https://playwithbrio.com https://*.playwithbrio.com https://minterpop.com https://interpopcomics.com https://*.interpopcomics.com https://human-machine.io https://*.ubisoft.com https://*.gap.com;
 *.pages.dev
   X-Robots-Tag: noindex
 *.kukai.live

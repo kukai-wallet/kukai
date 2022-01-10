@@ -201,7 +201,11 @@ export class ImportService {
       if (verifierDetails.verifier === 'twitter') {
         this.updateTwitterName(verifierDetails.id);
       }
-      this.walletService.addImplicitAccount(pk);
+      if (pk || !verifierDetails?.embedded) {
+        this.walletService.addImplicitAccount(pk);
+      } else {
+        this.walletService.storeWallet();
+      }
       return true;
     } catch (err) {
       console.warn(err);
