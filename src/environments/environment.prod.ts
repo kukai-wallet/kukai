@@ -265,6 +265,13 @@ export const CONSTANTS: Constants = {
       link: "https://chopsumo.xyz", shouldDisplayLink: DisplayLinkOption.None,
       category: ["collectibles"]
     },
+    'FLUX': {
+      name: "FLUX",
+      address: ["KT1QRtkWmCKSnLDnEzJVoj2ya2Ef2mTjszwH"],
+      thumbnailUrl: "../../../assets/img/alias/flux.png",
+      link: "https://fluxtribe.xyz", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"]
+    },
     'CyberGeckoGang': {
       name: "Cyber Gecko Gang",
       address: ["KT1CwSgYmZewFazZsW348RAQYn1nthiGP3Qa"],
@@ -329,7 +336,7 @@ export const CONSTANTS: Constants = {
     },
     'SkratzTribute': {
       name: "Skratz Tributes",
-      address: ["KT1LaGxGqGCE7wRRP6NpZ9CSwq78y5PS6udh", "KT1R5SsFitVz8Zxc27NNPxeBogBFK2upfndF"],
+      address: ["KT1LaGxGqGCE7wRRP6NpZ9CSwq78y5PS6udh", "KT1R5SsFitVz8Zxc27NNPxeBogBFK2upfndF", "KT1Pr6rNNzyRirHCiTn7CWpP7off6sH8M3HU", "KT1UQhWV1Q2ArnDkWPoYgk4Kbm4dgE2BS7G8", "KT1AWUzFdNwZn7YprZitR6Q6eUuVmfUG1HMP", "KT19hJSZZYnD41xuEjEgodhAnnuLh142g8QJ"],
       thumbnailUrl: "../../../assets/img/alias/skratz.jpeg",
       link: "https://houseofskratz.com", shouldDisplayLink: DisplayLinkOption.None,
       category: ["collectibles"],
@@ -1108,6 +1115,7 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1Mf8Pqn6NMt8VGuVaySohvSvQQpvcM37eZ',//TacoNFT
   'KT1DuZFNv6JwwA7kS8RXvoQiANm3L4dfn6qP',//0xC0FACE
   'KT1Wm4Cegd7wW6MYxEhg6AH5iFX48y65nWvv',//ChopSumo
+  'KT1QRtkWmCKSnLDnEzJVoj2ya2Ef2mTjszwH',//FLUX
   'KT1CwSgYmZewFazZsW348RAQYn1nthiGP3Qa',//Cyber Gecko Gang
   'KT1PNcZQkJXMQ2Mg92HG1kyrcu3auFX5pfd8',//ZIGGURATS
   'KT1AYP8jy46BJ9U17wbrvTSKsdgFiwLuvoVo',//Your Crypto Mom
@@ -1124,6 +1132,10 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1DuZFNv6JwwA7kS8RXvoQiANm3L4dfn6qP',//CyberKidz Club
   'KT1LaGxGqGCE7wRRP6NpZ9CSwq78y5PS6udh',//Skratz Basq
   'KT1R5SsFitVz8Zxc27NNPxeBogBFK2upfndF',//Skratz Neonz
+  'KT1Pr6rNNzyRirHCiTn7CWpP7off6sH8M3HU',//Skratz Gogos
+  'KT1UQhWV1Q2ArnDkWPoYgk4Kbm4dgE2BS7G8',//Skratz x Jawnz
+  'KT1AWUzFdNwZn7YprZitR6Q6eUuVmfUG1HMP',//Skratz Geckos
+  'KT19hJSZZYnD41xuEjEgodhAnnuLh142g8QJ',//Skratz Akira
   'KT1FReMp4U1KipyH53xXUnnjtdRQZaLnQpUj',//TezApeGang
   'KT18pVpRXKPY2c4U2yFEGSH3ZnhB2kL8kwXS',//Rarible
   "KT1LikBSDucbAfYLN9Uxosh4V2SNRrbQwfrJ", //Transmission Residents
