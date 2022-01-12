@@ -162,7 +162,7 @@ export class TorusService {
     } else {
       req = { username: username.replace('@', '') };
     }
-    return await fetch(`https://api.tezos.help/twitter-lookup/`, {
+    return await fetch(`https://backend.kukai.network/twitter-lookup`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       referrerPolicy: 'no-referrer',
