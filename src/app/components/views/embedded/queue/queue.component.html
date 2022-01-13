@@ -1,0 +1,28 @@
+<h3>Processing Transaction...</h3>
+<br />
+<h1 class="high-demand">High Demand Item!</h1>
+<br />
+<p class="desc">Your order is being delivered. Wait times vary, but can be<br />as short as seconds or a few minutes
+</p>
+<br />
+<br />
+<h1>Estimated Wait Time:</h1>
+<h1 class="flex-row time">
+  <span *ngIf="hours !== '00'"class="flex-column hours">
+    <h1>{{ hours }}</h1>
+    <h5>Hours</h5>
+  </span>
+  <span class="flex-column minutes">
+    <h1>{{ minutes }}</h1>
+    <h5>Minutes</h5>
+  </span>
+  <span class="flex-column seconds">
+    <h1>{{ seconds }}</h1>
+    <h5>Seconds</h5>
+  </span>
+</h1>
+<br />
+<br />
+<h2 class="note">Note: Do not close this window or leave this page!</h2>
+<br />
+<h2 class="desc">You will cancel this transaction<br />and have to start over!</h2>

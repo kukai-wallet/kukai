@@ -22,11 +22,13 @@ export class ConfirmSendEmbedComponent implements OnInit, OnChanges {
     public walletService: WalletService,
     public messageService: MessageService,
     private subjectService: SubjectService
-    ) { }
+  ) { }
 
   ngOnInit(): void {
     this.subjectService.origin.subscribe((origin) => {
-      if (origin && origin.indexOf('interpop') !== -1) { // (m)interpop
+      if (origin && origin.indexOf('gap') !== -1) { // (m)interpop
+        this.template = 'gap';
+      } else if (origin && origin.indexOf('interpop') !== -1) { // (m)interpop
         this.template = 'minterpop';
       } else {
         this.template = 'default';

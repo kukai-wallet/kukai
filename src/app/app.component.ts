@@ -64,6 +64,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
     }
     window.addEventListener('resize', e);
+    window.addEventListener('load', e);
     e();
   }
   ngOnDestroy(): void {
@@ -109,9 +110,7 @@ export class AppComponent implements OnInit, OnDestroy {
     if (!!this.embedded) {
       document.documentElement.style.setProperty('--base-background-color', bg); // recheck
       const resize = () => {
-        if (document.body.clientWidth < 450) {
-          document.documentElement.style.fontSize = '55%';
-        } else if (document.body.clientWidth < 540) {
+        if (document.body.clientWidth < 540) {
           document.documentElement.style.fontSize = '75%';
         } else if (document.body.clientWidth < 650) {
           document.documentElement.style.fontSize = '87.5%';
@@ -120,6 +119,7 @@ export class AppComponent implements OnInit, OnDestroy {
         }
       }
       window.addEventListener('resize', resize);
+      window.addEventListener('load', resize);
       resize();
     }
   }

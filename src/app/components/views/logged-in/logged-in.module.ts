@@ -33,6 +33,7 @@ import { ListComponent } from '../../ui/generic/list.component';
 import { SearchBarComponent } from '../../ui/search/search.component';
 import { RemoveCommaPipe } from '../../../pipes/remove-comma.pipe';
 import { ExprTemplateComponent } from '../embedded/sign-expr/template/template.component';
+import { QueueEmbedComponent } from '../embedded/queue/queue.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { ExprTemplateComponent } from '../embedded/sign-expr/template/template.c
     AdvancedToggleComponent,
     ConfirmSendEmbedComponent,
     SignExprEmbedComponent,
+    QueueEmbedComponent,
     PrepareSendDropdownComponent,
     AssetComponent,
     NftsBodyComponent,
@@ -77,6 +79,7 @@ import { ExprTemplateComponent } from '../embedded/sign-expr/template/template.c
     SendComponent,
     ConfirmSendEmbedComponent,
     SignExprEmbedComponent,
+    QueueEmbedComponent,
     AssetComponent,
     NftsBodyComponent,
     NftsTokenComponent,

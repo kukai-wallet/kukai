@@ -56,19 +56,23 @@ export class SigninComponent implements OnInit, OnChanges {
     // set high prio
     if (this.walletService.wallet instanceof EmbeddedTorusWallet) {
       this.queueTime = -1;
-      await this.setHighPrio(this.walletService.wallet.verifier, this.walletService.wallet.id);
+      this.setHighPrio(this.walletService.wallet.verifier, this.walletService.wallet.id);
     }
     this.queueTimeVisible = -1;
+    this.messageService.startSpinner();
     this.queueInterval = setInterval(() => {
+
       if (this.queueTimeVisible > 1 || (this.queueTimeVisible === 1 && this.queueTime === 0)) {
         this.queueTimeVisible -= 1;
       }
       if (this.walletService.wallet instanceof EmbeddedTorusWallet) {
-        let timeBetweenChecks = 60;
-        if (this.queueTimeVisible < 10) {
+        let timeBetweenChecks = 300;
+        if (this.queueTimeVisible < 4) {
           timeBetweenChecks = 2;
         } else if (this.queueTimeVisible < 60) {
-          timeBetweenChecks = 5;
+          timeBetweenChecks = 15;
+        } else if (this.queueTimeVisible < 1800) {
+          timeBetweenChecks = 60;
         }
         this.statusCounter = ++this.statusCounter % timeBetweenChecks;
         if (this.statusCounter === 0) {
@@ -81,12 +85,13 @@ export class SigninComponent implements OnInit, OnChanges {
     }, 1000)
   }
   stopQueue() {
-    this.queueTimeVisible = 0;
-    this.queueTimeVisible = 0;
-    this.statusCounter = 0;
     if (this.queueInterval) {
       clearInterval(this.queueInterval);
     }
+    this.queueTime = 0;
+    this.queueTimeVisible = 0;
+    this.statusCounter = 0;
+    this.messageService.stopSpinner();
   }
   abort() {
     this.loginResponse.emit(null);
@@ -156,6 +161,9 @@ export class SigninComponent implements OnInit, OnChanges {
         console.error('FailedToResolve');
         this.abort()
         return;
+      }
+      if (this.queueTimeVisible === -1) {
+        this.messageService.stopSpinner();
       }
       this.queueTime = this.queueTimeVisible = res.EstimatedTimeSeconds;
     }
