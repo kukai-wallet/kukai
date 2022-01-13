@@ -1,4 +1,37 @@
+@use '../../../../../abstracts/variables' as v;
+
 div.legal {
-  padding: 4rem 3rem;
+  padding: 4rem 15.5rem;
   margin-bottom: 6rem;
+  & p {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  & h1 {
+    font-size: 3rem;
+  }
+
+  & h4 {
+    font-size: 3rem;
+    font-weight: 500;
+    margin: 1rem 0;
+  }
+
+  & h5 {
+    font-size: 2rem;
+    font-weight: 500;
+    margin: 1rem 0;
+  }
+  & .notice {
+    color: red;
+    margin: 1rem 0 0 0;
+  }
+}
+
+@media (max-width: v.$layout-break-3) and (max-aspect-ratio: 1/1), (max-width: v.$layout-break-5) {
+  div.legal {
+    width: 89%;
+    padding: 4rem 5.5%;
+  }
 }
