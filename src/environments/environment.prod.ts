@@ -20,6 +20,17 @@ export const CONSTANTS: Constants = {
     hard_storage_limit_per_operation: 60000
   },
   CONTRACT_ALIASES: {
+    'gap': {
+      name: "Gap Threads",
+      address: ['KT1GA6KaLWpURnjvmnxB4wToErzM2EXHqrMo'],
+      thumbnailUrl: "assets/img/alias/gap_600x600.png",
+      discoverUrl: "assets/img/alias/gap-discover.svg",
+      link: "https://www.gap.com/nft",
+      shouldDisplayLink: DisplayLinkOption.All,
+      category: ["collectibles"],
+      backgroundColor: 'black',
+      description: "A fun and interactive digital collectible experience"
+    },
     'UbisoftQuartz': {
       name: "Ubisoft Quartz",
       address: ["KT1TnVQhjxeNvLutGvzwZvYtC7vKRpwPWhc6"],

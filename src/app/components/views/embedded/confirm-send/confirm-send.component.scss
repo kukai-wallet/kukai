@@ -24,7 +24,8 @@ $box-shadow: 0px 12px 24px #3331 !default;
 $box-shadow-dark: 0px 6px 12px #3333 !default;
 
 // border constant
-$border-radius: 1.0rem !default;
+$border-width: 2px !default;
+$border-radius: 1rem !default;
 $border-radius-hard: calc(#{$border-radius} * 2) !default;
 $border-radius-hardest: calc(#{$border-radius} * 10) !default;
 $border-color: #aaa3;
@@ -165,7 +166,7 @@ button {
       cursor: pointer;
     }
 
-    &>.top {
+    & > .top {
       position: relative;
       margin: 0 0 1rem 0;
       align-items: center;
@@ -262,18 +263,18 @@ button {
         margin: 1rem 0;
         width: 9rem;
         cursor: pointer;
-  
+
         span {
           color: $base-font-color-secondary;
           text-transform: uppercase;
           font-size: 1rem;
         }
-  
+
         img {
           height: 1.75rem;
           width: auto;
         }
-  
+
         &.open {
           img {
             transform: rotate(180deg);
@@ -301,7 +302,7 @@ button {
       width: calc(100% + 4rem);
     }
 
-    & input:not([type=checkbox]) {
+    & input:not([type="checkbox"]) {
       height: 4rem;
       width: calc(100% - 2rem);
       background-color: $base-end-color;
@@ -358,6 +359,95 @@ button {
   }
 }
 
+.kukai-modal.gap {
+  $base-font-color: $base-end-color;
+  $base-font-color-secondary: #9399a7;
+  background-color: rgba(0, 0, 0, 0.85);
+  font-family: "Helvetica Neue", "Helvetica", sans-serif !important;
+  & .content {
+    background-color: #3f3f40;
+    border: $border-width solid $border-color;
+    border-radius: 13px;
+    & .seperator {
+      left: 0rem;
+      width: calc(100% - 2rem);
+    }
+    & .close {
+      filter: brightness(10) invert(0);
+      border: none;
+    }
+    & .top {
+      & .title {
+        color: $base-end-color;
+      }
+    }
+    & .torus {
+      & .name {
+        color: $base-font-color;
+      }
+
+      & .address {
+        color: $base-font-color-secondary;
+        margin: 0.25rem 0 0 0;
+      }
+    }
+    & .asset-name {
+      color: $base-font-color;
+    }
+
+    & .default-text {
+      color: $base-font-color-secondary;
+      font-size: 1.25rem;
+      font-weight: 300;
+
+      &.amount {
+        color: $base-font-color;
+        font-weight: 400;
+        font-size: 2rem;
+        margin: 0;
+      }
+      &.more-info {
+        color: $base-font-color;
+        width: 8.5rem !important;
+        span {
+          color: $base-font-color;
+          font-family: "Helvetica Neue", "Helvetica", sans-serif !important;
+        }
+        img {
+          height: 0.75rem !important;
+          width: auto;
+        }
+      }
+    }
+
+    & .buttons button {
+      background: linear-gradient(118.22deg, #00fff0 -36.68%, #eb00ff 130.4%);
+      border-radius: 4px;
+    }
+
+    & .footer {
+      filter: brightness(10) invert(0);
+      & > span {
+        font-weight: 400;
+      }
+    }
+  }
+}
+
+@media (min-width: 767px) {
+  .kukai-modal.gap {
+    & .content {
+      & .seperator {
+        left: 0rem;
+        width: 100%;
+      }
+      & .more-info span {
+        color: $base-end-color !important
+      }
+    }
+  }
+}
+
 @media (max-width: 767px) {
   :host {
     font-size: 62%;
@@ -371,67 +461,66 @@ button {
       justify-content: flex-start;
       align-items: center;
       z-index: 1000;
-    
+
       & .content {
         justify-content: center;
         align-items: center;
         background-color: $base-end-color;
         height: auto;
-        border-radius: $border-radius-hard;
         padding: 1rem 2rem 2rem 2rem;
         max-width: calc(100% - 6rem);
         position: relative;
         margin: 5rem 0 0 0;
         overflow-x: hidden;
         overflow-y: auto;
-    
+
         & .close {
           width: 3em !important;
           height: 3em !important;
         }
-    
-        &>.top {
+
+        & > .top {
           position: relative;
           margin: 0;
           align-items: center;
-    
+
           & .title {
             margin: 0 0 1rem 0;
             font-size: 2rem;
           }
         }
-    
+
         & .confirm-send {
           align-items: center;
-    
+
           & .transaction {
             width: 100%;
           }
           & .transaction .left {
             font-size: 75%;
           }
-    
+
           & > .seperator {
             left: 0;
           }
         }
-    
+
         & .torus {
           justify-content: flex-start;
           align-items: flex-start;
-    
+
           & .icon {
             width: 1.5rem;
             height: 1.5rem;
             margin: 0.25rem 0.5rem 0 0;
           }
-    
+
           & .name {
             font-weight: 600;
             font-size: 1.25rem;
             color: $base-font-color;
           }
-    
+
           & .address {
             font-weight: 500;
             font-size: 1rem;
@@ -439,19 +528,19 @@ button {
             font-style: italic;
           }
         }
-    
+
         & .token-image {
           margin: 0 0 1rem 1rem;
           width: 8rem;
           height: 8rem;
           object-fit: scale-down;
         }
-    
+
         & .single-to {
           font-style: italic;
           font-weight: 500;
         }
-    
+
         & .asset-name {
           margin: 1rem 0 0 0;
           font-size: 1.5rem;
@@ -463,19 +552,19 @@ button {
           overflow: hidden;
           text-overflow: ellipsis;
         }
-    
+
         & .default-text {
           font-size: 1rem;
           color: $base-font-color-secondary;
           font-weight: 500;
-    
+
           &.amount {
             font-weight: 600;
             font-size: 2.25rem;
             color: $base-font-color;
             margin: -0.5rem 0 0 0;
           }
-    
+
           &.more-info {
             font-size: 1.25rem;
             color: $base-font-color;
@@ -484,18 +573,18 @@ button {
             margin: 1em 0;
             width: 8em;
             cursor: pointer;
-      
+
             span {
               color: $base-font-color-secondary;
               text-transform: uppercase;
               font-size: 1rem;
             }
-      
+
             img {
               height: 1.75rem;
               width: auto;
             }
-      
+
             &.open {
               img {
                 transform: rotate(180deg);
@@ -503,18 +592,18 @@ button {
             }
           }
         }
-    
+
         & .info {
           width: 100%;
           & .default-text {
             width: 65%;
           }
-    
+
           & .seperator {
             margin: 0.5rem 0;
           }
         }
-    
+
         & .seperator {
           position: relative;
           height: 2px;
@@ -522,27 +611,27 @@ button {
           left: -2rem;
           width: calc(100% + 4rem);
         }
-    
-        & input:not([type=checkbox]) {
+
+        & input:not([type="checkbox"]) {
           height: 4rem;
           width: calc(100% - 2rem);
           background-color: $base-end-color;
           border: 2px solid $border-color;
           border-radius: $border-radius-hardest;
           font-size: 1.25rem;
-    
+
           &.password,
           &.text {
             width: calc(100% - 2rem);
           }
         }
-    
+
         & .bottom {
           margin: 1rem 0 0 0;
           width: 100%;
           align-items: center;
         }
-    
+
         & .buttons {
           width: 100%;
           justify-content: center;
@@ -554,13 +643,13 @@ button {
             height: 4rem;
           }
         }
-    
+
         & button.confirm {
           width: 50%;
           height: 2.5em;
           border-radius: $border-radius-hard;
         }
-    
+
         & .footer {
           margin: 2rem 0 0;
           display: flex;
@@ -572,10 +661,87 @@ button {
             line-height: 1rem;
             font-weight: 600;
           }
-    
+
           & img {
             height: 1.25rem;
             margin: 0 0 0 0.5rem;
+          }
+        }
+      }
+    }
+    & .kukai-modal.gap {
+      $base-font-color: $base-end-color;
+      $base-font-color-secondary: #9399a7;
+      background-color: rgba(0, 0, 0, 0.85);
+      & .content {
+        background-color: #3f3f40;
+        border: $border-width solid $border-color;
+        & .close {
+          filter: brightness(10) invert(0);
+          border: none;
+        }
+        & .top {
+          & .title {
+            color: $base-end-color;
+          }
+        }
+        & .torus {
+          & .name {
+            color: $base-font-color;
+          }
+
+          & .address {
+            color: $base-font-color-secondary;
+            margin: 0.25rem 0 0 0;
+          }
+        }
+        & .asset-name {
+          color: $base-font-color;
+        }
+
+        & .confirm-send {
+          position: relative;
+          & .transaction .right {
+            position: absolute;
+            right: -1.5rem;
+          }
+        }
+
+        & .default-text {
+          color: $base-font-color-secondary;
+          font-size: 1.25rem;
+          font-weight: 300;
+          font-family: "Roboto Condensed", "Helvetica Neue", "Helvetica", sans-serif !important;
+          &.amount {
+            color: $base-font-color;
+            font-weight: 400;
+            font-size: 1.5rem;
+            margin: 0;
+            font-family: "Helvetica Neue", "Helvetica", sans-serif !important;
+          }
+          &.more-info {
+            color: $base-font-color;
+            width: 7.5rem !important;
+            span {
+              color: $base-font-color-secondary;
+              font-family: "Roboto Condensed", "Helvetica Neue", "Helvetica", sans-serif !important;
+            }
+          }
+        }
+
+        & .buttons button {
+          background: linear-gradient(
+            118.22deg,
+            #00fff0 -36.68%,
+            #eb00ff 129.07%
+          );
+          border-radius: 4px;
+        }
+
+        & .footer {
+          filter: brightness(10) invert(0);
+          & > span {
+            font-weight: 400;
           }
         }
       }

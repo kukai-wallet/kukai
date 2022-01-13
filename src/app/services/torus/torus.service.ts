@@ -134,7 +134,7 @@ export class TorusService {
       this.nodeDetails = { torusNodeEndpoints, torusNodePub }; // Cache node details
     }
     let sanitizedVerifierId = verifierId;
-    if (!this.verifierMap[selectedVerifier].caseSensitiveVerifierID) {
+    if (!this.verifierMap[selectedVerifier].caseSensitiveVerifierID && selectedVerifier !== 'twitter') {
       sanitizedVerifierId = sanitizedVerifierId.toLocaleLowerCase();
     }
     let twitterId = '';

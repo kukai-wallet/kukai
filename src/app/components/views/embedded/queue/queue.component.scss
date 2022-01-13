@@ -1,0 +1,70 @@
+@import "../scss/base.scss";
+
+:host {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #333d;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+}
+
+span,
+h6,
+h5,
+h4,
+h3,
+h2,
+h1,
+p {
+  color: $base-end-color;
+  font-weight: 300;
+  letter-spacing: 0.02em;
+}
+
+h1 {
+  font-weight: 400;
+}
+
+h3 {
+  font-size: 1.375rem;
+}
+
+.high-demand {
+  color: #c776ff;
+}
+
+.desc {
+  text-align: center;
+  line-height: 2rem;
+}
+
+.time {
+  & .hours,
+  & .minutes,
+  & .seconds {
+    width: 7rem;
+    text-align: center;
+    & h1 {
+      font-size: 6rem;
+      height: 6.375rem;
+    }
+    & h5 {
+      color: #9090a6;
+    }
+  }
+  & .hours {
+    margin-right: 1rem;
+  }
+  & .seconds {
+    margin-left: 1rem;
+  }
+}
+
+.note {
+  color:#ff4d8d;
+}
