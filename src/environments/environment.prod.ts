@@ -1154,6 +1154,7 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   "KT1BwNPvwjYm7bLEzt93MWDTb6pE8xsac9c1", //Transmission Items
   "KT1FivwAmg7oB6mDSKnkRfvi32wL8TQAsfHz", //Transmission Merch
   "KT1P5zodzq7DtfQkdbHz65WhtQYMwmEXNitP", //Transmission Extras
-  "KT1D394hqndjvTcFgrmUYBxwrzUTNtzrZ5ox" //Platypoos
+  "KT1D394hqndjvTcFgrmUYBxwrzUTNtzrZ5ox", //Platypoos
+  "KT1GA6KaLWpURnjvmnxB4wToErzM2EXHqrMo" //Gap
 ];
 export const BLACKLISTED_TOKEN_CONTRACTS = []
