@@ -1,11 +1,11 @@
 @use '../../../../../abstracts/variables' as v;
 
 div.legal {
-  width: calc(100% - 180px);
   padding: 4rem 15.5rem;
   margin-bottom: 6rem;
   & p {
     font-size: 2rem;
+    margin-bottom: 2rem;
   }
 
   & h1 {
@@ -23,7 +23,6 @@ div.legal {
     font-weight: 500;
     margin: 1rem 0;
   }
-
   & .notice {
     color: red;
     margin: 1rem 0 0 0;
