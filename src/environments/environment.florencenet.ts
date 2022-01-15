@@ -246,13 +246,13 @@ export const CONSTANTS: Constants = {
   CONTRACT_OVERRIDES: {
     // mystery map
     'KT1TWb6cE56q2L8yTeNNchXqDSXacrNqyVNZ:reward': {
-      storageUsage: 150, gasUsage: 59920
+      storage: 150, gas: 60000
     },
     'KT1RUSCZ7pJ3WNTuXFD44UpStmNRjA459guZ:reward': {
-      storageUsage: 150, gasUsage: 59920
+      storage: 150, gas: 60000
     },
     'KT1PrNd3sy1pLAqGtft47dzG4v8KizqPJntT:reward': {
-      storageUsage: 150, gasUsage: 59920
+      storage: 150, gas: 59920
     },
   },
   NFT_CONTRACT_OVERRIDES: ['KT1QzkVVgUYMTvwnyRwGttM8zTg5CyuHKxQH', 'KT1HEzZQV9B85HZnGpDgaZtZNk4ZXbLRuBii']

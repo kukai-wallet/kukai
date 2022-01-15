@@ -125,11 +125,11 @@ div.direct-auth-login > div.footer {
   opacity: 0.5;
 }
 div.direct-auth-login > div.footer > span {
-  @include m.multiply("font-size", 0.75rem);
+  font-size: 0.75rem;
   line-height: 1rem;
   font-weight: 600;
 }
 div.direct-auth-login > div.footer img {
   height: 0.75rem;
-  margin: 0.0625rem 0 0.1875rem 0.375rem;
+  margin: 0 0 0 0.375rem;
 }

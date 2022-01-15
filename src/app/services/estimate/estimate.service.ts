@@ -3,18 +3,17 @@ import { HttpClient } from '@angular/common/http';
 import { OperationService } from '../operation/operation.service';
 import { flatMap, catchError } from 'rxjs/operators';
 import { of, Observable } from 'rxjs';
-import { DefaultTransactionParams } from '../../interfaces';
+import { DefaultTransactionParams, OpLimits } from '../../interfaces';
 import Big from 'big.js';
 import { CONSTANTS } from '../../../environments/environment';
-import { ContractOverrideType } from '../token/token.service';
+import { InputValidationService } from '../input-validation/input-validation.service';
 
 const httpOptions = { headers: { 'Content-Type': 'application/json' } };
-const extraGas = 80;
 @Injectable()
 export class EstimateService {
   readonly costPerByte = '250';
   readonly revealGasLimit = 1000;
-  readonly contractsOverride: Record<string, ContractOverrideType>;
+  readonly contractsOverride: Record<string, OpLimits>;
   queue = [];
   nodeURL = CONSTANTS.NODE_URL;
   pkh: string;
@@ -26,6 +25,7 @@ export class EstimateService {
   constructor(
     private http: HttpClient,
     private operationService: OperationService,
+    private imputValidationService: InputValidationService
   ) {
     this.contractsOverride = CONSTANTS.CONTRACT_OVERRIDES;
   }
@@ -116,8 +116,8 @@ export class EstimateService {
           } else if (['transaction', 'origination'].includes(result.contents[i].kind) && result.contents[i].metadata.operation_result.status === 'applied') {
             const index: number = Number(i) + ((result.contents[0]?.kind === 'reveal') ? -1 : 0);
             const opObj = index > -1 ? operations[index] : null;
-            const { gasUsage, storageUsage } = this.getOpUsage(result.contents[i], opObj);
-            limits.push({ gasLimit: gasUsage + extraGas, storageLimit: storageUsage });
+            const { gas, storage } = this.getOpUsage(result.contents[i], opObj);
+            limits.push({ gasLimit: gas, storageLimit: storage });
           } else {
             return null;
           }
@@ -137,7 +137,7 @@ export class EstimateService {
     }
     return null;
   }
-  getOpUsage(content: any, op: any): { gasUsage: number, storageUsage: number } {
+  getOpUsage(content: any, op: any): OpLimits {
     let gasUsage = 0;
     let burn = Big(0);
     if (content.source && content.source === this.pkh) {
@@ -183,12 +183,7 @@ export class EstimateService {
     if (gasUsage < 0 || gasUsage > CONSTANTS.HARD_LIMITS.hard_gas_limit_per_operation || storageUsage < 0 || storageUsage > CONSTANTS.HARD_LIMITS.hard_storage_limit_per_operation) {
       throw new Error('InvalidUsageCalculation');
     }
-    const customUsage = this.getUsageException(content, op);
-    if (customUsage) {
-      // if there is a usageException then override values
-      return { gasUsage, storageUsage, ...customUsage };
-    }
-    return { gasUsage, storageUsage };
+    return this.getOpLimits(content, op, gasUsage, storageUsage);
   }
   /*
     Need to be updated when fee market appear or default behavior for bakers changes
@@ -241,27 +236,42 @@ export class EstimateService {
         return this.operationService.errHandler(err);
       }));
   }
-  private getUsageException(content: any, op: any): ContractOverrideType {
+  private getOpLimits(content: any, op: any, gasUsage: number, storageUsage: number): OpLimits {
+    // check for hardcoded override
+    let limit: OpLimits = {};
     const entrypoint = content?.parameters?.entrypoint;
     const destination = content?.destination;
     if (entrypoint && destination) {
-      const contractOverride = this.contractsOverride[`${destination}:${entrypoint}`];
+      const contractOverride: OpLimits = this.contractsOverride[`${destination}:${entrypoint}`];
       if (contractOverride) {
-        return contractOverride;
+        limit = contractOverride;
       }
     }
-    if (op?.gasRecommendation || op?.storageRecommendation) {
-      const override: ContractOverrideType = {};
-      if (op.gasRecommendation) {
-        override.gasUsage = Number(op.gasRecommendation) - extraGas;
+    // gas
+    if (!limit.gas) {
+      if (op?.gasRecommendation && this.imputValidationService.gas(op.gasRecommendation)) {
+        limit.gas = Number(op.gasRecommendation);
+      } else if (op?.gasRecommendation && this.imputValidationService.relativeLimit(op.gasRecommendation)) {
+        let percentage: number = Number(op.gasRecommendation.slice(1, -1));
+        percentage = Math.min(Math.max(percentage, 2), 900);
+        limit.gas = Math.round(gasUsage * (1 + (percentage / 100)));
+      } else {
+        // default
+        limit.gas = Math.max(Math.ceil(gasUsage * 1.02), Math.round(gasUsage + 80));
       }
-      if (op.storageRecommendation) {
-        override.storageUsage = Number(op.storageRecommendation);
-      }
-      console.log('Dapp recommendation', { gas: op.gasRecommendation, storage: op.storageRecommendation });
-      return override;
     }
-    return null;
+    // storage
+    if (!limit.storage) {
+      if (op?.storageRecommendation && this.imputValidationService.storage(op.storageRecommendation)) {
+        limit.storage = Number(op.storageRecommendation);
+      } else if (op?.storageRecommendation && this.imputValidationService.relativeLimit(op.storageRecommendation)) {
+        const percentage: number = Number(op.storageRecommendation.slice(1, -1));
+        limit.storage = Math.round(storageUsage * (1 + (percentage / 100)));
+      } else {
+        limit.storage = Math.round(storageUsage);
+      }
+    }
+    return limit;
   }
   private async getCounter(pkh: string): Promise<number> {
     return this.operationService.getRpc(`chains/main/blocks/head/context/contracts/${pkh}/counter`).toPromise();
