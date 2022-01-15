@@ -267,7 +267,7 @@ export const CONSTANTS: Constants = {
     },
     'FLUX': {
       name: "FLUX",
-      address: ["KT1QRtkWmCKSnLDnEzJVoj2ya2Ef2mTjszwH"],
+      address: ["KT1QRtkWmCKSnLDnEzJVoj2ya2Ef2mTjszwH", "KT1XKUyUtRqobh5CqZzXFJW6UT5t55Sn3iT6"],
       thumbnailUrl: "../../../assets/img/alias/flux.png",
       link: "https://fluxtribe.xyz", shouldDisplayLink: DisplayLinkOption.None,
       category: ["collectibles"]
