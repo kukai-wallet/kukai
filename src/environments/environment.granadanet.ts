@@ -79,7 +79,15 @@ export const CONSTANTS: Constants = {
         discoverUrl: "../../../assets/img/alias/tezotopia-discover.png",
         link: "https://testnet.app.tezotopia.com/marketplace/units", shouldDisplayLink: DisplayLinkOption.All, category: ["game", "collectibles"],
         description: "Battle, earn, win prizes plus NFT yield farming"
-    }
+    },
+    'Versum': {
+      name: "Versum",
+      address: ["KT1XUw3is6ZbTJ1xKUYPefuVZ2ECd7LEan2Q"],
+      thumbnailUrl: "../../../assets/img/alias/versum.png",
+      discoverUrl: "../../../assets/img/alias/versum.svg",
+      link: "https://versum.xyz", shouldDisplayLink: DisplayLinkOption.All, backgroundColor: 'black', category: ["marketplace"],
+      description: "NFT Marketplace focused on organic content and curation.",
+    },
   },
   ASSETS: {},
   NFT_CONTRACT_OVERRIDES: [],
