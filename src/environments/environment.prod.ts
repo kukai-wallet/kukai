@@ -387,10 +387,10 @@ export const CONSTANTS: Constants = {
     },
     'Versum': {
       name: "Versum",
-      address: ["KT1EY6XHM8ycpozauAjCqTqVrnyZLo2b1fUv", "KT1PVJP2FbSZrXgKWdhXguMV1HmfrX4dH7o5", "KT1LjmAdYQCLBjwv4S2oFkEzyHVkomAf5MrW"],
+      address: ["KT1LjmAdYQCLBjwv4S2oFkEzyHVkomAf5MrW"],
       thumbnailUrl: "../../../assets/img/alias/versum.png",
       discoverUrl: "../../../assets/img/alias/versum.svg",
-      link: "https://versum.xyz", shouldDisplayLink: DisplayLinkOption.None, category: ["marketplace"],
+      link: "https://versum.xyz", shouldDisplayLink: DisplayLinkOption.None, backgroundColor: 'black', category: ["marketplace"],
       description: "NFT Marketplace focused on organic content and curation.",
     },
   },
