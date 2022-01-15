@@ -384,7 +384,15 @@ export const CONSTANTS: Constants = {
       category: ["collectibles"],
       backgroundColor: "black",
       description: "aka P.Poos, 250, super rare, totally worthless",
-    }
+    },
+    'Versum': {
+      name: "Versum",
+      address: ["KT1EY6XHM8ycpozauAjCqTqVrnyZLo2b1fUv", "KT1PVJP2FbSZrXgKWdhXguMV1HmfrX4dH7o5", "KT1LjmAdYQCLBjwv4S2oFkEzyHVkomAf5MrW"],
+      thumbnailUrl: "../../../assets/img/alias/versum.png",
+      discoverUrl: "../../../assets/img/alias/versum.svg",
+      link: "https://versum.xyz", shouldDisplayLink: DisplayLinkOption.None, category: ["marketplace"],
+      description: "NFT Marketplace focused on organic content and curation.",
+    },
   },
   ASSETS: {
     'KT1K9gCRgaLRFKTErYt1wVxA3Frb9FjasjTV': { // kUSD
