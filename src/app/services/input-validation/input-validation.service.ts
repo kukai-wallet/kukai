@@ -117,6 +117,12 @@ export class InputValidationService {
   storage(amount: string) {
     return this.gas(amount);
   }
+  relativeLimit(limit: string) {
+    if (limit?.length > 2 && limit.startsWith('+') && limit.endsWith('%')) {
+      return this.gas(limit.slice(1, -1));
+    }
+    return false;
+  }
   code(code: string): Boolean {
     if (code && code.length === 40 && code.match(/^[0-9a-f]*$/g)) { // 40 hex chars
       return true;

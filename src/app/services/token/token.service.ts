@@ -32,11 +32,6 @@ export interface CachedAsset {
 
 export type ContractsType = Record<string, ContractType>;
 export type ContractType = FA12 | FA2;
-export type ContractsOverrideType = Record<string, ContractOverrideType>;
-export interface ContractOverrideType {
-  storageUsage?: number;
-  gasUsage?: number;
-}
 export interface TokensInterface {
   category: string;
 }

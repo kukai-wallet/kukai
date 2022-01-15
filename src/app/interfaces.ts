@@ -1,5 +1,5 @@
 import { Activity } from './services/wallet/wallet';
-import { Asset, ContractOverrideType, ContractType } from './services/token/token.service';
+import { Asset, ContractType } from './services/token/token.service';
 
 export { Activity };
 
@@ -113,6 +113,11 @@ export enum DisplayLinkOption {
   None,
 }
 
+export interface OpLimits {
+  gas?: number;
+  storage?: number;
+}
+
 export interface Constants {
   NAME: string;
   TEZOS_DOMAIN: {
@@ -129,7 +134,7 @@ export interface Constants {
     hard_storage_limit_per_operation: number,
   },
   ASSETS: Record<string, ContractType>;
-  CONTRACT_OVERRIDES: Record<string, ContractOverrideType>;
+  CONTRACT_OVERRIDES: Record<string, OpLimits>;
   CONTRACT_ALIASES: Record<string, { name?: string, address: string[], thumbnailUrl: Asset, discoverUrl?: string, zoomDiscoverImg?: boolean, link: string, shouldDisplayLink: DisplayLinkOption, category?: string[], backgroundColor?: string, description?: string }>;
   NFT_CONTRACT_OVERRIDES: string[];
 }
