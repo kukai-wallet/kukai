@@ -384,7 +384,15 @@ export const CONSTANTS: Constants = {
       category: ["collectibles"],
       backgroundColor: "black",
       description: "aka P.Poos, 250, super rare, totally worthless",
-    }
+    },
+    'Versum': {
+      name: "Versum",
+      address: ["KT1LjmAdYQCLBjwv4S2oFkEzyHVkomAf5MrW"],
+      thumbnailUrl: "../../../assets/img/alias/versum.png",
+      discoverUrl: "../../../assets/img/alias/versum.svg",
+      link: "https://versum.xyz", shouldDisplayLink: DisplayLinkOption.None, backgroundColor: 'black', category: ["marketplace"],
+      description: "NFT Marketplace focused on organic content and curation.",
+    },
   },
   ASSETS: {
     'KT1K9gCRgaLRFKTErYt1wVxA3Frb9FjasjTV': { // kUSD
@@ -1155,6 +1163,7 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   "KT1FivwAmg7oB6mDSKnkRfvi32wL8TQAsfHz", //Transmission Merch
   "KT1P5zodzq7DtfQkdbHz65WhtQYMwmEXNitP", //Transmission Extras
   "KT1D394hqndjvTcFgrmUYBxwrzUTNtzrZ5ox", //Platypoos
-  "KT1GA6KaLWpURnjvmnxB4wToErzM2EXHqrMo" //Gap
+  "KT1GA6KaLWpURnjvmnxB4wToErzM2EXHqrMo", //Gap
+  "KT1LjmAdYQCLBjwv4S2oFkEzyHVkomAf5MrW" //Versum
 ];
 export const BLACKLISTED_TOKEN_CONTRACTS = []
