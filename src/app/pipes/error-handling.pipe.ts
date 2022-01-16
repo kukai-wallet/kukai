@@ -559,7 +559,7 @@ export class ErrorHandlingPipe implements PipeTransform {
     {
       msg:
         'The block being validated does not include the required minimum number of endorsements for this priority.',
-      id: 'proto.alpha.operation.not_enought_endorsements_for_priority',
+      id: 'proto.alpha.operation.not_enough_endorsements_for_priority',
     },
     {
       msg:
