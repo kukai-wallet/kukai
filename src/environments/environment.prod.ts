@@ -1116,6 +1116,7 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1DuZFNv6JwwA7kS8RXvoQiANm3L4dfn6qP',//0xC0FACE
   'KT1Wm4Cegd7wW6MYxEhg6AH5iFX48y65nWvv',//ChopSumo
   'KT1QRtkWmCKSnLDnEzJVoj2ya2Ef2mTjszwH',//FLUX
+  'KT1XKUyUtRqobh5CqZzXFJW6UT5t55Sn3iT6',//New Flux City
   'KT1CwSgYmZewFazZsW348RAQYn1nthiGP3Qa',//Cyber Gecko Gang
   'KT1PNcZQkJXMQ2Mg92HG1kyrcu3auFX5pfd8',//ZIGGURATS
   'KT1AYP8jy46BJ9U17wbrvTSKsdgFiwLuvoVo',//Your Crypto Mom
