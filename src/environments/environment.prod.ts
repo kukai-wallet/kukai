@@ -50,13 +50,13 @@ export const CONSTANTS: Constants = {
       description: "A green NFT platform for the music community"
     },
     'OneOfGloGang': {
-        name: "OneOf - GloGang",
-        address: ["KT1Fv8TsEeafDhZXsHCyxFas96YDhXpdmUmz"],
-        thumbnailUrl: "../../../assets/img/alias/glogang.jpg",
-        link: "https://www.oneof.com/GloGang", shouldDisplayLink: DisplayLinkOption.None,
-        category: ["music", "collectibles"],
-        backgroundColor: '#000',
-        description: "Genesis collection by Chief Keef and ColorfulMula"
+      name: "OneOf - GloGang",
+      address: ["KT1Fv8TsEeafDhZXsHCyxFas96YDhXpdmUmz"],
+      thumbnailUrl: "../../../assets/img/alias/glogang.jpg",
+      link: "https://www.oneof.com/GloGang", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["music", "collectibles"],
+      backgroundColor: '#000',
+      description: "Genesis collection by Chief Keef and ColorfulMula"
     },
     'ZIGGURATS': {
       name: "ZIGGURATS",
@@ -300,27 +300,27 @@ export const CONSTANTS: Constants = {
       description: "Your Crypto mom is a tribute to every mom in the world. Every art is unique."
     },
     'CUBEHEADS': {
-        name: "CUBE HEAD",
-        address: ["KT1XHyDd8ScUteYRWNocHgwZtj2BwBcoCZZo", "KT1SioBPZ6HB4J1cL3jZYBv3WZPydxfswz4k", "KT1HVjodj7Wh1Z92vVgowZwu3PU2A6ZqbmQv"],
-        thumbnailUrl: "../../../assets/img/alias/cubeheads.png",
-        link: "", shouldDisplayLink: DisplayLinkOption.None,
-        category: ["collectibles"],
-        description: "Collections made with a unique cube character set"
+      name: "CUBE HEAD",
+      address: ["KT1XHyDd8ScUteYRWNocHgwZtj2BwBcoCZZo", "KT1SioBPZ6HB4J1cL3jZYBv3WZPydxfswz4k", "KT1HVjodj7Wh1Z92vVgowZwu3PU2A6ZqbmQv"],
+      thumbnailUrl: "../../../assets/img/alias/cubeheads.png",
+      link: "", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"],
+      description: "Collections made with a unique cube character set"
     },
     'fxhash': {
-        name: "fx(hash)",
-        address: ["KT1KEa8z6vWXDJrVqtMrAeDVzsvxat3kHaCE"],
-        thumbnailUrl: "../../../assets/img/alias/fxhash.jpg",
-        link: "https://www.fxhash.xyz", shouldDisplayLink: DisplayLinkOption.None, category: ["marketplace"], backgroundColor: 'black',
-        description: "Open generative NFT platform on Tezos",
+      name: "fx(hash)",
+      address: ["KT1KEa8z6vWXDJrVqtMrAeDVzsvxat3kHaCE"],
+      thumbnailUrl: "../../../assets/img/alias/fxhash.jpg",
+      link: "https://www.fxhash.xyz", shouldDisplayLink: DisplayLinkOption.None, category: ["marketplace"], backgroundColor: 'black',
+      description: "Open generative NFT platform on Tezos",
     },
     'FormallyVerified': {
-        name: "Formally Verified",
-        address: ["KT1Lk3fKhyFMVSdDGcqKKetqsVw3t5sHBXb8"],
-        thumbnailUrl: "../../../assets/img/alias/formally-verified.png",
-        link: "https://formallyverified.xyz", shouldDisplayLink: DisplayLinkOption.None,
-        category: ["badges"],
-        description: "Formally Verified is a contract for digital badges proving that someone has attended an event.",
+      name: "Formally Verified",
+      address: ["KT1Lk3fKhyFMVSdDGcqKKetqsVw3t5sHBXb8"],
+      thumbnailUrl: "../../../assets/img/alias/formally-verified.png",
+      link: "https://formallyverified.xyz", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["badges"],
+      description: "Formally Verified is a contract for digital badges proving that someone has attended an event.",
     },
     'BoomerPunks': {
       name: "BoomerPunks",
@@ -376,7 +376,7 @@ export const CONSTANTS: Constants = {
     },
     'TheTransmission': {
       name: "The Transmission",
-      address: ["KT1LikBSDucbAfYLN9Uxosh4V2SNRrbQwfrJ","KT1A93CFh7JhYcJFhJqwHskVPFzQJgSRmLW7","KT1BwNPvwjYm7bLEzt93MWDTb6pE8xsac9c1","KT1FivwAmg7oB6mDSKnkRfvi32wL8TQAsfHz","KT1P5zodzq7DtfQkdbHz65WhtQYMwmEXNitP"],
+      address: ["KT1LikBSDucbAfYLN9Uxosh4V2SNRrbQwfrJ", "KT1A93CFh7JhYcJFhJqwHskVPFzQJgSRmLW7", "KT1BwNPvwjYm7bLEzt93MWDTb6pE8xsac9c1", "KT1FivwAmg7oB6mDSKnkRfvi32wL8TQAsfHz", "KT1P5zodzq7DtfQkdbHz65WhtQYMwmEXNitP"],
       thumbnailUrl: "../../../assets/img/alias/transmission.png",
       link: "https://thetransmission.xyz", shouldDisplayLink: DisplayLinkOption.None,
       category: ["game", "collectibles"],
@@ -400,7 +400,7 @@ export const CONSTANTS: Constants = {
       link: "https://versum.xyz", shouldDisplayLink: DisplayLinkOption.None, backgroundColor: 'black', category: ["marketplace"],
       description: "NFT Marketplace focused on organic content and curation.",
     },
-     'FCOREBOLLO': {
+    'FCOREBOLLO': {
       name: "FCO. REBOLLO",
       address: ["KT1Qc8xu8i72QX5S72ifPB3KJGsJqXB79eTP"],
       thumbnailUrl: "../../../assets/img/alias/FCOREBOLLO.png",
@@ -409,6 +409,15 @@ export const CONSTANTS: Constants = {
       category: ["collectibles"],
       description: "Original artworks by Francisco Rebollo",
     },
+    'Monarx': {
+      name: "Monarx",
+      address: ["KT1V3BYwUN7FiBqADLMvMpWbz33tq1vudBh5"],
+      thumbnailUrl: "../../../assets/img/alias/monarx.jpg",
+      link: "https://monarx.art/", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"],
+      backgroundColor: "black",
+      description: "A generative collection on Tezos of 666 NFTs",
+    }
   },
   ASSETS: {
     'KT1K9gCRgaLRFKTErYt1wVxA3Frb9FjasjTV': { // kUSD
@@ -1183,6 +1192,7 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   "KT1D394hqndjvTcFgrmUYBxwrzUTNtzrZ5ox", //Platypoos
   "KT1GA6KaLWpURnjvmnxB4wToErzM2EXHqrMo", //Gap
   "KT1LjmAdYQCLBjwv4S2oFkEzyHVkomAf5MrW", //Versum
-  "KT1Qc8xu8i72QX5S72ifPB3KJGsJqXB79eTP" // FCO REBOLLO
+  "KT1Qc8xu8i72QX5S72ifPB3KJGsJqXB79eTP", // FCO REBOLLO
+  "KT1V3BYwUN7FiBqADLMvMpWbz33tq1vudBh5" //Monarx
 ];
 export const BLACKLISTED_TOKEN_CONTRACTS = []
