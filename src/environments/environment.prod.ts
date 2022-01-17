@@ -400,6 +400,24 @@ export const CONSTANTS: Constants = {
       link: "https://versum.xyz", shouldDisplayLink: DisplayLinkOption.None, backgroundColor: 'black', category: ["marketplace"],
       description: "NFT Marketplace focused on organic content and curation.",
     },
+    'DistributedConsciousness': {
+      name: "Distributed Consciousness",
+      address: ["KT1S9VbCtVZUgAG4Q3VArvY5stu96q4CiPHZ"],
+      thumbnailUrl: "../../../assets/img/alias/distribconsc.jpg",
+      discoverUrl:  "../../../assets/img/alias/distribconsc_discover.jpg",
+      link: "https://www.distributedconsciousness.xyz/", shouldDisplayLink: DisplayLinkOption.All,
+      category: ["art", "collectibles"],
+      description: "AI generated Tentacular Critters (hiding a surprise secret!). By Memo Akten (memo.tv)",
+    },
+    'DistributedConsciousnessVerses': {
+      name: "Distributed Consciousness Verses",
+      address: ["KT1JYioHwutnTpYPTk5yRe9YSfCaFGWhd9MR"],
+      thumbnailUrl: "../../../assets/img/alias/distribconsc_verses.jpg",
+      discoverUrl:  "../../../assets/img/alias/distribconsc_verses_discover.jpg",
+      link: "https://www.distributedconsciousness.xyz/", shouldDisplayLink: DisplayLinkOption.All,
+      category: ["art", "collectibles"],
+      description: "AI generated 'Verses' which were cryptographically hidden in the 'Distributed Consciousness' images. By Memo Akten (memo.tv)",
+    },
   },
   ASSETS: {
     'KT1K9gCRgaLRFKTErYt1wVxA3Frb9FjasjTV': { // kUSD
@@ -1172,6 +1190,8 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   "KT1P5zodzq7DtfQkdbHz65WhtQYMwmEXNitP", //Transmission Extras
   "KT1D394hqndjvTcFgrmUYBxwrzUTNtzrZ5ox", //Platypoos
   "KT1GA6KaLWpURnjvmnxB4wToErzM2EXHqrMo", //Gap
-  "KT1LjmAdYQCLBjwv4S2oFkEzyHVkomAf5MrW" //Versum
+  "KT1LjmAdYQCLBjwv4S2oFkEzyHVkomAf5MrW", //Versum
+  "KT1S9VbCtVZUgAG4Q3VArvY5stu96q4CiPHZ", // Distributed Consciousness
+  "KT1JYioHwutnTpYPTk5yRe9YSfCaFGWhd9MR", // Distributed Consciousness Verses
 ];
 export const BLACKLISTED_TOKEN_CONTRACTS = []
