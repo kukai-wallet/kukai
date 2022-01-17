@@ -400,6 +400,15 @@ export const CONSTANTS: Constants = {
       link: "https://versum.xyz", shouldDisplayLink: DisplayLinkOption.None, backgroundColor: 'black', category: ["marketplace"],
       description: "NFT Marketplace focused on organic content and curation.",
     },
+     'FCOREBOLLO': {
+      name: "FCO. REBOLLO",
+      address: ["KT1Qc8xu8i72QX5S72ifPB3KJGsJqXB79eTP"],
+      thumbnailUrl: "../../../assets/img/alias/FCOREBOLLO.png",
+      link: "https://fcorebollo.com", shouldDisplayLink: DisplayLinkOption.None,
+      backgroundColor: '#312615',
+      category: ["collectibles"],
+      description: "Original artworks by Francisco Rebollo",
+    },
   },
   ASSETS: {
     'KT1K9gCRgaLRFKTErYt1wVxA3Frb9FjasjTV': { // kUSD
@@ -1172,6 +1181,7 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   "KT1P5zodzq7DtfQkdbHz65WhtQYMwmEXNitP", //Transmission Extras
   "KT1D394hqndjvTcFgrmUYBxwrzUTNtzrZ5ox", //Platypoos
   "KT1GA6KaLWpURnjvmnxB4wToErzM2EXHqrMo", //Gap
-  "KT1LjmAdYQCLBjwv4S2oFkEzyHVkomAf5MrW" //Versum
+  "KT1LjmAdYQCLBjwv4S2oFkEzyHVkomAf5MrW", //Versum
+  "KT1Qc8xu8i72QX5S72ifPB3KJGsJqXB79eTP" // FCO REBOLLO
 ];
 export const BLACKLISTED_TOKEN_CONTRACTS = []
