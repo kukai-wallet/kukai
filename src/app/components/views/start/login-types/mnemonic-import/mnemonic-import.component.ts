@@ -274,6 +274,7 @@ export class MnemonicImportComponent implements OnInit, OnDestroy {
         }
       }).catch((e) => {
         this.messageService.addError(e);
+        this.walletService.clearWallet();
         this.messageService.stopSpinner();
       });
   }
