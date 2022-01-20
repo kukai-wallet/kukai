@@ -58,6 +58,23 @@ export const CONSTANTS: Constants = {
       backgroundColor: '#000',
       description: "Genesis collection by Chief Keef and ColorfulMula"
     },
+    'mclarenracing': {
+      name: 'McLaren Racing Collective',
+      address: ['KT1PEGqt5rMmHpyaMXc8RFTFkkAUDrzSFRWk'],
+      thumbnailUrl: '../../../assets/img/alias/mclaren-thumbnail.png',
+      discoverUrl: '../../../assets/img/alias/mclaren-discover.png',
+      link: 'https://mclarenracingcollective.com', shouldDisplayLink: DisplayLinkOption.All, category: ["collectibles"],
+      description: 'Collect & Build a digital MCL35M F1 CAR',
+      backgroundColor: 'black'
+    },
+    'Verses': {
+      name: 'Verses',
+      address: ['KT1Qi93pZoig6grMNBd7GGA7fveE2cxQK9Ei'],
+      thumbnailUrl: '../../../assets/img/alias/verses.png',
+      discoverUrl: '../../../assets/img/alias/verses-discover.png',
+      link: 'https://minterpop.com/?fa2=Verses', shouldDisplayLink: DisplayLinkOption.All, category: ["games", "collectibles"],
+      description: 'Collect the Art. Play the Game.'
+    },
     'ZIGGURATS': {
       name: "ZIGGURATS",
       address: ["KT1PNcZQkJXMQ2Mg92HG1kyrcu3auFX5pfd8"],
@@ -67,15 +84,6 @@ export const CONSTANTS: Constants = {
       category: ["collectibles"],
       backgroundColor: '#000',
       description: "Generative mixtape + art by Mike Shinoda"
-    },
-    'mclarenracing': {
-      name: 'McLaren Racing Collective',
-      address: ['KT1PEGqt5rMmHpyaMXc8RFTFkkAUDrzSFRWk'],
-      thumbnailUrl: '../../../assets/img/alias/mclaren-thumbnail.png',
-      discoverUrl: '../../../assets/img/alias/mclaren-discover.png',
-      link: 'https://mclarenracingcollective.com', shouldDisplayLink: DisplayLinkOption.All, category: ["collectibles"],
-      description: 'Collect & Build a digital MCL35M F1 CAR',
-      backgroundColor: 'black'
     },
     'randomlycommonskeles': {
       name: "randomly common skeles",
@@ -1193,6 +1201,7 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   "KT1GA6KaLWpURnjvmnxB4wToErzM2EXHqrMo", //Gap
   "KT1LjmAdYQCLBjwv4S2oFkEzyHVkomAf5MrW", //Versum
   "KT1Qc8xu8i72QX5S72ifPB3KJGsJqXB79eTP", // FCO REBOLLO
-  "KT1V3BYwUN7FiBqADLMvMpWbz33tq1vudBh5" //Monarx
+  "KT1V3BYwUN7FiBqADLMvMpWbz33tq1vudBh5", //Monarx
+  "KT1Qi93pZoig6grMNBd7GGA7fveE2cxQK9Ei" //Verses
 ];
 export const BLACKLISTED_TOKEN_CONTRACTS = []
