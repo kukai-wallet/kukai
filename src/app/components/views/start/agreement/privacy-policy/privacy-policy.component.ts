@@ -11,5 +11,8 @@ export class PrivacyPolicyComponent implements OnInit {
 
   ngOnInit(): void {
   }
+  getHostName(): string {
+    return location.hostname;
+  }
 
 }
