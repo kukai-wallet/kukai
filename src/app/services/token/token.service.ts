@@ -52,6 +52,7 @@ export interface TokenData {
   shouldPreferSymbol?: boolean;
   series?: string;
   status: Status;
+  tokenIdOffset?: Number;
 }
 export interface FA12 extends TokensInterface {
   kind: 'FA1.2';
@@ -107,7 +108,8 @@ export class TokenService {
                 const last = Number(span[1]);
                 if (id >= first && id <= last) {
                   token = JSON.parse(JSON.stringify(contract.tokens[idx]));
-                  token.name = `${JSON.parse(JSON.stringify(contract.tokens[idx].name))} #${(id - first + 1)}`;
+                  const tokenIdOffset = contract.tokens[idx].tokenIdOffset ?? 0;
+                  token.name = `${JSON.parse(JSON.stringify(contract.tokens[idx].name))} #${(id - first + 1 + tokenIdOffset)}`;
                   break;
                 }
               }

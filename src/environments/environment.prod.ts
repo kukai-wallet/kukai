@@ -425,7 +425,15 @@ export const CONSTANTS: Constants = {
       category: ["collectibles"],
       backgroundColor: "black",
       description: "A generative collection on Tezos of 666 NFTs",
-    }
+    },
+    'EndlessWays': {
+      name: "Endless Ways",
+      address: ["KT1EXwn1B3rHnn8mtNmsRN3thkfS6CzLxmaP"],
+      thumbnailUrl: "../../../assets/img/alias/endlesswaysLogo.png",
+      discoverUrl: "../../../assets/img/alias/endlesswaysBanner.png",
+      link: "https://endlessways.net", shouldDisplayLink: DisplayLinkOption.All, backgroundColor: 'black', category: ["collectibles"],
+      description: "Generative Art. Proper Curation.",
+    },
   },
   ASSETS: {
     'KT1K9gCRgaLRFKTErYt1wVxA3Frb9FjasjTV': { // kUSD
@@ -1118,7 +1126,24 @@ export const CONSTANTS: Constants = {
           status: 1
         }
       }
-    }
+    },
+    'KT1EXwn1B3rHnn8mtNmsRN3thkfS6CzLxmaP': {
+      kind: 'FA2',
+      category: 'collectibles',
+      tokens: {
+        '10000000000-999999999999999': {
+          name: 'Endless Ways',
+          symbol: 'EWY',
+          decimals: 0,
+          description: 'A unique mint of an artwork on Endless Ways.',
+          displayAsset: '../../../assets/img/tokens/endlessways.svg',
+          thumbnailAsset: '../../../assets/img/tokens/endlessways.svg',
+          shouldPreferSymbol: true,
+          status: 1,
+          tokenIdOffset: 9999999999
+        }
+      }
+    }, 
   },
   CONTRACT_OVERRIDES: {
     // hice et nunc
@@ -1202,6 +1227,7 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   "KT1LjmAdYQCLBjwv4S2oFkEzyHVkomAf5MrW", //Versum
   "KT1Qc8xu8i72QX5S72ifPB3KJGsJqXB79eTP", // FCO REBOLLO
   "KT1V3BYwUN7FiBqADLMvMpWbz33tq1vudBh5", //Monarx
-  "KT1Qi93pZoig6grMNBd7GGA7fveE2cxQK9Ei" //Verses
+  "KT1Qi93pZoig6grMNBd7GGA7fveE2cxQK9Ei", //Verses
+  "KT1EXwn1B3rHnn8mtNmsRN3thkfS6CzLxmaP", //Endless Ways
 ];
 export const BLACKLISTED_TOKEN_CONTRACTS = []

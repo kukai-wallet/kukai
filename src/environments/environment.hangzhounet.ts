@@ -40,8 +40,68 @@ export const CONSTANTS: Constants = {
       link: "https://versum.xyz", shouldDisplayLink: DisplayLinkOption.All, backgroundColor: 'black', category: ["marketplace"],
       description: "NFT Marketplace focused on organic content and curation.",
     },
+    'EndlessWays': {
+      name: "Endless Ways",
+      address: ["KT1U17aZt1fuFeHpkaFLTjoqbRngHEUa4JBw", "KT1RPY1YEH9L1fp2Zy3DdByb5KukrP34XWcR", "KT1EibnzPnFiCKtaN8EyUrhxyGk1N8XT1Tmu"],
+      thumbnailUrl: "../../../assets/img/alias/endlesswaysLogo.png",
+      discoverUrl: "../../../assets/img/alias/endlesswaysBanner.png",
+      link: "https://greenroom.endlessways.net", shouldDisplayLink: DisplayLinkOption.All, backgroundColor: 'black', category: ["collectibles"],
+      description: "Generative Art. Proper Curation.",
+    },
   },
-  ASSETS: {},
+  ASSETS: {
+    'KT1U17aZt1fuFeHpkaFLTjoqbRngHEUa4JBw': {
+      kind: 'FA2',
+      category: 'collectibles',
+      tokens: {
+        '90000000000-119999999999': {
+          name: 'Endless Ways',
+          symbol: 'EWY',
+          decimals: 0,
+          description: 'A unique mint of an artwork on Endless Ways.',
+          displayAsset: '../../../assets/img/tokens/endlessways.svg',
+          thumbnailAsset: '../../../assets/img/tokens/endlessways.svg',
+          shouldPreferSymbol: true,
+          status: 1,
+          tokenIdOffset: 89999999999
+        }
+      }
+    },  
+    'KT1RPY1YEH9L1fp2Zy3DdByb5KukrP34XWcR': {
+      kind: 'FA2',
+      category: 'collectibles',
+      tokens: {
+        '120000000000-149999999999': {
+          name: 'Endless Ways',
+          symbol: 'EWY',
+          decimals: 0,
+          description: 'A unique mint of an artwork on Endless Ways.',
+          displayAsset: '../../../assets/img/tokens/endlessways.svg',
+          thumbnailAsset: '../../../assets/img/tokens/endlessways.svg',
+          shouldPreferSymbol: true,
+          status: 1,
+          tokenIdOffset: 119999999999
+        }
+      }
+    }, 
+    'KT1EibnzPnFiCKtaN8EyUrhxyGk1N8XT1Tmu': {
+      kind: 'FA2',
+      category: 'collectibles',
+      tokens: {
+        '150000000000-999990000000000': {
+          name: 'Endless Ways',
+          symbol: 'EWY',
+          decimals: 0,
+          description: 'A unique mint of an artwork on Endless Ways.',
+          displayAsset: '../../../assets/img/tokens/endlessways.svg',
+          thumbnailAsset: '../../../assets/img/tokens/endlessways.svg',
+          shouldPreferSymbol: true,
+          status: 1,
+          tokenIdOffset: 149999999999
+        }
+      }
+    }, 
+  },
   NFT_CONTRACT_OVERRIDES: [],
   CONTRACT_OVERRIDES: {}
 };
