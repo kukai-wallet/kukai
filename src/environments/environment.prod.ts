@@ -1142,7 +1142,6 @@ export const CONSTANTS: Constants = {
   ]
 };
 export const TRUSTED_TOKEN_CONTRACTS = [
-  "KT1DtsVHqUvKBkkypLB3x2bYd4jWdbbaHdMy"//Basqunks
   'KT1Em3sjKdHo3Fo9Az4EusZXQbkgsdZHkQkF',//alchememist giveaway
   'KT1RJ6PbjHpwc3M5rw5s2Nbmefwbuwbdxton',//hicetnunc
   'KT1M2JnD1wsg7w2B4UXJXtKQPuDUpU2L7cJH',//hicetnunc-legacy
@@ -1214,5 +1213,6 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   "KT1Qc8xu8i72QX5S72ifPB3KJGsJqXB79eTP", // FCO REBOLLO
   "KT1V3BYwUN7FiBqADLMvMpWbz33tq1vudBh5", //Monarx
   "KT1Qi93pZoig6grMNBd7GGA7fveE2cxQK9Ei" //Verses
+  'KT1DtsVHqUvKBkkypLB3x2bYd4jWdbbaHdMy'//Basqunks
 ];
 export const BLACKLISTED_TOKEN_CONTRACTS = []
