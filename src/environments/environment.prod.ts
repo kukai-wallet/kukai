@@ -20,6 +20,16 @@ export const CONSTANTS: Constants = {
     hard_storage_limit_per_operation: 60000
   },
   CONTRACT_ALIASES: {
+    'Basqunks':{
+      name:"Basqunks",
+      address: ["KT1DtsVHqUvKBkkypLB3x2bYd4jWdbbaHdMy"],
+      thumbnailUrl: "../../../assets/img/alias/basqunks0.png",
+      link: "https://objkt.com/collection/KT1DtsVHqUvKBkkypLB3x2bYd4jWdbbaHdMy",
+      shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"],
+      backgroundColor: 'red',
+      description: "A CryptoPunks inspired collection, combining the style of Jean-Michel Basquiat with the Crypto Punks."
+    },
     'gap': {
       name: "Gap Threads",
       address: ['KT1GA6KaLWpURnjvmnxB4wToErzM2EXHqrMo'],
@@ -1132,6 +1142,7 @@ export const CONSTANTS: Constants = {
   ]
 };
 export const TRUSTED_TOKEN_CONTRACTS = [
+  "KT1DtsVHqUvKBkkypLB3x2bYd4jWdbbaHdMy"//Basqunks
   'KT1Em3sjKdHo3Fo9Az4EusZXQbkgsdZHkQkF',//alchememist giveaway
   'KT1RJ6PbjHpwc3M5rw5s2Nbmefwbuwbdxton',//hicetnunc
   'KT1M2JnD1wsg7w2B4UXJXtKQPuDUpU2L7cJH',//hicetnunc-legacy
