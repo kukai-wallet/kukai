@@ -362,7 +362,7 @@ export const CONSTANTS: Constants = {
     },
     'SkratzTribute': {
       name: "Skratz Tributes",
-      address: ["KT1LaGxGqGCE7wRRP6NpZ9CSwq78y5PS6udh", "KT1R5SsFitVz8Zxc27NNPxeBogBFK2upfndF", "KT1Pr6rNNzyRirHCiTn7CWpP7off6sH8M3HU", "KT1UQhWV1Q2ArnDkWPoYgk4Kbm4dgE2BS7G8", "KT1AWUzFdNwZn7YprZitR6Q6eUuVmfUG1HMP", "KT19hJSZZYnD41xuEjEgodhAnnuLh142g8QJ"],
+      address: ["KT1LaGxGqGCE7wRRP6NpZ9CSwq78y5PS6udh", "KT1R5SsFitVz8Zxc27NNPxeBogBFK2upfndF", "KT1Pr6rNNzyRirHCiTn7CWpP7off6sH8M3HU", "KT1UQhWV1Q2ArnDkWPoYgk4Kbm4dgE2BS7G8", "KT1AWUzFdNwZn7YprZitR6Q6eUuVmfUG1HMP", "KT19hJSZZYnD41xuEjEgodhAnnuLh142g8QJ", "KT1F9uU1xXJEzKmPvxMAdo1cMwnhnBHEB6pN"],
       thumbnailUrl: "../../../assets/img/alias/skratz.jpeg",
       link: "https://houseofskratz.com", shouldDisplayLink: DisplayLinkOption.None,
       category: ["collectibles"],
@@ -1198,6 +1198,7 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1UQhWV1Q2ArnDkWPoYgk4Kbm4dgE2BS7G8',//Skratz x Jawnz
   'KT1AWUzFdNwZn7YprZitR6Q6eUuVmfUG1HMP',//Skratz Geckos
   'KT19hJSZZYnD41xuEjEgodhAnnuLh142g8QJ',//Skratz Akira
+  'KT1F9uU1xXJEzKmPvxMAdo1cMwnhnBHEB6pN',//Skratz x Tezape
   'KT1UHiGBUpbmUSV68tiGi8owFP7VWr2zBMCk',// House Of Skratz
   'KT1MWKxDT6QJWgPH4Wq1TuHwW2tcvJRbuKMZ',// House Of Skratz Whitelist
   'KT1HMvdTCsK9Su7RkFKgFwQuxaqgmNdbtdLS',// House Of Skratz DAO
