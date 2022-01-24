@@ -20,16 +20,6 @@ export const CONSTANTS: Constants = {
     hard_storage_limit_per_operation: 60000
   },
   CONTRACT_ALIASES: {
-    'Basqunks':{
-      name:"Basqunks",
-      address: ["KT1DtsVHqUvKBkkypLB3x2bYd4jWdbbaHdMy"],
-      thumbnailUrl: "../../../assets/img/alias/basqunks0.png",
-      link: "https://objkt.com/collection/KT1DtsVHqUvKBkkypLB3x2bYd4jWdbbaHdMy",
-      shouldDisplayLink: DisplayLinkOption.None,
-      category: ["collectibles"],
-      backgroundColor: 'red',
-      description: "A CryptoPunks inspired collection, combining the style of Jean-Michel Basquiat with the Crypto Punks."
-    },
     'gap': {
       name: "Gap Threads",
       address: ['KT1GA6KaLWpURnjvmnxB4wToErzM2EXHqrMo'],
@@ -435,7 +425,17 @@ export const CONSTANTS: Constants = {
       category: ["collectibles"],
       backgroundColor: "black",
       description: "A generative collection on Tezos of 666 NFTs",
-    }
+    },
+    'Basqunks':{
+      name:"Basqunks",
+      address: ["KT1DtsVHqUvKBkkypLB3x2bYd4jWdbbaHdMy"],
+      thumbnailUrl: "../../../assets/img/alias/basqunks.png",
+      link: "https://objkt.com/collection/KT1DtsVHqUvKBkkypLB3x2bYd4jWdbbaHdMy",
+      shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"],
+      backgroundColor: 'red',
+      description: "A CryptoPunks inspired collection, combining the style of Jean-Michel Basquiat with the Crypto Punks."
+    },
   },
   ASSETS: {
     'KT1K9gCRgaLRFKTErYt1wVxA3Frb9FjasjTV': { // kUSD
