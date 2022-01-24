@@ -79,7 +79,7 @@
               {{ token[key] + ' ' + '(' + token['id'] + ')' }}
             </div>
           </div>
-          <div *ngIf="key !== 'contractAddress' && key !== 'description' && key !== 'id' && key !== 'tokenIdOffset' && !!token[key]"
+          <div *ngIf="key !== 'contractAddress' && key !== 'description' && key !== 'id' && !!token[key]"
             class="flex-column key-value">
             <div class="key">
               {{key}}

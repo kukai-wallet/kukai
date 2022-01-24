@@ -1131,7 +1131,7 @@ export const CONSTANTS: Constants = {
       kind: 'FA2',
       category: 'collectibles',
       tokens: {
-        '10000000000-999999999999999': {
+        '1-999999999999999': {
           name: 'Endless Ways',
           symbol: 'EWY',
           decimals: 0,
@@ -1139,8 +1139,7 @@ export const CONSTANTS: Constants = {
           displayAsset: '../../../assets/img/tokens/endlessways.svg',
           thumbnailAsset: '../../../assets/img/tokens/endlessways.svg',
           shouldPreferSymbol: true,
-          status: 1,
-          tokenIdOffset: 9999999999
+          status: 1
         }
       }
     }, 

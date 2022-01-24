@@ -54,16 +54,15 @@ export const CONSTANTS: Constants = {
       kind: 'FA2',
       category: 'collectibles',
       tokens: {
-        '90000000000-119999999999': {
+        '1-119999999999': {
           name: 'Endless Ways',
           symbol: 'EWY',
           decimals: 0,
           description: 'A unique mint of an artwork on Endless Ways.',
           displayAsset: '../../../assets/img/tokens/endlessways.svg',
           thumbnailAsset: '../../../assets/img/tokens/endlessways.svg',
-          shouldPreferSymbol: true,
-          status: 1,
-          tokenIdOffset: 89999999999
+          shouldPreferSymbol: false,
+          status: 1
         }
       }
     },  
@@ -71,16 +70,15 @@ export const CONSTANTS: Constants = {
       kind: 'FA2',
       category: 'collectibles',
       tokens: {
-        '120000000000-149999999999': {
+        '1-149999999999': {
           name: 'Endless Ways',
           symbol: 'EWY',
           decimals: 0,
           description: 'A unique mint of an artwork on Endless Ways.',
           displayAsset: '../../../assets/img/tokens/endlessways.svg',
           thumbnailAsset: '../../../assets/img/tokens/endlessways.svg',
-          shouldPreferSymbol: true,
-          status: 1,
-          tokenIdOffset: 119999999999
+          shouldPreferSymbol: false,
+          status: 1
         }
       }
     }, 
@@ -88,16 +86,15 @@ export const CONSTANTS: Constants = {
       kind: 'FA2',
       category: 'collectibles',
       tokens: {
-        '150000000000-999990000000000': {
+        '1-999990000000000': {
           name: 'Endless Ways',
           symbol: 'EWY',
           decimals: 0,
           description: 'A unique mint of an artwork on Endless Ways.',
           displayAsset: '../../../assets/img/tokens/endlessways.svg',
           thumbnailAsset: '../../../assets/img/tokens/endlessways.svg',
-          shouldPreferSymbol: true,
-          status: 1,
-          tokenIdOffset: 149999999999
+          shouldPreferSymbol: false,
+          status: 1
         }
       }
     }, 
