@@ -417,6 +417,14 @@ export const CONSTANTS: Constants = {
       category: ["collectibles"],
       description: "Original artworks by Francisco Rebollo",
     },
+    'DistributedConsciousness': {
+      name: "Distributed Consciousness",
+      address: ["KT1S9VbCtVZUgAG4Q3VArvY5stu96q4CiPHZ", "KT1JYioHwutnTpYPTk5yRe9YSfCaFGWhd9MR"],
+      thumbnailUrl: "../../../assets/img/alias/distribconsc.jpg",
+      link: "https://www.distributedconsciousness.xyz/", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["art", "collectibles"],
+      description: "AI generated Tentacular Critters and Verses. By Memo Akten (memo.tv)",
+    },
     'Monarx': {
       name: "Monarx",
       address: ["KT1V3BYwUN7FiBqADLMvMpWbz33tq1vudBh5"],
@@ -1202,6 +1210,8 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   "KT1LjmAdYQCLBjwv4S2oFkEzyHVkomAf5MrW", //Versum
   "KT1Qc8xu8i72QX5S72ifPB3KJGsJqXB79eTP", // FCO REBOLLO
   "KT1V3BYwUN7FiBqADLMvMpWbz33tq1vudBh5", //Monarx
+  "KT1S9VbCtVZUgAG4Q3VArvY5stu96q4CiPHZ", // Distributed Consciousness
+  "KT1JYioHwutnTpYPTk5yRe9YSfCaFGWhd9MR", // Distributed Consciousness Verses
   "KT1Qi93pZoig6grMNBd7GGA7fveE2cxQK9Ei" //Verses
 ];
 export const BLACKLISTED_TOKEN_CONTRACTS = []
