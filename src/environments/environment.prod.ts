@@ -362,11 +362,19 @@ export const CONSTANTS: Constants = {
     },
     'SkratzTribute': {
       name: "Skratz Tributes",
-      address: ["KT1LaGxGqGCE7wRRP6NpZ9CSwq78y5PS6udh", "KT1R5SsFitVz8Zxc27NNPxeBogBFK2upfndF", "KT1Pr6rNNzyRirHCiTn7CWpP7off6sH8M3HU", "KT1UQhWV1Q2ArnDkWPoYgk4Kbm4dgE2BS7G8", "KT1AWUzFdNwZn7YprZitR6Q6eUuVmfUG1HMP", "KT19hJSZZYnD41xuEjEgodhAnnuLh142g8QJ"],
+      address: ["KT1LaGxGqGCE7wRRP6NpZ9CSwq78y5PS6udh", "KT1R5SsFitVz8Zxc27NNPxeBogBFK2upfndF", "KT1Pr6rNNzyRirHCiTn7CWpP7off6sH8M3HU", "KT1UQhWV1Q2ArnDkWPoYgk4Kbm4dgE2BS7G8", "KT1AWUzFdNwZn7YprZitR6Q6eUuVmfUG1HMP", "KT19hJSZZYnD41xuEjEgodhAnnuLh142g8QJ", "KT1F9uU1xXJEzKmPvxMAdo1cMwnhnBHEB6pN"],
       thumbnailUrl: "../../../assets/img/alias/skratz.jpeg",
       link: "https://houseofskratz.com", shouldDisplayLink: DisplayLinkOption.None,
       category: ["collectibles"],
       description: "Skratz Tribute from https://houseofskratz.com.",
+    },
+    'HouseOfSkratz': {
+      name: "House Of Skratz",
+      address: ["KT1UHiGBUpbmUSV68tiGi8owFP7VWr2zBMCk", "KT1MWKxDT6QJWgPH4Wq1TuHwW2tcvJRbuKMZ", "KT1HMvdTCsK9Su7RkFKgFwQuxaqgmNdbtdLS"],
+      thumbnailUrl: "../../../assets/img/alias/skratz.jpeg",
+      link: "https://houseofskratz.com", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"],
+      description: "2222 Skratz from https://houseofskratz.com.",
     },
     'TezApeGang': {
       name: "TezApeGang",
@@ -417,6 +425,14 @@ export const CONSTANTS: Constants = {
       category: ["collectibles"],
       description: "Original artworks by Francisco Rebollo",
     },
+    'DistributedConsciousness': {
+      name: "Distributed Consciousness",
+      address: ["KT1S9VbCtVZUgAG4Q3VArvY5stu96q4CiPHZ", "KT1JYioHwutnTpYPTk5yRe9YSfCaFGWhd9MR"],
+      thumbnailUrl: "../../../assets/img/alias/distribconsc.jpg",
+      link: "https://www.distributedconsciousness.xyz/", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["art", "collectibles"],
+      description: "AI generated Tentacular Critters and Verses. By Memo Akten (memo.tv)",
+    },
     'Monarx': {
       name: "Monarx",
       address: ["KT1V3BYwUN7FiBqADLMvMpWbz33tq1vudBh5"],
@@ -425,7 +441,17 @@ export const CONSTANTS: Constants = {
       category: ["collectibles"],
       backgroundColor: "black",
       description: "A generative collection on Tezos of 666 NFTs",
-    }
+    },
+    'Basqunks':{
+      name: "Basqunks",
+      address: ["KT1DtsVHqUvKBkkypLB3x2bYd4jWdbbaHdMy"],
+      thumbnailUrl: "../../../assets/img/alias/basqunks.png",
+      link: "https://objkt.com/collection/KT1DtsVHqUvKBkkypLB3x2bYd4jWdbbaHdMy",
+      shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"],
+      backgroundColor: 'red',
+      description: "A CryptoPunks inspired collection, combining the style of Jean-Michel Basquiat with the Crypto Punks."
+    },
   },
   ASSETS: {
     'KT1K9gCRgaLRFKTErYt1wVxA3Frb9FjasjTV': { // kUSD
@@ -1190,6 +1216,10 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1UQhWV1Q2ArnDkWPoYgk4Kbm4dgE2BS7G8',//Skratz x Jawnz
   'KT1AWUzFdNwZn7YprZitR6Q6eUuVmfUG1HMP',//Skratz Geckos
   'KT19hJSZZYnD41xuEjEgodhAnnuLh142g8QJ',//Skratz Akira
+  'KT1F9uU1xXJEzKmPvxMAdo1cMwnhnBHEB6pN',//Skratz x Tezape
+  'KT1UHiGBUpbmUSV68tiGi8owFP7VWr2zBMCk',// House Of Skratz
+  'KT1MWKxDT6QJWgPH4Wq1TuHwW2tcvJRbuKMZ',// House Of Skratz Whitelist
+  'KT1HMvdTCsK9Su7RkFKgFwQuxaqgmNdbtdLS',// House Of Skratz DAO
   'KT1FReMp4U1KipyH53xXUnnjtdRQZaLnQpUj',//TezApeGang
   'KT18pVpRXKPY2c4U2yFEGSH3ZnhB2kL8kwXS',//Rarible
   "KT1LikBSDucbAfYLN9Uxosh4V2SNRrbQwfrJ", //Transmission Residents
@@ -1202,6 +1232,9 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   "KT1LjmAdYQCLBjwv4S2oFkEzyHVkomAf5MrW", //Versum
   "KT1Qc8xu8i72QX5S72ifPB3KJGsJqXB79eTP", // FCO REBOLLO
   "KT1V3BYwUN7FiBqADLMvMpWbz33tq1vudBh5", //Monarx
-  "KT1Qi93pZoig6grMNBd7GGA7fveE2cxQK9Ei" //Verses
+  "KT1S9VbCtVZUgAG4Q3VArvY5stu96q4CiPHZ", // Distributed Consciousness
+  "KT1JYioHwutnTpYPTk5yRe9YSfCaFGWhd9MR", // Distributed Consciousness Verses
+  "KT1Qi93pZoig6grMNBd7GGA7fveE2cxQK9Ei", //Verses
+  'KT1DtsVHqUvKBkkypLB3x2bYd4jWdbbaHdMy'//Basqunks
 ];
 export const BLACKLISTED_TOKEN_CONTRACTS = []
