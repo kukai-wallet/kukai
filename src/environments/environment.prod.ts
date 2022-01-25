@@ -443,7 +443,7 @@ export const CONSTANTS: Constants = {
       description: "A generative collection on Tezos of 666 NFTs",
     },
     'Basqunks':{
-      name:"Basqunks",
+      name: "Basqunks",
       address: ["KT1DtsVHqUvKBkkypLB3x2bYd4jWdbbaHdMy"],
       thumbnailUrl: "../../../assets/img/alias/basqunks.png",
       link: "https://objkt.com/collection/KT1DtsVHqUvKBkkypLB3x2bYd4jWdbbaHdMy",
@@ -1234,7 +1234,7 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   "KT1V3BYwUN7FiBqADLMvMpWbz33tq1vudBh5", //Monarx
   "KT1S9VbCtVZUgAG4Q3VArvY5stu96q4CiPHZ", // Distributed Consciousness
   "KT1JYioHwutnTpYPTk5yRe9YSfCaFGWhd9MR", // Distributed Consciousness Verses
-  "KT1Qi93pZoig6grMNBd7GGA7fveE2cxQK9Ei" //Verses
+  "KT1Qi93pZoig6grMNBd7GGA7fveE2cxQK9Ei", //Verses
   'KT1DtsVHqUvKBkkypLB3x2bYd4jWdbbaHdMy'//Basqunks
 ];
 export const BLACKLISTED_TOKEN_CONTRACTS = []
