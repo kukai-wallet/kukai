@@ -441,7 +441,17 @@ export const CONSTANTS: Constants = {
       category: ["collectibles"],
       backgroundColor: "black",
       description: "A generative collection on Tezos of 666 NFTs",
-    }
+    },
+    'Basqunks':{
+      name:"Basqunks",
+      address: ["KT1DtsVHqUvKBkkypLB3x2bYd4jWdbbaHdMy"],
+      thumbnailUrl: "../../../assets/img/alias/basqunks.png",
+      link: "https://objkt.com/collection/KT1DtsVHqUvKBkkypLB3x2bYd4jWdbbaHdMy",
+      shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"],
+      backgroundColor: 'red',
+      description: "A CryptoPunks inspired collection, combining the style of Jean-Michel Basquiat with the Crypto Punks."
+    },
   },
   ASSETS: {
     'KT1K9gCRgaLRFKTErYt1wVxA3Frb9FjasjTV': { // kUSD
@@ -1225,5 +1235,6 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   "KT1S9VbCtVZUgAG4Q3VArvY5stu96q4CiPHZ", // Distributed Consciousness
   "KT1JYioHwutnTpYPTk5yRe9YSfCaFGWhd9MR", // Distributed Consciousness Verses
   "KT1Qi93pZoig6grMNBd7GGA7fveE2cxQK9Ei" //Verses
+  'KT1DtsVHqUvKBkkypLB3x2bYd4jWdbbaHdMy'//Basqunks
 ];
 export const BLACKLISTED_TOKEN_CONTRACTS = []
