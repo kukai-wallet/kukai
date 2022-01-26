@@ -2,5 +2,5 @@
   "editor.tabSize": 2,
   "editor.insertSpaces": true,
   "editor.detectIndentation": false,
-  "typescript.tsdk": "c:\\Users\\klas_\\Git\\kukai\\node_modules\\typescript\\lib"
+  "files.eol": "\n"
 }

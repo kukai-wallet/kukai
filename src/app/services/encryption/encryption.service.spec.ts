@@ -142,4 +142,28 @@ describe('[ EncryptionService ]', () => {
 		});
 
 	});
+  describe('> shiftIV', () => {
+    const iv0 = 'e564de6f29058d42cbd105007624e050';
+		it('should shift iv if offset within valid range', () => {
+			expect(service.shiftIV(iv0, 1)).toEqual('e564de6f29058d42cbd105007625e050');
+			expect(service.shiftIV(iv0, 2)).toEqual('e564de6f29058d42cbd105007626e050');
+      expect(service.shiftIV(iv0, 18)).toEqual('e564de6f29058d42cbd105007636e050');
+      expect(service.shiftIV(iv0, 255)).toEqual('e564de6f29058d42cbd105007623e050');
+		});
+    it('should throw error if invalid offset', async () => {
+      let errors = 0;
+      const ivs = [0, null, 'wad', 256, 574643, 6.56, -123];
+      for (let offset of ivs) {
+        try {
+          expect(service.shiftIV(iv0, offset as number));
+          console.warn('didn\'t throw error', offset as number);
+        } catch (e) {
+          if (e.message === 'Invalid offset for IV') {
+            errors++;
+          }
+        }
+      }
+      expect(errors).toEqual(ivs.length);
+    });
+	});
 });

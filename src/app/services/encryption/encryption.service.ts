@@ -117,12 +117,12 @@ export class EncryptionService {
       return null;
     }
   }
-  bumpIV(salt: string, bumps: number) {
-    if (bumps > 255) {
-      throw new Error('Invalid incremention');
+  shiftIV(salt: string, offset: number) {
+    if (!Number.isInteger(offset) || offset > 255 || offset < 1) {
+      throw new Error('Invalid offset for IV');
     }
     const buf = new Buffer(salt, 'hex');
-    buf[13] = (buf[13] + 1) % 256;
+    buf[13] = (buf[13] + offset) % 256;
     return buf.toString('hex');
   }
 }

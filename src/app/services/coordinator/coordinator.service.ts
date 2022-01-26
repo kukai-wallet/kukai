@@ -5,7 +5,7 @@ import { BalanceService } from '../balance/balance.service';
 import { WalletService } from '../wallet/wallet.service';
 import { DelegateService } from '../delegate/delegate.service';
 import { OperationService } from '../operation/operation.service';
-import { Account } from '../wallet/wallet';
+import { Account, OpStatus } from '../wallet/wallet';
 import Big from 'big.js';
 import { TokenService } from '../token/token.service';
 import { LookupService } from '../lookup/lookup.service';
@@ -166,7 +166,7 @@ export class CoordinatorService {
         const acc = this.walletService.wallet?.getAccount(pkh);
         if (acc?.activities?.length) {
           const latestActivity = acc.activities[0];
-          if (latestActivity.status === 0) {
+          if (latestActivity.status === OpStatus.UNCONFIRMED) {
             const age = new Date().getTime() - new Date(latestActivity.timestamp).getTime();
             if (age > 1800000) { // 30m
               acc.activities.shift();
@@ -250,7 +250,7 @@ export class CoordinatorService {
       for (const op of metadata.transactions) {
         const transaction = {
           type: 'transaction',
-          status: 0,
+          status: OpStatus.UNCONFIRMED,
           amount: Big(op.amount).times(10 ** decimals).toString(),
           fee: null,
           source: { address: from },
@@ -271,7 +271,7 @@ export class CoordinatorService {
     } else if (metadata.delegate !== undefined) {
       const delegation = {
         type: 'delegation',
-        status: 0,
+        status: OpStatus.UNCONFIRMED,
         amount: null,
         fee: null,
         source: { address: from },
@@ -285,7 +285,7 @@ export class CoordinatorService {
     } else if (metadata.origination !== undefined) {
       const origination = {
         type: 'origination',
-        status: 0,
+        status: OpStatus.UNCONFIRMED,
         amount: metadata.origination.balance,
         fee: null,
         source: { address: from },

@@ -11,6 +11,7 @@ import {
   LegacyWalletV3,
   EmbeddedTorusWallet,
   HdWallet,
+  OpStatus,
 } from './../../src/app/services/wallet/wallet';
 import { viewClassName } from '@angular/compiler';
 
@@ -407,7 +408,7 @@ export class ActivityTools extends OperationTools {
       hash: operationhash,
       block: blockhash,
       source: { address: source },
-      status: 1,
+      status: OpStatus.CONFIRMED,
       destination: { address: this.generateDestination() },
       amount: this.generateAmount().toString(),
       fee: this.generateFee().toString(),

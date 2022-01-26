@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
-import { Account, Activity } from '../../../../../../services/wallet/wallet';
+import { Account, Activity, OpStatus } from '../../../../../../services/wallet/wallet';
 import { TimeAgoPipe } from '../../../../../../pipes/time-ago.pipe';
 import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from '../../../../../../services/message/message.service';
@@ -17,7 +17,8 @@ import { Subscription } from 'rxjs';
   styleUrls: ['../../../../../../../scss/components/views/logged-in/account-view/cards/activity/event.component.scss'],
 })
 export class EventComponent implements OnInit, OnChanges, OnDestroy {
-  public LookupType = LookupType
+  public OpStatus = OpStatus;
+  public LookupType = LookupType;
   public fresh = undefined;
   private subscriptions: Subscription = new Subscription();
   constructor(
@@ -84,7 +85,7 @@ export class EventComponent implements OnInit, OnChanges, OnDestroy {
     return `../../../../assets/img/${LookupType[this.getCounterparty(this.activity)?.lookupType].toLowerCase().replace('tezosdomains', 'domain')}-logo.svg`;
   }
   getEventStatusIcon(): string {
-    return this.fresh && this.activity.status === 1 ? '../../../../assets/img/event-new.png' : this.activity.status === 1 ? '../../../../assets/img/event-confirmed.png' : this.activity.status === 0 ? '../../../../assets/img/event-unconfirmed.png' : this.activity.status === -1 ? '../../../../assets/img/event-error.png' : this.activity.status === 0.5 ? '../../../../../assets/img/event-half-confirmed.png' : '../../../../assets/img/event-unconfirmed.png'
+    return this.fresh && this.activity.status === OpStatus.CONFIRMED ? '../../../../assets/img/event-new.png' : this.activity.status === OpStatus.CONFIRMED ? '../../../../assets/img/event-confirmed.png' : this.activity.status === OpStatus.UNCONFIRMED ? '../../../../assets/img/event-unconfirmed.png' : this.activity.status === OpStatus.FAILED ? '../../../../assets/img/event-error.png' : this.activity.status === OpStatus.HALF_CONFIRMED ? '../../../../../assets/img/event-half-confirmed.png' : '../../../../assets/img/event-unconfirmed.png'
   }
   printAmount(): string {
     switch (this.getType()) {

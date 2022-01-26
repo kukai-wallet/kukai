@@ -240,10 +240,16 @@ export class OriginatedAccount extends Account {
   }
 }
 
+export enum OpStatus {
+  FAILED = -1,
+  UNCONFIRMED = 0,
+  HALF_CONFIRMED = 0.5, // confirmed but not indexed fully yet
+  CONFIRMED = 1
+}
 export class Activity {
   type: string;
   block: string;
-  status: number; // 0: unconfirmed, 1: confirmed, -1: failed
+  status: OpStatus;
   amount: string;
   source: {
     address: string,

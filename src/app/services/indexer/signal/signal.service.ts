@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HubConnectionBuilder } from '@microsoft/signalr';
 import { CONSTANTS } from '../../../../environments/environment';
 import { WalletService } from '../../wallet/wallet.service';
-import { Account } from '../../wallet/wallet';
+import { Account, OpStatus } from '../../wallet/wallet';
 import { ActivityService } from '../../activity/activity.service';
 import { OperationService } from '../../operation/operation.service';
 import { BalanceService } from '../../balance/balance.service';
@@ -51,12 +51,12 @@ export class SignalService {
         const account: Account = this.walletService.wallet.getAccount(address);
         if (account) {
           for (let i in account.activities) {
-            if (account.activities[i].hash === opHash && account.activities[i].status === 0) {
+            if (account.activities[i].hash === opHash && account.activities[i].status === OpStatus.UNCONFIRMED) {
               account.activities[i].timestamp = (new Date(timestamp)).getTime();
               if (invoke) {
-                account.activities[i].status = 0.5;
+                account.activities[i].status = OpStatus.HALF_CONFIRMED;
               } else {
-                account.activities[i].status = 1;
+                account.activities[i].status = OpStatus.CONFIRMED;
                 this.activityService.promptNewActivities(account, [], [account.activities[i]]);
                 this.updateAccountData(address);
               }
@@ -98,24 +98,6 @@ export class SignalService {
     }
 }
 
-  // async start() {
-  //   console.log("here");
-  //   await this.connection?.stop()
-  //   try {
-  //     if (!(await this.connection?.start())) {
-  //       setTimeout(async () => {
-  //         await this.start();
-  //       }, 5000);
-  //     } else {
-  //       console.log("%cSignalR Connected!", "color:green;");
-  //     }
-  //   } catch (err) {
-  //     console.log(err);
-  //     setTimeout(async () => {
-  //       await this.start();
-  //     }, 5000);
-  //   }
-  // };
   async subscribeToAccount(address: string) {
     console.log('Listen to: ' + address);
     await this.connection.invoke("SubscribeToOperations", { address, types: 'transaction,delegation,origination' });

@@ -4,6 +4,7 @@ import { EstimateService } from './estimate.service';
 import { http_imports, rx, translate_imports, ErrorHandlingPipe } from '../../../../spec/helpers/service.helper';
 import { OperationService } from '../operation/operation.service';
 import { of, Observable } from 'rxjs';
+import { InputValidationService } from '../input-validation/input-validation.service';
 
 
 import { TranslateService, TranslateLoader, TranslateFakeLoader, TranslateModule } from '@ngx-translate/core';
@@ -21,7 +22,8 @@ describe('EstimateService', () => {
         EstimateService,
         OperationService,
         TranslateService,
-        ErrorHandlingPipe
+        ErrorHandlingPipe,
+        InputValidationService
       ]
     });
 
@@ -40,18 +42,18 @@ describe('EstimateService', () => {
     it('Should estimate batch transaction', async function (done) {
       const ref = {
         customLimits: [{
-          gasLimit: 10287,
+          gasLimit: 10412,
           storageLimit: 0
         }, {
-          gasLimit: 15365,
+          gasLimit: 15591,
           storageLimit: 0
         }, {
-          gasLimit: 10287,
+          gasLimit: 10412,
           storageLimit: 257
         }],
-        fee: 0.003991,
+        fee: 0.004039,
         burn: 0.06425,
-        gas: 35939,
+        gas: 36415,
         storage: 257,
         reveal: false
       };

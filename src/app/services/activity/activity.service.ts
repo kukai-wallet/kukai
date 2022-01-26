@@ -3,7 +3,7 @@ import { WalletService } from '../wallet/wallet.service';
 import { of, Observable, from as fromPromise } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 import { delay, takeUntil } from 'rxjs/operators'
-import { Activity, Account } from '../wallet/wallet';
+import { Activity, Account, OpStatus } from '../wallet/wallet';
 import { MessageService } from '../message/message.service';
 import { LookupService } from '../lookup/lookup.service';
 import { IndexerService } from '../indexer/indexer.service';
@@ -113,7 +113,7 @@ export class ActivityService {
           const unconfirmedOps = [];
           if (oldActivities && oldActivities.length) {
             for (let op of oldActivities) {
-              if (op.status === 0 || op.status === 0.5) {
+              if (op.status === OpStatus.UNCONFIRMED || op.status === OpStatus.HALF_CONFIRMED) {
                 let save = true;
                 for (const opNew of operations) {
                   if (opNew.hash === op.hash) {
@@ -147,7 +147,7 @@ export class ActivityService {
   }
   promptNewActivities(account: Account, oldActivities: Activity[], newActivities: Activity[]) {
     for (const activity of newActivities) {
-      const index = oldActivities.findIndex((a) => a.hash === activity.hash && a.status === 1);
+      const index = oldActivities.findIndex((a) => a.hash === activity.hash && a.status === OpStatus.CONFIRMED);
       if (index === -1) {
         const now = (new Date()).getTime();
         const timeDiff = now - (activity?.timestamp ? activity.timestamp : now);

@@ -40,11 +40,10 @@ export class EstimateService {
   async preLoadData(pkh: string, pk: string) {
     this.pkh = pkh;
     this.pk = pk;
-    await Promise.all([this.operationService.getHeader().toPromise(), this.getCounter(pkh), this.getManager(pkh)]).then(req => {
-      if (req[0] && req[1] && (req[2]) || req[2] === null) {
-        this.init(req[0].hash, req[0].chain_id, req[1], req[2], pk, pkh);
-      }
-    });
+    const [head, counter, manager] = await Promise.all([this.operationService.getHeader().toPromise(), this.getCounter(pkh), this.getManager(pkh)]);
+    if (head && counter && (manager || manager === null)) {
+      this.init(head.hash, head.chain_id, counter, manager, pk, pkh);
+    }
   }
   public async estimateTransactions(transactions: any, from: string, tokenTransfer: string = '', callback) {
     this.estimate(transactions, from, tokenTransfer, callback, false);

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { CONSTANTS } from '../../../../environments/environment';
 import { Indexer } from '../indexer.service';
 import * as cryptob from 'crypto-browserify';
-import { WalletObject, Activity } from '../../wallet/wallet';
+import { WalletObject, Activity, OpStatus } from '../../wallet/wallet';
 import assert from 'assert';
 import { Asset, CachedAsset } from '../../token/token.service';
 import { TezosToolkit } from '@taquito/taquito';
@@ -103,7 +103,7 @@ export class TzktService implements Indexer {
       .then(response => response.json())
       .then(data => data.map(op => {
         if (!op.hasInternals || !wallet.getAccount(op.target.address)) {
-          const status = op.status === 'applied' ? 1 : -1;
+          const status: OpStatus = op.status === 'applied' ? OpStatus.CONFIRMED : OpStatus.FAILED;
           let destination = { address: '' };
           let amount = '0';
           let entrypoint = '';
@@ -176,7 +176,7 @@ export class TzktService implements Indexer {
           const activity: Activity = {
             type: 'transaction',
             block: '',
-            status: 1,
+            status: OpStatus.CONFIRMED,
             amount: tx.amount,
             tokenId,
             source,

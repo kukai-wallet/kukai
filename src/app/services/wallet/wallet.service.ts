@@ -33,7 +33,7 @@ export class WalletService {
     private encryptionService: EncryptionService,
     private operationService: OperationService,
     private torusService: TorusService
-  ) {}
+  ) { }
   /*
     Wallet creation
   */
@@ -57,7 +57,10 @@ export class WalletService {
     const encrypted = await this.encryptionService.encrypt(seed, password, 3);
     const encryptedSeed: string = encrypted.chiphertext;
     const iv: string = encrypted.iv;
-    const iv2: string = this.encryptionService.bumpIV(iv, 1);
+    /*
+      Warning: Make sure to never reuse IV for AES-GCM
+    */
+    const iv2: string = this.encryptionService.shiftIV(iv, 1);
     const encryptedEntropy: string = (await this.encryptionService.encrypt(
       entropy,
       password,
@@ -66,7 +69,7 @@ export class WalletService {
     )).chiphertext;
     return {
       data: this.exportKeyStoreInit(
-        hdSeed ? WalletType.HdWallet : WalletType.FullWallet,
+        hdSeed ? WalletType.HdWallet : WalletType.LegacyWallet,
         encryptedSeed,
         encryptedEntropy,
         iv
@@ -110,7 +113,7 @@ export class WalletService {
       };
       return keyPair;
     } else if (this.wallet instanceof EmbeddedTorusWallet && this.wallet?.sk) {
-        return this.operationService.spPrivKeyToKeyPair(this.wallet.sk);
+      return this.operationService.spPrivKeyToKeyPair(this.wallet.sk);
     } else if (this.wallet instanceof TorusWallet || (this.wallet instanceof EmbeddedTorusWallet && !this.wallet?.sk)) {
       const keyPair = await this.torusService.getTorusKeyPair(this.wallet.verifier, this.wallet.id);
       if (this.wallet.getImplicitAccount(keyPair.pkh)) {
@@ -119,7 +122,7 @@ export class WalletService {
         throw new Error('Signed with wrong account');
       }
       return null;
-    }  else {
+    } else {
       return null;
     }
     if (!seed) {
@@ -150,7 +153,7 @@ export class WalletService {
       this.wallet &&
       (this.wallet instanceof HdWallet || this.wallet instanceof LegacyWalletV3)
     ) {
-      const iv = this.encryptionService.bumpIV(this.wallet.IV, 1);
+      const iv = this.encryptionService.shiftIV(this.wallet.IV, 1);
       const entropy = await this.encryptionService.decrypt(
         this.wallet.encryptedEntropy,
         pwd,
@@ -270,7 +273,7 @@ export class WalletService {
     return (!this.isTorusWallet() && !this.isLedgerWallet() && !this.isWatchWallet());
   }
   exportKeyStoreInit(
-    type: WalletType,
+    walletType: WalletType,
     encryptedSeed: string,
     encryptedEntropy: string,
     iv: string
@@ -278,7 +281,7 @@ export class WalletService {
     const data: any = {
       provider: 'Kukai',
       version: 3.0,
-      walletType: type,
+      walletType,
       encryptedSeed,
       encryptedEntropy,
       iv,

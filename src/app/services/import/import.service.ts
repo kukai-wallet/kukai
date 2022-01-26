@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { KeyPair } from './../../interfaces';
+import { KeyPair, WalletType } from './../../interfaces';
 import { WalletService } from '../wallet/wallet.service';
 import { CoordinatorService } from '../coordinator/coordinator.service';
 import {
@@ -33,7 +33,7 @@ export class ImportService {
     if (walletData.provider !== 'Kukai') {
       throw new Error(`Unsupported wallet format`);
     }
-    if (walletData.walletType === 0 || walletData.walletType === 4) {
+    if (walletData.walletType === WalletType.LegacyWallet || walletData.walletType === WalletType.HdWallet) {
       return true;
     } else {
       return false;
@@ -45,7 +45,7 @@ export class ImportService {
     let walletData;
     try {
       walletData = JSON.parse(json);
-      if (walletData.walletType === 4 && walletData.version === 3) {
+      if (walletData.walletType === WalletType.HdWallet && walletData.version === 3) {
         //hd
         seed = await this.encryptionService.decrypt(
           walletData.encryptedSeed,
@@ -53,7 +53,7 @@ export class ImportService {
           walletData.iv,
           3
         );
-      } else if (walletData.walletType === 0) {
+      } else if (walletData.walletType === WalletType.LegacyWallet) {
         if (walletData.version === 1) {
           console.log('v1');
           seed = await this.encryptionService.decrypt(
@@ -94,14 +94,14 @@ export class ImportService {
   }
   async importWalletFromObject(data: any, seed: any): Promise<boolean> {
     this.coordinatorService.stopAll();
-    if (data.walletType === 4 && data.version === 3) {
+    if (data.walletType === WalletType.HdWallet && data.version === 3) {
       // HD
       this.walletService.wallet = new HdWallet(
         data.iv,
         data.encryptedSeed,
         data.encryptedEntropy
       );
-    } else if (data.walletType === 0) {
+    } else if (data.walletType === WalletType.LegacyWallet) {
       if (data.version === 3) {
         this.walletService.wallet = new LegacyWalletV3(
           data.iv,
