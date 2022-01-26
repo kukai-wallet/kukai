@@ -479,9 +479,6 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
     this.operationResponse.emit(emit);
     this.reset();
   }
-  backModalAction(): void {
-    ModalComponent.currentModel.next({ name: 'prepare-send', data: null });
-  }
   reset(init = false): void {
     if (!init) {
       this.confirmRequest = null;
