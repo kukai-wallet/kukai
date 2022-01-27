@@ -5,7 +5,7 @@ import { BalanceService } from '../balance/balance.service';
 import { WalletService } from '../wallet/wallet.service';
 import { DelegateService } from '../delegate/delegate.service';
 import { OperationService } from '../operation/operation.service';
-import { Account } from '../wallet/wallet';
+import { Account, OpStatus } from '../wallet/wallet';
 import Big from 'big.js';
 import { TokenService } from '../token/token.service';
 import { LookupService } from '../lookup/lookup.service';
@@ -24,7 +24,7 @@ export interface ScheduleData {
 enum State {
   UpToDate,
   Wait,
-  Updating,
+  Updating
 }
 
 @Injectable()
@@ -54,11 +54,11 @@ export class CoordinatorService {
         this.stopAll();
       }
     });
-    this.walletService.activeAccount.subscribe(activeAccount => {
+    this.walletService.activeAccount.subscribe((activeAccount) => {
       if (this.walletService.wallet) {
         this.accounts = this.walletService.wallet.getAccounts();
         this.accounts.forEach(({ address }) => {
-          if(address === activeAccount?.address) {
+          if (address === activeAccount?.address) {
             this.start(activeAccount.address, this.defaultDelayActivity);
           } else {
             this.start(address, this.longDelayActivity);
@@ -66,7 +66,7 @@ export class CoordinatorService {
         });
         this.startXTZ();
       }
-    })
+    });
   }
   startXTZ() {
     if (!this.tzrateInterval) {
@@ -75,7 +75,7 @@ export class CoordinatorService {
         this.tzrateService.getTzrate();
         this.teztoolsService.getMarkets();
         this.lookupService.recheckWalletAddresses(true);
-      }
+      };
       this.tzrateInterval = interval(this.defaultDelayPrice).subscribe(() => update());
       update();
     }
@@ -88,12 +88,12 @@ export class CoordinatorService {
         pkh: pkh,
         state: State.UpToDate,
         interval: interval(this.defaultDelayActivity).subscribe(() => this.update(pkh)),
-        stateCounter: 0,
+        stateCounter: 0
       };
       this.scheduler.set(pkh, scheduleData);
       this.update(pkh);
       this.updateAccountData(pkh);
-    } else if(pkh && this.scheduler.get(pkh)) {
+    } else if (pkh && this.scheduler.get(pkh)) {
       this.setDelay(pkh, delay);
     }
   }
@@ -114,10 +114,7 @@ export class CoordinatorService {
         const counter = this.scheduler.get(pkh).stateCounter;
         setTimeout(() => {
           // Failsafe
-          if (
-            this.scheduler?.size &&
-            this.scheduler.get(pkh).stateCounter === counter
-          ) {
+          if (this.scheduler?.size && this.scheduler.get(pkh).stateCounter === counter) {
             console.log('Timeout from wait state');
             this.changeState(pkh, State.UpToDate);
           }
@@ -166,18 +163,23 @@ export class CoordinatorService {
         const acc = this.walletService.wallet?.getAccount(pkh);
         if (acc?.activities?.length) {
           const latestActivity = acc.activities[0];
-          if (latestActivity.status === 0) {
+          if (latestActivity.status === OpStatus.UNCONFIRMED) {
             const age = new Date().getTime() - new Date(latestActivity.timestamp).getTime();
-            if (age > 1800000) { // 30m
+            if (age > 1800000) {
+              // 30m
               acc.activities.shift();
               this.walletService.storeWallet();
             }
           }
         }
       },
-      err => console.log('Error in update()', err),
+      (err) => console.log('Error in update()', err),
       () => {
-        console.log(`account[${this.accounts.findIndex((a) => a.address === pkh)}][${typeof this.scheduler.get(pkh)?.state !== 'undefined' ? this.scheduler.get(pkh).state : '*'}]: <<`);
+        console.log(
+          `account[${this.accounts.findIndex((a) => a.address === pkh)}][${
+            typeof this.scheduler.get(pkh)?.state !== 'undefined' ? this.scheduler.get(pkh).state : '*'
+          }]: <<`
+        );
       }
     );
   }
@@ -189,7 +191,7 @@ export class CoordinatorService {
     }
     if (newState === State.Wait || newState === State.Updating) {
       scheduleData.interval.unsubscribe();
-      scheduleData.interval = interval(this.shortDelayActivity).subscribe(() => this.update(pkh))
+      scheduleData.interval = interval(this.shortDelayActivity).subscribe(() => this.update(pkh));
     }
     scheduleData.stateCounter++;
     this.scheduler.set(pkh, scheduleData);
@@ -199,7 +201,7 @@ export class CoordinatorService {
     if (scheduleData.interval) {
       scheduleData.interval.unsubscribe();
     }
-    scheduleData.interval = interval(time).subscribe(() => this.update(pkh))
+    scheduleData.interval = interval(time).subscribe(() => this.update(pkh));
     this.scheduler.set(pkh, scheduleData);
   }
   stopAll() {
@@ -210,16 +212,14 @@ export class CoordinatorService {
           this.stop(account.address);
         }
       }
-      if(this.tzrateInterval) {
+      if (this.tzrateInterval) {
         this.tzrateInterval.unsubscribe();
         this.tzrateInterval = null;
       }
     }
   }
   async stop(pkh) {
-    console.log(
-      'Stop scheduler ' + this.accounts.findIndex((a) => a.address === pkh)
-    );
+    console.log('Stop scheduler ' + this.accounts.findIndex((a) => a.address === pkh));
     if (this.scheduler.get(pkh)) {
       this.scheduler.get(pkh).interval.unsubscribe();
       this.scheduler.get(pkh).interval = null;
@@ -231,10 +231,7 @@ export class CoordinatorService {
     console.log('update account data for ' + pkh);
     this.operationService.getAccount(pkh).subscribe((ans: any) => {
       if (ans.success) {
-        this.balanceService.updateAccountBalance(
-          this.walletService.wallet?.getAccount(pkh),
-          Number(ans.payload.balance)
-        );
+        this.balanceService.updateAccountBalance(this.walletService.wallet?.getAccount(pkh), Number(ans.payload.balance));
         const acc = this.walletService.wallet?.getAccount(pkh);
         this.delegateService.handleDelegateResponse(acc, ans.payload.delegate);
       } else {
@@ -246,12 +243,15 @@ export class CoordinatorService {
     if (metadata.transactions) {
       console.log('Unconfirmed transactions:');
       console.log(metadata.transactions);
-      const decimals = metadata.tokenTransfer && this.tokenService.getAsset(metadata.tokenTransfer) ? this.tokenService.getAsset(metadata.tokenTransfer).decimals : 6;
+      const decimals =
+        metadata.tokenTransfer && this.tokenService.getAsset(metadata.tokenTransfer) ? this.tokenService.getAsset(metadata.tokenTransfer).decimals : 6;
       for (const op of metadata.transactions) {
         const transaction = {
           type: 'transaction',
-          status: 0,
-          amount: Big(op.amount).times(10 ** decimals).toString(),
+          status: OpStatus.UNCONFIRMED,
+          amount: Big(op.amount)
+            .times(10 ** decimals)
+            .toString(),
           fee: null,
           source: { address: from },
           destination: { address: op.destination },
@@ -265,13 +265,13 @@ export class CoordinatorService {
         account.activities.unshift(transaction);
         account = this.walletService.wallet?.getAccount(op.destination);
         if (account) {
-          account.activities.unshift({...transaction});
+          account.activities.unshift({ ...transaction });
         }
       }
     } else if (metadata.delegate !== undefined) {
       const delegation = {
         type: 'delegation',
-        status: 0,
+        status: OpStatus.UNCONFIRMED,
         amount: null,
         fee: null,
         source: { address: from },
@@ -285,7 +285,7 @@ export class CoordinatorService {
     } else if (metadata.origination !== undefined) {
       const origination = {
         type: 'origination',
-        status: 0,
+        status: OpStatus.UNCONFIRMED,
         amount: metadata.origination.balance,
         fee: null,
         source: { address: from },

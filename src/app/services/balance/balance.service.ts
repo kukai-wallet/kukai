@@ -6,11 +6,7 @@ import { Account } from '../wallet/wallet';
 
 @Injectable()
 export class BalanceService {
-  constructor(
-    private walletService: WalletService,
-    private tzrateService: TzrateService,
-    private operationService: OperationService
-  ) { }
+  constructor(private walletService: WalletService, private tzrateService: TzrateService, private operationService: OperationService) {}
 
   getBalanceAll() {
     for (const account of this.walletService.wallet.getAccounts()) {
@@ -19,14 +15,13 @@ export class BalanceService {
   }
   getAccountBalance(account: Account) {
     console.log('for ' + account.address);
-    this.operationService.getBalance(account.address)
-      .subscribe((ans: any) => {
-        if (ans.success) {
-          this.updateAccountBalance(account, Number(ans.payload.balance));
-        } else {
-          console.log('Balance Error: ' + JSON.stringify(ans.payload.msg));
-        }
-      });
+    this.operationService.getBalance(account.address).subscribe((ans: any) => {
+      if (ans.success) {
+        this.updateAccountBalance(account, Number(ans.payload.balance));
+      } else {
+        console.log('Balance Error: ' + JSON.stringify(ans.payload.msg));
+      }
+    });
   }
   updateAccountBalance(account: Account, newBalance: number) {
     if (account.balanceXTZ === null || account.balanceXTZ === undefined || newBalance !== account.balanceXTZ) {

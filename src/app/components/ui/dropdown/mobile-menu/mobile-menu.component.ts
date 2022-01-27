@@ -9,14 +9,12 @@ import { MessageService } from '../../../../services/message/message.service';
 import { LookupService } from '../../../../services/lookup/lookup.service';
 import { SubjectService } from '../../../../services/subject/subject.service';
 
-
 @Component({
   selector: 'app-ui-mobile-menu',
   templateUrl: './mobile-menu.component.html',
   styleUrls: ['../../../../../scss/components/ui/dropdown/mobile-menu.component.scss']
 })
 export class MobileMenuDropdownComponent extends DropdownComponent implements OnInit {
-
   @Input() activeAccount: Account;
   @Input() delegateName;
   @Input() newAccount;
@@ -29,10 +27,11 @@ export class MobileMenuDropdownComponent extends DropdownComponent implements On
     private messageService: MessageService,
     private translate: TranslateService,
     private subjectService: SubjectService
-    ) { super(); }
-
-  ngOnInit(): void {
+  ) {
+    super();
   }
+
+  ngOnInit(): void {}
   toggleDropdown(): void {
     if (window.innerHeight < document.body.scrollHeight) {
       document.body.style.overflow = 'hidden';
@@ -41,9 +40,7 @@ export class MobileMenuDropdownComponent extends DropdownComponent implements On
   }
   copy(): void {
     copy(this.activeAccount.address);
-    const copyToClipboard = this.translate.instant(
-      'OVERVIEWCOMPONENT.COPIEDTOCLIPBOARD'
-    );
+    const copyToClipboard = this.translate.instant('OVERVIEWCOMPONENT.COPIEDTOCLIPBOARD');
     this.messageService.add(this.activeAccount.address + ' ' + copyToClipboard, 5);
   }
   logout(): void {

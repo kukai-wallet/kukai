@@ -141,7 +141,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         useFactory: HttpLoaderFactory,
         deps: [HttpClient]
       }
-    })  // lazy loading will need TranslateModule.forChild() in the lazy loaded modules
+    }) // lazy loading will need TranslateModule.forChild() in the lazy loaded modules
   ],
   providers: [
     // Services
@@ -173,4 +173,4 @@ export function HttpLoaderFactory(http: HttpClient) {
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

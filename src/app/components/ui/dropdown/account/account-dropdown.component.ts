@@ -14,19 +14,18 @@ import { Subscription } from 'rxjs';
   styleUrls: ['../../../../../scss/components/ui/dropdown/account-dropdown.component.scss']
 })
 export class AccountDropdownComponent extends DropdownComponent implements OnInit, OnChanges, OnDestroy {
-
   postfix = '';
 
   private subscriptions: Subscription = new Subscription();
 
   constructor(public router: Router, public lookupService: LookupService, private walletService: WalletService) {
     super();
-    this.subscriptions.add(this.router.events
-      .pipe(filter((evt) => evt instanceof NavigationEnd))
-      .subscribe(async (r: NavigationEnd) => {
+    this.subscriptions.add(
+      this.router.events.pipe(filter((evt) => evt instanceof NavigationEnd)).subscribe(async (r: NavigationEnd) => {
         let accountAddress = r.url.substr(r.url.indexOf('/account/') + 9);
         this.postfix = !!accountAddress.substring(36) ? accountAddress.substring(36) : '';
-      }));
+      })
+    );
   }
 
   ngOnInit(): void {
@@ -36,7 +35,7 @@ export class AccountDropdownComponent extends DropdownComponent implements OnIni
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes.options && changes.options.currentValue !== changes.options.previousValue) {
+    if (changes.options && changes.options.currentValue !== changes.options.previousValue) {
       this.list = this.options;
     }
   }
@@ -48,8 +47,10 @@ export class AccountDropdownComponent extends DropdownComponent implements OnIni
   getUsername(address: string): string {
     if (this.walletService.wallet instanceof TorusWallet) {
       return this.walletService.wallet.displayName();
-    } else  {
-      const party = this.lookupService.resolve({ address: address || this.current?.address });
+    } else {
+      const party = this.lookupService.resolve({
+        address: address || this.current?.address
+      });
       if (party?.name) {
         return party.name;
       }

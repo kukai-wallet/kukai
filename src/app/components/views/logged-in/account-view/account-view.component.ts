@@ -13,7 +13,7 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-account-view',
   templateUrl: './account-view.component.html',
-  styleUrls: ['../../../../../scss/components/views/logged-in/account-view/account-view.component.scss'],
+  styleUrls: ['../../../../../scss/components/views/logged-in/account-view/account-view.component.scss']
 })
 export class AccountViewComponent implements OnInit, OnDestroy {
   account: Account;
@@ -29,10 +29,12 @@ export class AccountViewComponent implements OnInit, OnDestroy {
   trigger = true;
   @Input() activity: any;
   ngOnInit(): void {
-    this.subscriptions.add(this.walletService.activeAccount.subscribe(activeAccount => {
-      this.account = activeAccount;
-    }));
-    setInterval(() => this.trigger = !this.trigger, 1000);
+    this.subscriptions.add(
+      this.walletService.activeAccount.subscribe((activeAccount) => {
+        this.account = activeAccount;
+      })
+    );
+    setInterval(() => (this.trigger = !this.trigger), 1000);
   }
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
@@ -64,9 +66,7 @@ export class AccountViewComponent implements OnInit, OnDestroy {
   }
   copy(account: Account): void {
     copy(account.address);
-    const copyToClipboard = this.translate.instant(
-      'OVERVIEWCOMPONENT.COPIEDTOCLIPBOARD'
-    );
+    const copyToClipboard = this.translate.instant('OVERVIEWCOMPONENT.COPIEDTOCLIPBOARD');
     this.messageService.add(account.address + ' ' + copyToClipboard, 5);
   }
   explorerURL(hash: string): string {
@@ -83,12 +83,12 @@ export class AccountViewComponent implements OnInit, OnDestroy {
     return 'Sent';
   }
   zeroSent(activity): boolean {
-    return (this.sentKind(activity).length > 4 && activity.amount === '0');
+    return this.sentKind(activity).length > 4 && activity.amount === '0';
   }
   receivedKind(activity): string {
-    return (activity.tokenId && activity.source.address && (activity.tokenId.split(':')[0] === activity.source.address)) ? 'Minted' : 'Received';
+    return activity.tokenId && activity.source.address && activity.tokenId.split(':')[0] === activity.source.address ? 'Minted' : 'Received';
   }
   displayTokenCard(): boolean {
-    return (this.account instanceof ImplicitAccount) || (this.account?.tokens?.length > 0);
+    return this.account instanceof ImplicitAccount || this.account?.tokens?.length > 0;
   }
 }

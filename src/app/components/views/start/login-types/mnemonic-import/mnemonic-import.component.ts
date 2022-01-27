@@ -50,83 +50,83 @@ export class MnemonicImportComponent implements OnInit, OnDestroy {
     private exportService: ExportService,
     private inputValidationService: InputValidationService
   ) {
-    this.subscriptions.add(this.router.events
-    .pipe(filter(e => e instanceof NavigationEnd && e.url.startsWith('/import')))
-    .subscribe(() => {
-     const navigation  = this.router.getCurrentNavigation();
-     this.importOption = navigation.extras?.state?.option ? navigation.extras.state.option : 0;
-    }));
+    this.subscriptions.add(
+      this.router.events.pipe(filter((e) => e instanceof NavigationEnd && e.url.startsWith('/import'))).subscribe(() => {
+        const navigation = this.router.getCurrentNavigation();
+        this.importOption = navigation.extras?.state?.option ? navigation.extras.state.option : 0;
+      })
+    );
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
 
   clickPassword(e) {
-    e.target.removeAttribute("readonly");
+    e.target.removeAttribute('readonly');
     e.target.focus();
   }
 
   blurPassword(e) {
-    e.target.setAttribute("readonly", true);
+    e.target.setAttribute('readonly', true);
   }
 
   retrieve(): void {
     if (this.mnemonic) {
-      this.mnemonic = this.mnemonic.toLowerCase().replace(/(\r\n|\n|\r)/gm, ' ').trim();
+      this.mnemonic = this.mnemonic
+        .toLowerCase()
+        .replace(/(\r\n|\n|\r)/gm, ' ')
+        .trim();
     }
     if (this.importOption === 2) {
       this.passphrase = this.email + this.password;
     }
     if (!this.inputValidationService.mnemonics(this.mnemonic)) {
-      this.subscriptions.add(this.translate
-        .get('MNEMONICIMPORTCOMPONENT.INVALIDMNEMONIC')
-        .subscribe((res: string) => this.messageService.addWarning(res, 10)));
-    } else if (
-      this.importOption === 2 &&
-      !this.inputValidationService.email(this.email)
-    ) {
-      this.subscriptions.add(this.translate.get('MNEMONICIMPORTCOMPONENT.INVALIDEMAIL').subscribe(
-        (res: string) => this.messageService.addWarning(res, 10) // 'Invalid email!'
-      ));
+      this.subscriptions.add(this.translate.get('MNEMONICIMPORTCOMPONENT.INVALIDMNEMONIC').subscribe((res: string) => this.messageService.addWarning(res, 10)));
+    } else if (this.importOption === 2 && !this.inputValidationService.email(this.email)) {
+      this.subscriptions.add(
+        this.translate.get('MNEMONICIMPORTCOMPONENT.INVALIDEMAIL').subscribe(
+          (res: string) => this.messageService.addWarning(res, 10) // 'Invalid email!'
+        )
+      );
     } else if (this.importOption === 2 && !this.password) {
-      this.subscriptions.add(this.translate.get('MNEMONICIMPORTCOMPONENT.INVALIDPASSWORD').subscribe(
-        (res: string) => this.messageService.addWarning(res, 10) // 'Invalid password!'
-      ));
+      this.subscriptions.add(
+        this.translate.get('MNEMONICIMPORTCOMPONENT.INVALIDPASSWORD').subscribe(
+          (res: string) => this.messageService.addWarning(res, 10) // 'Invalid password!'
+        )
+      );
     } else if (!this.inputValidationService.passphrase(this.passphrase)) {
-      this.subscriptions.add(this.translate.get('MNEMONICIMPORTCOMPONENT.INVALIDPASSPHRASE').subscribe(
-        (res: string) => this.messageService.addWarning(res, 10) // 'Invalid passphrase!'
-      ));
+      this.subscriptions.add(
+        this.translate.get('MNEMONICIMPORTCOMPONENT.INVALIDPASSPHRASE').subscribe(
+          (res: string) => this.messageService.addWarning(res, 10) // 'Invalid passphrase!'
+        )
+      );
     } else if (this.pkh && !this.inputValidationService.address(this.pkh)) {
-      this.subscriptions.add(this.translate.get('MNEMONICIMPORTCOMPONENT.INVALIDPKH').subscribe(
-        (res: string) => this.messageService.addWarning(res, 10) // 'Invalid public key hash!'
-      ));
+      this.subscriptions.add(
+        this.translate.get('MNEMONICIMPORTCOMPONENT.INVALIDPKH').subscribe(
+          (res: string) => this.messageService.addWarning(res, 10) // 'Invalid public key hash!'
+        )
+      );
     } else {
       let pkh = '';
       if (this.pkh) {
         if (this.importOption === 1 && this.hdImport) {
-          pkh = hd.keyPairFromAccountIndex(
-            utils.mnemonicToSeed(this.mnemonic, this.passphrase, true),
-            0
-          ).pkh;
+          pkh = hd.keyPairFromAccountIndex(utils.mnemonicToSeed(this.mnemonic, this.passphrase, true), 0).pkh;
         } else {
-          pkh = utils.seedToKeyPair(
-            utils.mnemonicToSeed(this.mnemonic, this.passphrase, false)
-          ).pkh;
+          pkh = utils.seedToKeyPair(utils.mnemonicToSeed(this.mnemonic, this.passphrase, false)).pkh;
         }
       }
       if (this.pkh && pkh !== this.pkh) {
         if (this.importOption === 2) {
-          this.subscriptions.add(this.translate
-            .get('MNEMONICIMPORTCOMPONENT.INVALIDEMAILPASSWORD')
-            .subscribe((res: string) => this.messageService.addWarning(res, 5)));
+          this.subscriptions.add(
+            this.translate.get('MNEMONICIMPORTCOMPONENT.INVALIDEMAILPASSWORD').subscribe((res: string) => this.messageService.addWarning(res, 5))
+          );
         } else {
-          this.subscriptions.add(this.translate
-            .get('MNEMONICIMPORTCOMPONENT.INVALIDPASSPHRASE')
-            .subscribe((res: string) => this.messageService.addWarning(res, 5)));
+          this.subscriptions.add(
+            this.translate.get('MNEMONICIMPORTCOMPONENT.INVALIDPASSPHRASE').subscribe((res: string) => this.messageService.addWarning(res, 5))
+          );
         }
       } else {
         this.activePanel++;
@@ -140,12 +140,7 @@ export class MnemonicImportComponent implements OnInit, OnDestroy {
       this.pwd2 = '';
       await this.messageService.startSpinner('Encrypting wallet...');
       try {
-        this.wallet = await this.walletService.createEncryptedWallet(
-          this.mnemonic,
-          password,
-          this.passphrase,
-          this.importOption === 1 && this.hdImport
-        );
+        this.wallet = await this.walletService.createEncryptedWallet(this.mnemonic, password, this.passphrase, this.importOption === 1 && this.hdImport);
       } finally {
         this.messageService.stopSpinner();
       }
@@ -159,23 +154,25 @@ export class MnemonicImportComponent implements OnInit, OnDestroy {
 
   validPwd(): boolean {
     if (!this.inputValidationService.password(this.pwd1)) {
-      this.subscriptions.add(this.translate.get('MNEMONICIMPORTCOMPONENT.PASSWORDWEAK').subscribe(
-        (res: string) => this.messageService.addWarning(res, 10) // 'Password is too weak!'
-      ));
+      this.subscriptions.add(
+        this.translate.get('MNEMONICIMPORTCOMPONENT.PASSWORDWEAK').subscribe(
+          (res: string) => this.messageService.addWarning(res, 10) // 'Password is too weak!'
+        )
+      );
       return false;
     } else if (this.pwd1 !== this.pwd2) {
-      this.subscriptions.add(this.translate.get('MNEMONICIMPORTCOMPONENT.NOMATCHPASSWORDS').subscribe(
-        (res: string) => this.messageService.addWarning(res, 10) // Passwords don't match!
-      ));
+      this.subscriptions.add(
+        this.translate.get('MNEMONICIMPORTCOMPONENT.NOMATCHPASSWORDS').subscribe(
+          (res: string) => this.messageService.addWarning(res, 10) // Passwords don't match!
+        )
+      );
       return false;
     } else {
       return true;
     }
   }
   calcStrength(): void {
-    this.pwdStrength = this.inputValidationService.passwordStrengthDisplay(
-      this.pwd1
-    );
+    this.pwdStrength = this.inputValidationService.passwordStrengthDisplay(this.pwd1);
   }
   export(): string {
     return JSON.stringify(this.wallet.data);
@@ -190,18 +187,13 @@ export class MnemonicImportComponent implements OnInit, OnDestroy {
   async done(): Promise<void> {
     await this.messageService.startSpinner('Loading wallet...');
     try {
-      await this.importService.importWalletFromObject(
-        this.wallet.data,
-        this.wallet.seed
-      );
+      await this.importService.importWalletFromObject(this.wallet.data, this.wallet.seed);
     } finally {
       this.messageService.stopSpinner();
     }
     this.wallet = null;
     this.router.navigate([`/account/`]);
-    this.subscriptions.add(this.translate
-      .get('MNEMONICIMPORTCOMPONENT.WALLETREADY')
-      .subscribe((res: string) => this.messageService.addSuccess(res)));
+    this.subscriptions.add(this.translate.get('MNEMONICIMPORTCOMPONENT.WALLETREADY').subscribe((res: string) => this.messageService.addSuccess(res)));
   }
   /* Keystore handling */
   importPreCheck(keyFile: string): void {
@@ -272,8 +264,10 @@ export class MnemonicImportComponent implements OnInit, OnDestroy {
           console.log(success);
           this.messageService.addError('Something went wrong');
         }
-      }).catch((e) => {
+      })
+      .catch((e) => {
         this.messageService.addError(e);
+        this.walletService.clearWallet();
         this.messageService.stopSpinner();
       });
   }
@@ -283,9 +277,7 @@ export class MnemonicImportComponent implements OnInit, OnDestroy {
       return false;
     } else if (!this.validateFile(fileToUpload.name)) {
       let fileNotSupported = '';
-      this.subscriptions.add(this.translate
-        .get('IMPORTCOMPONENT.FILENOTSUPPORTED')
-        .subscribe((res: string) => (fileNotSupported = res)));
+      this.subscriptions.add(this.translate.get('IMPORTCOMPONENT.FILENOTSUPPORTED').subscribe((res: string) => (fileNotSupported = res)));
       this.messageService.add(fileNotSupported);
 
       console.log('Selected file format is not supported');
@@ -293,7 +285,6 @@ export class MnemonicImportComponent implements OnInit, OnDestroy {
       this.walletJson = null;
       return false;
     } else {
-
       const reader = new FileReader();
       reader.readAsText(fileToUpload);
       reader.onload = () => {

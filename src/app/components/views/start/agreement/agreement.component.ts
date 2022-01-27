@@ -9,9 +9,7 @@ import { Location } from '@angular/common';
 export class AgreementComponent implements OnInit {
   displayAgreement = false;
   key = 'accepted-terms';
-  constructor(
-    private location: Location
-    ) { }
+  constructor(private location: Location) {}
   ngOnInit(): void {
     // localStorage.removeItem(this.key);
     const accepted = localStorage.getItem(this.key);

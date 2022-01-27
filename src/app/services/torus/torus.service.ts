@@ -17,7 +17,7 @@ const AUTH_DOMAIN_MAINNET = 'https://kukai.eu.auth0.com';
 })
 export class TorusService {
   torus: any = null;
-  nodeDetails: { torusNodeEndpoints: string[], torusNodePub: any[] } = null;
+  nodeDetails: { torusNodeEndpoints: string[]; torusNodePub: any[] } = null;
   public readonly verifierMap: any;
   private readonly proxy: any;
   verifierMaps = {
@@ -95,16 +95,19 @@ export class TorusService {
     }
   };
   verifierMapKeys: any;
-  constructor(
-    private operationService: OperationService,
-    private inputValidationService: InputValidationService
-  ) {
+  constructor(private operationService: OperationService, private inputValidationService: InputValidationService) {
     if (CONSTANTS.MAINNET) {
       this.verifierMap = this.verifierMaps.mainnet;
-      this.proxy = { address: '0x638646503746d5456209e33a2ff5e3226d698bea', network: 'mainnet' };
+      this.proxy = {
+        address: '0x638646503746d5456209e33a2ff5e3226d698bea',
+        network: 'mainnet'
+      };
     } else {
       this.verifierMap = this.verifierMaps.testnet;
-      this.proxy = { address: '0x4023d2a0D330bF11426B12C6144Cfb96B7fa6183', network: 'ropsten' };
+      this.proxy = {
+        address: '0x4023d2a0D330bF11426B12C6144Cfb96B7fa6183',
+        network: 'ropsten'
+      };
     }
     this.verifierMapKeys = Object.keys(this.verifierMap);
   }
@@ -116,7 +119,7 @@ export class TorusService {
           redirectToOpener: true,
           enableLogging: !(this.proxy.network === 'mainnet'),
           proxyContractAddress: this.proxy.address,
-          network: (this.proxy.network === 'mainnet') ? this.proxy.network : 'testnet',
+          network: this.proxy.network === 'mainnet' ? this.proxy.network : 'testnet'
         });
         await torusdirectsdk.init({ skipSw: false });
         this.torus = torusdirectsdk;
@@ -126,7 +129,10 @@ export class TorusService {
     }
   }
   async lookupPkh(selectedVerifier: string, verifierId: string): Promise<any> {
-    const fetchNodeDetails = new FetchNodeDetails({ network: this.proxy.network, proxyAddress: this.proxy.address });
+    const fetchNodeDetails = new FetchNodeDetails({
+      network: this.proxy.network,
+      proxyAddress: this.proxy.address
+    });
     const torus = new TorusUtils();
     const verifier = this.verifierMap[selectedVerifier].verifier;
     if (!this.nodeDetails) {
@@ -148,7 +154,12 @@ export class TorusService {
         throw new Error('Twitter handle not found');
       }
     }
-    const pk: any = await torus.getPublicAddress(this.nodeDetails.torusNodeEndpoints, this.nodeDetails.torusNodePub, { verifier, verifierId: sanitizedVerifierId }, true);
+    const pk: any = await torus.getPublicAddress(
+      this.nodeDetails.torusNodeEndpoints,
+      this.nodeDetails.torusNodePub,
+      { verifier, verifierId: sanitizedVerifierId },
+      true
+    );
     const pkh = this.operationService.spPointsToPkh(pk.X, pk.Y);
     return { pkh, twitterId };
   }
@@ -167,11 +178,9 @@ export class TorusService {
       headers: { 'Content-Type': 'application/json' },
       referrerPolicy: 'no-referrer',
       body: JSON.stringify(req)
-    }).then(
-      (ans) => {
-        return ans.json();
-      }
-    );
+    }).then((ans) => {
+      return ans.json();
+    });
   }
   async loginTorus(selectedVerifier: string, verifierId = '', skipTorusKey = false): Promise<any> {
     if (!CONSTANTS.MAINNET && document?.location?.host === 'localhost:4200' && selectedVerifier !== 'google' && selectedVerifier !== 'twitter') {
@@ -184,33 +193,35 @@ export class TorusService {
         console.log('login_hint: ' + verifierId);
       }
       const { typeOfLogin, clientId, verifier, aggregated } = this.verifierMap[selectedVerifier];
-      const loginDetails = aggregated ? await this.torus.triggerAggregateLogin({
-        aggregateVerifierType: 'single_id_verifier',
-        verifierIdentifier: verifier,
-        subVerifierDetailsArray: [
-          {
+      const loginDetails = aggregated
+        ? await this.torus.triggerAggregateLogin({
+            aggregateVerifierType: 'single_id_verifier',
+            verifierIdentifier: verifier,
+            subVerifierDetailsArray: [
+              {
+                clientId,
+                typeOfLogin: typeOfLogin,
+                verifier: this.verifierMap[selectedVerifier].subVerifier,
+                jwtParams
+              }
+            ],
+            skipTorusKey
+          })
+        : await this.torus.triggerLogin({
+            verifier,
+            typeOfLogin,
             clientId,
-            typeOfLogin: typeOfLogin,
-            verifier: this.verifierMap[selectedVerifier].subVerifier,
-            jwtParams
-          }
-        ],
-        skipTorusKey
-      }) : await this.torus.triggerLogin({
-        verifier,
-        typeOfLogin,
-        clientId,
-        jwtParams,
-        skipTorusKey
-      });
+            jwtParams,
+            skipTorusKey
+          });
       if (aggregated) {
         loginDetails.userInfo = loginDetails.userInfo[0];
       }
       if (selectedVerifier === FACEBOOK) {
         console.log('Invalidating access token...');
-        fetch(`https://graph.facebook.com/me/permissions?access_token=${loginDetails.userInfo.accessToken}`, { method: "DELETE", mode: "cors" });
+        fetch(`https://graph.facebook.com/me/permissions?access_token=${loginDetails.userInfo.accessToken}`, { method: 'DELETE', mode: 'cors' });
       }
-      const keyPair = (skipTorusKey && !loginDetails?.privateKey) ? { pk: '', pkh: '' } : this.operationService.spPrivKeyToKeyPair(loginDetails.privateKey);
+      const keyPair = skipTorusKey && !loginDetails?.privateKey ? { pk: '', pkh: '' } : this.operationService.spPrivKeyToKeyPair(loginDetails.privateKey);
       console.log('DirectAuth KeyPair', keyPair);
       if (loginDetails?.userInfo?.typeOfLogin === 'jwt') {
         loginDetails.userInfo.typeOfLogin = selectedVerifier;
@@ -236,12 +247,12 @@ export class TorusService {
       },
       [REDDIT]: {
         domain: CONSTANTS.MAINNET ? AUTH_DOMAIN_MAINNET : AUTH_DOMAIN,
-        connection: "Reddit",
-        verifierIdField: "name",
+        connection: 'Reddit',
+        verifierIdField: 'name',
         isVerifierIdCaseSensitive: false
       }
     };
-  }
+  };
   private async mockLogin(typeOfLogin: string): Promise<any> {
     const keyPair = {
       sk: 'spsk1VfCfhixtzGvUSKDre6jwyGbXFm6aoeLGnxeVLCouueZmkgtJF',

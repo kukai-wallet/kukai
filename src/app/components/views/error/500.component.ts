@@ -5,7 +5,5 @@ import { Component } from '@angular/core';
   styleUrls: ['../../../../scss/components/views/error/error.scss']
 })
 export class P500Component {
-
-  constructor() { }
-
+  constructor() {}
 }

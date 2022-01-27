@@ -13,7 +13,9 @@ describe('TokenService', () => {
     spyOn(localStorage.__proto__, 'getItem').and.returnValue(undefined);
     service = TestBed.inject(TokenService);
     (service as any).contracts = {};
-    spyOn(service, 'explore').and.callFake(function () { return true; });
+    spyOn(service, 'explore').and.callFake(function () {
+      return true;
+    });
     indexerService = TestBed.inject(IndexerService);
     response = {
       decimals: 0,
@@ -30,7 +32,9 @@ describe('TokenService', () => {
   });
   describe('> Search metadata', async () => {
     beforeEach(() => {
-      spyOn(indexerService, 'getTokenMetadata').and.callFake(async function () { return response; });
+      spyOn(indexerService, 'getTokenMetadata').and.callFake(async function () {
+        return response;
+      });
     });
     /* deprecated
     it('Valid metadata => inclusion', async (done) => {

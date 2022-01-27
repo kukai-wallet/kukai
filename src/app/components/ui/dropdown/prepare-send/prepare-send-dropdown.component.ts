@@ -9,17 +9,20 @@ import { DropdownComponent } from '../dropdown.component';
   styleUrls: ['../../../../../scss/components/ui/dropdown/prepare-send-dropdown.component.scss']
 })
 export class PrepareSendDropdownComponent extends DropdownComponent implements OnInit {
-
   @Input() torusVerifierName = 'Tezos Address';
   @Input() torusVerifier = '';
 
-  constructor(public router: Router, public torusService: TorusService) { super(); }
-
-  ngOnInit(): void {
+  constructor(public router: Router, public torusService: TorusService) {
+    super();
   }
 
+  ngOnInit(): void {}
+
   toggleDropdown(): void {
-    this.dropdownResponse.emit({ torusVerifierName: this.torusVerifierName, torusVerifier: this.torusVerifier  })
+    this.dropdownResponse.emit({
+      torusVerifierName: this.torusVerifierName,
+      torusVerifier: this.torusVerifier
+    });
     this.isOpen = !this.isOpen;
   }
 }

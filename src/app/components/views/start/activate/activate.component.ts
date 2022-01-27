@@ -20,10 +20,9 @@ export class ActivateComponent implements OnInit, OnDestroy {
     private operationService: OperationService,
     private inputValidationService: InputValidationService,
     private translate: TranslateService
-  ) { }
+  ) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
@@ -34,45 +33,53 @@ export class ActivateComponent implements OnInit, OnDestroy {
       const secret = this.secret;
       this.pkh = '';
       this.secret = '';
-      this.subscriptions.add(this.operationService.activate(pkh, secret).subscribe(
-        (ans: any) => {
-          if (ans.success) {
-            if (ans.payload.opHash) {
-              this.subscriptions.add(this.translate.get('ACTIVATECOMPONENT.ACTIVATESUCCESS').subscribe(
-                (res: string) => this.messageService.addSuccess(res)  // 'Activation successfully broadcasted to the blockchain!'
-              ));
-            } else {
-              this.subscriptions.add(this.translate.get('ACTIVATECOMPONENT.RETRIEVEFAIL').subscribe(
-                (res: string) => this.messageService.addWarning(res)  // Could not retrieve an operation hash
-              ));
-            }
-          } else {
-            let errorMessage = '';
-            if (typeof ans.payload.msg === 'string') {
-              errorMessage = 'NodeError ' + ans.payload.msg;
-            } else {
-              errorMessage = 'NodeError ' + JSON.stringify(ans.payload.msg);
-            }
-            this.messageService.addError(errorMessage);
-            console.log(JSON.stringify(ans.payload.msg));
-          }
-        },
-        err => {
-          this.subscriptions.add(this.translate.get('ACTIVATECOMPONENT.ACTIVATEFAIL').subscribe(
-            (res: string) => {
-              let errorMessage = '';
-              const activateFailed = res;
-              if (typeof err.payload.msg === 'string') {
-                errorMessage = activateFailed + ' ' + err.payload.msg;
+      this.subscriptions.add(
+        this.operationService.activate(pkh, secret).subscribe(
+          (ans: any) => {
+            if (ans.success) {
+              if (ans.payload.opHash) {
+                this.subscriptions.add(
+                  this.translate.get('ACTIVATECOMPONENT.ACTIVATESUCCESS').subscribe(
+                    (res: string) => this.messageService.addSuccess(res) // 'Activation successfully broadcasted to the blockchain!'
+                  )
+                );
               } else {
-                errorMessage = activateFailed;
+                this.subscriptions.add(
+                  this.translate.get('ACTIVATECOMPONENT.RETRIEVEFAIL').subscribe(
+                    (res: string) => this.messageService.addWarning(res) // Could not retrieve an operation hash
+                  )
+                );
+              }
+            } else {
+              let errorMessage = '';
+              if (typeof ans.payload.msg === 'string') {
+                errorMessage = 'NodeError ' + ans.payload.msg;
+              } else {
+                errorMessage = 'NodeError ' + JSON.stringify(ans.payload.msg);
               }
               this.messageService.addError(errorMessage);
-            }  // 'Failed to activate wallet!'
-          ));
-          console.log(JSON.stringify(err));
-        }
-      ));
+              console.log(JSON.stringify(ans.payload.msg));
+            }
+          },
+          (err) => {
+            this.subscriptions.add(
+              this.translate.get('ACTIVATECOMPONENT.ACTIVATEFAIL').subscribe(
+                (res: string) => {
+                  let errorMessage = '';
+                  const activateFailed = res;
+                  if (typeof err.payload.msg === 'string') {
+                    errorMessage = activateFailed + ' ' + err.payload.msg;
+                  } else {
+                    errorMessage = activateFailed;
+                  }
+                  this.messageService.addError(errorMessage);
+                } // 'Failed to activate wallet!'
+              )
+            );
+            console.log(JSON.stringify(err));
+          }
+        )
+      );
     }
   }
   checkInput(): string {

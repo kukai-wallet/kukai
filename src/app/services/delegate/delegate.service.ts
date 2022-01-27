@@ -8,16 +8,12 @@ import { take } from 'rxjs/operators';
 
 @Injectable()
 export class DelegateService {
-
   private readonly network = CONSTANTS.NETWORK.replace('edonet', 'edo2net');
   public readonly bcd = 'https://api.baking-bad.org/v2';
   public readonly tzkt = `https://staging.api.${this.network}.tzkt.io/v1`;
   public delegates = new BehaviorSubject<any>([]);
 
-  constructor(
-    private walletService: WalletService,
-    private operationService: OperationService
-  ) {
+  constructor(private walletService: WalletService, private operationService: OperationService) {
     this.getDelegates();
   }
   getDelegate(account: Account) {
@@ -46,12 +42,14 @@ export class DelegateService {
     }
   }
   getDelegates(): void {
-    fetch(`${this.bcd}/bakers`).then((response) => response.json()).then((d) => this.delegates.next(d));
+    fetch(`${this.bcd}/bakers`)
+      .then((response) => response.json())
+      .then((d) => this.delegates.next(d));
   }
 
   resolveDelegateByAddress(address: string): Promise<any> {
-    return new Promise(resolve => {
-      this.delegates.pipe(take(1)).subscribe(d => resolve(d?.find(d => d?.address === address)));
+    return new Promise((resolve) => {
+      this.delegates.pipe(take(1)).subscribe((d) => resolve(d?.find((d) => d?.address === address)));
     });
   }
 }

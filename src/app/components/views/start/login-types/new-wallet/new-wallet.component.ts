@@ -7,7 +7,6 @@ import { InputValidationService } from '../../../../../services/input-validation
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 
-
 @Component({
   selector: 'app-new-wallet',
   templateUrl: './new-wallet.component.html',
@@ -20,6 +19,7 @@ export class NewWalletComponent implements OnInit {
   @Input() pwd2 = '';
   @Input() userMnemonic = '';
   hideBlur = false;
+  isSelectedMnemonic = false;
   pwdStrength = '';
   ekfDownloaded = false;
   activePanel = 0;
@@ -28,11 +28,12 @@ export class NewWalletComponent implements OnInit {
   pkh: string;
   pk: string;
   MNEMONIC: {
-    string: string,
-    array: string[],
-    verify: number[],
-    wordsToVerify: number
+    string: string;
+    array: string[];
+    verify: number[];
+    wordsToVerify: number;
   };
+  longClickTs = 0;
   constructor(
     private translate: TranslateService,
     private walletService: WalletService,
@@ -41,7 +42,7 @@ export class NewWalletComponent implements OnInit {
     private importService: ImportService,
     private inputValidationService: InputValidationService,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.generateSeed();
@@ -125,7 +126,7 @@ export class NewWalletComponent implements OnInit {
   }
 
   mnemonicMatch(): boolean {
-    return (this.MNEMONIC.string === this.userMnemonic);
+    return this.MNEMONIC.string === this.userMnemonic;
   }
   async encryptWallet(): Promise<void> {
     if (this.validPwd()) {
@@ -180,5 +181,25 @@ export class NewWalletComponent implements OnInit {
   download(): void {
     this.exportService.downloadWallet(this.data);
     this.ekfDownloaded = true;
+  }
+  mouseOut(e) {
+    e.stopPropagation();
+    this.hideBlur = false;
+    window.getSelection()?.removeAllRanges();
+  }
+  checkSelection(ev) {
+    ev.stopPropagation();
+    if (this.isTextSelected()) {
+      this.isSelectedMnemonic = true;
+    }
+  }
+  private isTextSelected() {
+    let selection: Selection;
+    if (window.getSelection) {
+      selection = window.getSelection();
+    } else if (document.getSelection) {
+      selection = document.getSelection();
+    } else return false;
+    return !selection?.isCollapsed;
   }
 }

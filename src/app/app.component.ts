@@ -9,7 +9,7 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit, OnDestroy {
   readonly CONSTANTS = _CONSTANTS;
@@ -21,14 +21,7 @@ export class AppComponent implements OnInit, OnDestroy {
   container = null;
   post = false;
   private subscriptions: Subscription = new Subscription();
-  constructor(
-    private walletService: WalletService,
-    public router: Router,
-    public translate: TranslateService,
-    private location: Location
-
-  ) {
-
+  constructor(private walletService: WalletService, public router: Router, public translate: TranslateService, private location: Location) {
     // this language will be used as a fallback when a translation isn't found in the current language
     translate.setDefaultLang('en');
 
@@ -43,26 +36,28 @@ export class AppComponent implements OnInit, OnDestroy {
     if (!this.embedded) {
       this.walletService.loadStoredWallet();
     }
-    this.subscriptions.add(this.router.events.subscribe((event: Event) => {
-      if (event instanceof NavigationEnd) {
-        this.checkEmbedded();
-        window.scrollTo(0, 0);
-      }
-    }));
+    this.subscriptions.add(
+      this.router.events.subscribe((event: Event) => {
+        if (event instanceof NavigationEnd) {
+          this.checkEmbedded();
+          window.scrollTo(0, 0);
+        }
+      })
+    );
     if (!this.embedded) {
-      window.addEventListener('storage', (e) => { this.handleStorageEvent(e); });
+      window.addEventListener('storage', (e) => {
+        this.handleStorageEvent(e);
+      });
     }
 
     const e = () => {
-      const brk = getComputedStyle(document.documentElement)
-        .getPropertyValue('--layout-break-5');
+      const brk = getComputedStyle(document.documentElement).getPropertyValue('--layout-break-5');
       if (parseFloat(brk.replace(/[a-zA-Z]/g, '')) * 16 > document.documentElement.clientWidth) {
-        document.documentElement.style.setProperty('--is-mobile', "1");
+        document.documentElement.style.setProperty('--is-mobile', '1');
       } else {
-        document.documentElement.style.setProperty('--is-mobile', "0");
+        document.documentElement.style.setProperty('--is-mobile', '0');
       }
-
-    }
+    };
     window.addEventListener('resize', e);
     window.addEventListener('load', e);
     e();
@@ -83,7 +78,6 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   }
   returnLanguage(lang: string) {
-
     // this.translate.use(lang);
     // console.log('lang ', lang);
 
@@ -117,7 +111,7 @@ export class AppComponent implements OnInit, OnDestroy {
         } else {
           document.documentElement.style.fontSize = '100%';
         }
-      }
+      };
       window.addEventListener('resize', resize);
       window.addEventListener('load', resize);
       resize();

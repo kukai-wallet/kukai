@@ -9,14 +9,10 @@ import { WalletService } from '../../../../../services/wallet/wallet.service';
 export class ExprTemplateComponent implements OnInit, OnChanges {
   @Input() req = null;
   @Output() isApproved = new EventEmitter();
-  constructor(
-    public walletService: WalletService
-  ) {}
+  constructor(public walletService: WalletService) {}
 
-  ngOnInit(): void {
-  }
-  ngOnChanges(changes: SimpleChanges): void {
-  }
+  ngOnInit(): void {}
+  ngOnChanges(changes: SimpleChanges): void {}
   cancel() {
     this.isApproved.emit(false);
   }

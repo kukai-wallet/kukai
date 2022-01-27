@@ -3,11 +3,11 @@ import { saveAs } from 'file-saver';
 
 @Injectable()
 export class ExportService {
-
-  constructor(
-  ) { }
+  constructor() {}
   downloadWallet(data: any) {
-    const blob = new Blob([JSON.stringify(data, null, 4)], { type: 'application/json' });
+    const blob = new Blob([JSON.stringify(data, null, 4)], {
+      type: 'application/json'
+    });
     let filename = 'wallet.tez';
     if (data.walletType === 1) {
       filename = 'view-only_wallet.tez';
@@ -32,7 +32,9 @@ export class ExportService {
     } else {
       filename = 'unsigned.tzop';
     }
-    const blob = new Blob([JSON.stringify(data, null, 4)], { type: 'application/json' });
+    const blob = new Blob([JSON.stringify(data, null, 4)], {
+      type: 'application/json'
+    });
     saveAs(blob, filename);
   }
 }

@@ -9,22 +9,24 @@ import { BasicButtonComponent } from '../basic.component';
   templateUrl: './send-button.component.html',
   styleUrls: ['../../../../../../scss/components/ui/button/send.component.scss']
 })
-
 export class SendButtonComponent extends BasicButtonComponent implements OnInit {
   @Input() activeAccount: Account;
   @Input() tokenTransfer: string;
   @Input() symbol: string;
   @Input() override = false;
   asset = null;
-  constructor(
-    public tokenService: TokenService,
-    private subjectService: SubjectService
-  ) { super(); }
+  constructor(public tokenService: TokenService, private subjectService: SubjectService) {
+    super();
+  }
 
   ngOnInit(): void {
-    this.asset = this.tokenService.getAsset(this.tokenTransfer)
+    this.asset = this.tokenService.getAsset(this.tokenTransfer);
   }
   prepareTransaction(): void {
-    this.subjectService.prepareTokenTransfer.next({ account: this.activeAccount, tokenTransfer: this.tokenTransfer, symbol: this.symbol });
+    this.subjectService.prepareTokenTransfer.next({
+      account: this.activeAccount,
+      tokenTransfer: this.tokenTransfer,
+      symbol: this.symbol
+    });
   }
 }

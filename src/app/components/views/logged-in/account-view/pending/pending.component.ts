@@ -7,17 +7,12 @@ import { TokenService } from '../../../../../services/token/token.service';
 @Component({
   selector: 'app-pending',
   templateUrl: './pending.component.html',
-  styleUrls: ['../../../../../../scss/components/views/logged-in/account-view/cards/pending.component.scss'],
+  styleUrls: ['../../../../../../scss/components/views/logged-in/account-view/cards/pending.component.scss']
 })
 export class PendingComponent implements OnInit {
   account: Account;
-  constructor(
-    public translate: TranslateService,
-    public messageService: MessageService,
-    public tokenService: TokenService
-  ) { }
-  ngOnInit(): void {
-  }
+  constructor(public translate: TranslateService, public messageService: MessageService, public tokenService: TokenService) {}
+  ngOnInit(): void {}
   toggleDropdown() {
     document.querySelector('.pending').classList.toggle('expanded');
     if (document.querySelector('.pending .tokens').classList.contains('expanded')) {
@@ -29,4 +24,3 @@ export class PendingComponent implements OnInit {
     }
   }
 }
-

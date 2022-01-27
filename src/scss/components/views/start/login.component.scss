@@ -119,9 +119,15 @@ $base-background-color: v.$base-background-color;
           font-weight: 600;
         }
 
-        &.red {
+        &.red, & .red {
           @include m.multiply("font-size", 1.5);
           color: red;
+        }
+
+        & .warning {
+          display: block;
+          padding: 1rem;
+          background-color: #000;
         }
       }
 

@@ -4,17 +4,12 @@ import { OperationService } from '../operation/operation.service';
 import { WalletService } from '../../services/wallet/wallet.service';
 import { MessageService } from '../../services/message/message.service';
 
-
 @Injectable({
   providedIn: 'root'
 })
 export class DeeplinkService {
   private pairingJson = '';
-  constructor(
-    private operationService: OperationService,
-    private walletService: WalletService,
-    private messageService: MessageService
-  ) { }
+  constructor(private operationService: OperationService, private walletService: WalletService, private messageService: MessageService) {}
   set(params: Params) {
     console.log(params);
     this.pairingJson = this.extractPairingJson(params);

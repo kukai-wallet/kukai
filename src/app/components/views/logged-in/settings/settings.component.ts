@@ -24,7 +24,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
     private router: Router,
     private tokenService: TokenService,
     private coordinatorService: CoordinatorService
-    ) { }
+  ) {}
 
   ngOnInit(): void {
     if (this.walletService.wallet) {
@@ -33,13 +33,13 @@ export class SettingsComponent implements OnInit, OnDestroy {
       this.onResize();
     }
 
-    this.subscriptions.add(this.walletService.activeAccount.subscribe(activeAccount => {
-      this.activeAccount = activeAccount;
-    }));
+    this.subscriptions.add(
+      this.walletService.activeAccount.subscribe((activeAccount) => {
+        this.activeAccount = activeAccount;
+      })
+    );
   }
-  ngOnDestroy(): void {
-
-  }
+  ngOnDestroy(): void {}
   accountAvailable(pkh: string): boolean {
     const index = this.implicitAccounts.findIndex((impAcc: any) => impAcc.pkh === pkh);
     if (index === -1) {
@@ -49,7 +49,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
   }
   @HostListener('window:resize')
   onResize(): void {
-    this.wideAccounts = (window.innerWidth > 600);
+    this.wideAccounts = window.innerWidth > 600;
   }
   formatAddress(address: string): string {
     if (this.wideAccounts) {

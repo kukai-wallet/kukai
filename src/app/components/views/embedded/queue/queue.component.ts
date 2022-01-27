@@ -7,16 +7,16 @@ import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 })
 export class QueueEmbedComponent implements OnInit {
   @Input('queueTime') queueTime = 0;
-  hours = "0";
-  minutes = "0";
-  seconds = "0";
-  constructor() { }
+  hours = '0';
+  minutes = '0';
+  seconds = '0';
+  constructor() {}
   ngOnInit(): void {
     this.updateTime();
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if(changes.queueTime.currentValue !== changes.queueTime.previousValue) {
+    if (changes.queueTime.currentValue !== changes.queueTime.previousValue) {
       this.updateTime();
     }
   }
@@ -31,8 +31,8 @@ export class QueueEmbedComponent implements OnInit {
     min = min.toString();
     hrs = hrs.toString();
 
-    this.hours = hrs.length < 2 ? "0" + hrs : hrs; 
-    this.minutes = min.length < 2 ? "0" + min : min;
-    this.seconds = sec.length < 2 ? "0" + sec : sec;
+    this.hours = hrs.length < 2 ? '0' + hrs : hrs;
+    this.minutes = min.length < 2 ? '0' + min : min;
+    this.seconds = sec.length < 2 ? '0' + sec : sec;
   }
 }

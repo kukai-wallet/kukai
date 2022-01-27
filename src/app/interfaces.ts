@@ -33,7 +33,7 @@ export interface Balance {
   pendingFiat: number | null;
 }
 export enum WalletType {
-  FullWallet,
+  LegacyWallet,
   ViewOnlyWallet,
   ObserverWallet,
   LedgerWallet,
@@ -69,12 +69,14 @@ export interface Period {
   remaining: number;
 }
 export interface ParticipationPerPeriod {
-  proposal?: [{
-    hash: string;
-    alias: string;
-    count: number;
-    votes: number;
-  }];
+  proposal?: [
+    {
+      hash: string;
+      alias: string;
+      count: number;
+      votes: number;
+    }
+  ];
   unused_count: number;
   total_count: number;
   unused_votes: number;
@@ -110,7 +112,7 @@ export interface DefaultTransactionParams {
 export enum DisplayLinkOption {
   All,
   DirectAuth,
-  None,
+  None
 }
 
 export interface OpLimits {
@@ -129,12 +131,26 @@ export interface Constants {
   NODE_URL: string;
   BLOCK_EXPLORER_URL: string;
   HARD_LIMITS: {
-    hard_gas_limit_per_operation: number,
-    hard_gas_limit_per_block: number,
-    hard_storage_limit_per_operation: number,
-  },
+    hard_gas_limit_per_operation: number;
+    hard_gas_limit_per_block: number;
+    hard_storage_limit_per_operation: number;
+  };
   ASSETS: Record<string, ContractType>;
   CONTRACT_OVERRIDES: Record<string, OpLimits>;
-  CONTRACT_ALIASES: Record<string, { name?: string, address: string[], thumbnailUrl: Asset, discoverUrl?: string, zoomDiscoverImg?: boolean, link: string, shouldDisplayLink: DisplayLinkOption, category?: string[], backgroundColor?: string, description?: string }>;
+  CONTRACT_ALIASES: Record<
+    string,
+    {
+      name?: string;
+      address: string[];
+      thumbnailUrl: Asset;
+      discoverUrl?: string;
+      zoomDiscoverImg?: boolean;
+      link: string;
+      shouldDisplayLink: DisplayLinkOption;
+      category?: string[];
+      backgroundColor?: string;
+      description?: string;
+    }
+  >;
   NFT_CONTRACT_OVERRIDES: string[];
 }

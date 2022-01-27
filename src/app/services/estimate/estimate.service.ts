@@ -22,11 +22,7 @@ export class EstimateService {
   chainId: string;
   manager: string;
   counter: number;
-  constructor(
-    private http: HttpClient,
-    private operationService: OperationService,
-    private imputValidationService: InputValidationService
-  ) {
+  constructor(private http: HttpClient, private operationService: OperationService, private imputValidationService: InputValidationService) {
     this.contractsOverride = CONSTANTS.CONTRACT_OVERRIDES;
   }
   init(hash: string, chainId: string, counter: number, manager: string, pk: string, pkh: string) {
@@ -40,11 +36,10 @@ export class EstimateService {
   async preLoadData(pkh: string, pk: string) {
     this.pkh = pkh;
     this.pk = pk;
-    await Promise.all([this.operationService.getHeader().toPromise(), this.getCounter(pkh), this.getManager(pkh)]).then(req => {
-      if (req[0] && req[1] && (req[2]) || req[2] === null) {
-        this.init(req[0].hash, req[0].chain_id, req[1], req[2], pk, pkh);
-      }
-    });
+    const [head, counter, manager] = await Promise.all([this.operationService.getHeader().toPromise(), this.getCounter(pkh), this.getManager(pkh)]);
+    if (head && counter && (manager || manager === null)) {
+      this.init(head.hash, head.chain_id, counter, manager, pk, pkh);
+    }
   }
   public async estimateTransactions(transactions: any, from: string, tokenTransfer: string = '', callback) {
     this.estimate(transactions, from, tokenTransfer, callback, false);
@@ -61,28 +56,35 @@ export class EstimateService {
           this.queue.shift();
         }
         let retry = false;
-        for (let i = 0; i < 1 || retry && i < 2; i++) {
-          await this._estimate(this.queue[0].transactions, this.queue[0].from, tokenTransfer, isOrigination).then((res) => {
-            this.queue[0].callback(res);
-          }).catch(async (error) => {
-            if (error.message && error.message === 'An operation assumed a contract counter in the past' && !retry) {
-              console.log('Update counter');
-              await this.preLoadData(this.pkh, this.pk);
-              retry = true;
-            } else {
-              this.queue[0].callback({ error });
-            }
-          });
+        for (let i = 0; i < 1 || (retry && i < 2); i++) {
+          await this._estimate(this.queue[0].transactions, this.queue[0].from, tokenTransfer, isOrigination)
+            .then((res) => {
+              this.queue[0].callback(res);
+            })
+            .catch(async (error) => {
+              if (error.message && error.message === 'An operation assumed a contract counter in the past' && !retry) {
+                console.log('Update counter');
+                await this.preLoadData(this.pkh, this.pk);
+                retry = true;
+              } else {
+                this.queue[0].callback({ error });
+              }
+            });
         }
         this.queue.shift();
       }
     }
   }
   private async _estimate(operations: any, from: string, tokenTransfer: string, isOrigination: boolean = false): Promise<any> {
-    if (!this.hash) { return null; }
+    if (!this.hash) {
+      return null;
+    }
     const simulation = {
       fee: 0,
-      gasLimit: Math.min(CONSTANTS.HARD_LIMITS.hard_gas_limit_per_operation, Math.floor(CONSTANTS.HARD_LIMITS.hard_gas_limit_per_block / (operations.length + 1))),
+      gasLimit: Math.min(
+        CONSTANTS.HARD_LIMITS.hard_gas_limit_per_operation,
+        Math.floor(CONSTANTS.HARD_LIMITS.hard_gas_limit_per_block / (operations.length + 1))
+      ),
       storageLimit: CONSTANTS.HARD_LIMITS.hard_storage_limit_per_operation
     };
     for (const tx of operations) {
@@ -99,14 +101,25 @@ export class EstimateService {
       tx.storageLimit = simulation.storageLimit;
     }
     if (this.hash && this.counter && (this.manager || this.manager === null)) {
-      const op = isOrigination ? this.operationService.createOriginationObject(this.hash, this.counter, this.manager, operations[0], simulation.fee, this.pk, this.pkh) :
-        this.operationService.createTransactionObject(this.hash, this.counter, this.manager, operations, this.pkh, this.pk, from, simulation.fee, tokenTransfer);
-      const result = await this.simulate(op).toPromise().catch(
-        e => {
+      const op = isOrigination
+        ? this.operationService.createOriginationObject(this.hash, this.counter, this.manager, operations[0], simulation.fee, this.pk, this.pkh)
+        : this.operationService.createTransactionObject(
+            this.hash,
+            this.counter,
+            this.manager,
+            operations,
+            this.pkh,
+            this.pk,
+            from,
+            simulation.fee,
+            tokenTransfer
+          );
+      const result = await this.simulate(op)
+        .toPromise()
+        .catch((e) => {
           console.warn(e);
           return null;
-        }
-      );
+        });
       if (result && result.contents) {
         let reveal = false;
         const limits = [];
@@ -114,7 +127,7 @@ export class EstimateService {
           if (result.contents[i].kind === 'reveal') {
             reveal = true;
           } else if (['transaction', 'origination'].includes(result.contents[i].kind) && result.contents[i].metadata.operation_result.status === 'applied') {
-            const index: number = Number(i) + ((result.contents[0]?.kind === 'reveal') ? -1 : 0);
+            const index: number = Number(i) + (result.contents[0]?.kind === 'reveal' ? -1 : 0);
             const opObj = index > -1 ? operations[index] : null;
             const { gas, storage } = this.getOpUsage(result.contents[i], opObj);
             limits.push({ gasLimit: gas, storageLimit: storage });
@@ -122,14 +135,26 @@ export class EstimateService {
             return null;
           }
         }
-        return await this.operationService.localForge(op).pipe(flatMap(fop => {
-          const bytes = (fop.length / 2) + 64;
-          const gas = this.totalGasLimit(limits);
-          const storage = this.totalStorageLimit(limits);
-          const dtp: DefaultTransactionParams = { customLimits: limits, fee: this.recommendFee(limits, reveal, bytes), burn: this.burnFee(limits), gas, storage, reveal };
-          console.log(JSON.stringify(dtp));
-          return of(dtp);
-        })).toPromise();
+        return await this.operationService
+          .localForge(op)
+          .pipe(
+            flatMap((fop) => {
+              const bytes = fop.length / 2 + 64;
+              const gas = this.totalGasLimit(limits);
+              const storage = this.totalStorageLimit(limits);
+              const dtp: DefaultTransactionParams = {
+                customLimits: limits,
+                fee: this.recommendFee(limits, reveal, bytes),
+                burn: this.burnFee(limits),
+                gas,
+                storage,
+                reveal
+              };
+              console.log(JSON.stringify(dtp));
+              return of(dtp);
+            })
+          )
+          .toPromise();
       } else if (typeof result?.success === 'boolean' && result.success === false) {
         console.log(result);
         throw new Error(result.payload.msg);
@@ -180,7 +205,12 @@ export class EstimateService {
       }
     }
     const storageUsage = Math.round(burn / Number(this.costPerByte));
-    if (gasUsage < 0 || gasUsage > CONSTANTS.HARD_LIMITS.hard_gas_limit_per_operation || storageUsage < 0 || storageUsage > CONSTANTS.HARD_LIMITS.hard_storage_limit_per_operation) {
+    if (
+      gasUsage < 0 ||
+      gasUsage > CONSTANTS.HARD_LIMITS.hard_gas_limit_per_operation ||
+      storageUsage < 0 ||
+      storageUsage > CONSTANTS.HARD_LIMITS.hard_storage_limit_per_operation
+    ) {
       throw new Error('InvalidUsageCalculation');
     }
     return this.getOpLimits(content, op, gasUsage, storageUsage);
@@ -203,7 +233,11 @@ export class EstimateService {
       numberOfOperations++;
     }
     bytes += 10 * numberOfOperations; // add 10 extra bytes for variation in amount & fee
-    return Number(Big(Math.ceil(minimalFee + (feePerByte * bytes) + (feePerGasUnit * gasUnits))).div(1000000).toString());
+    return Number(
+      Big(Math.ceil(minimalFee + feePerByte * bytes + feePerGasUnit * gasUnits))
+        .div(1000000)
+        .toString()
+    );
   }
   totalGasLimit(limits: any): number {
     let totalGasLimit = 0;
@@ -228,13 +262,22 @@ export class EstimateService {
   }
   simulate(op: any): Observable<any> {
     op.signature = 'edsigtXomBKi5CTRf5cjATJWSyaRvhfYNHqSUGrn4SdbYRcGwQrUGjzEfQDTuqHhuA8b2d8NarZjz8TRf65WkpQmo423BtomS8Q';
-    return this.operationService.postRpc('chains/main/blocks/head/helpers/scripts/run_operation', { operation: op, chain_id: this.chainId })
-      .pipe(flatMap(res => {
-        this.operationService.checkApplied([res]);
-        return of(res);
-      })).pipe(catchError(err => {
-        return this.operationService.errHandler(err);
-      }));
+    return this.operationService
+      .postRpc('chains/main/blocks/head/helpers/scripts/run_operation', {
+        operation: op,
+        chain_id: this.chainId
+      })
+      .pipe(
+        flatMap((res) => {
+          this.operationService.checkApplied([res]);
+          return of(res);
+        })
+      )
+      .pipe(
+        catchError((err) => {
+          return this.operationService.errHandler(err);
+        })
+      );
   }
   private getOpLimits(content: any, op: any, gasUsage: number, storageUsage: number): OpLimits {
     // check for hardcoded override
@@ -254,7 +297,7 @@ export class EstimateService {
       } else if (op?.gasRecommendation && this.imputValidationService.relativeLimit(op.gasRecommendation)) {
         let percentage: number = Number(op.gasRecommendation.slice(1, -1));
         percentage = Math.min(Math.max(percentage, 2), 900);
-        limit.gas = Math.round(gasUsage * (1 + (percentage / 100)));
+        limit.gas = Math.round(gasUsage * (1 + percentage / 100));
       } else {
         // default
         limit.gas = Math.max(Math.ceil(gasUsage * 1.02), Math.round(gasUsage + 80));
@@ -266,7 +309,7 @@ export class EstimateService {
         limit.storage = Number(op.storageRecommendation);
       } else if (op?.storageRecommendation && this.imputValidationService.relativeLimit(op.storageRecommendation)) {
         const percentage: number = Number(op.storageRecommendation.slice(1, -1));
-        limit.storage = Math.round(storageUsage * (1 + (percentage / 100)));
+        limit.storage = Math.round(storageUsage * (1 + percentage / 100));
       } else {
         limit.storage = Math.round(storageUsage);
       }

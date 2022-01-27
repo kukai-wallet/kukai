@@ -6,13 +6,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['../../../../../../scss/components/views/start/agreement/terms-of-use/terms-of-use.component.scss']
 })
 export class PrivacyPolicyComponent implements OnInit {
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
   getHostName(): string {
     return location.hostname;
   }
-
 }

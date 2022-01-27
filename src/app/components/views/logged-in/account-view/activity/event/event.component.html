@@ -1,14 +1,14 @@
 <div class="flex-column" [class]="getType().replace('undelegated', 'delegated')"
-  [class.unconfirmed]="activity.status === 0" [class.half_confirmed]="activity.status === 0.5"
-  [class.confirmed]="activity.status === 1" [class.new]="fresh && activity.status === 1"
-  [class.failed]="activity.status === -1">
+  [class.unconfirmed]="activity.status === OpStatus.UNCONFIRMED" [class.half_confirmed]="activity.status === OpStatus.HALF_CONFIRMED"
+  [class.confirmed]="activity.status === OpStatus.CONFIRMED" [class.new]="fresh && activity.status === OpStatus.CONFIRMED"
+  [class.failed]="activity.status === OpStatus.FAILED">
   <div class="flex-row top">
     <div class="flex-row title">
       <ng-container *ngIf="!activity.entrypoint; else callEntrypoint">
         <ng-container [ngSwitch]="getType()?.replace('undelegated', 'delegated')">
-          <img *ngSwitchCase="'sent'" [src]="activity.status === -1 ? '../../../../assets/img/up-arrow-red.svg' : '../../../../assets/img/up-arrow-black.svg'"
+          <img *ngSwitchCase="'sent'" [src]="activity.status === OpStatus.FAILED ? '../../../../assets/img/up-arrow-red.svg' : '../../../../assets/img/up-arrow-black.svg'"
             style="transform: rotate(45deg)" />
-          <img *ngSwitchCase="'received'" [src]="activity.status === -1 ? '../../../../assets/img/up-arrow-red.svg' : '../../../../assets/img/up-arrow.svg'" style="transform: rotate(135deg)" />
+          <img *ngSwitchCase="'received'" [src]="activity.status === OpStatus.FAILED ? '../../../../assets/img/up-arrow-red.svg' : '../../../../assets/img/up-arrow.svg'" style="transform: rotate(135deg)" />
           <div *ngSwitchDefault class="blank"></div>
         </ng-container>{{ printAmount() }}
       </ng-container>
@@ -22,8 +22,8 @@
         {{ sentKind(activity) }}
       </ng-template>
     </div>
-    <span class="failed" *ngIf="activity.status === -1">Error</span>
-    <div class="updating-balances" *ngIf="activity.status === 0.5">
+    <span class="failed" *ngIf="activity.status === OpStatus.FAILED">Error</span>
+    <div class="updating-balances" *ngIf="activity.status === OpStatus.HALF_CONFIRMED">
       <img class="spinner" src="../../../../../assets/img/feeLoader.gif">
       <span>Updating balances</span>
     </div>
@@ -33,20 +33,21 @@
         *ngIf="!!getCounterparty(activity)?.lookupType && getCounterparty(activity)?.lookupType !== 5"
         [src]="getEventIcon()" class="event-icon" />
       <div class="flex-row value">{{ getAddressPrefix(getType()) }}&nbsp;{{getCounterparty(activity)?.name ||
-        getCounterparty(activity)?.address || ''}}<img class="copy" src="../../../../assets/img/copy-icon.svg"
-          (click)="copy(getCounterparty(activity)?.address)" /></div>
+        getCounterparty(activity)?.address || ''}}</div>
+      <img class="copy" src="../../../../assets/img/copy-icon.svg"
+          (click)="copy(getCounterparty(activity)?.address)" />
     </div>
     <span class="flex-row time">
       <img [src]="getEventStatusIcon()" />
-      <a class="status" *ngIf="activity.status !== 0" href="{{ explorerURL(activity.hash) }}" target="_blank">
-        <ng-container *ngIf="activity.status !== 0.5; else halfConfirmed">
+      <a class="status" *ngIf="activity.status !== OpStatus.UNCONFIRMED" href="{{ explorerURL(activity.hash) }}" target="_blank">
+        <ng-container *ngIf="activity.status !== OpStatus.HALF_CONFIRMED; else halfConfirmed">
           {{ activity.timestamp | timeAgo:trigger }}
         </ng-container>
         <ng-template #halfConfirmed>
           Confirmed
         </ng-template>
       </a>
-      <div class="status" *ngIf="activity.status === 0">Unconfirmed</div>
+      <div class="status" *ngIf="activity.status === OpStatus.UNCONFIRMED">Unconfirmed</div>
     </span>
   </div>
 </div>

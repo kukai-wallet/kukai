@@ -5,10 +5,7 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './logged-in.component.html'
 })
 export class LoggedInComponent implements OnInit {
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }

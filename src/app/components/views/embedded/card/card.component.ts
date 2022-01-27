@@ -1,9 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { WalletService } from '../../../../services/wallet/wallet.service';
-import {
-  TorusWallet,
-  ImplicitAccount
-} from '../../../../services/wallet/wallet';
+import { TorusWallet, ImplicitAccount } from '../../../../services/wallet/wallet';
 
 @Component({
   selector: 'app-card',
@@ -13,12 +10,9 @@ import {
 export class CardComponent implements OnInit {
   @Input() activeAccount: ImplicitAccount;
 
-  constructor(
-    private walletService: WalletService,
-  ) { }
+  constructor(private walletService: WalletService) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   displayName(): string {
     if (this.walletService.wallet instanceof TorusWallet) {

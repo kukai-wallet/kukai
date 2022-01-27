@@ -1,17 +1,53 @@
 const fs = require('fs');
-const f = 'node_modules/@angular-devkit/build-angular/src/webpack/configs/browser.js';
+const common = 'node_modules/@angular-devkit/build-angular/src/webpack/configs/common.js';
+const tdcore = 'node_modules/@tezos-domains/core/dist/core.es2015.js'
 
-fs.readFile(f, 'utf8', function (err, data) {
-  if (err) {
-    return console.log(err);
-  }
-  if (data.indexOf('new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)') === -1) {
-    var result = data.replace(/node: false/g, 'node: {crypto: true, stream: true, fs: \'empty\'}');
-    result = result.replace('  ...extraPlugins', '  new webpack.IgnorePlugin(/^\\.\\/locale$/, /moment$/), ...extraPlugins');
-    result = result.replace('\nconst plugins_1 = require("../plugins");', '\nconst webpack = require("webpack"); const plugins_1 = require("../plugins");');
+const fallback = `
+fallback: {
+  path: require.resolve('path-browserify'),
+  process: require.resolve('process/browser'),
+  fs: require.resolve('fs'),
+  assert: require.resolve('assert'),
+  crypto: require.resolve('crypto-browserify'),
+  http: require.resolve('stream-http'),
+  https: require.resolve('https-browserify'),
+  os: require.resolve('os-browserify/browser'),
+  buffer: require.resolve('buffer'),
+  stream: require.resolve('stream-browserify')
+},
+alias: {
+  assert: "assert",
+  buffer: "buffer",
+  crypto: "crypto-browserify",
+  http: "stream-http",
+  https: "https-browserify",
+  os: "os-browserify/browser",
+  path: "path-browserify",
+  process: "process/browser",
+  stream: "stream-browserify"
+},
+`;
 
-    fs.writeFile(f, result, 'utf8', function (err) {
-      if (err) return console.log(err);
-    });
-  }
-});
+const plugins = `
+new webpack_2.ProvidePlugin({
+  process: 'process/browser',
+  Buffer: ['buffer', 'Buffer']
+}),
+new webpack_2.EnvironmentPlugin({'NODE_DEBUG': false}),
+`;
+
+let data = fs.readFileSync(tdcore, 'utf8');
+data = data.replace("import { randomInt } from 'crypto';", "import { randomBytes } from 'crypto';");
+data = data.replace("return randomInt(0xFFFFFFFFFFFF);", "return randomBytes(0xFFFFFFFFFFFF);");
+fs.writeFileSync(tdcore, data, 'utf8');
+
+data = fs.readFileSync(common, 'utf8');
+if (data.indexOf("fallback: {") === -1) {
+  data = data.replace('(scriptTarget, isPlatformServer),', `(scriptTarget, isPlatformServer),
+      ${fallback}
+    `);
+  data = data.replace('plugins_1.DedupeModuleResolvePlugin({ verbose }),', `plugins_1.DedupeModuleResolvePlugin({ verbose }),
+      ${plugins}
+    `)
+  fs.writeFileSync(common, data, 'utf8');
+}

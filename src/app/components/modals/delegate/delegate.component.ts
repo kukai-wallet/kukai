@@ -67,9 +67,11 @@ export class DelegateComponent extends ModalComponent implements OnInit, OnChang
       if (this.walletService.addressExists(address)) {
         this.activeAccount = this.walletService.wallet.getAccount(address);
       }
-      this.subscriptions.add(this.walletService.activeAccount.subscribe(activeAccount => {
-        this.activeAccount = activeAccount;
-      }));
+      this.subscriptions.add(
+        this.walletService.activeAccount.subscribe((activeAccount) => {
+          this.activeAccount = activeAccount;
+        })
+      );
     }
   }
   ngOnChanges(changes: SimpleChanges): void {
@@ -79,9 +81,15 @@ export class DelegateComponent extends ModalComponent implements OnInit, OnChang
         if (opReq[0]?.kind === 'delegation') {
           if (opReq[0].delegate) {
             if (this.beaconMode) {
-              ModalComponent.currentModel.next({ name: '', data: null });
+              ModalComponent.currentModel.next({
+                name: '',
+                data: null
+              });
               this.clearForm();
-              ModalComponent.currentModel.next({ name: 'delegate-confirm', data: { address: opReq[0].delegate } });
+              ModalComponent.currentModel.next({
+                name: 'delegate-confirm',
+                data: { address: opReq[0].delegate }
+              });
             }
           }
         }
@@ -151,32 +159,37 @@ export class DelegateComponent extends ModalComponent implements OnInit, OnChang
 
   async sendDelegation(keys: KeyPair): Promise<void> {
     let fee = this.getFee();
-    this.subscriptions.add(this.operationService.delegate(this.activeAccount.address, this.toPkh, Number(fee), keys).subscribe(
-      async (ans: any) => {
-        this.sendResponse = ans;
-        console.log(JSON.stringify(ans));
-        if (ans.success === true) {
-          if (ans.payload.opHash) {
-            this.operationResponse.emit(ans.payload.opHash);
-            const metadata = { delegate: this.toPkh, opHash: ans.payload.opHash };
-            this.coordinatorService.boost(this.activeAccount.address, metadata);
+    this.subscriptions.add(
+      this.operationService.delegate(this.activeAccount.address, this.toPkh, Number(fee), keys).subscribe(
+        async (ans: any) => {
+          this.sendResponse = ans;
+          console.log(JSON.stringify(ans));
+          if (ans.success === true) {
+            if (ans.payload.opHash) {
+              this.operationResponse.emit(ans.payload.opHash);
+              const metadata = {
+                delegate: this.toPkh,
+                opHash: ans.payload.opHash
+              };
+              this.coordinatorService.boost(this.activeAccount.address, metadata);
+              this.closeModal();
+              this.router.navigate([`/account/${this.activeAccount.address}`]);
+            } else if (this.walletService.isLedgerWallet()) {
+              this.requestLedgerSignature();
+            }
+          } else {
+            console.log('Delegation error id ', ans.payload.msg);
+            this.messageService.addError(ans.payload.msg, 0);
+            this.operationResponse.emit('broadcast_error');
             this.closeModal();
-            this.router.navigate([`/account/${this.activeAccount.address}`]);
-          } else if (this.walletService.isLedgerWallet()) {
-            this.requestLedgerSignature();
           }
-        } else {
-          console.log('Delegation error id ', ans.payload.msg);
-          this.messageService.addError(ans.payload.msg, 0);
-          this.operationResponse.emit('broadcast_error');
-          this.closeModal();
+        },
+        (err) => {
+          console.log('Error Message ', JSON.stringify(err));
+          this.ledgerError = 'Failed to create operation';
         }
-      },
-      err => {
-        console.log('Error Message ', JSON.stringify(err));
-        this.ledgerError = 'Failed to create operation';
-      }
-    ));
+      )
+    );
   }
   async requestLedgerSignature(): Promise<void> {
     if (this.walletService.wallet instanceof LedgerWallet) {
@@ -200,11 +213,14 @@ export class DelegateComponent extends ModalComponent implements OnInit, OnChang
   async broadCastLedgerTransaction(): Promise<void> {
     this.messageService.startSpinner('Broadcasting operation');
     this.operationService.broadcast(this.sendResponse.payload.signedOperation).subscribe(
-      ((ans: any) => {
+      (ans: any) => {
         this.sendResponse = ans;
         if (ans.success && this.activeAccount.address) {
           this.operationResponse.emit(ans.payload.opHash);
-          const metadata = { delegate: this.toPkh, opHash: ans.payload.opHash };
+          const metadata = {
+            delegate: this.toPkh,
+            opHash: ans.payload.opHash
+          };
           this.coordinatorService.boost(this.activeAccount.address, metadata);
           this.closeModal();
           this.router.navigate([`/account/${this.activeAccount.address}`]);
@@ -214,27 +230,28 @@ export class DelegateComponent extends ModalComponent implements OnInit, OnChang
         }
         this.closeModal();
         console.log('ans: ' + JSON.stringify(ans));
-      }),
-      (error => {
+      },
+      (error) => {
         this.messageService.stopSpinner();
         this.messageService.addError(error, 0);
         this.operationResponse.emit('broadcast_error');
-      })
+      }
     );
   }
   estimateDefaultFee(): void {
-    this.subscriptions.add(this.operationService.isRevealed(this.activeAccount.pkh)
-      .subscribe((revealed: boolean) => {
+    this.subscriptions.add(
+      this.operationService.isRevealed(this.activeAccount.pkh).subscribe((revealed: boolean) => {
         const revealFee = revealed ? 0 : 0.0002;
         if (this.activeAccount instanceof ImplicitAccount) {
           this.defaultFee = Number(new Big(revealFee).plus(this.pkhFee));
         } else if (this.activeAccount instanceof OriginatedAccount) {
           this.defaultFee = Number(new Big(revealFee).plus(this.ktFee));
         }
-      }));
+      })
+    );
   }
   getFee(): string {
-    return (this.fee !== '') ? this.fee : this.defaultFee.toString()
+    return this.fee !== '' ? this.fee : this.defaultFee.toString();
   }
   clearForm(init: boolean = false): void {
     if (!init && this.syncSub) {
@@ -271,10 +288,11 @@ export class DelegateComponent extends ModalComponent implements OnInit, OnChang
         this.domainPendingLookup = false;
       }
     }
-    if ((!this.inputValidationService.address(this.toPkh) &&
-      this.toPkh !== '') || (
-        this.toPkh.length > 1 && this.toPkh.slice(0, 2) !== 'tz') || (
-        this.walletService.wallet.getImplicitAccount(this.toPkh))) {
+    if (
+      (!this.inputValidationService.address(this.toPkh) && this.toPkh !== '') ||
+      (this.toPkh.length > 1 && this.toPkh.slice(0, 2) !== 'tz') ||
+      this.walletService.wallet.getImplicitAccount(this.toPkh)
+    ) {
       return 'invalid delegate address';
     } else if (!this.inputValidationService.fee(this.fee)) {
       return 'invalid fee';
@@ -284,9 +302,8 @@ export class DelegateComponent extends ModalComponent implements OnInit, OnChang
   }
   // Only Numbers with Decimals
   keyPressNumbersDecimal(event, input): boolean {
-    const charCode = (event.which) ? event.which : event.keyCode;
-    if (charCode !== 46 && charCode > 31
-      && (charCode < 48 || charCode > 57)) {
+    const charCode = event.which ? event.which : event.keyCode;
+    if (charCode !== 46 && charCode > 31 && (charCode < 48 || charCode > 57)) {
       event.preventDefault();
       return false;
     } else if (charCode === 46 && this[input].length === 0) {
