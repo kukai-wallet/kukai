@@ -489,6 +489,14 @@ const _CONSTANTS: Constants = {
       backgroundColor: 'red',
       description: "A CryptoPunks inspired collection, combining the style of Jean-Michel Basquiat with the Crypto Punks."
     },
+    'Ottez': {
+      name: "Ottez",
+      address: ["KT1L7GvUxZH5tfa6cgZKnH6vpp2uVxnFVHKu"],
+      thumbnailUrl: "../../../assets/img/alias/ottez.png",
+      link: "https://ottez.xyz", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"],
+      description: "Humans are gone. Ottez have moved in. 4,007 generative, collectible PFP otters have taken over Earth. ",
+    },
   },
   ASSETS: {
     KT1K9gCRgaLRFKTErYt1wVxA3Frb9FjasjTV: {
@@ -1308,7 +1316,8 @@ const _TRUSTED_TOKEN_CONTRACTS = [
   "KT1S9VbCtVZUgAG4Q3VArvY5stu96q4CiPHZ", // Distributed Consciousness
   "KT1JYioHwutnTpYPTk5yRe9YSfCaFGWhd9MR", // Distributed Consciousness Verses
   "KT1Qi93pZoig6grMNBd7GGA7fveE2cxQK9Ei", //Verses
-  'KT1DtsVHqUvKBkkypLB3x2bYd4jWdbbaHdMy'//Basqunks
+  'KT1DtsVHqUvKBkkypLB3x2bYd4jWdbbaHdMy',//Basqunks
+  'KT1L7GvUxZH5tfa6cgZKnH6vpp2uVxnFVHKu',//Ottez
 ];
 const _BLACKLISTED_TOKEN_CONTRACTS = []
 
