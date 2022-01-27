@@ -56,7 +56,7 @@ export interface TokenData {
 export interface FA12 extends TokensInterface {
   kind: 'FA1.2';
   tokens: {
-    0: TokenData
+    0: TokenData;
   };
 }
 export interface FA2 extends TokensInterface {
@@ -66,21 +66,16 @@ export interface FA2 extends TokensInterface {
 @Injectable({
   providedIn: 'root'
 })
-
 export class TokenService {
   readonly AUTO_DISCOVER: boolean = true;
   readonly version: string = '1.0.10';
   private contracts: ContractsType = {};
-  private exploredIds: Record<string, { firstCheck: number, lastCheck: number, counter: number }> = {};
+  private exploredIds: Record<string, { firstCheck: number; lastCheck: number; counter: number }> = {};
   private pendingSave = null;
   readonly storeKey = 'tokenMetadata';
   queue = [];
   workers = 0;
-  constructor(
-    public indexerService: IndexerService,
-    private subjectService: SubjectService,
-    private teztoolsService: TeztoolsService
-  ) {
+  constructor(public indexerService: IndexerService, private subjectService: SubjectService, private teztoolsService: TeztoolsService) {
     this.contracts = JSON.parse(JSON.stringify(CONSTANTS.ASSETS));
     this.loadMetadata();
     this.saveMetadata();
@@ -97,7 +92,8 @@ export class TokenService {
     if (id > -1) {
       if (contract) {
         let token: TokenResponseType = contract.tokens[id];
-        if (!token) { // check ranges
+        if (!token) {
+          // check ranges
           const ids = Object.keys(contract.tokens);
           for (const idx of ids) {
             if (idx.includes('-')) {
@@ -107,7 +103,7 @@ export class TokenService {
                 const last = Number(span[1]);
                 if (id >= first && id <= last) {
                   token = JSON.parse(JSON.stringify(contract.tokens[idx]));
-                  token.name = `${JSON.parse(JSON.stringify(contract.tokens[idx].name))} #${(id - first + 1)}`;
+                  token.name = `${JSON.parse(JSON.stringify(contract.tokens[idx].name))} #${id - first + 1}`;
                   break;
                 }
               }
@@ -115,7 +111,7 @@ export class TokenService {
           }
         }
         if (token) {
-          if (CONSTANTS.MAINNET && token.status < 1 || token.status < 0) {
+          if ((CONSTANTS.MAINNET && token.status < 1) || token.status < 0) {
             return {
               kind: contract.kind,
               category: contract.category,
@@ -123,7 +119,7 @@ export class TokenService {
               contractAddress,
               ...token,
               thumbnailAsset: '',
-              displayAsset: '',
+              displayAsset: ''
             };
           }
           return {
@@ -139,7 +135,7 @@ export class TokenService {
     return null;
   }
   isKnownTokenId(tokenId: string): boolean {
-    return (this.getAsset(tokenId) !== null);
+    return this.getAsset(tokenId) !== null;
   }
   knownTokenIds(): string[] {
     const tokenIds: string[] = [];
@@ -160,7 +156,7 @@ export class TokenService {
     return regex.test(this.contracts[address]?.category);
   }
   isKnownTokenContract(address: string): boolean {
-    return (this.contracts[address] !== undefined);
+    return this.contracts[address] !== undefined;
   }
   addAsset(contractAddress: string, contract: ContractType) {
     if (!this.contracts[contractAddress]) {
@@ -196,16 +192,13 @@ export class TokenService {
           const metadata = await this.indexerService.getTokenMetadata(contractAddress, id, this.getCounter(tokenId));
           this.handleMetadata(metadata, contractAddress, id);
         }
-      } catch (e) { }
+      } catch (e) {}
     }
     this.workers--;
   }
   handleMetadata(metadata: any, contractAddress: string, id: number) {
     const tokenId = `${contractAddress}:${id}`;
-    if (metadata &&
-      (metadata.name || metadata.symbol) &&
-      (!isNaN(metadata.decimals) && metadata.decimals >= 0)
-    ) {
+    if (metadata && (metadata.name || metadata.symbol) && !isNaN(metadata.decimals) && metadata.decimals >= 0) {
       const contract: ContractType = {
         kind: metadata.tokenType ? metadata.tokenType : 'FA2',
         category: metadata.tokenCategory ? metadata.tokenCategory : '',
@@ -221,25 +214,38 @@ export class TokenService {
         isTransferable: metadata?.isTransferable ? metadata.isTransferable : true,
         isBooleanAmount: metadata?.isBooleanAmount ? metadata.isBooleanAmount : false,
         series: metadata.series ? metadata.series : undefined,
-        status: TRUSTED_TOKEN_CONTRACTS.includes(contractAddress) || CONSTANTS.NFT_CONTRACT_OVERRIDES.includes(tokenId) || this.teztoolsService.defiTokens.includes(tokenId) ? 1 : 0
+        status:
+          TRUSTED_TOKEN_CONTRACTS.includes(contractAddress) ||
+          CONSTANTS.NFT_CONTRACT_OVERRIDES.includes(tokenId) ||
+          this.teztoolsService.defiTokens.includes(tokenId)
+            ? 1
+            : 0
       };
       contract.tokens[id] = token;
       this.addAsset(contractAddress, contract);
       this.saveMetadata();
-      this.subjectService.metadataUpdated.next({ contractAddress, id, token });
+      this.subjectService.metadataUpdated.next({
+        contractAddress,
+        id,
+        token
+      });
     }
   }
   explore(tokenId: string): boolean {
     const now = new Date().getTime();
     if (!this.exploredIds[tokenId]) {
-      this.exploredIds[tokenId] = { firstCheck: now, lastCheck: now, counter: 0 };
+      this.exploredIds[tokenId] = {
+        firstCheck: now,
+        lastCheck: now,
+        counter: 0
+      };
       this.saveMetadata();
       return true;
     } else {
       const token = this.exploredIds[tokenId];
-      let t1 = (2 ** token.counter) * 250;
-      t1 = (t1 < 20000) ? 20000 : t1;
-      const t2 = (now - token.lastCheck);
+      let t1 = 2 ** token.counter * 250;
+      t1 = t1 < 20000 ? 20000 : t1;
+      const t2 = now - token.lastCheck;
       if (t1 > t2) {
         return false;
       }
@@ -271,7 +277,7 @@ export class TokenService {
   searchTimeMs(tokenId: string) {
     if (this.exploredIds[tokenId]) {
       const token = this.exploredIds[tokenId];
-      return (token.lastCheck - token.firstCheck);
+      return token.lastCheck - token.firstCheck;
     }
     return 0;
   }
@@ -309,7 +315,11 @@ export class TokenService {
   private _saveMetadata() {
     localStorage.setItem(
       this.storeKey,
-      JSON.stringify({ contracts: this.contracts, exploredIds: this.exploredIds, version: this.version })
+      JSON.stringify({
+        contracts: this.contracts,
+        exploredIds: this.exploredIds,
+        version: this.version
+      })
     );
   }
   loadMetadata(): any {
@@ -322,7 +332,11 @@ export class TokenService {
           for (const address of contractAddresses) {
             for (const id of Object.keys(metadata.contracts[address].tokens)) {
               if (metadata.contracts[address].tokens[id]?.status === 0) {
-                if (TRUSTED_TOKEN_CONTRACTS.includes(address) || CONSTANTS.NFT_CONTRACT_OVERRIDES.includes(`${address}:${id}`) || this.teztoolsService.defiTokens.includes(`${address}:${id}`)) {
+                if (
+                  TRUSTED_TOKEN_CONTRACTS.includes(address) ||
+                  CONSTANTS.NFT_CONTRACT_OVERRIDES.includes(`${address}:${id}`) ||
+                  this.teztoolsService.defiTokens.includes(`${address}:${id}`)
+                ) {
                   metadata.contracts[address].tokens[id].status = 1; // flip status if it have been marked as trusted
                 }
                 if (BLACKLISTED_TOKEN_CONTRACTS.includes(address)) {
@@ -352,7 +366,9 @@ export class TokenService {
   }
   formatAmount(tokenKey: string, amount: string, baseUnit = true): string {
     if (!tokenKey) {
-      return `${Big(amount).div(10 ** (baseUnit ? 6 : 0)).toFixed()} tez`;
+      return `${Big(amount)
+        .div(10 ** (baseUnit ? 6 : 0))
+        .toFixed()} tez`;
     } else {
       const token = this.getAsset(tokenKey);
       if (token) {
@@ -363,10 +379,14 @@ export class TokenService {
             }
             return `${token.name}`;
           } else {
-            return `${Big(amount).div(10 ** (baseUnit ? token.decimals : 0)).toFixed()} ${token.name}`;
+            return `${Big(amount)
+              .div(10 ** (baseUnit ? token.decimals : 0))
+              .toFixed()} ${token.name}`;
           }
         } else {
-          return `${Big(amount).div(10 ** (baseUnit ? token.decimals : 0)).toFixed()} ${token.symbol}`;
+          return `${Big(amount)
+            .div(10 ** (baseUnit ? token.decimals : 0))
+            .toFixed()} ${token.symbol}`;
         }
       } else {
         return '[Unknown token]';

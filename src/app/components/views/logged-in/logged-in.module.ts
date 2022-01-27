@@ -68,12 +68,7 @@ import { QueueEmbedComponent } from '../embedded/queue/queue.component';
     RemoveCommaPipe,
     ExprTemplateComponent
   ],
-  imports: [
-    CommonModule,
-    LoggedInRoutingModule,
-    HttpClientModule,
-    FormsModule
-  ],
+  imports: [CommonModule, LoggedInRoutingModule, HttpClientModule, FormsModule],
   exports: [
     AdvancedToggleComponent,
     SendComponent,
@@ -92,9 +87,6 @@ import { QueueEmbedComponent } from '../embedded/queue/queue.component';
     RemoveCommaPipe,
     ExprTemplateComponent
   ],
-  providers: [
-    EstimateService,
-    RemoveCommaPipe
-  ]
+  providers: [EstimateService, RemoveCommaPipe]
 })
-export class LoggedInModule { }
+export class LoggedInModule {}

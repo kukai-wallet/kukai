@@ -14,7 +14,7 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-event',
   templateUrl: './event.component.html',
-  styleUrls: ['../../../../../../../scss/components/views/logged-in/account-view/cards/activity/event.component.scss'],
+  styleUrls: ['../../../../../../../scss/components/views/logged-in/account-view/cards/activity/event.component.scss']
 })
 export class EventComponent implements OnInit, OnChanges, OnDestroy {
   public OpStatus = OpStatus;
@@ -28,20 +28,24 @@ export class EventComponent implements OnInit, OnChanges, OnDestroy {
     private activityService: ActivityService,
     public tokenService: TokenService,
     private subjectService: SubjectService
-  ) { }
+  ) {}
   trigger = true;
   @Input() activity: Activity;
   @Input() account: Account;
   ngOnInit(): void {
-    setInterval(() => { this.trigger = !this.trigger }, 1000);
-    this.subscriptions.add(this.subjectService.confirmedOp.subscribe((opHash) => {
-      if (opHash === this.activity.hash && this.fresh === undefined) {
-        this.fresh = true;
-        setTimeout(() => {
-          this.fresh = false;
-        }, 20000);
-      }
-    }));
+    setInterval(() => {
+      this.trigger = !this.trigger;
+    }, 1000);
+    this.subscriptions.add(
+      this.subjectService.confirmedOp.subscribe((opHash) => {
+        if (opHash === this.activity.hash && this.fresh === undefined) {
+          this.fresh = true;
+          setTimeout(() => {
+            this.fresh = false;
+          }, 20000);
+        }
+      })
+    );
   }
   ngOnChanges(changes: SimpleChanges): void {}
   ngOnDestroy(): void {
@@ -85,7 +89,17 @@ export class EventComponent implements OnInit, OnChanges, OnDestroy {
     return `../../../../assets/img/${LookupType[this.getCounterparty(this.activity)?.lookupType].toLowerCase().replace('tezosdomains', 'domain')}-logo.svg`;
   }
   getEventStatusIcon(): string {
-    return this.fresh && this.activity.status === OpStatus.CONFIRMED ? '../../../../assets/img/event-new.png' : this.activity.status === OpStatus.CONFIRMED ? '../../../../assets/img/event-confirmed.png' : this.activity.status === OpStatus.UNCONFIRMED ? '../../../../assets/img/event-unconfirmed.png' : this.activity.status === OpStatus.FAILED ? '../../../../assets/img/event-error.png' : this.activity.status === OpStatus.HALF_CONFIRMED ? '../../../../../assets/img/event-half-confirmed.png' : '../../../../assets/img/event-unconfirmed.png'
+    return this.fresh && this.activity.status === OpStatus.CONFIRMED
+      ? '../../../../assets/img/event-new.png'
+      : this.activity.status === OpStatus.CONFIRMED
+      ? '../../../../assets/img/event-confirmed.png'
+      : this.activity.status === OpStatus.UNCONFIRMED
+      ? '../../../../assets/img/event-unconfirmed.png'
+      : this.activity.status === OpStatus.FAILED
+      ? '../../../../assets/img/event-error.png'
+      : this.activity.status === OpStatus.HALF_CONFIRMED
+      ? '../../../../../assets/img/event-half-confirmed.png'
+      : '../../../../assets/img/event-unconfirmed.png';
   }
   printAmount(): string {
     switch (this.getType()) {
@@ -113,10 +127,10 @@ export class EventComponent implements OnInit, OnChanges, OnDestroy {
     return '0';
   }
   zeroSent(activity): boolean {
-    return (this.sentKind(activity).length > 4 && activity.amount === '0');
+    return this.sentKind(activity).length > 4 && activity.amount === '0';
   }
   receivedKind(activity): string {
-    return (activity.tokenId && activity.source.address && (activity.tokenId.split(':')[0] === activity.source.address)) ? 'Minted' : 'Received';
+    return activity.tokenId && activity.source.address && activity.tokenId.split(':')[0] === activity.source.address ? 'Minted' : 'Received';
   }
   getAddressPrefix(type: string) {
     switch (type.toLowerCase()) {
@@ -134,9 +148,7 @@ export class EventComponent implements OnInit, OnChanges, OnDestroy {
   }
   copy(address: string): void {
     copy(address);
-    const copyToClipboard = this.translate.instant(
-      'OVERVIEWCOMPONENT.COPIEDTOCLIPBOARD'
-    );
+    const copyToClipboard = this.translate.instant('OVERVIEWCOMPONENT.COPIEDTOCLIPBOARD');
     this.messageService.add(address + ' ' + copyToClipboard, 5);
   }
 }

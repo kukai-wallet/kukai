@@ -14,7 +14,6 @@ import { TezosDomainsService } from '../../../../services/tezos-domains/tezos-do
 import { ModalComponent } from '../../modal.component';
 import { TokenBalancesService } from '../../../../services/token-balances/token-balances.service';
 
-
 const zeroTxParams: DefaultTransactionParams = {
   gas: 0,
   storage: 0,
@@ -35,14 +34,13 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
   token = null;
   costPerByte: string = this.estimateService.costPerByte;
 
-
   defaultTransactionParams: DefaultTransactionParams = zeroTxParams;
   active = false;
   isMultipleDestinations = false;
   advancedForm = false;
   hideAmount = false;
   simSemaphore = 0;
-  isNFT = false
+  isNFT = false;
   accountDropdownIsOpen = false;
 
   torusVerifierName = 'Tezos Address';
@@ -78,10 +76,11 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
     public tezosDomains: TezosDomainsService,
     private inputValidationService: InputValidationService,
     private tokenBalancesService: TokenBalancesService
-  ) { super(); }
-
-  ngOnInit(): void {
+  ) {
+    super();
   }
+
+  ngOnInit(): void {}
   ngOnChanges(changes: SimpleChanges): void {
     if (changes?.prepareRequest?.currentValue) {
       this.reset(true);
@@ -250,7 +249,7 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
     2. create basic transaction array
   */
   sanitizeNumberInput(e, type = ''): void {
-    console.dir(this.token?.decimals, e.target)
+    console.dir(this.token?.decimals, e.target);
     if (['gas', 'storage'].includes(type) || (type === 'amount' && this.token?.decimals == 0)) {
       e.target.value = e.target.value.replace(/[^0-9]/g, '');
     } else {
@@ -297,15 +296,31 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
         assert(!this.invalidTorusAccount(), this.invalidTorusAccount());
         assert(this.torusReady(), 'Pending lookup');
         this.checkTx(this.torusLookupAddress, this.amount, finalCheck);
-        const meta: any = { verifier: this.torusVerifier, alias: this.torusLookupId };
+        const meta: any = {
+          verifier: this.torusVerifier,
+          alias: this.torusLookupId
+        };
         if (this.torusTwitterId) {
           meta.twitterId = this.torusTwitterId;
         }
-        return [{ kind: 'transaction', destination: this.torusLookupAddress, amount: this.amount ? this.amount : '0', meta }];
+        return [
+          {
+            kind: 'transaction',
+            destination: this.torusLookupAddress,
+            amount: this.amount ? this.amount : '0',
+            meta
+          }
+        ];
       } else {
         this.checkTx(this.toPkh, this.amount, finalCheck);
       }
-      return [{ kind: 'transaction', destination: this.toPkh, amount: this.amount ? this.amount : '0' }];
+      return [
+        {
+          kind: 'transaction',
+          destination: this.toPkh,
+          amount: this.amount ? this.amount : '0'
+        }
+      ];
       //this.checkGasStorageFee();
     } else {
       return this.getBatch(finalCheck);
@@ -313,35 +328,51 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
     }
   }
   checkTx(toPkh: string, amount: string, finalCheck: boolean): void {
-    assert(this.torusVerifier || !(!this.inputValidationService.address(toPkh) || toPkh === this.activeAccount.address),
-      this.translate.instant('SENDCOMPONENT.INVALIDRECEIVERADDRESS'));
-    assert(!this.torusVerifier || !(!this.inputValidationService.torusAccount(this.toPkh, this.torusVerifier) || this.torusLookupAddress === this.activeAccount.address),
-      'Invalid recipient');
-    assert(!(!this.inputValidationService.amount(amount, this.token ? this.token.decimals : undefined) || (finalCheck && ((amount === '0') || amount === '') && (toPkh.slice(0, 3) !== 'KT1'))),
-      this.translate.instant('SENDCOMPONENT.INVALIDAMOUNT'));
+    assert(
+      this.torusVerifier || !(!this.inputValidationService.address(toPkh) || toPkh === this.activeAccount.address),
+      this.translate.instant('SENDCOMPONENT.INVALIDRECEIVERADDRESS')
+    );
+    assert(
+      !this.torusVerifier ||
+        !(!this.inputValidationService.torusAccount(this.toPkh, this.torusVerifier) || this.torusLookupAddress === this.activeAccount.address),
+      'Invalid recipient'
+    );
+    assert(
+      !(
+        !this.inputValidationService.amount(amount, this.token ? this.token.decimals : undefined) ||
+        (finalCheck && (amount === '0' || amount === '') && toPkh.slice(0, 3) !== 'KT1')
+      ),
+      this.translate.instant('SENDCOMPONENT.INVALIDAMOUNT')
+    );
   }
   getBatch(finalCheck = false): PartiallyPreparedTransaction[] {
-    const txs: PartiallyPreparedTransaction[] = this.toMultipleDestinationsString.trim().split(';').map((row, i) => {
-      if (row.trim()) {
-        const cols = row.trim().split(' ').map(col => col.trim()).filter(col => col);
-        assert(cols?.length === 2, `Transaction ${i + 1} has invalid number of arguments. Expected 2, but got ${cols?.length}.`);
-        assert(this.inputValidationService.address(cols[0]), `Transaction ${i + 1} contains an invalid destination.`);
-        assert(this.inputValidationService.amount(cols[1]), `Transaction ${i + 1} contains an invalid amount.`);
-        this.checkTx(cols[0], cols[1], finalCheck);
-        const tx: PartiallyPreparedTransaction = {
-          kind: 'transaction',
-          destination: cols[0],
-          amount: cols[1]
-        };
-        return tx;
-      }
-    }).filter(row => row);
+    const txs: PartiallyPreparedTransaction[] = this.toMultipleDestinationsString
+      .trim()
+      .split(';')
+      .map((row, i) => {
+        if (row.trim()) {
+          const cols = row
+            .trim()
+            .split(' ')
+            .map((col) => col.trim())
+            .filter((col) => col);
+          assert(cols?.length === 2, `Transaction ${i + 1} has invalid number of arguments. Expected 2, but got ${cols?.length}.`);
+          assert(this.inputValidationService.address(cols[0]), `Transaction ${i + 1} contains an invalid destination.`);
+          assert(this.inputValidationService.amount(cols[1]), `Transaction ${i + 1} contains an invalid amount.`);
+          this.checkTx(cols[0], cols[1], finalCheck);
+          const tx: PartiallyPreparedTransaction = {
+            kind: 'transaction',
+            destination: cols[0],
+            amount: cols[1]
+          };
+          return tx;
+        }
+      })
+      .filter((row) => row);
     return txs;
   }
   getFullyPreparedTxs(): FullyPreparedTransaction[] {
-    assert(!this.simSemaphore && (!this.torusVerifier || this.torusReady()),
-      this.formInvalid ? this.formInvalid : 'Awaiting request'
-    );
+    assert(!this.simSemaphore && (!this.torusVerifier || this.torusReady()), this.formInvalid ? this.formInvalid : 'Awaiting request');
     const minimalTxs = this.getMinimalPreparedTxs(true);
     this.transactions = minimalTxs;
     assert(this.inputValidationService.fee(this.customFee), 'Invalid fee');
@@ -364,22 +395,31 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
     const extraStoragePerOp: number = Math.round(extraStorage / this.transactions.length);
     const txs: FullyPreparedTransaction[] = [];
     for (let i = 0; i < this.transactions.length; i++) {
-      let gasLimit: string = extraGas ? (Number(this.defaultTransactionParams.customLimits[i].gasLimit) + extraGasPerOp).toString() : this.defaultTransactionParams.customLimits[i].gasLimit.toString();
-      let storageLimit = extraStorage ? (Number(this.defaultTransactionParams.customLimits[i].storageLimit) + extraStoragePerOp).toString() : this.defaultTransactionParams.customLimits[i].storageLimit.toString();
+      let gasLimit: string = extraGas
+        ? (Number(this.defaultTransactionParams.customLimits[i].gasLimit) + extraGasPerOp).toString()
+        : this.defaultTransactionParams.customLimits[i].gasLimit.toString();
+      let storageLimit = extraStorage
+        ? (Number(this.defaultTransactionParams.customLimits[i].storageLimit) + extraStoragePerOp).toString()
+        : this.defaultTransactionParams.customLimits[i].storageLimit.toString();
       gasLimit = !(Number(gasLimit) < 0) ? gasLimit : '0';
       storageLimit = !(Number(storageLimit) < 0) ? storageLimit : '0';
       const fullyTx: FullyPreparedTransaction = {
         ...this.transactions[i],
-        fee: (i === this.transactions.length - 1) ? this.getTotalFee().toString() : '0',
+        fee: i === this.transactions.length - 1 ? this.getTotalFee().toString() : '0',
         gasLimit,
-        storageLimit,
+        storageLimit
       };
       txs.push(fullyTx);
     }
     return txs;
   }
   invalidTorusAccount(): string {
-    const torusError = { google: 'Invalid Google email address', reddit: 'Invalid Reddit username', twitter: 'Invalid Twitter username', domain: 'Tezos Domains must be valid url' };
+    const torusError = {
+      google: 'Invalid Google email address',
+      reddit: 'Invalid Reddit username',
+      twitter: 'Invalid Twitter username',
+      domain: 'Tezos Domains must be valid url'
+    };
     if (!this.inputValidationService.torusAccount(this.toPkh, this.torusVerifier) && this.toPkh !== '') {
       return torusError[this.torusVerifier];
     }
@@ -425,7 +465,7 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
   }
   checkBalance(): string {
     if (this.transactions.length > 0) {
-      if (this.activeAccount && (this.activeAccount instanceof ImplicitAccount)) {
+      if (this.activeAccount && this.activeAccount instanceof ImplicitAccount) {
         const max = Big(this.maxToSend(this.activeAccount)).plus(this.tokenTransfer ? 0 : 0.000001);
         let amount = Big(0);
         for (const tx of this.transactions) {
@@ -434,7 +474,7 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
         if (amount.gt(max)) {
           return this.translate.instant('SENDCOMPONENT.TOOHIGHFEEORAMOUNT');
         }
-      } else if (this.activeAccount && (this.activeAccount instanceof OriginatedAccount)) {
+      } else if (this.activeAccount && this.activeAccount instanceof OriginatedAccount) {
         const maxKt = Big(this.maxToSend(this.activeAccount));
         const maxTz = Big(this.maxToSend(this.walletService.wallet.getImplicitAccount(this.activeAccount.pkh))).plus(0.000001);
         let amount = Big(0);
@@ -443,7 +483,7 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
         }
         if (amount.gt(maxKt)) {
           return this.translate.instant('SENDCOMPONENT.TOOHIGHAMOUNT');
-        } else if ((new Big('0')).gt(maxTz)) {
+        } else if (new Big('0').gt(maxTz)) {
           return this.translate.instant('SENDCOMPONENT.TOOHIGHFEE');
         }
       }
@@ -463,11 +503,15 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
     }
   }
   maxToSend(account: Account): string {
-    if (account && (account instanceof ImplicitAccount) && !this.tokenTransfer) {
+    if (account && account instanceof ImplicitAccount && !this.tokenTransfer) {
       let accountBalance = Big(account.balanceXTZ).div(1000000);
       accountBalance = accountBalance.minus(this.customFee && Number(this.customFee) ? Number(this.customFee) : this.defaultTransactionParams.fee);
       if (!this.isMultipleDestinations) {
-        accountBalance = accountBalance.minus(this.customStorageLimit && Number(this.customStorageLimit) ? Number(Big(this.customStorageLimit).times(this.costPerByte).div('1000000')) : this.defaultTransactionParams.burn);
+        accountBalance = accountBalance.minus(
+          this.customStorageLimit && Number(this.customStorageLimit)
+            ? Number(Big(this.customStorageLimit).times(this.costPerByte).div('1000000'))
+            : this.defaultTransactionParams.burn
+        );
       } else {
         accountBalance = accountBalance.minus(this.defaultTransactionParams.burn);
       }
@@ -476,14 +520,15 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
     } else {
       if (this.tokenTransfer) {
         if (account instanceof ImplicitAccount) {
-          return Big(account.getTokenBalance(this.tokenTransfer)).div(10 ** this.token.decimals).toFixed();
+          return Big(account.getTokenBalance(this.tokenTransfer))
+            .div(10 ** this.token.decimals)
+            .toFixed();
         }
       } else {
         return Big(account.balanceXTZ).div(1000000).toString();
       }
     }
   }
-
 
   async verifierChange(): Promise<void> {
     this.torusLookupAddress = '';
@@ -505,22 +550,26 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
       this.torusPendingLookup = true;
       this.torusLookupId = this.toPkh;
 
-      const { pkh, twitterId } = this.torusVerifier === 'domain' ?
-        await this.tezosDomains.getAddressFromDomain(this.toPkh).then((ans) => {
-          if (ans?.pkh === '') {
-            this.formInvalid = 'Could not find the domain';
-          }
-          return ans;
-        }).catch(e => {
-          console.error(e);
-          this.formInvalid = e;
-          return '';
-        }) :
-        await this.torusService.lookupPkh(this.torusVerifier, this.toPkh).catch(e => {
-          console.error(e);
-          this.formInvalid = e;
-          return '';
-        });
+      const { pkh, twitterId } =
+        this.torusVerifier === 'domain'
+          ? await this.tezosDomains
+              .getAddressFromDomain(this.toPkh)
+              .then((ans) => {
+                if (ans?.pkh === '') {
+                  this.formInvalid = 'Could not find the domain';
+                }
+                return ans;
+              })
+              .catch((e) => {
+                console.error(e);
+                this.formInvalid = e;
+                return '';
+              })
+          : await this.torusService.lookupPkh(this.torusVerifier, this.toPkh).catch((e) => {
+              console.error(e);
+              this.formInvalid = e;
+              return '';
+            });
 
       this.torusPendingLookup = false;
       if (pkh) {
@@ -537,7 +586,6 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
       const numberOfTxs = txs ? txs : this.defaultTransactionParams.customLimits.length;
       const txsLimit = 294 + (this.defaultTransactionParams.reveal ? 0 : 2); // Max transactions in a batch is 296 (294 with a reveal)
       return !txs ? this.numberWithCommas(numberOfTxs + ' / ' + txsLimit) : numberOfTxs <= txsLimit;
-
     }
     return !txs ? '' : true;
   }
@@ -547,7 +595,7 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
     return parts.join('.');
   }
   torusReady(): boolean {
-    return (!this.torusPendingLookup && this.torusLookupAddress !== '');
+    return !this.torusPendingLookup && this.torusLookupAddress !== '';
   }
   preview(): void {
     let txs: FullyPreparedTransaction[];
@@ -555,7 +603,8 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
       txs = this.getFullyPreparedTxs();
       this.prepareResponse.emit(txs);
       ModalComponent.currentModel.next({
-        name: 'confirm-send', data: {
+        name: 'confirm-send',
+        data: {
           customFee: this.customFee,
           customGasLimit: this.customGasLimit,
           customStorageLimit: this.customStorageLimit

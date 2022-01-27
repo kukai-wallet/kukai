@@ -13,7 +13,7 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-nfts',
   templateUrl: './nfts.component.html',
-  styleUrls: ['../../../../../../scss/components/views/logged-in/account-view/cards/nfts/nfts.component.scss'],
+  styleUrls: ['../../../../../../scss/components/views/logged-in/account-view/cards/nfts/nfts.component.scss']
 })
 export class NftsComponent implements OnInit, OnDestroy {
   DisplayLinkOption = DisplayLinkOption;
@@ -24,7 +24,7 @@ export class NftsComponent implements OnInit, OnDestroy {
   isDiscover: boolean = false;
   isInitLoad: boolean = true;
   filter: string = 'APP';
-  contractAliases = Object.keys(CONSTANTS.CONTRACT_ALIASES).map((key: any) => ({key, ...(CONSTANTS.CONTRACT_ALIASES[key])}));
+  contractAliases = Object.keys(CONSTANTS.CONTRACT_ALIASES).map((key: any) => ({ key, ...CONSTANTS.CONTRACT_ALIASES[key] }));
   activeAddress: string = '';
   private subscriptions: Subscription = new Subscription();
   constructor(
@@ -35,42 +35,56 @@ export class NftsComponent implements OnInit, OnDestroy {
     private subjectService: SubjectService,
     private walletService: WalletService
   ) {
-    this.subscriptions.add(this.subjectService.nftsUpdated.subscribe((p) => {
-      const activeAddress = this.walletService.activeAccount.getValue()?.address;
-      if (activeAddress !== this.activeAddress) {
-        this.activeAddress = activeAddress;
-        this.reset();
-      }
-      if(this.isInitLoad) {
-        if (!p?.nfts || !Object.keys(p.nfts)?.length) {
-          this.isDiscover = true;
-        } else {
-          this.isInitLoad = false;
-          this.isDiscover = false;
+    this.subscriptions.add(
+      this.subjectService.nftsUpdated.subscribe((p) => {
+        const activeAddress = this.walletService.activeAccount.getValue()?.address;
+        if (activeAddress !== this.activeAddress) {
+          this.activeAddress = activeAddress;
+          this.reset();
         }
-      }
-      this.nfts = p?.nfts;
-      this.nftsArray = p?.nfts ? Object.keys(p.nfts).map((key: any) => ({key, ...(p.nfts[key])})) : [];
-      this.tokens = p?.nfts ? Object.keys(p.nfts).map((key: any) => p.nfts[key]?.tokens).flat() : [];
-    }));
-    this.subscriptions.add(this.subjectService.logout.subscribe(o => {
-      if (o) {
-        this.reset();
-        this.activeAddress = '';
-      }
-    }));
-    this.subscriptions.add(this.walletService.activeAccount.subscribe(activeAccount => {
-      const activeAddress = activeAccount?.address;
-      if (activeAddress !== this.activeAddress) {
-        this.activeAddress = activeAddress;
-        this.reset();
-      }
-    }));
+        if (this.isInitLoad) {
+          if (!p?.nfts || !Object.keys(p.nfts)?.length) {
+            this.isDiscover = true;
+          } else {
+            this.isInitLoad = false;
+            this.isDiscover = false;
+          }
+        }
+        this.nfts = p?.nfts;
+        this.nftsArray = p?.nfts
+          ? Object.keys(p.nfts).map((key: any) => ({
+              key,
+              ...p.nfts[key]
+            }))
+          : [];
+        this.tokens = p?.nfts
+          ? Object.keys(p.nfts)
+              .map((key: any) => p.nfts[key]?.tokens)
+              .flat()
+          : [];
+      })
+    );
+    this.subscriptions.add(
+      this.subjectService.logout.subscribe((o) => {
+        if (o) {
+          this.reset();
+          this.activeAddress = '';
+        }
+      })
+    );
+    this.subscriptions.add(
+      this.walletService.activeAccount.subscribe((activeAccount) => {
+        const activeAddress = activeAccount?.address;
+        if (activeAddress !== this.activeAddress) {
+          this.activeAddress = activeAddress;
+          this.reset();
+        }
+      })
+    );
   }
   @Input() activity: any;
   @Input() account;
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }

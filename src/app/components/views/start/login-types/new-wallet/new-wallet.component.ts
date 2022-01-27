@@ -7,7 +7,6 @@ import { InputValidationService } from '../../../../../services/input-validation
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 
-
 @Component({
   selector: 'app-new-wallet',
   templateUrl: './new-wallet.component.html',
@@ -29,10 +28,10 @@ export class NewWalletComponent implements OnInit {
   pkh: string;
   pk: string;
   MNEMONIC: {
-    string: string,
-    array: string[],
-    verify: number[],
-    wordsToVerify: number
+    string: string;
+    array: string[];
+    verify: number[];
+    wordsToVerify: number;
   };
   longClickTs = 0;
   constructor(
@@ -43,7 +42,7 @@ export class NewWalletComponent implements OnInit {
     private importService: ImportService,
     private inputValidationService: InputValidationService,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.generateSeed();
@@ -127,7 +126,7 @@ export class NewWalletComponent implements OnInit {
   }
 
   mnemonicMatch(): boolean {
-    return (this.MNEMONIC.string === this.userMnemonic);
+    return this.MNEMONIC.string === this.userMnemonic;
   }
   async encryptWallet(): Promise<void> {
     if (this.validPwd()) {
@@ -198,11 +197,9 @@ export class NewWalletComponent implements OnInit {
     let selection: Selection;
     if (window.getSelection) {
       selection = window.getSelection();
-    }
-    else if (document.getSelection) {
+    } else if (document.getSelection) {
       selection = document.getSelection();
-    }
-    else return false;
+    } else return false;
     return !selection?.isCollapsed;
   }
 }

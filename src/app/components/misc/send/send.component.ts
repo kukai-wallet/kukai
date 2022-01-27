@@ -18,7 +18,6 @@ import { Subscription } from 'rxjs';
   selector: 'app-send',
   templateUrl: './send.component.html'
 })
-
 export class SendComponent implements OnInit, OnChanges, OnDestroy {
   @Input() embedded: boolean;
   @Input() activeAccount: Account;
@@ -40,15 +39,17 @@ export class SendComponent implements OnInit, OnChanges, OnDestroy {
     private walletService: WalletService,
     private coordinatorService: CoordinatorService,
     private subjectService: SubjectService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-    this.subscriptions.add(this.subjectService.prepareTokenTransfer.subscribe(t => {
-      this.prepareRequest = t;
-      this.tokenTransfer = t?.tokenTransfer;
-      this.activeAccount = t?.account;
-      this.symbol = t?.symbol;
-    }));
+    this.subscriptions.add(
+      this.subjectService.prepareTokenTransfer.subscribe((t) => {
+        this.prepareRequest = t;
+        this.tokenTransfer = t?.tokenTransfer;
+        this.activeAccount = t?.account;
+        this.symbol = t?.symbol;
+      })
+    );
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes?.operationRequest?.currentValue) {
@@ -58,18 +59,23 @@ export class SendComponent implements OnInit, OnChanges, OnDestroy {
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
-  private async checkOpReq(opReq: any): Promise<void | {kind, desstination, amount, parameters, gasRecommendation, storageRecommendation}> {
+  private async checkOpReq(opReq: any): Promise<void | {
+    kind;
+    desstination;
+    amount;
+    parameters;
+    gasRecommendation;
+    storageRecommendation;
+  }> {
     if (opReq.operationDetails) {
       opReq = opReq.operationDetails;
     }
-    if (this.walletService.wallet instanceof EmbeddedTorusWallet &&
-      !this.walletService.wallet?.sk && this.template?.silent
-    ) {
+    if (this.walletService.wallet instanceof EmbeddedTorusWallet && !this.walletService.wallet?.sk && this.template?.silent) {
       this.operationResponse.emit('invalid_parameters');
       return;
     }
     if (opReq[0].kind === 'transaction') {
-      const txs: PartiallyPreparedTransaction[] = opReq.map(tx => {
+      const txs: PartiallyPreparedTransaction[] = opReq.map((tx) => {
         if (tx.kind !== 'transaction') {
           throw new Error('Invalid op kind');
         }
@@ -77,7 +83,9 @@ export class SendComponent implements OnInit, OnChanges, OnDestroy {
         return {
           kind: 'transaction',
           destination: tx.destination,
-          amount: Big(tx.amount).div(10 ** 6).toFixed(), // handle token decimals here
+          amount: Big(tx.amount)
+            .div(10 ** 6)
+            .toFixed(), // handle token decimals here
           parameters: tx.parameters ? tx.parameters : undefined,
           gasRecommendation: tx.gas_limit ? tx.gas_limit : undefined,
           storageRecommendation: tx.storage_limit ? tx.storage_limit : undefined
@@ -88,7 +96,9 @@ export class SendComponent implements OnInit, OnChanges, OnDestroy {
           const tokenTransferObj: any = this.getTokenTransferObj(txs[0]);
           if (tokenTransferObj) {
             const asset = this.tokenService.getAsset(tokenTransferObj.tokenId);
-            txs[0].amount = Big(tokenTransferObj.amount).div(10 ** asset.decimals).toFixed();
+            txs[0].amount = Big(tokenTransferObj.amount)
+              .div(10 ** asset.decimals)
+              .toFixed();
             txs[0].destination = tokenTransferObj.to;
             this.tokenTransfer = tokenTransferObj.tokenId;
             delete txs[0].parameters;
@@ -105,7 +115,7 @@ export class SendComponent implements OnInit, OnChanges, OnDestroy {
       }
     }
   }
-  getTokenTransferObj(op: any): null | { tokenId: string, to: string, amount: string } {
+  getTokenTransferObj(op: any): null | { tokenId: string; to: string; amount: string } {
     if (op.parameters && this.tokenService.isKnownTokenContract(op.destination)) {
       const tokenTransfer = this.operationService.parseTokenTransfer(op);
       if (tokenTransfer && this.tokenService.isKnownTokenId(tokenTransfer?.tokenId)) {
@@ -118,8 +128,7 @@ export class SendComponent implements OnInit, OnChanges, OnDestroy {
     for (const tx of txs) {
       if (tx.parameters) {
         try {
-          if (!tx.parameters.value ||
-            !tx.parameters.entrypoint) {
+          if (!tx.parameters.value || !tx.parameters.entrypoint) {
             throw new Error('entrypoint and value expected');
           }
           assertMichelsonData(tx.parameters.value);
@@ -131,12 +140,23 @@ export class SendComponent implements OnInit, OnChanges, OnDestroy {
     }
     return true;
   }
-  async simulateRequest(txs: PartiallyPreparedTransaction[], tokenTransfer: string): Promise<void | {tx: PartiallyPreparedTransaction, fee, gasLimit, storageLimit}> {
+  async simulateRequest(
+    txs: PartiallyPreparedTransaction[],
+    tokenTransfer: string
+  ): Promise<void | {
+    tx: PartiallyPreparedTransaction;
+    fee;
+    gasLimit;
+    storageLimit;
+  }> {
     if (this.template) {
       if (this.template.silent) {
         console.log('Silent signing');
       } else {
-        this.templateRequest = { template: this.template, partialOps: txs };
+        this.templateRequest = {
+          template: this.template,
+          partialOps: txs
+        };
       }
     } else {
       await this.messageService.startSpinner('Preparing transaction...');
@@ -147,21 +167,29 @@ export class SendComponent implements OnInit, OnChanges, OnDestroy {
         if (res) {
           if (res.error) {
             this.messageService.addError(`Simulation error: ${res.error.message}`, 0);
-            this.operationResponse.emit({ error: 'invalid_parameters', errorMessage: res.error.message });
+            this.operationResponse.emit({
+              error: 'invalid_parameters',
+              errorMessage: res.error.message
+            });
           } else {
             const fullyPrepared: FullyPreparedTransaction[] = txs.map((tx, i) => {
               return {
                 ...tx,
-                fee: (i === txs.length - 1) ? res.fee : '0',
+                fee: i === txs.length - 1 ? res.fee : '0',
                 gasLimit: res.customLimits[i].gasLimit.toString(),
-                storageLimit: res.customLimits[i].storageLimit.toString(),
+                storageLimit: res.customLimits[i].storageLimit.toString()
               };
             });
             if (this.template) {
               const fee = this.getTemplateFee(fullyPrepared);
               console.log('Use template', this.template);
               if (!this.template.silent) {
-                this.templateRequest = { template: this.template, partialOps: txs, ops: fullyPrepared, fee };
+                this.templateRequest = {
+                  template: this.template,
+                  partialOps: txs,
+                  ops: fullyPrepared,
+                  fee
+                };
               } else {
                 let amount = Big(0);
                 for (const op of fullyPrepared) {
@@ -192,10 +220,19 @@ export class SendComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
   prepareTransaction(): void {
-    this.prepareRequest = { account: this.activeAccount, tokenTransfer: this.tokenTransfer, symbol: this.symbol };
+    this.prepareRequest = {
+      account: this.activeAccount,
+      tokenTransfer: this.tokenTransfer,
+      symbol: this.symbol
+    };
   }
   confirmTransactions(transactions: FullyPreparedTransaction[], externalReq: boolean): void {
-    this.confirmRequest = { account: this.activeAccount, tokenTransfer: this.tokenTransfer, transactions, externalReq };
+    this.confirmRequest = {
+      account: this.activeAccount,
+      tokenTransfer: this.tokenTransfer,
+      transactions,
+      externalReq
+    };
   }
   handlePrepareResponse(preparedTransactions: FullyPreparedTransaction[]): void {
     this.prepareRequest = null;
@@ -234,7 +271,8 @@ export class SendComponent implements OnInit, OnChanges, OnDestroy {
       this.operationResponse.emit('UNSUPPORTED_WALLET_TYPE');
       return;
     }
-    for (const op of ops) { // Limit to transactions for now
+    for (const op of ops) {
+      // Limit to transactions for now
       if (op.kind !== 'transaction') {
         this.operationResponse.emit('UNSUPPORTED_KIND');
         break;
@@ -253,31 +291,39 @@ export class SendComponent implements OnInit, OnChanges, OnDestroy {
       this.operationResponse.emit('FAILED_TO_SIGN');
       return;
     }
-    this.subscriptions.add(this.operationService.transfer(this.activeAccount.address, ops, Number(ops[ops.length - 1].fee), keys, '').subscribe(
-      async (ans: any) => {
-        if (ans.success === true) {
-          console.log('Transaction successful ', ans);
-          await this.messageService.stopSpinner();
-          this.operationResponse.emit(ans.payload.opHash);
-          const metadata = { transactions: ops, opHash: ans.payload.opHash };
-          await this.coordinatorService.boost(this.activeAccount.address, metadata);
-          for (const transaction of ops) {
-            if (this.walletService.addressExists(transaction.destination)) {
-              await this.coordinatorService.boost(transaction.destination);
+    this.subscriptions.add(
+      this.operationService.transfer(this.activeAccount.address, ops, Number(ops[ops.length - 1].fee), keys, '').subscribe(
+        async (ans: any) => {
+          if (ans.success === true) {
+            console.log('Transaction successful ', ans);
+            await this.messageService.stopSpinner();
+            this.operationResponse.emit(ans.payload.opHash);
+            const metadata = {
+              transactions: ops,
+              opHash: ans.payload.opHash
+            };
+            await this.coordinatorService.boost(this.activeAccount.address, metadata);
+            for (const transaction of ops) {
+              if (this.walletService.addressExists(transaction.destination)) {
+                await this.coordinatorService.boost(transaction.destination);
+              }
             }
+          } else {
+            await this.messageService.stopSpinner();
+            console.log('Transaction error id ', ans.payload.msg);
+            this.messageService.addError(ans.payload.msg, 0);
+            this.operationResponse.emit({
+              error: 'broadcast_error',
+              errorMessage: ans.payload.msg
+            });
           }
-        } else {
-          await this.messageService.stopSpinner();
-          console.log('Transaction error id ', ans.payload.msg);
-          this.messageService.addError(ans.payload.msg, 0);
-          this.operationResponse.emit({ error: 'broadcast_error', errorMessage: ans.payload.msg });
+        },
+        (err) => {
+          this.messageService.stopSpinner();
+          console.log(err);
+          this.operationResponse.emit('UNKNOWN_ERROR');
         }
-      },
-      err => {
-        this.messageService.stopSpinner();
-        console.log(err);
-        this.operationResponse.emit('UNKNOWN_ERROR');
-      },
-    ));
+      )
+    );
   }
 }

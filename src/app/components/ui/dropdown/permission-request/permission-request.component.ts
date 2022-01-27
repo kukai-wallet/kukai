@@ -11,8 +11,9 @@ import { DropdownComponent } from '../dropdown.component';
   styleUrls: ['../../../../../scss/components/ui/dropdown/account-dropdown.component.scss']
 })
 export class PermissionRequestDropdownComponent extends DropdownComponent implements OnInit, OnChanges {
-
-  constructor(public router: Router, public lookupService: LookupService, private walletService: WalletService) { super(); }
+  constructor(public router: Router, public lookupService: LookupService, private walletService: WalletService) {
+    super();
+  }
 
   ngOnInit(): void {
     this.selection = this.current;
@@ -20,7 +21,7 @@ export class PermissionRequestDropdownComponent extends DropdownComponent implem
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes.options && changes.options.currentValue !== changes.options.previousValue) {
+    if (changes.options && changes.options.currentValue !== changes.options.previousValue) {
       this.list = this.options;
     }
   }
@@ -28,8 +29,10 @@ export class PermissionRequestDropdownComponent extends DropdownComponent implem
   getUsername(address: string): string {
     if (this.walletService.wallet instanceof TorusWallet) {
       return this.walletService.wallet.displayName();
-    } else  {
-      const party = this.lookupService.resolve({ address: address || this.current?.address });
+    } else {
+      const party = this.lookupService.resolve({
+        address: address || this.current?.address
+      });
       if (party?.name) {
         return party.name;
       }

@@ -1,11 +1,4 @@
-export type WalletObject =
-  LegacyWalletV1
-  | LegacyWalletV2
-  | LegacyWalletV3
-  | LedgerWallet
-  | HdWallet
-  | TorusWallet
-  | WatchWallet;
+export type WalletObject = LegacyWalletV1 | LegacyWalletV2 | LegacyWalletV3 | LedgerWallet | HdWallet | TorusWallet | WatchWallet;
 
 export class Wallet {
   totalBalanceXTZ: number | null;
@@ -130,15 +123,15 @@ export class TorusWallet extends Wallet {
   }
 }
 export class EmbeddedTorusWallet extends TorusWallet {
-    origin: string;
-    sk: string;
-    instanceId: string;
-    constructor(verifier: string, id: string, name: string, origin: string, sk: string, instanceId: string) {
-      super(verifier, id, name);
-      this.origin = origin;
-      this.sk = sk;
-      this.instanceId = instanceId;
-    }
+  origin: string;
+  sk: string;
+  instanceId: string;
+  constructor(verifier: string, id: string, name: string, origin: string, sk: string, instanceId: string) {
+    super(verifier, id, name);
+    this.origin = origin;
+    this.sk = sk;
+    this.instanceId = instanceId;
+  }
 }
 export class LedgerWallet extends Wallet {
   constructor() {
@@ -211,7 +204,7 @@ export abstract class Account {
       }
     }
     if (tokenId.length > 37 && balance && balance !== '0' && balance.slice(0, 1) !== '-') {
-      this.tokens.unshift({ tokenId, balance});
+      this.tokens.unshift({ tokenId, balance });
     }
   }
 }
@@ -252,12 +245,12 @@ export class Activity {
   status: OpStatus;
   amount: string;
   source: {
-    address: string,
-    alias?: string
+    address: string;
+    alias?: string;
   };
   destination: {
-    address: string,
-    alias?: string
+    address: string;
+    alias?: string;
   };
   fee?: string;
   hash: string;

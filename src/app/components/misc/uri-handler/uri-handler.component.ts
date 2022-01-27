@@ -26,9 +26,11 @@ export class UriHandlerComponent implements OnInit, OnDestroy {
     private inputValidationService: InputValidationService,
     private subjectService: SubjectService
   ) {
-    this.subscriptions.add(this.walletService.activeAccount.subscribe((activeAccount) => {
-      this.activeAccount = activeAccount;
-    }));
+    this.subscriptions.add(
+      this.walletService.activeAccount.subscribe((activeAccount) => {
+        this.activeAccount = activeAccount;
+      })
+    );
   }
   permissionRequest: PermissionResponseInput = null;
   operationRequest: any = null;
@@ -45,7 +47,7 @@ export class UriHandlerComponent implements OnInit, OnDestroy {
     }
   }
   ngOnDestroy(): void {
-this.subscriptions.unsubscribe();
+    this.subscriptions.unsubscribe();
   }
   async init() {
     const pairingString = this.deeplinkService.popPairingJson();
@@ -53,7 +55,9 @@ this.subscriptions.unsubscribe();
       console.log(pairingString);
       this.beaconService.preNotifyPairing(pairingString);
     }
-    window.addEventListener('storage', (e) => { this.handleStorageEvent(e); });
+    window.addEventListener('storage', (e) => {
+      this.handleStorageEvent(e);
+    });
     await this.connectApp().catch((error) => console.error('connect error', error));
     if (pairingString) {
       await this.beaconService.client.isConnected;
@@ -70,7 +74,9 @@ this.subscriptions.unsubscribe();
   /* https://github.com/airgap-it/beacon-sdk/blob/master/src/clients/wallet-client/WalletClient.ts */
   connectApp = async (): Promise<void> => {
     if (!this.beaconService.client) {
-      this.beaconService.client = new WalletClient({ name: 'Kukai Wallet' });
+      this.beaconService.client = new WalletClient({
+        name: 'Kukai Wallet'
+      });
     }
     await this.beaconService.client.init(); // Establish P2P connection
     this.beaconService.client
@@ -105,7 +111,7 @@ this.subscriptions.unsubscribe();
         }
       })
       .catch((error) => console.error('connect error', error));
-  }
+  };
   async handlePermissionRequest(message: any): Promise<void> {
     console.log('## permission request');
     message.scopes = message.scopes.filter((scope: PermissionScope) => [PermissionScope.OPERATION_REQUEST, PermissionScope.SIGN].includes(scope));
@@ -141,16 +147,15 @@ this.subscriptions.unsubscribe();
     }
     if (message.operationDetails[0].kind === 'transaction') {
       for (let i = 0; i < message.operationDetails.length; i++) {
-        if (message.operationDetails[i].destination &&
+        if (
+          message.operationDetails[i].destination &&
           message.operationDetails[i].parameters &&
-          this.walletService.wallet.getAccount(message.operationDetails[i].destination)) {
+          this.walletService.wallet.getAccount(message.operationDetails[i].destination)
+        ) {
           console.warn('Invocation of user controlled contract is disabled');
           await this.beaconService.rejectOnPermission(message);
           return false;
-        } else if (
-          !message.operationDetails[i].destination ||
-          !message.operationDetails[i].amount
-        ) {
+        } else if (!message.operationDetails[i].destination || !message.operationDetails[i].amount) {
           console.warn('Missing destination or amount');
           await this.beaconService.rejectOnUnknown(message);
           return false;
@@ -186,7 +191,8 @@ this.subscriptions.unsubscribe();
     return true;
   }
   private invalidOptionals(op: any): boolean {
-    if (typeof op.gas_limit === 'number') { // normalize
+    if (typeof op.gas_limit === 'number') {
+      // normalize
       op.gas_limit = op.gas_limit.toString();
     }
     if (typeof op.storage_limit === 'number') {
@@ -234,8 +240,7 @@ this.subscriptions.unsubscribe();
   invalidParameters(parameters: any): boolean {
     try {
       if (parameters) {
-        if (!parameters.value ||
-          !parameters.entrypoint) {
+        if (!parameters.value || !parameters.entrypoint) {
           throw new Error('entrypoint and value expected');
         }
         assertMichelsonData(parameters.value);
@@ -250,11 +255,11 @@ this.subscriptions.unsubscribe();
     if (opHash?.error) {
       opHash = opHash.error;
     }
-    if(!this.operationRequest) {
+    if (!this.operationRequest) {
       return;
     }
-    console.log("hash", opHash);
-    console.log("operationRequest", this.operationRequest);
+    console.log('hash', opHash);
+    console.log('operationRequest', this.operationRequest);
     if (!opHash) {
       await this.beaconService.rejectOnUserAbort(this.operationRequest);
     } else if (opHash === 'broadcast_error') {
@@ -306,7 +311,7 @@ this.subscriptions.unsubscribe();
     switch (ev.key) {
       case 'beacon:communication-peers-wallet':
         const peers = JSON.parse(ev.newValue);
-        const senderIds = (await this.beaconService.client.getAppMetadataList()).map(app => {
+        const senderIds = (await this.beaconService.client.getAppMetadataList()).map((app) => {
           return app.senderId;
         });
         const newPeers = peers.length - senderIds.length;

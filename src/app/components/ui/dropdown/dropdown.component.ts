@@ -5,17 +5,17 @@ import { ListComponent } from '../generic/list.component';
   selector: 'app-ui-dropdown',
   templateUrl: './dropdown.component.html'
 })
-
 export class DropdownComponent extends ListComponent implements OnInit {
   @Output() dropdownResponse = new EventEmitter();
   @Input() options: any[];
   selection: any;
   ecmpId = this.constructor['ɵcmp'].id;
   isOpen = false;
-  constructor() { super(); }
-
-  ngOnInit(): void {
+  constructor() {
+    super();
   }
+
+  ngOnInit(): void {}
 
   @HostListener('document:click', ['$event'])
   @HostListener('document:touchend', ['$event'])

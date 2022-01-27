@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { WalletService } from '../wallet/wallet.service';
 import { of, Observable, from as fromPromise } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
-import { delay, takeUntil } from 'rxjs/operators'
+import { delay, takeUntil } from 'rxjs/operators';
 import { Activity, Account, OpStatus } from '../wallet/wallet';
 import { MessageService } from '../message/message.service';
 import { LookupService } from '../lookup/lookup.service';
@@ -22,7 +22,7 @@ export class ActivityService {
     private indexerService: IndexerService,
     private tokenService: TokenService,
     private subjectService: SubjectService
-  ) { }
+  ) {}
   updateTransactions(pkh): Observable<any> {
     try {
       const account = this.walletService.wallet.getAccount(pkh);
@@ -91,7 +91,9 @@ export class ActivityService {
             account.updateTokenBalance(tokenId, token.balance.toString());
           }
         }
-        const currentTokenIds = account.getTokenBalances().map((token) => { return token.tokenId });
+        const currentTokenIds = account.getTokenBalances().map((token) => {
+          return token.tokenId;
+        });
         for (const tokenId of currentTokenIds) {
           if (!idsWithBalance.includes(tokenId)) {
             account.updateTokenBalance(tokenId, '0');
@@ -131,7 +133,8 @@ export class ActivityService {
           const oldState = account.state;
           account.state = counter;
           this.walletService.storeWallet();
-          if (oldState !== '') { // Exclude inital loading
+          if (oldState !== '') {
+            // Exclude inital loading
             this.promptNewActivities(account, oldActivities, operations);
           }
           for (const activity of operations) {
@@ -149,9 +152,10 @@ export class ActivityService {
     for (const activity of newActivities) {
       const index = oldActivities.findIndex((a) => a.hash === activity.hash && a.status === OpStatus.CONFIRMED);
       if (index === -1) {
-        const now = (new Date()).getTime();
+        const now = new Date().getTime();
         const timeDiff = now - (activity?.timestamp ? activity.timestamp : now);
-        if (timeDiff < 1800000) { // 1/2 hour
+        if (timeDiff < 1800000) {
+          // 1/2 hour
           if (activity.hash) {
             setTimeout(() => {
               this.subjectService.confirmedOp.next(activity.hash);
@@ -162,15 +166,27 @@ export class ActivityService {
               this.messageService.addSuccess(account.shortAddress() + ': Sent ' + this.tokenService.formatAmount(activity.tokenId, activity.amount.toString()));
             }
             if (account.address === activity.destination.address) {
-              const ref = activity.tokenId ? (Date.now()).toString() + activity.tokenId : '';
-              this.messageService.addSuccess((account.shortAddress() + ': Received ' + this.tokenService.formatAmount(activity.tokenId, activity.amount.toString())).replace('[Unknown token]', 'Token'), undefined, ref);
-              if (activity.tokenId && this.tokenService.getAsset(activity.tokenId) === null) { // unknown token
-                this.subjectService.metadataUpdated.pipe(takeUntil(of(true).pipe(delay(8000)))).subscribe((token: any) => { // unsub after 8s
+              const ref = activity.tokenId ? Date.now().toString() + activity.tokenId : '';
+              this.messageService.addSuccess(
+                (account.shortAddress() + ': Received ' + this.tokenService.formatAmount(activity.tokenId, activity.amount.toString())).replace(
+                  '[Unknown token]',
+                  'Token'
+                ),
+                undefined,
+                ref
+              );
+              if (activity.tokenId && this.tokenService.getAsset(activity.tokenId) === null) {
+                // unknown token
+                this.subjectService.metadataUpdated.pipe(takeUntil(of(true).pipe(delay(8000)))).subscribe((token: any) => {
+                  // unsub after 8s
                   if (token?.contractAddress && token.id !== undefined) {
                     const tokenId = token.contractAddress + ':' + token.id.toString();
                     if (activity.tokenId === tokenId) {
-                      this.messageService.modify(account.shortAddress() + ': Received ' + this.tokenService.formatAmount(activity.tokenId, activity.amount.toString()), ref);
-                    };
+                      this.messageService.modify(
+                        account.shortAddress() + ': Received ' + this.tokenService.formatAmount(activity.tokenId, activity.amount.toString()),
+                        ref
+                      );
+                    }
                   }
                 });
               }

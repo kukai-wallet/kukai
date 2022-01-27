@@ -12,10 +12,7 @@ export class SpinnerComponent implements OnInit, OnDestroy {
   @Input() embedded: boolean;
   logo = 'default';
   private subscriptions: Subscription = new Subscription();
-  constructor(
-    public messageService: MessageService,
-    private subjectService: SubjectService
-    ) { }
+  constructor(public messageService: MessageService, private subjectService: SubjectService) {}
 
   ngOnInit(): void {
     this.subjectService.origin.subscribe((o) => {

@@ -7,10 +7,7 @@ import { MessageService } from '../../../../services/message/message.service';
   styleUrls: ['./spinner-legacy.component.scss']
 })
 export class SpinnerLegacyComponent implements OnInit {
+  constructor(public messageService: MessageService) {}
 
-  constructor(public messageService: MessageService) { }
-
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }

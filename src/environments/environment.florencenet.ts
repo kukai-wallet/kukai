@@ -23,109 +23,132 @@ const _CONSTANTS: Constants = {
     hard_storage_limit_per_operation: 60000
   },
   CONTRACT_ALIASES: {
-    'Eli': {
-      address: ["KT1DgT2VViqZR5qt9bzXZnmbAsPkdad8fxrc"],
-      thumbnailUrl: "https://cloudflare-ipfs.com/ipfs/QmXJHCoidLgxcf4Sbi3UvasEtFTbzVme6f7ztSQ6tJFXTr",
-      link: "", shouldDisplayLink: DisplayLinkOption.None
+    Eli: {
+      address: ['KT1DgT2VViqZR5qt9bzXZnmbAsPkdad8fxrc'],
+      thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmXJHCoidLgxcf4Sbi3UvasEtFTbzVme6f7ztSQ6tJFXTr',
+      link: '',
+      shouldDisplayLink: DisplayLinkOption.None
     },
-    'USDtz': {
-      address: ["KT1FCMQk44tEP9fm9n5JJEhkSk1TW3XQdaWH"],
-      thumbnailUrl: "../../../assets/img/tokens/usdtz.png",
-      link: "", shouldDisplayLink: DisplayLinkOption.None
+    USDtz: {
+      address: ['KT1FCMQk44tEP9fm9n5JJEhkSk1TW3XQdaWH'],
+      thumbnailUrl: '../../../assets/img/tokens/usdtz.png',
+      link: '',
+      shouldDisplayLink: DisplayLinkOption.None
     },
-    'tzBTC': {
-      address: ["KT1CUg39jQF8mV6nTMqZxjUUZFuz1KXowv3K"],
-      thumbnailUrl: "../../../assets/img/tokens/tzbtc.png",
-      link: "", shouldDisplayLink: DisplayLinkOption.None
+    tzBTC: {
+      address: ['KT1CUg39jQF8mV6nTMqZxjUUZFuz1KXowv3K'],
+      thumbnailUrl: '../../../assets/img/tokens/tzbtc.png',
+      link: '',
+      shouldDisplayLink: DisplayLinkOption.None
     },
-    'MFIL': {
-      address: ["KT1MGe5wY9FugXvsjin4SnQFEU7yM1FFBF9U"],
-      thumbnailUrl: "../../../assets/img/tokens/mfil.jfif",
-      link: "", shouldDisplayLink: DisplayLinkOption.None
+    MFIL: {
+      address: ['KT1MGe5wY9FugXvsjin4SnQFEU7yM1FFBF9U'],
+      thumbnailUrl: '../../../assets/img/tokens/mfil.jfif',
+      link: '',
+      shouldDisplayLink: DisplayLinkOption.None
     },
-    'kUSD': {
-      address: ["KT1RXpLtz22YgX24QQhxKVyKvtKZFaAVtTB9"],
-      thumbnailUrl: "../../../assets/img/tokens/kusd.png",
-      link: "", shouldDisplayLink: DisplayLinkOption.None
+    kUSD: {
+      address: ['KT1RXpLtz22YgX24QQhxKVyKvtKZFaAVtTB9'],
+      thumbnailUrl: '../../../assets/img/tokens/kusd.png',
+      link: '',
+      shouldDisplayLink: DisplayLinkOption.None
     },
-    'OpenMinter': {
-      address: ["KT1DzPX2SHnviWURFUfD5NQ9FcHQVmYFuPYu"],
-      thumbnailUrl: "../../../assets/img/tokens/minter.svg",
-      link: "", shouldDisplayLink: DisplayLinkOption.None
+    OpenMinter: {
+      address: ['KT1DzPX2SHnviWURFUfD5NQ9FcHQVmYFuPYu'],
+      thumbnailUrl: '../../../assets/img/tokens/minter.svg',
+      link: '',
+      shouldDisplayLink: DisplayLinkOption.None
     },
-    'PixelPotus': {
-      address: ["KT1D1S7KywvhzrTWHBo9MWUn5x3R9vxBmbio"],
-      thumbnailUrl: "https://www.pixelpotus.com/img/eagle-right.d1840b0b.png",
-      link: "https://pixelpotus-frontend-172tineil-pixelpotus.vercel.app/", shouldDisplayLink: DisplayLinkOption.All, category: ["collectibles"]
+    PixelPotus: {
+      address: ['KT1D1S7KywvhzrTWHBo9MWUn5x3R9vxBmbio'],
+      thumbnailUrl: 'https://www.pixelpotus.com/img/eagle-right.d1840b0b.png',
+      link: 'https://pixelpotus-frontend-172tineil-pixelpotus.vercel.app/',
+      shouldDisplayLink: DisplayLinkOption.All,
+      category: ['collectibles']
     },
-    'MysteryMap': {
-      address: ["KT1MktwJ9ud6i57e4NKzBkwweEArVsMobHrU"],
-      thumbnailUrl: "",
-      link: "", shouldDisplayLink: DisplayLinkOption.None
+    MysteryMap: {
+      address: ['KT1MktwJ9ud6i57e4NKzBkwweEArVsMobHrU'],
+      thumbnailUrl: '',
+      link: '',
+      shouldDisplayLink: DisplayLinkOption.None
     },
-    'SpicySwap': {
-      address: ["KT1QzkVVgUYMTvwnyRwGttM8zTg5CyuHKxQH", "KT1HEzZQV9B85HZnGpDgaZtZNk4ZXbLRuBii"],
-      thumbnailUrl: "https://miro.medium.com/max/1950/1*P4W6alVA28NnbBy9CfJOpg.png",
-      link: "", shouldDisplayLink: DisplayLinkOption.None
+    SpicySwap: {
+      address: ['KT1QzkVVgUYMTvwnyRwGttM8zTg5CyuHKxQH', 'KT1HEzZQV9B85HZnGpDgaZtZNk4ZXbLRuBii'],
+      thumbnailUrl: 'https://miro.medium.com/max/1950/1*P4W6alVA28NnbBy9CfJOpg.png',
+      link: '',
+      shouldDisplayLink: DisplayLinkOption.None
     },
-    'Truesy': {
-      address: ["KT1TVA93qdPyhKXXgi5rN4XphJZBh4PgARb5", "KT1Dwucgeaa9bgFi3Ds16Q1VAgpapXPhMZ5Q"],
-      thumbnailUrl: "../../../assets/img/spinner/truesy.svg",
-      link: "https://www.truesy.com/", shouldDisplayLink: DisplayLinkOption.None
+    Truesy: {
+      address: ['KT1TVA93qdPyhKXXgi5rN4XphJZBh4PgARb5', 'KT1Dwucgeaa9bgFi3Ds16Q1VAgpapXPhMZ5Q'],
+      thumbnailUrl: '../../../assets/img/spinner/truesy.svg',
+      link: 'https://www.truesy.com/',
+      shouldDisplayLink: DisplayLinkOption.None
     },
-    "MinterPop": {
+    MinterPop: {
       address: ['KT1M2TMFrF1gbr64a7ySE3Cvt5BjZqQLKE6s'],
-      thumbnailUrl: "../../../assets/img/alias/minterpop.svg",
+      thumbnailUrl: '../../../assets/img/alias/minterpop.svg',
       // thumbnailUrl: {
       //   filename: 'u4tdtnfwszmavwllohvxnhm6x6udvp',
       //   extension: 'svg'
       // },
-      link: "https://minterpop.vercel.app/", shouldDisplayLink: DisplayLinkOption.DirectAuth, category: ["collectibles"]
+      link: 'https://minterpop.vercel.app/',
+      shouldDisplayLink: DisplayLinkOption.DirectAuth,
+      category: ['collectibles']
     },
-    "MinterPopDev": {
+    MinterPopDev: {
       name: 'MinterPop Dev',
       address: ['KT1AzVpQRrQNNQU4x1KGUS3E6P96yZYjQfbS'],
-      thumbnailUrl: "../../../assets/img/alias/minterpop.svg",
+      thumbnailUrl: '../../../assets/img/alias/minterpop.svg',
       // thumbnailUrl: {
       //   filename: 'u4tdtnfwszmavwllohvxnhm6x6udvp',
       //   extension: 'svg'
       // },
-      link: "https://minterpop-dev.vercel.app/", shouldDisplayLink: DisplayLinkOption.DirectAuth, category: ["collectibles"]
+      link: 'https://minterpop-dev.vercel.app/',
+      shouldDisplayLink: DisplayLinkOption.DirectAuth,
+      category: ['collectibles']
     },
-    'PixelPotusv2': {
+    PixelPotusv2: {
       name: 'PixelPotus v2',
-      address: ["KT1AorRGJvDkbpa8ap6setUGMCNm21bpp8qe"],
-      thumbnailUrl: "https://www.pixelpotus.com/img/eagle-right.d1840b0b.png",
+      address: ['KT1AorRGJvDkbpa8ap6setUGMCNm21bpp8qe'],
+      thumbnailUrl: 'https://www.pixelpotus.com/img/eagle-right.d1840b0b.png',
       // thumbnailUrl: {
       //   filename: '5oqkhgoiie2dqyylrvk47spwt4webt',
       //   extension: 'png'
       // },
-      link: "https://pixelpotus-frontend-r7y63b2h9-pixelpotus.vercel.app/", shouldDisplayLink: DisplayLinkOption.All, category: ["collectibles"]
+      link: 'https://pixelpotus-frontend-r7y63b2h9-pixelpotus.vercel.app/',
+      shouldDisplayLink: DisplayLinkOption.All,
+      category: ['collectibles']
     },
-    'Kalamint': {
-      address: ["KT1DEJEcfiMUWYjn1ZCTbbLokRcP26sx2pTH"],
-      thumbnailUrl: "https://testnet.kalamint.io/static/media/logo.2681f48f.svg",
-      discoverUrl: "../../../assets/img/alias/kalamint.svg",
-      link: "https://testnet.kalamint.io/", shouldDisplayLink: DisplayLinkOption.All, category: ["marketplaces"], backgroundColor: '#0ab688'
+    Kalamint: {
+      address: ['KT1DEJEcfiMUWYjn1ZCTbbLokRcP26sx2pTH'],
+      thumbnailUrl: 'https://testnet.kalamint.io/static/media/logo.2681f48f.svg',
+      discoverUrl: '../../../assets/img/alias/kalamint.svg',
+      link: 'https://testnet.kalamint.io/',
+      shouldDisplayLink: DisplayLinkOption.All,
+      category: ['marketplaces'],
+      backgroundColor: '#0ab688'
     },
-    'Tezotopia': {
-      address: ["KT1G1V5hS6ghW95GsUV2ZbEfEHENAvq3zTMn"],
-      thumbnailUrl: "../../../assets/img/alias/tezotopia.png",
-      link: "", shouldDisplayLink: DisplayLinkOption.None
+    Tezotopia: {
+      address: ['KT1G1V5hS6ghW95GsUV2ZbEfEHENAvq3zTMn'],
+      thumbnailUrl: '../../../assets/img/alias/tezotopia.png',
+      link: '',
+      shouldDisplayLink: DisplayLinkOption.None
     },
-    'InterpopComics': {
-      name: "Interpop Comics",
-      address: ["KT1KG5XcKeUtFWvQBkeiTe5vjvrAya8VsQFi"],
-      thumbnailUrl: "../../../assets/img/tokens/INTERPOP_FINAL_ICON.svg",
+    InterpopComics: {
+      name: 'Interpop Comics',
+      address: ['KT1KG5XcKeUtFWvQBkeiTe5vjvrAya8VsQFi'],
+      thumbnailUrl: '../../../assets/img/tokens/INTERPOP_FINAL_ICON.svg',
       // thumbnailUrl: {
       //   filename: '2fl5x5wifmqwbsd6d4axz5wrxwlpqv',
       //   extension: 'svg'
       // },
-      link: "https://dev.interpopcomics.com/", shouldDisplayLink: DisplayLinkOption.DirectAuth, category: ["collectibles"]
+      link: 'https://dev.interpopcomics.com/',
+      shouldDisplayLink: DisplayLinkOption.DirectAuth,
+      category: ['collectibles']
     }
   },
   ASSETS: {
-    'KT1FCMQk44tEP9fm9n5JJEhkSk1TW3XQdaWH': {
+    KT1FCMQk44tEP9fm9n5JJEhkSk1TW3XQdaWH: {
       kind: 'FA1.2',
       category: 'finance',
       tokens: {
@@ -141,7 +164,7 @@ const _CONSTANTS: Constants = {
         }
       }
     },
-    'KT1CUg39jQF8mV6nTMqZxjUUZFuz1KXowv3K': {
+    KT1CUg39jQF8mV6nTMqZxjUUZFuz1KXowv3K: {
       kind: 'FA1.2',
       category: 'finance',
       tokens: {
@@ -158,7 +181,7 @@ const _CONSTANTS: Constants = {
         }
       }
     },
-    'KT1MGe5wY9FugXvsjin4SnQFEU7yM1FFBF9U': {
+    KT1MGe5wY9FugXvsjin4SnQFEU7yM1FFBF9U: {
       kind: 'FA2',
       category: 'finance',
       tokens: {
@@ -166,7 +189,8 @@ const _CONSTANTS: Constants = {
           name: 'Tezos Israel Workshop Certificate',
           symbol: 'MFIL',
           decimals: 0,
-          description: 'This certificate verifies that the holder of its private key attended, contributed and completed the Tezos Israel and Madfish Solution Workshop on December 7th to the 9th, 2020. The certificate holder utilized skills in smart contract development and tokenization to build, test and deploy a token on the Tezos blockchain.',
+          description:
+            'This certificate verifies that the holder of its private key attended, contributed and completed the Tezos Israel and Madfish Solution Workshop on December 7th to the 9th, 2020. The certificate holder utilized skills in smart contract development and tokenization to build, test and deploy a token on the Tezos blockchain.',
           displayAsset: '../../../assets/img/tokens/mfil.jfif',
           thumbnailAsset: '../../../assets/img/tokens/mfil.jfif',
           isTransferable: false,
@@ -175,7 +199,7 @@ const _CONSTANTS: Constants = {
         }
       }
     },
-    'KT1RXpLtz22YgX24QQhxKVyKvtKZFaAVtTB9': {
+    KT1RXpLtz22YgX24QQhxKVyKvtKZFaAVtTB9: {
       kind: 'FA1.2',
       category: 'finance',
       tokens: {
@@ -191,7 +215,7 @@ const _CONSTANTS: Constants = {
         }
       }
     },
-    'KT1DgT2VViqZR5qt9bzXZnmbAsPkdad8fxrc': {
+    KT1DgT2VViqZR5qt9bzXZnmbAsPkdad8fxrc: {
       kind: 'FA2',
       category: 'finance',
       tokens: {
@@ -208,7 +232,7 @@ const _CONSTANTS: Constants = {
         }
       }
     },
-    'KT1Dwucgeaa9bgFi3Ds16Q1VAgpapXPhMZ5Q': {
+    KT1Dwucgeaa9bgFi3Ds16Q1VAgpapXPhMZ5Q: {
       kind: 'FA2',
       category: 'finance',
       tokens: {
@@ -216,7 +240,8 @@ const _CONSTANTS: Constants = {
           name: 'in bloom',
           symbol: '',
           decimals: 0,
-          description: 'I had a pretty intense year both personally and artistically, something between dream and frenzy. Things I was expecting for a long time happened suddenly and I feel like everything is blooming right now. It’s funny because the artwork itself is blooming while you’re watching it.',
+          description:
+            'I had a pretty intense year both personally and artistically, something between dream and frenzy. Things I was expecting for a long time happened suddenly and I feel like everything is blooming right now. It’s funny because the artwork itself is blooming while you’re watching it.',
           displayAsset: 'https://cloudflare-ipfs.com/ipfs/QmaN5STTo5TS5ittfMVFPmQSsS3z4JdNQfpMJNJtsCNsYZ',
           thumbnailAsset: 'https://cloudflare-ipfs.com/ipfs/QmaN5STTo5TS5ittfMVFPmQSsS3z4JdNQfpMJNJtsCNsYZ',
           shouldPreferSymbol: false,
@@ -225,7 +250,7 @@ const _CONSTANTS: Constants = {
         }
       }
     },
-    'KT1TVA93qdPyhKXXgi5rN4XphJZBh4PgARb5': {
+    KT1TVA93qdPyhKXXgi5rN4XphJZBh4PgARb5: {
       kind: 'FA2',
       category: 'finance',
       tokens: {
@@ -233,7 +258,8 @@ const _CONSTANTS: Constants = {
           name: 'Welcome to Miami',
           symbol: '',
           decimals: 0,
-          description: 'This piece was the first time I painted something inspired by the city that I’ve called home for my whole life. Miami. \nWhen I was considering the composition for this piece, I kept coming back to that famous saying, “the whole is greater than the sum of its parts.”\nSo if you asked me, what makes Miami, “Miami”? It’s the Miami skyline. It’s the palm trees that line the streets. It’s the boats parked on the dock. It’s the lifeguard towers spread along the beaches. It’s the ocean’s waves. And it’s the weather. The bipolar weather represented in the woman carrying an umbrella. First it’s sunny, then it rains, then it’s sunny again.\nMiami wouldn’t be “Miami” without all these features incorporated together that make up the vibrant city that it is. And so much more.',
+          description:
+            'This piece was the first time I painted something inspired by the city that I’ve called home for my whole life. Miami. \nWhen I was considering the composition for this piece, I kept coming back to that famous saying, “the whole is greater than the sum of its parts.”\nSo if you asked me, what makes Miami, “Miami”? It’s the Miami skyline. It’s the palm trees that line the streets. It’s the boats parked on the dock. It’s the lifeguard towers spread along the beaches. It’s the ocean’s waves. And it’s the weather. The bipolar weather represented in the woman carrying an umbrella. First it’s sunny, then it rains, then it’s sunny again.\nMiami wouldn’t be “Miami” without all these features incorporated together that make up the vibrant city that it is. And so much more.',
           displayAsset: 'https://cloudflare-ipfs.com/ipfs/QmPfQcyyjqAATqjtpVH9YCUxKH8fasUYZGoaSR4BwyMiu5',
           thumbnailAsset: 'https://cloudflare-ipfs.com/ipfs/QmPfQcyyjqAATqjtpVH9YCUxKH8fasUYZGoaSR4BwyMiu5',
           shouldPreferSymbol: false,

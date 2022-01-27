@@ -11,9 +11,7 @@ export interface Indexer {
   providedIn: 'root'
 })
 export class IndexerService {
-  constructor(
-    public tzktService: TzktService
-  ) {}
+  constructor(public tzktService: TzktService) {}
   async isUsedAccount(address: string): Promise<boolean> {
     return this.tzktService.isUsedAccount(address);
   }

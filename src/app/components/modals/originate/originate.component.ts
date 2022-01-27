@@ -14,7 +14,6 @@ import { Subscription } from 'rxjs';
 import { ModalComponent } from '../modal.component';
 import { SubjectService } from '../../../services/subject/subject.service';
 
-
 const zeroTxParams: DefaultTransactionParams = {
   gas: 0,
   storage: 0,
@@ -67,15 +66,18 @@ export class OriginateComponent extends ModalComponent implements OnInit, OnChan
     private messageService: MessageService,
     private estimateService: EstimateService,
     private subjectService: SubjectService
-  ) { super(); }
-  ngOnInit(): void { }
+  ) {
+    super();
+  }
+  ngOnInit(): void {}
   ngOnChanges(changes: SimpleChanges): void {
     if (this.beaconMode) {
-      if (this.operationRequest && this.operationRequest.operationDetails.length === 1 &&
-        this.operationRequest.operationDetails[0].kind === 'origination') {
+      if (this.operationRequest && this.operationRequest.operationDetails.length === 1 && this.operationRequest.operationDetails[0].kind === 'origination') {
         if (this.isValidOrigination()) {
           this.openModal();
-          this.balance = Big(this.operationRequest.operationDetails[0].balance).div(10 ** 6).toFixed();
+          this.balance = Big(this.operationRequest.operationDetails[0].balance)
+            .div(10 ** 6)
+            .toFixed();
           this.script = this.operationRequest.operationDetails[0].script;
           const recommendations = {
             gasRecommendation: this.operationRequest.operationDetails[0].gas_limit ? this.operationRequest.operationDetails[0].gas_limit : undefined,
@@ -110,7 +112,7 @@ export class OriginateComponent extends ModalComponent implements OnInit, OnChan
       if (this.walletService.isLedgerWallet()) {
         this.ledgerError = '?';
       }
-      ModalComponent.currentModel.next({name:this.name, data:null});
+      ModalComponent.currentModel.next({ name: this.name, data: null });
     }
   }
   isValidOrigination(): boolean {
@@ -142,17 +144,24 @@ export class OriginateComponent extends ModalComponent implements OnInit, OnChan
     };
     this.simSemaphore++;
     await this.estimateService.preLoadData(this.activeAccount.pkh, this.activeAccount.pk);
-    this.estimateService.estimateOrigination({...this.getOrigination(), ...recommendations}, this.activeAccount.pkh, callback);
+    this.estimateService.estimateOrigination({ ...this.getOrigination(), ...recommendations }, this.activeAccount.pkh, callback);
   }
-  getOrigination(): {balance: string; script: string; gasLimit: number; storageLimit: number;} {
+  getOrigination(): {
+    balance: string;
+    script: string;
+    gasLimit: number;
+    storageLimit: number;
+  } {
     const gasLimit = this.customGas ? Number(this.customGas) : this.defaultTransactionParams.gas;
     const storageLimit = this.customStorage ? Number(this.customStorage) : this.defaultTransactionParams.storage;
-    return JSON.parse(JSON.stringify({
-      balance: this.balance,
-      script: this.script,
-      gasLimit,
-      storageLimit
-    }));
+    return JSON.parse(
+      JSON.stringify({
+        balance: this.balance,
+        script: this.script,
+        gasLimit,
+        storageLimit
+      })
+    );
   }
   getTotalCost(display: boolean = false): string {
     const totalFee = Big(this.getTotalFee()).plus(Big(this.getTotalBurn())).toString();
@@ -181,14 +190,19 @@ export class OriginateComponent extends ModalComponent implements OnInit, OnChan
     return '';
   }
   getScript(): string {
-    return this.activeTab ? emitMicheline(this.script.storage, { indent: '  ', newline: '\n' }) : emitMicheline(this.script.code, { indent: '  ', newline: '\n' });
+    return this.activeTab
+      ? emitMicheline(this.script.storage, {
+          indent: '  ',
+          newline: '\n'
+        })
+      : emitMicheline(this.script.code, { indent: '  ', newline: '\n' });
   }
   closeModalAction(): void {
     this.operationResponse.emit(null);
     this.closeModal();
   }
   closeModal(): void {
-    ModalComponent.currentModel.next({name:'', data:null});
+    ModalComponent.currentModel.next({ name: '', data: null });
     this.clearForm();
     this.messageService?.stopSpinner();
   }
@@ -254,32 +268,38 @@ export class OriginateComponent extends ModalComponent implements OnInit, OnChan
   }
   async sendOrigination(keys: KeyPair): Promise<void> {
     //this.fee = '';
-    this.subscriptions.add(this.operationService.originate(this.getOrigination(), this.getTotalFee(), keys).subscribe(
-      async (ans: any) => {
-        this.sendResponse = ans;
-        if (ans.success === true) {
-          if (ans.payload.opHash) {
-            this.operationResponse.emit(ans.payload.opHash);
-            const metadata = { kt1: ans.payload.newPkh, opHash: ans.payload.opHash, origination: this.operationRequest.operationDetails[0] };
-            this.coordinatorService.boost(this.activeAccount.address, metadata);
-          } else if (this.walletService.isLedgerWallet()) {
-            this.requestLedgerSignature();
+    this.subscriptions.add(
+      this.operationService.originate(this.getOrigination(), this.getTotalFee(), keys).subscribe(
+        async (ans: any) => {
+          this.sendResponse = ans;
+          if (ans.success === true) {
+            if (ans.payload.opHash) {
+              this.operationResponse.emit(ans.payload.opHash);
+              const metadata = {
+                kt1: ans.payload.newPkh,
+                opHash: ans.payload.opHash,
+                origination: this.operationRequest.operationDetails[0]
+              };
+              this.coordinatorService.boost(this.activeAccount.address, metadata);
+            } else if (this.walletService.isLedgerWallet()) {
+              this.requestLedgerSignature();
+            }
+          } else {
+            this.messageService.stopSpinner();
+            console.log('Origination error id ', ans.payload.msg);
+            this.messageService.addError(ans.payload.msg, 0);
+            this.operationResponse.emit('broadcast_error');
+            if (this.walletService.isLedgerWallet) {
+              this.closeModal();
+            }
           }
-        } else {
-          this.messageService.stopSpinner();
-          console.log('Origination error id ', ans.payload.msg);
-          this.messageService.addError(ans.payload.msg, 0);
-          this.operationResponse.emit('broadcast_error');
-          if (this.walletService.isLedgerWallet) {
-            this.closeModal();
-          }
+        },
+        (err) => {
+          console.log('Error Message ', JSON.stringify(err));
+          this.ledgerError = 'Failed to create operation';
         }
-      },
-      err => {
-        console.log('Error Message ', JSON.stringify(err));
-        this.ledgerError = 'Failed to create operation';
-      }
-    ));
+      )
+    );
   }
   async requestLedgerSignature(): Promise<void> {
     if (this.walletService.wallet instanceof LedgerWallet) {
@@ -302,25 +322,31 @@ export class OriginateComponent extends ModalComponent implements OnInit, OnChan
   }
   async broadCastLedgerTransaction(): Promise<void> {
     this.messageService.startSpinner('Broadcasting operation');
-    this.subscriptions.add(this.operationService.broadcast(this.sendResponse.payload.signedOperation).subscribe(
-      ((ans: any) => {
-        this.sendResponse = ans;
-        if (ans.success && this.activeAccount.address) {
-          const metadata = { kt1: ans.payload.newPkh, opHash: ans.payload.opHash, origination: this.operationRequest.operationDetails[0] };
-          this.coordinatorService.boost(this.activeAccount.address, metadata);
-        } else {
-          this.messageService.addError(this.sendResponse.payload.msg, 0);
+    this.subscriptions.add(
+      this.operationService.broadcast(this.sendResponse.payload.signedOperation).subscribe(
+        (ans: any) => {
+          this.sendResponse = ans;
+          if (ans.success && this.activeAccount.address) {
+            const metadata = {
+              kt1: ans.payload.newPkh,
+              opHash: ans.payload.opHash,
+              origination: this.operationRequest.operationDetails[0]
+            };
+            this.coordinatorService.boost(this.activeAccount.address, metadata);
+          } else {
+            this.messageService.addError(this.sendResponse.payload.msg, 0);
+            this.operationResponse.emit('broadcast_error');
+          }
+          this.closeModal();
+          console.log('ans: ' + JSON.stringify(ans));
+        },
+        (error) => {
+          this.messageService.stopSpinner();
+          this.messageService.addError(error, 0);
           this.operationResponse.emit('broadcast_error');
         }
-        this.closeModal();
-        console.log('ans: ' + JSON.stringify(ans));
-      }),
-      (error => {
-        this.messageService.stopSpinner();
-        this.messageService.addError(error, 0);
-        this.operationResponse.emit('broadcast_error');
-      })
-    ));
+      )
+    );
   }
   clearForm(): void {
     this.defaultTransactionParams = zeroTxParams;
@@ -350,9 +376,8 @@ export class OriginateComponent extends ModalComponent implements OnInit, OnChan
   }
   // Only Numbers with Decimals
   keyPressNumbersDecimal(event, input): boolean {
-    const charCode = (event.which) ? event.which : event.keyCode;
-    if (charCode !== 46 && charCode > 31
-      && (charCode < 48 || charCode > 57)) {
+    const charCode = event.which ? event.which : event.keyCode;
+    if (charCode !== 46 && charCode > 31 && (charCode < 48 || charCode > 57)) {
       event.preventDefault();
       return false;
     } else if (charCode === 46 && this[input].length === 0) {

@@ -12,11 +12,7 @@ import { CONSTANTS } from '../../../../../environments/environment';
   styleUrls: ['../../../../../scss/components/views/embedded/signin/signin.component.scss']
 })
 export class SigninComponent implements OnInit, OnChanges {
-  constructor(
-    private messageService: MessageService,
-    public torusService: TorusService,
-    private walletService: WalletService
-  ) { }
+  constructor(private messageService: MessageService, public torusService: TorusService, private walletService: WalletService) {}
   @Input() dismiss: Boolean;
   @Input() loginConfig: LoginConfig;
   @Output() loginResponse = new EventEmitter();
@@ -25,8 +21,7 @@ export class SigninComponent implements OnInit, OnChanges {
   queueTimeVisible: number = 0;
   statusCounter: number = 0;
   queueInterval: NodeJS.Timeout;
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
   ngOnChanges(changes: SimpleChanges): void {
     if (changes?.dismiss?.currentValue === true) {
       this.messageService.stopSpinner().then(() => this.loginResponse.emit('dismiss'));
@@ -61,7 +56,6 @@ export class SigninComponent implements OnInit, OnChanges {
     this.queueTimeVisible = -1;
     this.messageService.startSpinner();
     this.queueInterval = setInterval(() => {
-
       if (this.queueTimeVisible > 1 || (this.queueTimeVisible === 1 && this.queueTime === 0)) {
         this.queueTimeVisible -= 1;
       }
@@ -82,7 +76,7 @@ export class SigninComponent implements OnInit, OnChanges {
       if (this.queueTimeVisible <= 0 && this.queueTime === 0) {
         this.stopQueue();
       }
-    }, 1000)
+    }, 1000);
   }
   stopQueue() {
     if (this.queueInterval) {
@@ -159,7 +153,7 @@ export class SigninComponent implements OnInit, OnChanges {
     if (res?.EstimatedTimeSeconds !== -1) {
       if (res.EstimatedTimeSeconds === 0 && res.Status === 'error') {
         console.error('FailedToResolve');
-        this.abort()
+        this.abort();
         return;
       }
       if (this.queueTimeVisible === -1) {
@@ -169,14 +163,16 @@ export class SigninComponent implements OnInit, OnChanges {
     }
   }
   async get(url: string, triesLeft = 3) {
-    return await fetch(url).then(async res => {
-      return await res.json();
-    }).catch(async e => {
-      if (triesLeft > 0) {
-        return await this.get(url, --triesLeft);
-      } else {
-        throw e;
-      }
-    });
+    return await fetch(url)
+      .then(async (res) => {
+        return await res.json();
+      })
+      .catch(async (e) => {
+        if (triesLeft > 0) {
+          return await this.get(url, --triesLeft);
+        } else {
+          throw e;
+        }
+      });
   }
 }

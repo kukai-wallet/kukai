@@ -14,16 +14,16 @@ import { ActivateComponent } from './components/views/start/activate/activate.co
 
 const routes: Routes = [
   {
-    path: '', children: [
+    path: '',
+    children: [
       { path: '', component: StartComponent },
       { path: 'new-wallet', component: NewWalletComponent },
       { path: 'import', component: MnemonicImportComponent },
       { path: 'connect-ledger', component: ConnectLedgerComponent },
       {
-        path: 'account', component: LoggedInComponent,
-        loadChildren: () => import(`./components/views/logged-in/logged-in.module`).then(
-          module => module.LoggedInModule
-        )
+        path: 'account',
+        component: LoggedInComponent,
+        loadChildren: () => import(`./components/views/logged-in/logged-in.module`).then((module) => module.LoggedInModule)
       },
       { path: 'activate', component: ActivateComponent },
       { path: 'serviceworker', component: TermsOfUseComponent },
@@ -34,11 +34,11 @@ const routes: Routes = [
   { path: 'terms-of-use', component: TermsOfUseComponent },
   { path: '404', component: P404Component, data: { title: 'Page 404' } },
   { path: '500', component: P500Component, data: { title: 'Page 500' } },
-  { path: '**', redirectTo: '404' },
+  { path: '**', redirectTo: '404' }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

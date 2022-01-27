@@ -3,11 +3,10 @@ import { TestBed } from '@angular/core/testing';
 import { HttpTestingController } from '@angular/common/http/testing';
 
 // class mocks
-import { http_imports, translate_imports, balancesrv_providers, rx} from '../../../../spec/helpers/service.helper';
+import { http_imports, translate_imports, balancesrv_providers, rx } from '../../../../spec/helpers/service.helper';
 import { BalanceService, WalletService, OperationService } from '../../../../spec/helpers/service.helper';
 import { WalletServiceStub } from '../../../../spec/mocks/wallet.mock';
 import { Wallet } from '../wallet/wallet';
-
 
 // class dependencies
 /**
@@ -16,65 +15,69 @@ import { Wallet } from '../wallet/wallet';
  * @todo: review the logic in behavior used in tests.
  */
 describe('[ BalanceService ]', () => {
-	// class under inspection
-	let service: BalanceService;
+  // class under inspection
+  let service: BalanceService;
 
-	// class dependencies
-	let walletsrv;
-	let operationsrv: OperationService;
-	let httpMock: HttpTestingController;
+  // class dependencies
+  let walletsrv;
+  let operationsrv: OperationService;
+  let httpMock: HttpTestingController;
 
-	beforeEach(() => {
-		// WalletService mock
-		TestBed.configureTestingModule({
-			imports: [http_imports, translate_imports],
-			providers: [ balancesrv_providers ]
-		});
+  beforeEach(() => {
+    // WalletService mock
+    TestBed.configureTestingModule({
+      imports: [http_imports, translate_imports],
+      providers: [balancesrv_providers]
+    });
 
-		service = TestBed.inject(BalanceService);
-		walletsrv = TestBed.inject(WalletService);
-		operationsrv = TestBed.inject(OperationService);
-		httpMock  = TestBed.inject(HttpTestingController);
+    service = TestBed.inject(BalanceService);
+    walletsrv = TestBed.inject(WalletService);
+    operationsrv = TestBed.inject(OperationService);
+    httpMock = TestBed.inject(HttpTestingController);
 
-		// create mock empty full wallet
-		walletsrv.wallet = new WalletServiceStub().emptyWallet(1);
+    // create mock empty full wallet
+    walletsrv.wallet = new WalletServiceStub().emptyWallet(1);
 
+    // configure spies
+  });
 
-		// configure spies
-	});
+  afterEach(() => {
+    httpMock.verify();
+  });
 
-	afterEach(() => {
-		httpMock.verify();
-	});
+  it('should be created', () => {
+    expect(service).toBeTruthy();
+  });
 
-	it('should be created', () => {
-		expect(service).toBeTruthy();
-	});
+  it('should call getbalanceall once', () => {
+    spyOn(service, 'getBalanceAll');
+    service.getBalanceAll();
+    expect(service.getBalanceAll).toHaveBeenCalledTimes(1);
+  });
 
-	it('should call getbalanceall once', () => {
-		spyOn(service, 'getBalanceAll');
-		service.getBalanceAll();
-		expect(service.getBalanceAll).toHaveBeenCalledTimes(1);
-	});
+  it('should call attempt to update account balance 3 times', () => {
+    spyOn(service, 'getAccountBalance');
+    service.getBalanceAll();
+    expect(service.getAccountBalance).toHaveBeenCalledTimes(3);
+  });
 
-	it('should call attempt to update account balance 3 times', () => {
-		spyOn(service, 'getAccountBalance');
-		service.getBalanceAll();
-		expect(service.getAccountBalance).toHaveBeenCalledTimes(3);
-	});
+  it('should update an account balance to 10', () => {
+    const acc = walletsrv.wallet.implicitAccounts[0];
+    spyOn(console, 'log');
+    spyOn(operationsrv, 'getBalance').and.callFake(function () {
+      return rx.Observable.of({
+        success: true,
+        payload: { balance: 10 }
+      });
+    });
 
-	it('should update an account balance to 10', () => {
-		const acc = walletsrv.wallet.implicitAccounts[0];
-		spyOn(console, 'log');
-		spyOn(operationsrv, 'getBalance').and.callFake(function() { return rx.Observable.of({	success: true, payload: { balance: 10 } });	});
+    service.getAccountBalance(acc);
 
-		service.getAccountBalance(acc);
+    // expect(console.log).toHaveBeenCalledWith('for ' + pkh);
+    expect(walletsrv.wallet.implicitAccounts[0].balanceXTZ).toEqual(10);
+  });
 
-		// expect(console.log).toHaveBeenCalledWith('for ' + pkh);
-		expect(walletsrv.wallet.implicitAccounts[0].balanceXTZ).toEqual(10);
-	});
-
-	/** Failing on 1.3.0 update
+  /** Failing on 1.3.0 update
 	it('should handle error on failed request', () => {
 		pkh = accounts[1].pkh;
 		let index = 1;
@@ -85,7 +88,7 @@ describe('[ BalanceService ]', () => {
 		expect(console.log).toHaveBeenCalledWith('Balance Error: "Unknown Error"');
 	}); */
 
-	/** Failing on 1.3.0 update
+  /** Failing on 1.3.0 update
 	it('should update the wallet total balance', () => {
 
 		spyOn(console,'log');

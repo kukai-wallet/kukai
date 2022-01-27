@@ -14,20 +14,16 @@ export class ReceiveComponent extends ModalComponent implements OnInit {
   activeAddress: string;
   showReceiveFormat = {
     btnOutline: true,
-    dropdownItem: false,
+    dropdownItem: false
   };
 
   name = 'receive';
 
-  constructor(
-    private messageService: MessageService,
-    private translate: TranslateService,
-  ) {
+  constructor(private messageService: MessageService, private translate: TranslateService) {
     super();
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
   open(data: any): void {
     this.activeAddress = data.address;
     setTimeout(() => {
@@ -39,15 +35,24 @@ export class ReceiveComponent extends ModalComponent implements OnInit {
     ModalComponent.currentModel.next({ name: '', data: null });
   }
   getQR(): void {
-    QRCode.toCanvas(document.getElementById('canvas'), this.activeAddress, { errorCorrectionLevel: 'H', scaleFactor: 2, color: { light: '#FCFCFC' } }, function (err, canvas) {
-      if (err) { throw err; }
-    });
+    QRCode.toCanvas(
+      document.getElementById('canvas'),
+      this.activeAddress,
+      {
+        errorCorrectionLevel: 'H',
+        scaleFactor: 2,
+        color: { light: '#FCFCFC' }
+      },
+      function (err, canvas) {
+        if (err) {
+          throw err;
+        }
+      }
+    );
   }
   copy(): void {
     copy(this.activeAddress);
-    const copyToClipboard = this.translate.instant(
-      'OVERVIEWCOMPONENT.COPIEDTOCLIPBOARD'
-    );
+    const copyToClipboard = this.translate.instant('OVERVIEWCOMPONENT.COPIEDTOCLIPBOARD');
     this.messageService.add(this.activeAddress + ' ' + copyToClipboard, 5);
   }
 }

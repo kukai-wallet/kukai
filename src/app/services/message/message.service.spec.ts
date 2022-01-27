@@ -8,102 +8,117 @@ import { TestBed } from '@angular/core/testing';
  * Suite: MessageService
  */
 describe('[ MessageService ]', () => {
+  // class under inspection
+  let service: MessageService;
 
-	// class under inspection
-	let service: MessageService;
+  // vars
+  let type: string;
+  let message: string;
 
-	// vars
-	let type: string;
-	let message: string;
+  // testing data
+  const seconds = 15;
+  const infomsg = {
+    type: 'info',
+    msg: 'informational message',
+    timeout: seconds * 1000
+  };
+  const errormsg = {
+    type: 'danger',
+    msg: 'error message',
+    timeout: seconds * 1000
+  };
+  const warningmsg = {
+    type: 'warning',
+    msg: 'warning message',
+    timeout: seconds * 1000
+  };
+  const successmsg = {
+    type: 'success',
+    msg: 'success message',
+    timeout: seconds * 1000,
+    ref: ''
+  };
 
-	// testing data
-	const seconds = 15;
-	const infomsg = { type: 'info', msg: 'informational message', timeout: seconds * 1000 };
-	const errormsg = { type: 'danger', msg: 'error message', timeout: seconds * 1000 };
-	const warningmsg = { type: 'warning', msg: 'warning message', timeout: seconds * 1000 };
-	const successmsg = { type: 'success', msg: 'success message', timeout: seconds * 1000, ref: '' };
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [MessageService]
+    });
 
-	beforeEach(() => {
-    	TestBed.configureTestingModule({
-      		providers: [MessageService]
-    	});
+    service = TestBed.inject(MessageService);
 
-		service = TestBed.inject(MessageService);
+    // reset message queue
+    service.messages = [];
 
-		// reset message queue
-		service.messages = [];
+    // do nothing on console logging
+    spyOn(console, 'log');
+  });
 
-		// do nothing on console logging
-		spyOn(console, 'log');
+  it('should be created', () => {
+    expect(service).toBeTruthy();
+  });
 
-	});
+  it('should create message object array', () => {
+    const messages = service.messages;
+    expect(messages instanceof Array).toBeTruthy();
+  });
 
-	it('should be created', () => {
-		expect(service).toBeTruthy();
-	});
+  it('should push an information message', () => {
+    // set message type and value
+    message = 'informational message';
+    type = 'info';
 
-	it('should create message object array', () => {
-		const messages = service.messages;
-		expect(messages instanceof Array).toBeTruthy();
-	});
+    service.add(message, seconds);
 
-	it('should push an information message', () => {
-		// set message type and value
-		message = 'informational message';
-		type = 'info';
+    expect(infomsg).toEqual(service.messages.pop());
+    expect(console.log).toHaveBeenCalledWith(type + ': ' + message);
+  });
 
-		service.add(message, seconds);
+  it('should push an error message', () => {
+    // set message type and value
+    message = 'error message';
+    type = 'danger';
 
-		expect(infomsg).toEqual(service.messages.pop());
-		expect(console.log).toHaveBeenCalledWith(type + ': ' + message);
-	});
+    service.addError(message, seconds);
 
-	it('should push an error message', () => {
-		// set message type and value
-		message = 'error message';
-		type = 'danger';
+    expect(errormsg).toEqual(service.messages.pop());
+    expect(console.log).toHaveBeenCalledWith(type + ': ' + message);
+  });
 
-		service.addError(message, seconds);
+  it('should push an warning message', () => {
+    // set message type and value
+    message = 'warning message';
+    type = 'warning';
 
-		expect(errormsg).toEqual(service.messages.pop());
-		expect(console.log).toHaveBeenCalledWith(type + ': ' + message);
-	});
+    service.addWarning(message, seconds);
 
-	it('should push an warning message', () => {
-		// set message type and value
-		message = 'warning message';
-		type = 'warning';
+    expect(warningmsg).toEqual(service.messages.pop());
+    expect(console.log).toHaveBeenCalledWith(type + ': ' + message);
+  });
 
-		service.addWarning(message, seconds);
+  it('should push an success message', () => {
+    // set message type and value
+    message = 'success message';
+    type = 'success';
 
-		expect(warningmsg).toEqual(service.messages.pop());
-		expect(console.log).toHaveBeenCalledWith(type + ': ' + message);
-	});
+    service.addSuccess(message, seconds);
 
-	it('should push an success message', () => {
-		// set message type and value
-		message = 'success message';
-		type = 'success';
+    expect(successmsg).toEqual(service.messages.pop());
+    expect(console.log).toHaveBeenCalledWith(type + ': ' + message);
+  });
 
-		service.addSuccess(message, seconds);
+  it('should clear queue of (3) messages', () => {
+    // set message value
+    message = 'filler message';
 
-		expect(successmsg).toEqual(service.messages.pop());
-		expect(console.log).toHaveBeenCalledWith(type + ': ' + message);
-	});
+    // add multiple messages to the queue
+    service.add(message, seconds);
+    service.add(message, seconds);
+    service.add(message, seconds);
 
-	it('should clear queue of (3) messages', () => {
-		// set message value
-		message = 'filler message';
+    expect(service.messages.length).toEqual(3);
 
-		// add multiple messages to the queue
-		service.add(message, seconds);
-		service.add(message, seconds);
-		service.add(message, seconds);
+    service.clear();
 
-		expect(service.messages.length).toEqual(3);
-
-		service.clear();
-
-		expect(service.messages.length).toEqual(0);
-	});
+    expect(service.messages.length).toEqual(0);
+  });
 });

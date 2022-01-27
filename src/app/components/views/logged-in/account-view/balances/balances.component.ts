@@ -12,7 +12,7 @@ import { RemoveCommaPipe } from '../../../../../pipes/remove-comma.pipe';
 @Component({
   selector: 'app-balances',
   templateUrl: './balances.component.html',
-  styleUrls: ['../../../../../../scss/components/views/logged-in/account-view/cards/balances/balances.component.scss'],
+  styleUrls: ['../../../../../../scss/components/views/logged-in/account-view/cards/balances/balances.component.scss']
 })
 export class BalancesComponent implements OnInit, AfterViewChecked, OnDestroy {
   Object = Object;
@@ -30,19 +30,25 @@ export class BalancesComponent implements OnInit, AfterViewChecked, OnDestroy {
     private walletService: WalletService,
     public removeCommaPipe: RemoveCommaPipe
   ) {
-    this.subscriptions.add(this.walletService.activeAccount.pipe(filter((account: Account) => account?.address !== this.account?.address)).subscribe((account) => {
-      this.account = account;
-      this.balances = this.tokenBalancesService?.balances;
-      this.calcTotalBalances();
-    }));
-    this.subscriptions.add(this.subjectService.nftsUpdated.subscribe((p) => {
-      this.balances = p?.balances ?? this.tokenBalancesService?.balances;
-      this.calcTotalBalances();
-    }));
-    this.subscriptions.add(this.walletService.walletUpdated.subscribe(() => {
-      this.balances = this.tokenBalancesService?.balances;
-      this.calcTotalBalances();
-    }));
+    this.subscriptions.add(
+      this.walletService.activeAccount.pipe(filter((account: Account) => account?.address !== this.account?.address)).subscribe((account) => {
+        this.account = account;
+        this.balances = this.tokenBalancesService?.balances;
+        this.calcTotalBalances();
+      })
+    );
+    this.subscriptions.add(
+      this.subjectService.nftsUpdated.subscribe((p) => {
+        this.balances = p?.balances ?? this.tokenBalancesService?.balances;
+        this.calcTotalBalances();
+      })
+    );
+    this.subscriptions.add(
+      this.walletService.walletUpdated.subscribe(() => {
+        this.balances = this.tokenBalancesService?.balances;
+        this.calcTotalBalances();
+      })
+    );
   }
   e(wrap) {
     if (!!wrap) {
@@ -82,7 +88,13 @@ export class BalancesComponent implements OnInit, AfterViewChecked, OnDestroy {
   }
 
   calcTotalBalances(): void {
-    this.totalBalances = this.isFiat ? this.balances.reduce((prev, balance) => prev + parseFloat(balance?.price ?? 0), 0) + this.account?.balanceUSD : this.balances.reduce((prev, balance) => prev + parseFloat(balance?.price ?? 0), 0) / this.walletService.wallet.XTZrate + parseFloat(Big(this.account?.balanceXTZ ?? 0).div(1000000).toFixed());
+    this.totalBalances = this.isFiat
+      ? this.balances.reduce((prev, balance) => prev + parseFloat(balance?.price ?? 0), 0) + this.account?.balanceUSD
+      : this.balances.reduce((prev, balance) => prev + parseFloat(balance?.price ?? 0), 0) / this.walletService.wallet.XTZrate +
+        parseFloat(
+          Big(this.account?.balanceXTZ ?? 0)
+            .div(1000000)
+            .toFixed()
+        );
   }
 }
-

@@ -2,16 +2,7 @@ import { Injectable } from '@angular/core';
 import { KeyPair, WalletType } from './../../interfaces';
 import { WalletService } from '../wallet/wallet.service';
 import { CoordinatorService } from '../coordinator/coordinator.service';
-import {
-  LegacyWalletV1,
-  LegacyWalletV2,
-  LegacyWalletV3,
-  HdWallet,
-  LedgerWallet,
-  TorusWallet,
-  EmbeddedTorusWallet,
-  WatchWallet
-} from '../wallet/wallet';
+import { LegacyWalletV1, LegacyWalletV2, LegacyWalletV3, HdWallet, LedgerWallet, TorusWallet, EmbeddedTorusWallet, WatchWallet } from '../wallet/wallet';
 import { hd, utils } from '@tezos-core-tools/crypto-utils';
 import { EncryptionService } from '../encryption/encryption.service';
 import { TorusService } from '../torus/torus.service';
@@ -27,7 +18,7 @@ export class ImportService {
     private encryptionService: EncryptionService,
     private torusService: TorusService,
     private operationService: OperationService
-  ) { }
+  ) {}
   pwdRequired(json: string) {
     const walletData = JSON.parse(json);
     if (walletData.provider !== 'Kukai') {
@@ -47,31 +38,16 @@ export class ImportService {
       walletData = JSON.parse(json);
       if (walletData.walletType === WalletType.HdWallet && walletData.version === 3) {
         //hd
-        seed = await this.encryptionService.decrypt(
-          walletData.encryptedSeed,
-          pwd,
-          walletData.iv,
-          3
-        );
+        seed = await this.encryptionService.decrypt(walletData.encryptedSeed, pwd, walletData.iv, 3);
       } else if (walletData.walletType === WalletType.LegacyWallet) {
         if (walletData.version === 1) {
           console.log('v1');
-          seed = await this.encryptionService.decrypt(
-            walletData.encryptedSeed,
-            pwd,
-            walletData.pkh.slice(3, 19),
-            1
-          );
+          seed = await this.encryptionService.decrypt(walletData.encryptedSeed, pwd, walletData.pkh.slice(3, 19), 1);
           if (utils.seedToKeyPair(seed).pkh !== walletData.pkh) {
             seed = '';
           }
         } else if (walletData.version === 2 || walletData.version === 3) {
-          seed = await this.encryptionService.decrypt(
-            walletData.encryptedSeed,
-            pwd,
-            walletData.iv,
-            walletData.version
-          );
+          seed = await this.encryptionService.decrypt(walletData.encryptedSeed, pwd, walletData.iv, walletData.version);
         }
       }
     } catch (e) {
@@ -96,28 +72,14 @@ export class ImportService {
     this.coordinatorService.stopAll();
     if (data.walletType === WalletType.HdWallet && data.version === 3) {
       // HD
-      this.walletService.wallet = new HdWallet(
-        data.iv,
-        data.encryptedSeed,
-        data.encryptedEntropy
-      );
+      this.walletService.wallet = new HdWallet(data.iv, data.encryptedSeed, data.encryptedEntropy);
     } else if (data.walletType === WalletType.LegacyWallet) {
       if (data.version === 3) {
-        this.walletService.wallet = new LegacyWalletV3(
-          data.iv,
-          data.encryptedSeed,
-          data.encryptedEntropy
-        );
+        this.walletService.wallet = new LegacyWalletV3(data.iv, data.encryptedSeed, data.encryptedEntropy);
       } else if (data.version === 2) {
-        this.walletService.wallet = new LegacyWalletV2(
-          data.iv,
-          data.encryptedSeed
-        );
+        this.walletService.wallet = new LegacyWalletV2(data.iv, data.encryptedSeed);
       } else if (data.version === 1) {
-        this.walletService.wallet = new LegacyWalletV1(
-          data.pkh.slice(3, 19),
-          data.encryptedSeed
-        );
+        this.walletService.wallet = new LegacyWalletV1(data.pkh.slice(3, 19), data.encryptedSeed);
       } else {
         throw new Error('Unsupported wallet file');
       }
@@ -140,10 +102,7 @@ export class ImportService {
         keys = hd.keyPairFromAccountIndex(seed, index);
         isUsedAccount = await this.indexerService.isUsedAccount(keys.pkh);
         if (isUsedAccount || index === 0) {
-          this.walletService.addImplicitAccount(
-            keys.pk,
-            index++
-          );
+          this.walletService.addImplicitAccount(keys.pk, index++);
           await this.findContracts(keys.pkh);
         }
       }
@@ -193,7 +152,14 @@ export class ImportService {
     try {
       if (verifierDetails.embedded) {
         this.walletService.initStorage(instanceId);
-        this.walletService.wallet = new EmbeddedTorusWallet(verifierDetails.verifier, verifierDetails.id, verifierDetails.name, verifierDetails.origin, sk, instanceId);
+        this.walletService.wallet = new EmbeddedTorusWallet(
+          verifierDetails.verifier,
+          verifierDetails.id,
+          verifierDetails.name,
+          verifierDetails.origin,
+          sk,
+          instanceId
+        );
       } else {
         this.walletService.initStorage();
         this.walletService.wallet = new TorusWallet(verifierDetails.verifier, verifierDetails.id, verifierDetails.name);

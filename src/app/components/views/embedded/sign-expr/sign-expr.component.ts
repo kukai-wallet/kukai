@@ -33,9 +33,8 @@ export class SignExprEmbedComponent implements OnInit, OnChanges {
     public translate: TranslateService,
     private operationService: OperationService,
     private inputValidationService: InputValidationService
-  ) { }
-  ngOnInit(): void {
-  }
+  ) {}
+  ngOnInit(): void {}
   ngOnChanges(changes: SimpleChanges): void {
     if (this.signRequest) {
       const scrollBarWidth = window.innerWidth - document.body.offsetWidth;
@@ -44,40 +43,43 @@ export class SignExprEmbedComponent implements OnInit, OnChanges {
       this.template = this.signRequest.ui;
       this.isMessage = this.inputValidationService.isMessageSigning(this.signRequest.payload);
       const value = valueDecoder(Uint8ArrayConsumer.fromHexString(this.signRequest.payload.slice(2)));
-      const payload = emitMicheline(value, { indent: '  ', newline: '\n' });
+      const payload = emitMicheline(value, {
+        indent: '  ',
+        newline: '\n'
+      });
       this.payload = this.isMessage ? value.string : payload;
     }
   }
   async sign() {
-      const pwd = this.password;
-      this.password = '';
-      await this.messageService.startSpinner(`Signing ${this.isMessage ? 'message' : 'payload'}...`);
-      let keys;
+    const pwd = this.password;
+    this.password = '';
+    await this.messageService.startSpinner(`Signing ${this.isMessage ? 'message' : 'payload'}...`);
+    let keys;
+    try {
+      keys = await this.walletService.getKeys(pwd, this.activeAccount.pkh);
+    } catch (e) {
+      console.warn(e);
+      this.messageService.stopSpinner();
+    }
+    if (keys) {
+      this.pwdInvalid = '';
       try {
-        keys = await this.walletService.getKeys(pwd, this.activeAccount.pkh);
+        const signature = this.operationService.sign(this.signRequest.payload, keys.sk).edsig;
+        this.acceptSigning(signature);
       } catch (e) {
+        this.pwdInvalid = 'Signing failed';
         console.warn(e);
+      } finally {
         this.messageService.stopSpinner();
       }
-      if (keys) {
-        this.pwdInvalid = '';
-        try {
-          const signature = this.operationService.sign(this.signRequest.payload, keys.sk).edsig;
-          this.acceptSigning(signature);
-        } catch (e) {
-          this.pwdInvalid = 'Signing failed';
-          console.warn(e);
-        } finally {
-          this.messageService.stopSpinner();
-        }
+    } else {
+      this.messageService.stopSpinner();
+      if (this.walletService.isTorusWallet()) {
+        this.pwdInvalid = `Authorization failed`;
       } else {
-        this.messageService.stopSpinner();
-        if (this.walletService.isTorusWallet()) {
-          this.pwdInvalid = `Authorization failed`;
-        } else {
-          this.pwdInvalid = this.translate.instant('SENDCOMPONENT.WRONGPASSWORD');
-        }
+        this.pwdInvalid = this.translate.instant('SENDCOMPONENT.WRONGPASSWORD');
       }
+    }
   }
   rejectSigning() {
     this.closeModal();

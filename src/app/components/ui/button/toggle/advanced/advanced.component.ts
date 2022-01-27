@@ -7,10 +7,9 @@ import { ToggleComponent } from '../toggle.component';
   styleUrls: ['../../../../../../scss/components/ui/button/toggle.component.scss']
 })
 export class AdvancedToggleComponent extends ToggleComponent implements OnInit {
-
-  constructor() { super(); }
-
-  ngOnInit(): void {
+  constructor() {
+    super();
   }
 
+  ngOnInit(): void {}
 }

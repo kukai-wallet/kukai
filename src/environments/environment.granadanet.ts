@@ -23,54 +23,67 @@ const _CONSTANTS: Constants = {
     hard_storage_limit_per_operation: 60000
   },
   CONTRACT_ALIASES: {
-    'QuipuSwap': {
-        name: "QuipuSwap",
-        address: [],
-        thumbnailUrl: "../../../assets/img/alias/quipu.png",
-        discoverUrl: "../../../assets/img/alias/quipuswap-discover.jpeg",
-        link: "https://quipuswap.com/", shouldDisplayLink: DisplayLinkOption.All, category: ["exchange"], backgroundColor: '#222d47',
-        description: "A decentralized exchange on Tezos"
+    QuipuSwap: {
+      name: 'QuipuSwap',
+      address: [],
+      thumbnailUrl: '../../../assets/img/alias/quipu.png',
+      discoverUrl: '../../../assets/img/alias/quipuswap-discover.jpeg',
+      link: 'https://quipuswap.com/',
+      shouldDisplayLink: DisplayLinkOption.All,
+      category: ['exchange'],
+      backgroundColor: '#222d47',
+      description: 'A decentralized exchange on Tezos'
     },
-    'MinterPop': {
-        name: "Minter Pop",
-        address: ['KT1T7ShxhtSRuhvhHeug6Sjc7W8irLmswEt7'],
-        thumbnailUrl: "../../../assets/img/alias/minterpop.svg",
-        discoverUrl: "../../../assets/img/alias/minterpop-discover.png",
-        link: "https://minterpop-dev.vercel.app/", shouldDisplayLink: DisplayLinkOption.All, category: ["collectibles"],
-        description: "Curated NFT art and collectibles marketplace"
+    MinterPop: {
+      name: 'Minter Pop',
+      address: ['KT1T7ShxhtSRuhvhHeug6Sjc7W8irLmswEt7'],
+      thumbnailUrl: '../../../assets/img/alias/minterpop.svg',
+      discoverUrl: '../../../assets/img/alias/minterpop-discover.png',
+      link: 'https://minterpop-dev.vercel.app/',
+      shouldDisplayLink: DisplayLinkOption.All,
+      category: ['collectibles'],
+      description: 'Curated NFT art and collectibles marketplace'
     },
-    'Quartz': {
-        name: 'Quartz',
-        address: ["KT1Caj4ZXbop5AswuH4RAv61rMVEeVdtFk4f"],
-        thumbnailUrl: "../../../assets/img/alias/quartz-demo.svg",
-        link: "", shouldDisplayLink: DisplayLinkOption.None, category: ["collectibles"],
-        description: ""
+    Quartz: {
+      name: 'Quartz',
+      address: ['KT1Caj4ZXbop5AswuH4RAv61rMVEeVdtFk4f'],
+      thumbnailUrl: '../../../assets/img/alias/quartz-demo.svg',
+      link: '',
+      shouldDisplayLink: DisplayLinkOption.None,
+      category: ['collectibles'],
+      description: ''
     },
-    'TezosDomains': {
-        name: 'Tezos Domains',
-        address: ["KT1Ch6PstAQG32uNfQJUSL2bf2WvimvY5umk"],
-        thumbnailUrl: "",
-        discoverUrl: "../../../assets/img/alias/tezosdomains-discover.png",
-        link: "https://granadanet.tezos.domains/", shouldDisplayLink: DisplayLinkOption.All, category: ["identity"],
-        description: "Friendly names on Tezos",
-        backgroundColor: '#f1f4f8'
+    TezosDomains: {
+      name: 'Tezos Domains',
+      address: ['KT1Ch6PstAQG32uNfQJUSL2bf2WvimvY5umk'],
+      thumbnailUrl: '',
+      discoverUrl: '../../../assets/img/alias/tezosdomains-discover.png',
+      link: 'https://granadanet.tezos.domains/',
+      shouldDisplayLink: DisplayLinkOption.All,
+      category: ['identity'],
+      description: 'Friendly names on Tezos',
+      backgroundColor: '#f1f4f8'
     },
-    'Kalamint': {
-        name: "Kalamint",
-        address: ["KT1FWJZb8eAXmucegZ3tWQB7TCRvQGjTmfB6"],
-        thumbnailUrl: "../../../assets/img/alias/kalamint-thumbnail.png",
-        discoverUrl: "../../../assets/img/alias/kalamint.svg",
-        link: "https://testnet.kalamint.io/", shouldDisplayLink: DisplayLinkOption.All, category: ["marketplace"],
-        backgroundColor: '#0ab688',
-        description: "Create, sell and collect NFTs"
+    Kalamint: {
+      name: 'Kalamint',
+      address: ['KT1FWJZb8eAXmucegZ3tWQB7TCRvQGjTmfB6'],
+      thumbnailUrl: '../../../assets/img/alias/kalamint-thumbnail.png',
+      discoverUrl: '../../../assets/img/alias/kalamint.svg',
+      link: 'https://testnet.kalamint.io/',
+      shouldDisplayLink: DisplayLinkOption.All,
+      category: ['marketplace'],
+      backgroundColor: '#0ab688',
+      description: 'Create, sell and collect NFTs'
     },
-    'PixelPotus': {
-        name: 'PixelPotus',
-        address: ["KT1B3pPLmJnVUfEogxDTc7tGNQdicbHToyBx"],
-        thumbnailUrl: "../../../assets/img/alias/pixelpotus.png",
-        link: "https://www.pixelpotus.com/", shouldDisplayLink: DisplayLinkOption.None, category: ["game", "collectibles"],
-        description: "Collectibles game with FREE daily NFTs",
-        backgroundColor: '#c7b299'
+    PixelPotus: {
+      name: 'PixelPotus',
+      address: ['KT1B3pPLmJnVUfEogxDTc7tGNQdicbHToyBx'],
+      thumbnailUrl: '../../../assets/img/alias/pixelpotus.png',
+      link: 'https://www.pixelpotus.com/',
+      shouldDisplayLink: DisplayLinkOption.None,
+      category: ['game', 'collectibles'],
+      description: 'Collectibles game with FREE daily NFTs',
+      backgroundColor: '#c7b299'
     },
     'Tezotopia': {
         name: "Tezotopia",
@@ -104,7 +117,6 @@ const _TRUSTED_TOKEN_CONTRACTS = [
   'KT1SZ87ihAWc43YZxYjoRz8MQyAapUGbZigG', //Tezotopia
   'KT1B3pPLmJnVUfEogxDTc7tGNQdicbHToyBx', //PixelPotus old test
   'KT1FWJZb8eAXmucegZ3tWQB7TCRvQGjTmfB6' //Kalamint
-
 ];
 const _BLACKLISTED_TOKEN_CONTRACTS = []
 

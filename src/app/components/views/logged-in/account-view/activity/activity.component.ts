@@ -9,16 +9,11 @@ import { TokenService } from '../../../../../services/token/token.service';
 @Component({
   selector: 'app-activity',
   templateUrl: './activity.component.html',
-  styleUrls: ['../../../../../../scss/components/views/logged-in/account-view/cards/activity/activity.component.scss'],
+  styleUrls: ['../../../../../../scss/components/views/logged-in/account-view/cards/activity/activity.component.scss']
 })
 export class ActivityComponent implements OnInit {
   public currTimeStamp: number;
-  constructor(
-    public translate: TranslateService,
-    public messageService: MessageService,
-    public timeAgoPipe: TimeAgoPipe,
-    public tokenService: TokenService
-  ) { }
+  constructor(public translate: TranslateService, public messageService: MessageService, public timeAgoPipe: TimeAgoPipe, public tokenService: TokenService) {}
   trigger = true;
   @Input() activity: any;
   @Input() account: Account;

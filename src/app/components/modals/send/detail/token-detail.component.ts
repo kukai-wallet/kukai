@@ -21,18 +21,35 @@ export class TokenDetail extends ModalComponent implements OnInit, OnDestroy {
   descOverflow = false;
   isNFT = false;
   assetLoaded = false;
-  name = "token-detail";
-  readonly blacklistMeta = ['name', 'kind', 'displayAsset', 'thumbnailAsset', 'rawUrl', 'isTransferable', 'isBooleanAmount', 'balance', 'category', 'symbol', 'decimals', 'status', 'shouldPreferSymbol', 'price', 'isUnknownToken'];
+  name = 'token-detail';
+  readonly blacklistMeta = [
+    'name',
+    'kind',
+    'displayAsset',
+    'thumbnailAsset',
+    'rawUrl',
+    'isTransferable',
+    'isBooleanAmount',
+    'balance',
+    'category',
+    'symbol',
+    'decimals',
+    'status',
+    'shouldPreferSymbol',
+    'price',
+    'isUnknownToken'
+  ];
   private subscriptions: Subscription = new Subscription();
-  constructor(
-    private walletService: WalletService,
-    private tokenBalancesService: TokenBalancesService
-  ) { super(); }
+  constructor(private walletService: WalletService, private tokenBalancesService: TokenBalancesService) {
+    super();
+  }
 
   ngOnInit(): void {
-    this.subscriptions.add(this.walletService.activeAccount.subscribe(activeAccount => {
-      this.activeAccount = activeAccount;
-    }));
+    this.subscriptions.add(
+      this.walletService.activeAccount.subscribe((activeAccount) => {
+        this.activeAccount = activeAccount;
+      })
+    );
   }
 
   ngOnDestroy(): void {
@@ -40,7 +57,11 @@ export class TokenDetail extends ModalComponent implements OnInit, OnDestroy {
   }
 
   open(data): void {
-    !!data ? Object.keys(data).filter(key => !this.blacklistMeta.includes(key)).forEach(key => (this.tokenFiltered[key] = data[key])) : undefined;
+    !!data
+      ? Object.keys(data)
+          .filter((key) => !this.blacklistMeta.includes(key))
+          .forEach((key) => (this.tokenFiltered[key] = data[key]))
+      : undefined;
     this.token = data;
     this.isNFT = this.tokenBalancesService.isNFT(this.token);
     this.descOverflow = this.token?.description && this.token?.description.length > 250 ? true : false;
@@ -54,10 +75,10 @@ export class TokenDetail extends ModalComponent implements OnInit, OnDestroy {
 
   expand(): void {
     this.moreInfo = !this.moreInfo;
-    if(!this.autoOverflow) {
+    if (!this.autoOverflow) {
       setTimeout(() => {
         this.autoOverflow = !this.autoOverflow;
-      }, 160)
+      }, 160);
     } else {
       this.autoOverflow = !this.autoOverflow;
     }
@@ -74,4 +95,3 @@ export class TokenDetail extends ModalComponent implements OnInit, OnDestroy {
     this.assetLoaded = false;
   }
 }
-

@@ -18,7 +18,10 @@ export enum LookupType { // ordered in priority
   providedIn: 'root'
 })
 export class LookupService {
-  public records: { address: string, data: { name: string, lookupType: LookupType }[] }[] = [];
+  public records: {
+    address: string;
+    data: { name: string; lookupType: LookupType }[];
+  }[] = [];
   private pendingLookups: Record<string, number> = {};
   constructor(
     private operationService: OperationService,
@@ -30,9 +33,7 @@ export class LookupService {
     this.initCheck();
   }
   initCheck() {
-    if (!this.records.length &&
-      this.walletService.wallet &&
-      this.walletService.wallet.lookups.length) {
+    if (!this.records.length && this.walletService.wallet && this.walletService.wallet.lookups.length) {
       console.log('### Loading lookups from memory');
       this.records = this.walletService.wallet.lookups;
     }
@@ -109,10 +110,7 @@ export class LookupService {
   torusLookup(address: string) {
     this.operationService.torusKeyLookup(address).subscribe(async (ans: any) => {
       if (ans) {
-        if (
-          ans.result &&
-          ans.result.Verifiers
-        ) {
+        if (ans.result && ans.result.Verifiers) {
           const keys = Object.keys(ans.result.Verifiers);
           const verifierMap = this.torusService.verifierMap;
           for (const key of keys) {
@@ -173,7 +171,8 @@ export class LookupService {
         x = i;
         for (let j = 0; j < this.records[i].data.length; j++) {
           if (this.records[i].data[j].lookupType < y || y === -1) {
-            if (this.records[i].data[j].lookupType !== LookupType.TezosDomains || this.records[i].data[j].name) { // skip empty domain records
+            if (this.records[i].data[j].lookupType !== LookupType.TezosDomains || this.records[i].data[j].name) {
+              // skip empty domain records
               y = j;
             }
           }
@@ -186,7 +185,11 @@ export class LookupService {
     this.initCheck();
     const { x, y } = this.indexTop(party?.address);
     if (x !== -1 && y !== -1) {
-      return { name: this.records[x].data[y].name, lookupType: this.records[x].data[y].lookupType, address: party.address };
+      return {
+        name: this.records[x].data[y].name,
+        lookupType: this.records[x].data[y].lookupType,
+        address: party.address
+      };
     } else if (party?.alias) {
       this.add(party.address, party.alias, LookupType.Alias);
       return this.resolve(party);

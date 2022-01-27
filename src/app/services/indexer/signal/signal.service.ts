@@ -24,13 +24,11 @@ export class SignalService {
     this.init();
   }
   async init() {
-    this.connection = new HubConnectionBuilder()
-      .withUrl(`https://api.${CONSTANTS.NETWORK}.tzkt.io/v1/events`)
-      .build();
-    this.connection.on("operations", (msg) => {
+    this.connection = new HubConnectionBuilder().withUrl(`https://api.${CONSTANTS.NETWORK}.tzkt.io/v1/events`).build();
+    this.connection.on('operations', (msg) => {
       for (const op of msg.data) {
         if (op?.status === 'applied') {
-          console.log("%csignalR msg", "color: green;", op);
+          console.log('%csignalR msg', 'color: green;', op);
           const sender: string = op?.sender?.address ?? '';
           const target: string = op?.target?.address ?? '';
           const opHash: string = op?.hash ?? '';
@@ -52,7 +50,7 @@ export class SignalService {
         if (account) {
           for (let i in account.activities) {
             if (account.activities[i].hash === opHash && account.activities[i].status === OpStatus.UNCONFIRMED) {
-              account.activities[i].timestamp = (new Date(timestamp)).getTime();
+              account.activities[i].timestamp = new Date(timestamp).getTime();
               if (invoke) {
                 account.activities[i].status = OpStatus.HALF_CONFIRMED;
               } else {
@@ -69,10 +67,7 @@ export class SignalService {
   updateAccountData(pkh: string) {
     this.operationService.getAccount(pkh).subscribe((ans: any) => {
       if (ans.success) {
-        this.balanceService.updateAccountBalance(
-          this.walletService.wallet?.getAccount(pkh),
-          Number(ans.payload.balance)
-        );
+        this.balanceService.updateAccountBalance(this.walletService.wallet?.getAccount(pkh), Number(ans.payload.balance));
         const acc = this.walletService.wallet?.getAccount(pkh);
         this.delegateService.handleDelegateResponse(acc, ans.payload.delegate);
       } else {
@@ -82,30 +77,33 @@ export class SignalService {
 
   async start() {
     try {
-        if(!!this.connection?.start) {
-          await this.connection?.start();
-          console.log("%cSignalR Connected!", "color:green;");
-        } else {
-          setTimeout(() => {
-            this.start();
-          }, 5000);
-        }
-    } catch (err) {
-        console.log(err);
+      if (!!this.connection?.start) {
+        await this.connection?.start();
+        console.log('%cSignalR Connected!', 'color:green;');
+      } else {
         setTimeout(() => {
           this.start();
         }, 5000);
+      }
+    } catch (err) {
+      console.log(err);
+      setTimeout(() => {
+        this.start();
+      }, 5000);
     }
-}
+  }
 
   async subscribeToAccount(address: string) {
     console.log('Listen to: ' + address);
-    await this.connection.invoke("SubscribeToOperations", { address, types: 'transaction,delegation,origination' });
+    await this.connection.invoke('SubscribeToOperations', {
+      address,
+      types: 'transaction,delegation,origination'
+    });
   }
   ngOnDestroy(): void {
     try {
       this.connection.stop();
-      console.log("%cSignalR Disconnected!", "color:red;");
-    } catch (e) { }
+      console.log('%cSignalR Disconnected!', 'color:red;');
+    } catch (e) {}
   }
 }

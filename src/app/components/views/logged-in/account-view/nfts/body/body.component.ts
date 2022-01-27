@@ -11,7 +11,7 @@ import { Token } from '../../../../../../services/wallet/wallet';
 @Component({
   selector: 'app-nfts-body',
   templateUrl: './body.component.html',
-  styleUrls: ['../../../../../../../scss/components/views/logged-in/account-view/cards/nfts/body.component.scss'],
+  styleUrls: ['../../../../../../../scss/components/views/logged-in/account-view/cards/nfts/body.component.scss']
 })
 export class NftsBodyComponent implements OnInit, OnChanges, AfterViewInit {
   DisplayLinkOption = DisplayLinkOption;
@@ -19,12 +19,12 @@ export class NftsBodyComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() isDisplaying;
   @Input() tokens;
   @Input() searchable = false;
-  tokensToDisplay = {loaded: [], filtered: [], raw: []};
+  tokensToDisplay = { loaded: [], filtered: [], raw: [] };
   contractAliases = CONSTANTS.CONTRACT_ALIASES;
   readonly chunkSize = 24;
   sliceEnd = this.chunkSize;
   inputUpdated = new Subject<any>();
-  filter = ".*";
+  filter = '.*';
 
   constructor(
     public translate: TranslateService,
@@ -36,18 +36,21 @@ export class NftsBodyComponent implements OnInit, OnChanges, AfterViewInit {
     this.refresh();
   }
   ngOnChanges(): void {
-    if(this.isDisplaying) {
+    if (this.isDisplaying) {
       this.refresh();
     }
   }
   refresh(): void {
-    this.tokensToDisplay.raw = this.tokens
+    this.tokensToDisplay.raw = this.tokens;
     this.tokensToDisplay.filtered = this.search(this.tokens);
     this.tokensToDisplay.loaded = this.tokensToDisplay.filtered.slice(0, this.sliceEnd);
   }
   ngAfterViewInit(): void {
     const cb = (e) => {
-      if(this.body?.nativeElement?.scrollTop >= (this.body?.nativeElement?.scrollHeight - this.body?.nativeElement?.clientHeight - 15) && (this.sliceEnd < this.tokensToDisplay.raw?.length ?? 0)) {
+      if (
+        this.body?.nativeElement?.scrollTop >= this.body?.nativeElement?.scrollHeight - this.body?.nativeElement?.clientHeight - 15 &&
+        (this.sliceEnd < this.tokensToDisplay.raw?.length ?? 0)
+      ) {
         this.sliceEnd += this.chunkSize;
         this.refresh();
       }
@@ -57,7 +60,11 @@ export class NftsBodyComponent implements OnInit, OnChanges, AfterViewInit {
   }
   search(tokens): Token[] {
     if (this.filter.length > 0 && this.filter !== '.*') {
-      return tokens.filter((t: any) => (t.name.match(new RegExp(`.*${this.filter}.*`, 'i')) || !isNaN(Number(this.filter)) && t.id.toString().match(new RegExp(`.*${parseInt(this.filter)}.*`, 'g'))));
+      return tokens.filter(
+        (t: any) =>
+          t.name.match(new RegExp(`.*${this.filter}.*`, 'i')) ||
+          (!isNaN(Number(this.filter)) && t.id.toString().match(new RegExp(`.*${parseInt(this.filter)}.*`, 'g')))
+      );
     }
     return tokens;
   }
@@ -67,8 +74,8 @@ export class NftsBodyComponent implements OnInit, OnChanges, AfterViewInit {
     if (prevFilter !== this.filter) {
       this.sliceEnd = this.chunkSize;
       this.refresh();
-      this.body.nativeElement.scrollTo(0,0);
-    };
+      this.body.nativeElement.scrollTo(0, 0);
+    }
   }
   trackToken(index: number, token: any) {
     return token?.contractAddress ? token?.contractAddress + ':' + token?.id : index;

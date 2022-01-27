@@ -10,8 +10,16 @@ describe('[ InputValidationService ]', () => {
   let service: InputValidationService;
   beforeEach(() => {
     TestBed.configureTestingModule({
-		imports: [ HttpClientModule, HttpClientTestingModule, TranslateModule.forRoot(
-      { loader: { provide: TranslateLoader, useClass: TranslateFakeLoader }})],
+      imports: [
+        HttpClientModule,
+        HttpClientTestingModule,
+        TranslateModule.forRoot({
+          loader: {
+            provide: TranslateLoader,
+            useClass: TranslateFakeLoader
+          }
+        })
+      ],
       providers: [InputValidationService, OperationService, ErrorHandlingPipe]
     });
     service = TestBed.inject(InputValidationService);
@@ -40,12 +48,14 @@ describe('[ InputValidationService ]', () => {
   describe('> isMessageSigning', () => {
     it('should be true', () => {
       // Tezos Signed Message: mydapp.com 2021-01-14T15:16:04Z Hello world!
-      const payload = '05010000004254657a6f73205369676e6564204d6573736167653a206d79646170702e636f6d20323032312d30312d31345431353a31363a30345a2048656c6c6f20776f726c6421';
+      const payload =
+        '05010000004254657a6f73205369676e6564204d6573736167653a206d79646170702e636f6d20323032312d30312d31345431353a31363a30345a2048656c6c6f20776f726c6421';
       expect(service.isMessageSigning(payload)).toBeTruthy();
     });
     it('should be false', () => {
       // Permit
-      const payload = '05070707070a00000004a83650210a0000001601cc71fa0ddd7113f936438158e407160675706ae800070700010a000000200f0db0ce6f057a8835adb6a2c617fd8a136b8028fac90aab7b4766def688ea0c';
+      const payload =
+        '05070707070a00000004a83650210a0000001601cc71fa0ddd7113f936438158e407160675706ae800070700010a000000200f0db0ce6f057a8835adb6a2c617fd8a136b8028fac90aab7b4766def688ea0c';
       expect(service.isMessageSigning(payload)).toBeFalsy();
     });
   });
