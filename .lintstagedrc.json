@@ -1,4 +1,4 @@
 {
-  "!(*d).{js,ts}": ["npx eslint --ext .js,.ts src/app/ --fix"],
+  "!(*d).{ts}": ["npx eslint -c ./.eslintrc --ext .ts src/app/ --fix"],
   "*.{js,json, md}": ["npx prettier --config ./.prettierrc.json --write"]
 }
