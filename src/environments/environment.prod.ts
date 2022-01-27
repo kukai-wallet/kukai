@@ -3,7 +3,7 @@ import { Constants, DisplayLinkOption } from './../app/interfaces';
 export const environment = {
   production: true
 };
-export const CONSTANTS: Constants = {
+const _CONSTANTS: Constants = {
   NAME: 'Mainnet',
   // https://gitlab.com/tezos-domains/contracts/-/blob/master/deployed/mainnet.json#L9
   TEZOS_DOMAIN: {
@@ -1157,7 +1157,7 @@ export const CONSTANTS: Constants = {
     "KT1AafHA1C1vk959wvHWBispY9Y2f3fxBUUo:0"//lp tzBTC
   ]
 };
-export const TRUSTED_TOKEN_CONTRACTS = [
+const _TRUSTED_TOKEN_CONTRACTS = [
   'KT1Em3sjKdHo3Fo9Az4EusZXQbkgsdZHkQkF',//alchememist giveaway
   'KT1RJ6PbjHpwc3M5rw5s2Nbmefwbuwbdxton',//hicetnunc
   'KT1M2JnD1wsg7w2B4UXJXtKQPuDUpU2L7cJH',//hicetnunc-legacy
@@ -1237,4 +1237,8 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   "KT1Qi93pZoig6grMNBd7GGA7fveE2cxQK9Ei", //Verses
   'KT1DtsVHqUvKBkkypLB3x2bYd4jWdbbaHdMy'//Basqunks
 ];
-export const BLACKLISTED_TOKEN_CONTRACTS = []
+const _BLACKLISTED_TOKEN_CONTRACTS = []
+
+export const CONSTANTS = JSON.parse(JSON.stringify(_CONSTANTS));
+export const TRUSTED_TOKEN_CONTRACTS = JSON.parse(JSON.stringify(_TRUSTED_TOKEN_CONTRACTS));
+export const BLACKLISTED_TOKEN_CONTRACTS = JSON.parse(JSON.stringify(_BLACKLISTED_TOKEN_CONTRACTS));

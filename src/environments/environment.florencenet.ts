@@ -7,7 +7,7 @@ import { Constants, DisplayLinkOption } from '../app/interfaces';
 export const environment = {
   production: false
 };
-export const CONSTANTS: Constants = {
+const _CONSTANTS: Constants = {
   NAME: 'Testnet / Florencenet',
   TEZOS_DOMAIN: {
     CONTRACT: 'KT1KQkkVMTRhGUfJYbHBoaeJ6NUJi8o58cvg',
@@ -257,7 +257,7 @@ export const CONSTANTS: Constants = {
   },
   NFT_CONTRACT_OVERRIDES: ['KT1QzkVVgUYMTvwnyRwGttM8zTg5CyuHKxQH', 'KT1HEzZQV9B85HZnGpDgaZtZNk4ZXbLRuBii']
 };
-export const TRUSTED_TOKEN_CONTRACTS = [
+const _TRUSTED_TOKEN_CONTRACTS = [
   'KT1LyJV9JdcDCp5zDfw6MxpoShXYrBMG3dfK',
   'KT1RfMoskMhR1hDFJTVN6gGMwQLDSTmLeDsc',
   'KT1Szwqme712TkQ7LdP1hBqKjdUUBjxoB8bR',
@@ -291,4 +291,8 @@ export const TRUSTED_TOKEN_CONTRACTS = [
   'KT1G1V5hS6ghW95GsUV2ZbEfEHENAvq3zTMn',
   'KT1DEJEcfiMUWYjn1ZCTbbLokRcP26sx2pTH'
 ];
-export const BLACKLISTED_TOKEN_CONTRACTS = []
+const _BLACKLISTED_TOKEN_CONTRACTS = []
+
+export const CONSTANTS = JSON.parse(JSON.stringify(_CONSTANTS));
+export const TRUSTED_TOKEN_CONTRACTS = JSON.parse(JSON.stringify(_TRUSTED_TOKEN_CONTRACTS));
+export const BLACKLISTED_TOKEN_CONTRACTS = JSON.parse(JSON.stringify(_BLACKLISTED_TOKEN_CONTRACTS)); 
