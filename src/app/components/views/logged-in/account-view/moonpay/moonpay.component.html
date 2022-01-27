@@ -1,0 +1,18 @@
+<div *ngIf="active" class="moonpay">
+  <div class="top">
+    <a>
+      <button class="back secondary" (click)="close()">
+        <img src="../../../../../assets/img/left-arrow.svg">Back</button>
+    </a>
+    <p>Buy XTZ with MoonPay</p>
+  </div>
+  <div class="main">
+    <ng-container *ngIf="url">
+      <iframe allow="accelerometer; autoplay; camera; gyroscope; payment" frameborder="0" height="100%" [src]="this.url"
+        width="100%">
+        <p>Your browser does not support iframes.</p>
+      </iframe>
+    </ng-container>
+    <img *ngIf="!(url && mobile)" class="loading" src="../../../../../../assets/img/loader.svg">
+  </div>
+</div>

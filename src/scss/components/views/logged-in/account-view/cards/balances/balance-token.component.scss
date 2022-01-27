@@ -11,6 +11,8 @@ $border-width: v.$border-width;
 $border-radius: v.$border-radius;
 $border-color: v.$border-color;
 $compactness: v.$compactness;
+$base-end-color-static: v.$base-end-color-static;
+$base-blue-color : v.$base-blue-color;
 
 :host.tez {
 
@@ -40,7 +42,42 @@ $compactness: v.$compactness;
     border-top: none !important;
   }
 }
+:host button {
+  &.with-image {
+    padding: 0.75rem;
+    border: v.$border-width solid transparent;
+    border-radius: v.$border-radius-hardest;
 
+    &:not(.tez) {
+      background-color: transparent;
+      border-color: $border-color;
+      margin-right: 0.75rem;
+    }
+
+    & span {
+      @include m.multiply('font-size',1.25);
+      margin: 0 1rem 0 0.25rem;
+      font-weight: 500;
+      color: $base-end-color-static;
+    }
+
+    & img {
+      width: 2rem;
+      height: 2rem;
+    }
+
+    &.tez {
+      padding: 1rem;
+      color: $base-blue-color;
+    }
+  }
+
+  &.detail {
+    width: 50%;
+    height: 4rem;
+    color: v.$base-end-color-static;
+  }
+}
 .balance {
   align-items: flex-start;
   padding: calc(2rem * #{$compactness}) 0;
