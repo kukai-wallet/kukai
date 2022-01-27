@@ -1,18 +1,24 @@
 <div class="flex-column card">
   <a routerLink="/"><button class="flex-row back"><img src="../../../../../assets/img/left-arrow.svg">BACK</button></a>
-  <div *ngIf="activePanel==1" class="flex-column body" (click)="hideBlur = false">
+  <div *ngIf="activePanel==1" class="flex-column body">
     <h1>Back up your seed</h1>
     <p class="description">When you create a new wallet, new Tezos Recovery (Seed) Words are generated.<br />Your seed
       words are
       the
       master key of your wallet accounts and any value they hold.</p>
-    <div class="whitebox" (mouseout)="hideBlur = false" (click)="$event.stopPropagation()">{{ MNEMONIC.string }} <div
-        *ngIf="!hideBlur" class="flex-row seed-blur" (click)="hideBlur = true ; $event.stopPropagation()">
+    <div class="whitebox" (mouseout)="mouseOut($event)" (touchstart)="$event.stopPropagation(); this.hideBlur = true;"
+      (touchend)="checkSelection($event)" (click)="$event.stopPropagation()" (mouseup)="checkSelection($event)">
+      {{ MNEMONIC.string }}<div *ngIf="!hideBlur" class="flex-row seed-blur"
+        (click)="$event.stopPropagation(); this.hideBlur = true;">
         <span>CLICK HERE TO REVEAL YOUR SEED WORDS</span>
       </div>
     </div>
-    <p class="description red">Make sure to back it up, write it down, and keep it
-      incredibly safe.</p>
+    <p class="description red">
+      <span *ngIf="isSelectedMnemonic" style="margin-top: -4rem" class="warning red">
+        WARNING: Copying the seed words to your clipboard can result in sensitive leakage. The clipboard is a shared
+        resource that can be monitored by other web pages or browser extensions.<br />
+      </span> Be sure sure to back it up (seed words), write it down, and keep it incredibly safe.
+    </p>
     <button class="button next" (click)="verifyView()">Next</button>
   </div>
   <div *ngIf="activePanel==2" class="flex-column body">

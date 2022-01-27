@@ -20,6 +20,7 @@ export class NewWalletComponent implements OnInit {
   @Input() pwd2 = '';
   @Input() userMnemonic = '';
   hideBlur = false;
+  isSelectedMnemonic = false;
   pwdStrength = '';
   ekfDownloaded = false;
   activePanel = 0;
@@ -33,6 +34,7 @@ export class NewWalletComponent implements OnInit {
     verify: number[],
     wordsToVerify: number
   };
+  longClickTs = 0;
   constructor(
     private translate: TranslateService,
     private walletService: WalletService,
@@ -180,5 +182,27 @@ export class NewWalletComponent implements OnInit {
   download(): void {
     this.exportService.downloadWallet(this.data);
     this.ekfDownloaded = true;
+  }
+  mouseOut(e) {
+    e.stopPropagation();
+    this.hideBlur = false;
+    window.getSelection()?.removeAllRanges();
+  }
+  checkSelection(ev) {
+    ev.stopPropagation();
+    if (this.isTextSelected()) {
+      this.isSelectedMnemonic = true;
+    }
+  }
+  private isTextSelected() {
+    let selection: Selection;
+    if (window.getSelection) {
+      selection = window.getSelection();
+    }
+    else if (document.getSelection) {
+      selection = document.getSelection();
+    }
+    else return false;
+    return !selection?.isCollapsed;
   }
 }
