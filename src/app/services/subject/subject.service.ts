@@ -25,6 +25,7 @@ export class SubjectService {
   public origin: BehaviorSubject<string>;
   public beaconResponse: Subject<boolean>;
   public logout: Subject<boolean>;
+  public moonpay: Subject<boolean>;
   constructor() {
     this.init();
     this.logout.subscribe((o) => {
@@ -42,6 +43,7 @@ export class SubjectService {
     this.origin = new BehaviorSubject<string>(null);
     this.beaconResponse = new Subject<boolean>();
     this.logout = new Subject<boolean>();
+    this.moonpay = new Subject<boolean>();
   }
   reset() {
     this.metadataUpdated.next(null);

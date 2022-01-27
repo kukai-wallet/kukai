@@ -1,0 +1,102 @@
+@use "../../../../../../abstracts/variables" as v;
+@use "../../../../../../abstracts/mixins" as m;
+@import "../mixins";
+
+$base-font-color: v.$base-font-color;
+$base-end-color: v.$base-end-color;
+$base-background-color: v.$base-background-color;
+$base-font-color-secondary: v.$base-font-color-secondary;
+$base-blue-color: v.$base-blue-color;
+$base-blue-color-lightened: v.$base-blue-color-lightened;
+$base-color-lightened-675: v.$base-color-lightened-675;
+$border-color-dark-only: v.$border-color-dark-only;
+$border-width-dark-only: v.$border-width-dark-only;
+$border-width: v.$border-width;
+$border-color: v.$border-color;
+$layout-break-5: v.$layout-break-5;
+
+:host {
+  & .buy {
+    //margin-right: 2rem;
+    min-width: 10.5rem;
+    & img {
+      height: 1rem;
+      margin: 0 0 0 1rem;
+    }
+  }
+  & .secondary {
+    @include m.multiply("font-size", 1.25);
+    background-color: $base-background-color;
+    border: v.$border-width solid $border-color;
+    border-radius: v.$border-radius-hardest;
+    color: v.$base-font-color;
+    font-weight: 500;
+    padding: 0.75rem 1.25rem;
+  }
+  & .moonpay {
+    z-index: 3000 !important;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    background-color: rgba(247, 247, 247, 1);
+    & div.top {
+      position: fixed;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      top: 0;
+      padding: 1rem 1.5rem 0 1.5rem;
+      width: calc(100% - 3rem);
+      & a {
+        text-decoration: none;
+        & .back {
+          & img {
+            height: 1rem;
+            margin: 0 1rem 0 0;
+          }
+        }
+      }
+      & p {
+        @include m.multiply("font-size", 1.25);
+        & a {
+          text-decoration: none;
+          color: $base-blue-color;
+        }
+      }
+    }
+    & div.main {
+      width: 100%;
+      height: 100%;
+    }
+    & .loading {
+      z-index: -1;
+      margin: 0;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+}
+
+@media (max-width: 575px) {
+  div.moonpay > div.top,
+  div.moonpay > div.top button {
+    background-color: white;
+  }
+  div.moonpay > div.main,
+  div.moonpay > div.top {
+    position: relative !important;
+  }
+  div.moonpay > div.top {
+    border-bottom: 1px solid #e6e6e6;
+    padding: 1rem 1.5rem 1rem 1.5rem !important;
+  }
+}

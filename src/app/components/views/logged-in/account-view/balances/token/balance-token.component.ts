@@ -3,6 +3,7 @@ import { ModalComponent } from '../../../../../modals/modal.component';
 import { CONSTANTS } from '../../../../../../../environments/environment';
 import { Big } from 'big.js';
 import { RemoveCommaPipe } from '../../../../../../pipes/remove-comma.pipe';
+import { SubjectService } from '../../../../../../services/subject/subject.service';
 
 @Component({
   selector: 'app-balance-token',
@@ -14,8 +15,12 @@ export class BalanceTokenComponent implements OnInit {
   @Input() account;
   contractAliases = CONSTANTS.CONTRACT_ALIASES;
 
-  constructor(public removeCommaPipe: RemoveCommaPipe) {}
-  ngOnInit(): void {}
+  constructor(
+    public removeCommaPipe: RemoveCommaPipe,
+    private subjectService: SubjectService
+    ) { }
+  ngOnInit(): void {
+  }
 
   getBalance(): number | string {
     return !this.token ? (this.account?.balanceXTZ !== null ? Big(this.account?.balanceXTZ).div(1000000).toFixed() : '—') : this.token?.balance;
@@ -31,5 +36,8 @@ export class BalanceTokenComponent implements OnInit {
         data: this.token
       });
     }
+  }
+  buyTez() {
+    this.subjectService.moonpay.next(true);
   }
 }
