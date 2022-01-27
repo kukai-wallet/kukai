@@ -455,7 +455,7 @@ export const CONSTANTS: Constants = {
     'Ottez': {
       name: "Ottez",
       address: ["KT1L7GvUxZH5tfa6cgZKnH6vpp2uVxnFVHKu"],
-      thumbnailUrl: "../../../assets/img/alias/tezapegang.png",
+      thumbnailUrl: "../../../assets/img/alias/ottez.png",
       link: "https://ottez.xyz", shouldDisplayLink: DisplayLinkOption.None,
       category: ["collectibles"],
       description: "Humans are gone. Ottez have moved in. 4,007 generative, collectible PFP otters have taken over Earth. ",
