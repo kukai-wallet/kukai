@@ -33,8 +33,9 @@
         *ngIf="!!getCounterparty(activity)?.lookupType && getCounterparty(activity)?.lookupType !== 5"
         [src]="getEventIcon()" class="event-icon" />
       <div class="flex-row value">{{ getAddressPrefix(getType()) }}&nbsp;{{getCounterparty(activity)?.name ||
-        getCounterparty(activity)?.address || ''}}<img class="copy" src="../../../../assets/img/copy-icon.svg"
-          (click)="copy(getCounterparty(activity)?.address)" /></div>
+        getCounterparty(activity)?.address || ''}}</div>
+      <img class="copy" src="../../../../assets/img/copy-icon.svg"
+          (click)="copy(getCounterparty(activity)?.address)" />
     </div>
     <span class="flex-row time">
       <img [src]="getEventStatusIcon()" />
