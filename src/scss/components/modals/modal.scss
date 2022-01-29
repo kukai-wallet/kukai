@@ -187,6 +187,8 @@ $base-filter-contrast-invert-01: v.$base-filter-contrast-invert-01;
 
     @import "./account-list.scss";
 
+    @import "./info.scss";
+
     & .advanced-form {
       margin: 1rem 0 0 0;
 
