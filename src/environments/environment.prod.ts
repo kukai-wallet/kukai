@@ -497,6 +497,15 @@ const _CONSTANTS: Constants = {
       category: ["collectibles"],
       description: "Humans are gone. Ottez have moved in. 4,007 generative, collectible PFP otters have taken over Earth. ",
     },
+    xarb: {
+      name: 'Xarb',
+      address: ['KT1JsJUo4PQARJB3AkstQJ8mHskoNJb29a7Z'],
+      thumbnailUrl: '../../../assets/img/alias/xarb.png',
+      link: 'https://xarb.io',
+      shouldDisplayLink: DisplayLinkOption.All,
+      category: ['marketplace'],
+      description: 'A Place To Find And Collect NFTs'
+    },
   },
   ASSETS: {
     KT1K9gCRgaLRFKTErYt1wVxA3Frb9FjasjTV: {
@@ -1318,6 +1327,7 @@ const _TRUSTED_TOKEN_CONTRACTS = [
   "KT1Qi93pZoig6grMNBd7GGA7fveE2cxQK9Ei", //Verses
   'KT1DtsVHqUvKBkkypLB3x2bYd4jWdbbaHdMy',//Basqunks
   'KT1L7GvUxZH5tfa6cgZKnH6vpp2uVxnFVHKu',//Ottez
+  'KT1JsJUo4PQARJB3AkstQJ8mHskoNJb29a7Z',//Xarb
 ];
 const _BLACKLISTED_TOKEN_CONTRACTS = []
 
