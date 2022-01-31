@@ -302,6 +302,50 @@ const _CONSTANTS: Constants = {
       shouldDisplayLink: DisplayLinkOption.None,
       category: ["collectibles"]
     },
+    'PRJKTNEON': {
+      name: "PRJKTNEON",
+      address: ["KT1VbHpQmtkA3D4uEbbju26zS8C42M5AGNjZ", "KT1H8sxNSgnkCeZsij4z76pkXu8BCZNvPZEx"],
+      thumbnailUrl: "../../../assets/img/alias/prjktneon.png",
+      link: "", shouldDisplayLink: DisplayLinkOption.None
+    },
+    'NEONZ': {
+      name: "NEONZ",
+      address: ["KT1MsdyBSAMQwzvDH4jt2mxUKJvBSWZuPoRJ"],
+      thumbnailUrl: "../../../assets/img/alias/neonz.jpg",
+      link: "https://neonz.xyz", shouldDisplayLink: DisplayLinkOption.None
+    },
+    'GOGOs': {
+      name: "GOGOs",
+      address: ["KT1SyPgtiXTaEfBuMZKviWGNHqVrBBEjvtfQ"],
+      thumbnailUrl: "../../../assets/img/alias/gogo.jpg",
+      link: "https://gogos.tez.page/", shouldDisplayLink: DisplayLinkOption.None
+    },
+    'GOGOsInventoryItems': {
+      name: "GOGOs Inventory Items",
+      address: ["KT1Xf44LpwrA7oBcB3VwWTtUBP1eNRaNnWeh"],
+      thumbnailUrl: "../../../assets/img/alias/gogo.jpg",
+      link: "https://gogos.tez.page/", shouldDisplayLink: DisplayLinkOption.None
+    },
+    'HashThreePoints': {
+      name: "Hash Three Points",
+      address: ["KT1Fxz4V3LaUcVFpvF8pAAx8G3Z4H7p7hhDg"],
+      thumbnailUrl: "../../../assets/img/alias/hashthreepoints.png",
+      link: "https://h3p.deconcept.com/", shouldDisplayLink: DisplayLinkOption.None
+    },
+    'TheMoments': {
+      name: "The Moments",
+      address: ["KT1CNHwTyjFrKnCstRoMftyFVwoNzF6Xxhpy"],
+      thumbnailUrl: "../../../assets/img/alias/themoments.jpeg",
+      link: "https://themoments.xyz/", shouldDisplayLink: DisplayLinkOption.None
+    },
+    'HOLLOWS': {
+      name: "HOLLOWS",
+      address: ["KT1Ak8AFA54waFVMyPXNE925cUaQjFEqxuYN"],
+      thumbnailUrl: "../../../assets/img/alias/hollows.jpg",
+      link: "https://hollowsnft.xyz/",
+      shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"]
+    },
     'TacoNFT': {
       name: "TacoNFT",
       address: ["KT1Mf8Pqn6NMt8VGuVaySohvSvQQpvcM37eZ", "KT1BkStQej7MwnkWhCV2tUanETeN25zc7ADe"],
@@ -1266,6 +1310,7 @@ const _TRUSTED_TOKEN_CONTRACTS = [
   'KT1PEGqt5rMmHpyaMXc8RFTFkkAUDrzSFRWk',//mclaren
   'KT1MsdyBSAMQwzvDH4jt2mxUKJvBSWZuPoRJ',//NEONZ
   'KT1SyPgtiXTaEfBuMZKviWGNHqVrBBEjvtfQ',//GOGOs
+  'KT1Xf44LpwrA7oBcB3VwWTtUBP1eNRaNnWeh',//GOGOs Inventory Items
   'KT1Fxz4V3LaUcVFpvF8pAAx8G3Z4H7p7hhDg',//Hash Three Points
   'KT1CNHwTyjFrKnCstRoMftyFVwoNzF6Xxhpy',//The Moments
   'KT1HZVd9Cjc2CMe3sQvXgbxhpJkdena21pih',//randomly common skeles
