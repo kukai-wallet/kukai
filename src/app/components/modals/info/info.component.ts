@@ -29,7 +29,9 @@ export class InfoComponent extends ModalComponent implements OnInit {
   }
   proceed() {
     if (!!this.href) {
-      window.open(this.href, '_blank').focus();
+      const newTab = window.open(this.href, '_blank');
+      newTab.focus();
+      newTab.opener = null;
     }
     this.closeModal();
   }
