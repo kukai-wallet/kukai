@@ -4,7 +4,7 @@ import { Account } from '../../../../../services/wallet/wallet';
 import { WalletService } from '../../../../../services/wallet/wallet.service';
 import { CONSTANTS, environment } from '../../../../../../environments/environment';
 import { SubjectService } from '../../../../../services/subject/subject.service';
-import { HostListener } from "@angular/core";
+import { HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-moonpay',
@@ -14,7 +14,7 @@ import { HostListener } from "@angular/core";
 export class MoonpayComponent implements OnInit {
   @HostListener('window:resize', ['$event'])
   onResize() {
-    this.mobile = (window.innerWidth < 575);
+    this.mobile = window.innerWidth < 575;
   }
   readonly dev: boolean = !(CONSTANTS.MAINNET && environment.production);
   readonly baseUrl: string = `https://buy${this.dev ? '-staging' : ''}.moonpay.com`;
@@ -22,28 +22,26 @@ export class MoonpayComponent implements OnInit {
   url: SafeUrl;
   active = false;
   account: Account;
-  constructor(
-    private walletService: WalletService,
-    private sanitizer: DomSanitizer,
-    private subjectService: SubjectService
-  ) { }
+  constructor(private walletService: WalletService, private sanitizer: DomSanitizer, private subjectService: SubjectService) {}
 
   ngOnInit(): void {
-    this.onResize()
-    this.walletService.activeAccount.subscribe(a => {
+    this.onResize();
+    this.walletService.activeAccount.subscribe((a) => {
       this.account = a;
     });
-    this.subjectService.moonpay.subscribe(o => {
+    this.subjectService.moonpay.subscribe((o) => {
       if (o) {
         this.open();
       } else {
         this.close();
       }
-    })
+    });
   }
   private async signUrl(address: string): Promise<SafeUrl> {
     if (address?.startsWith('tz')) {
-      const query: string = `?apiKey=${this.dev ? 'pk_test_M23P0Zc5SvBORSFV63sfWKi7n5QbGZR' : 'pk_live_rP9HlBRO54nY4QKLxc6ONl4Prrm6vymK'}&colorCode=%237178E3&currencyCode=xtz&walletAddress=${encodeURIComponent(address)}`;
+      const query: string = `?apiKey=${
+        this.dev ? 'pk_test_M23P0Zc5SvBORSFV63sfWKi7n5QbGZR' : 'pk_live_rP9HlBRO54nY4QKLxc6ONl4Prrm6vymK'
+      }&colorCode=%237178E3&currencyCode=xtz&walletAddress=${encodeURIComponent(address)}`;
       const sig = await this.post({ dev: this.dev, url: query });
       if (sig) {
         const url = this.sanitizer.bypassSecurityTrustResourceUrl(`${this.baseUrl}${query}&signature=${encodeURIComponent(sig)}`);
@@ -71,8 +69,12 @@ export class MoonpayComponent implements OnInit {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(data)
-    }).then(async d => {
-      return d.text();
-    }).catch(e => { return '' })
+    })
+      .then(async (d) => {
+        return d.text();
+      })
+      .catch((e) => {
+        return '';
+      });
   }
 }

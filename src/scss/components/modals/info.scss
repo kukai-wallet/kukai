@@ -1,0 +1,18 @@
+@use '../../abstracts/mixins' as m;
+
+& .info {
+  margin: 2rem 0 0 0;
+  width: 38rem;
+  & .message {
+    margin: 0 0 1rem 0;
+    font-size: 1.375rem;
+    white-space: pre-line;
+    font-weight: 600;
+  }
+
+  & button {
+    width: 50%;
+    margin: 2rem 0 0 0;
+    align-self: center;
+  }
+}

@@ -15,12 +15,8 @@ export class BalanceTokenComponent implements OnInit {
   @Input() account;
   contractAliases = CONSTANTS.CONTRACT_ALIASES;
 
-  constructor(
-    public removeCommaPipe: RemoveCommaPipe,
-    private subjectService: SubjectService
-    ) { }
-  ngOnInit(): void {
-  }
+  constructor(public removeCommaPipe: RemoveCommaPipe, private subjectService: SubjectService) {}
+  ngOnInit(): void {}
 
   getBalance(): number | string {
     return !this.token ? (this.account?.balanceXTZ !== null ? Big(this.account?.balanceXTZ).div(1000000).toFixed() : '—') : this.token?.balance;

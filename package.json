@@ -11,7 +11,6 @@
     "test": "ng test",
     "lint": "npx eslint -c ./.eslintrc --ext .ts src/app/",
     "e2e": "ng e2e",
-    "postinstall": "node patch.js",
     "stage-ghpages-mainnet": "ng lint --fix && ng build --prod && angular-cli-ghpages --repo \"git@github.com:kukai-wallet/wallet.git\" --branch staging --cname=wallet.kukai.app",
     "stage-ghpages-testnet": "ng lint --fix && ng build && angular-cli-ghpages --repo \"git@github.com:kukai-wallet/testnet.git\" --branch staging --cname=testnet.kukai.app",
     "deploy-granadanet-version": "npm run build-dev && angular-cli-ghpages --repo \"git@github.com:kukai-wallet/granadanet.git\" --branch main --cname=granadanet.kukai.app",
@@ -20,7 +19,8 @@
     "deploy-experimental-version": "ng lint --fix && npm run build-dev && angular-cli-ghpages --repo \"git@github.com:kukai-wallet/experimental.git\" --branch master --cname=experimental.kukai.app",
     "deploy-ichabod-version": "npm run build-dev && angular-cli-ghpages --repo \"git@github.com:kukai-wallet/ichabod-dev.git\" --branch main --cname=ichabod-dev.kukai.app",
     "deploy-beta-version": "ng lint --fix && ng build --prod && angular-cli-ghpages --repo \"git@github.com:kukai-wallet/beta.git\" --branch master --cname=beta.kukai.app",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "postinstall": "node patch.js"
   },
   "private": true,
   "dependencies": {
@@ -63,7 +63,6 @@
     "buffer": "^5.4.0",
     "copy-to-clipboard": "^3.2.0",
     "core-js": "^3.2.1",
-    "crypto-browserify": "^3.12.0",
     "customauth": "git://github.com/kukai-wallet/CustomAuth.git#fc707c769797569107e9ea73ad63d7559635a1b3",
     "elliptic": "^6.5.4",
     "file-saver": "^2.0.2",
@@ -124,10 +123,10 @@
     "karma-mocha-reporter": "^2.2.5",
     "kukai-embed": "0.7.1-beta.1",
     "lint-staged": "^12.1.7",
-    "prettier": "^2.5.1",
     "mini-css-extract-plugin": "^1.6.2",
     "os-browserify": "^0.3.0",
     "path-browserify": "^1.0.1",
+    "prettier": "^2.5.1",
     "process": "^0.11.10",
     "protractor": "~7.0.0",
     "stream-browserify": "^3.0.0",
@@ -139,7 +138,7 @@
     "url": "^0.11.0"
   },
   "overrides": {
-    "strip-ansi" : "6.0.0",
+    "strip-ansi": "6.0.0",
     "axios": "^0.25.0"
   }
 }
