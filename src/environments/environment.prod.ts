@@ -465,6 +465,14 @@ const _CONSTANTS: Constants = {
       category: ["collectibles"],
       description: "TezApeGang is a collection of 6969 Apes living on the Tezos Blockchain. With Ape staking feature and DAO from Day1.",
     },
+    'MekatronK9': {
+      name: "MekatronK9",
+      address: ["KT1PooRxUckYjnWVvn9CetZxC9YeG1kkFYW5"],
+      thumbnailUrl: "../../../assets/img/alias/mekatron.jpeg",
+      link: "https://www.mekatron.club/", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"],
+      description: "Driven from their homeword, they are the last surviving Mekatron k9, now seeking refuge in earth's metaverse. Their fight for survival has just begun.",
+    },
     'rarible': {
       name: "Rarible",
       address: ["KT18pVpRXKPY2c4U2yFEGSH3ZnhB2kL8kwXS"],
@@ -1363,6 +1371,7 @@ const _TRUSTED_TOKEN_CONTRACTS = [
   "KT1Qi93pZoig6grMNBd7GGA7fveE2cxQK9Ei", //Verses
   'KT1DtsVHqUvKBkkypLB3x2bYd4jWdbbaHdMy',//Basqunks
   'KT1L7GvUxZH5tfa6cgZKnH6vpp2uVxnFVHKu',//Ottez
+  "KT1PooRxUckYjnWVvn9CetZxC9YeG1kkFYW5", // MekatronK9
 ];
 const _BLACKLISTED_TOKEN_CONTRACTS = []
 
