@@ -23,30 +23,95 @@ const _CONSTANTS: Constants = {
     hard_storage_limit_per_operation: 60000
   },
   CONTRACT_ALIASES: {
-    'TezosDomains': {
-        name: 'Tezos Domains',
-        address: ["KT1MgQjmWMBQ4LyuMAqZccTkMSUJbEXeGqii"],
-        thumbnailUrl: "",
-        discoverUrl: "../../../assets/img/alias/tezosdomains-discover.png",
-        link: "https://hangzhounet.tezos.domains", shouldDisplayLink: DisplayLinkOption.All, category: ["identity"],
-        description: "Friendly names on Tezos",
-        backgroundColor: '#f1f4f8'
+    TezosDomains: {
+      name: 'Tezos Domains',
+      address: ['KT1MgQjmWMBQ4LyuMAqZccTkMSUJbEXeGqii'],
+      thumbnailUrl: '',
+      discoverUrl: '../../../assets/img/alias/tezosdomains-discover.png',
+      link: 'https://hangzhounet.tezos.domains',
+      shouldDisplayLink: DisplayLinkOption.All,
+      category: ['identity'],
+      description: 'Friendly names on Tezos',
+      backgroundColor: '#f1f4f8'
     },
-    'Versum': {
-      name: "Versum",
-      address: ["KT1EY6XHM8ycpozauAjCqTqVrnyZLo2b1fUv", "KT1PVJP2FbSZrXgKWdhXguMV1HmfrX4dH7o5"],
-      thumbnailUrl: "../../../assets/img/alias/versum.png",
-      discoverUrl: "../../../assets/img/alias/versum.svg",
-      link: "https://versum.xyz", shouldDisplayLink: DisplayLinkOption.All, backgroundColor: 'black', category: ["marketplace"],
-      description: "NFT Marketplace focused on organic content and curation.",
+    Versum: {
+      name: 'Versum',
+      address: ['KT1EY6XHM8ycpozauAjCqTqVrnyZLo2b1fUv', 'KT1PVJP2FbSZrXgKWdhXguMV1HmfrX4dH7o5'],
+      thumbnailUrl: '../../../assets/img/alias/versum.png',
+      discoverUrl: '../../../assets/img/alias/versum.svg',
+      link: 'https://versum.xyz',
+      shouldDisplayLink: DisplayLinkOption.All,
+      backgroundColor: 'black',
+      category: ['marketplace'],
+      description: 'NFT Marketplace focused on organic content and curation.'
     },
+    EndlessWays: {
+      name: 'Endless Ways',
+      address: ['KT1U17aZt1fuFeHpkaFLTjoqbRngHEUa4JBw', 'KT1RPY1YEH9L1fp2Zy3DdByb5KukrP34XWcR', 'KT1EibnzPnFiCKtaN8EyUrhxyGk1N8XT1Tmu'],
+      thumbnailUrl: '../../../assets/img/alias/endlesswaysLogo.png',
+      discoverUrl: '../../../assets/img/alias/endlesswaysBanner.png',
+      link: 'https://greenroom.endlessways.net',
+      shouldDisplayLink: DisplayLinkOption.All,
+      backgroundColor: 'black',
+      category: ['collectibles'],
+      description: 'Generative Art. Proper Curation.'
+    }
   },
-  ASSETS: {},
+  ASSETS: {
+    KT1U17aZt1fuFeHpkaFLTjoqbRngHEUa4JBw: {
+      kind: 'FA2',
+      category: 'collectibles',
+      tokens: {
+        '1-119999999999': {
+          name: 'Endless Ways',
+          symbol: 'EWY',
+          decimals: 0,
+          description: 'A unique mint of an artwork on Endless Ways.',
+          displayAsset: '../../../assets/img/tokens/endlessways.svg',
+          thumbnailAsset: '../../../assets/img/tokens/endlessways.svg',
+          shouldPreferSymbol: false,
+          status: 1
+        }
+      }
+    },
+    KT1RPY1YEH9L1fp2Zy3DdByb5KukrP34XWcR: {
+      kind: 'FA2',
+      category: 'collectibles',
+      tokens: {
+        '1-149999999999': {
+          name: 'Endless Ways',
+          symbol: 'EWY',
+          decimals: 0,
+          description: 'A unique mint of an artwork on Endless Ways.',
+          displayAsset: '../../../assets/img/tokens/endlessways.svg',
+          thumbnailAsset: '../../../assets/img/tokens/endlessways.svg',
+          shouldPreferSymbol: false,
+          status: 1
+        }
+      }
+    },
+    KT1EibnzPnFiCKtaN8EyUrhxyGk1N8XT1Tmu: {
+      kind: 'FA2',
+      category: 'collectibles',
+      tokens: {
+        '1-999990000000000': {
+          name: 'Endless Ways',
+          symbol: 'EWY',
+          decimals: 0,
+          description: 'A unique mint of an artwork on Endless Ways.',
+          displayAsset: '../../../assets/img/tokens/endlessways.svg',
+          thumbnailAsset: '../../../assets/img/tokens/endlessways.svg',
+          shouldPreferSymbol: false,
+          status: 1
+        }
+      }
+    }
+  },
   NFT_CONTRACT_OVERRIDES: [],
   CONTRACT_OVERRIDES: {}
 };
 const _TRUSTED_TOKEN_CONTRACTS = [];
-const _BLACKLISTED_TOKEN_CONTRACTS = []
+const _BLACKLISTED_TOKEN_CONTRACTS = [];
 
 export const CONSTANTS = JSON.parse(JSON.stringify(_CONSTANTS));
 export const TRUSTED_TOKEN_CONTRACTS = JSON.parse(JSON.stringify(_TRUSTED_TOKEN_CONTRACTS));

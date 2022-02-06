@@ -541,6 +541,15 @@ const _CONSTANTS: Constants = {
       category: ["collectibles"],
       description: "Humans are gone. Ottez have moved in. 4,007 generative, collectible PFP otters have taken over Earth. ",
     },
+    },
+    'EndlessWays': {
+      name: "Endless Ways",
+      address: ["KT1EXwn1B3rHnn8mtNmsRN3thkfS6CzLxmaP"],
+      thumbnailUrl: "../../../assets/img/alias/endlesswaysLogo.png",
+      discoverUrl: "../../../assets/img/alias/endlesswaysBanner.png",
+      link: "https://endlessways.net", shouldDisplayLink: DisplayLinkOption.All, backgroundColor: 'black', category: ["collectibles"],
+      description: "Generative Art. Proper Curation.",
+    },
   },
   ASSETS: {
     KT1K9gCRgaLRFKTErYt1wVxA3Frb9FjasjTV: {
@@ -1269,7 +1278,23 @@ const _CONSTANTS: Constants = {
           status: 1
         }
       }
-    }
+    },
+    'KT1EXwn1B3rHnn8mtNmsRN3thkfS6CzLxmaP': {
+      kind: 'FA2',
+      category: 'collectibles',
+      tokens: {
+        '1-999999999999999': {
+          name: 'Endless Ways',
+          symbol: 'EWY',
+          decimals: 0,
+          description: 'A unique mint of an artwork on Endless Ways.',
+          displayAsset: '../../../assets/img/tokens/endlessways.svg',
+          thumbnailAsset: '../../../assets/img/tokens/endlessways.svg',
+          shouldPreferSymbol: true,
+          status: 1
+        }
+      }
+    }, 
   },
   CONTRACT_OVERRIDES: {
     // hice et nunc
@@ -1363,6 +1388,7 @@ const _TRUSTED_TOKEN_CONTRACTS = [
   "KT1Qi93pZoig6grMNBd7GGA7fveE2cxQK9Ei", //Verses
   'KT1DtsVHqUvKBkkypLB3x2bYd4jWdbbaHdMy',//Basqunks
   'KT1L7GvUxZH5tfa6cgZKnH6vpp2uVxnFVHKu',//Ottez
+  "KT1EXwn1B3rHnn8mtNmsRN3thkfS6CzLxmaP", //Endless Ways
 ];
 const _BLACKLISTED_TOKEN_CONTRACTS = []
 
