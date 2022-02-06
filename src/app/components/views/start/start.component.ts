@@ -15,7 +15,6 @@ import { Subscription } from 'rxjs';
   styleUrls: ['../../../../scss/components/views/start/start.component.scss']
 })
 export class StartComponent implements OnInit, AfterViewInit, OnDestroy {
-
   @ViewChild('canvas') canvas;
 
   isMobile = false;
@@ -34,14 +33,13 @@ export class StartComponent implements OnInit, AfterViewInit, OnDestroy {
     private messageService: MessageService,
     private router: Router,
     private route: ActivatedRoute
-  ) {
-  }
+  ) {}
 
   async ngOnInit(): Promise<void> {
-    this.subscriptions.add(this.route.queryParams
-      .subscribe(async params => {
+    this.subscriptions.add(
+      this.route.queryParams.subscribe(async (params) => {
         if (params?.devtool === 'watch') {
-          const address = prompt("Enter watch address");
+          const address = prompt('Enter watch address');
           if (address) {
             try {
               await this.importService.watch(address);
@@ -52,15 +50,15 @@ export class StartComponent implements OnInit, AfterViewInit, OnDestroy {
             }
           }
         }
-      }
-      ));
+      })
+    );
     if (!this.walletService.wallet) {
       this.torusService.initTorus();
     }
 
     const e = () => {
       this.isMobile = !!parseInt(getComputedStyle(document.documentElement).getPropertyValue('--is-mobile'));
-    }
+    };
     window.addEventListener('resize', e);
     e();
   }
@@ -77,13 +75,15 @@ export class StartComponent implements OnInit, AfterViewInit, OnDestroy {
   async torusLogin(verifier: string): Promise<void> {
     await this.messageService.startSpinner('Loading wallet...');
     // const { keyPair, userInfo } = await this.mockLogin();
-    const { keyPair, userInfo } = await this.torusService.loginTorus(verifier).catch(async (e) =>
-      await this.messageService.stopSpinner()
-    );
+    const { keyPair, userInfo } = await this.torusService.loginTorus(verifier).catch(async (e) => await this.messageService.stopSpinner());
     console.log('login done');
     if (keyPair) {
       await this.importService
-        .importWalletFromPk(keyPair.pk, '', { verifier: userInfo.typeOfLogin, id: userInfo.verifierId, name: userInfo.name })
+        .importWalletFromPk(keyPair.pk, '', {
+          verifier: userInfo.typeOfLogin,
+          id: userInfo.verifierId,
+          name: userInfo.name
+        })
         .then((success: boolean) => {
           if (success) {
             console.log('success');
@@ -120,11 +120,15 @@ export class StartComponent implements OnInit, AfterViewInit, OnDestroy {
   async initCanvas() {
     this.c = this.canvas.nativeElement;
     this.recalculateCanvasDimensions();
-    this.c.style.pointerEvents = "none";
-    this.ctx = this.c.getContext("2d");
+    this.c.style.pointerEvents = 'none';
+    this.ctx = this.c.getContext('2d');
     this.dots = [];
     for (let i = 0; i < 1024; ++i) {
-      this.dots.push({ dot: [Math.random() * parseFloat(this.c.width), Math.random() * parseFloat(this.c.height), Math.random() * 1 + 1, 0, 2 * Math.PI, true], vx: 0, vy: 1.25 })
+      this.dots.push({
+        dot: [Math.random() * parseFloat(this.c.width), Math.random() * parseFloat(this.c.height), Math.random() * 1 + 1, 0, 2 * Math.PI, true],
+        vx: 0,
+        vy: 1.25
+      });
     }
   }
 
@@ -136,15 +140,15 @@ export class StartComponent implements OnInit, AfterViewInit, OnDestroy {
   draw() {
     const maxV = 2.5;
     this.ctx.clearRect(0, 0, this.c.width, this.c.height);
-    let randvx = (Math.random() * 0.4) - 0.2;
-    let randvy = (Math.random() * 0.5) - 0.2;
+    let randvx = Math.random() * 0.4 - 0.2;
+    let randvy = Math.random() * 0.5 - 0.2;
     for (let i = 0; i < this.dots.length; ++i) {
       if (5 * (this.dots.length / 8) === i) {
-        randvx = (Math.random() * 0.4) - 0.2;
-        randvy = (Math.random() * 0.5) - 0.25;
+        randvx = Math.random() * 0.4 - 0.2;
+        randvy = Math.random() * 0.5 - 0.25;
       }
-      let randvx2 = (Math.random() * 0.1) - 0.05;
-      let randvy2 = (Math.random() * 0.1) - 0.05;
+      let randvx2 = Math.random() * 0.1 - 0.05;
+      let randvy2 = Math.random() * 0.1 - 0.05;
       this.ctx.fillStyle = `#fff`;
       this.ctx.beginPath();
       this.dots[i].vx = this.dots[i].vx + randvx + randvx2;

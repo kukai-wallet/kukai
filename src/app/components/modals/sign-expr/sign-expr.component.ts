@@ -37,15 +37,19 @@ export class SignExprComponent extends ModalComponent implements OnInit, OnChang
     private ledgerService: LedgerService,
     private inputValidationService: InputValidationService,
     private subjectService: SubjectService
-  ) { super(); }
-  ngOnInit(): void {
+  ) {
+    super();
   }
+  ngOnInit(): void {}
   ngOnChanges(changes: SimpleChanges): void {
     if (this.signRequest) {
-      ModalComponent.currentModel.next({name:this.name, data:null});
+      ModalComponent.currentModel.next({ name: this.name, data: null });
       this.isMessage = this.inputValidationService.isMessageSigning(this.signRequest.payload);
       const value = valueDecoder(Uint8ArrayConsumer.fromHexString(this.signRequest.payload.slice(2)));
-      const payload = emitMicheline(value, { indent: '  ', newline: '\n' });
+      const payload = emitMicheline(value, {
+        indent: '  ',
+        newline: '\n'
+      });
       this.payload = this.isMessage ? value.string : payload;
       this.syncSub = this.subjectService.beaconResponse.subscribe((response) => {
         if (response) {
@@ -98,7 +102,10 @@ export class SignExprComponent extends ModalComponent implements OnInit, OnChang
       if (payload.length <= 2290) {
         signature = await this.ledgerService.signOperation(payload, this.walletService.wallet.implicitAccounts[0].derivationPath);
       } else {
-        signature = await this.ledgerService.signHash(this.operationService.ledgerPreHash(payload), this.walletService.wallet.implicitAccounts[0].derivationPath);
+        signature = await this.ledgerService.signHash(
+          this.operationService.ledgerPreHash(payload),
+          this.walletService.wallet.implicitAccounts[0].derivationPath
+        );
       }
       if (signature) {
         this.acceptSigning(this.operationService.hexsigToEdsig(signature));
@@ -119,7 +126,7 @@ export class SignExprComponent extends ModalComponent implements OnInit, OnChang
     this.signResponse.emit(signature);
   }
   closeModal(): void {
-    ModalComponent.currentModel.next({name:'', data:null});
+    ModalComponent.currentModel.next({ name: '', data: null });
     this.clear();
   }
   clear(): void {

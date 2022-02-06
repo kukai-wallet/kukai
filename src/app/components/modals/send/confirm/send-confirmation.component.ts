@@ -43,9 +43,9 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
   parameters: any = null;
   batchParamIndex = 0;
   micheline: any = null;
-  batchParameters: { num: number, parameters: any }[] = [];
+  batchParameters: { num: number; parameters: any }[] = [];
   parametersFormat = 0;
-  parametersDisplay = "";
+  parametersDisplay = '';
   showAll = 10;
 
   showFullBatch = false;
@@ -74,23 +74,28 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
     public tezosDomainService: TezosDomainsService,
     public tokenBalanceService: TokenBalancesService,
     private subjectService: SubjectService
-  ) { super(); }
+  ) {
+    super();
+  }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
   ngOnChanges(changes: SimpleChanges): void {
     if (changes?.confirmRequest?.currentValue) {
       this.reset(true);
       this.externalReq = changes.confirmRequest.currentValue.externalReq;
       this.tokenTransfer = changes.confirmRequest.currentValue.tokenTransfer;
       this.activeAccount = changes.confirmRequest.currentValue.account;
-      this.tezosDomainService.getDomainFromAddress(this.activeAccount?.address).then(domain => {
+      this.tezosDomainService.getDomainFromAddress(this.activeAccount?.address).then((domain) => {
         this.domain = domain;
-      })
+      });
       this.transactions = changes.confirmRequest.currentValue.transactions;
       this.token = this.tokenService.getAsset(this.tokenTransfer);
       console.log('transactions', this.transactions);
       if (this.externalReq) {
-        ModalComponent.currentModel.next({ name: this.name, data: null });
+        ModalComponent.currentModel.next({
+          name: this.name,
+          data: null
+        });
       }
       this.init();
       if (this.externalReq) {
@@ -121,7 +126,10 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
     if (this.transactions.length > 1) {
       for (const [i, op] of this.transactions.entries()) {
         if (op.parameters) {
-          this.batchParameters.push({ num: i + 1, parameters: op.parameters });
+          this.batchParameters.push({
+            num: i + 1,
+            parameters: op.parameters
+          });
           if (!this.parameters) {
             this.updateParameters(0, op.parameters);
           }
@@ -138,13 +146,11 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
     this.parametersDisplay = this.parametersTextboxDisplay();
   }
   parametersTextboxDisplay(): string {
-    return !this.parametersFormat ?
-      this.micheline.value :
-      JSON.stringify(this.parameters.value, null, 2);
+    return !this.parametersFormat ? this.micheline.value : JSON.stringify(this.parameters.value, null, 2);
   }
   setParametersFormat(id: number): void {
     this.parametersFormat = id;
-    this.parametersDisplay = this.parametersTextboxDisplay()
+    this.parametersDisplay = this.parametersTextboxDisplay();
   }
   beaconTokenTransfer(op: any): null | { tokenId: string; to: string; amount: string } {
     if (op.parameters && this.tokenService.isKnownTokenContract(op.destination)) {
@@ -155,13 +161,18 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
   parametersToMicheline(): void {
     if (this.parameters) {
       try {
-        if (!this.parameters.value ||
-          !this.parameters.entrypoint) {
+        if (!this.parameters.value || !this.parameters.entrypoint) {
           throw new Error('entrypoint and value expected');
         }
         assertMichelsonData(this.parameters.value);
-        const res = emitMicheline(this.parameters.value, { indent: '  ', newline: '\n' });
-        this.micheline = { entrypoint: this.parameters.entrypoint, value: res };
+        const res = emitMicheline(this.parameters.value, {
+          indent: '  ',
+          newline: '\n'
+        });
+        this.micheline = {
+          entrypoint: this.parameters.entrypoint,
+          value: res
+        };
       } catch (e) {
         console.warn(e);
         this.micheline = null;
@@ -193,7 +204,8 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
     return totalFee.toFixed();
   }
   getTotalBurn(): number {
-    const totalActiveStorageLimit: number = (this.customStorageLimit !== '' && Number(this.customStorageLimit)) ? Number(this.customStorageLimit) : this.getTotalDefaultStorage();
+    const totalActiveStorageLimit: number =
+      this.customStorageLimit !== '' && Number(this.customStorageLimit) ? Number(this.customStorageLimit) : this.getTotalDefaultStorage();
     return Number(Big(totalActiveStorageLimit).times(this.costPerByte).div(1000000).toString());
   }
   getTotalDefaultGas(): number {
@@ -211,7 +223,9 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
     return totalStorage.toFixed();
   }
   getQuantity(amount): number {
-    return Big(amount).div(10 ** (false ? this.token.decimals : 0)).toFixed();
+    return Big(amount)
+      .div(10 ** (false ? this.token.decimals : 0))
+      .toFixed();
   }
   totalAmount(): string {
     let totalSent = Big(0);
@@ -222,13 +236,17 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
   }
   formatAmount(token, amount: string, baseUnit = true): string {
     if (!token) {
-      return `${Big(amount).div(10 ** (baseUnit ? 6 : 0)).toFixed()} tez`;
+      return `${Big(amount)
+        .div(10 ** (baseUnit ? 6 : 0))
+        .toFixed()} tez`;
     } else {
       if (token) {
         if (this.tokenBalanceService.isNFT(token)) {
           return `${token.name}`;
         } else {
-          return `${Big(amount).div(10 ** (baseUnit ? token.decimals : 0)).toFixed()} ${token.symbol}`;
+          return `${Big(amount)
+            .div(10 ** (baseUnit ? token.decimals : 0))
+            .toFixed()} ${token.symbol}`;
         }
       } else {
         return '[Unknown token]';
@@ -277,57 +295,63 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
         if (this.walletService.wallet instanceof TorusWallet) {
           this.pwdInvalid = `Authorization failed`;
         } else {
-          this.pwdInvalid = this.translate.instant('SENDCOMPONENT.WRONGPASSWORD');  // 'Wrong password!';
+          this.pwdInvalid = this.translate.instant('SENDCOMPONENT.WRONGPASSWORD'); // 'Wrong password!';
         }
       }
     }
   }
   async sendTransaction(keys: KeyPair): Promise<void> {
     const txs: FullyPreparedTransaction[] = this.opsWithCustomLimits();
-    this.subscriptions.add(this.operationService.transfer(this.activeAccount.address, txs, Number(this.getTotalFee()), keys, this.tokenTransfer).subscribe(
-      async (ans: any) => {
-        this.sendResponse = ans;
-        if (ans.success === true) {
-          console.log('Transaction successful ', ans);
-          if (ans.payload.opHash) {
-            document.body.style.marginRight = '0.5rem !important';
-            document.body.style.overflowY = 'hidden !important';
-            await this.messageService.stopSpinner();
-            this.operationResponse.emit(ans.payload.opHash);
-            const metadata = { transactions: this.transactions, opHash: ans.payload.opHash, tokenTransfer: this.tokenTransfer };
-            await this.coordinatorService.boost(this.activeAccount.address, metadata);
-            if (this.transactions[0].meta) {
-              this.torusNotification(this.transactions[0]);
-            }
-            for (const transaction of this.transactions) {
-              if (this.walletService.addressExists(transaction.destination)) {
-                await this.coordinatorService.boost(transaction.destination);
+    this.subscriptions.add(
+      this.operationService.transfer(this.activeAccount.address, txs, Number(this.getTotalFee()), keys, this.tokenTransfer).subscribe(
+        async (ans: any) => {
+          this.sendResponse = ans;
+          if (ans.success === true) {
+            console.log('Transaction successful ', ans);
+            if (ans.payload.opHash) {
+              document.body.style.marginRight = '0.5rem !important';
+              document.body.style.overflowY = 'hidden !important';
+              await this.messageService.stopSpinner();
+              this.operationResponse.emit(ans.payload.opHash);
+              const metadata = {
+                transactions: this.transactions,
+                opHash: ans.payload.opHash,
+                tokenTransfer: this.tokenTransfer
+              };
+              await this.coordinatorService.boost(this.activeAccount.address, metadata);
+              if (this.transactions[0].meta) {
+                this.torusNotification(this.transactions[0]);
               }
+              for (const transaction of this.transactions) {
+                if (this.walletService.addressExists(transaction.destination)) {
+                  await this.coordinatorService.boost(transaction.destination);
+                }
+              }
+            } else if (this.walletService.wallet instanceof LedgerWallet) {
+              document.body.style.marginRight = '0.5rem !important';
+              document.body.style.overflowY = 'hidden !important';
+              await this.requestLedgerSignature();
+              return;
             }
-          } else if (this.walletService.wallet instanceof LedgerWallet) {
-            document.body.style.marginRight = '0.5rem !important';
-            document.body.style.overflowY = 'hidden !important';
-            await this.requestLedgerSignature();
-            return;
+          } else {
+            await this.messageService.stopSpinner();
+            console.log('Transaction error id ', ans.payload.msg);
+            this.messageService.addError(ans.payload.msg, 0);
+            this.operationResponse.emit('broadcast_error');
           }
-        } else {
-          await this.messageService.stopSpinner();
-          console.log('Transaction error id ', ans.payload.msg);
-          this.messageService.addError(ans.payload.msg, 0);
-          this.operationResponse.emit('broadcast_error');
+          this.reset();
+        },
+        (err) => {
+          this.messageService.stopSpinner();
+          console.log('Error Message ', JSON.stringify(err));
+          if (this.walletService.isLedgerWallet()) {
+            this.messageService.addError('Failed to create transaction', 0);
+            this.operationResponse.emit('broadcast_error');
+          }
+          this.reset();
         }
-        this.reset();
-      },
-      err => {
-        this.messageService.stopSpinner();
-        console.log('Error Message ', JSON.stringify(err));
-        if (this.walletService.isLedgerWallet()) {
-          this.messageService.addError('Failed to create transaction', 0);
-          this.operationResponse.emit('broadcast_error');
-        }
-        this.reset();
-      },
-    ));
+      )
+    );
   }
   opsWithCustomLimits(): FullyPreparedTransaction[] {
     let extraGas: number = 0;
@@ -343,14 +367,16 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
     const txs: FullyPreparedTransaction[] = [];
     for (let i = 0; i < this.transactions.length; i++) {
       let gasLimit: string = extraGas ? (Number(this.transactions[i].gasLimit) + extraGasPerOp).toString() : this.transactions[i].gasLimit.toString();
-      let storageLimit = extraStorage ? (Number(this.transactions[i].storageLimit) + extraStoragePerOp).toString() : this.transactions[i].storageLimit.toString();
+      let storageLimit = extraStorage
+        ? (Number(this.transactions[i].storageLimit) + extraStoragePerOp).toString()
+        : this.transactions[i].storageLimit.toString();
       gasLimit = !(Number(gasLimit) < 0) ? gasLimit : '0';
       storageLimit = !(Number(storageLimit) < 0) ? storageLimit : '0';
       const fullyTx: FullyPreparedTransaction = {
         ...this.transactions[i],
-        fee: (i === this.transactions.length - 1) ? this.getTotalFee().toString() : '0',
+        fee: i === this.transactions.length - 1 ? this.getTotalFee().toString() : '0',
         gasLimit,
-        storageLimit,
+        storageLimit
       };
       txs.push(fullyTx);
     }
@@ -365,7 +391,10 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
         if (op.length <= 2290) {
           signature = await this.ledgerService.signOperation('03' + op, this.walletService.wallet.implicitAccounts[0].derivationPath);
         } else {
-          signature = await this.ledgerService.signHash(this.operationService.ledgerPreHash('03' + op), this.walletService.wallet.implicitAccounts[0].derivationPath);
+          signature = await this.ledgerService.signHash(
+            this.operationService.ledgerPreHash('03' + op),
+            this.walletService.wallet.implicitAccounts[0].derivationPath
+          );
         }
         if (signature) {
           const signedOp = op + signature;
@@ -380,11 +409,15 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
     }
   }
   async broadCastLedgerTransaction(): Promise<void> {
-    this.subscriptions.add(this.operationService.broadcast(this.sendResponse.payload.signedOperation).subscribe(
-      (async (ans: any) => {
+    this.subscriptions.add(
+      this.operationService.broadcast(this.sendResponse.payload.signedOperation).subscribe(async (ans: any) => {
         this.sendResponse = ans;
         if (ans.success && this.activeAccount) {
-          const metadata = { transactions: this.transactions, opHash: ans.payload.opHash, tokenTransfer: this.tokenTransfer };
+          const metadata = {
+            transactions: this.transactions,
+            opHash: ans.payload.opHash,
+            tokenTransfer: this.tokenTransfer
+          };
           if (this.transactions[0].meta) {
             this.torusNotification(this.transactions[0]);
           }
@@ -400,7 +433,7 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
         console.log('ans: ' + JSON.stringify(ans));
         this.reset();
       })
-    ));
+    );
   }
   async torusNotification(transaction: FullyPreparedTransaction): Promise<void> {
     if (transaction.meta) {
@@ -421,7 +454,9 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
     if (this.walletService.wallet instanceof TorusWallet) {
       return this.walletService.wallet.displayName();
     } else if (this.activeAccount) {
-      const party = this.lookupService.resolve({ address: this.activeAccount.address });
+      const party = this.lookupService.resolve({
+        address: this.activeAccount.address
+      });
       if (party?.name) {
         return party.name;
       }
@@ -459,7 +494,7 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
   }
   // Only Numbers with Decimals
   sanitizeNumberInput(e, type = ''): void {
-    console.dir(this.token?.decimals, e.target)
+    console.dir(this.token?.decimals, e.target);
     if (['gas', 'storage'].includes(type) || (type === 'amount' && this.token?.decimals == 0)) {
       e.target.value = e.target.value.replace(/[^0-9]/g, '');
     } else {
@@ -478,9 +513,6 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
     ModalComponent.currentModel.next({ name: '', data: null });
     this.operationResponse.emit(emit);
     this.reset();
-  }
-  backModalAction(): void {
-    ModalComponent.currentModel.next({ name: 'prepare-send', data: null });
   }
   reset(init = false): void {
     if (!init) {

@@ -34,6 +34,7 @@ import { SearchBarComponent } from '../../ui/search/search.component';
 import { RemoveCommaPipe } from '../../../pipes/remove-comma.pipe';
 import { ExprTemplateComponent } from '../embedded/sign-expr/template/template.component';
 import { QueueEmbedComponent } from '../embedded/queue/queue.component';
+import { MoonpayComponent } from './account-view/moonpay/moonpay.component';
 
 @NgModule({
   declarations: [
@@ -66,14 +67,10 @@ import { QueueEmbedComponent } from '../embedded/queue/queue.component';
     ListComponent,
     SearchBarComponent,
     RemoveCommaPipe,
-    ExprTemplateComponent
+    ExprTemplateComponent,
+    MoonpayComponent
   ],
-  imports: [
-    CommonModule,
-    LoggedInRoutingModule,
-    HttpClientModule,
-    FormsModule
-  ],
+  imports: [CommonModule, LoggedInRoutingModule, HttpClientModule, FormsModule],
   exports: [
     AdvancedToggleComponent,
     SendComponent,
@@ -92,9 +89,6 @@ import { QueueEmbedComponent } from '../embedded/queue/queue.component';
     RemoveCommaPipe,
     ExprTemplateComponent
   ],
-  providers: [
-    EstimateService,
-    RemoveCommaPipe
-  ]
+  providers: [EstimateService, RemoveCommaPipe]
 })
-export class LoggedInModule { }
+export class LoggedInModule {}

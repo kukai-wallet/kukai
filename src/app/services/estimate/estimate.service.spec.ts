@@ -4,7 +4,7 @@ import { EstimateService } from './estimate.service';
 import { http_imports, rx, translate_imports, ErrorHandlingPipe } from '../../../../spec/helpers/service.helper';
 import { OperationService } from '../operation/operation.service';
 import { of, Observable } from 'rxjs';
-
+import { InputValidationService } from '../input-validation/input-validation.service';
 
 import { TranslateService, TranslateLoader, TranslateFakeLoader, TranslateModule } from '@ngx-translate/core';
 
@@ -14,15 +14,8 @@ describe('EstimateService', () => {
   let httpMock: HttpTestingController;
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        http_imports,
-        translate_imports],
-      providers: [
-        EstimateService,
-        OperationService,
-        TranslateService,
-        ErrorHandlingPipe
-      ]
+      imports: [http_imports, translate_imports],
+      providers: [EstimateService, OperationService, TranslateService, ErrorHandlingPipe, InputValidationService]
     });
 
     // service dependencies
@@ -39,19 +32,23 @@ describe('EstimateService', () => {
   describe('> Estimate limits/cost for transactions ', () => {
     it('Should estimate batch transaction', async function (done) {
       const ref = {
-        customLimits: [{
-          gasLimit: 10287,
-          storageLimit: 0
-        }, {
-          gasLimit: 15365,
-          storageLimit: 0
-        }, {
-          gasLimit: 10287,
-          storageLimit: 257
-        }],
-        fee: 0.003991,
+        customLimits: [
+          {
+            gasLimit: 10412,
+            storageLimit: 0
+          },
+          {
+            gasLimit: 15591,
+            storageLimit: 0
+          },
+          {
+            gasLimit: 10412,
+            storageLimit: 257
+          }
+        ],
+        fee: 0.004039,
         burn: 0.06425,
-        gas: 35939,
+        gas: 36415,
         storage: 257,
         reveal: false
       };
@@ -61,10 +58,29 @@ describe('EstimateService', () => {
           done();
         }
       };
-      spyOn(service, 'simulate').and.returnValue(of(JSON.parse('{"contents":[{"kind":"transaction","source":"tz1aUxrUek1tSCP4pTPLrSNhYGSMdwyzuYTb","fee":"0","counter":"468258","gas_limit":"800000","storage_limit":"60000","amount":"1","destination":"tz1LcuQHNVQEWP2fZjk1QYZGNrfLDwrT3SyZ","metadata":{"balance_updates":[],"operation_result":{"status":"applied","balance_updates":[{"kind":"contract","contract":"tz1aUxrUek1tSCP4pTPLrSNhYGSMdwyzuYTb","change":"-1"},{"kind":"contract","contract":"tz1LcuQHNVQEWP2fZjk1QYZGNrfLDwrT3SyZ","change":"1"}],"consumed_gas":"10207"}}},{"kind":"transaction","source":"tz1aUxrUek1tSCP4pTPLrSNhYGSMdwyzuYTb","fee":"0","counter":"468259","gas_limit":"800000","storage_limit":"60000","amount":"1","destination":"KT1NXwhVgf7Ge7iS9bCUzMNVJeeB1Eni5kVS","metadata":{"balance_updates":[],"operation_result":{"status":"applied","storage":{"bytes":"00a2d2f0526e018e5c555383c21e213d317db559dc"},"balance_updates":[{"kind":"contract","contract":"tz1aUxrUek1tSCP4pTPLrSNhYGSMdwyzuYTb","change":"-1"},{"kind":"contract","contract":"KT1NXwhVgf7Ge7iS9bCUzMNVJeeB1Eni5kVS","change":"1"}],"consumed_gas":"15285","storage_size":"232"}}},{"kind":"transaction","source":"tz1aUxrUek1tSCP4pTPLrSNhYGSMdwyzuYTb","fee":"1000000","counter":"468260","gas_limit":"800000","storage_limit":"60000","amount":"1","destination":"tz1TwVimQy3BywXoSszdFXjT9bSTQrsZYo2u","metadata":{"balance_updates":[{"kind":"contract","contract":"tz1aUxrUek1tSCP4pTPLrSNhYGSMdwyzuYTb","change":"-1000000"},{"kind":"freezer","category":"fees","delegate":"tz1Ke2h7sDdakHJQh8WX4Z372du1KChsksyU","cycle":151,"change":"1000000"}],"operation_result":{"status":"applied","balance_updates":[{"kind":"contract","contract":"tz1aUxrUek1tSCP4pTPLrSNhYGSMdwyzuYTb","change":"-1"},{"kind":"contract","contract":"tz1TwVimQy3BywXoSszdFXjT9bSTQrsZYo2u","change":"1"},{"kind":"contract","contract":"tz1aUxrUek1tSCP4pTPLrSNhYGSMdwyzuYTb","change":"-64250"}],"consumed_gas":"10207","allocated_destination_contract":true}}}]}')));
-      await service.init('BLU5JYNPCDVhm6pgJsrDp1qQ8abxu9MgFnWWHVyrhRHD3UeKLhp', 'NetXUdfLh6Gm88t', 468257, 'edpkuHo1zj3e9fVky1iq94LQY6tKfMNwkaoBEe3JFiPXxT3i4XkUxU', 'edpkuHo1zj3e9fVky1iq94LQY6tKfMNwkaoBEe3JFiPXxT3i4XkUxU', 'tz1aUxrUek1tSCP4pTPLrSNhYGSMdwyzuYTb');
-      await service.estimateTransactions(JSON.parse('[{"destination":"tz1LcuQHNVQEWP2fZjk1QYZGNrfLDwrT3SyZ","amount":3,"gasLimit":0,"storageLimit":0},{"destination":"KT1NXwhVgf7Ge7iS9bCUzMNVJeeB1Eni5kVS","amount":5,"gasLimit":0,"storageLimit":0},{"destination":"tz1TwVimQy3BywXoSszdFXjT9bSTQrsZYo2u","amount":7,"gasLimit":0,"storageLimit":0}]'),
-        'tz1aUxrUek1tSCP4pTPLrSNhYGSMdwyzuYTb', '', callback);
+      spyOn(service, 'simulate').and.returnValue(
+        of(
+          JSON.parse(
+            '{"contents":[{"kind":"transaction","source":"tz1aUxrUek1tSCP4pTPLrSNhYGSMdwyzuYTb","fee":"0","counter":"468258","gas_limit":"800000","storage_limit":"60000","amount":"1","destination":"tz1LcuQHNVQEWP2fZjk1QYZGNrfLDwrT3SyZ","metadata":{"balance_updates":[],"operation_result":{"status":"applied","balance_updates":[{"kind":"contract","contract":"tz1aUxrUek1tSCP4pTPLrSNhYGSMdwyzuYTb","change":"-1"},{"kind":"contract","contract":"tz1LcuQHNVQEWP2fZjk1QYZGNrfLDwrT3SyZ","change":"1"}],"consumed_gas":"10207"}}},{"kind":"transaction","source":"tz1aUxrUek1tSCP4pTPLrSNhYGSMdwyzuYTb","fee":"0","counter":"468259","gas_limit":"800000","storage_limit":"60000","amount":"1","destination":"KT1NXwhVgf7Ge7iS9bCUzMNVJeeB1Eni5kVS","metadata":{"balance_updates":[],"operation_result":{"status":"applied","storage":{"bytes":"00a2d2f0526e018e5c555383c21e213d317db559dc"},"balance_updates":[{"kind":"contract","contract":"tz1aUxrUek1tSCP4pTPLrSNhYGSMdwyzuYTb","change":"-1"},{"kind":"contract","contract":"KT1NXwhVgf7Ge7iS9bCUzMNVJeeB1Eni5kVS","change":"1"}],"consumed_gas":"15285","storage_size":"232"}}},{"kind":"transaction","source":"tz1aUxrUek1tSCP4pTPLrSNhYGSMdwyzuYTb","fee":"1000000","counter":"468260","gas_limit":"800000","storage_limit":"60000","amount":"1","destination":"tz1TwVimQy3BywXoSszdFXjT9bSTQrsZYo2u","metadata":{"balance_updates":[{"kind":"contract","contract":"tz1aUxrUek1tSCP4pTPLrSNhYGSMdwyzuYTb","change":"-1000000"},{"kind":"freezer","category":"fees","delegate":"tz1Ke2h7sDdakHJQh8WX4Z372du1KChsksyU","cycle":151,"change":"1000000"}],"operation_result":{"status":"applied","balance_updates":[{"kind":"contract","contract":"tz1aUxrUek1tSCP4pTPLrSNhYGSMdwyzuYTb","change":"-1"},{"kind":"contract","contract":"tz1TwVimQy3BywXoSszdFXjT9bSTQrsZYo2u","change":"1"},{"kind":"contract","contract":"tz1aUxrUek1tSCP4pTPLrSNhYGSMdwyzuYTb","change":"-64250"}],"consumed_gas":"10207","allocated_destination_contract":true}}}]}'
+          )
+        )
+      );
+      await service.init(
+        'BLU5JYNPCDVhm6pgJsrDp1qQ8abxu9MgFnWWHVyrhRHD3UeKLhp',
+        'NetXUdfLh6Gm88t',
+        468257,
+        'edpkuHo1zj3e9fVky1iq94LQY6tKfMNwkaoBEe3JFiPXxT3i4XkUxU',
+        'edpkuHo1zj3e9fVky1iq94LQY6tKfMNwkaoBEe3JFiPXxT3i4XkUxU',
+        'tz1aUxrUek1tSCP4pTPLrSNhYGSMdwyzuYTb'
+      );
+      await service.estimateTransactions(
+        JSON.parse(
+          '[{"destination":"tz1LcuQHNVQEWP2fZjk1QYZGNrfLDwrT3SyZ","amount":3,"gasLimit":0,"storageLimit":0},{"destination":"KT1NXwhVgf7Ge7iS9bCUzMNVJeeB1Eni5kVS","amount":5,"gasLimit":0,"storageLimit":0},{"destination":"tz1TwVimQy3BywXoSszdFXjT9bSTQrsZYo2u","amount":7,"gasLimit":0,"storageLimit":0}]'
+        ),
+        'tz1aUxrUek1tSCP4pTPLrSNhYGSMdwyzuYTb',
+        '',
+        callback
+      );
     });
     /*
     it('Should estimate contract invocation', async function () {

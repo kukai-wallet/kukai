@@ -10,19 +10,15 @@ import { OperationService } from '../operation/operation.service';
   providedIn: 'root'
 })
 export class EmbeddedAuthService {
-
-  constructor(
-    private walletService: WalletService,
-    private operationService: OperationService
-  ) { }
-  async authenticate(authReq: any, origin: string, keyPair: KeyPair = null): Promise<{ message: string, signature: string }> {
+  constructor(private walletService: WalletService, private operationService: OperationService) {}
+  async authenticate(authReq: any, origin: string, keyPair: KeyPair = null): Promise<{ message: string; signature: string }> {
     if (!origin) {
       throw new Error('NO_DOMAIN_FOUND');
     } else if ((!this.walletService?.wallet || !this.walletService.isEmbeddedTorusWallet()) && !keyPair) {
       throw new Error('NO_WALLET_FOUND');
     }
     if (!keyPair) {
-      keyPair = await this.walletService.getKeys('', this.walletService.wallet.implicitAccounts[0].pkh).catch(e => {
+      keyPair = await this.walletService.getKeys('', this.walletService.wallet.implicitAccounts[0].pkh).catch((e) => {
         throw new Error('NO_KEYS_FOUND');
       });
     }
@@ -31,7 +27,7 @@ export class EmbeddedAuthService {
     return { message: authMessage, signature };
   }
   async signExprSilent(hexExpr: string): Promise<string> {
-    const keyPair = await this.walletService.getKeys('', this.walletService.wallet.implicitAccounts[0].pkh).catch(e => {
+    const keyPair = await this.walletService.getKeys('', this.walletService.wallet.implicitAccounts[0].pkh).catch((e) => {
       throw new Error('NO_KEYS_FOUND');
     });
     const signature: string = this.operationService.sign(hexExpr, keyPair.sk).edsig;
@@ -72,4 +68,3 @@ export class EmbeddedAuthService {
     return signature;
   }
 }
-

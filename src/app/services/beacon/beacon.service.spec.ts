@@ -8,10 +8,7 @@ describe('BeaconService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        OperationService,
-        MessageService
-      ]
+      providers: [OperationService, MessageService]
     });
     service = TestBed.inject(BeaconService);
   });

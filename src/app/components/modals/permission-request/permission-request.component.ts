@@ -27,19 +27,25 @@ export class PermissionRequestComponent implements OnInit, OnChanges, OnDestroy 
     private subjectService: SubjectService,
     private router: Router,
     private beaconService: BeaconService
-  ) { }
+  ) {}
   ngOnInit(): void {
     if (this.walletService.wallet) {
-      this.preSelectedAccount = this.selectedAccount = this.activeAccount?.address?.startsWith('tz') ? this.activeAccount : this.walletService.wallet.implicitAccounts[0];
+      this.preSelectedAccount = this.selectedAccount = this.activeAccount?.address?.startsWith('tz')
+        ? this.activeAccount
+        : this.walletService.wallet.implicitAccounts[0];
     }
-    this.subscriptions.add(this.walletService.walletUpdated.subscribe(async () => {
-      this.accounts = this.walletService.wallet?.getImplicitAccounts();
-    }));
+    this.subscriptions.add(
+      this.walletService.walletUpdated.subscribe(async () => {
+        this.accounts = this.walletService.wallet?.getImplicitAccounts();
+      })
+    );
     this.accounts = this.walletService.wallet?.getImplicitAccounts();
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.activeAccount) {
-      this.preSelectedAccount = this.selectedAccount = this.activeAccount?.address?.startsWith('tz') ? this.activeAccount : this.walletService.wallet.implicitAccounts[0];
+      this.preSelectedAccount = this.selectedAccount = this.activeAccount?.address?.startsWith('tz')
+        ? this.activeAccount
+        : this.walletService.wallet.implicitAccounts[0];
     }
     if (this.permissionRequest) {
       const scrollBarWidth = window.innerWidth - document.body.offsetWidth;

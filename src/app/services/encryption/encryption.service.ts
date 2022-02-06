@@ -7,7 +7,7 @@ import * as forge from 'node-forge';
 declare const Buffer;
 @Injectable()
 export class EncryptionService {
-  constructor() { }
+  constructor() {}
   async encrypt(plaintext: any, password: string, version: number, salt: string = null): Promise<any> {
     if (version === 1) {
       throw new Error('Encryption version no longer supported');
@@ -30,14 +30,14 @@ export class EncryptionService {
   }
   // Version 1
   async encrypt_v1(plaintext: any, password: string, salt: string): Promise<string> {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       try {
         if (!password || !salt) {
           throw new Error('Missing password or salt');
         }
         pbkdf2.pbkdf2(password, salt, 10000, 32, 'sha512', (err, key) => {
           if (err) {
-            throw (err);
+            throw err;
           }
           const aesCtr = new AES.ModeOfOperation.ctr(key);
           let chiphertext = aesCtr.encrypt(plaintext);
@@ -51,14 +51,14 @@ export class EncryptionService {
     });
   }
   async decrypt_v1(chiphertext: string, password: string, salt: string): Promise<any> {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       try {
         if (!password || !salt) {
           throw new Error('Missing password or salt');
         }
         pbkdf2.pbkdf2(password, salt, 10000, 32, 'sha512', (err, key) => {
           if (err) {
-            throw (err);
+            throw err;
           }
           chiphertext = AES.utils.hex.toBytes(chiphertext);
           const aesCtr = new AES.ModeOfOperation.ctr(key);
@@ -84,7 +84,7 @@ export class EncryptionService {
     const key = await scrypt.async(password, salty, 65536, 8, 1, 32);
     const cipher: any = forge.cipher.createCipher('AES-GCM', key.toString('binary'));
     cipher.start({
-      iv: salty,
+      iv: salty
     });
     const byteStringBuffer = forge.util.createBuffer(plaintext.toString('binary'), 'utf-8');
     cipher.update(byteStringBuffer);
@@ -104,9 +104,9 @@ export class EncryptionService {
       const decipher: any = forge.cipher.createDecipher('AES-GCM', key.toString('binary'));
       decipher.start({
         iv: new Buffer(salt, 'hex'),
-        tag: forge.util.createBuffer((new Buffer(tag, 'hex')).toString('binary'), 'utf-8'), // authentication tag from encryption
+        tag: forge.util.createBuffer(new Buffer(tag, 'hex').toString('binary'), 'utf-8') // authentication tag from encryption
       });
-      decipher.update(forge.util.createBuffer((new Buffer(chiphertext, 'hex')).toString('binary'), 'utf-8'));
+      decipher.update(forge.util.createBuffer(new Buffer(chiphertext, 'hex').toString('binary'), 'utf-8'));
       const pass = decipher.finish();
       if (pass) {
         return new Buffer(decipher.output.toHex(), 'hex');
@@ -117,12 +117,12 @@ export class EncryptionService {
       return null;
     }
   }
-  bumpIV(salt: string, bumps: number) {
-    if (bumps > 255) {
-      throw new Error('Invalid incremention');
+  shiftIV(salt: string, offset: number) {
+    if (!Number.isInteger(offset) || offset > 255 || offset < 1) {
+      throw new Error('Invalid offset for IV');
     }
     const buf = new Buffer(salt, 'hex');
-    buf[13] = (buf[13] + 1) % 256;
+    buf[13] = (buf[13] + offset) % 256;
     return buf.toString('hex');
   }
 }

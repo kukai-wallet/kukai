@@ -1,18 +1,15 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-import { TranslateService } from '@ngx-translate/core';  // Multiple instances created ?
+import { TranslateService } from '@ngx-translate/core'; // Multiple instances created ?
 import * as timediff from 'timediff';
 
 @Pipe({
   name: 'timeAgo',
-  pure: true  // if false pipe will be called at each changes - necessary for translation - is there a better way?
+  pure: true // if false pipe will be called at each changes - necessary for translation - is there a better way?
 })
 export class TimeAgoPipe implements PipeTransform {
-  constructor(
-    private translate: TranslateService
-  ) { }
+  constructor(private translate: TranslateService) {}
   transform(timestamp: number): string {
-
     const now = this.translate.instant('TIMEAGOPIPE.JUSTNOW');
     const sec = this.translate.instant('TIMEAGOPIPE.SEC');
     const secs = sec;
@@ -71,4 +68,3 @@ export class TimeAgoPipe implements PipeTransform {
     return output;
   }
 }
-

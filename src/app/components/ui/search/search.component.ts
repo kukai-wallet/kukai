@@ -10,30 +10,35 @@ import { DropdownComponent } from '../dropdown/dropdown.component';
   styleUrls: ['../../../../scss/components/ui/search-bar/search.component.scss']
 })
 export class SearchBarComponent extends DropdownComponent implements OnInit, OnDestroy {
-
   @ViewChild('input') input: ElementRef;
   @Output() onInput = new EventEmitter();
   @Input() itemCount = 0;
   @Input() matchCount = 0;
   inputUpdated = new Subject<any>();
-  filter = ".*";
+  filter = '.*';
   isActive = false;
   hasValue = false;
   @Input() placeholder = '';
   placeholderText = '';
-  searchText = ''
+  searchText = '';
   private subscriptions: Subscription = new Subscription();
 
   constructor(private walletService: WalletService) {
     super();
-    this.subscriptions.add(this.inputUpdated.pipe(debounceTime(150)).subscribe((e) => {
-      this.filter = !!e?.target.value ? `${e.target.value.replace(/(\W)/g, '\\$1')}` : "";
-      if (!!e) { this.onInput.emit(this.filter); };
-      this.hasValue = !!this.filter;
-    }));
-    this.subscriptions.add(this.walletService.activeAccount.subscribe(_ => {
-      this.reset();
-    }));
+    this.subscriptions.add(
+      this.inputUpdated.pipe(debounceTime(150)).subscribe((e) => {
+        this.filter = !!e?.target.value ? `${e.target.value.replace(/(\W)/g, '\\$1')}` : '';
+        if (!!e) {
+          this.onInput.emit(this.filter);
+        }
+        this.hasValue = !!this.filter;
+      })
+    );
+    this.subscriptions.add(
+      this.walletService.activeAccount.subscribe((_) => {
+        this.reset();
+      })
+    );
   }
   ngOnInit(): void {
     this.placeholderText = this.placeholder;
@@ -58,7 +63,7 @@ export class SearchBarComponent extends DropdownComponent implements OnInit, OnD
   onBlur(e): void {
     if (!e.target.closest('#' + this.ecmpId) && this.isActive && !this.hasValue) {
       this.isActive = false;
-      this.onInput.emit("");
+      this.onInput.emit('');
     }
   }
   reset(): void {

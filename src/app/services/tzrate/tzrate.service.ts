@@ -6,9 +6,7 @@ import { CONSTANTS } from '../../../environments/environment';
 @Injectable()
 export class TzrateService {
   public apiUrl = 'https://api.coingecko.com/api/v3/simple/price?ids=tezos&vs_currencies=usd';
-  constructor(private http: HttpClient,
-    private walletService: WalletService) {
-  }
+  constructor(private http: HttpClient, private walletService: WalletService) {}
 
   getTzrate() {
     if (CONSTANTS.MAINNET) {
@@ -17,7 +15,7 @@ export class TzrateService {
           this.walletService.wallet.XTZrate = price.tezos.usd;
           this.updateFiatBalances();
         },
-        err => console.log('Failed to get xtz price: ' + JSON.stringify(err))
+        (err) => console.log('Failed to get xtz price: ' + JSON.stringify(err))
       );
     } else {
       this.walletService.wallet.XTZrate = 0;
@@ -30,8 +28,7 @@ export class TzrateService {
     let change = false;
     for (const account of accounts) {
       if (account.balanceXTZ !== null) {
-        account.balanceUSD =
-          Number(account.balanceXTZ / 1000000 * this.walletService.wallet.XTZrate);
+        account.balanceUSD = Number((account.balanceXTZ / 1000000) * this.walletService.wallet.XTZrate);
         tot += account.balanceUSD;
         change = true;
       }

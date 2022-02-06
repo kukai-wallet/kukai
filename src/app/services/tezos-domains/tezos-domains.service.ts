@@ -13,7 +13,6 @@ export class TezosDomainsService {
   private queue = [];
   pending = false;
   constructor() {
-
     const tezosToolkit = new TezosToolkit(CONSTANTS.NODE_URL);
     tezosToolkit.addExtension(new Tzip16Module());
     const options = { caching: { enabled: false } };
@@ -36,7 +35,7 @@ export class TezosDomainsService {
       this.collect();
     }
     return new Promise((resolve, reject) => {
-      this.queue.push({address, resolve, reject});
+      this.queue.push({ address, resolve, reject });
     });
   }
   async collect() {
@@ -44,10 +43,10 @@ export class TezosDomainsService {
       this.pending = false;
       const queue = this.queue;
       this.queue = [];
-      const addresses = queue.map(q => {
+      const addresses = queue.map((q) => {
         return q.address;
       });
-      const items = await this.getDomainFromAddresses(addresses).catch(e => {
+      const items = await this.getDomainFromAddresses(addresses).catch((e) => {
         for (const q of queue) {
           q.reject(e);
           throw e;
@@ -67,14 +66,16 @@ export class TezosDomainsService {
     const baseUrl = CONSTANTS.MAINNET ? 'https://api.tezos.domains/graphql' : `https://${CONSTANTS.NETWORK}-api.tezos.domains/graphql`;
     const req = {
       query: `{reverseRecords(where: {address: {in: ${JSON.stringify(addresses)}}}) {items {address domain: domain {id, name}}}}`
-    }
-    const response = await (await fetch(baseUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(req)
-    })).json();
+    };
+    const response = await (
+      await fetch(baseUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(req)
+      })
+    ).json();
     const r = {};
     for (const item of response.data.reverseRecords.items) {
       if (item?.address && item?.domain?.name) {

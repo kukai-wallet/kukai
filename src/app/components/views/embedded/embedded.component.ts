@@ -40,13 +40,13 @@ enum Permission {
   MICHELINE_SILENT = 'micheline_silent'
 }
 interface Permissions {
-  origins: string[],
+  origins: string[];
   permissions: {
-    [Permission.LOGIN]: boolean,
-    [Permission.OPERATIONS]: boolean,
-    [Permission.MICHELINE]: boolean,
-    [Permission.MICHELINE_SILENT]?: boolean
-  }
+    [Permission.LOGIN]: boolean;
+    [Permission.OPERATIONS]: boolean;
+    [Permission.MICHELINE]: boolean;
+    [Permission.MICHELINE_SILENT]?: boolean;
+  };
 }
 @Component({
   selector: 'app-embedded',
@@ -117,7 +117,7 @@ export class EmbeddedComponent implements OnInit {
     private subjectService: SubjectService,
     private inputValidationService: InputValidationService,
     private elRef: ElementRef
-  ) { }
+  ) {}
   pendingOps: string[] = [];
   ophashSubscription: Subscription;
   origin = '';
@@ -144,8 +144,8 @@ export class EmbeddedComponent implements OnInit {
     }
     console.log('icabod is connected...');
     this.route.queryParams
-      .filter(params => params.instanceId)
-      .subscribe(params => {
+      .filter((params) => params.instanceId)
+      .subscribe((params) => {
         this.walletService.loadStoredWallet(params.instanceId);
         this.currentInstanceId = params.instanceId;
         if (this.walletService.wallet instanceof EmbeddedTorusWallet) {
@@ -166,8 +166,7 @@ export class EmbeddedComponent implements OnInit {
       const data: RequestMessage = JSON.parse(evt.data);
       if (this.hasPermission(null, evt.origin)) {
         console.log(`Received ${evt.data} from ${evt.origin}`);
-        if (data &&
-          data.type) {
+        if (data && data.type) {
           this.origin = evt.origin;
           this.subjectService.origin.next(this.origin);
           switch (data.type) {
@@ -202,11 +201,15 @@ export class EmbeddedComponent implements OnInit {
       } else if (data && data.type) {
         console.error(`Invalid origin (${evt.origin})`);
       }
-    } catch { }
-  }
+    } catch {}
+  };
   private handleSignExprRequest(req: SignExprRequest) {
     if (!this.hasPermission(Permission.MICHELINE)) {
-      const response: ResponseMessage = { type: ResponseTypes.signExprResponse, failed: true, error: 'NO_PERMISSION' };
+      const response: ResponseMessage = {
+        type: ResponseTypes.signExprResponse,
+        failed: true,
+        error: 'NO_PERMISSION'
+      };
       this.sendResponse(response);
       return;
     }
@@ -216,23 +219,45 @@ export class EmbeddedComponent implements OnInit {
       }
       if (this.inputValidationService.isMichelineExpr(req.expr)) {
         if (req?.ui?.silent && this.hasPermission(Permission.MICHELINE_SILENT)) {
-          this.embeddedAuthService.signExprSilent(req.expr).then(signature => {
-            this.signResponse(signature);
-          }).catch(e => {
-            this.sendResponse({ type: ResponseTypes.signExprResponse, failed: true, error: e.message ? e.message : 'UNKNOWN_ERROR' });
-          });
+          this.embeddedAuthService
+            .signExprSilent(req.expr)
+            .then((signature) => {
+              this.signResponse(signature);
+            })
+            .catch((e) => {
+              this.sendResponse({
+                type: ResponseTypes.signExprResponse,
+                failed: true,
+                error: e.message ? e.message : 'UNKNOWN_ERROR'
+              });
+            });
         } else {
-          this.signRequest = { payload: req.expr, ui: this.normalizeTemplate(req?.ui) };
+          this.signRequest = {
+            payload: req.expr,
+            ui: this.normalizeTemplate(req?.ui)
+          };
         }
       } else {
-        this.sendResponse({ type: ResponseTypes.signExprResponse, failed: true, error: 'INVALID_PARAMETERS' });
+        this.sendResponse({
+          type: ResponseTypes.signExprResponse,
+          failed: true,
+          error: 'INVALID_PARAMETERS'
+        });
       }
     } else {
       let response: ResponseMessage;
       if (!(this.walletService.wallet instanceof EmbeddedTorusWallet) || !this.walletService.wallet.implicitAccounts[0]) {
-        response = { type: ResponseTypes.signExprResponse, failed: true, error: 'NO_WALLET_FOUND' };
+        response = {
+          type: ResponseTypes.signExprResponse,
+          failed: true,
+          error: 'NO_WALLET_FOUND'
+        };
       } else {
-        response = { type: ResponseTypes.signExprResponse, failed: true, error: 'INVALID_PARAMETERS' };
+        response = {
+          type: ResponseTypes.signExprResponse,
+          failed: true,
+          error: 'INVALID_PARAMETERS'
+        };
       }
       this.sendResponse(response);
     }
@@ -241,24 +266,44 @@ export class EmbeddedComponent implements OnInit {
     this.signRequest = null;
     let resp: SignExprResponse;
     if (response && typeof response === 'string' && response.length > 95 && response.slice(0, 5) === 'spsig') {
-      resp = { type: ResponseTypes.signExprResponse, failed: false, signature: response };
+      resp = {
+        type: ResponseTypes.signExprResponse,
+        failed: false,
+        signature: response
+      };
     } else {
-      resp = { type: ResponseTypes.signExprResponse, failed: true, error: 'ABORTED_BY_USER' };
+      resp = {
+        type: ResponseTypes.signExprResponse,
+        failed: true,
+        error: 'ABORTED_BY_USER'
+      };
     }
     this.sendResponse(resp);
   }
   private handleLoginRequest(req: LoginRequest) {
     if (!this.hasPermission(Permission.LOGIN)) {
-      const response: ResponseMessage = { type: ResponseTypes.loginResponse, failed: true, error: 'NO_PERMISSION' };
+      const response: ResponseMessage = {
+        type: ResponseTypes.loginResponse,
+        failed: true,
+        error: 'NO_PERMISSION'
+      };
       this.sendResponse(response);
       return;
     }
     this.queueMode = req?.config.customPrio ? req?.config.customPrio : null;
     if (this.activeAccount || (this.queueMode === 'low' && this.walletService.wallet)) {
-      const response: ResponseMessage = { type: ResponseTypes.loginResponse, failed: true, error: 'ALREADY_LOGGED_IN' };
+      const response: ResponseMessage = {
+        type: ResponseTypes.loginResponse,
+        failed: true,
+        error: 'ALREADY_LOGGED_IN'
+      };
       this.sendResponse(response);
     } else if (this.queueMode === 'high' && !this.walletService.wallet) {
-      const response: ResponseMessage = { type: ResponseTypes.loginResponse, failed: true, error: 'NO_WALLET_FOUND' };
+      const response: ResponseMessage = {
+        type: ResponseTypes.loginResponse,
+        failed: true,
+        error: 'NO_WALLET_FOUND'
+      };
       this.sendResponse(response);
     } else {
       if (req?.config?.customSpinnerDismissal) {
@@ -272,7 +317,11 @@ export class EmbeddedComponent implements OnInit {
   }
   private handleOperationRequest(req: OperationRequest) {
     if (!this.hasPermission(Permission.OPERATIONS)) {
-      const response: ResponseMessage = { type: ResponseTypes.operationResponse, failed: true, error: 'NO_PERMISSION' };
+      const response: ResponseMessage = {
+        type: ResponseTypes.operationResponse,
+        failed: true,
+        error: 'NO_PERMISSION'
+      };
       this.sendResponse(response);
       return;
     }
@@ -325,7 +374,13 @@ export class EmbeddedComponent implements OnInit {
       const { keyPair, userInfo } = loginData;
       const { idToken = '', accessToken = '', long_lived_token = '', ...filteredUserInfo } = { ...userInfo };
       let instanceId;
-      if (this.walletService.wallet && this.walletService.wallet instanceof EmbeddedTorusWallet && keyPair?.pk && !this.walletService.wallet.implicitAccounts[0] && this.currentInstanceId) {
+      if (
+        this.walletService.wallet &&
+        this.walletService.wallet instanceof EmbeddedTorusWallet &&
+        keyPair?.pk &&
+        !this.walletService.wallet.implicitAccounts[0] &&
+        this.currentInstanceId
+      ) {
         instanceId = this.currentInstanceId;
       } else {
         // 160 bits of entropy, base58 encoded
@@ -345,13 +400,21 @@ export class EmbeddedComponent implements OnInit {
           response.authResponse = await this.embeddedAuthService.authenticate(this.loginConfig.authParams, this.origin, keyPair);
         } catch (e) {
           console.error(e);
-          response = { type: ResponseTypes.loginResponse, failed: true, error: e?.message };
+          response = {
+            type: ResponseTypes.loginResponse,
+            failed: true,
+            error: e?.message
+          };
           toImport = undefined;
         }
       }
     } else {
       this.dismiss = null;
-      response = { type: ResponseTypes.loginResponse, failed: true, error: 'ABORTED_BY_USER' };
+      response = {
+        type: ResponseTypes.loginResponse,
+        failed: true,
+        error: 'ABORTED_BY_USER'
+      };
     }
     const loginConfig = this.loginConfig;
     if (this.dismiss === null) {
@@ -370,28 +433,38 @@ export class EmbeddedComponent implements OnInit {
   }
   async handleAuthRequest(authReq: AuthRequest) {
     if (!this.hasPermission(Permission.LOGIN)) {
-      const response: ResponseMessage = { type: ResponseTypes.loginResponse, failed: true, error: 'NO_PERMISSION' };
+      const response: ResponseMessage = {
+        type: ResponseTypes.loginResponse,
+        failed: true,
+        error: 'NO_PERMISSION'
+      };
       this.sendResponse(response);
       return;
     }
-    this.embeddedAuthService.authenticate(authReq, this.origin).then((authResponse: any) => {
-      this.sendResponse({
-        type: ResponseTypes.authResponse,
-        failed: false,
-        message: authResponse.message,
-        signature: authResponse.signature
+    this.embeddedAuthService
+      .authenticate(authReq, this.origin)
+      .then((authResponse: any) => {
+        this.sendResponse({
+          type: ResponseTypes.authResponse,
+          failed: false,
+          message: authResponse.message,
+          signature: authResponse.signature
+        });
+      })
+      .catch((e: Error) => {
+        this.sendResponse({
+          type: ResponseTypes.authResponse,
+          failed: true,
+          error: e.message ? e.message : 'UNKNOWN_ERROR'
+        });
       });
-    }).catch((e: Error) => {
-      this.sendResponse({
-        type: ResponseTypes.authResponse,
-        failed: true,
-        error: e.message ? e.message : 'UNKNOWN_ERROR'
-      });
-    });
   }
   handleCardRequest(req: CardRequest) {
     this.blockCard = !req.show;
-    const response: CardResponse = { type: ResponseTypes.cardResponse, failed: false };
+    const response: CardResponse = {
+      type: ResponseTypes.cardResponse,
+      failed: false
+    };
     this.sendResponse(response);
   }
   noWalletError() {
@@ -409,18 +482,44 @@ export class EmbeddedComponent implements OnInit {
       opHash = opHash.error;
     }
     if (!opHash) {
-      response = { type: ResponseTypes.operationResponse, failed: true, error: 'ABORTED_BY_USER' };
+      response = {
+        type: ResponseTypes.operationResponse,
+        failed: true,
+        error: 'ABORTED_BY_USER'
+      };
     } else if (opHash === 'exceeded_threshold') {
-      response = { type: ResponseTypes.operationResponse, failed: true, error: 'EXEEDED_THRESHOLD' };
+      response = {
+        type: ResponseTypes.operationResponse,
+        failed: true,
+        error: 'EXEEDED_THRESHOLD'
+      };
     } else if (opHash === 'broadcast_error') {
-      response = { type: ResponseTypes.operationResponse, failed: true, error: 'BROADCAST_ERROR', errorMessage };
+      response = {
+        type: ResponseTypes.operationResponse,
+        failed: true,
+        error: 'BROADCAST_ERROR',
+        errorMessage
+      };
     } else if (opHash === 'invalid_parameters') {
-      response = { type: ResponseTypes.operationResponse, failed: true, error: 'INVALID_PARAMETERS', errorMessage };
+      response = {
+        type: ResponseTypes.operationResponse,
+        failed: true,
+        error: 'INVALID_PARAMETERS',
+        errorMessage
+      };
     } else if (utils.validOperationHash(opHash)) {
-      response = { type: ResponseTypes.operationResponse, opHash, failed: false };
+      response = {
+        type: ResponseTypes.operationResponse,
+        opHash,
+        failed: false
+      };
     } else {
       console.warn('Unknown operation response:', opHash);
-      response = { type: ResponseTypes.operationResponse, failed: true, error: 'UNKNOWN_ERROR' };
+      response = {
+        type: ResponseTypes.operationResponse,
+        failed: true,
+        error: 'UNKNOWN_ERROR'
+      };
     }
     this.template = null;
     this.operationRequests = null;
@@ -434,7 +533,19 @@ export class EmbeddedComponent implements OnInit {
   private async importAccount(keyPair: KeyPair, userInfo: any, instanceId: string) {
     if (keyPair?.pk) {
       await this.importService
-        .importWalletFromPk(keyPair.pk, '', { verifier: userInfo.typeOfLogin, id: userInfo.verifierId, name: userInfo.name, embedded: true, origin: this.origin }, keyPair.sk, instanceId)
+        .importWalletFromPk(
+          keyPair.pk,
+          '',
+          {
+            verifier: userInfo.typeOfLogin,
+            id: userInfo.verifierId,
+            name: userInfo.name,
+            embedded: true,
+            origin: this.origin
+          },
+          keyPair.sk,
+          instanceId
+        )
         .then((success: boolean) => {
           if (success) {
             this.activeAccount = this.walletService.wallet.implicitAccounts[0];
@@ -443,20 +554,28 @@ export class EmbeddedComponent implements OnInit {
             this.subscribeToConfirmedOps();
           }
         });
-    } else if (keyPair?.pk === '') { // login without keys
-      await this.importService
-        .importWalletFromPk(keyPair.pk, '', { verifier: userInfo.typeOfLogin, id: userInfo.verifierId, name: userInfo.name, embedded: true, origin: this.origin }, '', instanceId);
+    } else if (keyPair?.pk === '') {
+      // login without keys
+      await this.importService.importWalletFromPk(
+        keyPair.pk,
+        '',
+        {
+          verifier: userInfo.typeOfLogin,
+          id: userInfo.verifierId,
+          name: userInfo.name,
+          embedded: true,
+          origin: this.origin
+        },
+        '',
+        instanceId
+      );
     }
     this.currentInstanceId = instanceId;
   }
   private isValidOperation(transactions: PartialTezosTransactionOperation[]): boolean {
     try {
       transactions.forEach((tx) => {
-        if (
-          tx.kind !== 'transaction' ||
-          typeof tx.amount !== 'string' ||
-          !utils.validAddress(tx.destination)
-        ) {
+        if (tx.kind !== 'transaction' || typeof tx.amount !== 'string' || !utils.validAddress(tx.destination)) {
           throw new Error('Invalid transaction');
         }
       });
@@ -499,7 +618,9 @@ export class EmbeddedComponent implements OnInit {
     if (template?.descriptions) {
       for (let i in template.descriptions) {
         if (typeof template.descriptions[i] === 'string') {
-          template.descriptions[i] = { text: template.descriptions[i] };
+          template.descriptions[i] = {
+            text: template.descriptions[i]
+          };
         }
       }
     }

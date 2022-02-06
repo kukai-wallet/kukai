@@ -44,59 +44,62 @@ export class OperationService {
   };
   microTez = new Big(1000000);
   feeHardCap = 10; //tez
-  constructor(
-    private http: HttpClient,
-    private errorHandlingPipe: ErrorHandlingPipe,
-    private tokenService: TokenService
-  ) { }
+  constructor(private http: HttpClient, private errorHandlingPipe: ErrorHandlingPipe, private tokenService: TokenService) {}
   /*
     Returns an observable for the activation of an ICO identity
   */
   activate(pkh: string, secret: string): Observable<any> {
     return this.getHeader()
-      .pipe(flatMap((header: any) => {
-        const fop: any = {
-          branch: header.hash,
-          contents: [{
-            kind: 'activate_account',
-            pkh: pkh,
-            secret: secret
-          }]
-        };
-        return this.postRpc('chains/main/blocks/head/helpers/forge/operations', fop)
-          .pipe(flatMap((opbytes: any) => {
-            const sopbytes: string = opbytes + Array(129).join('0');
-            fop.protocol = header.protocol;
-            fop.signature = 'edsigtXomBKi5CTRf5cjATJWSyaRvhfYNHqSUGrn4SdbYRcGwQrUGjzEfQDTuqHhuA8b2d8NarZjz8TRf65WkpQmo423BtomS8Q';
-            return this.postRpc('chains/main/blocks/head/helpers/preapply/operations', [fop])
-              .pipe(flatMap((preApplyResult: any) => {
-                console.log(JSON.stringify(preApplyResult));
-                return this.postRpc('injection/operation', JSON.stringify(sopbytes)).pipe(flatMap((final: any) => {
-                  return this.opCheck(final);
-                }));
-              }));
-          }));
-      })).pipe(catchError(err => this.errHandler(err)));
+      .pipe(
+        flatMap((header: any) => {
+          const fop: any = {
+            branch: header.hash,
+            contents: [
+              {
+                kind: 'activate_account',
+                pkh: pkh,
+                secret: secret
+              }
+            ]
+          };
+          return this.postRpc('chains/main/blocks/head/helpers/forge/operations', fop).pipe(
+            flatMap((opbytes: any) => {
+              const sopbytes: string = opbytes + Array(129).join('0');
+              fop.protocol = header.protocol;
+              fop.signature = 'edsigtXomBKi5CTRf5cjATJWSyaRvhfYNHqSUGrn4SdbYRcGwQrUGjzEfQDTuqHhuA8b2d8NarZjz8TRf65WkpQmo423BtomS8Q';
+              return this.postRpc('chains/main/blocks/head/helpers/preapply/operations', [fop]).pipe(
+                flatMap((preApplyResult: any) => {
+                  console.log(JSON.stringify(preApplyResult));
+                  return this.postRpc('injection/operation', JSON.stringify(sopbytes)).pipe(
+                    flatMap((final: any) => {
+                      return this.opCheck(final);
+                    })
+                  );
+                })
+              );
+            })
+          );
+        })
+      )
+      .pipe(catchError((err) => this.errHandler(err)));
   }
   opCheck(final: any, newPkh: string = null): Observable<any> {
-    if (typeof (final) === 'string' && final.length === 51) {
-      return of(
-        {
-          success: true,
-          payload: {
-            opHash: final,
-            newPkh: newPkh
-          }
-        });
+    if (typeof final === 'string' && final.length === 51) {
+      return of({
+        success: true,
+        payload: {
+          opHash: final,
+          newPkh: newPkh
+        }
+      });
     } else {
-      return of(
-        {
-          success: false,
-          payload: {
-            opHash: null,
-            msg: final
-          }
-        });
+      return of({
+        success: false,
+        payload: {
+          opHash: null,
+          msg: final
+        }
+      });
     }
   }
   /*
@@ -105,20 +108,25 @@ export class OperationService {
   originate(origination: any, fee: number = 0, keys: KeyPair): Observable<any> {
     console.log(fee, origination);
     return this.getHeader()
-      .pipe(flatMap((header: any) => {
-        return this.getRpc(`chains/main/blocks/head/context/contracts/${keys.pkh}/counter`)
-          .pipe(flatMap((actions: number) => {
-            return this.getRpc(`chains/main/blocks/head/context/contracts/${keys.pkh}/manager_key`)
-              .pipe(flatMap((manager: any) => {
-                if (fee >= this.feeHardCap) {
-                  throw new Error('TooHighFee');
-                }
-                const counter: number = Number(actions);
-                const fop = this.createOriginationObject(header.hash, counter, manager, origination, fee, keys.pk, keys.pkh);
-                return this.operation(fop, header, keys, true);
-              }));
-          }));
-      })).pipe(catchError(err => this.errHandler(err)));
+      .pipe(
+        flatMap((header: any) => {
+          return this.getRpc(`chains/main/blocks/head/context/contracts/${keys.pkh}/counter`).pipe(
+            flatMap((actions: number) => {
+              return this.getRpc(`chains/main/blocks/head/context/contracts/${keys.pkh}/manager_key`).pipe(
+                flatMap((manager: any) => {
+                  if (fee >= this.feeHardCap) {
+                    throw new Error('TooHighFee');
+                  }
+                  const counter: number = Number(actions);
+                  const fop = this.createOriginationObject(header.hash, counter, manager, origination, fee, keys.pk, keys.pkh);
+                  return this.operation(fop, header, keys, true);
+                })
+              );
+            })
+          );
+        })
+      )
+      .pipe(catchError((err) => this.errHandler(err)));
   }
   createOriginationObject(hash: string, counter: number, manager: string, origination: any, fee: number, pk: string, pkh: string): any {
     const fop: any = {
@@ -127,7 +135,8 @@ export class OperationService {
     };
     const gas_limit = origination.gasLimit.toString();
     const storage_limit = origination.storageLimit.toString();
-    if (manager === null) { // Reveal
+    if (manager === null) {
+      // Reveal
       fop.contents.push({
         kind: 'reveal',
         source: pkh,
@@ -155,28 +164,43 @@ export class OperationService {
   */
   transfer(from: string, transactions: any, fee: number, keys: KeyPair, tokenTransfer: string = ''): Observable<any> {
     return this.getHeader()
-      .pipe(flatMap((header: any) => {
-        return this.getRpc(`chains/main/blocks/head/context/contracts/${keys.pkh}/counter`)
-          .pipe(flatMap((actions: any) => {
-            return this.getRpc(`chains/main/blocks/head/context/contracts/${keys.pkh}/manager_key`)
-              .pipe(flatMap((manager: any) => {
-                if (fee >= this.feeHardCap) {
-                  throw new Error('TooHighFee');
-                }
-                const counter: number = Number(actions);
-                const fop = this.createTransactionObject(header.hash, counter, manager, transactions, keys.pkh, keys.pk, from, fee, tokenTransfer);
-                return this.operation(fop, header, keys);
-              }));
-          }));
-      })).pipe(catchError(err => this.errHandler(err)));
+      .pipe(
+        flatMap((header: any) => {
+          return this.getRpc(`chains/main/blocks/head/context/contracts/${keys.pkh}/counter`).pipe(
+            flatMap((actions: any) => {
+              return this.getRpc(`chains/main/blocks/head/context/contracts/${keys.pkh}/manager_key`).pipe(
+                flatMap((manager: any) => {
+                  if (fee >= this.feeHardCap) {
+                    throw new Error('TooHighFee');
+                  }
+                  const counter: number = Number(actions);
+                  const fop = this.createTransactionObject(header.hash, counter, manager, transactions, keys.pkh, keys.pk, from, fee, tokenTransfer);
+                  return this.operation(fop, header, keys);
+                })
+              );
+            })
+          );
+        })
+      )
+      .pipe(catchError((err) => this.errHandler(err)));
   }
-  createTransactionObject(hash: string, counter: number, manager: string, transactions: any,
-    pkh: string, pk: string, from: string, fee: number, tokenTransfer: string): any {
+  createTransactionObject(
+    hash: string,
+    counter: number,
+    manager: string,
+    transactions: any,
+    pkh: string,
+    pk: string,
+    from: string,
+    fee: number,
+    tokenTransfer: string
+  ): any {
     const fop: any = {
       branch: hash,
       contents: []
     };
-    if (manager === null) { // Reveal
+    if (manager === null) {
+      // Reveal
       fop.contents.push({
         kind: 'reveal',
         source: pkh,
@@ -226,7 +250,7 @@ export class OperationService {
           gas_limit: gasLimit,
           storage_limit: storageLimit,
           amount: this.microTez.times(transactions[i].amount).toString(),
-          destination: transactions[i].destination,
+          destination: transactions[i].destination
         };
         if (transactions[i].parameters) {
           transactionOp.parameters = transactions[i].parameters;
@@ -269,117 +293,122 @@ export class OperationService {
   */
   delegate(from: string, to: string, fee: number = 0, keys: KeyPair): Observable<any> {
     return this.getHeader()
-      .pipe(flatMap((header: any) => {
-        return this.getRpc(`chains/main/blocks/head/context/contracts/${keys.pkh}/counter`)
-          .pipe(flatMap((actions: any) => {
-            return this.getRpc(`chains/main/blocks/head/context/contracts/${keys.pkh}/manager_key`)
-              .pipe(flatMap((manager: any) => {
-                if (fee >= this.feeHardCap) {
-                  throw new Error('TooHighFee');
-                }
-                let counter: number = Number(actions);
-                let delegationOp: any;
-                if (from.slice(0, 2) === 'tz') {
-                  delegationOp = {
-                    kind: 'delegation',
-                    source: from,
-                    fee: this.microTez.times(fee).toString(),
-                    counter: (++counter).toString(),
-                    gas_limit: '1000',
-                    storage_limit: '0',
-                  };
-                  if (to !== '') {
-                    delegationOp.delegate = to;
+      .pipe(
+        flatMap((header: any) => {
+          return this.getRpc(`chains/main/blocks/head/context/contracts/${keys.pkh}/counter`).pipe(
+            flatMap((actions: any) => {
+              return this.getRpc(`chains/main/blocks/head/context/contracts/${keys.pkh}/manager_key`).pipe(
+                flatMap((manager: any) => {
+                  if (fee >= this.feeHardCap) {
+                    throw new Error('TooHighFee');
                   }
-                } else if (from.slice(0, 2) === 'KT') {
-                  delegationOp = {
-                    kind: 'transaction',
-                    source: keys.pkh,
-                    fee: this.microTez.times(fee).toString(),
-                    counter: (++counter).toString(),
-                    gas_limit: '4380',
-                    storage_limit: '0',
-                    amount: '0',
-                    destination: from,
-                    parameters: (to !== '') ? this.getContractDelegation(to) : this.getContractUnDelegation()
+                  let counter: number = Number(actions);
+                  let delegationOp: any;
+                  if (from.slice(0, 2) === 'tz') {
+                    delegationOp = {
+                      kind: 'delegation',
+                      source: from,
+                      fee: this.microTez.times(fee).toString(),
+                      counter: (++counter).toString(),
+                      gas_limit: '1000',
+                      storage_limit: '0'
+                    };
+                    if (to !== '') {
+                      delegationOp.delegate = to;
+                    }
+                  } else if (from.slice(0, 2) === 'KT') {
+                    delegationOp = {
+                      kind: 'transaction',
+                      source: keys.pkh,
+                      fee: this.microTez.times(fee).toString(),
+                      counter: (++counter).toString(),
+                      gas_limit: '4380',
+                      storage_limit: '0',
+                      amount: '0',
+                      destination: from,
+                      parameters: to !== '' ? this.getContractDelegation(to) : this.getContractUnDelegation()
+                    };
+                  }
+                  const fop: any = {
+                    branch: header.hash,
+                    contents: [delegationOp]
                   };
-                }
-                const fop: any = {
-                  branch: header.hash,
-                  contents: [
-                    delegationOp
-                  ]
-                };
-                if (manager === null) {
-                  fop.contents[1] = fop.contents[0];
-                  fop.contents[0] = {
-                    kind: 'reveal',
-                    source: keys.pkh,
-                    fee: '0',
-                    counter: (counter).toString(),
-                    gas_limit: '1000',
-                    storage_limit: '0',
-                    public_key: keys.pk
-                  };
-                  fop.contents[1].counter = (Number(fop.contents[1].counter) + 1).toString();
-                }
-                return this.operation(fop, header, keys);
-              }));
-          }));
-      })).pipe(catchError(err => this.errHandler(err)));
+                  if (manager === null) {
+                    fop.contents[1] = fop.contents[0];
+                    fop.contents[0] = {
+                      kind: 'reveal',
+                      source: keys.pkh,
+                      fee: '0',
+                      counter: counter.toString(),
+                      gas_limit: '1000',
+                      storage_limit: '0',
+                      public_key: keys.pk
+                    };
+                    fop.contents[1].counter = (Number(fop.contents[1].counter) + 1).toString();
+                  }
+                  return this.operation(fop, header, keys);
+                })
+              );
+            })
+          );
+        })
+      )
+      .pipe(catchError((err) => this.errHandler(err)));
   }
   /*
   Help function for operations
   */
   operation(fop: any, header: any, keys: KeyPair, origination: boolean = false): Observable<any> {
     console.log('fop to send: ' + JSON.stringify(fop));
-    return this.postRpc('chains/main/blocks/head/helpers/forge/operations', fop)
-      .pipe(flatMap((opbytes: any) => {
-        return this.localForge(fop)
-          .pipe(flatMap((localOpbytes: string) => {
+    return this.postRpc('chains/main/blocks/head/helpers/forge/operations', fop).pipe(
+      flatMap((opbytes: any) => {
+        return this.localForge(fop).pipe(
+          flatMap((localOpbytes: string) => {
             if (opbytes !== localOpbytes) {
               throw new Error('ValidationError');
             }
             if (!keys.sk) {
               fop.signature = 'edsigtXomBKi5CTRf5cjATJWSyaRvhfYNHqSUGrn4SdbYRcGwQrUGjzEfQDTuqHhuA8b2d8NarZjz8TRf65WkpQmo423BtomS8Q';
-              return this.postRpc('chains/main/blocks/head/helpers/scripts/run_operation', { operation: fop, chain_id: header.chain_id })
-                .pipe(flatMap((applied: any) => {
+              return this.postRpc('chains/main/blocks/head/helpers/scripts/run_operation', { operation: fop, chain_id: header.chain_id }).pipe(
+                flatMap((applied: any) => {
                   console.log('applied: ' + JSON.stringify(applied));
                   this.checkApplied([applied]);
-                  return of(
-                    {
-                      success: true,
-                      payload: {
-                        unsignedOperation: opbytes
-                      }
-                    });
-                }));
+                  return of({
+                    success: true,
+                    payload: {
+                      unsignedOperation: opbytes
+                    }
+                  });
+                })
+              );
             } else {
               fop.protocol = header.protocol;
               const signed = this.sign('03' + opbytes, keys.sk);
               const sopbytes = signed.sbytes;
               fop.signature = signed.edsig;
-              return this.postRpc('chains/main/blocks/head/helpers/preapply/operations', [fop])
-                .pipe(flatMap((applied: any) => {
+              return this.postRpc('chains/main/blocks/head/helpers/preapply/operations', [fop]).pipe(
+                flatMap((applied: any) => {
                   console.log('applied: ' + JSON.stringify(applied));
                   this.checkApplied(applied);
                   console.log('sop: ' + sopbytes);
                   return this.postRpc('injection/operation', JSON.stringify(sopbytes))
+                    .pipe(timeout(30000))
                     .pipe(
-                      timeout(30000)
-                    )
-                    .pipe(flatMap((final: any) => {
-                      let newPkh = null;
-                      if (origination) {
-                        newPkh = applied[0].contents[fop.contents.length - 1].
-                          metadata.operation_result.originated_contracts[0];
-                      }
-                      return this.opCheck(final, newPkh);
-                    }));
-                }));
+                      flatMap((final: any) => {
+                        let newPkh = null;
+                        if (origination) {
+                          newPkh = applied[0].contents[fop.contents.length - 1].metadata.operation_result.originated_contracts[0];
+                        }
+                        return this.opCheck(final, newPkh);
+                      })
+                    );
+                })
+              );
             }
-          }));
-      }));
+          })
+        );
+      })
+    );
   }
   /*
     Broadcast a signed operation to the network
@@ -388,25 +417,33 @@ export class OperationService {
     console.log('Broadcast...');
     const opbytes = sopbytes.slice(0, sopbytes.length - 128);
     const edsig = this.sig2edsig(sopbytes.slice(sopbytes.length - 128));
-    return fromPromise(localForger.parse(opbytes)).pipe(flatMap((fop: any) => {
-      fop.signature = edsig;
-      return this.getHeader().pipe(flatMap((header: any) => {
-        fop.protocol = header.protocol;
-        return this.postRpc('chains/main/blocks/head/helpers/preapply/operations', [fop])
-          .pipe(flatMap((parsed: any) => {
-            let newPkh = null;
-            for (let i = 0; i < parsed[0].contents.length; i++) {
-              if (parsed[0].contents[i].kind === 'origination') {
-                newPkh = parsed[0].contents[i].metadata.operation_result.originated_contracts[0];
-              }
-            }
-            return this.postRpc('injection/operation', JSON.stringify(sopbytes))
-              .pipe(flatMap((final: any) => {
-                return this.opCheck(final, newPkh);
-              }));
-          }));
-      }));
-    })).pipe(catchError(err => this.errHandler(err)));
+    return fromPromise(localForger.parse(opbytes))
+      .pipe(
+        flatMap((fop: any) => {
+          fop.signature = edsig;
+          return this.getHeader().pipe(
+            flatMap((header: any) => {
+              fop.protocol = header.protocol;
+              return this.postRpc('chains/main/blocks/head/helpers/preapply/operations', [fop]).pipe(
+                flatMap((parsed: any) => {
+                  let newPkh = null;
+                  for (let i = 0; i < parsed[0].contents.length; i++) {
+                    if (parsed[0].contents[i].kind === 'origination') {
+                      newPkh = parsed[0].contents[i].metadata.operation_result.originated_contracts[0];
+                    }
+                  }
+                  return this.postRpc('injection/operation', JSON.stringify(sopbytes)).pipe(
+                    flatMap((final: any) => {
+                      return this.opCheck(final, newPkh);
+                    })
+                  );
+                })
+              );
+            })
+          );
+        })
+      )
+      .pipe(catchError((err) => this.errHandler(err)));
   }
   torusKeyLookup(tz2address: string): Observable<any> {
     // Make it into Promise
@@ -414,38 +451,41 @@ export class OperationService {
     if (tz2address.length !== 36 || tz2address.slice(0, 3) !== 'tz2') {
       throw new Error('InvalidTorusAddress');
     }
-    return this.getRpc(`chains/main/blocks/head/context/contracts/${tz2address}/manager_key`)
-      .pipe(flatMap((manager: any) => {
+    return this.getRpc(`chains/main/blocks/head/context/contracts/${tz2address}/manager_key`).pipe(
+      flatMap((manager: any) => {
         if (manager === null) {
           return of({ noReveal: true });
         } else {
-          return fromPromise(this.decompress(manager)).pipe(flatMap((pk: any) => {
-            const torusReq = {
-              jsonrpc: '2.0',
-              method: 'KeyLookupRequest',
-              id: 10,
-              params: {
-                pub_key_X: pk.X,
-                pub_key_Y: pk.Y
-              }
-            };
-            const url = CONSTANTS.NETWORK === 'mainnet' ? 'https://torus-19.torusnode.com/jrpc' : 'https://teal-15-1.torusnode.com/jrpc';
-            return this.http.post(url, JSON.stringify(torusReq), httpOptions)
-              .pipe(flatMap((ans: any) => {
-                try {
-                  if (ans.result.PublicKey.X === pk.X &&
-                    ans.result.PublicKey.Y === pk.Y) {
-                    return of(ans);
-                  } else {
+          return fromPromise(this.decompress(manager)).pipe(
+            flatMap((pk: any) => {
+              const torusReq = {
+                jsonrpc: '2.0',
+                method: 'KeyLookupRequest',
+                id: 10,
+                params: {
+                  pub_key_X: pk.X,
+                  pub_key_Y: pk.Y
+                }
+              };
+              const url = CONSTANTS.NETWORK === 'mainnet' ? 'https://torus-19.torusnode.com/jrpc' : 'https://teal-15-1.torusnode.com/jrpc';
+              return this.http.post(url, JSON.stringify(torusReq), httpOptions).pipe(
+                flatMap((ans: any) => {
+                  try {
+                    if (ans.result.PublicKey.X === pk.X && ans.result.PublicKey.Y === pk.Y) {
+                      return of(ans);
+                    } else {
+                      return of(null);
+                    }
+                  } catch {
                     return of(null);
                   }
-                } catch {
-                  return of(null);
-                }
-              }));
-          }));
+                })
+              );
+            })
+          );
         }
-      }));
+      })
+    );
   }
   checkApplied(applied: any) {
     let failed = false;
@@ -454,14 +494,11 @@ export class OperationService {
         failed = true;
         if (applied[0].contents[i].metadata.operation_result.errors) {
           console.log('Error in operation_result');
-          throw applied[0].contents[i].metadata.operation_result.errors[
-          applied[0].contents[i].metadata.operation_result.errors.length - 1
-          ];
-        } else if (applied[0].contents[i].metadata.internal_operation_results &&
-          applied[0].contents[i].metadata.internal_operation_results[0].result.errors) {
+          throw applied[0].contents[i].metadata.operation_result.errors[applied[0].contents[i].metadata.operation_result.errors.length - 1];
+        } else if (applied[0].contents[i].metadata.internal_operation_results && applied[0].contents[i].metadata.internal_operation_results[0].result.errors) {
           console.log('Error in internal_operation_results');
           throw applied[0].contents[i].metadata.internal_operation_results[0].result.errors[
-          applied[0].contents[i].metadata.internal_operation_results[0].result.errors.length - 1
+            applied[0].contents[i].metadata.internal_operation_results[0].result.errors.length - 1
           ];
         }
       }
@@ -471,7 +508,8 @@ export class OperationService {
     }
   }
   errHandler(error: any): Observable<any> {
-    if (error.error && typeof error.error === 'string') { // parsing errors
+    if (error.error && typeof error.error === 'string') {
+      // parsing errors
       error = error.error;
       const lines = error.split('\n').map((line: string) => {
         return line.trim();
@@ -508,93 +546,101 @@ export class OperationService {
       console.warn('Error not categorized', error);
       error = 'Unrecogized error';
     }
-    return of(
-      {
-        success: false,
-        payload: {
-          msg: error
-        }
+    return of({
+      success: false,
+      payload: {
+        msg: error
       }
-    );
+    });
   }
   // Local forge with Taquito
   localForge(operation: any): Observable<string> {
-    return fromPromise(localForger.forge(operation)).pipe(flatMap((localForgedBytes: string) => {
-      return of(localForgedBytes);
-    }));
+    return fromPromise(localForger.forge(operation)).pipe(
+      flatMap((localForgedBytes: string) => {
+        return of(localForgedBytes);
+      })
+    );
   }
   getHeader(): Observable<any> {
     return this.getRpc(`chains/main/blocks/head~3/header`);
   }
   getBalance(pkh: string): Observable<any> {
     return this.getRpc(`chains/main/blocks/head/context/contracts/${pkh}/balance`)
-      .pipe(flatMap((balance: any) => {
-        return of(
-          {
+      .pipe(
+        flatMap((balance: any) => {
+          return of({
             success: true,
             payload: {
               balance: balance
             }
-          }
-        );
-      })).pipe(catchError(err => this.errHandler(err)));
+          });
+        })
+      )
+      .pipe(catchError((err) => this.errHandler(err)));
   }
   getDelegate(pkh: string): Observable<any> {
     return this.getRpc(`chains/main/blocks/head/context/contracts/${pkh}`)
-      .pipe(flatMap((contract: any) => {
-        let delegate = '';
-        if (contract.delegate) {
-          delegate = contract.delegate;
-        }
-        return of(
-          {
+      .pipe(
+        flatMap((contract: any) => {
+          let delegate = '';
+          if (contract.delegate) {
+            delegate = contract.delegate;
+          }
+          return of({
             success: true,
             payload: {
               delegate: delegate
             }
-          }
-        );
-      })).pipe(catchError(err => this.errHandler(err)));
+          });
+        })
+      )
+      .pipe(catchError((err) => this.errHandler(err)));
   }
   getVotingRights(): Observable<any> {
     return this.getRpc(`chains/main/blocks/head/votes/listings`)
-      .pipe(flatMap((listings: any) => {
-        return of(
-          {
+      .pipe(
+        flatMap((listings: any) => {
+          return of({
             success: true,
             payload: listings
-          }
-        );
-      })).pipe(catchError(err => this.errHandler(err)));
+          });
+        })
+      )
+      .pipe(catchError((err) => this.errHandler(err)));
   }
   isRevealed(pkh: string): Observable<boolean> {
     return this.getRpc(`chains/main/blocks/head/context/contracts/${pkh}/manager_key`)
-      .pipe(flatMap((manager: any) => {
-        if (manager === null) {
-          return of(false);
-        } else {
+      .pipe(
+        flatMap((manager: any) => {
+          if (manager === null) {
+            return of(false);
+          } else {
+            return of(true);
+          }
+        })
+      )
+      .pipe(
+        catchError((err) => {
           return of(true);
-        }
-      }
-      )).pipe(catchError(err => {
-        return of(true);
-      })); // conservative action
+        })
+      ); // conservative action
   }
   getManager(pkh: string): Observable<string> {
-    return this.getRpc(`chains/main/blocks/head/context/contracts/${pkh}/manager_key`)
-      .pipe(flatMap((pk: string) => {
+    return this.getRpc(`chains/main/blocks/head/context/contracts/${pkh}/manager_key`).pipe(
+      flatMap((pk: string) => {
         return of(pk ?? '');
-      }));
+      })
+    );
   }
   getAccount(pkh: string): Observable<any> {
     return this.getRpc(`chains/main/blocks/head/context/contracts/${pkh}`)
-      .pipe(flatMap((contract: any) => {
-        let delegate = '';
-        if (contract.delegate) {
-          delegate = contract.delegate;
-        }
-        return of(
-          {
+      .pipe(
+        flatMap((contract: any) => {
+          let delegate = '';
+          if (contract.delegate) {
+            delegate = contract.delegate;
+          }
+          return of({
             success: true,
             payload: {
               balance: contract.balance,
@@ -602,16 +648,17 @@ export class OperationService {
               delegate: delegate,
               counter: contract.counter
             }
-          }
-        );
-      })).pipe(catchError(err => this.errHandler(err)));
+          });
+        })
+      )
+      .pipe(catchError((err) => this.errHandler(err)));
   }
   getVerifiedOpBytes(operationLevel, operationHash, pkh, pk): Observable<string> {
-    return this.getRpc(`chains/main/blocks/${operationLevel}/operation_hashes`)
-      .pipe(flatMap((opHashes: any) => {
-        const opIndex = opHashes[3].findIndex(a => a === operationHash);
-        return this.getRpc(`chains/main/blocks/${operationLevel}/operations`)
-          .pipe(flatMap((op: any) => {
+    return this.getRpc(`chains/main/blocks/${operationLevel}/operation_hashes`).pipe(
+      flatMap((opHashes: any) => {
+        const opIndex = opHashes[3].findIndex((a) => a === operationHash);
+        return this.getRpc(`chains/main/blocks/${operationLevel}/operations`).pipe(
+          flatMap((op: any) => {
             let ans = '';
             op = op[3][opIndex];
             const sig = op.signature;
@@ -621,13 +668,14 @@ export class OperationService {
             delete op.protocol;
             for (let i = 0; i < op.contents.length; i++) {
               delete op.contents[i].metadata;
-              if (op.contents[i].managerPubkey) { // Fix for mainnet
+              if (op.contents[i].managerPubkey) {
+                // Fix for mainnet
                 op.contents[i].manager_pubkey = op.contents[i].managerPubkey;
                 delete op.contents[i].managerPubkey;
               }
             }
-            return this.postRpc('chains/main/blocks/head/helpers/forge/operations', op)
-              .pipe(flatMap((opBytes: any) => {
+            return this.postRpc('chains/main/blocks/head/helpers/forge/operations', op).pipe(
+              flatMap((opBytes: any) => {
                 if (this.pk2pkh(pk) === pkh) {
                   if (this.verify(opBytes, sig, pk)) {
                     ans = opBytes + this.buf2hex(this.b58cdecode(sig, this.prefix.sig));
@@ -638,9 +686,12 @@ export class OperationService {
                   throw new Error('InvalidPublicKey');
                 }
                 return of(ans);
-              }));
-          }));
-      }));
+              })
+            );
+          })
+        );
+      })
+    );
   }
   getConstants(): Observable<any> {
     return this.getRpc(`chains/main/blocks/head/context/constants`);
@@ -660,7 +711,7 @@ export class OperationService {
     if (!this.validMnemonic(mnemonic)) {
       throw new Error('InvalidMnemonic');
     }
-    return (bip39.mnemonicToSeedSync(mnemonic, passphrase)).slice(0, 32);
+    return bip39.mnemonicToSeedSync(mnemonic, passphrase).slice(0, 32);
   }
   mnemonic2entropy(mnemonic: string, passphrase: string = '') {
     if (!this.validMnemonic(mnemonic)) {
@@ -698,15 +749,11 @@ export class OperationService {
     } else {
       throw new Error('Invalid private key');
     }
-    const keyPair = (new elliptic.ec('secp256k1')).keyFromPrivate(
-      new Uint8Array(this.b58cdecode(sk, this.prefix.spsk))
-    );
+    const keyPair = new elliptic.ec('secp256k1').keyFromPrivate(new Uint8Array(this.b58cdecode(sk, this.prefix.spsk)));
     const yArray = keyPair.getPublic().getY().toArray();
     const prefixVal = yArray[yArray.length - 1] % 2 ? 3 : 2; // Y odd / even
     const pad = new Array(32).fill(0); // Zero-padding
-    const publicKey = new Uint8Array(
-      [prefixVal].concat(pad.concat(keyPair.getPublic().getX().toArray()).slice(-32)
-      ));
+    const publicKey = new Uint8Array([prefixVal].concat(pad.concat(keyPair.getPublic().getX().toArray()).slice(-32)));
     const pk = this.b58cencode(publicKey, this.prefix.sppk);
     if (yArray.length < 32 && prefixVal === 3 && this.isInvertedPk(pk)) {
       return this.spPrivKeyToKeyPair(this.invertSpsk(sk));
@@ -726,7 +773,7 @@ export class OperationService {
     return invertedPks.includes(pk);
   }
   invertSpsk(sk: string) {
-    const x = new Uint8Array([...(new Uint8Array(32).fill(0)), ...this.b58cdecode(sk, this.prefix.spsk)]).slice(-32);
+    const x = new Uint8Array([...new Uint8Array(32).fill(0), ...this.b58cdecode(sk, this.prefix.spsk)]).slice(-32);
     const p = this.hex2buf('FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141'.toLowerCase());
     let inv = []; // p - x
     let remainder = 0;
@@ -747,18 +794,17 @@ export class OperationService {
     return this.buf2hex(inv);
   }
   spPointsToPkh(pubX: string, pubY: string): string {
-    const key = (new elliptic.ec('secp256k1')).keyFromPublic({ x: pubX, y: pubY });
+    const key = new elliptic.ec('secp256k1').keyFromPublic({
+      x: pubX,
+      y: pubY
+    });
     const yArray = key.getPublic().getY().toArray();
     const prefixVal = yArray[yArray.length - 1] % 2 ? 3 : 2;
     const pad = new Array(32).fill(0);
-    let publicKey = new Uint8Array(
-      [prefixVal].concat(pad.concat(key.getPublic().getX().toArray()).slice(-32)
-      ));
+    let publicKey = new Uint8Array([prefixVal].concat(pad.concat(key.getPublic().getX().toArray()).slice(-32)));
     let pk = this.b58cencode(publicKey, this.prefix.sppk);
     if (yArray.length < 32 && prefixVal === 3 && this.isInvertedPk(pk)) {
-      publicKey = new Uint8Array(
-        [2].concat(pad.concat(key.getPublic().getX().toArray()).slice(-32)
-        ));
+      publicKey = new Uint8Array([2].concat(pad.concat(key.getPublic().getX().toArray()).slice(-32)));
       pk = this.b58cencode(publicKey, this.prefix.sppk);
     }
     const pkh = this.pk2pkh(pk);
@@ -777,12 +823,15 @@ export class OperationService {
     return this.b58cencode(this.hex2buf(hex.slice(2, 66)), this.prefix.edpk);
   }
   hex2buf(hex) {
-    return new Uint8Array(hex.match(/[\da-f]{2}/gi).map(function (h) {
-      return parseInt(h, 16);
-    }));
+    return new Uint8Array(
+      hex.match(/[\da-f]{2}/gi).map(function (h) {
+        return parseInt(h, 16);
+      })
+    );
   }
   buf2hex(buffer) {
-    const byteArray = new Uint8Array(buffer), hexParts = [];
+    const byteArray = new Uint8Array(buffer),
+      hexParts = [];
     for (let i = 0; i < byteArray.length; i++) {
       const hex = byteArray[i].toString(16);
       const paddedHex = ('00' + hex).slice(-2);
@@ -811,7 +860,7 @@ export class OperationService {
     if (sk.slice(0, 4) === 'spsk') {
       const hash = blake2b(this.hex2buf(bytes), null, 32);
       bytes = bytes.slice(2);
-      const key = (new elliptic.ec('secp256k1')).keyFromPrivate(new Uint8Array(this.b58cdecode(sk, this.prefix.spsk)));
+      const key = new elliptic.ec('secp256k1').keyFromPrivate(new Uint8Array(this.b58cdecode(sk, this.prefix.spsk)));
       let sig = key.sign(hash, { canonical: true });
       const pad = new Array(32).fill(0);
       const r = pad.concat(sig.r.toArray()).slice(-32);
@@ -823,7 +872,7 @@ export class OperationService {
         bytes: bytes,
         sig: sig,
         edsig: spsig,
-        sbytes: sbytes,
+        sbytes: sbytes
       };
     } else {
       const hash = blake2b(this.hex2buf(bytes), null, 32);
@@ -835,7 +884,7 @@ export class OperationService {
         bytes: bytes,
         sig: sig,
         edsig: edsig,
-        sbytes: sbytes,
+        sbytes: sbytes
       };
     }
   }
@@ -860,7 +909,7 @@ export class OperationService {
     let value = 0;
     while (1) {
       const byte = Number('0x' + hex.slice(0 + count * 2, 2 + count * 2));
-      value += ((byte & 127) * (128 ** count));
+      value += (byte & 127) * 128 ** count;
       count++;
       if ((byte & 128) !== 128) {
         break;
@@ -877,9 +926,11 @@ export class OperationService {
     while (1) {
       const byte = Number('0x' + hex.slice(0 + count * 2, 2 + count * 2));
       if (count === 0) {
-        value = Big(((byte & 63) * (128 ** count))).add(value);
+        value = Big((byte & 63) * 128 ** count).add(value);
       } else {
-        value = Big(((byte & 127) * 2) >> 1).times(64 * 128 ** (count - 1)).add(value);
+        value = Big(((byte & 127) * 2) >> 1)
+          .times(64 * 128 ** (count - 1))
+          .add(value);
       }
       count++;
       if ((byte & 128) !== 128) {
@@ -894,88 +945,96 @@ export class OperationService {
   getContractDelegation(pkh: string) {
     return {
       entrypoint: 'do',
-      value:
-        [{ prim: 'DROP' },
+      value: [
+        { prim: 'DROP' },
         {
           prim: 'NIL',
           args: [{ prim: 'operation' }]
         },
         {
           prim: 'PUSH',
-          args:
-            [{ prim: 'key_hash' },
+          args: [
+            { prim: 'key_hash' },
             {
               string: pkh
-            }]
+            }
+          ]
         },
-        { prim: 'SOME' }, { prim: 'SET_DELEGATE' },
-        { prim: 'CONS' }]
+        { prim: 'SOME' },
+        { prim: 'SET_DELEGATE' },
+        { prim: 'CONS' }
+      ]
     };
   }
   getContractUnDelegation() {
     return {
       entrypoint: 'do',
-      value:
-        [{ prim: 'DROP' },
+      value: [
+        { prim: 'DROP' },
         {
           prim: 'NIL',
-          args: [{ prim: 'operation' }],
-        }, {
+          args: [{ prim: 'operation' }]
+        },
+        {
           prim: 'NONE',
-          args: [{ prim: 'key_hash' }],
+          args: [{ prim: 'key_hash' }]
         },
         { prim: 'SET_DELEGATE' },
-        { prim: 'CONS' }]
+        { prim: 'CONS' }
+      ]
     };
   }
   getContractPkhTransaction(to: string, amount: string) {
     return {
       entrypoint: 'do',
-      value:
-        [{ prim: 'DROP' },
+      value: [
+        { prim: 'DROP' },
         { prim: 'NIL', args: [{ prim: 'operation' }] },
         {
           prim: 'PUSH',
-          args:
-            [{ prim: 'key_hash' },
+          args: [
+            { prim: 'key_hash' },
             {
               string: to
-            }]
+            }
+          ]
         },
         { prim: 'IMPLICIT_ACCOUNT' },
         {
           prim: 'PUSH',
-          args:
-            [{ prim: 'mutez' }, { 'int': amount }]
+          args: [{ prim: 'mutez' }, { int: amount }]
         },
-        { prim: 'UNIT' }, { prim: 'TRANSFER_TOKENS' },
-        { prim: 'CONS' }]
+        { prim: 'UNIT' },
+        { prim: 'TRANSFER_TOKENS' },
+        { prim: 'CONS' }
+      ]
     };
   }
   getContractKtTransaction(to: string, amount: string) {
     return {
       entrypoint: 'do',
-      value: [{ prim: 'DROP' },
-      { prim: 'NIL', args: [{ prim: 'operation' }] },
-      {
-        prim: 'PUSH',
-        args:
-          [{ prim: 'address' },
-          { string: to }]
-      },
-      { prim: 'CONTRACT', args: [{ prim: 'unit' }] },
-      [{
-        prim: 'IF_NONE',
-        args:
-          [[[{ prim: 'UNIT' }, { prim: 'FAILWITH' }]],
-          []]
-      }],
-      {
-        prim: 'PUSH',
-        args: [{ prim: 'mutez' }, { 'int': amount }]
-      },
-      { prim: 'UNIT' }, { prim: 'TRANSFER_TOKENS' },
-      { prim: 'CONS' }]
+      value: [
+        { prim: 'DROP' },
+        { prim: 'NIL', args: [{ prim: 'operation' }] },
+        {
+          prim: 'PUSH',
+          args: [{ prim: 'address' }, { string: to }]
+        },
+        { prim: 'CONTRACT', args: [{ prim: 'unit' }] },
+        [
+          {
+            prim: 'IF_NONE',
+            args: [[[{ prim: 'UNIT' }, { prim: 'FAILWITH' }]], []]
+          }
+        ],
+        {
+          prim: 'PUSH',
+          args: [{ prim: 'mutez' }, { int: amount }]
+        },
+        { prim: 'UNIT' },
+        { prim: 'TRANSFER_TOKENS' },
+        { prim: 'CONS' }
+      ]
     };
   }
   getManagerScript(pkh: string) {
@@ -1008,15 +1067,11 @@ export class OperationService {
                       ]
                     }
                   ],
-                  annots: [
-                    '%do'
-                  ]
+                  annots: ['%do']
                 },
                 {
                   prim: 'unit',
-                  annots: [
-                    '%default'
-                  ]
+                  annots: ['%default']
                 }
               ]
             }
@@ -1065,7 +1120,7 @@ export class OperationService {
                           prim: 'mutez'
                         },
                         {
-                          'int': '0'
+                          int: '0'
                         }
                       ]
                     },
@@ -1084,9 +1139,7 @@ export class OperationService {
                       {
                         prim: 'IF',
                         args: [
-                          [
-
-                          ],
+                          [],
                           [
                             [
                               {
@@ -1136,9 +1189,7 @@ export class OperationService {
                       {
                         prim: 'IF',
                         args: [
-                          [
-
-                          ],
+                          [],
                           [
                             [
                               {
@@ -1184,8 +1235,7 @@ export class OperationService {
           ]
         }
       ],
-      storage:
-        { bytes: pkHex }
+      storage: { bytes: pkHex }
     };
   }
   getFA12Transaction(from: string, to: string, amount: string) {
@@ -1195,11 +1245,13 @@ export class OperationService {
         args: [
           {
             string: from
-          }, {
+          },
+          {
             args: [
               {
                 string: to
-              }, {
+              },
+              {
                 int: amount
               }
             ],
@@ -1236,10 +1288,10 @@ export class OperationService {
                     prim: 'Pair',
                     args: [
                       {
-                        'int': stringId ?? id.toString()
+                        int: stringId ?? id.toString()
                       },
                       {
-                        'int': amount
+                        int: amount
                       }
                     ]
                   }
@@ -1251,12 +1303,16 @@ export class OperationService {
       ]
     };
   }
-  parseTokenTransfer(op: any): { tokenId: string, to: string, amount: string } {
+  parseTokenTransfer(op: any): {
+    tokenId: string;
+    to: string;
+    amount: string;
+  } {
     const opJson = JSON.stringify(op.parameters);
-    const addresses = opJson.match(/\{\"string\":\"[^\"]*/g)?.map(s => {
+    const addresses = opJson.match(/\{\"string\":\"[^\"]*/g)?.map((s) => {
       return s.slice(11);
     });
-    const amounts = opJson.match(/\{\"int\":\"[^\"]*/g)?.map(i => {
+    const amounts = opJson.match(/\{\"int\":\"[^\"]*/g)?.map((i) => {
       return i.slice(8);
     });
     if (!addresses || !amounts) {
@@ -1266,38 +1322,40 @@ export class OperationService {
       if (amounts.length === 1) {
         const fa12ref = this.getFA12Transaction(addresses[0], addresses[1], amounts[0]);
         if (isEqual(fa12ref, op.parameters)) {
-          return { tokenId: `${op.destination}:0`, to: addresses[1], amount: amounts[0] };
+          return {
+            tokenId: `${op.destination}:0`,
+            to: addresses[1],
+            amount: amounts[0]
+          };
         }
       } else if (amounts.length === 2) {
         const fa2ref = this.getFA2Transaction(addresses[0], addresses[1], amounts[1], Number(amounts[0]));
         if (isEqual(fa2ref, op.parameters)) {
-          return { tokenId: `${op.destination}:${amounts[0]}`, to: addresses[1], amount: amounts[1] };
+          return {
+            tokenId: `${op.destination}:${amounts[0]}`,
+            to: addresses[1],
+            amount: amounts[1]
+          };
         }
       }
     }
     return null;
   }
   postRpc(path: string, payload: any): Observable<any> {
-    return this.http.post(`${this.nodeURL}/${path}`, payload, httpOptions).pipe(this.retryPipeline(path))
+    return this.http.post(`${this.nodeURL}/${path}`, payload, httpOptions).pipe(this.retryPipeline(path));
   }
   getRpc(path: string): Observable<any> {
-    return this.http.get(`${this.nodeURL}/${path}`).pipe(this.retryPipeline(path))
+    return this.http.get(`${this.nodeURL}/${path}`).pipe(this.retryPipeline(path));
   }
   private retryPipeline(path: string, retries: number = 3): MonoTypeOperatorFunction<unknown> {
     const retryWithWarning = (i, e) => {
       if (i < retries) {
         console.warn(`Retry ${i + 1}: ${path}`, e);
       }
-      return of(e).pipe(delayOperator(250))
+      return of(e).pipe(delayOperator(250));
     };
-    return retryWhen(errors => errors.pipe(
-      concatMap((e, i) =>
-        iif(
-          () => (i >= retries || !(e?.name === 'HttpErrorResponse')),
-          throwError(e),
-          retryWithWarning(i, e)
-        )
-      )
-    ));
+    return retryWhen((errors) =>
+      errors.pipe(concatMap((e, i) => iif(() => i >= retries || !(e?.name === 'HttpErrorResponse'), throwError(e), retryWithWarning(i, e))))
+    );
   }
 }

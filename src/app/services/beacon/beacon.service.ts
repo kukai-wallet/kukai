@@ -1,6 +1,16 @@
 import { Injectable } from '@angular/core';
 import { MessageService } from '../../services/message/message.service';
-import { WalletClient, BeaconMessageType, PermissionResponseInput, SignPayloadResponseInput, P2PPairingRequest, BeaconErrorType, BEACON_VERSION, ErrorResponse, getSenderId } from '@airgap/beacon-sdk';
+import {
+  WalletClient,
+  BeaconMessageType,
+  PermissionResponseInput,
+  SignPayloadResponseInput,
+  P2PPairingRequest,
+  BeaconErrorType,
+  BEACON_VERSION,
+  ErrorResponse,
+  getSenderId
+} from '@airgap/beacon-sdk';
 import { ExtendedP2PPairingResponse } from '@airgap/beacon-sdk/dist/cjs/types/P2PPairingResponse';
 import { Asset } from '../token/token.service';
 import { TzktService } from '../indexer/tzkt/tzkt.service';
@@ -11,10 +21,7 @@ export class BeaconService {
   client: WalletClient = null;
   peers = [];
   permissions = [];
-  constructor(
-    private messageService: MessageService,
-    private tzktService: TzktService
-  ) {}
+  constructor(private messageService: MessageService, private tzktService: TzktService) {}
   preNotifyPairing(pairInfoJson: string) {
     const pairInfo: P2PPairingRequest = JSON.parse(pairInfoJson);
     if (this.isNewPairingRequest(pairInfo)) {
@@ -52,7 +59,9 @@ export class BeaconService {
     const key = 'beacon:communication-peers-wallet';
     const asset: Asset = await this.tzktService.fetchApi(`https://backend.kukai.network/file/info?src=${pairInfo.icon}`);
     const json = localStorage.getItem(key);
-    if (!json || !asset) { return; }
+    if (!json || !asset) {
+      return;
+    }
     const peers = JSON.parse(json);
     if (peers) {
       for (const peer of peers) {
@@ -61,7 +70,7 @@ export class BeaconService {
           break;
         }
       }
-      localStorage.setItem(key, JSON.stringify(peers))
+      localStorage.setItem(key, JSON.stringify(peers));
       this.syncBeaconState();
     }
   }

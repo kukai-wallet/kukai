@@ -23,109 +23,108 @@ import { InputValidationService } from '../input-validation/input-validation.ser
  * @todo: remove console.log spy, mock operation service calls entirely. it should never be tested.
  */
 describe('[ DelegateService ]', () => {
-	// class under inspection
-	let service: DelegateService;
+  // class under inspection
+  let service: DelegateService;
 
-	// class dependencies
-	let walletsrv: WalletService;
-	let operationsrv: OperationService;
-	let httpMock: HttpTestingController;
+  // class dependencies
+  let walletsrv: WalletService;
+  let operationsrv: OperationService;
+  let httpMock: HttpTestingController;
 
-	// testing variables
-	const nodeurl = 'https://rpc.tezrpc.me/';
-	let delegate: string;
-	let account: ImplicitAccount;
+  // testing variables
+  const nodeurl = 'https://rpc.tezrpc.me/';
+  let delegate: string;
+  let account: ImplicitAccount;
 
-	let accounts: ImplicitAccount[];
-	let networkresponses: any[];
+  let accounts: ImplicitAccount[];
+  let networkresponses: any[];
 
-	beforeEach(() => {
-		// WalletService mock
-		TestBed.configureTestingModule({
-			imports: [HttpClientModule, HttpClientTestingModule, TranslateModule.forRoot({
-				loader: { provide: TranslateLoader, useClass: TranslateFakeLoader }})],
-			providers: [
-				DelegateService,
-				WalletService,
-				TranslateService,
-				OperationService,
-				EncryptionService,
-        ErrorHandlingPipe,
-        InputValidationService
-			]
-		});
+  beforeEach(() => {
+    // WalletService mock
+    TestBed.configureTestingModule({
+      imports: [
+        HttpClientModule,
+        HttpClientTestingModule,
+        TranslateModule.forRoot({
+          loader: {
+            provide: TranslateLoader,
+            useClass: TranslateFakeLoader
+          }
+        })
+      ],
+      providers: [DelegateService, WalletService, TranslateService, OperationService, EncryptionService, ErrorHandlingPipe, InputValidationService]
+    });
 
-		service = TestBed.inject(DelegateService);
-		walletsrv = TestBed.inject(WalletService);
-		operationsrv = TestBed.inject(OperationService);
-		httpMock  = TestBed.inject(HttpTestingController);
+    service = TestBed.inject(DelegateService);
+    walletsrv = TestBed.inject(WalletService);
+    operationsrv = TestBed.inject(OperationService);
+    httpMock = TestBed.inject(HttpTestingController);
 
-		// create mock empty full wallet
-		walletsrv.wallet = new WalletServiceStub().emptyWallet(1);
+    // create mock empty full wallet
+    walletsrv.wallet = new WalletServiceStub().emptyWallet(1);
 
+    accounts = walletsrv.wallet.implicitAccounts;
 
-		accounts = walletsrv.wallet.implicitAccounts;
+    networkresponses = [
+      {
+        manager: 'tz1primary',
+        balance: '3310767978478',
+        spendable: true,
+        delegate: {
+          setable: false,
+          value: ''
+        },
+        counter: '10'
+      },
+      {
+        //KT1contract1
+        manager: 'tz1primary',
+        balance: '110135021478',
+        spendable: true,
+        delegate: {
+          setable: true,
+          value: 'tz1primary'
+        },
+        counter: '10'
+      },
+      {
+        //KT1contract2
+        manager: 'tz1primary',
+        balance: '767978868',
+        spendable: true,
+        delegate: {
+          setable: true,
+          value: 'tz1bakerone'
+        },
+        counter: '10'
+      }
+    ];
 
-		networkresponses = [
-			{
-				'manager': 'tz1primary',
-				'balance': '3310767978478',
-				'spendable': true,
-				'delegate': {
-					'setable': false,
-					'value': ''
-				},
-				'counter': '10'
-			},
-			{
-				//KT1contract1
-				'manager': 'tz1primary',
-				'balance': '110135021478',
-				'spendable': true,
-				'delegate': {
-					'setable': true,
-					'value': 'tz1primary'
-				},
-				'counter': '10'
-			},
-			{
-				//KT1contract2
-				'manager': 'tz1primary',
-				'balance': '767978868',
-				'spendable': true,
-				'delegate': {
-					'setable': true,
-					'value': 'tz1bakerone'
-				},
-				'counter': '10'
-			}];
+    account = accounts[0];
+    delegate = networkresponses[1].delegate.value;
 
-		account = accounts[0];
-		delegate = networkresponses[1].delegate.value;
+    // configure spies
+    spyOn(walletsrv, 'storeWallet');
+    spyOn(operationsrv, 'getDelegate').and.callThrough();
+    spyOn(console, 'log'); // remove later
+  });
 
-		// configure spies
-		spyOn(walletsrv, 'storeWallet');
-		spyOn(operationsrv, 'getDelegate').and.callThrough();
-		spyOn(console, 'log'); // remove later
+  afterEach(() => {
+    httpMock.verify();
+  });
 
-	});
+  it('should be created', () => {
+    expect(service).toBeTruthy();
+  });
 
-	afterEach(() => {
-		httpMock.verify();
-	});
-
-	it('should be created', () => {
-		expect(service).toBeTruthy();
-	});
-
-	/** No longer true after Babylon
+  /** No longer true after Babylon
 	it('should ignore TZ1 accounts', () => {
 		service.getDelegate('tz1mockaccount');
 		expect(operationsrv.getDelegate).not.toHaveBeenCalled();
 	});
 	 */
 
-	/** Broken in 1.3.0 update
+  /** Broken in 1.3.0 update
 	it('should get a single delegate', () => {
 		service.getDelegate(pkh);
 		httpMock.expectOne(nodeurl + '/chains/main/blocks/head/context/contracts/' + pkh).flush( networkresponses[1]);
@@ -133,13 +132,13 @@ describe('[ DelegateService ]', () => {
 	});
 	 */
 
-	it('should add account if accounts[] is empty', () => {
-		service.handleDelegateResponse(account, delegate);
-		expect(walletsrv.wallet.implicitAccounts[0].delegate).toEqual(delegate);
-		expect(walletsrv.storeWallet).toHaveBeenCalled();
-	});
+  it('should add account if accounts[] is empty', () => {
+    service.handleDelegateResponse(account, delegate);
+    expect(walletsrv.wallet.implicitAccounts[0].delegate).toEqual(delegate);
+    expect(walletsrv.storeWallet).toHaveBeenCalled();
+  });
 
-	/** Broken in 1.3.0 update
+  /** Broken in 1.3.0 update
 	it('should update all delegates', () => {
 		walletsrv.wallet.accounts = accounts;
 

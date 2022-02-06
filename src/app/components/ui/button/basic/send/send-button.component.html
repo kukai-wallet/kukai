@@ -1,7 +1,9 @@
 <button *ngIf="symbol && !override; else detailButton" class="flex-row button button-primary with-image" [class]="symbol === 'tez' ? 'tez' : ''"
   (click)="prepareTransaction()">
-  <ng-container *ngIf="symbol === 'tez'"><span>SEND</span></ng-container><img
-    [src]="symbol === 'tez' ? '../../../../assets/img/up-arrow-white.svg' : '../../../../assets/img/up-arrow.svg'" />
+  <img [src]="symbol === 'tez' ? '../../../../assets/img/up-arrow-white.svg' : '../../../../assets/img/up-arrow.svg'" />
+  <div class="tooltip">
+    <div class="description">SEND TEZ</div>
+  </div>
 </button>
 <ng-template #detailButton>
   <button class="button button-primary detail" (click)="prepareTransaction()">SEND</button>

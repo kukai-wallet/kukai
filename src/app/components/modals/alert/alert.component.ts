@@ -7,19 +7,17 @@ import { MessageService } from '../../../services/message/message.service';
   styleUrls: ['../../../../scss/components/modals/alert/alert.component.scss']
 })
 export class AlertComponent implements OnInit {
-
   @Input() public message;
   @Input() index;
 
-  constructor(public messageService: MessageService) {
-  }
+  constructor(public messageService: MessageService) {}
   readonly subject = 'Sent you Tezos tokens';
   ngOnInit(): void {
-    if(this.message?.timeout) {
+    if (this.message?.timeout) {
       setTimeout(() => {
         this.removeMessage(this.index);
         this.message = null;
-      }, this.message?.timeout)
+      }, this.message?.timeout);
     }
   }
 
@@ -57,15 +55,14 @@ export class AlertComponent implements OnInit {
     return `https://twitter.com/messages/compose?recipient_id=${message.twitterId}&text=${body}`;
   }
   encodedBody(amount: string, accountType: string, url: string): string {
-    const s = (accountType === 'Reddit') ? '  ' : '';
-    const b = (accountType === 'Reddit') ? '**' : '';
-    const t = (accountType === 'Twitter') ? 'Tezos ' : '';
-    return encodeURI(`Hi,${s}\nI sent you ${b}${amount}${b} using the Kukai wallet.\n\nYou can access your ${t}wallet with your ${accountType} account at: ${url}`);
+    const s = accountType === 'Reddit' ? '  ' : '';
+    const b = accountType === 'Reddit' ? '**' : '';
+    const t = accountType === 'Twitter' ? 'Tezos ' : '';
+    return encodeURI(
+      `Hi,${s}\nI sent you ${b}${amount}${b} using the Kukai wallet.\n\nYou can access your ${t}wallet with your ${accountType} account at: ${url}`
+    );
   }
   getAlias(message: any) {
-    return message.email ? message.email :
-      message.username ? message.username :
-      message.handler ? message.handler :
-      'recipient';
+    return message.email ? message.email : message.username ? message.username : message.handler ? message.handler : 'recipient';
   }
 }

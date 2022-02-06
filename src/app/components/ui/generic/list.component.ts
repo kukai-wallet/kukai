@@ -5,13 +5,10 @@ import { Component, Input, OnInit } from '@angular/core';
   templateUrl: './list.component.html'
 })
 export class ListComponent implements OnInit {
-
   @Input() current;
-  @Input() list: any [];
+  @Input() list: any[];
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {
-
-  }
+  ngOnInit(): void {}
 }

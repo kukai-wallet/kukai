@@ -29,23 +29,14 @@ export class WalletService {
   activeAccount = new BehaviorSubject(null);
   walletUpdated = new BehaviorSubject(null);
 
-  constructor(
-    private encryptionService: EncryptionService,
-    private operationService: OperationService,
-    private torusService: TorusService
-  ) {}
+  constructor(private encryptionService: EncryptionService, private operationService: OperationService, private torusService: TorusService) {}
   /*
     Wallet creation
   */
   createNewWallet(): string {
     return utils.generateMnemonic(24);
   }
-  async createEncryptedWallet(
-    mnemonic: string,
-    password: string,
-    passphrase: string = '',
-    hdSeed: boolean
-  ): Promise<any> {
+  async createEncryptedWallet(mnemonic: string, password: string, passphrase: string = '', hdSeed: boolean): Promise<any> {
     const seed = utils.mnemonicToSeed(mnemonic, passphrase, hdSeed);
     const entropy: Buffer = Buffer.from(utils.mnemonicToEntropy(mnemonic));
     let keyPair: KeyPair;
@@ -57,60 +48,35 @@ export class WalletService {
     const encrypted = await this.encryptionService.encrypt(seed, password, 3);
     const encryptedSeed: string = encrypted.chiphertext;
     const iv: string = encrypted.iv;
-    const iv2: string = this.encryptionService.bumpIV(iv, 1);
-    const encryptedEntropy: string = (await this.encryptionService.encrypt(
-      entropy,
-      password,
-      3,
-      iv2
-    )).chiphertext;
+    /*
+      Warning: Make sure to never reuse IV for AES-GCM
+    */
+    const iv2: string = this.encryptionService.shiftIV(iv, 1);
+    const encryptedEntropy: string = (await this.encryptionService.encrypt(entropy, password, 3, iv2)).chiphertext;
     return {
-      data: this.exportKeyStoreInit(
-        hdSeed ? WalletType.HdWallet : WalletType.FullWallet,
-        encryptedSeed,
-        encryptedEntropy,
-        iv
-      ),
+      data: this.exportKeyStoreInit(hdSeed ? WalletType.HdWallet : WalletType.LegacyWallet, encryptedSeed, encryptedEntropy, iv),
       pkh: keyPair.pkh,
       pk: keyPair.pk,
-      seed: seed,
+      seed: seed
     };
   }
   async getKeys(pwd: string, pkh?: string): Promise<KeyPair> {
     let seed;
     if (this.wallet instanceof LegacyWalletV1) {
-      seed = await this.encryptionService.decrypt(
-        this.wallet.encryptedSeed,
-        pwd,
-        this.wallet.salt,
-        1
-      );
+      seed = await this.encryptionService.decrypt(this.wallet.encryptedSeed, pwd, this.wallet.salt, 1);
     } else if (this.wallet instanceof LegacyWalletV2) {
-      seed = await this.encryptionService.decrypt(
-        this.wallet.encryptedSeed,
-        pwd,
-        this.wallet.IV,
-        2
-      );
-    } else if (
-      this.wallet instanceof LegacyWalletV3 ||
-      this.wallet instanceof HdWallet
-    ) {
-      seed = await this.encryptionService.decrypt(
-        this.wallet.encryptedSeed,
-        pwd,
-        this.wallet.IV,
-        3
-      );
+      seed = await this.encryptionService.decrypt(this.wallet.encryptedSeed, pwd, this.wallet.IV, 2);
+    } else if (this.wallet instanceof LegacyWalletV3 || this.wallet instanceof HdWallet) {
+      seed = await this.encryptionService.decrypt(this.wallet.encryptedSeed, pwd, this.wallet.IV, 3);
     } else if (this.wallet instanceof LedgerWallet) {
       const keyPair: KeyPair = {
         sk: null,
         pk: this.wallet.implicitAccounts[0].pk,
-        pkh: this.wallet.implicitAccounts[0].pkh,
+        pkh: this.wallet.implicitAccounts[0].pkh
       };
       return keyPair;
     } else if (this.wallet instanceof EmbeddedTorusWallet && this.wallet?.sk) {
-        return this.operationService.spPrivKeyToKeyPair(this.wallet.sk);
+      return this.operationService.spPrivKeyToKeyPair(this.wallet.sk);
     } else if (this.wallet instanceof TorusWallet || (this.wallet instanceof EmbeddedTorusWallet && !this.wallet?.sk)) {
       const keyPair = await this.torusService.getTorusKeyPair(this.wallet.verifier, this.wallet.id);
       if (this.wallet.getImplicitAccount(keyPair.pkh)) {
@@ -119,7 +85,7 @@ export class WalletService {
         throw new Error('Signed with wrong account');
       }
       return null;
-    }  else {
+    } else {
       return null;
     }
     if (!seed) {
@@ -146,17 +112,9 @@ export class WalletService {
     }
   }
   async revealMnemonicPhrase(pwd: string): Promise<string> {
-    if (
-      this.wallet &&
-      (this.wallet instanceof HdWallet || this.wallet instanceof LegacyWalletV3)
-    ) {
-      const iv = this.encryptionService.bumpIV(this.wallet.IV, 1);
-      const entropy = await this.encryptionService.decrypt(
-        this.wallet.encryptedEntropy,
-        pwd,
-        iv,
-        3
-      );
+    if (this.wallet && (this.wallet instanceof HdWallet || this.wallet instanceof LegacyWalletV3)) {
+      const iv = this.encryptionService.shiftIV(this.wallet.IV, 1);
+      const entropy = await this.encryptionService.decrypt(this.wallet.encryptedEntropy, pwd, iv, 3);
       if (entropy) {
         return utils.entropyToMnemonic(entropy);
       } else {
@@ -174,24 +132,16 @@ export class WalletService {
       pkh = utils.pkToPkh(pk);
     }
     if (pkh) {
-      this.wallet.implicitAccounts.push(
-        new ImplicitAccount(pkh, pk, typeof derivationPath === 'number' ? `44'/1729'/${derivationPath}'/0'` : derivationPath)
-      );
+      this.wallet.implicitAccounts.push(new ImplicitAccount(pkh, pk, typeof derivationPath === 'number' ? `44'/1729'/${derivationPath}'/0'` : derivationPath));
       console.log('Adding new implicit account...');
-      console.log(
-        this.wallet.implicitAccounts[this.wallet.implicitAccounts.length - 1]
-      );
+      console.log(this.wallet.implicitAccounts[this.wallet.implicitAccounts.length - 1]);
       this.storeWallet();
     }
   }
   addOriginatedAccount(kt: string, manager: string) {
     const implicitAccount = this.wallet.getImplicitAccount(manager);
     if (implicitAccount) {
-      const origAcc = new OriginatedAccount(
-        kt,
-        implicitAccount.pkh,
-        implicitAccount.pk
-      );
+      const origAcc = new OriginatedAccount(kt, implicitAccount.pkh, implicitAccount.pk);
       implicitAccount.originatedAccounts.push(origAcc);
       this.storeWallet();
     } else {
@@ -204,18 +154,11 @@ export class WalletService {
     }
   }*/
   addressExists(address: string): boolean {
-    return (
-      this.wallet?.getAccounts().findIndex((a) => a.address === address) !== -1
-    );
+    return this.wallet?.getAccounts().findIndex((a) => a.address === address) !== -1;
   }
   async incrementAccountIndex(password: string): Promise<string> {
     if (this.wallet instanceof HdWallet) {
-      const seed = await this.encryptionService.decrypt(
-        this.wallet.encryptedSeed,
-        password,
-        this.wallet.IV,
-        3
-      );
+      const seed = await this.encryptionService.decrypt(this.wallet.encryptedSeed, password, this.wallet.IV, 3);
       if (seed) {
         const keyPair: KeyPair = hd.seedToKeyPair(seed, `44'/1729'/${this.wallet.index}'/0'`);
         this.addImplicitAccount(keyPair.pk, this.wallet.index);
@@ -267,21 +210,16 @@ export class WalletService {
     return this.wallet instanceof WatchWallet;
   }
   isPwdWallet(): boolean {
-    return (!this.isTorusWallet() && !this.isLedgerWallet() && !this.isWatchWallet());
+    return !this.isTorusWallet() && !this.isLedgerWallet() && !this.isWatchWallet();
   }
-  exportKeyStoreInit(
-    type: WalletType,
-    encryptedSeed: string,
-    encryptedEntropy: string,
-    iv: string
-  ) {
+  exportKeyStoreInit(walletType: WalletType, encryptedSeed: string, encryptedEntropy: string, iv: string) {
     const data: any = {
       provider: 'Kukai',
       version: 3.0,
-      walletType: type,
+      walletType,
       encryptedSeed,
       encryptedEntropy,
-      iv,
+      iv
     };
     return data;
   }
@@ -291,15 +229,9 @@ export class WalletService {
   initStorage(instanceId: string = '') {
     this.storageId = Date.now();
     if (instanceId) {
-      sessionStorage.setItem(
-        instanceId,
-        JSON.stringify({ localStorageId: this.storageId })
-      );
+      sessionStorage.setItem(instanceId, JSON.stringify({ localStorageId: this.storageId }));
     } else {
-      localStorage.setItem(
-        this.storeKey,
-        JSON.stringify({ localStorageId: this.storageId })
-      );
+      localStorage.setItem(this.storeKey, JSON.stringify({ localStorageId: this.storageId }));
     }
   }
   storeWallet() {
@@ -324,8 +256,12 @@ export class WalletService {
         type = 'WatchWallet';
       }
       this.getStorage().setItem(
-        (this.wallet instanceof EmbeddedTorusWallet) ? this.wallet.instanceId : this.storeKey,
-        JSON.stringify({ type, localStorageId: this.storageId, data: this.wallet })
+        this.wallet instanceof EmbeddedTorusWallet ? this.wallet.instanceId : this.storeKey,
+        JSON.stringify({
+          type,
+          localStorageId: this.storageId,
+          data: this.wallet
+        })
       );
     } else {
       console.log('Outdated storage id');
@@ -364,11 +300,7 @@ export class WalletService {
   deserializeStoredWallet(wd: any, type: string) {
     switch (type) {
       case 'HdWallet':
-        this.wallet = new HdWallet(
-          wd.IV,
-          wd.encryptedSeed,
-          wd.encryptedEntropy
-        );
+        this.wallet = new HdWallet(wd.IV, wd.encryptedSeed, wd.encryptedEntropy);
         if (this.wallet instanceof HdWallet) {
           this.wallet.index = wd.index;
         }
@@ -380,11 +312,7 @@ export class WalletService {
         this.wallet = new LegacyWalletV2(wd.IV, wd.encryptedSeed);
         break;
       case 'LegacyWalletV3':
-        this.wallet = new LegacyWalletV3(
-          wd.IV,
-          wd.encryptedSeed,
-          wd.encryptedEntropy
-        );
+        this.wallet = new LegacyWalletV3(wd.IV, wd.encryptedSeed, wd.encryptedEntropy);
         break;
       case 'LedgerWallet':
         this.wallet = new LedgerWallet();
@@ -408,11 +336,7 @@ export class WalletService {
       this.wallet.lookups = wd.lookups;
     }
     for (const implicit of wd.implicitAccounts) {
-      const impAcc: ImplicitAccount = new ImplicitAccount(
-        implicit.pkh,
-        implicit.pk,
-        implicit.derivationPath ? implicit.derivationPath : null
-      );
+      const impAcc: ImplicitAccount = new ImplicitAccount(implicit.pkh, implicit.pk, implicit.derivationPath ? implicit.derivationPath : null);
       impAcc.balanceUSD = implicit.balanceUSD;
       impAcc.balanceXTZ = implicit.balanceXTZ;
       impAcc.delegate = implicit.delegate;
@@ -422,11 +346,7 @@ export class WalletService {
         impAcc.tokens = implicit.tokens;
       }
       for (const originated of implicit.originatedAccounts) {
-        const origAcc = new OriginatedAccount(
-          originated.address,
-          impAcc.pkh,
-          impAcc.pk
-        );
+        const origAcc = new OriginatedAccount(originated.address, impAcc.pkh, impAcc.pk);
         origAcc.balanceUSD = originated.balanceUSD;
         origAcc.balanceXTZ = originated.balanceXTZ;
         origAcc.delegate = originated.delegate;

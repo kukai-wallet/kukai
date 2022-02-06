@@ -76,6 +76,7 @@ import { TruncatePipe } from './pipes/truncate.pipe';
 import { TimeAgoPipe } from './pipes/time-ago.pipe';
 import { DeeplinkService } from './services/deeplink/deeplink.service';
 import { RemoveCommaPipe } from './pipes/remove-comma.pipe';
+import { InfoComponent } from './components/modals/info/info.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -122,6 +123,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     // Modals
     ModalComponent,
     AlertComponent,
+    InfoComponent,
 
     // Pipes
     ErrorHandlingPipe,
@@ -141,7 +143,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         useFactory: HttpLoaderFactory,
         deps: [HttpClient]
       }
-    })  // lazy loading will need TranslateModule.forChild() in the lazy loaded modules
+    }) // lazy loading will need TranslateModule.forChild() in the lazy loaded modules
   ],
   providers: [
     // Services
@@ -173,4 +175,4 @@ export function HttpLoaderFactory(http: HttpClient) {
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

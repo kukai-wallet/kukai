@@ -4,10 +4,8 @@ import { Component, OnInit } from '@angular/core';
   selector: 'app-basic-button',
   templateUrl: './basic.component.html'
 })
-
 export class BasicButtonComponent implements OnInit {
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 }

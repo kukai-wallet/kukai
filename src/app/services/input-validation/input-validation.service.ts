@@ -8,11 +8,7 @@ import { Uint8ArrayConsumer } from '@taquito/local-forging/dist/lib/uint8array-c
 
 @Injectable()
 export class InputValidationService {
-
-  constructor(
-    private operationService: OperationService,
-    private translate: TranslateService
-  ) { }
+  constructor(private operationService: OperationService, private translate: TranslateService) {}
   /*
     Input validations
   */
@@ -20,7 +16,7 @@ export class InputValidationService {
     return this.operationService.validMnemonic(mnemonics);
   }
   password(password: string): boolean {
-    return (zxcvbn(password).score === 4);
+    return zxcvbn(password).score === 4;
   }
   passwordStrengthDisplay(password: string): string {
     if (!password) {
@@ -28,16 +24,21 @@ export class InputValidationService {
     }
     switch (zxcvbn(password).score) {
       case 0: {
-        return this.translate.instant('INPUTVALIDATIONCOMPONENT.CATASTROPHIC');  // 'Catastrophic!'
-      } case 1: {
-        return this.translate.instant('INPUTVALIDATIONCOMPONENT.VERYWEAK');  // 'Very weak!'
-      } case 2: {
-        return this.translate.instant('INPUTVALIDATIONCOMPONENT.WEAK');  // 'Weak!'
-      } case 3: {
-        return this.translate.instant('INPUTVALIDATIONCOMPONENT.WEAK');  // 'Weak!'
-      } case 4: {
-        return this.translate.instant('INPUTVALIDATIONCOMPONENT.STRONG');  // 'Strong!'
-      } default: {
+        return this.translate.instant('INPUTVALIDATIONCOMPONENT.CATASTROPHIC'); // 'Catastrophic!'
+      }
+      case 1: {
+        return this.translate.instant('INPUTVALIDATIONCOMPONENT.VERYWEAK'); // 'Very weak!'
+      }
+      case 2: {
+        return this.translate.instant('INPUTVALIDATIONCOMPONENT.WEAK'); // 'Weak!'
+      }
+      case 3: {
+        return this.translate.instant('INPUTVALIDATIONCOMPONENT.WEAK'); // 'Weak!'
+      }
+      case 4: {
+        return this.translate.instant('INPUTVALIDATIONCOMPONENT.STRONG'); // 'Strong!'
+      }
+      default: {
         return '';
       }
     }
@@ -58,7 +59,6 @@ export class InputValidationService {
       default:
         return false;
     }
-
   }
   redditAccount(username: string) {
     // Letters, numbers, dashes, and underscores only
@@ -67,7 +67,8 @@ export class InputValidationService {
     return re.test(username);
   }
   email(email: string): Boolean {
-    const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const re =
+      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);
   }
   tezosDomain(domain: string) {
@@ -78,7 +79,7 @@ export class InputValidationService {
         return false;
       }
     }
-    return (a.length >= 2 && domain.endsWith(`.${CONSTANTS.TEZOS_DOMAIN.TOP_DOMAIN}`));
+    return a.length >= 2 && domain.endsWith(`.${CONSTANTS.TEZOS_DOMAIN.TOP_DOMAIN}`);
   }
   twitterAccount(username: string) {
     // The only characters you can use are uppercase and lowercase letters, numbers, and the underscore character ( _ ).
@@ -95,9 +96,11 @@ export class InputValidationService {
   amount(amount: string, decimals: number = 6): Boolean {
     const decimalsPart = decimals ? `(\.[0-9]{1,${decimals}}){0,1}` : '';
     const expr = new RegExp(`^(0|[1-9][0-9]*)${decimalsPart}$`, 'g');
-    if (amount === '' || amount === '0') { // default value / zero
+    if (amount === '' || amount === '0') {
+      // default value / zero
       return true;
-    } else if (Number(amount) && amount.match(expr)) { // Positive number
+    } else if (Number(amount) && amount.match(expr)) {
+      // Positive number
       return true;
     }
     return false;
@@ -106,9 +109,11 @@ export class InputValidationService {
     return this.amount(fee); // same as amount
   }
   gas(amount: string): Boolean {
-    if (amount === '' || amount === '0') { // default value / zero
+    if (amount === '' || amount === '0') {
+      // default value / zero
       return true;
-    } else if (Number(amount) && 0 < Number(amount) && Number(amount) % 1 === 0) { // Positive integer
+    } else if (Number(amount) && 0 < Number(amount) && Number(amount) % 1 === 0) {
+      // Positive integer
       return true;
     } else {
       return false;
@@ -124,7 +129,8 @@ export class InputValidationService {
     return false;
   }
   code(code: string): Boolean {
-    if (code && code.length === 40 && code.match(/^[0-9a-f]*$/g)) { // 40 hex chars
+    if (code && code.length === 40 && code.match(/^[0-9a-f]*$/g)) {
+      // 40 hex chars
       return true;
     } else {
       return false;
@@ -132,7 +138,7 @@ export class InputValidationService {
   }
   derivationPath(path: string): Boolean {
     const m = path.match(/^44\'\/1729(\'\/[0-9]+)+\'$/g);
-    if (m || path === '44\'/1729\'') {
+    if (m || path === "44'/1729'") {
       return true;
     }
     return false;

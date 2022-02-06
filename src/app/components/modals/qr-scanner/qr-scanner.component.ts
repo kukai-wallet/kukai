@@ -14,11 +14,7 @@ import { ModalComponent } from '../modal.component';
 export class QrScannerComponent extends ModalComponent implements OnInit {
   readonly CONSTANTS = _CONSTANTS;
   readonly env = environment;
-  constructor(
-    private beaconService: BeaconService,
-    private deeplinkService: DeeplinkService,
-    private messageService: MessageService
-  ) {
+  constructor(private beaconService: BeaconService, private deeplinkService: DeeplinkService, private messageService: MessageService) {
     super();
   }
   @ViewChild('videoPlayer') videoplayer: ElementRef;
@@ -26,8 +22,7 @@ export class QrScannerComponent extends ModalComponent implements OnInit {
   manualInput = '';
   name = 'qr-scanner';
   loadingCam = false;
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
   openModal(): void {
     ModalComponent.currentModel.next({ name: this.name, data: null });
     this.scan();
@@ -37,7 +32,7 @@ export class QrScannerComponent extends ModalComponent implements OnInit {
     const hasCamera = await QrScanner.hasCamera();
     if (hasCamera) {
       QrScanner.WORKER_PATH = './assets/js/qr-scanner-worker.min.js';
-      this.qrScanner = new QrScanner(this.videoplayer.nativeElement, result => this.handleQrCode(result));
+      this.qrScanner = new QrScanner(this.videoplayer.nativeElement, (result) => this.handleQrCode(result));
       await this.qrScanner.start();
       if (!this.isOpen) {
         this.qrScanner.stop();

@@ -11,24 +11,21 @@ import { SubjectService } from '../../../../services/subject/subject.service';
   styleUrls: ['./confirm-send.component.scss']
 })
 export class ConfirmSendEmbedComponent implements OnInit, OnChanges {
-
   @Input() templateRequest: TemplateRequest = null;
   @Output() isApproved = new EventEmitter();
   @Input() activeAccount = null;
   active = false;
   showMore = false;
   template = 'default';
-  constructor(
-    public walletService: WalletService,
-    public messageService: MessageService,
-    private subjectService: SubjectService
-  ) { }
+  constructor(public walletService: WalletService, public messageService: MessageService, private subjectService: SubjectService) {}
 
   ngOnInit(): void {
     this.subjectService.origin.subscribe((origin) => {
-      if (origin && origin.indexOf('gap') !== -1) { // (m)interpop
+      if (origin && origin.indexOf('gap') !== -1) {
+        // (m)interpop
         this.template = 'gap';
-      } else if (origin && origin.indexOf('interpop') !== -1) { // (m)interpop
+      } else if (origin && origin.indexOf('interpop') !== -1) {
+        // (m)interpop
         this.template = 'minterpop';
       } else {
         this.template = 'default';
@@ -76,4 +73,3 @@ export class ConfirmSendEmbedComponent implements OnInit, OnChanges {
     document.body.style.overflow = '';
   }
 }
-

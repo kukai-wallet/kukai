@@ -13,7 +13,7 @@ import { utils } from '@tezos-core-tools/crypto-utils';
 })
 export class ConnectLedgerComponent implements OnInit {
   activePanel = 0;
-  defaultPath = '44\'/1729\'/0\'/0\'';
+  defaultPath = "44'/1729'/0'/0'";
   defaultText = 'Default derivation path';
   path: string;
   pendingLedgerConfirmation = false;
@@ -26,7 +26,7 @@ export class ConnectLedgerComponent implements OnInit {
     private importService: ImportService,
     private messageService: MessageService,
     private inputValidationService: InputValidationService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.path = this.defaultText;
@@ -36,9 +36,9 @@ export class ConnectLedgerComponent implements OnInit {
     try {
       if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
         this.browser = 'firefox';
-      } else if((navigator as any)?.userAgentData?.brands?.some(b => (b.brand === 'Google Chrome' || 'Chromium'))) {
+      } else if ((navigator as any)?.userAgentData?.brands?.some((b) => b.brand === 'Google Chrome' || 'Chromium')) {
         this.browser = 'chromium';
-      } else if((navigator as any)?.userAgent.toLowerCase().indexOf('safari') > -1 && navigator.platform.indexOf('Mac') === -1) {
+      } else if ((navigator as any)?.userAgent.toLowerCase().indexOf('safari') > -1 && navigator.platform.indexOf('Mac') === -1) {
         this.browser = 'safari';
       }
     } catch (e) {
@@ -55,7 +55,7 @@ export class ConnectLedgerComponent implements OnInit {
         console.log('getPK => ' + pk);
         await this.importFromPk(pk, path);
       } catch (e) {
-        throw (e);
+        throw e;
       } finally {
         this.pendingLedgerConfirmation = false;
         this.messageService.stopSpinner();

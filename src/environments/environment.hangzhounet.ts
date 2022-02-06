@@ -7,7 +7,7 @@ import { Constants, DisplayLinkOption } from '../app/interfaces';
 export const environment = {
   production: false
 };
-export const CONSTANTS: Constants = {
+const _CONSTANTS: Constants = {
   NETWORK: 'hangzhounet',
   NAME: 'Testnet / Hangzhounet',
   TEZOS_DOMAIN: {
@@ -102,5 +102,9 @@ export const CONSTANTS: Constants = {
   NFT_CONTRACT_OVERRIDES: [],
   CONTRACT_OVERRIDES: {}
 };
-export const TRUSTED_TOKEN_CONTRACTS = [];
-export const BLACKLISTED_TOKEN_CONTRACTS = []
+const _TRUSTED_TOKEN_CONTRACTS = [];
+const _BLACKLISTED_TOKEN_CONTRACTS = []
+
+export const CONSTANTS = JSON.parse(JSON.stringify(_CONSTANTS));
+export const TRUSTED_TOKEN_CONTRACTS = JSON.parse(JSON.stringify(_TRUSTED_TOKEN_CONTRACTS));
+export const BLACKLISTED_TOKEN_CONTRACTS = JSON.parse(JSON.stringify(_BLACKLISTED_TOKEN_CONTRACTS));

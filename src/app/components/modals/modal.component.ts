@@ -11,16 +11,17 @@ interface ModalPayload {
   selector: 'app-modal',
   templateUrl: './modal.component.html'
 })
-
 export class ModalComponent implements OnInit, OnDestroy {
-
   public isOpen = false;
   name = '';
-  static currentModel = new BehaviorSubject<ModalPayload>({ name: '', data: null });
+  static currentModel = new BehaviorSubject<ModalPayload>({
+    name: '',
+    data: null
+  });
   private modalSub: Subscription = new Subscription();
   constructor(@Optional() public cd?: ChangeDetectorRef) {
     this.cd = cd;
-    this.modalSub = ModalComponent.currentModel.subscribe(load => {
+    this.modalSub = ModalComponent.currentModel.subscribe((load) => {
       if (!!load.name && load.name === this.name) {
         if (!this.isOpen) {
           this.willOpen();
@@ -37,16 +38,13 @@ export class ModalComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this.modalSub.unsubscribe();
   }
 
-  willOpen(): void {
-
-  }
+  willOpen(): void {}
 
   open(data?: any): void {
     if (window.innerHeight < document.body.scrollHeight) {
@@ -61,5 +59,4 @@ export class ModalComponent implements OnInit, OnDestroy {
     document.body.style.overflowY = '';
     this.isOpen = false;
   }
-
 }

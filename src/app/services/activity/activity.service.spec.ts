@@ -23,42 +23,53 @@ import { Observable } from 'rxjs/Observable';
 import { HttpClient } from 'selenium-webdriver/http';
 import { RSA_X931_PADDING } from 'constants';
 
-
-
-
 describe('[ ActivityService ]', () => {
-	let service: ActivityService;
-	let walletservice: WalletService;
+  let service: ActivityService;
+  let walletservice: WalletService;
 
-	const mockLib = new WalletTools();
+  const mockLib = new WalletTools();
 
-	//let pkh, blockhash, operationhash;
-	//let acctIndex, activIndex;
+  //let pkh, blockhash, operationhash;
+  //let acctIndex, activIndex;
 
-	beforeEach(() => {
-		//create new activity
-		TestBed.configureTestingModule({
-			imports: [HttpClientModule, HttpClientTestingModule, TranslateModule.forRoot(
-				{ loader: { provide: TranslateLoader, useClass: TranslateFakeLoader } })],
-			providers: [ActivityService, WalletService, MessageService,
-				TranslateService, OperationService, EncryptionService, ErrorHandlingPipe, InputValidationService]
-		});
+  beforeEach(() => {
+    //create new activity
+    TestBed.configureTestingModule({
+      imports: [
+        HttpClientModule,
+        HttpClientTestingModule,
+        TranslateModule.forRoot({
+          loader: {
+            provide: TranslateLoader,
+            useClass: TranslateFakeLoader
+          }
+        })
+      ],
+      providers: [
+        ActivityService,
+        WalletService,
+        MessageService,
+        TranslateService,
+        OperationService,
+        EncryptionService,
+        ErrorHandlingPipe,
+        InputValidationService
+      ]
+    });
 
-		// configure injected services
-		service = TestBed.inject(ActivityService);
-		walletservice = TestBed.inject(WalletService);
+    // configure injected services
+    service = TestBed.inject(ActivityService);
+    walletservice = TestBed.inject(WalletService);
 
-		// generate random wallet
-		walletservice.wallet = mockLib.generateWalletV1();
+    // generate random wallet
+    walletservice.wallet = mockLib.generateWalletV1();
+  });
 
-	});
+  it('should be created', () => {
+    expect(service).toBeTruthy();
+  });
 
-	it('should be created', () => {
-		expect(service).toBeTruthy();
-	});
-
-
-	/*it('should get the transaction counter for given pkh', () => {
+  /*it('should get the transaction counter for given pkh', () => {
 		const pkh = walletservice.wallet.accounts[0].pkh;
 		const number_operations = [walletservice.wallet.accounts[0].numberOfActivites];
 
@@ -70,7 +81,7 @@ describe('[ ActivityService ]', () => {
 		//expect(service.getTransactions).toHaveBeenCalledWith(pkh, number_operations[0]);
 	});*/
 
-	/** TODO
+  /** TODO
 	it('@TODO should get transactions', async() => {
 		 // Mocks Required: (External Calls)
 		 // tzscan.operations [done]

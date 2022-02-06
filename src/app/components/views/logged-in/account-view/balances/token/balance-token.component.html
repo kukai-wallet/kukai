@@ -10,7 +10,22 @@
     </div>
   </div>
   <div class="flex-row right">
-    <app-send-button [activeAccount]="account"
+    <ng-container *ngIf="!token">
+      <button *ngIf="this.account?.balanceXTZ" class="flex-row button button-primary with-image buy" (click)="this.buyTez()">
+        <img src="../../../../../../../assets/img/add-blue.svg">
+        <div class="tooltip">
+          <div class="description">BUY TEZ</div>
+        </div>
+      </button>
+      <button *ngIf="this.account?.balanceXTZ === 0" class="flex-row button button-primary with-image buy tez" (click)="this.buyTez()">
+        <span>Buy</span>
+        <img src="../../../../../../../assets/img/add-white.svg">
+        <div class="tooltip alt">
+          <div class="description">BUY TEZ</div>
+        </div>
+      </button>
+    </ng-container>
+    <app-send-button *ngIf="token || this.account?.balanceXTZ" [activeAccount]="account"
       [tokenTransfer]="!token ? null : token?.contractAddress + ':' + token?.id"
       [symbol]="!token ? 'tez' : token?.symbol"></app-send-button>
   </div>

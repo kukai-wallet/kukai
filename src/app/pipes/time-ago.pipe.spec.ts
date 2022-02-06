@@ -9,58 +9,63 @@ import { TimeAgoPipe } from './time-ago.pipe';
  * Suite: TimeAgoPipe
  */
 describe('[ TimeAgoPipe ]', () => {
-	let injector: TestBed;
-	let pipe: TimeAgoPipe;
-	let translate: TranslateService;
-	let date: Date;
+  let injector: TestBed;
+  let pipe: TimeAgoPipe;
+  let translate: TranslateService;
+  let date: Date;
 
-	beforeEach(() => {
-		TestBed.configureTestingModule({
-		  imports: [ TranslateModule.forRoot( { loader: { provide: TranslateLoader, useClass: TranslateFakeLoader } }) ],
-		  providers: [ TranslateService ]
-		});
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        TranslateModule.forRoot({
+          loader: {
+            provide: TranslateLoader,
+            useClass: TranslateFakeLoader
+          }
+        })
+      ],
+      providers: [TranslateService]
+    });
 
-		// store injectors to call during tests
-		injector = getTestBed();
-		translate = injector.inject(TranslateService);
-		pipe = new TimeAgoPipe(translate);
-		date = new Date();
-	});
+    // store injectors to call during tests
+    injector = getTestBed();
+    translate = injector.inject(TranslateService);
+    pipe = new TimeAgoPipe(translate);
+    date = new Date();
+  });
 
-	// spec: expect instantiation
-    it('create an instance', () => {
-        expect(pipe).toBeTruthy();
-	});
+  // spec: expect instantiation
+  it('create an instance', () => {
+    expect(pipe).toBeTruthy();
+  });
 
-	// suite: transform method
-	describe('{ should transform string date to ??string}', () => {
+  // suite: transform method
+  describe('{ should transform string date to ??string}', () => {
+    const testdate = '2018-12-24T11:25:23Z';
+    const testdate2 = '2018-12-24';
 
-		const testdate = '2018-12-24T11:25:23Z';
-		const testdate2 = '2018-12-24';
+    //yesterday.setDate(currentDate.getDate()-1);
+    //console.log(yesterday.toDateString())
 
+    // spec: except spied method called
+    it('should be called', () => {
+      // create spy
+      spyOn(pipe, 'transform');
 
-		//yesterday.setDate(currentDate.getDate()-1);
-		//console.log(yesterday.toDateString())
+      // call transform method
+      pipe.transform(null);
 
-		// spec: except spied method called
-		it('should be called', () => {
-			// create spy
-			spyOn(pipe, 'transform');
+      // expect it was called
+      expect(pipe.transform).toHaveBeenCalled();
+    });
 
-			// call transform method
-			pipe.transform(null);
+    it('should return a string ', () => {
+      expect(pipe.transform(date.getTime())).toEqual(jasmine.any(String));
+    });
 
-			// expect it was called
-			expect(pipe.transform).toHaveBeenCalled();
-		});
-
-		it('should return a string ', () => {
-			expect(pipe.transform(date.getTime())).toEqual(jasmine.any(String));
-		});
-
-		it('should return timeago data given offset date', () => {
+    it('should return timeago data given offset date', () => {
       const expectedResult = date.getHours() + 'TIMEAGOPIPE.HOURS ' + date.getMinutes() + 'TIMEAGOPIPE.MINUTE';
-			expect(pipe.transform(Number(new Date(date.toDateString())))).toEqual(expectedResult);
-		});
-	});
+      expect(pipe.transform(Number(new Date(date.toDateString())))).toEqual(expectedResult);
+    });
+  });
 });

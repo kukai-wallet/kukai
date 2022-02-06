@@ -12,14 +12,13 @@
     "moduleResolution": "node",
     "experimentalDecorators": true,
     "target": "es2015",
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "lib": [
-      "es2020",
-      "dom"
-    ],
+    "typeRoots": ["node_modules/@types"],
+    "lib": ["es2020", "dom"],
     "module": "es2020",
-    "baseUrl": "./"
+    "baseUrl": "./",
+    "paths": {
+      "@tezos-domains/core": ["node_modules/@tezos-domains/core/dist/core.es2015.js"],
+      "idna-uts46-hx": ["./node_modules/idna-uts46-hx/uts46.js"]
+    }
   }
 }

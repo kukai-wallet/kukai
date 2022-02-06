@@ -16,7 +16,6 @@ interface MetadataUpdated {
 @Injectable({
   providedIn: 'root'
 })
-
 export class SubjectService {
   public metadataUpdated: BehaviorSubject<MetadataUpdated>;
   public markets: BehaviorSubject<any>;
@@ -26,13 +25,14 @@ export class SubjectService {
   public origin: BehaviorSubject<string>;
   public beaconResponse: Subject<boolean>;
   public logout: Subject<boolean>;
+  public moonpay: Subject<boolean>;
   constructor() {
     this.init();
-    this.logout.subscribe(o => {
+    this.logout.subscribe((o) => {
       if (o) {
         this.reset();
       }
-    })
+    });
   }
   init() {
     this.metadataUpdated = new BehaviorSubject<MetadataUpdated>(null);
@@ -43,6 +43,7 @@ export class SubjectService {
     this.origin = new BehaviorSubject<string>(null);
     this.beaconResponse = new Subject<boolean>();
     this.logout = new Subject<boolean>();
+    this.moonpay = new Subject<boolean>();
   }
   reset() {
     this.metadataUpdated.next(null);

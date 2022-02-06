@@ -8,10 +8,6 @@ import { TorusService } from '../../../services/torus/torus.service';
   styleUrls: ['../../../../scss/components/ui/messages/messages.component.scss']
 })
 export class MessagesComponent implements OnInit {
-  constructor(
-    public messageService: MessageService,
-    public torusService: TorusService
-    ) { }
-  ngOnInit(): void {
-  }
+  constructor(public messageService: MessageService, public torusService: TorusService) {}
+  ngOnInit(): void {}
 }

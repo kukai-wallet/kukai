@@ -11,7 +11,7 @@ import Big from 'big.js';
 @Component({
   selector: 'app-nfts-token',
   templateUrl: './token.component.html',
-  styleUrls: ['../../../../../../../scss/components/views/logged-in/account-view/cards/nfts/token.component.scss'],
+  styleUrls: ['../../../../../../../scss/components/views/logged-in/account-view/cards/nfts/token.component.scss']
 })
 export class NftsTokenComponent implements OnInit, OnChanges {
   DisplayLinkOption = DisplayLinkOption;
@@ -25,10 +25,13 @@ export class NftsTokenComponent implements OnInit, OnChanges {
     public tokenService: TokenService,
     public tokenBalancesService: TokenBalancesService
   ) {}
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes.token.previousValue?.balance > -1 && changes.token.currentValue?.balance > -1 && (changes.token.currentValue?.balance != changes.token.previousValue?.balance)) {
+    if (
+      changes.token.previousValue?.balance > -1 &&
+      changes.token.currentValue?.balance > -1 &&
+      changes.token.currentValue?.balance != changes.token.previousValue?.balance
+    ) {
       this.isNew = true;
     }
   }
@@ -38,9 +41,11 @@ export class NftsTokenComponent implements OnInit, OnChanges {
   balanceChangeTimer(): void {
     setTimeout(() => {
       this.isNew = false;
-    }, 5000)
+    }, 5000);
   }
   formatBalance(token): string {
-    return Big(token.balance).div(10 ** parseInt(token.decimals)).toFixed();
+    return Big(token.balance)
+      .div(10 ** parseInt(token.decimals))
+      .toFixed();
   }
 }

@@ -37,27 +37,29 @@ export class HeaderComponent implements OnInit, OnChanges, OnDestroy {
     private translate: TranslateService,
     private delegateService: DelegateService,
     private subjectService: SubjectService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-    this.subscriptions.add(this.walletService.walletUpdated.subscribe(async () => {
-      this.accounts = this.walletService.wallet?.getAccounts();
-      this.delegateName = await this.getDelegateName(this.activeAccount?.delegate);
-    }));
+    this.subscriptions.add(
+      this.walletService.walletUpdated.subscribe(async () => {
+        this.accounts = this.walletService.wallet?.getAccounts();
+        this.delegateName = await this.getDelegateName(this.activeAccount?.delegate);
+      })
+    );
     this.accounts = this.walletService.wallet?.getAccounts();
-    this.subscriptions.add(this.route.queryParams
-      .subscribe(async params => {
+    this.subscriptions.add(
+      this.route.queryParams.subscribe(async (params) => {
         if (params?.type) {
           this.deeplinkService.set(params);
         }
-      }));
-    this.subscriptions.add(this.router.events
-      .pipe(filter((evt) => evt instanceof NavigationEnd))
-      .subscribe(async (r: NavigationEnd) => {
+      })
+    );
+    this.subscriptions.add(
+      this.router.events.pipe(filter((evt) => evt instanceof NavigationEnd)).subscribe(async (r: NavigationEnd) => {
         document.body.scrollTop = 0;
         if (!(this.accounts?.length > 0) && r.url.indexOf('/account/') === 0) {
           this.router.navigateByUrl('/');
-        } else if ((this.accounts?.length > 0 && !r.url.match(/terms\-of\-use|privacy\-policy/g))) {
+        } else if (this.accounts?.length > 0 && !r.url.match(/terms\-of\-use|privacy\-policy/g)) {
           let accountAddress = r.url.substr(r.url.indexOf('/account/') + 9);
           accountAddress = accountAddress.indexOf('/') !== -1 ? accountAddress.substring(0, accountAddress.indexOf('/')) : accountAddress;
           if (!this.walletService.addressExists(accountAddress)) {
@@ -70,7 +72,8 @@ export class HeaderComponent implements OnInit, OnChanges, OnDestroy {
           }
           this.delegateName = await this.getDelegateName(this.activeAccount?.delegate);
         }
-      }));
+      })
+    );
   }
 
   async ngOnChanges(changes: SimpleChanges): Promise<void> {
@@ -92,9 +95,7 @@ export class HeaderComponent implements OnInit, OnChanges, OnDestroy {
   }
   copy(): void {
     copy(this.activeAccount.address);
-    const copyToClipboard = this.translate.instant(
-      'OVERVIEWCOMPONENT.COPIEDTOCLIPBOARD'
-    );
+    const copyToClipboard = this.translate.instant('OVERVIEWCOMPONENT.COPIEDTOCLIPBOARD');
     this.messageService.add(this.activeAccount.address + ' ' + copyToClipboard, 5);
   }
 
@@ -105,10 +106,16 @@ export class HeaderComponent implements OnInit, OnChanges, OnDestroy {
     ModalComponent.currentModel.next({ name: 'new-implicit', data: null });
   }
   receive(): void {
-    ModalComponent.currentModel.next({ name: 'receive', data: { address: this.activeAccount.address }});
+    ModalComponent.currentModel.next({
+      name: 'receive',
+      data: { address: this.activeAccount.address }
+    });
   }
 
   async getDelegateName(address: string): Promise<string> {
-    return address ? (await this.delegateService.resolveDelegateByAddress(address))?.name ?? address.substring(0, 7) + '...' + address.substring(address.length - 4, address.length) : address;
+    return address
+      ? (await this.delegateService.resolveDelegateByAddress(address))?.name ??
+          address.substring(0, 7) + '...' + address.substring(address.length - 4, address.length)
+      : address;
   }
 }

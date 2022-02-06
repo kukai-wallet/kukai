@@ -4,12 +4,11 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'removeComma'
 })
 export class RemoveCommaPipe implements PipeTransform {
-
   transform(value: string): string {
     if (value !== undefined && value !== null) {
-      return value.replace(/,/g, "");
+      return value.replace(/,/g, '');
     } else {
-      return "";
+      return '';
     }
   }
 }

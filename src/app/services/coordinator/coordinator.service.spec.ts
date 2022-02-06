@@ -25,45 +25,64 @@ import { BalanceService } from '../balance/balance.service';
 import { DelegateService } from '../delegate/delegate.service';
 import { InputValidationService } from '../input-validation/input-validation.service';
 
-
 /**
  * Suite: CoordinatorService
  */
 describe('[ Coordinator ]', () => {
-	// class under inspection
-	let service: CoordinatorService;
+  // class under inspection
+  let service: CoordinatorService;
 
-	// class dependencies
-	/*let walletsrv: WalletService;
+  // class dependencies
+  /*let walletsrv: WalletService;
 	let operationsrv: OperationService;*/
-	let httpMock: HttpTestingController;
+  let httpMock: HttpTestingController;
 
-	// testing variables
-	const nodeurl = 'https://rpc.tezrpc.me/';
-	/*let pkh: string;
+  // testing variables
+  const nodeurl = 'https://rpc.tezrpc.me/';
+  /*let pkh: string;
 
 	let accounts: Account[];
 	let networkresponses: any[];*/
 
-	beforeEach(() => {
-		// WalletService mock
-		TestBed.configureTestingModule({
-			imports: [HttpClientModule, HttpClientTestingModule, TranslateModule.forRoot(
-				{ loader: { provide: TranslateLoader, useClass: TranslateFakeLoader }})],
-			providers: [ ActivityService, WalletService, EncryptionService, ErrorHandlingPipe,
-				BalanceService, DelegateService, TzrateService, MessageService,
-				OperationService, CoordinatorService, AppModule, AppComponent, InputValidationService]
-		});
+  beforeEach(() => {
+    // WalletService mock
+    TestBed.configureTestingModule({
+      imports: [
+        HttpClientModule,
+        HttpClientTestingModule,
+        TranslateModule.forRoot({
+          loader: {
+            provide: TranslateLoader,
+            useClass: TranslateFakeLoader
+          }
+        })
+      ],
+      providers: [
+        ActivityService,
+        WalletService,
+        EncryptionService,
+        ErrorHandlingPipe,
+        BalanceService,
+        DelegateService,
+        TzrateService,
+        MessageService,
+        OperationService,
+        CoordinatorService,
+        AppModule,
+        AppComponent,
+        InputValidationService
+      ]
+    });
 
-		service = TestBed.inject(CoordinatorService);
-		httpMock  = TestBed.inject(HttpTestingController);
-	});
+    service = TestBed.inject(CoordinatorService);
+    httpMock = TestBed.inject(HttpTestingController);
+  });
 
-	afterEach(() => {
-		httpMock.verify();
-	});
+  afterEach(() => {
+    httpMock.verify();
+  });
 
-	it('should be created', () => {
-		expect(service).toBeTruthy();
-	});
+  it('should be created', () => {
+    expect(service).toBeTruthy();
+  });
 });

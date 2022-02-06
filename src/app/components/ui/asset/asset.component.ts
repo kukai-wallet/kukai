@@ -1,6 +1,5 @@
-
 import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
-import mimes from 'mime-db/db.json'
+import mimes from 'mime-db/db.json';
 import { Asset, CachedAsset } from '../../../services/token/token.service';
 
 @Component({
@@ -8,7 +7,6 @@ import { Asset, CachedAsset } from '../../../services/token/token.service';
   templateUrl: './asset.component.html',
   styleUrls: ['../../../../scss/components/ui/asset/asset.component.scss']
 })
-
 export class AssetComponent implements OnInit, OnChanges, AfterViewInit {
   @ViewChild('preImage') preImage;
   @ViewChild('postImage') postImage;
@@ -33,8 +31,7 @@ export class AssetComponent implements OnInit, OnChanges, AfterViewInit {
 
   obs: IntersectionObserver;
 
-  constructor() {
-  }
+  constructor() {}
 
   ngOnInit(): void {
     this.evaluate();
@@ -56,7 +53,10 @@ export class AssetComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   isEqualUrl(): boolean {
-    return (typeof (this.meta) === 'string' && this.meta === this.dataSrc || typeof (this.meta) === 'object' && `${this.baseUrl}/${this.meta.filename}_${this.size}.${this.meta.extension}` === this.dataSrc);
+    return (
+      (typeof this.meta === 'string' && this.meta === this.dataSrc) ||
+      (typeof this.meta === 'object' && `${this.baseUrl}/${this.meta.filename}_${this.size}.${this.meta.extension}` === this.dataSrc)
+    );
   }
 
   onLoad(e): void {
@@ -72,14 +72,18 @@ export class AssetComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   async evaluate(): Promise<void> {
-    if (this.isEqualUrl()) { return; }
+    if (this.isEqualUrl()) {
+      return;
+    }
     this.dataSrc = undefined;
     this.postSrc = this.loaderUrl;
     this.mimeType = 'image/*';
-    if (typeof (this.meta) === 'object') {
-      this.mimeType = Object.keys(mimes).filter(key => !!mimes[key]?.extensions?.length).find((key) => mimes[key].extensions.includes((this.meta as CachedAsset)?.extension));
+    if (typeof this.meta === 'object') {
+      this.mimeType = Object.keys(mimes)
+        .filter((key) => !!mimes[key]?.extensions?.length)
+        .find((key) => mimes[key].extensions.includes((this.meta as CachedAsset)?.extension));
       this.dataSrc = `${this.baseUrl}/${this.meta.filename}_${this.size}.${this.meta.extension}`;
-    } else if (typeof (this.meta) === 'string' && this.meta) {
+    } else if (typeof this.meta === 'string' && this.meta) {
       this.dataSrc = this.meta;
     } else if (!this.meta) {
       this.mimeType = 'image/*';
@@ -88,9 +92,11 @@ export class AssetComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   async modelInit(): Promise<void> {
-    await fetch('https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js').then(response => response.blob()).then(async blob => {
-      document.querySelector('head').appendChild(document.createElement('script').appendChild(document.createTextNode(await blob.text())));
-    });
+    await fetch('https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js')
+      .then((response) => response.blob())
+      .then(async (blob) => {
+        document.querySelector('head').appendChild(document.createElement('script').appendChild(document.createTextNode(await blob.text())));
+      });
   }
 
   lazyLoad(): void {
@@ -110,7 +116,7 @@ export class AssetComponent implements OnInit, OnChanges, AfterViewInit {
         }
       });
     });
-    if(this.postImage?.nativeElement) {
+    if (this.postImage?.nativeElement) {
       this.obs.observe(this.postImage?.nativeElement);
     }
   }

@@ -103,18 +103,21 @@ export class MessageService {
     });
   }
   async removeBeaconMsg(delay = false) {
-    setTimeout(() => {
-      for (let i = 0; i < this.messages.length; i++) {
-        if (this.messages[i].loader) {
-          this.messages.splice(i, 1);
-          this.addSuccess(this.pairingCompleteMsg, 10);
-          break;
-        } else if (this.messages[i].msg === this.pairingCompleteMsg) {
-          this.messages.splice(i, 1);
-          break;
+    setTimeout(
+      () => {
+        for (let i = 0; i < this.messages.length; i++) {
+          if (this.messages[i].loader) {
+            this.messages.splice(i, 1);
+            this.addSuccess(this.pairingCompleteMsg, 10);
+            break;
+          } else if (this.messages[i].msg === this.pairingCompleteMsg) {
+            this.messages.splice(i, 1);
+            break;
+          }
         }
-      }
-    }, delay ? 500 : 0);
+      },
+      delay ? 500 : 0
+    );
   }
   clear() {
     this.messages = [];
