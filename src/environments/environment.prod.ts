@@ -541,7 +541,6 @@ const _CONSTANTS: Constants = {
       category: ["collectibles"],
       description: "Humans are gone. Ottez have moved in. 4,007 generative, collectible PFP otters have taken over Earth. ",
     },
-    },
     'EndlessWays': {
       name: "Endless Ways",
       address: ["KT1EXwn1B3rHnn8mtNmsRN3thkfS6CzLxmaP"],
