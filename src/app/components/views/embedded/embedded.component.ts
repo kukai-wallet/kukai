@@ -103,6 +103,14 @@ export class EmbeddedComponent implements OnInit {
         micheline: true,
         micheline_silent: true
       }
+    },
+    lexus: {
+      origins: ['https://ldai.lexusdesign.in'],
+      permissions: {
+        login: true,
+        operations: false,
+        micheline: false
+      }
     }
   };
   constructor(
