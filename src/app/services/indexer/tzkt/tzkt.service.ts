@@ -208,19 +208,7 @@ export class TzktService implements Indexer {
     return { operations, unknownTokenIds };
   }
   private extractEntrypoint(op: any): string {
-    try {
-      if (op.parameters) {
-        const entrypoint = op.parameters.match(/\{\"entrypoint\":\"[^\"]*/g)?.map((i) => {
-          return i.slice(15);
-        });
-        if (entrypoint !== null && entrypoint.length) {
-          return entrypoint[0];
-        }
-      }
-    } catch (e) {
-      console.log(e);
-    }
-    return '';
+    return op?.entrypoint ?? op?.parameter?.entrypoint ?? '';
   }
   async getTokenMetadata(contractAddress, id, counter): Promise<TokenMetadata> {
     // cache token kind

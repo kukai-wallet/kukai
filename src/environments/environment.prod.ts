@@ -465,6 +465,14 @@ const _CONSTANTS: Constants = {
       category: ["collectibles"],
       description: "TezApeGang is a collection of 6969 Apes living on the Tezos Blockchain. With Ape staking feature and DAO from Day1.",
     },
+    'MekatronK9': {
+      name: "MekatronK9",
+      address: ["KT1PooRxUckYjnWVvn9CetZxC9YeG1kkFYW5"],
+      thumbnailUrl: "../../../assets/img/alias/mekatron.jpeg",
+      link: "https://www.mekatron.club/", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"],
+      description: "Driven from their homeword, they are the last surviving Mekatron k9, now seeking refuge in earth's metaverse. Their fight for survival has just begun.",
+    },
     'rarible': {
       name: "Rarible",
       address: ["KT18pVpRXKPY2c4U2yFEGSH3ZnhB2kL8kwXS"],
@@ -523,7 +531,7 @@ const _CONSTANTS: Constants = {
       backgroundColor: "black",
       description: "A generative collection on Tezos of 666 NFTs",
     },
-    'Basqunks':{
+    'Basqunks': {
       name: "Basqunks",
       address: ["KT1DtsVHqUvKBkkypLB3x2bYd4jWdbbaHdMy"],
       thumbnailUrl: "../../../assets/img/alias/basqunks.png",
@@ -540,6 +548,22 @@ const _CONSTANTS: Constants = {
       link: "https://ottez.xyz", shouldDisplayLink: DisplayLinkOption.None,
       category: ["collectibles"],
       description: "Humans are gone. Ottez have moved in. 4,007 generative, collectible PFP otters have taken over Earth. ",
+    },
+    'BunnyKnights2ndGen': {
+      name: "Bunny Knights 2nd Gen",
+      address: ["KT1EVBE1T4GqviEopZEtEQhPEyTQvWyDqDNE"],
+      thumbnailUrl: "../../../assets/img/alias/bunnyknights2ndgen.png",
+      link: "https://bunnyknights.com", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"],
+      description: "2nd Generation Collection of Bunny Knights.",
+    },
+    'alchemy': {
+      name: "Ch=mpathy Alch=my",
+      address: ["KT1MjS4L4HRajqNhQCdTSXgSPhW4A6gHiQo7"],
+      thumbnailUrl: "../../../assets/img/alias/alchemy.png",
+      link: "https://al.chempathy.xyz", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"],
+      description: "3477 Arcan=s transmuted and summoned by Overlords on the Tezos Blockchain.",
     },
     'EndlessWays': {
       name: "Endless Ways",
@@ -1387,6 +1411,10 @@ const _TRUSTED_TOKEN_CONTRACTS = [
   "KT1Qi93pZoig6grMNBd7GGA7fveE2cxQK9Ei", //Verses
   'KT1DtsVHqUvKBkkypLB3x2bYd4jWdbbaHdMy',//Basqunks
   'KT1L7GvUxZH5tfa6cgZKnH6vpp2uVxnFVHKu',//Ottez
+  'KT1EVBE1T4GqviEopZEtEQhPEyTQvWyDqDNE', // Bunny Knights 2nd Gen
+  'KT1MjS4L4HRajqNhQCdTSXgSPhW4A6gHiQo7',//Ch=mpathy Alch=my
+  "KT1PooRxUckYjnWVvn9CetZxC9YeG1kkFYW5", // MekatronK9
+  "KT1SRFbwhvfkXoRGqiDFVVsf5GTp16wGgtCa",//here and now 4
   "KT1WmAHNFxV1JzoGxQYEkE1aFKvNNNSj73sX", //Endless Ways
 ];
 const _BLACKLISTED_TOKEN_CONTRACTS = []
