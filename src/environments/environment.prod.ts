@@ -531,7 +531,7 @@ const _CONSTANTS: Constants = {
       backgroundColor: "black",
       description: "A generative collection on Tezos of 666 NFTs",
     },
-    'Basqunks':{
+    'Basqunks': {
       name: "Basqunks",
       address: ["KT1DtsVHqUvKBkkypLB3x2bYd4jWdbbaHdMy"],
       thumbnailUrl: "../../../assets/img/alias/basqunks.png",
@@ -556,7 +556,7 @@ const _CONSTANTS: Constants = {
       link: "https://bunnyknights.com", shouldDisplayLink: DisplayLinkOption.None,
       category: ["collectibles"],
       description: "2nd Generation Collection of Bunny Knights.",
-    },   
+    },
     'alchemy': {
       name: "Ch=mpathy Alch=my",
       address: ["KT1MjS4L4HRajqNhQCdTSXgSPhW4A6gHiQo7"],
@@ -1390,6 +1390,7 @@ const _TRUSTED_TOKEN_CONTRACTS = [
   'KT1EVBE1T4GqviEopZEtEQhPEyTQvWyDqDNE', // Bunny Knights 2nd Gen
   'KT1MjS4L4HRajqNhQCdTSXgSPhW4A6gHiQo7',//Ch=mpathy Alch=my
   "KT1PooRxUckYjnWVvn9CetZxC9YeG1kkFYW5", // MekatronK9
+  "KT1SRFbwhvfkXoRGqiDFVVsf5GTp16wGgtCa",//here and now 4
 ];
 const _BLACKLISTED_TOKEN_CONTRACTS = []
 
