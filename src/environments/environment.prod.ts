@@ -549,6 +549,14 @@ const _CONSTANTS: Constants = {
       category: ["collectibles"],
       description: "Humans are gone. Ottez have moved in. 4,007 generative, collectible PFP otters have taken over Earth. ",
     },
+    'BunnyKnights2ndGen': {
+      name: "Bunny Knights 2nd Gen",
+      address: ["KT1EVBE1T4GqviEopZEtEQhPEyTQvWyDqDNE"],
+      thumbnailUrl: "../../../assets/img/alias/bunnyknights2ndgen.png",
+      link: "https://bunnyknights.com", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"],
+      description: "2nd Generation Collection of Bunny Knights.",
+    },   
     'alchemy': {
       name: "Ch=mpathy Alch=my",
       address: ["KT1MjS4L4HRajqNhQCdTSXgSPhW4A6gHiQo7"],
@@ -1379,6 +1387,7 @@ const _TRUSTED_TOKEN_CONTRACTS = [
   "KT1Qi93pZoig6grMNBd7GGA7fveE2cxQK9Ei", //Verses
   'KT1DtsVHqUvKBkkypLB3x2bYd4jWdbbaHdMy',//Basqunks
   'KT1L7GvUxZH5tfa6cgZKnH6vpp2uVxnFVHKu',//Ottez
+  'KT1EVBE1T4GqviEopZEtEQhPEyTQvWyDqDNE', // Bunny Knights 2nd Gen
   'KT1MjS4L4HRajqNhQCdTSXgSPhW4A6gHiQo7',//Ch=mpathy Alch=my
   "KT1PooRxUckYjnWVvn9CetZxC9YeG1kkFYW5", // MekatronK9
 ];
