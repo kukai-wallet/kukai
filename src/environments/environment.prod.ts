@@ -549,6 +549,14 @@ const _CONSTANTS: Constants = {
       category: ["collectibles"],
       description: "Humans are gone. Ottez have moved in. 4,007 generative, collectible PFP otters have taken over Earth. ",
     },
+    'alchemy': {
+      name: "Ch=mpathy Alch=my",
+      address: ["KT1MjS4L4HRajqNhQCdTSXgSPhW4A6gHiQo7"],
+      thumbnailUrl: "../../../assets/img/alias/alchemy.png",
+      link: "https://al.chempathy.xyz", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"],
+      description: "3477 Arcan=s transmuted and summoned by Overlords on the Tezos Blockchain.",
+    },
   },
   ASSETS: {
     KT1K9gCRgaLRFKTErYt1wVxA3Frb9FjasjTV: {
@@ -1371,6 +1379,7 @@ const _TRUSTED_TOKEN_CONTRACTS = [
   "KT1Qi93pZoig6grMNBd7GGA7fveE2cxQK9Ei", //Verses
   'KT1DtsVHqUvKBkkypLB3x2bYd4jWdbbaHdMy',//Basqunks
   'KT1L7GvUxZH5tfa6cgZKnH6vpp2uVxnFVHKu',//Ottez
+  'KT1MjS4L4HRajqNhQCdTSXgSPhW4A6gHiQo7',//Ch=mpathy Alch=my
   "KT1PooRxUckYjnWVvn9CetZxC9YeG1kkFYW5", // MekatronK9
 ];
 const _BLACKLISTED_TOKEN_CONTRACTS = []
