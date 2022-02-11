@@ -565,6 +565,14 @@ const _CONSTANTS: Constants = {
       category: ["collectibles"],
       description: "3477 Arcan=s transmuted and summoned by Overlords on the Tezos Blockchain.",
     },
+    'HereAndNow4': {
+      name: "HERE & NOW: Edition 4",
+      address: ["KT1SRFbwhvfkXoRGqiDFVVsf5GTp16wGgtCa"],
+      thumbnailUrl: "../../../assets/img/alias/HereAndNowEd4.png",
+      link: "https://hereandnow.events/", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["art", "collectibles"],
+      description: "Here and Now is an interactive virtual Art experience that showcases emerging and established artists.",
+    },
   },
   ASSETS: {
     KT1K9gCRgaLRFKTErYt1wVxA3Frb9FjasjTV: {
