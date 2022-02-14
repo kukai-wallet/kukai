@@ -20,6 +20,16 @@ const _CONSTANTS: Constants = {
     hard_storage_limit_per_operation: 60000
   },
   CONTRACT_ALIASES: {
+    'mooncakes': {
+      name: "Mooncakes",
+      address: ['KT1Qm7MHmbdiBzoRs7xqBiqoRxw7T2cxTTJN'],
+      thumbnailUrl: "../../../assets/img/alias/mooncakes.svg",
+      discoverUrl: '../../../assets/img/alias/mooncakes-discover.svg',
+      link: "https://mooncakes.fun", shouldDisplayLink: DisplayLinkOption.All,
+      category: ["collectibles"],
+      backgroundColor: '#1C1C20',
+      description: "Have fun exploring a galaxy of NFTs",
+    },
     gap: {
       name: 'Gap Threads',
       address: ['KT1GA6KaLWpURnjvmnxB4wToErzM2EXHqrMo'],
@@ -42,17 +52,6 @@ const _CONSTANTS: Constants = {
       backgroundColor: 'black',
       description: 'The first Ubisoft NFTs playable in a HD game'
     },
-    OneOf: {
-      name: 'OneOf',
-      address: ['KT1Up463qVJqtW5KF7dQZz5SsWMiS32GtBrw'],
-      thumbnailUrl: '../../../assets/img/alias/oneof.png',
-      discoverUrl: '../../../assets/img/alias/oneof-discover.svg',
-      link: 'https://www.oneof.com/',
-      shouldDisplayLink: DisplayLinkOption.All,
-      category: ['music', 'collectibles'],
-      backgroundColor: '#000',
-      description: "A green NFT platform for the music community"
-    },
     'OneOfGloGang': {
       name: "OneOf - GloGang",
       address: ["KT1Fv8TsEeafDhZXsHCyxFas96YDhXpdmUmz"],
@@ -72,6 +71,17 @@ const _CONSTANTS: Constants = {
       category: ['collectibles'],
       description: 'Collect & Build a digital MCL35M F1 CAR',
       backgroundColor: 'black'
+    },
+    OneOf: {
+      name: 'OneOf',
+      address: ['KT1Up463qVJqtW5KF7dQZz5SsWMiS32GtBrw'],
+      thumbnailUrl: '../../../assets/img/alias/oneof.png',
+      discoverUrl: '../../../assets/img/alias/oneof-discover.svg',
+      link: 'https://www.oneof.com/',
+      shouldDisplayLink: DisplayLinkOption.All,
+      category: ['music', 'collectibles'],
+      backgroundColor: '#000',
+      description: "A green NFT platform for the music community"
     },
     'Verses': {
       name: 'Verses',
@@ -1415,6 +1425,7 @@ const _TRUSTED_TOKEN_CONTRACTS = [
   'KT1MjS4L4HRajqNhQCdTSXgSPhW4A6gHiQo7',//Ch=mpathy Alch=my
   "KT1PooRxUckYjnWVvn9CetZxC9YeG1kkFYW5", // MekatronK9
   "KT1SRFbwhvfkXoRGqiDFVVsf5GTp16wGgtCa",//here and now 4
+  "KT1Qm7MHmbdiBzoRs7xqBiqoRxw7T2cxTTJN",//mooncakes
   "KT1WmAHNFxV1JzoGxQYEkE1aFKvNNNSj73sX", //Endless Ways
 ];
 const _BLACKLISTED_TOKEN_CONTRACTS = []
