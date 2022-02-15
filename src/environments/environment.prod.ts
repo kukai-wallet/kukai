@@ -575,6 +575,14 @@ const _CONSTANTS: Constants = {
       category: ["collectibles"],
       description: "3477 Arcan=s transmuted and summoned by Overlords on the Tezos Blockchain.",
     },
+    'Ilmeresh': {
+      name: "Fellowship of Ilmeresh",
+      address: ["KT1HJExmBz4G4kG1wx9zqs394kgRiDLWCb4m"],
+      thumbnailUrl: "../../../assets/img/alias/ilmeresh.png",
+      link: "https://ilmeresh.com", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"],
+      description: "The Fellowship of Ilmeresh is a collection of randomly generated characters .jpg on the Tezos blockchain. Designed in 3D!",
+    },
   },
   ASSETS: {
     KT1K9gCRgaLRFKTErYt1wVxA3Frb9FjasjTV: {
@@ -1402,6 +1410,7 @@ const _TRUSTED_TOKEN_CONTRACTS = [
   "KT1PooRxUckYjnWVvn9CetZxC9YeG1kkFYW5", // MekatronK9
   "KT1SRFbwhvfkXoRGqiDFVVsf5GTp16wGgtCa",//here and now 4
   "KT1Qm7MHmbdiBzoRs7xqBiqoRxw7T2cxTTJN",//mooncakes
+  "KT1HJExmBz4G4kG1wx9zqs394kgRiDLWCb4m", // Fellowship of Ilmeresh
 ];
 const _BLACKLISTED_TOKEN_CONTRACTS = []
 
