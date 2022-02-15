@@ -515,6 +515,15 @@ const _CONSTANTS: Constants = {
       link: "https://versum.xyz", shouldDisplayLink: DisplayLinkOption.None, backgroundColor: 'black', category: ["marketplace"],
       description: "NFT Marketplace focused on organic content and curation.",
     },
+    'VesselGen0': {
+      name: "Vessel Gen0",
+      address: ["KT1U1GDQDE7C9DNfE9iSojsKfWf5zUXdSVde"],
+      thumbnailUrl: "../../../assets/img/alias/vesselgen0.jpg",
+      link: "https://vesselsgen0.xyz/",
+      shouldDisplayLink: DisplayLinkOption.None,
+      description: "An eclectic kaleidoscope: alien cultists, scifi loving tech heads, old earth culture pilfering retronauts and flamboyant gang members.",
+      category: ["collectibles"]
+    },
     'FCOREBOLLO': {
       name: "FCO. REBOLLO",
       address: ["KT1Qc8xu8i72QX5S72ifPB3KJGsJqXB79eTP"],
@@ -1390,6 +1399,7 @@ const _TRUSTED_TOKEN_CONTRACTS = [
   "KT1D394hqndjvTcFgrmUYBxwrzUTNtzrZ5ox", //Platypoos
   "KT1GA6KaLWpURnjvmnxB4wToErzM2EXHqrMo", //Gap
   "KT1LjmAdYQCLBjwv4S2oFkEzyHVkomAf5MrW", //Versum
+  "KT1U1GDQDE7C9DNfE9iSojsKfWf5zUXdSVde", // Vessel Gen0
   "KT1Qc8xu8i72QX5S72ifPB3KJGsJqXB79eTP", // FCO REBOLLO
   "KT1V3BYwUN7FiBqADLMvMpWbz33tq1vudBh5", //Monarx
   "KT1S9VbCtVZUgAG4Q3VArvY5stu96q4CiPHZ", // Distributed Consciousness
