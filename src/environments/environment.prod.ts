@@ -1313,7 +1313,8 @@ const _CONSTANTS: Constants = {
     'KT1Hkg5qeNhfwpKW4fXvq7HGZB9z2EnmCCA9:collect': { storage: 212 },
   },
   NFT_CONTRACT_OVERRIDES: [
-    'KT1AafHA1C1vk959wvHWBispY9Y2f3fxBUUo:0' //lp tzBTC
+    'KT1AafHA1C1vk959wvHWBispY9Y2f3fxBUUo:0', //lp tzBTC
+    'KT1JBNFcB5tiycHNdYGYCtR3kk6JaJysUCi8:0' // Lugh Euro
   ]
 };
 const _TRUSTED_TOKEN_CONTRACTS = [
