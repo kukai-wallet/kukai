@@ -577,7 +577,7 @@ const _CONSTANTS: Constants = {
     },
     'EndlessWays': {
       name: "Endless Ways",
-      address: ["KT1WmAHNFxV1JzoGxQYEkE1aFKvNNNSj73sX"],
+      address: ["KT1VdCrmZsQfuYgbQsezAHT1pXvs6zKF8xHB"],
       thumbnailUrl: "../../../assets/img/alias/endlesswaysLogo.png",
       discoverUrl: "../../../assets/img/alias/endlesswaysBanner.png",
       link: "https://endlessways.net", shouldDisplayLink: DisplayLinkOption.All, backgroundColor: 'black', category: ["collectibles"],
@@ -1312,7 +1312,7 @@ const _CONSTANTS: Constants = {
         }
       }
     },
-    'KT1WmAHNFxV1JzoGxQYEkE1aFKvNNNSj73sX': {
+    'KT1VdCrmZsQfuYgbQsezAHT1pXvs6zKF8xHB': {
       kind: 'FA2',
       category: 'collectibles',
       tokens: {
@@ -1426,7 +1426,7 @@ const _TRUSTED_TOKEN_CONTRACTS = [
   "KT1PooRxUckYjnWVvn9CetZxC9YeG1kkFYW5", // MekatronK9
   "KT1SRFbwhvfkXoRGqiDFVVsf5GTp16wGgtCa",//here and now 4
   "KT1Qm7MHmbdiBzoRs7xqBiqoRxw7T2cxTTJN",//mooncakes
-  "KT1WmAHNFxV1JzoGxQYEkE1aFKvNNNSj73sX", //Endless Ways
+  "KT1VdCrmZsQfuYgbQsezAHT1pXvs6zKF8xHB", //Endless Ways
 ];
 const _BLACKLISTED_TOKEN_CONTRACTS = []
 
