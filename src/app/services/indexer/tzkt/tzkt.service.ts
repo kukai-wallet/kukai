@@ -250,6 +250,9 @@ export class TzktService implements Indexer {
         if (data?.length && data[0]?.name === 'Unknown') {
           data = [];
         }
+        if (contractAddress === 'KT1Qm7MHmbdiBzoRs7xqBiqoRxw7T2cxTTJN') {
+          data = []; // bypass bcd cache for mooncakes
+        }
         if (data.length === 0) {
           try {
             data = await this.getTokenMetadataWithTaquito(contractAddress, id);
