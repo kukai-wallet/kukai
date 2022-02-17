@@ -575,6 +575,17 @@ const _CONSTANTS: Constants = {
       category: ["collectibles"],
       description: "3477 Arcan=s transmuted and summoned by Overlords on the Tezos Blockchain.",
     },
+    'Orbix360': {
+      name: 'Orbix360',
+      address: ['KT1Nf6V7fje6ELNgD6hkKfc3SXaDNVFAifEX', 'KT1BQv5ynR5rV1Wf42iBgZP4cERgjn4ihbBx'],
+      thumbnailUrl: '../../../assets/img/alias/orbix360.png',
+      discoverUrl: '../../../assets/img/alias/orbix360.svg',
+      link: 'https://minter.orbix360.com',
+      shouldDisplayLink: DisplayLinkOption.All,
+      category: ['marketplace'],
+      backgroundColor: '#171717',
+      description: 'NFT Marketplace with Metaverse Creation Tools'
+    },
   },
   ASSETS: {
     KT1K9gCRgaLRFKTErYt1wVxA3Frb9FjasjTV: {
