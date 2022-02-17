@@ -1414,6 +1414,7 @@ const _TRUSTED_TOKEN_CONTRACTS = [
   "KT1PooRxUckYjnWVvn9CetZxC9YeG1kkFYW5", // MekatronK9
   "KT1SRFbwhvfkXoRGqiDFVVsf5GTp16wGgtCa",//here and now 4
   "KT1Qm7MHmbdiBzoRs7xqBiqoRxw7T2cxTTJN",//mooncakes
+  "KT1Nf6V7fje6ELNgD6hkKfc3SXaDNVFAifEX", // Orbix360
 ];
 const _BLACKLISTED_TOKEN_CONTRACTS = []
 
