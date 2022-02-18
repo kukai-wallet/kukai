@@ -586,6 +586,13 @@ const _CONSTANTS: Constants = {
       backgroundColor: '#171717',
       description: 'NFT Marketplace with Metaverse Creation Tools'
     },
+    'EndlessWays': {
+      name: "Endless Ways",
+      address: ["KT1VdCrmZsQfuYgbQsezAHT1pXvs6zKF8xHB"],
+      thumbnailUrl: "../../../assets/img/alias/endlesswaysLogo.png",
+      link: "https://endlessways.net", shouldDisplayLink: DisplayLinkOption.None, category: ["collectibles"],
+      description: "Generative Art. Proper Curation.",
+    },
   },
   ASSETS: {
     KT1K9gCRgaLRFKTErYt1wVxA3Frb9FjasjTV: {
@@ -1415,6 +1422,7 @@ const _TRUSTED_TOKEN_CONTRACTS = [
   "KT1SRFbwhvfkXoRGqiDFVVsf5GTp16wGgtCa",//here and now 4
   "KT1Qm7MHmbdiBzoRs7xqBiqoRxw7T2cxTTJN",//mooncakes
   "KT1Nf6V7fje6ELNgD6hkKfc3SXaDNVFAifEX", // Orbix360
+  "KT1VdCrmZsQfuYgbQsezAHT1pXvs6zKF8xHB",//Endless Ways
 ];
 const _BLACKLISTED_TOKEN_CONTRACTS = []
 
