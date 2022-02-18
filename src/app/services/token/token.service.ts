@@ -68,7 +68,7 @@ export interface FA2 extends TokensInterface {
 })
 export class TokenService {
   readonly AUTO_DISCOVER: boolean = true;
-  readonly version: string = '1.0.11';
+  readonly version: string = '1.0.12';
   private contracts: ContractsType = {};
   private exploredIds: Record<string, { firstCheck: number; lastCheck: number; counter: number }> = {};
   private pendingSave = null;
@@ -361,8 +361,8 @@ export class TokenService {
           localStorage.setItem(this.storeKey, JSON.stringify(metadata));
           this.loadMetadata();
         }
-      } else if (metadata?.version === '1.0.10') {
-        metadata.version = '1.0.11';
+      } else if (metadata?.version === '1.0.10' || metadata?.version === '1.0.11') {
+        metadata.version = '1.0.12';
         try {
           if (metadata?.contracts) {
             const targetContract = 'KT1Qm7MHmbdiBzoRs7xqBiqoRxw7T2cxTTJN'; // clear mooncakes metadata
