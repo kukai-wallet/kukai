@@ -7,6 +7,7 @@ import assert from 'assert';
 import { Asset, CachedAsset } from '../../token/token.service';
 import { TezosToolkit } from '@taquito/taquito';
 import { Tzip12Module, tzip12 } from '@taquito/tzip12';
+import { TezosStorageHandler } from '@taquito/tzip16';
 import { Handler, IpfsHttpHandler, MetadataProvider } from '@taquito/tzip16';
 import Big from 'big.js';
 
@@ -37,8 +38,11 @@ export class TzktService implements Indexer {
   Tezos: TezosToolkit;
   constructor() {
     this.Tezos = new TezosToolkit(CONSTANTS.NODE_URL);
-    const customHandler = new Map<string, Handler>([['ipfs', new IpfsHttpHandler('cloudflare-ipfs.com')]]);
-    const customMetadataProvider = new MetadataProvider(customHandler);
+    const customHandlers = new Map<string, Handler>([
+      ['ipfs', new IpfsHttpHandler('cloudflare-ipfs.com')],
+      ['tezos-storage', new TezosStorageHandler()]
+    ]);
+    const customMetadataProvider = new MetadataProvider(customHandlers);
     this.Tezos.addExtension(new Tzip12Module(customMetadataProvider));
   }
   async getContractAddresses(pkh: string): Promise<any> {
