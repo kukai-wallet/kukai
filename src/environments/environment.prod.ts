@@ -213,6 +213,15 @@ const _CONSTANTS: Constants = {
       category: ['game', 'collectibles'],
       description: 'Battle, earn, win prizes plus NFT yield farming'
     },
+    Diplomats: {
+      name: 'Diplomats of Tezotopia',
+      address: ['KT1BqfEQFrfx3h2wWQo7gTM1SE6FpH1Y5pqK'],
+      thumbnailUrl: '../../../assets/img/alias/diplomats.png',
+      link: 'https://gallery.diplomats.tezotopia.com/',
+      shouldDisplayLink: DisplayLinkOption.None,
+      category: ['game', 'collectibles'],
+      description: 'Diplomats of Tezotopia are more than a simple PFP collectible, these representatives unlock the ability to perform various diplomatic actions in the game.'
+    },
     'Bazaar Market': {
       name: 'Bazaar Market',
       address: ['KT1PKvHNWuWDNVDtqjDha4AostLrGDu4G1jy'],
@@ -1336,6 +1345,7 @@ const _TRUSTED_TOKEN_CONTRACTS = [
   'KT1EpGgjQs73QfFJs9z7m1Mxm5MTnpC2tqse',//Kalamint NFT
   'KT1A5P4ejnLix13jtadsfV9GCnXLMNnab8UT',//Kalamint token
   'KT1ViVwoVfGSCsDaxjwoovejm1aYSGz7s2TZ',//Teztopia
+  'KT1BqfEQFrfx3h2wWQo7gTM1SE6FpH1Y5pqK',//Diplomats
   'KT1BA9igcUcgkMT4LEEQzwURsdMpQayfb6i4',//turtle
   'KT1PKvHNWuWDNVDtqjDha4AostLrGDu4G1jy',//Bazaar Market
   'KT1WGDVRnff4rmGzJUbdCRAJBmYt12BrPzdD',//PixelPotus
