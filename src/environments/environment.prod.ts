@@ -582,12 +582,13 @@ const _CONSTANTS: Constants = {
       link: "https://endlessways.net", shouldDisplayLink: DisplayLinkOption.None, category: ["collectibles"],
       description: "Generative Art. Proper Curation.",
     },
-    'A Token Gesture': {
-      name: "FLUX",
+    'TokenGesture': {
+      name: "A Token Gesture",
       address: ["KT1GU8M8kxFiK4HF9uzdXLUonX5JuddBsrba"],
       thumbnailUrl: "../../../assets/img/alias/tokengesture.png",
       link: "https://nft.inspace.ed.ac.uk", shouldDisplayLink: DisplayLinkOption.None,
-      category: ["collectibles"]
+      category: ["collectibles"],
+      description: "A Token Gesture is an interactive NFT exhibition at Inspace, part of the Institute for Design Informatics, University of Edinburgh."
     },
   },
   ASSETS: {
