@@ -582,6 +582,13 @@ const _CONSTANTS: Constants = {
       link: "https://endlessways.net", shouldDisplayLink: DisplayLinkOption.None, category: ["collectibles"],
       description: "Generative Art. Proper Curation.",
     },
+    'A Token Gesture': {
+      name: "FLUX",
+      address: ["KT1GU8M8kxFiK4HF9uzdXLUonX5JuddBsrba"],
+      thumbnailUrl: "../../../assets/img/alias/tokengesture.png",
+      link: "https://nft.inspace.ed.ac.uk", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"]
+    },
   },
   ASSETS: {
     KT1K9gCRgaLRFKTErYt1wVxA3Frb9FjasjTV: {
@@ -1411,6 +1418,7 @@ const _TRUSTED_TOKEN_CONTRACTS = [
   "KT1SRFbwhvfkXoRGqiDFVVsf5GTp16wGgtCa",//here and now 4
   "KT1Qm7MHmbdiBzoRs7xqBiqoRxw7T2cxTTJN",//mooncakes
   "KT1VdCrmZsQfuYgbQsezAHT1pXvs6zKF8xHB",//Endless Ways
+  "KT1GU8M8kxFiK4HF9uzdXLUonX5JuddBsrba",//A Token Gesture
 ];
 const _BLACKLISTED_TOKEN_CONTRACTS = []
 
