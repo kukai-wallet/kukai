@@ -111,6 +111,14 @@ export class EmbeddedComponent implements OnInit {
         operations: false,
         micheline: false
       }
+    },
+    blockspace: {
+      origins: ['https://block-space.app'],
+      permissions: {
+        login: true,
+        operations: false,
+        micheline: false
+      }
     }
   };
   constructor(

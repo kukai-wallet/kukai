@@ -1,2 +1,2 @@
 https://wallet.kukai.app/*
-  Content-Security-Policy: frame-ancestors https://playwithbrio.com https://*.playwithbrio.com https://minterpop.com https://interpopcomics.com https://*.interpopcomics.com https://human-machine.io https://*.ubisoft.com https://*.gap.com https://ldai.lexusdesign.in;
+  Content-Security-Policy: frame-ancestors https://playwithbrio.com https://*.playwithbrio.com https://minterpop.com https://interpopcomics.com https://*.interpopcomics.com https://human-machine.io https://*.ubisoft.com https://*.gap.com https://ldai.lexusdesign.in https://block-space.app;
