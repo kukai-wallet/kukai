@@ -4,6 +4,7 @@ import { TaquitoTezosDomainsClient } from '@tezos-domains/taquito-client';
 import { Tzip16Module } from '@taquito/tzip16';
 import { Injectable } from '@angular/core';
 import { CONSTANTS } from '../../../environments/environment';
+import { SupportedNetworkType } from '@tezos-domains/core';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,7 @@ export class TezosDomainsService {
     const options = { caching: { enabled: false } };
     this.client = new TaquitoTezosDomainsClient({
       tezos: tezosToolkit,
-      network: <'mainnet' | 'granadanet' | 'hangzhounet'>CONSTANTS.NETWORK,
+      network: <SupportedNetworkType>CONSTANTS.NETWORK,
       ...options
     });
   }

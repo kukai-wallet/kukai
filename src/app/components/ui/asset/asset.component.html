@@ -1,7 +1,12 @@
-<img #postImage *ngIf="mimeType?.startsWith('image/')" [src]="postSrc" id="postImage" [style.objectFit]="postSrc.indexOf(loaderUrl) > -1 ? 'scale-down' : ''"/>
+<img #postImage *ngIf="mimeType?.startsWith('image/')" [src]="postSrc" id="postImage"
+  [style.objectFit]="postSrc.indexOf(loaderUrl) > -1 ? 'scale-down' : ''" (load)="onLoad($event)"
+  (error)="onError($event)" />
 <img #preImage *ngIf="mimeType?.startsWith('image/')" style="display: none" [attr.data-src]="dataSrc" [src]="preSrc"
-  id="preImage" />
+  id="preImage" (load)="onLoad($event)" (error)="onError($event)" />
 <video #video *ngIf="mimeType?.startsWith('video/')" [controls]="controls" [autoplay]="autoplay" [muted]="muted"
   [attr.data-src]="dataSrc" [attr.data-src]="dataSrc" [src]="postSrc + '#t=' + offset"></video>
-<model-viewer #model *ngIf="mimeType?.startsWith('model/')" id="modelCanvas" auto-rotate rotation-per-second="30deg"
-  [attr.data-src]="postSrc"></model-viewer>
+<div *ngIf="mimeType?.startsWith('model/')" class="model-wrapper">
+  <model-viewer #model id="modelCanvas" auto-rotate rotation-per-second="30deg"
+    [attr.data-src]="dataSrc" [src]="postSrc" alt="postSrc" (load)="onLoad($event)" (error)="onError($event)"
+    camera-controls ar ar-modes="webxr scene-viewer quick-look"></model-viewer>
+</div>

@@ -1414,6 +1414,13 @@ const _TRUSTED_TOKEN_CONTRACTS = [
 ];
 const _BLACKLISTED_TOKEN_CONTRACTS = []
 
+const _MODEL_3D_WHITELIST = [
+  'KT1NVvPsNDChrLRH5K2cy6Sc9r1uuUwdiZQd',/* Dogami */
+  'KT1AWoUQAuUudqpc75cGukWufbfim3GRn8h6',/* Flex */
+  'KT1Lz7Jd6Sh1zUE66nDGS7hGnjwcyTBCiYbF' /* SXSW */
+];
+
 export const CONSTANTS = JSON.parse(JSON.stringify(_CONSTANTS));
 export const TRUSTED_TOKEN_CONTRACTS = JSON.parse(JSON.stringify(_TRUSTED_TOKEN_CONTRACTS));
 export const BLACKLISTED_TOKEN_CONTRACTS = JSON.parse(JSON.stringify(_BLACKLISTED_TOKEN_CONTRACTS));
+export const MODEL_3D_WHITELIST = JSON.parse(JSON.stringify(_MODEL_3D_WHITELIST));
