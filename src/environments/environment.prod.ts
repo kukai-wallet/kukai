@@ -582,6 +582,27 @@ const _CONSTANTS: Constants = {
       link: "https://endlessways.net", shouldDisplayLink: DisplayLinkOption.None, category: ["collectibles"],
       description: "Generative Art. Proper Curation.",
     },
+    'Flex': {
+        name: "Flex",
+        address: ["KT1AWoUQAuUudqpc75cGukWufbfim3GRn8h6"],
+        thumbnailUrl: "../../../assets/img/alias/Flex_Monument.png",
+        link: "https://flex.fashion", shouldDisplayLink: DisplayLinkOption.None, category: ["fashion", "collectibles"],
+        description: "Fashion, Creativity, and NFTs on Tezos",
+    },
+    'BlueVishnu': {
+        name: "BlueVishnu",
+        address: ["KT1Lz7Jd6Sh1zUE66nDGS7hGnjwcyTBCiYbF"],
+        thumbnailUrl: "../../../assets/img/alias/bluevishnu.jpg",
+        link: "", shouldDisplayLink: DisplayLinkOption.None, category: ["3D", "collectibles"],
+        description: "",
+    },
+    'Pantone': {
+        name: "PANTONE Very Peri",
+        address: ["KT1AjuZb9TZTastAzhbufGsYG7vVNADUFmue"],
+        thumbnailUrl: "../../../assets/img/alias/pantone-very-peri.jpg",
+        link: "", shouldDisplayLink: DisplayLinkOption.None, category: ["collectibles"],
+        description: "",
+    },
   },
   ASSETS: {
     KT1K9gCRgaLRFKTErYt1wVxA3Frb9FjasjTV: {
@@ -1411,6 +1432,9 @@ const _TRUSTED_TOKEN_CONTRACTS = [
   "KT1SRFbwhvfkXoRGqiDFVVsf5GTp16wGgtCa",//here and now 4
   "KT1Qm7MHmbdiBzoRs7xqBiqoRxw7T2cxTTJN",//mooncakes
   "KT1VdCrmZsQfuYgbQsezAHT1pXvs6zKF8xHB",//Endless Ways
+  "KT1AWoUQAuUudqpc75cGukWufbfim3GRn8h6",//Flex
+  "KT1Lz7Jd6Sh1zUE66nDGS7hGnjwcyTBCiYbF",//BlueVishnu
+  "KT1AjuZb9TZTastAzhbufGsYG7vVNADUFmue",//PantoneVeryPeri
 ];
 const _BLACKLISTED_TOKEN_CONTRACTS = []
 
