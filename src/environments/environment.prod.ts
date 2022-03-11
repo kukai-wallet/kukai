@@ -22,7 +22,7 @@ const _CONSTANTS: Constants = {
   CONTRACT_ALIASES: {
     'mooncakes': {
       name: "Mooncakes",
-      address: ['KT1Qm7MHmbdiBzoRs7xqBiqoRxw7T2cxTTJN'],
+      address: ['KT1Qm7MHmbdiBzoRs7xqBiqoRxw7T2cxTTJN', 'KT1CzVSa18hndYupV9NcXy3Qj7p8YFDZKVQv'],
       thumbnailUrl: "../../../assets/img/alias/mooncakes.svg",
       discoverUrl: '../../../assets/img/alias/mooncakes-discover.svg',
       link: "https://mooncakes.fun", shouldDisplayLink: DisplayLinkOption.All,
