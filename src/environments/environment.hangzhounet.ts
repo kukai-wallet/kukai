@@ -23,31 +23,38 @@ const _CONSTANTS: Constants = {
     hard_storage_limit_per_operation: 60000
   },
   CONTRACT_ALIASES: {
-    'TezosDomains': {
-        name: 'Tezos Domains',
-        address: ["KT1MgQjmWMBQ4LyuMAqZccTkMSUJbEXeGqii"],
-        thumbnailUrl: "",
-        discoverUrl: "../../../assets/img/alias/tezosdomains-discover.png",
-        link: "https://hangzhounet.tezos.domains", shouldDisplayLink: DisplayLinkOption.All, category: ["identity"],
-        description: "Friendly names on Tezos",
-        backgroundColor: '#f1f4f8'
+    TezosDomains: {
+      name: 'Tezos Domains',
+      address: ['KT1MgQjmWMBQ4LyuMAqZccTkMSUJbEXeGqii'],
+      thumbnailUrl: '',
+      discoverUrl: '../../../assets/img/alias/tezosdomains-discover.png',
+      link: 'https://hangzhounet.tezos.domains',
+      shouldDisplayLink: DisplayLinkOption.All,
+      category: ['identity'],
+      description: 'Friendly names on Tezos',
+      backgroundColor: '#f1f4f8'
     },
-    'Versum': {
-      name: "Versum",
-      address: ["KT1EY6XHM8ycpozauAjCqTqVrnyZLo2b1fUv", "KT1PVJP2FbSZrXgKWdhXguMV1HmfrX4dH7o5"],
-      thumbnailUrl: "../../../assets/img/alias/versum.png",
-      discoverUrl: "../../../assets/img/alias/versum.svg",
-      link: "https://versum.xyz", shouldDisplayLink: DisplayLinkOption.All, backgroundColor: 'black', category: ["marketplace"],
-      description: "NFT Marketplace focused on organic content and curation.",
-    },
+    Versum: {
+      name: 'Versum',
+      address: ['KT1EY6XHM8ycpozauAjCqTqVrnyZLo2b1fUv', 'KT1PVJP2FbSZrXgKWdhXguMV1HmfrX4dH7o5'],
+      thumbnailUrl: '../../../assets/img/alias/versum.png',
+      discoverUrl: '../../../assets/img/alias/versum.svg',
+      link: 'https://versum.xyz',
+      shouldDisplayLink: DisplayLinkOption.All,
+      backgroundColor: 'black',
+      category: ['marketplace'],
+      description: 'NFT Marketplace focused on organic content and curation.'
+    }
   },
   ASSETS: {},
   NFT_CONTRACT_OVERRIDES: [],
   CONTRACT_OVERRIDES: {}
 };
 const _TRUSTED_TOKEN_CONTRACTS = [];
-const _BLACKLISTED_TOKEN_CONTRACTS = []
+const _BLACKLISTED_TOKEN_CONTRACTS = [];
+const _MODEL_3D_WHITELIST = [];
 
 export const CONSTANTS = JSON.parse(JSON.stringify(_CONSTANTS));
 export const TRUSTED_TOKEN_CONTRACTS = JSON.parse(JSON.stringify(_TRUSTED_TOKEN_CONTRACTS));
 export const BLACKLISTED_TOKEN_CONTRACTS = JSON.parse(JSON.stringify(_BLACKLISTED_TOKEN_CONTRACTS));
+export const MODEL_3D_WHITELIST = JSON.parse(JSON.stringify(_MODEL_3D_WHITELIST));

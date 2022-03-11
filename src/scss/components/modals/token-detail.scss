@@ -68,7 +68,7 @@
         border-radius: unset;
       }
 
-      & img.expand {
+      & img.expand, b.expand {
         position: absolute;
         bottom: 0.5rem;
         right: 0.5rem;
@@ -80,6 +80,10 @@
         cursor: pointer;
         filter: invert(1) opacity(0.8);
         z-index: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #000;
       }
     }
 

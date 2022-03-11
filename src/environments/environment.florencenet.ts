@@ -272,14 +272,17 @@ const _CONSTANTS: Constants = {
   CONTRACT_OVERRIDES: {
     // mystery map
     'KT1TWb6cE56q2L8yTeNNchXqDSXacrNqyVNZ:reward': {
-      storage: 150, gas: 60000
+      storage: 150,
+      gas: 60000
     },
     'KT1RUSCZ7pJ3WNTuXFD44UpStmNRjA459guZ:reward': {
-      storage: 150, gas: 60000
+      storage: 150,
+      gas: 60000
     },
     'KT1PrNd3sy1pLAqGtft47dzG4v8KizqPJntT:reward': {
-      storage: 150, gas: 59920
-    },
+      storage: 150,
+      gas: 59920
+    }
   },
   NFT_CONTRACT_OVERRIDES: ['KT1QzkVVgUYMTvwnyRwGttM8zTg5CyuHKxQH', 'KT1HEzZQV9B85HZnGpDgaZtZNk4ZXbLRuBii']
 };
@@ -317,8 +320,10 @@ const _TRUSTED_TOKEN_CONTRACTS = [
   'KT1G1V5hS6ghW95GsUV2ZbEfEHENAvq3zTMn',
   'KT1DEJEcfiMUWYjn1ZCTbbLokRcP26sx2pTH'
 ];
-const _BLACKLISTED_TOKEN_CONTRACTS = []
+const _BLACKLISTED_TOKEN_CONTRACTS = [];
+const _MODEL_3D_WHITELIST = [];
 
 export const CONSTANTS = JSON.parse(JSON.stringify(_CONSTANTS));
 export const TRUSTED_TOKEN_CONTRACTS = JSON.parse(JSON.stringify(_TRUSTED_TOKEN_CONTRACTS));
-export const BLACKLISTED_TOKEN_CONTRACTS = JSON.parse(JSON.stringify(_BLACKLISTED_TOKEN_CONTRACTS)); 
+export const BLACKLISTED_TOKEN_CONTRACTS = JSON.parse(JSON.stringify(_BLACKLISTED_TOKEN_CONTRACTS));
+export const MODEL_3D_WHITELIST = JSON.parse(JSON.stringify(_MODEL_3D_WHITELIST));
