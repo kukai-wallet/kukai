@@ -402,9 +402,6 @@ export class TzktService implements Indexer {
           metadata.thumbnailUri = '';
         }
       }
-      if (data?.symbol === 'OBJKTCOM' && typeof rawData?.formats === 'object') {
-        metadata.displayUri = rawData.formats[0];
-      }
       if (data?.contract === 'KT1NVvPsNDChrLRH5K2cy6Sc9r1uuUwdiZQd' /* Dogami */ && rawData?.formats) {
         if (typeof rawData.formats[0] === 'string') {
           metadata.displayUri = JSON.parse(rawData.formats)[0];
