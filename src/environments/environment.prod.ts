@@ -22,7 +22,7 @@ const _CONSTANTS: Constants = {
   CONTRACT_ALIASES: {
     'mooncakes': {
       name: "Mooncakes",
-      address: ['KT1Qm7MHmbdiBzoRs7xqBiqoRxw7T2cxTTJN'],
+      address: ['KT1Qm7MHmbdiBzoRs7xqBiqoRxw7T2cxTTJN', 'KT1CzVSa18hndYupV9NcXy3Qj7p8YFDZKVQv'],
       thumbnailUrl: "../../../assets/img/alias/mooncakes.svg",
       discoverUrl: '../../../assets/img/alias/mooncakes-discover.svg',
       link: "https://mooncakes.fun", shouldDisplayLink: DisplayLinkOption.All,
@@ -589,6 +589,27 @@ const _CONSTANTS: Constants = {
       link: "https://nft.inspace.ed.ac.uk", shouldDisplayLink: DisplayLinkOption.None,
       category: ["collectibles"],
       description: "A Token Gesture is an interactive NFT exhibition at Inspace, part of the Institute for Design Informatics, University of Edinburgh."
+    },
+    'Flex': {
+        name: "Flex",
+        address: ["KT1AWoUQAuUudqpc75cGukWufbfim3GRn8h6"],
+        thumbnailUrl: "../../../assets/img/alias/Flex_Monument.png",
+        link: "https://flex.fashion", shouldDisplayLink: DisplayLinkOption.None, category: ["fashion", "collectibles"],
+        description: "Fashion, Creativity, and NFTs on Tezos",
+    },
+    'BlueVishnu': {
+        name: "BlueVishnu",
+        address: ["KT1Lz7Jd6Sh1zUE66nDGS7hGnjwcyTBCiYbF"],
+        thumbnailUrl: "../../../assets/img/alias/bluevishnu.jpg",
+        link: "", shouldDisplayLink: DisplayLinkOption.None, category: ["3D", "collectibles"],
+        description: "",
+    },
+    'Pantone': {
+        name: "PANTONE Very Peri",
+        address: ["KT1AjuZb9TZTastAzhbufGsYG7vVNADUFmue"],
+        thumbnailUrl: "../../../assets/img/alias/pantone-very-peri.jpg",
+        link: "", shouldDisplayLink: DisplayLinkOption.None, category: ["collectibles"],
+        description: "",
     },
   },
   ASSETS: {
@@ -1420,9 +1441,19 @@ const _TRUSTED_TOKEN_CONTRACTS = [
   "KT1Qm7MHmbdiBzoRs7xqBiqoRxw7T2cxTTJN",//mooncakes
   "KT1VdCrmZsQfuYgbQsezAHT1pXvs6zKF8xHB",//Endless Ways
   "KT1GU8M8kxFiK4HF9uzdXLUonX5JuddBsrba",//A Token Gesture
+  "KT1AWoUQAuUudqpc75cGukWufbfim3GRn8h6",//Flex
+  "KT1Lz7Jd6Sh1zUE66nDGS7hGnjwcyTBCiYbF",//BlueVishnu
+  "KT1AjuZb9TZTastAzhbufGsYG7vVNADUFmue",//PantoneVeryPeri
 ];
 const _BLACKLISTED_TOKEN_CONTRACTS = []
+
+const _MODEL_3D_WHITELIST = [
+  'KT1NVvPsNDChrLRH5K2cy6Sc9r1uuUwdiZQd',/* Dogami */
+  'KT1AWoUQAuUudqpc75cGukWufbfim3GRn8h6',/* Flex */
+  'KT1Lz7Jd6Sh1zUE66nDGS7hGnjwcyTBCiYbF' /* SXSW */
+];
 
 export const CONSTANTS = JSON.parse(JSON.stringify(_CONSTANTS));
 export const TRUSTED_TOKEN_CONTRACTS = JSON.parse(JSON.stringify(_TRUSTED_TOKEN_CONTRACTS));
 export const BLACKLISTED_TOKEN_CONTRACTS = JSON.parse(JSON.stringify(_BLACKLISTED_TOKEN_CONTRACTS));
+export const MODEL_3D_WHITELIST = JSON.parse(JSON.stringify(_MODEL_3D_WHITELIST));

@@ -85,22 +85,27 @@ const _CONSTANTS: Constants = {
       description: 'Collectibles game with FREE daily NFTs',
       backgroundColor: '#c7b299'
     },
-    'Tezotopia': {
-        name: "Tezotopia",
-        address: ["KT1SZ87ihAWc43YZxYjoRz8MQyAapUGbZigG"],
-        thumbnailUrl: "../../../assets/img/alias/tezotopia.png",
-        discoverUrl: "../../../assets/img/alias/tezotopia-discover.png",
-        link: "https://testnet.app.tezotopia.com/marketplace/units", shouldDisplayLink: DisplayLinkOption.All, category: ["game", "collectibles"],
-        description: "Battle, earn, win prizes plus NFT yield farming"
+    Tezotopia: {
+      name: 'Tezotopia',
+      address: ['KT1SZ87ihAWc43YZxYjoRz8MQyAapUGbZigG'],
+      thumbnailUrl: '../../../assets/img/alias/tezotopia.png',
+      discoverUrl: '../../../assets/img/alias/tezotopia-discover.png',
+      link: 'https://testnet.app.tezotopia.com/marketplace/units',
+      shouldDisplayLink: DisplayLinkOption.All,
+      category: ['game', 'collectibles'],
+      description: 'Battle, earn, win prizes plus NFT yield farming'
     },
-    'Versum': {
-      name: "Versum",
-      address: ["KT1XUw3is6ZbTJ1xKUYPefuVZ2ECd7LEan2Q"],
-      thumbnailUrl: "../../../assets/img/alias/versum.png",
-      discoverUrl: "../../../assets/img/alias/versum.svg",
-      link: "https://versum.xyz", shouldDisplayLink: DisplayLinkOption.All, backgroundColor: 'black', category: ["marketplace"],
-      description: "NFT Marketplace focused on organic content and curation.",
-    },
+    Versum: {
+      name: 'Versum',
+      address: ['KT1XUw3is6ZbTJ1xKUYPefuVZ2ECd7LEan2Q'],
+      thumbnailUrl: '../../../assets/img/alias/versum.png',
+      discoverUrl: '../../../assets/img/alias/versum.svg',
+      link: 'https://versum.xyz',
+      shouldDisplayLink: DisplayLinkOption.All,
+      backgroundColor: 'black',
+      category: ['marketplace'],
+      description: 'NFT Marketplace focused on organic content and curation.'
+    }
   },
   ASSETS: {},
   NFT_CONTRACT_OVERRIDES: [],
@@ -118,8 +123,10 @@ const _TRUSTED_TOKEN_CONTRACTS = [
   'KT1B3pPLmJnVUfEogxDTc7tGNQdicbHToyBx', //PixelPotus old test
   'KT1FWJZb8eAXmucegZ3tWQB7TCRvQGjTmfB6' //Kalamint
 ];
-const _BLACKLISTED_TOKEN_CONTRACTS = []
+const _BLACKLISTED_TOKEN_CONTRACTS = [];
+const _MODEL_3D_WHITELIST = [];
 
 export const CONSTANTS = JSON.parse(JSON.stringify(_CONSTANTS));
 export const TRUSTED_TOKEN_CONTRACTS = JSON.parse(JSON.stringify(_TRUSTED_TOKEN_CONTRACTS));
-export const BLACKLISTED_TOKEN_CONTRACTS = JSON.parse(JSON.stringify(_BLACKLISTED_TOKEN_CONTRACTS)); 
+export const BLACKLISTED_TOKEN_CONTRACTS = JSON.parse(JSON.stringify(_BLACKLISTED_TOKEN_CONTRACTS));
+export const MODEL_3D_WHITELIST = JSON.parse(JSON.stringify(_MODEL_3D_WHITELIST));

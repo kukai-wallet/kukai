@@ -53,6 +53,8 @@ import 'zone.js/dist/zone'; // Included with Angular CLI.
 
 (window as any).global = window;
 
+import '@google/model-viewer';
+
 /***************************************************************************************************
  * IE10 issues
  */
