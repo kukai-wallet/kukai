@@ -30,6 +30,14 @@ const _CONSTANTS: Constants = {
       backgroundColor: '#1C1C20',
       description: "Have fun exploring a galaxy of NFTs",
     },
+    'GJOE': {
+      name: "GJOE",
+      address: ["KT1QdMB7uePDFGoFLDZmAL34roFYqYhzHu7N"],
+      thumbnailUrl: "../../../assets/img/alias/gjoe.jpg",
+      link: "https://customhorror.net/gjoe", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"],
+      description: "Generative Jolt of Expression",
+    },
     gap: {
       name: 'Gap Threads',
       address: ['KT1GA6KaLWpURnjvmnxB4wToErzM2EXHqrMo'],
