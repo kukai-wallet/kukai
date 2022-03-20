@@ -616,6 +616,14 @@ const _CONSTANTS: Constants = {
       link: "https://endlessways.net", shouldDisplayLink: DisplayLinkOption.None, category: ["collectibles"],
       description: "Generative Art. Proper Curation.",
     },
+    'TokenGesture': {
+      name: "A Token Gesture",
+      address: ["KT1GU8M8kxFiK4HF9uzdXLUonX5JuddBsrba"],
+      thumbnailUrl: "../../../assets/img/alias/tokengesture.png",
+      link: "https://nft.inspace.ed.ac.uk", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"],
+      description: "A Token Gesture is an interactive NFT exhibition at Inspace, part of the Institute for Design Informatics, University of Edinburgh."
+    },
     'Flex': {
         name: "Flex",
         address: ["KT1AWoUQAuUudqpc75cGukWufbfim3GRn8h6"],
@@ -1469,6 +1477,7 @@ const _TRUSTED_TOKEN_CONTRACTS = [
   "KT1Qm7MHmbdiBzoRs7xqBiqoRxw7T2cxTTJN",//mooncakes
   "KT1HJExmBz4G4kG1wx9zqs394kgRiDLWCb4m", // Fellowship of Ilmeresh
   "KT1VdCrmZsQfuYgbQsezAHT1pXvs6zKF8xHB",//Endless Ways
+  "KT1GU8M8kxFiK4HF9uzdXLUonX5JuddBsrba",//A Token Gesture
   "KT1AWoUQAuUudqpc75cGukWufbfim3GRn8h6",//Flex
   "KT1Lz7Jd6Sh1zUE66nDGS7hGnjwcyTBCiYbF",//BlueVishnu
   "KT1AjuZb9TZTastAzhbufGsYG7vVNADUFmue",//PantoneVeryPeri
