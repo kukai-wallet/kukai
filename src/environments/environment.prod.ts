@@ -213,6 +213,15 @@ const _CONSTANTS: Constants = {
       category: ['game', 'collectibles'],
       description: 'Battle, earn, win prizes plus NFT yield farming'
     },
+    Diplomats: {
+      name: 'Diplomats of Tezotopia',
+      address: ['KT1BqfEQFrfx3h2wWQo7gTM1SE6FpH1Y5pqK'],
+      thumbnailUrl: '../../../assets/img/alias/diplomats.png',
+      link: 'https://gallery.diplomats.tezotopia.com/',
+      shouldDisplayLink: DisplayLinkOption.None,
+      category: ['game', 'collectibles'],
+      description: 'Diplomats of Tezotopia are more than a simple PFP collectible, these representatives unlock the ability to perform various diplomatic actions in the game.'
+    },
     'Bazaar Market': {
       name: 'Bazaar Market',
       address: ['KT1PKvHNWuWDNVDtqjDha4AostLrGDu4G1jy'],
@@ -461,7 +470,7 @@ const _CONSTANTS: Constants = {
     },
     'HouseOfSkratz': {
       name: "House Of Skratz",
-      address: ["KT1UHiGBUpbmUSV68tiGi8owFP7VWr2zBMCk", "KT1MWKxDT6QJWgPH4Wq1TuHwW2tcvJRbuKMZ", "KT1HMvdTCsK9Su7RkFKgFwQuxaqgmNdbtdLS"],
+      address: ["KT1UHiGBUpbmUSV68tiGi8owFP7VWr2zBMCk", "KT1MWKxDT6QJWgPH4Wq1TuHwW2tcvJRbuKMZ", "KT1HMvdTCsK9Su7RkFKgFwQuxaqgmNdbtdLS", "KT1CFdGeFo44DN64JgtfHF2YqrZTKg1yFXM4"],
       thumbnailUrl: "../../../assets/img/alias/skratz.jpeg",
       link: "https://houseofskratz.com", shouldDisplayLink: DisplayLinkOption.None,
       category: ["collectibles"],
@@ -514,6 +523,15 @@ const _CONSTANTS: Constants = {
       discoverUrl: "../../../assets/img/alias/versum.svg",
       link: "https://versum.xyz", shouldDisplayLink: DisplayLinkOption.None, backgroundColor: 'black', category: ["marketplace"],
       description: "NFT Marketplace focused on organic content and curation.",
+    },
+    'VesselGen0': {
+      name: "Vessel Gen0",
+      address: ["KT1U1GDQDE7C9DNfE9iSojsKfWf5zUXdSVde"],
+      thumbnailUrl: "../../../assets/img/alias/vesselgen0.jpg",
+      link: "https://vesselsgen0.xyz/",
+      shouldDisplayLink: DisplayLinkOption.None,
+      description: "An eclectic kaleidoscope: alien cultists, scifi loving tech heads, old earth culture pilfering retronauts and flamboyant gang members.",
+      category: ["collectibles"]
     },
     'FCOREBOLLO': {
       name: "FCO. REBOLLO",
@@ -575,12 +593,36 @@ const _CONSTANTS: Constants = {
       category: ["collectibles"],
       description: "3477 Arcan=s transmuted and summoned by Overlords on the Tezos Blockchain.",
     },
+    'Ilmeresh': {
+      name: "Fellowship of Ilmeresh",
+      address: ["KT1HJExmBz4G4kG1wx9zqs394kgRiDLWCb4m"],
+      thumbnailUrl: "../../../assets/img/alias/ilmeresh.png",
+      link: "https://ilmeresh.com", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"],
+      description: "The Fellowship of Ilmeresh is a collection of randomly generated characters .jpg on the Tezos blockchain. Designed in 3D!",
+    },
+    'HereAndNow4': {
+      name: "HERE & NOW: Edition 4",
+      address: ["KT1SRFbwhvfkXoRGqiDFVVsf5GTp16wGgtCa"],
+      thumbnailUrl: "../../../assets/img/alias/HereAndNowEd4.png",
+      link: "https://hereandnow.events/", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["art", "collectibles"],
+      description: "Here and Now is an interactive virtual Art experience that showcases emerging and established artists.",
+    },
     'EndlessWays': {
       name: "Endless Ways",
       address: ["KT1VdCrmZsQfuYgbQsezAHT1pXvs6zKF8xHB"],
       thumbnailUrl: "../../../assets/img/alias/endlesswaysLogo.png",
       link: "https://endlessways.net", shouldDisplayLink: DisplayLinkOption.None, category: ["collectibles"],
       description: "Generative Art. Proper Curation.",
+    },
+    'TokenGesture': {
+      name: "A Token Gesture",
+      address: ["KT1GU8M8kxFiK4HF9uzdXLUonX5JuddBsrba"],
+      thumbnailUrl: "../../../assets/img/alias/tokengesture.png",
+      link: "https://nft.inspace.ed.ac.uk", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"],
+      description: "A Token Gesture is an interactive NFT exhibition at Inspace, part of the Institute for Design Informatics, University of Edinburgh."
     },
     'Flex': {
         name: "Flex",
@@ -1357,6 +1399,7 @@ const _TRUSTED_TOKEN_CONTRACTS = [
   'KT1EpGgjQs73QfFJs9z7m1Mxm5MTnpC2tqse',//Kalamint NFT
   'KT1A5P4ejnLix13jtadsfV9GCnXLMNnab8UT',//Kalamint token
   'KT1ViVwoVfGSCsDaxjwoovejm1aYSGz7s2TZ',//Teztopia
+  'KT1BqfEQFrfx3h2wWQo7gTM1SE6FpH1Y5pqK',//Diplomats
   'KT1BA9igcUcgkMT4LEEQzwURsdMpQayfb6i4',//turtle
   'KT1PKvHNWuWDNVDtqjDha4AostLrGDu4G1jy',//Bazaar Market
   'KT1WGDVRnff4rmGzJUbdCRAJBmYt12BrPzdD',//PixelPotus
@@ -1406,9 +1449,10 @@ const _TRUSTED_TOKEN_CONTRACTS = [
   'KT1AWUzFdNwZn7YprZitR6Q6eUuVmfUG1HMP',//Skratz Geckos
   'KT19hJSZZYnD41xuEjEgodhAnnuLh142g8QJ',//Skratz Akira
   'KT1F9uU1xXJEzKmPvxMAdo1cMwnhnBHEB6pN',//Skratz x Tezape
-  'KT1UHiGBUpbmUSV68tiGi8owFP7VWr2zBMCk',// House Of Skratz
+  'KT1UHiGBUpbmUSV68tiGi8owFP7VWr2zBMCk',// Skratz v1
   'KT1MWKxDT6QJWgPH4Wq1TuHwW2tcvJRbuKMZ',// House Of Skratz Whitelist
   'KT1HMvdTCsK9Su7RkFKgFwQuxaqgmNdbtdLS',// House Of Skratz DAO
+  "KT1CFdGeFo44DN64JgtfHF2YqrZTKg1yFXM4",// House Of Skratz
   'KT1FReMp4U1KipyH53xXUnnjtdRQZaLnQpUj',//TezApeGang
   'KT18pVpRXKPY2c4U2yFEGSH3ZnhB2kL8kwXS',//Rarible
   "KT1LikBSDucbAfYLN9Uxosh4V2SNRrbQwfrJ", //Transmission Residents
@@ -1419,6 +1463,7 @@ const _TRUSTED_TOKEN_CONTRACTS = [
   "KT1D394hqndjvTcFgrmUYBxwrzUTNtzrZ5ox", //Platypoos
   "KT1GA6KaLWpURnjvmnxB4wToErzM2EXHqrMo", //Gap
   "KT1LjmAdYQCLBjwv4S2oFkEzyHVkomAf5MrW", //Versum
+  "KT1U1GDQDE7C9DNfE9iSojsKfWf5zUXdSVde", // Vessel Gen0
   "KT1Qc8xu8i72QX5S72ifPB3KJGsJqXB79eTP", // FCO REBOLLO
   "KT1V3BYwUN7FiBqADLMvMpWbz33tq1vudBh5", //Monarx
   "KT1S9VbCtVZUgAG4Q3VArvY5stu96q4CiPHZ", // Distributed Consciousness
@@ -1431,7 +1476,9 @@ const _TRUSTED_TOKEN_CONTRACTS = [
   "KT1PooRxUckYjnWVvn9CetZxC9YeG1kkFYW5", // MekatronK9
   "KT1SRFbwhvfkXoRGqiDFVVsf5GTp16wGgtCa",//here and now 4
   "KT1Qm7MHmbdiBzoRs7xqBiqoRxw7T2cxTTJN",//mooncakes
+  "KT1HJExmBz4G4kG1wx9zqs394kgRiDLWCb4m", // Fellowship of Ilmeresh
   "KT1VdCrmZsQfuYgbQsezAHT1pXvs6zKF8xHB",//Endless Ways
+  "KT1GU8M8kxFiK4HF9uzdXLUonX5JuddBsrba",//A Token Gesture
   "KT1AWoUQAuUudqpc75cGukWufbfim3GRn8h6",//Flex
   "KT1Lz7Jd6Sh1zUE66nDGS7hGnjwcyTBCiYbF",//BlueVishnu
   "KT1AjuZb9TZTastAzhbufGsYG7vVNADUFmue",//PantoneVeryPeri
