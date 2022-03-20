@@ -1,15 +1,20 @@
 <div *ngIf="displayAgreement" class="agreement-wrapper fade-in">
   <div class="agreement-body">
     <div class="agreement-footer fade-in">
-      <p>By Accessing, Continuing to Use & Browse this Website including its Services provided therein (“Kukai Wallet”), you agree that you have read and reviewed our <a href="./terms-of-use" target="_blank">Terms of Use</a> and <a href="./privacy-policy" target="_blank">Privacy Policy</a>.</p>
-      <div><div class="accept">
-        <button (click)="accept()">Accept</button>
-        <p>I have reviewed the Terms of Use and Privacy Policy, I hereby Accept and Agree to the Terms of Use and Privacy Policy.</p>
-      </div>
+      <p>By Accessing, Continuing to Use & Browse this Website including its Services provided therein (“Kukai Wallet”),
+        you agree that you have read and reviewed our <a href="./terms-of-use" target="_blank">Terms of Use</a> and <a
+          href="./privacy-policy" target="_blank">Privacy Policy</a>.</p>
       <div>
-        <a href="about:blank"><button>Decline</button></a>
-        <p>I have reviewed the Terms of Use and Privacy Policy, I hereby DO NOT Accept and Agree to the Terms of Use and Privacy Policy.</p>
-      </div>
+        <div class="flex-column accept">
+          <button class="fade-in" (click)="accept()">Accept</button>
+          <p>I have reviewed the Terms of Use and Privacy Policy, I hereby Accept and Agree to the Terms of Use and
+            Privacy Policy.</p>
+        </div>
+        <div class="flex-column decline">
+          <a class="flex-column" href="about:blank"><button>Decline</button></a>
+          <p>I have reviewed the Terms of Use and Privacy Policy, I hereby DO NOT Accept and Agree to the Terms of Use
+            and Privacy Policy.</p>
+        </div>
       </div>
     </div>
   </div>

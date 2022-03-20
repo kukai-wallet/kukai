@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CONSTANTS } from '../../../../environments/environment';
+import { CONSTANTS, MODEL_3D_WHITELIST } from '../../../../environments/environment';
 import { Indexer } from '../indexer.service';
 import * as cryptob from 'crypto-browserify';
 import { WalletObject, Activity, OpStatus } from '../../wallet/wallet';
@@ -7,6 +7,7 @@ import assert from 'assert';
 import { Asset, CachedAsset } from '../../token/token.service';
 import { TezosToolkit } from '@taquito/taquito';
 import { Tzip12Module, tzip12 } from '@taquito/tzip12';
+import { TezosStorageHandler } from '@taquito/tzip16';
 import { Handler, IpfsHttpHandler, MetadataProvider } from '@taquito/tzip16';
 import Big from 'big.js';
 
@@ -37,8 +38,11 @@ export class TzktService implements Indexer {
   Tezos: TezosToolkit;
   constructor() {
     this.Tezos = new TezosToolkit(CONSTANTS.NODE_URL);
-    const customHandler = new Map<string, Handler>([['ipfs', new IpfsHttpHandler('cloudflare-ipfs.com')]]);
-    const customMetadataProvider = new MetadataProvider(customHandler);
+    const customHandlers = new Map<string, Handler>([
+      ['ipfs', new IpfsHttpHandler('cloudflare-ipfs.com')],
+      ['tezos-storage', new TezosStorageHandler()]
+    ]);
+    const customMetadataProvider = new MetadataProvider(customHandlers);
     this.Tezos.addExtension(new Tzip12Module(customMetadataProvider));
   }
   async getContractAddresses(pkh: string): Promise<any> {
@@ -250,6 +254,9 @@ export class TzktService implements Indexer {
         if (data?.length && data[0]?.name === 'Unknown') {
           data = [];
         }
+        if (contractAddress === 'KT1Qm7MHmbdiBzoRs7xqBiqoRxw7T2cxTTJN') {
+          data = []; // bypass bcd cache for mooncakes
+        }
         if (data.length === 0) {
           try {
             data = await this.getTokenMetadataWithTaquito(contractAddress, id);
@@ -334,7 +341,6 @@ export class TzktService implements Indexer {
       'decimals',
       'name',
       'description',
-      'artifactUri',
       'displayUri',
       'thumbnailUri',
       'externalUri',
@@ -396,8 +402,29 @@ export class TzktService implements Indexer {
           metadata.thumbnailUri = '';
         }
       }
+      if (data?.contract === 'KT1NVvPsNDChrLRH5K2cy6Sc9r1uuUwdiZQd' /* Dogami */ && rawData?.formats) {
+        if (typeof rawData.formats[0] === 'string') {
+          metadata.displayUri = JSON.parse(rawData.formats)[0];
+        } else {
+          metadata.displayUri = rawData.formats[0];
+        }
+      }
+      if (
+        (data?.contract === 'KT1AWoUQAuUudqpc75cGukWufbfim3GRn8h6' /* Flex */ || data?.contract === 'KT1Lz7Jd6Sh1zUE66nDGS7hGnjwcyTBCiYbF') /* SXSW */ &&
+        rawData?.formats?.length
+      ) {
+        metadata.displayUri = rawData.formats?.find((f) => f?.mimeType?.startsWith('model/')) ?? metadata.displayUri;
+      }
       if (!metadata.displayUri && !metadata.thumbnailUri && rawData?.icon) {
         metadata.thumbnailUri = await this.uriToAsset(rawData?.icon, counter); // Plenty + HEH
+      }
+      if (!(MODEL_3D_WHITELIST as Array<any>).includes(data?.contract)) {
+        if (metadata.displayUri?.mimeType.startsWith('model/')) {
+          metadata.displayUri = '';
+        }
+        if (metadata.thumbnailUri?.mimeType.startsWith('model/')) {
+          metadata.thumbnailUri = '';
+        }
       }
     } catch (e) {}
     return metadata;

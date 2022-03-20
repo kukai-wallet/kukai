@@ -14,11 +14,12 @@
             [size]="'600x600'" (click)="expandImage()" (loaded)="assetLoaded = true"></app-asset>
           <app-asset [style.display]="!imageExpanded ? 'none' : ''" class="flex-row button sd-only"
             [meta]="!token ? '../../../assets/img/tezos-xtz-logo.svg' : token?.displayAsset || token?.thumbnailAsset"
-            [size]="'raw'" (click)="expandImage()"></app-asset>
+            [size]="'raw'"></app-asset>
           <img *ngIf="imageExpanded" class="flex-row button close" (click)="expandImage()"
             src="../../../../../assets/img/close-btn-x.png" />
-          <img *ngIf="!imageExpanded && assetLoaded" class="expand" src="../../../../../assets/img/expand.png"
+          <img *ngIf="!imageExpanded && assetLoaded && !token.displayAsset?.mimeType?.startsWith('model/')" class="expand" src="../../../../../assets/img/expand.png"
             (click)="expandImage()" />
+            <b *ngIf="!imageExpanded && token.displayAsset?.mimeType?.startsWith('model/')" class="expand" (click)="expandImage()" >3D</b>
         </div>
         <div class="flex-column meta">
           <div class="flex-column top">

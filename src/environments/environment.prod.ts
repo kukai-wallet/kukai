@@ -22,7 +22,7 @@ const _CONSTANTS: Constants = {
   CONTRACT_ALIASES: {
     'mooncakes': {
       name: "Mooncakes",
-      address: ['KT1Qm7MHmbdiBzoRs7xqBiqoRxw7T2cxTTJN'],
+      address: ['KT1Qm7MHmbdiBzoRs7xqBiqoRxw7T2cxTTJN', 'KT1CzVSa18hndYupV9NcXy3Qj7p8YFDZKVQv'],
       thumbnailUrl: "../../../assets/img/alias/mooncakes.svg",
       discoverUrl: '../../../assets/img/alias/mooncakes-discover.svg',
       link: "https://mooncakes.fun", shouldDisplayLink: DisplayLinkOption.All,
@@ -582,6 +582,42 @@ const _CONSTANTS: Constants = {
       link: "https://ilmeresh.com", shouldDisplayLink: DisplayLinkOption.None,
       category: ["collectibles"],
       description: "The Fellowship of Ilmeresh is a collection of randomly generated characters .jpg on the Tezos blockchain. Designed in 3D!",
+    },
+    'HereAndNow4': {
+      name: "HERE & NOW: Edition 4",
+      address: ["KT1SRFbwhvfkXoRGqiDFVVsf5GTp16wGgtCa"],
+      thumbnailUrl: "../../../assets/img/alias/HereAndNowEd4.png",
+      link: "https://hereandnow.events/", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["art", "collectibles"],
+      description: "Here and Now is an interactive virtual Art experience that showcases emerging and established artists.",
+    },
+    'EndlessWays': {
+      name: "Endless Ways",
+      address: ["KT1VdCrmZsQfuYgbQsezAHT1pXvs6zKF8xHB"],
+      thumbnailUrl: "../../../assets/img/alias/endlesswaysLogo.png",
+      link: "https://endlessways.net", shouldDisplayLink: DisplayLinkOption.None, category: ["collectibles"],
+      description: "Generative Art. Proper Curation.",
+    },
+    'Flex': {
+        name: "Flex",
+        address: ["KT1AWoUQAuUudqpc75cGukWufbfim3GRn8h6"],
+        thumbnailUrl: "../../../assets/img/alias/Flex_Monument.png",
+        link: "https://flex.fashion", shouldDisplayLink: DisplayLinkOption.None, category: ["fashion", "collectibles"],
+        description: "Fashion, Creativity, and NFTs on Tezos",
+    },
+    'BlueVishnu': {
+        name: "BlueVishnu",
+        address: ["KT1Lz7Jd6Sh1zUE66nDGS7hGnjwcyTBCiYbF"],
+        thumbnailUrl: "../../../assets/img/alias/bluevishnu.jpg",
+        link: "", shouldDisplayLink: DisplayLinkOption.None, category: ["3D", "collectibles"],
+        description: "",
+    },
+    'Pantone': {
+        name: "PANTONE Very Peri",
+        address: ["KT1AjuZb9TZTastAzhbufGsYG7vVNADUFmue"],
+        thumbnailUrl: "../../../assets/img/alias/pantone-very-peri.jpg",
+        link: "", shouldDisplayLink: DisplayLinkOption.None, category: ["collectibles"],
+        description: "",
     },
   },
   ASSETS: {
@@ -1321,7 +1357,8 @@ const _CONSTANTS: Constants = {
     'KT1Hkg5qeNhfwpKW4fXvq7HGZB9z2EnmCCA9:collect': { storage: 212 },
   },
   NFT_CONTRACT_OVERRIDES: [
-    'KT1AafHA1C1vk959wvHWBispY9Y2f3fxBUUo:0' //lp tzBTC
+    'KT1AafHA1C1vk959wvHWBispY9Y2f3fxBUUo:0', //lp tzBTC
+    'KT1JBNFcB5tiycHNdYGYCtR3kk6JaJysUCi8:0' // Lugh Euro
   ]
 };
 const _TRUSTED_TOKEN_CONTRACTS = [
@@ -1411,9 +1448,20 @@ const _TRUSTED_TOKEN_CONTRACTS = [
   "KT1SRFbwhvfkXoRGqiDFVVsf5GTp16wGgtCa",//here and now 4
   "KT1Qm7MHmbdiBzoRs7xqBiqoRxw7T2cxTTJN",//mooncakes
   "KT1HJExmBz4G4kG1wx9zqs394kgRiDLWCb4m", // Fellowship of Ilmeresh
+  "KT1VdCrmZsQfuYgbQsezAHT1pXvs6zKF8xHB",//Endless Ways
+  "KT1AWoUQAuUudqpc75cGukWufbfim3GRn8h6",//Flex
+  "KT1Lz7Jd6Sh1zUE66nDGS7hGnjwcyTBCiYbF",//BlueVishnu
+  "KT1AjuZb9TZTastAzhbufGsYG7vVNADUFmue",//PantoneVeryPeri
 ];
 const _BLACKLISTED_TOKEN_CONTRACTS = []
+
+const _MODEL_3D_WHITELIST = [
+  'KT1NVvPsNDChrLRH5K2cy6Sc9r1uuUwdiZQd',/* Dogami */
+  'KT1AWoUQAuUudqpc75cGukWufbfim3GRn8h6',/* Flex */
+  'KT1Lz7Jd6Sh1zUE66nDGS7hGnjwcyTBCiYbF' /* SXSW */
+];
 
 export const CONSTANTS = JSON.parse(JSON.stringify(_CONSTANTS));
 export const TRUSTED_TOKEN_CONTRACTS = JSON.parse(JSON.stringify(_TRUSTED_TOKEN_CONTRACTS));
 export const BLACKLISTED_TOKEN_CONTRACTS = JSON.parse(JSON.stringify(_BLACKLISTED_TOKEN_CONTRACTS));
+export const MODEL_3D_WHITELIST = JSON.parse(JSON.stringify(_MODEL_3D_WHITELIST));

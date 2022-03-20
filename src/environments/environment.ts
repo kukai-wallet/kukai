@@ -3,7 +3,12 @@
 // `ng build --env=prod` then `environment.prod.ts` will be used instead.
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 import { Constants } from './../app/interfaces';
-import { CONSTANTS as _CONSTANTS, TRUSTED_TOKEN_CONTRACTS as _TTC, BLACKLISTED_TOKEN_CONTRACTS as _BLTC } from './environment.hangzhounet'; 
+import {
+  CONSTANTS as _CONSTANTS,
+  TRUSTED_TOKEN_CONTRACTS as _TTC,
+  BLACKLISTED_TOKEN_CONTRACTS as _BLTC,
+  MODEL_3D_WHITELIST as _M3DW
+} from './environment.hangzhounet';
 
 export const environment = {
   production: false
@@ -11,3 +16,4 @@ export const environment = {
 export const CONSTANTS: Constants = _CONSTANTS;
 export const TRUSTED_TOKEN_CONTRACTS = _TTC;
 export const BLACKLISTED_TOKEN_CONTRACTS = _BLTC;
+export const MODEL_3D_WHITELIST = _M3DW;
