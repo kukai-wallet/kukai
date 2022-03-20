@@ -470,7 +470,7 @@ const _CONSTANTS: Constants = {
     },
     'HouseOfSkratz': {
       name: "House Of Skratz",
-      address: ["KT1UHiGBUpbmUSV68tiGi8owFP7VWr2zBMCk", "KT1MWKxDT6QJWgPH4Wq1TuHwW2tcvJRbuKMZ", "KT1HMvdTCsK9Su7RkFKgFwQuxaqgmNdbtdLS"],
+      address: ["KT1UHiGBUpbmUSV68tiGi8owFP7VWr2zBMCk", "KT1MWKxDT6QJWgPH4Wq1TuHwW2tcvJRbuKMZ", "KT1HMvdTCsK9Su7RkFKgFwQuxaqgmNdbtdLS", "KT1CFdGeFo44DN64JgtfHF2YqrZTKg1yFXM4"],
       thumbnailUrl: "../../../assets/img/alias/skratz.jpeg",
       link: "https://houseofskratz.com", shouldDisplayLink: DisplayLinkOption.None,
       category: ["collectibles"],
@@ -1449,9 +1449,10 @@ const _TRUSTED_TOKEN_CONTRACTS = [
   'KT1AWUzFdNwZn7YprZitR6Q6eUuVmfUG1HMP',//Skratz Geckos
   'KT19hJSZZYnD41xuEjEgodhAnnuLh142g8QJ',//Skratz Akira
   'KT1F9uU1xXJEzKmPvxMAdo1cMwnhnBHEB6pN',//Skratz x Tezape
-  'KT1UHiGBUpbmUSV68tiGi8owFP7VWr2zBMCk',// House Of Skratz
+  'KT1UHiGBUpbmUSV68tiGi8owFP7VWr2zBMCk',// Skratz v1
   'KT1MWKxDT6QJWgPH4Wq1TuHwW2tcvJRbuKMZ',// House Of Skratz Whitelist
   'KT1HMvdTCsK9Su7RkFKgFwQuxaqgmNdbtdLS',// House Of Skratz DAO
+  "KT1CFdGeFo44DN64JgtfHF2YqrZTKg1yFXM4",// House Of Skratz
   'KT1FReMp4U1KipyH53xXUnnjtdRQZaLnQpUj',//TezApeGang
   'KT18pVpRXKPY2c4U2yFEGSH3ZnhB2kL8kwXS',//Rarible
   "KT1LikBSDucbAfYLN9Uxosh4V2SNRrbQwfrJ", //Transmission Residents
