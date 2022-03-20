@@ -2,7 +2,7 @@
   (click)="prepareTransaction()">
   <img [src]="symbol === 'tez' ? '../../../../assets/img/up-arrow-white.svg' : '../../../../assets/img/up-arrow.svg'" />
   <div class="tooltip">
-    <div class="description">SEND TEZ</div>
+    <div class="description">SEND {{ symbol }}</div>
   </div>
 </button>
 <ng-template #detailButton>

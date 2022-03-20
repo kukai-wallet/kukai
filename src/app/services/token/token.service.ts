@@ -68,7 +68,7 @@ export interface FA2 extends TokensInterface {
 })
 export class TokenService {
   readonly AUTO_DISCOVER: boolean = true;
-  readonly version: string = '1.0.10';
+  readonly version: string = '1.0.12';
   private contracts: ContractsType = {};
   private exploredIds: Record<string, { firstCheck: number; lastCheck: number; counter: number }> = {};
   private pendingSave = null;
@@ -111,7 +111,7 @@ export class TokenService {
           }
         }
         if (token) {
-          if ((CONSTANTS.MAINNET && token.status < 1) || token.status < 0) {
+          if (token.status < 0) {
             return {
               kind: contract.kind,
               category: contract.category,
@@ -360,6 +360,27 @@ export class TokenService {
           metadata.version = '1.0.9';
           localStorage.setItem(this.storeKey, JSON.stringify(metadata));
           this.loadMetadata();
+        }
+      } else if (metadata?.version === '1.0.10' || metadata?.version === '1.0.11') {
+        metadata.version = '1.0.12';
+        try {
+          if (metadata?.contracts) {
+            const targetContract = 'KT1Qm7MHmbdiBzoRs7xqBiqoRxw7T2cxTTJN'; // clear mooncakes metadata
+            if (metadata.contracts[targetContract]) {
+              delete metadata.contracts[targetContract];
+            }
+            if (metadata.exploredIds) {
+              for (let id of Object.keys(metadata.exploredIds)) {
+                if (id.startsWith(targetContract)) {
+                  delete metadata.exploredIds[id];
+                }
+              }
+            }
+          }
+          localStorage.setItem(this.storeKey, JSON.stringify(metadata));
+          this.loadMetadata();
+        } catch (e) {
+          console.error(e);
         }
       }
     }

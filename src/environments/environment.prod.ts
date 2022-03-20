@@ -20,6 +20,16 @@ const _CONSTANTS: Constants = {
     hard_storage_limit_per_operation: 60000
   },
   CONTRACT_ALIASES: {
+    'mooncakes': {
+      name: "Mooncakes",
+      address: ['KT1Qm7MHmbdiBzoRs7xqBiqoRxw7T2cxTTJN', 'KT1CzVSa18hndYupV9NcXy3Qj7p8YFDZKVQv'],
+      thumbnailUrl: "../../../assets/img/alias/mooncakes.svg",
+      discoverUrl: '../../../assets/img/alias/mooncakes-discover.svg',
+      link: "https://mooncakes.fun", shouldDisplayLink: DisplayLinkOption.All,
+      category: ["collectibles"],
+      backgroundColor: '#1C1C20',
+      description: "Have fun exploring a galaxy of NFTs",
+    },
     gap: {
       name: 'Gap Threads',
       address: ['KT1GA6KaLWpURnjvmnxB4wToErzM2EXHqrMo'],
@@ -42,17 +52,6 @@ const _CONSTANTS: Constants = {
       backgroundColor: 'black',
       description: 'The first Ubisoft NFTs playable in a HD game'
     },
-    OneOf: {
-      name: 'OneOf',
-      address: ['KT1Up463qVJqtW5KF7dQZz5SsWMiS32GtBrw'],
-      thumbnailUrl: '../../../assets/img/alias/oneof.png',
-      discoverUrl: '../../../assets/img/alias/oneof-discover.svg',
-      link: 'https://www.oneof.com/',
-      shouldDisplayLink: DisplayLinkOption.All,
-      category: ['music', 'collectibles'],
-      backgroundColor: '#000',
-      description: "A green NFT platform for the music community"
-    },
     'OneOfGloGang': {
       name: "OneOf - GloGang",
       address: ["KT1Fv8TsEeafDhZXsHCyxFas96YDhXpdmUmz"],
@@ -72,6 +71,17 @@ const _CONSTANTS: Constants = {
       category: ['collectibles'],
       description: 'Collect & Build a digital MCL35M F1 CAR',
       backgroundColor: 'black'
+    },
+    OneOf: {
+      name: 'OneOf',
+      address: ['KT1Up463qVJqtW5KF7dQZz5SsWMiS32GtBrw'],
+      thumbnailUrl: '../../../assets/img/alias/oneof.png',
+      discoverUrl: '../../../assets/img/alias/oneof-discover.svg',
+      link: 'https://www.oneof.com/',
+      shouldDisplayLink: DisplayLinkOption.All,
+      category: ['music', 'collectibles'],
+      backgroundColor: '#000',
+      description: "A green NFT platform for the music community"
     },
     'Verses': {
       name: 'Verses',
@@ -572,6 +582,34 @@ const _CONSTANTS: Constants = {
       link: "https://hereandnow.events/", shouldDisplayLink: DisplayLinkOption.None,
       category: ["art", "collectibles"],
       description: "Here and Now is an interactive virtual Art experience that showcases emerging and established artists.",
+    },
+    'EndlessWays': {
+      name: "Endless Ways",
+      address: ["KT1VdCrmZsQfuYgbQsezAHT1pXvs6zKF8xHB"],
+      thumbnailUrl: "../../../assets/img/alias/endlesswaysLogo.png",
+      link: "https://endlessways.net", shouldDisplayLink: DisplayLinkOption.None, category: ["collectibles"],
+      description: "Generative Art. Proper Curation.",
+    },
+    'Flex': {
+        name: "Flex",
+        address: ["KT1AWoUQAuUudqpc75cGukWufbfim3GRn8h6"],
+        thumbnailUrl: "../../../assets/img/alias/Flex_Monument.png",
+        link: "https://flex.fashion", shouldDisplayLink: DisplayLinkOption.None, category: ["fashion", "collectibles"],
+        description: "Fashion, Creativity, and NFTs on Tezos",
+    },
+    'BlueVishnu': {
+        name: "BlueVishnu",
+        address: ["KT1Lz7Jd6Sh1zUE66nDGS7hGnjwcyTBCiYbF"],
+        thumbnailUrl: "../../../assets/img/alias/bluevishnu.jpg",
+        link: "", shouldDisplayLink: DisplayLinkOption.None, category: ["3D", "collectibles"],
+        description: "",
+    },
+    'Pantone': {
+        name: "PANTONE Very Peri",
+        address: ["KT1AjuZb9TZTastAzhbufGsYG7vVNADUFmue"],
+        thumbnailUrl: "../../../assets/img/alias/pantone-very-peri.jpg",
+        link: "", shouldDisplayLink: DisplayLinkOption.None, category: ["collectibles"],
+        description: "",
     },
   },
   ASSETS: {
@@ -1311,7 +1349,8 @@ const _CONSTANTS: Constants = {
     'KT1Hkg5qeNhfwpKW4fXvq7HGZB9z2EnmCCA9:collect': { storage: 212 },
   },
   NFT_CONTRACT_OVERRIDES: [
-    'KT1AafHA1C1vk959wvHWBispY9Y2f3fxBUUo:0' //lp tzBTC
+    'KT1AafHA1C1vk959wvHWBispY9Y2f3fxBUUo:0', //lp tzBTC
+    'KT1JBNFcB5tiycHNdYGYCtR3kk6JaJysUCi8:0' // Lugh Euro
   ]
 };
 const _TRUSTED_TOKEN_CONTRACTS = [
@@ -1399,9 +1438,21 @@ const _TRUSTED_TOKEN_CONTRACTS = [
   'KT1MjS4L4HRajqNhQCdTSXgSPhW4A6gHiQo7',//Ch=mpathy Alch=my
   "KT1PooRxUckYjnWVvn9CetZxC9YeG1kkFYW5", // MekatronK9
   "KT1SRFbwhvfkXoRGqiDFVVsf5GTp16wGgtCa",//here and now 4
+  "KT1Qm7MHmbdiBzoRs7xqBiqoRxw7T2cxTTJN",//mooncakes
+  "KT1VdCrmZsQfuYgbQsezAHT1pXvs6zKF8xHB",//Endless Ways
+  "KT1AWoUQAuUudqpc75cGukWufbfim3GRn8h6",//Flex
+  "KT1Lz7Jd6Sh1zUE66nDGS7hGnjwcyTBCiYbF",//BlueVishnu
+  "KT1AjuZb9TZTastAzhbufGsYG7vVNADUFmue",//PantoneVeryPeri
 ];
 const _BLACKLISTED_TOKEN_CONTRACTS = []
+
+const _MODEL_3D_WHITELIST = [
+  'KT1NVvPsNDChrLRH5K2cy6Sc9r1uuUwdiZQd',/* Dogami */
+  'KT1AWoUQAuUudqpc75cGukWufbfim3GRn8h6',/* Flex */
+  'KT1Lz7Jd6Sh1zUE66nDGS7hGnjwcyTBCiYbF' /* SXSW */
+];
 
 export const CONSTANTS = JSON.parse(JSON.stringify(_CONSTANTS));
 export const TRUSTED_TOKEN_CONTRACTS = JSON.parse(JSON.stringify(_TRUSTED_TOKEN_CONTRACTS));
 export const BLACKLISTED_TOKEN_CONTRACTS = JSON.parse(JSON.stringify(_BLACKLISTED_TOKEN_CONTRACTS));
+export const MODEL_3D_WHITELIST = JSON.parse(JSON.stringify(_MODEL_3D_WHITELIST));

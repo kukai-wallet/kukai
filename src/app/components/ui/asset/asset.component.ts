@@ -27,7 +27,6 @@ export class AssetComponent implements OnInit, OnChanges, AfterViewInit {
   preSrc = this.loaderUrl;
   postSrc = this.loaderUrl;
   mimeType = 'image/*';
-  viewed = false;
 
   obs: IntersectionObserver;
 
@@ -45,10 +44,6 @@ export class AssetComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.preImage.nativeElement.onerror = this.onError.bind(this);
-    this.preImage.nativeElement.onload = this.onLoad.bind(this);
-    this.postImage.nativeElement.onerror = this.onError.bind(this);
-    this.postImage.nativeElement.onload = this.onLoad.bind(this);
     this.lazyLoad();
   }
 
@@ -79,10 +74,16 @@ export class AssetComponent implements OnInit, OnChanges, AfterViewInit {
     this.postSrc = this.loaderUrl;
     this.mimeType = 'image/*';
     if (typeof this.meta === 'object') {
-      this.mimeType = Object.keys(mimes)
-        .filter((key) => !!mimes[key]?.extensions?.length)
-        .find((key) => mimes[key].extensions.includes((this.meta as CachedAsset)?.extension));
-      this.dataSrc = `${this.baseUrl}/${this.meta.filename}_${this.size}.${this.meta.extension}`;
+      this.mimeType = (this.meta as any)?.mimeType
+        ? (this.meta as any)?.mimeType
+        : Object.keys(mimes)
+            .filter((key) => !!mimes[key]?.extensions?.length)
+            .find((key) => mimes[key].extensions.includes((this.meta as CachedAsset)?.extension));
+      if (this.mimeType?.startsWith('model/') && (this.meta as any)?.uri?.startsWith('ipfs://')) {
+        this.dataSrc = `https://cloudflare-ipfs.com/ipfs/${(this.meta as any).uri.slice(7)}`;
+      } else {
+        this.dataSrc = `${this.baseUrl}/${this.meta.filename}_${this.size}.${this.meta.extension}`;
+      }
     } else if (typeof this.meta === 'string' && this.meta) {
       this.dataSrc = this.meta;
     } else if (!this.meta) {
@@ -91,26 +92,17 @@ export class AssetComponent implements OnInit, OnChanges, AfterViewInit {
     }
   }
 
-  async modelInit(): Promise<void> {
-    await fetch('https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js')
-      .then((response) => response.blob())
-      .then(async (blob) => {
-        document.querySelector('head').appendChild(document.createElement('script').appendChild(document.createTextNode(await blob.text())));
-      });
-  }
-
   lazyLoad(): void {
     this.obs = new IntersectionObserver((entries, _) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           const lazyAsset = entry.target as HTMLImageElement | HTMLVideoElement;
           //console.log("lazy loading ", lazyAsset)
-          if (!this.viewed) {
-            if (lazyAsset instanceof HTMLImageElement) {
-              this.preSrc = this.dataSrc;
-            } else {
-              this.postSrc = this.dataSrc;
-            }
+          this.obs.unobserve(lazyAsset);
+          if (lazyAsset instanceof HTMLImageElement) {
+            this.preSrc = this.dataSrc;
+          } else if (this.mimeType?.startsWith('model/')) {
+            this.postSrc = this.dataSrc;
           }
           this.inView.emit();
         }
@@ -118,6 +110,9 @@ export class AssetComponent implements OnInit, OnChanges, AfterViewInit {
     });
     if (this.postImage?.nativeElement) {
       this.obs.observe(this.postImage?.nativeElement);
+    }
+    if (this.model?.nativeElement) {
+      this.obs.observe(this.model?.nativeElement);
     }
   }
 }
