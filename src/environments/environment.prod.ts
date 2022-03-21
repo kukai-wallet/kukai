@@ -1384,7 +1384,8 @@ const _CONSTANTS: Constants = {
   },
   NFT_CONTRACT_OVERRIDES: [
     'KT1AafHA1C1vk959wvHWBispY9Y2f3fxBUUo:0', //lp tzBTC
-    'KT1JBNFcB5tiycHNdYGYCtR3kk6JaJysUCi8:0' // Lugh Euro
+    'KT1JBNFcB5tiycHNdYGYCtR3kk6JaJysUCi8:0', // Lugh Euro
+    'KT1Ha4yFVeyzw6KRAdkzq6TxDHB97KG4pZe8:0' // Dogami
   ]
 };
 const _TRUSTED_TOKEN_CONTRACTS = [

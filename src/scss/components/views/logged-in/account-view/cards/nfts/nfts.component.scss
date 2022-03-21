@@ -296,7 +296,7 @@ $compactness: v.$compactness;
 
         & .title {
           @include m.ellipsis;
-          max-width: 100%;
+          max-width: 82%;
           cursor: pointer;
         }
 
