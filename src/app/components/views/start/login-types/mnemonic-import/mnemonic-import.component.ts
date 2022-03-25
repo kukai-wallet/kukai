@@ -1,4 +1,4 @@
-import { Component, OnInit, HostBinding, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, HostBinding, Input, OnDestroy, AfterViewInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core'; // Multiple instances created ?
 import { ImportService } from '../../../../../services/import/import.service';
@@ -15,7 +15,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './mnemonic-import.component.html',
   styleUrls: ['../../../../../../scss/components/views/start/login.component.scss']
 })
-export class MnemonicImportComponent implements OnInit, OnDestroy {
+export class MnemonicImportComponent implements OnInit, AfterViewInit, OnDestroy {
   @HostBinding('class.tacos') showTacos = false;
   @Input('keyStore') keyStore;
   MIN_PWD_LENGTH = 9;
@@ -59,6 +59,11 @@ export class MnemonicImportComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {}
+
+  ngAfterViewInit(): void {
+    document.documentElement.addEventListener('dragover', this.allowDrop.bind(this));
+    document.documentElement.addEventListener('drop', this.handleFileDragAndDrop.bind(this));
+  }
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
@@ -270,6 +275,14 @@ export class MnemonicImportComponent implements OnInit, OnDestroy {
         this.walletService.clearWallet();
         this.messageService.stopSpinner();
       });
+  }
+  allowDrop(e): void {
+    e.stopPropagation();
+    e.preventDefault();
+  }
+  handleFileDragAndDrop(e): void {
+    e.preventDefault();
+    this.handleFileInput(e.dataTransfer.files);
   }
   handleFileInput(files: FileList): boolean {
     let fileToUpload = files.item(0);
