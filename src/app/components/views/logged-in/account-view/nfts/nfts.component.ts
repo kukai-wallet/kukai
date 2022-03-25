@@ -37,7 +37,7 @@ export class NftsComponent implements OnInit, OnDestroy {
   ) {
     this.subscriptions.add(
       this.subjectService.nftsUpdated.subscribe((p) => {
-        const activeAddress = this.walletService.activeAccount.getValue()?.address;
+        const activeAddress = this.subjectService.activeAccount.getValue()?.address;
         if (activeAddress !== this.activeAddress) {
           this.activeAddress = activeAddress;
           this.reset();
@@ -51,12 +51,7 @@ export class NftsComponent implements OnInit, OnDestroy {
           }
         }
         this.nfts = p?.nfts;
-        this.nftsArray = p?.nfts
-          ? Object.keys(p.nfts).map((key: any) => ({
-              key,
-              ...p.nfts[key]
-            }))
-          : [];
+        this.nftsArray = p?.nfts ? Object.keys(p.nfts).map((key: any) => ({ key, ...p.nfts[key] })) : [];
         this.tokens = p?.nfts
           ? Object.keys(p.nfts)
               .map((key: any) => p.nfts[key]?.tokens)
@@ -73,7 +68,7 @@ export class NftsComponent implements OnInit, OnDestroy {
       })
     );
     this.subscriptions.add(
-      this.walletService.activeAccount.subscribe((activeAccount) => {
+      this.subjectService.activeAccount.subscribe((activeAccount) => {
         const activeAddress = activeAccount?.address;
         if (activeAddress !== this.activeAddress) {
           this.activeAddress = activeAddress;
@@ -111,7 +106,7 @@ export class NftsComponent implements OnInit, OnDestroy {
     return false;
   }
   sanitizeKey(key: string): string {
-    return key?.replace(/ /g, '');
+    return 'ku' + key?.replace(/ /g, '');
   }
 
   trackContract(index: number, contract: any) {

@@ -54,7 +54,7 @@ export class CoordinatorService {
         this.stopAll();
       }
     });
-    this.walletService.activeAccount.subscribe((activeAccount) => {
+    this.subjectService.activeAccount.subscribe((activeAccount) => {
       if (this.walletService.wallet) {
         this.accounts = this.walletService.wallet.getAccounts();
         this.accounts.forEach(({ address }) => {
@@ -173,7 +173,10 @@ export class CoordinatorService {
           }
         }
       },
-      (err) => console.log('Error in update()', err),
+      (err) => {
+        console.log('Error in update()');
+        console.error(err);
+      },
       () => {
         console.log(
           `account[${this.accounts.findIndex((a) => a.address === pkh)}][${

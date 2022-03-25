@@ -112,21 +112,11 @@ div.agreement-body {
   }
 }
 
-.fade-in {
-  animation-name: fadein;
-  -webkit-animation-name: fadein;
-  animation-fill-mode: backwards;
-  animation-delay: 1s;
-  -webkit-animation-delay: 1s;
-  animation-duration: 1s;
-  -webkit-animation-duration: 1s;
-}
 button.fade-in {
   animation-name: fadein;
   -webkit-animation-name: fadein;
-  animation-fill-mode: backwards;
-  animation-delay: 2s;
-  -webkit-animation-delay: 2s;
-  animation-duration: 0.2s;
-  -webkit-animation-duration: 0.2s;
+  animation-delay: 0s;
+  -webkit-animation-delay: 0s;
+  animation-duration: 0.75s;
+  -webkit-animation-duration: 0.75s;
 }

@@ -1,7 +1,7 @@
 <div class="flex-row token" (click)="viewToken(token)">
   <div class="dot"></div>
   <div class="wrapper">
-    <app-asset class="asset" (inView)="balanceChangeTimer()" [meta]="token?.thumbnailAsset || token?.displayAsset"></app-asset>
+    <app-asset class="asset" (inView)="balanceChangeTimer()" [assets]="token" [size]="'small'" [muted]="true" [autoplay]="true" [playsinline]="true" [loop]="true" [priorityList]="['thumbnailAsset', 'displayAsset']"></app-asset>
     <div *ngIf="Number.parseInt(token?.balance) > 1" class="balance">x{{
       formatBalance(token) }}</div>
   </div>

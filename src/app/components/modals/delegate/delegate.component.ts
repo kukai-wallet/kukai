@@ -68,7 +68,7 @@ export class DelegateComponent extends ModalComponent implements OnInit, OnChang
         this.activeAccount = this.walletService.wallet.getAccount(address);
       }
       this.subscriptions.add(
-        this.walletService.activeAccount.subscribe((activeAccount) => {
+        this.subjectService.activeAccount.subscribe((activeAccount) => {
           this.activeAccount = activeAccount;
         })
       );

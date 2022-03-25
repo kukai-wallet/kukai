@@ -6,7 +6,7 @@
     </div>
     <div class="seperator"></div>
     <div class="flex-column permission-request">
-      <ng-container *ngIf="cachedIcon(permissionRequest); let cachedIcon;"><app-asset class="app-icon" [meta]="cachedIcon"></app-asset></ng-container>
+      <ng-container *ngIf="cachedIcon(permissionRequest); let cachedIcon;"><app-asset class="app-icon" [assets]="{ displayAsset: cachedIcon }"></app-asset></ng-container>
       <h4>Permissions requests:</h4>
       <div class="flex-row-wrap requests">
         <span class="flex-row" *ngFor="let scope of permissionRequest.scopes">{{ scopeToText(scope) }}</span>

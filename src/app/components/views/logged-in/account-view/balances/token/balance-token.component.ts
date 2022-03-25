@@ -19,14 +19,18 @@ export class BalanceTokenComponent implements OnInit {
   ngOnInit(): void {}
 
   getBalance(): number | string {
-    return !this.token ? (this.account?.balanceXTZ !== null ? Big(this.account?.balanceXTZ).div(1000000).toFixed() : '—') : this.token?.balance;
+    return this.token?.name === 'tezos'
+      ? this.account?.balanceXTZ !== null
+        ? Big(this.account?.balanceXTZ).div(1000000).toFixed()
+        : undefined
+      : this.token?.balance;
   }
 
   getBalanceFiat(): number | undefined {
-    return !this.token ? this.account?.balanceUSD || undefined : this.token?.price && this.token.price >= 0.005 ? this.token.price : undefined;
+    return this.token.name === 'tezos' ? this.account?.balanceUSD || undefined : this.token?.price && this.token.price >= 0.005 ? this.token.price : undefined;
   }
   viewToken(): void {
-    if (!!this.token) {
+    if (this.token?.name !== 'tezos') {
       ModalComponent.currentModel.next({
         name: 'token-detail',
         data: this.token

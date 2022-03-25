@@ -3,23 +3,27 @@
   margin: 2rem 0 0 0;
   max-width: 50rem;
 
+  & .artifact {
+    position: absolute;
+    bottom: 0;
+  }
+
   & .data {
     justify-content: flex-start;
     align-items: center;
     max-height: 48rem;
     height: auto;
-    margin: 0 0 2rem 0;
-    padding: 2rem;
+    margin: 0;
+    padding: 2rem 2rem 0 2rem;
     background-color: v.$base-color-lightened-7;
     border-radius: v.$border-radius-hard;
-
+    
     & .wrapper {
       max-width: 24rem;
       max-height: 48rem;
-      width: 100%;
+      width: 50%;
       height: 100%;
       justify-content: center;
-      margin: 0 1rem 0 0;
       position: relative;
 
       &.expanded {
@@ -90,13 +94,16 @@
     & .meta {
       max-width: 24rem;
       max-height: 48rem;
-      width: 100%;
+      width: calc(50% - 1rem);
       height: 100%;
       justify-content: space-between;
       margin: 0 0 0 1rem;
       align-self: flex-start;
 
       & .top {
+        & .desc {
+          z-index: 1;
+        }
         & .desc .value {
           max-height: 12rem;
           overflow-x: hidden;
