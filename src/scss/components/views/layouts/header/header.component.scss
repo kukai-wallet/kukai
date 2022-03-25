@@ -276,7 +276,7 @@ $base-filter-brightness-5: v.$base-filter-brightness-5;
   }
 }
 
-@media (max-width: v.$layout-break-3) and (max-aspect-ratio: 1/1), (max-width: v.$layout-break-5) {
+@media (max-width: v.$layout-break-5) {
   .top-container.mobile.default .brand-logo .icon {
     height: 75% !important;
   }
@@ -287,5 +287,7 @@ $base-filter-brightness-5: v.$base-filter-brightness-5;
 
   .top-container.mobile {
     display: flex;
+    width: 92%;
+    padding: 0 4%;
   }
 }

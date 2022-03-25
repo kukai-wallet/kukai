@@ -31,7 +31,7 @@ export class BalancesComponent implements OnInit, AfterViewChecked, OnDestroy {
     public removeCommaPipe: RemoveCommaPipe
   ) {
     this.subscriptions.add(
-      this.walletService.activeAccount.pipe(filter((account: Account) => account?.address !== this.account?.address)).subscribe((account) => {
+      this.subjectService.activeAccount.pipe(filter((account: Account) => account?.address !== this.account?.address)).subscribe((account) => {
         this.account = account;
         this.balances = this.tokenBalancesService?.balances;
         this.calcTotalBalances();
@@ -44,7 +44,7 @@ export class BalancesComponent implements OnInit, AfterViewChecked, OnDestroy {
       })
     );
     this.subscriptions.add(
-      this.walletService.walletUpdated.subscribe(() => {
+      this.subjectService.walletUpdated.subscribe(() => {
         this.balances = this.tokenBalancesService?.balances;
         this.calcTotalBalances();
       })
@@ -79,7 +79,7 @@ export class BalancesComponent implements OnInit, AfterViewChecked, OnDestroy {
     this.e(wrap);
   }
   trackToken(index: number, token: any) {
-    return token?.contractAddress ? token.contractAddress + ':' + token?.id + ':' + token?.balance : index;
+    return token?.contractAddress ? token.contractAddress + ':' + token?.id + ':' + token?.balance + ':' + token?.thumbnailAsset : index;
   }
 
   toggleTotalBalances(): void {

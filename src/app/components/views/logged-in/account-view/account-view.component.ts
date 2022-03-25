@@ -9,6 +9,7 @@ import { CONSTANTS } from '../../../../../environments/environment';
 import { ActivityService } from '../../../../services/activity/activity.service';
 import { TokenService } from '../../../../services/token/token.service';
 import { Subscription } from 'rxjs';
+import { SubjectService } from '../../../../services/subject/subject.service';
 
 @Component({
   selector: 'app-account-view',
@@ -24,13 +25,14 @@ export class AccountViewComponent implements OnInit, OnDestroy {
     public messageService: MessageService,
     public timeAgoPipe: TimeAgoPipe,
     private activityService: ActivityService,
-    public tokenService: TokenService
+    public tokenService: TokenService,
+    private subjectService: SubjectService
   ) {}
   trigger = true;
   @Input() activity: any;
   ngOnInit(): void {
     this.subscriptions.add(
-      this.walletService.activeAccount.subscribe((activeAccount) => {
+      this.subjectService.activeAccount.subscribe((activeAccount) => {
         this.account = activeAccount;
       })
     );

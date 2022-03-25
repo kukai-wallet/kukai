@@ -10,7 +10,8 @@
         <div class="flex-column left" [style.minHeight]="!tokenBalanceService.isNFT(token) ? 'unset' : ''">
           <span *ngIf="!tokenBalanceService.isNFT(token)" class="key">SEND AMOUNT:</span>
           <app-asset class="token-image" [class.balance]="!tokenBalanceService.isNFT(token)"
-            [meta]="token ? token.thumbnailAsset || token.displayAsset : '../../../assets/img/tezos-xtz-logo.svg'"
+            [assets]="token ? {displayAsset: token?.displayAsset, thumbnailAsset: token?.thumbnailAsset} : {thumbnailAsset: 'assets/img/tezos-xtz-logo.svg'}"
+            [priorityList]="['thumbnailAsset', 'displayAsset']"
             [class.sd]="!token"></app-asset>
         </div>
         <div class="flex-column right">
@@ -34,7 +35,7 @@
                 |
                 number:'1.0-6') + ' tez'
                 }}</span></span>
-          </div>
+          </div> 
         </div>
       </div>
       <div class="flex-row from">

@@ -6,6 +6,7 @@ import { TokenService } from '../../../../services/token/token.service';
 import { MessageService } from '../../../../services/message/message.service';
 import { Subscription } from 'rxjs';
 import { CoordinatorService } from '../../../../services/coordinator/coordinator.service';
+import { SubjectService } from '../../../../services/subject/subject.service';
 
 @Component({
   selector: 'app-settings',
@@ -23,7 +24,8 @@ export class SettingsComponent implements OnInit, OnDestroy {
     private walletService: WalletService,
     private router: Router,
     private tokenService: TokenService,
-    private coordinatorService: CoordinatorService
+    private coordinatorService: CoordinatorService,
+    private subjectService: SubjectService
   ) {}
 
   ngOnInit(): void {
@@ -34,7 +36,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
     }
 
     this.subscriptions.add(
-      this.walletService.activeAccount.subscribe((activeAccount) => {
+      this.subjectService.activeAccount.subscribe((activeAccount) => {
         this.activeAccount = activeAccount;
       })
     );

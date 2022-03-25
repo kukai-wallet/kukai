@@ -26,7 +26,7 @@ export class MoonpayComponent implements OnInit {
 
   ngOnInit(): void {
     this.onResize();
-    this.walletService.activeAccount.subscribe((a) => {
+    this.subjectService.activeAccount.subscribe((a) => {
       this.account = a;
     });
     this.subjectService.moonpay.subscribe((o) => {

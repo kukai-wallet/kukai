@@ -94,8 +94,8 @@ const _CONSTANTS: Constants = {
     'ZIGGURATS': {
       name: "ZIGGURATS",
       address: ["KT1PNcZQkJXMQ2Mg92HG1kyrcu3auFX5pfd8"],
-      thumbnailUrl: "../../../assets/img/alias/ziggurats.png",
-      discoverUrl: "../../../assets/img/alias/ziggurats-discover.png",
+      thumbnailUrl: "assets/img/alias/ziggurats.png",
+      discoverUrl: "assets/img/alias/ziggurats-discover.png",
       link: "https://ziggurats.xyz", shouldDisplayLink: DisplayLinkOption.All,
       category: ["collectibles"],
       backgroundColor: '#000',
@@ -104,8 +104,8 @@ const _CONSTANTS: Constants = {
     'randomlycommonskeles': {
       name: "randomly common skeles",
       address: ["KT1HZVd9Cjc2CMe3sQvXgbxhpJkdena21pih"],
-      thumbnailUrl: "../../../assets/img/alias/commonskeles.jpg",
-      discoverUrl: "../../../assets/img/alias/skele-grid-discover.jpg", zoomDiscoverImg: true,
+      thumbnailUrl: "assets/img/alias/commonskeles.jpg",
+      discoverUrl: "assets/img/alias/skele-grid-discover.jpg", zoomDiscoverImg: true,
       link: "https://objkt.com/collection/rcs", shouldDisplayLink: DisplayLinkOption.All, category: ["collectibles"],
       description: "randomly generated skeleton .gifs by john karel : )"
     },
@@ -368,19 +368,19 @@ const _CONSTANTS: Constants = {
     'TacoNFT': {
       name: "TacoNFT",
       address: ["KT1Mf8Pqn6NMt8VGuVaySohvSvQQpvcM37eZ", "KT1BkStQej7MwnkWhCV2tUanETeN25zc7ADe"],
-      thumbnailUrl: "../../../assets/img/alias/taconft.png",
+      thumbnailUrl: "assets/img/alias/taconft.png",
       link: "https://taconft.xyz/", shouldDisplayLink: DisplayLinkOption.None
     },
     'C0FACE': {
       name: "0xC0FACE COLLECTION",
       address: ["KT1DuZFNv6JwwA7kS8RXvoQiANm3L4dfn6qP"],
-      thumbnailUrl: "../../../assets/img/alias/0xC0FACE-thumb.jpg",
+      thumbnailUrl: "assets/img/alias/0xC0FACE-thumb.jpg",
       link: '', shouldDisplayLink: DisplayLinkOption.None
     },
     'ChopSumo': {
       name: "Chop Sumo",
       address: ["KT1Wm4Cegd7wW6MYxEhg6AH5iFX48y65nWvv"],
-      thumbnailUrl: "../../../assets/img/alias/chopsumo.png",
+      thumbnailUrl: "assets/img/alias/chopsumo.png",
       link: "https://chopsumo.xyz", shouldDisplayLink: DisplayLinkOption.None,
       category: ["collectibles"]
     },
@@ -394,7 +394,7 @@ const _CONSTANTS: Constants = {
     'CyberGeckoGang': {
       name: "Cyber Gecko Gang",
       address: ["KT1CwSgYmZewFazZsW348RAQYn1nthiGP3Qa"],
-      thumbnailUrl: "../../../assets/img/alias/cyber-gecko-gang.png",
+      thumbnailUrl: "assets/img/alias/cyber-gecko-gang.png",
       link: "https://cybergeckogang.xyz", shouldDisplayLink: DisplayLinkOption.None,
       category: ["collectibles"],
       description: "Cyber Gecko Gang is a limited collection of smug geckos programmatically, randomly generated on the Tezos blockchain"
@@ -657,8 +657,8 @@ const _CONSTANTS: Constants = {
           symbol: 'kUSD',
           decimals: 18,
           description: 'Kolibri is a Tezos based stablecoin built on Collateralized Debt Positions (CDPs) known as Ovens.',
-          displayAsset: '../../../assets/img/tokens/kusd.png',
-          thumbnailAsset: '../../../assets/img/tokens/kusd.png',
+          displayAsset: 'assets/img/tokens/kusd.png',
+          thumbnailAsset: 'assets/img/tokens/kusd.png',
           shouldPreferSymbol: true,
           status: 1
         }
@@ -674,8 +674,8 @@ const _CONSTANTS: Constants = {
           symbol: 'kDAO',
           decimals: 18,
           description: '',
-          displayAsset: '../../../assets/img/tokens/kdao.png',
-          thumbnailAsset: '../../../assets/img/tokens/kdao.png',
+          displayAsset: 'assets/img/tokens/kdao.png',
+          thumbnailAsset: 'assets/img/tokens/kdao.png',
           shouldPreferSymbol: true,
           status: 1
         }
@@ -691,8 +691,8 @@ const _CONSTANTS: Constants = {
           symbol: 'USDtz',
           decimals: 6,
           description: 'USDtz is a Tezos on-chain stablecoin pegged to the value of the United States Dollar.',
-          displayAsset: '../../../assets/img/tokens/usdtz.png',
-          thumbnailAsset: '../../../assets/img/tokens/usdtz.png',
+          displayAsset: 'assets/img/tokens/usdtz.png',
+          thumbnailAsset: 'assets/img/tokens/usdtz.png',
           shouldPreferSymbol: true,
           status: 1
         }
@@ -708,8 +708,8 @@ const _CONSTANTS: Constants = {
           symbol: 'uUSD',
           decimals: 12,
           description: '',
-          displayAsset: '../../../assets/img/tokens/uusd.png',
-          thumbnailAsset: '../../../assets/img/tokens/uusd.png',
+          displayAsset: 'assets/img/tokens/uusd.png',
+          thumbnailAsset: 'assets/img/tokens/uusd.png',
           shouldPreferSymbol: true,
           status: 1
         }
@@ -725,8 +725,8 @@ const _CONSTANTS: Constants = {
           symbol: 'YOU',
           decimals: 12,
           description: '',
-          displayAsset: '../../../assets/img/tokens/you.png',
-          thumbnailAsset: '../../../assets/img/tokens/you.png',
+          displayAsset: 'assets/img/tokens/you.png',
+          thumbnailAsset: 'assets/img/tokens/you.png',
           shouldPreferSymbol: true,
           status: 1
         }
@@ -741,8 +741,8 @@ const _CONSTANTS: Constants = {
           symbol: 'BTCtz',
           decimals: 8,
           description: 'BTCtz is a Tezos on-chain stablecoin pegged to the value of Bitcoin.',
-          displayAsset: '../../../assets/img/tokens/btctz.png',
-          thumbnailAsset: '../../../assets/img/tokens/btctz.png',
+          displayAsset: 'assets/img/tokens/btctz.png',
+          thumbnailAsset: 'assets/img/tokens/btctz.png',
           shouldPreferSymbol: true,
           status: 1
         }
@@ -758,8 +758,8 @@ const _CONSTANTS: Constants = {
           symbol: 'tzBTC',
           decimals: 8,
           description: 'tzBTC delivers the power of Bitcoin as a token on the Tezos blockchain.',
-          displayAsset: '../../../assets/img/tokens/tzbtc.png',
-          thumbnailAsset: '../../../assets/img/tokens/tzbtc.png',
+          displayAsset: 'assets/img/tokens/tzbtc.png',
+          thumbnailAsset: 'assets/img/tokens/tzbtc.png',
           shouldPreferSymbol: true,
           status: 1
         }
@@ -775,8 +775,8 @@ const _CONSTANTS: Constants = {
           symbol: 'ETHtz',
           decimals: 18,
           description: 'ETHtz is Ethereum wrapped in the Tezos FA 2.0 token standard.',
-          displayAsset: '../../../assets/img/tokens/ethtz.png',
-          thumbnailAsset: '../../../assets/img/tokens/ethtz.png',
+          displayAsset: 'assets/img/tokens/ethtz.png',
+          thumbnailAsset: 'assets/img/tokens/ethtz.png',
           shouldPreferSymbol: true,
           status: 1
         }
@@ -792,8 +792,8 @@ const _CONSTANTS: Constants = {
           symbol: 'wXTZ',
           decimals: 6,
           description: 'Wrapped Tezos by StakerDAO, a fully collateralized representation of XTZ.',
-          displayAsset: '../../../assets/img/tokens/wxtz.png',
-          thumbnailAsset: '../../../assets/img/tokens/wxtz.png',
+          displayAsset: 'assets/img/tokens/wxtz.png',
+          thumbnailAsset: 'assets/img/tokens/wxtz.png',
           shouldPreferSymbol: true,
           status: 1
         }
@@ -828,8 +828,8 @@ const _CONSTANTS: Constants = {
           symbol: 'hDAO',
           decimals: 6,
           description: '',
-          displayAsset: '../../../assets/img/tokens/hdao.png',
-          thumbnailAsset: '../../../assets/img/tokens/hdao.png',
+          displayAsset: 'assets/img/tokens/hdao.png',
+          thumbnailAsset: 'assets/img/tokens/hdao.png',
           isTransferable: true,
           isBooleanAmount: false,
           shouldPreferSymbol: true,
@@ -885,8 +885,8 @@ const _CONSTANTS: Constants = {
             'This Taco NFT was inspired by and minted for Austin, Texas on Taco Tuesday, May 4th, 2021, to help push the Clean NFT movement forward. Enjoy your taco or send it to a friend to help spread the word about Clean NFTs on Tezos.',
           displayAsset: {
             // ipfs://QmYbWkagqQyQ4bJhWWWSGaCLNGP1czbPgD2PLmJ4aVmtGR
-            filename: 'cpyxxjpnsmhpttzcm66cj4bkceq6li',
-            extension: 'jpeg'
+            uri: 'https://cloudflare-ipfs.com/ipfs/QmYbWkagqQyQ4bJhWWWSGaCLNGP1czbPgD2PLmJ4aVmtGR',
+            mimeType: 'image/jpeg'
           },
           thumbnailAsset: '',
           shouldPreferSymbol: false,
@@ -1351,8 +1351,8 @@ const _CONSTANTS: Constants = {
             'NFTs are changing everything...but what exactly is an NFT? A Non-Friendly Turtle? Discover how Tezos is changing NFTs, and collect your own at Tezos.com/NFTgallery.',
           displayAsset: {
             // ipfs://QmTmSjweqQrba5WGRUxB4u5WEbwktQBQekioi9K7Kkos6x
-            filename: 'ioqq2cioaynduzip4aox3wzc2akvly',
-            extension: 'gif'
+            uri: 'https://cloudflare-ipfs.com/ipfs/QmTmSjweqQrba5WGRUxB4u5WEbwktQBQekioi9K7Kkos6x',
+            mimeType: 'image/gif'
           },
           thumbnailAsset: '',
           isBooleanAmount: false,

@@ -9,6 +9,7 @@ export interface TokenResponseType {
   contractAddress: string;
   id: number;
   decimals: number;
+  artifactAsset?: Asset;
   displayAsset: Asset;
   thumbnailAsset: Asset;
   name: string;
@@ -24,10 +25,9 @@ export interface TokenResponseType {
   isUnknownToken?: boolean;
 }
 export type Asset = string | CachedAsset;
-
 export interface CachedAsset {
-  filename: string;
-  extension: string;
+  uri: string;
+  mimeType: string;
 }
 
 export type ContractsType = Record<string, ContractType>;
@@ -45,6 +45,7 @@ export interface TokenData {
   symbol: string;
   decimals: number;
   description: string;
+  artifactAsset?: Asset;
   displayAsset: Asset;
   thumbnailAsset: Asset;
   isTransferable?: boolean;
@@ -68,7 +69,7 @@ export interface FA2 extends TokensInterface {
 })
 export class TokenService {
   readonly AUTO_DISCOVER: boolean = true;
-  readonly version: string = '1.0.12';
+  readonly version: string = '1.0.13';
   private contracts: ContractsType = {};
   private exploredIds: Record<string, { firstCheck: number; lastCheck: number; counter: number }> = {};
   private pendingSave = null;
@@ -82,7 +83,6 @@ export class TokenService {
   }
   getAsset(tokenId: string): TokenResponseType {
     if (!tokenId || !tokenId.includes(':')) {
-      console.warn(`Invalid tokenId`, tokenId);
       return null;
     }
     const tokenIdArray = tokenId.split(':');
@@ -134,6 +134,18 @@ export class TokenService {
     }
     return null;
   }
+  getContractAddressFromAsset(uri: string) {
+    const contractAddresses = Object.keys(this.contracts);
+    for (const contractAddress of contractAddresses) {
+      const tokens = this.contracts[contractAddress].tokens;
+      for (const id in tokens) {
+        if (tokens[id]?.thumbnailAsset?.uri === uri || tokens[id]?.displayAsset?.uri === uri || tokens[id]?.artifactAsset?.uri === uri) {
+          return contractAddress;
+        }
+      }
+    }
+    return '';
+  }
   isKnownTokenId(tokenId: string): boolean {
     return this.getAsset(tokenId) !== null;
   }
@@ -167,6 +179,8 @@ export class TokenService {
       for (const key of newKeys) {
         if (!currentKeys.includes(key)) {
           this.contracts[contractAddress].tokens[key] = contract.tokens[key];
+        } else if (JSON.stringify(contract.tokens[key]) !== JSON.stringify(this.contracts[contractAddress].tokens[key])) {
+          this.contracts[contractAddress].tokens[key] = contract.tokens[key];
         }
       }
     }
@@ -189,7 +203,7 @@ export class TokenService {
         const contractAddress = a[0];
         const id = Number(a[1]);
         if (!this.isKnownTokenId(tokenId)) {
-          const metadata = await this.indexerService.getTokenMetadata(contractAddress, id, this.getCounter(tokenId));
+          const metadata = await this.indexerService.getTokenMetadata(contractAddress, id);
           this.handleMetadata(metadata, contractAddress, id);
         }
       } catch (e) {}
@@ -209,8 +223,9 @@ export class TokenService {
         symbol: metadata.symbol ? metadata.symbol : '',
         decimals: Number(metadata.decimals),
         description: metadata.description ? metadata.description : '',
-        displayAsset: metadata.displayUri,
-        thumbnailAsset: metadata.thumbnailUri,
+        artifactAsset: metadata.artifactUri ?? '',
+        displayAsset: metadata.displayUri ?? '',
+        thumbnailAsset: metadata.thumbnailUri ?? '',
         isTransferable: metadata?.isTransferable ? metadata.isTransferable : true,
         isBooleanAmount: metadata?.isBooleanAmount ? metadata.isBooleanAmount : false,
         series: metadata.series ? metadata.series : undefined,
@@ -221,7 +236,11 @@ export class TokenService {
             ? 1
             : 0
       };
-      contract.tokens[id] = token;
+      if (CONSTANTS.ASSETS[contractAddress]?.tokens[id]) {
+        contract.tokens[id] = { ...token, ...CONSTANTS.ASSETS[contractAddress].tokens[id] };
+      } else {
+        contract.tokens[id] = token;
+      }
       this.addAsset(contractAddress, contract);
       this.saveMetadata();
       this.subjectService.metadataUpdated.next({
@@ -382,6 +401,16 @@ export class TokenService {
         } catch (e) {
           console.error(e);
         }
+        metadata.version = '1.0.11';
+        localStorage.setItem(this.storeKey, JSON.stringify(metadata));
+        this.loadMetadata();
+      } else if (metadata?.version === '1.0.12') {
+        metadata.version = '1.0.13';
+        this.resetAllMetadata();
+      } else {
+        metadata.version = this.version;
+        localStorage.setItem(this.storeKey, JSON.stringify(metadata));
+        this.loadMetadata();
       }
     }
   }

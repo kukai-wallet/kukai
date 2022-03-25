@@ -1,26 +1,52 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
-import mimes from 'mime-db/db.json';
-import { Asset, CachedAsset } from '../../../services/token/token.service';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, Sanitizer, ViewChild } from '@angular/core';
+import { Asset, CachedAsset, TokenService } from '../../../services/token/token.service';
+import { CONSTANTS, MODEL_3D_WHITELIST } from '../../../../environments/environment';
+
+enum Display {
+  'none',
+  'audio',
+  'image',
+  'video',
+  'threeD'
+}
+
+enum Size {
+  'icon' = 'icon',
+  'small' = 'small',
+  'medium' = 'medium',
+  'gallery' = 'gallery',
+  'raw' = 'raw'
+}
+
+const MIMETYPE_OVERLOADS = ['unknown', 'image/gif'];
 
 @Component({
   selector: 'app-asset',
   templateUrl: './asset.component.html',
   styleUrls: ['../../../../scss/components/ui/asset/asset.component.scss']
 })
-export class AssetComponent implements OnInit, OnChanges, AfterViewInit {
+export class AssetComponent implements OnInit, AfterViewInit {
+  Display = Display;
+  display = Display.image;
   @ViewChild('preImage') preImage;
   @ViewChild('postImage') postImage;
+  @ViewChild('audio') audio;
   @ViewChild('video') video;
   @ViewChild('model') model;
-  @Input() meta: Asset;
-  @Input() size = '150x150';
-  @Output() inView = new EventEmitter(null);
-  @Output() loaded = new EventEmitter(null);
+  @Input() assets: any;
+  @Input() size = Size.medium;
+  @Input() priorityList = ['displayAsset', 'thumbnailAsset'];
+  @Input() controlsList = 'nofullscreen nodownload noremoteplayback noplaybackrate';
+  @Input() poster: CachedAsset;
   @Input() controls = false;
-  @Input() autoplay = false;
+  @Input() requires = ['all'];
+  @Input() hideSpinner = false;
   @Input() muted = false;
-  @Input() offset = '0.0';
-  readonly baseUrl = 'https://backend.kukai.network/file';
+  @Input() autoplay = false;
+  @Input() loop = false;
+  @Input() playsinline = false;
+  @Output() inView = new EventEmitter(null);
+  @Output() load = new EventEmitter(null);
   readonly loaderUrl = 'assets/img/loader.svg';
   readonly unknownUrl = 'assets/img/unknown-token-grayscale.svg';
   dataSrc = undefined;
@@ -30,16 +56,11 @@ export class AssetComponent implements OnInit, OnChanges, AfterViewInit {
 
   obs: IntersectionObserver;
 
-  constructor() {}
+  constructor(private elRef: ElementRef, private tokenService: TokenService) {}
 
-  ngOnInit(): void {
-    this.evaluate();
-  }
-
-  async ngOnChanges(changes: SimpleChanges): Promise<void> {
-    await this.evaluate();
-    if (this.preImage?.nativeElement || this.video?.nativeElement || this.model?.nativeElement) {
-      this.lazyLoad();
+  ngOnInit() {
+    if (this.hideSpinner) {
+      this.display = Display.none;
     }
   }
 
@@ -47,48 +68,87 @@ export class AssetComponent implements OnInit, OnChanges, AfterViewInit {
     this.lazyLoad();
   }
 
-  isEqualUrl(): boolean {
-    return (
-      (typeof this.meta === 'string' && this.meta === this.dataSrc) ||
-      (typeof this.meta === 'object' && `${this.baseUrl}/${this.meta.filename}_${this.size}.${this.meta.extension}` === this.dataSrc)
-    );
+  updateDisplay(): void {
+    if (this.isImage() && (this.requires.includes('image') || this.requires.includes('all'))) {
+      this.display = Display.image;
+    } else if (this.isAudio() && (this.requires.includes('audio') || this.requires.includes('all'))) {
+      this.display = Display.audio;
+    } else if (this.isVideo() && (this.requires.includes('video') || this.requires.includes('all'))) {
+      this.display = Display.video;
+    } else if (this.is3D() && (this.requires.includes('model') || this.requires.includes('all'))) {
+      this.display = Display.threeD;
+    } else {
+      this.display = Display.none;
+    }
+  }
+
+  isImage(): boolean {
+    return this.mimeType?.startsWith('image/') || this.mimeType?.startsWith('application/');
+  }
+
+  isVideo(): boolean {
+    return this.mimeType?.startsWith('video/');
+  }
+
+  isAudio(): boolean {
+    return this.mimeType?.startsWith('audio/');
+  }
+
+  is3D(): boolean {
+    return this.mimeType?.startsWith('model/');
   }
 
   onLoad(e): void {
     if (e?.target?.id === 'preImage') {
       this.postSrc = this.preSrc;
-    } else if (e?.target?.id === 'postImage' && e?.target?.src.indexOf(this.loaderUrl) === -1 && e?.target?.src.indexOf(this.unknownUrl) === -1) {
-      this.loaded.emit();
+      this.updateDisplay();
+    }
+  }
+
+  onLoadData(e): void {
+    if (this.isAudio()) {
+      if (this.audio.nativeElement.muted) {
+        this.audio.nativeElement.volume = 1.0;
+      }
     }
   }
 
   onError(e): void {
-    this.postSrc = this.unknownUrl;
+    if (e?.target?.id === 'postImage' && this.isImage()) {
+      this.evaluateInvalid();
+    }
   }
 
-  async evaluate(): Promise<void> {
-    if (this.isEqualUrl()) {
-      return;
-    }
-    this.dataSrc = undefined;
-    this.postSrc = this.loaderUrl;
+  evaluateInvalid(): void {
     this.mimeType = 'image/*';
-    if (typeof this.meta === 'object') {
-      this.mimeType = (this.meta as any)?.mimeType
-        ? (this.meta as any)?.mimeType
-        : Object.keys(mimes)
-            .filter((key) => !!mimes[key]?.extensions?.length)
-            .find((key) => mimes[key].extensions.includes((this.meta as CachedAsset)?.extension));
-      if (this.mimeType?.startsWith('model/') && (this.meta as any)?.uri?.startsWith('ipfs://')) {
-        this.dataSrc = `https://cloudflare-ipfs.com/ipfs/${(this.meta as any).uri.slice(7)}`;
-      } else {
-        this.dataSrc = `${this.baseUrl}/${this.meta.filename}_${this.size}.${this.meta.extension}`;
+    this.updateDisplay();
+    this.preSrc = this.unknownUrl;
+  }
+  pickAsset(assets): Asset {
+    for (let type of this.priorityList) {
+      if (assets && assets[type]) {
+        return assets[type];
       }
-    } else if (typeof this.meta === 'string' && this.meta) {
-      this.dataSrc = this.meta;
-    } else if (!this.meta) {
-      this.mimeType = 'image/*';
-      this.dataSrc = this.unknownUrl;
+    }
+    return null;
+  }
+
+  async evaluate(assets): Promise<void> {
+    if (this.poster) {
+      this.preSrc = this.assetToUrl(this.poster?.uri);
+    }
+    let asset = this.pickAsset(assets);
+    if (asset) {
+      try {
+        await this.determineMime(asset);
+      } catch (e) {
+        console.error(e);
+        this.evaluateInvalid();
+        return;
+      }
+      this.setSrc(asset);
+    } else {
+      this.evaluateInvalid();
     }
   }
 
@@ -96,23 +156,76 @@ export class AssetComponent implements OnInit, OnChanges, AfterViewInit {
     this.obs = new IntersectionObserver((entries, _) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          const lazyAsset = entry.target as HTMLImageElement | HTMLVideoElement;
-          //console.log("lazy loading ", lazyAsset)
-          this.obs.unobserve(lazyAsset);
-          if (lazyAsset instanceof HTMLImageElement) {
-            this.preSrc = this.dataSrc;
-          } else if (this.mimeType?.startsWith('model/')) {
-            this.postSrc = this.dataSrc;
-          }
-          this.inView.emit();
+          this.evaluate(this.assets);
         }
+        this.inView.emit();
       });
     });
-    if (this.postImage?.nativeElement) {
-      this.obs.observe(this.postImage?.nativeElement);
+    if (this.elRef?.nativeElement) {
+      this.obs.observe(this.elRef?.nativeElement);
     }
-    if (this.model?.nativeElement) {
-      this.obs.observe(this.model?.nativeElement);
+  }
+
+  async determineMime(asset: Asset) {
+    const url = this.assetToUrl(asset);
+    if (!url) {
+      throw new Error('InvalidUrl');
     }
+    if (url?.startsWith('data:image')) {
+      this.mimeType = 'image/*';
+      return (this.preSrc = url);
+    }
+    // Ignore MIME type provided in metadata for now. Way too unreliable.
+    if (typeof asset !== 'string' /* && (!asset?.mimeType || MIMETYPE_OVERLOADS.includes(asset?.mimeType))*/) {
+      const response = await fetch(url, { method: 'GET' });
+      if (!response.ok) {
+        throw new Error();
+      }
+      this.mimeType = response.headers.get('content-type');
+    } else if (typeof asset === 'string') {
+      this.mimeType = 'image/*';
+    } /*else {
+      this.mimeType = asset.mimeType;
+    }*/
+  }
+
+  setSrc(asset) {
+    this.updateDisplay();
+    if (this.isAudio() || this.isVideo() || this.is3D()) {
+      this.isAudio() ? this.load.emit() : undefined;
+      if (this.is3D()) {
+        const contractAddress = this.tokenService.getContractAddressFromAsset(asset?.uri);
+        if (!(MODEL_3D_WHITELIST as Array<any>).includes(contractAddress)) {
+          console.warn('Content blocked');
+          this.evaluateInvalid();
+          return;
+        }
+      }
+      this.dataSrc = this.assetToUrl(asset);
+    } else if (this.isImage()) {
+      this.preSrc = this.assetToUrl(asset);
+    } else {
+      console.warn(`Unrecognized MIME type: ${this.mimeType}`, '\n', 'Assuming: image/*');
+      this.mimeType = 'image/*';
+      this.updateDisplay();
+      this.preSrc = this.assetToUrl(asset);
+    }
+  }
+  assetToUrl(asset: Asset): string {
+    let url = '';
+    const uri = typeof asset === 'string' ? asset : asset?.uri;
+    if (uri.startsWith('ipfs://')) {
+      url = `https://static.tcinfra.net/media/${this.size}/ipfs/${uri.slice(7)}`;
+    } else if (uri.startsWith('https://')) {
+      url = `https://static.tcinfra.net/media/${this.size}/web/${uri.slice(8)}`;
+    } else if (!CONSTANTS.MAINNET && (uri.startsWith('http://localhost') || uri.startsWith('http://127.0.0.1'))) {
+      url = uri.slice(16);
+    } else if (typeof asset === 'string') {
+      url = uri;
+    } else {
+      console.warn('failed to parse asset', asset);
+      url = uri;
+    }
+    return url ?? '';
   }
 }

@@ -2,14 +2,12 @@ import { Injectable } from '@angular/core';
 import { CONSTANTS, MODEL_3D_WHITELIST } from '../../../../environments/environment';
 import { Indexer } from '../indexer.service';
 import * as cryptob from 'crypto-browserify';
-import { WalletObject, Activity, OpStatus } from '../../wallet/wallet';
-import assert from 'assert';
-import { Asset, CachedAsset } from '../../token/token.service';
+import { WalletObject, Activity, OpStatus, Token } from '../../wallet/wallet';
 import { TezosToolkit } from '@taquito/taquito';
 import { Tzip12Module, tzip12 } from '@taquito/tzip12';
 import { TezosStorageHandler } from '@taquito/tzip16';
 import { Handler, IpfsHttpHandler, MetadataProvider } from '@taquito/tzip16';
-import Big from 'big.js';
+import { SubjectService } from '../../subject/subject.service';
 
 interface TokenMetadata {
   name: string;
@@ -17,6 +15,7 @@ interface TokenMetadata {
   decimals: number;
   symbol?: string;
   description?: string;
+  artifactUri?: string;
   displayUri?: string;
   thumbnailUri?: string;
   category?: string;
@@ -30,13 +29,12 @@ interface TokenMetadata {
   providedIn: 'root'
 })
 export class TzktService implements Indexer {
+  tokenBalanceCache = {};
   readonly network = CONSTANTS.NETWORK.replace('hangzhounet', 'hangzhou2net');
-  public readonly bcd = 'https://api.better-call.dev/v1';
   public readonly tzkt = `https://api.${this.network}.tzkt.io/v1`;
-  readonly BCD_TOKEN_QUERY_SIZE: number = 50;
-  tokenKindCache: Record<string, { kind: string; timestamp: number }> = {};
+  readonly TZKT_TOKEN_QUERY_SIZE: number = 10000;
   Tezos: TezosToolkit;
-  constructor() {
+  constructor(private subjectService: SubjectService) {
     this.Tezos = new TezosToolkit(CONSTANTS.NODE_URL);
     const customHandlers = new Map<string, Handler>([
       ['ipfs', new IpfsHttpHandler('cloudflare-ipfs.com')],
@@ -46,7 +44,7 @@ export class TzktService implements Indexer {
     this.Tezos.addExtension(new Tzip12Module(customMetadataProvider));
   }
   async getContractAddresses(pkh: string): Promise<any> {
-    return fetch(`https://api.${this.network}.tzkt.io/v1/operations/originations?contractManager=${pkh}`)
+    return fetch(`${this.tzkt}/operations/originations?contractManager=${pkh}`)
       .then((response) => response.json())
       .then((data) =>
         data
@@ -56,52 +54,69 @@ export class TzktService implements Indexer {
           .filter((address: string) => address.length)
       );
   }
+  async getHashAndBlockById(transactionId: number, ops: any): Promise<any> {
+    try {
+      for (const op of ops) {
+        if (op.type === 'transaction' && op.id === transactionId) {
+          if (op.hash && op.block) {
+            return { hash: op.hash, block: op.block };
+          }
+          break;
+        }
+      }
+    } catch (e) {
+      console.error(e);
+    }
+    return fetch(`${this.tzkt}/operations/transactions?id=${transactionId}`)
+      .then((res) => {
+        return res.json();
+      })
+      .then((o) => {
+        return o?.length && o[0].hash && o[0].block ? { hash: o[0].hash, block: o[0].block } : '';
+      });
+  }
   async accountInfo(address: string, knownTokenIds: string[]): Promise<any> {
-    const tokens = [];
     const unknownTokenIds = [];
-    const data = await (await fetch(`${this.bcd}/account/${this.network}/${address}`)).json();
-    const aryTokens: any[] = address.startsWith('tz') ? await this.getTokenBalancesUsingPromiseAll(address) : [];
+    const data = await (await fetch(`${this.tzkt}/accounts/${address}`)).json();
+    const tokenBalances = address.startsWith('tz') ? await this.getAllTokenBalances(address) : [];
     if (data) {
-      // inject aryTokens result back into where tokens property used to be
-      data.tokens = aryTokens;
-      if (data?.tokens?.length) {
-        for (const token of data.tokens) {
-          tokens.push(token);
-          if (!knownTokenIds.includes(`${token.contract}:${token.token_id}`)) {
-            unknownTokenIds.push(`${token.contract}:${token.token_id}`);
+      if (tokenBalances?.length) {
+        for (const token of tokenBalances) {
+          if (!knownTokenIds.includes(token.tokenId)) {
+            unknownTokenIds.push(token.tokenId);
           }
         }
       }
-      tokens.sort(function (a: any, b: any) {
-        if (`${a.contract}:${a.token_id}` < `${b.contract}:${b.token_id}`) {
+      tokenBalances.sort(function (a: any, b: any) {
+        if (a.tokenId < b.tokenId) {
           return -1;
         } else {
           return 1;
         }
       });
-      const payload: string = (data.balance ? data.balance : '') + (data.last_action ? data.last_action : '') + (tokens ? JSON.stringify(tokens) : '');
+      const payload: string = (data.balance ? data.balance : '') + (data.counter ? data.counter : '') + (tokenBalances ? JSON.stringify(tokenBalances) : '');
       const input = Buffer.from(payload);
       const hash = cryptob.createHash('sha512').update(input).digest('hex');
-      if (payload && payload !== '0001-01-01T00:00:00Z[]' && payload !== '[]') {
+      if (payload && payload !== '[]') {
         const balance = data?.balance !== undefined ? data.balance : 0;
-        return { counter: hash, unknownTokenIds, tokens, balance };
+        return { counter: hash, unknownTokenIds, tokens: tokenBalances, balance };
       }
     }
-    return { counter: '', unknownTokenIds, tokens };
+    return { counter: '', tokens: tokenBalances };
   }
   async isUsedAccount(address: string): Promise<boolean> {
-    const accountInfo = await (await fetch(`${this.bcd}/account/${this.network}/${address}`)).json();
+    const accountInfo = await (await fetch(`${this.tzkt}/accounts/${address}`)).json();
     if (accountInfo && (accountInfo.balance || accountInfo.tx_count)) {
       return true;
     } else {
-      const tokenCount = await (await fetch(`${this.bcd}/account/${this.network}/${address}/count`)).json();
+      const tokenCount = await (await fetch(`${this.tzkt}/accounts/count`)).json();
       if (tokenCount && Object.keys(tokenCount).length > 0) {
         return true;
       }
     }
     return false;
   }
-  async getOperations(address: string, knownTokenIds: string[] = [], wallet: WalletObject): Promise<any> {
+  async getOperations(address: string, knownTokenIds: string[], wallet: WalletObject): Promise<any> {
     const ops = await fetch(`${this.tzkt}/accounts/${address}/operations?limit=20&type=delegation,origination,transaction`)
       .then((response) => response.json())
       .then((data) =>
@@ -112,6 +127,7 @@ export class TzktService implements Indexer {
               let destination = { address: '' };
               let amount = '0';
               let entrypoint = '';
+              let opId = '';
               switch (op.type) {
                 case 'transaction':
                   if (address !== op.target.address && address !== op.sender.address) {
@@ -120,6 +136,7 @@ export class TzktService implements Indexer {
                   destination = op.target;
                   amount = op.amount.toString();
                   entrypoint = this.extractEntrypoint(op);
+                  opId = op?.id ? `t${op.id}` : '';
                   break;
                 case 'delegation':
                   if (address !== op.sender.address) {
@@ -127,12 +144,14 @@ export class TzktService implements Indexer {
                   }
                   destination = op.newDelegate ? op.newDelegate : { address: '' };
                   amount = '0';
+                  opId = op?.id ? `d${op.id}` : '';
                   break;
                 case 'origination':
                   destination = op.originatedContract;
                   if (op.contractBalance) {
                     amount = op.contractBalance.toString();
                   }
+                  opId = op?.id ? `o${op.id}` : '';
                   break;
                 default:
                   console.log(`Ignoring kind ${op.type}`);
@@ -148,7 +167,8 @@ export class TzktService implements Indexer {
                 hash: op.hash,
                 counter: op.counter,
                 timestamp: new Date(op.timestamp).getTime(),
-                entrypoint
+                entrypoint,
+                opId
               };
               return activity;
             }
@@ -156,169 +176,87 @@ export class TzktService implements Indexer {
           .filter((obj) => obj)
       );
     const unknownTokenIds: string[] = [];
-    const tokenTxs = await fetch(`${this.bcd}/tokens/${this.network}/transfers/${address}?size=10&start=0`)
-      .then((response) => response.json())
-      .then((data) =>
-        data.transfers
-          .map((tx) => {
-            const tokenId = `${tx.contract}:${tx.token_id}`;
-            if (tx.contract && tokenId && tx.status === 'applied') {
-              if (!knownTokenIds.includes(tokenId)) {
-                unknownTokenIds.push(tokenId);
-              }
-              const source: any = { address: tx.from };
-              if (tx.from === '' && tx.contract) {
-                source.address = tx.contract;
-                if (tx.alias) {
-                  source.alias = tx.alias;
-                }
-              }
-              const index = ops.findIndex((op: any) => op.hash === tx.hash && op.counter === tx.counter);
-              let hiddenOp;
-              if (index !== -1) {
-                hiddenOp = ops[index];
-                if (hiddenOp?.entrypoint && hiddenOp.entrypoint === 'transfer') {
-                  ops.splice(index, 1); // Hide token transfer invokation
-                }
-              }
-              const activity: Activity = {
-                type: 'transaction',
-                block: '',
-                status: OpStatus.CONFIRMED,
-                amount: tx.amount,
-                tokenId,
-                source,
-                destination: { address: tx.to },
-                hash: tx.hash,
-                counter: tx.counter,
-                timestamp: new Date(tx.timestamp).getTime()
-              };
-              return activity;
-            } else {
-              return null;
-            }
-          })
-          .filter((obj) => obj)
-      );
-    const operations = ops.concat(tokenTxs).sort(function (a: any, b: any) {
-      if (b.timestamp - a.timestamp === 0 && a.counter && b.counter) {
-        if (b.counter - a.counter === 0) {
-          return b.entrypoint ? -1 : 1;
+    const tokenTxs = await (await fetch(`${this.tzkt}/tokens/transfers?anyof.from.to=${address}&limit=20&offset=0&sort.desc=id`)).json();
+    const tokenArr = [];
+    for (let i = 0; i < tokenTxs.length; ++i) {
+      const tokenId = `${tokenTxs[i].token.contract.address}:${tokenTxs[i].token.tokenId}`;
+      if (tokenTxs[i].token.contract && tokenId) {
+        if (!knownTokenIds.includes(tokenId)) {
+          unknownTokenIds.push(tokenId);
         }
-        return b.counter - a.counter;
+        const source: any = { address: tokenTxs[i].from?.address };
+        if (tokenTxs[i].from === '' && tokenTxs[i].token.contract) {
+          source.address = tokenTxs[i].contract.address;
+        }
+        let hash = '';
+        let block = '';
+        if (tokenTxs[i].transactionId) {
+          const o = await this.getHashAndBlockById(tokenTxs[i].transactionId, ops);
+          if (o) {
+            hash = o.hash;
+            block = o.block;
+          }
+        }
+        const activity: Activity = {
+          type: 'transaction',
+          block,
+          hash,
+          status: OpStatus.CONFIRMED,
+          amount: tokenTxs[i].amount,
+          tokenId,
+          source,
+          destination: { address: tokenTxs[i].to?.address ?? '' },
+          timestamp: new Date(tokenTxs[i].timestamp).getTime(),
+          opId: `t${tokenTxs[i].transactionId}`
+        };
+        tokenArr.push(activity);
       }
-      return b.timestamp - a.timestamp;
-    });
+    }
+    let operations = ops
+      .concat(tokenArr)
+      .filter((op) => op?.entrypoint !== 'transfer' && op?.entrypoint !== 'claim')
+      .sort(function (a: any, b: any) {
+        return b.timestamp - a.timestamp;
+      });
     return { operations, unknownTokenIds };
   }
   private extractEntrypoint(op: any): string {
     return op?.entrypoint ?? op?.parameter?.entrypoint ?? '';
   }
-  async getTokenMetadata(contractAddress, id, counter): Promise<TokenMetadata> {
-    // cache token kind
-    const tokenKind: Promise<any> = new Promise(async (resolve) => {
-      let kind;
-      const now = new Date().getTime();
-      if (this.tokenKindCache[contractAddress] && now - this.tokenKindCache[contractAddress].timestamp < 1800000) {
-        // get from cache
-        kind = this.tokenKindCache[contractAddress].kind;
-      } else {
-        kind = await fetch(`${this.bcd}/contract/${this.network}/${contractAddress}`)
-          .then((response) => response.json())
-          .then((data) => {
-            if (data?.tags?.includes('fa2')) {
-              return 'FA2';
-            } else if (data?.tags.includes('fa1-2')) {
-              return 'FA1.2';
-            }
-            return null;
-          })
-          .catch((e) => {
-            return null;
-          });
-        if (kind) {
-          this.tokenKindCache[contractAddress] = { kind, timestamp: new Date().getTime() };
-        }
-      }
-      resolve(kind);
-    });
-    let bcdId: string; // skeles hotfix
-    if (contractAddress === 'KT1HZVd9Cjc2CMe3sQvXgbxhpJkdena21pih') {
-      const map = import('../../../../assets/js/KT1HZVd9Cjc2CMe3sQvXgbxhpJkdena21pih.json');
-      bcdId = map[id];
-      bcdId = bcdId ? Big(bcdId).mod(Big(2).pow(64)).toFixed() : undefined;
+  async getTokenMetadata(contractAddress, id): Promise<TokenMetadata> {
+    let meta;
+    let tokenType = 'FA2';
+    const tokenId = `${contractAddress}:${id}`;
+    if (this.tokenBalanceCache[tokenId]) {
+      meta = this.tokenBalanceCache[tokenId].token.metadata;
+      tokenType = this.tokenBalanceCache[tokenId].token.standard && this.tokenBalanceCache[tokenId].token.standard === 'fa1.2' ? 'FA1.2' : 'FA2';
     }
-    const tokenMetadata: Promise<any> = fetch(`${this.bcd}/contract/${this.network}/${contractAddress}/tokens?token_id=${bcdId ?? id}&offset=0`)
-      .then((response) => response.json())
-      .then(async (data) => {
-        if (data?.length && data[0]?.name === 'Unknown') {
-          data = [];
-        }
-        if (contractAddress === 'KT1Qm7MHmbdiBzoRs7xqBiqoRxw7T2cxTTJN') {
-          data = []; // bypass bcd cache for mooncakes
-        }
-        if (data.length === 0) {
-          try {
-            data = await this.getTokenMetadataWithTaquito(contractAddress, id);
-            console.log(`Fallback on Taquito metadata (${contractAddress}:${id})`, data);
-          } catch (e) {
-            console.log(`No metadata found for: ${contractAddress}:${id}`, e);
-            throw e;
-          }
-        } else {
-          data = data[0];
-        }
-        const keys = [
-          { key: 'name', type: 'string' },
-          { key: 'decimals', type: 'number' },
-          { key: 'symbol', type: 'string' },
-          { key: 'description', type: 'string' },
-          { key: 'displayUri', type: 'string' },
-          { key: 'thumbnailUri', type: 'string' },
-          { key: 'isTransferable', type: 'boolean' },
-          { key: 'shouldPreferSymbol', type: 'boolean' },
-          { key: 'isBooleanAmount', type: 'boolean' },
-          { key: 'series', type: 'string' }
-        ];
-        // should always be 1
-        mutableConvertObjectPropertiesSnakeToCamel(data);
-        assert(data, `cannot find token_id ${id} for contract: ${contractAddress}`);
-        if (data?.token_id === Number(id) || data.tokenId === Number(id) || data.tokenId > Number.MAX_SAFE_INTEGER) {
-          // possible snake_case to camelCase conversion; depending on future BCD updates
-          const rawData = JSON.parse(JSON.stringify(data));
-          this.flattern(data);
-          let metadata: any = {};
-          for (const a of keys) {
-            if (typeof data[a.key] === a.type) {
-              metadata[a.key] = data[a.key];
-            }
-          }
-          metadata = { ...metadata, ...(await this.resolveAssetUris(data, counter)) };
-          return metadata;
-        }
-        console.log(`No token metadata found for ${contractAddress}:${id}`);
-        return {};
-      })
-      .catch((e) => {
-        console.warn(e);
-        return {};
-      });
-    const ans = await Promise.all([tokenMetadata, tokenKind]).then((res) => {
-      const merged: any = { ...res[0] };
-      if (!merged.tokenType && res[1]) {
-        merged.tokenType = res[1];
+    if (meta) {
+      this.normalizeMetadata(meta, contractAddress, id);
+      this.filterMetadata(meta);
+    }
+    if (!(meta && (meta.name || meta.symbol) && !isNaN(meta.decimals) && meta.decimals >= 0)) {
+      meta = null;
+    }
+    if (!meta) {
+      console.log('fallback on taquito', { contractAddress, id });
+      meta = await this.getTokenMetadataWithTaquito(contractAddress, id);
+      if (meta) {
+        this.normalizeMetadata(meta, contractAddress, id);
+        this.filterMetadata(meta);
       }
-      return merged;
-    });
-    return ans ? ans : null;
+    }
+    if (!(meta && (meta.name || meta.symbol) && !isNaN(meta.decimals) && meta.decimals >= 0)) {
+      meta = null;
+    }
+    if (!meta) {
+      console.warn(`cannot find token_id ${id} for contract: ${contractAddress}`);
+      return null;
+    }
+    return { ...meta, tokenType };
   }
   async getTokenMetadataWithTaquito(contractAddress, id) {
     const contract = await this.Tezos.contract.at(contractAddress, tzip12);
-    let stringId: any; // skeles hotfix
-    if (contractAddress === 'KT1HZVd9Cjc2CMe3sQvXgbxhpJkdena21pih') {
-      const map = import('../../../../assets/js/KT1HZVd9Cjc2CMe3sQvXgbxhpJkdena21pih.json');
-      stringId = map[id] as any;
-    }
     let metadata: any;
     if (['KT1TnVQhjxeNvLutGvzwZvYtC7vKRpwPWhc6'].includes(contractAddress)) {
       // nl hotfix
@@ -331,162 +269,124 @@ export class TzktService implements Indexer {
         metadata = response;
       }
     } else {
-      metadata = await contract.tzip12().getTokenMetadata(stringId ?? Number(id));
+      metadata = await contract.tzip12().getTokenMetadata(Number(id));
     }
-    mutableConvertObjectPropertiesSnakeToCamel(metadata);
-    // add extras to mimic bcd response
-    const firstClassProps = [
-      'tokenId',
-      'symbol',
-      'decimals',
-      'name',
-      'description',
-      'displayUri',
-      'thumbnailUri',
-      'externalUri',
-      'isTransferable',
-      'isBooleanAmount',
-      'shouldPreferSymbol',
-      'creators',
-      'tags',
-      'formats',
-      'extras'
+    return metadata;
+  }
+  async getAllTokenBalances(address: string): Promise<Array<Token>> {
+    const fetchToken = async (offset: number): Promise<Array<any>> => {
+      let res = await (await fetch(`${this.tzkt}/tokens/balances?account=${address}&offset=${offset}&limit=${this.TZKT_TOKEN_QUERY_SIZE}&balance.ne=0`)).json();
+      if (res?.length) {
+        if (res.length === this.TZKT_TOKEN_QUERY_SIZE) {
+          // get more if limit reached
+          return [...res, ...(await fetchToken(offset + this.TZKT_TOKEN_QUERY_SIZE))];
+        } else {
+          return res;
+        }
+      } else {
+        return [];
+      }
+    };
+    let tzktTokensResponse = await fetchToken(0);
+    const tokenBalances: Token[] = [];
+    for (let i = 0; i < tzktTokensResponse.length; ++i) {
+      if (tzktTokensResponse[i]?.balance && tzktTokensResponse[i].token?.contract?.address && tzktTokensResponse[i].token?.tokenId !== undefined) {
+        const tokenId: string = `${tzktTokensResponse[i].token.contract.address}:${tzktTokensResponse[i].token.tokenId}`;
+        tokenBalances.push({ tokenId, balance: tzktTokensResponse[i].balance });
+        this.tokenBalanceCache[tokenId] = tzktTokensResponse[i];
+      }
+    }
+    return tokenBalances;
+  }
+  private filterMetadata(meta: any) {
+    const keys = [
+      { key: 'name', type: 'string' },
+      { key: 'balance', type: 'string' },
+      { key: 'symbol', type: 'string' },
+      { key: 'contractAddress', type: 'string' },
+      { key: 'id', type: 'string' },
+      { key: 'decimals', type: 'string' },
+      { key: 'description', type: 'string' },
+      { key: 'artifactUri', type: 'string', toAsset: true },
+      { key: 'displayUri', type: 'string', toAsset: true },
+      { key: 'thumbnailUri', type: 'string', toAsset: true },
+      { key: 'isTransferable', type: 'boolean' },
+      { key: 'shouldPreferSymbol', type: 'boolean' },
+      { key: 'isBooleanAmount', type: 'boolean' },
+      { key: 'series', type: 'string' }
     ];
-    if (metadata?.extras === undefined) {
-      metadata.extras = {};
-    }
-    const keys = Object.keys(metadata);
-    for (const key of keys) {
-      if (!firstClassProps.includes(key)) {
-        metadata.extras[key] = metadata[key];
-        delete metadata[key];
+    let metadata: any = {};
+    for (const a of keys) {
+      if (typeof meta[a.key] === a.type) {
+        if (a.toAsset) {
+          // extract mime type
+          if (meta?.formats?.length) {
+            const index = meta.formats.findIndex((b) => b.uri === meta[a.key]);
+            if (index !== -1 && meta.formats[index].uri && meta.formats[index].mimeType) {
+              meta[a.key] = { uri: meta[a.key], mimeType: meta.formats[index].mimeType };
+            }
+          }
+          if (typeof meta[a.key] === 'string') {
+            meta[a.key] = { uri: meta[a.key], mimeType: 'unknown' };
+          }
+        }
+        metadata[a.key] = meta[a.key];
       }
     }
     return metadata;
   }
-  private flattern(obj: any): any {
-    const keys = Object.keys(obj);
-    for (const key of keys) {
-      if (typeof obj[key] === 'object' && !Array.isArray(obj[key])) {
-        const childKeys = Object.keys(obj[key]);
-        for (const childKey of childKeys) {
-          if (typeof obj[childKey] === 'undefined' && typeof obj[key][childKey] !== 'object') {
-            obj[childKey] = obj[key][childKey];
-          }
-        }
-        delete obj[key];
+  private normalizeMetadata(meta: any, contractAddress: string, id: number) {
+    mutableConvertObjectPropertiesSnakeToCamel(meta);
+    for (let key of Object.keys(meta)) {
+      if (typeof meta[key] === 'number') {
+        meta[key] = `${meta[key]}`;
       }
+    }
+    this.handleMetadataExceptions(meta, contractAddress, id);
+    if (meta?.isTransferable && typeof meta?.isTransferable === 'string') {
+      meta.isTransferable = meta.isTransferable?.toLowerCase() === 'false' ? false : meta.isTransferable?.toLowerCase() === 'true' ? true : undefined;
+    }
+    if (meta?.shouldPreferSymbol && typeof meta?.shouldPreferSymbol === 'string') {
+      meta.shouldPreferSymbol =
+        meta.shouldPreferSymbol?.toLowerCase() === 'false' ? false : meta.shouldPreferSymbol?.toLowerCase() === 'true' ? true : undefined;
+    }
+    if (meta?.isBooleanAmount && typeof meta?.isBooleanAmount === 'string') {
+      meta.isBooleanAmount = meta.isBooleanAmount?.toLowerCase() === 'false' ? false : meta.isBooleanAmount?.toLowerCase() === 'true' ? true : undefined;
     }
   }
-  async resolveAssetUris(data: any, counter: number): Promise<any> {
-    const metadata: any = {};
-    const rawData = JSON.parse(JSON.stringify(data));
-    metadata.displayUri = await this.uriToAsset(data.displayUri, counter);
-    if (data.displayUri && data.thumbnailUri && data.displayUri === data.thumbnailUri) {
-      metadata.thumbnailUri = metadata.displayUri;
-    } else {
-      metadata.thumbnailUri = await this.uriToAsset(data.thumbnailUri, counter);
+  handleMetadataExceptions(meta: any, contractAddress: string, id: number) {
+    // hen
+    if (meta?.symbol === 'OBJKT') {
+      if (!meta.displayUri && meta.formats?.length) {
+        meta.displayUri = meta.formats[0].uri;
+      }
+      if (meta.displayUri && meta.thumbnailUri) {
+        delete meta.thumbnailUri;
+      }
     }
-    try {
-      // Exceptions
-      if (data?.isBooleanAmount === undefined && typeof data?.isBooleanAmount === 'string' && data?.isBooleanAmount === 'true') {
-        // mandala
-        metadata.isBooleanAmount = true;
+    if (contractAddress === 'KT1NVvPsNDChrLRH5K2cy6Sc9r1uuUwdiZQd' /* Dogami */ && meta?.formats) {
+      if (typeof meta.formats[0] === 'string') {
+        meta.formats = JSON.parse(meta.formats);
       }
-      if (data?.symbol === 'OBJKT') {
-        if (!data.displayUri) {
-          // hicetnunc
-          metadata.displayUri = await this.uriToAsset(rawData.formats[0].uri, counter);
-        }
-        if (metadata?.displayUri) {
-          metadata.thumbnailUri = '';
-        }
-      }
-      if (data?.contract === 'KT1NVvPsNDChrLRH5K2cy6Sc9r1uuUwdiZQd' /* Dogami */ && rawData?.formats) {
-        if (typeof rawData.formats[0] === 'string') {
-          metadata.displayUri = JSON.parse(rawData.formats)[0];
-        } else {
-          metadata.displayUri = rawData.formats[0];
-        }
-      }
-      if (
-        (data?.contract === 'KT1AWoUQAuUudqpc75cGukWufbfim3GRn8h6' /* Flex */ || data?.contract === 'KT1Lz7Jd6Sh1zUE66nDGS7hGnjwcyTBCiYbF') /* SXSW */ &&
-        rawData?.formats?.length
-      ) {
-        metadata.displayUri = rawData.formats?.find((f) => f?.mimeType?.startsWith('model/')) ?? metadata.displayUri;
-      }
-      if (!metadata.displayUri && !metadata.thumbnailUri && rawData?.icon) {
-        metadata.thumbnailUri = await this.uriToAsset(rawData?.icon, counter); // Plenty + HEH
-      }
-      if (!(MODEL_3D_WHITELIST as Array<any>).includes(data?.contract)) {
-        if (metadata.displayUri?.mimeType.startsWith('model/')) {
-          metadata.displayUri = '';
-        }
-        if (metadata.thumbnailUri?.mimeType.startsWith('model/')) {
-          metadata.thumbnailUri = '';
-        }
-      }
-    } catch (e) {}
-    return metadata;
-  }
-  async uriToAsset(uri: string, counter: number): Promise<Asset> {
-    if (!uri || uri.length < 8) {
-      return '';
     }
-    let url = '';
-    if (uri.startsWith('ipfs://')) {
-      url = `https://cloudflare-ipfs.com/ipfs/${uri.slice(7)}`;
-    } else if (uri.startsWith('https://')) {
-      url = uri;
-    } else if (!CONSTANTS.MAINNET && (uri.startsWith('http://localhost') || uri.startsWith('http://127.0.0.1'))) {
-      url = uri;
+    // Plenty + HEH
+    if (!meta.displayUri && !meta.thumbnailUri && meta?.icon) {
+      meta.thumbnailUri = { uri: meta.icon, mimeType: 'unknown' };
     }
-    const suffix = counter ? `&retry=${counter}` : ''; // bypass cache
-    const cacheMeta = url ? await this.fetchApi(`https://backend.kukai.network/file/info?src=${url}${suffix}`, counter) : '';
-    return cacheMeta ? cacheMeta : '';
-  }
-  async fetchApi(url: string, counter: number = 0): Promise<Asset> {
-    return fetch(url)
-      .then((response) => response.json())
-      .then((data) => {
-        if (data?.Status === 'ok' && data.Filename && data.Extension) {
-          const asset: CachedAsset = {
-            filename: data.Filename,
-            extension: data.Extension
-          };
-          if (asset.extension !== 'unknown') {
-            return asset;
-          }
-          console.warn(url, data);
-        } else {
-          if (!counter || counter < 5) throw new Error(data?.Error || data);
-        }
-        return '';
-      });
-  }
-  async getTokenBalancesUsingPromiseAll(address: string) {
-    // get total number of tokens
-    const tokenCount = await (await fetch(`${this.bcd}/account/${this.network}/${address}/count?hide_empty=true`)).json();
-    const tokenTotal = Object.keys(tokenCount)
-      .map((key) => tokenCount[key])
-      .reduce((a, b) => a + b, 0);
-
-    // Use Promise.All to get all token balances
-    const totalPromises = Math.floor(tokenTotal / this.BCD_TOKEN_QUERY_SIZE) + Number(tokenTotal % this.BCD_TOKEN_QUERY_SIZE !== 0);
-    const aryTokenFetchUrl: Promise<Response>[] = [];
-    for (let i = 0; i < totalPromises; i++) {
-      const url = `${this.bcd}/account/${this.network}/${address}/token_balances?size=${this.BCD_TOKEN_QUERY_SIZE}&offset=${
-        this.BCD_TOKEN_QUERY_SIZE * i
-      }&hide_empty=true`;
-      aryTokenFetchUrl.push(fetch(url));
+    if (
+      (contractAddress === 'KT1AWoUQAuUudqpc75cGukWufbfim3GRn8h6' /* Flex */ ||
+        contractAddress === 'KT1Lz7Jd6Sh1zUE66nDGS7hGnjwcyTBCiYbF' /* SXSW */ ||
+        contractAddress === 'KT1NVvPsNDChrLRH5K2cy6Sc9r1uuUwdiZQd') /* Dogami */ &&
+      meta?.formats?.length
+    ) {
+      meta.displayUri = meta.artifactUri = meta.formats?.find((f) => f?.mimeType?.startsWith('model/')) ?? meta.displayUri;
     }
-    const aryTokenResults = await Promise.all(aryTokenFetchUrl);
-    const aryTokenBalances = await Promise.all(aryTokenResults.map((r) => r.json()));
-    const aryTokens = [].concat(...aryTokenBalances.map((t) => t.balances));
-    return aryTokens;
+    if (contractAddress === 'KT1NVvPsNDChrLRH5K2cy6Sc9r1uuUwdiZQd') {
+      // override wrong mimeType
+      meta.thumbnailUri = { uri: meta.thumbnailUri, mimeType: 'video/mp4' };
+    }
   }
 }
-
 export function mutableConvertObjectPropertiesSnakeToCamel(data: Object) {
   for (const key in data) {
     if (key.charAt(0).toLowerCase() !== key.charAt(0)) {
@@ -506,6 +406,7 @@ export function mutableConvertObjectPropertiesSnakeToCamel(data: Object) {
       const camelKey = aryCamelKey.join('');
       if (!data.hasOwnProperty(camelKey)) {
         data[camelKey] = data[key];
+        delete data[key];
       }
     }
   }

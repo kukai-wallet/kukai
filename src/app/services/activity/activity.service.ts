@@ -85,11 +85,8 @@ export class ActivityService {
         account.updateTokenBalance('', '');
       } else {
         for (const token of tokens) {
-          const tokenId = `${token.contract}:${token.token_id}`;
-          idsWithBalance.push(tokenId);
-          if (tokenId) {
-            account.updateTokenBalance(tokenId, token.balance.toString());
-          }
+          idsWithBalance.push(token.tokenId);
+          account.updateTokenBalance(token.tokenId, token.balance.toString());
         }
         const currentTokenIds = account.getTokenBalances().map((token) => {
           return token.tokenId;
