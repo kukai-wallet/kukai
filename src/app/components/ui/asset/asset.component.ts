@@ -175,8 +175,11 @@ export class AssetComponent implements OnInit, AfterViewInit {
       this.mimeType = 'image/*';
       return (this.preSrc = url);
     }
-    // Ignore MIME type provided in metadata for now. Way too unreliable.
-    if (typeof asset !== 'string' /* && (!asset?.mimeType || MIMETYPE_OVERLOADS.includes(asset?.mimeType))*/) {
+    // Ignore MIME type provided in metadata for now. Way too unreliable. Exception for nfts in 3d wl. (media proxy don't return the correct mime type)
+    if (
+      typeof asset !== 'string' &&
+      !(asset?.mimeType?.startsWith('model/') && (MODEL_3D_WHITELIST as Array<any>).includes(this.tokenService.getContractAddressFromAsset(asset?.uri)))
+    ) {
       const response = await fetch(url, { method: 'GET' });
       if (!response.ok) {
         throw new Error();
@@ -184,9 +187,9 @@ export class AssetComponent implements OnInit, AfterViewInit {
       this.mimeType = response.headers.get('content-type');
     } else if (typeof asset === 'string') {
       this.mimeType = 'image/*';
-    } /*else {
+    } else {
       this.mimeType = asset.mimeType;
-    }*/
+    }
   }
 
   setSrc(asset) {
