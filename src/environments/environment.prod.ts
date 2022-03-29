@@ -632,8 +632,8 @@ const _CONSTANTS: Constants = {
         description: "Fashion, Creativity, and NFTs on Tezos",
     },
     'BlueVishnu': {
-        name: "BlueVishnu",
-        address: ["KT1Lz7Jd6Sh1zUE66nDGS7hGnjwcyTBCiYbF"],
+        name: "BlueVishnu - Digital Humans",
+        address: ["KT1Lz7Jd6Sh1zUE66nDGS7hGnjwcyTBCiYbF", "KT1D1XtWFoQDPtuYzbkeRJhcDgH6CDem2FkZ"],
         thumbnailUrl: "../../../assets/img/alias/bluevishnu.jpg",
         link: "", shouldDisplayLink: DisplayLinkOption.None, category: ["3D", "collectibles"],
         description: "",
@@ -1489,7 +1489,8 @@ const _BLACKLISTED_TOKEN_CONTRACTS = []
 const _MODEL_3D_WHITELIST = [
   'KT1NVvPsNDChrLRH5K2cy6Sc9r1uuUwdiZQd',/* Dogami */
   'KT1AWoUQAuUudqpc75cGukWufbfim3GRn8h6',/* Flex */
-  'KT1Lz7Jd6Sh1zUE66nDGS7hGnjwcyTBCiYbF' /* SXSW */
+  'KT1Lz7Jd6Sh1zUE66nDGS7hGnjwcyTBCiYbF',/* SXSW */
+  'KT1D1XtWFoQDPtuYzbkeRJhcDgH6CDem2FkZ' /* BlueVishnu */
 ];
 
 export const CONSTANTS = JSON.parse(JSON.stringify(_CONSTANTS));
