@@ -157,6 +157,7 @@ export class AssetComponent implements OnInit, AfterViewInit {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           this.evaluate(this.assets);
+          this.obs.unobserve(this.elRef?.nativeElement);
         }
         this.inView.emit();
       });

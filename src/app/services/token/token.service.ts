@@ -369,48 +369,8 @@ export class TokenService {
         if (metadata?.exploredIds) {
           this.exploredIds = metadata.exploredIds;
         }
-      } else if (metadata?.version === '1.0.8') {
-        // add metadata counter
-        if (metadata?.exploredIds) {
-          const ids = Object.keys(metadata.exploredIds);
-          for (const id of ids) {
-            metadata.exploredIds[id].counter = 0;
-          }
-          metadata.version = '1.0.9';
-          localStorage.setItem(this.storeKey, JSON.stringify(metadata));
-          this.loadMetadata();
-        }
-      } else if (metadata?.version === '1.0.10' || metadata?.version === '1.0.11') {
-        metadata.version = '1.0.12';
-        try {
-          if (metadata?.contracts) {
-            const targetContract = 'KT1Qm7MHmbdiBzoRs7xqBiqoRxw7T2cxTTJN'; // clear mooncakes metadata
-            if (metadata.contracts[targetContract]) {
-              delete metadata.contracts[targetContract];
-            }
-            if (metadata.exploredIds) {
-              for (let id of Object.keys(metadata.exploredIds)) {
-                if (id.startsWith(targetContract)) {
-                  delete metadata.exploredIds[id];
-                }
-              }
-            }
-          }
-          localStorage.setItem(this.storeKey, JSON.stringify(metadata));
-          this.loadMetadata();
-        } catch (e) {
-          console.error(e);
-        }
-        metadata.version = '1.0.11';
-        localStorage.setItem(this.storeKey, JSON.stringify(metadata));
-        this.loadMetadata();
-      } else if (metadata?.version === '1.0.12') {
-        metadata.version = '1.0.13';
-        this.resetAllMetadata();
       } else {
-        metadata.version = this.version;
-        localStorage.setItem(this.storeKey, JSON.stringify(metadata));
-        this.loadMetadata();
+        // clear all metadata
       }
     }
   }
