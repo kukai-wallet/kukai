@@ -15,6 +15,7 @@
     "stage-ghpages-testnet": "ng lint --fix && ng build && angular-cli-ghpages --repo \"git@github.com:kukai-wallet/testnet.git\" --branch staging --cname=testnet.kukai.app",
     "deploy-granadanet-version": "npm run build-dev && angular-cli-ghpages --repo \"git@github.com:kukai-wallet/granadanet.git\" --branch main --cname=granadanet.kukai.app",
     "deploy-hangzhounet-version": "npm run build-dev && angular-cli-ghpages --repo \"git@github.com:kukai-wallet/hangzhounet.git\" --branch main --cname=hangzhounet.kukai.app",
+    "deploy-ithacanet-version": "npm run build-dev && angular-cli-ghpages --repo \"git@github.com:kukai-wallet/ithacanet.git\" --branch main --cname=ithacanet.kukai.app",
     "deploy-preview-version": "ng lint --fix && npm run build-dev && angular-cli-ghpages --repo \"git@github.com:kukai-wallet/preview.git\" --branch master --cname=preview.kukai.app",
     "deploy-experimental-version": "ng lint --fix && npm run build-dev && angular-cli-ghpages --repo \"git@github.com:kukai-wallet/experimental.git\" --branch master --cname=experimental.kukai.app",
     "deploy-ichabod-version": "npm run build-dev && angular-cli-ghpages --repo \"git@github.com:kukai-wallet/ichabod-dev.git\" --branch main --cname=ichabod-dev.kukai.app",
