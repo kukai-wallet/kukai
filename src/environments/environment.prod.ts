@@ -20,6 +20,17 @@ const _CONSTANTS: Constants = {
     hard_storage_limit_per_operation: 60000
   },
   CONTRACT_ALIASES: {
+    FILMCrew: {
+      name: 'FILMCrew Collection',
+      address: ['KT1Su3fNrnABFSYMtWVDZnMbH3DzJeysAd6t'],
+      thumbnailUrl: '../../../assets/img/alias/filmcrew.svg',
+      discoverUrl: '../../../assets/img/alias/filmcrew-discover.png',
+      link: 'https://decentralized.pictures/filmcrew-collection',
+      shouldDisplayLink: DisplayLinkOption.All,
+      category: ['collectibles'],
+      backgroundColor: '#435259',
+      description: `A series of illustrations portraying the key components of film sets, FILMCrew is the world's first limited NFT collection of its kind.`,
+    },
     'mooncakes': {
       name: "Mooncakes",
       address: ['KT1Qm7MHmbdiBzoRs7xqBiqoRxw7T2cxTTJN', 'KT1CzVSa18hndYupV9NcXy3Qj7p8YFDZKVQv'],
@@ -1389,6 +1400,7 @@ const _CONSTANTS: Constants = {
   ]
 };
 const _TRUSTED_TOKEN_CONTRACTS = [
+  'KT1Su3fNrnABFSYMtWVDZnMbH3DzJeysAd6t',//FILMCrew
   'KT1Em3sjKdHo3Fo9Az4EusZXQbkgsdZHkQkF',//alchememist giveaway
   'KT1RJ6PbjHpwc3M5rw5s2Nbmefwbuwbdxton',//hicetnunc
   'KT1M2JnD1wsg7w2B4UXJXtKQPuDUpU2L7cJH',//hicetnunc-legacy
