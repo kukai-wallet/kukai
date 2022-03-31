@@ -645,6 +645,17 @@ const _CONSTANTS: Constants = {
         link: "", shouldDisplayLink: DisplayLinkOption.None, category: ["collectibles"],
         description: "",
     },
+    'FILMCrew': {
+      name: 'FILMCrew Collection',
+      address: ['KT1Su3fNrnABFSYMtWVDZnMbH3DzJeysAd6t'],
+      thumbnailUrl: '../../../assets/img/alias/filmcrew.png',
+      discoverUrl: '../../../assets/img/alias/filmcrew-discover.png',
+      link: 'https://decentralized.pictures/filmcrew-collection',
+      shouldDisplayLink: DisplayLinkOption.None,
+      category: ['collectibles'],
+      backgroundColor: '#435259',
+      description: `A series of illustrations portraying the key components of film sets, FILMCrew is the world's first limited NFT collection of its kind.`,
+    },
   },
   ASSETS: {
     KT1K9gCRgaLRFKTErYt1wVxA3Frb9FjasjTV: {
@@ -1483,6 +1494,7 @@ const _TRUSTED_TOKEN_CONTRACTS = [
   "KT1AWoUQAuUudqpc75cGukWufbfim3GRn8h6",//Flex
   "KT1Lz7Jd6Sh1zUE66nDGS7hGnjwcyTBCiYbF",//BlueVishnu
   "KT1AjuZb9TZTastAzhbufGsYG7vVNADUFmue",//PantoneVeryPeri
+  'KT1Su3fNrnABFSYMtWVDZnMbH3DzJeysAd6t',//FILMCrew
 ];
 const _BLACKLISTED_TOKEN_CONTRACTS = []
 
