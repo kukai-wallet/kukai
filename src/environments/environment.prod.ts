@@ -26,7 +26,7 @@ const _CONSTANTS: Constants = {
       thumbnailUrl: '../../../assets/img/alias/filmcrew.svg',
       discoverUrl: '../../../assets/img/alias/filmcrew-discover.png',
       link: 'https://decentralized.pictures/filmcrew-collection',
-      shouldDisplayLink: DisplayLinkOption.All,
+      shouldDisplayLink: DisplayLinkOption.None,
       category: ['collectibles'],
       backgroundColor: '#435259',
       description: `A series of illustrations portraying the key components of film sets, FILMCrew is the world's first limited NFT collection of its kind.`,
