@@ -13,6 +13,7 @@ $base-filter-invert-1: v.$base-filter-invert-1;
     font-style: normal;
     font-weight: 400;
     color: inherit;
+    width: calc(100% - 1rem);
   }
 
   button {
@@ -44,6 +45,7 @@ $base-filter-invert-1: v.$base-filter-invert-1;
     align-items: center;
     justify-content: center;
     margin: 1rem 0 0 0;
+    max-width: 64rem;
 
     & .close {
       width: 1rem;

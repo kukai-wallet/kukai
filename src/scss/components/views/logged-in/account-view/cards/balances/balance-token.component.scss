@@ -77,6 +77,8 @@ $base-blue-color : v.$base-blue-color;
     }
 
     &.buy {
+      margin: 1rem;
+      height: 4rem;
       &:hover {
         & .tooltip {
           display: block;
