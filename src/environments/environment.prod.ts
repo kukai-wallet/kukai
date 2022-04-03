@@ -609,6 +609,17 @@ const _CONSTANTS: Constants = {
       category: ["art", "collectibles"],
       description: "Here and Now is an interactive virtual Art experience that showcases emerging and established artists.",
     },
+    'Orbix360': {
+      name: 'Orbix360',
+      address: ['KT1Nf6V7fje6ELNgD6hkKfc3SXaDNVFAifEX', 'KT1BQv5ynR5rV1Wf42iBgZP4cERgjn4ihbBx'],
+      thumbnailUrl: '../../../assets/img/alias/orbix360.png',
+      discoverUrl: '../../../assets/img/alias/orbix360.svg',
+      link: 'https://minter.orbix360.com',
+      shouldDisplayLink: DisplayLinkOption.None,
+      category: ['marketplace'],
+      backgroundColor: '#171717',
+      description: 'NFT Marketplace with Metaverse Creation Tools'
+    },
     'EndlessWays': {
       name: "Endless Ways",
       address: ["KT1VdCrmZsQfuYgbQsezAHT1pXvs6zKF8xHB"],
@@ -1489,6 +1500,7 @@ const _TRUSTED_TOKEN_CONTRACTS = [
   "KT1SRFbwhvfkXoRGqiDFVVsf5GTp16wGgtCa",//here and now 4
   "KT1Qm7MHmbdiBzoRs7xqBiqoRxw7T2cxTTJN",//mooncakes
   "KT1HJExmBz4G4kG1wx9zqs394kgRiDLWCb4m", // Fellowship of Ilmeresh
+  "KT1Nf6V7fje6ELNgD6hkKfc3SXaDNVFAifEX", // Orbix360
   "KT1VdCrmZsQfuYgbQsezAHT1pXvs6zKF8xHB",//Endless Ways
   "KT1GU8M8kxFiK4HF9uzdXLUonX5JuddBsrba",//A Token Gesture
   "KT1AWoUQAuUudqpc75cGukWufbfim3GRn8h6",//Flex
