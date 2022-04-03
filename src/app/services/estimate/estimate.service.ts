@@ -292,27 +292,32 @@ export class EstimateService {
     }
     // gas
     if (!limit.gas) {
-      if (op?.gasRecommendation && this.imputValidationService.gas(op.gasRecommendation)) {
-        limit.gas = Number(op.gasRecommendation);
-      } else if (op?.gasRecommendation && this.imputValidationService.relativeLimit(op.gasRecommendation)) {
-        let percentage: number = Number(op.gasRecommendation.slice(1, -1));
-        percentage = Math.min(Math.max(percentage, 2), 900);
-        limit.gas = Math.round(gasUsage * (1 + percentage / 100));
-      } else {
-        // default
-        limit.gas = Math.max(Math.ceil(gasUsage * 1.02), Math.round(gasUsage + 80));
+      let gasRecommendation: number = 0;
+      if (op?.gasRecommendation) {
+        if (this.imputValidationService.gas(op.gasRecommendation)) {
+          gasRecommendation = Number(op.gasRecommendation);
+        } else if (this.imputValidationService.relativeLimit(op.gasRecommendation)) {
+          let percentage: number = Number(op.gasRecommendation.slice(1, -1));
+          percentage = Math.min(Math.max(percentage, 2), 900);
+          gasRecommendation = Math.round(gasUsage * (1 + percentage / 100));
+        }
       }
+      const gasEstimation = Math.max(Math.ceil(gasUsage * 1.02), Math.round(gasUsage + 80));
+      limit.gas = Math.max(gasRecommendation, gasEstimation); // make sure dapps don't underestimate (ithaca side effect)
     }
     // storage
     if (!limit.storage) {
-      if (op?.storageRecommendation && this.imputValidationService.storage(op.storageRecommendation)) {
-        limit.storage = Number(op.storageRecommendation);
-      } else if (op?.storageRecommendation && this.imputValidationService.relativeLimit(op.storageRecommendation)) {
-        const percentage: number = Number(op.storageRecommendation.slice(1, -1));
-        limit.storage = Math.round(storageUsage * (1 + percentage / 100));
-      } else {
-        limit.storage = Math.round(storageUsage);
+      let storageRecommendation: number = 0;
+      if (op?.storageRecommendation) {
+        if (this.imputValidationService.storage(op.storageRecommendation)) {
+          storageRecommendation = Number(op.storageRecommendation);
+        } else if (this.imputValidationService.relativeLimit(op.storageRecommendation)) {
+          const percentage: number = Number(op.storageRecommendation.slice(1, -1));
+          storageRecommendation = Math.round(storageUsage * (1 + percentage / 100));
+        }
       }
+      const storageEstimation = Math.round(storageUsage);
+      limit.storage = Math.max(storageRecommendation, storageEstimation);
     }
     return limit;
   }
