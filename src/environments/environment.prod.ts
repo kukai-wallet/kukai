@@ -667,6 +667,13 @@ const _CONSTANTS: Constants = {
       backgroundColor: '#435259',
       description: `A series of illustrations portraying the key components of film sets, FILMCrew is the world's first limited NFT collection of its kind.`,
     },
+    'Decathlon': {
+        name: "Decathlon NFT",
+        address: ["KT1QXngq1CCuWv5RtnuYCSvGdKGeBxsRCWvQ"],
+        thumbnailUrl: "../../../assets/img/alias/decathlon.png",
+        link: "https://www.decathlon.com", shouldDisplayLink: DisplayLinkOption.None, category: ["collectibles"],
+        description: "First step in building a future where digital goods are connected to physical goods"
+    },
   },
   ASSETS: {
     KT1K9gCRgaLRFKTErYt1wVxA3Frb9FjasjTV: {
@@ -1507,6 +1514,7 @@ const _TRUSTED_TOKEN_CONTRACTS = [
   "KT1Lz7Jd6Sh1zUE66nDGS7hGnjwcyTBCiYbF",//BlueVishnu
   "KT1AjuZb9TZTastAzhbufGsYG7vVNADUFmue",//PantoneVeryPeri
   'KT1Su3fNrnABFSYMtWVDZnMbH3DzJeysAd6t',//FILMCrew
+  "KT1QXngq1CCuWv5RtnuYCSvGdKGeBxsRCWvQ",//Decathlon
 ];
 const _BLACKLISTED_TOKEN_CONTRACTS = []
 
