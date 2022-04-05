@@ -1,8 +1,8 @@
 <div class="flex-row dropdown" [class.expanded]="isOpen" (click)="toggleDropdown()" [id]="ecmpId">
   <img class="button icon-torus"
-    [src]="torusVerifier === '' ? '../../../assets/img/tezos-xtz-logo.svg' :  '../../../assets/img/' + torusVerifier.toLowerCase() + '-logo.svg'" />
+    [src]="torusVerifier === '' ? 'assets/img/tezos-xtz-logo.svg' :  'assets/img/' + torusVerifier.toLowerCase() + '-logo.svg'" />
   <input readonly [(ngModel)]="torusVerifierName" /><img class="button icon-db"
-    src="../../../assets/img/down-arrow-purple.svg" />
+    src="../../../assets/img/down-arrow.svg" />
   <div class="flex-column dropdown-content">
     <a [class.selected]="torusVerifierName === 'Tezos Address'"
       (click)="torusVerifier = ''; torusVerifierName = 'Tezos Address';">

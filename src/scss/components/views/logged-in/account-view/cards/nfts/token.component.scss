@@ -6,11 +6,11 @@ $base-font-color: v.$base-font-color;
 $base-end-color: v.$base-end-color;
 $base-blue-color-lightened: v.$base-blue-color-lightened;
 $base-red-color: v.$base-red-color;
-$base-color-lightened-1: v.$base-color-lightened-1;
-$base-color-lightened-2: v.$base-color-lightened-2;
-$base-color-lightened-5: v.$base-color-lightened-5;
-$base-color-lightened-6: v.$base-color-lightened-6;
-$base-color-lightened-7: v.$base-color-lightened-7;
+$color-lightened-1: v.$color-lightened-1;
+$color-lightened-2: v.$color-lightened-2;
+$color-lightened-5: v.$color-lightened-5;
+$color-lightened-6: v.$color-lightened-6;
+$color-lightened-7: v.$color-lightened-7;
 $border-color-dark-only: v.$border-color-dark-only;
 $border-radius: v.$border-radius;
 $border-width: v.$border-width;
@@ -71,7 +71,7 @@ $comapactness: v.$compactness;
       justify-content: center;
       font-size: 1.125rem;
       font-weight: 600;
-      background-color: $base-color-lightened-5;
+      background-color: $color-lightened-5;
       color: $base-font-color;
     }
   }

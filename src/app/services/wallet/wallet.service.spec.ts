@@ -1,6 +1,7 @@
 // unit-testing framework
 import { TestBed } from '@angular/core/testing';
 import { WalletTools } from '../../../../spec/mocks/library.mock';
+import { RouterTestingModule } from '@angular/router/testing';
 
 // class under inspection
 import { WalletService } from './wallet.service';
@@ -29,7 +30,7 @@ describe('[ WalletService ]', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [http_imports, translate_imports],
+      imports: [http_imports, translate_imports, RouterTestingModule],
       providers: [walletsrv_providers]
     });
 

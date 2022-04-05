@@ -636,25 +636,25 @@ const _CONSTANTS: Constants = {
       description: "A Token Gesture is an interactive NFT exhibition at Inspace, part of the Institute for Design Informatics, University of Edinburgh."
     },
     'Flex': {
-        name: "Flex",
-        address: ["KT1AWoUQAuUudqpc75cGukWufbfim3GRn8h6"],
-        thumbnailUrl: "../../../assets/img/alias/Flex_Monument.png",
-        link: "https://flex.fashion", shouldDisplayLink: DisplayLinkOption.None, category: ["fashion", "collectibles"],
-        description: "Fashion, Creativity, and NFTs on Tezos",
+      name: "Flex",
+      address: ["KT1AWoUQAuUudqpc75cGukWufbfim3GRn8h6"],
+      thumbnailUrl: "../../../assets/img/alias/Flex_Monument.png",
+      link: "https://flex.fashion", shouldDisplayLink: DisplayLinkOption.None, category: ["fashion", "collectibles"],
+      description: "Fashion, Creativity, and NFTs on Tezos",
     },
     'BlueVishnu': {
-        name: "BlueVishnu - Digital Humans",
-        address: ["KT1Lz7Jd6Sh1zUE66nDGS7hGnjwcyTBCiYbF", "KT1D1XtWFoQDPtuYzbkeRJhcDgH6CDem2FkZ"],
-        thumbnailUrl: "../../../assets/img/alias/bluevishnu.jpg",
-        link: "", shouldDisplayLink: DisplayLinkOption.None, category: ["3D", "collectibles"],
-        description: "",
+      name: "BlueVishnu - Digital Humans",
+      address: ["KT1Lz7Jd6Sh1zUE66nDGS7hGnjwcyTBCiYbF", "KT1D1XtWFoQDPtuYzbkeRJhcDgH6CDem2FkZ"],
+      thumbnailUrl: "../../../assets/img/alias/bluevishnu.jpg",
+      link: "", shouldDisplayLink: DisplayLinkOption.None, category: ["3D", "collectibles"],
+      description: "",
     },
     'Pantone': {
-        name: "PANTONE Very Peri",
-        address: ["KT1AjuZb9TZTastAzhbufGsYG7vVNADUFmue"],
-        thumbnailUrl: "../../../assets/img/alias/pantone-very-peri.jpg",
-        link: "", shouldDisplayLink: DisplayLinkOption.None, category: ["collectibles"],
-        description: "",
+      name: "PANTONE Very Peri",
+      address: ["KT1AjuZb9TZTastAzhbufGsYG7vVNADUFmue"],
+      thumbnailUrl: "../../../assets/img/alias/pantone-very-peri.jpg",
+      link: "", shouldDisplayLink: DisplayLinkOption.None, category: ["collectibles"],
+      description: "",
     },
     'FILMCrew': {
       name: 'FILMCrew Collection',
@@ -668,11 +668,11 @@ const _CONSTANTS: Constants = {
       description: `A series of illustrations portraying the key components of film sets, FILMCrew is the world's first limited NFT collection of its kind.`,
     },
     'Decathlon': {
-        name: "Decathlon NFT",
-        address: ["KT1QXngq1CCuWv5RtnuYCSvGdKGeBxsRCWvQ"],
-        thumbnailUrl: "../../../assets/img/alias/decathlon.png",
-        link: "https://www.decathlon.com", shouldDisplayLink: DisplayLinkOption.None, category: ["collectibles"],
-        description: "First step in building a future where digital goods are connected to physical goods"
+      name: "Decathlon NFT",
+      address: ["KT1QXngq1CCuWv5RtnuYCSvGdKGeBxsRCWvQ"],
+      thumbnailUrl: "../../../assets/img/alias/decathlon.png",
+      link: "https://www.decathlon.com", shouldDisplayLink: DisplayLinkOption.None, category: ["collectibles"],
+      description: "First step in building a future where digital goods are connected to physical goods"
     },
   },
   ASSETS: {
@@ -1415,7 +1415,14 @@ const _CONSTANTS: Constants = {
     'KT1AafHA1C1vk959wvHWBispY9Y2f3fxBUUo:0', //lp tzBTC
     'KT1JBNFcB5tiycHNdYGYCtR3kk6JaJysUCi8:0', // Lugh Euro
     'KT1Ha4yFVeyzw6KRAdkzq6TxDHB97KG4pZe8:0' // Dogami
-  ]
+  ],
+  FEATURE_CONTRACTS: {
+    theme: {
+      dark: [
+        'KT1CzVSa18hndYupV9NcXy3Qj7p8YFDZKVQv:43'
+      ]
+    }
+  }
 };
 const _TRUSTED_TOKEN_CONTRACTS = [
   'KT1Em3sjKdHo3Fo9Az4EusZXQbkgsdZHkQkF',//alchememist giveaway

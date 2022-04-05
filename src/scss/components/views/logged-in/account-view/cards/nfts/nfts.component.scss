@@ -5,12 +5,12 @@
 $base-font-color: v.$base-font-color;
 $base-end-color: v.$base-end-color;
 $base-blue-color-lightened: v.$base-blue-color-lightened;
-$base-color-lightened-1: v.$base-color-lightened-1;
-$base-color-lightened-2: v.$base-color-lightened-2;
-$base-color-lightened-5: v.$base-color-lightened-5;
-$base-color-lightened-6: v.$base-color-lightened-6;
-$base-color-lightened-65: v.$base-color-lightened-65;
-$base-color-lightened-7: v.$base-color-lightened-7;
+$color-lightened-1: v.$color-lightened-1;
+$color-lightened-2: v.$color-lightened-2;
+$color-lightened-5: v.$color-lightened-5;
+$color-lightened-6: v.$color-lightened-6;
+$color-lightened-65: v.$color-lightened-65;
+$color-lightened-7: v.$color-lightened-7;
 $border-color-dark-only: v.$border-color-dark-only;
 $border-width-dark-only: v.$border-width-dark-only;
 $border-width: v.$border-width;
@@ -38,7 +38,7 @@ $compactness: v.$compactness;
       background: linear-gradient(
         180deg,
         transparent 0% 50%,
-        $base-color-lightened-6 50% 100%
+        v.$collectible-body-background-color 50% 100%
       );
 
       & h1 {
@@ -60,7 +60,7 @@ $compactness: v.$compactness;
           border-top-left-radius: $border-radius-tab;
           border-top-right-radius: $border-radius-tab;
           border-bottom-right-radius: 0;
-          background-color: $base-color-lightened-6;
+          background-color: v.$collectible-body-background-color;
         }
         &:last-of-type {
           border-top-left-radius: $border-radius-tab;
@@ -72,7 +72,7 @@ $compactness: v.$compactness;
           border-top-left-radius: $border-radius-tab;
           border-top-right-radius: $border-radius-tab;
           border-bottom-left-radius: 0;
-          background-color: $base-color-lightened-6;
+          background-color: v.$collectible-body-background-color;
         }
       }
     }
@@ -83,18 +83,22 @@ $compactness: v.$compactness;
       height: 1.15rem;
       padding: calc(0.5rem * #{$compactness}) 0rem;
       border-radius: $border-radius-hard;
-      border: $border-width solid $base-color-lightened-5;
+      border: $border-width solid $color-lightened-5;
     }
 
     & .icon-grey {
       @include m.multiply("font-size", 1.15);
       margin-left: 1.5rem;
       width: auto;
-      padding: calc(0.5rem * #{$compactness}) 1.5rem;
-      background-color: $base-color-lightened-7;
+      padding: calc(0.5rem * $compactness) 1.5rem;
+      background-color: v.$color-lightened-7;
       border-radius: $border-radius-hard;
-      border: $border-width solid $base-color-lightened-5;
+      border: $border-width solid v.$color-lightened-5;
       justify-content: center;
+
+      &:not(.selected) {
+        color: v.$color-lightened-3;
+      }
     }
 
     & span.discover {
@@ -127,8 +131,8 @@ $compactness: v.$compactness;
 .nfts {
   & .head {
     padding: calc(1.5rem * #{$compactness}) 2.5rem calc(1.5rem * #{$compactness}) 1.875rem;
+    background-color: v.$collectible-background-color;
     border-radius: v.$border-radius;
-    background-color: $base-end-color;
 
     & .left {
       justify-content: flex-start;
@@ -152,7 +156,7 @@ $compactness: v.$compactness;
 .nfts {
   width: calc(100% - 3rem);
   padding: 1.5rem 1.5rem 0 1.5rem;
-  background-color: $base-color-lightened-6;
+  background-color: v.$collectible-body-background-color;
   border-radius: 2rem;
   border-radius: $border-radius;
   border-top-left-radius: 0;
@@ -237,7 +241,7 @@ $compactness: v.$compactness;
             font-weight: 600;
             color: v.$base-blue-color-lightened !important;
             background-color: transparent;
-
+            border: none;
             & img {
               margin: 0 0 0 1rem;
             }
@@ -261,6 +265,7 @@ $compactness: v.$compactness;
       box-shadow: v.$box-shadow;
 
       & .head {
+        border-radius: v.$border-radius;
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
         box-shadow: unset;
@@ -316,7 +321,7 @@ $compactness: v.$compactness;
           width: auto;
           height: auto;
           text-align: center;
-          color: $base-color-lightened-2;
+          color: $color-lightened-2;
           font-weight: 500;
         }
         & .toggle img {

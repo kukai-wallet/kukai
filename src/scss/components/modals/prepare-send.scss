@@ -6,30 +6,30 @@ $base-font-color-secondary: v.$base-font-color-secondary;
 $base-end-color: v.$base-end-color;
 $base-red-color: v.$base-red-color;
 $base-blue-color-lightened: v.$base-blue-color-lightened;
-$base-color-lightened-3: v.$base-color-lightened-3;
-$base-color-lightened-7: v.$base-color-lightened-7;
+$color-lightened-3: v.$color-lightened-3;
+$color-lightened-7: v.$color-lightened-7;
 $border-width: v.$border-width;
 $border-color: v.$border-color;
 $base-background-color: v.$base-background-color;
 
 & .prepare-send {
-  margin: 2rem 0 0 0;
+  margin: 2em 0 0 0;
   height: auto;
   width: 100%;
-  max-width: 32rem;
+  max-width: 32em;
 
   & textarea {
     border-radius: v.$border-radius-hard;
     border: $border-width solid $border-color;
-    padding: 2rem;
-    margin: 1rem 0;
+    padding: 2em;
+    margin: 1em 0;
   }
 
   & .title {
-    @include m.multiply('font-size', 1);
+    @include m.multiply('font-size', 1, "em");
     color: $base-font-color;
     font-weight: 500;
-    width: calc(100% - 8rem);
+    width: calc(100% - 8em);
     @include m.ellipsis;
   }
 
@@ -38,19 +38,19 @@ $base-background-color: v.$base-background-color;
   & .to {
     height: auto;
     border-radius: v.$border-radius;
-    padding: 2rem;
+    padding: 2em;
   }
 
   & .top {
-    background-color: $base-color-lightened-7;
+    background-color: v.$modal-container-background-color;
     align-items: flex-start;
-    padding: 0.75rem 1rem 1rem 1rem;
+    padding: 0.75em 1em 1em 1em;
 
     & .label {
       text-transform: uppercase;
 
       &.title {
-        margin: 1rem 0 1rem 0;
+        margin: 1em 0 1em 0;
       }
     }
 
@@ -59,11 +59,11 @@ $base-background-color: v.$base-background-color;
       align-items: center;
       width: 100%;
       height: auto;
-      margin: 0.25rem 0 1rem 0rem;
+      margin: 0.25em 0 1em 0em;
 
       & .asset {
-        width: 6rem;
-        height: 6rem;
+        width: 6em;
+        height: 6em;
         overflow: hidden;
         background-color: $base-end-color;
         border-radius: v.$border-radius;
@@ -71,43 +71,43 @@ $base-background-color: v.$base-background-color;
       }
 
       & .title {
-        @include m.multiply('font-size', 1.5);
+        @include m.multiply('font-size', 1.5, "em");
         color: $base-font-color;
         font-weight: 500;
-        margin: 0 0 0 1.5rem;
+        margin: 0 0 0 1.5em;
       }
     }
 
     & .amount {
       width: 100%;
       position: relative;
-      margin: 0 0 1rem 0;
+      margin: 0 0 1em 0;
 
       & input {
-        width: calc(100% - 2rem);
-        height: 3.5rem;
+        width: 100%;
+        height: 3.5em;
       }
 
       & button {
         position: absolute;
-        right: 0.5rem;
-        top: 0.5625rem;
-        width: 5rem;
-        height: 2.75rem;
+        right: 0.375em;
+        top: 0.35em;
+        width: 6em;
+        height: 2.75em;
         background-color: transparent;
         color: #666;
         border: $border-width solid $border-color;
-        padding: 0 1rem;
+        padding: 0 1em;
         font-weight: 600;
-        font-size: 1rem;
+        border-radius: v.$border-radius-hardest;
       }
     }
 
     & .fees {
       width: calc(100% - 4px);
-      height: 1.25rem;
+      height: 1.25em;
       padding: 0;
-      color: $base-color-lightened-3;
+      color: $color-lightened-3;
 
       & .amount {
 
@@ -126,8 +126,8 @@ $base-background-color: v.$base-background-color;
     & .from {
       width: 100%;
       border-top: 2px solid $border-color;
-      padding: 1rem 0 0 0;
-      margin: 1rem 0 0 0;
+      padding: 1em 0 0 0;
+      margin: 1em 0 0 0;
 
       &>p {
         color: $base-font-color-secondary;
@@ -136,26 +136,25 @@ $base-background-color: v.$base-background-color;
   }
 
   & .to {
-    margin-top: 2rem;
+    margin-top: 2em;
     padding: 0;
 
     & .address {
       position: relative;
-      height: 5.5rem;
 
       & input.text {
-        margin: 0 0 0.5rem 0;
+        margin: 0 0 0.5em 0;
       }
 
       &-display {
-        height: 1rem;
+        height: 1em;
 
         & span {
-          height: 1rem;
-          margin: 0 1rem;
+          height: 1em;
+          margin: 0 1em;
 
           & img {
-            height: 1rem;
+            height: 1em;
           }
         }
       }
@@ -163,31 +162,16 @@ $base-background-color: v.$base-background-color;
   }
 
   & .multiple-destinations {
-    padding: 1rem;
-    width: 17rem;
+    padding: 1em;
+    width: 15em;
     background-color: $base-end-color;
     color: $base-font-color-secondary;
     border: $border-width solid $border-color;
-    font-size: 1rem;
-    margin: 1rem 0 0 0;
-  }
+    font-size: 1.25em;
+    margin: 1em 0 0 0;
 
-  & .advanced-form {
-    margin: 1rem 0 0 0;
-
-    &>div {
-      width: 100%;
-
-      &>div {
-        width: 50%;
-      }
-    }
-
-    & input {
-      margin: 0 0 1rem 0;
-      width: calc(100% - 3rem);
-      height: 3.5rem;
-      align-self: center;
+    & span {
+      font-size: 0.85em;
     }
   }
 
@@ -195,12 +179,17 @@ $base-background-color: v.$base-background-color;
     margin: 0;
 
     & .danger {
-      align-self: flex-start;
+      margin: 1em 0 0 0;
+      align-self: center;
       color: $base-red-color;
     }
+  }
+}
 
-    & button.confirm {
-      margin: 0;
-    }
+@media (max-width: v.$layout-break-6) {
+  .prepare-send .top .amount button {
+    font-size: 4.45vw;
+    right: 0.45em;
+    top: 0.375em;
   }
 }

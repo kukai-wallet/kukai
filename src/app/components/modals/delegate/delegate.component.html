@@ -1,6 +1,6 @@
 <div *ngIf="isOpen" class="flex-column kukai-modal">
   <div class="content">
-    <div class="flex-column top">
+    <div class="flex-row top">
       <div class="flex-row button close" (click)="closeModalAction()"><img class="x" src="../../../assets/img/close-btn-x.png" /></div>
       <h1 class="title">Confirm Staking</h1>
     </div>
@@ -20,7 +20,7 @@
         </ng-template>
       </div>
       <br/>
-      <app-ui-toggle-advanced style="width: 13rem;" [default]="false" (stateChange)="advanced = $event"></app-ui-toggle-advanced>
+      <app-ui-toggle-advanced style="width: calc(100% - 1em);" [default]="false" (stateChange)="advanced = $event"></app-ui-toggle-advanced>
       <br/>
       <br/>
       <ng-container *ngIf="advanced">
@@ -29,8 +29,8 @@
       </ng-container>
       <br/>
       <br/>
-      <div class="seperator"></div>
       <div class="flex-column bottom">
+        <div class="seperator"></div>
         <ng-container *ngIf="walletService.isPwdWallet()">
           <div class="label">ENTER YOUR PASSWORD TO CONFIRM</div>
           <span *ngIf="this.pwdValid" class="label danger">{{ this.pwdValid }}</span>

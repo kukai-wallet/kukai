@@ -14,6 +14,7 @@ import { SubjectService } from '../subject/subject.service';
 import { TeztoolsService } from '../indexer/teztools/teztools.service';
 import { interval } from 'rxjs';
 import { SignalService } from '../indexer/signal/signal.service';
+import { UnlockableService } from '../unlockable/unlockable.service';
 
 export interface ScheduleData {
   pkh: string;
@@ -47,7 +48,8 @@ export class CoordinatorService {
     private teztoolsService: TeztoolsService,
     private lookupService: LookupService,
     private subjectService: SubjectService,
-    private signalService: SignalService
+    private signalService: SignalService,
+    private unlockableService: UnlockableService
   ) {
     this.subjectService.logout.subscribe((o) => {
       if (!!o) {
@@ -81,6 +83,7 @@ export class CoordinatorService {
     }
   }
   async start(pkh: string, delay: number) {
+    this.unlockableService.restoreFeatures();
     if (pkh && !this.scheduler.get(pkh)) {
       this.accounts = this.walletService.wallet.getAccounts();
       console.log('Start scheduler ' + this.scheduler.size + ' ' + pkh);

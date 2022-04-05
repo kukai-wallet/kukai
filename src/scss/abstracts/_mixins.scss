@@ -1,6 +1,6 @@
 @use './variables' as v;
 
-@mixin multiply($property, $base, $postfix: 'rem', $override: -1, $breakpoint: v.$layout-break-5) {
+@mixin multiply($property, $base, $postfix: 'rem', $override: -1, $breakpoint: v.$layout-break-6) {
   @media (min-width: $breakpoint) {
     #{$property}: #{($base * 1) + $postfix};
   }

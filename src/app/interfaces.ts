@@ -153,4 +153,5 @@ export interface Constants {
     }
   >;
   NFT_CONTRACT_OVERRIDES: string[];
+  FEATURE_CONTRACTS: {};
 }

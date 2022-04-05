@@ -109,7 +109,8 @@ const _CONSTANTS: Constants = {
   },
   ASSETS: {},
   NFT_CONTRACT_OVERRIDES: [],
-  CONTRACT_OVERRIDES: {}
+  CONTRACT_OVERRIDES: {},
+  FEATURE_CONTRACTS: {}
 };
 const _TRUSTED_TOKEN_CONTRACTS = [
   'KT1RWoiiyQTd88etyJq33KvJgsLioSgngBfB', //spicyswap fake token assets

@@ -1,4 +1,5 @@
 import { TestBed, inject } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { OperationService } from '../operation/operation.service';
 import { TorusService } from './torus.service';
 import { InputValidationService } from '../input-validation/input-validation.service';
@@ -7,7 +8,7 @@ import { http_imports, translate_imports, ErrorHandlingPipe } from '../../../../
 describe('TorusService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [http_imports, translate_imports],
+      imports: [http_imports, translate_imports, RouterTestingModule],
       providers: [TorusService, OperationService, ErrorHandlingPipe, InputValidationService]
     });
   });

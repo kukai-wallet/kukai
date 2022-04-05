@@ -6,17 +6,17 @@ $border-color: #e6eaef;
 
 @mixin confirm-send-mobile-default {
   .confirm-send {
-    width: 33rem;
+    width: auto;
 
     @include b.confirm-send-mobile-batch;
 
     & .transfer-amount,
     & .contract-call {
-      width: calc(100% - 2rem);
+      width: calc(100% - 2em);
     }
 
     &.image .top .left {
-      min-height: 8rem;
+      min-height: 8em;
     }
 
     & .divider {
@@ -34,7 +34,7 @@ $border-color: #e6eaef;
     }
 
     & .top {
-      width: calc(100% - 4rem);
+      width: calc(100% - 4em);
 
       & .left {
         width: 26%;
@@ -45,22 +45,22 @@ $border-color: #e6eaef;
       }
 
       & .right {
-        width: calc(74% - 2rem);
+        width: calc(74% - 2em);
       }
 
       & .token-image {
-        width: 8rem;
-        height: 8rem;
+        width: 8em;
+        height: 8em;
 
         &.balance {
-          width: 4rem;
-          height: 4rem;
+          width: 4em;
+          height: 4em;
         }
       }
     }
 
     & .from {
-      padding: 1rem 2rem;
+      padding: 1em 2em;
       flex-direction: column;
       justify-content: center;
       align-items: flex-start;
@@ -75,23 +75,23 @@ $border-color: #e6eaef;
 
         & .address {
           font-family: "Roboto Mono";
-          margin: 0.5rem 0 0 0;
+          margin: 0.5em 0 0 0;
         }
 
         & .torus-name {
           left: 0;
-          margin: 0.5rem 0 0 0;
+          margin: 0.5em 0 0 0;
 
           & .verifier-logo {
-            margin: 0.25rem 0.5rem 0 3rem;
+            margin: 0.25em 0.5em 0 3em;
           }
         }
       }
     }
 
     & .to {
-      padding: 2rem;
-      width: calc(100% - 4rem);
+      padding: 2em;
+      width: calc(100% - 4em);
       flex-direction: column;
 
       & .left {
@@ -106,15 +106,15 @@ $border-color: #e6eaef;
         & .transaction {
           & .torus-to {
             left: 0;
-            margin: 0.5rem 0 0 0;
+            margin: 0.5em 0 0 0;
           }
 
           & .single-to {
-            margin: 0.5rem 0 0 0;
+            margin: 0.5em 0 0 0;
 
             &.default {
               & span {
-                margin: 0.5rem 0 0 0;
+                margin: 0.5em 0 0 0;
               }
             }
 
@@ -125,9 +125,10 @@ $border-color: #e6eaef;
         }
       }
     }
-
-    & .bottom {
-      width: 100%;
+    & .advanced {
+      &-form {
+        margin: 1em 0 20em 0;
+      }
     }
   }
 }

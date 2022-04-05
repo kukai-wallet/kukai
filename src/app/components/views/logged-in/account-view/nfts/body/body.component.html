@@ -1,4 +1,4 @@
-<app-search-bar *ngIf="tokens?.length > 12 && searchable" style="width: 100%" [placeholder]="'Search'"
+<app-search-bar *ngIf="tokens?.length > 12 && searchable" [placeholder]="'Search'"
   [matchCount]="tokensToDisplay?.filtered.length || 0" [itemCount]="tokensToDisplay?.raw.length || 0"
   (onInput)="updateFilter($event)"></app-search-bar>
 <div class="scroll-wrapper">

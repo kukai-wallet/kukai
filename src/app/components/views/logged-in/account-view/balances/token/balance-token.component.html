@@ -16,14 +16,14 @@
       <button *ngIf="this.account?.balanceXTZ" class="flex-row button button-primary with-image buy" (click)="this.buyTez()">
         <img src="../../../../../../../assets/img/add-blue.svg">
         <div class="tooltip">
-          <div class="description">BUY TEZ</div>
+          <div class="description">BUY tez</div>
         </div>
       </button>
       <button *ngIf="this.account?.balanceXTZ === 0" class="flex-row button button-primary with-image buy tez" (click)="this.buyTez()">
         <span>Buy</span>
         <img src="../../../../../../../assets/img/add-white.svg">
         <div class="tooltip alt">
-          <div class="description">BUY TEZ</div>
+          <div class="description">BUY tez</div>
         </div>
       </button>
     </ng-container>

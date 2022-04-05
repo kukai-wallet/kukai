@@ -5,6 +5,7 @@ import { BehaviorSubject } from 'rxjs';
 interface ModalPayload {
   name: string | null;
   data: any;
+  forceClose?: boolean;
 }
 
 @Component({
@@ -22,13 +23,14 @@ export class ModalComponent implements OnInit, OnDestroy {
   constructor(@Optional() public cd?: ChangeDetectorRef) {
     this.cd = cd;
     this.modalSub = ModalComponent.currentModel.subscribe((load) => {
+      load.forceClose = load.forceClose === undefined ? true : load.forceClose;
       if (!!load.name && load.name === this.name) {
         if (!this.isOpen) {
           this.willOpen();
           this.open(load.data);
         }
       } else {
-        if (this.isOpen) {
+        if (this.isOpen && load.forceClose) {
           this.close();
           if (this.cd) {
             this.cd.detectChanges();

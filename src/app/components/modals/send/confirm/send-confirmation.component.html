@@ -1,6 +1,6 @@
 <div *ngIf="isOpen" class="flex-column kukai-modal">
   <div class="content">
-    <div class="flex-column top">
+    <div class="flex-row top">
       <div class="flex-row button close" (click)="closeModalAction()"><img class="x"
           src="../../../assets/img/close-btn-x.png" /></div>
       <h1 class="title">Confirmation</h1>
@@ -84,7 +84,7 @@
           }}</span></span>
       <div *ngIf="parameters && parameters?.entrypoint" class="flex-row contract-call"><span class="key">CONTRACT CALL:
         </span><span class="key">{{ parameters?.entrypoint }}</span></div>
-      <app-ui-toggle-advanced style="width: 13rem;" *ngIf="externalReq" [default]="false"
+      <app-ui-toggle-advanced style="width: calc(100% - 1em);margin: 0 0 2.5em 0;" *ngIf="externalReq" [default]="false"
         (stateChange)="advancedForm = $event">
       </app-ui-toggle-advanced>
       <div *ngIf="advancedForm" class="advanced-form">

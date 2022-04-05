@@ -17,10 +17,10 @@
 
 %base-button {
   outline: none;
-  border: none;
+  border: v.$border-width solid v.$button-border-color;
   border-radius: v.$border-radius-hard;
-  background-color: v.$base-blue-color-lightened;
-  color: v.$base-end-color-static;
+  background-color: v.$button-background-color;
+  color: v.$button-color;
   padding: 1rem 2rem;
   font-size: 1.25rem;
   cursor: pointer;
@@ -70,7 +70,7 @@
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: v.$base-color-lightened-3;
+  scrollbar-color: v.$color-lightened-3;
   font-family: "Roboto", serif;
   -webkit-tap-highlight-color: #fff0 !important;
 }
@@ -86,15 +86,20 @@ body * {
 }
 
 *::-webkit-scrollbar-track {
-  background: v.$base-color-lightened-6;
+  background: v.$color-lightened-6;
   margin: 1.5rem 0;
   border-radius: v.$border-radius;
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: v.$base-color-lightened-3;
+  background-color: v.$color-lightened-3;
   border-radius: v.$border-radius;
-  border: v.$border-width solid v.$base-color-lightened-3;
+  border: v.$border-width solid v.$color-lightened-3;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  appearance: none;
 }
 
 html {
@@ -114,10 +119,28 @@ body {
 
 input {
   text-align: left;
-  height: calc(2.5rem - 4px);
-  padding: 0 0 0 2rem;
+  height: 4.5rem;
+  padding: 1px 1px 1px 2em;
+  box-sizing: border-box;
   border-radius: v.$border-radius-hard;
-  background-color: v.$base-end-color;
+  background-color: $base-end-color;
+  &:focus {
+    border-color: v.$base-blue-color !important;
+  }
+  &:disabled {
+    filter: opacity(0.85);
+  }
+  &::placeholder {
+    color: $base-font-color;
+  }
+  &:autofill, &:autofill:hover, &:autofill:focus {
+    box-shadow: 0 0 0 1000px $base-end-color inset !important;
+    color: $base-font-color !important;
+    -webkit-text-fill-color: $base-font-color !important;
+    background-clip: content-box !important;
+    padding: 1px 1px 1px 2em !important;
+    -webkit-appearance: none !important;
+  }
 }
 
 h1 {
@@ -130,7 +153,6 @@ textarea {
   background-color: v.$base-end-color;
 }
 
-BR,
 br {
   height: 0;
   margin: 0.625rem 0;
@@ -153,7 +175,7 @@ button {
     @extend %base-button-selected;
   }
   &:hover {
-    filter: invert(0.05);
+    filter: saturate(1.5);
   }
 }
 

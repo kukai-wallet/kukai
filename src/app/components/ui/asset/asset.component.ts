@@ -126,7 +126,7 @@ export class AssetComponent implements OnInit, AfterViewInit {
   }
   pickAsset(assets): Asset {
     for (let type of this.priorityList) {
-      if (assets && assets[type]) {
+      if (assets && assets[type] && !(typeof assets[type] === 'object' && !assets[type]?.uri)) {
         return assets[type];
       }
     }
