@@ -20,16 +20,6 @@ const _CONSTANTS: Constants = {
     hard_storage_limit_per_operation: 60000
   },
   CONTRACT_ALIASES: {
-    'mooncakes': {
-      name: "Mooncakes",
-      address: ['KT1Qm7MHmbdiBzoRs7xqBiqoRxw7T2cxTTJN', 'KT1CzVSa18hndYupV9NcXy3Qj7p8YFDZKVQv'],
-      thumbnailUrl: "../../../assets/img/alias/mooncakes.svg",
-      discoverUrl: '../../../assets/img/alias/mooncakes-discover.svg',
-      link: "https://mooncakes.fun", shouldDisplayLink: DisplayLinkOption.All,
-      category: ["collectibles"],
-      backgroundColor: '#1C1C20',
-      description: "Have fun exploring a galaxy of NFTs",
-    },
     gap: {
       name: 'Gap Threads',
       address: ['KT1GA6KaLWpURnjvmnxB4wToErzM2EXHqrMo'],
@@ -40,6 +30,16 @@ const _CONSTANTS: Constants = {
       category: ['collectibles'],
       backgroundColor: 'black',
       description: 'A fun and interactive digital collectible experience'
+    },
+    'mooncakes': {
+      name: "Mooncakes",
+      address: ['KT1Qm7MHmbdiBzoRs7xqBiqoRxw7T2cxTTJN', 'KT1CzVSa18hndYupV9NcXy3Qj7p8YFDZKVQv'],
+      thumbnailUrl: "../../../assets/img/alias/mooncakes.svg",
+      discoverUrl: '../../../assets/img/alias/mooncakes-discover.jpg', zoomDiscoverImg: true,
+      link: "https://mooncakes.fun", shouldDisplayLink: DisplayLinkOption.All,
+      category: ["collectibles"],
+      backgroundColor: '#1C1C20',
+      description: "Have fun exploring a galaxy of NFTs",
     },
     UbisoftQuartz: {
       name: 'Ubisoft Quartz',
