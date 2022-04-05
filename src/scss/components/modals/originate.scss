@@ -71,9 +71,14 @@ $border-radius: v.$border-radius;
       }
     }
 
+    & .label {
+      width: calc(100% - 1em);
+      align-self: center;
+    }
+
     & input {
       margin: 0 0 1em 0;
-      width: calc(100% - 3em);
+      width: calc(100% - 1em);
       height: 3.5em;
       align-self: center;
     }
@@ -81,6 +86,7 @@ $border-radius: v.$border-radius;
     & textarea {
       width: calc(100% - 2em);
       padding: 1em;
+      margin: 0 0 2em 0;
     }
 
     & .tabs-container {
