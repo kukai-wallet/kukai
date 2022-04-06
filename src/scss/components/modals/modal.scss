@@ -38,7 +38,7 @@ $base-filter-contrast-invert-01: v.$base-filter-contrast-invert-01;
     min-width: 32em;
     overflow-x: hidden;
     border: $border-width solid $border-color-dark-only;
-    margin: 10em 0 4em 0;
+    margin: 10em 0 0em 0;
     border-radius: v.$border-radius;
 
     & .close {
@@ -247,7 +247,6 @@ $base-filter-contrast-invert-01: v.$base-filter-contrast-invert-01;
     font-size: 2.95vw;
     background-color: $base-end-color;
     & .content {
-      min-height: calc(100vh + 14em);
       margin: 0;
       border-radius: 0;
       padding: 1em;
@@ -268,7 +267,6 @@ $base-filter-contrast-invert-01: v.$base-filter-contrast-invert-01;
         padding: 0 2em;
         min-height: 16em;
         min-height: 12em;
-        position: fixed;
         justify-content: flex-end;
         background-color: $base-end-color;
       }

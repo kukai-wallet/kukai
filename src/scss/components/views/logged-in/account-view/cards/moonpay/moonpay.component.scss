@@ -32,6 +32,9 @@ $layout-break-5: v.$layout-break-5;
     color: v.$base-font-color;
     font-weight: 500;
     padding: 0.75rem 1.25rem;
+    & img {
+      filter: v.$moonpay-iframe-filter;
+    }
   }
   & .moonpay {
     z-index: 3000 !important;
@@ -91,7 +94,7 @@ $layout-break-5: v.$layout-break-5;
 @media (max-width: 575px) {
   div.moonpay > div.top,
   div.moonpay > div.top button {
-    background-color: white;
+    background-color: $base-end-color;
   }
   div.moonpay > div.main,
   div.moonpay > div.top {
@@ -102,3 +105,4 @@ $layout-break-5: v.$layout-break-5;
     padding: 1rem 1.5rem 1rem 1.5rem !important;
   }
 }
+
