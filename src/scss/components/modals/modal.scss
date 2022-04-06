@@ -24,6 +24,7 @@ $base-filter-contrast-invert-01: v.$base-filter-contrast-invert-01;
   justify-content: flex-start;
   align-items: center;
   z-index: 1000;
+  font-size: 100%;
 
   & .content {
     @include m.base-relative;
@@ -33,28 +34,27 @@ $base-filter-contrast-invert-01: v.$base-filter-contrast-invert-01;
     width: auto;
     height: auto;
     max-width: 85vw;
-    border-radius: v.$border-radius;
-    padding: 2rem;
-    min-width: 32rem;
-    margin: 10rem 0 4rem 0;
+    padding: 2em 2em 0 2em;
+    min-width: 32em;
     overflow-x: hidden;
-    border: $border-width-dark-only solid $border-color-dark-only;
+    border: $border-width solid $border-color-dark-only;
+    margin: 10em 0 0em 0;
+    border-radius: v.$border-radius;
 
     & .close {
       display: flex;
       justify-content: center;
-      top: -0.5rem;
+      top: 0;
       right: 0;
-      position: absolute;
-      width: calc(3rem - 6px);
-      height: calc(3rem - 6px);
+      width: calc(4em - 6px);
+      height: calc(4em - 6px);
       border: v.$border-width solid $border-color;
       border-radius: v.$border-radius-hardest;
 
       & .x {
         object-fit: scale-down;
-        width: 0.875rem;
-        height: 0.875rem;
+        width: 1.25em;
+        height: 1.25em;
         filter: $base-filter-brightness-5;
       }
     }
@@ -63,21 +63,24 @@ $base-filter-contrast-invert-01: v.$base-filter-contrast-invert-01;
       position: relative;
       top: 0;
       left: 0;
-      margin: 0 0 1rem 0;
       align-items: center;
+      justify-content: space-between;
+      flex-direction: row-reverse;
+      height: 4em;
+      margin: 0 0 2em 0;
 
       .title {
-        @include m.multiply("font-size", 1.875);
+        font-size: 1.875em;
         @include m.ellipsis;
         width: 70%;
         font-weight: 500;
-        text-align: center;
+        text-align: left;
       }
     }
 
     & .label {
-      @include m.multiply("font-size", 1);
-      margin: 1rem;
+      @include m.multiply("font-size", 1, "em");
+      margin: 1em;
       letter-spacing: 0.02em;
       font-weight: 500;
       color: $base-font-color-secondary-half;
@@ -86,28 +89,28 @@ $base-filter-contrast-invert-01: v.$base-filter-contrast-invert-01;
 
     & .seperator {
       @include m.base-relative;
-      height: 1px;
+      height: $border-width;
       background-color: $border-color;
-      left: -2rem;
-      width: calc(100% + 4rem);
+      left: 0;
+      width: calc(100% + 4em);
+    }
+
+    & > .seperator {
+      width: 100%;
     }
 
     & input:not([type="checkbox"]) {
-      @include m.multiply("font-size", 1.25);
-      height: 4rem;
-      width: calc(100% - 2rem);
+      @include m.multiply("font-size", 1.25, "em");
+      height: 4em;
+      width: 100%;
       background-color: $base-end-color;
       border: v.$border-width solid $border-color;
       border-radius: v.$border-radius-hardest;
-
-      &.text,
-      &.password {
-        width: calc(100% - 2rem);
-      }
+      padding: 0 0 0 2em;
     }
 
     & .key-value {
-      margin: 0 0 1rem 0;
+      margin: 0 0 1em 0;
     }
 
     & .key {
@@ -121,24 +124,24 @@ $base-filter-contrast-invert-01: v.$base-filter-contrast-invert-01;
     }
 
     & .value {
-      @include m.multiply("font-size", 1.25);
+      @include m.multiply("font-size", 1.25, "em");
       color: $base-font-color;
     }
 
     & .more-info {
-      height: 2rem;
+      height: 2em;
       justify-content: flex-end;
-      margin: 1rem 0;
+      margin: 1em 0;
 
       span {
-        @include m.multiply("font-size", 1);
+        @include m.multiply("font-size", 1, "em");
         color: $base-font-color-secondary;
         text-transform: uppercase;
-        margin: 0 0.5rem 0 0;
+        margin: 0 0.5em 0 0;
       }
 
       img {
-        height: 1.75rem;
+        height: 1.75em;
         width: auto;
         filter: $base-filter-contrast-invert-01;
       }
@@ -189,48 +192,84 @@ $base-filter-contrast-invert-01: v.$base-filter-contrast-invert-01;
 
     @import "./info.scss";
 
-    & .advanced-form {
-      margin: 1rem 0 0 0;
-
-      & > div {
+    & .advanced {
+      &-toggle {
+        position: relative;
+        left: -1em;
         width: 100%;
-
-        & > div {
-          width: 50%;
-        }
+        height: 4em;
+        margin: 0 0 1em 0;
       }
-
-      & input {
-        margin: 0 0 1rem 0;
-        width: calc(100% - 2rem);
-        align-self: center;
+      &-form {
+        margin: 1em 0 0 0;
+        width: 100%;
+        & > div {
+          width: 100%;
+          & > div {
+            width: calc(50% - 0.5em);
+          }
+        }
+        & .label {
+          font-size: 1.125em;
+          margin: 0 0 0.5em 0;
+        }
+        & input {
+          margin: 0 0 1em 0;
+          width: 100%;
+          padding: 0 0 0 1em;
+          height: 3.5em;
+          border-radius: 1em;
+          align-self: flex-start;
+        }
       }
     }
 
     & .bottom {
-      margin: 2rem 0 0 0;
       align-items: center;
+      background-color: $base-end-color;
+      width: 100%;
     }
   }
 
   & button.confirm {
     width: 50%;
-    height: 4.5rem;
+    height: 4.5em;
     border-radius: v.$border-radius-hardest;
-    padding: 0 2rem;
-    font-size: 1.125rem;
-    margin: 2rem 0 0 0;
+    padding: 0 2em;
+    font-size: 1.125em;
+    margin: 2em 0;
     color: $base-end-color-static;
   }
 }
 
-button {
-  color: $base-end-color-static;
-}
-
-@media (max-width: v.$layout-break-5) {
-  .kukai-modal .content .close {
-    width: calc(4rem - 6px);
-    height: calc(4rem - 6px);
+@media (max-width: v.$layout-break-6) {
+  .kukai-modal {
+    font-size: 2.95vw;
+    background-color: $base-end-color;
+    & .content {
+      margin: 0;
+      border-radius: 0;
+      padding: 1em;
+      border: none;
+      & .top {
+        margin: 0 0 1em 0;
+      }
+      & .advanced {
+        &-form {
+          margin: 1em 0;
+        }
+      }
+    
+      & .bottom {
+        left: 0em;
+        bottom: 0;
+        width: calc(100% - 4em);
+        padding: 0 2em;
+        min-height: 16em;
+        min-height: 12em;
+        justify-content: flex-end;
+        background-color: $base-end-color;
+      }
+    }
   }
 }

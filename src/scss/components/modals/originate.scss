@@ -4,29 +4,27 @@
 $border-radius: v.$border-radius;
 
 & .originate {
-
-  margin: 2rem 0 0 0;
+  margin: 2em 0 0 0;
   height: auto;
-  width: 36rem;
-  $base-color-lightened-7: v.$base-color-lightened-7;
+  $color-lightened-7: v.$color-lightened-7;
 
   & .seperator, span {
-    margin: 0.5rem 0;
+    margin: 0.5em 0;
   }
 
   & .top {
-    padding: 1rem 2rem;
-    background-color: v.$base-color-lightened-65;
+    padding: 1em 2em;
+    background-color: v.$color-lightened-65;
     border-radius: $border-radius;
 
     & .amount {
       &.key {
-        font-size: 1.25rem;
+        font-size: 1.25em;
         font-weight: 500;
       }
 
       & .value {
-        font-size: 1.8755rem;
+        font-size: 1.5em;
         font-weight: 500;
       }
     }
@@ -47,7 +45,7 @@ $border-radius: v.$border-radius;
   }
 
   & .attrs {
-    padding: 0 1rem 0.5rem 1rem;
+    padding: 0 1em 0.5em 1em;
   }
 
   & .attr {
@@ -55,16 +53,15 @@ $border-radius: v.$border-radius;
   }
 
   & .key, .value {
-    font-size: 1rem;
+    font-size: 1em;
     font-weight: 500;
   }
 
   & .danger {
-    margin-top: 1rem;
+    margin-top: 1em;
   }
 
   & .advanced-form {
-    margin: 1rem 0 0 0;
 
     &>div:not(.tabs-container) {
       width: 100%;
@@ -74,28 +71,34 @@ $border-radius: v.$border-radius;
       }
     }
 
+    & .label {
+      width: calc(100% - 1em);
+      align-self: center;
+    }
+
     & input {
-      margin: 0 0 1rem 0;
-      width: calc(100% - 3rem);
-      height: 3.5rem;
+      margin: 0 0 1em 0;
+      width: calc(100% - 1em);
+      height: 3.5em;
       align-self: center;
     }
 
     & textarea {
-      width: calc(100% - 2rem);
-      padding: 1rem;
+      width: calc(100% - 2em);
+      padding: 1em;
+      margin: 0 0 2em 0;
     }
 
     & .tabs-container {
-      margin-top: 0.5rem;
+      margin-top: 0.5em;
       width: 100%;
 
       & .tabs {
         width: 100%;
-        margin: 0 0 0.5rem 0;
+        margin: 0 0 0.5em 0;
 
         & .tab {
-          @include m.multiply('font-size',1.25);
+          @include m.multiply('font-size', 1.25, "em");
           color: v.$base-font-color;
           cursor: pointer;
 
@@ -105,9 +108,5 @@ $border-radius: v.$border-radius;
         }
       }
     }
-  }
-
-  & .bottom {
-    margin: 1.75rem 0 0 0;
   }
 }

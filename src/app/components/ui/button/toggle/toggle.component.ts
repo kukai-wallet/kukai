@@ -5,7 +5,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
   templateUrl: './toggle.component.html'
 })
 export class ToggleComponent implements OnInit {
-  state: boolean;
+  @Input() state: boolean;
   @Input() text = 'Advanced:';
   @Input() default: boolean = false;
   @Output() stateChange = new EventEmitter<boolean>();

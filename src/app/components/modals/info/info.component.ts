@@ -25,7 +25,7 @@ export class InfoComponent extends ModalComponent implements OnInit {
   }
 
   closeModal(): void {
-    ModalComponent.currentModel.next({ name: '', data: null });
+    super.close();
   }
   proceed() {
     if (!!this.href) {

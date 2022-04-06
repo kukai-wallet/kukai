@@ -1,4 +1,4 @@
-<app-send [embedded]="false" (operationResponse)="operationResponse($event)" [activeAccount]=selectedAccount
+<app-send [embedded]="false" (operationResponse)="operationResponse($event)" [activeAccount]="selectedAccount"
   [operationRequest]="operationRequest"></app-send>
 <app-delegate (operationResponse)="operationResponse($event)" [beaconMode]=true [operationRequest]=operationRequest>
 </app-delegate>

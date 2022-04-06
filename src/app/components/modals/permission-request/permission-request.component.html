@@ -1,6 +1,6 @@
 <div *ngIf="permissionRequest" class="flex-column kukai-modal">
   <div class="content">
-    <div class="flex-column top">
+    <div class="flex-row top">
       <div class="flex-row button close" (click)="rejectPermissions()"><img class="x" src="../../../assets/img/close-btn-x.png" /></div>
       <h1 class="title">{{ permissionRequest.appMetadata.name }}</h1>
     </div>
@@ -13,8 +13,8 @@
       </div>
       <h6>Apply To Account:</h6>
       <app-ui-dropdown-permission-request [options]="accounts" [current]="preSelectedAccount" (dropdownResponse)="selectedAccount = $event" style="width: 100%;align-self: center;"></app-ui-dropdown-permission-request>
-      <div class="seperator"></div>
       <div class="flex-column bottom">
+        <div class="seperator"></div>
         <button class="blue confirm" (click)="grantPermissions()">Approve</button>
       </div>
     </div>

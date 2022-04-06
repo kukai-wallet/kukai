@@ -1,6 +1,7 @@
 // suite unit-test frameworks
 import { TestBed } from '@angular/core/testing';
 import { HttpTestingController } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
 // class mocks
 import { http_imports, translate_imports, balancesrv_providers, rx } from '../../../../spec/helpers/service.helper';
@@ -26,7 +27,7 @@ describe('[ BalanceService ]', () => {
   beforeEach(() => {
     // WalletService mock
     TestBed.configureTestingModule({
-      imports: [http_imports, translate_imports],
+      imports: [http_imports, translate_imports, RouterTestingModule],
       providers: [balancesrv_providers]
     });
 

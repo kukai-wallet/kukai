@@ -3,35 +3,35 @@
 
 $base-font-color: v.$base-font-color;
 $base-end-color: v.$base-end-color;
-$base-color-lightened-5: v.$base-color-lightened-5;
-$base-color-lightened-6: v.$base-color-lightened-6;
-$base-color-lightened-7: v.$base-color-lightened-7;
+$color-lightened-5: v.$color-lightened-5;
+$color-lightened-6: v.$color-lightened-6;
+$color-lightened-7: v.$color-lightened-7;
 $border-width: v.$border-width;
 $border-color: v.$border-color;
 
 .dropdown {
-  min-width: 11.5rem;
+  min-width: 11.5em;
   width: 0%;
-  height: 2.375rem;
+  height: 2.375em;
   position: absolute;
   justify-content: space-between;
   align-items: center;
-  top: -3.1265rem;
-  right: 2px;
+  top: -3.1265em;
+  right: 0;
   cursor: pointer;
-  font-size: 1em;
-  border: $border-width solid $base-color-lightened-6;
-  border-radius: v.$border-radius-hard;
+  font-size: 1.25em;
+  border: $border-width solid $color-lightened-6;
+  border-radius: v.$border-radius-hardest;
   transition: 0.25s border-radius;
-  padding: 0 0.5rem;
+  padding: 0 0.5em;
   & * {
     -webkit-tap-highlight-color: #fff0; 
   }
 
   & input {
     text-align: left;
-    width: calc(100% - 4rem);
-    padding: 0 0rem 0 0rem;
+    width: calc(100% - 4em);
+    padding: 0 0em 0 0em;
     transition: 0.25s border-radius;
     text-transform: uppercase;
     border: none;
@@ -39,16 +39,16 @@ $border-color: v.$border-color;
     color: $base-font-color;
     height: 100%;
     margin: 0;
-    font-size: 0.875rem;
+    font-size: 0.875em;
     cursor: pointer;
   }
 
   & .icon-db {
     height: 1.25em;
     width: 1.25em;
-    object-fit: scale-down;
     transform: rotate(0deg);
     transition: 0.15s transform;
+    filter: v.$dropdown-icon-invert;
   }
 
   & .icon-torus {
@@ -63,34 +63,35 @@ $border-color: v.$border-color;
     display: none;
     z-index: 1;
     overflow: hidden;
-    width: calc(100%);
-    top: 3rem;
+    width: 100%;
+    top: 3em;
+    right: 0;
     box-shadow: v.$box-shadow-dark;
 
     &.right {
-      margin-top: -1.1rem;
+      margin-top: -1.1em;
     }
 
     & .sep {
-      margin-top: 0.5rem;
-      margin-bottom: 0.5rem;
+      margin-top: 0.5em;
+      margin-bottom: 0.5em;
       border-top: 1px solid $border-color;
       border-bottom: 1px solid $border-color;
     }
 
     & a {
       color: $base-font-color;
-      padding: 0.75rem 1.875rem;
+      padding: 0.75em 1.875em;
       text-decoration: none;
       display: block;
       cursor: pointer;
 
       &:hover {
-        background: $base-color-lightened-7;
+        background: $color-lightened-7;
       }
 
       &.selected {
-        background: $base-color-lightened-6;
+        background: $color-lightened-6;
       }
     }
   }
@@ -108,8 +109,9 @@ $border-color: v.$border-color;
 
 @media (max-width: v.$layout-break-6) {
   .dropdown {
-    top: -3rem;
-    min-width: 12rem;
+    top: -3.25em;
+    min-width: 12em;
+    right: 0;
   }
   .dropdown .icon-db, .dropdown .icon-torus {
     top: 0.75em !important;

@@ -1,6 +1,7 @@
 // testing framework
 import { TestBed } from '@angular/core/testing';
 import { WalletTools } from '../../../../spec/mocks/library.mock';
+import { RouterTestingModule } from '@angular/router/testing';
 
 // class under inspection
 import { ActivityService } from './activity.service';
@@ -38,6 +39,7 @@ describe('[ ActivityService ]', () => {
       imports: [
         HttpClientModule,
         HttpClientTestingModule,
+        RouterTestingModule,
         TranslateModule.forRoot({
           loader: {
             provide: TranslateLoader,

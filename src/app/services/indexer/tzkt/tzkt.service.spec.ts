@@ -16,25 +16,25 @@ describe('TzktService', () => {
     const bigMapId = { contract: 26006, token: 26009 };
     const tokenCloudUrl = 'https://cloudflare-ipfs.com/ipfs/QmZDycNwSy12vueaPnxuCMFUCHeQieT5wA5yNwqswwFn3V';
     const contractCloudUrl = 'https://cloudflare-ipfs.com/ipfs/QmVBdYhUXmF3QSRSYgoZfvUhLKgW4oCWC6xMzvHzV5TFVA';
-    spyOn(service, 'fetchApi')
-      .withArgs(`${service.bcd}/contract/${CONSTANTS.NETWORK}/${contractAddress}/storage`)
-      .and.callFake(async () => JSON.parse(storageMock))
-      .withArgs(`${service.bcd}/bigmap/${CONSTANTS.NETWORK}/${bigMapId.token}/keys?size=1000`)
-      .and.callFake(async function () {
-        return JSON.parse(tokenMetadataBigMapMock);
-      })
-      .withArgs(`${service.bcd}/bigmap/${CONSTANTS.NETWORK}/${bigMapId.contract}/keys`)
-      .and.callFake(async function () {
-        return JSON.parse(contractMetadataBigMapMock);
-      })
-      .withArgs(tokenCloudUrl)
-      .and.callFake(async function () {
-        return JSON.parse(tokenIpfsMock);
-      })
-      .withArgs(contractCloudUrl)
-      .and.callFake(async function () {
-        return JSON.parse(contractIpfsMock);
-      });
+    // spyOn(service, 'fetchApi')
+    //   .withArgs(`${service.bcd}/contract/${CONSTANTS.NETWORK}/${contractAddress}/storage`)
+    //   .and.callFake(async () => JSON.parse(storageMock))
+    //   .withArgs(`${service.bcd}/bigmap/${CONSTANTS.NETWORK}/${bigMapId.token}/keys?size=1000`)
+    //   .and.callFake(async function () {
+    //     return JSON.parse(tokenMetadataBigMapMock);
+    //   })
+    //   .withArgs(`${service.bcd}/bigmap/${CONSTANTS.NETWORK}/${bigMapId.contract}/keys`)
+    //   .and.callFake(async function () {
+    //     return JSON.parse(contractMetadataBigMapMock);
+    //   })
+    //   .withArgs(tokenCloudUrl)
+    //   .and.callFake(async function () {
+    //     return JSON.parse(tokenIpfsMock);
+    //   })
+    //   .withArgs(contractCloudUrl)
+    //   .and.callFake(async function () {
+    //     return JSON.parse(contractIpfsMock);
+    //   });
     // expect(await service.getBigMapIds(contractAddress)).toEqual(bigMapId);
     // expect(await service.getTokenMetadataDepricated(contractAddress, 0)).toEqual(expectedResult);
   });

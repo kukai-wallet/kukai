@@ -1,5 +1,6 @@
 // suite unit-test frameworks
 import { TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { HttpTestingController, HttpClientTestingModule, TestRequest } from '@angular/common/http/testing';
 
 // class under inspection
@@ -50,6 +51,7 @@ describe('[ Coordinator ]', () => {
       imports: [
         HttpClientModule,
         HttpClientTestingModule,
+        RouterTestingModule,
         TranslateModule.forRoot({
           loader: {
             provide: TranslateLoader,

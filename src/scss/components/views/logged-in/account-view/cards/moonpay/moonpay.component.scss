@@ -8,7 +8,7 @@ $base-background-color: v.$base-background-color;
 $base-font-color-secondary: v.$base-font-color-secondary;
 $base-blue-color: v.$base-blue-color;
 $base-blue-color-lightened: v.$base-blue-color-lightened;
-$base-color-lightened-675: v.$base-color-lightened-675;
+$color-lightened-675: v.$color-lightened-675;
 $border-color-dark-only: v.$border-color-dark-only;
 $border-width-dark-only: v.$border-width-dark-only;
 $border-width: v.$border-width;
@@ -32,6 +32,9 @@ $layout-break-5: v.$layout-break-5;
     color: v.$base-font-color;
     font-weight: 500;
     padding: 0.75rem 1.25rem;
+    & img {
+      filter: v.$moonpay-iframe-filter;
+    }
   }
   & .moonpay {
     z-index: 3000 !important;
@@ -54,6 +57,7 @@ $layout-break-5: v.$layout-break-5;
       top: 0;
       padding: 1rem 1.5rem 0 1.5rem;
       width: calc(100% - 3rem);
+      z-index: 1000;
       & a {
         text-decoration: none;
         & .back {
@@ -74,6 +78,7 @@ $layout-break-5: v.$layout-break-5;
     & div.main {
       width: 100%;
       height: 100%;
+      filter: v.$moonpay-iframe-filter;
     }
     & .loading {
       z-index: -1;
@@ -89,7 +94,7 @@ $layout-break-5: v.$layout-break-5;
 @media (max-width: 575px) {
   div.moonpay > div.top,
   div.moonpay > div.top button {
-    background-color: white;
+    background-color: $base-end-color;
   }
   div.moonpay > div.main,
   div.moonpay > div.top {
@@ -100,3 +105,4 @@ $layout-break-5: v.$layout-break-5;
     padding: 1rem 1.5rem 1rem 1.5rem !important;
   }
 }
+

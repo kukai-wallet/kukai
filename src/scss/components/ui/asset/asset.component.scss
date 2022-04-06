@@ -6,7 +6,7 @@ $compactness: v.$compactness;
 :host {
   width: 100%;
   height: 100%;
-  
+  background-color: transparent;
   & img,
   & video,
   & audio,
@@ -90,6 +90,7 @@ $compactness: v.$compactness;
     position: relative;
     bottom: 0px;
     z-index: 0;
+    filter: v.$base-filter-invert-1;
   }
 
   & audio:not(.minimal-controls) {
@@ -173,7 +174,7 @@ $compactness: v.$compactness;
     & video,
     & img,
     & #modelCanvas {
-      border-radius: 0.5rem;
+      border-radius: v.$collectible-thumbnail-border-radius;
       object-fit: contain;
     }
   }

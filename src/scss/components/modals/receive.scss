@@ -1,16 +1,16 @@
 & .receive {
   justify-content: center;
   align-items: center;
-  margin: 1rem 0 0 0;
+  margin: 1em 0 0 0;
 
   & label {
-    @include m.multiply("font-size", 1.125);
-    margin: 0 0 1rem 0;
+    @include m.multiply("font-size", 1.125, "em");
+    margin: 0 0 1em 0;
   }
 
   & img.qr-icon {
-    width: 1rem;
-    height: 1rem;
+    width: 1em;
+    height: 1em;
     cursor: pointer;
     vertical-align: baseline;
   }
@@ -18,9 +18,10 @@
   & img.copy {
     cursor: pointer;
     margin: 0 0 0 0.5rem;
+    filter: v.$base-filter-invert-1
   }
 
   & span.value {
-    margin: 1rem 0 0 0;
+    margin: 1em 0;
   }
 }

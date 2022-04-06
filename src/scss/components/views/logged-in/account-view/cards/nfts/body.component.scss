@@ -5,11 +5,11 @@
 $base-font-color: v.$base-font-color;
 $base-end-color: v.$base-end-color;
 $base-blue-color-lightened: v.$base-blue-color-lightened;
-$base-color-lightened-1: v.$base-color-lightened-1;
-$base-color-lightened-2: v.$base-color-lightened-2;
-$base-color-lightened-5: v.$base-color-lightened-5;
-$base-color-lightened-65: v.$base-color-lightened-65;
-$base-color-lightened-7: v.$base-color-lightened-7;
+$color-lightened-1: v.$color-lightened-1;
+$color-lightened-2: v.$color-lightened-2;
+$color-lightened-5: v.$color-lightened-5;
+$color-lightened-65: v.$color-lightened-65;
+$color-lightened-7: v.$color-lightened-7;
 $border-color-dark-only: v.$border-color-dark-only;
 $border-width: v.$border-width;
 $border-color: v.$border-color;
@@ -46,7 +46,7 @@ $box-shadow: 0px 4px 6px #3332;
     cursor: pointer;
 
     &:hover {
-      background-color: $base-color-lightened-65;
+      background-color: $color-lightened-65;
       border-radius: $border-radius;
     }
 

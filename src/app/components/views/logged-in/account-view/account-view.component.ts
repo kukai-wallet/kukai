@@ -1,4 +1,4 @@
-import { Component, HostListener, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Account, Activity, ImplicitAccount } from '../../../../services/wallet/wallet';
 import { WalletService } from '../../../../services/wallet/wallet.service';
 import { TimeAgoPipe } from '../../../../pipes/time-ago.pipe';

@@ -3,7 +3,7 @@
 
 $theme: v.$theme;
 $base-font-color: v.$base-font-color;
-$base-color-lightened-4: v.$base-color-lightened-4;
+$color-lightened-4: v.$color-lightened-4;
 $border-width: v.$border-width;
 $border-color: v.$border-color;
 $border-color-dark-only: v.$border-color-dark-only;
@@ -48,7 +48,8 @@ $base-filter-contrast-invert-11: v.$base-filter-contrast-invert-11;
       align-self: flex-end;
     }
     button#all {
-      background-color: #eb4e39;
+      background-color: v.$button-red-background-color;
+      color: v.$button-red-color;
     }
 
     & > h3,

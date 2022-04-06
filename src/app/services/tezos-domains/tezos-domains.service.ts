@@ -78,9 +78,11 @@ export class TezosDomainsService {
       })
     ).json();
     const r = {};
-    for (const item of response.data.reverseRecords.items) {
-      if (item?.address && item?.domain?.name) {
-        r[item.address] = item.domain.name;
+    if (response.data) {
+      for (const item of response.data.reverseRecords.items) {
+        if (item?.address && item?.domain?.name) {
+          r[item.address] = item.domain.name;
+        }
       }
     }
     return r;

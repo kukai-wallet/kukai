@@ -4,6 +4,8 @@ import { IndexerService } from '../indexer/indexer.service';
 import Big from 'big.js';
 import { SubjectService } from '../subject/subject.service';
 import { TeztoolsService } from '../indexer/teztools/teztools.service';
+import { filter } from 'rxjs/operators';
+import { NavigationEnd, Router } from '@angular/router';
 
 export interface TokenResponseType {
   contractAddress: string;
@@ -74,12 +76,18 @@ export class TokenService {
   private exploredIds: Record<string, { firstCheck: number; lastCheck: number; counter: number }> = {};
   private pendingSave = null;
   readonly storeKey = 'tokenMetadata';
+  readonly unlockablesKey = 'unlockables';
   queue = [];
   workers = 0;
-  constructor(public indexerService: IndexerService, private subjectService: SubjectService, private teztoolsService: TeztoolsService) {
+  constructor(public indexerService: IndexerService, private subjectService: SubjectService, private teztoolsService: TeztoolsService, private router: Router) {
     this.contracts = JSON.parse(JSON.stringify(CONSTANTS.ASSETS));
     this.loadMetadata();
     this.saveMetadata();
+    this.router.events.pipe(filter((evt) => evt instanceof NavigationEnd)).subscribe(async (r: NavigationEnd) => {
+      if (r.url.indexOf('/account') === -1) {
+        document.documentElement.className = '';
+      }
+    });
   }
   getAsset(tokenId: string): TokenResponseType {
     if (!tokenId || !tokenId.includes(':')) {

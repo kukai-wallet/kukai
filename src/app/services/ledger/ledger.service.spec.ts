@@ -1,4 +1,5 @@
 import { TestBed, inject } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { OperationService } from '../operation/operation.service';
 import { MessageService } from '../message/message.service';
 import { LedgerService } from '../ledger/ledger.service';
@@ -13,6 +14,7 @@ describe('LedgerService', () => {
       imports: [
         HttpClientModule,
         HttpClientTestingModule,
+        RouterTestingModule,
         TranslateModule.forRoot({
           loader: {
             provide: TranslateLoader,

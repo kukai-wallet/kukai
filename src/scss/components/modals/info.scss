@@ -1,18 +1,24 @@
 @use '../../abstracts/mixins' as m;
+@use '../../abstracts/variables' as v;
 
 & .info {
-  margin: 2rem 0 0 0;
-  width: 38rem;
+  margin: 2em 0 0 0;
+  width: 38em;
   & .message {
-    margin: 0 0 1rem 0;
-    font-size: 1.375rem;
+    margin: 0 0 1em 0;
+    font-size: 1.375em;
     white-space: pre-line;
     font-weight: 600;
   }
 
   & button {
     width: 50%;
-    margin: 2rem 0 0 0;
     align-self: center;
+  }
+}
+
+@media (max-width: v.$layout-break-6) {
+  .info {
+    width: unset;
   }
 }
