@@ -258,7 +258,7 @@ $compactness: v.$compactness;
     transition: 0.15s height;
     margin: 0 0 calc(2rem * #{$compactness}) 0;
     border-radius: v.$border-radius;
-    border: $border-width-dark-only solid $border-color-dark-only;
+    overflow: hidden;
 
     &.expanded {
       height: auto;
