@@ -42,7 +42,7 @@ $base-filter-contrast-invert-11: v.$base-filter-contrast-invert-11;
     max-width: 100em;
     width: 85%;
 
-    & .rescan {
+    & .rescan, & .reveal-mnemonic {
       margin: 2rem 0 0 0;
       max-width: 65%;
       align-self: flex-end;

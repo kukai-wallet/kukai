@@ -192,6 +192,8 @@ $base-filter-contrast-invert-01: v.$base-filter-contrast-invert-01;
 
     @import "./info.scss";
 
+    @import "./export-mnemonic.scss";
+
     & .advanced {
       &-toggle {
         position: relative;
@@ -228,6 +230,9 @@ $base-filter-contrast-invert-01: v.$base-filter-contrast-invert-01;
       align-items: center;
       background-color: $base-end-color;
       width: 100%;
+      & .danger {
+        color: v.$base-red-color;
+      }
     }
   }
 

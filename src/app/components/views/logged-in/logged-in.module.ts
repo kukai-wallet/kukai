@@ -36,6 +36,7 @@ import { ExprTemplateComponent } from '../embedded/sign-expr/template/template.c
 import { QueueEmbedComponent } from '../embedded/queue/queue.component';
 import { MoonpayComponent } from './account-view/moonpay/moonpay.component';
 import { InfoComponent } from '../../modals/info/info.component';
+import { ExportMnemonicComponent } from '../../modals/export-mnemonic/export-mnemonic.component';
 
 @NgModule({
   declarations: [
@@ -71,7 +72,8 @@ import { InfoComponent } from '../../modals/info/info.component';
     ExprTemplateComponent,
     MoonpayComponent,
     InfoComponent,
-    RemoveCommaPipe
+    RemoveCommaPipe,
+    ExportMnemonicComponent
   ],
   imports: [CommonModule, LoggedInRoutingModule, HttpClientModule, FormsModule],
   exports: [
