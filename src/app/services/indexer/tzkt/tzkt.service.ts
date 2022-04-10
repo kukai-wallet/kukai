@@ -385,6 +385,10 @@ export class TzktService implements Indexer {
       // override wrong mimeType
       meta.thumbnailUri = { uri: meta.thumbnailUri, mimeType: 'video/mp4' };
     }
+    // Rarible
+    if (contractAddress === 'KT18pVpRXKPY2c4U2yFEGSH3ZnhB2kL8kwXS') {
+      meta.thumbnailUri = meta.displayUri = meta.formats[0].uri;
+    }
   }
 }
 export function mutableConvertObjectPropertiesSnakeToCamel(data: Object) {
