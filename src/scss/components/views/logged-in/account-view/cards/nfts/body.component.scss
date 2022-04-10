@@ -24,6 +24,10 @@ $box-shadow: 0px 4px 6px #3332;
   margin: 1rem 0 0 0;
 }
 
+:host.all .body {
+  max-height: 92.75rem;
+}
+
 .body {
   display: grid;
   grid-template-columns: repeat(3, 33.3333%);

@@ -342,10 +342,6 @@ $compactness: v.$compactness;
       &.all {
         padding: 0;
         width: 100%;
-        & .body {
-          overflow-y: auto;
-          padding: 1rem 1.875rem;
-        }
       }
     }
 

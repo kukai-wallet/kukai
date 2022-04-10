@@ -38,7 +38,7 @@
       </div>
     </ng-container>
     <div class="flex-column collection scroll all" [style.display]="!isDiscover && filter === 'ALL' ? '' : 'none'">
-      <app-nfts-body [isDisplaying]="!isDiscover && filter === 'ALL'" [tokens]="tokens" [searchable]="true"></app-nfts-body>
+      <app-nfts-body class="all" [isDisplaying]="!isDiscover && filter === 'ALL'" [tokens]="tokens" [searchable]="true"></app-nfts-body>
     </div>
     <ng-container *ngFor="let contractAlias of contractAliases">
       <ng-container *ngIf="shouldDisplayLink(contractAlias?.shouldDisplayLink)">
