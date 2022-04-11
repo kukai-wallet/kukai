@@ -1,0 +1,35 @@
+<div [style.display]="!isOpen ? 'none' : ''" class="flex-column kukai-modal">
+  <div class="content">
+    <div class="flex-column top">
+      <div class="flex-row button close" (click)="closeModal()"><img class="x"
+          src="../../../assets/img/close-btn-x.png" /></div>
+      <h1 class="title">{{ title }}</h1>
+    </div>
+    <div class="flex-column export-mnemonic">
+      <div *ngIf="!!mnemonicPhrase" class="whitebox" (mouseout)="mouseOut($event)" (touchstart)="$event.stopPropagation(); this.hideBlur = true;"
+        (touchend)="checkSelection($event)" (click)="$event.stopPropagation()" (mouseup)="checkSelection($event)">
+        {{ mnemonicPhrase }}<div *ngIf="!hideBlur" class="flex-row seed-blur"
+          (click)="$event.stopPropagation(); this.hideBlur = true;">
+          <span>CLICK HERE TO REVEAL YOUR SEED WORDS</span>
+        </div>
+      </div>
+      <p *ngIf="!!mnemonicPhrase" class="description red">
+        <span *ngIf="isSelectedMnemonic" style="margin: 1rem 0" class="warning red">
+          WARNING: Copying the seed words to your clipboard can result in sensitive leakage. The clipboard is a shared
+          resource that can be monitored by other web pages or browser extensions.<br />
+        </span>
+      </p>
+      <div *ngIf="!mnemonicPhrase" class="flex-column bottom">
+        <div class="seperator"></div>
+        <div class="label">
+          ENTER YOUR PASSWORD TO REVEAL 
+        </div>
+        <span [style.visibility]="!pwdInvalid ? 'hidden' : ''" [style.margin]="!pwdInvalid ? '0' : ''"
+        class="label danger">{{ this.pwdInvalid }}</span>
+        <input [(ngModel)]="pwd" autocomplete="current-password" placeholder="Password" class="text password"
+          type="password" (input)="this.pwdInvalid = ''" (change)="this.pwdInvalid = ''" (keydown.enter)='reveal()'>
+        <button class="button confirm" (click)="reveal()">Continue</button>
+      </div>
+    </div>
+  </div>
+</div>
