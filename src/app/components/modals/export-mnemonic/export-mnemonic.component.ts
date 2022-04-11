@@ -9,7 +9,7 @@ import { ModalComponent } from '../modal.component';
   styleUrls: ['../../../../scss/components/modals/modal.scss']
 })
 export class ExportMnemonicComponent extends ModalComponent implements OnInit {
-  title = 'Export Mnemonic Phrase';
+  title = 'Reveal Seed Words';
   name = 'export-mnemonic';
   mnemonicPhrase = '';
   ledgerError = '';
