@@ -146,7 +146,7 @@ $border-width-dark-only: v.$border-width-dark-only;
 
     & .option {
       color: v.$base-font-color;
-      padding: 0.75em 1.125em 0.75em calc(4em - #{$border-width});
+      padding: 0.75em 1.125em 0.75em calc(2rem - #{$border-width});
       text-decoration: none;
       cursor: pointer;
       background: $base-end-color;
@@ -223,7 +223,7 @@ $border-width-dark-only: v.$border-width-dark-only;
     & .dropdown:not(.pr-request) .dropdown-content {
       width: calc(100% + 6em);
       top: 4.78em;
-      left: -4em;
+      left: calc(-4em + $border-width);
 
       & .option {
         font-size: 1.5em;
