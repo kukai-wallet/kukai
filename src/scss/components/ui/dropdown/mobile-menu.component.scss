@@ -6,7 +6,7 @@ $base-end-color: v.$base-end-color;
 $base-red-color: v.$base-red-color;
 $base-blue-color: v.$base-blue-color;
 $base-blue-color-lightened: v.$base-blue-color-lightened;
-$base-color-lightened-6: v.$base-color-lightened-6;
+$color-lightened-6: v.$color-lightened-6;
 $border-width: v.$border-width;
 $border-width-thick: v.$border-width-thick;
 $border-color: v.$border-color;
@@ -27,13 +27,16 @@ $border-color: v.$border-color;
     top: 10rem;
     background-color: #0006;
     z-index: 1000;
-    border-top: 2px solid $base-color-lightened-6;
+    border-top: 2px solid $color-lightened-6;
     box-shadow: v.$box-shadow-dark;
     height: 100vh;
     overflow: hidden;
 
-    & .button {
+    & > .button {
       align-items: center;
+      & img {
+        filter: v.$base-filter-invert-1;
+      }
     }
 
     & span {
@@ -45,7 +48,7 @@ $border-color: v.$border-color;
 
     & .account-content {
       padding: 2rem 0;
-      background-color: #f3f4f8;
+      background-color: $base-end-color;
       justify-content: space-evenly;
 
       & .wrapper {
@@ -83,11 +86,11 @@ $border-color: v.$border-color;
       }
     }
     & > div.delegation {
-      border-top: $border-width solid $base-color-lightened-6;
+      border-top: $border-width solid $color-lightened-6;
       text-align: center;
       padding: 1rem 2rem;
       width: calc(100% - 4rem);
-      background-color: #f3f4f8;
+      background-color: $base-end-color;
     }
 
   }

@@ -3,10 +3,10 @@
 
 $base-font-color: v.$base-font-color;
 $base-end-color: v.$base-end-color;
-$base-color-lightened-5: v.$base-color-lightened-5;
-$base-color-lightened-6: v.$base-color-lightened-6;
-$base-color-lightened-65: v.$base-color-lightened-65;
-$base-color-lightened-7: v.$base-color-lightened-7;
+$color-lightened-5: v.$color-lightened-5;
+$color-lightened-6: v.$color-lightened-6;
+$color-lightened-65: v.$color-lightened-65;
+$color-lightened-7: v.$color-lightened-7;
 $base-blue-color-lightened: v.$base-blue-color-lightened;
 $border-width: v.$border-width;
 $border-color: v.$border-color;
@@ -19,37 +19,38 @@ $border-width-dark-only: v.$border-width-dark-only;
 .dropdown {
   display: block;
   position: relative;
-  margin: 0 0.5rem 0 0;
+  margin: 0 0.5em 0 0;
 
   &.pr-request {
     width: 100%;
-    margin: 1rem 0;
+    margin: 1em 0;
 
     & .currentAddress {
-      width: calc(100% - 1rem);
-      padding: 0 0 0 1rem;
+      width: calc(100% - 1em - #{$border-width});
+      padding: 0 0 0 calc(1em - #{$border-width});
       border: $border-width solid $border-color-dark-only;
+      font-size: 1.15em;
     }
 
     & .icon-db {
-      right: 0.5rem;
+      right: 0.75em;
     }
 
     & .dropdown-content {
-      top: 0rem;
+      top: 0em;
       width: calc(100% + #{$border-width} * 2);
       border: 0 solid $border-color-dark-only;
       position: relative;
-      max-height: 15rem;
+      max-height: 15em;
       overflow-y: auto;
-      margin: 0 0 2.5rem 0;
+      margin: 0 0 2.5em 0;
 
       &::-webkit-scrollbar-track {
-        margin: 0 0 1.5rem 0;
+        margin: 0 0 1.5em 0;
       }
 
       & .option {
-        padding: 0.75rem 1.125rem 0.75rem 2.375rem;
+        padding: 0.75em 1.125em 0.75em 2.375em;
       }
     }
     &.expanded {
@@ -64,29 +65,30 @@ $border-width-dark-only: v.$border-width-dark-only;
   }
 
   & .currentAddress {
-    @include m.multiply("font-size", 1.15);
-    width: calc(100% - 2rem);
-    padding: 0 0 0 1rem;
-    background-color: $base-color-lightened-65;
+    @include m.multiply("font-size", 1);
+    width: calc(100% - 2em);
+    padding: 0 0 0 1em;
+    background-color: $color-lightened-65;
     border-radius: v.$border-radius-hard;
     border: $border-width solid $border-color-dark-only;
     transition: 0.25s border-radius;
-    height: calc(3.375rem - #{$border-width});
+    height: calc(3.375em - #{$border-width});
     cursor: pointer;
     font-weight: 500;
     justify-content: flex-start;
 
     & .logo {
-      height: 1.5rem;
-      width: 1.5rem;
+      height: 1.5em;
+      width: 1.5em;
       object-fit: cover;
-      margin: 0 1rem 0 0;
+      margin: 0 1em 0 0;
     }
 
     & .address {
       @include m.ellipsis;
-      width: calc(100% - 4rem);
+      width: calc(100% - 4em);
       font-weight: 500;
+      font-size: 1.25em;
     }
 
     &::placeholder {
@@ -95,16 +97,16 @@ $border-width-dark-only: v.$border-width-dark-only;
   }
 
   & .icon-db {
-    width: 2rem;
-    height: 2rem;
+    width: 2em;
+    height: 2em;
     position: absolute;
-    top: calc(0.685rem + #{$border-width} / 2);
-    right: 1.5rem;
-    background-color: $base-color-lightened-7;
+    top: calc(0.685em + #{$border-width} / 2);
+    right: 1.5em;
     border-radius: v.$border-radius-hard;
     transform: rotate(0deg);
     transition: 0.25s transform, 0.25s border-radius;
     cursor: pointer;
+    filter: v.$dropdown-icon-invert;
   }
 
   & .dropdown-content {
@@ -112,50 +114,50 @@ $border-width-dark-only: v.$border-width-dark-only;
     position: absolute;
     display: none;
     z-index: 100;
-    width: calc((100% - 1rem) + var(--border-width) * 2);
-    top: 3.375rem;
+    width: calc((100% - 1em) + var(--border-width) * 2);
+    top: 3.375em;
     left: 0;
     border: none;
     box-shadow: $box-shadow-dark;
     overflow: hidden;
-    max-height: 15rem;
+    max-height: 15em;
     $box-shadow-dark: $box-shadow-dark;
-    border-bottom-left-radius: $border-radius-hard;
-    border-bottom-right-radius: $border-radius-hard;
+    border-bottom-left-radius: v.$border-radius;
+    border-bottom-right-radius: v.$border-radius;
 
     & .body {
       overflow: hidden;
       overflow-y: auto;
       &::-webkit-scrollbar-track {
-        margin: 0 0 0rem 0;
+        margin: 0 0 0em 0;
       }
     }
 
     &.right {
-      margin-top: -1.1rem;
+      margin-top: -1.1em;
     }
 
     & .sep {
-      margin-top: 0.5rem;
-      margin-bottom: 0.5rem;
+      margin-top: 0.5em;
+      margin-bottom: 0.5em;
       border-top: 1px solid #0004;
       border-bottom: 1px solid #0004;
     }
 
     & .option {
       color: v.$base-font-color;
-      padding: 0.75rem 1.125rem 0.75rem calc(4rem - #{$border-width});
+      padding: 0.75em 1.125em 0.75em calc(2rem - #{$border-width});
       text-decoration: none;
       cursor: pointer;
       background: $base-end-color;
       @include m.multiply("font-size", 1.15);
 
       &:hover {
-        background: $base-color-lightened-6;
+        background: $color-lightened-6;
       }
 
       &.selected {
-        background: $base-color-lightened-5;
+        background: $color-lightened-5;
       }
 
       & .alias {
@@ -163,8 +165,8 @@ $border-width-dark-only: v.$border-width-dark-only;
         justify-content: flex-start;
 
         & img {
-          height: 1rem;
-          margin: 0 0.5rem 0 -1.5rem;
+          height: 1em;
+          margin: 0 0.5em 0 0em;
         }
 
         & span {
@@ -192,11 +194,11 @@ $border-width-dark-only: v.$border-width-dark-only;
   &.expanded {
     & .currentAddress,
     & .icon-db {
-      border-top-right-radius: v.$border-radius-hard;
+      border-top-right-radius: v.$border-radius;
     }
 
     & .currentAddress {
-      border-top-left-radius: v.$border-radius-hard;
+      border-top-left-radius: v.$border-radius;
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
       box-shadow: $box-shadow-dark;
@@ -207,7 +209,9 @@ $border-width-dark-only: v.$border-width-dark-only;
     }
 
     & .dropdown-content {
-      display: flex !important;
+      display: flex;
+      border: v.$border-width solid v.$border-color-dark-only;
+      box-sizing: border-box;
     }
   }
 }
@@ -217,12 +221,12 @@ $border-width-dark-only: v.$border-width-dark-only;
     width: 50%;
 
     & .dropdown:not(.pr-request) .dropdown-content {
-      width: calc(100% + 6rem);
-      top: 4.78rem;
-      left: -3rem;
+      width: calc(100% + 6em);
+      top: 4.78em;
+      left: calc(-4em + $border-width);
 
       & .option {
-        font-size: 1.5rem;
+        font-size: 1.5em;
       }
     }
   }

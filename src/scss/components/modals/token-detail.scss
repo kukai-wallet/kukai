@@ -1,25 +1,30 @@
 & .token-info {
-  height: calc(100% - 11rem);
-  margin: 2rem 0 0 0;
-  max-width: 50rem;
+  height: calc(100% - 11em);
+  margin: 2em 0 0 0;
+  max-width: 50em;
+
+  & .artifact {
+    position: absolute;
+    bottom: 0;
+  }
 
   & .data {
     justify-content: flex-start;
     align-items: center;
-    max-height: 48rem;
+    max-height: 48em;
     height: auto;
-    margin: 0 0 2rem 0;
-    padding: 2rem;
-    background-color: v.$base-color-lightened-7;
+    margin: 0 0 2em 0;
+    padding: 2em 2em 0 2em;
+    background-color: v.$color-lightened-7;
     border-radius: v.$border-radius-hard;
-
+    
     & .wrapper {
-      max-width: 24rem;
-      max-height: 48rem;
-      width: 100%;
+      max-width: calc(50% - 1em);
+      max-height: 48em;
+      width: 24em;
       height: 100%;
       justify-content: center;
-      margin: 0 1rem 0 0;
+      margin: 0 1em 0 0;
       position: relative;
 
       &.expanded {
@@ -50,33 +55,34 @@
 
       & img:not(.close) {
         max-width: 100%;
-        max-height: 32rem;
+        max-height: 32em;
         object-fit: scale-down;
         object-position: center;
       }
 
       & img.close {
         z-index: 5000;
-        top: 1rem;
-        right: 1rem;
+        top: 1em;
+        right: 1em;
         filter: invert(1) $base-filter-brightness-5;
-        width: calc(3rem - 6px);
-        height: calc(3rem - 6px);
-        padding: 0.5rem;
+        width: calc(3em - 6px);
+        height: calc(3em - 6px);
+        padding: 0.5em;
         object-fit: scale-down;
         border: none;
         border-radius: unset;
+        position: absolute;
       }
 
       & img.expand, b.expand {
         position: absolute;
-        bottom: 0.5rem;
-        right: 0.5rem;
-        width: 1.75rem;
-        height: 1.75rem;
+        bottom: 0.5em;
+        right: 0.5em;
+        width: 1.75em;
+        height: 1.75em;
         background-color: #999;
-        padding: 0.5rem;
-        border-radius: 8rem;
+        padding: 0.5em;
+        border-radius: 8em;
         cursor: pointer;
         filter: invert(1) opacity(0.8);
         z-index: 1;
@@ -88,20 +94,24 @@
     }
 
     & .meta {
-      max-width: 24rem;
+      max-width: calc(50% - 1em);
       max-height: 48rem;
       width: 100%;
       height: 100%;
       justify-content: space-between;
-      margin: 0 0 0 1rem;
+      margin: 0 0 0 1em;
       align-self: flex-start;
 
       & .top {
+        & .desc {
+          z-index: 1;
+        }
         & .desc .value {
-          max-height: 12rem;
+          text-overflow: ellipsis;
+          max-height: 12em;
           overflow-x: hidden;
           overflow-y: auto;
-          padding: 0 1rem 0 0;
+          padding: 0 1em 0 0;
         }
       }
     }

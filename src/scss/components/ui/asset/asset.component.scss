@@ -1,17 +1,29 @@
-@use '../../../abstracts/variables'as v;
-@use '../../../abstracts/mixins' as m;
+@use "../../../abstracts/variables" as v;
+@use "../../../abstracts/mixins" as m;
 
 $compactness: v.$compactness;
 
 :host {
   width: 100%;
   height: 100%;
+  background-color: transparent;
   & img,
   & video,
+  & audio,
   & .model-wrapper {
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  & video {
+    position: relative;
+    opacity: 1;
+  }
+  
+  & audio {
+    position: absolute;
+    bottom: 0;
   }
 
   &.sd,
@@ -51,6 +63,10 @@ $compactness: v.$compactness;
     padding: 0.5rem;
   }
 
+  #preImage {
+    display: none;
+  }
+
   &.discover {
     & video,
     & img,
@@ -68,7 +84,88 @@ $compactness: v.$compactness;
     }
   }
 
+  &.audio {
+    overflow: hidden;
+    margin: 0;
+    position: relative;
+    bottom: 0px;
+    z-index: 0;
+    filter: v.$base-filter-invert-1;
+  }
 
+  & audio:not(.minimal-controls) {
+    &::-webkit-media-controls-panel {
+      filter: invert(1);
+      border-radius: 0;
+      background-color: #eee;
+    }
+    &::-webkit-media-controls-enclosure {
+      filter: invert(1);
+      border-radius: 0;
+      background-color: #ddd;
+    }
+    &::-webkit-media-controls-timeline {
+      background-color: #ccc;
+      margin: 0 2rem;
+      filter: invert(1);
+      border-radius: 10rem;
+    }
+    &::-webkit-media-controls-timeline:hover {
+      background-color: #fff;
+      filter: invert(0);
+    }
+    &::-webkit-media-controls-current-time-display,
+    &::-webkit-media-controls-time-remaining-display {
+      font-weight: 500;
+      font-family: "Roboto Mono", "Roboto", sans-serif;
+    }
+  }
+
+  &.minimal-controls {
+    height: 45px;
+    margin: 1rem 0;
+    transition: 0.15s height;
+    & .spinner {
+      height: 100%;
+      object-fit: scale-down;
+    }
+    & audio {
+      height: 45px;
+      margin: 0;
+      position: absolute;
+      bottom: 0;
+      overflow: hidden;
+      width: 100%;
+
+    &::-webkit-media-controls-enclosure,
+    &::-webkit-media-controls-panel {
+      filter: invert(1);
+      background-color: transparent;
+      border-radius: 100rem;
+    }
+    &::-webkit-media-controls-volume-control-hover-background,
+    &::-webkit-media-controls-volume-slider,
+    &::-webkit-media-controls-volume-control-container {
+      min-width: 0px !important;
+      width: 0px !important;
+      overflow: hidden;
+    }
+    & input[type="range" i] {
+      display: none !important;
+    }
+    &::-webkit-media-controls-current-time-display,
+    &::-webkit-media-controls-time-remaining-display {
+      display: none !important;
+    }
+    &::-webkit-media-controls-mute-button {
+      width: 20% !important;
+    }
+    &::-webkit-media-controls-timeline {
+      filter: invert(0.1);
+      background-color: transparent;
+    }
+  }
+  }
 
   &.nfts-head-thumbnail {
     width: calc(3.5rem * #{$compactness});
@@ -77,7 +174,7 @@ $compactness: v.$compactness;
     & video,
     & img,
     & #modelCanvas {
-      border-radius: 0.5rem;
+      border-radius: v.$collectible-thumbnail-border-radius;
       object-fit: contain;
     }
   }

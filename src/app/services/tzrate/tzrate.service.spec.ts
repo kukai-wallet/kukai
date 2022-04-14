@@ -1,6 +1,6 @@
 // suite unit-test frameworks
 import { HttpTestingController, HttpClientTestingModule, TestRequest } from '@angular/common/http/testing';
-
+import { RouterTestingModule } from '@angular/router/testing';
 // class under inspection
 import { TzrateService } from './tzrate.service';
 
@@ -52,6 +52,7 @@ describe('[ TzrateService ]', () => {
       imports: [
         HttpClientModule,
         HttpClientTestingModule,
+        RouterTestingModule,
         TranslateModule.forRoot({
           loader: {
             provide: TranslateLoader,

@@ -20,13 +20,9 @@ button {
   &.with-image {
     width: auto;
     padding: 1rem;
-    border: v.$border-width solid transparent;
+    border: v.$border-width solid v.$send-button-border-color;
     border-radius: v.$border-radius-hardest;
-
-    &:not(.tez) {
-      background-color: transparent;
-      border-color: $border-color;
-    }
+    background-color: v.$send-button-background-color;
 
     & span {
       @include m.multiply('font-size',1.25);
@@ -35,7 +31,7 @@ button {
       color: v.$base-end-color-static;
     }
 
-    & img {
+    & img, & svg {
       width: 1.5rem;
       height: 1.5rem;
       transform: rotate(45deg);
@@ -44,6 +40,12 @@ button {
     &.tez {
       padding: 1rem;
       color: $base-blue-color;
+      background-color: v.$send-button-tez-background-color;
+      border: v.$border-width solid v.$send-button-tez-border-color;
+
+      & svg path {
+        fill: v.$send-button-tez-icon-color;
+      }
     }
     &:hover {
       filter: unset;
@@ -73,19 +75,24 @@ button {
         letter-spacing: 0.02em;
         font-size: 1rem;
         white-space: pre;
+        text-transform: initial;
       }
     }
 
     &:not(.tez, .buy) .tooltip {
-      top: 0.5rem;
-      right: 115%;
+      top: 4rem;
+      right: 0;
       left: unset;
     }
   }
 
   &.detail {
     width: 50%;
-    height: 4rem;
+    height: 4.5em;
+    border-radius: v.$border-radius-hardest;
+    padding: 0 2em;
+    font-size: 1.125em;
+    margin: 2em 0;
     color: v.$base-end-color-static;
   }
 }

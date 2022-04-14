@@ -12,6 +12,7 @@ import { TranslateService } from '@ngx-translate/core';
 import Big from 'big.js';
 import { RemoveCommaPipe } from '../../../../pipes/remove-comma.pipe';
 import { filter } from 'rxjs/operators';
+import { SubjectService } from '../../../../services/subject/subject.service';
 
 @Component({
   selector: 'app-account-list-body',
@@ -31,7 +32,8 @@ export class AccountListBodyComponent extends ListComponent implements OnInit, A
     private walletService: WalletService,
     public translate: TranslateService,
     public messageService: MessageService,
-    public removeCommaPipe: RemoveCommaPipe
+    public removeCommaPipe: RemoveCommaPipe,
+    private subjectService: SubjectService
   ) {
     super();
     this.subscriptions.add(
@@ -47,7 +49,7 @@ export class AccountListBodyComponent extends ListComponent implements OnInit, A
       this.preSelectedAccount = this.current;
     }
     this.subscriptions.add(
-      this.walletService.walletUpdated.subscribe(() => {
+      this.subjectService.walletUpdated.subscribe(() => {
         this.list = this.walletService.wallet?.getAccounts();
       })
     );

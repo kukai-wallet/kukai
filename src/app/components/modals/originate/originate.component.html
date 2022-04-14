@@ -1,6 +1,6 @@
 <div *ngIf="isOpen" class="flex-column kukai-modal">
   <div class="content">
-    <div class="flex-column top">
+    <div class="flex-row top">
       <div class="flex-row button close" (click)="closeModalAction()"><img class="x"
           src="../../../assets/img/close-btn-x.png" /></div>
       <h1 class="title">Originate</h1>
@@ -8,7 +8,8 @@
     <div class="seperator"></div>
     <div class="flex-column originate">
       <div class="flex-column top">
-        <span class="amount key">AMOUNT:&nbsp;<span class="value">{{ this.balance ? this.balance + ' ' + 'tez' : '' }}</span></span>
+        <span class="amount key">AMOUNT:&nbsp;<span class="value">{{ this.balance ? this.balance + ' ' + 'tez' : ''
+            }}</span></span>
         <!-- <span class="amount-usd"> </span> -->
         <span class="section key">From:&nbsp;<span class="from">{{ activeAccount?.address }}</span></span>
       </div>
@@ -21,9 +22,8 @@
           <span class="key">MAX STORAGE COST:&nbsp;</span><span class="value">{{ getTotalBurn() }} tez</span>
         </div>
       </div>
-      <div class="seperator"></div>
-      <br />
-      <app-ui-toggle-advanced style="width: min-content" [default]="false" (stateChange)="advancedForm = $event">
+      <app-ui-toggle-advanced style="width: calc(100% - 1em);margin: 2em 0;" [default]="false"
+        (stateChange)="advancedForm = $event">
       </app-ui-toggle-advanced>
       <div *ngIf="advancedForm" class="advanced-form">
         <div class="tabs-container">
@@ -64,6 +64,8 @@
         {{ formInvalid }}
       </span>
       <div class="flex-column bottom">
+        <div class="seperator"></div>
+        <br />
         <ng-container *ngIf="walletService.isPwdWallet()">
           <input [(ngModel)]="password" placeholder="Password" autocomplete="current-password" class="text password"
             type="password" (input)="this.pwdInvalid = ''" (paste)="this.pwdInvalid = ''" (keydown.enter)='inject()'>

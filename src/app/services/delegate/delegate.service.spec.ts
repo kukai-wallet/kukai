@@ -6,6 +6,7 @@ import { DelegateService } from './delegate.service';
 
 // class dependencies
 import { HttpClientModule } from '@angular/common/http';
+import { RouterTestingModule } from '@angular/router/testing';
 import { WalletService } from '../wallet/wallet.service';
 import { OperationService } from '../operation/operation.service';
 import { TranslateLoader, TranslateFakeLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -45,6 +46,7 @@ describe('[ DelegateService ]', () => {
       imports: [
         HttpClientModule,
         HttpClientTestingModule,
+        RouterTestingModule,
         TranslateModule.forRoot({
           loader: {
             provide: TranslateLoader,

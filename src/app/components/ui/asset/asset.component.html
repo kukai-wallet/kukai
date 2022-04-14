@@ -1,12 +1,17 @@
-<img #postImage *ngIf="mimeType?.startsWith('image/')" [src]="postSrc" id="postImage"
-  [style.objectFit]="postSrc.indexOf(loaderUrl) > -1 ? 'scale-down' : ''" (load)="onLoad($event)"
-  (error)="onError($event)" />
-<img #preImage *ngIf="mimeType?.startsWith('image/')" style="display: none" [attr.data-src]="dataSrc" [src]="preSrc"
-  id="preImage" (load)="onLoad($event)" (error)="onError($event)" />
-<video #video *ngIf="mimeType?.startsWith('video/')" [controls]="controls" [autoplay]="autoplay" [muted]="muted"
-  [attr.data-src]="dataSrc" [attr.data-src]="dataSrc" [src]="postSrc + '#t=' + offset"></video>
-<div *ngIf="mimeType?.startsWith('model/')" class="model-wrapper">
-  <model-viewer #model id="modelCanvas" auto-rotate rotation-per-second="30deg"
-    [attr.data-src]="dataSrc" [src]="postSrc" alt="postSrc" (load)="onLoad($event)" (error)="onError($event)"
+<ng-container *ngIf="this.display === Display.image || (this.display === Display.audio && !!poster)">
+  <!-- Need crossorigin anonymous here to leverage caching from first GET (check mime type) -->
+  <img crossorigin="anonymous" #postImage [src]="postSrc" id="postImage" [style.objectFit]="postSrc?.indexOf(loaderUrl) > -1 ? 'scale-down' : ''" (error)="onError($event)" (load)="onLoad($event)" />
+  <img crossorigin="anonymous" #preImage [src]="preSrc" id="preImage" (error)="onError($event)" (load)="onLoad($event)" />
+</ng-container>
+<audio crossorigin="anonymous" #audio *ngIf="this.display === Display.audio" preload="metadata" [controls]="controls" [controlsList]="controlsList" id="audio" (error)="onError($event)" (loadeddata)="onLoadData($event)">
+  <source crossorigin="anonymous" [src]="dataSrc" [type]="mimeType" />
+</audio>
+<video crossorigin="anonymous" #video *ngIf="this.display === Display.video" preload="metadata" id="video" [controls]="controls" [playsinline]="playsinline" [muted]="muted" [loop]="loop" [autoplay]="autoplay" (error)="onError($event)" (loadeddata)="onLoadData($event)">
+  <source crossorigin="anonymous" [src]="dataSrc" [type]="mimeType" />
+  <img crossorigin="anonymous" [src]="loaderUrl" class="spinner" />
+</video>
+<div *ngIf="this.display === Display.threeD" class="model-wrapper">
+  <model-viewer crossorigin="anonymous" #model id="modelCanvas" auto-rotate rotation-per-second="30deg"
+    [src]="dataSrc" alt="postSrc" (load)="onLoad($event)" (error)="onError($event)"
     camera-controls ar ar-modes="webxr scene-viewer quick-look"></model-viewer>
 </div>

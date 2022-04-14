@@ -17,6 +17,8 @@ interface MetadataUpdated {
   providedIn: 'root'
 })
 export class SubjectService {
+  public activeAccount = new BehaviorSubject(null);
+  public walletUpdated = new BehaviorSubject(null);
   public metadataUpdated: BehaviorSubject<MetadataUpdated>;
   public markets: BehaviorSubject<any>;
   public confirmedOp: Subject<string>;

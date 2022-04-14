@@ -2,17 +2,17 @@
   position: relative;
   background-color: v.$base-end-color;
   $base-end-color: v.$base-end-color;
-  padding: 0 2rem;
+  padding: 0 2em;
   border-radius: v.$border-radius-hard;
   max-width: v.$lower-break;
 
   & video {
     width: 100%;
-    max-width: 30rem;
+    max-width: 30em;
   }
 
   & .video-container {
-    margin: 1rem -1rem -0.5rem;
+    margin: 1em -1em -0.5em;
   }
 
   & p.no-cam {
@@ -22,6 +22,6 @@
   }
 
   input.text {
-    margin: 2rem 0 0 0;
+    margin: 2em 0;
   }
 }

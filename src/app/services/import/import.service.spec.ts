@@ -1,6 +1,6 @@
 // suite unit-test frameworks
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-
+import { RouterTestingModule } from '@angular/router/testing';
 // class under inspection
 import { ImportService } from './import.service';
 
@@ -92,6 +92,7 @@ describe('[ ImportService ]', () => {
       imports: [
         HttpClientModule,
         HttpClientTestingModule,
+        RouterTestingModule,
         TranslateModule.forRoot({
           loader: {
             provide: TranslateLoader,

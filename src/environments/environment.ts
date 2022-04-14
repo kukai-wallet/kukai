@@ -8,7 +8,7 @@ import {
   TRUSTED_TOKEN_CONTRACTS as _TTC,
   BLACKLISTED_TOKEN_CONTRACTS as _BLTC,
   MODEL_3D_WHITELIST as _M3DW
-} from './environment.hangzhounet';
+} from './environment.ithacanet';
 
 export const environment = {
   production: false

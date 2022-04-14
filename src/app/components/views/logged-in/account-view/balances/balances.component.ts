@@ -4,10 +4,12 @@ import { CONSTANTS } from '../../../../../../environments/environment';
 import { TokenBalancesService } from '../../../../../services/token-balances/token-balances.service';
 import { SubjectService } from '../../../../../services/subject/subject.service';
 import { WalletService } from '../../../../../services/wallet/wallet.service';
-import { merge, Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
+import { filter, take } from 'rxjs/operators';
 import { Big } from 'big.js';
 import { RemoveCommaPipe } from '../../../../../pipes/remove-comma.pipe';
+import { ModalComponent } from '../../../../../components/modals/modal.component';
+import { MessageService } from '../../../../../services/message/message.service';
 
 @Component({
   selector: 'app-balances',
@@ -28,10 +30,11 @@ export class BalancesComponent implements OnInit, AfterViewChecked, OnDestroy {
     public tokenBalancesService: TokenBalancesService,
     private subjectService: SubjectService,
     private walletService: WalletService,
-    public removeCommaPipe: RemoveCommaPipe
+    public removeCommaPipe: RemoveCommaPipe,
+    private messageService: MessageService
   ) {
     this.subscriptions.add(
-      this.walletService.activeAccount.pipe(filter((account: Account) => account?.address !== this.account?.address)).subscribe((account) => {
+      this.subjectService.activeAccount.pipe(filter((account: Account) => account?.address !== this.account?.address)).subscribe((account) => {
         this.account = account;
         this.balances = this.tokenBalancesService?.balances;
         this.calcTotalBalances();
@@ -44,7 +47,7 @@ export class BalancesComponent implements OnInit, AfterViewChecked, OnDestroy {
       })
     );
     this.subscriptions.add(
-      this.walletService.walletUpdated.subscribe(() => {
+      this.subjectService.walletUpdated.subscribe(() => {
         this.balances = this.tokenBalancesService?.balances;
         this.calcTotalBalances();
       })
@@ -62,8 +65,12 @@ export class BalancesComponent implements OnInit, AfterViewChecked, OnDestroy {
 
       if (this.tokenBalancesService?.balances?.length > 4) {
         wrap.style.overflowY = 'auto';
+        wrap.style.width = 'calc(100% - 2.675rem)';
+        wrap.style.padding = '0 0 0 2rem';
       } else {
         wrap.style.overflowY = '';
+        wrap.style.width = '';
+        wrap.style.padding = '';
       }
     }
   }
@@ -79,14 +86,13 @@ export class BalancesComponent implements OnInit, AfterViewChecked, OnDestroy {
     this.e(wrap);
   }
   trackToken(index: number, token: any) {
-    return token?.contractAddress ? token.contractAddress + ':' + token?.id + ':' + token?.balance : index;
+    return token?.contractAddress ? token.contractAddress + ':' + token?.id + ':' + token?.balance + ':' + token?.thumbnailAsset : index;
   }
 
   toggleTotalBalances(): void {
     this.isFiat = !this.isFiat;
     this.calcTotalBalances();
   }
-
   calcTotalBalances(): void {
     this.totalBalances = this.isFiat
       ? this.balances.reduce((prev, balance) => prev + parseFloat(balance?.price ?? 0), 0) + this.account?.balanceUSD

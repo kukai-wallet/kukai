@@ -1,5 +1,5 @@
 & .confirm-staking {
-  width: 32rem;
+  width: 32em;
 
   & .label {
     color: v.$base-font-color-secondary
@@ -8,24 +8,24 @@
   & .head {
     margin: 1rem 0;
     padding: 2rem;
-    background-color: v.$base-color-lightened-5;
+    background-color: v.$modal-container-background-color;
     border-radius: v.$border-radius;
 
     & img {
-      width: 5rem;
-      height: 5rem;
+      width: 5em;
+      height: 5em;
     }
 
     & .data {
-      height: 5rem;
+      height: 5em;
       justify-content: center;
       width: 100%;
       align-items: flex-start;
-      margin: 0 0 0 2rem;
+      margin: 0 0 0 2em;
 
       & .name {
-        @include m.multiply('font-size',1.125);
-        margin: 0 0 1rem 0;
+        @include m.multiply('font-size', 1.125, "em");
+        margin: 0 0 1em 0;
         color: v.$base-font-color;
         font-weight: 600;
       }
@@ -33,7 +33,7 @@
       & .fee-space {
 
         & .fee {
-          @include m.multiply('font-size',1);
+          @include m.multiply('font-size', 1, "em");
           color: v.$base-font-color;
           font-weight: 600;
 
@@ -44,8 +44,8 @@
         }
 
         & .space {
-          @include m.multiply('font-size',1);
-          margin: 0 0 0 2rem;
+          @include m.multiply('font-size', 1, "em");
+          margin: 0 0 0 2em;
           color: v.$base-font-color;
           font-weight: 600;
 
@@ -59,16 +59,16 @@
   }
 
   & .bottom {
-    margin: 1rem 0 0 0;
+    margin: 1em 0 0 0;
     & .text.password {
-      width: calc(100% - 2.5rem);
+      width: calc(100% - 2.5em);
       margin: 0;
     }
 
     & span.label.danger {
       color: v.$base-red-color;
       font-weight: 500;
-      margin: 0 1rem 1rem 1rem;
+      margin: 0 1em 1em 1em;
       align-self: flex-start;
     }
   }

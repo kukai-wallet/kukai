@@ -34,6 +34,7 @@ $base-blue-color : v.$base-blue-color;
   &.no-box .balance {
     box-shadow: none !important;
     border-color: $border-color;
+    width: calc(100% - 4rem);
   }
 }
 
@@ -50,9 +51,10 @@ $base-blue-color : v.$base-blue-color;
     border-radius: v.$border-radius-hardest;
 
     &:not(.tez) {
-      background-color: transparent;
-      border-color: $border-color;
       margin-right: 0.75rem;
+      border: v.$border-width solid v.$send-button-border-color;
+      border-radius: v.$border-radius-hardest;
+      background-color: v.$send-button-background-color;
     }
 
     & span {
@@ -77,6 +79,8 @@ $base-blue-color : v.$base-blue-color;
     }
 
     &.buy {
+      margin: 1rem;
+      height: 4rem;
       &:hover {
         & .tooltip {
           display: block;
@@ -103,6 +107,7 @@ $base-blue-color : v.$base-blue-color;
           font-weight: 500;
           letter-spacing: 0.02em;
           font-size: 1rem;
+          text-transform: initial;
         }
         &.alt {
           left: 0.5rem;

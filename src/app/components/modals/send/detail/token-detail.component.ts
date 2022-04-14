@@ -1,9 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ModalComponent } from '../../modal.component';
-import { WalletService } from '../../../../services/wallet/wallet.service';
 import { TokenBalancesService } from '../../../../services/token-balances/token-balances.service';
-import { Big } from 'big.js';
 import { Subscription } from 'rxjs';
+import { SubjectService } from '../../../../services/subject/subject.service';
+import { CONSTANTS } from '../../../../../environments/environment';
+import { UnlockableService } from '../../../../services/unlockable/unlockable.service';
 
 @Component({
   selector: 'app-token-detail',
@@ -12,6 +13,7 @@ import { Subscription } from 'rxjs';
 })
 export class TokenDetail extends ModalComponent implements OnInit, OnDestroy {
   Object = Object;
+  CONSTANTS = CONSTANTS;
   token = null;
   tokenFiltered = {};
   activeAccount = null;
@@ -21,10 +23,12 @@ export class TokenDetail extends ModalComponent implements OnInit, OnDestroy {
   descOverflow = false;
   isNFT = false;
   assetLoaded = false;
+  isAudio = false;
   name = 'token-detail';
   readonly blacklistMeta = [
     'name',
     'kind',
+    'artifactAsset',
     'displayAsset',
     'thumbnailAsset',
     'rawUrl',
@@ -37,19 +41,31 @@ export class TokenDetail extends ModalComponent implements OnInit, OnDestroy {
     'status',
     'shouldPreferSymbol',
     'price',
+    'formats',
     'isUnknownToken'
   ];
+
+  theme = '';
+
   private subscriptions: Subscription = new Subscription();
-  constructor(private walletService: WalletService, private tokenBalancesService: TokenBalancesService) {
+  constructor(private subjectService: SubjectService, private tokenBalancesService: TokenBalancesService, private unlockableService: UnlockableService) {
     super();
   }
 
   ngOnInit(): void {
     this.subscriptions.add(
-      this.walletService.activeAccount.subscribe((activeAccount) => {
+      this.subjectService.activeAccount.subscribe((activeAccount) => {
         this.activeAccount = activeAccount;
       })
     );
+    for (let type of Object.keys(CONSTANTS.FEATURE_CONTRACTS)) {
+      for (let feat of Object.keys(CONSTANTS.FEATURE_CONTRACTS[type])) {
+        if (document.documentElement.classList.contains(feat)) {
+          this.theme = feat;
+        }
+        return;
+      }
+    }
   }
 
   ngOnDestroy(): void {
@@ -88,10 +104,15 @@ export class TokenDetail extends ModalComponent implements OnInit, OnDestroy {
     this.imageExpanded = !this.imageExpanded;
   }
 
+  async toggleFeature(type, feat) {
+    this.theme = this.unlockableService.toggleFeature(type, feat) ? feat : '';
+  }
+
   reset(): void {
     this.moreInfo = false;
     this.imageExpanded = false;
     this.descOverflow = false;
     this.assetLoaded = false;
+    this.isAudio = false;
   }
 }

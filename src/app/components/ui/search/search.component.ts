@@ -1,7 +1,7 @@
 import { Component, ElementRef, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { WalletService } from '../../../services/wallet/wallet.service';
+import { SubjectService } from '../../../services/subject/subject.service';
 import { DropdownComponent } from '../dropdown/dropdown.component';
 
 @Component({
@@ -23,7 +23,7 @@ export class SearchBarComponent extends DropdownComponent implements OnInit, OnD
   searchText = '';
   private subscriptions: Subscription = new Subscription();
 
-  constructor(private walletService: WalletService) {
+  constructor(private subjectService: SubjectService) {
     super();
     this.subscriptions.add(
       this.inputUpdated.pipe(debounceTime(150)).subscribe((e) => {
@@ -35,7 +35,7 @@ export class SearchBarComponent extends DropdownComponent implements OnInit, OnD
       })
     );
     this.subscriptions.add(
-      this.walletService.activeAccount.subscribe((_) => {
+      this.subjectService.activeAccount.subscribe((_) => {
         this.reset();
       })
     );

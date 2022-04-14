@@ -27,7 +27,7 @@ export class UriHandlerComponent implements OnInit, OnDestroy {
     private subjectService: SubjectService
   ) {
     this.subscriptions.add(
-      this.walletService.activeAccount.subscribe((activeAccount) => {
+      this.subjectService.activeAccount.subscribe((activeAccount) => {
         this.activeAccount = activeAccount;
       })
     );

@@ -2,15 +2,15 @@ $theme: var(--theme);
 /* Color */
 $base-color-static: var(--base-color-static);
 $base-color: var(--base-color);
-$base-color-lightened-1: var(--base-color-lightened-1);
-$base-color-lightened-2: var(--base-color-lightened-2);
-$base-color-lightened-3: var(--base-color-lightened-3);
-$base-color-lightened-4: var(--base-color-lightened-4);
-$base-color-lightened-5: var(--base-color-lightened-5);
-$base-color-lightened-6: var(--base-color-lightened-6);
-$base-color-lightened-65: var(--base-color-lightened-65);
-$base-color-lightened-675: var(--base-color-lightened-675);
-$base-color-lightened-7: var(--base-color-lightened-7);
+$color-lightened-1: var(--color-lightened-1);
+$color-lightened-2: var(--color-lightened-2);
+$color-lightened-3: var(--color-lightened-3);
+$color-lightened-4: var(--color-lightened-4);
+$color-lightened-5: var(--color-lightened-5);
+$color-lightened-6: var(--color-lightened-6);
+$color-lightened-65: var(--color-lightened-65);
+$color-lightened-675: var(--color-lightened-675);
+$color-lightened-7: var(--color-lightened-7);
 $base-end-color-static: var(--base-end-color-static);
 $base-end-color: var(--base-end-color);
 $base-background-color: var(--base-background-color);
@@ -19,6 +19,7 @@ $base-blue-color: var(--base-blue-color);
 $base-blue-color-lightened: var(--base-blue-color-lightened);
 $base-red-color: var(--base-red-color);
 $base-green-color: var(--base-green-color);
+$base-green-color-lightened: var(--base-green-color-lightened);
 $base-font-color: var(--base-font-color);
 $base-font-color-secondary: var(--base-font-color-secondary);
 $base-font-color-secondary-half: var(--base-font-color-secondary-half);
@@ -34,6 +35,7 @@ $box-shadow-right: var(--box-shadow-right);
 $box-shadow-bottom: var(--box-shadow-bottom);
 $box-shadow-left: var(--box-shadow-left);
 $box-shadow-dark: var(--box-shadow-dark);
+$box-shadow-darkest: var(--box-shadow-darkest);
 
 /* Border */
 $border-radius: var(--border-radius);
@@ -55,6 +57,27 @@ $base-filter-contrast-invert-01: var(--base-filter-contrast-invert-01);
 $base-filter-contrast-invert-10: var(--base-filter-contrast-invert-10);
 $base-filter-contrast-invert-11: var(--base-filter-contrast-invert-11);
 
+/* Components */
+$header-background-color: var(--header-background-color);
+$collectible-background-color: var(--collectible-background-color);
+$collectible-body-background-color: var(--collectible-body-background-color);
+$modal-container-background-color: var(--modal-container-background-color);
+$asset-background-color: var(--asset-background-color);
+$send-button-border-color: var(--send-button-border-color);
+$send-button-background-color: var(--send-button-background-color);
+$send-button-tez-border-color: var(--send-button-tez-border-color);
+$send-button-tez-background-color: var(--send-button-tez-background-color);
+$send-button-tez-icon-color: var(--send-button-tez-icon-color);
+$collectible-thumbnail-border-radius: var(--collectible-thumbnail-border-radius);
+$search-bar-background-color: var(--search-bar-background-color);
+$moonpay-iframe-filter: var(--moonpay-iframe-filter);
+$dropdown-icon-invert: var(--dropdown-icon-invert);
+
+$button-background-color: var(--button-background-color);
+$button-color: var(--button-color);
+$button-red-background-color: var(--button-red-background-color);
+$button-red-color: var(--button-red-color);
+$button-border-color: var(--button-border-color);
 /* @media */
 
 /* Default Break */

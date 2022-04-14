@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpTestingController } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { EstimateService } from './estimate.service';
 import { http_imports, rx, translate_imports, ErrorHandlingPipe } from '../../../../spec/helpers/service.helper';
 import { OperationService } from '../operation/operation.service';
@@ -14,7 +15,7 @@ describe('EstimateService', () => {
   let httpMock: HttpTestingController;
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [http_imports, translate_imports],
+      imports: [http_imports, translate_imports, RouterTestingModule],
       providers: [EstimateService, OperationService, TranslateService, ErrorHandlingPipe, InputValidationService]
     });
 

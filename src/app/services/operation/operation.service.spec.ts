@@ -1,6 +1,7 @@
 // unit-testing framework
 import { TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpTestingController } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
 // class under inspection
 import { OperationService } from './operation.service';
@@ -24,7 +25,7 @@ describe('[ OperationService ]', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [http_imports, translate_imports],
+      imports: [http_imports, translate_imports, RouterTestingModule],
       providers: [OperationService, TranslateService, ErrorHandlingPipe]
     });
 

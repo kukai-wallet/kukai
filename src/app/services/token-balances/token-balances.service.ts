@@ -45,12 +45,14 @@ export class TokenBalancesService {
         this.mergeMarket();
       }
     });
-    combineLatest([this.walletService.activeAccount, this.subjectService.metadataUpdated, this.activityService.tokenBalanceUpdated]).subscribe(([a, b, c]) => {
-      if (this.activeAccount !== a) {
-        this.activeAccount = a;
-      }
-      this.reload();
-    });
+    combineLatest([this.subjectService.activeAccount, this.subjectService.metadataUpdated, this.activityService.tokenBalanceUpdated])
+      .pipe(debounceTime(3))
+      .subscribe(([a, b, c]) => {
+        if (this.activeAccount !== a) {
+          this.activeAccount = a;
+        }
+        this.reload();
+      });
     this.reload();
     this.subjectService.logout.subscribe((o) => {
       if (!!o) {
@@ -88,11 +90,8 @@ export class TokenBalancesService {
             nfts[contractAlias].visitUrl = CONTRACT_ALIASES.link;
           }
         }
-        nfts[contractAlias].tokens.push({
-          ...asset,
-          balance: token.balance
-        });
-      } else {
+        nfts[contractAlias].tokens.push({ ...asset, balance: token.balance });
+      } else if (!isNaN(asset.decimals)) {
         const balance = Big(token.balance)
           .div(10 ** asset.decimals)
           .toFixed();
@@ -127,8 +126,8 @@ export class TokenBalancesService {
     }
     const balances: TokenWithBalance[] = [];
     const nfts: ContractsWithBalance = {};
-    for (let token of this.activeAccount.tokens) {
-      if (token.balance && token.balance !== '0') {
+    for (let token of this.walletService.wallet.getAccount(this.activeAccount.address).tokens) {
+      if (token?.balance && token?.balance != '0') {
         this.resolveAsset(token, balances, nfts);
       }
     }
@@ -144,17 +143,7 @@ export class TokenBalancesService {
       });
       this._thumbnailsToCreate = [];
     }
-    if (this.activeAccount instanceof OriginatedAccount) {
-      this.subjectService.nftsUpdated.next({
-        nfts: this.nfts,
-        balances: this.balances
-      });
-    } else {
-      this.subjectService.nftsUpdated.next({
-        nfts: this.nfts,
-        balances: this.balances
-      });
-    }
+    this.subjectService.nftsUpdated.next({ nfts: this.nfts, balances: this.balances });
   }
   orderedNfts(nfts: ContractsWithBalance): ContractsWithBalance {
     const _nfts: ContractsWithBalance = {};

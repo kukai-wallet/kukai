@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { TzktService } from './tzkt/tzkt.service';
 import { WalletObject } from '../wallet/wallet';
+import { Asset } from '../token/token.service';
 
 export interface Indexer {
   getContractAddresses(pkh: string): Promise<any>;
@@ -24,7 +25,7 @@ export class IndexerService {
   async getOperations(address: string, knownTokenIds: string[], wallet: WalletObject): Promise<any> {
     return this.tzktService.getOperations(address, knownTokenIds, wallet);
   }
-  async getTokenMetadata(contractAddress: string, id: number, counter: number): Promise<any> {
-    return this.tzktService.getTokenMetadata(contractAddress, id, counter);
+  async getTokenMetadata(contractAddress: string, id: number): Promise<any> {
+    return this.tzktService.getTokenMetadata(contractAddress, id);
   }
 }

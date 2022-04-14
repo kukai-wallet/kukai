@@ -6,7 +6,7 @@ $base-font-color-secondary: v.$base-font-color-secondary;
 $base-end-color: v.$base-end-color;
 $base-blue-color: v.$base-blue-color;
 $base-blue-color-lightened: v.$base-blue-color-lightened;
-$base-color-lightened-4: v.$base-color-lightened-4;
+$color-lightened-4: v.$color-lightened-4;
 $border-width: v.$border-width;
 $border-color: v.$border-color;
 $base-background-color: v.$base-background-color;
@@ -18,7 +18,7 @@ $base-background-color: v.$base-background-color;
   min-height: calc(100vh - 28rem);
   justify-content: flex-start;
   align-items: center;
-  background-color: $base-background-color;
+  background-color: v.$color-lightened-65;
 
   .card {
     @include m.base-relative;
@@ -36,7 +36,7 @@ $base-background-color: v.$base-background-color;
         top: 1rem;
         left: -0;
         background-color: $base-background-color;
-        border: v.$border-width solid $base-color-lightened-4;
+        border: v.$border-width solid $color-lightened-4;
         border-radius: v.$border-radius-hardest;
         color: $base-font-color;
         font-weight: 500;
@@ -198,7 +198,7 @@ $base-background-color: v.$base-background-color;
 
       & progress::-webkit-progress-bar,
       & progress {
-        background-color: $base-color-lightened-4;
+        background-color: $color-lightened-4;
         border-radius: v.$border-radius;
         width: 100%;
       }
@@ -250,7 +250,7 @@ $base-background-color: v.$base-background-color;
 
       & input[type="password"] {
         width: 100%;
-        max-width: calc(50% - 2rem);
+        max-width: 50%;
 
         &:first-of-type {
           margin: 0 0 2rem 0;
@@ -419,7 +419,7 @@ $base-background-color: v.$base-background-color;
         width: 0.75rem;
         height: 0.75rem;
         margin: 0.5rem;
-        background-color: $base-color-lightened-4;
+        background-color: $color-lightened-4;
         border-radius: v.$border-radius-hardest;
         transition: 0.5s width, 0.5s height, margin 0.5s;
 
