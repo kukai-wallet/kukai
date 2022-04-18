@@ -83,6 +83,9 @@
     --send-button-tez-border-color: var(--base-blue-color-lightened);
     --send-button-tez-background-color: var(--base-blue-color-lightened);
     --send-button-tez-icon-color: var(--base-end-color);
+    --send-button-buy-border-color: var(--base-blue-color-lightened);
+    --send-button-buy-background-color: inherit;
+    --send-button-buy-icon-color: var(--base-blue-color-lightened);
 
     --button-background-color: var(--base-blue-color-lightened);
     --button-color: var(--base-end-color);
@@ -139,6 +142,10 @@
       --send-button-border-color: var(--border-color);
       --send-button-background-color: var(--border-color);
       --send-button-tez-icon-color: var(--border-color);
+      --send-button-buy-border-color: var(--base-blue-color-lightened);
+      --send-button-buy-background-color: inherit;
+      --send-button-buy-icon-color: var(--base-blue-color-lightened);
+
       --collectible-thumbnail-border-radius: 0;
       --search-bar-background-color: #303036;
       --moonpay-iframe-filter: invert(0.925) hue-rotate(175deg);

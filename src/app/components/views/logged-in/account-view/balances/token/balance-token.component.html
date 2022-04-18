@@ -14,20 +14,26 @@
   <div class="flex-row right">
     <ng-container *ngIf="token?.name === 'tezos'">
       <button *ngIf="this.account?.balanceXTZ" class="flex-row button button-primary with-image buy" (click)="this.buyTez()">
-        <img src="../../../../../../../assets/img/add-blue.svg">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 5.00024V19.0002" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M5 12H19" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
         <div class="tooltip">
           <div class="description">BUY tez</div>
         </div>
       </button>
       <button *ngIf="this.account?.balanceXTZ === 0" class="flex-row button button-primary with-image buy tez" (click)="this.buyTez()">
         <span>Buy</span>
-        <img src="../../../../../../../assets/img/add-white.svg">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 5.00024V19.0002" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M5 12H19" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
         <div class="tooltip alt">
           <div class="description">BUY tez</div>
         </div>
       </button>
     </ng-container>
-    <app-send-button *ngIf="token || this.account?.balanceXTZ" [activeAccount]="account"
+    <app-send-button *ngIf="token && this.account?.balanceXTZ !== 0" [activeAccount]="account"
       [tokenTransfer]="token?.name === 'tezos' ? null : token?.contractAddress + ':' + token?.id"
       [symbol]="token?.name === 'tezos' ? 'tez' : token?.symbol"></app-send-button>
   </div>
