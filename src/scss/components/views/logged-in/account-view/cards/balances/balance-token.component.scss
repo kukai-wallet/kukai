@@ -28,7 +28,7 @@ $base-blue-color: v.$base-blue-color;
     border-bottom: none;
     margin: 0;
     border-bottom: 2px solid transparent;
-    background-color: $base-end-color;
+    background-color: v.$balances-background-color;
   }
   &.no-box .balance {
     box-shadow: none !important;
