@@ -106,7 +106,7 @@ export class TzktService implements Indexer {
   }
   async isUsedAccount(address: string): Promise<boolean> {
     const accountInfo = await (await fetch(`${this.tzkt}/accounts/${address}`)).json();
-    if (accountInfo && (accountInfo.balance || accountInfo.tx_count)) {
+    if (accountInfo && (accountInfo.balance || accountInfo.tokenBalancesCount)) {
       return true;
     } else {
       const tokenCount = await (await fetch(`${this.tzkt}/accounts/count`)).json();
