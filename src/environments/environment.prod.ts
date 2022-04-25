@@ -416,11 +416,14 @@ const _CONSTANTS: Constants = {
       description: "Collections made with a unique cube character set"
     },
     'fxhash': {
-      name: "fx(hash)",
-      address: ["KT1KEa8z6vWXDJrVqtMrAeDVzsvxat3kHaCE"],
-      thumbnailUrl: "../../../assets/img/alias/fxhash.jpg",
-      link: "https://www.fxhash.xyz", shouldDisplayLink: DisplayLinkOption.None, category: ["marketplace"], backgroundColor: 'black',
-      description: "Open generative NFT platform on Tezos",
+      name: "fxhash",
+      address: ["KT1KEa8z6vWXDJrVqtMrAeDVzsvxat3kHaCE", "KT1U6EHmNxJTkvaWJ4ThczG4FSDaHC21ssvi"],
+      thumbnailUrl: "../../../assets/img/alias/fxhash.svg",
+      discoverUrl: '../../../assets/img/alias/fxhash-discover.jpg',
+      link: "https://www.fxhash.xyz", shouldDisplayLink: DisplayLinkOption.None, 
+      category: ["marketplace"],
+      backgroundColor: 'black',
+      description: "Open generative art NFT platform on Tezos",
     },
     'FormallyVerified': {
       name: "Formally Verified",
