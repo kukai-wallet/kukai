@@ -20,6 +20,14 @@ const _CONSTANTS: Constants = {
     hard_storage_limit_per_operation: 60000
   },
   CONTRACT_ALIASES: {
+    'GJOE': {
+      name: "GJOE",
+      address: ["KT1QdMB7uePDFGoFLDZmAL34roFYqYhzHu7N"],
+      thumbnailUrl: "../../../assets/img/alias/gjoe.jpg",
+      link: "https://customhorror.net/gjoe", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"],
+      description: "Generative Jolt of Expression",
+    },
     gap: {
       name: 'Gap Threads',
       address: ['KT1GA6KaLWpURnjvmnxB4wToErzM2EXHqrMo'],
