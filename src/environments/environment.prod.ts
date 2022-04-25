@@ -580,6 +580,15 @@ const _CONSTANTS: Constants = {
       category: ["collectibles"],
       description: "Humans are gone. Ottez have moved in. 4,007 generative, collectible PFP otters have taken over Earth. ",
     },
+    xarb: {
+      name: 'Xarb',
+      address: ['KT1JsJUo4PQARJB3AkstQJ8mHskoNJb29a7Z'],
+      thumbnailUrl: '../../../assets/img/alias/xarb.png',
+      link: 'https://xarb.io',
+      shouldDisplayLink: DisplayLinkOption.None,
+      category: ['marketplace'],
+      description: 'A Place To Find And Collect NFTs'
+    },
     'BunnyKnights2ndGen': {
       name: "Bunny Knights 2nd Gen",
       address: ["KT1EVBE1T4GqviEopZEtEQhPEyTQvWyDqDNE"],
@@ -1511,6 +1520,7 @@ const _TRUSTED_TOKEN_CONTRACTS = [
   "KT1Qi93pZoig6grMNBd7GGA7fveE2cxQK9Ei", //Verses
   'KT1DtsVHqUvKBkkypLB3x2bYd4jWdbbaHdMy',//Basqunks
   'KT1L7GvUxZH5tfa6cgZKnH6vpp2uVxnFVHKu',//Ottez
+  'KT1JsJUo4PQARJB3AkstQJ8mHskoNJb29a7Z',//Xarb
   'KT1EVBE1T4GqviEopZEtEQhPEyTQvWyDqDNE', // Bunny Knights 2nd Gen
   'KT1MjS4L4HRajqNhQCdTSXgSPhW4A6gHiQo7',//Ch=mpathy Alch=my
   "KT1PooRxUckYjnWVvn9CetZxC9YeG1kkFYW5", // MekatronK9
