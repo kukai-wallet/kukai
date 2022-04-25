@@ -5,6 +5,7 @@
     --theme: "default";
     --base-background-color: #f8f9fa;
     --base-background-color-alert: #e2e4ff;
+    --base-color-alert: #333333;
     --base-color-static: #000;
     --base-color: #000;
     --color-lightened-1: #4a5d75;
@@ -72,6 +73,9 @@
     --collectible-body-background-color: var(--color-lightened-6);
     --collectible-thumbnail-border-radius: calc(var(--border-radius) / 2);
 
+    //balances
+    --balances-background-color: var(--base-end-color);
+
     //moonpay
     --moonpay-iframe-filter: unset;
 
@@ -83,6 +87,9 @@
     --send-button-tez-border-color: var(--base-blue-color-lightened);
     --send-button-tez-background-color: var(--base-blue-color-lightened);
     --send-button-tez-icon-color: var(--base-end-color);
+    --send-button-buy-border-color: var(--base-blue-color-lightened);
+    --send-button-buy-background-color: inherit;
+    --send-button-buy-icon-color: var(--base-blue-color-lightened);
 
     --button-background-color: var(--base-blue-color-lightened);
     --button-color: var(--base-end-color);
@@ -100,7 +107,8 @@
     &.dark {
       --theme: "dark";
       --base-background-color: #1a1b1e;
-      --base-background-color-alert: #{f.theme-transform(#e2e4ff, "dark")};
+      --base-background-color-alert: #E6E6E6;
+      --base-color-alert: #333333;
       --base-color: #{f.theme-transform(#000)};
       --color-lightened-1: #888b8d;
       --color-lightened-2: #787b7d;
@@ -116,8 +124,8 @@
 
       --base-end-color: #1d1d21;
       --base-font-color: #c9d1d9;
-      --base-font-color-secondary: rgba(255, 255, 255, 0.48);
-      --base-font-color-secondary-half: rgba(255, 255, 255, 0.48);
+      --base-font-color-secondary: rgba(255, 255, 255, 0.60);
+      --base-font-color-secondary-half: rgba(255, 255, 255, 0.60);
 
       --border-width-dark-only: var(--border-width);
 
@@ -133,12 +141,17 @@
 
       /* Components */
       --header-background-color: #1d1d21;
-      --collectible-background-color: #303036;
+      --collectible-background-color: #393940;
       --collectible-body-background-color: #26262b;
+      --balances-background-color: #26262b;
       --modal-container-background-color: #26262b;
       --send-button-border-color: var(--border-color);
       --send-button-background-color: var(--border-color);
       --send-button-tez-icon-color: var(--border-color);
+      --send-button-buy-border-color: var(--base-blue-color-lightened);
+      --send-button-buy-background-color: inherit;
+      --send-button-buy-icon-color: var(--base-blue-color-lightened);
+
       --collectible-thumbnail-border-radius: 0;
       --search-bar-background-color: #303036;
       --moonpay-iframe-filter: invert(0.925) hue-rotate(175deg);

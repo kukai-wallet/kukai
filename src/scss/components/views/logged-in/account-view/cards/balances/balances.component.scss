@@ -38,7 +38,7 @@ $layout-break-5: v.$layout-break-5;
     padding: 0;
     position: relative;
     z-index: 0;
-    background-color: $base-end-color;
+    background-color: v.$balances-background-color;
     box-shadow: v.$box-shadow-darkest;
   }
 }

@@ -20,6 +20,14 @@ const _CONSTANTS: Constants = {
     hard_storage_limit_per_operation: 60000
   },
   CONTRACT_ALIASES: {
+    'GJOE': {
+      name: "GJOE",
+      address: ["KT1QdMB7uePDFGoFLDZmAL34roFYqYhzHu7N"],
+      thumbnailUrl: "../../../assets/img/alias/gjoe.jpg",
+      link: "https://customhorror.net/gjoe", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"],
+      description: "Generative Jolt of Expression",
+    },
     gap: {
       name: 'Gap Threads',
       address: ['KT1GA6KaLWpURnjvmnxB4wToErzM2EXHqrMo'],
@@ -416,11 +424,14 @@ const _CONSTANTS: Constants = {
       description: "Collections made with a unique cube character set"
     },
     'fxhash': {
-      name: "fx(hash)",
-      address: ["KT1KEa8z6vWXDJrVqtMrAeDVzsvxat3kHaCE"],
-      thumbnailUrl: "../../../assets/img/alias/fxhash.jpg",
-      link: "https://www.fxhash.xyz", shouldDisplayLink: DisplayLinkOption.None, category: ["marketplace"], backgroundColor: 'black',
-      description: "Open generative NFT platform on Tezos",
+      name: "fxhash",
+      address: ["KT1KEa8z6vWXDJrVqtMrAeDVzsvxat3kHaCE", "KT1U6EHmNxJTkvaWJ4ThczG4FSDaHC21ssvi"],
+      thumbnailUrl: "../../../assets/img/alias/fxhash.svg",
+      discoverUrl: '../../../assets/img/alias/fxhash-discover.jpg',
+      link: "https://www.fxhash.xyz", shouldDisplayLink: DisplayLinkOption.None, 
+      category: ["marketplace"],
+      backgroundColor: 'black',
+      description: "Open generative art NFT platform on Tezos",
     },
     'FormallyVerified': {
       name: "Formally Verified",
@@ -576,6 +587,15 @@ const _CONSTANTS: Constants = {
       link: "https://ottez.xyz", shouldDisplayLink: DisplayLinkOption.None,
       category: ["collectibles"],
       description: "Humans are gone. Ottez have moved in. 4,007 generative, collectible PFP otters have taken over Earth. ",
+    },
+    xarb: {
+      name: 'Xarb',
+      address: ['KT1JsJUo4PQARJB3AkstQJ8mHskoNJb29a7Z'],
+      thumbnailUrl: '../../../assets/img/alias/xarb.png',
+      link: 'https://xarb.io',
+      shouldDisplayLink: DisplayLinkOption.None,
+      category: ['marketplace'],
+      description: 'A Place To Find And Collect NFTs'
     },
     'BunnyKnights2ndGen': {
       name: "Bunny Knights 2nd Gen",
@@ -1508,6 +1528,7 @@ const _TRUSTED_TOKEN_CONTRACTS = [
   "KT1Qi93pZoig6grMNBd7GGA7fveE2cxQK9Ei", //Verses
   'KT1DtsVHqUvKBkkypLB3x2bYd4jWdbbaHdMy',//Basqunks
   'KT1L7GvUxZH5tfa6cgZKnH6vpp2uVxnFVHKu',//Ottez
+  'KT1JsJUo4PQARJB3AkstQJ8mHskoNJb29a7Z',//Xarb
   'KT1EVBE1T4GqviEopZEtEQhPEyTQvWyDqDNE', // Bunny Knights 2nd Gen
   'KT1MjS4L4HRajqNhQCdTSXgSPhW4A6gHiQo7',//Ch=mpathy Alch=my
   "KT1PooRxUckYjnWVvn9CetZxC9YeG1kkFYW5", // MekatronK9

@@ -59,14 +59,14 @@ $base-filter-invert-1: v.$base-filter-invert-1;
   }
 
   &.alert-info {
-    color: v.$base-font-color;
+    color: v.$base-color-alert;
     background-color: $base-background-color-alert;
     border-color: $border-color-dark-only;
   }
 
 
   &.alert-heading {
-    color: v.$base-font-color;
+    color: v.$base-color-alert;
   }
 
   &.alert-link {
@@ -86,7 +86,7 @@ $base-filter-invert-1: v.$base-filter-invert-1;
   }
 
   &.alert-primary {
-    color: v.$base-font-color;
+    color: v.$base-color-alert;
     background-color: $base-background-color-alert;
     border-color: $border-color-dark-only;
   }
@@ -96,11 +96,11 @@ $base-filter-invert-1: v.$base-filter-invert-1;
   }
 
   &.alert-primary &.alert-link {
-    color: v.$base-font-color
+    color: v.$base-color-alert
   }
 
   &.alert-secondary {
-    color: v.$base-font-color;
+    color: v.$base-color-alert;
     background-color: $base-background-color-alert;
     border-color: $border-color-dark-only;
   }
@@ -110,11 +110,11 @@ $base-filter-invert-1: v.$base-filter-invert-1;
   }
 
   &.alert-secondary &.alert-link {
-    color: v.$base-font-color
+    color: v.$base-color-alert
   }
 
   &.alert-success {
-    color: v.$base-font-color;
+    color: v.$base-color-alert;
     background-color: $base-background-color-alert;
     border-color: $border-color-dark-only;
     & .close {
@@ -127,7 +127,7 @@ $base-filter-invert-1: v.$base-filter-invert-1;
   }
 
   &.alert-success &.alert-link {
-    color: v.$base-font-color
+    color: v.$base-color-alert
   }
 
   &.alert-info hr {
@@ -135,7 +135,7 @@ $base-filter-invert-1: v.$base-filter-invert-1;
   }
 
   &.alert-info &.alert-link {
-    color: v.$base-font-color
+    color: v.$base-color-alert
   }
 
   &.alert-warning {
