@@ -19,6 +19,7 @@ import { OperationService } from '../operation/operation.service';
 import { TorusService } from '../torus/torus.service';
 import { utils, hd } from '@tezos-core-tools/crypto-utils';
 import { BehaviorSubject } from 'rxjs';
+import { SubjectService } from '../subject/subject.service';
 
 @Injectable()
 export class WalletService {
@@ -26,10 +27,12 @@ export class WalletService {
   storageId = 0;
   wallet: WalletObject;
 
-  activeAccount = new BehaviorSubject(null);
-  walletUpdated = new BehaviorSubject(null);
-
-  constructor(private encryptionService: EncryptionService, private operationService: OperationService, private torusService: TorusService) {}
+  constructor(
+    private encryptionService: EncryptionService,
+    private operationService: OperationService,
+    private torusService: TorusService,
+    private subjectService: SubjectService
+  ) {}
   /*
     Wallet creation
   */
@@ -266,7 +269,7 @@ export class WalletService {
     } else {
       console.log('Outdated storage id');
     }
-    this.walletUpdated.next(null);
+    this.subjectService.walletUpdated.next(null);
   }
   getLocalStorageId() {
     const walletData = this.wallet instanceof EmbeddedTorusWallet ? sessionStorage.getItem(this.wallet.instanceId) : localStorage.getItem(this.storeKey);

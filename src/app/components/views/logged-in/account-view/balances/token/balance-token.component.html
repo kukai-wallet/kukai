@@ -1,26 +1,40 @@
 <div class="flex-row balance">
   <div class="flex-row left">
-    <app-asset class="asset"
-      [meta]="!token ? '../../../../assets/img/tezos-xtz-logo.svg' : token?.thumbnailAsset || token?.displayAsset" [class.sd]="!token" (click)="viewToken()">
+    <app-asset class="asset" [priorityList]="['thumbnailAsset', 'displayAsset', 'fallback']" [assets]="token" [class.sd]="token.name === 'tezos'"
+      (click)="viewToken()">
     </app-asset>
-    <div class="flex-row title" (click)="viewToken()">{{!token ? 'Tezos' : token.symbol}}</div>
+    <div class="flex-row title" (click)="viewToken()">{{token.name === 'tezos' ? 'Tezos' : token.symbol}}</div>
     <div class="flex-column prices">
-      <div class="price">{{ token ? (getBalance() | number: '1.0-' + (token?.decimals || 6) | removeComma) : getBalance() }}</div>
-      <div class="price-usd">{{ getBalanceFiat() ? '$' + (getBalanceFiat() | number:'1.2-2' | removeComma) : '—' }}</div>
+      <div class="price">{{ token.name === 'tezos' ? (getBalance() | number: '1.0-' + (token?.decimals || 6) | removeComma) || '—' :
+        getBalance() }}</div>
+      <div class="price-usd">{{ getBalanceFiat() ? '$' + (getBalanceFiat() | number:'1.2-2' | removeComma) : '—' }}
+      </div>
     </div>
   </div>
   <div class="flex-row right">
-    <ng-container *ngIf="!token">
-      <button *ngIf="this.account?.balanceXTZ" class="flex-row button button-primary with-image" (click)="this.buyTez()">
-        <img src="../../../../../../../assets/img/add-blue.svg">
+    <ng-container *ngIf="token?.name === 'tezos'">
+      <button *ngIf="this.account?.balanceXTZ" class="flex-row button button-primary with-image buy" (click)="this.buyTez()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 5.00024V19.0002" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M5 12H19" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="tooltip">
+          <div class="description">BUY tez</div>
+        </div>
       </button>
-      <button *ngIf="this.account?.balanceXTZ === 0" class="flex-row button button-primary with-image tez" (click)="this.buyTez()">
+      <button *ngIf="this.account?.balanceXTZ === 0" class="flex-row button button-primary with-image buy tez" (click)="this.buyTez()">
         <span>Buy</span>
-        <img src="../../../../../../../assets/img/add-white.svg">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 5.00024V19.0002" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M5 12H19" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="tooltip alt">
+          <div class="description">BUY tez</div>
+        </div>
       </button>
     </ng-container>
-    <app-send-button *ngIf="token || this.account?.balanceXTZ" [activeAccount]="account"
-      [tokenTransfer]="!token ? null : token?.contractAddress + ':' + token?.id"
-      [symbol]="!token ? 'tez' : token?.symbol"></app-send-button>
+    <app-send-button *ngIf="token && this.account?.balanceXTZ !== 0" [activeAccount]="account"
+      [tokenTransfer]="token?.name === 'tezos' ? null : token?.contractAddress + ':' + token?.id"
+      [symbol]="token?.name === 'tezos' ? 'tez' : token?.symbol"></app-send-button>
   </div>
 </div>

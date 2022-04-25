@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { WalletTools } from '../../../../spec/mocks/library.mock';
+import { RouterTestingModule } from '@angular/router/testing';
 import { WalletService } from '../wallet/wallet.service';
 import { EmbeddedAuthService } from './embedded-auth.service';
 import { EncryptionService } from '../encryption/encryption.service';
@@ -17,7 +18,7 @@ describe('EmbeddedAuthService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [http_imports, translate_imports],
+      imports: [http_imports, translate_imports, RouterTestingModule],
       providers: [EmbeddedAuthService, WalletService, EncryptionService, OperationService, TorusService, InputValidationService, ErrorHandlingPipe]
     });
     const walletgen: WalletTools = new WalletTools();

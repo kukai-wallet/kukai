@@ -51,4 +51,5 @@
   <div class="seperator"></div>
   <button class="rescan" (click)="rescan()">Rescan unknown tokens</button>
   <button id="all" class="rescan" (click)="rescanAll()">Clear all token metadata</button>
+  <button *ngIf="canRevealMnomonic()" class="reveal-mnemonic" (click)="revealMnemonic()">Reveal Seed Words</button>
 </div>

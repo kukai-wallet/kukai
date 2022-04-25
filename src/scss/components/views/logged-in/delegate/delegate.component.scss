@@ -8,7 +8,7 @@
   & input {
     @include m.multiply("font-size", 1);
     height: 2rem;
-    border: 1px solid v.$base-color-lightened-4;
+    border: 1px solid v.$color-lightened-4;
     border-radius: v.$border-radius-hard;
     padding: 0 0 0 1rem;
     width: calc(100% - 1rem);
@@ -83,7 +83,7 @@
             &.back {
               @include m.multiply("font-size", 1.25);
               background-color: v.$base-background-color;
-              border: v.$border-width solid v.$base-color-lightened-4;
+              border: v.$border-width solid v.$color-lightened-4;
               border-radius: v.$border-radius-hardest;
               color: v.$base-font-color;
               font-weight: 500;
@@ -262,7 +262,7 @@
     & input {
       @include m.multiply("font-size", 1);
       height: 2rem;
-      border: v.$border-width solid v.$base-color-lightened-4;
+      border: v.$border-width solid v.$color-lightened-4;
       border-radius: v.$border-radius-hard;
       padding: 0 0 0 1rem;
       width: calc(100% - 1rem);

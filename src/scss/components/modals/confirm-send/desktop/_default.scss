@@ -8,81 +8,81 @@ $base-font-color-secondary-half: v.$base-font-color-secondary-half;
 $base-end-color: v.$base-end-color;
 $base-red-color: v.$base-red-color;
 $base-blue-color-lightened: v.$base-blue-color-lightened;
-$base-color-lightened-5: v.$base-color-lightened-5;
-$base-color-lightened-7: v.$base-color-lightened-7;
+$color-lightened-5: v.$color-lightened-5;
+$color-lightened-7: v.$color-lightened-7;
 $border-width: v.$border-width;
 $border-color: #e6eaef;
 
 @mixin confirm-send-default {
   .confirm-send {
-    margin: 2rem 0 0 0;
-    width: 38rem;
+    margin: 2em 0 0 0;
+    width: 38em;
     height: auto;
 
     &.image .top .left {
-      min-height: 10rem;
+      min-height: 10em;
     }
 
     @include b.confirm-send-batch;
 
     & .amount-fee {
       &.key {
-        @include m.multiply("font-size", 1.25);
+        @include m.multiply("font-size", 1.25, "em");
       }
 
       & .value {
-        @include m.multiply("font-size", 1.25);
+        @include m.multiply("font-size", 1.25, "em");
       }
     }
 
     & .amount-quantity {
       &.key {
-        @include m.multiply("font-size", 1.25);
+        @include m.multiply("font-size", 1.25, "em");
       }
 
       & .value {
-        @include m.multiply("font-size", 1.625);
+        @include m.multiply("font-size", 1.625, "em");
       }
     }
 
     & .transfer-amount {
-      margin: 0 1rem 1rem 1rem;
+      margin: 0 1em 1em 1em;
     }
 
     & .contract-call {
-      margin: 0 1rem 2rem 1rem;
+      margin: 0 1em 2em 1em;
     }
 
     & .top,
     & .to {
       height: auto;
       border-radius: v.$border-radius;
-      padding: 2rem;
+      padding: 2em;
     }
 
     & .top {
       align-items: flex-start;
       flex-wrap: wrap;
-      background-color: $base-color-lightened-7;
+      background-color: v.$modal-container-background-color;
       border-radius: v.$border-radius;
       height: auto;
-      padding: 2rem;
+      padding: 2em;
 
       & .key {
         width: 100%;
         text-align: left;
-        margin: 0 0 0.5rem 0;
+        margin: 0 0 0.5em 0;
       }
 
       & table {
         width: 100%;
         color: $base-font-color-secondary;
-        margin: 0 0 4rem 0;
+        margin: 0 0 4em 0;
       }
 
       & .token-image {
-        width: 10rem;
-        height: 10rem;
+        width: 10em;
+        height: 10em;
         overflow: hidden;
         background-color: $base-end-color;
         border-radius: v.$border-radius;
@@ -92,12 +92,12 @@ $border-color: #e6eaef;
         left: 0;
 
         &.balance {
-          width: 3rem;
-          height: 3rem;
+          width: 3em;
+          height: 3em;
           position: initial;
           box-shadow: unset;
           border-radius: v.$border-radius-hardest;
-          border: v.$border-width solid $base-color-lightened-5;
+          border: v.$border-width solid $color-lightened-5;
         }
       }
 
@@ -106,7 +106,7 @@ $border-color: #e6eaef;
         justify-content: space-evenly;
 
         & span {
-          padding: 0.75rem 0 0 0;
+          padding: 0.75em 0 0 0;
         }
       }
 
@@ -120,7 +120,7 @@ $border-color: #e6eaef;
         & .key {
           text-align: center;
           color: $base-font-color;
-          margin: 0.35rem 0 1rem 0;
+          margin: 0.35em 0 1em 0;
           font-weight: 500;
         }
       }
@@ -131,11 +131,11 @@ $border-color: #e6eaef;
         justify-content: flex-start;
 
         & .amount {
-          margin: 0 0 1rem 0;
-          padding: 0 0 0.5rem 0;
+          margin: 0 0 1em 0;
+          padding: 0 0 0.5em 0;
           border-bottom: $border-width solid #dde2e9;
           & .tez {
-            font-size: 1.5rem;
+            font-size: 1.5em;
             font-weight: 600;
           }
 
@@ -151,7 +151,7 @@ $border-color: #e6eaef;
 
         & .items {
           & .key {
-            @include m.multiply("font-size", 1);
+            @include m.multiply("font-size", 1, "em");
             text-transform: unset;
 
             &:last-of-type {
@@ -159,7 +159,7 @@ $border-color: #e6eaef;
             }
 
             & .value {
-              @include m.multiply("font-size", 1);
+              @include m.multiply("font-size", 1, "em");
               font-weight: 500;
               color: $base-font-color-secondary-half;
             }
@@ -171,7 +171,7 @@ $border-color: #e6eaef;
 
             & .value {
               font-weight: 500;
-              font-size: 1.5rem;
+              font-size: 1.5em;
             }
           }
         }
@@ -179,8 +179,8 @@ $border-color: #e6eaef;
     }
 
     & .from {
-      margin-top: 1rem;
-      padding: 1rem 2rem;
+      margin-top: 1em;
+      padding: 1em 2em;
 
       & .left {
         width: 30%;
@@ -199,30 +199,30 @@ $border-color: #e6eaef;
       }
 
       & .domain {
-        @include m.multiply("font-size", 1.5);
+        @include m.multiply("font-size", 1.5, "em");
         font-weight: 500;
         color: $base-font-color;
       }
 
       & .address {
-        @include m.multiply("font-size", 1, "rem", 1.3, v.$layout-break-6);
+        @include m.multiply("font-size", 1, "em", 1.3, v.$layout-break-6);
         font-family: "Roboto Mono", "Roboto";
         color: $base-font-color-secondary;
       }
 
       & .torus-name {
-        @include m.multiply("font-size", 1.5);
+        @include m.multiply("font-size", 1.5, "em");
         justify-content: flex-start;
         font-weight: 500;
         position: relative;
-        left: -2.55rem;
+        left: -2.55em;
         top: 0;
 
         & .verifier-logo {
           object-fit: unset;
-          width: 2rem;
-          height: 2rem;
-          margin: 0 0.5rem 0 0;
+          width: 2em;
+          height: 2em;
+          margin: 0 0.5em 0 0;
         }
       }
     }
@@ -241,7 +241,7 @@ $border-color: #e6eaef;
       }
 
       & img {
-        width: 2rem;
+        width: 2em;
         height: auto;
         border: none;
         object-fit: scale-down;
@@ -249,8 +249,8 @@ $border-color: #e6eaef;
     }
 
     & .to {
-      padding: 2rem;
-      margin: 1rem 0 0 0;
+      padding: 2em;
+      margin: 1em 0 0 0;
       align-items: flex-start;
       background-color: #7178e333;
 
@@ -260,7 +260,7 @@ $border-color: #e6eaef;
         align-items: center;
 
         & span {
-          margin: 0.25rem 0 0 0;
+          margin: 0.25em 0 0 0;
           color: $base-blue-color-lightened;
           font-weight: 500;
         }
@@ -272,10 +272,10 @@ $border-color: #e6eaef;
         justify-content: space-between;
 
         & .scroll {
-          max-height: 5rem;
+          max-height: 5em;
           overflow-x: hidden;
           overflow-y: auto;
-          padding: 0 1rem 0 0;
+          padding: 0 1em 0 0;
 
           &::-webkit-scrollbar-track {
             margin: 0;
@@ -285,17 +285,17 @@ $border-color: #e6eaef;
 
         & .torus-to {
           justify-content: flex-start;
-          @include m.multiply("font-size", 1.5);
+          @include m.multiply("font-size", 1.5, "em");
           font-weight: 500;
           position: relative;
-          left: -2.55rem;
+          left: -2.55em;
           top: 0;
 
           & .icon {
             object-fit: unset;
-            width: 2rem;
-            height: 2rem;
-            margin: 0 0.5rem 0 0;
+            width: 2em;
+            height: 2em;
+            margin: 0 0.5em 0 0;
           }
         }
 
@@ -304,15 +304,15 @@ $border-color: #e6eaef;
           justify-content: center;
 
           & .single-to {
-            @include m.multiply("font-size", 1.125);
+            @include m.multiply("font-size", 1.125, "em");
             color: $base-font-color-secondary;
             font-weight: 400;
             cursor: pointer;
             width: 100%;
-            margin: 0 0 1.25rem 0;
+            margin: 0 0 1.25em 0;
 
             & span {
-              @include m.multiply("font-size", 1, "rem", 1.3, v.$layout-break-6);
+              @include m.multiply("font-size", 1, "em", 1.3, v.$layout-break-6);
               color: $base-font-color-secondary;
             }
 
@@ -327,7 +327,7 @@ $border-color: #e6eaef;
 
             &.default {
               font-weight: 400;
-              font-size: 1rem;
+              font-size: 1em;
               cursor: unset;
               margin: 0;
 
@@ -345,7 +345,7 @@ $border-color: #e6eaef;
         }
 
         & .show-all {
-          margin: 1rem 0 0 0;
+          margin: 1em 0 0 0;
           text-transform: uppercase;
           font-weight: 500;
           color: #6c7a8d;
@@ -354,8 +354,6 @@ $border-color: #e6eaef;
     }
 
     & .advanced-form {
-      margin: 1rem 0 0 0;
-
       & > div {
         width: 100%;
 
@@ -364,15 +362,20 @@ $border-color: #e6eaef;
         }
       }
 
+      & .label {
+        width: calc(100% - 1em);
+        align-self: center;
+      }
+
       & input {
-        margin: 0 0 1rem 0;
-        width: calc(100% - 3rem);
-        height: 3.5rem;
+        margin: 0 0 1em 0;
+        width: calc(100% - 1em);
+        height: 3.5em;
         align-self: center;
       }
 
       & li.tab {
-        @include m.multiply("font-size", 1.25);
+        @include m.multiply("font-size", 1.25, "em");
         appearance: auto;
         cursor: pointer;
         font-weight: 400;
@@ -386,9 +389,9 @@ $border-color: #e6eaef;
       }
 
       & ul.tabs {
-        width: calc(100% - 2rem);
+        width: calc(100% - 2em);
         padding: 0;
-        margin: 1rem 0 0.5rem 1rem;
+        margin: 1em 0 0.5em 1em;
         list-style-type: none;
       }
 
@@ -397,25 +400,25 @@ $border-color: #e6eaef;
       }
 
       & textarea {
-        padding: 1rem;
-        width: calc(100% - 2rem);
+        padding: 1em;
+        width: calc(100% - 2em);
+        margin: 0 0 2em 0;
       }
     }
 
     & .bottom {
       border-top: 2px solid $border-color;
-      margin: 2rem 0 0;
 
       & .label {
-        height: 1.25rem;
-        margin: 1rem;
+        height: 1.25em;
+        margin: 1em;
         align-self: flex-start;
       }
 
       & .danger {
         height: auto;
         color: $base-red-color;
-        margin: 1rem 1rem 0rem 1rem;
+        margin: 1em 1em 0em 1em;
         align-self: flex-start;
       }
     }

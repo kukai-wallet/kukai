@@ -74,6 +74,9 @@ export class LookupService {
     if (address?.address !== undefined) {
       address = address.address;
     }
+    if (typeof address !== 'string') {
+      return;
+    }
     this.initCheck();
     if (force) {
       console.log('Forced recheck for: ' + address);
@@ -81,13 +84,13 @@ export class LookupService {
     if (address && !this.pendingLookups[address]) {
       const { x } = this.index(address, 0);
       if (x === -1 || force) {
-        // DirectAuth
-        if (address.slice(0, 3) === 'tz2') {
-          if (x === -1) {
-            this.pendingLookups[address]++;
-            this.torusLookup(address);
-          }
-        }
+        // DirectAuth - disabled
+        // if (address && address.slice(0, 3) === 'tz2') {
+        //   if (x === -1) {
+        //     this.pendingLookups[address]++;
+        //     this.torusLookup(address);
+        //   }
+        // }
         // Tezos Domains
         this.pendingLookups[address]++;
         let domain = '';

@@ -31,13 +31,14 @@ import { TorusService } from './services/torus/torus.service';
 import { EmbeddedAuthService } from './services/embedded-auth/embedded-auth.service';
 import { TokenBalancesService } from './services/token-balances/token-balances.service';
 import { SubjectService } from './services/subject/subject.service';
+import { UnlockableService } from './services/unlockable/unlockable.service';
+import { CoordinatorService } from './services/coordinator/coordinator.service';
+import { OperationService } from './services/operation/operation.service';
 
 // View components
 import { StartComponent } from './components/views/start/start.component';
 import { NewWalletComponent } from './components/views/start/login-types/new-wallet/new-wallet.component';
 import { MnemonicImportComponent } from './components/views/start/login-types/mnemonic-import/mnemonic-import.component';
-import { CoordinatorService } from './services/coordinator/coordinator.service';
-import { OperationService } from './services/operation/operation.service';
 import { MessagesComponent } from './components/ui/messages/messages.component';
 import { ModalComponent } from './components/modals/modal.component';
 import { HeaderComponent } from './components/views/layouts/header/header.component';
@@ -164,7 +165,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     SubjectService,
     TokenBalancesService,
     DeeplinkService,
-
+    UnlockableService,
     // Pipes
     ErrorHandlingPipe,
     TruncatePipe,

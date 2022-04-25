@@ -57,7 +57,7 @@ export class BeaconService {
   }
   async cacheIcon(pairInfo: any) {
     const key = 'beacon:communication-peers-wallet';
-    const asset: Asset = await this.tzktService.fetchApi(`https://backend.kukai.network/file/info?src=${pairInfo.icon}`);
+    const asset: Asset = pairInfo.icon;
     const json = localStorage.getItem(key);
     if (!json || !asset) {
       return;

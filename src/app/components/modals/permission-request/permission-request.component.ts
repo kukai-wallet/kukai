@@ -35,7 +35,7 @@ export class PermissionRequestComponent implements OnInit, OnChanges, OnDestroy 
         : this.walletService.wallet.implicitAccounts[0];
     }
     this.subscriptions.add(
-      this.walletService.walletUpdated.subscribe(async () => {
+      this.subjectService.walletUpdated.subscribe(async () => {
         this.accounts = this.walletService.wallet?.getImplicitAccounts();
       })
     );

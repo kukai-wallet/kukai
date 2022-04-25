@@ -7,6 +7,7 @@ import { InputValidationService } from '../../../../services/input-validation/in
 import { MessageService } from '../../../../services/message/message.service';
 import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { SubjectService } from '../../../../services/subject/subject.service';
 
 @Component({
   selector: 'app-delegate-page',
@@ -25,10 +26,11 @@ export class DelegatePageComponent implements OnInit, OnDestroy {
     public router: Router,
     public walletService: WalletService,
     public inputValidationService: InputValidationService,
-    private messageServcie: MessageService
+    private messageServcie: MessageService,
+    private subjectService: SubjectService
   ) {
     this.subscriptions.add(
-      this.walletService.activeAccount.subscribe((activeAccount) => {
+      this.subjectService.activeAccount.subscribe((activeAccount) => {
         if (this.activeAccount !== activeAccount) {
           this.activeAccount = activeAccount;
           this.subscriptions.add(

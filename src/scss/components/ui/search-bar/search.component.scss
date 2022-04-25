@@ -2,17 +2,18 @@
 @use "../../../abstracts/mixins" as m;
 
 $base-font-color-secondary: v.$base-font-color-secondary;
-$base-color-lightened-7: v.$base-color-lightened-7;
-$base-color-lightened-675: v.$base-color-lightened-675;
-$base-color-lightened-65: v.$base-color-lightened-65;
+$color-lightened-7: v.$color-lightened-7;
+$color-lightened-675: v.$color-lightened-675;
+$color-lightened-65: v.$color-lightened-65;
 $border-width: v.$border-width;
 $border-color: v.$border-color;
 $border-radius-hardest: v.$border-radius-hardest;
 $base-filter-invert-1: v.$base-filter-invert-1;
-$base-bg: #d0d8e1;
+$search-bar-background-color: v.$search-bar-background-color;
 
 :host {
-  width: 100%;
+  width: calc(100% - 3rem);
+  padding: 1rem 2rem 0 1rem;
   position: relative;
   display: inline-block;
 }
@@ -23,7 +24,7 @@ $base-bg: #d0d8e1;
   position: relative;
   height: 4rem;
   width: 0%;
-  background-color: $base-bg;
+  background-color: $search-bar-background-color;
   max-width: 48.5rem;
   transition: 150ms width linear, 150ms border-color linear;
 
@@ -34,7 +35,7 @@ $base-bg: #d0d8e1;
     border-radius: $border-radius-hardest;
     position: absolute;
     z-index: 2;
-    background-color: $base-bg;
+    background-color: $search-bar-background-color;
     cursor: pointer;
   }
   input {

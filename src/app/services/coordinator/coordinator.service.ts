@@ -14,6 +14,7 @@ import { SubjectService } from '../subject/subject.service';
 import { TeztoolsService } from '../indexer/teztools/teztools.service';
 import { interval } from 'rxjs';
 import { SignalService } from '../indexer/signal/signal.service';
+import { UnlockableService } from '../unlockable/unlockable.service';
 
 export interface ScheduleData {
   pkh: string;
@@ -47,14 +48,15 @@ export class CoordinatorService {
     private teztoolsService: TeztoolsService,
     private lookupService: LookupService,
     private subjectService: SubjectService,
-    private signalService: SignalService
+    private signalService: SignalService,
+    private unlockableService: UnlockableService
   ) {
     this.subjectService.logout.subscribe((o) => {
       if (!!o) {
         this.stopAll();
       }
     });
-    this.walletService.activeAccount.subscribe((activeAccount) => {
+    this.subjectService.activeAccount.subscribe((activeAccount) => {
       if (this.walletService.wallet) {
         this.accounts = this.walletService.wallet.getAccounts();
         this.accounts.forEach(({ address }) => {
@@ -81,6 +83,7 @@ export class CoordinatorService {
     }
   }
   async start(pkh: string, delay: number) {
+    this.unlockableService.restoreFeatures();
     if (pkh && !this.scheduler.get(pkh)) {
       this.accounts = this.walletService.wallet.getAccounts();
       console.log('Start scheduler ' + this.scheduler.size + ' ' + pkh);
@@ -173,7 +176,10 @@ export class CoordinatorService {
           }
         }
       },
-      (err) => console.log('Error in update()', err),
+      (err) => {
+        console.log('Error in update()');
+        console.error(err);
+      },
       () => {
         console.log(
           `account[${this.accounts.findIndex((a) => a.address === pkh)}][${

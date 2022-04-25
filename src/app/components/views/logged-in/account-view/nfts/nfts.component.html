@@ -22,7 +22,7 @@
         [style.display]="!isDiscover && filter !== 'ALL' ? '' : 'none'">
         <div class="flex-row head" (click)="toggleDropdown(sanitizeKey(contract?.key))">
           <div class="flex-row left">
-            <app-asset class="nfts-head-thumbnail" [meta]="contract?.thumbnailUrl"></app-asset>
+            <app-asset class="nfts-head-thumbnail" [assets]="{ thumbnailAsset:contract?.thumbnailUrl}"></app-asset>
             <div class="title">
               {{ contract?.name }}
             </div>
@@ -38,14 +38,14 @@
       </div>
     </ng-container>
     <div class="flex-column collection scroll all" [style.display]="!isDiscover && filter === 'ALL' ? '' : 'none'">
-      <app-nfts-body [isDisplaying]="!isDiscover && filter === 'ALL'" [tokens]="tokens" [searchable]="true"></app-nfts-body>
+      <app-nfts-body class="all" [isDisplaying]="!isDiscover && filter === 'ALL'" [tokens]="tokens" [searchable]="true"></app-nfts-body>
     </div>
     <ng-container *ngFor="let contractAlias of contractAliases">
       <ng-container *ngIf="shouldDisplayLink(contractAlias?.shouldDisplayLink)">
         <a class="flex-column discover" rel="noreferrer" [href]="contractAlias?.link || '/'" target="_blank" [style.display]="isDiscover ? '' : 'none'">
           <div class="flex-row top">{{ getContractAlias(contractAlias?.category) || '' }}</div>
           <div class="flex-column middle" [class.zoom]="contractAlias?.zoomDiscoverImg" [style.backgroundColor]="contractAlias?.backgroundColor">
-            <app-asset class="discover" [class.zoom]="contractAlias?.zoomDiscoverImg" [size]="'raw'" [meta]="contractAlias?.discoverUrl || contractAlias?.thumbnailUrl"></app-asset>
+            <app-asset class="discover" [class.zoom]="contractAlias?.zoomDiscoverImg" [size]="'raw'" [assets]="{displayAsset: contractAlias.discoverUrl, thumbnailAsset: contractAlias.thumbnailUrl}"></app-asset>
           </div>
           <div class="flex-row bottom">
             <div class="flex-column left">

@@ -1,0 +1,16 @@
+<div [style.display]="!isOpen ? 'none' : ''" class="flex-column kukai-modal">
+  <div class="content">
+    <div class="flex-row top">
+      <h1 class="title">{{ title }}</h1>
+    </div>
+    <div class="flex-column info">
+      <div class="message">
+        {{ message }}
+      </div>
+      <div class="flex-column bottom">
+        <div class="seperator"></div>
+        <button class="button confirm" (click)="proceed()">Got it</button>
+      </div>
+    </div>
+  </div>
+</div>

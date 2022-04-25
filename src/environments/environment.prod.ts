@@ -31,6 +31,16 @@ const _CONSTANTS: Constants = {
       backgroundColor: 'black',
       description: 'A fun and interactive digital collectible experience'
     },
+    'mooncakes': {
+      name: "Mooncakes",
+      address: ['KT1Qm7MHmbdiBzoRs7xqBiqoRxw7T2cxTTJN', 'KT1CzVSa18hndYupV9NcXy3Qj7p8YFDZKVQv'],
+      thumbnailUrl: "../../../assets/img/alias/mooncakes.svg",
+      discoverUrl: '../../../assets/img/alias/mooncakes-discover.jpg', zoomDiscoverImg: true,
+      link: "https://mooncakes.fun", shouldDisplayLink: DisplayLinkOption.All,
+      category: ["collectibles"],
+      backgroundColor: '#1C1C20',
+      description: "Have fun exploring a galaxy of NFTs",
+    },
     UbisoftQuartz: {
       name: 'Ubisoft Quartz',
       address: ['KT1TnVQhjxeNvLutGvzwZvYtC7vKRpwPWhc6'],
@@ -41,17 +51,6 @@ const _CONSTANTS: Constants = {
       category: ['games', 'collectibles'],
       backgroundColor: 'black',
       description: 'The first Ubisoft NFTs playable in a HD game'
-    },
-    OneOf: {
-      name: 'OneOf',
-      address: ['KT1Up463qVJqtW5KF7dQZz5SsWMiS32GtBrw'],
-      thumbnailUrl: '../../../assets/img/alias/oneof.png',
-      discoverUrl: '../../../assets/img/alias/oneof-discover.svg',
-      link: 'https://www.oneof.com/',
-      shouldDisplayLink: DisplayLinkOption.All,
-      category: ['music', 'collectibles'],
-      backgroundColor: '#000',
-      description: "A green NFT platform for the music community"
     },
     'OneOfGloGang': {
       name: "OneOf - GloGang",
@@ -73,6 +72,17 @@ const _CONSTANTS: Constants = {
       description: 'Collect & Build a digital MCL35M F1 CAR',
       backgroundColor: 'black'
     },
+    OneOf: {
+      name: 'OneOf',
+      address: ['KT1Up463qVJqtW5KF7dQZz5SsWMiS32GtBrw'],
+      thumbnailUrl: '../../../assets/img/alias/oneof.png',
+      discoverUrl: '../../../assets/img/alias/oneof-discover.svg',
+      link: 'https://www.oneof.com/',
+      shouldDisplayLink: DisplayLinkOption.All,
+      category: ['music', 'collectibles'],
+      backgroundColor: '#000',
+      description: "A green NFT platform for the music community"
+    },
     'Verses': {
       name: 'Verses',
       address: ['KT1Qi93pZoig6grMNBd7GGA7fveE2cxQK9Ei'],
@@ -84,8 +94,8 @@ const _CONSTANTS: Constants = {
     'ZIGGURATS': {
       name: "ZIGGURATS",
       address: ["KT1PNcZQkJXMQ2Mg92HG1kyrcu3auFX5pfd8"],
-      thumbnailUrl: "../../../assets/img/alias/ziggurats.png",
-      discoverUrl: "../../../assets/img/alias/ziggurats-discover.png",
+      thumbnailUrl: "assets/img/alias/ziggurats.png",
+      discoverUrl: "assets/img/alias/ziggurats-discover.png",
       link: "https://ziggurats.xyz", shouldDisplayLink: DisplayLinkOption.All,
       category: ["collectibles"],
       backgroundColor: '#000',
@@ -94,8 +104,8 @@ const _CONSTANTS: Constants = {
     'randomlycommonskeles': {
       name: "randomly common skeles",
       address: ["KT1HZVd9Cjc2CMe3sQvXgbxhpJkdena21pih"],
-      thumbnailUrl: "../../../assets/img/alias/commonskeles.jpg",
-      discoverUrl: "../../../assets/img/alias/skele-grid-discover.jpg", zoomDiscoverImg: true,
+      thumbnailUrl: "assets/img/alias/commonskeles.jpg",
+      discoverUrl: "assets/img/alias/skele-grid-discover.jpg", zoomDiscoverImg: true,
       link: "https://objkt.com/collection/rcs", shouldDisplayLink: DisplayLinkOption.All, category: ["collectibles"],
       description: "randomly generated skeleton .gifs by john karel : )"
     },
@@ -203,6 +213,15 @@ const _CONSTANTS: Constants = {
       category: ['game', 'collectibles'],
       description: 'Battle, earn, win prizes plus NFT yield farming'
     },
+    Diplomats: {
+      name: 'Diplomats of Tezotopia',
+      address: ['KT1BqfEQFrfx3h2wWQo7gTM1SE6FpH1Y5pqK'],
+      thumbnailUrl: '../../../assets/img/alias/diplomats.png',
+      link: 'https://gallery.diplomats.tezotopia.com/',
+      shouldDisplayLink: DisplayLinkOption.None,
+      category: ['game', 'collectibles'],
+      description: 'Diplomats of Tezotopia are more than a simple PFP collectible, these representatives unlock the ability to perform various diplomatic actions in the game.'
+    },
     'Bazaar Market': {
       name: 'Bazaar Market',
       address: ['KT1PKvHNWuWDNVDtqjDha4AostLrGDu4G1jy'],
@@ -302,22 +321,66 @@ const _CONSTANTS: Constants = {
       shouldDisplayLink: DisplayLinkOption.None,
       category: ["collectibles"]
     },
+    'PRJKTNEON': {
+      name: "PRJKTNEON",
+      address: ["KT1VbHpQmtkA3D4uEbbju26zS8C42M5AGNjZ", "KT1H8sxNSgnkCeZsij4z76pkXu8BCZNvPZEx"],
+      thumbnailUrl: "../../../assets/img/alias/prjktneon.png",
+      link: "", shouldDisplayLink: DisplayLinkOption.None
+    },
+    'NEONZ': {
+      name: "NEONZ",
+      address: ["KT1MsdyBSAMQwzvDH4jt2mxUKJvBSWZuPoRJ"],
+      thumbnailUrl: "../../../assets/img/alias/neonz.jpg",
+      link: "https://neonz.xyz", shouldDisplayLink: DisplayLinkOption.None
+    },
+    'GOGOs': {
+      name: "GOGOs",
+      address: ["KT1SyPgtiXTaEfBuMZKviWGNHqVrBBEjvtfQ"],
+      thumbnailUrl: "../../../assets/img/alias/gogo.jpg",
+      link: "https://gogos.tez.page/", shouldDisplayLink: DisplayLinkOption.None
+    },
+    'GOGOsInventoryItems': {
+      name: "GOGOs Inventory Items",
+      address: ["KT1Xf44LpwrA7oBcB3VwWTtUBP1eNRaNnWeh"],
+      thumbnailUrl: "../../../assets/img/alias/gogo.jpg",
+      link: "https://gogos.tez.page/", shouldDisplayLink: DisplayLinkOption.None
+    },
+    'HashThreePoints': {
+      name: "Hash Three Points",
+      address: ["KT1Fxz4V3LaUcVFpvF8pAAx8G3Z4H7p7hhDg"],
+      thumbnailUrl: "../../../assets/img/alias/hashthreepoints.png",
+      link: "https://h3p.deconcept.com/", shouldDisplayLink: DisplayLinkOption.None
+    },
+    'TheMoments': {
+      name: "The Moments",
+      address: ["KT1CNHwTyjFrKnCstRoMftyFVwoNzF6Xxhpy"],
+      thumbnailUrl: "../../../assets/img/alias/themoments.jpeg",
+      link: "https://themoments.xyz/", shouldDisplayLink: DisplayLinkOption.None
+    },
+    'HOLLOWS': {
+      name: "HOLLOWS",
+      address: ["KT1Ak8AFA54waFVMyPXNE925cUaQjFEqxuYN"],
+      thumbnailUrl: "../../../assets/img/alias/hollows.jpg",
+      link: "https://hollowsnft.xyz/",
+      shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"]
+    },
     'TacoNFT': {
       name: "TacoNFT",
       address: ["KT1Mf8Pqn6NMt8VGuVaySohvSvQQpvcM37eZ", "KT1BkStQej7MwnkWhCV2tUanETeN25zc7ADe"],
-      thumbnailUrl: "../../../assets/img/alias/taconft.png",
+      thumbnailUrl: "assets/img/alias/taconft.png",
       link: "https://taconft.xyz/", shouldDisplayLink: DisplayLinkOption.None
     },
     'C0FACE': {
       name: "0xC0FACE COLLECTION",
       address: ["KT1DuZFNv6JwwA7kS8RXvoQiANm3L4dfn6qP"],
-      thumbnailUrl: "../../../assets/img/alias/0xC0FACE-thumb.jpg",
+      thumbnailUrl: "assets/img/alias/0xC0FACE-thumb.jpg",
       link: '', shouldDisplayLink: DisplayLinkOption.None
     },
     'ChopSumo': {
       name: "Chop Sumo",
       address: ["KT1Wm4Cegd7wW6MYxEhg6AH5iFX48y65nWvv"],
-      thumbnailUrl: "../../../assets/img/alias/chopsumo.png",
+      thumbnailUrl: "assets/img/alias/chopsumo.png",
       link: "https://chopsumo.xyz", shouldDisplayLink: DisplayLinkOption.None,
       category: ["collectibles"]
     },
@@ -331,7 +394,7 @@ const _CONSTANTS: Constants = {
     'CyberGeckoGang': {
       name: "Cyber Gecko Gang",
       address: ["KT1CwSgYmZewFazZsW348RAQYn1nthiGP3Qa"],
-      thumbnailUrl: "../../../assets/img/alias/cyber-gecko-gang.png",
+      thumbnailUrl: "assets/img/alias/cyber-gecko-gang.png",
       link: "https://cybergeckogang.xyz", shouldDisplayLink: DisplayLinkOption.None,
       category: ["collectibles"],
       description: "Cyber Gecko Gang is a limited collection of smug geckos programmatically, randomly generated on the Tezos blockchain"
@@ -353,11 +416,14 @@ const _CONSTANTS: Constants = {
       description: "Collections made with a unique cube character set"
     },
     'fxhash': {
-      name: "fx(hash)",
-      address: ["KT1KEa8z6vWXDJrVqtMrAeDVzsvxat3kHaCE"],
-      thumbnailUrl: "../../../assets/img/alias/fxhash.jpg",
-      link: "https://www.fxhash.xyz", shouldDisplayLink: DisplayLinkOption.None, category: ["marketplace"], backgroundColor: 'black',
-      description: "Open generative NFT platform on Tezos",
+      name: "fxhash",
+      address: ["KT1KEa8z6vWXDJrVqtMrAeDVzsvxat3kHaCE", "KT1U6EHmNxJTkvaWJ4ThczG4FSDaHC21ssvi"],
+      thumbnailUrl: "../../../assets/img/alias/fxhash.svg",
+      discoverUrl: '../../../assets/img/alias/fxhash-discover.jpg',
+      link: "https://www.fxhash.xyz", shouldDisplayLink: DisplayLinkOption.None, 
+      category: ["marketplace"],
+      backgroundColor: 'black',
+      description: "Open generative art NFT platform on Tezos",
     },
     'FormallyVerified': {
       name: "Formally Verified",
@@ -407,7 +473,7 @@ const _CONSTANTS: Constants = {
     },
     'HouseOfSkratz': {
       name: "House Of Skratz",
-      address: ["KT1UHiGBUpbmUSV68tiGi8owFP7VWr2zBMCk", "KT1MWKxDT6QJWgPH4Wq1TuHwW2tcvJRbuKMZ", "KT1HMvdTCsK9Su7RkFKgFwQuxaqgmNdbtdLS"],
+      address: ["KT1UHiGBUpbmUSV68tiGi8owFP7VWr2zBMCk", "KT1MWKxDT6QJWgPH4Wq1TuHwW2tcvJRbuKMZ", "KT1HMvdTCsK9Su7RkFKgFwQuxaqgmNdbtdLS", "KT1CFdGeFo44DN64JgtfHF2YqrZTKg1yFXM4"],
       thumbnailUrl: "../../../assets/img/alias/skratz.jpeg",
       link: "https://houseofskratz.com", shouldDisplayLink: DisplayLinkOption.None,
       category: ["collectibles"],
@@ -420,6 +486,14 @@ const _CONSTANTS: Constants = {
       link: "https://tezapegang.xyz", shouldDisplayLink: DisplayLinkOption.None,
       category: ["collectibles"],
       description: "TezApeGang is a collection of 6969 Apes living on the Tezos Blockchain. With Ape staking feature and DAO from Day1.",
+    },
+    'MekatronK9': {
+      name: "MekatronK9",
+      address: ["KT1PooRxUckYjnWVvn9CetZxC9YeG1kkFYW5"],
+      thumbnailUrl: "../../../assets/img/alias/mekatron.jpeg",
+      link: "https://www.mekatron.club/", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"],
+      description: "Driven from their homeword, they are the last surviving Mekatron k9, now seeking refuge in earth's metaverse. Their fight for survival has just begun.",
     },
     'rarible': {
       name: "Rarible",
@@ -453,6 +527,15 @@ const _CONSTANTS: Constants = {
       link: "https://versum.xyz", shouldDisplayLink: DisplayLinkOption.None, backgroundColor: 'black', category: ["marketplace"],
       description: "NFT Marketplace focused on organic content and curation.",
     },
+    'VesselGen0': {
+      name: "Vessel Gen0",
+      address: ["KT1U1GDQDE7C9DNfE9iSojsKfWf5zUXdSVde"],
+      thumbnailUrl: "../../../assets/img/alias/vesselgen0.jpg",
+      link: "https://vesselsgen0.xyz/",
+      shouldDisplayLink: DisplayLinkOption.None,
+      description: "An eclectic kaleidoscope: alien cultists, scifi loving tech heads, old earth culture pilfering retronauts and flamboyant gang members.",
+      category: ["collectibles"]
+    },
     'FCOREBOLLO': {
       name: "FCO. REBOLLO",
       address: ["KT1Qc8xu8i72QX5S72ifPB3KJGsJqXB79eTP"],
@@ -479,7 +562,7 @@ const _CONSTANTS: Constants = {
       backgroundColor: "black",
       description: "A generative collection on Tezos of 666 NFTs",
     },
-    'Basqunks':{
+    'Basqunks': {
       name: "Basqunks",
       address: ["KT1DtsVHqUvKBkkypLB3x2bYd4jWdbbaHdMy"],
       thumbnailUrl: "../../../assets/img/alias/basqunks.png",
@@ -502,9 +585,106 @@ const _CONSTANTS: Constants = {
       address: ['KT1JsJUo4PQARJB3AkstQJ8mHskoNJb29a7Z'],
       thumbnailUrl: '../../../assets/img/alias/xarb.png',
       link: 'https://xarb.io',
-      shouldDisplayLink: DisplayLinkOption.All,
+      shouldDisplayLink: DisplayLinkOption.None,
       category: ['marketplace'],
       description: 'A Place To Find And Collect NFTs'
+    },
+    'BunnyKnights2ndGen': {
+      name: "Bunny Knights 2nd Gen",
+      address: ["KT1EVBE1T4GqviEopZEtEQhPEyTQvWyDqDNE"],
+      thumbnailUrl: "../../../assets/img/alias/bunnyknights2ndgen.png",
+      link: "https://bunnyknights.com", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"],
+      description: "2nd Generation Collection of Bunny Knights.",
+    },
+    'alchemy': {
+      name: "Ch=mpathy Alch=my",
+      address: ["KT1MjS4L4HRajqNhQCdTSXgSPhW4A6gHiQo7"],
+      thumbnailUrl: "../../../assets/img/alias/alchemy.png",
+      link: "https://al.chempathy.xyz", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"],
+      description: "3477 Arcan=s transmuted and summoned by Overlords on the Tezos Blockchain.",
+    },
+    'Ilmeresh': {
+      name: "Fellowship of Ilmeresh",
+      address: ["KT1HJExmBz4G4kG1wx9zqs394kgRiDLWCb4m"],
+      thumbnailUrl: "../../../assets/img/alias/ilmeresh.png",
+      link: "https://ilmeresh.com", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"],
+      description: "The Fellowship of Ilmeresh is a collection of randomly generated characters .jpg on the Tezos blockchain. Designed in 3D!",
+    },
+    'HereAndNow4': {
+      name: "HERE & NOW: Edition 4",
+      address: ["KT1SRFbwhvfkXoRGqiDFVVsf5GTp16wGgtCa"],
+      thumbnailUrl: "../../../assets/img/alias/HereAndNowEd4.png",
+      link: "https://hereandnow.events/", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["art", "collectibles"],
+      description: "Here and Now is an interactive virtual Art experience that showcases emerging and established artists.",
+    },
+    'Orbix360': {
+      name: 'Orbix360',
+      address: ['KT1Nf6V7fje6ELNgD6hkKfc3SXaDNVFAifEX', 'KT1BQv5ynR5rV1Wf42iBgZP4cERgjn4ihbBx'],
+      thumbnailUrl: '../../../assets/img/alias/orbix360.png',
+      discoverUrl: '../../../assets/img/alias/orbix360.svg',
+      link: 'https://minter.orbix360.com',
+      shouldDisplayLink: DisplayLinkOption.None,
+      category: ['marketplace'],
+      backgroundColor: '#171717',
+      description: 'NFT Marketplace with Metaverse Creation Tools'
+    },
+    'EndlessWays': {
+      name: "Endless Ways",
+      address: ["KT1VdCrmZsQfuYgbQsezAHT1pXvs6zKF8xHB"],
+      thumbnailUrl: "../../../assets/img/alias/endlesswaysLogo.png",
+      link: "https://endlessways.net", shouldDisplayLink: DisplayLinkOption.None, category: ["collectibles"],
+      description: "Generative Art. Proper Curation.",
+    },
+    'TokenGesture': {
+      name: "A Token Gesture",
+      address: ["KT1GU8M8kxFiK4HF9uzdXLUonX5JuddBsrba"],
+      thumbnailUrl: "../../../assets/img/alias/tokengesture.png",
+      link: "https://nft.inspace.ed.ac.uk", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"],
+      description: "A Token Gesture is an interactive NFT exhibition at Inspace, part of the Institute for Design Informatics, University of Edinburgh."
+    },
+    'Flex': {
+      name: "Flex",
+      address: ["KT1AWoUQAuUudqpc75cGukWufbfim3GRn8h6"],
+      thumbnailUrl: "../../../assets/img/alias/Flex_Monument.png",
+      link: "https://flex.fashion", shouldDisplayLink: DisplayLinkOption.None, category: ["fashion", "collectibles"],
+      description: "Fashion, Creativity, and NFTs on Tezos",
+    },
+    'BlueVishnu': {
+      name: "BlueVishnu - Digital Humans",
+      address: ["KT1Lz7Jd6Sh1zUE66nDGS7hGnjwcyTBCiYbF", "KT1D1XtWFoQDPtuYzbkeRJhcDgH6CDem2FkZ"],
+      thumbnailUrl: "../../../assets/img/alias/bluevishnu.jpg",
+      link: "", shouldDisplayLink: DisplayLinkOption.None, category: ["3D", "collectibles"],
+      description: "",
+    },
+    'Pantone': {
+      name: "PANTONE Very Peri",
+      address: ["KT1AjuZb9TZTastAzhbufGsYG7vVNADUFmue"],
+      thumbnailUrl: "../../../assets/img/alias/pantone-very-peri.jpg",
+      link: "", shouldDisplayLink: DisplayLinkOption.None, category: ["collectibles"],
+      description: "",
+    },
+    'FILMCrew': {
+      name: 'FILMCrew Collection',
+      address: ['KT1Su3fNrnABFSYMtWVDZnMbH3DzJeysAd6t'],
+      thumbnailUrl: '../../../assets/img/alias/filmcrew.png',
+      discoverUrl: '../../../assets/img/alias/filmcrew-discover.png',
+      link: 'https://decentralized.pictures/filmcrew-collection',
+      shouldDisplayLink: DisplayLinkOption.None,
+      category: ['collectibles'],
+      backgroundColor: '#435259',
+      description: `A series of illustrations portraying the key components of film sets, FILMCrew is the world's first limited NFT collection of its kind.`,
+    },
+    'Decathlon': {
+      name: "Decathlon NFT",
+      address: ["KT1QXngq1CCuWv5RtnuYCSvGdKGeBxsRCWvQ"],
+      thumbnailUrl: "../../../assets/img/alias/decathlon.png",
+      link: "https://www.decathlon.com", shouldDisplayLink: DisplayLinkOption.None, category: ["collectibles"],
+      description: "First step in building a future where digital goods are connected to physical goods"
     },
   },
   ASSETS: {
@@ -518,8 +698,8 @@ const _CONSTANTS: Constants = {
           symbol: 'kUSD',
           decimals: 18,
           description: 'Kolibri is a Tezos based stablecoin built on Collateralized Debt Positions (CDPs) known as Ovens.',
-          displayAsset: '../../../assets/img/tokens/kusd.png',
-          thumbnailAsset: '../../../assets/img/tokens/kusd.png',
+          displayAsset: 'assets/img/tokens/kusd.png',
+          thumbnailAsset: 'assets/img/tokens/kusd.png',
           shouldPreferSymbol: true,
           status: 1
         }
@@ -535,8 +715,8 @@ const _CONSTANTS: Constants = {
           symbol: 'kDAO',
           decimals: 18,
           description: '',
-          displayAsset: '../../../assets/img/tokens/kdao.png',
-          thumbnailAsset: '../../../assets/img/tokens/kdao.png',
+          displayAsset: 'assets/img/tokens/kdao.png',
+          thumbnailAsset: 'assets/img/tokens/kdao.png',
           shouldPreferSymbol: true,
           status: 1
         }
@@ -552,8 +732,8 @@ const _CONSTANTS: Constants = {
           symbol: 'USDtz',
           decimals: 6,
           description: 'USDtz is a Tezos on-chain stablecoin pegged to the value of the United States Dollar.',
-          displayAsset: '../../../assets/img/tokens/usdtz.png',
-          thumbnailAsset: '../../../assets/img/tokens/usdtz.png',
+          displayAsset: 'assets/img/tokens/usdtz.png',
+          thumbnailAsset: 'assets/img/tokens/usdtz.png',
           shouldPreferSymbol: true,
           status: 1
         }
@@ -569,8 +749,8 @@ const _CONSTANTS: Constants = {
           symbol: 'uUSD',
           decimals: 12,
           description: '',
-          displayAsset: '../../../assets/img/tokens/uusd.png',
-          thumbnailAsset: '../../../assets/img/tokens/uusd.png',
+          displayAsset: 'assets/img/tokens/uusd.png',
+          thumbnailAsset: 'assets/img/tokens/uusd.png',
           shouldPreferSymbol: true,
           status: 1
         }
@@ -586,8 +766,8 @@ const _CONSTANTS: Constants = {
           symbol: 'YOU',
           decimals: 12,
           description: '',
-          displayAsset: '../../../assets/img/tokens/you.png',
-          thumbnailAsset: '../../../assets/img/tokens/you.png',
+          displayAsset: 'assets/img/tokens/you.png',
+          thumbnailAsset: 'assets/img/tokens/you.png',
           shouldPreferSymbol: true,
           status: 1
         }
@@ -602,8 +782,8 @@ const _CONSTANTS: Constants = {
           symbol: 'BTCtz',
           decimals: 8,
           description: 'BTCtz is a Tezos on-chain stablecoin pegged to the value of Bitcoin.',
-          displayAsset: '../../../assets/img/tokens/btctz.png',
-          thumbnailAsset: '../../../assets/img/tokens/btctz.png',
+          displayAsset: 'assets/img/tokens/btctz.png',
+          thumbnailAsset: 'assets/img/tokens/btctz.png',
           shouldPreferSymbol: true,
           status: 1
         }
@@ -619,8 +799,8 @@ const _CONSTANTS: Constants = {
           symbol: 'tzBTC',
           decimals: 8,
           description: 'tzBTC delivers the power of Bitcoin as a token on the Tezos blockchain.',
-          displayAsset: '../../../assets/img/tokens/tzbtc.png',
-          thumbnailAsset: '../../../assets/img/tokens/tzbtc.png',
+          displayAsset: 'assets/img/tokens/tzbtc.png',
+          thumbnailAsset: 'assets/img/tokens/tzbtc.png',
           shouldPreferSymbol: true,
           status: 1
         }
@@ -636,8 +816,8 @@ const _CONSTANTS: Constants = {
           symbol: 'ETHtz',
           decimals: 18,
           description: 'ETHtz is Ethereum wrapped in the Tezos FA 2.0 token standard.',
-          displayAsset: '../../../assets/img/tokens/ethtz.png',
-          thumbnailAsset: '../../../assets/img/tokens/ethtz.png',
+          displayAsset: 'assets/img/tokens/ethtz.png',
+          thumbnailAsset: 'assets/img/tokens/ethtz.png',
           shouldPreferSymbol: true,
           status: 1
         }
@@ -653,8 +833,8 @@ const _CONSTANTS: Constants = {
           symbol: 'wXTZ',
           decimals: 6,
           description: 'Wrapped Tezos by StakerDAO, a fully collateralized representation of XTZ.',
-          displayAsset: '../../../assets/img/tokens/wxtz.png',
-          thumbnailAsset: '../../../assets/img/tokens/wxtz.png',
+          displayAsset: 'assets/img/tokens/wxtz.png',
+          thumbnailAsset: 'assets/img/tokens/wxtz.png',
           shouldPreferSymbol: true,
           status: 1
         }
@@ -689,8 +869,8 @@ const _CONSTANTS: Constants = {
           symbol: 'hDAO',
           decimals: 6,
           description: '',
-          displayAsset: '../../../assets/img/tokens/hdao.png',
-          thumbnailAsset: '../../../assets/img/tokens/hdao.png',
+          displayAsset: 'assets/img/tokens/hdao.png',
+          thumbnailAsset: 'assets/img/tokens/hdao.png',
           isTransferable: true,
           isBooleanAmount: false,
           shouldPreferSymbol: true,
@@ -746,8 +926,8 @@ const _CONSTANTS: Constants = {
             'This Taco NFT was inspired by and minted for Austin, Texas on Taco Tuesday, May 4th, 2021, to help push the Clean NFT movement forward. Enjoy your taco or send it to a friend to help spread the word about Clean NFTs on Tezos.',
           displayAsset: {
             // ipfs://QmYbWkagqQyQ4bJhWWWSGaCLNGP1czbPgD2PLmJ4aVmtGR
-            filename: 'cpyxxjpnsmhpttzcm66cj4bkceq6li',
-            extension: 'jpeg'
+            uri: 'https://cloudflare-ipfs.com/ipfs/QmYbWkagqQyQ4bJhWWWSGaCLNGP1czbPgD2PLmJ4aVmtGR',
+            mimeType: 'image/jpeg'
           },
           thumbnailAsset: '',
           shouldPreferSymbol: false,
@@ -1212,8 +1392,8 @@ const _CONSTANTS: Constants = {
             'NFTs are changing everything...but what exactly is an NFT? A Non-Friendly Turtle? Discover how Tezos is changing NFTs, and collect your own at Tezos.com/NFTgallery.',
           displayAsset: {
             // ipfs://QmTmSjweqQrba5WGRUxB4u5WEbwktQBQekioi9K7Kkos6x
-            filename: 'ioqq2cioaynduzip4aox3wzc2akvly',
-            extension: 'gif'
+            uri: 'https://cloudflare-ipfs.com/ipfs/QmTmSjweqQrba5WGRUxB4u5WEbwktQBQekioi9K7Kkos6x',
+            mimeType: 'image/gif'
           },
           thumbnailAsset: '',
           isBooleanAmount: false,
@@ -1244,8 +1424,17 @@ const _CONSTANTS: Constants = {
     'KT1Hkg5qeNhfwpKW4fXvq7HGZB9z2EnmCCA9:collect': { storage: 212 },
   },
   NFT_CONTRACT_OVERRIDES: [
-    'KT1AafHA1C1vk959wvHWBispY9Y2f3fxBUUo:0' //lp tzBTC
-  ]
+    'KT1AafHA1C1vk959wvHWBispY9Y2f3fxBUUo:0', //lp tzBTC
+    'KT1JBNFcB5tiycHNdYGYCtR3kk6JaJysUCi8:0', // Lugh Euro
+    'KT1Ha4yFVeyzw6KRAdkzq6TxDHB97KG4pZe8:0' // Dogami
+  ],
+  FEATURE_CONTRACTS: {
+    theme: {
+      dark: [
+        'KT1CzVSa18hndYupV9NcXy3Qj7p8YFDZKVQv:43'
+      ]
+    }
+  }
 };
 const _TRUSTED_TOKEN_CONTRACTS = [
   'KT1Em3sjKdHo3Fo9Az4EusZXQbkgsdZHkQkF',//alchememist giveaway
@@ -1259,6 +1448,7 @@ const _TRUSTED_TOKEN_CONTRACTS = [
   'KT1EpGgjQs73QfFJs9z7m1Mxm5MTnpC2tqse',//Kalamint NFT
   'KT1A5P4ejnLix13jtadsfV9GCnXLMNnab8UT',//Kalamint token
   'KT1ViVwoVfGSCsDaxjwoovejm1aYSGz7s2TZ',//Teztopia
+  'KT1BqfEQFrfx3h2wWQo7gTM1SE6FpH1Y5pqK',//Diplomats
   'KT1BA9igcUcgkMT4LEEQzwURsdMpQayfb6i4',//turtle
   'KT1PKvHNWuWDNVDtqjDha4AostLrGDu4G1jy',//Bazaar Market
   'KT1WGDVRnff4rmGzJUbdCRAJBmYt12BrPzdD',//PixelPotus
@@ -1275,6 +1465,7 @@ const _TRUSTED_TOKEN_CONTRACTS = [
   'KT1PEGqt5rMmHpyaMXc8RFTFkkAUDrzSFRWk',//mclaren
   'KT1MsdyBSAMQwzvDH4jt2mxUKJvBSWZuPoRJ',//NEONZ
   'KT1SyPgtiXTaEfBuMZKviWGNHqVrBBEjvtfQ',//GOGOs
+  'KT1Xf44LpwrA7oBcB3VwWTtUBP1eNRaNnWeh',//GOGOs Inventory Items
   'KT1Fxz4V3LaUcVFpvF8pAAx8G3Z4H7p7hhDg',//Hash Three Points
   'KT1CNHwTyjFrKnCstRoMftyFVwoNzF6Xxhpy',//The Moments
   'KT1HZVd9Cjc2CMe3sQvXgbxhpJkdena21pih',//randomly common skeles
@@ -1307,9 +1498,10 @@ const _TRUSTED_TOKEN_CONTRACTS = [
   'KT1AWUzFdNwZn7YprZitR6Q6eUuVmfUG1HMP',//Skratz Geckos
   'KT19hJSZZYnD41xuEjEgodhAnnuLh142g8QJ',//Skratz Akira
   'KT1F9uU1xXJEzKmPvxMAdo1cMwnhnBHEB6pN',//Skratz x Tezape
-  'KT1UHiGBUpbmUSV68tiGi8owFP7VWr2zBMCk',// House Of Skratz
+  'KT1UHiGBUpbmUSV68tiGi8owFP7VWr2zBMCk',// Skratz v1
   'KT1MWKxDT6QJWgPH4Wq1TuHwW2tcvJRbuKMZ',// House Of Skratz Whitelist
   'KT1HMvdTCsK9Su7RkFKgFwQuxaqgmNdbtdLS',// House Of Skratz DAO
+  "KT1CFdGeFo44DN64JgtfHF2YqrZTKg1yFXM4",// House Of Skratz
   'KT1FReMp4U1KipyH53xXUnnjtdRQZaLnQpUj',//TezApeGang
   'KT18pVpRXKPY2c4U2yFEGSH3ZnhB2kL8kwXS',//Rarible
   "KT1LikBSDucbAfYLN9Uxosh4V2SNRrbQwfrJ", //Transmission Residents
@@ -1320,6 +1512,7 @@ const _TRUSTED_TOKEN_CONTRACTS = [
   "KT1D394hqndjvTcFgrmUYBxwrzUTNtzrZ5ox", //Platypoos
   "KT1GA6KaLWpURnjvmnxB4wToErzM2EXHqrMo", //Gap
   "KT1LjmAdYQCLBjwv4S2oFkEzyHVkomAf5MrW", //Versum
+  "KT1U1GDQDE7C9DNfE9iSojsKfWf5zUXdSVde", // Vessel Gen0
   "KT1Qc8xu8i72QX5S72ifPB3KJGsJqXB79eTP", // FCO REBOLLO
   "KT1V3BYwUN7FiBqADLMvMpWbz33tq1vudBh5", //Monarx
   "KT1S9VbCtVZUgAG4Q3VArvY5stu96q4CiPHZ", // Distributed Consciousness
@@ -1328,9 +1521,31 @@ const _TRUSTED_TOKEN_CONTRACTS = [
   'KT1DtsVHqUvKBkkypLB3x2bYd4jWdbbaHdMy',//Basqunks
   'KT1L7GvUxZH5tfa6cgZKnH6vpp2uVxnFVHKu',//Ottez
   'KT1JsJUo4PQARJB3AkstQJ8mHskoNJb29a7Z',//Xarb
+  'KT1EVBE1T4GqviEopZEtEQhPEyTQvWyDqDNE', // Bunny Knights 2nd Gen
+  'KT1MjS4L4HRajqNhQCdTSXgSPhW4A6gHiQo7',//Ch=mpathy Alch=my
+  "KT1PooRxUckYjnWVvn9CetZxC9YeG1kkFYW5", // MekatronK9
+  "KT1SRFbwhvfkXoRGqiDFVVsf5GTp16wGgtCa",//here and now 4
+  "KT1Qm7MHmbdiBzoRs7xqBiqoRxw7T2cxTTJN",//mooncakes
+  "KT1HJExmBz4G4kG1wx9zqs394kgRiDLWCb4m", // Fellowship of Ilmeresh
+  "KT1Nf6V7fje6ELNgD6hkKfc3SXaDNVFAifEX", // Orbix360
+  "KT1VdCrmZsQfuYgbQsezAHT1pXvs6zKF8xHB",//Endless Ways
+  "KT1GU8M8kxFiK4HF9uzdXLUonX5JuddBsrba",//A Token Gesture
+  "KT1AWoUQAuUudqpc75cGukWufbfim3GRn8h6",//Flex
+  "KT1Lz7Jd6Sh1zUE66nDGS7hGnjwcyTBCiYbF",//BlueVishnu
+  "KT1AjuZb9TZTastAzhbufGsYG7vVNADUFmue",//PantoneVeryPeri
+  'KT1Su3fNrnABFSYMtWVDZnMbH3DzJeysAd6t',//FILMCrew
+  "KT1QXngq1CCuWv5RtnuYCSvGdKGeBxsRCWvQ",//Decathlon
 ];
 const _BLACKLISTED_TOKEN_CONTRACTS = []
+
+const _MODEL_3D_WHITELIST = [
+  'KT1NVvPsNDChrLRH5K2cy6Sc9r1uuUwdiZQd',/* Dogami */
+  'KT1AWoUQAuUudqpc75cGukWufbfim3GRn8h6',/* Flex */
+  'KT1Lz7Jd6Sh1zUE66nDGS7hGnjwcyTBCiYbF',/* SXSW */
+  'KT1D1XtWFoQDPtuYzbkeRJhcDgH6CDem2FkZ' /* BlueVishnu */
+];
 
 export const CONSTANTS = JSON.parse(JSON.stringify(_CONSTANTS));
 export const TRUSTED_TOKEN_CONTRACTS = JSON.parse(JSON.stringify(_TRUSTED_TOKEN_CONTRACTS));
 export const BLACKLISTED_TOKEN_CONTRACTS = JSON.parse(JSON.stringify(_BLACKLISTED_TOKEN_CONTRACTS));
+export const MODEL_3D_WHITELIST = JSON.parse(JSON.stringify(_MODEL_3D_WHITELIST));

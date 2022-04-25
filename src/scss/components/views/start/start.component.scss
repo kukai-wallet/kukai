@@ -4,8 +4,8 @@
 $base-font-color: v.$base-font-color;
 $base-font-color-secondary: v.$base-font-color-secondary;
 $base-end-color: v.$base-end-color;
-$base-color-lightened-5: v.$base-color-lightened-5;
-$base-color-lightened-6: v.$base-color-lightened-6;
+$color-lightened-5: v.$color-lightened-5;
+$color-lightened-6: v.$color-lightened-6;
 $border-width: v.$border-width;
 $border-color: v.$border-color;
 $base-background-color: v.$base-background-color;
@@ -26,11 +26,11 @@ $base-background-color: v.$base-background-color;
   width: 100vw !important;
   height: 46% !important;
   border-top: 1.5rem solid #d6dbe3;
-  background-color: $base-color-lightened-6;
+  background-color: $color-lightened-6;
   z-index: -100;
   background: linear-gradient(
     180deg,
-    $base-color-lightened-5,
+    $color-lightened-5,
     $base-background-color
   );
 }
@@ -43,7 +43,7 @@ $base-background-color: v.$base-background-color;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  background-color: $base-color-lightened-6;
+  background-color: $base-background-color;
 
   & .is-mobile {
     display: block;
@@ -241,20 +241,6 @@ $base-background-color: v.$base-background-color;
       @extend %bg;
       display: none;
     }
-  }
-}
-
-.canvas-wrapper {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100%;
-  background-color: transparent;
-  z-index: 90;
-  & canvas {
-    width: 100%;
-    height: 100%;
   }
 }
 

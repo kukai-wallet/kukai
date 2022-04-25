@@ -41,7 +41,7 @@ export class HeaderComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnInit(): void {
     this.subscriptions.add(
-      this.walletService.walletUpdated.subscribe(async () => {
+      this.subjectService.walletUpdated.subscribe(async () => {
         this.accounts = this.walletService.wallet?.getAccounts();
         this.delegateName = await this.getDelegateName(this.activeAccount?.delegate);
       })
@@ -65,10 +65,10 @@ export class HeaderComponent implements OnInit, OnChanges, OnDestroy {
           if (!this.walletService.addressExists(accountAddress)) {
             this.router.navigateByUrl(`/account/${this.accounts[0].address}`);
             this.activeAccount = this.accounts[0];
-            this.walletService.activeAccount.next(this.accounts[0]);
+            this.subjectService.activeAccount.next(this.accounts[0]);
           } else {
             this.activeAccount = this.walletService.wallet?.getAccount(accountAddress);
-            this.walletService.activeAccount.next(this.activeAccount);
+            this.subjectService.activeAccount.next(this.activeAccount);
           }
           this.delegateName = await this.getDelegateName(this.activeAccount?.delegate);
         }

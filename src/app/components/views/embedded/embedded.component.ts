@@ -103,6 +103,38 @@ export class EmbeddedComponent implements OnInit {
         micheline: true,
         micheline_silent: true
       }
+    },
+    lexus: {
+      origins: ['https://ldai.lexusdesign.in'],
+      permissions: {
+        login: true,
+        operations: false,
+        micheline: false
+      }
+    },
+    blockspace: {
+      origins: ['https://block-space.app'],
+      permissions: {
+        login: true,
+        operations: false,
+        micheline: false
+      }
+    },
+    evian: {
+      origins: ['https://nft.evian.com'],
+      permissions: {
+        login: true,
+        operations: false,
+        micheline: false
+      }
+    },
+    souvie: {
+      origins: ['https://souvie.dev'],
+      permissions: {
+        login: true,
+        operations: false,
+        micheline: false
+      }
     }
   };
   constructor(

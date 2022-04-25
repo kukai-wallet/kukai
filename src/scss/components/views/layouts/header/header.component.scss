@@ -7,9 +7,9 @@ $base-end-color: v.$base-end-color;
 $base-red-color: v.$base-red-color;
 $base-blue-color: v.$base-blue-color;
 $base-blue-color-lightened: v.$base-blue-color-lightened;
-$base-color-lightened-2: v.$base-color-lightened-2;
-$base-color-lightened-5: v.$base-color-lightened-5;
-$base-color-lightened-6: v.$base-color-lightened-6;
+$color-lightened-2: v.$color-lightened-2;
+$color-lightened-5: v.$color-lightened-5;
+$color-lightened-6: v.$color-lightened-6;
 $border-color-dark-only: v.$border-color-dark-only;
 $border-width-dark-only: v.$border-width-dark-only;
 $border-width: v.$border-width;
@@ -39,7 +39,7 @@ $base-filter-brightness-5: v.$base-filter-brightness-5;
   width: 100%;
   display: flex;
   flex-direction: column;
-  background-color: $base-background-color;
+  background-color: transparent;
   align-items: center;
 
   & .brand-logo {
@@ -77,7 +77,7 @@ $base-filter-brightness-5: v.$base-filter-brightness-5;
   max-width: 2560px;
 
   &.default {
-    background-color: $base-end-color;
+    background-color: v.$header-background-color;
     border-bottom: $border-width solid $border-color;
     max-width: unset;
     width: calc(100% - 8%);
@@ -139,7 +139,7 @@ $base-filter-brightness-5: v.$base-filter-brightness-5;
         padding: 0.6rem 0 0.6rem 2rem;
         background-color: $base-end-color;
         border-radius: v.$border-radius;
-        border: $border-width solid $base-color-lightened-5;
+        border: $border-width solid $color-lightened-5;
         border-radius: $border-radius;
         transition: 0.25s border-radius;
         text-align: left;
@@ -251,7 +251,7 @@ $base-filter-brightness-5: v.$base-filter-brightness-5;
   position: relative;
 
   &.default {
-    background-color: $base-end-color;
+    background-color: v.$header-background-color;
   }
 
   & .copy {
@@ -276,7 +276,7 @@ $base-filter-brightness-5: v.$base-filter-brightness-5;
   }
 }
 
-@media (max-width: v.$layout-break-3) and (max-aspect-ratio: 1/1), (max-width: v.$layout-break-5) {
+@media (max-width: v.$layout-break-5) {
   .top-container.mobile.default .brand-logo .icon {
     height: 75% !important;
   }
@@ -287,5 +287,7 @@ $base-filter-brightness-5: v.$base-filter-brightness-5;
 
   .top-container.mobile {
     display: flex;
+    width: 92%;
+    padding: 0 4%;
   }
 }

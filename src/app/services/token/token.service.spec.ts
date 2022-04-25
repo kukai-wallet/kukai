@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
 import { TokenService, TokenResponseType } from './token.service';
 import { IndexerService } from '../indexer/indexer.service';
@@ -9,7 +10,7 @@ describe('TokenService', () => {
   let response: any = {};
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({ imports: [RouterTestingModule] });
     spyOn(localStorage.__proto__, 'getItem').and.returnValue(undefined);
     service = TestBed.inject(TokenService);
     (service as any).contracts = {};

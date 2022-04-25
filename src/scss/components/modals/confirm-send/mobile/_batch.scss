@@ -1,6 +1,6 @@
 @mixin confirm-send-mobile-batch {
   &.batch {
-    width: 32rem;
+    width: 32em;
 
     & .divider {
       display: none;
@@ -9,10 +9,10 @@
     & .top,
     & .to,
     & .from {
-      padding: 2rem 0;
-      margin: 0 0 0 -2rem;
+      padding: 2em 0;
+      margin: 0 0 0 -2em;
       border-radius: 0;
-      width: calc(100% + 4rem);
+      width: calc(100% + 4em);
     }
 
     & .top {
@@ -21,14 +21,14 @@
       }
 
       & .right {
-        width: calc(60% - 2rem);
-        margin: 0 2rem 0 0;
+        width: calc(60% - 2em);
+        margin: 0 2em 0 0;
       }
 
       &.image {
         align-items: center;
-        padding: 1rem;
-        width: calc(100% + 2rem);
+        padding: 1em;
+        width: calc(100% + 2em);
         & .left {
           width: auto;
           height: auto;
@@ -39,14 +39,14 @@
         & .right {
           height: 100%;
           justify-content: center;
-          width: calc(67% - 2rem);
-          margin: 0 2rem 0 0;
+          width: calc(67% - 2em);
+          margin: 0 2em 0 0;
         }
 
         & .token-image {
-          width: 8rem;
-          height: 8rem;
-          margin: 0 0 0 1.5rem;
+          width: 8em;
+          height: 8em;
+          margin: 0 0 0 1.5em;
         }
       }
     }
@@ -54,14 +54,14 @@
     & .from {
       & .left {
         width: auto;
-        margin: 0 0 0 3rem;
+        margin: 0 0 0 3em;
       }
 
       & .right {
         width: 67%;
 
         & .address {
-          margin: 0.5rem 0 0 3rem;
+          margin: 0.5em 0 0 3em;
         }
       }
     }
@@ -71,7 +71,7 @@
       align-items: center;
       & .left,
       .right {
-        width: calc(100% - 2rem);
+        width: calc(100% - 2em);
         & .torus-to {
           left: 0;
         }
@@ -81,23 +81,23 @@
         align-items: flex-start;
         width: 35%;
         align-self: flex-start;
-        margin: 0 0 1rem 0;
+        margin: 0 0 1em 0;
 
         & .key {
           text-align: center;
-          margin: 0.5rem 0 0 3rem;
+          margin: 0.5em 0 0 3em;
         }
       }
 
       & .right {
-        width: calc(100% - 6rem);
+        width: calc(100% - 6em);
         & .transaction {
           width: 100%;
           & .single-to {
-            margin: 0.5rem 0;
+            margin: 0.5em 0;
             width: 100%;
             & span {
-              font-size: 1.375rem;
+              font-size: 1em;
             }
           }
         }
