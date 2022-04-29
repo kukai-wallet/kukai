@@ -1,7 +1,8 @@
 <div class="main-container" *ngIf="displayTokenCard()">
   <div class="flex-row top-container-nfts">
     <div class="flex-row toggle">
-      <h1 class="flex-row" [class.selected]="!isDiscover" (click)="isDiscover = false">NFT<span> / Collectibles</span></h1>
+      <h1 class="flex-row" [class.selected]="!isDiscover" (click)="isDiscover = false">NFT<span> / Collectibles</span>
+      </h1>
       <h1 class="flex-row" [class.selected]="isDiscover" (click)="isDiscover = true">{{ 'Discover' }}</h1>
     </div>
     <div class="flex-row right">
@@ -18,8 +19,8 @@
     <ng-container *ngIf="!nftsArray?.length && !isDiscover"><span>There are no NFTs in this account</span>
     </ng-container>
     <ng-container *ngFor="let contract of nftsArray; trackBy:trackContract">
-      <div class="flex-column collection" [class.expanded]="filter === sanitizeKey(contract?.key)" [id]="sanitizeKey(contract?.key)"
-        [style.display]="!isDiscover && filter !== 'ALL' ? '' : 'none'">
+      <div class="flex-column collection" [class.expanded]="filter === sanitizeKey(contract?.key)"
+        [id]="sanitizeKey(contract?.key)" [style.display]="!isDiscover && filter !== 'ALL' ? '' : 'none'">
         <div class="flex-row head" (click)="toggleDropdown(sanitizeKey(contract?.key))">
           <div class="flex-row left">
             <app-asset class="nfts-head-thumbnail" [assets]="{ thumbnailAsset:contract?.thumbnailUrl}"></app-asset>
@@ -33,32 +34,40 @@
           </div>
         </div>
         <div class="flex-column scroll">
-          <app-nfts-body [isDisplaying]="filter === sanitizeKey(contract?.key)" [tokens]="contract?.tokens"></app-nfts-body>
+          <app-nfts-body [isDisplaying]="filter === sanitizeKey(contract?.key)" [tokens]="contract?.tokens">
+          </app-nfts-body>
         </div>
       </div>
     </ng-container>
     <div class="flex-column collection scroll all" [style.display]="!isDiscover && filter === 'ALL' ? '' : 'none'">
-      <app-nfts-body class="all" [isDisplaying]="!isDiscover && filter === 'ALL'" [tokens]="tokens" [searchable]="true"></app-nfts-body>
+      <app-nfts-body class="all" [isDisplaying]="!isDiscover && filter === 'ALL'" [tokens]="tokens" [searchable]="true">
+      </app-nfts-body>
     </div>
-    <ng-container *ngFor="let contractAlias of contractAliases">
-      <ng-container *ngIf="shouldDisplayLink(contractAlias?.shouldDisplayLink)">
-        <a class="flex-column discover" rel="noreferrer" [href]="contractAlias?.link || '/'" target="_blank" [style.display]="isDiscover ? '' : 'none'">
-          <div class="flex-row top">{{ getContractAlias(contractAlias?.category) || '' }}</div>
-          <div class="flex-column middle" [class.zoom]="contractAlias?.zoomDiscoverImg" [style.backgroundColor]="contractAlias?.backgroundColor">
-            <app-asset class="discover" [class.zoom]="contractAlias?.zoomDiscoverImg" [size]="'raw'" [assets]="{displayAsset: contractAlias.discoverUrl, thumbnailAsset: contractAlias.thumbnailUrl}"></app-asset>
-          </div>
-          <div class="flex-row bottom">
-            <div class="flex-column left">
-              <div class="title">{{ contractAlias?.name || key }}</div>
-              <div class="description">{{ contractAlias?.description }}</div>
+    <ng-container *ngIf="isDiscover">
+      <ng-container *ngFor="let contractAlias of contractAliases">
+        <ng-container *ngIf="shouldDisplayLink(contractAlias?.shouldDisplayLink)">
+          <a class="flex-column discover" rel="noreferrer" [href]="contractAlias?.link || '/'" target="_blank"
+            [style.display]="isDiscover ? '' : 'none'">
+            <div class="flex-row top">{{ getContractAlias(contractAlias?.category) || '' }}</div>
+            <div class="flex-column middle" [class.zoom]="contractAlias?.zoomDiscoverImg"
+              [style.backgroundColor]="contractAlias?.backgroundColor">
+              <app-asset class="discover" [class.zoom]="contractAlias?.zoomDiscoverImg" [size]="'raw'"
+                [assets]="{displayAsset: contractAlias.discoverUrl, thumbnailAsset: contractAlias.thumbnailUrl}">
+              </app-asset>
             </div>
-            <div class="flex-column right">
-              <a class="link-to-app">
-                <button class="flex-row button">GO <img src="assets/img/discover-right-angle.svg" /></button>
-              </a>
+            <div class="flex-row bottom">
+              <div class="flex-column left">
+                <div class="title">{{ contractAlias?.name || key }}</div>
+                <div class="description">{{ contractAlias?.description }}</div>
+              </div>
+              <div class="flex-column right">
+                <a class="link-to-app">
+                  <button class="flex-row button">GO <img src="assets/img/discover-right-angle.svg" /></button>
+                </a>
+              </div>
             </div>
-          </div>
-        </a>
+          </a>
+        </ng-container>
       </ng-container>
     </ng-container>
   </div>

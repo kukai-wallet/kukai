@@ -135,6 +135,14 @@ export class EmbeddedComponent implements OnInit {
         operations: false,
         micheline: false
       }
+    },
+    tzstaging: {
+      origins: ['*.tzstaging.com', 'https://tzstaging.com', 'https://tezos.com'],
+      permissions: {
+        login: true,
+        operations: false,
+        micheline: false
+      }
     }
   };
   constructor(
