@@ -588,6 +588,15 @@ const _CONSTANTS: Constants = {
       category: ["collectibles"],
       description: "Humans are gone. Ottez have moved in. 4,007 generative, collectible PFP otters have taken over Earth. ",
     },
+    'Parrotz': {
+      name: 'Parrotz',
+      address: ['KT1GMRLLmxfNBb5VPASEouaKhnhQvBigzDtL'],
+      thumbnailUrl: '../../../assets/img/alias/Parrotz.png',
+      link: 'https://parrotz.tzdropz.com/',
+      shouldDisplayLink: DisplayLinkOption.None,
+      category: ['collectibles'],
+      description: 'In a new world that was once dominated by lizzards and otters, evolution took hold and a flock of 10k generative PFP Parrotz came to Tezos as NFTs to live peacefully with those that came before them.'
+    },
     xarb: {
       name: 'Xarb',
       address: ['KT1JsJUo4PQARJB3AkstQJ8mHskoNJb29a7Z'],
