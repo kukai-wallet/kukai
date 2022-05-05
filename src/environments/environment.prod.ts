@@ -694,6 +694,14 @@ const _CONSTANTS: Constants = {
       link: "https://www.decathlon.com", shouldDisplayLink: DisplayLinkOption.None, category: ["collectibles"],
       description: "First step in building a future where digital goods are connected to physical goods"
     },
+    'Taqueria': {
+      name: 'Taqueria Collection',
+      address: ['KT1D6er82V26zwV7RUxA9Wq7YyjziC52STjo'],
+      thumbnailUrl: '../../../assets/img/alias/taqueria.png',
+      link: 'https://taqueria.io/',
+      shouldDisplayLink: DisplayLinkOption.None,
+      description: `Taqueria is a Tezos developer tool suite, designed to make working with Tezos easier and more secure.`,
+    },
   },
   ASSETS: {
     KT1K9gCRgaLRFKTErYt1wVxA3Frb9FjasjTV: {
@@ -1543,6 +1551,7 @@ const _TRUSTED_TOKEN_CONTRACTS = [
   "KT1AjuZb9TZTastAzhbufGsYG7vVNADUFmue",//PantoneVeryPeri
   'KT1Su3fNrnABFSYMtWVDZnMbH3DzJeysAd6t',//FILMCrew
   "KT1QXngq1CCuWv5RtnuYCSvGdKGeBxsRCWvQ",//Decathlon
+  "KT1D6er82V26zwV7RUxA9Wq7YyjziC52STjo",//Taqueria
 ];
 const _BLACKLISTED_TOKEN_CONTRACTS = []
 
