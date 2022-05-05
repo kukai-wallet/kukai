@@ -62,21 +62,3 @@ data = fs.readFileSync(uts46, 'utf8');
 data = data.replace(/punycode\.ucs2\.decode/g, 'punycode.ucs2decode');
 data = data.replace(/punycode\.ucs2\.encode/g, 'punycode.ucs2encode');
 fs.writeFileSync(uts46, data, 'utf8');
-
-data = fs.readFileSync(common, 'utf8');
-if (data.indexOf('fallback: {') === -1) {
-  data = data.replace(
-    '(scriptTarget, isPlatformServer),',
-    `(scriptTarget, isPlatformServer),
-      ${fallback}
-    `
-  );
-  data = data.replace(
-    'plugins_1.DedupeModuleResolvePlugin({ verbose }),',
-    `plugins_1.DedupeModuleResolvePlugin({ verbose }),
-      ${plugins}
-    `
-  );
-  data = data.replace('cache: (0, helpers_1.getCacheSettings)(wco, NG_VERSION.full)', 'cache: false');
-  fs.writeFileSync(common, data, 'utf8');
-}
