@@ -5,11 +5,9 @@ import { TokenBalancesService } from '../../../../../services/token-balances/tok
 import { SubjectService } from '../../../../../services/subject/subject.service';
 import { WalletService } from '../../../../../services/wallet/wallet.service';
 import { Subscription } from 'rxjs';
-import { filter, take } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 import { Big } from 'big.js';
 import { RemoveCommaPipe } from '../../../../../pipes/remove-comma.pipe';
-import { ModalComponent } from '../../../../../components/modals/modal.component';
-import { MessageService } from '../../../../../services/message/message.service';
 
 @Component({
   selector: 'app-balances',
@@ -30,8 +28,7 @@ export class BalancesComponent implements OnInit, AfterViewChecked, OnDestroy {
     public tokenBalancesService: TokenBalancesService,
     private subjectService: SubjectService,
     private walletService: WalletService,
-    public removeCommaPipe: RemoveCommaPipe,
-    private messageService: MessageService
+    public removeCommaPipe: RemoveCommaPipe
   ) {
     this.subscriptions.add(
       this.subjectService.activeAccount.pipe(filter((account: Account) => account?.address !== this.account?.address)).subscribe((account) => {
@@ -85,7 +82,7 @@ export class BalancesComponent implements OnInit, AfterViewChecked, OnDestroy {
     const wrap = document.querySelector('.scroll-wrapper .balances') as HTMLElement;
     this.e(wrap);
   }
-  trackToken(index: number, token: any) {
+  trackToken(index: number, token: any): string | number {
     return token?.contractAddress ? token.contractAddress + ':' + token?.id + ':' + token?.balance + ':' + token?.thumbnailAsset : index;
   }
 

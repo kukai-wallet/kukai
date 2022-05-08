@@ -104,7 +104,7 @@ export class TokenDetail extends ModalComponent implements OnInit, OnDestroy {
     this.imageExpanded = !this.imageExpanded;
   }
 
-  async toggleFeature(type, feat) {
+  async toggleFeature(type, feat): Promise<void> {
     this.theme = this.unlockableService.toggleFeature(type, feat) ? feat : '';
   }
 
