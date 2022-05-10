@@ -22,7 +22,7 @@ export class ActivateComponent implements OnInit, OnDestroy {
     private translate: TranslateService
   ) {}
 
-  ngOnInit() {}
+  ngOnInit(): void {}
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }

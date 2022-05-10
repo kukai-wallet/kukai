@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Account, TorusWallet } from '../../../../../services/wallet/wallet';
+import { TorusWallet } from '../../../../../services/wallet/wallet';
 import { WalletService } from '../../../../../services/wallet/wallet.service';
 import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from '../../../../../services/message/message.service';
@@ -109,7 +109,7 @@ export class NftsComponent implements OnInit, OnDestroy {
     return 'ku' + key?.replace(/ /g, '');
   }
 
-  trackContract(index: number, contract: any) {
+  trackContract(index: number, contract: any): string | number {
     return contract?.key ? contract.key : index;
   }
 

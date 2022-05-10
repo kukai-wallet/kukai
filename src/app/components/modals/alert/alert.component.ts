@@ -62,7 +62,7 @@ export class AlertComponent implements OnInit {
       `Hi,${s}\nI sent you ${b}${amount}${b} using the Kukai wallet.\n\nYou can access your ${t}wallet with your ${accountType} account at: ${url}`
     );
   }
-  getAlias(message: any) {
+  getAlias(message: any): string {
     return message.email ? message.email : message.username ? message.username : message.handler ? message.handler : 'recipient';
   }
 }

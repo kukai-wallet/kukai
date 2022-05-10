@@ -1,6 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Account, Activity, ImplicitAccount } from '../../../../services/wallet/wallet';
-import { WalletService } from '../../../../services/wallet/wallet.service';
 import { TimeAgoPipe } from '../../../../pipes/time-ago.pipe';
 import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from '../../../../services/message/message.service';
@@ -20,7 +19,6 @@ export class AccountViewComponent implements OnInit, OnDestroy {
   account: Account;
   private subscriptions: Subscription = new Subscription();
   constructor(
-    private walletService: WalletService,
     public translate: TranslateService,
     public messageService: MessageService,
     public timeAgoPipe: TimeAgoPipe,

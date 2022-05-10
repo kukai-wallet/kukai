@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, HostListener } from '@angular/core';
 import { MessageService } from '../../../services/message/message.service';
 import { WalletClient, BeaconMessageType, PermissionScope, PermissionResponseInput, OperationResponseInput } from '@airgap/beacon-sdk';
 import { WalletService } from '../../../services/wallet/wallet.service';
@@ -8,7 +8,6 @@ import { BeaconService } from '../../../services/beacon/beacon.service';
 import { DeeplinkService } from '../../../services/deeplink/deeplink.service';
 import { assertMichelsonData } from '@taquito/michel-codec';
 import { InputValidationService } from '../../../services/input-validation/input-validation.service';
-import { HostListener } from '@angular/core';
 import { SubjectService } from '../../../services/subject/subject.service';
 import { Subscription } from 'rxjs';
 

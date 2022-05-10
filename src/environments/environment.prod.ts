@@ -588,6 +588,15 @@ const _CONSTANTS: Constants = {
       category: ["collectibles"],
       description: "Humans are gone. Ottez have moved in. 4,007 generative, collectible PFP otters have taken over Earth. ",
     },
+    'Parrotz': {
+      name: 'Parrotz',
+      address: ['KT1GMRLLmxfNBb5VPASEouaKhnhQvBigzDtL'],
+      thumbnailUrl: '../../../assets/img/alias/Parrotz.png',
+      link: 'https://parrotz.tzdropz.com/',
+      shouldDisplayLink: DisplayLinkOption.None,
+      category: ['collectibles'],
+      description: 'In a new world that was once dominated by lizzards and otters, evolution took hold and a flock of 10k generative PFP Parrotz came to Tezos as NFTs to live peacefully with those that came before them.'
+    },
     xarb: {
       name: 'Xarb',
       address: ['KT1JsJUo4PQARJB3AkstQJ8mHskoNJb29a7Z'],
@@ -693,6 +702,14 @@ const _CONSTANTS: Constants = {
       thumbnailUrl: "../../../assets/img/alias/decathlon.png",
       link: "https://www.decathlon.com", shouldDisplayLink: DisplayLinkOption.None, category: ["collectibles"],
       description: "First step in building a future where digital goods are connected to physical goods"
+    },
+    'Taqueria': {
+      name: 'Taqueria Collection',
+      address: ['KT1D6er82V26zwV7RUxA9Wq7YyjziC52STjo'],
+      thumbnailUrl: '../../../assets/img/alias/taqueria.png',
+      link: 'https://taqueria.io/',
+      shouldDisplayLink: DisplayLinkOption.None,
+      description: `Taqueria is a Tezos developer tool suite, designed to make working with Tezos easier and more secure.`,
     },
   },
   ASSETS: {
@@ -1543,6 +1560,7 @@ const _TRUSTED_TOKEN_CONTRACTS = [
   "KT1AjuZb9TZTastAzhbufGsYG7vVNADUFmue",//PantoneVeryPeri
   'KT1Su3fNrnABFSYMtWVDZnMbH3DzJeysAd6t',//FILMCrew
   "KT1QXngq1CCuWv5RtnuYCSvGdKGeBxsRCWvQ",//Decathlon
+  "KT1D6er82V26zwV7RUxA9Wq7YyjziC52STjo",//Taqueria
 ];
 const _BLACKLISTED_TOKEN_CONTRACTS = []
 

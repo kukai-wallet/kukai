@@ -50,7 +50,7 @@ export class MoonpayComponent implements OnInit {
     }
     return null;
   }
-  private async open() {
+  private async open(): Promise<void> {
     this.active = true;
     const address: string = this.account ? this.account.address : null;
     if (!address?.startsWith('tz')) {
@@ -58,11 +58,11 @@ export class MoonpayComponent implements OnInit {
     }
     this.url = await this.signUrl(address);
   }
-  private close() {
+  private close(): void {
     this.url = null;
     this.active = false;
   }
-  private async post(data: any = {}) {
+  private async post(data: any = {}): Promise<string> {
     return fetch('https://utils.kukai.network/moonpay/sign', {
       method: 'POST',
       headers: {

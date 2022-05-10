@@ -37,7 +37,7 @@ export class BalanceTokenComponent implements OnInit {
       });
     }
   }
-  buyTez() {
+  buyTez(): void {
     this.subjectService.moonpay.next(true);
   }
 }

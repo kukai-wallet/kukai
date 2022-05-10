@@ -69,12 +69,12 @@ export class MnemonicImportComponent implements OnInit, AfterViewInit, OnDestroy
     this.subscriptions.unsubscribe();
   }
 
-  clickPassword(e) {
+  clickPassword(e): void {
     e.target.removeAttribute('readonly');
     e.target.focus();
   }
 
-  blurPassword(e) {
+  blurPassword(e): void {
     e.target.setAttribute('readonly', true);
   }
 

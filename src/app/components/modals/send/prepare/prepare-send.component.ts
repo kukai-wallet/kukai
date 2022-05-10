@@ -424,7 +424,7 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
       return torusError[this.torusVerifier];
     }
   }
-  sendEntireBalance(event: Event) {
+  sendEntireBalance(event: Event): void {
     event.stopPropagation();
     this.sendMax = true;
     this.checkMaxAmount();

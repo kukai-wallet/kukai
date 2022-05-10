@@ -74,7 +74,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
     this.coordinatorService.update(this.activeAccount.address);
     this.router.navigate([`/account/${this.activeAccount.address}`]);
   }
-  revealMnemonic() {
+  revealMnemonic(): void {
     ModalComponent.currentModel.next({ name: 'export-mnemonic', data: null });
   }
   canRevealMnomonic(): boolean {

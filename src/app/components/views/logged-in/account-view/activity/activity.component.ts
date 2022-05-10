@@ -23,7 +23,7 @@ export class ActivityComponent implements OnInit {
     return `${baseURL}/${hash}`;
   }
 
-  trackEvent(index: number, activity: any) {
+  trackEvent(index: number, activity: any): string {
     return activity.block + activity.hash;
   }
 }

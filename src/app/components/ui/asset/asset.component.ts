@@ -58,7 +58,7 @@ export class AssetComponent implements OnInit, AfterViewInit {
 
   constructor(private elRef: ElementRef, private tokenService: TokenService) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     if (this.hideSpinner) {
       this.display = Display.none;
     }
@@ -193,7 +193,7 @@ export class AssetComponent implements OnInit, AfterViewInit {
     }
   }
 
-  setSrc(asset) {
+  setSrc(asset): void {
     this.updateDisplay();
     if (this.isAudio() || this.isVideo() || this.is3D()) {
       this.isAudio() ? this.load.emit() : undefined;

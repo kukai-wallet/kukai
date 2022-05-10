@@ -77,7 +77,7 @@
           <app-ui-toggle-advanced
             *ngIf="CONSTANTS.FEATURE_CONTRACTS[type][feat]?.includes(token?.contractAddress + ':' + token?.id)"
             [class]="'feat ' + feat" style="width: 100%" (stateChange)="toggleFeature(type, feat)"
-            [text]="(feat + ' Mode Preview').toUpperCase()" [state]="theme === feat" [default]="theme === feat">
+            [text]="(feat + ' Mode').toUpperCase()" [state]="theme === feat" [default]="theme === feat">
           </app-ui-toggle-advanced>
         </ng-container>
       </ng-container>

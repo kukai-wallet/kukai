@@ -77,7 +77,7 @@ export class NftsBodyComponent implements OnInit, OnChanges, AfterViewInit {
       this.body.nativeElement.scrollTo(0, 0);
     }
   }
-  trackToken(index: number, token: any) {
+  trackToken(index: number, token: any): string | number {
     return token?.contractAddress ? token?.contractAddress + ':' + token?.id : index;
   }
 }

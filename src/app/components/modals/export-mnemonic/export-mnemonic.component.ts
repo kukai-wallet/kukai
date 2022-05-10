@@ -39,18 +39,18 @@ export class ExportMnemonicComponent extends ModalComponent implements OnInit {
     }
   }
 
-  mouseOut(e) {
+  mouseOut(e): void {
     e.stopPropagation();
     this.hideBlur = false;
     window.getSelection()?.removeAllRanges();
   }
-  checkSelection(ev) {
+  checkSelection(ev): void {
     ev.stopPropagation();
     if (this.isTextSelected()) {
       this.isSelectedMnemonic = true;
     }
   }
-  private isTextSelected() {
+  private isTextSelected(): boolean {
     let selection: Selection;
     if (window.getSelection) {
       selection = window.getSelection();
