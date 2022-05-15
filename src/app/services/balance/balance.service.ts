@@ -24,7 +24,7 @@ export class BalanceService {
     });
   }
   updateAccountBalance(account: Account, newBalance: number) {
-    if (account.balanceXTZ === null || account.balanceXTZ === undefined || newBalance !== account.balanceXTZ) {
+    if (account && (account.balanceXTZ === null || account.balanceXTZ === undefined || newBalance !== account.balanceXTZ)) {
       account.balanceXTZ = newBalance;
       this.updateTotalBalance();
       this.tzrateService.updateFiatBalances();
