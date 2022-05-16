@@ -145,7 +145,7 @@ export class EmbeddedComponent implements OnInit {
       }
     },
     studioexception: {
-      origins: ['https://studioexception.fr'],
+      origins: ['https://studioexception.eu'],
       permissions: {
         login: true,
         operations: false,
