@@ -149,7 +149,7 @@ export class EmbeddedComponent implements OnInit {
       permissions: {
         login: true,
         operations: false,
-        micheline: false
+        micheline: true
       }
     }
   };
