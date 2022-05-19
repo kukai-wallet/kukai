@@ -25,7 +25,7 @@
       <app-ui-toggle-advanced style="width: calc(100% - 1em);margin: 2em 0;" [default]="false"
         (stateChange)="advancedForm = $event">
       </app-ui-toggle-advanced>
-      <div *ngIf="advancedForm" class="advanced-form">
+      <form autocomplete="off" *ngIf="advancedForm" class="advanced-form">
         <div class="tabs-container">
           <div class="flex-row tabs">
             <span class="tab" [class.active]="activeTab === 0" (click)="activeTab = 0">Code</span>
@@ -37,29 +37,29 @@
           <div class="flex-row">
             <div class="flex-column">
               <label class="label">Gas limit</label>
-              <input type="text" class="text" placeholder={{this.defaultTransactionParams.gas.toString()}}
+              <input name="none" type="text" class="text" placeholder={{this.defaultTransactionParams.gas.toString()}}
                 [(ngModel)]="customGas">
             </div>
             <div class="flex-column">
               <label class="label">Fee</label>
-              <input type="text" class="text" (keypress)="keyPressNumbersDecimal($event, 'customFee')"
+              <input name="none" type="text" class="text" (keypress)="keyPressNumbersDecimal($event, 'customFee')"
                 placeholder={{this.defaultTransactionParams.fee.toString()}} [(ngModel)]="customFee">
             </div>
           </div>
           <div class="flex-row">
             <div class="flex-column">
               <label class="label">Storage limit</label>
-              <input type="text" class="text" placeholder={{this.defaultTransactionParams?.storage.toString()}}
-                [(ngModel)]="customStorage">
+              <input name="none" type="text" class="text"
+                placeholder={{this.defaultTransactionParams?.storage.toString()}} [(ngModel)]="customStorage">
             </div>
             <div class="flex-column">
               <label class="label">Max storage cost</label>
-              <input type="text" class="text read-only" [value]="burnAmount() ? burnAmount() : '0 tez'" tabindex=-1
-                readonly>
+              <input name="none" type="text" class="text read-only" [value]="burnAmount() ? burnAmount() : '0 tez'"
+                tabindex=-1 readonly>
             </div>
           </div>
         </ng-container>
-      </div>
+      </form>
       <span *ngIf="formInvalid" class="danger margin">
         {{ formInvalid }}
       </span>
@@ -67,8 +67,9 @@
         <div class="seperator"></div>
         <br />
         <ng-container *ngIf="walletService.isPwdWallet()">
-          <input [(ngModel)]="password" placeholder="Password" autocomplete="current-password" class="text password"
-            type="password" (input)="this.pwdInvalid = ''" (paste)="this.pwdInvalid = ''" (keydown.enter)='inject()'>
+          <input name="none" [(ngModel)]="password" placeholder="Password" autocomplete="current-password"
+            class="text password" type="password" (input)="this.pwdInvalid = ''" (paste)="this.pwdInvalid = ''"
+            (keydown.enter)='inject()'>
         </ng-container>
         <button *ngIf="walletService.isLedgerWallet() && ledgerError; else elseBlock" class="blue confirm"
           (click)="ledgerSign()">Sign with Ledger</button>

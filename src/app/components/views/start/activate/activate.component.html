@@ -1,19 +1,21 @@
-<div class="flex-column card">
-  <a routerLink="/import/" [state]="{ option: 2 }"><button class="flex-row back"><img src="../../../../../assets/img/left-arrow.svg">BACK</button></a>
-  <div class="flex-column body">
-    <h1>
-      Activate a Fundraiser wallet
-    </h1>
-    <p class="description">Wallets created during the fundraiser need to be activated. No private key is required for
-      the activation process.</p>
-    <span class="description">Your public key hash</span>
-    <input type="text" class="text" [(ngModel)]="pkh" [placeholder]="'tz1...'">
-    <span class="description">Your activation code</span>
-    <input type="text" class="text" [(ngModel)]="secret" [placeholder]="'Code'">
-    <button class="button next"
-      (click)="activate()">Activate</button>
-    <span *ngIf="formInvalid" class="description red">
-      {{ formInvalid }}
-    </span>
+<form autocomplete="off">
+  <div class="flex-column card">
+    <a routerLink="/import/" [state]="{ option: 2 }"><button class="flex-row back"><img
+          src="../../../../../assets/img/left-arrow.svg">BACK</button></a>
+    <div class="flex-column body">
+      <h1>
+        Activate a Fundraiser wallet
+      </h1>
+      <p class="description">Wallets created during the fundraiser need to be activated. No private key is required for
+        the activation process.</p>
+      <span class="description">Your public key hash</span>
+      <input name="none" type="text" class="text" [(ngModel)]="pkh" [placeholder]="'tz1...'">
+      <span class="description">Your activation code</span>
+      <input name="none" type="text" class="text" [(ngModel)]="secret" [placeholder]="'Code'">
+      <button class="button next" (click)="activate()">Activate</button>
+      <span *ngIf="formInvalid" class="description red">
+        {{ formInvalid }}
+      </span>
+    </div>
   </div>
-</div>
+</form>
