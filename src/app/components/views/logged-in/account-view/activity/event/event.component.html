@@ -1,14 +1,28 @@
 <div class="flex-column" [class]="getType().replace('undelegated', 'delegated')"
-  [class.unconfirmed]="activity.status === OpStatus.UNCONFIRMED" [class.half_confirmed]="activity.status === OpStatus.HALF_CONFIRMED"
-  [class.confirmed]="activity.status === OpStatus.CONFIRMED" [class.new]="fresh && activity.status === OpStatus.CONFIRMED"
-  [class.failed]="activity.status === OpStatus.FAILED">
+  [class.unconfirmed]="activity.status === OpStatus.UNCONFIRMED"
+  [class.half_confirmed]="activity.status === OpStatus.HALF_CONFIRMED"
+  [class.confirmed]="activity.status === OpStatus.CONFIRMED"
+  [class.new]="fresh && activity.status === OpStatus.CONFIRMED" [class.failed]="activity.status === OpStatus.FAILED">
   <div class="flex-row top">
     <div class="flex-row title">
       <ng-container *ngIf="!activity.entrypoint; else callEntrypoint">
         <ng-container [ngSwitch]="getType()?.replace('undelegated', 'delegated')">
-          <img *ngSwitchCase="'sent'" [src]="activity.status === OpStatus.FAILED ? '../../../../assets/img/up-arrow-red.svg' : '../../../../assets/img/up-arrow-black.svg'"
-            style="transform: rotate(45deg)" />
-          <img *ngSwitchCase="'received'" [src]="activity.status === OpStatus.FAILED ? '../../../../assets/img/up-arrow-red.svg' : '../../../../assets/img/up-arrow.svg'" style="transform: rotate(135deg)" />
+          <svg *ngSwitchCase="'sent'" class="icon" width="18" height="18" viewBox="0 0 18 18"
+            xmlns="http://www.w3.org/2000/svg" style="transform: rotate(45deg)">
+            <g>
+              <path id="svg_1"
+                d="m16.4439,9.50064c-0.764,0.764 -2.003,0.764 -2.767,0l-2.66,-2.659l0,9.231c0,1.105 -0.895,2 -2,2c-1.104,0 -2,-0.895 -2,-2l0,-9.254l-2.679,2.68c-0.767,0.767 -2.01,0.767 -2.777,0c-0.767,-0.767 -0.767,-2.01 0,-2.776l5.936,-5.936c0.037,-0.044 0.052,-0.099 0.093,-0.14c0.203,-0.203 0.558,-0.344 0.693,-0.439c0.716,-0.307 1.575,-0.176 2.16,0.409c0.101,0.101 0.152,0.227 0.227,0.342l5.774,5.774c0.765,0.764 0.765,2.004 0,2.768z"
+                fill="#3e4855" fill-rule="evenodd" />
+            </g>
+          </svg>
+          <svg *ngSwitchCase="'received'" class="icon" width="18" height="18" viewBox="0 0 18 18"
+            xmlns="http://www.w3.org/2000/svg" style="transform: rotate(135deg)">
+            <g>
+              <path id="svg_1"
+                d="m16.4439,9.50064c-0.764,0.764 -2.003,0.764 -2.767,0l-2.66,-2.659l0,9.231c0,1.105 -0.895,2 -2,2c-1.104,0 -2,-0.895 -2,-2l0,-9.254l-2.679,2.68c-0.767,0.767 -2.01,0.767 -2.777,0c-0.767,-0.767 -0.767,-2.01 0,-2.776l5.936,-5.936c0.037,-0.044 0.052,-0.099 0.093,-0.14c0.203,-0.203 0.558,-0.344 0.693,-0.439c0.716,-0.307 1.575,-0.176 2.16,0.409c0.101,0.101 0.152,0.227 0.227,0.342l5.774,5.774c0.765,0.764 0.765,2.004 0,2.768z"
+                fill="rgb(103, 111, 219)" fill-rule="evenodd" />
+            </g>
+          </svg>
           <div *ngSwitchDefault class="blank"></div>
         </ng-container>{{ printAmount() }}
       </ng-container>
@@ -17,7 +31,14 @@
           <div class="blank"></div>
         </ng-container>
         <ng-template #notZero>
-          <img src="../../../../assets/img/up-arrow-black.svg" style="transform: rotate(45deg)" />
+          <svg class="icon" width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg"
+            style="transform: rotate(45deg)">
+            <g>
+              <path id="svg_1"
+                d="m16.4439,9.50064c-0.764,0.764 -2.003,0.764 -2.767,0l-2.66,-2.659l0,9.231c0,1.105 -0.895,2 -2,2c-1.104,0 -2,-0.895 -2,-2l0,-9.254l-2.679,2.68c-0.767,0.767 -2.01,0.767 -2.777,0c-0.767,-0.767 -0.767,-2.01 0,-2.776l5.936,-5.936c0.037,-0.044 0.052,-0.099 0.093,-0.14c0.203,-0.203 0.558,-0.344 0.693,-0.439c0.716,-0.307 1.575,-0.176 2.16,0.409c0.101,0.101 0.152,0.227 0.227,0.342l5.774,5.774c0.765,0.764 0.765,2.004 0,2.768z"
+                fill="#3e4855" fill-rule="evenodd" />
+            </g>
+          </svg>
         </ng-template>
         {{ sentKind(activity) }}
       </ng-template>
@@ -34,17 +55,39 @@
         [src]="getEventIcon()" class="event-icon" />
       <div class="flex-row value">{{ getAddressPrefix(getType()) }}&nbsp;{{getCounterparty(activity)?.name ||
         getCounterparty(activity)?.address || ''}}</div>
-      <img class="copy" src="../../../../assets/img/copy-icon.svg"
-          (click)="copy(getCounterparty(activity)?.address)" />
+      <img class="copy" src="../../../../assets/img/copy-icon.svg" (click)="copy(getCounterparty(activity)?.address)" />
     </div>
     <span class="flex-row time">
-      <img [src]="getEventStatusIcon()" />
-      <a class="status" *ngIf="activity.status !== OpStatus.UNCONFIRMED" href="{{ explorerURL(activity.hash) }}" target="_blank">
+      <svg *ngIf="activity.status === OpStatus.FAILED" width="14" height="14" viewBox="0 0 14 14" fill="none"
+        xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M7 0.5C10.5841 0.5 13.5 3.41594 13.5 7C13.5 10.5841 10.5841 13.5 7 13.5C3.41594 13.5 0.5 10.5841 0.5 7C0.5 3.41594 3.41594 0.5 7 0.5ZM7 10.4972C7.12361 10.4972 7.24445 10.4605 7.34723 10.3919C7.45001 10.3232 7.53012 10.2256 7.57742 10.1114C7.62473 9.99716 7.63711 9.87149 7.61299 9.75026C7.58888 9.62902 7.52935 9.51765 7.44194 9.43025C7.35453 9.34284 7.24317 9.28331 7.12193 9.2592C7.00069 9.23508 6.87503 9.24746 6.76082 9.29476C6.64662 9.34207 6.54901 9.42218 6.48033 9.52496C6.41166 9.62774 6.375 9.74857 6.375 9.87219C6.375 10.0379 6.44085 10.1969 6.55806 10.3141C6.67527 10.4313 6.83424 10.4972 7 10.4972ZM6.32125 4.21125L6.50062 8.02375C6.50062 8.15636 6.5533 8.28354 6.64707 8.3773C6.74084 8.47107 6.86802 8.52375 7.00063 8.52375C7.13323 8.52375 7.26041 8.47107 7.35418 8.3773C7.44795 8.28354 7.50063 8.15636 7.50063 8.02375L7.68 4.21313V4.21156C7.68393 4.11998 7.66929 4.02854 7.63695 3.94277C7.60461 3.85699 7.55525 3.77865 7.49183 3.71245C7.42842 3.64626 7.35226 3.59358 7.26795 3.55759C7.18364 3.5216 7.09292 3.50305 7.00125 3.50305C6.90958 3.50305 6.81886 3.5216 6.73455 3.55759C6.65024 3.59358 6.57408 3.64626 6.51067 3.71245C6.44725 3.77865 6.39789 3.85699 6.36555 3.94277C6.33321 4.02854 6.31857 4.11998 6.3225 4.21156L6.32125 4.21125Z"
+          fill="#FA574C" />
+      </svg>
+      <svg *ngIf="activity.status === OpStatus.CONFIRMED || activity.status === OpStatus.HALF_CONFIRMED" width="12"
+        height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" clip-rule="evenodd"
+          d="M6 12C9.31371 12 12 9.31371 12 6C12 2.68629 9.31371 0 6 0C2.68629 0 0 2.68629 0 6C0 9.31371 2.68629 12 6 12ZM8.41202 4.28327C8.56846 4.05571 8.51082 3.74442 8.28327 3.58798C8.05571 3.43154 7.74442 3.48918 7.58798 3.71673L5.15308 7.25839L3.8254 6.12037C3.61573 5.94066 3.30008 5.96494 3.12037 6.1746C2.94066 6.38427 2.96494 6.69992 3.1746 6.87963L4.92459 8.37963C5.03229 8.47194 5.17413 8.51416 5.31478 8.49578C5.45543 8.47741 5.58165 8.40015 5.66201 8.28327L8.41202 4.28327Z"
+          fill="#E8EBEF" />
+      </svg>
+      <svg *ngIf="activity.status === OpStatus.UNCONFIRMED" xmlns="http://www.w3.org/2000/svg" width="16.000000pt" height="16.000000pt"
+        viewBox="0 0 16.000000 16.000000" preserveAspectRatio="xMidYMid meet">
+
+        <g transform="translate(0.000000,16.000000) scale(0.100000,-0.100000)" fill="#000000" stroke="none">
+          <path d="M43 148 c-55 -27 -50 -114 8 -138 89 -37 151 99 63 139 -30 13 -42
+13 -71 -1z m64 -38 c3 -18 -24 -56 -33 -47 -4 4 -1 13 6 22 17 20 5 32 -15 15
+-12 -10 -15 -10 -15 2 0 8 3 18 7 22 12 12 48 2 50 -14z m-17 -70 c0 -5 -4
+-10 -10 -10 -5 0 -10 5 -10 10 0 6 5 10 10 10 6 0 10 -4 10 -10z" />
+        </g>
+      </svg>
+      <!-- <img [src]="getEventStatusIcon()" /> -->
+      <a class="status" *ngIf="activity.status !== OpStatus.UNCONFIRMED" href="{{ explorerURL(activity.hash) }}"
+        target="_blank">
         <ng-container *ngIf="activity.status !== OpStatus.HALF_CONFIRMED; else halfConfirmed">
           {{ activity.timestamp | timeAgo:trigger }}
         </ng-container>
         <ng-template #halfConfirmed>
-          Confirmed
+          1 Confirmation
         </ng-template>
       </a>
       <div class="status" *ngIf="activity.status === OpStatus.UNCONFIRMED">Unconfirmed</div>

@@ -6,8 +6,8 @@ $base-font-color-secondary: v.$base-font-color-secondary;
 $base-blue-color-lightened: v.$base-blue-color-lightened;
 $color-lightened-1: v.$color-lightened-1;
 $color-lightened-2: v.$color-lightened-2;
-$base-red-color: v.$base-red-color;
-$base-green-color: v.$base-green-color;
+$red-color-1: v.$base-red-color;
+$green-color-1: v.$base-green-color;
 $border-color-dark-only: v.$border-color-dark-only;
 $border-width-dark-only: v.$border-width-dark-only;
 $border-radius: v.$border-radius;
@@ -47,6 +47,7 @@ $event-new: v.$base-end-color;
     overflow: hidden;
     background-color: #1d1d21;
     box-shadow: v.$box-shadow-darkest;
+    border: v.$border-width solid transparent;
 
     &:after {
       content: "";
@@ -59,14 +60,13 @@ $event-new: v.$base-end-color;
 
     &.unconfirmed {
       background-color: $event-unconfirmed;
-
-      &:after {
-        height: 0.1875rem;
-        background-color: $color-lightened-1;
+      & .time svg path {
+        fill: v.$base-font-color;
       }
     }
     &.half_confirmed {
-      background-color: $event-new;
+      background-color: v.$activity-yellow-color-2;
+      border-color: v.$activity-yellow-color-1;
       & .updating-balances {
         display: flex;
         align-items: center;
@@ -75,37 +75,88 @@ $event-new: v.$base-end-color;
           width: 1.125rem;
           height: 1.125rem;
           margin-right: 0.5rem;
+          filter: v.$base-filter-invert-1;
         }
         & span {
-          color: $base-font-color;
+          color: v.$activity-yellow-color-1;
+        }
+      }
+      & .title {
+        color: v.$activity-yellow-color-1;
+
+        & .icon path {
+          fill: v.$activity-yellow-color-1
+        }
+      }
+      & .bottom {
+        & .time a.status {
+          color: v.$activity-yellow-color-1;
+        }
+        & .address div.value {
+          color: v.$activity-yellow-color-1;
+          opacity: 0.675;
+        }
+        & .time svg path {
+          fill: v.$activity-yellow-color-1;
         }
       }
     }
     &.confirmed {
       background-color: $event-confirmed;
+
+      & .time svg path {
+        fill: v.$activity-blue-color-1;
+      }
     }
 
     &.new {
-      background-color: $event-new;
+      background-color: v.$activity-green-color-2;
+      border-color: v.$activity-green-color-1;
+      & .title {
+        color: v.$activity-green-color-1;
 
-      &:after {
-        height: 0.1875rem;
-        background-color: $base-green-color;
+        & .icon path {
+          fill: v.$activity-green-color-1;
+        }
+      }
+      & .bottom {
+        & .time a.status {
+          color: v.$activity-green-color-1;
+        }
+        & .address div.value {
+          color: v.$activity-green-color-1;
+          opacity: 0.675;
+        }
+        & .time svg path {
+          fill: v.$activity-green-color-1;
+        }
       }
     }
 
     &.failed {
-      background-color: $event-confirmed;
-      &:after {
-        height: 0.1875rem;
-        background-color: $base-red-color;
-      }
+      background-color: v.$activity-red-color-2;
+      border-color: v.$activity-red-color-1;
       & .title,
       & .failed {
-        color: $base-red-color;
+        color: v.$activity-red-color-1;
+      }
+      & .title .icon path {
+        fill: v.$activity-red-color-1;
       }
       & .failed {
         @include m.multiply("font-size", 1.25);
+      }
+      & .bottom {
+        & .time a.status {
+          color: v.$activity-red-color-1;
+        }
+        & .address div.value {
+          color: v.$activity-red-color-1;
+          opacity: 0.675;
+        }
+        & .time svg path {
+          fill: v.$activity-red-color-1;
+        }
       }
     }
 
@@ -113,10 +164,10 @@ $event-new: v.$base-end-color;
       @include m.multiply("font-size", 1.5);
       margin-bottom: 0.5rem;
 
-      & img {
+      & svg.icon {
         margin: 0 0.5rem 0 0;
         width: 1.5rem;
-        height: auto;
+        height: 1.5rem;
       }
 
       & .blank {
@@ -127,7 +178,8 @@ $event-new: v.$base-end-color;
       }
     }
 
-    & .top, .bottom {
+    & .top,
+    .bottom {
       width: 100%;
     }
 
@@ -183,12 +235,13 @@ $event-new: v.$base-end-color;
       width: 11rem;
       height: 1.25rem;
 
-      & img {
+      & svg {
         width: 1rem;
         height: 1rem;
         margin: 0 0.375rem 0 0;
       }
-      & a.status, div.status {
+      & a.status,
+      div.status {
         @include m.multiply("font-size", 1.125, "rem", 1.2);
         color: $base-font-color-secondary;
         white-space: nowrap;
