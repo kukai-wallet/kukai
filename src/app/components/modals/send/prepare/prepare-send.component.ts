@@ -264,8 +264,8 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
       }
     }
   }
-  updateDefaultValues(e?: any): void {
-    const val = e?.target.value.trim();
+  updateDefaultValues(ev?: any): void {
+    const val = ev?.target.value.trim();
     if (val && !this.torusVerifier) {
       if (this.inputValidationService.twitterAccount(val)) {
         this.torusVerifier = 'twitter';
@@ -274,7 +274,7 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
         this.torusVerifier = 'domain';
         this.torusVerifierName = 'Tezos Domains';
       }
-      e.target.value = e.target.value.trim();
+      ev.target.value = ev.target.value.trim();
     }
 
     if (!this.torusVerifier) {
@@ -636,5 +636,15 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
       this.torusVerifierName = data.torusVerifierName;
       this.verifierChange();
     }
+  }
+  pasteToPkh(): void {
+    navigator.clipboard.readText().then((clipText) => {
+      this.toPkh = clipText;
+      this.updateDefaultValues({ target: { value: this.toPkh } });
+    });
+  }
+  handleScanResponse(ev): void {
+    this.toPkh = ev?.pkh || '';
+    this.updateDefaultValues({ target: { value: this.toPkh } });
   }
 }

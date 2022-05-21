@@ -1,4 +1,5 @@
-<button class="scan" (click)="openModal()">Scan QR code</button>
+<button *ngIf="!override" class="scan" (click)="openModal()">Scan QR code</button>
+<img *ngIf="override" class="scan override" (click)="openModal()" src="assets/img/qr.svg" />
 <div *ngIf="isOpen" class="flex-column kukai-modal">
   <form autocomplete="off">
     <div class="content">
@@ -9,14 +10,15 @@
       </div>
       <div class="seperator"></div>
       <div class="flex-column qr-scanner">
-        <!-- <label class="value">Scan QR code from dApp</label> -->
         <div class="video-container">
           <video #videoPlayer>
             Browser not supported
           </video>
           <p class="no-cam" *ngIf="!qrScanner">No camera detected</p>
+          <p class="no-cam" *ngIf="!!errorMessage">{{ errorMessage }}</p>
+          <p class="no-cam" *ngIf="!!errorMessage">Please check site permissions</p>
         </div>
-        <input *ngIf="!env.production" name="none" type="text" [(ngModel)]="manualInput" class="text" (paste)="handlePaste($event)"
+        <input *ngIf="!env.production && !override" name="none" type="text" [(ngModel)]="manualInput" class="text" (paste)="handlePaste($event)"
           placeholder="...or paste pairing string here">
       </div>
     </div>

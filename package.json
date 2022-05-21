@@ -74,7 +74,7 @@
     "mutationobserver-shim": "^0.3.5",
     "node-forge": "^1.3.1",
     "pbkdf2": "^3.0.17",
-    "qr-scanner": "^1.2.0",
+    "qr-scanner": "^1.4.1",
     "qrcode": "^1.4.1",
     "rxjs": "^6.5.5",
     "rxjs-compat": "^6.5.2",
@@ -142,8 +142,9 @@
   },
   "overrides": {
     "async": "3.2.3",
+    "ejs": "3.1.7",
     "strip-ansi": "6.0.0",
-    "axios": "^0.25.0",
+    "axios": "^0.27.2",
     "minimist": "^1.2.6"
   }
 }

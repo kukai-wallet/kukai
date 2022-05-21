@@ -41,20 +41,22 @@
       </form>
       <div class="to">
         <div *ngIf="!this.isMultipleDestinations" class="flex-column">
-          <form autocomplete="off">
-            <span class="label title">SEND TO:</span>
-            <div class="address">
-              <app-ui-dropdown-prepare-send [torusVerifier]="torusVerifier" [torusVerifierName]="torusVerifierName"
-                (dropdownResponse)="dropdownResponse($event)"></app-ui-dropdown-prepare-send>
-              <input name="none" type="text" placeholder="Recipient" class="text" (input)="updateDefaultValues($event)"
-                (change)="toPkhChange()" [(ngModel)]="toPkh" name="none">
+          <span class="label title">SEND TO:</span>
+          <div class="address">
+            <div *ngIf="!toPkh" class="flex-column tool" id="paste" (click)="pasteToPkh()">
+              <img src="assets/img/paste.svg" />
             </div>
-            <div class="flex-row address-display">
-              <span [style.display]="!torusPendingLookup && torusLookupAddress ? '' : 'none'">{{ torusLookupAddress
-                }}</span><span [style.display]="torusPendingLookup ? '' : 'none'"><img
-                  src="../../../../assets/img/feeLoader.gif"></span>
-            </div>
-          </form>
+            <app-qr-scanner *ngIf="!toPkh" [override]="true" class="flex-column tool" id="qr" (scanResponse)="handleScanResponse($event)"></app-qr-scanner>
+            <app-ui-dropdown-prepare-send [torusVerifier]="torusVerifier" [torusVerifierName]="torusVerifierName"
+              (dropdownResponse)="dropdownResponse($event)"></app-ui-dropdown-prepare-send>
+            <input type="text" placeholder="Recipient" class="text" (input)="updateDefaultValues($event)"
+              (change)="toPkhChange()" [(ngModel)]="toPkh">
+          </div>
+          <div class="flex-row address-display">
+            <span [style.display]="!torusPendingLookup && torusLookupAddress ? '' : 'none'">{{ torusLookupAddress
+              }}</span><span [style.display]="torusPendingLookup ? '' : 'none'"><img
+                src="../../../../assets/img/feeLoader.gif"></span>
+          </div>
         </div>
         <div *ngIf="this.isMultipleDestinations" class="flex-column">
           <label class="label">Addresses and amounts <span class="batchInfo">{{ batchSpace() }}</span></label>
