@@ -1,5 +1,5 @@
-@use '../../abstracts/mixins'as m;
-@use '../../abstracts/variables'as v;
+@use "../../abstracts/mixins" as m;
+@use "../../abstracts/variables" as v;
 
 $base-font-color: v.$base-font-color;
 $base-font-color-secondary: v.$base-font-color-secondary;
@@ -26,7 +26,7 @@ $base-background-color: v.$base-background-color;
   }
 
   & .title {
-    @include m.multiply('font-size', 1, "em");
+    @include m.multiply("font-size", 1, "em");
     color: $base-font-color;
     font-weight: 500;
     width: calc(100% - 8em);
@@ -71,7 +71,7 @@ $base-background-color: v.$base-background-color;
       }
 
       & .title {
-        @include m.multiply('font-size', 1.5, "em");
+        @include m.multiply("font-size", 1.5, "em");
         color: $base-font-color;
         font-weight: 500;
         margin: 0 0 0 1.5em;
@@ -86,6 +86,7 @@ $base-background-color: v.$base-background-color;
       & input {
         width: 100%;
         height: 3.5em;
+        padding: 0 0 0 1.25em;
       }
 
       & button {
@@ -110,13 +111,12 @@ $base-background-color: v.$base-background-color;
       color: $color-lightened-3;
 
       & .amount {
-
         &-usd,
         &-fee {
           color: #6c7a8d;
           font-weight: 500;
 
-          &>span {
+          & > span {
             color: #b9bfc7;
           }
         }
@@ -129,7 +129,7 @@ $base-background-color: v.$base-background-color;
       padding: 1em 0 0 0;
       margin: 1em 0 0 0;
 
-      &>p {
+      & > p {
         color: $base-font-color-secondary;
       }
     }
@@ -142,8 +142,27 @@ $base-background-color: v.$base-background-color;
     & .address {
       position: relative;
 
+      & .tool {
+        border: v.$border-width solid v.$border-color;
+        border-radius: v.$border-radius-hard;
+        position: absolute;
+        top: 0.875em;
+        right: 0.75em;
+        cursor: pointer;
+        & img {
+          width: 2em;
+          height: 2em;
+          padding: 0.5em;
+          filter: v.$base-filter-brightness-5;
+        }
+        &#paste {
+          right: 4.75em;
+        }
+      }
+
       & input.text {
         margin: 0 0 0.5em 0;
+        padding: 0 0 0 1.25em;
       }
 
       &-display {
@@ -191,5 +210,18 @@ $base-background-color: v.$base-background-color;
     font-size: 4.45vw;
     right: 0.45em;
     top: 0.375em;
+  }
+
+  .prepare-send .to .address .tool {
+    top: 1em;
+    right: 1em;
+    & img {
+      width: 2em;
+      height: 2em;
+      padding: 0.75em;
+    }
+    &#paste {
+      right: 5.5em;
+    }
   }
 }

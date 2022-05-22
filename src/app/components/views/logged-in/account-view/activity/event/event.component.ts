@@ -88,19 +88,6 @@ export class EventComponent implements OnInit, OnChanges, OnDestroy {
   getEventIcon(): string {
     return `../../../../assets/img/${LookupType[this.getCounterparty(this.activity)?.lookupType].toLowerCase().replace('tezosdomains', 'domain')}-logo.svg`;
   }
-  getEventStatusIcon(): string {
-    return this.fresh && this.activity.status === OpStatus.CONFIRMED
-      ? '../../../../assets/img/event-new.png'
-      : this.activity.status === OpStatus.CONFIRMED
-      ? '../../../../assets/img/event-confirmed.png'
-      : this.activity.status === OpStatus.UNCONFIRMED
-      ? '../../../../assets/img/event-unconfirmed.png'
-      : this.activity.status === OpStatus.FAILED
-      ? '../../../../assets/img/event-error.png'
-      : this.activity.status === OpStatus.HALF_CONFIRMED
-      ? '../../../../../assets/img/event-half-confirmed.png'
-      : '../../../../assets/img/event-unconfirmed.png';
-  }
   printAmount(): string {
     switch (this.getType()) {
       case 'sent':

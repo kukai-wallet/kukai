@@ -64,8 +64,10 @@ export class TorusService {
         typeOfLogin: 'google',
         clientId: '952872982551-49mfvktoios59oj2kmiknlltfq9pvi6c.apps.googleusercontent.com',
         verifier: 'tezos-google',
+        subVerifier: 'kukai-web',
         caseSensitiveVerifierID: false,
-        lookups: true
+        lookups: true,
+        aggregated: true
       },
       [REDDIT]: {
         name: 'Reddit',

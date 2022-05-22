@@ -14,6 +14,30 @@ $border-color: v.$border-color;
 $base-filter-brightness-5: v.$base-filter-brightness-5;
 $base-filter-contrast-invert-01: v.$base-filter-contrast-invert-01;
 
+:host {
+  &#qr {
+    & img.override {
+      width: 2em;
+      height: 2em;
+      padding: 0.5em;
+      filter: v.$base-filter-brightness-5;
+      & + .kukai-modal {
+        position: fixed;
+      }
+    }
+    
+    @media (max-width: v.$layout-break-6) {
+      img.override {
+        padding: 0.75em;
+      }
+    }
+
+    & .kukai-modal .content {
+      overflow-y: hidden;
+    }
+  }
+}
+
 .kukai-modal {
   position: absolute;
   top: 0;
@@ -264,7 +288,7 @@ $base-filter-contrast-invert-01: v.$base-filter-contrast-invert-01;
           margin: 1em 0;
         }
       }
-    
+
       & .bottom {
         left: 0em;
         bottom: 0;

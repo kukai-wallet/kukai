@@ -1,16 +1,19 @@
 <div *ngIf="isOpen" class="flex-column kukai-modal">
   <div class="content">
     <div class="flex-row top">
-      <div class="flex-row button close" (click)="closeModalAction()"><img class="x" src="../../../assets/img/close-btn-x.png" /></div>
+      <div class="flex-row button close" (click)="closeModalAction()"><img class="x"
+          src="../../../assets/img/close-btn-x.png" /></div>
       <h1 class="title">Confirm Staking</h1>
     </div>
     <div class="flex-column confirm-staking">
       <div class="flex-row head">
         <img *ngIf="delegate?.logo" [src]="delegate.logo" />
-        <div class="flex-column data" *ngIf="delegate?.name ? delegate.name : toPkh; let delegateDisplayName; else undelegate">
+        <div class="flex-column data"
+          *ngIf="delegate?.name ? delegate.name : toPkh; let delegateDisplayName; else undelegate">
           <span class="name">{{ delegateDisplayName }}</span>
-          <div class="flex-row fee-space"><span class="fee"><span>SPLIT:</span>&nbsp;{{ delegate?.fee ? toPercent(delegate.fee) : 'UNKNOWN' }}</span><span
-              *ngIf="delegate?.freeSpace" class="space"><span>SPACE:</span>&nbsp;{{ round(delegate.freeSpace) }}</span>
+          <div class="flex-row fee-space"><span class="fee"><span>SPLIT:</span>&nbsp;{{ delegate?.fee ?
+              toPercent(delegate.fee) : 'UNKNOWN' }}</span><span *ngIf="delegate?.freeSpace"
+              class="space"><span>SPACE:</span>&nbsp;{{ round(delegate.freeSpace) }}</span>
           </div>
         </div>
         <ng-template #undelegate>
@@ -19,24 +22,28 @@
           </div>
         </ng-template>
       </div>
-      <br/>
-      <app-ui-toggle-advanced style="width: calc(100% - 1em);" [default]="false" (stateChange)="advanced = $event"></app-ui-toggle-advanced>
-      <br/>
-      <br/>
+      <br />
+      <app-ui-toggle-advanced style="width: calc(100% - 1em);" [default]="false" (stateChange)="advanced = $event">
+      </app-ui-toggle-advanced>
+      <br />
+      <br />
       <ng-container *ngIf="advanced">
-        <div class="label">Fee <span class="label" style="margin: 0; text-transform: lowercase;">(tez)</span></div>
-        <input [(ngModel)]="fee" class="text fee" type="text" placeholder="{{defaultFee}}" [disabled]="walletService.isLedgerWallet() && sendResponse?.payload?.signedOperation"/>
+        <form autocomplete="off">
+          <div class="label">Fee <span class="label" style="margin: 0; text-transform: lowercase;">(tez)</span></div>
+          <input name="none" [(ngModel)]="fee" class="text fee" type="text" placeholder="{{defaultFee}}"
+            [disabled]="walletService.isLedgerWallet() && sendResponse?.payload?.signedOperation" />
+        </form>
       </ng-container>
-      <br/>
-      <br/>
+      <br />
+      <br />
       <div class="flex-column bottom">
         <div class="seperator"></div>
         <ng-container *ngIf="walletService.isPwdWallet()">
           <div class="label">ENTER YOUR PASSWORD TO CONFIRM</div>
           <span *ngIf="this.pwdValid" class="label danger">{{ this.pwdValid }}</span>
-          <input [(ngModel)]="password"
-            placeholder="Password" autocomplete="current-password" class="text password" type="password"
-            (input)="this.pwdValid = ''" (change)="this.pwdValid = ''" (keydown.enter)='inject()'>
+          <input name="none" [(ngModel)]="password" placeholder="Password" autocomplete="current-password"
+            class="text password" type="password" (input)="this.pwdValid = ''" (change)="this.pwdValid = ''"
+            (keydown.enter)='inject()'>
         </ng-container>
         <button class="confirm" *ngIf="walletService.isLedgerWallet() && ledgerError; else elseBlock"
           (click)="ledgerSign()">Sign with Ledger</button>
