@@ -15,7 +15,7 @@ const _CONSTANTS: Constants = {
     TOP_DOMAIN: 'ith'
   },
   MAINNET: false,
-  NODE_URL: 'https://rpc.ithacanet.teztnets.xyz',
+  NODE_URL: 'https://ithacanet.ecadinfra.com',
   BLOCK_EXPLORER_URL: 'https://ithacanet.tzkt.io',
   HARD_LIMITS: {
     hard_gas_limit_per_operation: 1040000,
