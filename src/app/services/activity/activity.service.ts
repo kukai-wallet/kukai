@@ -41,7 +41,8 @@ export class ActivityService {
       flatMap((data) => {
         const counter = data.counter;
         const unknownTokenIds = data.unknownTokenIds ? data.unknownTokenIds : [];
-        this.handleUnknownTokenIds(unknownTokenIds);
+        this.tokenService.searchAllMetadata(unknownTokenIds);
+        this.tokenService.recheckMetadata(data?.tokens);
         if (account.state !== counter) {
           if (data.tokens) {
             this.updateTokenBalances(account, data.tokens);
@@ -69,14 +70,6 @@ export class ActivityService {
         }
       })
     );
-  }
-  private handleUnknownTokenIds(unknownTokenIds) {
-    if (unknownTokenIds.length) {
-      for (const tokenId of unknownTokenIds) {
-        const tok = tokenId.split(':');
-        this.tokenService.searchMetadata(tok[0], tok[1]);
-      }
-    }
   }
   async updateTokenBalances(account, tokens) {
     if (Array.isArray(tokens)) {
@@ -106,7 +99,7 @@ export class ActivityService {
     return fromPromise(this.indexerService.getOperations(account.address, knownTokenIds, this.walletService.wallet)).pipe(
       flatMap((resp) => {
         const operations = resp.operations;
-        this.handleUnknownTokenIds(resp.unknownTokenIds);
+        this.tokenService.searchAllMetadata(resp.unknownTokenIds);
         if (Array.isArray(operations)) {
           const oldActivities = account.activities;
           const unconfirmedOps = [];

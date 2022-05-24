@@ -23,6 +23,7 @@ export interface TokenResponseType {
   isBooleanAmount?: boolean;
   shouldPreferSymbol?: boolean;
   series?: string;
+  ttl?: number;
   status: Status;
   isUnknownToken?: boolean;
 }
@@ -54,6 +55,7 @@ export interface TokenData {
   isBooleanAmount?: boolean;
   shouldPreferSymbol?: boolean;
   series?: string;
+  ttl?: number;
   status: Status;
 }
 export interface FA12 extends TokensInterface {
@@ -193,9 +195,35 @@ export class TokenService {
       }
     }
   }
-  async searchMetadata(contractAddress: string, id: number) {
-    const tokenId = `${contractAddress}:${id}`;
-    if (!this.isKnownTokenId(tokenId) && !this.queue.includes(tokenId) && this.explore(tokenId)) {
+  async searchAllMetadata(unknownTokenIds: any) {
+    if (unknownTokenIds.length) {
+      for (const tokenId of unknownTokenIds) {
+        this.searchMetadata(tokenId);
+      }
+    }
+  }
+  async recheckMetadata(tokens) {
+    if (tokens?.length) {
+      for (let token of tokens) {
+        const tokenObject = this.getAsset(token.tokenId);
+        if (tokenObject?.ttl) {
+          const exp = this.exploredIds[token.tokenId];
+          const now = new Date().getTime();
+          if (now - exp.lastCheck > tokenObject.ttl * 1000) {
+            console.log('recheck metadata for', token.tokenId);
+            this.exploredIds[token.tokenId].lastCheck = now;
+            this.exploredIds[token.tokenId].counter = ++exp.counter || 0;
+            this.saveMetadata();
+            if (!this.queue.includes(token.tokenId)) {
+              this.searchMetadata(token.tokenId, true);
+            }
+          }
+        }
+      }
+    }
+  }
+  private async searchMetadata(tokenId: string, force = false) {
+    if ((!this.isKnownTokenId(tokenId) && !this.queue.includes(tokenId) && this.explore(tokenId)) || force) {
       this.queue.push(tokenId);
       if (this.workers < 64) {
         this.startWorker();
@@ -210,10 +238,10 @@ export class TokenService {
         const a = tokenId.split(':');
         const contractAddress = a[0];
         const id = Number(a[1]);
-        if (!this.isKnownTokenId(tokenId)) {
-          const metadata = await this.indexerService.getTokenMetadata(contractAddress, id);
-          this.handleMetadata(metadata, contractAddress, id);
-        }
+        const recentDay = this.exploredIds[tokenId]?.lastCheck - this.exploredIds[tokenId]?.firstCheck < 1000 * 3600 * 24;
+        const skipTzkt = this.isKnownTokenId(tokenId) && this.exploredIds[tokenId]?.counter % 5 === 2 && recentDay;
+        const metadata = await this.indexerService.getTokenMetadata(contractAddress, id, skipTzkt);
+        this.handleMetadata(metadata, contractAddress, id);
       } catch (e) {}
     }
     this.workers--;
@@ -234,9 +262,8 @@ export class TokenService {
         artifactAsset: metadata.artifactUri ?? '',
         displayAsset: metadata.displayUri ?? '',
         thumbnailAsset: metadata.thumbnailUri ?? '',
-        isTransferable: metadata?.isTransferable ? metadata.isTransferable : true,
+        isTransferable: metadata?.isTransferable === false ? metadata.isTransferable : true,
         isBooleanAmount: metadata?.isBooleanAmount ? metadata.isBooleanAmount : false,
-        series: metadata.series ? metadata.series : undefined,
         status:
           TRUSTED_TOKEN_CONTRACTS.includes(contractAddress) ||
           CONSTANTS.NFT_CONTRACT_OVERRIDES.includes(tokenId) ||
@@ -244,6 +271,12 @@ export class TokenService {
             ? 1
             : 0
       };
+      if (metadata?.ttl) {
+        token.ttl = Math.max(Number(metadata.ttl), 30);
+      }
+      if (metadata?.series) {
+        token.series = metadata.series;
+      }
       if (CONSTANTS.ASSETS[contractAddress]?.tokens[id]) {
         contract.tokens[id] = { ...token, ...CONSTANTS.ASSETS[contractAddress].tokens[id] };
       } else {
