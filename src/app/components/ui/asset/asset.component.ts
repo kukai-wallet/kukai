@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, Sanitizer, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, Sanitizer, SimpleChanges, ViewChild } from '@angular/core';
 import { Asset, CachedAsset, TokenService } from '../../../services/token/token.service';
 import { CONSTANTS, MODEL_3D_WHITELIST } from '../../../../environments/environment';
 
@@ -61,6 +61,27 @@ export class AssetComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     if (this.hideSpinner) {
       this.display = Display.none;
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (
+      changes?.assets?.previousValue &&
+      changes?.assets?.currentValue &&
+      JSON.stringify(changes?.assets?.previousValue) !== JSON.stringify(changes?.assets?.currentValue)
+    ) {
+      const p0 = this.assetToUrl(this.pickAsset(changes?.assets?.previousValue));
+      const p1 = this.assetToUrl(this.pickAsset(changes?.assets?.currentValue));
+      if (p0 !== p1) {
+        console.log('reload asset', { from: p0, to: p1 });
+        this.display = Display.none;
+        this.dataSrc = undefined;
+        this.preSrc = this.loaderUrl;
+        this.postSrc = this.loaderUrl;
+        this.mimeType = 'image/*';
+        this.updateDisplay();
+        this.lazyLoad();
+      }
     }
   }
 
