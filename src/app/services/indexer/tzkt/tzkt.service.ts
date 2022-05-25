@@ -371,6 +371,10 @@ export class TzktService implements Indexer {
         meta.formats = JSON.parse(meta.formats);
       }
     }
+    // fxHash
+    if (contractAddress === 'KT1U6EHmNxJTkvaWJ4ThczG4FSDaHC21ssvi' && meta?.artifactUri) {
+      delete meta.artifactUri;
+    }
     // Plenty + HEH
     if (!meta.displayUri && !meta.thumbnailUri && meta?.icon) {
       meta.thumbnailUri = { uri: meta.icon, mimeType: 'unknown' };
