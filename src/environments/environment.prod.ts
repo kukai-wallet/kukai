@@ -20,6 +20,17 @@ const _CONSTANTS: Constants = {
     hard_storage_limit_per_operation: 60000
   },
   CONTRACT_ALIASES: {
+    dogami: {
+      name: 'Dogamí',
+      address: ['KT1NVvPsNDChrLRH5K2cy6Sc9r1uuUwdiZQd', 'KT1SnUZLQ4gVrQeapUvp6GY9UKKb4gAZJ8D9'],
+      thumbnailUrl: 'assets/img/alias/dogami-thumbnail.png',
+      discoverUrl: 'assets/img/alias/dogami-discover.png',
+      link: 'https://dogami.com',
+      shouldDisplayLink: DisplayLinkOption.All,
+      category: ['games', 'collectibles'],
+      zoomDiscoverImg: true,
+      description: 'Raise unique virtual NFT avatars on mobile'
+    },
     'GJOE': {
       name: "GJOE",
       address: ["KT1QdMB7uePDFGoFLDZmAL34roFYqYhzHu7N"],
