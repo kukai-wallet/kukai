@@ -151,6 +151,14 @@ export class EmbeddedComponent implements OnInit {
         operations: false,
         micheline: true
       }
+    },
+    cleantree: {
+      origins: ['https://cleantree.artshelp.net'],
+      permissions: {
+        login: true,
+        operations: false,
+        micheline: false
+      }
     }
   };
   constructor(
