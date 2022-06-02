@@ -52,6 +52,7 @@
                   "maximumWarning": "10kb"
                 }
               ],
+              "outputHashing": "all",
               "buildOptimizer": false,
               "optimization": false,
               "vendorChunk": true,
