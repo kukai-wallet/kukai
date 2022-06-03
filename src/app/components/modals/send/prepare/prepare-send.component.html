@@ -39,7 +39,7 @@
           </div>
         </div>
       </form>
-      <div class="to">
+      <form class="to" autocomplete="off">
         <div *ngIf="!this.isMultipleDestinations" class="flex-column">
           <span class="label title">SEND TO:</span>
           <div class="address">
@@ -50,7 +50,7 @@
             <app-ui-dropdown-prepare-send [torusVerifier]="torusVerifier" [torusVerifierName]="torusVerifierName"
               (dropdownResponse)="dropdownResponse($event)"></app-ui-dropdown-prepare-send>
             <input type="text" placeholder="Recipient" class="text" (input)="updateDefaultValues($event)"
-              (change)="toPkhChange()" [(ngModel)]="toPkh">
+              (change)="toPkhChange()" name="toPkh" [(ngModel)]="toPkh">
           </div>
           <div class="flex-row address-display">
             <span [style.display]="!torusPendingLookup && torusLookupAddress ? '' : 'none'">{{ torusLookupAddress
@@ -74,7 +74,7 @@
             </span>
           </button>
         </div>
-      </div>
+      </form>
       <form autocomplete="off" *ngIf="advancedForm" class="flex-column advanced-form">
         <div class="flex-row">
           <div class="flex-column">
