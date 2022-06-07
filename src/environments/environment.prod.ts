@@ -722,6 +722,41 @@ const _CONSTANTS: Constants = {
       shouldDisplayLink: DisplayLinkOption.None,
       description: `Taqueria is a Tezos developer tool suite, designed to make working with Tezos easier and more secure.`,
     },
+    'Witchez': {
+      name: "Witchez",
+      address: ["KT1S89SqXpD3ys6MCmh7PEu3URwxb91G9wmU"],
+      thumbnailUrl: "../../../assets/img/alias/witchez.png",
+      link: "https://witchez.xyz", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"],
+    },
+    'MONSTERFACE': {
+      name: "MONSTERFACE",
+      address: ["KT1HAsUs1FCZMLMgdpVdygZvosm16SzGCuHn"],
+      thumbnailUrl: "../../../assets/img/alias/MONSTERFACE.png",
+      link: "https://chopsumo.xyz", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"],
+    },
+    'Nightmare Lords': {
+      name: "Nightmare Lords",
+      address: ["KT19atdNp1Pt7Bta49RQNPjfbSpMTK8n5h2w"],
+      thumbnailUrl: "../../../assets/img/alias/nightmare-lords.png",
+      link: "https://chopsumo.xyz", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"],
+    },
+    'Witchez Extraz': {
+      name: "Witchez Extraz",
+      address: ["KT1TzUGqVHv965DhFiNaYQyDK82ZQzNoqqZx"],
+      thumbnailUrl: "../../../assets/img/alias/witchez-extraz.png",
+      link: "https://witchez.xyz", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"],
+    },
+    'AUBREY': {
+      name: "AUBREY",
+      address: ["KT1LJ6qEqL1izvwLHp3uAeeNf1TusAVAbjou"],
+      thumbnailUrl: "../../../assets/img/alias/AUBREY.png",
+      link: "https://chopsumo.xyz", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"],
+    },
   },
   ASSETS: {
     KT1K9gCRgaLRFKTErYt1wVxA3Frb9FjasjTV: {
@@ -1572,6 +1607,11 @@ const _TRUSTED_TOKEN_CONTRACTS = [
   'KT1Su3fNrnABFSYMtWVDZnMbH3DzJeysAd6t',//FILMCrew
   "KT1QXngq1CCuWv5RtnuYCSvGdKGeBxsRCWvQ",//Decathlon
   "KT1D6er82V26zwV7RUxA9Wq7YyjziC52STjo",//Taqueria
+  'KT1S89SqXpD3ys6MCmh7PEu3URwxb91G9wmU',//Witchez
+  'KT1HAsUs1FCZMLMgdpVdygZvosm16SzGCuHn',//MONSTERFACE
+  'KT19atdNp1Pt7Bta49RQNPjfbSpMTK8n5h2w',//Nightmare Lords
+  'KT1TzUGqVHv965DhFiNaYQyDK82ZQzNoqqZx',//Witchez Extraz
+  'KT1LJ6qEqL1izvwLHp3uAeeNf1TusAVAbjou',//AUBREY
 ];
 const _BLACKLISTED_TOKEN_CONTRACTS = []
 
