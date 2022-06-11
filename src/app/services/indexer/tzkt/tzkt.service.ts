@@ -213,8 +213,8 @@ export class TzktService implements Indexer {
         tokenArr.push(activity);
       }
     }
-    let operations = ops
-      .concat(tokenArr)
+    let operations = tokenArr
+      .concat(ops)
       .filter((op) => op?.entrypoint !== 'transfer' && op?.entrypoint !== 'claim')
       .sort(function (a: any, b: any) {
         return b.timestamp - a.timestamp;
