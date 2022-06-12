@@ -80,10 +80,10 @@ export class TokenBalancesService {
               });
             }
           }
-          const name = CONTRACT_ALIASES?.name ? CONTRACT_ALIASES.name : contractAlias;
+          const name = CONTRACT_ALIASES?.name ? CONTRACT_ALIASES.name : this.tokenService.getContractName(asset.contractAddress) ?? contractAlias;
           nfts[contractAlias] = {
             name,
-            thumbnailUrl: CONTRACT_ALIASES?.thumbnailUrl,
+            thumbnailUrl: CONTRACT_ALIASES?.thumbnailUrl ?? this.tokenService.getContractLogo(asset.contractAddress),
             tokens: []
           };
           if (CONTRACT_ALIASES?.link) {
