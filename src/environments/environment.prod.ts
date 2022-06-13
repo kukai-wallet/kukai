@@ -722,6 +722,14 @@ const _CONSTANTS: Constants = {
       shouldDisplayLink: DisplayLinkOption.None,
       description: `Taqueria is a Tezos developer tool suite, designed to make working with Tezos easier and more secure.`,
     },
+    'HCKR Lounge': {
+      name: 'Tezos HCKR Lounge',
+      address: ['KT1Fezth36inWMKtTh8Rt6NaQSM1im5LwP4T'],
+      thumbnailUrl: '../../../assets/img/alias/tezos_blue_bg.jpg',
+      link: '',
+      shouldDisplayLink: DisplayLinkOption.None,
+      description: ``,
+    },
   },
   ASSETS: {
     KT1K9gCRgaLRFKTErYt1wVxA3Frb9FjasjTV: {

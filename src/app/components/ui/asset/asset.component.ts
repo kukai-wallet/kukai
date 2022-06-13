@@ -53,7 +53,7 @@ export class AssetComponent implements OnInit, AfterViewInit {
   preSrc = this.loaderUrl;
   postSrc = this.loaderUrl;
   mimeType = 'image/*';
-
+  errors = 0;
   obs: IntersectionObserver;
 
   constructor(private elRef: ElementRef, private tokenService: TokenService) {}
@@ -74,13 +74,7 @@ export class AssetComponent implements OnInit, AfterViewInit {
       const p1 = this.assetToUrl(this.pickAsset(changes?.assets?.currentValue));
       if (p0 !== p1) {
         console.log('reload asset', { from: p0, to: p1 });
-        this.display = Display.none;
-        this.dataSrc = undefined;
-        this.preSrc = this.loaderUrl;
-        this.postSrc = this.loaderUrl;
-        this.mimeType = 'image/*';
-        this.updateDisplay();
-        this.lazyLoad();
+        this.reload();
       }
     }
   }
@@ -88,7 +82,15 @@ export class AssetComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.lazyLoad();
   }
-
+  private reload() {
+    this.display = Display.none;
+    this.dataSrc = undefined;
+    this.preSrc = this.loaderUrl;
+    this.postSrc = this.loaderUrl;
+    this.mimeType = 'image/*';
+    this.updateDisplay();
+    this.lazyLoad();
+  }
   updateDisplay(): void {
     if (this.isImage() && (this.requires.includes('image') || this.requires.includes('all'))) {
       this.display = Display.image;
@@ -135,8 +137,15 @@ export class AssetComponent implements OnInit, AfterViewInit {
   }
 
   onError(e): void {
-    if (e?.target?.id === 'postImage' && this.isImage()) {
-      this.evaluateInvalid();
+    if ((e?.target?.id === 'postImage' || e?.target?.id === 'preImage') && this.isImage()) {
+      this.errors++;
+      if (this.errors <= 2) {
+        console.log('retry lazyload', this.preSrc);
+        this.reload();
+      } else {
+        console.log('failed to load asset', this.preSrc);
+        this.evaluateInvalid();
+      }
     }
   }
 
@@ -202,8 +211,11 @@ export class AssetComponent implements OnInit, AfterViewInit {
       typeof asset !== 'string' &&
       !(asset?.mimeType?.startsWith('model/') && (MODEL_3D_WHITELIST as Array<any>).includes(this.tokenService.getContractAddressFromAsset(asset?.uri)))
     ) {
-      const response = await fetch(url, { method: 'GET' });
-      if (!response.ok) {
+      let response;
+      for (let i = 0; i < 3 && !response?.ok; i++) {
+        response = await fetch(url, { method: 'GET' });
+      }
+      if (!response?.ok) {
         throw new Error();
       }
       this.mimeType = response.headers.get('content-type');
