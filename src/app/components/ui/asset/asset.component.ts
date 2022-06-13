@@ -211,8 +211,11 @@ export class AssetComponent implements OnInit, AfterViewInit {
       typeof asset !== 'string' &&
       !(asset?.mimeType?.startsWith('model/') && (MODEL_3D_WHITELIST as Array<any>).includes(this.tokenService.getContractAddressFromAsset(asset?.uri)))
     ) {
-      const response = await fetch(url, { method: 'GET' });
-      if (!response.ok) {
+      let response;
+      for (let i = 0; i < 3 && !response?.ok; i++) {
+        response = await fetch(url, { method: 'GET' });
+      }
+      if (!response?.ok) {
         throw new Error();
       }
       this.mimeType = response.headers.get('content-type');
