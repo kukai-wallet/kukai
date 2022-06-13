@@ -43,7 +43,7 @@ export class OperationService {
     KT: new Uint8Array([2, 90, 121])
   };
   microTez = new Big(1000000);
-  feeHardCap = 10; //tez
+  feeHardCap = 100; //tez
   constructor(private http: HttpClient, private errorHandlingPipe: ErrorHandlingPipe, private tokenService: TokenService) {}
   /*
     Returns an observable for the activation of an ICO identity
@@ -114,7 +114,7 @@ export class OperationService {
             flatMap((actions: number) => {
               return this.getRpc(`chains/main/blocks/head/context/contracts/${keys.pkh}/manager_key`).pipe(
                 flatMap((manager: any) => {
-                  if (fee >= this.feeHardCap) {
+                  if (fee > this.feeHardCap) {
                     throw new Error('TooHighFee');
                   }
                   const counter: number = Number(actions);
@@ -170,7 +170,7 @@ export class OperationService {
             flatMap((actions: any) => {
               return this.getRpc(`chains/main/blocks/head/context/contracts/${keys.pkh}/manager_key`).pipe(
                 flatMap((manager: any) => {
-                  if (fee >= this.feeHardCap) {
+                  if (fee > this.feeHardCap) {
                     throw new Error('TooHighFee');
                   }
                   const counter: number = Number(actions);
@@ -299,7 +299,7 @@ export class OperationService {
             flatMap((actions: any) => {
               return this.getRpc(`chains/main/blocks/head/context/contracts/${keys.pkh}/manager_key`).pipe(
                 flatMap((manager: any) => {
-                  if (fee >= this.feeHardCap) {
+                  if (fee > this.feeHardCap) {
                     throw new Error('TooHighFee');
                   }
                   let counter: number = Number(actions);

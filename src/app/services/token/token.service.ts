@@ -6,6 +6,7 @@ import { SubjectService } from '../subject/subject.service';
 import { TeztoolsService } from '../indexer/teztools/teztools.service';
 import { filter } from 'rxjs/operators';
 import { NavigationEnd, Router } from '@angular/router';
+import { ObjktService } from '../indexer/objkt/objkt.service';
 
 export interface TokenResponseType {
   contractAddress: string;
@@ -37,6 +38,11 @@ export type ContractsType = Record<string, ContractType>;
 export type ContractType = FA12 | FA2;
 export interface TokensInterface {
   category: string;
+  objkt?: {
+    name?: string;
+    logo?: string;
+    updated: number;
+  };
 }
 enum Status {
   Rejected = -1,
@@ -81,7 +87,13 @@ export class TokenService {
   readonly unlockablesKey = 'unlockables';
   queue = [];
   workers = 0;
-  constructor(public indexerService: IndexerService, private subjectService: SubjectService, private teztoolsService: TeztoolsService, private router: Router) {
+  constructor(
+    public indexerService: IndexerService,
+    private subjectService: SubjectService,
+    private teztoolsService: TeztoolsService,
+    private router: Router,
+    private objktService: ObjktService
+  ) {
     this.contracts = JSON.parse(JSON.stringify(CONSTANTS.ASSETS));
     this.loadMetadata();
     this.saveMetadata();
@@ -144,6 +156,12 @@ export class TokenService {
     }
     return null;
   }
+  getContractName(contractAddress: string) {
+    return this.contracts[contractAddress]?.objkt?.name ?? null;
+  }
+  getContractLogo(contractAddress: string) {
+    return this.contracts[contractAddress]?.objkt?.logo ?? null;
+  }
   getContractAddressFromAsset(uri: string) {
     const contractAddresses = Object.keys(this.contracts);
     for (const contractAddress of contractAddresses) {
@@ -183,6 +201,7 @@ export class TokenService {
   addAsset(contractAddress: string, contract: ContractType) {
     if (!this.contracts[contractAddress]) {
       this.contracts[contractAddress] = contract;
+      this.checkObjktData(contractAddress, contract);
     } else {
       const currentKeys = Object.keys(this.contracts[contractAddress].tokens);
       const newKeys = Object.keys(contract.tokens);
@@ -193,6 +212,31 @@ export class TokenService {
           this.contracts[contractAddress].tokens[key] = contract.tokens[key];
         }
       }
+    }
+  }
+  async checkObjktData(contractAddress: string, contract: ContractType) {
+    let check = false;
+    if (!contract.objkt) {
+      check = true;
+    } else if (contract?.objkt?.updated) {
+      const diff = Date.now() - contract.objkt.updated;
+      if (!contract?.objkt?.name) {
+        if (diff > 1000 * 60 * 60 * 24) {
+          check = true;
+        }
+      }
+    }
+    if (check) {
+      const _objkt = await this.objktService.resolveCollection(contractAddress);
+      const objkt: any = { updated: Date.now() };
+      if (_objkt?.name) {
+        objkt.name = _objkt.name;
+        if (_objkt.logo) {
+          objkt.logo = _objkt.logo;
+        }
+      }
+      this.contracts[contractAddress].objkt = objkt;
+      this._saveMetadata();
     }
   }
   async searchAllMetadata(unknownTokenIds: any) {

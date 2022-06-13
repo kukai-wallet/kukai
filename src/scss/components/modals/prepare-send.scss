@@ -138,6 +138,7 @@ $base-background-color: v.$base-background-color;
   & .to {
     margin-top: 2em;
     padding: 0;
+    display: block;
 
     & .address {
       position: relative;
