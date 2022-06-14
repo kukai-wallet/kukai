@@ -31,14 +31,6 @@ const _CONSTANTS: Constants = {
       zoomDiscoverImg: true,
       description: 'Raise unique virtual NFT avatars on mobile'
     },
-    'GJOE': {
-      name: "GJOE",
-      address: ["KT1QdMB7uePDFGoFLDZmAL34roFYqYhzHu7N"],
-      thumbnailUrl: "../../../assets/img/alias/gjoe.jpg",
-      link: "https://customhorror.net/gjoe", shouldDisplayLink: DisplayLinkOption.None,
-      category: ["collectibles"],
-      description: "Generative Jolt of Expression",
-    },
     gap: {
       name: 'Gap Threads',
       address: ['KT1GA6KaLWpURnjvmnxB4wToErzM2EXHqrMo'],
@@ -50,15 +42,16 @@ const _CONSTANTS: Constants = {
       backgroundColor: 'black',
       description: 'A fun and interactive digital collectible experience'
     },
-    'mooncakes': {
-      name: "Mooncakes",
-      address: ['KT1Qm7MHmbdiBzoRs7xqBiqoRxw7T2cxTTJN', 'KT1CzVSa18hndYupV9NcXy3Qj7p8YFDZKVQv'],
-      thumbnailUrl: "../../../assets/img/alias/mooncakes.svg",
-      discoverUrl: '../../../assets/img/alias/mooncakes-discover.jpg', zoomDiscoverImg: true,
-      link: "https://mooncakes.fun", shouldDisplayLink: DisplayLinkOption.All,
-      category: ["collectibles"],
-      backgroundColor: '#1C1C20',
-      description: "Have fun exploring a galaxy of NFTs",
+    'fxhash': {
+      name: "fxhash",
+      address: ["KT1KEa8z6vWXDJrVqtMrAeDVzsvxat3kHaCE", "KT1U6EHmNxJTkvaWJ4ThczG4FSDaHC21ssvi"],
+      thumbnailUrl: "../../../assets/img/alias/fxhash.svg",
+      discoverUrl: '../../../assets/img/alias/fxhash-discover.jpg',
+      link: "https://www.fxhash.xyz", shouldDisplayLink: DisplayLinkOption.All, 
+      category: ["marketplace"],
+      backgroundColor: 'black',
+      zoomDiscoverImg: true,
+      description: "Open generative art NFT platform on Tezos",
     },
     UbisoftQuartz: {
       name: 'Ubisoft Quartz',
@@ -70,6 +63,16 @@ const _CONSTANTS: Constants = {
       category: ['games', 'collectibles'],
       backgroundColor: 'black',
       description: 'The first Ubisoft NFTs playable in a HD game'
+    },
+    'mooncakes': {
+      name: "Mooncakes",
+      address: ['KT1Qm7MHmbdiBzoRs7xqBiqoRxw7T2cxTTJN', 'KT1CzVSa18hndYupV9NcXy3Qj7p8YFDZKVQv'],
+      thumbnailUrl: "../../../assets/img/alias/mooncakes.svg",
+      discoverUrl: '../../../assets/img/alias/mooncakes-discover.jpg', zoomDiscoverImg: true,
+      link: "https://mooncakes.fun", shouldDisplayLink: DisplayLinkOption.All,
+      category: ["collectibles"],
+      backgroundColor: '#1C1C20',
+      description: "Have fun exploring a galaxy of NFTs",
     },
     'OneOfGloGang': {
       name: "OneOf - GloGang",
@@ -434,16 +437,6 @@ const _CONSTANTS: Constants = {
       category: ["collectibles"],
       description: "Collections made with a unique cube character set"
     },
-    'fxhash': {
-      name: "fxhash",
-      address: ["KT1KEa8z6vWXDJrVqtMrAeDVzsvxat3kHaCE", "KT1U6EHmNxJTkvaWJ4ThczG4FSDaHC21ssvi"],
-      thumbnailUrl: "../../../assets/img/alias/fxhash.svg",
-      discoverUrl: '../../../assets/img/alias/fxhash-discover.jpg',
-      link: "https://www.fxhash.xyz", shouldDisplayLink: DisplayLinkOption.None, 
-      category: ["marketplace"],
-      backgroundColor: 'black',
-      description: "Open generative art NFT platform on Tezos",
-    },
     'FormallyVerified': {
       name: "Formally Verified",
       address: ["KT1Lk3fKhyFMVSdDGcqKKetqsVw3t5sHBXb8"],
@@ -729,6 +722,14 @@ const _CONSTANTS: Constants = {
       link: '',
       shouldDisplayLink: DisplayLinkOption.None,
       description: ``,
+    },
+    'GJOE': {
+      name: "GJOE",
+      address: ["KT1QdMB7uePDFGoFLDZmAL34roFYqYhzHu7N"],
+      thumbnailUrl: "../../../assets/img/alias/gjoe.jpg",
+      link: "https://customhorror.net/gjoe", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"],
+      description: "Generative Jolt of Expression",
     },
   },
   ASSETS: {
