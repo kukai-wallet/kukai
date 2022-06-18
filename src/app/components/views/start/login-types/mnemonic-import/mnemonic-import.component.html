@@ -30,7 +30,7 @@
           </label>
         </div>
         <input *ngIf="walletJson" name="none" type="password" class="text" autocomplete="current-password"
-          (keydown.enter)='checkImportPwd()' id="pwd" [(ngModel)]="pwd" placeholder="Password">
+           id="pwd" [(ngModel)]="pwd" placeholder="Password">
         <button class="button next" [style.visibility]="!walletJson ? 'hidden' : ''"
           (click)='checkImportPwd()'>Import</button>
       </form>

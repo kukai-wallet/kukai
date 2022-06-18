@@ -381,7 +381,8 @@ export class TzktService implements Indexer {
     }
     if (
       (contractAddress === 'KT1AWoUQAuUudqpc75cGukWufbfim3GRn8h6' /* Flex */ ||
-        contractAddress === 'KT1Lz7Jd6Sh1zUE66nDGS7hGnjwcyTBCiYbF' /* SXSW */ ||
+        contractAddress === 'KT1Lz7Jd6Sh1zUE66nDGS7hGnjwcyTBCiYbF' /* BV */ ||
+        contractAddress === 'KT1D1XtWFoQDPtuYzbkeRJhcDgH6CDem2FkZ' /* BV */ ||
         contractAddress === 'KT1NVvPsNDChrLRH5K2cy6Sc9r1uuUwdiZQd') /* Dogami */ &&
       meta?.formats?.length
     ) {
