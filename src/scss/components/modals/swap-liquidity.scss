@@ -1,0 +1,562 @@
+@use "../../abstracts/variables" as v;
+@use "../../abstracts/mixins" as m;
+
+$base-font-color: v.$base-font-color;
+$base-font-color-secondary: v.$base-font-color-secondary;
+$base-blue-color-lightened: v.$base-blue-color-lightened;
+$color-lightened-7: v.$color-lightened-7;
+$base-end-color: v.$base-end-color;
+$border-width: v.$border-width-thin;
+$border-color: v.$border-color;
+$box-shadow: v.$box-shadow;
+$border-radius-hardest: v.$border-radius-hardest;
+
+& .liquidity-baking {
+  justify-content: center;
+  align-items: center;
+  min-width: 32em;
+  height: auto;
+  margin: -1em -1em 0 -1em;
+
+  & .key {
+    text-transform: unset;
+  }
+
+  & .main-container {
+    align-items: flex-start;
+    background-color: $color-lightened-7;
+    border-radius: v.$border-radius;
+    & > .left {
+      width: 32em;
+      background-color: $base-end-color;
+      padding: 1em 1em 0 1em;
+      min-height: 39em;
+      box-shadow: v.$box-shadow-darkest;
+      z-index: 0;
+    }
+
+    & > .right {
+      height: 41em;
+      background-color: $color-lightened-7;
+      margin: 1em 0 0 0;
+      margin: 1em -0.25em 0em -1em;
+      overflow: hidden;
+      &.loaded {
+        //background: linear-gradient(0deg, #e3e5ff 0 50%, var(--color-lightened-7) 50% 100%);
+      }
+      &.expanded-00 {
+        height: 54em;
+      }
+    
+      &.expanded-01 {
+        height: 52.25em;
+      }
+    
+      &.expanded-10 {
+        height: 65.25em;
+      }
+    
+      &.expanded-11 {
+        height: 46em;
+      }
+    
+      &.expanded-100 {
+        height: 58.85em;
+      }
+    
+      &.expanded-101 {
+        height: 57em;
+      }
+    
+      &.expanded-110 {
+        height: 70.25em;
+      }
+    
+      &.expanded-111 {
+        height: 39em;
+      }
+    
+      &.expanded-1000 {
+        height: 53.75em;
+      }
+    
+      &.expanded-1001 {
+        height: 49.75em;
+      }
+    
+      &.expanded-1010 {
+        height: 65em;
+      }
+
+      & .filler {
+        height: 100%;
+        background-color: v.$lqd-chart-filler-background-color;
+      }
+    }
+  }
+
+  & .info-button {
+    width: auto;
+    height: 1.25em;
+    position: relative;
+    cursor: pointer;
+    & + .body {
+      display: none;
+      position: absolute;
+      padding: 1em;
+      background-color: v.$base-end-color;
+      bottom: 2em;
+      border-radius: 1em;
+      box-shadow: v.$box-shadow;
+      width: calc(100% - 3em);
+      white-space: pre-line;
+    }
+    &:hover + .body {
+      display: flex;
+    }
+  }
+
+  & .price-impact {
+    padding: 0.25em 0.5em;
+    font-size: 0.875em;
+    margin: 0 0 0 0.25em;
+    background-color: #ffdada;
+    border-radius: 0.5em;
+    color: v.$base-red-color;
+  }
+
+  & .advanced-toggle {
+    width: 100%;
+    margin: 1em 0 1em 0.5em;
+  }
+
+  & .advanced-form {
+    margin: 0;
+  }
+
+  & .seperator {
+    &.files {
+      position: relative;
+      width: 100%;
+      height: 0.125em;
+      left: 0;
+      margin: 2em 0;
+      & .backdrop {
+        height: 1.5em;
+        width: 4em;
+        position: absolute;
+        top: -1em;
+        left: calc(50% - 2em);
+        background-color: $base-end-color;
+      }
+      & .img-wrap {
+        position: absolute;
+        width: 1.5em;
+        height: 1.5em;
+        top: calc(-0.95em - #{$border-width} * 2);
+        left: calc(50% - 0.75em - #{$border-width} * 2);
+        padding: 0.25em;
+        object-fit: scale-down;
+        border-radius: $border-radius-hardest;
+        border: $border-width solid $border-color;
+        cursor: pointer;
+        & img {
+          object-fit: scale-down;
+          object-position: center;
+          width: 100%;
+          height: 100%;
+          filter: v.$base-filter-invert-1;
+        }
+      }
+    }
+    &.add {
+      margin: 0.125em 0;
+      background-color: transparent;
+      z-index: 1;
+      height: 0;
+      & .img-wrap {
+        border: 0.25em solid v.$base-end-color;
+        background-color: v.$color-lightened-7;
+      }
+    }
+  }
+
+  & .top {
+    width: 100%;
+    position: relative;
+    top: -1em;
+
+    & .button.close {
+      position: absolute;
+      top: 1em;
+      right: 0em;
+    }
+  }
+
+  & .container {
+    &-toggle {
+      position: relative;
+      left: 0;
+      top: 1.25em;
+      width: 45%;
+
+      &-secondary {
+        margin: 1.5em 0 0 0;
+        width: 100%;
+        & button {
+          font-size: 1.125em;
+          width: calc(50% - 2em);
+          height: 3em;
+          border-radius: 1em;
+          background-color: $base-end-color;
+          color: $base-font-color;
+          border: none;
+          padding: 0;
+          box-sizing: unset;
+          &.active {
+            background-color: $border-color;
+          }
+        }
+      }
+      & button {
+        position: relative;
+        height: 2.5em;
+        border: none;
+        border-radius: 0;
+        background-color: transparent;
+        color: v.$lqd-font-secondary;
+        font-size: 1.25em;
+        padding: 0 0.75em;
+        &:first-of-type:before {
+          content: "";
+          position: absolute;
+          top: 25%;
+          right: -0.0625em;
+          width: 0.125em;
+          bottom: 0;
+          height: 50%;
+        }
+        &:after {
+          content: "";
+          position: absolute;
+          left: 0;
+          bottom: 0;
+          height: 0.125em;
+          width: 100%;
+        }
+        &.active {
+          color: $base-font-color;
+        }
+      }
+    }
+    &-inputs {
+      &.liquidity {
+        border-radius: 1em;
+        & .currency {
+          margin: 0;
+        }
+      }
+      margin: 1.5em 0 0 0;
+      width: 100%;
+      & .currency {
+        position: relative;
+        $padding: 1em;
+        padding: $padding;
+        width: calc(100% - #{$padding * 2});
+        height: auto;
+        background-color: $color-lightened-7;
+        border-radius: 1em;
+
+        & .tag {
+          position: absolute;
+          bottom: 1em;
+          left: 1em;
+          color: v.$lqd-font-terinary;
+        }
+        & .label {
+          font-size: 1.125em;
+          margin: 0 0 0.5em 0;
+        }
+        & .hint {
+          margin: 0.5em 0 0 0;
+          font-size: 1em;
+          color: v.$lqd-font-terinary;
+          text-align: end;
+
+          & .max {
+            color: v.$base-blue-color;
+            text-decoration: underline;
+            cursor: pointer;
+          }
+        }
+        & .inputs {
+          border-radius: 1em;
+          &:focus-within {
+            border-color: v.$base-blue-color;
+          }
+        }
+        & .left {
+          position: relative;
+          height: 3em;
+          background-color: $base-end-color;
+          border-radius: 0.5em;
+          justify-content: flex-start;
+          padding: 0 0.5em;
+          & img {
+            width: auto;
+            height: 1.5em;
+            object-fit: scale-down;
+            padding: 0 0.5em 0 0;
+          }
+          & .symbol {
+            font-weight: 500;
+            font-size: 1.5em;
+            padding: 0 0.5em;
+            text-align: right;
+          }
+        }
+        & .right {
+          position: relative;
+          width: calc(100% - 6em);
+          height: 3.5em;
+          overflow: hidden;
+          background-color: transparent;
+          & input {
+            width: calc(100% - 0em);
+            height: 100%;
+            padding: 0 0 0 0em;
+            border: none;
+            border-radius: 0;
+            font-size: 2.25em;
+            font-weight: 500;
+            background-color: transparent;
+          }
+          & .tag {
+            position: absolute;
+            top: 1.25em;
+            right: 1.25em;
+            font-size: 1em;
+            color: v.$lqd-font-secondary;
+          }
+          & button.max {
+            position: absolute;
+            top: 0.25em;
+            right: 0.25em;
+            width: auto;
+            height: 3em;
+            padding: 0.575em 1em 0.5em 1.175em;
+            border-radius: 0.75em;
+            font-weight: 300;
+            background-color: $base-end-color;
+            color: $base-font-color;
+            border: $border-width solid $border-color;
+            font-size: 1em;
+            text-align: center;
+          }
+        }
+      }
+    }
+  }
+  & .more-info-toggle {
+    border: v.$border-width solid v.$border-color;
+    border-radius: 1em;
+    padding: 0 1em;
+    height: 3em;
+    margin: 1em 0 0 0;
+    cursor: pointer;
+    justify-content: center;
+    & .item {
+      height: 100%;
+      min-height: 3em;
+      & .key {
+        font-size: 1em;
+      }
+      & img {
+        width: 1em;
+      }
+    }
+    &.expanded {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+      border-bottom: none;
+      & .item img {
+        transition: 0.25s transform;
+        transform: rotate(180deg);
+      }
+    }
+    & .value {
+      color: v.$base-font-color;
+      font-size: 1em;
+      font-weight: 500;
+    }
+  }
+  & .more-info-body {
+    padding: 0 1em 1em 1em;
+    border: v.$border-width solid v.$border-color;
+    border-top: none;
+    border-radius: 1em;
+    display: block;
+    width: calc(100% - 2em - v.$border-width * 2);
+
+    &.expanded {
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+    &-toggle {
+      margin: 2em 0 1em 0;
+      align-self: flex-start;
+      cursor: pointer;
+    }
+    & .item {
+      padding: 0.75em 0;
+      position: relative;
+      border-bottom: v.$border-width solid v.$border-color;
+      & .key {
+        justify-content: flex-start;
+        font-size: 1em;
+        & img {
+          height: 1.25em;
+          filter: v.$base-filter-invert-1;
+        }
+        & .info-button {
+          & + .body {
+            bottom: 2.5em;
+          }
+        }
+      }
+      & .value {
+        font-size: 1em;
+        font-weight: 500;
+        color: v.$base-font-color;
+        &.warning {
+          background-color: #ffdada;
+          color: v.$base-red-color;
+          padding: 0.25em 0.5em 0.15em 0.5em;
+          border-radius: 0.25em;
+        }
+      }
+    }
+    & .entity {
+      & .label {
+        font-size: 1em;
+        margin: 0.5em;
+      }
+      & input {
+        border-radius: 0.5em;
+        height: 3em;
+        padding: 0 0 0 0.75em;
+        font-size: 1em;
+      }
+      width: calc(50% - 1em);
+    }
+  }
+
+  & .item.expected-rate {
+    padding: 1em 1em 0 1em;
+    & .key {
+      font-size: 1em;
+    }
+    & .value {
+      color: v.$base-font-color;
+      font-size: 1em;
+      font-weight: 500;
+    }
+  }
+
+  & .slippage {
+    position: relative;
+    margin: 1em 0 0 0;
+    width: 100%;
+    & .label {
+      position: relative;
+      font-size: 1em;
+      font-weight: 400;
+      margin: 0 0 1em 0;
+      justify-content: flex-start;
+      align-items: center;
+      text-transform: unset;
+      color: v.$lqd-font-secondary;
+      & img {
+        filter: v.$base-filter-invert-1;
+      }
+    }
+
+    & .inputs {
+      width: 100%;
+      & button,
+      & input {
+        font-size: 1em;
+        font-weight: 400;
+        width: calc(16.666% - 1.375em);
+        height: 2.5em;
+        border-radius: 0.5em;
+        background-color: $base-end-color;
+        color: $base-font-color;
+        border: $border-width solid $border-color;
+        padding: 0;
+        box-sizing: unset;
+        margin: 0;
+
+        &.active {
+          background-color: $border-color;
+        }
+      }
+      & input {
+        text-align: left;
+        padding: 0 1em !important;
+        width: calc(50% - 2em);
+        margin: 0 0 0 0.25em;
+        &::placeholder {
+          color: v.$lqd-font-terinary;
+        }
+      }
+
+      & button {
+        padding: 0 0.25em 0 0.5em;
+        margin: 0 0.25em;
+        color: $base-font-color;
+      }
+    }
+    & .hint {
+      margin: 0.5em 0 0 0;
+      font-size: 1em;
+    }
+    & .placeholder-secondary {
+      position: absolute;
+      bottom: 0.85em;
+      right: 1em;
+      color: v.$lqd-font-secondary;
+    }
+  }
+
+  & .bottom {
+    margin: 1em 0 0 0;
+    & .seperator {
+      left: 0;
+      width: calc(100% + 2em);
+    }
+    & .form-validity {
+      margin: 0.75em 0 0 0;
+      font-weight: 600;
+      height: 1.125em;
+      &.error {
+        color: v.$base-red-color;
+      }
+    }
+
+    & button {
+      margin: 1em 0 1.5em 0;
+    }
+  }
+}
+
+@media (max-width: v.$layout-break-6) {
+  .liquidity-baking {
+    & .main-container {
+      & > .left {
+        margin: 0 -1em 0 0;
+        box-shadow: unset;
+      }
+    }
+  }
+}

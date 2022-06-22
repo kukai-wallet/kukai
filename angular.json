@@ -27,13 +27,14 @@
             "production": {
               "budgets": [
                 {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "10kb"
+                  "type": "initial",
+                  "maximumWarning": "25mb",
+                  "maximumError": "50mb"
                 }
               ],
               "optimization": true,
               "outputHashing": "all",
-              "sourceMap": true,
+              "sourceMap": false,
               "namedChunks": false,
               "extractLicenses": true,
               "vendorChunk": false,
@@ -45,11 +46,27 @@
                 }
               ]
             },
+            "testnet": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "25mb",
+                  "maximumError": "50mb"
+                }
+              ],
+              "outputHashing": "all",
+              "buildOptimizer": true,
+              "optimization": true,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true
+            },
             "development": {
               "budgets": [
                 {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "10kb"
+                  "type": "initial",
+                  "maximumWarning": "25mb",
+                  "maximumError": "50mb"
                 }
               ],
               "outputHashing": "all",
@@ -58,18 +75,39 @@
               "vendorChunk": true,
               "extractLicenses": false,
               "sourceMap": true
+            },
+            "development-mainnet": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "25mb",
+                  "maximumError": "50mb"
+                }
+              ],
+              "outputHashing": "all",
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ]
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "testnet"
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
-            "production": {
-              "browserTarget": "wallet:build:production"
-            },
             "development": {
               "browserTarget": "wallet:build:development"
+            },
+            "mainnet": {
+              "browserTarget": "wallet:build:development-mainnet"
             }
           },
           "defaultConfiguration": "development"

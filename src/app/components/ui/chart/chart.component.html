@@ -1,0 +1,51 @@
+<div class="title-dropdown" [class.expanded]="ddExpanded">
+  <ng-container *ngFor="let value of ddSets">
+    <p [class.active]="set === value?.name" (click)="toggleSet(value?.name);ddExpanded = !ddExpanded">{{ value?.name ||
+      '' }}</p>
+  </ng-container>
+</div>
+<div *ngIf="sets?.length" class="flex-row mode">
+  <div class="flex-column left">
+    <span class="title" (click)="ddExpanded = !ddExpanded">{{ set }}<img [class.expanded]="ddExpanded"
+        src="assets/img/chevron-down.svg" /></span>
+    <span class="tooltip value">{{ tooltipValue }}
+      <span class="unit">{{ units }}</span>
+    </span>
+  </div>
+  <div class="right">
+    <div class="attributes">
+      <ng-container *ngFor="let key of Object.keys(attributes)">
+        <span>{{ attributes[key] }}</span>
+      </ng-container>
+    </div>
+  </div>
+</div>
+<svg *ngIf="!sets?.length" class="spinner" viewBox="0 0 50 50">
+  <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+</svg>
+<span *ngIf="!sets?.length" class="loading-text">Loading Chart...</span>
+<div class="expand" (click)="toggleChartExpand(); ddExpanded = false; toggleSet(set)">{{ !chartExpanded ? 'Expand' : 'Collapse' }}
+</div>
+<ng-container *ngIf="design === 'default'">
+  <div class="flex-column canvas-wrapper">
+    <canvas #chart [class.loaded]="sets?.length"></canvas>
+    <div *ngIf="sets?.length" class="flex-row time" [class.expanded]="chartExpanded">
+      <span *ngIf="set !== 'Total Value Locked'" [class.active]="series === 'day'" (click)="toggleSeries('day')">24H</span><span
+      *ngIf="set !== 'Total Value Locked'" [class.active]="series === 'week'" (click)="toggleSeries('week')">1W</span>
+      <span [class.active]="series === 'month'" (click)="toggleSeries('month')">1M</span><span
+      *ngIf="set !== 'Total Value Locked'" [class.active]="series === 'year'" (click)="toggleSeries('year')">1Y</span>
+    </div>
+  </div>
+</ng-container>
+<ng-container *ngIf="design === 'mini'">
+  <div class="canvas-wrapper">
+    <canvas #chart [class.loaded]="sets?.length"></canvas>
+    <div *ngIf="sets?.length" class="flex-row time" [class.expanded]="chartExpanded">
+      <span *ngIf="set !== 'Total Value Locked'" [class.active]="series === 'day'"
+        (click)="toggleSeries('day')">24H</span><span *ngIf="set !== 'Total Value Locked'"
+        [class.active]="series === 'week'" (click)="toggleSeries('week')">1W</span>
+      <span [class.active]="series === 'month'" (click)="toggleSeries('month')">1M</span><span
+        *ngIf="set !== 'Total Value Locked'" [class.active]="series === 'year'" (click)="toggleSeries('year')">1Y</span>
+    </div>
+  </div>
+</ng-container>

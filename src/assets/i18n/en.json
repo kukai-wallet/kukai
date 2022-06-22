@@ -363,6 +363,7 @@
   "SWAPCOMPONENT": {
     "TOOHIGHFEEORAMOUNT": "Not enough balance",
     "TOOHIGHAMOUNT": "Not enough balance",
+    "TOOSMALLAMOUNT": "Too small of amount",
     "CONTRACTSTORAGEFAILED": "Error: Please try again later"
   }
 }

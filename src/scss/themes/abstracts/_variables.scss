@@ -104,6 +104,16 @@
 
     --search-bar-background-color: #d0d8e1;
 
+    //lqd
+
+    --background-expected-color: #f2f3ff;
+    --background-from-color: #f7f7f7;
+
+    --lqd-font-secondary: #666666;
+    --lqd-font-terinary: #858585;
+
+    --lqd-chart-filler-background-color: #5963ff1a;
+
     &.dark {
       --theme: "dark";
       --base-background-color: #1a1b1e;
@@ -162,6 +172,14 @@
       --button-red-background-color: var(--base-end-color);
       --button-red-color: var(--base-red-color);
       --button-border-color: var(--base-blue-color-lightened);;
+
+      --background-expected-color: #393940;
+      --background-from-color: #26262b;
+
+      --lqd-font-secondary: #999999;
+      --lqd-font-terinary: #7a7a7a;
+
+      --lqd-chart-filler-background-color: rgba(89, 99, 255, 0.114);
     }
   }
 }

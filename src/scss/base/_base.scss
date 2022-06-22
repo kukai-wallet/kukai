@@ -102,6 +102,11 @@ input[type=number]::-webkit-outer-spin-button {
   appearance: none;
 }
 
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  appearance: none;
+}
+
 html {
   font-size: 16px;
   -webkit-text-size-adjust: none;
@@ -146,6 +151,11 @@ input {
     padding: 1px 1px 1px 2em !important;
     -webkit-appearance: none !important;
   }
+}
+
+form {
+  width: 100%;
+  display: contents;
 }
 
 h1 {

@@ -1,3 +1,5 @@
 <app-prepare-send *ngIf="!embedded" [prepareRequest]="prepareRequest" (prepareResponse)="handlePrepareResponse($event)"></app-prepare-send>
 <app-confirm-send [confirmRequest]="confirmRequest" (operationResponse)="handleConfirmResponse($event)"></app-confirm-send>
 <app-confirm-send-embed *ngIf="embedded" [templateRequest]="templateRequest" (isApproved)="handleTemplateApproval($event)" [activeAccount]="activeAccount"></app-confirm-send-embed>
+<app-swap-liquidity (prepareResponse)="handlePrepareResponse($event)"></app-swap-liquidity>
+<app-swap-liquidity-confirm [confirmRequest]="confirmSwapLiquidityRequest" (operationResponse)="handleConfirmResponse($event)"></app-swap-liquidity-confirm>

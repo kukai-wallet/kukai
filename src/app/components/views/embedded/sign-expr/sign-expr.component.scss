@@ -98,12 +98,34 @@ $upper-break: 260rem;
   }
 }
 
+p,
+span,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+small,
+div,
+th,
+td,
+label {
+  margin: 0;
+  outline: none;
+  resize: none;
+  font-weight: 400;
+  color: $base-font-color;
+}
+
 textarea {
   border: 2px solid;
   border-color: $border-color;
   border-radius: $border-radius;
+  background-color: #fff;
   font-size: 1rem;
   box-sizing: border-box;
+  color: $base-font-color;
 }
 
 button {
@@ -324,7 +346,7 @@ button {
 
     & button.confirm {
       width: 100%;
-      height: 3rem;
+      height: auto;
     }
 
     & .footer {

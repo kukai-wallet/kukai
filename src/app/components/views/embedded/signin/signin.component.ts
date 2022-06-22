@@ -9,7 +9,7 @@ import { CONSTANTS } from '../../../../../environments/environment';
 @Component({
   selector: 'app-signin',
   templateUrl: './signin.component.html',
-  styleUrls: ['../../../../../scss/components/views/embedded/signin/signin.component.scss']
+  styleUrls: ['./signin.component.scss']
 })
 export class SigninComponent implements OnInit, OnChanges {
   constructor(private messageService: MessageService, public torusService: TorusService, private walletService: WalletService) {}

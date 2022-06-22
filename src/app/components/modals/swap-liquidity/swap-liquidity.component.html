@@ -1,0 +1,251 @@
+<div *ngIf="isOpen" class="flex-column kukai-modal">
+  <div class="flex-row content">
+    <div class="flex-column liquidity-baking">
+      <div class="flex-row main-container">
+        <div class="flex-column right" [class.expanded]="advancedForm" [class.loaded]="chartInit" [class.expanded-00]="moreInfo && mode === Mode.swap" [class.expanded-01]="advancedForm && mode === Mode.swap" [class.expanded-10]="moreInfo && advancedForm && mode === Mode.swap" [class.expanded-11]="mode === Mode.liquidity && entrypoint === LqdEntrypoints.addLiquidity" [class.expanded-100]="moreInfo && mode === Mode.liquidity && entrypoint === LqdEntrypoints.addLiquidity" [class.expanded-101]="advancedForm && mode === Mode.liquidity && entrypoint === LqdEntrypoints.addLiquidity" [class.expanded-110]="moreInfo && advancedForm && mode === Mode.liquidity && entrypoint === LqdEntrypoints.addLiquidity" [class.expanded-111]="mode === Mode.liquidity && entrypoint === LqdEntrypoints.removeLiquidity" [class.expanded-1000]="moreInfo && mode === Mode.liquidity && entrypoint === LqdEntrypoints.removeLiquidity" [class.expanded-1001]="advancedForm && mode === Mode.liquidity && entrypoint === LqdEntrypoints.removeLiquidity" [class.expanded-1010]="moreInfo && advancedForm && mode === Mode.liquidity && entrypoint === LqdEntrypoints.removeLiquidity">
+          <app-ui-chart #leftChart class="popout" [design]="'default'" [type]="'line'" [units]="units" [datas]="chartDatas"
+            [attributes]="attributes" (drawn)="chartInit = true;"></app-ui-chart>
+            <div class="filler" [style.display]="chartInit ? '' : 'none'"></div>
+        </div>
+        <div class="flex-column left" [class.expanded]="advancedForm">
+          <div class="flex-column top">
+            <div class="flex-row container-toggle">
+              <button [class.active]="mode === Mode.swap" (click)="toggleMode(Mode.swap)">SWAP</button>
+              <button [class.active]="mode === Mode.liquidity" (click)="toggleMode(Mode.liquidity)">LIQUIDITY</button>
+            </div>
+            <div class="flex-row button close" (click)="close()"><img class="x"
+                src="../../../../../assets/img/close-btn-x.png" />
+            </div>
+          </div>
+          <app-ui-chart #miniChart class="popout-mini" [design]="'mini'" [type]="'line'" [units]="units"
+            [data]="chartData" [datas]="chartDatas" [attributes]="attributes">
+          </app-ui-chart>
+          <ng-container *ngIf="mode === Mode.liquidity">
+            <form autocomplete="off">
+              <div class="flex-column container-toggle-secondary">
+                <div class="flex-row buttons">
+                  <button [class.active]="entrypoint === LqdEntrypoints.addLiquidity" (click)="toggleDirection(0)">
+                    ADD
+                  </button>
+                  <button [class.active]="entrypoint === LqdEntrypoints.removeLiquidity" (click)="toggleDirection(1)">
+                    REMOVE
+                  </button>
+                </div>
+              </div>
+              <div class="flex-column container-inputs" [class.liquidity]="entrypoint === LqdEntrypoints.addLiquidity">
+                <div class="flex-column currency">
+                  <div class="flex-row inputs">
+                    <div class="flex-row right">
+                      <input type="text" inputmode="decimal" [value]="qtyRaw" [placeholder]="'0'" value=""
+                        (paste)="sanitizeNumberInput($event, qty.decimalPlaces, 'qtyRaw')"
+                        (input)="sanitizeNumberInput($event, qty.decimalPlaces, 'qtyRaw')" />
+                    </div>
+                    <div class="flex-row left">
+                      <span class="symbol">{{ entrypoint === LqdEntrypoints.addLiquidity ? 'XTZ' : 'LBT' }}</span>
+                      <img
+                        [src]="entrypoint === LqdEntrypoints.addLiquidity ? 'assets/img/tezos-xtz-logo.svg' : 'assets/img/tokens/lbt.png'" />
+                    </div>
+                  </div>
+                  <div class="tag">{{ entrypoint === LqdEntrypoints.addLiquidity ? 'Add' : 'Remove' }}</div>
+                  <span *ngIf="entrypoint === LqdEntrypoints.removeLiquidity" class="hint" (click)="updateMaxAmount('qtyRaw')">Balance: <span class="max">{{lqdBalance}}</span></span>
+                  <span *ngIf="entrypoint === LqdEntrypoints.addLiquidity" class="hint">Balance: {{xtzBalance}}</span>
+                </div>
+                <div *ngIf="entrypoint === LqdEntrypoints.addLiquidity" class="seperator files add">
+                  <span class="img-wrap"><img
+                      [src]="semaphore ? 'assets/img/feeLoader.gif' : 'assets/img/lb-plus.svg'" /></span>
+                </div>
+                <div *ngIf="entrypoint === LqdEntrypoints.addLiquidity" class="flex-column currency">
+                  <div class="flex-row inputs">
+                    <div class="flex-row right">
+                      <input type="text" inputmode="decimal" [value]="qtyRawOut" placeholder="0" [value]="qtyRawOut"
+                        (input)="sanitizeNumberInput($event, 8, 'qtyRawOut')"
+                        (paste)="sanitizeNumberInput($event, 8, 'qtyRawOut')" />
+                    </div>
+                    <div class="flex-row left">
+                      <span class="symbol">{{ 'tzBTC' }}</span>
+                      <img [src]="'assets/img/tokens/tzbtc.png'" />
+                    </div>
+                  </div>
+                  <div class="tag">Add</div>
+                  <span class="hint" (click)="updateMaxAmount('qtyRawOut')">Balance: <span class="max">{{ tzBTCBalance
+                      }}</span></span>
+                </div>
+              </div>
+            </form>
+          </ng-container>
+          <ng-container *ngIf="mode === Mode.swap">
+            <form autocomplete="off">
+              <div class="flex-column container-inputs">
+                <div class="flex-column currency">
+                  <div class="flex-row inputs">
+                    <div class="flex-row right">
+                      <input type="text" inputmode="decimal" [value]="qtyRaw" [placeholder]="'0'" value=""
+                        (paste)="sanitizeNumberInput($event, qty.decimalPlaces, 'qtyRaw')"
+                        (input)="sanitizeNumberInput($event, qty.decimalPlaces, 'qtyRaw')" />
+                    </div>
+                    <div class="flex-row left">
+                      <span class="symbol">{{ entrypoint === LqdEntrypoints.xtzToToken ? 'XTZ' : 'tzBTC' }}</span>
+                      <img
+                        [src]="entrypoint === LqdEntrypoints.xtzToToken ? 'assets/img/tezos-xtz-logo.svg' : 'assets/img/tokens/tzbtc.png'" />
+                    </div>
+                  </div>
+                  <div class="tag">From</div>
+                  <span *ngIf="entrypoint === LqdEntrypoints.xtzToToken" class="hint">Balance: {{ xtzBalance}}</span>
+                  <span *ngIf="entrypoint === LqdEntrypoints.tokenToXtz" class="hint" (click)="updateMaxAmount('qtyRaw')">Balance: <span class="max">{{tzBTCBalance}}</span></span>
+                </div>
+                <div class="seperator files add" (click)="toggleDirection()">
+                  <span class="img-wrap"><img
+                      [src]="simSemaphore ? 'assets/img/feeLoader.gif' : 'assets/img/swap.svg'" /></span>
+                </div>
+                <div class="flex-column currency">
+                  <div class="flex-row inputs">
+                    <div class="flex-row right">
+                      <input type="text" inputmode="decimal" [value]="qtyRawOut" [placeholder]="'0'"
+                        (paste)="sanitizeNumberInput($event, qtyOut.decimalPlaces, 'qtyRawOut')"
+                        (input)="sanitizeNumberInput($event, qtyOut.decimalPlaces, 'qtyRawOut')" />
+                    </div>
+                    <div class="flex-row left">
+                      <span class="symbol">{{ entrypoint === LqdEntrypoints.xtzToToken ? 'tzBTC' : 'XTZ' }}</span>
+                      <img
+                        [src]="entrypoint === LqdEntrypoints.xtzToToken ? 'assets/img/tokens/tzbtc.png' : 'assets/img/tezos-xtz-logo.svg'" />
+                    </div>
+                  </div>
+                  <div class="tag">Expected</div>
+                      <span *ngIf="entrypoint === LqdEntrypoints.tokenToXtz" class="hint">Balance: {{ xtzBalance }}</span>
+                      <span *ngIf="entrypoint === LqdEntrypoints.xtzToToken" class="hint">Balance: {{ tzBTCBalance }}</span>
+                </div>
+              </div>
+            </form>
+          </ng-container>
+          <div *ngIf="expectedRate" class="flex-row item expected-rate">
+            <span class="flex-row key">Exchange Rate:</span>
+            <span class="value">{{ expectedRate }}</span>
+          </div>
+          <div class="flex-column more-info-toggle" [class.expanded]="moreInfo">
+            <div class="flex-row item" (click)="moreInfo = !moreInfo">
+              <span class="value">{{ 'View Details' }} <span *ngIf="impactDouble >= 0.04" class="price-impact">Price
+                  Impact {{ impactDouble | percent:'1.2-2' }}</span></span>
+              <div class="flex-row"><img src="assets/img/chevron-down.svg"></div>
+            </div>
+          </div>
+          <div *ngIf="moreInfo" class="more-info-body"
+            [class.expanded]="moreInfo">
+            <div class="flex-row item">
+              <span class="flex-row key">Price Impact:&nbsp;<img src="assets/img/information-circle-outline.svg"
+                  class="info-button" />
+                <div class="body">
+                  The impact your transaction is expected to make on the exchange rate. The size of your swap relative to the size of the pool determines the impact. Note: This impact is what you are accepting in addition to the slippage.
+                </div>
+              </span>
+              <span class="value" [class.warning]="impactDouble > 0.04">{{impactDouble > 0.005 ? (impactDouble | percent:'1.2-2') : "<0.5%"}}</span>
+            </div>
+            <div *ngIf="(LqdEntrypoints.xtzToToken === entrypoint)" class="flex-row item">
+              <span class="flex-row key">Minimum Received:&nbsp;<img src="assets/img/information-circle-outline.svg"
+                  class="info-button" />
+                <div class="body">
+                  The minimum amount you are guaranteed to receive. If the exchange rate changes unfavorably such that you can no longer receive at least this amount, then your transaction will not be completed.
+                </div>
+              </span>
+              <span class="value">{{(minimumToken?.internalNormalised | number:'1.2-8') || 0}} tzBTC</span>
+            </div>
+            <div *ngIf="(LqdEntrypoints.tokenToXtz === entrypoint)" class="flex-row item">
+              <span class="flex-row key">Minimum Received:&nbsp;<img src="assets/img/information-circle-outline.svg"
+                  class="info-button" />
+                <div class="body">
+                  The minimum amount you are guaranteed to receive. If the exchange rate changes unfavorably such that you can no longer receive at least this amount, then your transaction will not be completed.
+                </div>
+              </span>
+              <span class="value">{{(minimumXtz?.internalNormalised | number:'1.6-6') || 0}} XTZ</span>
+            </div>
+            <div
+              *ngIf="(LqdEntrypoints.removeLiquidity === entrypoint)"
+              class="item">
+              <span class="flex-row key">Minimum Received:&nbsp;<img src="assets/img/information-circle-outline.svg"
+                  class="info-button" />
+                <div class="body">
+                  The minimum amount you are guaranteed to receive. If the exchange rate changes unfavorably such that you can no longer receive at least this amount, then your transaction will not be completed.
+                </div>
+              </span><br />
+              <span class="value">{{(minimumXtz?.internalNormalised | number:'1.6-6') || 0}} XTZ + {{
+                (minimumToken?.internalNormalised | number:'1.2-8') || 0}} tzBTC</span>
+            </div>
+            <div *ngIf="(LqdEntrypoints.addLiquidity === entrypoint)" class="flex-row item">
+              <span class="flex-row key">Minimum Received:&nbsp;<img src="assets/img/information-circle-outline.svg"
+                  class="info-button" />
+                <div class="body">
+                  The minimum amount you are guaranteed to receive. If the exchange rate changes unfavorably such that you can no longer receive at least this amount, then your transaction will not be completed.
+                </div>
+              </span>
+              <span class="value">{{(minimumLqd?.internalNormalised | number:'1.0-0') || 0}} LBT</span>
+            </div>
+            <div class="flex-column slippage">
+              <span class="flex-row label">Slippage&nbsp;<img src="assets/img/information-circle-outline.svg"
+                  class="info-button" />
+                <div class="body">
+                  Your transaction will not complete if the exchange rate changes unfavorably by more than this slippage percentage. The slippage does not include the Price Impact, when swapping you are accepting both the Price Impact % and the Slippage %.
+                </div>
+              </span>
+              <div class="flex-row inputs">
+                <button [class.active]="slippage === 0.005" (click)="slippage = 0.005; update()">
+                  0.5%
+                </button>
+                <button [class.active]="slippage === 0.01" (click)="slippage = 0.01; update()">
+                  1%
+                </button>
+                <button [class.active]="slippage === 0.03" (click)="slippage = 0.03; update()">
+                  3%
+                </button>
+                <form autocomplete="off">
+                  <input inputmode="decimal" [class.active]="slippage !== 0.03 && slippage !== 0.01 && slippage !== 0.005"
+                    (input)="customSlippage($event)" (focus)="customSlippageFocus($event)" (blur)="customSlippageBlur($event)"
+                    [placeholder]="slippage * 100" value="" />
+                  <span class="placeholder-secondary">%</span>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="flex-column more-info-toggle" [class.expanded]="advancedForm">
+            <div class="flex-row item" (click)="advancedForm = !advancedForm">
+              <span class="value">{{ 'Advanced' }}</span>
+              <div class="flex-row"><img src="assets/img/chevron-down.svg"></div>
+            </div>
+          </div>
+          <form *ngIf="advancedForm" autocomplete="off" class="more-info-body" [class.expanded]="advancedForm">
+            <div class="flex-row">
+              <div class="flex-column entity">
+                <label class="label">Gas limit</label>
+                <input inputmode="decimal" type="text" class="text" (input)="sanitizeNumberInput($event, 0, 'customGasLimit')"
+                  (paste)="sanitizeNumberInput($event, 0, 'customGasLimit')"
+                  placeholder={{this.defaultTransactionParams.gas.toString()}} [value]="customGasLimit">
+              </div>
+              <div class="flex-column entity">
+                <label class="label">Fee</label>
+                <input inputmode="decimal" type="text" (input)="sanitizeNumberInput($event, 6, 'customFee')"
+                  (paste)="sanitizeNumberInput($event, 6, 'customFee')" class="text"
+                  placeholder={{this.defaultTransactionParams.fee.toString()}} [value]="customFee">
+              </div>
+            </div>
+            <div class="flex-row">
+              <div class="flex-column entity">
+                <label class="label">Storage limit</label>
+                <input inputmode="decimal" type="text" (input)="sanitizeNumberInput($event, 0, 'customStorageLimit')"
+                  (paste)="sanitizeNumberInput($event, 0, 'customStorageLimit')" class="text"
+                  placeholder={{this.defaultTransactionParams.storage.toString()}} [value]="customStorageLimit">
+              </div>
+              <div class="flex-column entity">
+                <label class="label">Max Storage cost</label>
+                <input inputmode="decimal" type="text" class="text read-only" [value]="burnAmount() ? burnAmount() : '0 tez'" tabindex=-1
+                  readonly>
+              </div>
+            </div>
+          </form>
+          <div class="flex-column bottom">
+            <div class="seperator"></div>
+            <span class="form-validity error">{{ formInvalid || latestSimError }}</span>
+            <button class="confirm" [disabled]="formInvalid || latestSimError" (click)="preview()">Preview</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

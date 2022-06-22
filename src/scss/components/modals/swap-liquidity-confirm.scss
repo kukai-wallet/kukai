@@ -1,0 +1,366 @@
+@use "../../abstracts/variables" as v;
+@use "../../abstracts/mixins" as m;
+
+$base-font-color: v.$base-font-color;
+$lqd-font-secondary: v.$lqd-font-secondary;
+$base-blue-color-lightened: v.$base-blue-color-lightened;
+$color-lightened-7: v.$color-lightened-7;
+$base-end-color: v.$base-end-color;
+$border-width: v.$border-width;
+$border-color: v.$border-color;
+$box-shadow: v.$box-shadow;
+$border-radius-hardest: v.$border-radius-hardest;
+
+& .liquidity-baking-confirm {
+  justify-content: center;
+  align-items: center;
+  margin: 2em 0 0 0;
+  min-width: 28em;
+  max-width: 32em;
+  height: auto;
+
+  & .info-button {
+    width: auto;
+    height: 1.2em;
+    position: relative;
+    cursor: pointer;
+    margin: 0 auto 0 0;
+  }
+
+  & .advanced-toggle {
+    width: 100%;
+  }
+
+  & .output {
+    width: calc(100% - 1em);
+    margin: 1em 0;
+    border: v.$border-width-thin solid v.$border-color;
+    padding: 0 0.5em;
+    border-radius: 1em;
+    & .item {
+      width: auto;
+      padding: 0.75em 0.5em;
+      white-space: nowrap;
+      justify-content: space-between;
+      align-items: center;
+      border-top: v.$border-width solid v.$border-color;
+      position: relative;
+      &:nth-child(1) {
+        border-top: none;
+      }
+      & .key {
+        text-transform: initial;
+        font-size: 1em;
+        color: v.$lqd-font-secondary;
+        position: relative;
+        justify-content: flex-start;
+        & img {
+          filter: v.$base-filter-invert-1;
+        }
+      }
+      & .value {
+        font-size: 1em;
+        font-weight: 500;
+        color: $base-font-color;
+      }
+      & .body {
+        display: none;
+        position: absolute;
+        padding: 1em;
+        background-color: v.$base-end-color;
+        top: -7em;
+        border-radius: 1em;
+        box-shadow: v.$box-shadow;
+        width: calc(100% - 3em);
+        white-space: pre-line;
+        z-index: 100;
+      }
+      & .info-button:hover + .body {
+        display: flex;
+      }
+    }
+  }
+
+  & .seperator {
+    &.arrow {
+      position: relative;
+      width: 100%;
+      height: 0.125em;
+      left: 0;
+      margin: 2em 0.5em;
+      & .backdrop {
+        height: 1.5em;
+        width: 4em;
+        position: absolute;
+        top: -0.5em;
+        left: calc(50% - 2em);
+        background-color: $base-end-color;
+      }
+      & .img-wrap {
+        position: absolute;
+        width: 1.5em;
+        height: 1.5em;
+        top: calc(-0.85em - #{$border-width} * 2);
+        left: calc(50% - 0.75em - #{$border-width} * 2);
+        padding: 0.25em;
+        object-fit: scale-down;
+        border-radius: $border-radius-hardest;
+        border: $border-width solid $border-color;
+        cursor: pointer;
+        & img {
+          object-fit: scale-down;
+          object-position: center;
+          width: 100%;
+          height: 100%;
+          filter: v.$base-filter-invert-1;
+        }
+      }
+      &.plus {
+        & .img-wrap {
+          left: 0.125em;
+          border: none;
+          & img {
+            background-color: transparent;
+          }
+        }
+      }
+    }
+  }
+
+  & .container {
+    &-inputs {
+      &.liquidity {
+        background-color: $color-lightened-7;
+        border-radius: 1em;
+      }
+      margin: 0;
+      width: 100%;
+      & .currency {
+        position: relative;
+        $padding: 1.5em 1em;
+        padding: $padding;
+        width: calc(100% - 2em);
+        height: auto;
+        background-color: v.$background-from-color;
+        border-radius: 1em;
+
+        &.to {
+          flex-wrap: wrap;
+          background-color: v.$background-expected-color;
+        }
+
+        & .from {
+          width: 100%;
+        }
+        & .label {
+          font-size: 1em;
+          margin: 0 0 0.5em 0;
+          justify-content: flex-start;
+          color: v.$lqd-font-secondary;
+          & img {
+            height: 1.25em;
+            margin: 0 0 0 0.25em;
+            filter: v.$base-filter-invert-1;
+          }
+        }
+        & .amount {
+          font-size: 2em;
+          font-weight: 500;
+          width: 60%;
+        }
+
+        & .hint {
+          color: v.$lqd-font-terinary;
+          width: 50%;
+          position: relative;
+          justify-content: flex-start;
+          align-items: end;
+        }
+
+        & .left {
+          position: relative;
+          height: 3em;
+          background-color: $base-end-color;
+          border-radius: 0.5em;
+          justify-content: flex-start;
+          padding: 0 0.5em;
+          & img {
+            width: auto;
+            height: 1.5em;
+            object-fit: scale-down;
+            padding: 0 0.5em 0 0;
+          }
+          & .symbol {
+            font-weight: 500;
+            font-size: 1.5em;
+            padding: 0 0.5em;
+            text-align: right;
+          }
+        }
+      }
+      &.alt {
+        flex-flow: row nowrap;
+        background-color: v.$background-from-color;
+        align-items: center;
+        border-radius: 1em;
+
+        &.to {
+          background-color: v.$background-expected-color;
+        }
+
+        & .currency {
+          flex-flow: column-reverse nowrap;
+
+          & .left {
+            background-color: unset;
+            height: unset;
+            & span {
+              font-weight: 400;
+              font-size: 1.25em;
+            }
+          }
+
+          & .amount {
+            width: auto;
+          }
+        }
+
+        & .seperator {
+          width: 5em;
+          height: 0;
+        }
+      }
+    }
+  }
+
+  & .flex-row.container-inputs {
+    & .currency {
+      width: calc(50% - 3em);
+    }
+  }
+  & .more-info-toggle {
+    border: v.$border-width solid v.$border-color;
+    border-radius: 1em;
+    padding: 0 1em;
+    height: 3em;
+    margin: 1em 0 2em 0;
+    cursor: pointer;
+    justify-content: center;
+    width: calc(100% - 2em - v.$border-width * 2);
+    & .item {
+      height: 100%;
+      min-height: 3em;
+      & .key {
+        font-size: 1em;
+      }
+      & img {
+        width: 1em;
+      }
+    }
+    &.expanded {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+      border-bottom: none;
+      margin: 1em 0 0 0;
+      & .item img {
+        transition: 0.25s transform;
+        transform: rotate(180deg);
+      }
+    }
+    & .value {
+      color: v.$base-font-color;
+      font-size: 1em;
+      font-weight: 500;
+    }
+  }
+  & .more-info-body {
+    padding: 0 1em 1em 1em;
+    border: v.$border-width solid v.$border-color;
+    border-top: none;
+    border-radius: 1em;
+    display: block;
+    width: calc(100% - 2em - v.$border-width * 2);
+    margin: 0 0 2em 0;
+
+    &.expanded {
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+    &-toggle {
+      margin: 2em 0 1em 0;
+      align-self: flex-start;
+      cursor: pointer;
+    }
+    & .item {
+      padding: 0.75em 0;
+      position: relative;
+      border-bottom: v.$border-width solid v.$border-color;
+      & .key {
+        justify-content: flex-start;
+        font-size: 1em;
+        & img {
+          height: 1.25em;
+          filter: v.$base-filter-invert-1;
+        }
+        & .info-button {
+          & + .body {
+            bottom: 2.5em;
+          }
+        }
+      }
+      & .value {
+        font-size: 1em;
+        font-weight: 500;
+        color: v.$base-font-color;
+        &.warning {
+          background-color: #ffdada;
+          color: v.$base-red-color;
+          padding: 0.15em 0.25em;
+          border-radius: 0.25em;
+        }
+      }
+    }
+    & .entity {
+      & .label {
+        font-size: 1em;
+        margin: 0.5em;
+      }
+      & input {
+        border-radius: 0.5em;
+        height: 3em;
+        padding: 0 0 0 0.75em;
+        font-size: 1em;
+      }
+      width: calc(50% - 1em);
+    }
+  }
+  & .advanced-form {
+    & .entity {
+      & .label {
+        font-size: 1em;
+        margin: 0.5em;
+      }
+      & input {
+        border-radius: 0.5em;
+        height: 3em;
+        padding: 0 0 0 0.75em;
+        font-size: 1em;
+      }
+      width: calc(50% - 1em);
+    }
+  }
+  & .bottom {
+    width: 100%;
+    & .text.password {
+      width: calc(100% - 2.5em);
+      margin: 1.5em 0 0em 0;
+    }
+
+    & span.label.danger {
+      color: v.$base-red-color;
+      font-weight: 500;
+      margin: 1em 1em 0 1em;
+      align-self: center;
+    }
+  }
+}

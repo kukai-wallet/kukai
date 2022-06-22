@@ -1,9 +1,8 @@
-<app-send [embedded]="false" (operationResponse)="operationResponse($event)" [activeAccount]="selectedAccount"
-  [operationRequest]="operationRequest"></app-send>
-<app-delegate (operationResponse)="operationResponse($event)" [beaconMode]=true [operationRequest]=operationRequest>
+<app-send [embedded]="false" (operationResponse)="operationResponse($event)"
+  [externalRequest]="externalRequest"></app-send>
+<app-delegate (operationResponse)="operationResponse($event)" [beaconMode]=true [externalRequest]=externalRequest>
 </app-delegate>
-<app-originate (operationResponse)="operationResponse($event)" [operationRequest]=operationRequest
-  [activeAccount]=selectedAccount></app-originate>
+<app-originate (operationResponse)="operationResponse($event)" [externalRequest]=externalRequest></app-originate>
 <app-permission-request (permissionResponse)="permissionResponse($event)" [permissionRequest]="permissionRequest"
   [activeAccount]=activeAccount>
 </app-permission-request>

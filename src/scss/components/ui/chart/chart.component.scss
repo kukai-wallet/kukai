@@ -1,0 +1,413 @@
+@use "../../../abstracts/variables" as v;
+@use "../../../abstracts/mixins" as m;
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes dash {
+  0% {
+    stroke-dasharray: 1, 150;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -35;
+  }
+  100% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -124;
+  }
+}
+
+:host {
+  & .title-dropdown {
+    display: none;
+    position: absolute;
+    top: 3.5em;
+    left: 3em;
+    padding: 1em 0;
+    box-shadow: v.$box-shadow-darkest;
+    background-color: v.$base-end-color;
+    z-index: 1;
+    border-radius: 0.5em;
+    &.expanded {
+      display: block;
+    }
+    & p {
+      font-size: 1em;
+      font-weight: 500;
+      padding: 0.5em 1em;
+      cursor: pointer;
+      &.active {
+        background-color: v.$color-lightened-7;
+      }
+    }
+  }
+  & .spinner {
+    animation: rotate 2s linear infinite;
+    z-index: 2;
+    position: absolute;
+    top: calc(50% + 0em);
+    left: calc(50% - 2em);
+    margin: 0;
+    width: 6em;
+    height: auto;
+
+    & .path {
+      stroke: v.$base-blue-color;
+      stroke-linecap: round;
+      animation: dash 1.5s ease-in-out infinite;
+    }
+  }
+}
+:host.popout {
+  position: relative;
+  height: 33em;
+  width: 50em;
+  max-width: 40vw;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  margin: 0 -0.5em;
+  padding: 1em 0 0 0;
+  margin: 0;
+  & .loading-text {
+    display: none;
+  }
+
+  & .canvas-wrapper {
+    position: relative;
+    width: 100%;
+    height: calc(100% - 4em);
+    display: flex;
+  }
+
+  & canvas {
+    display: block;
+    box-sizing: border-box;
+    width: 100% !important;
+    &.loaded {
+      //background: linear-gradient(0deg, #f3f4ff 0 10%, var(--color-lightened-7) 10% 100%);
+    }
+    // &:hover + .time {
+    //   opacity: 0.25;
+    // }
+  }
+
+  & .mode {
+    width: calc(100% - 6em);
+    justify-content: space-between;
+    margin: 0;
+    align-items: flex-start;
+    & .left {
+    }
+
+    & .right {
+    }
+
+    & span {
+      font-size: 1.5em;
+      font-weight: 500;
+    }
+    & span.title {
+      cursor: pointer;
+      display: inline-flex;
+      margin: 0 0 0.25em 0;
+      font-weight: 500;
+      & img {
+        transition: 0.25s transform;
+        height: 1.125em;
+        filter: v.$base-filter-invert-1;
+        &.expanded {
+          transform: rotate(180deg);
+        }
+      }
+    }
+    & span.tooltip.value {
+      color: v.$base-blue-color;
+      font-size: 2.5em;
+      position: relative;
+      top: 0em;
+    }
+    & span.tooltip .unit {
+      font-size: 0.75em;
+      padding: 0 0 0 0em;
+      color: v.$base-blue-color;
+    }
+    & .attibutes {
+      span {
+        font-weight: 500;
+      }
+    }
+  }
+
+  & .time {
+    width: 12em;
+    height: 3em;
+    align-self: center;
+    width: auto;
+    justify-content: center;
+    border: 0.25em solid transparent;
+    border-radius: 10em;
+    box-shadow: v.$box-shadow-darkest;
+    background-color: v.$base-end-color;
+    position: relative;
+    top: 0em;
+    & span {
+      cursor: pointer;
+      margin: 0.25em;
+      padding: 0.75em 0;
+      min-width: 5em;
+      text-align: center;
+      border-radius: v.$border-radius-hardest;
+      &.active {
+        background-color: v.$base-font-color;
+        color: v.$base-end-color;
+      }
+    }
+  }
+  & .expand {
+    display: none;
+  }
+}
+
+:host.popout-mini {
+  position: relative;
+  height: 4em;
+  width: calc(100% - 2em);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  background-color: v.$color-lightened-7;
+  border-radius: 1em;
+  padding: 2em 1em;
+  flex-flow: column;
+  transition: 0.5s height;
+  &.expanded {
+    height: 20em;
+    padding: 6em 1em 6em 1em;
+    & span {
+      font-size: 1.5em;
+    }
+    & .mode span.title {
+      cursor: pointer;
+      display: inline-flex;
+      margin: 0 0 0.25em 0;
+      font-weight: 500;
+      font-size: 1em;
+      & img {
+        transition: 0.25s transform;
+        height: 1.125em;
+        margin: 0 0.125em 0 0;
+        filter: invert(1) contrast(0);
+        margin: 0 0 0 0.25em;
+        &.expanded {
+          transform: rotate(180deg);
+        }
+      }
+    }
+    & span.tooltip.value {
+      color: v.$base-blue-color;
+      font-size: 1.5em;
+      position: relative;
+      top: 0.5em;
+    }
+    & span.tooltip .unit {
+      font-size: 0.75em;
+      padding: 0 0 0.075em 0.1em;
+      color: v.$base-blue-color;
+      display: flex;
+      align-self: flex-end;
+    }
+    & canvas {
+      left: 0;
+    }
+    & .mode {
+      margin: 0;
+      display: flex;
+      position: absolute;
+      width: 58%;
+      top: 1.2em;
+      left: 1em;
+      & .tooltip {
+        display: flex;
+        position: unset;
+        margin: 0;
+      }
+      & .left {
+        width: 100%;
+      }
+      & .right {
+        width: 52%;
+        & .attributes {
+          & span {
+            position: unset;
+          }
+        }
+      }
+    }
+    & .time {
+      width: 10em;
+      height: 3em;
+      width: auto;
+      justify-content: center;
+      border: 0.25em solid transparent;
+      border-radius: 10em;
+      box-shadow: v.$box-shadow-darkest;
+      position: relative;
+      background-color: v.$base-end-color;
+      padding: 0.25em;
+      & span {
+        font-size: 1em;
+        display: inline;
+        cursor: pointer;
+        padding: 0.75em 0;
+        min-width: 5em;
+        text-align: center;
+        border-radius: v.$border-radius-hardest;
+        &.active {
+          background-color: v.$base-font-color;
+          color: v.$base-end-color;
+        }
+      }
+    }
+  }
+  & .loading-text {
+    position: absolute;
+    top: 3.5em;
+  }
+  & .expand {
+    position: absolute;
+    top: 1em;
+    right: 1em;
+    font-weight: 500;
+  }
+  & .spinner {
+    display: none;
+  }
+  & .canvas-wrapper {
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    display: flex;
+    flex-flow: column nowrap;
+  }
+  & canvas {
+    display: block;
+    box-sizing: border-box;
+    height: 100% !important;
+    width: calc(100% + 0em) !important;
+    background-color: transparent;
+    position: relative;
+    left: 0.5em;
+  }
+
+  & .time {
+    position: absolute;
+    top: 0.5em;
+    left: 0em;
+    & span {
+      display: none;
+      padding: 0.75em;
+      min-width: 3em;
+      text-align: center;
+      border-radius: v.$border-radius-hardest;
+      font-weight: 500;
+      &.active {
+        display: inline;
+        color: v.$base-font-color;
+        visibility: visible;
+      }
+    }
+  }
+
+  & .mode {
+    margin: 0 0 2em 0;
+    display: flex;
+    & .tooltip {
+      display: none;
+    }
+    & span.title {
+      display: none;
+      cursor: pointer;
+      & img {
+        transition: 0.25s transform;
+        height: 1.125em;
+        &.expanded {
+          transform: rotate(180deg);
+        }
+      }
+    }
+    & .right {
+      align-self: flex-start;
+      & .attributes {
+        & span {
+          font-size: 1em;
+          font-weight: 500;
+          position: relative;
+          top: 0.75em;
+        }
+      }
+    }
+  }
+}
+
+// @media (max-width: v.$font-break-0) {
+//   :host.popout {
+//     padding: 1em 0 9px 0 !important;
+//   }
+// }
+
+// @media (max-width: v.$font-break-1) {
+//   :host.popout {
+//     padding: 1em 0 7px 0 !important;
+//   }
+// }
+
+// @media (max-width: v.$font-break-2) {
+//   :host.popout {
+//     padding: 1em 0 6px 0 !important;
+//   }
+// }
+
+// @media (max-width: v.$font-break-3) {
+//   :host.popout {
+//     padding: 1em 0 4px 0 !important;
+//   }
+// }
+
+// @media (max-width: v.$font-break-4) {
+//   :host.popout {
+//     padding: 1em 0 1px 0 !important;
+//   }
+// }
+
+// @media (max-width: v.$font-break-5) {
+//   :host.popout {
+//     padding: 1em 0 1px 0 !important;
+//   }
+// }
+
+@media (max-width: v.$font-break-4) {
+  // :host.popout {
+  //   margin: 0 0 -1px 0;
+  // }
+  // :host .canvas-wrapper {
+  //   height: 205px !important;
+  // }
+  // :host canvas {
+  //   height: 205px !important;
+  // }
+}
+
+@media (max-width: v.$layout-break-6) {
+  :host.popout {
+    display: none;
+  }
+  :host.popout-mini {
+    display: flex;
+  }
+}

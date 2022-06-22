@@ -10,6 +10,7 @@ import { assertMichelsonData } from '@taquito/michel-codec';
 import { InputValidationService } from '../../../services/input-validation/input-validation.service';
 import { SubjectService } from '../../../services/subject/subject.service';
 import { Subscription } from 'rxjs';
+import { ExternalRequest } from '../../../interfaces';
 
 @Component({
   selector: 'app-uri-handler',
@@ -32,7 +33,7 @@ export class UriHandlerComponent implements OnInit, OnDestroy {
     );
   }
   permissionRequest: PermissionResponseInput = null;
-  operationRequest: any = null;
+  externalRequest: ExternalRequest = null;
   signRequest: any = null;
   activeAccount: Account;
   selectedAccount: Account;
@@ -84,14 +85,14 @@ export class UriHandlerComponent implements OnInit, OnDestroy {
         if (message.type !== BeaconMessageType.SignPayloadRequest && message.network.type.replace('edo2net', 'edonet') !== CONSTANTS.NETWORK) {
           console.warn(`Rejecting Beacon message because of network. Expected ${CONSTANTS.NETWORK} instead of ${message.network.type}`);
           await this.beaconService.rejectOnNetwork(message);
-        } else if (!this.permissionRequest && !this.operationRequest && !this.signRequest) {
+        } else if (!this.permissionRequest && !this.externalRequest && !this.signRequest) {
           switch (message.type) {
             case BeaconMessageType.PermissionRequest:
               await this.handlePermissionRequest(message);
               break;
             case BeaconMessageType.OperationRequest:
               if (await this.isSupportedOperationRequest(message)) {
-                this.operationRequest = message;
+                this.externalRequest = { operationRequest: message, selectedAccount: this.selectedAccount };
                 this.changeFavicon(true);
               }
               break;
@@ -254,33 +255,33 @@ export class UriHandlerComponent implements OnInit, OnDestroy {
     if (opHash?.error) {
       opHash = opHash.error;
     }
-    if (!this.operationRequest) {
+    if (!this.externalRequest) {
       return;
     }
     console.log('hash', opHash);
-    console.log('operationRequest', this.operationRequest);
+    console.log('externalRequest', this.externalRequest);
     if (!opHash) {
-      await this.beaconService.rejectOnUserAbort(this.operationRequest);
+      await this.beaconService.rejectOnUserAbort(this.externalRequest.operationRequest);
     } else if (opHash === 'broadcast_error') {
-      await this.beaconService.rejectOnBroadcastError(this.operationRequest);
+      await this.beaconService.rejectOnBroadcastError(this.externalRequest.operationRequest);
     } else if (opHash === 'invalid_parameters') {
-      await this.beaconService.rejectOnParameters(this.operationRequest);
+      await this.beaconService.rejectOnParameters(this.externalRequest.operationRequest);
     } else if (opHash === 'parameters_error') {
-      await this.beaconService.rejectOnParameters(this.operationRequest);
+      await this.beaconService.rejectOnParameters(this.externalRequest.operationRequest);
     } else if (opHash === 'unknown_error') {
-      await this.beaconService.rejectOnUnknown(this.operationRequest);
+      await this.beaconService.rejectOnUnknown(this.externalRequest.operationRequest);
     } else if (opHash !== 'silent') {
       const response: OperationResponseInput = {
         type: BeaconMessageType.OperationResponse,
         transactionHash: opHash,
-        id: this.operationRequest.id
+        id: this.externalRequest.operationRequest.id
       };
       await this.beaconService.client.respond(response);
     }
     if (opHash !== 'silent') {
       this.beaconService.responseSync();
     }
-    this.operationRequest = null;
+    this.externalRequest = null;
   }
   /* permission handling */
   async permissionResponse(publicKey: string): Promise<void> {

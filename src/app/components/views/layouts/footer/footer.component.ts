@@ -24,7 +24,8 @@ export class FooterComponent implements OnInit {
 • Do not answer anyone that sends you private messages or calls you
 
 • Do not click on any links in a private message, or share your seed words with anyone`,
-        title: 'Security Notice'
+        title: 'Security Notice',
+        action: 'I understand'
       }
     });
   }

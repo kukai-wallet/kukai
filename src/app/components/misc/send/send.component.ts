@@ -1,6 +1,15 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
 import { Account, EmbeddedTorusWallet } from '../../../services/wallet/wallet';
-import { PrepareRequest, ConfirmRequest, FullyPreparedTransaction, PartiallyPreparedTransaction, TemplateRequest, TemplateFee } from './interfaces';
+import {
+  PrepareRequest,
+  ConfirmRequest,
+  FullyPreparedTransaction,
+  PartiallyPreparedTransaction,
+  TemplateRequest,
+  TemplateFee,
+  ConfirmSwapRequest,
+  LqdEntrypoints
+} from './interfaces';
 import { Template } from 'kukai-embed';
 import { TokenService } from '../../../services/token/token.service';
 import { EstimateService } from '../../../services/estimate/estimate.service';
@@ -13,24 +22,32 @@ import { CoordinatorService } from '../../../services/coordinator/coordinator.se
 import { CONSTANTS } from '../../../../environments/environment';
 import { SubjectService } from '../../../services/subject/subject.service';
 import { Subscription } from 'rxjs';
+import { ExternalRequest } from '../../../interfaces';
 
 @Component({
   selector: 'app-send',
   templateUrl: './send.component.html'
 })
 export class SendComponent implements OnInit, OnChanges, OnDestroy {
+  LqdEntrypoints = LqdEntrypoints;
   @Input() embedded: boolean;
-  @Input() activeAccount: Account;
+  activeAccount: Account;
   @Input() tokenTransfer: string;
-  @Input() operationRequest: string;
+  @Input() externalRequest: ExternalRequest;
   @Input() template: Template;
   @Output() operationResponse = new EventEmitter();
   prepareRequest: PrepareRequest = null;
   confirmRequest: ConfirmRequest = null;
   templateRequest: TemplateRequest = null;
+  confirmSwapLiquidityRequest: ConfirmSwapRequest = null;
   symbol: string;
   readonly thresholdUSD = 50;
   private subscriptions: Subscription = new Subscription();
+  private swapLiquidityEntrypoints = ['addLiquidity', 'removeLiquidity', 'xtzToToken', 'tokenToXtz'];
+
+  readonly lqdContract = 'KT1TxqZ8QtKvLu3V3JH7Gx58n7Co8pgtpQU5';
+  readonly tzBTCContract = 'KT1PWx2mnDueood7fEmfbBDKx1D9BAnnXitn';
+
   constructor(
     public tokenService: TokenService,
     private estimateService: EstimateService,
@@ -52,8 +69,9 @@ export class SendComponent implements OnInit, OnChanges, OnDestroy {
     );
   }
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes?.operationRequest?.currentValue) {
-      this.checkOpReq(changes.operationRequest.currentValue);
+    if (changes?.externalRequest?.currentValue) {
+      this.activeAccount = changes.externalRequest.currentValue.selectedAccount;
+      this.checkOpReq(changes.externalRequest.currentValue.operationRequest);
     }
   }
   ngOnDestroy(): void {
@@ -61,7 +79,7 @@ export class SendComponent implements OnInit, OnChanges, OnDestroy {
   }
   private async checkOpReq(opReq: any): Promise<void | {
     kind;
-    desstination;
+    destination;
     amount;
     parameters;
     gasRecommendation;
@@ -227,22 +245,74 @@ export class SendComponent implements OnInit, OnChanges, OnDestroy {
     };
   }
   confirmTransactions(transactions: FullyPreparedTransaction[], externalReq: boolean): void {
-    this.confirmRequest = {
-      account: this.activeAccount,
-      tokenTransfer: this.tokenTransfer,
-      transactions,
-      externalReq
-    };
+    if (this.isLbReq(transactions)) {
+      if (!externalReq) {
+        this.activeAccount = this.subjectService.activeAccount.getValue();
+      }
+      this.confirmSwapLiquidityRequest = {
+        account: this.activeAccount,
+        transactions,
+        externalReq
+      };
+    } else {
+      this.confirmRequest = {
+        account: this.activeAccount,
+        tokenTransfer: this.tokenTransfer,
+        transactions,
+        externalReq
+      };
+    }
+  }
+  private isLbReq(transactions: FullyPreparedTransaction[]): boolean {
+    if (
+      transactions.length === 1 &&
+      transactions[0].destination === this.lqdContract &&
+      ['xtzToToken', 'removeLiquidity'].includes(transactions[0].parameters?.entrypoint)
+    ) {
+      // xtzToToken or removeLiquidity
+      return true;
+    } else if (transactions[0].destination === this.tzBTCContract && transactions[0].parameters?.entrypoint === 'approve') {
+      // can be tokenToXtz or addLiquidity
+      if (transactions.length === 3 && transactions[0].parameters?.value?.args[1]?.int !== '0') {
+        console.log('prepend 0 approve');
+        // normalize
+        transactions.unshift({
+          ...transactions[0],
+          kind: 'transaction',
+          amount: '0',
+          destination: this.tzBTCContract,
+          parameters: this.operationService.getRevokeAmountParameters(this.lqdContract)
+        });
+      }
+      if (
+        transactions.length === 4 &&
+        new Set([transactions[0].destination, transactions[1].destination, transactions[3].destination, this.tzBTCContract]).size === 1 &&
+        new Set([transactions[0].parameters?.entrypoint, transactions[1].parameters?.entrypoint, transactions[3].parameters?.entrypoint, 'approve']).size ===
+          1 &&
+        new Set([
+          transactions[0].parameters?.value?.args[0]?.string,
+          transactions[1].parameters?.value?.args[0]?.string,
+          transactions[3].parameters?.value?.args[0]?.string,
+          this.lqdContract
+        ]).size === 1 &&
+        transactions[2].destination === this.lqdContract &&
+        ['tokenToXtz', 'addLiquidity'].includes(transactions[2].parameters?.entrypoint)
+      ) {
+        return true;
+      }
+    }
+    return false;
   }
   handlePrepareResponse(preparedTransactions: FullyPreparedTransaction[]): void {
     this.prepareRequest = null;
     if (preparedTransactions) {
-      console.log('PrepareResponse', preparedTransactions);
+      console.log('PrepareResponse', JSON.stringify(preparedTransactions));
       this.confirmTransactions(preparedTransactions, false);
     }
   }
   handleConfirmResponse(opHash: string): void {
     this.confirmRequest = null;
+    this.confirmSwapLiquidityRequest = null;
     this.operationResponse.emit(opHash);
   }
   handleTemplateApproval(ops: FullyPreparedTransaction[]): void {

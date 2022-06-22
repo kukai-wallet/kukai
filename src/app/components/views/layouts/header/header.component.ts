@@ -13,6 +13,7 @@ import { DelegateService } from '../../../../services/delegate/delegate.service'
 import { SubjectService } from '../../../../services/subject/subject.service';
 import { Subscription } from 'rxjs';
 import { DeeplinkService } from '../../../../services/deeplink/deeplink.service';
+import { UnlockableService } from '../../../../services/unlockable/unlockable.service';
 
 @Component({
   selector: 'app-header',
@@ -36,7 +37,8 @@ export class HeaderComponent implements OnInit, OnChanges, OnDestroy {
     private messageService: MessageService,
     private translate: TranslateService,
     private delegateService: DelegateService,
-    private subjectService: SubjectService
+    private subjectService: SubjectService,
+    public unlockableService: UnlockableService
   ) {}
 
   ngOnInit(): void {

@@ -1,6 +1,9 @@
 <div class="main-container">
   <div class="flex-row top-container-balances">
     <h1>Balances</h1>
+    <div class="flex-row button right">
+      <button class="swap-liquidity" (click)="openSwap()">Liquidity Baking</button>
+    </div>
   </div>
   <div class="scroll-wrapper">
     <app-balance-token [account]="account" [token]="{name: 'tezos', fallback: 'assets/img/tezos-xtz-logo.svg'}" class="tez no-box"></app-balance-token>

@@ -1,0 +1,225 @@
+<div *ngIf="isOpen" class="flex-column kukai-modal">
+  <div class="content">
+    <div class="flex-column top">
+      <div class="flex-row button close" (click)="closeModalAction()"><img class="x"
+          src="../../../../../assets/img/close-btn-x.png" />
+      </div>
+      <h1 class="title">Confirmation</h1>
+    </div>
+    <div class="flex-column liquidity-baking-confirm">
+      <ng-container *ngIf="entrypoint === 'addLiquidity'">
+        <div class="flex-column container-inputs alt from">
+          <div class="flex-row currency from">
+            <span class="amount">{{ expectedXtz | number:'1.0-6' }}</span>
+            <div class="flex-row left">
+              <span class="symbol">{{ 'XTZ' }}</span>
+              <img [src]="'assets/img/tezos-xtz-logo.svg'" />
+            </div>
+          </div>
+          <div class="seperator arrow plus">
+            <span class="img-wrap"><img [src]="semaphore ? 'assets/img/feeLoader.gif' : 'assets/img/lb-plus.svg'" /></span>
+          </div>
+          <div class="flex-row currency from">
+            <span class="amount">{{ expectedToken | number:'1.0-8' }}</span>
+            <div class="flex-row left">
+              <span class="symbol">{{ 'tzBTC' }}</span>
+              <img [src]="'assets/img/tokens/tzbtc.png'" />
+            </div>
+          </div>
+        </div>
+        <div class="seperator arrow">
+          <div class="backdrop"></div>
+          <span class="img-wrap"><img [src]="semaphore ? 'assets/img/feeLoader.gif' : 'assets/img/lb-down-arrow.svg'" /></span>
+        </div>
+        <div class="flex-column container-inputs alt to">
+          <div class="flex-row currency to">
+            <span class="amount">≈ {{ expectedLqd ? (expectedLqd | number:'1.0-0') : "&nbsp;" }}</span>
+            <div class="flex-row left">
+              <span class="symbol">{{ 'LBT' }}</span>
+              <img [src]="'assets/img/tokens/lbt.png'" />
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="entrypoint === 'removeLiquidity'">
+        <div class="flex-column container-inputs alt from">
+          <div class="flex-row currency from">
+            <span class="amount">{{ expectedLqd | number:'1.0-0' }}</span>
+            <div class="flex-row left">
+              <span class="symbol">{{ 'LBT' }}</span>
+              <img [src]="'assets/img/tokens/lbt.png'" />
+            </div>
+          </div>
+        </div>
+        <div class="seperator arrow">
+          <div class="backdrop"></div>
+          <span class="img-wrap"><img [src]="semaphore ? 'assets/img/feeLoader.gif' : 'assets/img/lb-down-arrow.svg'" /></span>
+        </div>
+        <div class="flex-column container-inputs alt to">
+          <div class="flex-row currency to">
+            <span class="amount">≈ {{expectedXtz ? (expectedXtz | number:'1.0-6') : "&nbsp;"}}</span>
+            <div class="flex-row left">
+              <span class="symbol">{{ 'XTZ' }}</span>
+              <img [src]="'assets/img/tezos-xtz-logo.svg'" />
+            </div>
+          </div>
+          <div class="seperator arrow plus">
+            <span class="img-wrap"><img [src]="semaphore ? 'assets/img/feeLoader.gif' : 'assets/img/lb-plus.svg'" /></span>
+          </div>
+          <div class="flex-row currency to">
+            <span class="amount">≈ {{expectedToken ? (expectedToken | number:'1.0-8') : "&nbsp;"}}</span>
+            <div class="flex-row left">
+              <span class="symbol">{{ 'tzBTC' }}</span>
+              <img [src]="'assets/img/tokens/tzbtc.png'" />
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="entrypoint === 'xtzToToken'">
+        <div class="flex-column container-inputs">
+          <div *ngIf="expectedXtz" class="flex-row currency from">
+            <span class="amount">{{expectedXtz | number:'1.0-6'}}</span>
+            <div class="flex-row left">
+              <span class="symbol">{{ 'XTZ' }}</span>
+              <img [src]="'assets/img/tezos-xtz-logo.svg'" />
+            </div>
+          </div>
+          <div class="seperator arrow">
+            <div class="backdrop"></div>
+            <span class="img-wrap"><img [src]="semaphore ? 'assets/img/feeLoader.gif' : 'assets/img/lb-down-arrow.svg'" /></span>
+          </div>
+          <div class="flex-row currency to">
+            <span class="amount">≈ {{expectedToken ? (expectedToken | number:'1.0-8') : "&nbsp;"}}</span>
+            <div class="flex-row left">
+              <span class="symbol">{{ 'tzBTC' }}</span>
+              <img [src]="'assets/img/tokens/tzbtc.png'" />
+            </div>
+            <span class="flex-row hint">Expected</span>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="entrypoint === 'tokenToXtz'">
+        <div class="flex-column container-inputs">
+          <div class="flex-row currency from">
+            <span class="amount">{{expectedToken | number:'1.0-8'}}</span>
+            <div class="flex-row left">
+              <span class="symbol">{{ 'tzBTC' }}</span>
+              <img [src]="'assets/img/tokens/tzbtc.png'" />
+            </div>
+          </div>
+          <div class="seperator arrow">
+            <div class="backdrop"></div>
+            <span class="img-wrap"><img [src]="semaphore ? 'assets/img/feeLoader.gif' : 'assets/img/lb-down-arrow.svg'" /></span>
+          </div>
+          <div class="flex-row currency to">
+            <span class="amount">≈ {{expectedXtz ? (expectedXtz | number:'1.0-6') : "&nbsp;"}}</span>
+            <div class="flex-row left">
+              <span class="symbol">{{ 'XTZ' }}</span>
+              <img [src]="'assets/img/tezos-xtz-logo.svg'" />
+            </div>
+            <span class="flex-row hint">Expected</span>
+          </div>
+        </div>
+      </ng-container>
+      <div class="output">
+        <div *ngIf="minimumToken && !minimumXtz" class="flex-row item">
+          <span class="flex-row key">Minimum Received:&nbsp;
+          </span>
+          <img src="assets/img/information-circle-outline.svg" class="info-button" />
+          <div class="body">
+            The minimum amount you are guaranteed to receive. If the exchange rate changes unfavorably such that you can no longer receive at least this amount, then your transaction will not be completed.
+          </div>
+          <span class="value">{{minimumToken | number:'1.2-8'}} tzBTC</span>
+        </div>
+        <div *ngIf="minimumXtz && !minimumToken" class="flex-row item">
+          <span class="flex-row key">Minimum Received:&nbsp;
+          </span>
+          <img src="assets/img/information-circle-outline.svg"
+              class="info-button" />
+          <div class="body">
+            The minimum amount you are guaranteed to receive. If the exchange rate changes unfavorably such that you can no longer receive at least this amount, then your transaction will not be completed.
+          </div>
+          <span class="value">{{minimumXtz | number:'1.6-6'}} XTZ</span>
+        </div>
+        <div
+          *ngIf="minimumXtz && minimumToken"
+          class="item">
+          <span class="flex-row key" style="margin: 0 0 0.5em 0">Minimum Received:&nbsp;
+          </span>
+          <img src="assets/img/information-circle-outline.svg" class="info-button" />
+          <div class="body">
+            The minimum amount you are guaranteed to receive. If the exchange rate changes unfavorably such that you can no longer receive at least this amount, then your transaction will not be completed.
+          </div>
+          <span class="value">{{minimumXtz | number:'1.6-6'}} XTZ + {{
+            minimumToken | number:'1.2-8'}} tzBTC</span>
+        </div>
+        <div *ngIf="minimumLqd" class="flex-row item">
+          <span class="flex-row key">Minimum Received:&nbsp;
+          </span>
+          <img src="assets/img/information-circle-outline.svg" class="info-button" />
+          <div class="body">
+            The minimum amount you are guaranteed to receive. If the exchange rate changes unfavorably such that you can no longer receive at least this amount, then your transaction will not be completed.
+          </div>
+          <span class="value">{{minimumLqd | number:'1.0-0'}} LBT</span>
+        </div>
+        <div class="flex-row item">
+          <span class="flex-row key">Fee:</span>
+          <span class="value">&nbsp;{{getTotalFee() | number:'1.0-6'}} tez</span>
+        </div>
+        <div class="flex-row item" *ngIf="getTotalBurn(); let storageCost">
+          <span class="flex-row key">Storage Cost:</span>
+          <span class="value">&nbsp;{{storageCost | number:'1.0-6'}} tez</span>
+        </div>
+      </div>
+      <div *ngIf="(externalReq && (!walletService.isLedgerWallet() || ledgerError))" class="flex-column more-info-toggle" [class.expanded]="advancedForm">
+        <div class="flex-row item" (click)="advancedForm = !advancedForm">
+          <span class="value">{{ 'Advanced' }}</span>
+          <div class="flex-row"><img src="assets/img/chevron-down.svg"></div>
+        </div>
+      </div>
+      <form *ngIf="advancedForm && (externalReq && (!walletService.isLedgerWallet() || ledgerError))" autocomplete="off" class="more-info-body" [class.expanded]="advancedForm">
+        <div class="flex-row">
+          <div class="flex-column entity">
+            <label class="label">Gas limit</label>
+            <input type="text" inputmode="decimal" class="text" (input)="sanitizeNumberInput($event, 0, 'customGasLimit')"
+              (paste)="sanitizeNumberInput($event, 0, 'customGasLimit')" [placeholder]="getTotalDefaultGas() || '0'"
+              [value]="customGasLimit">
+          </div>
+          <div class="flex-column entity">
+            <label class="label">Fee</label>
+            <input type="text" inputmode="decimal" class="text" [placeholder]="getTotalFee() || '0'" (paste)="sanitizeNumberInput($event, 6, 'customFee')"
+              (input)="sanitizeNumberInput($event, 6, 'customFee')" [value]="customFee">
+          </div>
+        </div>
+        <div class="flex-row">
+          <div class="flex-column entity">
+            <label class="label">Storage limit</label>
+            <input type="text" inputmode="decimal" class="text" (input)="sanitizeNumberInput($event, 0, 'customStorageLimit')"
+              (paste)="sanitizeNumberInput($event, 0, 'customStorageLimit')" [placeholder]="getTotalDefaultStorage() || '0'"
+              [value]="customStorageLimit">
+          </div>
+          <div class="flex-column entity">
+            <label class="label">Max storage cost</label>
+            <input type="text" inputmode="decimal" class="text read-only" [placeholder]="(getTotalBurn() || '0') + ' tez'" tabindex=-1
+              readonly>
+          </div>
+        </div>
+      </form>
+      <div class="flex-column bottom">
+        <div class="seperator"></div>
+        <span class="form-validity" [class.error]="formInvalid !== 'Awaiting Request'">{{ formInvalid }}</span>
+        <button *ngIf="walletService.isLedgerWallet() && ledgerError; else elseBlock" class="confirm"
+          [disabled]="!!formInvalid" (click)="ledgerRetry()">Sign with Ledger</button>
+        <ng-template #elseBlock>
+          <span *ngIf="this.pwdInvalid" class="label danger">{{ pwdInvalid }}</span>
+          <input *ngIf="walletService.isPwdWallet()" [(ngModel)]="password" autocomplete="current-password"
+            placeholder="Password" class="text password" type="password" (input)="this.pwdInvalid = ''"
+            (change)="this.pwdInvalid = ''" (keydown.enter)='inject()'>
+          <button class="confirm" (click)="inject()"
+            [disabled]="(walletService.isLedgerWallet() && (!sendResponse || !sendResponse.payload || !sendResponse.payload.signedOperation)) || walletService.isWatchWallet()">
+            {{ walletService.isLedgerWallet() ? 'Broadcast' : confirmTitle}}</button>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>

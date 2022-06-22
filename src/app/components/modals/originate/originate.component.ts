@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
-import { KeyPair, DefaultTransactionParams } from '../../../interfaces';
+import { KeyPair, DefaultTransactionParams, ExternalRequest } from '../../../interfaces';
 import { WalletService } from '../../../services/wallet/wallet.service';
 import { CoordinatorService } from '../../../services/coordinator/coordinator.service';
 import { OperationService } from '../../../services/operation/operation.service';
@@ -28,9 +28,8 @@ const zeroTxParams: DefaultTransactionParams = {
 })
 export class OriginateComponent extends ModalComponent implements OnInit, OnChanges, OnDestroy {
   readonly beaconMode = true;
-  @Input() operationRequest: any;
+  @Input() externalRequest: ExternalRequest;
   @Output() operationResponse = new EventEmitter();
-  @Input() activeAccount: Account;
   syncSub: Subscription;
   defaultTransactionParams: DefaultTransactionParams = zeroTxParams;
   costPerByte: string = this.estimateService.costPerByte;
@@ -72,16 +71,23 @@ export class OriginateComponent extends ModalComponent implements OnInit, OnChan
   ngOnInit(): void {}
   ngOnChanges(changes: SimpleChanges): void {
     if (this.beaconMode) {
-      if (this.operationRequest && this.operationRequest.operationDetails.length === 1 && this.operationRequest.operationDetails[0].kind === 'origination') {
+      if (
+        this.externalRequest?.operationRequest?.operationDetails?.length === 1 &&
+        this.externalRequest.operationRequest.operationDetails[0].kind === 'origination'
+      ) {
         if (this.isValidOrigination()) {
           this.openModal();
-          this.balance = Big(this.operationRequest.operationDetails[0].balance)
+          this.balance = Big(this.externalRequest.operationRequest.operationDetails[0].balance)
             .div(10 ** 6)
             .toFixed();
-          this.script = this.operationRequest.operationDetails[0].script;
+          this.script = this.externalRequest.operationRequest.operationDetails[0].script;
           const recommendations = {
-            gasRecommendation: this.operationRequest.operationDetails[0].gas_limit ? this.operationRequest.operationDetails[0].gas_limit : undefined,
-            storageRecommendation: this.operationRequest.operationDetails[0].storage_limit ? this.operationRequest.operationDetails[0].storage_limit : undefined
+            gasRecommendation: this.externalRequest.operationRequest.operationDetails[0].gas_limit
+              ? this.externalRequest.operationRequest.operationDetails[0].gas_limit
+              : undefined,
+            storageRecommendation: this.externalRequest.operationRequest.operationDetails[0].storage_limit
+              ? this.externalRequest.operationRequest.operationDetails[0].storage_limit
+              : undefined
           };
           this.estimateFees(recommendations);
           if (this.beaconMode) {
@@ -116,7 +122,7 @@ export class OriginateComponent extends ModalComponent implements OnInit, OnChan
     }
   }
   isValidOrigination(): boolean {
-    const origination = this.operationRequest.operationDetails[0];
+    const origination = this.externalRequest.operationRequest.operationDetails[0];
     if (!origination.balance || !this.inputValidationService.amount(origination.balance, 0)) {
       console.warn('invalid balance');
       return false;
@@ -143,8 +149,8 @@ export class OriginateComponent extends ModalComponent implements OnInit, OnChan
       this.simSemaphore--;
     };
     this.simSemaphore++;
-    await this.estimateService.preLoadData(this.activeAccount.pkh, this.activeAccount.pk);
-    this.estimateService.estimateOrigination({ ...this.getOrigination(), ...recommendations }, this.activeAccount.pkh, callback);
+    await this.estimateService.preLoadData(this.externalRequest.selectedAccount.pkh, this.externalRequest.selectedAccount.pk);
+    this.estimateService.estimateOrigination({ ...this.getOrigination(), ...recommendations }, this.externalRequest.selectedAccount.pkh, callback);
   }
   getOrigination(): {
     balance: string;
@@ -215,7 +221,7 @@ export class OriginateComponent extends ModalComponent implements OnInit, OnChan
       this.messageService.startSpinner('Signing operation...');
       let keys;
       try {
-        keys = await this.walletService.getKeys(pwd, this.activeAccount.pkh);
+        keys = await this.walletService.getKeys(pwd, this.externalRequest.selectedAccount.pkh);
       } catch {
         this.messageService.stopSpinner();
       }
@@ -278,9 +284,9 @@ export class OriginateComponent extends ModalComponent implements OnInit, OnChan
               const metadata = {
                 kt1: ans.payload.newPkh,
                 opHash: ans.payload.opHash,
-                origination: this.operationRequest.operationDetails[0]
+                origination: this.externalRequest.operationRequest.operationDetails[0]
               };
-              this.coordinatorService.boost(this.activeAccount.address, metadata);
+              this.coordinatorService.boost(this.externalRequest.selectedAccount.address, metadata);
             } else if (this.walletService.isLedgerWallet()) {
               this.requestLedgerSignature();
             }
@@ -326,13 +332,13 @@ export class OriginateComponent extends ModalComponent implements OnInit, OnChan
       this.operationService.broadcast(this.sendResponse.payload.signedOperation).subscribe(
         (ans: any) => {
           this.sendResponse = ans;
-          if (ans.success && this.activeAccount.address) {
+          if (ans.success && this.externalRequest.selectedAccount.address) {
             const metadata = {
               kt1: ans.payload.newPkh,
               opHash: ans.payload.opHash,
-              origination: this.operationRequest.operationDetails[0]
+              origination: this.externalRequest.operationRequest.operationDetails[0]
             };
-            this.coordinatorService.boost(this.activeAccount.address, metadata);
+            this.coordinatorService.boost(this.externalRequest.selectedAccount.address, metadata);
           } else {
             this.messageService.addError(this.sendResponse.payload.msg, 0);
             this.operationResponse.emit('broadcast_error');
