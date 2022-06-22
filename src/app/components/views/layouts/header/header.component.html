@@ -4,7 +4,7 @@
   </a>
   <div *ngIf="router.url.indexOf('/account/') === 0" class="flex-row right">
     <div class="button icon" (click)="unlockableService.toggleFeature('theme', 'dark')">
-      <img [src]="this.unlockableService?.unlockables?.theme === 'dark' ? 'assets/img/light_mode.svg' : 'assets/img/dark_mode.svg'" />
+      <img src="../../../assets/img/dark_mode.svg" />
       <div class="tooltip">
         <div class="description">THEME</div>
       </div>
