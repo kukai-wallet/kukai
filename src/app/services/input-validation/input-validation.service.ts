@@ -79,7 +79,7 @@ export class InputValidationService {
         return false;
       }
     }
-    return a.length >= 2 && domain.endsWith(`.${CONSTANTS.TEZOS_DOMAIN.TOP_DOMAIN}`);
+    return a.length >= 2 && CONSTANTS.TEZOS_DOMAIN.TOP_DOMAINS.includes(a[a.length - 1]);
   }
   twitterAccount(username: string) {
     // The only characters you can use are uppercase and lowercase letters, numbers, and the underscore character ( _ ).

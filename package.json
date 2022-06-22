@@ -51,8 +51,8 @@
     "@taquito/tzip12": "12.1.1",
     "@taquito/tzip16": "12.1.1",
     "@tezos-core-tools/crypto-utils": "0.0.7",
-    "@tezos-domains/core": "^1.14.0",
-    "@tezos-domains/taquito-client": "^1.14.0",
+    "@tezos-domains/core": "^1.17.1",
+    "@tezos-domains/taquito-client": "^1.17.1",
     "@toruslabs/fetch-node-details": "^4.0.1",
     "@toruslabs/torus.js": "^4.2.0",
     "@types/w3c-web-hid": "^1.0.2",
@@ -140,6 +140,7 @@
     "ts-node": "~8.3.0",
     "typescript": "~4.7.3",
     "url": "^0.11.0",
+    "web3-eth-accounts": "^1.7.4",
     "webpack": "^5.68.0"
   },
   "overrides": {

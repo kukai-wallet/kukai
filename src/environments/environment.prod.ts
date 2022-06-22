@@ -8,7 +8,7 @@ const _CONSTANTS: Constants = {
   // https://gitlab.com/tezos-domains/contracts/-/blob/master/deployed/mainnet.json#L9
   TEZOS_DOMAIN: {
     CONTRACT: 'KT1P8n2qzJjwMPbHJfi4o8xu6Pe3gaU3u2A3',
-    TOP_DOMAIN: 'tez'
+    TOP_DOMAINS: ['tez', 'xyz']
   },
   NETWORK: 'mainnet',
   MAINNET: true,

@@ -12,7 +12,7 @@ const _CONSTANTS: Constants = {
   NAME: 'Testnet / Granadanet',
   TEZOS_DOMAIN: {
     CONTRACT: 'KT1Pg2i2fySptcJg3QEwvQzTUPAyoGADNSLe',
-    TOP_DOMAIN: 'gra'
+    TOP_DOMAINS: ['gra']
   },
   MAINNET: false,
   NODE_URL: 'https://api.tez.ie/rpc/granadanet',

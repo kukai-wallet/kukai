@@ -12,7 +12,7 @@ const _CONSTANTS: Constants = {
   NAME: 'Testnet / Hangzhounet',
   TEZOS_DOMAIN: {
     CONTRACT: 'KT1CEX6h5wxXMJ1f24ZZ8woDTmamZqPzcU5x',
-    TOP_DOMAIN: 'han'
+    TOP_DOMAINS: ['han']
   },
   MAINNET: false,
   NODE_URL: 'https://rpc.hangzhounet.teztnets.xyz',
