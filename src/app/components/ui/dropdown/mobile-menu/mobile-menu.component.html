@@ -2,6 +2,12 @@
   <img class="button icon-db" src="../../../../assets/img/hamburger.svg" (click)="toggleDropdown()" />
   <div *ngIf="router.url.indexOf('/account/') === 0" class="flex-column mobile dropdown-content">
     <div class="flex-row-wrap account-content">
+      <div class="flex-column button" (click)="unlockableService.toggleFeature('theme', 'dark');toggleDropdown()">
+        <div class="wrapper">
+          <img class="icon" src="../../../../assets/img/theme_icon.svg" />
+        </div>
+        <span>THEME</span>
+      </div>
       <div *ngIf="router.url.indexOf('/account/') === 0" class="flex-column button" (click)="copy();toggleDropdown()">
         <div class="wrapper">
           <img class="icon" src="../../../../assets/img/copy-blue.svg" />
@@ -21,7 +27,8 @@
         <span>ADD</span>
       </div>
     </div>
-    <div class="flex-row button delegation" routerLink="/account/{{activeAccount?.address}}/stakers" (click)="toggleDropdown()">
+    <div class="flex-row button delegation" routerLink="/account/{{activeAccount?.address}}/stakers"
+      (click)="toggleDropdown()">
       <div *ngIf="!activeAccount?.delegate" class="flex-row">
         <span class="flex-row">STAKING:</span><span class="choose">NOT
           STAKING</span>
@@ -32,9 +39,7 @@
           }}</span>
       </div>
     </div>
-    <div class="flex-row button" (click)="openSwap();toggleDropdown()">
-      <span>LIQUIDITY BAKING</span><img class="icon" src="../../../../assets/img/water_drop.svg" style="width: 3rem" />
-    </div>
+
     <div class="flex-row button" [routerLink]="'/account/' + activeAccount?.address + '/settings'" (click)="toggleDropdown()">
       <span>SETTINGS</span><img class="icon settings" src="../../../../assets/img/cog.svg" style="width: 2.75rem" />
     </div>

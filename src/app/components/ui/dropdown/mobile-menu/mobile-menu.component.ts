@@ -10,6 +10,7 @@ import { LookupService } from '../../../../services/lookup/lookup.service';
 import { SubjectService } from '../../../../services/subject/subject.service';
 import { ModalComponent } from '../../../../components/modals/modal.component';
 import { take } from 'rxjs/operators';
+import { UnlockableService } from '../../../../services/unlockable/unlockable.service';
 
 @Component({
   selector: 'app-ui-mobile-menu',
@@ -28,7 +29,8 @@ export class MobileMenuDropdownComponent extends DropdownComponent implements On
     public lookupService: LookupService,
     private messageService: MessageService,
     private translate: TranslateService,
-    private subjectService: SubjectService
+    private subjectService: SubjectService,
+    public unlockableService: UnlockableService
   ) {
     super();
   }
