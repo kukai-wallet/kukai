@@ -37,24 +37,24 @@
           <div class="flex-row">
             <div class="flex-column">
               <label class="label">Gas limit</label>
-              <input name="none" type="text" class="text" placeholder={{this.defaultTransactionParams.gas.toString()}}
+              <input numericinput="decimal" name="none" type="text" class="text" placeholder={{this.defaultTransactionParams.gas.toString()}}
                 [(ngModel)]="customGas">
             </div>
             <div class="flex-column">
               <label class="label">Fee</label>
-              <input name="none" type="text" class="text" (keypress)="keyPressNumbersDecimal($event, 'customFee')"
+              <input numericinput="decimal" name="none" type="text" class="text" (keypress)="keyPressNumbersDecimal($event, 'customFee')"
                 placeholder={{this.defaultTransactionParams.fee.toString()}} [(ngModel)]="customFee">
             </div>
           </div>
           <div class="flex-row">
             <div class="flex-column">
               <label class="label">Storage limit</label>
-              <input name="none" type="text" class="text"
+              <input numericinput="decimal" name="none" type="text" class="text"
                 placeholder={{this.defaultTransactionParams?.storage.toString()}} [(ngModel)]="customStorage">
             </div>
             <div class="flex-column">
               <label class="label">Max storage cost</label>
-              <input name="none" type="text" class="text read-only" [value]="burnAmount() ? burnAmount() : '0 tez'"
+              <input numericinput="decimal" name="none" type="text" class="text read-only" [value]="burnAmount() ? burnAmount() : '0 tez'"
                 tabindex=-1 readonly>
             </div>
           </div>

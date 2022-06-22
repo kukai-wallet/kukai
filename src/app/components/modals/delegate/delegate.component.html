@@ -30,7 +30,7 @@
       <ng-container *ngIf="advanced">
         <form autocomplete="off">
           <div class="label">Fee <span class="label" style="margin: 0; text-transform: lowercase;">(tez)</span></div>
-          <input name="none" [(ngModel)]="fee" class="text fee" type="text" placeholder="{{defaultFee}}"
+          <input inputmode="decimal" name="none" [(ngModel)]="fee" class="text fee" type="text" placeholder="{{defaultFee}}"
             [disabled]="walletService.isLedgerWallet() && sendResponse?.payload?.signedOperation" />
         </form>
       </ng-container>
