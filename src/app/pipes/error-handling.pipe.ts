@@ -1152,7 +1152,7 @@ export class ErrorHandlingPipe implements PipeTransform {
       id: 'Timeout has occurred'
     }
   ];
-  transform(errorId: string, withObj?: any): any {
+  transform(errorId: string, withObj?: any, location?: number): any {
     const protocol = errorId.match(/[0-9]{3}-P\w{7}/g);
     if (protocol && protocol[0]) {
       errorId = errorId.replace(protocol[0], 'alpha');
@@ -1163,6 +1163,8 @@ export class ErrorHandlingPipe implements PipeTransform {
     if (errorId === 'proto.alpha.michelson_v1.script_rejected' && withObj) {
       if (withObj.string) {
         errorMessage = `${this.ERROR_LIST[index].msg} | ${withObj.string}`;
+      } else if (withObj?.int === '4' && location === 206) {
+        errorMessage = 'Tokens deposited is greater than maximum tokens deposited. Please retry in a while.';
       } else {
         let jsonWith = JSON.stringify(withObj);
         if (jsonWith.length > 200) {

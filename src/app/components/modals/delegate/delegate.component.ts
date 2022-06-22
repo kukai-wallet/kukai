@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewChild, ElementRef, Output, EventEmitter, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
-import { KeyPair } from '../../../interfaces';
+import { KeyPair, ExternalRequest } from '../../../interfaces';
 import { WalletService } from '../../../services/wallet/wallet.service';
 import { CoordinatorService } from '../../../services/coordinator/coordinator.service';
 import { OperationService } from '../../../services/operation/operation.service';
@@ -27,7 +27,7 @@ export class DelegateComponent extends ModalComponent implements OnInit, OnChang
   readonly ktFee = 0.0008;
   @ViewChild('toPkhInput') toPkhView: ElementRef;
   @Input() beaconMode = false;
-  @Input() operationRequest: any;
+  @Input() externalRequest: ExternalRequest;
   @Output() operationResponse = new EventEmitter();
   activeAccount: Account;
   toPkh: string;
@@ -76,21 +76,22 @@ export class DelegateComponent extends ModalComponent implements OnInit, OnChang
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (this.beaconMode) {
-      if (this.operationRequest) {
-        const opReq = this.operationRequest.operationDetails ? this.operationRequest.operationDetails : this.operationRequest;
+      if (this.externalRequest?.operationRequest) {
+        const opReq = this.externalRequest.operationRequest.operationDetails
+          ? this.externalRequest.operationRequest.operationDetails
+          : this.externalRequest.operationRequest;
         if (opReq[0]?.kind === 'delegation') {
           if (opReq[0].delegate) {
-            if (this.beaconMode) {
-              ModalComponent.currentModel.next({
-                name: '',
-                data: null
-              });
-              this.clearForm();
-              ModalComponent.currentModel.next({
-                name: 'delegate-confirm',
-                data: { address: opReq[0].delegate }
-              });
-            }
+            this.activeAccount = this.externalRequest.selectedAccount;
+            ModalComponent.currentModel.next({
+              name: '',
+              data: null
+            });
+            this.clearForm();
+            ModalComponent.currentModel.next({
+              name: 'delegate-confirm',
+              data: { address: opReq[0].delegate }
+            });
           }
         }
       }

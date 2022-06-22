@@ -53,6 +53,12 @@ export class ModalComponent implements OnInit, OnDestroy {
       document.body.style.marginRight = '0.5rem !important';
       document.body.style.overflowY = 'hidden !important';
     }
+    const isMobile = Number(document.documentElement.style.getPropertyValue('--is-mobile'));
+    if (isMobile) {
+      setTimeout(() => {
+        window.scrollTo({ top: 0 });
+      }, 0);
+    }
     this.isOpen = true;
   }
 

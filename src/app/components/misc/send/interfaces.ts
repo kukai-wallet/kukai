@@ -17,6 +17,19 @@ export interface TemplateFee {
   total: string;
 }
 
+export interface ConfirmSwapRequest {
+  account: Account;
+  transactions: FullyPreparedTransaction[];
+  externalReq: boolean;
+}
+
+export enum LqdEntrypoints {
+  addLiquidity = 'addLiquidity',
+  removeLiquidity = 'removeLiquidity',
+  xtzToToken = 'xtzToToken',
+  tokenToXtz = 'tokenToXtz'
+}
+
 export interface ConfirmRequest {
   account: Account;
   tokenTransfer: string;

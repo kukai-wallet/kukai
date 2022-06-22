@@ -508,6 +508,7 @@ export class OperationService {
     }
   }
   errHandler(error: any): Observable<any> {
+    console.log(error);
     if (error.error && typeof error.error === 'string') {
       // parsing errors
       error = error.error;
@@ -532,7 +533,7 @@ export class OperationService {
       error = this.errorHandlingPipe.transform(error.message);
     } else if (error.id) {
       if (error.with) {
-        error = this.errorHandlingPipe.transform(error.id, error.with);
+        error = this.errorHandlingPipe.transform(error.id, error.with, error?.location);
       } else if (error.id === 'failure' && error.msg) {
         error = this.errorHandlingPipe.transform(error.msg);
       } else {
@@ -1303,11 +1304,213 @@ export class OperationService {
       ]
     };
   }
-  parseTokenTransfer(op: any): {
-    tokenId: string;
-    to: string;
-    amount: string;
-  } {
+  getApproveAmountParameters(from: string, amount: string) {
+    return {
+      entrypoint: 'approve',
+      value: {
+        prim: 'Pair',
+        args: [
+          {
+            string: from
+          },
+          {
+            int: amount
+          }
+        ]
+      }
+    };
+  }
+  getRevokeAmountParameters(from: string) {
+    return {
+      entrypoint: 'approve',
+      value: {
+        prim: 'Pair',
+        args: [
+          {
+            string: from
+          },
+          {
+            int: '0'
+          }
+        ]
+      }
+    };
+  }
+  getXTZToTokenParameters(from: string, minimum: string, expirationTime: string) {
+    return {
+      entrypoint: 'xtzToToken',
+      value: {
+        prim: 'Pair',
+        args: [
+          {
+            string: from
+          },
+          {
+            prim: 'Pair',
+            args: [
+              {
+                int: minimum
+              },
+              {
+                string: expirationTime
+              }
+            ]
+          }
+        ]
+      }
+    };
+  }
+  getTokenToXTZParameters(from: string, minimumToken: string, minimumXTZ: string, expirationTime: string) {
+    return {
+      entrypoint: 'tokenToXtz',
+      value: {
+        prim: 'Pair',
+        args: [
+          {
+            string: from
+          },
+          {
+            prim: 'Pair',
+            args: [
+              {
+                int: minimumToken
+              },
+              {
+                prim: 'Pair',
+                args: [
+                  {
+                    int: minimumXTZ
+                  },
+                  {
+                    string: expirationTime
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    };
+  }
+
+  getAddLiquidityParameters(from: string, minimumLqt: string, minimumToken: string, expirationTime: string) {
+    return {
+      entrypoint: 'addLiquidity',
+      value: {
+        prim: 'Pair',
+        args: [
+          {
+            string: from
+          },
+          {
+            prim: 'Pair',
+            args: [
+              {
+                int: minimumLqt
+              },
+              {
+                prim: 'Pair',
+                args: [
+                  {
+                    int: minimumToken
+                  },
+                  {
+                    string: expirationTime
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    };
+  }
+
+  getRemoveLiquidityParameters(from: string, lqtBurn: string, minXtzWithdrawn: string, minTokensWithdrawn: string, expirationTime: string) {
+    return {
+      entrypoint: 'removeLiquidity',
+
+      value: {
+        prim: 'Pair',
+        args: [
+          {
+            string: from
+          },
+          {
+            prim: 'Pair',
+            args: [
+              {
+                int: lqtBurn
+              },
+              {
+                prim: 'Pair',
+                args: [
+                  {
+                    int: minXtzWithdrawn
+                  },
+                  {
+                    prim: 'Pair',
+                    args: [
+                      {
+                        int: minTokensWithdrawn
+                      },
+                      {
+                        string: expirationTime
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    };
+  }
+
+  getTezToTokenPaymentParameters(from: string, minimumToken: string) {
+    return {
+      entrypoint: 'tezToTokenPayment',
+      value: {
+        prim: 'Pair',
+        args: [
+          {
+            int: minimumToken
+          },
+          {
+            string: from
+          }
+        ]
+      }
+    };
+  }
+
+  getTokenToTezPaymentParameters(from: string, minimumXtz: string, minimumToken: string) {
+    return {
+      entrypoint: 'tokenToTezPayment',
+      value: {
+        prim: 'Pair',
+        args: [
+          {
+            prim: 'Pair',
+            args: [
+              {
+                int: minimumToken
+              },
+              {
+                int: minimumXtz
+              }
+            ]
+          },
+          {
+            string: from
+          }
+        ]
+      }
+    };
+  }
+
+  parseTokenTransfer(op: any): { tokenId: string; to: string; amount: string } {
     const opJson = JSON.stringify(op.parameters);
     const addresses = opJson.match(/\{\"string\":\"[^\"]*/g)?.map((s) => {
       return s.slice(11);

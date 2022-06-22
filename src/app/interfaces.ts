@@ -1,4 +1,4 @@
-import { Activity } from './services/wallet/wallet';
+import { Activity, Account as WalletAccount } from './services/wallet/wallet';
 import { Asset, ContractType } from './services/token/token.service';
 
 export { Activity };
@@ -120,6 +120,10 @@ export interface OpLimits {
   storage?: number;
 }
 
+export interface ExternalRequest {
+  operationRequest: any;
+  selectedAccount: WalletAccount;
+}
 export interface Constants {
   NAME: string;
   TEZOS_DOMAIN: {

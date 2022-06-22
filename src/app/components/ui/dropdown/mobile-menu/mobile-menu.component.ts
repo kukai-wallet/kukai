@@ -8,6 +8,8 @@ import copy from 'copy-to-clipboard';
 import { MessageService } from '../../../../services/message/message.service';
 import { LookupService } from '../../../../services/lookup/lookup.service';
 import { SubjectService } from '../../../../services/subject/subject.service';
+import { ModalComponent } from '../../../../components/modals/modal.component';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-ui-mobile-menu',
@@ -42,6 +44,10 @@ export class MobileMenuDropdownComponent extends DropdownComponent implements On
     copy(this.activeAccount.address);
     const copyToClipboard = this.translate.instant('OVERVIEWCOMPONENT.COPIEDTOCLIPBOARD');
     this.messageService.add(this.activeAccount.address + ' ' + copyToClipboard, 5);
+  }
+  openSwap() {
+    this.messageService.startSpinner();
+    ModalComponent.currentModel.next({ name: 'swap-liquidity', data: null });
   }
   logout(): void {
     this.subjectService.logout.next(true);

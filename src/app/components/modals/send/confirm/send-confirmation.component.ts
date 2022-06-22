@@ -140,6 +140,9 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
     }
   }
   updateParameters(index: number, parameters: any): void {
+    if (!parameters) {
+      return;
+    }
     this.batchParamIndex = index;
     this.parameters = parameters;
     this.parametersToMicheline();
@@ -309,8 +312,6 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
           if (ans.success === true) {
             console.log('Transaction successful ', ans);
             if (ans.payload.opHash) {
-              document.body.style.marginRight = '0.5rem !important';
-              document.body.style.overflowY = 'hidden !important';
               await this.messageService.stopSpinner();
               this.operationResponse.emit(ans.payload.opHash);
               const metadata = {
@@ -328,8 +329,6 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
                 }
               }
             } else if (this.walletService.wallet instanceof LedgerWallet) {
-              document.body.style.marginRight = '0.5rem !important';
-              document.body.style.overflowY = 'hidden !important';
               await this.requestLedgerSignature();
               return;
             }

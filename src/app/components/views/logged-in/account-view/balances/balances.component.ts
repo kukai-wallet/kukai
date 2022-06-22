@@ -8,6 +8,8 @@ import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { Big } from 'big.js';
 import { RemoveCommaPipe } from '../../../../../pipes/remove-comma.pipe';
+import { ModalComponent } from '../../../../../components/modals/modal.component';
+import { MessageService } from '../../../../../services/message/message.service';
 
 @Component({
   selector: 'app-balances',
@@ -28,7 +30,8 @@ export class BalancesComponent implements OnInit, AfterViewChecked, OnDestroy {
     public tokenBalancesService: TokenBalancesService,
     private subjectService: SubjectService,
     private walletService: WalletService,
-    public removeCommaPipe: RemoveCommaPipe
+    public removeCommaPipe: RemoveCommaPipe,
+    private messageService: MessageService
   ) {
     this.subscriptions.add(
       this.subjectService.activeAccount.pipe(filter((account: Account) => account?.address !== this.account?.address)).subscribe((account) => {
@@ -99,5 +102,9 @@ export class BalancesComponent implements OnInit, AfterViewChecked, OnDestroy {
             .div(1000000)
             .toFixed()
         );
+  }
+  openSwap() {
+    this.messageService.startSpinner();
+    ModalComponent.currentModel.next({ name: 'swap-liquidity', data: null });
   }
 }

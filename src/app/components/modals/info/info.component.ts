@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ModalComponent } from '../modal.component';
 
 @Component({
@@ -7,6 +7,7 @@ import { ModalComponent } from '../modal.component';
   styleUrls: ['../../../../scss/components/modals/modal.scss']
 })
 export class InfoComponent extends ModalComponent implements OnInit {
+  action = '';
   message = '';
   href = '';
   title = 'Info';
@@ -18,6 +19,7 @@ export class InfoComponent extends ModalComponent implements OnInit {
   ngOnInit(): void {}
 
   open(data: any): void {
+    this.action = data?.action;
     this.message = data?.message;
     this.href = data?.href;
     this.title = data?.title || this.title;

@@ -34,6 +34,18 @@ $layout-break-5: v.$layout-break-5;
 :host {
   grid-area: balance;
 
+  & button.swap-liquidity {
+    background-color: transparent;
+    border: v.$border-width solid $border-color;
+    color: $base-font-color;
+    height: calc(3.5rem + #{v.$border-width-thin});
+    padding: 0 2rem;
+
+    &:hover {
+      border-color: $base-blue-color;
+    }
+  }
+
   & .main-container .scroll-wrapper {
     padding: 0;
     position: relative;

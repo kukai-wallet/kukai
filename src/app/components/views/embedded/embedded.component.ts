@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit } from '@angular/core';
 import { TorusService } from '../../../services/torus/torus.service';
 import { CONSTANTS } from '../../../../environments/environment';
 import { ImportService } from '../../../services/import/import.service';
-import { KeyPair } from '../../../interfaces';
+import { KeyPair, ExternalRequest } from '../../../interfaces';
 import { WalletService } from '../../../services/wallet/wallet.service';
 import { PartialTezosTransactionOperation } from '@airgap/beacon-sdk';
 import { EmbeddedTorusWallet, ImplicitAccount } from '../../../services/wallet/wallet';
@@ -182,7 +182,7 @@ export class EmbeddedComponent implements OnInit {
   blockCard = true;
   activeAccount: ImplicitAccount = null;
   template = null;
-  operationRequests = null;
+  externalRequest: ExternalRequest = null;
   signRequest = null;
   loginConfig: LoginConfig = null;
   queueMode: LoginPrio = null;
@@ -384,9 +384,9 @@ export class EmbeddedComponent implements OnInit {
     if (this.walletService.wallet instanceof EmbeddedTorusWallet && this.walletService.wallet.implicitAccounts[0] && req.operations) {
       if (this.isValidOperation(req.operations)) {
         this.template = req.ui ? this.normalizeTemplate(req.ui) : null;
-        this.operationRequests = req.operations;
+        this.externalRequest = { operationRequest: req.operations, selectedAccount: this.activeAccount };
       } else {
-        this.operationRequests = null;
+        this.externalRequest = null;
         this.sendResponse({
           type: ResponseTypes.operationResponse,
           failed: true,
@@ -578,7 +578,7 @@ export class EmbeddedComponent implements OnInit {
       };
     }
     this.template = null;
-    this.operationRequests = null;
+    this.externalRequest = null;
     setTimeout(() => {
       this.sendResponse(response);
     }, 0);

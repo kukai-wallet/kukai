@@ -58,10 +58,10 @@ $base-filter-contrast-invert-01: v.$base-filter-contrast-invert-01;
     width: auto;
     height: auto;
     max-width: 85vw;
-    padding: 2em 2em 0 2em;
+    padding: 1em 1em 0 1em;
     min-width: 32em;
     overflow-x: hidden;
-    border: $border-width solid $border-color-dark-only;
+    border: v.$border-width-dark-only solid $border-color-dark-only;
     margin: 10em 0 0em 0;
     border-radius: v.$border-radius;
 
@@ -70,10 +70,11 @@ $base-filter-contrast-invert-01: v.$base-filter-contrast-invert-01;
       justify-content: center;
       top: 0;
       right: 0;
-      width: calc(4em - 6px);
-      height: calc(4em - 6px);
+      width: 3em;
+      height: 3em;
       border: v.$border-width solid $border-color;
       border-radius: v.$border-radius-hardest;
+      position: absolute;
 
       & .x {
         object-fit: scale-down;
@@ -96,9 +97,10 @@ $base-filter-contrast-invert-01: v.$base-filter-contrast-invert-01;
       .title {
         font-size: 1.875em;
         @include m.ellipsis;
-        width: 70%;
+        width: 100%;
         font-weight: 500;
-        text-align: left;
+        text-align: center;
+        height: 1.5em;
       }
     }
 
@@ -217,6 +219,10 @@ $base-filter-contrast-invert-01: v.$base-filter-contrast-invert-01;
     @import "./info.scss";
 
     @import "./export-mnemonic.scss";
+    
+    @import "./swap-liquidity.scss";
+
+    @import "./swap-liquidity-confirm.scss";
 
     & .advanced {
       &-toggle {

@@ -1,5 +1,5 @@
-@use '../../../abstracts/variables' as v;
-@use '../../../abstracts/mixins' as m;
+@use "../../../abstracts/variables" as v;
+@use "../../../abstracts/mixins" as m;
 
 $base-font-color: v.$base-font-color;
 $base-end-color: v.$base-end-color;
@@ -20,6 +20,21 @@ $border-color: v.$border-color;
   border: $border-width solid $border-color;
 }
 
+:host.warning {
+  & .advanced {
+    & .switch-container {
+      & .switch {
+        & .slider {
+          border: $border-width solid v.$base-red-color;
+          & .round {
+            background-color: v.$base-red-color
+          }
+        }
+      }
+    }
+  }
+}
+
 .advanced {
   font-size: 100%;
   min-width: 12em;
@@ -28,7 +43,7 @@ $border-color: v.$border-color;
   width: 100%;
 
   & * {
-    -webkit-tap-highlight-color: #fff0; 
+    -webkit-tap-highlight-color: #fff0;
   }
 
   & .switch-container {
@@ -95,7 +110,7 @@ $border-color: v.$border-color;
       }
 
       &.value {
-        @include m.multiply('font-size',1.125, 'em !important');
+        @include m.multiply("font-size", 1.125, "em !important");
         color: #6c7a8d !important;
       }
     }

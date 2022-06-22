@@ -165,7 +165,7 @@ export class AssetComponent implements OnInit, AfterViewInit {
 
   async evaluate(assets): Promise<void> {
     if (this.poster) {
-      this.preSrc = this.assetToUrl(this.poster?.uri);
+      this.preSrc = this.assetToUrl(this.poster);
     }
     let asset = this.pickAsset(assets);
     if (asset) {

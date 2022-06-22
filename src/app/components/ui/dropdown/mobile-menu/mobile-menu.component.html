@@ -32,11 +32,14 @@
           }}</span>
       </div>
     </div>
+    <div class="flex-row button" (click)="openSwap();toggleDropdown()">
+      <span>LIQUIDITY BAKING</span><img class="icon" src="../../../../assets/img/water_drop.svg" style="width: 3rem" />
+    </div>
     <div class="flex-row button" [routerLink]="'/account/' + activeAccount?.address + '/settings'" (click)="toggleDropdown()">
-      <img class="icon settings" src="../../../../assets/img/cog.svg" /><span>SETTINGS</span>
+      <span>SETTINGS</span><img class="icon settings" src="../../../../assets/img/cog.svg" style="width: 2.75rem" />
     </div>
     <div class="flex-row button" (click)="logout();toggleDropdown()">
-      <img class="icon" src="../../../../assets/img/sign-out-alt.svg" /><span>LOGOUT</span>
+      <span>LOGOUT</span><img class="icon" src="../../../../assets/img/sign-out-alt.svg" style="width: 2.5rem" />
     </div>
   </div>
   <div *ngIf="router.url.indexOf('/account/') !== 0" class="flex-column mobile dropdown-content">
