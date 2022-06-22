@@ -224,7 +224,7 @@ export class TzktService implements Indexer {
   private extractEntrypoint(op: any): string {
     return op?.entrypoint ?? op?.parameter?.entrypoint ?? '';
   }
-  async getTokenMetadata(contractAddress: string, id: number, skipTzkt: boolean): Promise<TokenMetadata> {
+  async getTokenMetadata(contractAddress: string, id: string, skipTzkt: boolean): Promise<TokenMetadata> {
     let meta;
     let tokenType = 'FA2';
     const tokenId = `${contractAddress}:${id}`;
@@ -337,7 +337,7 @@ export class TzktService implements Indexer {
     }
     return metadata;
   }
-  private normalizeMetadata(meta: any, contractAddress: string, id: number) {
+  private normalizeMetadata(meta: any, contractAddress: string, id: string) {
     mutableConvertObjectPropertiesSnakeToCamel(meta);
     for (let key of Object.keys(meta)) {
       if (typeof meta[key] === 'number') {
@@ -356,7 +356,7 @@ export class TzktService implements Indexer {
       meta.isBooleanAmount = meta.isBooleanAmount?.toLowerCase() === 'false' ? false : meta.isBooleanAmount?.toLowerCase() === 'true' ? true : undefined;
     }
   }
-  handleMetadataExceptions(meta: any, contractAddress: string, id: number) {
+  handleMetadataExceptions(meta: any, contractAddress: string, id: string) {
     // hen
     if (meta?.symbol === 'OBJKT') {
       if (!meta.displayUri && meta.formats?.length) {

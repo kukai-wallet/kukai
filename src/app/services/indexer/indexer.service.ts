@@ -25,7 +25,7 @@ export class IndexerService {
   async getOperations(address: string, knownTokenIds: string[], wallet: WalletObject): Promise<any> {
     return this.tzktService.getOperations(address, knownTokenIds, wallet);
   }
-  async getTokenMetadata(contractAddress: string, id: number, skipTzkt = false): Promise<any> {
+  async getTokenMetadata(contractAddress: string, id: string, skipTzkt = false): Promise<any> {
     return this.tzktService.getTokenMetadata(contractAddress, id, skipTzkt);
   }
 }
