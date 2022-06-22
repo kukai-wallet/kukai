@@ -69,12 +69,12 @@
         <ng-container *ngIf="walletService.isPwdWallet()">
           <input name="none" [(ngModel)]="password" placeholder="Password" autocomplete="current-password"
             class="text password" type="password" (input)="this.pwdInvalid = ''" (paste)="this.pwdInvalid = ''"
-            (keydown.enter)='inject()'>
+            (keydown.enter)='!messageService.spinnerOn ? inject() : null'>
         </ng-container>
         <button *ngIf="walletService.isLedgerWallet() && ledgerError; else elseBlock" class="blue confirm"
           (click)="ledgerSign()">Sign with Ledger</button>
         <ng-template #elseBlock>
-          <button class="blue confirm" (click)="inject()"
+          <button class="blue confirm" (click)="!messageService.spinnerOn ? inject() : null"
             [disabled]="(walletService.isLedgerWallet() && (!sendResponse || !sendResponse.payload || !sendResponse.payload.signedOperation)) || walletService.isWatchWallet()">
             {{ walletService.isLedgerWallet() ? 'Broadcast' : 'Confirm'}}</button>
         </ng-template>
