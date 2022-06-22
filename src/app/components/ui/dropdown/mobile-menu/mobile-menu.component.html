@@ -4,7 +4,7 @@
     <div class="flex-row-wrap account-content">
       <div class="flex-column button" (click)="unlockableService.toggleFeature('theme', 'dark');toggleDropdown()">
         <div class="wrapper">
-          <img class="icon" src="../../../../assets/img/theme_icon.svg" />
+          <img class="icon" [src]="this.unlockableService?.unlockables?.theme === 'dark' ? 'assets/img/light_mode_blue.svg' : 'assets/img/dark_mode_blue.svg'" />
         </div>
         <span>THEME</span>
       </div>
