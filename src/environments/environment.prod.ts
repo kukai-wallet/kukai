@@ -731,6 +731,14 @@ const _CONSTANTS: Constants = {
       category: ["collectibles"],
       description: "Generative Jolt of Expression",
     },
+    'connies': {
+      name: "Connies",
+      address: ["KT1Bq16tfwdzWXHsnw4YjQvwB779u1AJnsyx"],
+      thumbnailUrl: "../../../assets/img/alias/connies-discover.png",
+      link: "", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"],
+      description: "Connies is a collection of randomly generated Unicorns on the Tezos blockchain. This collection of originally drawn “Connie the Unicorn” NFTs was created and distributed to attendees at VidCon 2022.",
+    },
   },
   ASSETS: {
     KT1K9gCRgaLRFKTErYt1wVxA3Frb9FjasjTV: {
