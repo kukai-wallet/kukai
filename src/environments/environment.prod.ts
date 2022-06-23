@@ -8,7 +8,7 @@ const _CONSTANTS: Constants = {
   // https://gitlab.com/tezos-domains/contracts/-/blob/master/deployed/mainnet.json#L9
   TEZOS_DOMAIN: {
     CONTRACT: 'KT1P8n2qzJjwMPbHJfi4o8xu6Pe3gaU3u2A3',
-    TOP_DOMAIN: 'tez'
+    TOP_DOMAINS: ['tez', 'xyz']
   },
   NETWORK: 'mainnet',
   MAINNET: true,
@@ -730,6 +730,14 @@ const _CONSTANTS: Constants = {
       link: "https://customhorror.net/gjoe", shouldDisplayLink: DisplayLinkOption.None,
       category: ["collectibles"],
       description: "Generative Jolt of Expression",
+    },
+    'connies': {
+      name: "Connies",
+      address: ["KT1Bq16tfwdzWXHsnw4YjQvwB779u1AJnsyx"],
+      thumbnailUrl: "../../../assets/img/alias/connies-discover.png",
+      link: "", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"],
+      description: "Connies is a collection of randomly generated Unicorns on the Tezos blockchain. This collection of originally drawn “Connie the Unicorn” NFTs was created and distributed to attendees at VidCon 2022.",
     },
   },
   ASSETS: {

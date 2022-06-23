@@ -10,7 +10,7 @@ import { ObjktService } from '../indexer/objkt/objkt.service';
 
 export interface TokenResponseType {
   contractAddress: string;
-  id: number;
+  id: string;
   decimals: number;
   artifactAsset?: Asset;
   displayAsset: Asset;
@@ -109,9 +109,9 @@ export class TokenService {
     }
     const tokenIdArray = tokenId.split(':');
     const contractAddress: string = tokenIdArray[0];
-    const id: number = tokenIdArray[1] ? Number(tokenIdArray[1]) : -1;
+    const id: string = tokenIdArray[1] ? String(tokenIdArray[1]) : null;
     const contract: ContractType = this.contracts[contractAddress];
-    if (id > -1) {
+    if (id != null) {
       if (contract) {
         let token: TokenResponseType = contract.tokens[id];
         if (!token) {
@@ -121,11 +121,11 @@ export class TokenService {
             if (idx.includes('-')) {
               const span = idx.split('-');
               if (span.length === 2 && !isNaN(Number(span[0])) && !isNaN(Number(span[1]))) {
-                const first = Number(span[0]);
-                const last = Number(span[1]);
-                if (id >= first && id <= last) {
+                const first = Big(span[0]);
+                const last = Big(span[1]);
+                if (first.gte(id) && last.lte(id)) {
                   token = JSON.parse(JSON.stringify(contract.tokens[idx]));
-                  token.name = `${JSON.parse(JSON.stringify(contract.tokens[idx].name))} #${id - first + 1}`;
+                  token.name = `${JSON.parse(JSON.stringify(contract.tokens[idx].name))} #${Big(id).minus(first).plus(1)}`;
                   break;
                 }
               }
@@ -281,7 +281,7 @@ export class TokenService {
       try {
         const a = tokenId.split(':');
         const contractAddress = a[0];
-        const id = Number(a[1]);
+        const id = String(a[1]);
         const recentDay = this.exploredIds[tokenId]?.lastCheck - this.exploredIds[tokenId]?.firstCheck < 1000 * 3600 * 24;
         const skipTzkt = this.isKnownTokenId(tokenId) && this.exploredIds[tokenId]?.counter % 5 === 2 && recentDay;
         const metadata = await this.indexerService.getTokenMetadata(contractAddress, id, skipTzkt);
@@ -290,7 +290,7 @@ export class TokenService {
     }
     this.workers--;
   }
-  handleMetadata(metadata: any, contractAddress: string, id: number) {
+  handleMetadata(metadata: any, contractAddress: string, id: string) {
     const tokenId = `${contractAddress}:${id}`;
     if (metadata && (metadata.name || metadata.symbol) && !isNaN(metadata.decimals) && metadata.decimals >= 0) {
       const contract: ContractType = {
@@ -388,7 +388,7 @@ export class TokenService {
   getPlaceholderToken(tokenId: string): TokenResponseType {
     const tokenIdArray = tokenId.split(':');
     const contractAddress: string = tokenIdArray[0];
-    const id: number = tokenIdArray[1] ? Number(tokenIdArray[1]) : -1;
+    const id: string = tokenIdArray[1] ? String(tokenIdArray[1]) : '';
     return {
       contractAddress,
       id,

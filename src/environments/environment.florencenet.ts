@@ -11,7 +11,7 @@ const _CONSTANTS: Constants = {
   NAME: 'Testnet / Florencenet',
   TEZOS_DOMAIN: {
     CONTRACT: 'KT1KQkkVMTRhGUfJYbHBoaeJ6NUJi8o58cvg',
-    TOP_DOMAIN: 'flo'
+    TOP_DOMAINS: ['flo']
   },
   NETWORK: 'florencenet',
   MAINNET: false,

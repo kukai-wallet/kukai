@@ -27,8 +27,8 @@
         <span [style.visibility]="!pwdInvalid ? 'hidden' : ''" [style.margin]="!pwdInvalid ? '0' : ''"
         class="label danger">{{ this.pwdInvalid }}</span>
         <input [(ngModel)]="pwd" autocomplete="current-password" placeholder="Password" class="text password"
-          type="password" (input)="this.pwdInvalid = ''" (change)="this.pwdInvalid = ''" (keydown.enter)='reveal()'>
-        <button class="button confirm" (click)="reveal()">Continue</button>
+          type="password" (input)="this.pwdInvalid = ''" (change)="this.pwdInvalid = ''" (keydown.enter)='!messageService.spinnerOn ? reveal() : null'>
+        <button class="button confirm" (click)="!messageService.spinnerOn ? reveal() : null">Continue</button>
       </div>
     </div>
   </div>

@@ -128,7 +128,7 @@ export interface Constants {
   NAME: string;
   TEZOS_DOMAIN: {
     CONTRACT: string;
-    TOP_DOMAIN: string;
+    TOP_DOMAINS: string[];
   };
   NETWORK: string;
   MAINNET: boolean;

@@ -1263,12 +1263,7 @@ export class OperationService {
       }
     };
   }
-  getFA2Transaction(from: string, to: string, amount: string, id: number) {
-    let stringId: string; // skeles hotfix
-    if (id > Number.MAX_SAFE_INTEGER) {
-      const map = import('../../../assets/js/KT1HZVd9Cjc2CMe3sQvXgbxhpJkdena21pih.json');
-      stringId = map[id] as any;
-    }
+  getFA2Transaction(from: string, to: string, amount: string, id: string) {
     return {
       entrypoint: 'transfer',
       value: [
@@ -1289,7 +1284,7 @@ export class OperationService {
                     prim: 'Pair',
                     args: [
                       {
-                        int: stringId ?? id.toString()
+                        int: id.toString()
                       },
                       {
                         int: amount
@@ -1532,7 +1527,7 @@ export class OperationService {
           };
         }
       } else if (amounts.length === 2) {
-        const fa2ref = this.getFA2Transaction(addresses[0], addresses[1], amounts[1], Number(amounts[0]));
+        const fa2ref = this.getFA2Transaction(addresses[0], addresses[1], amounts[1], String(amounts[0]));
         if (isEqual(fa2ref, op.parameters)) {
           return {
             tokenId: `${op.destination}:${amounts[0]}`,

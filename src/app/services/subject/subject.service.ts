@@ -10,7 +10,7 @@ interface PrepareTokenTransfer {
 }
 interface MetadataUpdated {
   contractAddress: string;
-  id: number;
+  id: string;
   token: TokenData;
 }
 @Injectable({

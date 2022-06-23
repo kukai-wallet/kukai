@@ -17,7 +17,7 @@
             'QUANTITY'}}:</span>
           <div *ngIf="!this.token || !(this.token?.isBooleanAmount || this.token?.balance == 1)"
             class="flex-row amount">
-            <input #amountInput name="none" [placeholder]="token?.decimals == 0 ? '0' : '0.00'" [(ngModel)]="amount"
+            <input #amountInput inputmode="decimal" name="none" [placeholder]="token?.decimals == 0 ? '0' : '0.00'" [(ngModel)]="amount"
               name="none" (mousedown)="sendMax = false; default"
               (input)="sanitizeNumberInput($event, 'amount'); amountChange()"
               (paste)="sanitizeNumberInput($event, 'amount')" (change)="amountChange()"
@@ -79,13 +79,13 @@
         <div class="flex-row">
           <div class="flex-column">
             <label class="label">Gas limit</label>
-            <input name="none" type="text" class="text" (input)="sanitizeNumberInput($event, 'gas')"
+            <input inputmode="decimal" name="none" type="text" class="text" (input)="sanitizeNumberInput($event, 'gas')"
               (paste)="sanitizeNumberInput($event, 'gas')" placeholder={{this.defaultTransactionParams.gas.toString()}}
               [(ngModel)]="customGasLimit" name="none">
           </div>
           <div class="flex-column">
             <label class="label">Fee</label>
-            <input name="none" type="text" (input)="sanitizeNumberInput($event); updateMaxAmount()"
+            <input inputmode="decimal" name="none" type="text" (input)="sanitizeNumberInput($event); updateMaxAmount()"
               (paste)="sanitizeNumberInput($event); updateMaxAmount()" class="text"
               placeholder={{this.defaultTransactionParams.fee.toString()}} [(ngModel)]="customFee" name="none">
           </div>
@@ -93,14 +93,14 @@
         <div class="flex-row">
           <div class="flex-column">
             <label class="label">Storage limit</label>
-            <input name="none" type="text" (input)="sanitizeNumberInput($event, 'storage'); updateMaxAmount()"
+            <input inputmode="decimal" name="none" type="text" (input)="sanitizeNumberInput($event, 'storage'); updateMaxAmount()"
               (paste)="sanitizeNumberInput($event, 'storage'); updateMaxAmount()" class="text"
               placeholder={{this.defaultTransactionParams.storage.toString()}} [(ngModel)]="customStorageLimit"
               name="none">
           </div>
           <div class="flex-column">
             <label class="label">Max storage cost</label>
-            <input name="none" type="text" class="text read-only" [value]="burnAmount() ? burnAmount() : '0 tez'"
+            <input inputmode="decimal" name="none" type="text" class="text read-only" [value]="burnAmount() ? burnAmount() : '0 tez'"
               tabindex=-1 readonly>
           </div>
         </div>

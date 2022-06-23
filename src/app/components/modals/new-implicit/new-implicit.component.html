@@ -10,11 +10,11 @@
         ENTER YOUR PASSWORD TO CONFIRM
       </div>
       <input #pwdInput [(ngModel)]="password" class="text password" autocomplete="current-password"
-        placeholder="Password" type="password" (input)="this.errorMsg = ''" (change)="this.errorMsg = ''" (keydown.enter)="addPkh()">
+        placeholder="Password" type="password" (input)="this.errorMsg = ''" (change)="this.errorMsg = ''" (keydown.enter)="!messageService.spinnerOn ? addPkh() : null">
       <span *ngIf="this.errorMsg" class="danger margin">{{ this.errorMsg }}</span>
       <div class="flex-column bottom">
         <div class="seperator"></div>
-        <button class="confirm" (click)="addPkh()">Confirm</button>
+        <button class="confirm" (click)="!messageService.spinnerOn ? addPkh() : null">Confirm</button>
       </div>
     </div>
   </div>

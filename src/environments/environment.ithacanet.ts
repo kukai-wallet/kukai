@@ -12,7 +12,7 @@ const _CONSTANTS: Constants = {
   NAME: 'Testnet / Ithacanet',
   TEZOS_DOMAIN: {
     CONTRACT: 'KT1WffvKqRGaPtVWYR1ZkG2GQY42B7a8x3kk',
-    TOP_DOMAIN: 'ith'
+    TOP_DOMAINS: ['ith']
   },
   MAINNET: false,
   NODE_URL: 'https://ithacanet.ecadinfra.com',
