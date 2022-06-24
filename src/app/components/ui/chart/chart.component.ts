@@ -18,7 +18,6 @@ function getGradientBackground(ctx, chartArea) {
     // gradient.addColorStop(0.5, '#5963ff33');
     // gradient.addColorStop(0, '#5963ff19');
     if (theme === 'dark') {
-      console.log('here');
       gradient.addColorStop(1, '#383d7d');
       gradient.addColorStop(0.5, '#2e304f');
       gradient.addColorStop(0, '#2a2c3f');

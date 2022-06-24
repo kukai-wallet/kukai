@@ -21,7 +21,7 @@
             src="../../../../../assets/img/close-btn-x.png" />
           <img *ngIf="!imageExpanded && assetLoaded && !token.displayAsset?.mimeType?.startsWith('model/')"
             class="expand" src="../../../../../assets/img/expand.png" (click)="expandImage()" />
-          <b *ngIf="!imageExpanded && token.artifactAsset?.mimeType?.startsWith('model/')" class="expand"
+          <b *ngIf="!imageExpanded && token.artifactAsset?.mimeType?.startsWith('model/')" class="expand icon-threed"
             (click)="expandImage()">3D</b>
         </div>
         <div class="flex-column meta">

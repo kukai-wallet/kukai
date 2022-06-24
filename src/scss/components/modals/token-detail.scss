@@ -117,3 +117,9 @@
     }
   }
 }
+
+@media(max-width: v.$layout-break-6) {
+  .token-info .icon-threed {
+    display: none !important;
+  }
+}
