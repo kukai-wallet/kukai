@@ -136,7 +136,7 @@ export class SwapLiquidityConfirmComponent extends ModalComponent implements OnI
         hasTrailingZeroApproval =
           this.transactions[this.transactions.length - 1].parameters.entrypoint === 'approve' &&
           this.transactions[this.transactions.length - 1]?.parameters?.value.args[1].int === '0';
-        this.expectedToken = new Amount({ rpcAmount: addLiquidity?.parameters.value.args[1].args[0].int, decimalPlaces: 8 }).internalNormalised;
+        this.expectedToken = new Amount({ rpcAmount: addLiquidity?.parameters.value.args[1].args[1].args[0].int, decimalPlaces: 8 }).internalNormalised;
         this.expectedXtz = parseFloat(addLiquidity?.amount);
         this.minimumLqd = new Amount({ rpcAmount: addLiquidity?.parameters.value.args[1].args[0].int, decimalPlaces: 0 }).internalNormalised;
         this.calcAddLiquidity();
