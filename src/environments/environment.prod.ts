@@ -1494,6 +1494,10 @@ const _CONSTANTS: Constants = {
     'KT1Hkg5qeNhfwpKW4fXvq7HGZB9z2EnmCCA9:swap': { storage: 180 },
     'KT1Hkg5qeNhfwpKW4fXvq7HGZB9z2EnmCCA9:curate': { storage: 100 },
     'KT1Hkg5qeNhfwpKW4fXvq7HGZB9z2EnmCCA9:collect': { storage: 212 },
+    'KT1TxqZ8QtKvLu3V3JH7Gx58n7Co8pgtpQU5:xtzToToken': { storage: 83 },
+    'KT1TxqZ8QtKvLu3V3JH7Gx58n7Co8pgtpQU5:addLiquidity': { storage: 69 },
+    'KT1TxqZ8QtKvLu3V3JH7Gx58n7Co8pgtpQU5:removeLiquidity': { storage: 82 },
+    'KT1PWx2mnDueood7fEmfbBDKx1D9BAnnXitn:approve': { storage: 35 }
   },
   NFT_CONTRACT_OVERRIDES: [
     'KT1AafHA1C1vk959wvHWBispY9Y2f3fxBUUo:0', //lp tzBTC

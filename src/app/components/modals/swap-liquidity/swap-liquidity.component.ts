@@ -638,9 +638,9 @@ export class SwapLiquidityComponent extends ModalComponent {
       );
       accountBalance = accountBalance.minus(0.000001); // dust
       return {
-        tez: accountBalance.toString(),
-        lqd: Big(this.lqdBalance).toString(),
-        tzBTC: Big(this.tzBTCBalance).toString()
+        tez: accountBalance.toFixed(),
+        lqd: Big(this.lqdBalance).toFixed(),
+        tzBTC: Big(this.tzBTCBalance).toFixed()
       };
     }
   }
@@ -684,7 +684,7 @@ export class SwapLiquidityComponent extends ModalComponent {
       if (!balances) {
         return;
       }
-      let balance = '0.0';
+      let balance: string = '0.0';
       if (this.entrypoint === this.LqdEntrypoints.removeLiquidity) {
         balance = balances?.lqd;
         this.qtyRaw = balance;
