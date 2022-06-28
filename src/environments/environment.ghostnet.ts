@@ -8,15 +8,15 @@ export const environment = {
   production: false
 };
 const _CONSTANTS: Constants = {
-  NETWORK: 'ithacanet',
-  NAME: 'Testnet / Ithacanet',
+  NETWORK: 'ghostnet',
+  NAME: 'Testnet / Ghostnet',
   TEZOS_DOMAIN: {
     CONTRACT: 'KT1WffvKqRGaPtVWYR1ZkG2GQY42B7a8x3kk',
     TOP_DOMAINS: ['ith']
   },
   MAINNET: false,
-  NODE_URL: 'https://ithacanet.ecadinfra.com',
-  BLOCK_EXPLORER_URL: 'https://ithacanet.tzkt.io',
+  NODE_URL: 'https://ghostnet.ecadinfra.com',
+  BLOCK_EXPLORER_URL: 'https://ghostnet.tzkt.io',
   HARD_LIMITS: {
     hard_gas_limit_per_operation: 1040000,
     hard_gas_limit_per_block: 5200000,
