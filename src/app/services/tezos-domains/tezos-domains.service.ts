@@ -19,7 +19,7 @@ export class TezosDomainsService {
     const options = { caching: { enabled: false } };
     this.client = new TaquitoTezosDomainsClient({
       tezos: tezosToolkit,
-      network: <SupportedNetworkType>CONSTANTS.NETWORK,
+      network: <SupportedNetworkType>CONSTANTS.NETWORK.replace('ghostnet', 'ithacanet'),
       ...options
     });
   }
@@ -64,7 +64,9 @@ export class TezosDomainsService {
     }, 100);
   }
   async getDomainFromAddresses(addresses: any) {
-    const baseUrl = CONSTANTS.MAINNET ? 'https://api.tezos.domains/graphql' : `https://${CONSTANTS.NETWORK}-api.tezos.domains/graphql`;
+    const baseUrl = CONSTANTS.MAINNET
+      ? 'https://api.tezos.domains/graphql'
+      : `https://${CONSTANTS.NETWORK.replace('ghostnet', 'ithacanet')}-api.tezos.domains/graphql`;
     const req = {
       query: `{reverseRecords(where: {address: {in: ${JSON.stringify(addresses)}}}) {items {address domain: domain {id, name}}}}`
     };

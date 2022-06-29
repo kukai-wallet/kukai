@@ -28,10 +28,16 @@ export class AccountViewComponent implements OnInit, OnDestroy {
   ) {}
   trigger = true;
   @Input() activity: any;
+  moreThan15 = false;
   ngOnInit(): void {
     this.subscriptions.add(
       this.subjectService.activeAccount.subscribe((activeAccount) => {
         this.account = activeAccount;
+      })
+    );
+    this.subscriptions.add(
+      this.subjectService.nftsUpdated.subscribe((p) => {
+        this.moreThan15 = Object.keys(p?.nfts ?? {})?.length > 15 ? true : false;
       })
     );
     setInterval(() => (this.trigger = !this.trigger), 1000);

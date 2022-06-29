@@ -8,7 +8,7 @@ import {
   TRUSTED_TOKEN_CONTRACTS as _TTC,
   BLACKLISTED_TOKEN_CONTRACTS as _BLTC,
   MODEL_3D_WHITELIST as _M3DW
-} from './environment.ithacanet';
+} from './environment.ghostnet';
 
 export const environment = {
   production: false

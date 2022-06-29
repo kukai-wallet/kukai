@@ -57,4 +57,12 @@
   .wrapper > div {
     max-width: 100%;
   }
+  .wrapper {
+    & > div.more-than-15 {
+      grid-template-areas:
+        "balance ."
+        "activity ."
+        "nft .";
+    }
+  }
 }
