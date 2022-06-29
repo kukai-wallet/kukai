@@ -18,7 +18,7 @@
           <p class="no-cam" *ngIf="!!errorMessage">{{ errorMessage }}</p>
           <p class="no-cam" *ngIf="!!errorMessage">Please check site permissions</p>
         </div>
-        <input *ngIf="!env.production && !override" name="none" type="text" [(ngModel)]="manualInput" class="text" (paste)="handlePaste($event)"
+        <input *ngIf="!override" name="none" type="text" [(ngModel)]="manualInput" class="text" (paste)="handlePaste($event)"
           placeholder="...or paste pairing string here">
       </div>
     </div>

@@ -73,21 +73,19 @@ export class QrScannerComponent extends ModalComponent {
     }
   }
   handlePaste(ev: ClipboardEvent): void {
-    if (!this.env.production) {
-      try {
-        const clipboardString = ev?.clipboardData?.getData('text');
-        const pairingInfo = clipboardString ? this.deeplinkService.QRtoPairingJson(clipboardString) : '';
-        if (!this.override && pairingInfo) {
-          this.beaconService.preNotifyPairing(pairingInfo);
-          this.beaconService.addPeer(pairingInfo);
-        } else if (clipboardString && this.override) {
-          this.scanResponse.emit({ pkh: clipboardString });
-        }
-        this.closeModal();
-      } catch (e) {
-        if (!this.override) {
-          this.messageService.addError('Invalid Base58 checksum!');
-        }
+    try {
+      const clipboardString = ev?.clipboardData?.getData('text');
+      const pairingInfo = clipboardString ? this.deeplinkService.QRtoPairingJson(clipboardString) : '';
+      if (!this.override && pairingInfo) {
+        this.beaconService.preNotifyPairing(pairingInfo);
+        this.beaconService.addPeer(pairingInfo);
+      } else if (clipboardString && this.override) {
+        this.scanResponse.emit({ pkh: clipboardString });
+      }
+      this.closeModal();
+    } catch (e) {
+      if (!this.override) {
+        this.messageService.addError('Invalid Base58 checksum!');
       }
     }
   }

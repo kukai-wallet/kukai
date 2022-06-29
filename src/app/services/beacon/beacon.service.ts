@@ -9,9 +9,9 @@ import {
   BeaconErrorType,
   BEACON_VERSION,
   ErrorResponse,
-  getSenderId
+  getSenderId,
+  ExtendedP2PPairingResponse
 } from '@airgap/beacon-sdk';
-import { ExtendedP2PPairingResponse } from '@airgap/beacon-sdk/dist/cjs/types/P2PPairingResponse';
 import { Asset } from '../token/token.service';
 import { TzktService } from '../indexer/tzkt/tzkt.service';
 @Injectable({
