@@ -1,5 +1,5 @@
 <div class="flex-column wrapper" *ngIf="account">
-  <div class="grid">
+  <div class="grid" [class.more-than-15]="moreThan15">
     <app-balances [account]="account"></app-balances>
     <app-nfts [account]="account"></app-nfts>
     <app-activity [account]="account"></app-activity>
