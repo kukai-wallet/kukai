@@ -399,6 +399,12 @@ const _CONSTANTS: Constants = {
       thumbnailUrl: "assets/img/alias/0xC0FACE-thumb.jpg",
       link: '', shouldDisplayLink: DisplayLinkOption.None
     },
+    'DY5P1ACE': {
+      name: "DY5P1ACE COLLECTION",
+      address: ["KT1XPCvaKhH4PXMiWLJo8AvKMAvFySLWuGFk"],
+      thumbnailUrl: "assets/img/alias/DY5P1ACE-thumb.jpg",
+      link: '', shouldDisplayLink: DisplayLinkOption.None
+    },
     'ChopSumo': {
       name: "Chop Sumo",
       address: ["KT1Wm4Cegd7wW6MYxEhg6AH5iFX48y65nWvv"],
