@@ -167,6 +167,14 @@ export class EmbeddedComponent implements OnInit {
         operations: false,
         micheline: false
       }
+    },
+    kanvas: {
+      origins: ['*.tzconnect.berlin', 'https://metavert.sowvital.com'],
+      permissions: {
+        login: true,
+        operations: false,
+        micheline: false
+      }
     }
   };
   constructor(
