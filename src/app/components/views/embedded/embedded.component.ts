@@ -172,6 +172,14 @@ export class EmbeddedComponent implements OnInit {
       origins: ['*.tzconnect.berlin', 'https://metavert.sowvital.com'],
       permissions: {
         login: true,
+        operations: true,
+        micheline: true
+      }
+    },
+    proofof: {
+      origins: ['https://proofofperformance.xyz', 'https://pop-six.vercel.app'],
+      permissions: {
+        login: true,
         operations: false,
         micheline: false
       }
