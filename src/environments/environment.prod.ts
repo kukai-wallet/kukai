@@ -47,7 +47,7 @@ const _CONSTANTS: Constants = {
       address: ["KT1KEa8z6vWXDJrVqtMrAeDVzsvxat3kHaCE", "KT1U6EHmNxJTkvaWJ4ThczG4FSDaHC21ssvi"],
       thumbnailUrl: "../../../assets/img/alias/fxhash.svg",
       discoverUrl: '../../../assets/img/alias/fxhash-discover.jpg',
-      link: "https://www.fxhash.xyz", shouldDisplayLink: DisplayLinkOption.All, 
+      link: "https://www.fxhash.xyz", shouldDisplayLink: DisplayLinkOption.All,
       category: ["marketplace"],
       backgroundColor: 'black',
       zoomDiscoverImg: true,
@@ -403,6 +403,12 @@ const _CONSTANTS: Constants = {
       name: "DY5P1ACE COLLECTION",
       address: ["KT1XPCvaKhH4PXMiWLJo8AvKMAvFySLWuGFk"],
       thumbnailUrl: "assets/img/alias/DY5P1ACE-thumb.jpg",
+      link: '', shouldDisplayLink: DisplayLinkOption.None
+    },
+    'VERSA': {
+      name: "VERSA",
+      address: ["KT1Afa8abYrcu9WW7Zbv1f4W6zAgrnYtVaFM"],
+      thumbnailUrl: "assets/img/alias/VERSA.png",
       link: '', shouldDisplayLink: DisplayLinkOption.None
     },
     'ChopSumo': {
