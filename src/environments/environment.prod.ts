@@ -411,6 +411,12 @@ const _CONSTANTS: Constants = {
       thumbnailUrl: "assets/img/alias/VERSA.png",
       link: '', shouldDisplayLink: DisplayLinkOption.None
     },
+    'RichieHawtin': {
+      name: "Richie Hawtin - Proof of Performance",
+      address: ["KT1FTHGWAPpNGqu8iDZMp52niALdpRpwmF3N"],
+      thumbnailUrl: "assets/img/alias/RichieHawtin.jpg",
+      link: '', shouldDisplayLink: DisplayLinkOption.None
+    },
     'ChopSumo': {
       name: "Chop Sumo",
       address: ["KT1Wm4Cegd7wW6MYxEhg6AH5iFX48y65nWvv"],
