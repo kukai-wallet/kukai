@@ -757,6 +757,12 @@ const _CONSTANTS: Constants = {
       category: ["collectibles"],
       description: "Connies is a collection of randomly generated Unicorns on the Tezos blockchain. This collection of originally drawn “Connie the Unicorn” NFTs was created and distributed to attendees at VidCon 2022.",
     },
+    'vitality': {
+      name: "V.Hive by Vitality",
+      address: ["KT1L6BTeGP5NcVmRjys85EaDxBymxMyx5rj8"],
+      thumbnailUrl: "../../../assets/img/alias/vitality.png",
+      link: "", shouldDisplayLink: DisplayLinkOption.None,
+    }
   },
   ASSETS: {
     KT1K9gCRgaLRFKTErYt1wVxA3Frb9FjasjTV: {
