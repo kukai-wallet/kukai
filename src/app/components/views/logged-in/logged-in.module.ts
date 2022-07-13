@@ -42,6 +42,8 @@ import { ExportMnemonicComponent } from '../../modals/export-mnemonic/export-mne
 import { SwapLiquidityConfirmComponent } from '../../modals/swap-liquidity/swap-liquidity-confirm.component';
 import { ChartComponent } from '../../ui/chart/chart.component';
 import { ChartService } from '../../../../app/services/chart/chart.service';
+import { RouteReuseStrategy } from '@angular/router';
+import { CustomReusingStrategy } from './custom-reusing-strategy.ts';
 
 @NgModule({
   declarations: [
@@ -104,6 +106,6 @@ import { ChartService } from '../../../../app/services/chart/chart.service';
     InfoComponent,
     ChartComponent
   ],
-  providers: [SwapLiquidityService, ChartService, EstimateService, RemoveCommaPipe]
+  providers: [SwapLiquidityService, ChartService, EstimateService, RemoveCommaPipe, { provide: RouteReuseStrategy, useClass: CustomReusingStrategy }]
 })
 export class LoggedInModule {}
