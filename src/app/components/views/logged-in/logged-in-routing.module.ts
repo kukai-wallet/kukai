@@ -6,7 +6,7 @@ import { DelegatePageComponent } from './delegate-page/delegate-page.component';
 import { ActivateComponent } from '../start/activate/activate.component';
 
 const routes: Routes = [
-  { path: ':address', component: AccountViewComponent, data: { reuse: true } },
+  { path: ':address', component: AccountViewComponent },
   { path: ':address/settings', component: SettingsComponent },
   { path: ':address/stakers', component: DelegatePageComponent },
   { path: 'activate', component: ActivateComponent }
