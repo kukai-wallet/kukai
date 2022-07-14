@@ -25,11 +25,14 @@ export class TeztoolsService {
             if (contract?.tokenAddress) {
               const tokenId: string = `${contract.tokenAddress}:${id}`;
               _defiTokens.push(tokenId);
-              if (contract.usdValue) {
-                _markets.push({
-                  tokenId,
-                  usdValue: contract.usdValue
-                });
+              if (contract.usdValue && contract.tezPool) {
+                const threshold = contract.tezPool % 1 === 0 ? 100000000 : 100;
+                if (contract.tezPool > threshold) {
+                  _markets.push({
+                    tokenId,
+                    usdValue: contract.usdValue
+                  });
+                }
               }
             }
           }
