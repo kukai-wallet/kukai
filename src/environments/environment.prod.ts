@@ -411,6 +411,12 @@ const _CONSTANTS: Constants = {
       thumbnailUrl: "assets/img/alias/VERSA.png",
       link: '', shouldDisplayLink: DisplayLinkOption.None
     },
+    'FloSportsPoa': {
+      name: "FloSports",
+      address: ["KT1Mr1sHC5XmA5ysakskyMo3dJV8yF61J3a6"],
+      thumbnailUrl: "assets/img/alias/FloSports.png",
+      link: '', shouldDisplayLink: DisplayLinkOption.None
+    },
     'ChopSumo': {
       name: "Chop Sumo",
       address: ["KT1Wm4Cegd7wW6MYxEhg6AH5iFX48y65nWvv"],
