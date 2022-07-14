@@ -252,7 +252,7 @@ export class SwapLiquidityService {
       dex.burn.toString(),
       dex.includeSibsidy
     );
-    return parseFloat(result?.toString() ?? 0) * 100;
+    return parseFloat(result?.toString() ?? 0);
   }
 
   tokenToXtzExpectedReturn(tokenToSell: Amount, xtzPool: Amount, tokenPool: Amount, dex): Amount {
@@ -362,7 +362,7 @@ export class SwapLiquidityService {
       dex.burn.toString(),
       dex.includeSibsidy
     );
-    return parseFloat(result?.toString() ?? 0) * 100;
+    return parseFloat(result?.toString() ?? 0);
   }
 
   addLiquidityReturn(xtzToDeposit: Amount, xtzPool: Amount, totalLiquidity: Amount, slippage: number, dex): { expected: Amount; minimum: Amount } {
