@@ -74,14 +74,11 @@ const _CONSTANTS: Constants = {
       backgroundColor: '#1C1C20',
       description: "Have fun exploring a galaxy of NFTs",
     },
-    'OneOfGloGang': {
-      name: "OneOf - GloGang",
-      address: ["KT1Fv8TsEeafDhZXsHCyxFas96YDhXpdmUmz"],
-      thumbnailUrl: "../../../assets/img/alias/glogang.jpg",
-      link: "https://www.oneof.com/GloGang", shouldDisplayLink: DisplayLinkOption.None,
-      category: ["music", "collectibles"],
-      backgroundColor: '#000',
-      description: "Genesis collection by Chief Keef and ColorfulMula"
+    'vitality': {
+      name: "V.Hive by Vitality",
+      address: ["KT1L6BTeGP5NcVmRjys85EaDxBymxMyx5rj8"],
+      thumbnailUrl: "../../../assets/img/alias/vitality.png",
+      link: "", shouldDisplayLink: DisplayLinkOption.None,
     },
     mclarenracing: {
       name: 'McLaren Racing Collective',
@@ -757,12 +754,15 @@ const _CONSTANTS: Constants = {
       category: ["collectibles"],
       description: "Connies is a collection of randomly generated Unicorns on the Tezos blockchain. This collection of originally drawn “Connie the Unicorn” NFTs was created and distributed to attendees at VidCon 2022.",
     },
-    'vitality': {
-      name: "V.Hive by Vitality",
-      address: ["KT1L6BTeGP5NcVmRjys85EaDxBymxMyx5rj8"],
-      thumbnailUrl: "../../../assets/img/alias/vitality.png",
-      link: "", shouldDisplayLink: DisplayLinkOption.None,
-    }
+    'OneOfGloGang': {
+      name: "OneOf - GloGang",
+      address: ["KT1Fv8TsEeafDhZXsHCyxFas96YDhXpdmUmz"],
+      thumbnailUrl: "../../../assets/img/alias/glogang.jpg",
+      link: "https://www.oneof.com/GloGang", shouldDisplayLink: DisplayLinkOption.None,
+      category: ["music", "collectibles"],
+      backgroundColor: '#000',
+      description: "Genesis collection by Chief Keef and ColorfulMula"
+    },
   },
   ASSETS: {
     KT1K9gCRgaLRFKTErYt1wVxA3Frb9FjasjTV: {
