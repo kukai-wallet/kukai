@@ -64,9 +64,7 @@ export class TezosDomainsService {
     }, 100);
   }
   async getDomainFromAddresses(addresses: any) {
-    const baseUrl = CONSTANTS.MAINNET
-      ? 'https://api.tezos.domains/graphql'
-      : `https://${CONSTANTS.NETWORK.replace('ghostnet', 'ithacanet')}-api.tezos.domains/graphql`;
+    const baseUrl = CONSTANTS.MAINNET ? 'https://api.tezos.domains/graphql' : `https://${CONSTANTS.NETWORK}-api.tezos.domains/graphql`;
     const req = {
       query: `{reverseRecords(where: {address: {in: ${JSON.stringify(addresses)}}}) {items {address domain: domain {id, name}}}}`
     };
