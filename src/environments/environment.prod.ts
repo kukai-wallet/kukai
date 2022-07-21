@@ -419,6 +419,12 @@ const _CONSTANTS: Constants = {
       thumbnailUrl: "assets/img/alias/RichieHawtin.jpg",
       link: '', shouldDisplayLink: DisplayLinkOption.None
     },
+    'TezDev': {
+      name: "TezDev Merch",
+      address: ["KT1TKH1tNgHozZkCGfoMAG9SiA9jPphTj3ym"],
+      thumbnailUrl: "assets/img/alias/TezDev_NFT.png",
+      link: '', shouldDisplayLink: DisplayLinkOption.None
+    },
     'ChopSumo': {
       name: "Chop Sumo",
       address: ["KT1Wm4Cegd7wW6MYxEhg6AH5iFX48y65nWvv"],
