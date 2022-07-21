@@ -408,6 +408,11 @@ const _CONSTANTS: Constants = {
       thumbnailUrl: "assets/img/alias/VERSA.png",
       link: '', shouldDisplayLink: DisplayLinkOption.None
     },
+    'FloSports': {
+      name: "FloSports",
+      address: ["KT1Mr1sHC5XmA5ysakskyMo3dJV8yF61J3a6"],
+      thumbnailUrl: "assets/img/alias/FloSports.png",
+    },
     'RichieHawtin': {
       name: "Richie Hawtin - Proof of Performance",
       address: ["KT1FTHGWAPpNGqu8iDZMp52niALdpRpwmF3N"],
