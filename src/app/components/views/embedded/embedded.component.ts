@@ -183,6 +183,22 @@ export class EmbeddedComponent implements OnInit {
         operations: false,
         micheline: false
       }
+    },
+    emergents: {
+      origins: ['https://play.emergentstcg.com'],
+      permissions: {
+        login: true,
+        operations: false,
+        micheline: false
+      }
+    },
+    thegoodsociety: {
+      origins: ['https://www.thegoodsociety.org'],
+      permissions: {
+        login: true,
+        operations: false,
+        micheline: false
+      }
     }
   };
   constructor(

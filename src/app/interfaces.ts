@@ -149,7 +149,7 @@ export interface Constants {
       thumbnailUrl: Asset;
       discoverUrl?: string;
       zoomDiscoverImg?: boolean;
-      link: string;
+      link?: string;
       shouldDisplayLink: DisplayLinkOption;
       category?: string[];
       backgroundColor?: string;

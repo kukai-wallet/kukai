@@ -256,7 +256,6 @@ const _CONSTANTS: Constants = {
       name: 'Tezos Campaigns',
       address: ['KT1BA9igcUcgkMT4LEEQzwURsdMpQayfb6i4', 'KT1JXZPcfEnxswdzYLox1LeALWTkSm1nsdhp'],
       thumbnailUrl: '../../../assets/img/alias/tezos-campaigns-thumbnail.jpeg',
-      link: '',
       shouldDisplayLink: DisplayLinkOption.None,
       category: ['collectibles']
     },
@@ -314,21 +313,18 @@ const _CONSTANTS: Constants = {
         'KT1QbzLyzwXB9JTevvjT3B24BzgWfMzFfBHt'
       ],
       thumbnailUrl: '../../../assets/img/spinner/truesy.svg',
-      link: '',
       shouldDisplayLink: DisplayLinkOption.None
     },
     OpenMinter: {
       name: 'OpenMinter',
       address: ['KT1QcxwB4QyPKfmSwjH1VRxa6kquUjeDWeEy'],
       thumbnailUrl: '../../../assets/img/alias/openminter.svg',
-      link: '',
       shouldDisplayLink: DisplayLinkOption.None
     },
     Tezzardz: {
       name: 'Tezzardz',
       address: ['KT1LHHLso8zQWQWg1HUukajdxxbkGfNoHjh6'],
       thumbnailUrl: '../../../assets/img/alias/tezzardz.png',
-      link: '',
       shouldDisplayLink: DisplayLinkOption.None
     },
     ArtCardz: {
@@ -394,24 +390,36 @@ const _CONSTANTS: Constants = {
       name: "0xC0FACE COLLECTION",
       address: ["KT1DuZFNv6JwwA7kS8RXvoQiANm3L4dfn6qP"],
       thumbnailUrl: "assets/img/alias/0xC0FACE-thumb.jpg",
-      link: '', shouldDisplayLink: DisplayLinkOption.None
+      shouldDisplayLink: DisplayLinkOption.None
     },
     'DY5P1ACE': {
       name: "DY5P1ACE COLLECTION",
       address: ["KT1XPCvaKhH4PXMiWLJo8AvKMAvFySLWuGFk"],
       thumbnailUrl: "assets/img/alias/DY5P1ACE-thumb.jpg",
-      link: '', shouldDisplayLink: DisplayLinkOption.None
+      shouldDisplayLink: DisplayLinkOption.None
     },
     'VERSA': {
       name: "VERSA",
       address: ["KT1Afa8abYrcu9WW7Zbv1f4W6zAgrnYtVaFM"],
       thumbnailUrl: "assets/img/alias/VERSA.png",
-      link: '', shouldDisplayLink: DisplayLinkOption.None
+      shouldDisplayLink: DisplayLinkOption.None
+    },
+    'FloSports': {
+      name: "FloSports",
+      address: ["KT1Mr1sHC5XmA5ysakskyMo3dJV8yF61J3a6"],
+      thumbnailUrl: "assets/img/alias/FloSports.png",
+      shouldDisplayLink: DisplayLinkOption.None
     },
     'RichieHawtin': {
       name: "Richie Hawtin - Proof of Performance",
       address: ["KT1FTHGWAPpNGqu8iDZMp52niALdpRpwmF3N"],
       thumbnailUrl: "assets/img/alias/RichieHawtin.jpg",
+      shouldDisplayLink: DisplayLinkOption.None
+    },
+    'TezDev': {
+      name: "TezDev Merch",
+      address: ["KT1TKH1tNgHozZkCGfoMAG9SiA9jPphTj3ym"],
+      thumbnailUrl: "assets/img/alias/TezDev_NFT.png",
       link: '', shouldDisplayLink: DisplayLinkOption.None
     },
     'ChopSumo': {
@@ -734,7 +742,6 @@ const _CONSTANTS: Constants = {
       name: 'Tezos HCKR Lounge',
       address: ['KT1Fezth36inWMKtTh8Rt6NaQSM1im5LwP4T'],
       thumbnailUrl: '../../../assets/img/alias/tezos_blue_bg.jpg',
-      link: '',
       shouldDisplayLink: DisplayLinkOption.None,
       description: ``,
     },
