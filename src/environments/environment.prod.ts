@@ -422,6 +422,12 @@ const _CONSTANTS: Constants = {
       thumbnailUrl: "assets/img/alias/TezDev_NFT.png",
       link: '', shouldDisplayLink: DisplayLinkOption.None
     },
+    'MarinaAbramovicTheHero': {
+      name: "Marina Abramović - The Hero 25FPS",
+      address: ["KT1Do66uucsbGELYV1sbLwBttCc5Gu6NrKmo"],
+      thumbnailUrl: "assets/img/alias/MarinaAbrabmovicTheHero.jpg",
+      link: '', shouldDisplayLink: DisplayLinkOption.None
+    },
     'ChopSumo': {
       name: "Chop Sumo",
       address: ["KT1Wm4Cegd7wW6MYxEhg6AH5iFX48y65nWvv"],
