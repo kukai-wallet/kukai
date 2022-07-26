@@ -173,7 +173,7 @@ const _CONSTANTS: Constants = {
     TezosDomains: {
       name: 'Tezos Domains',
       address: ['KT1GBZmSxmnKJXGMdMLbugPfLyUPmuLSMwKS'],
-      thumbnailUrl: '',
+      thumbnailUrl: '../../../assets/img/domain-logo.svg',
       discoverUrl: '../../../assets/img/alias/tezosdomains-discover.png',
       link: 'https://tezos.domains/',
       shouldDisplayLink: DisplayLinkOption.All,
