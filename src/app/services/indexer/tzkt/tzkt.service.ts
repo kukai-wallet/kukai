@@ -322,7 +322,7 @@ export class TzktService implements Indexer {
       if (typeof meta[a.key] === a.type) {
         if (a.toAsset) {
           // extract mime type
-          if (meta?.formats?.length) {
+          if (meta?.formats?.length && Array.isArray(meta?.formats)) {
             const index = meta.formats.findIndex((b) => b.uri === meta[a.key]);
             if (index !== -1 && meta.formats[index].uri && meta.formats[index].mimeType) {
               meta[a.key] = { uri: meta[a.key], mimeType: meta.formats[index].mimeType };
@@ -366,7 +366,7 @@ export class TzktService implements Indexer {
         delete meta.thumbnailUri;
       }
     }
-    if (contractAddress === 'KT1NVvPsNDChrLRH5K2cy6Sc9r1uuUwdiZQd' /* Dogami */ && meta?.formats) {
+    if (['KT1NVvPsNDChrLRH5K2cy6Sc9r1uuUwdiZQd', 'KT1CAbPGHUWvkSA9bxMPkqSgabgsjtmRYEda'].includes(contractAddress) /* Dogami */ && meta?.formats) {
       if (typeof meta.formats[0] === 'string') {
         meta.formats = JSON.parse(meta.formats);
       }
