@@ -22,7 +22,7 @@ const _CONSTANTS: Constants = {
   CONTRACT_ALIASES: {
     dogami: {
       name: 'Dogamí',
-      address: ['KT1NVvPsNDChrLRH5K2cy6Sc9r1uuUwdiZQd', 'KT1SnUZLQ4gVrQeapUvp6GY9UKKb4gAZJ8D9'],
+      address: ['KT1NVvPsNDChrLRH5K2cy6Sc9r1uuUwdiZQd', 'KT1SnUZLQ4gVrQeapUvp6GY9UKKb4gAZJ8D9', 'KT1CAbPGHUWvkSA9bxMPkqSgabgsjtmRYEda'],
       thumbnailUrl: 'assets/img/alias/dogami-thumbnail.png',
       discoverUrl: 'assets/img/alias/dogami-discover.png',
       link: 'https://dogami.com',
@@ -76,7 +76,7 @@ const _CONSTANTS: Constants = {
     },
     'vitality': {
       name: "V.Hive by Vitality",
-      address: ["KT1L6BTeGP5NcVmRjys85EaDxBymxMyx5rj8"],
+      address: ["KT1L6BTeGP5NcVmRjys85EaDxBymxMyx5rj8", "KT1MxZTs3QrWffkGCLrkw8hVXxBiSbqo3JZn"],
       thumbnailUrl: "../../../assets/img/alias/vitality.png",
       link: "", shouldDisplayLink: DisplayLinkOption.None,
     },
