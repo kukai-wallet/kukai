@@ -776,6 +776,16 @@ const _CONSTANTS: Constants = {
       backgroundColor: '#000',
       description: "Genesis collection by Chief Keef and ColorfulMula"
     },
+    'PLTFRMS': {
+      name: "PLTFRMS",
+      address: ["KT1KLV1dZBNW71zTP5QCs6SdeuvMFWVLVFzq"],
+      thumbnailUrl: "../../../assets/img/alias/pltfrms.jpg",
+      link: "https://pltfrms.com/",
+      shouldDisplayLink: DisplayLinkOption.None,
+      category: ["collectibles"],
+      backgroundColor: '#fff',
+      description: "The NFT marketplace from ArtsHelp.net"
+    },
   },
   ASSETS: {
     KT1K9gCRgaLRFKTErYt1wVxA3Frb9FjasjTV: {
@@ -1649,6 +1659,7 @@ const _TRUSTED_TOKEN_CONTRACTS = [
   'KT1Su3fNrnABFSYMtWVDZnMbH3DzJeysAd6t',//FILMCrew
   "KT1QXngq1CCuWv5RtnuYCSvGdKGeBxsRCWvQ",//Decathlon
   "KT1D6er82V26zwV7RUxA9Wq7YyjziC52STjo",//Taqueria
+  'KT1KLV1dZBNW71zTP5QCs6SdeuvMFWVLVFzq',//PLTFRMS
 ];
 const _BLACKLISTED_TOKEN_CONTRACTS = []
 
