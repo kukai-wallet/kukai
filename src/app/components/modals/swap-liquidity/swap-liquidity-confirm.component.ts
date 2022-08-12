@@ -495,8 +495,8 @@ export class SwapLiquidityConfirmComponent extends ModalComponent implements OnI
         ModalComponent.currentModel.next({
           name: 'info',
           data: {
-            message: 'The minimum amount of LBT to be received from the transaction.',
-            title: 'Minimum LBT'
+            message: 'The minimum amount of SIRS to be received from the transaction.',
+            title: 'Minimum SIRS'
           },
           forceClose: false
         });
@@ -505,8 +505,8 @@ export class SwapLiquidityConfirmComponent extends ModalComponent implements OnI
         ModalComponent.currentModel.next({
           name: 'info',
           data: {
-            message: 'The expected amount of LBT to be received from the transaction.',
-            title: 'Expected LBT'
+            message: 'The expected amount of SIRS to be received from the transaction.',
+            title: 'Expected SIRS'
           },
           forceClose: false
         });

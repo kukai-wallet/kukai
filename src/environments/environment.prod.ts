@@ -969,17 +969,16 @@ const _CONSTANTS: Constants = {
       }
     },
     KT1AafHA1C1vk959wvHWBispY9Y2f3fxBUUo: {
-      // LBT
       kind: 'FA1.2',
       category: 'finance',
       tokens: {
         0: {
-          name: 'LB Token',
-          symbol: 'LBT',
+          name: 'Sirius',
+          symbol: 'SIRS',
           decimals: 0,
           description: '',
-          displayAsset: '../../../assets/img/tokens/lbt.png',
-          thumbnailAsset: '../../../assets/img/tokens/lbt.png',
+          displayAsset: 'assets/img/tokens/sirius.png',
+          thumbnailAsset: 'assets/img/tokens/sirius.png',
           isTransferable: true,
           isBooleanAmount: false,
           shouldPreferSymbol: true,
