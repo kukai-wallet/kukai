@@ -8,6 +8,7 @@ import { Tzip12Module, tzip12 } from '@taquito/tzip12';
 import { TezosStorageHandler } from '@taquito/tzip16';
 import { Handler, IpfsHttpHandler, MetadataProvider } from '@taquito/tzip16';
 import { SubjectService } from '../../subject/subject.service';
+import Big from 'big.js';
 
 interface TokenMetadata {
   name: string;
@@ -217,8 +218,9 @@ export class TzktService implements Indexer {
       .concat(ops)
       .filter((op) => op?.entrypoint !== 'transfer' && op?.entrypoint !== 'claim')
       .sort(function (a: any, b: any) {
-        return b.timestamp - a.timestamp;
+        return b.timestamp - a.timestamp + parseInt(new Big(b.opId.substring(1)).minus(a.opId.substring(1)).toString());
       });
+    console.log(operations);
     return { operations, unknownTokenIds };
   }
   private extractEntrypoint(op: any): string {
