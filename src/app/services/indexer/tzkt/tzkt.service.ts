@@ -218,9 +218,11 @@ export class TzktService implements Indexer {
       .concat(ops)
       .filter((op) => op?.entrypoint !== 'transfer' && op?.entrypoint !== 'claim')
       .sort(function (a: any, b: any) {
-        return b.timestamp - a.timestamp + parseInt(new Big(b.opId.substring(1)).minus(a.opId.substring(1)).toString());
+        if (b.timestamp === a.timestamp && a.opId && b.opId) {
+          return parseInt(new Big(b.opId.substring(1)).minus(a.opId.substring(1)).toString());
+        }
+        return b.timestamp - a.timestamp;
       });
-    console.log(operations);
     return { operations, unknownTokenIds };
   }
   private extractEntrypoint(op: any): string {
