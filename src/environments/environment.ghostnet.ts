@@ -22,7 +22,19 @@ const _CONSTANTS: Constants = {
     hard_gas_limit_per_block: 5200000,
     hard_storage_limit_per_operation: 60000
   },
-  CONTRACT_ALIASES: {},
+  CONTRACT_ALIASES: {
+    EmergentsTCG: {
+      name: 'Emergents TCG',
+      address: ['KT1AWS8nWonvfG5xt86KPb1JxrYx2TYE6KvL'],
+      thumbnailUrl: 'assets/img/alias/emergents.svg',
+      discoverUrl: 'assets/img/alias/emergents-discover.png',
+      link: 'https://minterpop.com/emergentstcg',
+      shouldDisplayLink: DisplayLinkOption.All,
+      category: ['games', 'collectibles'],
+      zoomDiscoverImg: true,
+      description: 'A next-gen superhero trading card game'
+    }
+  },
   ASSETS: {},
   NFT_CONTRACT_OVERRIDES: [],
   CONTRACT_OVERRIDES: {},

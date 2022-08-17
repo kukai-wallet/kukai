@@ -20,6 +20,17 @@ const _CONSTANTS: Constants = {
     hard_storage_limit_per_operation: 60000
   },
   CONTRACT_ALIASES: {
+    EmergentsTCG: {
+      name: 'Emergents TCG',
+      address: ['KT1QuEhDNh51R8ERiCSh2VE1DjVPPgFrGMja'],
+      thumbnailUrl: 'assets/img/alias/emergents.svg',
+      discoverUrl: 'assets/img/alias/emergents-discover.png',
+      link: 'https://minterpop.com/emergentstcg',
+      shouldDisplayLink: DisplayLinkOption.All,
+      category: ['games', 'collectibles'],
+      zoomDiscoverImg: true,
+      description: 'A next-gen superhero trading card game'
+    },
     dogami: {
       name: 'Dogamí',
       address: ['KT1NVvPsNDChrLRH5K2cy6Sc9r1uuUwdiZQd', 'KT1SnUZLQ4gVrQeapUvp6GY9UKKb4gAZJ8D9', 'KT1CAbPGHUWvkSA9bxMPkqSgabgsjtmRYEda'],
