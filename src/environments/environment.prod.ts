@@ -133,7 +133,7 @@ const _CONSTANTS: Constants = {
       address: ['KT1AFA2mwNUMNd4SsujE1YYp29vd8BZejyKW', 'KT1RJ6PbjHpwc3M5rw5s2Nbmefwbuwbdxton', 'KT1M2JnD1wsg7w2B4UXJXtKQPuDUpU2L7cJH'],
       thumbnailUrl: '../../../assets/img/alias/hen.png',
       discoverUrl: '../../../assets/img/alias/hen.svg',
-      link: 'https://hen.teztools.io',
+      link: 'https://teia.art',
       shouldDisplayLink: DisplayLinkOption.All,
       category: ['marketplace'],
       backgroundColor: 'black',
