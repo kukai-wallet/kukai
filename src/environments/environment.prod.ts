@@ -20,6 +20,17 @@ const _CONSTANTS: Constants = {
     hard_storage_limit_per_operation: 60000
   },
   CONTRACT_ALIASES: {
+    EmergentsTCG: {
+      name: 'Emergents TCG',
+      address: ['KT1QuEhDNh51R8ERiCSh2VE1DjVPPgFrGMja'],
+      thumbnailUrl: 'assets/img/alias/emergents.svg',
+      discoverUrl: 'assets/img/alias/emergents-discover.png',
+      link: 'https://minterpop.com/emergentstcg',
+      shouldDisplayLink: DisplayLinkOption.All,
+      category: ['games', 'collectibles'],
+      zoomDiscoverImg: true,
+      description: 'A next-gen superhero trading card game'
+    },
     dogami: {
       name: 'Dogamí',
       address: ['KT1NVvPsNDChrLRH5K2cy6Sc9r1uuUwdiZQd', 'KT1SnUZLQ4gVrQeapUvp6GY9UKKb4gAZJ8D9', 'KT1CAbPGHUWvkSA9bxMPkqSgabgsjtmRYEda'],
@@ -133,7 +144,7 @@ const _CONSTANTS: Constants = {
       address: ['KT1AFA2mwNUMNd4SsujE1YYp29vd8BZejyKW', 'KT1RJ6PbjHpwc3M5rw5s2Nbmefwbuwbdxton', 'KT1M2JnD1wsg7w2B4UXJXtKQPuDUpU2L7cJH'],
       thumbnailUrl: '../../../assets/img/alias/hen.png',
       discoverUrl: '../../../assets/img/alias/hen.svg',
-      link: 'https://hen.teztools.io',
+      link: 'https://teia.art',
       shouldDisplayLink: DisplayLinkOption.All,
       category: ['marketplace'],
       backgroundColor: 'black',
@@ -969,17 +980,16 @@ const _CONSTANTS: Constants = {
       }
     },
     KT1AafHA1C1vk959wvHWBispY9Y2f3fxBUUo: {
-      // LBT
       kind: 'FA1.2',
       category: 'finance',
       tokens: {
         0: {
-          name: 'LB Token',
-          symbol: 'LBT',
+          name: 'Sirius',
+          symbol: 'SIRS',
           decimals: 0,
           description: '',
-          displayAsset: '../../../assets/img/tokens/lbt.png',
-          thumbnailAsset: '../../../assets/img/tokens/lbt.png',
+          displayAsset: 'assets/img/tokens/sirius.png',
+          thumbnailAsset: 'assets/img/tokens/sirius.png',
           isTransferable: true,
           isBooleanAmount: false,
           shouldPreferSymbol: true,

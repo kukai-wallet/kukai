@@ -1001,8 +1001,8 @@ export class SwapLiquidityComponent extends ModalComponent {
         ModalComponent.currentModel.next({
           name: 'info',
           data: {
-            message: 'The minimum amount of LBT to be received from the transaction.',
-            title: 'Minimum LBT'
+            message: 'The minimum amount of SIRS to be received from the transaction.',
+            title: 'Minimum SIRS'
           },
           forceClose: false
         });

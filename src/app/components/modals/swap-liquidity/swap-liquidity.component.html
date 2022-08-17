@@ -41,9 +41,9 @@
                         (input)="sanitizeNumberInput($event, qty.decimalPlaces, 'qtyRaw')" />
                     </div>
                     <div class="flex-row left">
-                      <span class="symbol">{{ entrypoint === LqdEntrypoints.addLiquidity ? 'XTZ' : 'LBT' }}</span>
+                      <span class="symbol">{{ entrypoint === LqdEntrypoints.addLiquidity ? 'XTZ' : 'SIRS' }}</span>
                       <img
-                        [src]="entrypoint === LqdEntrypoints.addLiquidity ? 'assets/img/tezos-xtz-logo.svg' : 'assets/img/tokens/lbt.png'" />
+                        [src]="entrypoint === LqdEntrypoints.addLiquidity ? 'assets/img/tezos-xtz-logo.svg' : 'assets/img/tokens/sirius.png'" />
                     </div>
                   </div>
                   <div class="tag">{{ entrypoint === LqdEntrypoints.addLiquidity ? 'Add' : 'Remove' }}</div>
@@ -176,7 +176,7 @@
                   The minimum amount you are guaranteed to receive. If the exchange rate changes unfavorably such that you can no longer receive at least this amount, then your transaction will not be completed.
                 </div>
               </span>
-              <span class="value">{{(minimumLqd?.internalNormalised | number:'1.0-0') || 0}} LBT</span>
+              <span class="value">{{(minimumLqd?.internalNormalised | number:'1.0-0') || 0}} SIRS</span>
             </div>
             <div class="flex-column slippage">
               <span class="flex-row label">Slippage&nbsp;<img src="assets/img/information-circle-outline.svg"
