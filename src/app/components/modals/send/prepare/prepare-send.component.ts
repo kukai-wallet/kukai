@@ -418,7 +418,8 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
       google: 'Invalid Google email address',
       reddit: 'Invalid Reddit username',
       twitter: 'Invalid Twitter username',
-      domain: 'Tezos Domains must be valid url'
+      domain: 'Tezos Domains must be valid url',
+      email: 'Invalid email address'
     };
     if (!this.inputValidationService.torusAccount(this.toPkh, this.torusVerifier) && this.toPkh !== '') {
       return torusError[this.torusVerifier];

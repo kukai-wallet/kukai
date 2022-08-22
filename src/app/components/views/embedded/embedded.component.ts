@@ -207,6 +207,14 @@ export class EmbeddedComponent implements OnInit {
         operations: false,
         micheline: false
       }
+    },
+    mooncakes: {
+      origins: ['https://mooncakes.fun', 'https://www.mooncakes.fun'],
+      permissions: {
+        login: true,
+        operations: true,
+        micheline: true
+      }
     }
   };
   constructor(

@@ -5,6 +5,8 @@ import { Account } from '../wallet/wallet';
 import { CONSTANTS } from '../../../environments/environment';
 import { BehaviorSubject } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Injectable()
 export class DelegateService {
@@ -13,8 +15,12 @@ export class DelegateService {
   public readonly tzkt = `https://staging.api.${this.network}.tzkt.io/v1`;
   public delegates = new BehaviorSubject<any>([]);
 
-  constructor(private walletService: WalletService, private operationService: OperationService) {
-    this.getDelegates();
+  constructor(private walletService: WalletService, private operationService: OperationService, public router: Router, private location: Location) {
+    const path = this.location.path();
+    const embedded = path.startsWith('/embedded');
+    if (!embedded) {
+      this.getDelegates();
+    }
   }
   getDelegate(account: Account) {
     this.operationService.getDelegate(account.address).subscribe(

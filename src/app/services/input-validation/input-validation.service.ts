@@ -50,6 +50,8 @@ export class InputValidationService {
     switch (loginType) {
       case 'google':
         return this.email(verifierId);
+      case 'email':
+        return this.email(verifierId);
       case 'reddit':
         return this.redditAccount(verifierId);
       case 'twitter':

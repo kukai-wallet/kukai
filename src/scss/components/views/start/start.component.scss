@@ -151,6 +151,7 @@ $base-background-color: v.$base-background-color;
 
         .facebook,
         .twitter,
+        .email,
         .reddit,
         & > .google img {
           border-radius: v.$border-radius-hardest;
@@ -164,6 +165,7 @@ $base-background-color: v.$base-background-color;
 
         .facebook,
         .twitter,
+        .email,
         .reddit {
           width: 4rem;
           height: 4rem;
@@ -400,6 +402,7 @@ $base-background-color: v.$base-background-color;
 
             & .facebook,
             & .twitter,
+            & .email,
             & .reddit {
               width: 4.5rem;
               height: 4.5rem;
