@@ -10,6 +10,7 @@ const GOOGLE = 'google';
 const REDDIT = 'reddit';
 const TWITTER = 'twitter';
 const FACEBOOK = 'facebook';
+const EMAIL = 'email';
 const AUTH_DOMAIN = 'https://dev-0li4gssz.eu.auth0.com';
 const AUTH_DOMAIN_MAINNET = 'https://kukai.eu.auth0.com';
 @Injectable({
@@ -56,6 +57,16 @@ export class TorusService {
         clientId: '213778980232619',
         verifier: 'tezos-facebook-testnet',
         caseSensitiveVerifierID: false
+      },
+      [EMAIL]: {
+        name: 'Email',
+        typeOfLogin: 'jwt',
+        clientId: 'L98HOmUY0hxLGX9k8AHEZxb1dj9Y3uZw',
+        verifier: 'kukai-google',
+        subVerifier: 'web-kukai-email',
+        caseSensitiveVerifierID: false,
+        lookups: true,
+        aggregated: true
       }
     },
     mainnet: {
@@ -93,6 +104,16 @@ export class TorusService {
         clientId: '523634882377310',
         verifier: 'tezos-facebook',
         caseSensitiveVerifierID: false
+      },
+      [EMAIL]: {
+        name: 'Email',
+        typeOfLogin: 'jwt',
+        clientId: 'LTg6fVsacafGmhv14TZlrWF1EavwQoDZ',
+        verifier: 'tezos-google',
+        subVerifier: 'web-kukai-email',
+        caseSensitiveVerifierID: false,
+        lookups: true,
+        aggregated: true
       }
     }
   };
@@ -185,7 +206,7 @@ export class TorusService {
     });
   }
   async loginTorus(selectedVerifier: string, verifierId = '', skipTorusKey = false): Promise<any> {
-    if (!CONSTANTS.MAINNET && document?.location?.host === 'localhost:4200' && selectedVerifier !== 'google' && selectedVerifier !== 'twitter') {
+    if (!CONSTANTS.MAINNET && document?.location?.host === 'localhost:4200' && !['google', 'twitter', 'email'].includes(selectedVerifier)) {
       return this.mockLogin(selectedVerifier); // mock locally
     }
     try {
@@ -194,9 +215,13 @@ export class TorusService {
         jwtParams.login_hint = verifierId;
         console.log('login_hint: ' + verifierId);
       }
+      if (verifierId && selectedVerifier === EMAIL) {
+        jwtParams.login_hint = verifierId;
+      }
       const { typeOfLogin, clientId, verifier, aggregated } = this.verifierMap[selectedVerifier];
       const loginDetails = aggregated
         ? await this.torus.triggerAggregateLogin({
+            login_hint: verifierId,
             aggregateVerifierType: 'single_id_verifier',
             verifierIdentifier: verifier,
             subVerifierDetailsArray: [
@@ -245,13 +270,19 @@ export class TorusService {
         domain: AUTH_DOMAIN
       },
       [FACEBOOK]: {
-        scope: 'public_profile'
+        scope: 'public_profile email'
       },
       [REDDIT]: {
         domain: CONSTANTS.MAINNET ? AUTH_DOMAIN_MAINNET : AUTH_DOMAIN,
         connection: 'Reddit',
         verifierIdField: 'name',
         isVerifierIdCaseSensitive: false
+      },
+      [EMAIL]: {
+        domain: CONSTANTS.MAINNET ? AUTH_DOMAIN_MAINNET : AUTH_DOMAIN,
+        connection: '',
+        verifierIdField: 'name',
+        isVerifierCaseSensitive: false
       }
     };
   };

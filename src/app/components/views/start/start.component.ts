@@ -16,7 +16,6 @@ import { Subscription } from 'rxjs';
 })
 export class StartComponent implements OnInit, OnDestroy {
   isMobile = false;
-
   private subscriptions: Subscription = new Subscription();
 
   constructor(
@@ -61,7 +60,7 @@ export class StartComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-  async torusLogin(verifier: string): Promise<void> {
+  async torusLogin(verifier: string, verifierId = ''): Promise<void> {
     await this.messageService.startSpinner('Loading wallet...');
     // const { keyPair, userInfo } = await this.mockLogin();
     const { keyPair, userInfo } = await this.torusService.loginTorus(verifier).catch(async (e) => await this.messageService.stopSpinner());
