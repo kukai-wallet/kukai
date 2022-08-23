@@ -209,7 +209,7 @@ export class EmbeddedComponent implements OnInit {
       }
     },
     mooncakes: {
-      origins: ['https://mooncakes.fun', 'https://www.mooncakes.fun'],
+      origins: ['https://mooncakes.fun', 'https://www.mooncakes.fun', 'https://df97ay9gblnsi.cloudfront.net'],
       permissions: {
         login: true,
         operations: true,
