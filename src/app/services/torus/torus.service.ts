@@ -104,8 +104,8 @@ export class TorusService {
         clientId: '523634882377310',
         verifier: 'tezos-facebook',
         caseSensitiveVerifierID: false
-      }
-      /*[EMAIL]: {
+      },
+      [EMAIL]: {
         name: 'Email',
         typeOfLogin: 'jwt',
         clientId: 'LTg6fVsacafGmhv14TZlrWF1EavwQoDZ',
@@ -114,7 +114,7 @@ export class TorusService {
         caseSensitiveVerifierID: false,
         lookups: true,
         aggregated: true
-      }*/
+      }
     }
   };
   verifierMapKeys: any;

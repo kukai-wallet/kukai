@@ -19,7 +19,7 @@ export class TezosDomainsService {
     const options = { caching: { enabled: false } };
     this.client = new TaquitoTezosDomainsClient({
       tezos: tezosToolkit,
-      network: <SupportedNetworkType>CONSTANTS.NETWORK,
+      network: <SupportedNetworkType>CONSTANTS.NETWORK.replace('ghostnet', 'ithacanet'),
       ...options
     });
   }
