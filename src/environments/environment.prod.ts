@@ -20,6 +20,18 @@ const _CONSTANTS: Constants = {
     hard_storage_limit_per_operation: 60000
   },
   CONTRACT_ALIASES: {
+    DNS.xyz: {
+      name: 'DNS.xyz',
+      address:[],
+      thumbnailUrl: 'assets/img/alias/dnsxyz.png',
+      discoverUrl: 'assets/img/alias/dnsxyz-discover.png',
+      link: 'https://dns.xyz',
+      shouldDisplayLink: DisplayLinkOption.All,
+      category: ['marketplace'],
+      zoomDiscoverImg: true,
+      backgroundColor: '#fff',
+      description: 'The Web3 player. Stream music, videos & art. On any chain.'
+    }
     EmergentsTCG: {
       name: 'Emergents TCG',
       address: ['KT1QuEhDNh51R8ERiCSh2VE1DjVPPgFrGMja'],
