@@ -121,7 +121,7 @@ export class SigninComponent implements OnInit, OnChanges {
       let loginData;
       const len: number = this.queueLen;
       if (this.loginConfig?.customPrio === LoginPrio.Low) {
-        loginData = await this.torusService.loginTorus(typeOfLogin, '', len > 5);
+        loginData = await this.torusService.loginTorus(typeOfLogin, '', len > 5 ? 1 : 0, true);
       } else if (this.loginConfig?.customPrio === LoginPrio.High && this.walletService.wallet instanceof EmbeddedTorusWallet) {
         loginData = await this.torusService.loginTorus(typeOfLogin, this.walletService.wallet.id);
       } else {
@@ -138,7 +138,11 @@ export class SigninComponent implements OnInit, OnChanges {
           if (len > 5) {
             this.skipQueue(loginData.userInfo.typeOfLogin, loginData.userInfo.verifierId, loginData.keyPair.pkh);
           } else {
-            this.setLowPrio(loginData.userInfo);
+            if (loginData?.userInfo?.isNewKey) {
+              this.setLowPrio(loginData.userInfo);
+            } else {
+              this.skipQueue(loginData.userInfo.typeOfLogin, loginData.userInfo.verifierId, loginData.keyPair.pkh);
+            }
           }
         }
       }

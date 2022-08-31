@@ -205,7 +205,7 @@ export class TorusService {
       return ans.json();
     });
   }
-  async loginTorus(selectedVerifier: string, verifierId = '', skipTorusKey = false): Promise<any> {
+  async loginTorus(selectedVerifier: string, verifierId = '', skipTorusKey = 0, checkIfNewKey = false): Promise<any> {
     if (!CONSTANTS.MAINNET && document?.location?.host === 'localhost:4200' && !['google', 'twitter', 'email'].includes(selectedVerifier)) {
       return this.mockLogin(selectedVerifier); // mock locally
     }
@@ -232,14 +232,16 @@ export class TorusService {
                 jwtParams
               }
             ],
-            skipTorusKey
+            skipTorusKey,
+            checkIfNewKey
           })
         : await this.torus.triggerLogin({
             verifier,
             typeOfLogin,
             clientId,
             jwtParams,
-            skipTorusKey
+            skipTorusKey,
+            checkIfNewKey
           });
       if (aggregated) {
         loginDetails.userInfo = loginDetails.userInfo[0];
@@ -250,6 +252,9 @@ export class TorusService {
       }
       const keyPair = skipTorusKey && !loginDetails?.privateKey ? { pk: '', pkh: '' } : this.operationService.spPrivKeyToKeyPair(loginDetails.privateKey);
       console.log('DirectAuth KeyPair', keyPair);
+      if (loginDetails?.isNewKey !== undefined) {
+        loginDetails.userInfo.isNewKey = loginDetails.isNewKey;
+      }
       if (loginDetails?.userInfo?.typeOfLogin === 'jwt') {
         loginDetails.userInfo.typeOfLogin = selectedVerifier;
       }
