@@ -99,7 +99,7 @@ export class ErrorHandlingPipe implements PipeTransform {
       id: 'proto.alpha.context.storage_error'
     },
     {
-      msg: 'An operation tried to spend more tokens than the contract has',
+      msg: 'An operation tried to spend more tez than the account has',
       id: 'proto.alpha.contract.balance_too_low'
     },
     {
