@@ -35,11 +35,26 @@ new webpack_2.ProvidePlugin({
   Buffer: ['buffer', 'Buffer']
 }),
 new webpack_2.EnvironmentPlugin({'NODE_DEBUG': false}),
-`;
+new TerserPlugin({
+  terserOptions: {
+      format: {
+          comments: false,
+      },
+  },
+  extractComments: false,
+  parallel: true,
+}),`;
+
+const pluginImports = `const TerserPlugin = require('terser-webpack-plugin');`;
 
 let data = fs.readFileSync(tdcore, 'utf8');
 data = data.replace("import { randomInt } from 'crypto';", "import { randomInt } from 'crypto-js';");
 fs.writeFileSync(tdcore, data, 'utf8');
+
+data = fs.readFileSync(uts46, 'utf8');
+data = data.replace(/punycode\.ucs2\.decode/g, 'punycode.ucs2decode');
+data = data.replace(/punycode\.ucs2\.encode/g, 'punycode.ucs2encode');
+fs.writeFileSync(uts46, data, 'utf8');
 
 data = fs.readFileSync(common, 'utf8');
 if (data.indexOf('fallback: {') === -1) {
@@ -49,16 +64,7 @@ if (data.indexOf('fallback: {') === -1) {
       ${fallback}
     `
   );
-  data = data.replace(
-    'plugins_1.DedupeModuleResolvePlugin({ verbose }),',
-    `plugins_1.DedupeModuleResolvePlugin({ verbose }),
-      ${plugins}
-    `
-  );
+  data = data.replace('plugins_1.DedupeModuleResolvePlugin({ verbose }),', `plugins_1.DedupeModuleResolvePlugin({ verbose }), ${plugins}`);
+  data = data.replace('const helpers_1 = require("../utils/helpers");', `const helpers_1 = require("../utils/helpers"); ${pluginImports}`);
   fs.writeFileSync(common, data, 'utf8');
 }
-
-data = fs.readFileSync(uts46, 'utf8');
-data = data.replace(/punycode\.ucs2\.decode/g, 'punycode.ucs2decode');
-data = data.replace(/punycode\.ucs2\.encode/g, 'punycode.ucs2encode');
-fs.writeFileSync(uts46, data, 'utf8');

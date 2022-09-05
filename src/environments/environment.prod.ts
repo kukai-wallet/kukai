@@ -439,6 +439,12 @@ const _CONSTANTS: Constants = {
       thumbnailUrl: "assets/img/alias/MarinaAbrabmovicTheHero.jpg",
       link: '', shouldDisplayLink: DisplayLinkOption.None
     },
+    'LifeAfterBobTrueName': {
+      name: "Life After BOB: TRUE NAME",
+      address: ["KT1GBWC8L4HYXM62GDBGipnZ6Bc9sWgqhcFF"],
+      thumbnailUrl: "assets/img/alias/afterbob-truename.png",
+      link: 'https://truename.me', shouldDisplayLink: DisplayLinkOption.None,
+    },
     'ChopSumo': {
       name: "Chop Sumo",
       address: ["KT1Wm4Cegd7wW6MYxEhg6AH5iFX48y65nWvv"],

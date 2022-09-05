@@ -215,6 +215,14 @@ export class EmbeddedComponent implements OnInit {
         operations: true,
         micheline: true
       }
+    },
+    truename: {
+      origins: ['https://truename.me'],
+      permissions: {
+        login: true,
+        operations: false,
+        micheline: false
+      }
     }
   };
   constructor(
