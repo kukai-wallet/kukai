@@ -33,7 +33,7 @@ export class SigninComponent implements OnInit, OnChanges {
   ngOnInit(): void {}
   ngOnChanges(changes: SimpleChanges): void {
     if (changes?.loginConfig) {
-      if (this.loginConfig?.customPrio === 'low') this.queueLen = 0;
+      if (this.loginConfig?.customPrio === LoginPrio.Low || this.loginConfig?.customPrio === LoginPrio.LowFast) this.queueLen = 0;
       this.queueLenInterval = setInterval(async () => {
         this.queueLen = await this.getQueueLen();
         console.log('Queue length (s)', this.queueLen);
@@ -122,6 +122,8 @@ export class SigninComponent implements OnInit, OnChanges {
       const len: number = this.queueLen;
       if (this.loginConfig?.customPrio === LoginPrio.Low) {
         loginData = await this.torusService.loginTorus(typeOfLogin, '', len > 5 ? 1 : 0, true);
+      } else if (this.loginConfig?.customPrio === LoginPrio.LowFast) {
+        loginData = await this.torusService.loginTorus(typeOfLogin, '', 2, true);
       } else if (this.loginConfig?.customPrio === LoginPrio.High && this.walletService.wallet instanceof EmbeddedTorusWallet) {
         loginData = await this.torusService.loginTorus(typeOfLogin, this.walletService.wallet.id);
       } else {
@@ -144,6 +146,12 @@ export class SigninComponent implements OnInit, OnChanges {
               this.skipQueue(loginData.userInfo.typeOfLogin, loginData.userInfo.verifierId, loginData.keyPair.pkh);
             }
           }
+        }
+      } else if (this.loginConfig?.customPrio === LoginPrio.LowFast) {
+        if (loginData?.userInfo?.isNewKey) {
+          this.skipQueue(loginData.userInfo.typeOfLogin, loginData.userInfo.verifierId, loginData.keyPair.pkh);
+        } else {
+          this.setLowPrio(loginData.userInfo);
         }
       }
       if (this.dismiss === null) {

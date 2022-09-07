@@ -411,7 +411,7 @@ export class EmbeddedComponent implements OnInit {
       return;
     }
     this.queueMode = req?.config.customPrio ? req?.config.customPrio : null;
-    if (this.activeAccount || (this.queueMode === 'low' && this.walletService.wallet)) {
+    if (this.activeAccount || ([LoginPrio.Low, LoginPrio.LowFast].includes(this.queueMode) && this.walletService.wallet)) {
       const response: ResponseMessage = {
         type: ResponseTypes.loginResponse,
         failed: true,
