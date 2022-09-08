@@ -33,15 +33,17 @@ export class SigninComponent implements OnInit, OnChanges {
   ngOnInit(): void {}
   ngOnChanges(changes: SimpleChanges): void {
     if (changes?.loginConfig) {
-      if (this.loginConfig?.customPrio === LoginPrio.Low || this.loginConfig?.customPrio === LoginPrio.LowFast) this.queueLen = 0;
-      this.queueLenInterval = setInterval(async () => {
-        this.queueLen = await this.getQueueLen();
-        console.log('Queue length (s)', this.queueLen);
-      }, 5000);
-      this.getQueueLen().then((res) => {
-        this.queueLen = res;
-        console.log('Queue length (s)', this.queueLen);
-      });
+      if (this.loginConfig?.customPrio === LoginPrio.Low) {
+        this.queueLen = 0;
+        this.queueLenInterval = setInterval(async () => {
+          this.queueLen = await this.getQueueLen();
+          console.log('Queue length (s)', this.queueLen);
+        }, 5000);
+        this.getQueueLen().then((res) => {
+          this.queueLen = res;
+          console.log('Queue length (s)', this.queueLen);
+        });
+      }
     }
     if (changes?.dismiss?.currentValue === true) {
       this.messageService.stopSpinner().then(() => this.loginResponse.emit('dismiss'));
@@ -115,6 +117,10 @@ export class SigninComponent implements OnInit, OnChanges {
     this.loginResponse.emit(null);
     this.stopQueue();
   }
+  back() {
+    this.loginResponse.emit(undefined);
+    this.stopQueue();
+  }
   async login(typeOfLogin: string) {
     try {
       this.messageService.startSpinner('Loading wallet...');
@@ -148,11 +154,11 @@ export class SigninComponent implements OnInit, OnChanges {
           }
         }
       } else if (this.loginConfig?.customPrio === LoginPrio.LowFast) {
-        if (loginData?.userInfo?.isNewKey) {
+        /*if (loginData?.userInfo?.isNewKey === false) {
           this.skipQueue(loginData.userInfo.typeOfLogin, loginData.userInfo.verifierId, loginData.keyPair.pkh);
-        } else {
-          this.setLowPrio(loginData.userInfo);
-        }
+        } else {*/
+        this.setLowPrio(loginData.userInfo);
+        //}
       }
       if (this.dismiss === null) {
         await this.messageService.stopSpinner();

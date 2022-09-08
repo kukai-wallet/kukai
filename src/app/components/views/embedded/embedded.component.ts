@@ -253,8 +253,6 @@ export class EmbeddedComponent implements OnInit {
   currentInstanceId = '';
 
   ngOnInit(): void {
-    const htmlElem = this.elRef.nativeElement.closest('html');
-    htmlElem.style.fontSize = '100%';
     document.body.style.background = 'none';
     this.torusService.initTorus();
     if (window.addEventListener) {
@@ -533,7 +531,7 @@ export class EmbeddedComponent implements OnInit {
       response = {
         type: ResponseTypes.loginResponse,
         failed: true,
-        error: 'ABORTED_BY_USER'
+        error: loginData === null ? 'ABORTED_BY_USER' : 'BACKED_BY_USER'
       };
     }
     const loginConfig = this.loginConfig;

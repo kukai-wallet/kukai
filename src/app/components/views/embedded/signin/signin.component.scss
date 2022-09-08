@@ -26,10 +26,10 @@ $box-shadow: 0px 12px 24px #3331 !default;
 $box-shadow-dark: 0px 6px 12px #3333 !default;
 
 // border constant
-$border-radius: 1.0rem !default;
+$border-radius: 1rem !default;
 $border-radius-hard: calc(#{$border-radius} * 2) !default;
 $border-radius-hardest: calc(#{$border-radius} * 10) !default;
-$border-color: #aaa3;
+$border-color: #cfcfcf;
 
 // @media constants
 $lower-break: 75rem;
@@ -158,146 +158,170 @@ button {
   }
 }
 
-@media (max-width: 767px) {
-  :host {
-    font-size: 75%;
-
-    & .close {
-      top: 0 !important;
-    }
-  }
-}
-
 :host {
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   background: rgba(0, 0, 0, 0.5);
 }
-div.direct-auth-login {
-  margin: 0 0.25rem;
-  width: 21.875rem;
-  background: #f3f3f3;
-  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.24), 0px 4px 12px rgba(0, 0, 0, 0.24),
-    0px 32px 48px rgba(0, 0, 0, 0.36);
-  border-radius: 0.625rem;
-  transform: scale(1.2);
-}
-:host div.header {
-  height: 2rem;
-  padding: 0.5rem 1rem 0;
-  display: flex;
-  flex-direction: row-reverse;
-}
-:host > div.direct-auth-login H2,
-:host > div.direct-auth-login span {
-  font-style: normal !important;
-  font-weight: 500 !important;
-}
-div.direct-auth-login > div.header {
-  height: 4.375rem;
-  background: white;
-  border-top-left-radius: 0.625rem;
-  border-top-right-radius: 0.625rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-div.direct-auth-login > div.header img {
-  height: 3.125rem;
-  width: 3.125rem;
-}
-div.direct-auth-login H2 {
-  margin: 0rem 0 0.5rem;
-  @include m.multiply("font-size", 1);
-  line-height: 1.3125rem;
-  text-align: center;
-  vertical-align: top;
-}
-// horizontal login buttons
-div.direct-auth-login > div.body div.login-options.vertically {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-div.direct-auth-login > div.body div.login-options.vertically div.login-option {
-  margin: 0.5rem 0;
-  padding-left: 1.25rem;
-  display: flex;
-  align-items: center;
-  background: white;
-  width: 17rem;
-  height: 3.5rem;
-  border-radius: 0.5rem;
-  border: 1px solid #cfcfcf;
-}
-div.direct-auth-login
-  > div.body
-  div.login-options.vertically
-  div.login-option
-  > span {
-  font-family: "Inter", sans-serif !important;
-  margin-left: 1.625rem;
-  font-weight: 700 !important;
-  color: #5d5d5d;
+
+:host {
+  & .direct-auth-login-alt {
+    padding: 0.5em;
+    width: calc(554px - 1em);
+    background: #FFFFFF;
+    box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.24), 0px 4px 12px rgba(0, 0, 0, 0.24), 0px 32px 48px rgba(0, 0, 0, 0.36);
+    border-radius: 20px;
+    & .header {
+      height: 2em;
+      padding: 0.75em 0 0 0;
+      flex-direction: row-reverse;
+      & .back,
+      & .abort {
+        border: 1px solid #CCCED5;
+        border-radius: 34px;
+        padding: 0.25em;
+        cursor: pointer;
+        z-index: 1;
+        width: 1em;
+        height: 1em;
+        padding: 0.5em;
+      }
+    }
+    & > h1,
+    & > h2 {
+      width: 100%;
+      text-align: center;
+    }
+    & > h1 {
+      font-size: 1.875em;
+      font-weight: 600;
+      font-family: "Roboto Condensed";
+      margin: -1.125em 0 0.75em 0;
+      color:#353535;
+    }
+    & > h2 {
+      margin: 0.75em 0 0.25em 0;
+      font-size: 1.375em;
+      color: #A3A8B9;
+      font-family: "Roboto Condensed";
+    }
+    & .login-options {
+      padding: 0.5em 1.25em;
+      justify-content: flex-start;
+      gap: 1.25em;
+      width: 31.125em;
+      & .option {
+        position: relative;
+        height: 2.5em;
+        cursor: pointer;
+        &.wide {
+          border: 2px solid #cfcfcf;
+          border-radius: 20px;
+          width: 31.125em;
+          height: 4.125em;
+          & img {
+            margin: 0 0 0 3.725em;
+          }
+        }
+        &.narrow {
+          width: calc(33.3333333333% - 1.0833333333em);
+          border: 2px solid #cfcfcf;
+          border-radius: 20px;
+          justify-content: center;
+          height: 4.375em;
+        }
+        & img {
+          width: 1.875em;
+          height: 1.875em;
+        }
+        & span {
+          text-transform: uppercase;
+          width: 100%;
+          font-size: 1.25em;
+          position: absolute;
+          text-align: center;
+          font-weight: 500;
+          color: #353535;
+        }
+      }
+    }
+    & .footer {
+      margin: 1.25em 0 2.25em 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      opacity: 0.5;
+
+      & span {
+        font-size: 1.125em;
+        line-height: 1.125em;
+        font-weight: 500;
+      }
+
+      & img {
+        height: 1.5em;
+        margin: 0 0 0 0.5em;
+      }
+    }
+  }
 }
 
-// Vertical login buttons
-div.direct-auth-login > div.body div.login-options.horizontally {
-  margin: 0.5rem 0;
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  flex-wrap: wrap;
-  flex-grow: 4;
-}
-div.direct-auth-login
-  > div.body
-  div.login-options.horizontally
-  div.login-option {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: white;
-  margin: 0.5rem;
-  border-radius: 0.625rem;
-  width: 90px;
-  height: 60px;
-}
-div.direct-auth-login
-  > div.body
-  div.login-options.horizontally
-  div.login-option:hover {
-  background: #eaebf9;
-}
-div.direct-auth-login
-  > div.body
-  div.login-options.horizontally
-  div.login-option
-  > img {
-  width: 2.5rem;
-}
-// both
-div.direct-auth-login > div.body div.login-options div.login-option:hover,
-div.direct-auth-login img.abort:hover {
-  cursor: pointer;
+@media (max-width: 767px) {
+  :host {
+    font-size: 175%;
+    & .direct-auth-login-alt {
+      transform: unset;
+      position: absolute;
+      bottom: 0;
+      width: calc(100% - 1em);
+      border-radius: 0;
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
+
+      & h1 {
+        margin: 0.5em 0 0.75em 0;
+      }
+
+      & .header {
+        padding: 0.5em 0.25em 0 0.25em;
+        & .back,
+        & .abort {
+          width: 1.25em;
+          height: 1.25em;
+          padding: 0.5em;
+        }
+      }
+
+      & .login-options {
+        width: calc(100% - 2.5em);
+
+        & .option {
+          & span {
+            width: calc(100% - 3.5em);
+            text-align: left;
+            margin: 0 0 0 3.5em;
+          }
+          &.wide {
+            width: 100%;
+            & img {
+              margin: 0 0 0 1em;
+            }
+          }
+        }
+      }
+
+      & .footer {
+        flex-grow: 1;
+      }
+    }
+  }
 }
 
-div.direct-auth-login > div.footer {
-  margin: 2.5rem 0 0.5rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  opacity: 0.5;
-}
-div.direct-auth-login > div.footer > span {
-  font-size: 0.75rem;
-  line-height: 1rem;
-  font-weight: 600;
-}
-div.direct-auth-login > div.footer img {
-  height: 0.75rem;
-  margin: 0 0 0 0.375rem;
+@media (max-width: 480px) {
+  :host {
+    font-size: 135%;
+  }
 }
