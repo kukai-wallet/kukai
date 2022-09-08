@@ -1181,6 +1181,14 @@ export class ErrorHandlingPipe implements PipeTransform {
         errorMessage =
           'Counter error: Another operation in mempool is blocking your operation. Wait for it to be included in a block or pruned from mempool (up to 60 minutes).';
       } else {
+        if (errorId?.startsWith('Failed to parse the request body')) {
+          const lines = errorId.split('At /kind, unexpected string instead of ');
+          for (let line of lines) {
+            if (line.startsWith('reveal\n  Unhandled error')) {
+              return line.replace('reveal\n  ', '');
+            }
+          }
+        }
         errorMessage = 'Unrecognized error: ' + errorId;
       }
     }
