@@ -4,7 +4,8 @@
     <img (click)="abort()" class="abort" src="../../../assets/img/x-alt.svg">
     <img *ngIf="loginConfig.showBackButton" (click)="back()" class="back" src="../../../assets/img/back-arrow.svg">
   </div>
-  <h1>Choose Sign in Type</h1>
+  <h1 *ngIf="this.loginConfig?.customPrio !== 'high'">Choose Social Provider</h1>
+  <h1 *ngIf="this.loginConfig?.customPrio === 'high'">Please re-authenticate</h1>
   <div class="flex-row-wrap login-options" *ngIf="torusService && torusService.verifierMapKeys">
     <ng-container *ngFor="let key of loginOptions; let idx = index">
       <div *ngIf="loginConfig.buttonsVertically === true || (loginConfig.wideButtons && loginConfig.wideButtons[idx] === true); else narrow" class="flex-row option wide"
