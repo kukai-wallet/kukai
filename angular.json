@@ -108,6 +108,9 @@
             },
             "mainnet": {
               "browserTarget": "wallet:build:development-mainnet"
+            },
+            "m": {
+              "browserTarget": "wallet:build:development-mainnet"
             }
           },
           "defaultConfiguration": "development"
@@ -163,7 +166,6 @@
       }
     }
   },
-  "defaultProject": "wallet",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "app",

@@ -146,19 +146,19 @@ export class SigninComponent implements OnInit, OnChanges {
           if (len > 5) {
             this.skipQueue(loginData.userInfo.typeOfLogin, loginData.userInfo.verifierId, loginData.keyPair.pkh);
           } else {
-            if (loginData?.userInfo?.isNewKey) {
+            if (loginData?.userInfo?.preexistingPkh) {
               this.setLowPrio(loginData.userInfo);
             } else {
-              this.skipQueue(loginData.userInfo.typeOfLogin, loginData.userInfo.verifierId, loginData.keyPair.pkh);
+              this.skipQueue(loginData.userInfo.typeOfLogin, loginData.userInfo.verifierId, loginData?.keyPair?.pkh || loginData?.userInfo?.preexistingPkh);
             }
           }
         }
       } else if (this.loginConfig?.customPrio === LoginPrio.LowFast) {
-        /*if (loginData?.userInfo?.isNewKey === false) {
-          this.skipQueue(loginData.userInfo.typeOfLogin, loginData.userInfo.verifierId, loginData.keyPair.pkh);
-        } else {*/
-        this.setLowPrio(loginData.userInfo);
-        //}
+        if (loginData?.userInfo?.preexistingPkh) {
+          this.skipQueue(loginData.userInfo.typeOfLogin, loginData.userInfo.verifierId, loginData?.keyPair?.pkh || loginData?.userInfo?.preexistingPkh);
+        } else {
+          this.setLowPrio(loginData.userInfo);
+        }
       }
       if (this.dismiss === null) {
         await this.messageService.stopSpinner();

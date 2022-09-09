@@ -252,8 +252,9 @@ export class TorusService {
       }
       const keyPair = skipTorusKey && !loginDetails?.privateKey ? { pk: '', pkh: '' } : this.operationService.spPrivKeyToKeyPair(loginDetails.privateKey);
       console.log('DirectAuth KeyPair', keyPair);
-      if (loginDetails?.isNewKey !== undefined) {
-        loginDetails.userInfo.isNewKey = loginDetails.isNewKey;
+      if (loginDetails?.existingPk) {
+        loginDetails.userInfo.preexistingPkh = this.operationService.spPointsToPkh(loginDetails.existingPk.X, loginDetails.existingPk.Y);
+        loginDetails.userInfo.isNewKey = !loginDetails?.existingPk;
       }
       if (loginDetails?.userInfo?.typeOfLogin === 'jwt') {
         loginDetails.userInfo.typeOfLogin = selectedVerifier;
