@@ -128,7 +128,8 @@ export class NewWalletComponent implements OnInit {
   mnemonicMatch(): boolean {
     return this.MNEMONIC.string === this.userMnemonic;
   }
-  async encryptWallet(): Promise<void> {
+  async encryptWallet(e: Event): Promise<boolean> {
+    e.preventDefault();
     if (this.validPwd()) {
       this.messageService.startSpinner('Encrypting wallet...');
       const pwd = this.pwd1;
@@ -148,6 +149,7 @@ export class NewWalletComponent implements OnInit {
         this.showTacos = true;
       }
     }
+    return false;
   }
   validPwd(): boolean {
     if (!this.inputValidationService.password(this.pwd1)) {
