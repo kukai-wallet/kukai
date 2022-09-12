@@ -131,7 +131,7 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
             parameters: op.parameters
           });
           if (!this.parameters) {
-            this.updateParameters(0, op.parameters);
+            this.updateParameters(i, op.parameters);
           }
         }
       }
