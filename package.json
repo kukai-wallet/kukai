@@ -8,6 +8,7 @@
     "start:https": "ng build --watch && http-server -S -C RootCA.pem -K RootCA.key -p 3000 -c-1 dist",
     "build-prod": "node --max_old_space_size=4096 ./node_modules/@angular/cli/bin/ng build --configuration production",
     "build-testnet": "node --max_old_space_size=4096 ./node_modules/@angular/cli/bin/ng build --configuration testnet",
+    "build-mainnet": "node --max_old_space_size=4096 ./node_modules/@angular/cli/bin/ng build --configuration mainnet",
     "build-dev": "npm run build-testnet",
     "test": "ng test",
     "lint": "npx eslint -c ./.eslintrc --ext .ts src/app/",

@@ -76,7 +76,7 @@
               "extractLicenses": false,
               "sourceMap": true
             },
-            "development-mainnet": {
+            "mainnet": {
               "budgets": [
                 {
                   "type": "initial",
@@ -107,10 +107,10 @@
               "browserTarget": "wallet:build:development"
             },
             "mainnet": {
-              "browserTarget": "wallet:build:development-mainnet"
+              "browserTarget": "wallet:build:mainnet"
             },
             "m": {
-              "browserTarget": "wallet:build:development-mainnet"
+              "browserTarget": "wallet:build:mainnet"
             }
           },
           "defaultConfiguration": "development"
