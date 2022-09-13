@@ -209,7 +209,7 @@ export class TzktService implements Indexer {
           source,
           destination: { address: tokenTxs[i].to?.address ?? '' },
           timestamp: new Date(tokenTxs[i].timestamp).getTime(),
-          opId: `t${tokenTxs[i].transactionId}`
+          opId: tokenTxs[i].transactionId ? `t${tokenTxs[i].transactionId}` : undefined
         };
         tokenArr.push(activity);
       }
