@@ -647,6 +647,15 @@ const _CONSTANTS: Constants = {
       category: ['collectibles'],
       description: 'In a new world that was once dominated by lizzards and otters, evolution took hold and a flock of 10k generative PFP Parrotz came to Tezos as NFTs to live peacefully with those that came before them.'
     },
+    'tzDropz': {
+      name: 'tzDropz',
+      address: ['KT1BRhcRAdLia3XQT1mPSofHyrmYpRddgj3s'],
+      thumbnailUrl: '../../../assets/img/alias/tzdropz.png',
+      link: 'https://tzdropz.com/',
+      shouldDisplayLink: DisplayLinkOption.None,
+      category: ['collectibles'],
+      description: 'tzDropz PASSES get access to future tzDropz exclusive NFTs, Discounts, whitelist access to partner projects, REVENUE SHARE of PASS ROYALTIES & FREE NFTs for DIAMOND PASS holders. Swap PASSES on our website for higher tiers -- https://tzdropz.com'
+    },    
     xarb: {
       name: 'Xarb',
       address: ['KT1JsJUo4PQARJB3AkstQJ8mHskoNJb29a7Z'],
