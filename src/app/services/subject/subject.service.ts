@@ -20,7 +20,7 @@ export class SubjectService {
   public activeAccount = new BehaviorSubject(null);
   public walletUpdated = new BehaviorSubject(null);
   public metadataUpdated: BehaviorSubject<MetadataUpdated>;
-  public markets: BehaviorSubject<any>;
+  public refreshTokens: BehaviorSubject<null>;
   public confirmedOp: Subject<string>;
   public prepareTokenTransfer: Subject<PrepareTokenTransfer>;
   public nftsUpdated: BehaviorSubject<any>;
@@ -38,7 +38,7 @@ export class SubjectService {
   }
   init() {
     this.metadataUpdated = new BehaviorSubject<MetadataUpdated>(null);
-    this.markets = new BehaviorSubject<any>([]);
+    this.refreshTokens = new BehaviorSubject<any>([]);
     this.confirmedOp = new Subject<string>();
     this.prepareTokenTransfer = new Subject<PrepareTokenTransfer>();
     this.nftsUpdated = new BehaviorSubject<any>(undefined);
@@ -49,7 +49,7 @@ export class SubjectService {
   }
   reset() {
     this.metadataUpdated.next(null);
-    this.markets.next([]);
+    this.refreshTokens.next(null);
     this.nftsUpdated.next(undefined);
   }
 }

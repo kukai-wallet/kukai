@@ -11,10 +11,10 @@ import { TokenService } from '../token/token.service';
 import { LookupService } from '../lookup/lookup.service';
 import { CONSTANTS } from '../../../environments/environment';
 import { SubjectService } from '../subject/subject.service';
-import { TeztoolsService } from '../indexer/teztools/teztools.service';
 import { interval } from 'rxjs';
 import { SignalService } from '../indexer/signal/signal.service';
 import { UnlockableService } from '../unlockable/unlockable.service';
+import { DipDupService } from '../indexer/dipdup/dipdup.service';
 
 export interface ScheduleData {
   pkh: string;
@@ -45,7 +45,7 @@ export class CoordinatorService {
     private delegateService: DelegateService,
     private operationService: OperationService,
     private tokenService: TokenService,
-    private teztoolsService: TeztoolsService,
+    private dipdupService: DipDupService,
     private lookupService: LookupService,
     private subjectService: SubjectService,
     private signalService: SignalService,
@@ -75,7 +75,7 @@ export class CoordinatorService {
       console.log('Start scheduler XTZ');
       const update = () => {
         this.tzrateService.getTzrate();
-        this.teztoolsService.getMarkets();
+        this.dipdupService.fetchTokensMidPrice();
         this.lookupService.recheckWalletAddresses(true);
       };
       this.tzrateInterval = interval(this.defaultDelayPrice).subscribe(() => update());

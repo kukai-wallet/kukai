@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { TeztoolsService } from './teztools.service';
+import { DipDupService } from './dipdup.service';
 
-describe('TeztoolsService', () => {
-  let service: TeztoolsService;
+describe('DipDupService', () => {
+  let service: DipDupService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(TeztoolsService);
+    service = TestBed.inject(DipDupService);
   });
 
   it('should be created', () => {
