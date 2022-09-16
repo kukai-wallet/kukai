@@ -187,12 +187,13 @@ export class EstimateService {
         }
       }
     }
-    gasUsage += content.metadata.operation_result.consumed_gas ? Number(content.metadata.operation_result.consumed_gas) : 0;
+    gasUsage += content.metadata.operation_result.consumed_milligas ? Math.ceil(Number(content.metadata.operation_result.consumed_milligas) / 1000) : 0;
     if (content.metadata.internal_operation_results) {
       for (const internalResult of content.metadata.internal_operation_results) {
         if (internalResult.result) {
-          if (internalResult.result.consumed_gas) {
-            gasUsage += internalResult.result && internalResult.result.consumed_gas ? Number(internalResult.result.consumed_gas) : 0;
+          if (internalResult.result.consumed_milligas) {
+            gasUsage +=
+              internalResult.result && internalResult.result.consumed_milligas ? Math.ceil(Number(internalResult.result.consumed_milligas) / 1000) : 0;
           }
           if (internalResult.result.balance_updates) {
             for (const balanceUpdate of internalResult.result.balance_updates) {
