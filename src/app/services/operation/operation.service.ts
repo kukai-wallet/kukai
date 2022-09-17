@@ -495,16 +495,19 @@ export class OperationService {
         if (applied[0].contents[i].metadata.operation_result.errors) {
           console.log('Error in operation_result');
           throw applied[0].contents[i].metadata.operation_result.errors[applied[0].contents[i].metadata.operation_result.errors.length - 1];
-        } else if (applied[0].contents[i].metadata.internal_operation_results && applied[0].contents[i].metadata.internal_operation_results[0].result.errors) {
-          console.log('Error in internal_operation_results');
-          throw applied[0].contents[i].metadata.internal_operation_results[0].result.errors[
-            applied[0].contents[i].metadata.internal_operation_results[0].result.errors.length - 1
-          ];
+        } else if (applied[0].contents[i].metadata.internal_operation_results) {
+          for (const ior of applied[0].contents[i].metadata.internal_operation_results) {
+            if (ior?.result?.status === 'failed') {
+              console.log('Error in internal_operation_results', ior);
+              throw ior.result.errors[ior.result.errors.length - 1];
+            }
+          }
         }
       }
     }
     if (failed) {
-      throw new Error('Uncaught error in preapply');
+      console.error(applied);
+      throw new Error('Uncaught error in applied');
     }
   }
   errHandler(error: any): Observable<any> {
