@@ -1,23 +1,25 @@
 <app-queue-embed *ngIf="this.queueTimeVisible > 0" [queueTime]="this.queueTimeVisible"></app-queue-embed>
-<div *ngIf="this.queueTime === 0 && this.queueTimeVisible === 0" class="direct-auth-login">
-  <div class="body">
-    <div class="header">
-      <img (click)="abort()" class="abort" src="../../../assets/img/x.svg">
-    </div>
-    <h2 *ngIf="this.loginConfig?.customPrio === 'high'">Please re-authenticate your social<br>login to complete your purchase:</h2>
-    <h2 *ngIf="this.loginConfig?.customPrio !== 'high'">Sign in with one of the<br>following providers:</h2>
-    <div class="login-options" [class.vertically]="loginConfig.buttonsVertically"
-      [class.horizontally]="!loginConfig.buttonsVertically" *ngIf="torusService && torusService.verifierMapKeys">
-      <ng-container *ngFor="let key of loginOptions">
-        <div *ngIf="!loginConfig.buttonsVertically" class="login-option" (click)="login(key)">
-          <img src="../../../../assets/img/torus-login/{{ key }}-color.svg" width="24">
-        </div>
-        <div *ngIf="loginConfig.buttonsVertically" class="login-option" (click)="login(key)">
-          <img src="../../../../assets/img/torus-login/{{ key }}-color.svg" width="24"><span>Sign in with {{ key |
-            titlecase }}</span>
-        </div>
-      </ng-container>
-    </div>
+<div *ngIf="this.queueTime === 0 && this.queueTimeVisible === 0" class="flex-column direct-auth-login-alt">
+  <div class="flex-row header">
+    <img (click)="abort()" class="abort" src="../../../assets/img/x-alt.svg">
+    <img *ngIf="loginConfig.showBackButton" (click)="back()" class="back" src="../../../assets/img/back-arrow.svg">
+  </div>
+  <h1 *ngIf="this.loginConfig?.customPrio !== 'high'">Choose Social Provider</h1>
+  <h1 *ngIf="this.loginConfig?.customPrio === 'high'">Please re-authenticate</h1>
+  <div class="flex-row-wrap login-options" *ngIf="torusService && torusService.verifierMapKeys">
+    <ng-container *ngFor="let key of loginOptions; let idx = index">
+      <div *ngIf="loginConfig.buttonsVertically === true || (loginConfig.wideButtons && loginConfig.wideButtons[idx] === true); else narrow" class="flex-row option wide"
+        (click)="login(key)">
+        <img src="../../../../assets/img/torus-login/{{ key }}-color.svg" width="24" /><span>Sign in with {{ key |
+          titlecase }}</span>
+      </div>
+      <ng-template #narrow>
+        <div class="flex-row option narrow"
+        (click)="login(key)">
+        <img src="../../../../assets/img/torus-login/{{ key }}-color.svg" width="24" />
+      </div>
+      </ng-template>
+    </ng-container>
   </div>
   <div class="footer">
     <span>Powered by</span><img class="logo" src="../../../../assets/img/header-logo-grey.svg">

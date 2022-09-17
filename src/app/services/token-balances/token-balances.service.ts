@@ -2,14 +2,14 @@ import { Injectable } from '@angular/core';
 import { TokenResponseType, TokenService } from '../token/token.service';
 import { ActivityService } from '../activity/activity.service';
 import { WalletService } from '../wallet/wallet.service';
-import { Account, OriginatedAccount } from '../wallet/wallet';
+import { Account } from '../wallet/wallet';
 import Big from 'big.js';
 import { CONSTANTS } from '../../../environments/environment';
 import { decode } from 'blurhash';
 import { combineLatest } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { SubjectService } from '../subject/subject.service';
-import { TeztoolsService } from '../indexer/teztools/teztools.service';
+import { DipDupService } from '../indexer/dipdup/dipdup.service';
 
 interface TokenWithBalance extends TokenResponseType {
   balance: string;
@@ -38,14 +38,14 @@ export class TokenBalancesService {
     private activityService: ActivityService,
     private walletService: WalletService,
     private subjectService: SubjectService,
-    private teztoolsService: TeztoolsService
+    private dipdupService: DipDupService
   ) {
-    this.subjectService.markets.subscribe((markets) => {
-      if (markets) {
-        this.mergeMarket();
-      }
-    });
-    combineLatest([this.subjectService.activeAccount, this.subjectService.metadataUpdated, this.activityService.tokenBalanceUpdated])
+    combineLatest([
+      this.subjectService.activeAccount,
+      this.subjectService.metadataUpdated,
+      this.activityService.tokenBalanceUpdated,
+      this.subjectService.refreshTokens
+    ])
       .pipe(debounceTime(3))
       .subscribe(([a, b, c]) => {
         if (this.activeAccount !== a) {
@@ -195,7 +195,7 @@ export class TokenBalancesService {
     if (CONSTANTS.MAINNET) {
       return !(
         CONSTANTS.NFT_CONTRACT_OVERRIDES.includes(`${asset.contractAddress}:${asset.id}`) ||
-        this.teztoolsService.defiTokens.includes(`${asset.contractAddress}:${asset.id}`)
+        this.dipdupService.tokens.get(`${asset.contractAddress}:${asset.id}`)
       );
     } else {
       return (asset?.isBooleanAmount || asset?.decimals == 0) && !CONSTANTS.NFT_CONTRACT_OVERRIDES.includes(`${asset.contractAddress}`) ? true : false;
@@ -203,11 +203,10 @@ export class TokenBalancesService {
   }
   mergeMarket() {
     Object.keys(this.balances).forEach((key) => {
-      let token = undefined;
+      let midPrice = undefined;
       const tokenId: string = `${this.balances[key]?.contractAddress}:${this.balances[key]?.id}`;
-      if ((token = this.subjectService.markets.value.find((t) => t?.tokenId === tokenId))) {
-        this.balances[key].price = token?.usdValue * parseFloat(this.balances[key].balance);
-        !!token?.logo_url ? (this.balances[key].displayUrl = this.balances[key].thumbnailUrl = token?.thumbnailUri) : null;
+      if ((midPrice = this.dipdupService.tokens.get(tokenId))) {
+        this.balances[key].price = midPrice * parseFloat(this.balances[key].balance) * this.walletService.wallet.XTZrate;
       }
     });
   }

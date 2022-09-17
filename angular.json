@@ -76,7 +76,7 @@
               "extractLicenses": false,
               "sourceMap": true
             },
-            "development-mainnet": {
+            "mainnet": {
               "budgets": [
                 {
                   "type": "initial",
@@ -93,7 +93,7 @@
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
+                  "with": "src/environments/environment.mainnet.ts"
                 }
               ]
             }
@@ -107,7 +107,10 @@
               "browserTarget": "wallet:build:development"
             },
             "mainnet": {
-              "browserTarget": "wallet:build:development-mainnet"
+              "browserTarget": "wallet:build:mainnet"
+            },
+            "m": {
+              "browserTarget": "wallet:build:mainnet"
             }
           },
           "defaultConfiguration": "development"
@@ -163,7 +166,6 @@
       }
     }
   },
-  "defaultProject": "wallet",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "app",

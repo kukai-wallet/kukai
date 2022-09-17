@@ -3,10 +3,10 @@ import { CONSTANTS, TRUSTED_TOKEN_CONTRACTS, BLACKLISTED_TOKEN_CONTRACTS } from 
 import { IndexerService } from '../indexer/indexer.service';
 import Big from 'big.js';
 import { SubjectService } from '../subject/subject.service';
-import { TeztoolsService } from '../indexer/teztools/teztools.service';
 import { filter } from 'rxjs/operators';
 import { NavigationEnd, Router } from '@angular/router';
 import { ObjktService } from '../indexer/objkt/objkt.service';
+import { DipDupService } from '../indexer/dipdup/dipdup.service';
 
 export interface TokenResponseType {
   contractAddress: string;
@@ -90,7 +90,7 @@ export class TokenService {
   constructor(
     public indexerService: IndexerService,
     private subjectService: SubjectService,
-    private teztoolsService: TeztoolsService,
+    private dipdupService: DipDupService,
     private router: Router,
     private objktService: ObjktService
   ) {
@@ -309,9 +309,7 @@ export class TokenService {
         isTransferable: metadata?.isTransferable === false ? metadata.isTransferable : true,
         isBooleanAmount: metadata?.isBooleanAmount ? metadata.isBooleanAmount : false,
         status:
-          TRUSTED_TOKEN_CONTRACTS.includes(contractAddress) ||
-          CONSTANTS.NFT_CONTRACT_OVERRIDES.includes(tokenId) ||
-          this.teztoolsService.defiTokens.includes(tokenId)
+          TRUSTED_TOKEN_CONTRACTS.includes(contractAddress) || CONSTANTS.NFT_CONTRACT_OVERRIDES.includes(tokenId) || this.dipdupService.tokens.get(tokenId)
             ? 1
             : 0
       };
@@ -439,7 +437,7 @@ export class TokenService {
                 if (
                   TRUSTED_TOKEN_CONTRACTS.includes(address) ||
                   CONSTANTS.NFT_CONTRACT_OVERRIDES.includes(`${address}:${id}`) ||
-                  this.teztoolsService.defiTokens.includes(`${address}:${id}`)
+                  this.dipdupService.tokens.get(`${address}:${id}`)
                 ) {
                   metadata.contracts[address].tokens[id].status = 1; // flip status if it have been marked as trusted
                 }

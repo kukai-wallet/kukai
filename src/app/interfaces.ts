@@ -127,7 +127,7 @@ export interface ExternalRequest {
 export interface Constants {
   NAME: string;
   TEZOS_DOMAIN: {
-    CONTRACT: string;
+    CONTRACT?: string; // deprecated?
     TOP_DOMAINS: string[];
   };
   NETWORK: string;

@@ -32,10 +32,10 @@ export class ExportMnemonicComponent extends ModalComponent implements OnInit {
     try {
       this.messageService.startSpinner();
       this.mnemonicPhrase = await this.walletService.revealMnemonicPhrase(this.pwd);
-      this.pwdInvalid = this.mnemonicPhrase === '' ? 'INVLAID PASSWORD' : '';
+      this.pwdInvalid = this.mnemonicPhrase === '' ? 'INVALID PASSWORD' : '';
       this.messageService.stopSpinner();
     } catch {
-      this.pwdInvalid = this.mnemonicPhrase === '' ? 'INVLAID PASSWORD' : '';
+      this.pwdInvalid = this.mnemonicPhrase === '' ? 'INVALID PASSWORD' : '';
     }
   }
 

@@ -59,7 +59,7 @@ export class TzktService implements Indexer {
   async getHashAndBlockById(transactionId: number, ops: any): Promise<any> {
     try {
       for (const op of ops) {
-        if (op.type === 'transaction' && op.id === transactionId) {
+        if (op.type === 'transaction' && op?.opId === `t${transactionId}`) {
           if (op.hash && op.block) {
             return { hash: op.hash, block: op.block };
           }
@@ -108,15 +108,7 @@ export class TzktService implements Indexer {
   }
   async isUsedAccount(address: string): Promise<boolean> {
     const accountInfo = await (await fetch(`${this.tzkt}/accounts/${address}`)).json();
-    if (accountInfo && (accountInfo.balance || accountInfo.tokenBalancesCount)) {
-      return true;
-    } else {
-      const tokenCount = await (await fetch(`${this.tzkt}/accounts/count`)).json();
-      if (tokenCount && Object.keys(tokenCount).length > 0) {
-        return true;
-      }
-    }
-    return false;
+    return accountInfo && (accountInfo?.type === 'user' || accountInfo?.balance || accountInfo?.tokenBalancesCount);
   }
   async getOperations(address: string, knownTokenIds: string[], wallet: WalletObject): Promise<any> {
     const ops = await fetch(`${this.tzkt}/accounts/${address}/operations?limit=20&type=delegation,origination,transaction`)
@@ -209,7 +201,7 @@ export class TzktService implements Indexer {
           source,
           destination: { address: tokenTxs[i].to?.address ?? '' },
           timestamp: new Date(tokenTxs[i].timestamp).getTime(),
-          opId: `t${tokenTxs[i].transactionId}`
+          opId: tokenTxs[i].transactionId ? `t${tokenTxs[i].transactionId}` : undefined
         };
         tokenArr.push(activity);
       }

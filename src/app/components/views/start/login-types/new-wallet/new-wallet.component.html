@@ -61,8 +61,8 @@
           [style.color]="pwdStrength === 'Catastrophic!' ? 'darkred' : pwdStrength === 'Very weak!' ? 'red' : pwdStrength === 'Weak!' ? 'orange' : pwdStrength === 'Strong!' ? 'green' : 'red'">{{
           pwdStrength }}</b></small>
       <input name="none" type="password" placeholder="{{ 'NEWWALLETCOMPONENT.CONFIRMPASSWORD' | translate }}" class="text"
-        autocomplete="new-password" [(ngModel)]="pwd2">
-      <button class="button next" [style.visibility]="!pwd1 ? 'hidden' : ''" (click)="encryptWallet()">Next</button>
+        autocomplete="new-password" [(ngModel)]="pwd2" (keydown.enter)="encryptWallet($event)">
+      <button class="button next" [style.visibility]="!pwd1 ? 'hidden' : ''" (click)="encryptWallet($event)">Next</button>
     </div>
     <div *ngIf="activePanel==4" class="flex-column body">
       <h1>Wallet created!</h1>
