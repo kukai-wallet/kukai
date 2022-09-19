@@ -56,25 +56,23 @@ export class TzktService implements Indexer {
           .filter((address: string) => address.length)
       );
   }
-  async getHashAndBlockById(transactionId: number, ops: any): Promise<any> {
-    try {
-      for (const op of ops) {
-        if (op.type === 'transaction' && op?.opId === `t${transactionId}`) {
-          if (op.hash && op.block) {
-            return { hash: op.hash, block: op.block };
-          }
-          break;
-        }
-      }
-    } catch (e) {
-      console.error(e);
+
+  async getHashAndBlockByIds(transactionIds: number[]): Promise<any> {
+    if (!transactionIds?.length) {
+      return {};
     }
-    return fetch(`${this.tzkt}/operations/transactions?id=${transactionId}`)
+    return fetch(`${this.tzkt}/operations/transactions?id.in=${transactionIds.join(',')}`)
       .then((res) => {
         return res.json();
       })
       .then((o) => {
-        return o?.length && o[0].hash && o[0].block ? { hash: o[0].hash, block: o[0].block } : '';
+        let res = {};
+        for (let i = 0; i < o.length; i++) {
+          if (o[i]?.id && o[i].hash && o[i].block) {
+            res[`t${o[i].id}`] = { hash: o[i].hash, block: o[i].block };
+          }
+        }
+        return res;
       });
   }
   async accountInfo(address: string, knownTokenIds: string[]): Promise<any> {
@@ -172,6 +170,7 @@ export class TzktService implements Indexer {
     const unknownTokenIds: string[] = [];
     const tokenTxs = await (await fetch(`${this.tzkt}/tokens/transfers?anyof.from.to=${address}&limit=20&offset=0&sort.desc=id`)).json();
     const tokenArr = [];
+    const opIds = [];
     for (let i = 0; i < tokenTxs.length; ++i) {
       const tokenId = `${tokenTxs[i].token.contract.address}:${tokenTxs[i].token.tokenId}`;
       if (tokenTxs[i].token.contract && tokenId) {
@@ -182,19 +181,13 @@ export class TzktService implements Indexer {
         if (tokenTxs[i].from === '' && tokenTxs[i].token.contract) {
           source.address = tokenTxs[i].contract.address;
         }
-        let hash = '';
-        let block = '';
         if (tokenTxs[i].transactionId) {
-          const o = await this.getHashAndBlockById(tokenTxs[i].transactionId, ops);
-          if (o) {
-            hash = o.hash;
-            block = o.block;
-          }
+          opIds.push(tokenTxs[i].transactionId);
         }
         const activity: Activity = {
           type: 'transaction',
-          block,
-          hash,
+          block: '',
+          hash: '',
           status: OpStatus.CONFIRMED,
           amount: tokenTxs[i].amount,
           tokenId,
@@ -204,6 +197,13 @@ export class TzktService implements Indexer {
           opId: tokenTxs[i].transactionId ? `t${tokenTxs[i].transactionId}` : undefined
         };
         tokenArr.push(activity);
+      }
+    }
+    const extra = await this.getHashAndBlockByIds(opIds);
+    for (const token of tokenArr) {
+      if (extra[token?.opId]) {
+        token.block = extra[token?.opId].block;
+        token.hash = extra[token?.opId].hash;
       }
     }
     let operations = tokenArr
