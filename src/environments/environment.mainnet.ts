@@ -90,7 +90,12 @@ const _CONSTANTS: Constants = {
     },
     vitality: {
       name: 'V.Hive by Vitality',
-      address: ['KT1L6BTeGP5NcVmRjys85EaDxBymxMyx5rj8', 'KT1MxZTs3QrWffkGCLrkw8hVXxBiSbqo3JZn', 'KT1NpS5Kfn4foSj2rKDwYraFHADq8eNuxpQS'],
+      address: [
+        'KT1L6BTeGP5NcVmRjys85EaDxBymxMyx5rj8',
+        'KT1MxZTs3QrWffkGCLrkw8hVXxBiSbqo3JZn',
+        'KT1NpS5Kfn4foSj2rKDwYraFHADq8eNuxpQS',
+        'KT1G5ph5ybHBbAy2hEd5RbPTuGEQuWXMWsBB'
+      ],
       thumbnailUrl: '../../../assets/img/alias/vitality.png',
       link: '',
       shouldDisplayLink: DisplayLinkOption.None
