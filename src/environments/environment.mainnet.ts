@@ -883,6 +883,16 @@ const _CONSTANTS: Constants = {
       category: ['music', 'collectibles'],
       backgroundColor: '#000',
       description: 'Genesis collection by Chief Keef and ColorfulMula'
+    },
+    Blockxer: {
+      name: 'Blockxer',
+      address: ['KT1Dia6a9FTbhov6ScfSDP4YUfLY6XUUyGyJ'],
+      thumbnailUrl: '../../../assets/img/alias/blockxer.png',
+      discoverUrl: '../../../assets/img/alias/blockxer-discover.png',
+      link: 'https://blockxer.com',
+      shouldDisplayLink: DisplayLinkOption.All,
+      category: ['games', 'collectibles'],
+      description: 'An epic NFT-powered beat’em up style game.'
     }
   },
   ASSETS: {
