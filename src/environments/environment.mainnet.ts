@@ -886,7 +886,7 @@ const _CONSTANTS: Constants = {
     },
     Blockxer: {
       name: 'Blockxer',
-      address: ['KT1LKxDNGSkxRhehWF7sf82D5F4UG7EQbZdP'],
+      address: ['KT1NjMYSVnfrTiuKEKsyXp61hnWP3CL6qPW2'],
       thumbnailUrl: '../../../assets/img/alias/blockxer.png',
       discoverUrl: '../../../assets/img/alias/blockxer-discover.png',
       link: 'https://blockxer.com',
