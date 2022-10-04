@@ -23,9 +23,8 @@
   },
   "private": true,
   "dependencies": {
-    "@airgap/beacon-sdk": "^3.1.4",
+    "@airgap/beacon-sdk": "^3.2.0",
     "@angular/animations": "^14.2.4",
-    "@angular/cdk": "^13.3.3",
     "@angular/common": "^14.2.4",
     "@angular/compiler": "^14.2.4",
     "@angular/core": "^14.2.4",
