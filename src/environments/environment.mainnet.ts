@@ -441,7 +441,7 @@ const _CONSTANTS: Constants = {
     },
     FloSports: {
       name: 'FloSports',
-      address: ['KT1Mr1sHC5XmA5ysakskyMo3dJV8yF61J3a6'],
+      address: ['KT1SQFuskMGQB7arqvQyuCH9v2utbJNmGcR6'],
       thumbnailUrl: 'assets/img/alias/FloSports.png',
       shouldDisplayLink: DisplayLinkOption.None
     },
