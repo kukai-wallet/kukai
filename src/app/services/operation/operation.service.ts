@@ -257,6 +257,9 @@ export class OperationService {
         }
         fop.contents.push(transactionOp);
       } else if (from.slice(0, 2) === 'KT') {
+        if (transactions[i].parameters) {
+          throw new Error('Unsupported Operation');
+        }
         if (transactions[i].destination.slice(0, 2) === 'tz') {
           const managerTransaction = this.getContractPkhTransaction(transactions[i].destination, this.microTez.times(transactions[i].amount).toString());
           fop.contents.push({
