@@ -64,7 +64,7 @@ export class EmbeddedComponent implements OnInit {
       }
     },
     minterpop: {
-      origins: ['https://minterpop.com'],
+      origins: ['https://minterpop.com', '*.minterpop.com'],
       permissions: {
         login: true,
         operations: true,
