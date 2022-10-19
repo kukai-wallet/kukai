@@ -20,7 +20,8 @@ import { Subscription } from 'rxjs';
 import { TezosDomainsService } from '../../../../services/tezos-domains/tezos-domains.service';
 import { TokenBalancesService } from '../../../../services/token-balances/token-balances.service';
 import { SubjectService } from '../../../../services/subject/subject.service';
-
+import { Schema } from '@taquito/michelson-encoder';
+import { TzktService } from '../../../../services/indexer/tzkt/tzkt.service';
 @Component({
   selector: 'app-confirm-send',
   templateUrl: './send-confirmation.component.html',
@@ -40,12 +41,15 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
   customGasLimit = '';
   customStorageLimit = '';
 
+  schema = undefined;
   parameters: any = null;
   batchParamIndex = 0;
   micheline: any = null;
   batchParameters: { num: number; parameters: any }[] = [];
   parametersFormat = 0;
   parametersDisplay = '';
+  transformedParameters = [];
+  extractedSchema = [];
   showAll = 10;
 
   showFullBatch = false;
@@ -73,7 +77,8 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
     private inputValidationService: InputValidationService,
     public tezosDomainService: TezosDomainsService,
     public tokenBalanceService: TokenBalancesService,
-    private subjectService: SubjectService
+    private subjectService: SubjectService,
+    private tzktService: TzktService
   ) {
     super();
   }
@@ -139,21 +144,26 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
       this.updateParameters(0, this.transactions[0].parameters);
     }
   }
-  updateParameters(index: number, parameters: any): void {
+  async updateParameters(index: number, parameters: any): Promise<void> {
     if (!parameters) {
       return;
     }
     this.batchParamIndex = index;
     this.parameters = parameters;
     this.parametersToMicheline();
-    this.parametersDisplay = this.parametersTextboxDisplay();
-  }
-  parametersTextboxDisplay(): string {
-    return !this.parametersFormat ? this.micheline.value : JSON.stringify(this.parameters.value, null, 2);
+    this.extractedSchema = undefined;
+    try {
+      const sc = await this.tzktService.getEntrypointMicheline(this.transactions[this.batchParamIndex]?.destination, this.parameters?.entrypoint);
+      this.schema = new Schema(sc);
+      this.extractedSchema = this.schema.Execute(this.parameters.value);
+      this.transformedParameters = this.parametersToTabular(this.extractedSchema);
+      this.parametersFormat = 1;
+    } catch {
+      this.transformedParameters = [{ children: [], key: 'Error', val: 'Failed to fetch annotations!' }];
+    }
   }
   setParametersFormat(id: number): void {
     this.parametersFormat = id;
-    this.parametersDisplay = this.parametersTextboxDisplay();
   }
   beaconTokenTransfer(op: any): null | { tokenId: string; to: string; amount: string } {
     if (op.parameters && this.tokenService.isKnownTokenContract(op.destination)) {
@@ -181,6 +191,67 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
         this.micheline = null;
       }
     }
+  }
+  parametersToTabular(parameters) {
+    const traverse = (key, val, level) => {
+      const isObject = (key, val, level) => {
+        let arr = [];
+        const entries = Object.entries(val);
+        for (const [key, value] of entries) {
+          if (
+            (typeof value === 'object' && (value as any)?.c == undefined && (value as any)?.e === undefined && (value as any)?.s === undefined) ||
+            ((value as any)?.length > 0 && typeof value !== 'string')
+          ) {
+            arr.push({ key, children: traverse(key, value, level + 1) });
+          } else {
+            arr.push(traverse(key, value, level + 1));
+          }
+        }
+        return arr;
+      };
+
+      const isArray = (key, val, level) => {
+        if (val.length === 1) {
+          return traverse(key, val[0], level + 1);
+        }
+        const arr = [];
+        for (let i = 0; i < val.length; ++i) {
+          if (
+            (typeof val[i] === 'object' && val[i]?.c === undefined && val[i]?.e === undefined && val[i]?.s === undefined) ||
+            ((val[i] as any)?.length > 0 && typeof val[i] !== 'string')
+          ) {
+            if (key) {
+              arr.push({ key, children: traverse(key, val[i], level + 1) });
+            } else {
+              arr.push(...traverse(key, val[i], level + 1));
+            }
+          } else {
+            arr.push(traverse(key, val[i], level + 1));
+          }
+        }
+        return arr;
+      };
+      if (typeof val === 'string') {
+        return { key, val, children: [] };
+      } else if (val && typeof val === 'object' && val?.c !== undefined && val?.e !== undefined && val?.s !== undefined) {
+        return { key, val: Big(val).toString(), children: [] };
+      } else if (!!val?.length && typeof val !== 'string') {
+        return isArray(key, val, level);
+      } else if (val && typeof val === 'object') {
+        return isObject(key, val, level);
+      } else if (typeof val === 'number') {
+        return { key, val, children: [] };
+      } else if (typeof val === 'symbol') {
+        return { key, val: val.valueOf(), children: [] };
+      } else {
+        return { key, val: null, children: [] };
+      }
+    };
+    let result = traverse(null, parameters, 0);
+    if (result?.length === undefined) {
+      result = [result];
+    }
+    return result;
   }
   getTotalAmount(): string {
     let totalSent = Big(0);
@@ -537,6 +608,9 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
     this.micheline = null;
     this.batchParameters = [];
     this.parametersFormat = 0;
+    this.transformedParameters = [];
+    this.extractedSchema = [];
+    this.schema = undefined;
 
     this.showFullBatch = false;
     this.sendResponse = null;
@@ -546,5 +620,16 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
     this.advancedForm = false;
     this.customFee = '';
     this.externalReq = false;
+  }
+  counter(i: number) {
+    return new Array(i);
+  }
+
+  toggleTab(e) {
+    let elem = e.target;
+    while (elem.tagName.toLowerCase() !== 'li') {
+      elem = elem.parentElement;
+    }
+    elem.classList.toggle('expanded');
   }
 }

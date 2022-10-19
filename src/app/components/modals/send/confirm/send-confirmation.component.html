@@ -91,22 +91,57 @@
         </app-ui-toggle-advanced>
       </form>
       <div *ngIf="advancedForm" class="advanced-form">
-        <ng-container *ngIf="parameters">
-          <div class="tabs-container">
-            <ul class="flex-row tabs">
-              <li class="tab" [class.active]="parametersFormat === 0" (click)="setParametersFormat(0)">Micheline</li>
-              <li class="tab" [class.active]="parametersFormat === 1" (click)="setParametersFormat(1)">JSON</li>
+        <div class="flex-column parms-container">
+          <ng-container *ngIf="parameters">
+            <div class="tabs-container">
+              <ul class="flex-row tabs">
+                <li class="tab" [class.active]="parametersFormat === 0" (click)="setParametersFormat(0)">Micheline</li>
+                <li class="tab" [class.active]="parametersFormat === 1" (click)="setParametersFormat(1)">Tabular</li>
+              </ul>
+            </div>
+            <textarea *ngIf="parameters && parametersFormat === 0" name="none" rows="10"
+              readonly>{{ micheline.value || '' }}</textarea>
+            <ul *ngIf="parameters && parametersFormat === 1" class="encoded-parms">
+              <ng-container *ngTemplateOutlet="recursiveListTmpl; context:{ list: transformedParameters, level: 0 }">
+              </ng-container>
             </ul>
-          </div>
-          <textarea *ngIf="parameters" name="none" rows="10" readonly>{{ parametersDisplay }}</textarea>
-        </ng-container>
+            <ng-template #recursiveListTmpl let-list="list" let-level="level">
+              <li *ngFor="let item of list" [class]="item?.children?.length ? 'expanded' : ''"
+                [style.marginLeft]="!level ? '0em' : '3em'">
+                <ng-container *ngIf="item?.children">
+                  <span [class.key]="item.children.length ? true : false"
+                    (click)="item.children.length ? toggleTab($event) : null">{{ item.key }}{{item.key ? ': ' : ' '}}{{
+                    (item.val ?? '') }}</span>
+                  <svg *ngIf="item.children.length" (click)="toggleTab($event)" version="1.2" baseProfile="tiny-ps"
+                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 13" width="20" height="13">
+                    <g id="1">
+                      <g id="NFT">
+                        <g id="Line 1">
+                          <g id="Line">
+                            <path id="Rectangle 4" class="shp0"
+                              d="M2.86 -0.02L12.86 10.1L10 12.99L0.01 2.88L2.86 -0.02ZM17.14 -0.02L19.99 2.88L10 12.99L7.14 10.1L17.14 -0.02Z" />
+                          </g>
+                        </g>
+                      </g>
+                    </g>
+                  </svg>
+                  <ul *ngIf="item.children && item.children.length > 0">
+                    <ng-container
+                      *ngTemplateOutlet="recursiveListTmpl; context:{ list: item.children, level: level+3 }">
+                    </ng-container>
+                  </ul>
+                </ng-container>
+              </li>
+            </ng-template>
+          </ng-container>
+        </div>
         <form autocomplete="off" *ngIf="externalReq && (!walletService.isLedgerWallet()) || ledgerError">
           <div class="flex-row">
             <div class="flex-column">
               <label class="label">Gas limit</label>
-              <input inputmode="decimal" name="none" type="text" class="text" (input)="sanitizeNumberInput($event, 'gas')"
-                (paste)="sanitizeNumberInput($event, 'gas')" [placeholder]="getTotalDefaultGas() || '0'"
-                [(ngModel)]="customGasLimit">
+              <input inputmode="decimal" name="none" type="text" class="text"
+                (input)="sanitizeNumberInput($event, 'gas')" (paste)="sanitizeNumberInput($event, 'gas')"
+                [placeholder]="getTotalDefaultGas() || '0'" [(ngModel)]="customGasLimit">
             </div>
             <div class="flex-column">
               <label class="label">Fee</label>
@@ -117,14 +152,14 @@
           <div class="flex-row">
             <div class="flex-column">
               <label class="label">Storage limit</label>
-              <input inputmode="decimal" name="none" type="text" class="text" (input)="sanitizeNumberInput($event, 'storage')"
-                (paste)="sanitizeNumberInput($event, 'storage')" [placeholder]="getTotalDefaultStorage() || '0'"
-                [(ngModel)]="customStorageLimit">
+              <input inputmode="decimal" name="none" type="text" class="text"
+                (input)="sanitizeNumberInput($event, 'storage')" (paste)="sanitizeNumberInput($event, 'storage')"
+                [placeholder]="getTotalDefaultStorage() || '0'" [(ngModel)]="customStorageLimit">
             </div>
             <div class="flex-column">
               <label class="label">Max storage cost</label>
-              <input inputmode="decimal" name="none" type="text" class="text read-only" [placeholder]="(getTotalBurn() || '0') + ' tez'"
-                tabindex=-1 readonly>
+              <input inputmode="decimal" name="none" type="text" class="text read-only"
+                [placeholder]="(getTotalBurn() || '0') + ' tez'" tabindex=-1 readonly>
             </div>
           </div>
         </form>

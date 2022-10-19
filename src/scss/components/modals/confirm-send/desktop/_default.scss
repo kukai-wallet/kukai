@@ -1,6 +1,6 @@
-@use '../../../../abstracts/mixins' as m;
-@use '../../../../abstracts/variables'as v;
-@use './batch' as b;
+@use "../../../../abstracts/mixins" as m;
+@use "../../../../abstracts/variables" as v;
+@use "./batch" as b;
 
 $base-font-color: v.$base-font-color;
 $base-font-color-secondary: v.$base-font-color-secondary;
@@ -354,6 +354,59 @@ $border-color: #e6eaef;
     }
 
     & .advanced-form {
+      & .parms-container {
+        margin: 0 0 1em 0;
+        & .tabs-container {
+          width: 100%;
+        }
+      }
+      & li {
+        list-style-type: none;
+        & span {
+          color: v.$base-font-color;
+          text-transform: unset;
+          white-space: pre;
+        }
+        & .key {
+          cursor: pointer;
+        }
+        & svg {
+          transform: rotate(-90deg);
+          width: 0.75em;
+          height: 0.75em;
+          margin: 0 0 0 0.25rem;
+          cursor: pointer;
+          & path {
+            fill: v.$base-font-color;
+          }
+        }
+        & ul {
+          display: none;
+        }
+        &.expanded {
+          & svg {
+            transform: unset;
+          }
+          & > ul {
+            display: initial;
+          }
+        }
+      }
+      & ul.encoded-parms {
+        list-style-type: none;
+        padding: 1em;
+        height: 12em;
+        overflow: auto;
+        border: 2px solid v.$border-color;
+        border-radius: v.$border-radius;
+        margin: 0;
+        font-size: 1.25em;
+
+        &::-webkit-scrollbar {
+          width: 0.5rem;
+          height: 0.5rem;
+        }
+      }
       & > div {
         width: 100%;
 
@@ -391,7 +444,7 @@ $border-color: #e6eaef;
       & ul.tabs {
         width: calc(100% - 2em);
         padding: 0;
-        margin: 1em 0 0.5em 1em;
+        margin: 0 0 0.5em 1em;
         list-style-type: none;
       }
 
@@ -401,8 +454,13 @@ $border-color: #e6eaef;
 
       & textarea {
         padding: 1em;
-        width: calc(100% - 2em);
-        margin: 0 0 2em 0;
+        width: calc(100% - 2em - 4px);
+        margin: 0;
+        height: 12em;
+        outline: none;
+        border: 2px solid v.$border-color;
+        border-radius: v.$border-radius;
+        font-size: 1.25em;
       }
     }
 
