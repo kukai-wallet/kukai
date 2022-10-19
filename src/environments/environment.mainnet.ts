@@ -894,6 +894,12 @@ const _CONSTANTS: Constants = {
       shouldDisplayLink: DisplayLinkOption.None,
       category: ['games', 'collectibles'],
       description: 'An epic NFT-powered beat’em up style game.'
+    },
+    Trance: {
+      name: 'TRANCE by Stacie Ant and Nsasi',
+      address: ['KT1C8JDN7mJfz5A4fQWFmqbRmcCR511r7Y8i'],
+      thumbnailUrl: '../../../assets/img/alias/trance.png',
+      shouldDisplayLink: DisplayLinkOption.None
     }
   },
   ASSETS: {
