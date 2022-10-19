@@ -225,7 +225,7 @@ export class EmbeddedComponent implements OnInit {
       }
     },
     verticalcrypto: {
-      origins: ['https://verticalcrypto.art'],
+      origins: ['https://verticalcrypto.art', '*.verticalcrypto.art'],
       permissions: {
         login: true,
         operations: false,
