@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { ModalComponent } from '../../../../../modals/modal.component';
 import { CONSTANTS } from '../../../../../../../environments/environment';
 import { Big } from 'big.js';
@@ -37,7 +37,11 @@ export class BalanceTokenComponent implements OnInit {
       });
     }
   }
-  buyTez(): void {
-    this.subjectService.moonpay.next(true);
+
+  buy() {
+    ModalComponent.currentModel.next({
+      name: 'buy',
+      data: undefined
+    });
   }
 }

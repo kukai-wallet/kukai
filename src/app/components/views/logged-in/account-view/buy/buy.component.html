@@ -1,18 +1,18 @@
-<div *ngIf="active" class="moonpay">
+<div *ngIf="provider" [class.transak]="provider === BuyProviderType.Transak" [class.moonpay]="provider === BuyProviderType.MoonPay">
   <div class="top">
     <a>
       <button class="back secondary" (click)="close()">
         <img src="../../../../../assets/img/left-arrow.svg">Back</button>
     </a>
-    <p>Buy XTZ (tez) with MoonPay</p>
+    <p>Buy XTZ (tez) with {{ BuyProviderType[provider] }}</p>
   </div>
   <div class="main">
     <ng-container *ngIf="url">
       <iframe allow="accelerometer; autoplay; camera; gyroscope; payment" frameborder="0" height="100%" [src]="this.url"
-        width="100%">
+        width="100%" (load)="iframeLoaded()" (error)="iframeError()">
         <p>Your browser does not support iframes.</p>
       </iframe>
     </ng-container>
-    <img *ngIf="!(url && mobile)" class="loading" src="../../../../../../assets/img/loader.svg">
   </div>
 </div>
+<img *ngIf="isLoading" class="loading" src="../../../../../../assets/img/loader.svg">

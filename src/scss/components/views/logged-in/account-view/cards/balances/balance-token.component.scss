@@ -79,24 +79,18 @@ $base-blue-color: v.$base-blue-color;
           stroke: v.$send-button-buy-icon-color;
         }
       }
-      &:hover {
-        & .tooltip {
-          display: block;
-        }
-      }
 
       & .tooltip {
         position: absolute;
         top: 4rem;
-        left: calc(-50%);
+        right: -60%;
         background-color: $base-end-color;
-        width: auto;
-        min-width: 6rem;
-        height: 1rem;
+        min-width: 7rem;
         padding: 0.5rem;
+        height: 1rem;
         justify-content: center;
         align-items: center;
-        border-radius: v.$border-radius-hard;
+        border-radius: v.$border-radius;
         display: none;
         box-shadow: v.$box-shadow;
 
@@ -194,5 +188,11 @@ $base-blue-color: v.$base-blue-color;
       border: v.$border-width solid $border-color;
       object-fit: scale-down;
     }
+  }
+}
+
+@media (min-width: v.$layout-break-6) {
+  :host button.with-image.buy:hover .tooltip {
+      display: block;
   }
 }

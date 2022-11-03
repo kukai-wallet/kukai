@@ -34,7 +34,6 @@ import { SearchBarComponent } from '../../ui/search/search.component';
 import { RemoveCommaPipe } from '../../../pipes/remove-comma.pipe';
 import { ExprTemplateComponent } from '../embedded/sign-expr/template/template.component';
 import { QueueEmbedComponent } from '../embedded/queue/queue.component';
-import { MoonpayComponent } from './account-view/moonpay/moonpay.component';
 import { SwapLiquidityComponent } from '../../modals/swap-liquidity/swap-liquidity.component';
 import { SwapLiquidityService } from '../../../services/swap-liquidity/swap-liquidity.service';
 import { InfoComponent } from '../../modals/info/info.component';
@@ -42,6 +41,8 @@ import { ExportMnemonicComponent } from '../../modals/export-mnemonic/export-mne
 import { SwapLiquidityConfirmComponent } from '../../modals/swap-liquidity/swap-liquidity-confirm.component';
 import { ChartComponent } from '../../ui/chart/chart.component';
 import { ChartService } from '../../../../app/services/chart/chart.service';
+import { BuyComponent } from './account-view/buy/buy.component';
+import { BuyModalComponent } from '../../modals/buy/buy.component';
 
 @NgModule({
   declarations: [
@@ -76,15 +77,18 @@ import { ChartService } from '../../../../app/services/chart/chart.service';
     SearchBarComponent,
     RemoveCommaPipe,
     ExprTemplateComponent,
-    MoonpayComponent,
     SwapLiquidityConfirmComponent,
     InfoComponent,
     RemoveCommaPipe,
     ExportMnemonicComponent,
-    ChartComponent
+    ChartComponent,
+    BuyComponent,
+    BuyModalComponent
   ],
   imports: [CommonModule, LoggedInRoutingModule, HttpClientModule, FormsModule],
   exports: [
+    BuyComponent,
+    BuyModalComponent,
     AdvancedToggleComponent,
     SendComponent,
     ConfirmSendEmbedComponent,
