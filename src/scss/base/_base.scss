@@ -236,6 +236,17 @@ button {
   @extend %grid;
 }
 
+#cbpay-embedded-onramp {
+  z-index: 1000;
+}
+
+@media (max-width: 575px) {
+  #cbpay-embedded-onramp {
+    top: 45px;
+    height: calc(100% - 45px);
+  }
+}
+
 @media (max-width: v.$font-break-0) {
   html {
     font-size: 100%;

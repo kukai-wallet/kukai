@@ -8,6 +8,11 @@ interface PrepareTokenTransfer {
   tokenTransfer: string;
   symbol: string;
 }
+export enum BuyProvider {
+  Coinbase = 0,
+  Transak,
+  MoonPay
+}
 interface MetadataUpdated {
   contractAddress: string;
   id: string;
@@ -27,7 +32,7 @@ export class SubjectService {
   public origin: BehaviorSubject<string>;
   public beaconResponse: Subject<boolean>;
   public logout: Subject<boolean>;
-  public moonpay: Subject<boolean>;
+  public buy: Subject<BuyProvider>;
   constructor() {
     this.init();
     this.logout.subscribe((o) => {
@@ -45,7 +50,7 @@ export class SubjectService {
     this.origin = new BehaviorSubject<string>(null);
     this.beaconResponse = new Subject<boolean>();
     this.logout = new Subject<boolean>();
-    this.moonpay = new Subject<boolean>();
+    this.buy = new Subject<BuyProvider>();
   }
   reset() {
     this.metadataUpdated.next(null);

@@ -1,6 +1,5 @@
-@use "../../../../../../abstracts/variables" as v;
-@use "../../../../../../abstracts/mixins" as m;
-@import "../mixins";
+@use '../../../../../abstracts/variables' as v;
+@use "../../../../../abstracts/mixins" as m;
 
 $base-font-color: v.$base-font-color;
 $base-end-color: v.$base-end-color;
@@ -17,7 +16,6 @@ $layout-break-5: v.$layout-break-5;
 
 :host {
   & .buy {
-    //margin-right: 2rem;
     min-width: 10.5rem;
     & img {
       height: 1rem;
@@ -36,7 +34,8 @@ $layout-break-5: v.$layout-break-5;
       filter: v.$moonpay-iframe-filter;
     }
   }
-  & .moonpay {
+  & .moonpay,
+  & .transak {
     z-index: 3000 !important;
     position: fixed;
     width: 100%;
@@ -80,29 +79,33 @@ $layout-break-5: v.$layout-break-5;
       height: 100%;
       filter: v.$moonpay-iframe-filter;
     }
-    & .loading {
-      z-index: -1;
-      margin: 0;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
+  }
+
+  & .loading {
+    z-index: 20000;
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 }
 
 @media (max-width: 575px) {
   div.moonpay > div.top,
-  div.moonpay > div.top button {
+  div.moonpay > div.top button,
+  div.transak > div.top,
+  div.transak > div.top button {
     background-color: $base-end-color;
-  }
-  div.moonpay > div.main,
-  div.moonpay > div.top {
     position: relative !important;
   }
-  div.moonpay > div.top {
+  div.moonpay > div.main,
+  div.transak > div.main {
+    position: relative !important;
+  }
+  div.moonpay > div.top,
+  div.transak > div.top {
     border-bottom: 1px solid #e6e6e6;
     padding: 1rem 1.5rem 1rem 1.5rem !important;
   }
 }
-

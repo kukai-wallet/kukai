@@ -47,12 +47,6 @@ button {
         fill: v.$send-button-tez-icon-color;
       }
     }
-    &:hover {
-      filter: unset;
-      & .tooltip {
-        display: flex;
-      }
-    }
 
     & .tooltip {
       position: absolute;
@@ -94,5 +88,11 @@ button {
     font-size: 1.125em;
     margin: 2em 0;
     color: v.$base-end-color-static;
+  }
+}
+
+@media (min-width: v.$layout-break-6) {
+  :host button.with-image:hover .tooltip {
+      display: flex;
   }
 }

@@ -33,6 +33,7 @@
     "@angular/platform-browser-dynamic": "^14.2.4",
     "@angular/router": "^14.2.4",
     "@bitauth/libauth": "^1.17.2",
+    "@coinbase/cbpay-js": "^1.1.0",
     "@google/model-viewer": "^1.10.1",
     "@ledgerhq/hw-transport-u2f": "^5.19.0",
     "@ledgerhq/hw-transport-webhid": "^5.51.1",
