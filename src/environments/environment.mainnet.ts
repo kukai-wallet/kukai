@@ -900,6 +900,12 @@ const _CONSTANTS: Constants = {
       address: ['KT1C8JDN7mJfz5A4fQWFmqbRmcCR511r7Y8i'],
       thumbnailUrl: '../../../assets/img/alias/trance.png',
       shouldDisplayLink: DisplayLinkOption.None
+    },
+    Portrait: {
+      name: 'Collective Voice ID by Portrait XO',
+      address: ['KT1TKLuE2RCoCoQsxkCosHjsQgEbavpsrf4Z'],
+      thumbnailUrl: '../../../assets/img/alias/portrait.png',
+      shouldDisplayLink: DisplayLinkOption.None
     }
   },
   ASSETS: {
