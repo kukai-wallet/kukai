@@ -121,7 +121,7 @@ export class EmbeddedComponent implements OnInit {
       }
     },
     evian: {
-      origins: ['https://nft.evian.com'],
+      origins: ['https://nft.evian.com', 'https://happy85.marieclaire.fr', 'https://claim.renaissance.land'],
       permissions: {
         login: true,
         operations: false,
