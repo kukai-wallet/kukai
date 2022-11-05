@@ -906,6 +906,12 @@ const _CONSTANTS: Constants = {
       address: ['KT1TKLuE2RCoCoQsxkCosHjsQgEbavpsrf4Z'],
       thumbnailUrl: '../../../assets/img/alias/portrait.png',
       shouldDisplayLink: DisplayLinkOption.None
+    },
+    Museum: {
+      name: 'Nxt Museum X Scotch and Soda',
+      address: ['KT1Vits8ubN3ApXL3vCsm98bu2WnzLaGs3Ypy'],
+      thumbnailUrl: '../../../assets/img/alias/museum-nacht.png',
+      shouldDisplayLink: DisplayLinkOption.None
     }
   },
   ASSETS: {
