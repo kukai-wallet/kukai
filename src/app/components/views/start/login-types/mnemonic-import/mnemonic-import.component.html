@@ -40,8 +40,8 @@
         <p class="description faucet" *ngIf="importOption === 2"><span>Please make sure to first <a
               routerLink="/activate">activate</a> your fundraiser wallet.</span></p>
         <span class="description label">RECOVERY (SEED) WORDS <span style="color: #98a0ab">12-24 WORDS</span></span>
-        <textarea name="none" class="text seed-word" [(ngModel)]="mnemonic" autocomplete="off"
-          [placeholder]="'Seed Words (required)'"></textarea>
+        <textarea name="none" class="text seed-word" [(ngModel)]="mnemonic" autocomplete="off" spellcheck="false"
+          [placeholder]="'Seed Words (required)'" (keydown)="seedWordKeydown($event)"></textarea>
       </form>
       <ng-container *ngIf="importOption === 1">
         <app-ui-toggle-advanced style="width: 13rem;" [default]="false" (stateChange)="advancedForm = $event">
