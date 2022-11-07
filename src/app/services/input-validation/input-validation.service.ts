@@ -5,7 +5,8 @@ import { CONSTANTS } from '../../../environments/environment';
 import { TranslateService } from '@ngx-translate/core';
 import { valueDecoder } from '@taquito/local-forging/dist/lib/michelson/codec';
 import { Uint8ArrayConsumer } from '@taquito/local-forging/dist/lib/uint8array-consumer';
-
+import { utils } from '@tezos-core-tools/crypto-utils';
+import * as bip39 from 'bip39';
 @Injectable()
 export class InputValidationService {
   constructor(private operationService: OperationService, private translate: TranslateService) {}
@@ -173,5 +174,31 @@ export class InputValidationService {
       return false;
     }
     return true;
+  }
+  invalidMnemonic(words: string): string {
+    if (utils.validMnemonic(words)) {
+      return '';
+    }
+    // number of words
+    const wordCount = words?.split(' ').filter((w) => w?.length > 0).length;
+    if (![12, 15, 18, 21, 24].includes(wordCount)) {
+      let extra = '';
+      if (wordCount >= 11 && wordCount <= 25) {
+        const rest = (wordCount % 3) - 1;
+        extra = rest ? ', missing one word?' : ', one word too many?';
+      }
+      return `Invalid number of words: ${wordCount}${extra}`;
+    }
+    // words in wordlist
+    if (words?.split(' ')) {
+      for (let word of words?.split(' ').filter((w) => w?.length > 0)) {
+        const r = bip39.wordlists.english.filter((w) => w === word);
+        if (r.length === 0 && word) {
+          return `Invalid seed word: ${word}`;
+        }
+      }
+    }
+    // checksum
+    return 'Invalid checksum! Double-check the order of the seed words.';
   }
 }
