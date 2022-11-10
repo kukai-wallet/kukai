@@ -35,7 +35,7 @@
         color: v.$base-font-color-secondary;
       }
     }
-    &:last-child {
+    &:nth-child(2) {
       margin: 0 0 0 0;
     }
   }

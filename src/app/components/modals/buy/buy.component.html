@@ -17,18 +17,18 @@
           <h4>Transfer from Coinbase</h4>
         </div>
       </div>
-      <div class="flex-row option" (click)="buyTez(BuyProviderType.Transak)">
-        <img src="assets/img/transak.png" />
-        <div class="text">
-          <h3>Transak</h3>
-          <h4>Bank transfers &amp; local payment methods in 120+ countries</h4>
-        </div>
-      </div>
       <div class="flex-row option" (click)="buyTez(BuyProviderType.MoonPay)">
         <img src="assets/img/moonpay.svg" />
         <div class="text">
           <h3>Moonpay</h3>
           <h4>Cards &amp; bank transfers</h4>
+        </div>
+      </div>
+      <div class="flex-row option" (click)="buyTez(BuyProviderType.Transak)" style="display: none">
+        <img src="assets/img/transak.png" />
+        <div class="text">
+          <h3>Transak</h3>
+          <h4>Bank transfers &amp; local payment methods in 120+ countries</h4>
         </div>
       </div>
     </div>
