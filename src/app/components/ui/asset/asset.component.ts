@@ -216,7 +216,7 @@ export class AssetComponent implements OnInit, AfterViewInit {
         response = await fetch(url, { method: 'GET' });
       }
       if (!response?.ok) {
-        throw new Error();
+        throw new Error('Failed to fetch asset');
       }
       this.mimeType = response.headers.get('content-type');
     } else if (typeof asset === 'string') {
@@ -252,7 +252,8 @@ export class AssetComponent implements OnInit, AfterViewInit {
     let url = '';
     const uri = typeof asset === 'string' ? asset : asset?.uri;
     if (uri.startsWith('ipfs://')) {
-      url = `https://static.tcinfra.net/media/${this.size}/ipfs/${uri.slice(7)}`;
+      const mediaAndSize = this.size === Size.raw ? '' : `media/${this.size}/`;
+      url = `https://static.tcinfra.net/${mediaAndSize}ipfs/${uri.slice(7)}`;
     } else if (uri.startsWith('https://')) {
       url = `https://static.tcinfra.net/media/${this.size}/web/${uri.slice(8)}`;
     } else if (!CONSTANTS.MAINNET && (uri.startsWith('http://localhost') || uri.startsWith('http://127.0.0.1'))) {
