@@ -75,10 +75,9 @@ export class BuyComponent implements OnInit, OnDestroy {
             XTZ: { address }
           }
         };
+        const apiKey = CONSTANTS.MAINNET ? 'f1336570-699b-4181-9bd1-cdd57206981f' : '3b0e81f3-37dc-41f3-9837-bd8d2c350313';
         this.url = this.sanitizer.bypassSecurityTrustResourceUrl(
-          `https://${
-            this.dev ? 'staging-' : ''
-          }global.transak.com?apiKey=3b0e81f3-37dc-41f3-9837-bd8d2c350313&cryptoCurrencyCode=XTZ&walletAddressesData=${JSON.stringify(
+          `https://${!CONSTANTS.MAINNET ? 'staging-' : ''}global.transak.com?apiKey=${apiKey}&cryptoCurrencyCode=XTZ&walletAddressesData=${JSON.stringify(
             walletAddressesData
           )}&disableWalletAddressForm=true}`
         );
