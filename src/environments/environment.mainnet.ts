@@ -31,6 +31,17 @@ const _CONSTANTS: Constants = {
       zoomDiscoverImg: true,
       description: 'A next-gen superhero trading card game'
     },
+    DNS: {
+      name: 'DNS.XYZ',
+        address: [''],
+        thumbnailUrl: 'assets/img/alias/dnsxyz.png',
+        discoverUrl: 'assets/img/alias/dnsxyz-discover.png',
+        link: 'https://dns.xyz',
+        shouldDisplayLink: DisplayLinkOption.All,
+        category: ['marketplace'],
+        zoomDiscoverImg: true,
+        description: 'Decentralized NFT streaming'
+      },
     dogami: {
       name: 'Dogamí',
       address: ['KT1NVvPsNDChrLRH5K2cy6Sc9r1uuUwdiZQd', 'KT1SnUZLQ4gVrQeapUvp6GY9UKKb4gAZJ8D9', 'KT1CAbPGHUWvkSA9bxMPkqSgabgsjtmRYEda'],
@@ -177,7 +188,7 @@ const _CONSTANTS: Constants = {
       backgroundColor: '#222d47',
       description: 'A decentralized exchange on Tezos'
     },
-    Objkt: {
+Objkt: {
       name: 'objkt.com',
       address: [],
       thumbnailUrl: '../../../assets/img/alias/objktcom.svg',
@@ -187,6 +198,17 @@ const _CONSTANTS: Constants = {
       category: ['marketplace'],
       description: 'The best Tezos NFTs all in one place'
     },
+    DNS.XYZ: {
+       name: 'DNS.XYZ',
+       address:[],
+       thumbnailUrl: 'assets/img/alias/dnsxyz.png',
+       discoverUrl: 'assets/img/alias/dnsxyz-discover.png',
+       link: 'https://dns.xyz',
+       shouldDisplayLink: DisplayLinkOption.All,
+       category: ['marketplace']
+       backgroundColor: '#fff',
+       description: 'The Web3 player. Stream music, videos & art. Any NFT. Any chain.'
+     }
     MinterPop: {
       name: 'Minter Pop',
       address: ['KT1AaaBSo5AE6Eo8fpEN5xhCD4w3kHStafxk'],
