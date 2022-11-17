@@ -2,7 +2,7 @@
   <div class="flex-row top-container-balances">
     <h1>Balances</h1>
     <div class="flex-row button right">
-      <button class="swap-liquidity" (click)="openSwap()">Liquidity Baking</button>
+      <button *ngIf="account?.isImplicit()" class="swap-liquidity" (click)="openSwap()">Liquidity Baking</button>
     </div>
   </div>
   <div class="scroll-wrapper">

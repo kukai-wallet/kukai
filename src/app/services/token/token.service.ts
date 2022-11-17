@@ -237,6 +237,7 @@ export class TokenService {
       }
       this.contracts[contractAddress].objkt = objkt;
       this._saveMetadata();
+      this.subjectService.metadataUpdated.next(null);
     }
   }
   async searchAllMetadata(unknownTokenIds: any) {

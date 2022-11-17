@@ -114,10 +114,14 @@
 
     --lqd-chart-filler-background-color: #5963ff1a;
 
+    // Buy Tez
+
+    --buy-background-color: #eaf1f3;
+
     &.dark {
       --theme: "dark";
       --base-background-color: #1a1b1e;
-      --base-background-color-alert: #E6E6E6;
+      --base-background-color-alert: #e6e6e6;
       --base-color-alert: #333333;
       --base-color: #{f.theme-transform(#000)};
       --color-lightened-1: #888b8d;
@@ -134,8 +138,8 @@
 
       --base-end-color: #1d1d21;
       --base-font-color: #c9d1d9;
-      --base-font-color-secondary: rgba(255, 255, 255, 0.60);
-      --base-font-color-secondary-half: rgba(255, 255, 255, 0.60);
+      --base-font-color-secondary: rgba(255, 255, 255, 0.6);
+      --base-font-color-secondary-half: rgba(255, 255, 255, 0.6);
 
       --border-width-dark-only: var(--border-width);
 
@@ -171,7 +175,7 @@
       --button-color: var(--base-blue-color-lightened);
       --button-red-background-color: var(--base-end-color);
       --button-red-color: var(--base-red-color);
-      --button-border-color: var(--base-blue-color-lightened);;
+      --button-border-color: var(--base-blue-color-lightened);
 
       --background-expected-color: #393940;
       --background-from-color: #26262b;
@@ -180,6 +184,8 @@
       --lqd-font-terinary: #7a7a7a;
 
       --lqd-chart-filler-background-color: rgba(89, 99, 255, 0.114);
+
+      --buy-background-color: #252526;
     }
   }
 }

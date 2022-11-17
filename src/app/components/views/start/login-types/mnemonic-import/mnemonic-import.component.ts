@@ -9,6 +9,7 @@ import { InputValidationService } from '../../../../../services/input-validation
 import { utils, hd } from '@tezos-core-tools/crypto-utils';
 import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
+import * as bip39 from 'bip39';
 
 @Component({
   selector: 'app-mnemonic-import-wallet',
@@ -38,6 +39,7 @@ export class MnemonicImportComponent implements OnInit, AfterViewInit, OnDestroy
   showWrongFileUploadMsg: false;
   browser = 'unknown';
   advancedForm = false;
+  bip39Wordlist = bip39.wordlists.english;
 
   private subscriptions: Subscription = new Subscription();
 
@@ -82,14 +84,17 @@ export class MnemonicImportComponent implements OnInit, AfterViewInit, OnDestroy
     if (this.mnemonic) {
       this.mnemonic = this.mnemonic
         .toLowerCase()
-        .replace(/(\r\n|\n|\r)/gm, ' ')
+        .replace(/(\r\n|\n|\r)/gm, ' ') // replace \n
+        .replace(/[^a-z| ]/gm, '') // remove forbidden characters
+        .replace(/\s+/g, ' ') // remove extra whitespaces
         .trim();
     }
     if (this.importOption === 2) {
       this.passphrase = this.email + this.password;
     }
-    if (!this.inputValidationService.mnemonics(this.mnemonic)) {
-      this.subscriptions.add(this.translate.get('MNEMONICIMPORTCOMPONENT.INVALIDMNEMONIC').subscribe((res: string) => this.messageService.addWarning(res, 10)));
+    const invalidMnemonic = this.inputValidationService.invalidMnemonic(this.mnemonic);
+    if (invalidMnemonic) {
+      this.messageService.addWarning(invalidMnemonic, 10);
     } else if (this.importOption === 2 && !this.inputValidationService.email(this.email)) {
       this.subscriptions.add(
         this.translate.get('MNEMONICIMPORTCOMPONENT.INVALIDEMAIL').subscribe(
@@ -325,6 +330,102 @@ export class MnemonicImportComponent implements OnInit, AfterViewInit, OnDestroy
     } else {
       return false;
     }
+  }
+  seedWordKeydown(e): boolean {
+    if (
+      !((e.keyCode >= 65 && e.keyCode <= 90) || [8, 9, 13, 32, 37, 38, 39, 40, 46].includes(e.keyCode)) ||
+      (e.keyCode === 32 &&
+        e.target.value?.slice(-1) === ' ' &&
+        e.target?.selectionStart === e.target?.selectionEnd &&
+        e.target?.selectionStart === e.target?.value.length)
+    ) {
+      return false;
+    }
+
+    let word = '';
+    let words = [];
+    let wordPos = -1;
+    let charPos = -1;
+    if (e.metaKey === false && e.ctrlKey === false && e.keyCode >= 65 && e.keyCode <= 90) {
+      const first = e.target.value.slice(0, e.target.selectionStart) + (e.target.selectionStart === e.target.selectionEnd ? e.key : '');
+      const second = e.target.value.slice(e.target.selectionStart);
+      const firstSplit = first.split(' ');
+      words = (first + second).split(' ');
+      wordPos = firstSplit.length - 1;
+      word = words[wordPos];
+      let n = -1;
+      firstSplit.pop();
+      firstSplit.forEach((item) => {
+        n += item.length;
+        n++;
+      });
+      charPos = e.target.selectionStart - 1 - n;
+    } else {
+      words = e.target.value.split(' ');
+    }
+    if (e.metaKey === false && e.ctrlKey === false && e.keyCode >= 65 && e.keyCode <= 90) {
+      if (e.target.selectionStart !== e.target.selectionEnd) {
+        if (e.target.value[e.target.selectionStart] === e.key) {
+          const selection = e.target.value.slice(e.target.selectionStart, e.target.selectionEnd);
+          if (selection.includes(' ')) {
+            return true;
+          }
+          ++e.target.selectionStart;
+          if (e.target.selectionStart === e.target.selectionEnd && words.length < 24) {
+            e.target.value = e.target.value.slice(0, e.target.selectionStart) + ' ' + e.target.value.slice(e.target.selectionStart);
+            this.mnemonic = e.target.value;
+          }
+          e.target.setAttribute('data-selection-start', e.target.selectionStart);
+          e.target.setAttribute('data-selection-end', e.target.selectionEnd);
+          return false;
+        } else {
+          return true;
+        }
+      }
+      if (word) {
+        const r = this.bip39Wordlist.filter((w) => w.startsWith(word));
+        // only suggest word if added char is in the end of current word
+        if (r.length === 1 && (e.target.selectionEnd !== e.target.selectionStart || charPos + 1 === word.length)) {
+          words = words.map((w) => (w === word ? r[0] : w));
+          const offset = r[0].length - word.length;
+          let selStart = e.target.selectionStart;
+          e.target.value = words.join(' ');
+          if (offset === 0 && words.length < 24 && wordPos === words.length - 1) {
+            e.target.value = e.target.value + ' ';
+            selStart++;
+          }
+          this.mnemonic = e.target.value;
+          e.target.selectionStart = selStart + 1;
+          e.target.selectionEnd = e.target.selectionStart + offset;
+          e.target.setAttribute('data-selection-start', e.target.selectionStart);
+          e.target.setAttribute('data-selection-end', e.target.selectionEnd);
+          return false;
+        }
+      }
+    } else if (
+      [9, 13, 32].includes(e.keyCode) &&
+      e.target.selectionStart !== e.target.selectionEnd &&
+      Number(e.target.getAttribute('data-selection-start')) === e.target.selectionStart &&
+      Number(e.target.getAttribute('data-selection-end')) === e.target.selectionEnd
+    ) {
+      let selEnd = e.target.selectionEnd;
+      const words = e.target.value?.split(' ');
+      if (e.target.value.length === selEnd && words?.length < 24) {
+        e.target.value += ' ';
+        selEnd += 1;
+      }
+      this.mnemonic = e.target.value;
+      e.target.selectionStart = e.target.selectionEnd = selEnd;
+      e.target.setAttribute('data-selection-start', e.target.selectionStart);
+      e.target.setAttribute('data-selection-end', e.target.selectionStart);
+      return false;
+    } else if (e.keyCode === 9) {
+      return false;
+    } else if (e.keyCode === 8) {
+      e.target.setAttribute('data-selection-start', e.target.selectionStart);
+      e.target.setAttribute('data-selection-end', e.target.selectionStart);
+    }
+    return true;
   }
 
   reset(): void {

@@ -64,7 +64,7 @@ export class EmbeddedComponent implements OnInit {
       }
     },
     minterpop: {
-      origins: ['https://minterpop.com'],
+      origins: ['https://minterpop.com', '*.minterpop.com'],
       permissions: {
         login: true,
         operations: true,
@@ -121,7 +121,7 @@ export class EmbeddedComponent implements OnInit {
       }
     },
     evian: {
-      origins: ['https://nft.evian.com'],
+      origins: ['https://nft.evian.com', 'https://happy85.marieclaire.fr', 'https://claim.renaissance.land'],
       permissions: {
         login: true,
         operations: false,
@@ -218,6 +218,22 @@ export class EmbeddedComponent implements OnInit {
     },
     truename: {
       origins: ['https://truename.me'],
+      permissions: {
+        login: true,
+        operations: false,
+        micheline: false
+      }
+    },
+    verticalcrypto: {
+      origins: ['https://verticalcrypto.art', '*.verticalcrypto.art'],
+      permissions: {
+        login: true,
+        operations: false,
+        micheline: false
+      }
+    },
+    playrecord: {
+      origins: ['https://claim.playrecordmint.xyz'],
       permissions: {
         login: true,
         operations: false,

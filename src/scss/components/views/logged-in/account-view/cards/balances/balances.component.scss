@@ -75,7 +75,7 @@ $layout-break-5: v.$layout-break-5;
   border-top-right-radius: 0;
   border-top: $border-width solid transparent;
   position: relative;
-  z-index: 1;
+  z-index: -11;
   width: calc(100% - 4rem);
 
   &.no-box {

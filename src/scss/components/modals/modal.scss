@@ -102,6 +102,15 @@ $base-filter-contrast-invert-01: v.$base-filter-contrast-invert-01;
         text-align: center;
         height: 1.5em;
       }
+      & .text {
+        width: 100%;
+        margin: 1.5em 0 0 0;
+        & .secondary {
+          color: v.$base-font-color-secondary;
+          font-size: 1.25em;
+          text-align: center;
+        }
+      }
     }
 
     & .label {
@@ -223,6 +232,8 @@ $base-filter-contrast-invert-01: v.$base-filter-contrast-invert-01;
     @import "./swap-liquidity.scss";
 
     @import "./swap-liquidity-confirm.scss";
+
+    @import "./buy.scss";
 
     & .advanced {
       &-toggle {

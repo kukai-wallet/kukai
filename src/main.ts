@@ -7,6 +7,7 @@ import { environment } from './environments/environment';
 if (environment.production) {
   enableProdMode();
   window.console.log = function () {};
+  window.console.dir = function () {};
 }
 
 platformBrowserDynamic()

@@ -94,7 +94,8 @@ const _CONSTANTS: Constants = {
         'KT1L6BTeGP5NcVmRjys85EaDxBymxMyx5rj8',
         'KT1MxZTs3QrWffkGCLrkw8hVXxBiSbqo3JZn',
         'KT1NpS5Kfn4foSj2rKDwYraFHADq8eNuxpQS',
-        'KT1G5ph5ybHBbAy2hEd5RbPTuGEQuWXMWsBB'
+        'KT1G5ph5ybHBbAy2hEd5RbPTuGEQuWXMWsBB',
+        'KT1HVzCL4e4F4f4pRwxG9ye9oo85YB6t7cmd'
       ],
       thumbnailUrl: '../../../assets/img/alias/vitality.png',
       link: '',
@@ -451,7 +452,7 @@ Objkt: {
     },
     FloSports: {
       name: 'FloSports',
-      address: ['KT1Mr1sHC5XmA5ysakskyMo3dJV8yF61J3a6'],
+      address: ['KT1SQFuskMGQB7arqvQyuCH9v2utbJNmGcR6'],
       thumbnailUrl: 'assets/img/alias/FloSports.png',
       shouldDisplayLink: DisplayLinkOption.None
     },
@@ -904,6 +905,24 @@ Objkt: {
       shouldDisplayLink: DisplayLinkOption.None,
       category: ['games', 'collectibles'],
       description: 'An epic NFT-powered beat’em up style game.'
+    },
+    Trance: {
+      name: 'TRANCE by Stacie Ant and Nsasi',
+      address: ['KT1C8JDN7mJfz5A4fQWFmqbRmcCR511r7Y8i'],
+      thumbnailUrl: '../../../assets/img/alias/trance.png',
+      shouldDisplayLink: DisplayLinkOption.None
+    },
+    Portrait: {
+      name: 'Collective Voice ID by Portrait XO',
+      address: ['KT1TKLuE2RCoCoQsxkCosHjsQgEbavpsrf4Z'],
+      thumbnailUrl: '../../../assets/img/alias/portrait.png',
+      shouldDisplayLink: DisplayLinkOption.None
+    },
+    Museum: {
+      name: 'Nxt Museum X Scotch and Soda',
+      address: ['KT1Vits8ubN3ApXL3vCsm98bu2WnzLaGs3Yp'],
+      thumbnailUrl: '../../../assets/img/alias/museum-nacht.png',
+      shouldDisplayLink: DisplayLinkOption.None
     }
   },
   ASSETS: {

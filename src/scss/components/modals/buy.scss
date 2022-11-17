@@ -1,0 +1,48 @@
+@use "../../abstracts/variables" as v;
+@use "../../abstracts/mixins" as m;
+
+& .buy {
+  background-color: v.$buy-background-color;
+  padding: 1em;
+  border-radius: 16px;
+  margin: 0 0 1em 0;
+  max-width: 31em;
+  & .option {
+    cursor: pointer;
+    padding: 1em;
+    background-color: v.$base-end-color;
+    border-radius: 16px;
+    margin: 0 0 1.875em 0;
+    justify-content: flex-start;
+    height: 4.5em;
+    border: 2px solid transparent;
+    &:hover {
+      border-color: #ADB9BF;
+    }
+    & img {
+      width: 3.75em;
+      height: 3.75em;
+      margin: 0 1.5em 0 0;
+    }
+    & div.text {
+      & h3 {
+        font-size: 1.75em;
+        font-weight: 500;
+        color: v.$base-font-color;
+      }
+      & h4 {
+        font-size: 1.25em;
+        color: v.$base-font-color-secondary;
+      }
+    }
+    &:last-child {
+      margin: 0 0 0 0;
+    }
+  }
+}
+
+@media (max-width: v.$layout-break-6) {
+  & .buy {
+    margin: 2em 0 1em 0;
+  }
+}

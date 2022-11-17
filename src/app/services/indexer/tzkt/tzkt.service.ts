@@ -393,6 +393,10 @@ export class TzktService implements Indexer {
       meta.thumbnailUri = meta.displayUri = meta.formats[0].uri;
     }
   }
+  async getEntrypointMicheline(contract: string, entrypoint: string) {
+    return (await (await fetch(`https://api.tzkt.io/v1/contracts/${contract}/entrypoints/${entrypoint}?micheline=true&json=false`)).json())
+      ?.michelineParameters;
+  }
 }
 export function mutableConvertObjectPropertiesSnakeToCamel(data: Object) {
   for (const key in data) {
