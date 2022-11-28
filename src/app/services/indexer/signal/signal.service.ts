@@ -24,7 +24,7 @@ export class SignalService {
     this.init();
   }
   async init() {
-    this.connection = new HubConnectionBuilder().withUrl(`https://api.${CONSTANTS.NETWORK}.tzkt.io/v1/events`).build();
+    this.connection = new HubConnectionBuilder().withUrl(`${CONSTANTS.API_URL}/events`).build();
     this.connection.on('operations', (msg) => {
       for (const op of msg.data) {
         if (op?.status === 'applied') {

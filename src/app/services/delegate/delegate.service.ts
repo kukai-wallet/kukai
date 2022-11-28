@@ -10,9 +10,7 @@ import { Location } from '@angular/common';
 
 @Injectable()
 export class DelegateService {
-  private readonly network = CONSTANTS.NETWORK.replace('edonet', 'edo2net');
-  public readonly bcd = 'https://api.baking-bad.org/v2';
-  public readonly tzkt = `https://staging.api.${this.network}.tzkt.io/v1`;
+  public readonly bb = 'https://api.baking-bad.org/v2';
   public delegates = new BehaviorSubject<any>([]);
 
   constructor(private walletService: WalletService, private operationService: OperationService, public router: Router, private location: Location) {
@@ -48,7 +46,7 @@ export class DelegateService {
     }
   }
   getDelegates(): void {
-    fetch(`${this.bcd}/bakers`)
+    fetch(`${this.bb}/bakers`)
       .then((response) => response.json())
       .then((d) => this.delegates.next(d));
   }

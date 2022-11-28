@@ -3,6 +3,7 @@ import dexterCalculations from 'dexCalcs/dist/index-mobile.min';
 import { Amount } from './classes/Amount';
 import Big from 'big.js';
 import { ChartSeries } from '../../../app/components/ui/chart/chart.component';
+import { CONSTANTS } from '../../../environments/environment';
 @Injectable({ providedIn: 'root' })
 export class SwapLiquidityService {
   readonly lqdTokenContract = 'KT1AafHA1C1vk959wvHWBispY9Y2f3fxBUUo';
@@ -43,7 +44,7 @@ export class SwapLiquidityService {
 
   async fetchStorage(contract): Promise<void> {
     try {
-      return await fetch(`https://api.tzkt.io/v1/contracts/${contract}/storage`)
+      return await fetch(`${CONSTANTS.API_URL}/contracts/${contract}/storage`)
         .then((r) => r.json())
         .then((r) => {
           this.storage[contract] = {};

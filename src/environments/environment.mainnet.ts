@@ -13,6 +13,7 @@ const _CONSTANTS: Constants = {
   NETWORK: 'mainnet',
   MAINNET: true,
   NODE_URL: 'https://mainnet.kukai.network',
+  API_URL: 'https://kukai.api.tzkt.io/v1',
   BLOCK_EXPLORER_URL: 'https://tzkt.io',
   HARD_LIMITS: {
     hard_gas_limit_per_operation: 1040000,

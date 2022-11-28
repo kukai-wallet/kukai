@@ -16,6 +16,7 @@ const _CONSTANTS: Constants = {
   },
   MAINNET: false,
   NODE_URL: 'https://jakartanet.ecadinfra.com',
+  API_URL: 'https://api.jakartanet.tzkt.io/v1',
   BLOCK_EXPLORER_URL: 'https://jakartanet.tzkt.io',
   HARD_LIMITS: {
     hard_gas_limit_per_operation: 1040000,

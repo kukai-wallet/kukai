@@ -133,6 +133,7 @@ export interface Constants {
   NETWORK: string;
   MAINNET: boolean;
   NODE_URL: string;
+  API_URL: string;
   BLOCK_EXPLORER_URL: string;
   HARD_LIMITS: {
     hard_gas_limit_per_operation: number;
