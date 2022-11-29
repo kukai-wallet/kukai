@@ -32,8 +32,6 @@ interface TokenMetadata {
 })
 export class TzktService implements Indexer {
   tokenBalanceCache = {};
-  readonly network = CONSTANTS.NETWORK.replace('hangzhounet', 'hangzhou2net');
-  public readonly tzkt = `https://api.${this.network}.tzkt.io/v1`;
   readonly TZKT_TOKEN_QUERY_SIZE: number = 10000;
   Tezos: TezosToolkit;
   constructor(private subjectService: SubjectService) {
@@ -46,7 +44,7 @@ export class TzktService implements Indexer {
     this.Tezos.addExtension(new Tzip12Module(customMetadataProvider));
   }
   async getContractAddresses(pkh: string): Promise<any> {
-    return fetch(`${this.tzkt}/operations/originations?contractManager=${pkh}`)
+    return fetch(`${CONSTANTS.API_URL}/operations/originations?contractManager=${pkh}`)
       .then((response) => response.json())
       .then((data) =>
         data
@@ -61,7 +59,7 @@ export class TzktService implements Indexer {
     if (!transactionIds?.length) {
       return {};
     }
-    return fetch(`${this.tzkt}/operations/transactions?id.in=${transactionIds.join(',')}`)
+    return fetch(`${CONSTANTS.API_URL}/operations/transactions?id.in=${transactionIds.join(',')}`)
       .then((res) => {
         return res.json();
       })
@@ -77,7 +75,7 @@ export class TzktService implements Indexer {
   }
   async accountInfo(address: string, knownTokenIds: string[]): Promise<any> {
     const unknownTokenIds = [];
-    const data = await (await fetch(`${this.tzkt}/accounts/${address}`)).json();
+    const data = await (await fetch(`${CONSTANTS.API_URL}/accounts/${address}`)).json();
     const tokenBalances = address.startsWith('tz') ? await this.getAllTokenBalances(address) : [];
     if (data) {
       if (tokenBalances?.length) {
@@ -105,11 +103,11 @@ export class TzktService implements Indexer {
     return { counter: '', tokens: tokenBalances };
   }
   async isUsedAccount(address: string): Promise<boolean> {
-    const accountInfo = await (await fetch(`${this.tzkt}/accounts/${address}`)).json();
+    const accountInfo = await (await fetch(`${CONSTANTS.API_URL}/accounts/${address}`)).json();
     return accountInfo && (accountInfo?.type === 'user' || accountInfo?.balance || accountInfo?.tokenBalancesCount);
   }
   async getOperations(address: string, knownTokenIds: string[], wallet: WalletObject): Promise<any> {
-    const ops = await fetch(`${this.tzkt}/accounts/${address}/operations?limit=20&type=delegation,origination,transaction`)
+    const ops = await fetch(`${CONSTANTS.API_URL}/accounts/${address}/operations?limit=20&type=delegation,origination,transaction`)
       .then((response) => response.json())
       .then((data) =>
         data
@@ -168,7 +166,7 @@ export class TzktService implements Indexer {
           .filter((obj) => obj)
       );
     const unknownTokenIds: string[] = [];
-    const tokenTxs = await (await fetch(`${this.tzkt}/tokens/transfers?anyof.from.to=${address}&limit=20&offset=0&sort.desc=id`)).json();
+    const tokenTxs = await (await fetch(`${CONSTANTS.API_URL}/tokens/transfers?anyof.from.to=${address}&limit=20&offset=0&sort.desc=id`)).json();
     const tokenArr = [];
     const opIds = [];
     for (let i = 0; i < tokenTxs.length; ++i) {
@@ -272,7 +270,9 @@ export class TzktService implements Indexer {
   }
   async getAllTokenBalances(address: string): Promise<Array<Token>> {
     const fetchToken = async (offset: number): Promise<Array<any>> => {
-      let res = await (await fetch(`${this.tzkt}/tokens/balances?account=${address}&offset=${offset}&limit=${this.TZKT_TOKEN_QUERY_SIZE}&balance.ne=0`)).json();
+      let res = await (
+        await fetch(`${CONSTANTS.API_URL}/tokens/balances?account=${address}&offset=${offset}&limit=${this.TZKT_TOKEN_QUERY_SIZE}&balance.ne=0`)
+      ).json();
       if (res?.length) {
         if (res.length === this.TZKT_TOKEN_QUERY_SIZE) {
           // get more if limit reached
@@ -394,8 +394,7 @@ export class TzktService implements Indexer {
     }
   }
   async getEntrypointMicheline(contract: string, entrypoint: string) {
-    return (await (await fetch(`https://api.tzkt.io/v1/contracts/${contract}/entrypoints/${entrypoint}?micheline=true&json=false`)).json())
-      ?.michelineParameters;
+    return (await (await fetch(`${CONSTANTS.API_URL}/contracts/${contract}/entrypoints/${entrypoint}?micheline=true&json=false`)).json())?.michelineParameters;
   }
 }
 export function mutableConvertObjectPropertiesSnakeToCamel(data: Object) {

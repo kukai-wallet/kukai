@@ -16,6 +16,7 @@ const _CONSTANTS: Constants = {
   },
   MAINNET: false,
   NODE_URL: 'https://ghostnet.ecadinfra.com',
+  API_URL: 'https://api.ghostnet.tzkt.io/v1',
   BLOCK_EXPLORER_URL: 'https://ghostnet.tzkt.io',
   HARD_LIMITS: {
     hard_gas_limit_per_operation: 1040000,
