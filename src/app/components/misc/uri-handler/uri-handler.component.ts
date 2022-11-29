@@ -225,12 +225,12 @@ export class UriHandlerComponent implements OnInit, OnDestroy {
       console.warn('Invalid sign payload');
       await this.beaconService.rejectOnUnknown(message);
       return false;
-    } else if (hexString.slice(0, 2) !== '05') {
-      console.warn('Unsupported prefix (expected 05)');
+    } else if (!['05', '80'].includes(hexString.slice(0, 2))) {
+      console.warn('Unsupported prefix:' + hexString.slice(0, 2));
       await this.beaconService.rejectOnUnknown(message);
       return false;
     }
-    if (!this.inputValidationService.isMichelineExpr(hexString)) {
+    if (hexString.slice(0, 2) === '05' && !this.inputValidationService.isMichelineExpr(hexString)) {
       await this.beaconService.rejectOnUnknown(message);
       return false;
     }
