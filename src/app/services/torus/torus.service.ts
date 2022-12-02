@@ -93,7 +93,7 @@ export class TorusService {
       [TWITTER]: {
         name: 'Twitter',
         typeOfLogin: 'twitter',
-        clientId: 'UJl5d4iHVgbrAaSlucXNf2F2uKlC0m25',
+        clientId: '3aCoxh3pw8g8JeFsdlJNUGwdgtLwdwgE',
         verifier: 'tezos-twitter',
         caseSensitiveVerifierID: false,
         lookups: true
@@ -273,7 +273,7 @@ export class TorusService {
   _loginToConnectionMap = () => {
     return {
       [TWITTER]: {
-        domain: AUTH_DOMAIN
+        domain: CONSTANTS.MAINNET ? AUTH_DOMAIN_MAINNET : AUTH_DOMAIN
       },
       [FACEBOOK]: {
         scope: 'public_profile email'

@@ -27,6 +27,7 @@ export class SignExprComponent extends ModalComponent implements OnInit, OnChang
   pwdInvalid = '';
   payload = '';
   isMessage = false;
+  isDeku = false;
   advancedForm = false;
   name = 'sign-expr';
   constructor(
@@ -44,13 +45,20 @@ export class SignExprComponent extends ModalComponent implements OnInit, OnChang
   ngOnChanges(changes: SimpleChanges): void {
     if (this.signRequest) {
       ModalComponent.currentModel.next({ name: this.name, data: null });
-      this.isMessage = this.inputValidationService.isMessageSigning(this.signRequest.payload);
-      const value = valueDecoder(Uint8ArrayConsumer.fromHexString(this.signRequest.payload.slice(2)));
-      const payload = emitMicheline(value, {
-        indent: '  ',
-        newline: '\n'
-      });
-      this.payload = this.isMessage ? value.string : payload;
+      this.isDeku = this.signRequest.payload.slice(0, 2) === '80';
+      if (!this.isDeku) {
+        console.log('not deku');
+        this.isMessage = this.inputValidationService.isMessageSigning(this.signRequest.payload);
+        const value = valueDecoder(Uint8ArrayConsumer.fromHexString(this.signRequest.payload.slice(2)));
+        const payload = emitMicheline(value, {
+          indent: '  ',
+          newline: '\n'
+        });
+        this.payload = this.isMessage ? value.string : payload;
+      } else {
+        console.log('pay', this.payload);
+        this.payload = `0x${this.signRequest.payload}`;
+      }
       this.syncSub = this.subjectService.beaconResponse.subscribe((response) => {
         if (response) {
           this.signResponse.emit('silent');
