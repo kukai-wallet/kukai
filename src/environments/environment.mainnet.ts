@@ -913,6 +913,12 @@ const _CONSTANTS: Constants = {
       address: ['KT1Vits8ubN3ApXL3vCsm98bu2WnzLaGs3Yp'],
       thumbnailUrl: '../../../assets/img/alias/museum-nacht.png',
       shouldDisplayLink: DisplayLinkOption.None
+    },
+    Femgen: {
+      name: 'Femgen - Miami 22',
+      address: ['KT1QWtzjPpCZ7mpDdC5YxUszY1897d6JMJws'],
+      thumbnailUrl: 'ipfs://QmaSjSstwf5YTqQ7aMK2cNQBVLh4XdnZu4h1kaPJdusj8G',
+      shouldDisplayLink: DisplayLinkOption.None
     }
   },
   ASSETS: {
