@@ -104,6 +104,14 @@ export class EmbeddedComponent implements OnInit {
         micheline_silent: true
       }
     },
+    manutd: {
+      origins: ['*.manutd.com'],
+      permissions: {
+        login: true,
+        operations: false,
+        micheline: false
+      }
+    },
     lexus: {
       origins: ['https://ldai.lexusdesign.in'],
       permissions: {
@@ -287,9 +295,9 @@ export class EmbeddedComponent implements OnInit {
           this.subjectService.origin.next(this.origin);
           if (this.walletService.wallet?.implicitAccounts[0]) {
             this.activeAccount = this.walletService.wallet.implicitAccounts[0];
-            this.coordinatorService.startXTZ();
-            this.coordinatorService.start(this.activeAccount.address, this.coordinatorService.defaultDelayActivity);
-            this.subscribeToConfirmedOps();
+            // this.coordinatorService.startXTZ();
+            // this.coordinatorService.start(this.activeAccount.address, this.coordinatorService.defaultDelayActivity);
+            // this.subscribeToConfirmedOps();
           }
         }
       });
@@ -683,9 +691,9 @@ export class EmbeddedComponent implements OnInit {
         .then((success: boolean) => {
           if (success) {
             this.activeAccount = this.walletService.wallet.implicitAccounts[0];
-            this.coordinatorService.startXTZ();
-            this.coordinatorService.start(this.activeAccount.address, this.coordinatorService.defaultDelayActivity);
-            this.subscribeToConfirmedOps();
+            // this.coordinatorService.startXTZ();
+            // this.coordinatorService.start(this.activeAccount.address, this.coordinatorService.defaultDelayActivity);
+            // this.subscribeToConfirmedOps();
           }
         });
     } else if (keyPair?.pk === '') {

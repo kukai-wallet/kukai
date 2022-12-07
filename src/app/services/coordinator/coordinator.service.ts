@@ -15,6 +15,8 @@ import { interval } from 'rxjs';
 import { SignalService } from '../indexer/signal/signal.service';
 import { UnlockableService } from '../unlockable/unlockable.service';
 import { DipDupService } from '../indexer/dipdup/dipdup.service';
+import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 export interface ScheduleData {
   pkh: string;
@@ -49,7 +51,9 @@ export class CoordinatorService {
     private lookupService: LookupService,
     private subjectService: SubjectService,
     private signalService: SignalService,
-    private unlockableService: UnlockableService
+    private unlockableService: UnlockableService,
+    public router: Router,
+    private location: Location
   ) {
     this.subjectService.logout.subscribe((o) => {
       if (!!o) {
@@ -73,6 +77,7 @@ export class CoordinatorService {
   startXTZ() {
     if (!this.tzrateInterval) {
       console.log('Start scheduler XTZ');
+      this.signalService.init();
       const update = () => {
         this.tzrateService.getTzrate();
         this.dipdupService.fetchTokensMidPrice();
@@ -101,6 +106,11 @@ export class CoordinatorService {
     }
   }
   async boost(pkh: string, metadata: any = null) {
+    const path = this.location.path();
+    const embedded = path.startsWith('/embedded');
+    if (embedded) {
+      return;
+    }
     // Expect action
     console.log('boost ' + pkh);
     if (this.walletService.addressExists(pkh)) {
@@ -246,6 +256,10 @@ export class CoordinatorService {
     });
   }
   addUnconfirmedOperations(from: string, metadata: any) {
+    let account = this.walletService.wallet?.getAccount(from);
+    if (!account.activities) {
+      return;
+    }
     if (metadata.transactions) {
       console.log('Unconfirmed transactions:');
       console.log(metadata.transactions);
@@ -267,7 +281,6 @@ export class CoordinatorService {
           tokenId: metadata.tokenTransfer ? metadata.tokenTransfer : undefined,
           entrypoint: op.parameters?.entrypoint ? op.parameters.entrypoint : ''
         };
-        let account = this.walletService.wallet?.getAccount(from);
         account.activities.unshift(transaction);
         account = this.walletService.wallet?.getAccount(op.destination);
         if (account) {
@@ -286,7 +299,6 @@ export class CoordinatorService {
         block: null,
         timestamp: new Date().getTime()
       };
-      const account = this.walletService.wallet?.getAccount(from);
       account?.activities.unshift(delegation);
     } else if (metadata.origination !== undefined) {
       const origination = {
@@ -300,7 +312,6 @@ export class CoordinatorService {
         block: null,
         timestamp: new Date().getTime()
       };
-      const account = this.walletService.wallet?.getAccount(from);
       account?.activities.unshift(origination);
     } else {
       console.log('Unknown metadata', metadata);

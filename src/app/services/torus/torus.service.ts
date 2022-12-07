@@ -5,6 +5,7 @@ import TorusUtils from '@toruslabs/torus.js';
 import { OperationService } from '../../services/operation/operation.service';
 import { InputValidationService } from '../../services/input-validation/input-validation.service';
 import { CONSTANTS } from '../../../environments/environment';
+import { MessageService } from '../message/message.service';
 
 const GOOGLE = 'google';
 const REDDIT = 'reddit';
@@ -17,7 +18,7 @@ const AUTH_DOMAIN_MAINNET = 'https://kukai.eu.auth0.com';
   providedIn: 'root'
 })
 export class TorusService {
-  torus: any = null;
+  torus: any = undefined;
   nodeDetails: { torusNodeEndpoints: string[]; torusNodePub: any[] } = null;
   public readonly verifierMap: any;
   private readonly proxy: any;
@@ -118,7 +119,7 @@ export class TorusService {
     }
   };
   verifierMapKeys: any;
-  constructor(private operationService: OperationService, private inputValidationService: InputValidationService) {
+  constructor(private operationService: OperationService, private inputValidationService: InputValidationService, private messageService: MessageService) {
     if (CONSTANTS.MAINNET) {
       this.verifierMap = this.verifierMaps.mainnet;
       this.proxy = {
@@ -128,25 +129,27 @@ export class TorusService {
     } else {
       this.verifierMap = this.verifierMaps.testnet;
       this.proxy = {
-        address: '0x4023d2a0D330bF11426B12C6144Cfb96B7fa6183',
-        network: 'ropsten'
+        address: '0xd084604e5FA387FbC2Da8bAab07fDD6aDED4614A',
+        network: 'testnet'
       };
     }
     this.verifierMapKeys = Object.keys(this.verifierMap);
   }
   async initTorus() {
-    if (!this.torus) {
+    if (this.torus === undefined) {
+      this.torus = null;
       try {
         const torusdirectsdk = new DirectWebSdk({
           baseUrl: `${location.origin}/serviceworker`,
           redirectToOpener: true,
           enableLogging: !(this.proxy.network === 'mainnet'),
           proxyContractAddress: this.proxy.address,
-          network: this.proxy.network === 'mainnet' ? this.proxy.network : 'testnet'
+          network: this.proxy.network
         });
         await torusdirectsdk.init({ skipSw: false });
         this.torus = torusdirectsdk;
       } catch (error) {
+        this.torus = undefined;
         console.error(error, 'oninit caught');
       }
     }
@@ -159,7 +162,7 @@ export class TorusService {
     const torus = new TorusUtils();
     const verifier = this.verifierMap[selectedVerifier].verifier;
     if (!this.nodeDetails) {
-      const { torusNodeEndpoints, torusNodePub, torusIndexes } = await fetchNodeDetails.getNodeDetails();
+      const { torusNodeEndpoints, torusNodePub, torusIndexes } = await fetchNodeDetails.getNodeDetails({ verifier: selectedVerifier, verifierId });
       this.nodeDetails = { torusNodeEndpoints, torusNodePub }; // Cache node details
     }
     let sanitizedVerifierId = verifierId;

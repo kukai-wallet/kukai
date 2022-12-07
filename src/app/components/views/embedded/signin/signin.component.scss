@@ -1,5 +1,7 @@
 @use "../../../../../scss/abstracts/mixins" as m;
 
+@import "https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Source+Sans+Pro:wght@400;600&display=swap";
+
 // generic color constants
 $base-color: #000 !default;
 $color-lightened-1: #4a5d75 !default;
@@ -171,7 +173,7 @@ button {
   & .direct-auth-login-alt {
     padding: 0.5em;
     width: calc(554px - 1em);
-    background: #FFFFFF;
+    background: #ffffff;
     box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.24), 0px 4px 12px rgba(0, 0, 0, 0.24), 0px 32px 48px rgba(0, 0, 0, 0.36);
     border-radius: 20px;
     & .header {
@@ -180,8 +182,8 @@ button {
       flex-direction: row-reverse;
       & .back,
       & .abort {
-        border: 1px solid #CCCED5;
-        border-radius: 34px;
+        border: 1px solid #ccced5;
+        border-radius: 100px;
         padding: 0.25em;
         cursor: pointer;
         z-index: 1;
@@ -200,13 +202,91 @@ button {
       font-weight: 600;
       font-family: "Roboto Condensed";
       margin: -1.125em 0 0.75em 0;
-      color:#353535;
+      color: #353535;
     }
     & > h2 {
       margin: 0.75em 0 0.25em 0;
       font-size: 1.375em;
-      color: #A3A8B9;
+      color: #a3a8b9;
       font-family: "Roboto Condensed";
+    }
+    &.manutd {
+      width: calc(570px - 4.5em);
+      padding: 2.25em 2.25em 0 2.25em;
+      & .header {
+        padding: 1em 0 0 0;
+      }
+      & > h1 {
+        font-size: 2.25em;
+        font-weight: 400;
+        font-family: "Bebas Neue", "Roboto";
+        margin: -0.95em 0 0.875em 0;
+      }
+      & .login-options {
+        gap: 0.75em;
+        width: 100%;
+        padding: 0.5em 0 0 0;
+        & .option {
+          width: auto;
+          &.facebook {
+            background-color: #1977f2;
+          }
+          &.twitter {
+            background-color: #1da1f2;
+            & img {
+              filter: invert(1) brightness(100);
+            }
+          }
+          &.reddit {
+            background-color: #ff4500;
+          }
+          &.wide {
+            border-radius: 100px;
+            border-color: #b8b7b9;
+            border-width: 1px;
+            width: 100%;
+            &.facebook,
+            &.twitter,
+            &.reddit {
+              border: none;
+              & span {
+                color: $base-end-color;
+              }
+            }
+            & img {
+              margin: 0 0 0 1em;
+              width: 1.5em;
+              height: 1.5em;
+            }
+            height: 3.125em;
+          }
+          &.narrow {
+            height: 2.875em;
+            width: calc(33.3333333333% - 0.75em);
+          }
+          & span {
+            font-size: 0.875em;
+            font-weight: 600;
+            font-family: "Source Sans Pro", "Roboto";
+          }
+        }
+      }
+      & .footer {
+        margin: 2.375em 0;
+        height: 1.125em;
+        align-items: center;
+        white-space: pre;
+        & span {
+          font-size: 0.875em;
+          font-weight: 400;
+          font-family: "Source Sans Pro", "Roboto";
+        }
+
+        & img {
+          height: 1em;
+          margin: 0 0 0 0.5em;
+        }
+      }
     }
     & .login-options {
       padding: 0.5em 1.25em;
@@ -249,7 +329,7 @@ button {
       }
     }
     & .footer {
-      margin: 1.25em 0 2.25em 0;
+      margin: 2.25em 0;
       display: flex;
       justify-content: center;
       align-items: flex-end;
@@ -269,59 +349,122 @@ button {
   }
 }
 
-@media (max-width: 767px) {
-  :host {
-    font-size: 175%;
-    & .direct-auth-login-alt {
-      transform: unset;
-      position: absolute;
-      bottom: 0;
-      width: calc(100% - 1em);
-      border-radius: 0;
-      border-top-left-radius: 20px;
-      border-top-right-radius: 20px;
+@keyframes transition-up {
+  from {
+    bottom: -100%;
+  }
+  to {
+    bottom: 0px;
+  }
+}
 
-      & h1 {
-        margin: 0.5em 0 0.75em 0;
+@keyframes transition-down {
+  from {
+    bottom: 0px;
+  }
+  to {
+    bottom: -100%;
+  }
+}
+
+@mixin mobile-0 {
+  font-size: 4vw;
+  & .direct-auth-login-alt,
+  & .direct-auth-login-alt.manutd {
+    transform: unset;
+    position: absolute;
+    bottom: 0;
+    width: calc(100% - 1em);
+    border-radius: 0;
+    border-top-left-radius: 8vw;
+    border-top-right-radius: 8vw;
+
+    & h1 {
+      margin: 0.5em 0 0.75em 0;
+    }
+
+    & .header {
+      padding: 0.5em 0.25em 0 0.25em;
+      & .back,
+      & .abort {
+        width: 1.25em;
+        height: 1.25em;
+        padding: 0.5em;
       }
+    }
 
-      & .header {
-        padding: 0.5em 0.25em 0 0.25em;
-        & .back,
-        & .abort {
-          width: 1.25em;
-          height: 1.25em;
-          padding: 0.5em;
+    & .login-options {
+      width: calc(100% - 2.5em);
+
+      & .option {
+        & span {
+          width: calc(100% - 3.5em);
+          text-align: left;
+          margin: 0 0 0 3.5em;
+        }
+        &.wide {
+          width: 100%;
+          & img {
+            margin: 0 0 0 1em;
+          }
         }
       }
+    }
 
-      & .login-options {
-        width: calc(100% - 2.5em);
-
-        & .option {
-          & span {
-            width: calc(100% - 3.5em);
-            text-align: left;
-            margin: 0 0 0 3.5em;
-          }
-          &.wide {
-            width: 100%;
-            & img {
-              margin: 0 0 0 1em;
-            }
-          }
+    & .footer {
+      flex-grow: 1;
+    }
+  }
+  & .direct-auth-login-alt.manutd {
+    width: 100% !important;
+    padding: 0;
+    align-items: center;
+    animation: transition-up 0.25s;
+    & .header {
+      padding: 1.25em 1.25em 0 1.25em;
+      width: 100%;
+      height: auto;
+      box-sizing: border-box;
+    }
+    & h1 {
+      margin: 1em 0;
+      font-size: 2.25em;
+    }
+    & .login-options {
+      & .option {
+        & span {
+          width: inherit;
+          text-align: center;
+          margin: auto;
         }
-      }
-
-      & .footer {
-        flex-grow: 1;
       }
     }
   }
 }
 
+@mixin mobile-1 {
+  font-size: 4vw;
+  min-height: 100%;
+}
+
+:host.viewport-override-0 {
+  @include mobile-0;
+}
+
+:host.viewport-override-1 {
+  @include mobile-0;
+  @include mobile-1;
+}
+
+@media (max-width: 649px) {
+  :host {
+    @include mobile-0;
+  }
+}
+
 @media (max-width: 480px) {
   :host {
-    font-size: 135%;
+    @include mobile-0;
+    @include mobile-1;
   }
 }

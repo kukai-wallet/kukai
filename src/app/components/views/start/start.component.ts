@@ -61,7 +61,7 @@ export class StartComponent implements OnInit, OnDestroy {
   }
 
   async torusLogin(verifier: string, verifierId = ''): Promise<void> {
-    await this.messageService.startSpinner('Loading wallet...');
+    this.messageService.startSpinner('Loading wallet...');
     // const { keyPair, userInfo } = await this.mockLogin();
     const { keyPair, userInfo } = await this.torusService.loginTorus(verifier).catch(async (e) => await this.messageService.stopSpinner());
     console.log('login done');

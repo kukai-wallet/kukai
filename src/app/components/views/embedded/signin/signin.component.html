@@ -1,22 +1,22 @@
 <app-queue-embed *ngIf="this.queueTimeVisible > 0" [queueTime]="this.queueTimeVisible"></app-queue-embed>
-<div *ngIf="this.queueTime === 0 && this.queueTimeVisible === 0" class="flex-column direct-auth-login-alt">
+<div *ngIf="this.queueTime === 0 && this.queueTimeVisible === 0" class="flex-column direct-auth-login-alt" [class.manutd]="template === 'manutd'">
   <div class="flex-row header">
     <img (click)="abort()" class="abort" src="../../../assets/img/x-alt.svg">
     <img *ngIf="loginConfig.showBackButton" (click)="back()" class="back" src="../../../assets/img/back-arrow.svg">
   </div>
-  <h1 *ngIf="this.loginConfig?.customPrio !== 'high'">Choose Social Provider</h1>
+  <h1 *ngIf="this.loginConfig?.customPrio !== 'high'">{{ template === 'manutd' ? 'CHOOSE SOCIAL PROVIDER' : 'Choose Sign In Type' }}</h1>
   <h1 *ngIf="this.loginConfig?.customPrio === 'high'">Please re-authenticate</h1>
   <div class="flex-row-wrap login-options" *ngIf="torusService && torusService.verifierMapKeys">
     <ng-container *ngFor="let key of loginOptions; let idx = index">
-      <div *ngIf="loginConfig.buttonsVertically === true || (loginConfig.wideButtons && loginConfig.wideButtons[idx] === true); else narrow" class="flex-row option wide"
+      <div *ngIf="loginConfig.buttonsVertically === true || (loginConfig.wideButtons && loginConfig.wideButtons[idx] === true); else narrow" class="flex-row option wide" [class.facebook]="key === 'facebook'" [class.twitter]="key === 'twitter'" [class.reddit]="key === 'reddit'"
         (click)="login(key)">
-        <img src="../../../../assets/img/torus-login/{{ key }}-color.svg" width="24" /><span>Sign in with {{ key |
+        <img [src]="key === 'facebook' ? '../../../../assets/img/torus-login/' + key + '-white.svg' : '../../../../assets/img/torus-login/' + key + '-color.svg'" width="24" /><span>Sign in with {{ key |
           titlecase }}</span>
       </div>
       <ng-template #narrow>
         <div class="flex-row option narrow"
         (click)="login(key)">
-        <img src="../../../../assets/img/torus-login/{{ key }}-color.svg" width="24" />
+        <img [src]="'../../../../assets/img/torus-login/' + key + '-color.svg'" width="24" />
       </div>
       </ng-template>
     </ng-container>
