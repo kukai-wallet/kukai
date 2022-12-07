@@ -7,8 +7,8 @@ import { ActivityService } from '../../activity/activity.service';
 import { OperationService } from '../../operation/operation.service';
 import { BalanceService } from '../../balance/balance.service';
 import { DelegateService } from '../../delegate/delegate.service';
-import { timeout } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 @Injectable({
   providedIn: 'root'
 })
@@ -20,9 +20,7 @@ export class SignalService {
     private operationService: OperationService,
     private balanceService: BalanceService,
     private delegateService: DelegateService
-  ) {
-    this.init();
-  }
+  ) {}
   async init() {
     this.connection = new HubConnectionBuilder().withUrl(`${CONSTANTS.API_URL}/events`).build();
     this.connection.on('operations', (msg) => {
@@ -95,10 +93,12 @@ export class SignalService {
 
   async subscribeToAccount(address: string) {
     console.log('Listen to: ' + address);
-    await this.connection.invoke('SubscribeToOperations', {
-      address,
-      types: 'transaction,delegation,origination'
-    });
+    try {
+      await this.connection.invoke('SubscribeToOperations', {
+        address,
+        types: 'transaction,delegation,origination'
+      });
+    } catch (e) {}
   }
   ngOnDestroy(): void {
     try {

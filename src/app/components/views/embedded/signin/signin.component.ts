@@ -1,4 +1,4 @@
-import { EventEmitter, Input, Output, SimpleChanges, Component, OnInit, OnChanges } from '@angular/core';
+import { EventEmitter, Input, Output, SimpleChanges, Component, OnInit, OnChanges, AfterViewInit, ElementRef, HostListener } from '@angular/core';
 import { LoginConfig, TypeOfLogin, LoginPrio } from 'kukai-embed';
 import { WalletService } from '../../../../services/wallet/wallet.service';
 import { MessageService } from '../../../../services/message/message.service';
@@ -12,16 +12,18 @@ import { SubjectService } from '../../../../services/subject/subject.service';
   templateUrl: './signin.component.html',
   styleUrls: ['./signin.component.scss']
 })
-export class SigninComponent implements OnInit, OnChanges {
+export class SigninComponent implements OnInit, OnChanges, AfterViewInit {
   constructor(
     private messageService: MessageService,
     public torusService: TorusService,
     private walletService: WalletService,
-    private subjectService: SubjectService
+    private subjectService: SubjectService,
+    private elRef: ElementRef
   ) {}
   @Input() dismiss: Boolean;
   @Input() loginConfig: LoginConfig;
   @Output() loginResponse = new EventEmitter();
+  template = 'default';
   loginOptions = [];
   queueTime: number = 0;
   queueTimeVisible: number = 0;
@@ -30,7 +32,23 @@ export class SigninComponent implements OnInit, OnChanges {
   statusCounter: number = 0;
   queueInterval: NodeJS.Timeout;
   readonly queueEndpoint = 'https://q.tcinfra.net/rpc';
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.subjectService.origin.subscribe((origin) => {
+      if (origin && origin.indexOf('gap') !== -1) {
+        this.template = 'gap';
+      } else if (origin && origin.indexOf('interpop') !== -1) {
+        // (m)interpop
+        this.template = 'minterpop';
+      } else if (origin && (origin.indexOf('manutd') !== -1 || origin.indexOf('concordia') !== -1)) {
+        this.template = 'manutd';
+      } else {
+        this.template = 'default';
+      }
+    });
+  }
+  ngAfterViewInit(): void {
+    this.viewportCheck();
+  }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes?.loginConfig) {
       if (this.loginConfig?.customPrio === LoginPrio.Low) {
@@ -67,6 +85,22 @@ export class SigninComponent implements OnInit, OnChanges {
       } else {
         this.loginOptions = this.torusService.verifierMapKeys;
       }
+    }
+  }
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.viewportCheck();
+  }
+  viewportCheck(): void {
+    if (screen.width < 650) {
+      this.elRef.nativeElement.classList.add('viewport-override-0');
+    } else {
+      this.elRef.nativeElement.classList.remove('viewport-override-0');
+    }
+    if (screen.width < 481) {
+      this.elRef.nativeElement.classList.add('viewport-override-1');
+    } else {
+      this.elRef.nativeElement.classList.remove('viewport-override-1');
     }
   }
   async startQueue() {
@@ -113,7 +147,9 @@ export class SigninComponent implements OnInit, OnChanges {
     this.statusCounter = 0;
     this.messageService.stopSpinner();
   }
-  abort() {
+  async abort() {
+    this.elRef.nativeElement.querySelector('.direct-auth-login-alt').style.animation = 'transition-down 0.25s';
+    await this.sleep(230);
     this.loginResponse.emit(null);
     this.stopQueue();
   }
@@ -163,6 +199,8 @@ export class SigninComponent implements OnInit, OnChanges {
       if (this.dismiss === null) {
         await this.messageService.stopSpinner();
       }
+      this.elRef.nativeElement.querySelector('.direct-auth-login-alt').style.animation = 'transition-down 0.25s';
+      await this.sleep(230);
       this.loginResponse.emit(loginData);
       this.stopQueue();
     } catch {
@@ -270,5 +308,8 @@ export class SigninComponent implements OnInit, OnChanges {
           throw e;
         }
       });
+  }
+  private async sleep(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 }

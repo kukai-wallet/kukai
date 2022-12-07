@@ -214,7 +214,7 @@ export class SendComponent implements OnInit, OnChanges, OnDestroy {
                   amount = Big(op.amount).plus(amount);
                 }
                 amount = Big(fee.total).plus(amount);
-                amount = amount.times(Big(CONSTANTS.MAINNET && this.walletService.wallet?.XTZrate ? this.walletService.wallet.XTZrate : 5));
+                amount = amount.times(Big(CONSTANTS.MAINNET && this.walletService.wallet?.XTZrate ? this.walletService.wallet.XTZrate : 1));
                 if (amount.gt(Big(this.thresholdUSD))) {
                   this.operationResponse.emit('exceeded_threshold');
                 } else {
