@@ -34,6 +34,15 @@ const _CONSTANTS: Constants = {
       category: ['games', 'collectibles'],
       zoomDiscoverImg: true,
       description: 'A next-gen superhero trading card game'
+    },
+    HugeMoves: {
+      name: 'Huge Moves',
+      address: ['KT1LCGANZSkBFtVds8zZjPckjQVdTg1M7C3c'],
+      thumbnailUrl: '../../../assets/img/alias/hugemoves.png',
+      link: 'https://hugemoves.xyz/',
+      shouldDisplayLink: DisplayLinkOption.None,
+      category: ['collectibles'],
+      description: 'This Huge Moves Soulbound NFT Collection serves as a key to our experimental space.'
     }
   },
   ASSETS: {},
