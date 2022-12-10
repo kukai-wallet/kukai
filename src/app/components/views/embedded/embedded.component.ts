@@ -105,7 +105,7 @@ export class EmbeddedComponent implements OnInit {
       }
     },
     manutd: {
-      origins: ['*.manutd.com'],
+      origins: ['*.manutd.com', '*.trili.tech'],
       permissions: {
         login: true,
         operations: false,
