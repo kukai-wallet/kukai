@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import DirectWebSdk from 'customauth';
-import FetchNodeDetails from '@toruslabs/fetch-node-details';
+import NodeDetailManager, { TORUS_NETWORK } from '@toruslabs/fetch-node-details';
 import TorusUtils from '@toruslabs/torus.js';
 import { OperationService } from '../../services/operation/operation.service';
 import { InputValidationService } from '../../services/input-validation/input-validation.service';
@@ -123,14 +123,14 @@ export class TorusService {
     if (CONSTANTS.MAINNET) {
       this.verifierMap = this.verifierMaps.mainnet;
       this.proxy = {
-        address: '0x638646503746d5456209e33a2ff5e3226d698bea',
-        network: 'mainnet'
+        address: NodeDetailManager.PROXY_ADDRESS_MAINNET,
+        network: TORUS_NETWORK.MAINNET
       };
     } else {
       this.verifierMap = this.verifierMaps.testnet;
       this.proxy = {
-        address: '0xd084604e5FA387FbC2Da8bAab07fDD6aDED4614A',
-        network: 'testnet'
+        address: NodeDetailManager.PROXY_ADDRESS_TESTNET,
+        network: TORUS_NETWORK.TESTNET
       };
     }
     this.verifierMapKeys = Object.keys(this.verifierMap);
@@ -155,16 +155,11 @@ export class TorusService {
     }
   }
   async lookupPkh(selectedVerifier: string, verifierId: string): Promise<any> {
-    const fetchNodeDetails = new FetchNodeDetails({
+    const fetchNodeDetails = new NodeDetailManager({
       network: this.proxy.network,
       proxyAddress: this.proxy.address
     });
     const torus = new TorusUtils();
-    const verifier = this.verifierMap[selectedVerifier].verifier;
-    if (!this.nodeDetails) {
-      const { torusNodeEndpoints, torusNodePub, torusIndexes } = await fetchNodeDetails.getNodeDetails({ verifier: selectedVerifier, verifierId });
-      this.nodeDetails = { torusNodeEndpoints, torusNodePub }; // Cache node details
-    }
     let sanitizedVerifierId = verifierId;
     if (!this.verifierMap[selectedVerifier].caseSensitiveVerifierID && selectedVerifier !== 'twitter') {
       sanitizedVerifierId = sanitizedVerifierId.toLocaleLowerCase();
@@ -179,6 +174,11 @@ export class TorusService {
       } else {
         throw new Error('Twitter handle not found');
       }
+    }
+    const verifier = this.verifierMap[selectedVerifier].verifier;
+    if (!this.nodeDetails) {
+      const { torusNodeEndpoints, torusNodePub, torusIndexes } = await fetchNodeDetails.getNodeDetails({ verifier, verifierId: sanitizedVerifierId });
+      this.nodeDetails = { torusNodeEndpoints, torusNodePub }; // Cache node details
     }
     const pk: any = await torus.getPublicAddress(
       this.nodeDetails.torusNodeEndpoints,
