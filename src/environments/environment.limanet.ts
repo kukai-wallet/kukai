@@ -8,16 +8,15 @@ export const environment = {
   production: false
 };
 const _CONSTANTS: Constants = {
-  NETWORK: 'jakartanet',
-  NAME: 'Testnet / Jakartanet',
+  NETWORK: 'limanet',
+  NAME: 'Testnet / Limanet',
   TEZOS_DOMAIN: {
-    CONTRACT: 'KT1D6vXtKDtF2fE5uQuUkMTDGpEeTrbByX25',
-    TOP_DOMAINS: ['jak']
+    TOP_DOMAINS: ['lim']
   },
   MAINNET: false,
-  NODE_URL: 'https://jakartanet.ecadinfra.com',
-  API_URL: 'https://api.jakartanet.tzkt.io/v1',
-  BLOCK_EXPLORER_URL: 'https://jakartanet.tzkt.io',
+  NODE_URL: 'https://limanet.ecadinfra.com',
+  API_URL: 'https://api.limanet.tzkt.io/v1',
+  BLOCK_EXPLORER_URL: 'https://limanet.tzkt.io',
   HARD_LIMITS: {
     hard_gas_limit_per_operation: 1040000,
     hard_gas_limit_per_block: 5200000,
