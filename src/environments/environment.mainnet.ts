@@ -14,6 +14,7 @@ const _CONSTANTS: Constants = {
   MAINNET: true,
   NODE_URL: 'https://mainnet.kukai.network',
   API_URL: 'https://kukai.api.tzkt.io/v1',
+  OBJKT_URL: 'https://data.objkt.com/v3/graphql',
   BLOCK_EXPLORER_URL: 'https://tzkt.io',
   HARD_LIMITS: {
     hard_gas_limit_per_operation: 1040000,

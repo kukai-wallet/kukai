@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { CONSTANTS } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +30,7 @@ export class ObjktService {
     try {
       return (
         await (
-          await fetch('https://data.objkt.com/v2/graphql', {
+          await fetch(CONSTANTS.OBJKT_URL, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
@@ -43,6 +44,9 @@ export class ObjktService {
     }
   }
   async resolveCollection(address): Promise<any> {
+    if (!CONSTANTS.MAINNET) {
+      return;
+    }
     while (this.queue.length >= 500) {
       // max 500 results per call
       await this.sleep(3000);
@@ -93,7 +97,7 @@ export class ObjktService {
     };
     const _objkts = (
       await (
-        await fetch('https://data.objkt.com/v2/graphql', {
+        await fetch(CONSTANTS.OBJKT_URL, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
