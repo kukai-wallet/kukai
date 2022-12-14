@@ -1,7 +1,7 @@
 # Kukai
 
 ## Development
-Kukai is built using Angular 13
+Kukai is built using Angular 15
 
 Install dependencies:
 
