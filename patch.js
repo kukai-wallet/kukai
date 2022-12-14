@@ -20,6 +20,7 @@ alias: {
   assert: "assert",
   buffer: "buffer",
   crypto: "crypto-browserify",
+  fs: "fs",
   http: "stream-http",
   https: "https-browserify",
   os: "os-browserify/browser",
@@ -59,8 +60,8 @@ fs.writeFileSync(uts46, data, 'utf8');
 data = fs.readFileSync(common, 'utf8');
 if (data.indexOf('fallback: {') === -1) {
   data = data.replace(
-    '(scriptTarget, isPlatformServer),',
-    `(scriptTarget, isPlatformServer),
+    'roots: [projectRoot],',
+    `roots: [projectRoot],
       ${fallback}
     `
   );

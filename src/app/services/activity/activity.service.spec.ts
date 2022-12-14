@@ -21,7 +21,7 @@ import 'rxjs/add/operator/mergeMap';
 import { of } from 'rxjs/observable/of';
 // import { forEach } from '@angular/router/src/utils/collection';
 import { Observable } from 'rxjs/Observable';
-import { HttpClient } from 'selenium-webdriver/http';
+import { HttpClient } from '@angular/common/http';
 import { RSA_X931_PADDING } from 'constants';
 
 describe('[ ActivityService ]', () => {
