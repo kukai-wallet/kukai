@@ -17,11 +17,25 @@ export class TezosDomainsService {
     const tezosToolkit = new TezosToolkit(CONSTANTS.NODE_URL);
     tezosToolkit.addExtension(new Tzip16Module());
     const options = { caching: { enabled: false } };
-    this.client = new TaquitoTezosDomainsClient({
-      tezos: tezosToolkit,
-      network: <SupportedNetworkType>CONSTANTS.NETWORK,
-      ...options
-    });
+    try {
+      this.client = new TaquitoTezosDomainsClient({
+        tezos: tezosToolkit,
+        network: <SupportedNetworkType>CONSTANTS.NETWORK,
+        ...options
+      });
+    } catch (e) {
+      if (e?.message && e.message.includes('Supported built-in networks are:') && !CONSTANTS.MAINNET) {
+        console.error(e);
+        console.warn('Falling back on Ghostnet as network for Tezos Domains initialization');
+        this.client = new TaquitoTezosDomainsClient({
+          tezos: tezosToolkit,
+          network: <SupportedNetworkType>'ghostnet',
+          ...options
+        });
+      } else {
+        throw e;
+      }
+    }
   }
   async getAddressFromDomain(domain: string) {
     const address = await this.client.resolver.resolveNameToAddress(domain);
