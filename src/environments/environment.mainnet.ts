@@ -25,7 +25,9 @@ const _CONSTANTS: Constants = {
     manutd: {
       name: 'Manchester United',
       address: [],
-      thumbnailUrl: '../../../assets/img/alias/mufc.png',
+      thumbnailUrl: 'assets/img/alias/mufc.png',
+      discoverUrl: 'assets/img/alias/mufc-discover.jpg',
+      zoomDiscoverImg: true,
       link: 'http://collectibles.manutd.com',
       shouldDisplayLink: DisplayLinkOption.All,
       category: ['sports', 'collectibles'],
