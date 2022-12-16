@@ -22,6 +22,15 @@ const _CONSTANTS: Constants = {
     hard_storage_limit_per_operation: 60000
   },
   CONTRACT_ALIASES: {
+    manutd: {
+      name: 'Manchester United',
+      address: [],
+      thumbnailUrl: '../../../assets/img/alias/mufc.png',
+      link: 'http://collectibles.manutd.com',
+      shouldDisplayLink: DisplayLinkOption.All,
+      category: ['sports', 'collectibles'],
+      description: 'Officially licensed Digital Collectibles, powered by Tezos'
+    },
     EmergentsTCG: {
       name: 'Emergents TCG',
       address: ['KT1QuEhDNh51R8ERiCSh2VE1DjVPPgFrGMja'],
