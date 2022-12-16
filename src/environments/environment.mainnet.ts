@@ -24,7 +24,7 @@ const _CONSTANTS: Constants = {
   CONTRACT_ALIASES: {
     manutd: {
       name: 'Manchester United',
-      address: [],
+      address: ['KT1V7QCmuKpGsThwCNRALmsVfDAYopV98EEL'],
       thumbnailUrl: 'assets/img/alias/mufc.png',
       discoverUrl: 'assets/img/alias/mufc-discover.jpg',
       zoomDiscoverImg: true,
