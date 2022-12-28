@@ -8,7 +8,7 @@ import { sign as naclSign } from 'tweetnacl';
 import * as Bs58check from 'bs58check';
 import * as bip39 from 'bip39';
 import Big from 'big.js';
-import { localForger } from '@taquito/local-forging';
+import { localForger, LocalForger, ProtocolsHash } from '@taquito/local-forging';
 import { CONSTANTS } from '../../../environments/environment';
 import { ErrorHandlingPipe } from '../../pipes/error-handling.pipe';
 import * as elliptic from 'elliptic';
@@ -26,6 +26,7 @@ export interface KeyPair {
 @Injectable()
 export class OperationService {
   nodeURL = CONSTANTS.NODE_URL;
+  localTaquitoForger = new LocalForger('PtLimaPtLMwfNinJi9rCfDPWea8dFgTZ1MeJ9f1m2SRic6ayiwW' as ProtocolsHash);
   prefix = {
     tz1: new Uint8Array([6, 161, 159]),
     tz2: new Uint8Array([6, 161, 161]),
@@ -420,7 +421,7 @@ export class OperationService {
     console.log('Broadcast...');
     const opbytes = sopbytes.slice(0, sopbytes.length - 128);
     const edsig = this.sig2edsig(sopbytes.slice(sopbytes.length - 128));
-    return fromPromise(localForger.parse(opbytes))
+    return fromPromise(this.localTaquitoForger.parse(opbytes))
       .pipe(
         flatMap((fop: any) => {
           fop.signature = edsig;
@@ -562,7 +563,7 @@ export class OperationService {
   }
   // Local forge with Taquito
   localForge(operation: any): Observable<string> {
-    return fromPromise(localForger.forge(operation)).pipe(
+    return fromPromise(this.localTaquitoForger.forge(operation)).pipe(
       flatMap((localForgedBytes: string) => {
         return of(localForgedBytes);
       })
