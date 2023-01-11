@@ -205,7 +205,7 @@ $border-color: #e6eaef;
       }
 
       & .address {
-        @include m.multiply("font-size", 1, "em", 1.3, v.$layout-break-6);
+        @include m.multiply("font-size", 1, "rem", 2.5, v.$layout-break-6);
         font-family: "Roboto Mono", "Roboto";
         color: $base-font-color-secondary;
       }
@@ -288,13 +288,13 @@ $border-color: #e6eaef;
           @include m.multiply("font-size", 1.5, "em");
           font-weight: 500;
           position: relative;
-          left: -2.55em;
+          left: -2em;
           top: 0;
 
           & .icon {
             object-fit: unset;
-            width: 2em;
-            height: 2em;
+            width: 1.5em;
+            height: 1.5em;
             margin: 0 0.5em 0 0;
           }
         }
@@ -304,7 +304,7 @@ $border-color: #e6eaef;
           justify-content: center;
 
           & .single-to {
-            @include m.multiply("font-size", 1.125, "em");
+            @include m.multiply("font-size", 1.125, "rem");
             color: $base-font-color-secondary;
             font-weight: 400;
             cursor: pointer;
@@ -312,7 +312,7 @@ $border-color: #e6eaef;
             margin: 0 0 1.25em 0;
 
             & span {
-              @include m.multiply("font-size", 1, "em", 1.3, v.$layout-break-6);
+              @include m.multiply("font-size", 1, "rem", 2.5, v.$layout-break-6);
               color: $base-font-color-secondary;
             }
 
