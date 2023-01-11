@@ -193,9 +193,12 @@ export class TokenBalancesService {
       return false;
     }
     if (CONSTANTS.MAINNET) {
-      return !(
-        CONSTANTS.NFT_CONTRACT_OVERRIDES.includes(`${asset.contractAddress}:${asset.id}`) ||
-        this.dipdupService.tokens.get(`${asset.contractAddress}:${asset.id}`)
+      return (
+        (asset?.isBooleanAmount || asset?.decimals == 0) &&
+        !(
+          CONSTANTS.NFT_CONTRACT_OVERRIDES.includes(`${asset.contractAddress}:${asset.id}`) ||
+          this.dipdupService.tokens.get(`${asset.contractAddress}:${asset.id}`)
+        )
       );
     } else {
       return (asset?.isBooleanAmount || asset?.decimals == 0) && !CONSTANTS.NFT_CONTRACT_OVERRIDES.includes(`${asset.contractAddress}`) ? true : false;
