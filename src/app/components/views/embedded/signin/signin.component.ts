@@ -6,6 +6,7 @@ import { TorusService } from '../../../../services/torus/torus.service';
 import { EmbeddedTorusWallet } from '../../../../services/wallet/wallet';
 import { CONSTANTS } from '../../../../../environments/environment';
 import { SubjectService } from '../../../../services/subject/subject.service';
+import { UtilsService } from '../../../../services/utils/utils.service';
 
 @Component({
   selector: 'app-signin',
@@ -18,7 +19,8 @@ export class SigninComponent implements OnInit, OnChanges, AfterViewInit {
     public torusService: TorusService,
     private walletService: WalletService,
     private subjectService: SubjectService,
-    private elRef: ElementRef
+    private elRef: ElementRef,
+    private utilsService: UtilsService
   ) {}
   @Input() dismiss: Boolean;
   @Input() loginConfig: LoginConfig;
@@ -149,7 +151,7 @@ export class SigninComponent implements OnInit, OnChanges, AfterViewInit {
   }
   async abort() {
     this.elRef.nativeElement.querySelector('.direct-auth-login-alt').style.animation = 'transition-down 0.25s';
-    await this.sleep(230);
+    await this.utilsService.sleep(230);
     this.loginResponse.emit(null);
     this.stopQueue();
   }
@@ -200,7 +202,7 @@ export class SigninComponent implements OnInit, OnChanges, AfterViewInit {
         await this.messageService.stopSpinner();
       }
       this.elRef.nativeElement.querySelector('.direct-auth-login-alt').style.animation = 'transition-down 0.25s';
-      await this.sleep(230);
+      await this.utilsService.sleep(230);
       this.loginResponse.emit(loginData);
       this.stopQueue();
     } catch {
@@ -308,8 +310,5 @@ export class SigninComponent implements OnInit, OnChanges, AfterViewInit {
           throw e;
         }
       });
-  }
-  private async sleep(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 }
