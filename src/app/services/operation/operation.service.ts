@@ -30,6 +30,7 @@ export class OperationService {
     tz1: new Uint8Array([6, 161, 159]),
     tz2: new Uint8Array([6, 161, 161]),
     tz3: new Uint8Array([6, 161, 164]),
+    tz4: new Uint8Array([6, 161, 166]),
     edpk: new Uint8Array([13, 15, 37, 217]),
     sppk: new Uint8Array([3, 254, 226, 86]),
     edsk: new Uint8Array([43, 246, 78, 7]),
