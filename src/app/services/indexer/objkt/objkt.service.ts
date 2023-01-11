@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CONSTANTS } from '../../../../environments/environment';
+import { UtilsService } from '../../utils/utils.service';
 
 @Injectable({
   providedIn: 'root'
@@ -7,7 +8,7 @@ import { CONSTANTS } from '../../../../environments/environment';
 export class ObjktService {
   private queue = [];
   pending = false;
-  constructor() {}
+  constructor(private utilsService: UtilsService) {}
 
   async resolveToken(contractAddress, id) {
     const req = {
@@ -49,7 +50,7 @@ export class ObjktService {
     }
     while (this.queue.length >= 500) {
       // max 500 results per call
-      await this.sleep(3000);
+      await this.utilsService.sleep(3000);
     }
     if (!this.pending) {
       this.pending = true;
@@ -114,8 +115,5 @@ export class ObjktService {
     }
     console.log('resolveCollections', objkts);
     return objkts;
-  }
-  private async sleep(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 }
