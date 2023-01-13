@@ -20,9 +20,11 @@ export class ObjktService {
           name
           attributes {
             attribute {
-              name
-              type
-              value
+              name,
+              value,
+              attribute_counts(where: {fa_contract: {_eq: "${contractAddress}"}}) {
+                editions
+              }
             }
           }
         }
@@ -92,7 +94,8 @@ export class ObjktService {
         fa(where: {contract: {_in: ${JSON.stringify(contractAddresses)}}}) {
           contract
           name
-          logo
+          logo,
+          editions
         }
       }`
     };
@@ -110,7 +113,7 @@ export class ObjktService {
     const objkts: any = {};
     if (_objkts) {
       for (const objkt of _objkts) {
-        objkts[objkt.contract] = { name: objkt.name, logo: objkt.logo };
+        objkts[objkt.contract] = { name: objkt.name, logo: objkt.logo, editions: objkt.editions };
       }
     }
     console.log('resolveCollections', objkts);

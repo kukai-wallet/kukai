@@ -41,6 +41,7 @@ export interface TokensInterface {
   objkt?: {
     name?: string;
     logo?: string;
+    editions?: number;
     updated: number;
   };
 }
@@ -79,7 +80,7 @@ export interface FA2 extends TokensInterface {
 })
 export class TokenService {
   readonly AUTO_DISCOVER: boolean = true;
-  readonly version: string = '1.0.13';
+  readonly version: string = '1.0.14';
   private contracts: ContractsType = {};
   private exploredIds: Record<string, { firstCheck: number; lastCheck: number; counter: number }> = {};
   private pendingSave = null;
@@ -162,6 +163,9 @@ export class TokenService {
   getContractLogo(contractAddress: string) {
     return this.contracts[contractAddress]?.objkt?.logo ?? null;
   }
+  getContractSize(contractAddress: string) {
+    return this.contracts[contractAddress]?.objkt?.editions;
+  }
   getContractAddressFromAsset(uri: string) {
     const contractAddresses = Object.keys(this.contracts);
     for (const contractAddress of contractAddresses) {
@@ -201,7 +205,7 @@ export class TokenService {
   addAsset(contractAddress: string, contract: ContractType) {
     if (!this.contracts[contractAddress]) {
       this.contracts[contractAddress] = contract;
-      this.checkObjktData(contractAddress, contract);
+      this.checkContractData(contractAddress, contract);
     } else {
       const currentKeys = Object.keys(this.contracts[contractAddress].tokens);
       const newKeys = Object.keys(contract.tokens);
@@ -214,7 +218,8 @@ export class TokenService {
       }
     }
   }
-  async checkObjktData(contractAddress: string, contract: ContractType) {
+
+  async checkContractData(contractAddress: string, contract: ContractType) {
     let check = false;
     if (!contract.objkt) {
       check = true;
@@ -233,6 +238,9 @@ export class TokenService {
         objkt.name = _objkt.name;
         if (_objkt.logo) {
           objkt.logo = _objkt.logo;
+        }
+        if (_objkt.editions) {
+          objkt.editions = _objkt.editions;
         }
       }
       this.contracts[contractAddress].objkt = objkt;

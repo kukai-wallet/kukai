@@ -5,6 +5,8 @@ import { Subscription } from 'rxjs';
 import { SubjectService } from '../../../../services/subject/subject.service';
 import { CONSTANTS } from '../../../../../environments/environment';
 import { UnlockableService } from '../../../../services/unlockable/unlockable.service';
+import { ObjktService } from '../../../../services/indexer/objkt/objkt.service';
+import { TokenService } from '../../../../services/token/token.service';
 
 @Component({
   selector: 'app-token-detail',
@@ -15,9 +17,10 @@ export class TokenDetail extends ModalComponent implements OnInit, OnDestroy {
   Object = Object;
   CONSTANTS = CONSTANTS;
   token = null;
-  tokenFiltered = {};
+  tokenFiltered: any = {};
   activeAccount = null;
   moreInfo = false;
+  attrInfo = false;
   imageExpanded = false;
   autoOverflow = false;
   descOverflow = false;
@@ -48,7 +51,13 @@ export class TokenDetail extends ModalComponent implements OnInit, OnDestroy {
   theme = '';
 
   private subscriptions: Subscription = new Subscription();
-  constructor(private subjectService: SubjectService, private tokenBalancesService: TokenBalancesService, private unlockableService: UnlockableService) {
+  constructor(
+    private subjectService: SubjectService,
+    private tokenBalancesService: TokenBalancesService,
+    private tokenService: TokenService,
+    private unlockableService: UnlockableService,
+    private objktService: ObjktService
+  ) {
     super();
   }
 
@@ -72,15 +81,34 @@ export class TokenDetail extends ModalComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-  open(data): void {
-    !!data
-      ? Object.keys(data)
-          .filter((key) => !this.blacklistMeta.includes(key))
-          .forEach((key) => (this.tokenFiltered[key] = data[key]))
-      : undefined;
+  async open(data): Promise<void> {
     this.token = data;
+    !!this.token
+      ? Object.keys(this.token)
+          .filter((key) => !this.blacklistMeta.includes(key))
+          .forEach((key) => (this.tokenFiltered[key] = this.token[key]))
+      : this.token;
     this.isNFT = this.tokenBalancesService.isNFT(this.token);
     this.descOverflow = this.token?.description && this.token?.description.length > 250 ? true : false;
+    this.objktService.resolveToken(this.token.contractAddress, this.token.id).then((d) => {
+      if (Object.keys(this.tokenFiltered).length === 0) {
+        return;
+      }
+      this.tokenFiltered = { ...d, ...this.tokenFiltered };
+      this.tokenFiltered.attributes = this.tokenFiltered?.attributes?.sort((a, b) =>
+        a.attribute.name > b.attribute.name ? 1 : a.attribute.name < b.attribute.name ? -1 : 0
+      );
+      const size = this.tokenService.getContractSize(this.tokenFiltered.contractAddress);
+      this.tokenFiltered.attributes = this.tokenFiltered?.attributes
+        ? this.tokenFiltered.attributes?.map((attr) => {
+            if (attr.attribute?.attribute_counts?.length) {
+              attr.attribute.freq = (attr.attribute?.attribute_counts[0].editions * 100) / size;
+              attr.attribute.freq = attr.attribute.freq === 0 ? undefined : attr.attribute.freq > 100 ? '—' : attr.attribute.freq.toFixed(2) + '%';
+            }
+            return attr;
+          })
+        : [];
+    });
     super.open();
   }
 
@@ -110,9 +138,11 @@ export class TokenDetail extends ModalComponent implements OnInit, OnDestroy {
 
   reset(): void {
     this.moreInfo = false;
+    this.attrInfo = false;
     this.imageExpanded = false;
     this.descOverflow = false;
     this.assetLoaded = false;
     this.isAudio = false;
+    this.tokenFiltered = {};
   }
 }

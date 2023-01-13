@@ -118,6 +118,11 @@
 
     --buy-background-color: #eaf1f3;
 
+
+    //token detail
+
+    --attr-label-color: #9f9f9f;
+
     &.dark {
       --theme: "dark";
       --base-background-color: #1a1b1e;
@@ -186,6 +191,8 @@
       --lqd-chart-filler-background-color: rgba(89, 99, 255, 0.114);
 
       --buy-background-color: #252526;
+
+      --attr-label-color: #737373;
     }
   }
 }
