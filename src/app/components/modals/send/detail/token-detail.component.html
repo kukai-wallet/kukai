@@ -12,7 +12,8 @@
           <app-asset [style.display]="imageExpanded ? 'none' : ''" class="flex-row button sd-only"
             [priorityList]="['displayAsset', 'thumbnailAsset']"
             [assets]="{thumbnailAsset: token?.thumbnailAsset, displayAsset: token?.displayAsset}" [size]="'small'"
-            (click)="expandImage()" (loaded)="assetLoaded = true" [autoplay]="true" [muted]="true" [loop]="true" [playsinline]="true"></app-asset>
+            (click)="expandImage()" (loaded)="assetLoaded = true" [autoplay]="true" [muted]="true" [loop]="true"
+            [playsinline]="true"></app-asset>
           <app-asset [style.display]="!imageExpanded ? 'none' : ''" class="flex-row button sd-only"
             [priorityList]="['artifactAsset', 'displayAsset', 'thumbnailAsset']"
             [assets]="{thumbnailAsset: token?.thumbnailAsset, displayAsset: token?.displayAsset, artifactAsset: token?.artifactAsset}"
@@ -58,14 +59,6 @@
                 {{token?.description}}
               </div>
             </div>
-            <div *ngIf="token?.creator" class="flex-column key-value">
-              <div class="key">
-                creator
-              </div>
-              <div class="value">
-                {{ token?.creator }}
-              </div>
-            </div>
           </div>
         </div>
         <app-asset [style.height]="isAudio ? '' : '0px'" class="flex-row audio minimal-controls" [requires]="['audio']"
@@ -76,11 +69,32 @@
         <ng-container *ngFor="let feat of Object.keys(CONSTANTS.FEATURE_CONTRACTS[type])">
           <app-ui-toggle-advanced
             *ngIf="CONSTANTS.FEATURE_CONTRACTS[type][feat]?.includes(token?.contractAddress + ':' + token?.id)"
-            [class]="'feat ' + feat" style="width: 100%" (stateChange)="toggleFeature(type, feat)"
+            [class]="'feat ' + feat" style="width: 100%; margin: 0 0 1em 0" (stateChange)="toggleFeature(type, feat)"
             [text]="(feat + ' Mode').toUpperCase()" [state]="theme === feat" [default]="theme === feat">
           </app-ui-toggle-advanced>
         </ng-container>
       </ng-container>
+      <div *ngIf="tokenFiltered?.attributes?.length" class="flex-column attr-more">
+        <div class="flex-row button attr-info" [class]="attrInfo ? 'open' : ''" (click)="attrInfo = !attrInfo">
+          <span>Attributes <span class="count">&nbsp;{{ tokenFiltered?.attributes.length }}</span></span><img src="../../../assets/img/chevron-down.svg" />
+        </div>
+        <div class="flex-row-wrap attributes" [style.maxHeight]="attrInfo ? (4.5 * Object.keys(tokenFiltered?.attributes)?.length + 6) + 'em' : '0em'"
+        [style.overflowY]="attrInfo ? 'auto' : 'hidden'">
+          <ng-container *ngFor="let a of tokenFiltered.attributes">
+            <div class="flex-column attr">
+              <div class="name">
+                {{ a.attribute.name }}
+              </div>
+              <div class="value">
+                {{ a.attribute.value }}
+              </div>
+              <div *ngIf="!!a.attribute.freq" class="freq">
+                {{ a.attribute.freq || '-' }}
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
       <div *ngIf="!!token" class="flex-row button more-info" [class]="moreInfo ? 'open' : ''" (click)="expand()">
         <span>{{ moreInfo ? 'LESS' : 'MORE' }} INFO</span><img src="../../../assets/img/chevron-down.svg" />
       </div>
@@ -93,15 +107,6 @@
             </div>
             <div class="value">
               {{ token[key] + ' ' + '(' + token['id'] + ')' }}
-            </div>
-          </div>
-          <div *ngIf="key !== 'contractAddress' && key !== 'description' && key !== 'id' && !!token[key]"
-            class="flex-column key-value">
-            <div class="key">
-              {{key}}
-            </div>
-            <div class="value">
-              {{ token[key] }}
             </div>
           </div>
         </ng-container>
