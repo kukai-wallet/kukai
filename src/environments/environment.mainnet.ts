@@ -22,7 +22,18 @@ const _CONSTANTS: Constants = {
     hard_storage_limit_per_operation: 60000
   },
   CONTRACT_ALIASES: {
-    manutd: {
+    xanadu: {
+      name: 'Xanadu NFT Gallery',
+      address: ['KT1D5o5b7dTGVe2z5mpUdWR9hWKDs8zbhtzA'],
+      thumbnailUrl: 'assets/img/alias/xanadu-nft-gallery.jpg',
+      discoverUrl: 'assets/img/alias/xanadu-nft-discover.jpg',
+      zoomDiscoverImg: true,
+      link: 'https://info.xanadu.asia/',
+      shouldDisplayLink: DisplayLinkOption.All,
+      category: ['art'],
+      description: 'Works of art minted and displayed in Xanadu NFT Gallery'
+    },
+	manutd: {
       name: 'Manchester United',
       address: ['KT1V7QCmuKpGsThwCNRALmsVfDAYopV98EEL', 'KT1JUt1DNTsZC14KAxdSop34TWBZhvZ7P9a3'],
       thumbnailUrl: 'assets/img/alias/mufc.png',
