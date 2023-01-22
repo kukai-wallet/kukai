@@ -931,6 +931,15 @@ const _CONSTANTS: Constants = {
       address: ['KT1QWtzjPpCZ7mpDdC5YxUszY1897d6JMJws'],
       thumbnailUrl: 'ipfs://QmaSjSstwf5YTqQ7aMK2cNQBVLh4XdnZu4h1kaPJdusj8G',
       shouldDisplayLink: DisplayLinkOption.None
+    },
+    HugeMoves: {
+      name: 'Huge Moves',
+      address: ['KT1SfPuWih6GhB8sppH42c1CwMPU2HZmmMrn'],
+      thumbnailUrl: '../../../assets/img/alias/hugemoves.png',
+      link: 'https://hugemoves.xyz/',
+      shouldDisplayLink: DisplayLinkOption.None,
+      category: ['collectibles'],
+      description: 'This Huge Moves Soulbound NFT Collection serves as a key to our experimental space'
     }
   },
   ASSETS: {
