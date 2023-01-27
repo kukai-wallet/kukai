@@ -205,7 +205,7 @@ $border-color: #e6eaef;
       }
 
       & .address {
-        @include m.multiply("font-size", 1, "rem", 2.5, v.$layout-break-6);
+        font-size: 1em;
         font-family: "Roboto Mono", "Roboto";
         color: $base-font-color-secondary;
       }
@@ -312,7 +312,7 @@ $border-color: #e6eaef;
             margin: 0 0 1.25em 0;
 
             & span {
-              @include m.multiply("font-size", 1, "rem", 2.5, v.$layout-break-6);
+              font-size: 1em;
               color: $base-font-color-secondary;
             }
 
