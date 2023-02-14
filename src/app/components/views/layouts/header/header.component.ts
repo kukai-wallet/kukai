@@ -51,7 +51,7 @@ export class HeaderComponent implements OnInit, OnChanges, OnDestroy {
     this.accounts = this.walletService.wallet?.getAccounts();
     this.subscriptions.add(
       this.route.queryParams.subscribe(async (params) => {
-        if (params?.type) {
+        if (params?.type || (params?.uri && params.uri.startsWith('wc:'))) {
           this.deeplinkService.set(params);
         }
       })

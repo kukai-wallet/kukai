@@ -2,46 +2,39 @@
 @use '../../abstracts/variables'as v;
 
 $color-lightened-7: v.$color-lightened-7;
-
+& .top {
+  margin: 0 !important;
+}
 & .permission-request {
-  margin: 2em 0 0 0;
+  margin: 0 0 0 0;
   align-items: center;
-
-  & .requests {
-    margin: 2em 0;
-    padding: 2em;
-    width: calc(100% - 4em);
-    background-color: $color-lightened-7;
-    border-radius: v.$border-radius;
-    
-    & span {
-      @include m.multiply("font-size", 1, "em");
-      color: v.$base-font-color-secondary-half;
-      text-transform: uppercase;
-      font-weight: 500;
-
-      &:before {
-        @include m.multiply("height", 1.375, "em");
-        content: "◆";
-        margin: 0 0.5em 0 0;
-      }
-    }
-  }
-
-  & h4 {
-    @include m.multiply("font-size", 1.375, "em");
-    color: v.$base-font-color;
+  & .transport {
+    margin-top: -0.75rem;
+    font-size: 1rem;
+    color: #696A80;
     font-weight: 500;
+    margin-bottom: 2rem;
   }
-
+  & .dapp-name {
+    font-size: 1.5rem;
+    color: #555CCA;
+    font-weight: 400;
+    margin-bottom: 1rem;
+  }
+  & .question {
+    font-size: 1rem;
+    color: #4E5066;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  & .app-icon {
+    margin-bottom: 0.25rem !important;
+  }
   & h6 {
     @include m.multiply("font-size", 1, "em");
     text-transform: uppercase;
     color: v.$base-font-color-secondary;
     font-weight: 500;
-  }
-
-  & .seperator {
-    left: 0;
   }
 }

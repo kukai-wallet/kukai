@@ -7,6 +7,7 @@ $color-lightened-4: v.$color-lightened-4;
 $border-width: v.$border-width;
 $border-color: v.$border-color;
 $border-color-dark-only: v.$border-color-dark-only;
+$button-background-color: v.$button-background-color;
 $base-background-color: v.$base-background-color;
 $base-filter-contrast-invert-11: v.$base-filter-contrast-invert-11;
 
@@ -17,7 +18,30 @@ $base-filter-contrast-invert-11: v.$base-filter-contrast-invert-11;
   align-items: center;
   flex-direction: column;
   min-height: calc(100vh - 18rem);
+  & button.restart {
+    margin-left: 0.5rem;
+    height: 2.5rem;
+    padding: 0.5rem 1rem;
+    background: none;
+    color: $button-background-color;
+    border-color: $button-background-color;
+  }
+  & span.blue-click {
+    color: $button-background-color;
+    cursor: pointer;
+  }
 
+  & tbody.wc.pairings tr td:nth-child(2),
+  & tbody.wc.sessions tr td:nth-child(3) {
+    width: 1.5rem;
+  }
+  & tbody.wc.pairings tr.dapp td:nth-child(2),
+  & tbody.wc.sessions tr.dapp td:nth-child(3) {
+    width: 8rem;
+  }
+  tbody.wc.sessions tr.dapp img.modify {
+    margin-right: 1.5rem;
+  }
   & a {
     text-decoration: none;
     & .back {
@@ -172,7 +196,7 @@ $base-filter-contrast-invert-11: v.$base-filter-contrast-invert-11;
 
     &:last-child {
       text-align: right;
-      width: 1rem;
+      //width: 2rem;
 
       & img {
         cursor: pointer;

@@ -196,6 +196,7 @@ $border-color: #e6eaef;
         width: 64%;
         height: auto;
         justify-content: space-between;
+        font-size: 1rem;
       }
 
       & .domain {
@@ -205,7 +206,7 @@ $border-color: #e6eaef;
       }
 
       & .address {
-        @include m.multiply("font-size", 1, "rem", 2.5, v.$layout-break-6);
+        font-size: 1em;
         font-family: "Roboto Mono", "Roboto";
         color: $base-font-color-secondary;
       }
@@ -304,15 +305,15 @@ $border-color: #e6eaef;
           justify-content: center;
 
           & .single-to {
-            @include m.multiply("font-size", 1.125, "rem");
             color: $base-font-color-secondary;
             font-weight: 400;
             cursor: pointer;
             width: 100%;
             margin: 0 0 1.25em 0;
+            font-size: 1rem;
 
             & span {
-              @include m.multiply("font-size", 1, "rem", 2.5, v.$layout-break-6);
+              font-size: 1em;
               color: $base-font-color-secondary;
             }
 
@@ -327,7 +328,6 @@ $border-color: #e6eaef;
 
             &.default {
               font-weight: 400;
-              font-size: 1em;
               cursor: unset;
               margin: 0;
 

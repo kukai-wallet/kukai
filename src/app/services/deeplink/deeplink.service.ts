@@ -25,6 +25,8 @@ export class DeeplinkService {
       } catch (e) {
         return '';
       }
+    } else if (params?.uri && params.uri.startsWith('wc:')) {
+      return params.uri;
     }
     return '';
   }

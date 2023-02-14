@@ -91,14 +91,12 @@ export class PermissionRequestComponent implements OnInit, OnChanges, OnDestroy 
     return scope;
   }
   cachedIcon(permissionRequest): string {
-    if (permissionRequest) {
-      for (const app of this.beaconService.peers) {
-        if (permissionRequest.senderId === app.senderId) {
-          if (app.cachedIcon) {
-            return app.cachedIcon;
-          }
-        }
+    if (permissionRequest?.appMetadata?.icon) {
+      let icon = permissionRequest?.appMetadata?.icon;
+      if (icon.startsWith('https://')) {
+        icon = icon.slice(8);
       }
+      return `https://static.tcinfra.net/media/medium/web/${icon}`;
     }
     return '';
   }

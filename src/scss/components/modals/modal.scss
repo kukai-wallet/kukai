@@ -223,6 +223,8 @@ $base-filter-contrast-invert-01: v.$base-filter-contrast-invert-01;
 
     @import "./permission-request.scss";
 
+    @import "./session-select.scss";
+
     @import "./account-list.scss";
 
     @import "./info.scss";

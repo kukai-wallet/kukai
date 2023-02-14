@@ -32,6 +32,7 @@ const routes: Routes = [
   },
   { path: 'privacy-policy', component: PrivacyPolicyComponent },
   { path: 'terms-of-use', component: TermsOfUseComponent },
+  { path: 'wc', redirectTo: '' },
   { path: '404', component: P404Component, data: { title: 'Page 404' } },
   { path: '500', component: P500Component, data: { title: 'Page 500' } },
   { path: '**', redirectTo: '404' }

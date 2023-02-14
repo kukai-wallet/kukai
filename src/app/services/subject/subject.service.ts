@@ -33,6 +33,7 @@ export class SubjectService {
   public beaconResponse: Subject<boolean>;
   public logout: Subject<boolean>;
   public buy: Subject<BuyProvider>;
+  public wc2: Subject<any>;
   constructor() {
     this.init();
     this.logout.subscribe((o) => {
@@ -51,6 +52,7 @@ export class SubjectService {
     this.beaconResponse = new Subject<boolean>();
     this.logout = new Subject<boolean>();
     this.buy = new Subject<BuyProvider>();
+    this.wc2 = new Subject<any>();
   }
   reset() {
     this.metadataUpdated.next(null);

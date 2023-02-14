@@ -5,6 +5,7 @@ import { DeeplinkService } from '../../../services/deeplink/deeplink.service';
 import { CONSTANTS as _CONSTANTS, environment } from '../../../../environments/environment';
 import { MessageService } from '../../../services/message/message.service';
 import { ModalComponent } from '../modal.component';
+import { WalletConnectService } from '../../../services/wallet-connect/wallet-connect.service';
 
 @Component({
   selector: 'app-qr-scanner',
@@ -14,7 +15,12 @@ import { ModalComponent } from '../modal.component';
 export class QrScannerComponent extends ModalComponent {
   readonly CONSTANTS = _CONSTANTS;
   readonly env = environment;
-  constructor(private beaconService: BeaconService, private deeplinkService: DeeplinkService, private messageService: MessageService) {
+  constructor(
+    private beaconService: BeaconService,
+    private deeplinkService: DeeplinkService,
+    private messageService: MessageService,
+    private walletConnectService: WalletConnectService
+  ) {
     super();
   }
   @Output('scanResponse') scanResponse = new EventEmitter();
@@ -72,7 +78,7 @@ export class QrScannerComponent extends ModalComponent {
       }
     }
   }
-  handlePaste(ev: ClipboardEvent): void {
+  async handlePaste(ev: ClipboardEvent) {
     try {
       const clipboardString = ev?.clipboardData?.getData('text');
       const pairingInfo = clipboardString ? this.deeplinkService.QRtoPairingJson(clipboardString) : '';
@@ -81,6 +87,8 @@ export class QrScannerComponent extends ModalComponent {
         this.beaconService.addPeer(pairingInfo);
       } else if (clipboardString && this.override) {
         this.scanResponse.emit({ pkh: clipboardString });
+      } else if (clipboardString.startsWith('wc')) {
+        this.walletConnectService.pair(clipboardString);
       }
       this.closeModal();
     } catch (e) {
