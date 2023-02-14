@@ -51,28 +51,6 @@ export class BeaconService {
     await this.client.addPeer(pairInfo, force);
     this.syncBeaconState();
     this.messageService.removeBeaconMsg();
-    if (pairInfo.icon && pairInfo.icon.startsWith('https://')) {
-      this.cacheIcon(pairInfo);
-    }
-  }
-  async cacheIcon(pairInfo: any) {
-    const key = 'beacon:communication-peers-wallet';
-    const asset: Asset = pairInfo.icon;
-    const json = localStorage.getItem(key);
-    if (!json || !asset) {
-      return;
-    }
-    const peers = JSON.parse(json);
-    if (peers) {
-      for (const peer of peers) {
-        if (peer.icon === pairInfo.icon) {
-          peer.cachedIcon = asset;
-          break;
-        }
-      }
-      localStorage.setItem(key, JSON.stringify(peers));
-      this.syncBeaconState();
-    }
   }
   async syncBeaconState() {
     this.peers = await this.getPeers();

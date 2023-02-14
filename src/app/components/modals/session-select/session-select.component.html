@@ -1,0 +1,19 @@
+<div *ngIf="isOpen" class="flex-column kukai-modal">
+  <div class="content">
+    <div class="flex-row top">
+      <div class="flex-row button close" (click)="close()"><img class="x"
+          src="../../../assets/img/close-btn-x.png" /></div>
+      <h1 class="title">Change Session Account</h1>
+    </div>
+    <div class="seperator"></div>
+    <div class="flex-column session-select">
+      <app-ui-dropdown-session-select [options]="accounts" [current]="selectedAccount"
+        (dropdownResponse)="selectedAccount = $event" style="width: 100%;align-self: center;">
+      </app-ui-dropdown-session-select>
+      <div class="flex-column bottom">
+        <div class="seperator"></div>
+        <button class="blue confirm" (click)="changeAddress()">Confirm</button>
+      </div>
+    </div>
+  </div>
+</div>

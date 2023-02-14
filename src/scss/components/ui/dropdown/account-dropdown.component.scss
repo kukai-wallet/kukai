@@ -21,6 +21,29 @@ $border-width-dark-only: v.$border-width-dark-only;
   position: relative;
   margin: 0 0.5em 0 0;
 
+  &.session-select {
+    width: 100%;
+    margin: 1em 0;
+
+    & .dropdown-content {
+      position: initial;
+      width: 100%;
+    }
+    &.expanded {
+      & .dropdown-content {
+        overflow-y: auto;
+      }
+    }
+    
+    & .currentAddress {
+      width: calc(100% - 1em - #{$border-width});
+    }
+
+    & .icon-db {
+      right: 0.75em;
+    }
+  }
+
   &.pr-request {
     width: 100%;
     margin: 1em 0;

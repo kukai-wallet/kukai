@@ -43,6 +43,8 @@ import { ChartComponent } from '../../ui/chart/chart.component';
 import { ChartService } from '../../../../app/services/chart/chart.service';
 import { BuyComponent } from './account-view/buy/buy.component';
 import { BuyModalComponent } from '../../modals/buy/buy.component';
+import { SessionSelectComponent } from '../../modals/session-select/session-select.component';
+import { SessionSelectDropdownComponent } from '../../ui/dropdown/session-select/session-select.component';
 
 @NgModule({
   declarations: [
@@ -83,7 +85,9 @@ import { BuyModalComponent } from '../../modals/buy/buy.component';
     ExportMnemonicComponent,
     ChartComponent,
     BuyComponent,
-    BuyModalComponent
+    BuyModalComponent,
+    SessionSelectComponent,
+    SessionSelectDropdownComponent
   ],
   imports: [CommonModule, LoggedInRoutingModule, HttpClientModule, FormsModule],
   exports: [
@@ -99,6 +103,8 @@ import { BuyModalComponent } from '../../modals/buy/buy.component';
     NftsTokenComponent,
     PermissionRequestComponent,
     PermissionRequestDropdownComponent,
+    SessionSelectComponent,
+    SessionSelectDropdownComponent,
     ListComponent,
     AccountListComponent,
     AccountListBodyComponent,

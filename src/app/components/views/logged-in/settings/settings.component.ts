@@ -9,6 +9,7 @@ import { CoordinatorService } from '../../../../services/coordinator/coordinator
 import { SubjectService } from '../../../../services/subject/subject.service';
 import { ModalComponent } from '../../../../components/modals/modal.component';
 import { HdWallet, LegacyWalletV3 } from '../../../../services/wallet/wallet';
+import { WalletConnectService } from '../../../../services/wallet-connect/wallet-connect.service';
 
 @Component({
   selector: 'app-settings',
@@ -27,7 +28,8 @@ export class SettingsComponent implements OnInit, OnDestroy {
     private router: Router,
     private tokenService: TokenService,
     private coordinatorService: CoordinatorService,
-    private subjectService: SubjectService
+    private subjectService: SubjectService,
+    public walletConnectService: WalletConnectService
   ) {}
 
   ngOnInit(): void {
@@ -80,4 +82,8 @@ export class SettingsComponent implements OnInit, OnDestroy {
   canRevealMnomonic(): boolean {
     return this.walletService.wallet && (this.walletService.wallet instanceof HdWallet || this.walletService.wallet instanceof LegacyWalletV3);
   }
+  changeSession(session: any): void {
+    ModalComponent.currentModel.next({ name: 'session-select', data: { topic: session.topic, preSelectedAccountAddress: session.address } });
+  }
+  unsorted() {}
 }

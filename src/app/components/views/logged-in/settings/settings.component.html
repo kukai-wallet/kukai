@@ -1,5 +1,6 @@
 <div class="flex-column settings">
-  <a><button class="flex-row back" [routerLink]="'/account/' + activeAccount?.address"><img src="../../../../../assets/img/left-arrow.svg">BACK</button></a>
+  <a><button class="flex-row back" [routerLink]="'/account/' + activeAccount?.address"><img
+        src="../../../../../assets/img/left-arrow.svg">BACK</button></a>
   <h3>Connect with dApps</h3>
   <div class="seperator"></div>
   <div class="flex-column handler">
@@ -10,6 +11,94 @@
       <app-qr-scanner></app-qr-scanner>
     </div>
   </div>
+  <ng-container *ngIf="walletConnectService?.wc2activated">
+    <h3 style="height: 1.5rem">Wallet Connect&nbsp;<span *ngIf="walletConnectService.active; else inactive"
+        style="color: #57E964; font-size: 1.5rem">⬤</span>
+      <ng-template #inactive>
+        <span style="color: red; font-size: 1.5rem">⬤</span>
+          <button class="restart" (click)="this.walletConnectService.restart()">Connect</button>
+      </ng-template>
+    </h3>
+    <div class="seperator"></div>
+    <div style="margin-left: 1rem">
+      <ng-container *ngIf="walletConnectService.client && walletConnectService.active">
+        <ng-container *ngIf="walletConnectService.pairings.size">
+          <h4>Pairings <span class="blue-click"
+              (click)="walletConnectService.pairings.expanded = !walletConnectService.pairings.expanded">&nbsp;{{
+              walletConnectService.pairings.expanded ? '&ndash;' : '+'}}&nbsp;</span>
+            <ng-container
+              *ngIf="walletConnectService.pairings.size">({{walletConnectService.pairings.size}})</ng-container>
+          </h4>
+          <table *ngIf="walletConnectService.pairings.expanded">
+            <tbody class="wc pairings">
+              <ng-container *ngFor="let dapp of walletConnectService.pairings.dapp | keyvalue">
+                <tr class="dapp">
+                  <td>{{ dapp.key }}<ng-container *ngIf="dapp?.value?.p?.length > 1">&nbsp;<span class="blue-click"
+                        (click)="walletConnectService.pairings.dapp[dapp.key].expanded = !walletConnectService.pairings.dapp[dapp.key].expanded">
+                        {{ dapp?.value?.expanded ? '&ndash;' : '+' }}
+                      </span>
+                      <ng-container *ngIf="walletConnectService.pairings?.dapp[dapp.key].p?.length > 1">
+                        ({{walletConnectService.pairings.dapp[dapp.key].p.length}})</ng-container>
+                    </ng-container>
+                  </td>
+                  <td><img (click)="walletConnectService.deletePairings(dapp?.value?.p)"
+                      src="../../../assets/img/wc_delete.svg"></td>
+                </tr>
+                <ng-container *ngIf="dapp?.value?.expanded && dapp?.value?.p?.length > 1">
+                  <tr *ngFor="let p of dapp?.value?.p | keyvalue: unsorted">
+                    <td>&emsp;#{{ p.key }}</td>
+                    <td><img (click)="walletConnectService.deletePairings([p?.value])"
+                        src="../../../assets/img/wc_delete.svg"></td>
+                  </tr>
+                </ng-container>
+              </ng-container>
+            </tbody>
+          </table>
+        </ng-container>
+        <ng-container *ngIf="walletConnectService.sessions.size">
+          <h4>Sessions <span class="blue-click"
+              (click)="walletConnectService.sessions.expanded = !walletConnectService.sessions.expanded">&nbsp;{{
+              walletConnectService.sessions.expanded ? '&ndash;' : '+'}}&nbsp;</span>
+            <ng-container
+              *ngIf="walletConnectService.sessions.size">({{walletConnectService.sessions.size}})</ng-container>
+          </h4>
+          <table *ngIf="walletConnectService.sessions.expanded">
+            <tbody class="wc sessions">
+              <ng-container *ngFor="let dapp of walletConnectService.sessions.dapp | keyvalue">
+                <tr class="dapp">
+                  <td>{{ dapp.key }}<ng-container *ngIf="dapp?.value?.s?.length > 1">&nbsp;<span class="blue-click"
+                        (click)="walletConnectService.sessions.dapp[dapp.key].expanded = !walletConnectService.sessions.dapp[dapp.key].expanded">
+                        {{ dapp?.value?.expanded ? '&ndash;' : '+' }}
+                      </span>
+                      <ng-container *ngIf="walletConnectService.sessions?.dapp[dapp.key].s?.length > 1">
+                        ({{walletConnectService.sessions.dapp[dapp.key].s.length}})</ng-container>
+                    </ng-container>
+                  </td>
+                  <td>
+                    <ng-container *ngIf="!(dapp?.value?.s?.length > 1)">{{ dapp.value.s[0].address }}
+                    </ng-container>
+                  </td>
+                  <td>
+                    <img class="modify" (click)="changeSession(dapp.value.s[0])" src="../../../assets/img/wc_modify.svg" *ngIf="!(dapp?.value?.s?.length > 1)">
+                    <img (click)="walletConnectService.deleteSessions(dapp?.value?.s)" src="../../../assets/img/wc_delete.svg">
+                  </td>
+                </tr>
+                <ng-container *ngIf="dapp?.value?.expanded && dapp?.value?.s?.length > 1">
+                  <tr *ngFor="let s of dapp?.value?.s | keyvalue: unsorted">
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;#{{ s.key }}</td>
+                    <td>{{s?.value?.address}}</td>
+                    <td><img (click)="walletConnectService.deleteSessions([s?.value])"
+                        src="../../../assets/img/wc_delete.svg">
+                    </td>
+                  </tr>
+                </ng-container>
+              </ng-container>
+            </tbody>
+          </table>
+        </ng-container>
+      </ng-container>
+    </div>
+  </ng-container>
   <h3>Peers</h3>
   <div class="seperator"></div>
   <table *ngIf="beaconService.peers.length">
@@ -24,7 +113,8 @@
       <tr *ngFor="let peer of beaconService.peers; index as i">
         <td>{{ peer.name }}</td>
         <td>{{ peer.relayServer }}</td>
-        <td (click)="beaconService.removePeer(i)"><img (click)="beaconService.removePeer(i)" src="../../../assets/img/cross.svg"></td>
+        <td (click)="beaconService.removePeer(i)"><img (click)="beaconService.removePeer(i)"
+            src="../../../assets/img/cross.svg"></td>
       </tr>
     </tbody>
   </table>
