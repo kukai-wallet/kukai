@@ -16,7 +16,7 @@
         style="color: #57E964; font-size: 1.5rem">⬤</span>
       <ng-template #inactive>
         <span style="color: red; font-size: 1.5rem">⬤</span>
-          <button class="restart" (click)="this.walletConnectService.restart()">Connect</button>
+        <button *ngIf="!recentlyRestartedWc2" class="restart" (click)="this.restart()">Connect</button>
       </ng-template>
     </h3>
     <div class="seperator"></div>

@@ -8,6 +8,7 @@ import { CONSTANTS, environment } from '../../../environments/environment';
 import { SubjectService } from '../subject/subject.service';
 import { OperationService } from '../operation/operation.service';
 import { BcService, MessageKind } from '../bc/bc.service';
+import { WalletService } from '../wallet/wallet.service';
 
 interface Pairings {
   expanded: boolean;
@@ -42,7 +43,7 @@ interface DSession {
   providedIn: 'root'
 })
 export class WalletConnectService {
-  readonly supportedMethods = ['tezos_send', 'tezos_sign'];
+  readonly supportedMethods = ['tezos_send', 'tezos_sign', 'tezos_getAccounts'];
   readonly supportedEvents = [];
   wc2activated = false;
   client: Client;
@@ -56,7 +57,12 @@ export class WalletConnectService {
     pairingsExpanded: boolean;
     sessionsExpanded: boolean;
   } = { pairing: {}, session: {}, pairingsExpanded: false, sessionsExpanded: false };
-  constructor(private subjectService: SubjectService, private operationService: OperationService, private bcService: BcService) {
+  constructor(
+    private subjectService: SubjectService,
+    private operationService: OperationService,
+    private bcService: BcService,
+    private walletService: WalletService
+  ) {
     (async () => {
       this.wc2activated = !!localStorage.getItem('wc2-activated');
       if (this.wc2activated) {
@@ -103,6 +109,7 @@ export class WalletConnectService {
           break;
         case 1: // Another tab flag itself as active => make sure this tab is flagged as inactive
           this.active = false;
+          this.removeListeners();
           break;
         case 2: // Tab with inactive wc2 connection closed => restart transport as hotfix for bug that can occur with 3 or more Kukai tabs open
           if (this.active) this.restart();
@@ -138,6 +145,9 @@ export class WalletConnectService {
         this.refresh();
       }, 100);
     });
+    // this.client.core.heartbeat.events.on('heartbeat_pulse', (data) => {
+    //   console.log('heartbeat', data);
+    // })
     const unhandledSignClientEvents: SignClientTypes.Event[] = [
       'session_update',
       'session_extend',
@@ -190,15 +200,21 @@ export class WalletConnectService {
     const data = request.wcData;
     console.log('data', data);
     const namespaces: SessionTypes.Namespaces = {};
-    Object.keys(data.params.requiredNamespaces).forEach((key) => {
-      const address = this.operationService.pk2pkh(publicKey);
-      const accounts: string[] = [`tezos:${CONSTANTS.NETWORK}:${address}`];
-      namespaces[key] = {
-        accounts,
-        methods: data.params.requiredNamespaces[key].methods.filter((method) => this.supportedMethods.includes(method)),
-        events: data.params.requiredNamespaces[key].events.filter((event) => this.supportedEvents.includes(event))
-      };
-    });
+    const address = this.operationService.pk2pkh(publicKey);
+    const accounts: string[] = [`tezos:${CONSTANTS.NETWORK}:${address}`];
+    const methods = data.params.requiredNamespaces?.tezos?.methods
+      ?.filter((method) => this.supportedMethods.includes(method))
+      .concat(data.params.optionalNamespaces?.tezos?.methods?.filter((method) => this.supportedMethods.includes(method)))
+      .filter((m) => m);
+    const events = data.params.requiredNamespaces?.tezos?.events
+      ?.filter((event) => this.supportedEvents.includes(event))
+      .concat(data.params.optionalNamespaces?.tezos?.events?.filter((event) => this.supportedEvents.includes(event)))
+      .filter((e) => e);
+    namespaces.tezos = {
+      accounts,
+      methods,
+      events
+    };
     const { topic, acknowledged } = await this.client.approve({
       id: data.id,
       relayProtocol: data.params.relays[0].protocol,
@@ -234,32 +250,58 @@ export class WalletConnectService {
     if (!allowedMethods.includes(method)) {
       throw new Error(`Method not allowed: ${method}`);
     }
-    if (!allowedAccounts.includes(account)) {
+    if (!allowedAccounts.includes(account) && !['tezos_getAccounts'].includes(method)) {
       throw new Error(`Account not allowed: ${account}`);
     }
-    if (data?.params?.request?.method === 'tezos_send') {
-      const message: any = {
-        type: 'operation_request',
-        version: 0,
-        sourceAddress: data.params.request.params.account,
-        operationDetails: data.params.request.params.operations,
-        network: { type: data.params.chainId.split(':')[1] },
-        wcData: data
-      };
-      this.subjectService.wc2.next(message);
-    } else if (data?.params?.request?.method === 'tezos_sign') {
-      const message: any = {
-        type: 'sign_payload_request',
-        version: 0,
-        sourceAddress: data.params.request.params.account,
-        signingType: 'raw',
-        payload: data.params.request.params.payload,
-        wcData: data
-      };
-      this.subjectService.wc2.next(message);
-    } else {
-      console.warn('Unhandled request');
-      return;
+    switch (method) {
+      case 'tezos_send':
+        this.subjectService.wc2.next({
+          type: 'operation_request',
+          version: 0,
+          sourceAddress: data.params.request.params.account,
+          operationDetails: data.params.request.params.operations,
+          network: { type: data.params.chainId.split(':')[1] },
+          wcData: data
+        });
+        break;
+      case 'tezos_sign':
+        this.subjectService.wc2.next({
+          type: 'sign_payload_request',
+          version: 0,
+          sourceAddress: data.params.request.params.account,
+          signingType: 'raw',
+          payload: data.params.request.params.payload,
+          wcData: data
+        });
+        break;
+      case 'tezos_getAccounts':
+        try {
+          const session = this.client.session.get(data.topic);
+          const accounts: { algo: string; address: string; pubkey: string }[] = session.namespaces.tezos.accounts.map((account) => {
+            const address: string = account.split(':')[2];
+            const impAcc = this.walletService.wallet.getImplicitAccount(address);
+            if (!impAcc) {
+              throw new Error('User is not logged in with the requested account');
+            }
+            const algo: string = address.startsWith('tz1') ? 'ed25519' : address.startsWith('tz2') ? 'secp256k1' : 'unknown';
+            const pubkey = impAcc.pk;
+            return { algo, address, pubkey };
+          });
+          await this.client.respond({
+            topic: data.topic,
+            response: formatJsonRpcResult(data.id, accounts)
+          });
+        } catch (e) {
+          console.error(e.message);
+          const error = formatJsonRpcError(data.id, getSdkError('USER_REJECTED').message);
+          await this.client.respond({
+            topic: data.topic,
+            response: error
+          });
+        }
+        break;
+      default:
+        console.warn('Unhandled request');
     }
     this.client.extend({ topic: data.topic });
     this.refresh();
@@ -379,9 +421,28 @@ export class WalletConnectService {
   }
   async restart() {
     console.time('restart');
+    await this.removeListeners();
     await this.init();
-    //await this.client.core.relayer.restartTransport();
     this.active = true;
     console.timeEnd('restart');
+  }
+  private async removeListeners(path = []) {
+    const isObject = (val) => val && typeof val === 'object' && !Array.isArray(val);
+    let obj: any = this.client;
+    path.forEach((prop) => {
+      obj = obj[prop];
+    });
+    if (isObject(obj)) {
+      if (obj?.events?.eventNames()?.length) {
+        for (const key of obj.events.eventNames()) {
+          await obj.events.removeAllListeners(key as any);
+        }
+      }
+      Object.keys(obj).forEach((key: string) => {
+        if (!path.includes(key)) {
+          this.removeListeners([...path, key]);
+        }
+      });
+    }
   }
 }
