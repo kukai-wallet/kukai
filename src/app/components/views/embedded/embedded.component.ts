@@ -247,6 +247,14 @@ export class EmbeddedComponent implements OnInit {
         operations: false,
         micheline: false
       }
+    },
+    mclaren: {
+      origins: ['*.mclaren.com'],
+      permissions: {
+        login: true,
+        operations: true,
+        micheline: false
+      }
     }
   };
   constructor(
