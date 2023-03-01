@@ -51,6 +51,14 @@
                 {{ token?.decimals }}
               </div>
             </div>
+            <!-- <div *ngIf="isNFT && !!tokenFiltered?.last_sale" class="flex-column key-value">
+              <div class="key">
+                Last Sale Price
+              </div>
+              <div class="value">
+                {{ tokenFiltered.last_sale + ' tez' }}
+              </div>
+            </div> -->
             <div *ngIf="token?.description" class="flex-column key-value desc">
               <div class="key">
                 description
@@ -65,6 +73,7 @@
           [assets]="token" [priorityList]="['artifactAsset']" [size]="'raw'" [autoplay]="true" [muted]="true"
           [hideSpinner]="true" [controls]="true" (load)="isAudio = true"></app-asset>
       </div>
+      <span *ngIf="isNFT && token?.floorPrice" class="floor-price">Collection Floor Price: <span>{{ token?.floorPrice + ' tez' }}</span></span>
       <ng-container *ngFor="let type of Object.keys(CONSTANTS.FEATURE_CONTRACTS)">
         <ng-container *ngFor="let feat of Object.keys(CONSTANTS.FEATURE_CONTRACTS[type])">
           <app-ui-toggle-advanced
