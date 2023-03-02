@@ -28,21 +28,37 @@ export class ObjktService {
             }
           }
         }
+        event(
+          where: {token: {fa_contract: {_eq: "${contractAddress}"}, token_id: {_eq: "${id}"}}, event_type_deprecated: {_is_null: false, _in: ["accept_offer", "ask_purchase", "conclude_auction"]}}
+          order_by: {level: asc, timestamp: desc}
+          limit: 1
+        ) {
+          price_xtz
+        }
+        fa(where: {contract: {_eq: "${contractAddress}"}}) {
+          editions
+          floor_price
+        }
       }`
     };
     try {
-      return (
-        await (
-          await fetch(CONSTANTS.OBJKT_URL, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(req)
-          })
-        ).json()
-      )?.data?.token[0];
-    } catch {
+      const result = await (
+        await fetch(CONSTANTS.OBJKT_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(req)
+        })
+      ).json();
+      return {
+        ...result?.data?.token[0],
+        last_sale: result?.data?.event[0]?.price_xtz,
+        floor_price: result?.data?.fa[0]?.floor_price,
+        editions: result?.data?.fa[0]?.editions
+      };
+    } catch (e) {
+      console.error(e);
       return undefined;
     }
   }
@@ -94,8 +110,7 @@ export class ObjktService {
         fa(where: {contract: {_in: ${JSON.stringify(contractAddresses)}}}) {
           contract
           name
-          logo,
-          editions
+          logo
         }
       }`
     };
@@ -113,7 +128,7 @@ export class ObjktService {
     const objkts: any = {};
     if (_objkts) {
       for (const objkt of _objkts) {
-        objkts[objkt.contract] = { name: objkt.name, logo: objkt.logo, editions: objkt.editions };
+        objkts[objkt.contract] = { name: objkt.name, logo: objkt.logo };
       }
     }
     console.log('resolveCollections', objkts);

@@ -7,7 +7,7 @@ import { CONSTANTS } from '../../../../../environments/environment';
 import { UnlockableService } from '../../../../services/unlockable/unlockable.service';
 import { ObjktService } from '../../../../services/indexer/objkt/objkt.service';
 import { TokenService } from '../../../../services/token/token.service';
-
+import Big from 'big.js';
 @Component({
   selector: 'app-token-detail',
   templateUrl: './token-detail.component.html',
@@ -94,11 +94,13 @@ export class TokenDetail extends ModalComponent implements OnInit, OnDestroy {
       if (Object.keys(this.tokenFiltered).length === 0) {
         return;
       }
+      this.token.floorPrice = d?.floor_price ? Big(d.floor_price).div(1000000) : undefined;
+      d?.last_sale ? (d.last_sale = Big(d.last_sale).div(1000000)) : undefined;
       this.tokenFiltered = { ...d, ...this.tokenFiltered };
       this.tokenFiltered.attributes = this.tokenFiltered?.attributes?.sort((a, b) =>
         a.attribute.name > b.attribute.name ? 1 : a.attribute.name < b.attribute.name ? -1 : 0
       );
-      const size = this.tokenService.getContractSize(this.tokenFiltered.contractAddress);
+      const size = d?.editions;
       this.tokenFiltered.attributes = this.tokenFiltered?.attributes
         ? this.tokenFiltered.attributes?.map((attr) => {
             if (attr.attribute?.attribute_counts?.length) {

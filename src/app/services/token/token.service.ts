@@ -41,7 +41,6 @@ export interface TokensInterface {
   objkt?: {
     name?: string;
     logo?: string;
-    editions?: number;
     updated: number;
   };
 }
@@ -163,9 +162,6 @@ export class TokenService {
   getContractLogo(contractAddress: string) {
     return this.contracts[contractAddress]?.objkt?.logo ?? null;
   }
-  getContractSize(contractAddress: string) {
-    return this.contracts[contractAddress]?.objkt?.editions;
-  }
   getContractAddressFromAsset(uri: string) {
     const contractAddresses = Object.keys(this.contracts);
     for (const contractAddress of contractAddresses) {
@@ -238,9 +234,6 @@ export class TokenService {
         objkt.name = _objkt.name;
         if (_objkt.logo) {
           objkt.logo = _objkt.logo;
-        }
-        if (_objkt.editions) {
-          objkt.editions = _objkt.editions;
         }
       }
       this.contracts[contractAddress].objkt = objkt;
