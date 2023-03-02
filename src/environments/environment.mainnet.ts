@@ -22,6 +22,17 @@ const _CONSTANTS: Constants = {
     hard_storage_limit_per_operation: 60000
   },
   CONTRACT_ALIASES: {
+    mclarenracing: {
+      name: 'McLaren Racing Digital Collectibles',
+      address: ['KT1PEGqt5rMmHpyaMXc8RFTFkkAUDrzSFRWk', 'KT1BRADdqGk2eLmMqvyWzqVmPQ1RCBCbW5dY'],
+      thumbnailUrl: '../../../assets/img/alias/mclaren-thumbnail2.png',
+      discoverUrl: '../../../assets/img/alias/mclaren-discover2.png',
+      link: 'https://collectibles.mclaren.com',
+      shouldDisplayLink: DisplayLinkOption.All,
+      category: ['sports', 'collectibles'],
+      description: "McLaren Racing's officially licensed Digital Collectibles",
+      zoomDiscoverImg: true
+    },
     manutd: {
       name: 'Manchester United',
       address: ['KT1V7QCmuKpGsThwCNRALmsVfDAYopV98EEL', 'KT1JUt1DNTsZC14KAxdSop34TWBZhvZ7P9a3', 'KT1FE8NtDa7snc9nrQMx9NpfoU98uEj52tyz'],
@@ -113,17 +124,6 @@ const _CONSTANTS: Constants = {
       thumbnailUrl: '../../../assets/img/alias/vitality.png',
       link: '',
       shouldDisplayLink: DisplayLinkOption.None
-    },
-    mclarenracing: {
-      name: 'McLaren Racing Collective',
-      address: ['KT1PEGqt5rMmHpyaMXc8RFTFkkAUDrzSFRWk'],
-      thumbnailUrl: '../../../assets/img/alias/mclaren-thumbnail.png',
-      discoverUrl: '../../../assets/img/alias/mclaren-discover.png',
-      link: 'https://mclarenracingcollective.com',
-      shouldDisplayLink: DisplayLinkOption.All,
-      category: ['collectibles'],
-      description: 'Collect & Build a digital MCL35M F1 CAR',
-      backgroundColor: 'black'
     },
     OneOf: {
       name: 'OneOf',
