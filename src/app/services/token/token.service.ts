@@ -25,6 +25,7 @@ export interface TokenResponseType {
   shouldPreferSymbol?: boolean;
   series?: string;
   ttl?: number;
+  mintingTool?: string;
   status: Status;
   isUnknownToken?: boolean;
 }
@@ -62,6 +63,7 @@ export interface TokenData {
   shouldPreferSymbol?: boolean;
   series?: string;
   ttl?: number;
+  mintingTool?: string;
   status: Status;
 }
 export interface FA12 extends TokensInterface {
@@ -79,7 +81,7 @@ export interface FA2 extends TokensInterface {
 })
 export class TokenService {
   readonly AUTO_DISCOVER: boolean = true;
-  readonly version: string = '1.0.14';
+  readonly version: string = '1.0.15';
   private contracts: ContractsType = {};
   private exploredIds: Record<string, { firstCheck: number; lastCheck: number; counter: number }> = {};
   private pendingSave = null;
@@ -108,7 +110,7 @@ export class TokenService {
       return null;
     }
     const tokenIdArray = tokenId.split(':');
-    const contractAddress: string = tokenIdArray[0];
+    let contractAddress: string = tokenIdArray[0];
     const id: string = tokenIdArray[1] ? String(tokenIdArray[1]) : null;
     const contract: ContractType = this.contracts[contractAddress];
     if (id != null) {
@@ -143,6 +145,10 @@ export class TokenService {
               thumbnailAsset: '',
               displayAsset: ''
             };
+          }
+          // Exception for teia so they get a unique alias even if they reuse the hen contract
+          if (contractAddress === 'KT1RJ6PbjHpwc3M5rw5s2Nbmefwbuwbdxton' && token?.mintingTool === 'https://teia.art/mint') {
+            contractAddress += '@teia';
           }
           return {
             kind: contract.kind,
@@ -318,6 +324,9 @@ export class TokenService {
       if (metadata?.ttl) {
         token.ttl = Math.max(Number(metadata.ttl), 30);
       }
+      if (metadata?.mintingTool) {
+        token.mintingTool = metadata.mintingTool;
+      }
       if (metadata?.series) {
         token.series = metadata.series;
       }
@@ -453,6 +462,16 @@ export class TokenService {
         }
         if (metadata?.exploredIds) {
           this.exploredIds = metadata.exploredIds;
+        }
+      } else if (metadata?.version === '1.0.14') {
+        // Clear hen metadata for new teia alias
+        try {
+          delete metadata.contracts['KT1RJ6PbjHpwc3M5rw5s2Nbmefwbuwbdxton'];
+          metadata.version = '1.0.15';
+          this.saveMetadata(true);
+          this.loadMetadata();
+        } catch (e) {
+          console.error(e);
         }
       } else {
         // clear all metadata

@@ -174,10 +174,20 @@ const _CONSTANTS: Constants = {
       thumbnailUrl: '../../../assets/img/alias/hen.png',
       discoverUrl: '../../../assets/img/alias/hen.svg',
       link: 'https://teia.art',
-      shouldDisplayLink: DisplayLinkOption.All,
+      shouldDisplayLink: DisplayLinkOption.None,
       category: ['marketplace'],
       backgroundColor: 'black',
       description: 'Largest independent artist-friendly NFT Marketplace'
+    },
+    teia: {
+      name: 'Teia',
+      address: ['KT1RJ6PbjHpwc3M5rw5s2Nbmefwbuwbdxton@teia'],
+      thumbnailUrl: '../../../assets/img/alias/teia-thumbnail.svg',
+      discoverUrl: '../../../assets/img/alias/teia-discover.png',
+      link: 'https://teia.art',
+      shouldDisplayLink: DisplayLinkOption.All,
+      category: ['marketplace'],
+      description: 'Community owned, artist friendly Marketplace'
     },
     QuipuSwap: {
       name: 'QuipuSwap',
@@ -238,7 +248,7 @@ const _CONSTANTS: Constants = {
       thumbnailUrl: '../../../assets/img/alias/kalamint-thumbnail.png',
       discoverUrl: '../../../assets/img/alias/kalamint.svg',
       link: 'https://kalamint.io/',
-      shouldDisplayLink: DisplayLinkOption.All,
+      shouldDisplayLink: DisplayLinkOption.None,
       category: ['marketplace'],
       backgroundColor: '#0ab688',
       description: 'Create, sell and collect NFTs'
@@ -248,7 +258,7 @@ const _CONSTANTS: Constants = {
       address: ['KT1WGDVRnff4rmGzJUbdCRAJBmYt12BrPzdD'],
       thumbnailUrl: '../../../assets/img/alias/pixelpotus.png',
       link: 'https://www.pixelpotus.com/',
-      shouldDisplayLink: DisplayLinkOption.All,
+      shouldDisplayLink: DisplayLinkOption.None,
       category: ['game', 'collectibles'],
       description: 'Collectibles game with FREE daily NFTs',
       backgroundColor: '#c7b299'
@@ -258,7 +268,7 @@ const _CONSTANTS: Constants = {
       address: ['KT1FyaDqiMQWg7Exo7VUiXAgZbd2kCzo3d4s'],
       thumbnailUrl: '../../../assets/img/alias/tzcolors.png',
       link: 'https://www.tzcolors.io/',
-      shouldDisplayLink: DisplayLinkOption.All,
+      shouldDisplayLink: DisplayLinkOption.None,
       category: ['collectibles'],
       description: 'Unique colors as NFT tokens on Tezos'
     },

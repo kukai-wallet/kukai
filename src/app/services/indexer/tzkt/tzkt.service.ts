@@ -25,6 +25,7 @@ interface TokenMetadata {
   isBooleanAmount?: boolean;
   series?: string;
   ttl?: number;
+  mintingTool: string;
 }
 
 @Injectable({
@@ -311,7 +312,8 @@ export class TzktService implements Indexer {
       { key: 'shouldPreferSymbol', type: 'boolean' },
       { key: 'isBooleanAmount', type: 'boolean' },
       { key: 'series', type: 'string' },
-      { key: 'ttl', type: 'string' }
+      { key: 'ttl', type: 'string' },
+      { key: 'mintingTool', type: 'string' }
     ];
     let metadata: any = {};
     for (const a of keys) {
