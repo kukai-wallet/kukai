@@ -29,7 +29,7 @@ export class ObjktService {
           }
         }
         event(
-          where: {token: {fa_contract: {_eq: "${contractAddress}"}, token_id: {_eq: "${id}"}}, event_type_deprecated: {_is_null: false, _in: ["accept_offer", "ask_purchase", "conclude_auction"]}}
+          where: {token: {fa_contract: {_eq: "${contractAddress}"}, token_id: {_eq: "${id}"}}}
           order_by: {level: asc, timestamp: desc}
           limit: 1
         ) {

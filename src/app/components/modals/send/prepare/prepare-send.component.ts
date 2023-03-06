@@ -164,7 +164,7 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
     return Number(totalFee);
   }
   getTotalFee(): number {
-    if (this.customFee !== '' && Number(this.customFee)) {
+    if (this.customFee !== '' && (Number(this.customFee) || this.customFee === '0')) {
       return Number(this.customFee);
     }
     return Number(this.defaultTransactionParams.fee);
@@ -606,7 +606,6 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
       ModalComponent.currentModel.next({
         name: 'confirm-send',
         data: {
-          customFee: this.customFee,
           customGasLimit: this.customGasLimit,
           customStorageLimit: this.customStorageLimit
         }
