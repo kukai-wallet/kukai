@@ -37,7 +37,6 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
   transactions: FullyPreparedTransaction[] = [];
   costPerByte: string = this.estimateService.costPerByte;
 
-  customFee = '';
   customGasLimit = '';
   customStorageLimit = '';
 
@@ -116,7 +115,6 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
     this.subscriptions.unsubscribe();
   }
   open(data: any): void {
-    this.customFee = data?.customFee;
     this.customGasLimit = data?.customGasLimit;
     this.customStorageLimit = data?.customStorageLimit;
     super.open();
@@ -268,9 +266,6 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
     return totalFee;
   }
   getTotalFee(): string {
-    if (this.customFee) {
-      return this.customFee;
-    }
     let totalFee = Big(0);
     for (const tx of this.transactions) {
       totalFee = totalFee.add(tx.fee ? tx.fee : 0);
@@ -596,7 +591,6 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
     this.transactions = [];
     this.activeAccount = null;
 
-    this.customFee = '';
     this.customGasLimit = '';
     this.customStorageLimit = '';
 
@@ -618,7 +612,6 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
     this.password = '';
     this.pwdInvalid = '';
     this.advancedForm = false;
-    this.customFee = '';
     this.externalReq = false;
   }
   counter(i: number) {
