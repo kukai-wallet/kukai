@@ -69,21 +69,25 @@ export class TokenBalancesService {
     if (asset) {
       if (this.isNFT(asset)) {
         // token balance or NFT?
-        const contractAlias = this.getContractAlias(asset.contractAddress) ?? asset.contractAddress;
+        let contractAddress = asset.contractAddress;
+        if (asset?.contractAddress === 'KT1RJ6PbjHpwc3M5rw5s2Nbmefwbuwbdxton' && asset?.mintingTool === 'https://teia.art/mint') {
+          contractAddress = contractAddress + '@teia';
+        }
+        const contractAlias = this.getContractAlias(contractAddress) ?? contractAddress;
         if (nfts[contractAlias] === undefined) {
           const CONTRACT_ALIASES = CONSTANTS.CONTRACT_ALIASES[contractAlias as string];
           if (!CONTRACT_ALIASES?.thumbnailUrl) {
             if (this._thumbnailsToCreate.filter((obj) => obj.contractAlias === contractAlias).length === 0) {
               this._thumbnailsToCreate.push({
                 contractAlias,
-                address: asset.contractAddress
+                address: contractAddress
               });
             }
           }
-          const name = CONTRACT_ALIASES?.name ? CONTRACT_ALIASES.name : this.tokenService.getContractName(asset.contractAddress) ?? contractAlias;
+          const name = CONTRACT_ALIASES?.name ? CONTRACT_ALIASES.name : this.tokenService.getContractName(contractAddress) ?? contractAlias;
           nfts[contractAlias] = {
             name,
-            thumbnailUrl: CONTRACT_ALIASES?.thumbnailUrl ?? this.tokenService.getContractLogo(asset.contractAddress),
+            thumbnailUrl: CONTRACT_ALIASES?.thumbnailUrl ?? this.tokenService.getContractLogo(contractAddress),
             tokens: []
           };
           if (CONTRACT_ALIASES?.link) {
