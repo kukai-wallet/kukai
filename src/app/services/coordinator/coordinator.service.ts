@@ -256,7 +256,7 @@ export class CoordinatorService {
     });
   }
   addUnconfirmedOperations(from: string, metadata: any) {
-    let account = this.walletService.wallet?.getAccount(from);
+    const account = this.walletService.wallet?.getAccount(from);
     if (!account.activities) {
       return;
     }
@@ -282,9 +282,9 @@ export class CoordinatorService {
           entrypoint: op.parameters?.entrypoint ? op.parameters.entrypoint : ''
         };
         account.activities.unshift(transaction);
-        account = this.walletService.wallet?.getAccount(op.destination);
+        const destinationAccount = this.walletService.wallet?.getAccount(op.destination);
         if (account) {
-          account.activities.unshift({ ...transaction });
+          destinationAccount.activities.unshift({ ...transaction });
         }
       }
     } else if (metadata.delegate !== undefined) {

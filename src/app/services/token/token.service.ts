@@ -146,10 +146,6 @@ export class TokenService {
               displayAsset: ''
             };
           }
-          // Exception for teia so they get a unique alias even if they reuse the hen contract
-          if (contractAddress === 'KT1RJ6PbjHpwc3M5rw5s2Nbmefwbuwbdxton' && token?.mintingTool === 'https://teia.art/mint') {
-            contractAddress += '@teia';
-          }
           return {
             kind: contract.kind,
             category: contract.category,
