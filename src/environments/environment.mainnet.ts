@@ -35,7 +35,12 @@ const _CONSTANTS: Constants = {
     },
     manutd: {
       name: 'Manchester United',
-      address: ['KT1V7QCmuKpGsThwCNRALmsVfDAYopV98EEL', 'KT1JUt1DNTsZC14KAxdSop34TWBZhvZ7P9a3', 'KT1FE8NtDa7snc9nrQMx9NpfoU98uEj52tyz'],
+      address: [
+        'KT1V7QCmuKpGsThwCNRALmsVfDAYopV98EEL',
+        'KT1JUt1DNTsZC14KAxdSop34TWBZhvZ7P9a3',
+        'KT1FE8NtDa7snc9nrQMx9NpfoU98uEj52tyz',
+        'KT1XNJ67F3JN2cmq6s1LmqtVg7gy9tCcN4E2'
+      ],
       thumbnailUrl: 'assets/img/alias/mufc.png',
       discoverUrl: 'assets/img/alias/mufc-discover.jpg',
       zoomDiscoverImg: true,
