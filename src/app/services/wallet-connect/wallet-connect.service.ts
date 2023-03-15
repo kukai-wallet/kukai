@@ -45,6 +45,8 @@ interface DSession {
 export class WalletConnectService {
   readonly supportedMethods = ['tezos_send', 'tezos_sign', 'tezos_getAccounts'];
   readonly supportedEvents = [];
+  weight = Date.now();
+  weights = [];
   wc2activated = false;
   client: Client;
   active = false;
@@ -77,6 +79,7 @@ export class WalletConnectService {
     });
   }
   async init() {
+    this.weight = Date.now();
     this.client = await this.createClient();
     this.active = true;
     this.bcService.broadcast({ kind: MessageKind.Initialized, payload: 1 });
@@ -104,8 +107,18 @@ export class WalletConnectService {
     this.client.on('session_proposal', (data) => this.proposalHandler(data));
     this.bcService.subject[MessageKind.Initialized].subscribe((payload) => {
       switch (payload) {
-        case 0: // Tab with active wc2 connection closed => restart transport in all tabs to get a new active wc2 connection
-          this.restart();
+        case 0: // Tab with active wc2 connection closed => restart transport for client with highest weight
+          this.bcService.broadcast({ kind: MessageKind.ShareWeight, payload: this.weight });
+          setTimeout(() => {
+            if (
+              this.weights.every((weight) => {
+                weight < this.weight;
+              })
+            ) {
+              this.restart();
+            }
+            this.weights = [];
+          }, 200);
           break;
         case 1: // Another tab flag itself as active => make sure this tab is flagged as inactive
           this.active = false;
@@ -115,6 +128,9 @@ export class WalletConnectService {
           if (this.active) this.restart();
           break;
       }
+    });
+    this.bcService.subject[MessageKind.ShareWeight].subscribe((payload) => {
+      this.weights.push(payload);
     });
     this.client.on('session_request', (data) => this.requestHandler(data));
     this.client.on('session_delete', (data) => {
