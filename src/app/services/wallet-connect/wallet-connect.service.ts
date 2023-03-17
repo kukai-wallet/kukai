@@ -9,6 +9,7 @@ import { SubjectService } from '../subject/subject.service';
 import { OperationService } from '../operation/operation.service';
 import { BcService, MessageKind } from '../bc/bc.service';
 import { WalletService } from '../wallet/wallet.service';
+import { Subscription } from 'rxjs';
 
 interface Pairings {
   expanded: boolean;
@@ -50,6 +51,7 @@ export class WalletConnectService {
   wc2activated = false;
   client: Client;
   active = false;
+  private subscriptions: Subscription;
   delayedPairing: any;
   sessions: Sessions = { expanded: false, size: 0, dapp: {} };
   pairings: Pairings = { expanded: false, size: 0, dapp: {} };
@@ -83,6 +85,8 @@ export class WalletConnectService {
     this.client = await this.createClient();
     this.active = true;
     this.bcService.broadcast({ kind: MessageKind.Initialized, payload: 1 });
+    this.subscriptions?.unsubscribe();
+    this.subscriptions = new Subscription();
     this.subscribeToEvents();
     if (this.delayedPairing) {
       await this.delayedPairing();
@@ -105,33 +109,33 @@ export class WalletConnectService {
   }
   subscribeToEvents() {
     this.client.on('session_proposal', (data) => this.proposalHandler(data));
-    this.bcService.subject[MessageKind.Initialized].subscribe((payload) => {
-      switch (payload) {
-        case 0: // Tab with active wc2 connection closed => restart transport for client with highest weight
-          this.bcService.broadcast({ kind: MessageKind.ShareWeight, payload: this.weight });
-          setTimeout(() => {
-            if (
-              this.weights.every((weight) => {
-                weight < this.weight;
-              })
-            ) {
-              this.restart();
-            }
-            this.weights = [];
-          }, 200);
-          break;
-        case 1: // Another tab flag itself as active => make sure this tab is flagged as inactive
-          this.active = false;
-          this.removeListeners();
-          break;
-        case 2: // Tab with inactive wc2 connection closed => restart transport as hotfix for bug that can occur with 3 or more Kukai tabs open
-          if (this.active) this.restart();
-          break;
-      }
-    });
-    this.bcService.subject[MessageKind.ShareWeight].subscribe((payload) => {
-      this.weights.push(payload);
-    });
+    this.subscriptions.add(
+      this.bcService.subject[MessageKind.Initialized].subscribe((payload) => {
+        switch (payload) {
+          case 0: // Tab with active wc2 connection closed => restart transport for client with highest weight
+            this.bcService.broadcast({ kind: MessageKind.ShareWeight, payload: this.weight });
+            setTimeout(() => {
+              if (this.weights.every((weight: number) => weight < this.weight)) {
+                this.restart();
+              }
+              this.weights = [];
+            }, 200);
+            break;
+          case 1: // Another tab flag itself as active => make sure this tab is flagged as inactive
+            this.active = false;
+            this.removeListeners();
+            break;
+          case 2: // Tab with inactive wc2 connection closed => restart transport as hotfix for bug that can occur with 3 or more Kukai tabs open
+            if (this.active) this.restart();
+            break;
+        }
+      })
+    );
+    this.subscriptions.add(
+      this.bcService.subject[MessageKind.ShareWeight].subscribe((payload) => {
+        this.weights.push(payload);
+      })
+    );
     this.client.on('session_request', (data) => this.requestHandler(data));
     this.client.on('session_delete', (data) => {
       console.log('delete', data);
