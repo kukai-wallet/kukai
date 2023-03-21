@@ -119,6 +119,8 @@ export class MnemonicImportComponent implements OnInit, AfterViewInit, OnDestroy
           (res: string) => this.messageService.addWarning(res, 10) // 'Invalid public key hash!'
         )
       );
+    } else if (this.importOption === 1 && this.passphrase && !this.pkh) {
+      this.subscriptions.add(this.translate.get('MNEMONICIMPORTCOMPONENT.MISSINGPKH').subscribe((res: string) => this.messageService.addWarning(res, 10)));
     } else {
       let pkh = '';
       if (this.pkh) {
