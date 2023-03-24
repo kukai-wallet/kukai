@@ -2,12 +2,18 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { BroadcastChannel } from 'broadcast-channel';
 export enum MessageKind {
-  Initialized = 'wc_initialized'
+  Initialized = 'wc_initialized',
+  ShareWeight = 'wc_share_weight'
 }
-export type Message = {
-  kind: MessageKind.Initialized;
-  payload: number;
-};
+export type Message =
+  | {
+      kind: MessageKind.Initialized;
+      payload: number;
+    }
+  | {
+      kind: MessageKind.ShareWeight;
+      payload: number;
+    };
 @Injectable({
   providedIn: 'root'
 })
@@ -15,6 +21,7 @@ export class BcService {
   channel: BroadcastChannel<Message>;
   subject: any = {
     wc_initialized: new Subject<any>(),
+    wc_share_weight: new Subject<any>(),
     test: new Subject<any>(),
     all: new Subject<Message>()
   };

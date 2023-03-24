@@ -16,6 +16,7 @@
     }
 
     & .top {
+      width: 100%;
       & .left {
         width: 40%;
       }
@@ -97,7 +98,7 @@
             margin: 0.5em 0;
             width: 100%;
             & span {
-              font-size: 1em;
+              font-size: 4vw;
             }
           }
         }

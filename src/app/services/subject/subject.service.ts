@@ -47,6 +47,7 @@ export class SubjectService {
     this.refreshTokens = new BehaviorSubject<any>([]);
     this.confirmedOp = new Subject<string>();
     this.prepareTokenTransfer = new Subject<PrepareTokenTransfer>();
+    this.refreshTokens = new BehaviorSubject<null>(null);
     this.nftsUpdated = new BehaviorSubject<any>(undefined);
     this.origin = new BehaviorSubject<string>(null);
     this.beaconResponse = new Subject<boolean>();

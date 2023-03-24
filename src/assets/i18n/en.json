@@ -183,7 +183,8 @@
     "INVALIDEMAIL": "Invalid email!",
     "INVALIDPASSWORD": "Invalid password!",
     "INVALIDPKH": "Invalid public key hash!",
-    "PASSWORDWEAK": "Password is too weak!"
+    "PASSWORDWEAK": "Password is too weak!",
+    "MISSINGPKH": "Address is required when importing with passphrase"
   },
   "NEWACCOUNTCOMPONENT": {
     "TITLE": "Fund new account",

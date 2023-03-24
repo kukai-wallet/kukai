@@ -56,8 +56,8 @@
               (click)="clickPassword($event)" (blur)="blurPassword($event)">
           </div>
           <div class="flex-column">
-            <span class="label"><b>Provide the public key hash<br /> to verify your passphrase is correct</b></span>
-            <input name="none" type="text" class="text" [(ngModel)]="pkh" [placeholder]="'tz1... (recommended)'">
+            <span class="label"><b>Provide the address<br /> to verify your passphrase is correct</b></span>
+            <input name="none" type="text" class="text" [(ngModel)]="pkh" [placeholder]='passphrase ? "tz1... (required)" : "tz1... (optional)"'>
           </div>
           <div class="flex-row radios" *ngIf="importOption === 1">
             <div class="flex-row">
