@@ -74,7 +74,7 @@ export class DelegatePageComponent implements OnInit, OnDestroy {
     return [];
   }
   stake(delegate: any): void {
-    if (delegate.address === '' || this.inputValidationService.address(delegate.address)) {
+    if (delegate.address === '' || this.inputValidationService.validDelegationAddress(delegate.address)) {
       ModalComponent.currentModel.next({
         name: 'delegate-confirm',
         data: delegate

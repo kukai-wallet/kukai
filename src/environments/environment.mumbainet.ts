@@ -8,34 +8,21 @@ export const environment = {
   production: false
 };
 const _CONSTANTS: Constants = {
-  NETWORK: 'ghostnet',
-  NAME: 'Testnet / Ghostnet',
+  NETWORK: 'mumbainet',
+  NAME: 'Testnet / Mumbainet',
   TEZOS_DOMAIN: {
-    CONTRACT: 'KT1WffvKqRGaPtVWYR1ZkG2GQY42B7a8x3kk',
-    TOP_DOMAINS: ['ith']
+    TOP_DOMAINS: ['mum']
   },
   MAINNET: false,
-  NODE_URL: 'https://ghostnet.ecadinfra.com',
-  API_URL: 'https://api.ghostnet.tzkt.io/v1',
-  BLOCK_EXPLORER_URL: 'https://ghostnet.tzkt.io',
+  NODE_URL: 'https://mumbainet.ecadinfra.com',
+  API_URL: 'https://api.mumbainet.tzkt.io/v1',
+  BLOCK_EXPLORER_URL: 'https://mumbainet.tzkt.io',
   HARD_LIMITS: {
     hard_gas_limit_per_operation: 1040000,
     hard_gas_limit_per_block: 2600000,
     hard_storage_limit_per_operation: 60000
   },
-  CONTRACT_ALIASES: {
-    EmergentsTCG: {
-      name: 'Emergents TCG',
-      address: ['KT1AWS8nWonvfG5xt86KPb1JxrYx2TYE6KvL'],
-      thumbnailUrl: 'assets/img/alias/emergents.svg',
-      discoverUrl: 'assets/img/alias/emergents-discover.png',
-      link: 'https://minterpop.com/emergentstcg',
-      shouldDisplayLink: DisplayLinkOption.All,
-      category: ['games', 'collectibles'],
-      zoomDiscoverImg: true,
-      description: 'A next-gen superhero trading card game'
-    }
-  },
+  CONTRACT_ALIASES: {},
   ASSETS: {},
   NFT_CONTRACT_OVERRIDES: [],
   CONTRACT_OVERRIDES: {},
