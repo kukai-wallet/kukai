@@ -47,9 +47,6 @@ export class InputValidationService {
   address(address: string): Boolean {
     return this.operationService.validAddress(address);
   }
-  validDelegationAddress(address: string): Boolean {
-    return this.operationService.validAddress(address) && address.slice(0, 3) !== 'tz4';
-  }
   torusAccount(verifierId: string, loginType: string): Boolean {
     switch (loginType) {
       case 'google':
