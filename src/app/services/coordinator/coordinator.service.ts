@@ -33,7 +33,7 @@ enum State {
 @Injectable()
 export class CoordinatorService {
   scheduler: Map<string, any> = new Map<string, any>(); // pkh + delay
-  defaultDelayActivity = CONSTANTS.MAINNET ? 60000 : 30000; // 60/30s
+  defaultDelayActivity = CONSTANTS.MAINNET ? 30000 : 15000; // 30/15s
   shortDelayActivity = 5000; // 5s
   longDelayActivity = 120000; // 2m
   defaultDelayPrice = 300000; // 5m
@@ -131,7 +131,7 @@ export class CoordinatorService {
             console.log('Timeout from wait state');
             this.changeState(pkh, State.UpToDate);
           }
-        }, 150000);
+        }, 75000);
       }
     }
   }
@@ -178,8 +178,8 @@ export class CoordinatorService {
           const latestActivity = acc.activities[0];
           if (latestActivity.status === OpStatus.UNCONFIRMED) {
             const age = new Date().getTime() - new Date(latestActivity.timestamp).getTime();
-            if (age > 1800000) {
-              // 30m
+            if (age > 3600000) {
+              // 60m
               acc.activities.shift();
               this.walletService.storeWallet();
             }
