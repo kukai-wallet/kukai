@@ -11,6 +11,7 @@ import { SupportedNetworkType } from '@tezos-domains/core';
 })
 export class TezosDomainsService {
   private client: TaquitoTezosDomainsClient;
+  unsupportedNetwork = false;
   private queue = [];
   pending = false;
   constructor() {
@@ -27,6 +28,7 @@ export class TezosDomainsService {
       if (e?.message && e.message.includes('Supported built-in networks are:') && !CONSTANTS.MAINNET) {
         console.error(e);
         console.warn('Falling back on Ghostnet as network for Tezos Domains initialization');
+        this.unsupportedNetwork = true;
         this.client = new TaquitoTezosDomainsClient({
           tezos: tezosToolkit,
           network: <SupportedNetworkType>'ghostnet',
@@ -38,6 +40,9 @@ export class TezosDomainsService {
     }
   }
   async getAddressFromDomain(domain: string) {
+    if (this.unsupportedNetwork) {
+      return { pkh: '' };
+    }
     const address = await this.client.resolver.resolveNameToAddress(domain);
     if (!address) {
       return { pkh: '' };
@@ -78,6 +83,9 @@ export class TezosDomainsService {
     }, 100);
   }
   async getDomainFromAddresses(addresses: any) {
+    if (this.unsupportedNetwork) {
+      return {};
+    }
     const baseUrl = CONSTANTS.MAINNET ? 'https://api.tezos.domains/graphql' : `https://${CONSTANTS.NETWORK}-api.tezos.domains/graphql`;
     const req = {
       query: `{reverseRecords(where: {address: {in: ${JSON.stringify(addresses)}}}) {items {address domain: domain {id, name}}}}`
