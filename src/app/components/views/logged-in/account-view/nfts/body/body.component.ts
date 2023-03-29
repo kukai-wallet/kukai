@@ -43,7 +43,7 @@ export class NftsBodyComponent implements OnInit, OnChanges, AfterViewInit {
   refresh(): void {
     this.tokensToDisplay.raw = this.tokens;
     this.tokensToDisplay.filtered = this.search(this.tokens);
-    this.tokensToDisplay.loaded = this.tokensToDisplay.filtered.slice(0, this.sliceEnd);
+    this.tokensToDisplay.loaded = this.tokensToDisplay.filtered?.slice(0, this.sliceEnd);
   }
   ngAfterViewInit(): void {
     const cb = (e) => {
@@ -55,8 +55,8 @@ export class NftsBodyComponent implements OnInit, OnChanges, AfterViewInit {
         this.refresh();
       }
     };
-    this.body?.nativeElement.addEventListener('scroll', cb);
-    this.body?.nativeElement.addEventListener('touchmove', cb);
+    this.body?.nativeElement.addEventListener('scroll', cb, { passive: true });
+    this.body?.nativeElement.addEventListener('touchmove', cb, { passive: true });
   }
   search(tokens): Token[] {
     if (this.filter.length > 0 && this.filter !== '.*') {

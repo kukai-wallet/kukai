@@ -18,7 +18,7 @@
     <!-- loop through contracts -->
     <ng-container *ngIf="!nftsArray?.length && !isDiscover"><span>There are no NFTs in this account</span>
     </ng-container>
-    <ng-container *ngFor="let contract of nftsArray; trackBy:trackContract">
+    <ng-container *ngFor="let contract of displayedNftsArray; trackBy:trackContract">
       <div class="flex-column collection" [class.expanded]="filter === sanitizeKey(contract?.key)"
         [id]="sanitizeKey(contract?.key)" [style.display]="!isDiscover && filter !== 'ALL' ? '' : 'none'">
         <div class="flex-row head" (click)="toggleDropdown(sanitizeKey(contract?.key))">

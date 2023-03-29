@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CONSTANTS, TRUSTED_TOKEN_CONTRACTS, BLACKLISTED_TOKEN_CONTRACTS } from '../../../environments/environment';
+import { CONSTANTS, TRUSTED_TOKEN_CONTRACTS, BLACKLISTED_TOKEN_CONTRACTS, environment } from '../../../environments/environment';
 import { IndexerService } from '../indexer/indexer.service';
 import Big from 'big.js';
 import { SubjectService } from '../subject/subject.service';
@@ -7,6 +7,7 @@ import { filter } from 'rxjs/operators';
 import { NavigationEnd, Router } from '@angular/router';
 import { ObjktService } from '../indexer/objkt/objkt.service';
 import { DipDupService } from '../indexer/dipdup/dipdup.service';
+import { getFromKvDb, saveToKvDb } from './indexedDB';
 
 export interface TokenResponseType {
   contractAddress: string;
@@ -83,6 +84,7 @@ export class TokenService {
   readonly AUTO_DISCOVER: boolean = true;
   readonly version: string = '1.0.15';
   private contracts: ContractsType = {};
+  public initialized = false;
   private exploredIds: Record<string, { firstCheck: number; lastCheck: number; counter: number }> = {};
   private pendingSave = null;
   readonly storeKey = 'tokenMetadata';
@@ -96,13 +98,16 @@ export class TokenService {
     private router: Router,
     private objktService: ObjktService
   ) {
-    this.contracts = JSON.parse(JSON.stringify(CONSTANTS.ASSETS));
-    this.loadMetadata();
-    this.saveMetadata();
     this.router.events.pipe(filter((evt) => evt instanceof NavigationEnd)).subscribe(async (r: NavigationEnd) => {
       if (r.url.indexOf('/account') === -1) {
         document.documentElement.className = '';
       }
+    });
+    this.contracts = JSON.parse(JSON.stringify(CONSTANTS.ASSETS));
+    this.loadMetadata().then(() => {
+      this.initialized = true;
+      this.subjectService.metadataUpdated.next(null);
+      this.saveMetadata();
     });
   }
   getAsset(tokenId: string): TokenResponseType {
@@ -238,8 +243,10 @@ export class TokenService {
           objkt.logo = _objkt.logo;
         }
       }
-      this.contracts[contractAddress].objkt = objkt;
-      this._saveMetadata();
+      if (this.contracts[contractAddress]) {
+        this.contracts[contractAddress].objkt = objkt;
+      }
+      this.saveMetadata();
       this.subjectService.metadataUpdated.next(null);
     }
   }
@@ -376,11 +383,11 @@ export class TokenService {
       this.saveMetadata(true);
     }
   }
-  resetAllMetadata() {
+  async resetAllMetadata() {
     this.exploredIds = {};
     this.contracts = JSON.parse(JSON.stringify(CONSTANTS.ASSETS));
-    this.saveMetadata(true);
-    this.loadMetadata();
+    await this.saveMetadata(true);
+    await this.loadMetadata();
     this.subjectService.metadataUpdated.next(null);
   }
   searchTimeMs(tokenId: string) {
@@ -409,9 +416,9 @@ export class TokenService {
       isUnknownToken: true
     };
   }
-  saveMetadata(force = false) {
+  async saveMetadata(force = false) {
     if (force) {
-      this._saveMetadata();
+      await this._saveMetadata();
       return;
     }
     if (!this.pendingSave) {
@@ -421,20 +428,28 @@ export class TokenService {
       }, 1000);
     }
   }
-  private _saveMetadata() {
-    localStorage.setItem(
-      this.storeKey,
-      JSON.stringify({
-        contracts: this.contracts,
-        exploredIds: this.exploredIds,
-        version: this.version
-      })
-    );
+  private async _saveMetadata() {
+    const data = {
+      contracts: this.contracts,
+      exploredIds: this.exploredIds,
+      version: this.version
+    };
+    try {
+      localStorage.setItem(this.storeKey, JSON.stringify(data));
+    } catch (e) {
+      localStorage.setItem(this.storeKey, 'KV_DB');
+      await saveToKvDb('tokenMetadata', data);
+    }
   }
-  loadMetadata(): any {
-    const metadataJson = localStorage.getItem(this.storeKey);
+  async loadMetadata() {
+    let metadataJson = localStorage.getItem(this.storeKey);
     if (metadataJson) {
-      const metadata = JSON.parse(metadataJson);
+      let metadata: any;
+      if (metadataJson === 'KV_DB') {
+        metadata = await getFromKvDb('tokenMetadata');
+      } else {
+        metadata = JSON.parse(metadataJson);
+      }
       if (metadata?.version === this.version) {
         if (metadata?.contracts) {
           const contractAddresses = Object.keys(metadata.contracts);
@@ -464,8 +479,8 @@ export class TokenService {
         try {
           delete metadata.contracts['KT1RJ6PbjHpwc3M5rw5s2Nbmefwbuwbdxton'];
           metadata.version = '1.0.15';
-          this.saveMetadata(true);
-          this.loadMetadata();
+          await this.saveMetadata(true);
+          await this.loadMetadata();
         } catch (e) {
           console.error(e);
         }

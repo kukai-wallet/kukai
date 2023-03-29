@@ -191,7 +191,7 @@ export class CoordinatorService {
         console.error(err);
       },
       () => {
-        console.log(
+        console.debug(
           `account[${this.accounts.findIndex((a) => a.address === pkh)}][${
             typeof this.scheduler.get(pkh)?.state !== 'undefined' ? this.scheduler.get(pkh).state : '*'
           }]: <<`

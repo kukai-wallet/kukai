@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { TorusWallet } from '../../../../../services/wallet/wallet';
 import { WalletService } from '../../../../../services/wallet/wallet.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -20,12 +20,15 @@ export class NftsComponent implements OnInit, OnDestroy {
   Object = Object;
   nfts = undefined;
   nftsArray = [];
+  displayedNftsArray = [];
   tokens = [];
   isDiscover: boolean = false;
   isInitLoad: boolean = true;
   filter: string = 'APP';
   contractAliases = Object.keys(CONSTANTS.CONTRACT_ALIASES).map((key: any) => ({ key, ...CONSTANTS.CONTRACT_ALIASES[key] }));
   activeAddress: string = '';
+  sliceEnd = 20;
+  sliceIncrement = 10;
   private subscriptions: Subscription = new Subscription();
   constructor(
     public translate: TranslateService,
@@ -36,27 +39,8 @@ export class NftsComponent implements OnInit, OnDestroy {
     private walletService: WalletService
   ) {
     this.subscriptions.add(
-      this.subjectService.nftsUpdated.subscribe((p) => {
-        const activeAddress = this.subjectService.activeAccount.getValue()?.address;
-        if (activeAddress !== this.activeAddress) {
-          this.activeAddress = activeAddress;
-          this.reset();
-        }
-        if (this.isInitLoad) {
-          if (!p?.nfts || !Object.keys(p.nfts)?.length) {
-            this.isDiscover = true;
-          } else {
-            this.isInitLoad = false;
-            this.isDiscover = false;
-          }
-        }
-        this.nfts = p?.nfts;
-        this.nftsArray = p?.nfts ? Object.keys(p.nfts).map((key: any) => ({ key, ...p.nfts[key] })) : [];
-        this.tokens = p?.nfts
-          ? Object.keys(p.nfts)
-              .map((key: any) => p.nfts[key]?.tokens)
-              .flat()
-          : [];
+      this.subjectService.nftsUpdated.subscribe((n) => {
+        this.populateNfts(n);
       })
     );
     this.subscriptions.add(
@@ -79,9 +63,58 @@ export class NftsComponent implements OnInit, OnDestroy {
   }
   @Input() activity: any;
   @Input() account;
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    document.addEventListener(
+      'scroll',
+      (event) => {
+        const height = Math.max(
+          document.body.scrollHeight,
+          document.body.offsetHeight,
+          document.documentElement.clientHeight,
+          document.documentElement.scrollHeight,
+          document.documentElement.offsetHeight
+        );
+        if (height < document.body.scrollTop + document.body.clientHeight + 250) {
+          this.refreshDisplayedNfts(true);
+        }
+      },
+      true
+    );
+  }
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
+  }
+  populateNfts(n) {
+    if (!n) return;
+    if (this.isInitLoad) {
+      if (!n?.nfts || !Object.keys(n.nfts)?.length) {
+        this.isDiscover = true;
+      } else {
+        this.isInitLoad = false;
+        this.isDiscover = false;
+      }
+    }
+    this.nfts = n?.nfts;
+    this.nftsArray = n?.nfts ? Object.keys(n.nfts).map((key: any) => ({ key, ...n.nfts[key] })) : [];
+    this.refreshDisplayedNfts();
+    this.tokens = n?.nfts
+      ? Object.keys(n.nfts)
+          .map((key: any) => n.nfts[key]?.tokens)
+          .flat()
+      : [];
+  }
+  refreshDisplayedNfts(showMore = false) {
+    if (!this.tokenService?.initialized) {
+      return;
+    }
+    let incremented = false;
+    if (showMore && this.sliceEnd <= this.displayedNftsArray.length) {
+      this.sliceEnd += this.sliceIncrement;
+      incremented = true;
+    }
+    if (!showMore || incremented) {
+      this.displayedNftsArray = this.nftsArray.slice(0, this.sliceEnd);
+    }
   }
   displayTokenCard(): boolean {
     return this.nfts !== undefined;
@@ -121,7 +154,9 @@ export class NftsComponent implements OnInit, OnDestroy {
     this.isDiscover = false;
     this.tokens = [];
     this.nftsArray = [];
+    this.displayedNftsArray = [];
     this.isInitLoad = true;
     this.filter = 'APP';
+    this.sliceEnd = 20;
   }
 }

@@ -7,7 +7,7 @@ import Big from 'big.js';
 import { CONSTANTS } from '../../../environments/environment';
 import { decode } from 'blurhash';
 import { combineLatest } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { sampleTime } from 'rxjs/operators';
 import { SubjectService } from '../subject/subject.service';
 import { DipDupService } from '../indexer/dipdup/dipdup.service';
 
@@ -46,7 +46,7 @@ export class TokenBalancesService {
       this.activityService.tokenBalanceUpdated,
       this.subjectService.refreshTokens
     ])
-      .pipe(debounceTime(3))
+      .pipe(sampleTime(10))
       .subscribe(([a, b, c]) => {
         if (this.activeAccount !== a) {
           this.activeAccount = a;
@@ -125,7 +125,7 @@ export class TokenBalancesService {
     }
   }
   reload() {
-    if (!this.activeAccount?.tokens) {
+    if (!this.activeAccount?.tokens || !this.tokenService.initialized) {
       return;
     }
     const balances: TokenWithBalance[] = [];
