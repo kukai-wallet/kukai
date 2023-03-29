@@ -235,7 +235,7 @@ export class TzktService implements Indexer {
       meta = null;
     }
     if (!meta) {
-      console.log('fallback on taquito', { contractAddress, id });
+      console.debug('fallback on taquito', { contractAddress, id });
       meta = await this.getTokenMetadataWithTaquito(contractAddress, id);
       if (meta) {
         this.normalizeMetadata(meta, contractAddress, id);

@@ -45,19 +45,14 @@
 }
 
 @media (max-width: v.$layout-break-5) {
-  .wrapper > div {
-    display: grid;
-    grid-template-columns: 100%;
-    grid-column-gap: 0;
-    grid-template-areas: "balance" "nft" "activity";
-    width: 100%;
-  }
-}
-@media (max-width: calc(#{v.$layout-break-6} - 5em)) {
-  .wrapper > div {
-    max-width: 100%;
-  }
   .wrapper {
+    & > div {
+      display: grid;
+      grid-template-columns: 100%;
+      grid-column-gap: 0;
+      grid-template-areas: "balance" "nft" "activity";
+      width: 100%;
+    }
     & > div.more-than-15 {
       grid-template-areas:
         "balance ."
