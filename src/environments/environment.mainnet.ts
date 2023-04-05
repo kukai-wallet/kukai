@@ -970,7 +970,27 @@ const _CONSTANTS: Constants = {
       address: ['KT1QWtzjPpCZ7mpDdC5YxUszY1897d6JMJws'],
       thumbnailUrl: 'ipfs://QmaSjSstwf5YTqQ7aMK2cNQBVLh4XdnZu4h1kaPJdusj8G',
       shouldDisplayLink: DisplayLinkOption.None
-    }
+    },
+    XQST: {
+      name: 'XQST',
+      address: ['KT1KDwxEjAvRuwg37M8jge2aEkvHBYFLjAMX'],
+      thumbnailUrl: '../../../assets/img/alias/xqst.jpg',
+      link: 'https://xqst.io',
+      shouldDisplayLink: DisplayLinkOption.All,
+      category: ['art', 'collectibles'],
+      backgroundColor: '#141313',
+      description: 'XQST is a digital maker space that invites artists to create the classic exquisite corpse, reimagined.'
+    },
+    'XQST Beta': {
+      name: 'XQST Beta',
+      address: ['KT1RCJqeJx5T3motUSywFwpRyu78Z5RAcPDM'],
+      thumbnailUrl: '../../../assets/img/alias/xqstbeta.jpg',
+      link: 'https://xqst.io',
+      shouldDisplayLink: DisplayLinkOption.All,
+      category: ['collectibles'],
+      backgroundColor: '#141313',
+      description: 'Early access passes for XQST.'
+    },
   },
   ASSETS: {
     KT1K9gCRgaLRFKTErYt1wVxA3Frb9FjasjTV: {
