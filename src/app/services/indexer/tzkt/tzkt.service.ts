@@ -28,6 +28,12 @@ interface TokenMetadata {
   mintingTool: string;
 }
 
+export enum MetadataSource {
+  Any = 0,
+  TzktOnly = 1,
+  TaquitoOnly = 2
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -219,7 +225,7 @@ export class TzktService implements Indexer {
   private extractEntrypoint(op: any): string {
     return op?.entrypoint ?? op?.parameter?.entrypoint ?? '';
   }
-  async getTokenMetadata(contractAddress: string, id: string, skipTzkt: boolean): Promise<TokenMetadata> {
+  async getTokenMetadata(contractAddress: string, id: string, metadataSource: MetadataSource): Promise<TokenMetadata> {
     let meta;
     let tokenType = 'FA2';
     const tokenId = `${contractAddress}:${id}`;
@@ -231,10 +237,10 @@ export class TzktService implements Indexer {
       this.normalizeMetadata(meta, contractAddress, id);
       this.filterMetadata(meta);
     }
-    if (!(meta && (meta.name || meta.symbol) && !isNaN(meta.decimals) && meta.decimals >= 0) || skipTzkt) {
+    if (!(meta && (meta.name || meta.symbol) && !isNaN(meta.decimals) && meta.decimals >= 0) || metadataSource === MetadataSource.TaquitoOnly) {
       meta = null;
     }
-    if (!meta) {
+    if (!meta && metadataSource !== MetadataSource.TzktOnly) {
       console.debug('fallback on taquito', { contractAddress, id });
       meta = await this.getTokenMetadataWithTaquito(contractAddress, id);
       if (meta) {

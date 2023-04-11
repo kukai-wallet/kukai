@@ -970,6 +970,16 @@ const _CONSTANTS: Constants = {
       address: ['KT1QWtzjPpCZ7mpDdC5YxUszY1897d6JMJws'],
       thumbnailUrl: 'ipfs://QmaSjSstwf5YTqQ7aMK2cNQBVLh4XdnZu4h1kaPJdusj8G',
       shouldDisplayLink: DisplayLinkOption.None
+    },
+    XQST: {
+      name: 'XQST',
+      address: ['KT1KDwxEjAvRuwg37M8jge2aEkvHBYFLjAMX', 'KT1RCJqeJx5T3motUSywFwpRyu78Z5RAcPDM'],
+      thumbnailUrl: '../../../assets/img/alias/xqst.jpg',
+      link: 'https://xqst.io',
+      shouldDisplayLink: DisplayLinkOption.None,
+      category: ['art', 'collectibles'],
+      backgroundColor: '#141313',
+      description: 'XQST is a digital maker space that invites artists to create the classic exquisite corpse, reimagined.'
     }
   },
   ASSETS: {

@@ -196,7 +196,6 @@ $border-color: #e6eaef;
         width: 64%;
         height: auto;
         justify-content: space-between;
-        font-size: 1rem;
       }
 
       & .domain {
@@ -212,17 +211,17 @@ $border-color: #e6eaef;
       }
 
       & .torus-name {
-        @include m.multiply("font-size", 1.5, "em");
+        font-size: 1.5em;
         justify-content: flex-start;
         font-weight: 500;
         position: relative;
-        left: -2.55em;
+        left: -2em;
         top: 0;
 
         & .verifier-logo {
           object-fit: unset;
-          width: 2em;
-          height: 2em;
+          width: 1.5em;
+          height: 1.5em;
           margin: 0 0.5em 0 0;
         }
       }
@@ -286,7 +285,7 @@ $border-color: #e6eaef;
 
         & .torus-to {
           justify-content: flex-start;
-          @include m.multiply("font-size", 1.5, "em");
+          font-size: 1.5em;
           font-weight: 500;
           position: relative;
           left: -2em;

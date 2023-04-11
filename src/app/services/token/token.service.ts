@@ -8,6 +8,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { ObjktService } from '../indexer/objkt/objkt.service';
 import { DipDupService } from '../indexer/dipdup/dipdup.service';
 import { getFromKvDb, saveToKvDb } from './indexedDB';
+import { MetadataSource } from '../indexer/tzkt/tzkt.service';
 
 export interface TokenResponseType {
   contractAddress: string;
@@ -280,7 +281,7 @@ export class TokenService {
   private async searchMetadata(tokenId: string, force = false) {
     if ((!this.isKnownTokenId(tokenId) && !this.queue.includes(tokenId) && this.explore(tokenId)) || force) {
       this.queue.push(tokenId);
-      if (this.workers < 64) {
+      if (this.workers < 2) {
         this.startWorker();
       }
     }
@@ -294,8 +295,12 @@ export class TokenService {
         const contractAddress = a[0];
         const id = String(a[1]);
         const recentDay = this.exploredIds[tokenId]?.lastCheck - this.exploredIds[tokenId]?.firstCheck < 1000 * 3600 * 24;
-        const skipTzkt = this.isKnownTokenId(tokenId) && this.exploredIds[tokenId]?.counter % 5 === 2 && recentDay;
-        const metadata = await this.indexerService.getTokenMetadata(contractAddress, id, skipTzkt);
+        const skipTzkt = this.isKnownTokenId(tokenId) && this.exploredIds[tokenId]?.counter % 5 === 3 && recentDay;
+        let metadataSource = skipTzkt ? MetadataSource.TaquitoOnly : MetadataSource.Any;
+        if (this.exploredIds[tokenId]?.counter === 0) {
+          metadataSource = MetadataSource.TzktOnly;
+        }
+        const metadata = await this.indexerService.getTokenMetadata(contractAddress, id, metadataSource);
         this.handleMetadata(metadata, contractAddress, id);
       } catch (e) {}
     }
