@@ -64,7 +64,7 @@ export class ObjktService {
   }
   async resolveCollection(address): Promise<any> {
     if (!CONSTANTS.MAINNET) {
-      return;
+      return {};
     }
     while (this.queue.length >= 500) {
       // max 500 results per call
@@ -105,6 +105,9 @@ export class ObjktService {
   }
 
   async resolveCollections(contractAddresses: string[]) {
+    if (!CONSTANTS?.OBJKT_URL) {
+      return;
+    }
     const req = {
       query: `{
         fa(where: {contract: {_in: ${JSON.stringify(contractAddresses)}}}) {
