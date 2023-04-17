@@ -258,22 +258,26 @@ export class TzktService implements Indexer {
     return { ...meta, tokenType };
   }
   async getTokenMetadataWithTaquito(contractAddress, id) {
-    const contract = await this.Tezos.contract.at(contractAddress, tzip12);
-    let metadata: any;
-    if (['KT1TnVQhjxeNvLutGvzwZvYtC7vKRpwPWhc6'].includes(contractAddress)) {
-      // nl hotfix
-      const contract = await this.Tezos.contract.at(contractAddress);
-      const storage: any = await contract.storage();
-      const parsed_uri = storage.token_metadata_uri.replace('{tokenId}', id);
-      const response = await (await fetch(parsed_uri)).json();
-      if (response) {
-        response.tokenId = id;
-        metadata = response;
+    try {
+      const contract = await this.Tezos.contract.at(contractAddress, tzip12);
+      let metadata: any;
+      if (['KT1TnVQhjxeNvLutGvzwZvYtC7vKRpwPWhc6'].includes(contractAddress)) {
+        // nl hotfix
+        const contract = await this.Tezos.contract.at(contractAddress);
+        const storage: any = await contract.storage();
+        const parsed_uri = storage.token_metadata_uri.replace('{tokenId}', id);
+        const response = await (await fetch(parsed_uri)).json();
+        if (response) {
+          response.tokenId = id;
+          metadata = response;
+        }
+      } else {
+        metadata = await contract.tzip12().getTokenMetadata(Number(id));
       }
-    } else {
-      metadata = await contract.tzip12().getTokenMetadata(Number(id));
+      return metadata;
+    } catch (e) {
+      return null;
     }
-    return metadata;
   }
   async getAllTokenBalances(address: string): Promise<Array<Token>> {
     const fetchToken = async (offset: number): Promise<Array<any>> => {

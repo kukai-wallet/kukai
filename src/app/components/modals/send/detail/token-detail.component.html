@@ -11,7 +11,7 @@
         <div class="flex-column wrapper" [class]="imageExpanded ? 'expanded' : ''">
           <app-asset [style.display]="imageExpanded ? 'none' : ''" class="flex-row button sd-only"
             [priorityList]="['displayAsset', 'thumbnailAsset']"
-            [assets]="{thumbnailAsset: token?.thumbnailAsset, displayAsset: token?.displayAsset}" [size]="'small'"
+            [assets]="{thumbnailAsset: token?.thumbnailAsset, displayAsset: token?.displayAsset}" [size]="'medium'"
             (click)="expandImage()" (loaded)="assetLoaded = true" [autoplay]="true" [muted]="true" [loop]="true"
             [playsinline]="true"></app-asset>
           <app-asset [style.display]="!imageExpanded ? 'none' : ''" class="flex-row button sd-only"

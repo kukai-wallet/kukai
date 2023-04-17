@@ -261,19 +261,23 @@ export class TokenService {
   async recheckMetadata(tokens) {
     if (tokens?.length) {
       for (let token of tokens) {
-        const tokenObject = this.getAsset(token.tokenId);
-        if (tokenObject?.ttl) {
-          const exp = this.exploredIds[token.tokenId];
-          const now = new Date().getTime();
-          if (now - exp.lastCheck > tokenObject.ttl * 1000) {
-            console.log('recheck metadata for', token.tokenId);
-            this.exploredIds[token.tokenId].lastCheck = now;
-            this.exploredIds[token.tokenId].counter = ++exp.counter || 0;
-            this.saveMetadata();
-            if (!this.queue.includes(token.tokenId)) {
-              this.searchMetadata(token.tokenId, true);
+        try {
+          const tokenObject = this.getAsset(token.tokenId);
+          if (tokenObject?.ttl) {
+            const exp = this.exploredIds[token.tokenId];
+            const now = new Date().getTime();
+            if (now - exp.lastCheck > tokenObject.ttl * 1000) {
+              console.log('recheck metadata for', token.tokenId);
+              this.exploredIds[token.tokenId].lastCheck = now;
+              this.exploredIds[token.tokenId].counter = ++exp.counter || 0;
+              this.saveMetadata();
+              if (!this.queue.includes(token.tokenId)) {
+                this.searchMetadata(token.tokenId, true);
+              }
             }
           }
+        } catch (e) {
+          console.error(e);
         }
       }
     }
@@ -392,6 +396,7 @@ export class TokenService {
     this.exploredIds = {};
     this.contracts = JSON.parse(JSON.stringify(CONSTANTS.ASSETS));
     await this.saveMetadata(true);
+    this.queue = [];
     await this.loadMetadata();
     this.subjectService.metadataUpdated.next(null);
   }

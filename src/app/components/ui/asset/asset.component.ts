@@ -261,8 +261,7 @@ export class AssetComponent implements OnInit, AfterViewInit {
     } else if (typeof asset === 'string') {
       url = uri;
     } else {
-      console.warn('failed to parse asset', asset);
-      url = uri;
+      console.error('failed to parse asset', asset);
     }
     return url ?? '';
   }
