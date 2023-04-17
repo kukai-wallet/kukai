@@ -89,7 +89,7 @@ const _CONSTANTS: Constants = {
       thumbnailUrl: 'assets/img/alias/emergents.svg',
       discoverUrl: 'assets/img/alias/emergents-discover.png',
       link: 'https://emergentstcg.com',
-      shouldDisplayLink: DisplayLinkOption.All,
+      shouldDisplayLink: DisplayLinkOption.None,
       category: ['games', 'collectibles'],
       zoomDiscoverImg: true,
       description: 'A next-gen superhero trading card game'
