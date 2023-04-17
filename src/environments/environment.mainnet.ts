@@ -266,7 +266,7 @@ const _CONSTANTS: Constants = {
       thumbnailUrl: '../../../assets/img/alias/interpop.svg',
       discoverUrl: '../../../assets/img/alias/interpop-discover.png',
       link: 'https://interpopcomics.com/',
-      shouldDisplayLink: DisplayLinkOption.All,
+      shouldDisplayLink: DisplayLinkOption.None,
       category: ['collectibles'],
       description: 'Digitally native comics as NFTs',
       backgroundColor: '#5f8394'
