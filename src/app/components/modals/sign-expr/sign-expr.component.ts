@@ -47,7 +47,6 @@ export class SignExprComponent extends ModalComponent implements OnInit, OnChang
       ModalComponent.currentModel.next({ name: this.name, data: null });
       this.isDeku = this.signRequest.payload.slice(0, 2) === '80';
       if (!this.isDeku) {
-        console.log('not deku');
         this.isMessage = this.inputValidationService.isMessageSigning(this.signRequest.payload);
         const value = valueDecoder(Uint8ArrayConsumer.fromHexString(this.signRequest.payload.slice(2)));
         const payload = emitMicheline(value, {

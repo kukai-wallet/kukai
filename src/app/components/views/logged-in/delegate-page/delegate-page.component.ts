@@ -61,7 +61,7 @@ export class DelegatePageComponent implements OnInit, OnDestroy {
       return delegates
         .map((d) => {
           try {
-            if (d.freeSpace > balanceXTZ && d.estimatedRoi > 0 && d.openForDelegation === true && d.minDelegation < balanceXTZ) {
+            if (d.freeSpace > balanceXTZ && d.estimatedRoi >= 0 && d.openForDelegation === true && d.minDelegation < balanceXTZ) {
               return d;
             }
           } catch {

@@ -46,9 +46,31 @@ export class DelegateService {
     }
   }
   getDelegates(): void {
-    fetch(`${this.bb}/bakers`)
-      .then((response) => response.json())
-      .then((d) => this.delegates.next(d));
+    if (CONSTANTS.NETWORK !== 'ghostnet') {
+      fetch(`${this.bb}/bakers`)
+        .then((response) => response.json())
+        .then((d) => this.delegates.next(d));
+    } else {
+      fetch('https://api.ghostnet.tzkt.io/v1/accounts/tz1Kukaiq96AJyqaHWn69XxTBrjUEB4sXSBq')
+        .then((r) => r.json())
+        .then((k) => {
+          const freeSpace = Math.round((k.balance * 10 - k.stakingBalance) / 10 ** 6);
+          this.delegates.next([
+            {
+              address: 'tz1Kukaiq96AJyqaHWn69XxTBrjUEB4sXSBq',
+              estimatedRoi: 0,
+              fee: 0,
+              freeSpace,
+              logo: `${window.location.origin}/assets/img/header-logo.png`,
+              minDelegation: 0,
+              name: 'Kukai Baker',
+              openForDelegation: true,
+              payoutAccuracy: 'precise',
+              serviceType: 'tezos_only'
+            }
+          ]);
+        });
+    }
   }
 
   resolveDelegateByAddress(address: string): Promise<any> {

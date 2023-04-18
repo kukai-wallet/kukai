@@ -336,12 +336,11 @@ export class UriHandlerComponent implements OnInit, OnDestroy {
     if (this.permissionRequest.version) {
       // Beacon
       if (!publicKey) {
-        await this.beaconService.rejectOnUserAbort(this.permissionRequest);
-        this.beaconService.responseSync();
+        this.beaconService.rejectOnUserAbort(this.permissionRequest);
       } else if (publicKey !== 'silent') {
-        await this.beaconService.approvePermissionRequest(this.permissionRequest, publicKey);
-        this.beaconService.syncBeaconState();
-        this.beaconService.responseSync();
+        this.beaconService.approvePermissionRequest(this.permissionRequest, publicKey).then(() => {
+          this.beaconService.syncBeaconState();
+        });
       }
     } else {
       // Wallet Connect 2
@@ -351,6 +350,7 @@ export class UriHandlerComponent implements OnInit, OnDestroy {
         this.walletConnectService.approvePairing(this.permissionRequest, publicKey);
       }
     }
+    this.beaconService.responseSync();
     this.permissionRequest = null;
   }
   /* sign payload handling */
@@ -358,10 +358,8 @@ export class UriHandlerComponent implements OnInit, OnDestroy {
     if (this.signRequest.version) {
       if (!signature) {
         await this.beaconService.rejectOnUserAbort(this.signRequest);
-        this.beaconService.responseSync();
       } else if (signature !== 'silent') {
         await this.beaconService.approveSignPayloadRequest(this.signRequest, signature);
-        this.beaconService.responseSync();
       }
     } else if (this.signRequest.version === 0) {
       if (signature) {
@@ -370,6 +368,7 @@ export class UriHandlerComponent implements OnInit, OnDestroy {
         this.walletConnectService.opResponse(this.signRequest, signature, false);
       }
     }
+    this.beaconService.responseSync();
     console.log(signature);
     this.signRequest = null;
   }

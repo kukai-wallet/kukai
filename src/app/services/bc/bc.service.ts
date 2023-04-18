@@ -3,7 +3,9 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { BroadcastChannel } from 'broadcast-channel';
 export enum MessageKind {
   Initialized = 'wc_initialized',
-  ShareWeight = 'wc_share_weight'
+  ShareWeight = 'wc_share_weight',
+  PropagateRequest = 'wc_propagate_request',
+  PropagateResponse = 'wc_propagate_response'
 }
 export type Message =
   | {
@@ -13,6 +15,14 @@ export type Message =
   | {
       kind: MessageKind.ShareWeight;
       payload: number;
+    }
+  | {
+      kind: MessageKind.PropagateRequest;
+      payload: any;
+    }
+  | {
+      kind: MessageKind.PropagateResponse;
+      payload: any;
     };
 @Injectable({
   providedIn: 'root'
@@ -22,6 +32,8 @@ export class BcService {
   subject: any = {
     wc_initialized: new Subject<any>(),
     wc_share_weight: new Subject<any>(),
+    wc_propagate_request: new Subject<any>(),
+    wc_propagate_response: new Subject<any>(),
     test: new Subject<any>(),
     all: new Subject<Message>()
   };
