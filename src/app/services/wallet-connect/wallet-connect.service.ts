@@ -70,7 +70,7 @@ export class WalletConnectService {
     (async () => {
       this.wc2activated = !!localStorage.getItem('wc2-activated');
       if (this.wc2activated) {
-        await this.init();
+        await this.startClient();
       }
     })();
     const self = this;
@@ -80,7 +80,7 @@ export class WalletConnectService {
       }
     });
   }
-  async init() {
+  async startClient() {
     this.weight = Date.now();
     this.client = await this.createClient();
     this.active = true;
@@ -116,17 +116,17 @@ export class WalletConnectService {
             this.bcService.broadcast({ kind: MessageKind.ShareWeight, payload: this.weight });
             setTimeout(() => {
               if (this.weights.every((weight: number) => weight < this.weight)) {
-                this.restart();
+                this.restartClient();
               }
               this.weights = [];
             }, 200);
             break;
           case 1: // Another tab flag itself as active => make sure this tab is flagged as inactive
             this.active = false;
-            this.removeListeners();
+            this.stopClient();
             break;
           case 2: // Tab with inactive wc2 connection closed => restart transport as hotfix for bug that can occur with 3 or more Kukai tabs open
-            if (this.active) this.restart();
+            if (this.active) this.restartClient();
             break;
         }
       })
@@ -134,6 +134,28 @@ export class WalletConnectService {
     this.subscriptions.add(
       this.bcService.subject[MessageKind.ShareWeight].subscribe((payload) => {
         this.weights.push(payload);
+      })
+    );
+    this.subscriptions.add(
+      this.bcService.subject[MessageKind.PropagateRequest].subscribe((request) => {
+        console.log('propagated request:', request.type, request);
+        this.subjectService.wc2.next(request);
+      })
+    );
+    this.subscriptions.add(
+      this.bcService.subject[MessageKind.PropagateResponse].subscribe((response) => {
+        if (this.active) {
+          console.log('propagated response:', response);
+          if (response.pairingApproved !== undefined) {
+            if (response.pairingApproved) {
+              this.approvePairing(response.request, response.publicKey);
+            } else {
+              this.rejectPairing(response.request);
+            }
+          } else {
+            this.opResponse(response.request, response.hash, response.success);
+          }
+        }
       })
     );
     this.client.on('session_request', (data) => this.requestHandler(data));
@@ -214,51 +236,69 @@ export class WalletConnectService {
     }
     message.scopes = { methods: data.params.requiredNamespaces.tezos.methods, events: data.params.requiredNamespaces.tezos.events };
     this.subjectService.wc2.next(message);
+    this.bcService.broadcast({ kind: MessageKind.PropagateRequest, payload: message });
     console.log('proposal', data);
   }
   async approvePairing(request: any, publicKey: string) {
-    const data = request.wcData;
-    console.log('data', data);
-    const namespaces: SessionTypes.Namespaces = {};
-    const address = this.operationService.pk2pkh(publicKey);
-    const accounts: string[] = [`tezos:${CONSTANTS.NETWORK}:${address}`];
-    const methods = data.params.requiredNamespaces?.tezos?.methods
-      ?.filter((method) => this.supportedMethods.includes(method))
-      .concat(data.params.optionalNamespaces?.tezos?.methods?.filter((method) => this.supportedMethods.includes(method)))
-      .filter((m) => m);
-    const events = data.params.requiredNamespaces?.tezos?.events
-      ?.filter((event) => this.supportedEvents.includes(event))
-      .concat(data.params.optionalNamespaces?.tezos?.events?.filter((event) => this.supportedEvents.includes(event)))
-      .filter((e) => e);
-    namespaces.tezos = {
-      accounts,
-      methods,
-      events
-    };
-    const { topic, acknowledged } = await this.client.approve({
-      id: data.id,
-      relayProtocol: data.params.relays[0].protocol,
-      namespaces
-    });
-    this.refresh();
-    await acknowledged();
-    this.refresh();
+    if (this.active) {
+      const data = request.wcData;
+      const namespaces: SessionTypes.Namespaces = {};
+      const address = this.operationService.pk2pkh(publicKey);
+      const accounts: string[] = [`tezos:${CONSTANTS.NETWORK}:${address}`];
+      const methods = data.params.requiredNamespaces?.tezos?.methods
+        ?.filter((method) => this.supportedMethods.includes(method))
+        .concat(data.params.optionalNamespaces?.tezos?.methods?.filter((method) => this.supportedMethods.includes(method)))
+        .filter((m) => m);
+      const events = data.params.requiredNamespaces?.tezos?.events
+        ?.filter((event) => this.supportedEvents.includes(event))
+        .concat(data.params.optionalNamespaces?.tezos?.events?.filter((event) => this.supportedEvents.includes(event)))
+        .filter((e) => e);
+      namespaces.tezos = {
+        accounts,
+        methods,
+        events
+      };
+      const { topic, acknowledged } = await this.client.approve({
+        id: data.id,
+        relayProtocol: data.params.relays[0].protocol,
+        namespaces
+      });
+      this.refresh();
+      await acknowledged();
+      //this.bcService.broadcast({ kind: MessageKind.PropagateResponse, payload: null })
+      this.refresh();
+    } else {
+      this.bcService.broadcast({ kind: MessageKind.PropagateResponse, payload: { request, publicKey, pairingApproved: true } });
+    }
   }
   async opResponse(request: any, hash: string, success: boolean) {
-    const data = request.wcData;
-    const result = formatJsonRpcResult(data.id, hash);
-    const error = formatJsonRpcError(data.id, getSdkError('USER_REJECTED').message);
-    await this.client.respond({
-      topic: data.topic,
-      response: success ? result : error
-    });
+    if (hash === 'silent') {
+      return;
+    }
+    console.log('opResponse', hash);
+    if (this.active) {
+      const data = request.wcData;
+      const result = formatJsonRpcResult(data.id, hash);
+      const error = formatJsonRpcError(data.id, getSdkError('USER_REJECTED').message);
+      await this.client.respond({
+        topic: data.topic,
+        response: success ? result : error
+      });
+    } else {
+      // if not silent
+      this.bcService.broadcast({ kind: MessageKind.PropagateResponse, payload: { request, hash, success } });
+    }
   }
   async rejectPairing(request: any) {
     const data = request.wcData;
-    await this.client.reject({
-      id: data.id,
-      reason: getSdkError('USER_REJECTED')
-    });
+    if (this.active) {
+      await this.client.reject({
+        id: data.id,
+        reason: getSdkError('USER_REJECTED')
+      });
+    } else {
+      this.bcService.broadcast({ kind: MessageKind.PropagateResponse, payload: { request, pairingApproved: false } });
+    }
   }
   private async requestHandler(data: any) {
     console.log('requestHandler', data);
@@ -275,24 +315,28 @@ export class WalletConnectService {
     }
     switch (method) {
       case 'tezos_send':
-        this.subjectService.wc2.next({
+        const send_req = {
           type: 'operation_request',
           version: 0,
           sourceAddress: data.params.request.params.account,
           operationDetails: data.params.request.params.operations,
           network: { type: data.params.chainId.split(':')[1] },
           wcData: data
-        });
+        };
+        this.subjectService.wc2.next(send_req);
+        this.bcService.broadcast({ kind: MessageKind.PropagateRequest, payload: send_req });
         break;
       case 'tezos_sign':
-        this.subjectService.wc2.next({
+        const sign_req = {
           type: 'sign_payload_request',
           version: 0,
           sourceAddress: data.params.request.params.account,
           signingType: 'raw',
           payload: data.params.request.params.payload,
           wcData: data
-        });
+        };
+        this.subjectService.wc2.next(sign_req);
+        this.bcService.broadcast({ kind: MessageKind.PropagateRequest, payload: sign_req });
         break;
       case 'tezos_getAccounts':
         try {
@@ -332,7 +376,7 @@ export class WalletConnectService {
         localStorage.setItem('wc2-activated', JSON.stringify(true));
         this.wc2activated = true;
         console.log('Wallet Connect 2 activated');
-        this.init();
+        this.startClient();
       }
       await new Promise((resolve, reject) => {
         this.delayedPairing = resolve;
@@ -439,12 +483,16 @@ export class WalletConnectService {
     }
     this.refresh();
   }
-  async restart() {
+  async restartClient() {
     console.time('restart');
-    await this.removeListeners();
-    await this.init();
-    this.active = true;
+    await this.stopClient();
+    await this.startClient();
     console.timeEnd('restart');
+  }
+  private async stopClient() {
+    //https://github.com/WalletConnect/walletconnect-monorepo/blob/v2.0/packages/sign-client/test/shared/helpers.ts#L4
+    this.client?.core?.heartbeat?.stop();
+    await this.removeListeners();
   }
   private async removeListeners(path = []) {
     const isObject = (val) => val && typeof val === 'object' && !Array.isArray(val);

@@ -89,7 +89,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
   unsorted() {}
   restart() {
     this.recentlyRestartedWc2 = true;
-    this.walletConnectService.restart();
+    this.walletConnectService.restartClient();
     setTimeout(() => {
       this.recentlyRestartedWc2 = false;
     }, 3000);

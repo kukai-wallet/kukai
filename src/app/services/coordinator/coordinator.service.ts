@@ -283,7 +283,7 @@ export class CoordinatorService {
         };
         account.activities.unshift(transaction);
         const destinationAccount = this.walletService.wallet?.getAccount(op.destination);
-        if (account) {
+        if (destinationAccount) {
           destinationAccount.activities.unshift({ ...transaction });
         }
       }
