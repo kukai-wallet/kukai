@@ -1,4 +1,4 @@
-@use '../../../abstracts/variables'as v;
+@use '../../../abstracts/variables' as v;
 @use '../../../abstracts/mixins' as m;
 
 $base-font-color: v.$base-font-color;
@@ -30,6 +30,7 @@ $base-background-color: v.$base-background-color;
 
     & a {
       text-decoration: none;
+
       & .back {
         @include m.multiply("font-size", 1);
         position: absolute;
@@ -113,13 +114,15 @@ $base-background-color: v.$base-background-color;
         margin: 2rem 0 2rem 0;
         text-transform: uppercase;
         font-weight: 600;
+
         & span {
           @include m.multiply("font-size", 1);
           text-transform: uppercase;
           font-weight: 600;
         }
 
-        &.red, & .red {
+        &.red,
+        & .red {
           @include m.multiply("font-size", 1.5);
           color: red;
         }
@@ -164,6 +167,7 @@ $base-background-color: v.$base-background-color;
           border-radius: v.$border-radius;
           background-color: #fff;
         }
+
         @supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
           & .seed-blur {
             background-color: rgba(0, 0, 0, 0);
@@ -272,7 +276,7 @@ $base-background-color: v.$base-background-color;
       .import-options {
         border-bottom: 1px solid $border-color;
 
-        & > span {
+        &>span {
           width: 30%;
           text-align: center;
           cursor: pointer;
@@ -377,11 +381,12 @@ $base-background-color: v.$base-background-color;
 
       & .import-option-1 {
         justify-content: center;
+
         & input {
           max-width: calc(100% - 2rem);
         }
 
-        & > div {
+        &>div {
           width: calc(50% - 2rem);
           height: 10rem;
           justify-content: space-between;
@@ -397,10 +402,15 @@ $base-background-color: v.$base-background-color;
 
       & .radios {
         width: 100%;
-        max-width: 40rem;
+        max-width: 60rem;
+        padding: 0 0 2rem 0;
+
+        & div {
+          padding: 0 1rem 0 1rem;
+        }
 
         & span {
-          margin: 0;
+          margin: 1rem;
         }
 
         & input {
@@ -408,6 +418,14 @@ $base-background-color: v.$base-background-color;
           height: 2rem;
           margin: 0 1rem 0 0;
         }
+      }
+
+      .wallet-type-option {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        font-weight: 600;
       }
     }
 
@@ -441,6 +459,7 @@ $base-background-color: v.$base-background-color;
       width: calc(100% - 4rem);
 
       & .body {
+
         textarea,
         input.text,
         input[type="password"],
@@ -457,12 +476,13 @@ $base-background-color: v.$base-background-color;
         & .import-option-1 {
           flex-direction: column;
 
-          & > div {
+          &>div {
             width: 100%;
             height: 100%;
             padding: 0;
           }
-          & > div.radios {
+
+          &>div.radios {
             margin: 0 0 2rem 0;
             width: 85%;
           }
