@@ -30,7 +30,8 @@
           </label>
         </div>
         <input *ngIf="walletJson" name="none" type="password" class="text" autocomplete="current-password"
-          (keydown.enter)='!messageService.spinnerOn ? checkImportPwd() : null' id="pwd" [(ngModel)]="pwd" placeholder="Password">
+          (keydown.enter)='!messageService.spinnerOn ? checkImportPwd() : null' id="pwd" [(ngModel)]="pwd"
+          placeholder="Password">
         <button class="button next" [style.visibility]="!walletJson ? 'hidden' : ''"
           (click)='!messageService.spinnerOn ? checkImportPwd() : null'>Import</button>
       </form>
@@ -56,18 +57,9 @@
               (click)="clickPassword($event)" (blur)="blurPassword($event)">
           </div>
           <div class="flex-column">
-            <span class="label"><b>Provide the address<br /> to verify your passphrase is correct</b></span>
-            <input name="none" type="text" class="text" [(ngModel)]="pkh" [placeholder]='passphrase ? "tz1... (required)" : "tz1... (optional)"'>
-          </div>
-          <div class="flex-row radios" *ngIf="importOption === 1">
-            <div class="flex-row">
-              <input name="none" (change)="hdImport = !hdImport" type="radio" name="walletType" value="hd" checked>
-              <span>HD wallet</span>
-            </div>
-            <div class="flex-row">
-              <input name="none" (change)="hdImport = !hdImport" type="radio" name="walletType" value="legacy">
-              <span>Legacy wallet</span>
-            </div>
+            <span class="label"><b>Provide the address to verify your passphrase is correct</b></span>
+            <input name="none" type="text" class="text" [(ngModel)]="pkh"
+              [placeholder]='passphrase ? "tz1... (required)" : "tz1... (optional)"'>
           </div>
         </form>
       </ng-container>
@@ -86,7 +78,8 @@
       <button class="button next" (click)="retrieve()">Import</button>
     </ng-container>
   </div>
-  <div *ngIf="activePanel==1" class="flex-column body">
+  <div *ngIf="activePanel==1 && chooseWalletState === chooseWalletStateEnum.UserDoesNotNeedToChooseWallet"
+    class="flex-column body">
     <form autocomplete="off">
       <h1>Set a password</h1>
       <p class="description bold blue">This password will be used to create an encrypted keystore file.</p>
@@ -99,8 +92,39 @@
           pwdStrength }}</b></small>
       <input name="none" type="password" placeholder="{{ 'NEWWALLETCOMPONENT.CONFIRMPASSWORD' | translate }}"
         class="text" autocomplete="new-password" [(ngModel)]="pwd2">
-      <button class="button next" [style.visibility]="!pwd1 ? 'hidden' : ''" (click)="setPwd()">Next</button>
+      <button class="button next" [style.visibility]="!pwd1 ? 'hidden' : ''"
+        (click)="setPwdOrConfirmWalletType()">Next</button>
     </form>
+  </div>
+  <div
+    *ngIf="importOption === 1 && activePanel === 1 && chooseWalletState !== chooseWalletStateEnum.UserDoesNotNeedToChooseWallet"
+    class="body flex-column">
+    <h1>Confirm Wallet Type</h1>
+    <p class="description" *ngIf="chooseWalletState !== chooseWalletStateEnum.TzktErrorEncountered">
+      You have used both the HD and Legacy wallets derived from the seed words. Please choose one.
+    </p>
+    <p class="description" *ngIf="chooseWalletState === chooseWalletStateEnum.TzktErrorEncountered">
+      We are currently unable to query information about your wallet. Please choose a wallet type.
+    </p>
+    <div class="radios flex-row">
+      <div class="flex-column">
+        <div class="wallet-type-option">
+          <input name="none" (change)="hdImport = !hdImport" type="radio" name="walletType" value="hd" checked>
+          <span>HD wallet</span>
+        </div>
+        <div>Address: {{hdCandidate.pkh}}</div>
+        <div>Tez Balance: {{hdCandidate.balance ?? '-'}}</div>
+      </div>
+      <div class="flex-column">
+        <div class="wallet-type-option">
+          <input name="none" (change)="hdImport = !hdImport" type="radio" name="walletType" value="legacy">
+          <span>Legacy wallet</span>
+        </div>
+        <div>Address: {{legacyCandidate.pkh}}</div>
+        <div>Tez balance: {{legacyCandidate.balance ?? '-'}}</div>
+      </div>
+    </div>
+    <button class="button next" (click)="setPwdAfterConfirmingWalletType()">Confirm Wallet Type</button>
   </div>
   <div *ngIf="activePanel==2" class="flex-column body">
     <h1>Wallet created!</h1>

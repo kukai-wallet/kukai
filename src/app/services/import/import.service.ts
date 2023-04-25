@@ -69,47 +69,52 @@ export class ImportService {
     }
   }
   async importWalletFromObject(data: any, seed: any): Promise<boolean> {
-    this.coordinatorService.stopAll();
-    if (data.walletType === WalletType.HdWallet && data.version === 3) {
-      // HD
-      this.walletService.wallet = new HdWallet(data.iv, data.encryptedSeed, data.encryptedEntropy);
-    } else if (data.walletType === WalletType.LegacyWallet) {
-      if (data.version === 3) {
-        this.walletService.wallet = new LegacyWalletV3(data.iv, data.encryptedSeed, data.encryptedEntropy);
-      } else if (data.version === 2) {
-        this.walletService.wallet = new LegacyWalletV2(data.iv, data.encryptedSeed);
-      } else if (data.version === 1) {
-        this.walletService.wallet = new LegacyWalletV1(data.pkh.slice(3, 19), data.encryptedSeed);
+    try {
+      this.coordinatorService.stopAll();
+      if (data.walletType === WalletType.HdWallet && data.version === 3) {
+        // HD
+        this.walletService.wallet = new HdWallet(data.iv, data.encryptedSeed, data.encryptedEntropy);
+      } else if (data.walletType === WalletType.LegacyWallet) {
+        if (data.version === 3) {
+          this.walletService.wallet = new LegacyWalletV3(data.iv, data.encryptedSeed, data.encryptedEntropy);
+        } else if (data.version === 2) {
+          this.walletService.wallet = new LegacyWalletV2(data.iv, data.encryptedSeed);
+        } else if (data.version === 1) {
+          this.walletService.wallet = new LegacyWalletV1(data.pkh.slice(3, 19), data.encryptedSeed);
+        } else {
+          throw new Error('Unsupported wallet file');
+        }
       } else {
         throw new Error('Unsupported wallet file');
       }
-    } else {
-      throw new Error('Unsupported wallet file');
-    }
-    let keys: KeyPair;
-    if (seed.length === 32) {
-      keys = utils.seedToKeyPair(seed);
-    } else if (seed.length === 64) {
-      keys = hd.keyPairFromAccountIndex(seed, 0);
-    } else {
-      throw new Error('Invalid seed length');
-    }
-    this.walletService.initStorage();
-    if (this.walletService.wallet instanceof HdWallet) {
-      let index = 0;
-      let isUsedAccount: boolean = true;
-      while (isUsedAccount) {
-        keys = hd.keyPairFromAccountIndex(seed, index);
-        isUsedAccount = await this.indexerService.isUsedAccount(keys.pkh);
-        if (isUsedAccount || index === 0) {
-          this.walletService.addImplicitAccount(keys.pk, index++);
-          await this.findContracts(keys.pkh);
-        }
+      let keys: KeyPair;
+      if (seed.length === 32) {
+        keys = utils.seedToKeyPair(seed);
+      } else if (seed.length === 64) {
+        keys = hd.keyPairFromAccountIndex(seed, 0);
+      } else {
+        throw new Error('Invalid seed length');
       }
-      this.walletService.wallet.index = index;
-    } else {
-      this.walletService.addImplicitAccount(keys.pk);
-      await this.findContracts(keys.pkh);
+      this.walletService.initStorage();
+      if (this.walletService.wallet instanceof HdWallet) {
+        let index = 0;
+        let isUsedAccount: boolean = true;
+        while (isUsedAccount) {
+          keys = hd.keyPairFromAccountIndex(seed, index);
+          isUsedAccount = await this.indexerService.isUsedAccount(keys.pkh);
+          if (isUsedAccount || index === 0) {
+            this.walletService.addImplicitAccount(keys.pk, index++);
+            await this.findContracts(keys.pkh);
+          }
+        }
+        this.walletService.wallet.index = index;
+      } else {
+        this.walletService.addImplicitAccount(keys.pk);
+        await this.findContracts(keys.pkh);
+      }
+    } catch (e) {
+      this.walletService.clearWallet();
+      throw e;
     }
     return true;
   }

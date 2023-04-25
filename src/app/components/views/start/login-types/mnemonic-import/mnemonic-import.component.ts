@@ -1,15 +1,29 @@
 import { Component, OnInit, HostBinding, Input, OnDestroy, AfterViewInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core'; // Multiple instances created ?
 import { ImportService } from '../../../../../services/import/import.service';
 import { MessageService } from '../../../../../services/message/message.service';
 import { WalletService } from '../../../../../services/wallet/wallet.service';
 import { ExportService } from '../../../../../services/export/export.service';
 import { InputValidationService } from '../../../../../services/input-validation/input-validation.service';
+import { IndexerService } from '../../../../../services/indexer/indexer.service';
+import { OperationService } from '../../../../../services/operation/operation.service';
 import { utils, hd } from '@tezos-core-tools/crypto-utils';
 import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import * as bip39 from 'bip39';
+import Big from 'big.js';
+
+interface WalletCandidate {
+  pkh: string;
+  used?: boolean;
+  balance?: string;
+}
+
+export enum ChooseWalletState {
+  UserDoesNotNeedToChooseWallet,
+  UserNeedsToChooseWallet,
+  TzktErrorEncountered
+}
 
 @Component({
   selector: 'app-mnemonic-import-wallet',
@@ -27,7 +41,6 @@ export class MnemonicImportComponent implements OnInit, AfterViewInit, OnDestroy
   pkh: string;
   importOption = 0;
   activePanel = 0;
-  hdImport = true;
   wallet: any;
   walletJson: string;
   pwd = '';
@@ -41,16 +54,24 @@ export class MnemonicImportComponent implements OnInit, AfterViewInit, OnDestroy
   advancedForm = false;
   bip39Wordlist = bip39.wordlists.english;
 
+  // data for seed word wallet import
+  hdImport = true;
+  chooseWalletStateEnum = ChooseWalletState;
+  chooseWalletState = ChooseWalletState.UserDoesNotNeedToChooseWallet;
+  legacyCandidate: null | WalletCandidate = null;
+  hdCandidate: null | WalletCandidate = null;
+
   private subscriptions: Subscription = new Subscription();
 
   constructor(
-    private translate: TranslateService,
     private importService: ImportService,
     private router: Router,
     private messageService: MessageService,
     private walletService: WalletService,
     private exportService: ExportService,
-    private inputValidationService: InputValidationService
+    private inputValidationService: InputValidationService,
+    private indexerService: IndexerService,
+    private operationService: OperationService
   ) {
     this.subscriptions.add(
       this.router.events.pipe(filter((e) => e instanceof NavigationEnd && e.url.startsWith('/import'))).subscribe(() => {
@@ -80,7 +101,8 @@ export class MnemonicImportComponent implements OnInit, AfterViewInit, OnDestroy
     e.target.setAttribute('readonly', true);
   }
 
-  retrieve(): void {
+  async retrieve(): Promise<void> {
+    // try to get the PKH from the user provided mnemonic
     if (this.mnemonic) {
       this.mnemonic = this.mnemonic
         .toLowerCase()
@@ -96,55 +118,114 @@ export class MnemonicImportComponent implements OnInit, AfterViewInit, OnDestroy
     if (invalidMnemonic) {
       this.messageService.addWarning(invalidMnemonic, 10);
     } else if (this.importOption === 2 && !this.inputValidationService.email(this.email)) {
-      this.subscriptions.add(
-        this.translate.get('MNEMONICIMPORTCOMPONENT.INVALIDEMAIL').subscribe(
-          (res: string) => this.messageService.addWarning(res, 10) // 'Invalid email!'
-        )
-      );
+      this.messageService.addWarning('Invalid email!', 10);
     } else if (this.importOption === 2 && !this.password) {
-      this.subscriptions.add(
-        this.translate.get('MNEMONICIMPORTCOMPONENT.INVALIDPASSWORD').subscribe(
-          (res: string) => this.messageService.addWarning(res, 10) // 'Invalid password!'
-        )
-      );
+      this.messageService.addWarning('Invalid password!', 10);
     } else if (!this.inputValidationService.passphrase(this.passphrase)) {
-      this.subscriptions.add(
-        this.translate.get('MNEMONICIMPORTCOMPONENT.INVALIDPASSPHRASE').subscribe(
-          (res: string) => this.messageService.addWarning(res, 10) // 'Invalid passphrase!'
-        )
-      );
+      this.messageService.addWarning('Invalid passphrase!', 10);
     } else if (this.pkh && !this.inputValidationService.address(this.pkh)) {
-      this.subscriptions.add(
-        this.translate.get('MNEMONICIMPORTCOMPONENT.INVALIDPKH').subscribe(
-          (res: string) => this.messageService.addWarning(res, 10) // 'Invalid public key hash!'
-        )
-      );
+      this.messageService.addWarning('Invalid public key hash!', 10);
     } else if (this.importOption === 1 && this.passphrase && !this.pkh) {
-      this.subscriptions.add(this.translate.get('MNEMONICIMPORTCOMPONENT.MISSINGPKH').subscribe((res: string) => this.messageService.addWarning(res, 10)));
+      this.messageService.addWarning('Address is required when importing with passphrase', 10);
     } else {
-      let pkh = '';
-      if (this.pkh) {
-        if (this.importOption === 1 && this.hdImport) {
-          pkh = hd.keyPairFromAccountIndex(utils.mnemonicToSeed(this.mnemonic, this.passphrase, true), 0).pkh;
+      // at this point we have validated the majority of the input and we can
+      // try to derive the PKH from mnemonic and the passphrase.
+
+      const passphrase = this.passphrase ? this.passphrase : '';
+      const legacyWalletAddress = utils.seedToKeyPair(utils.mnemonicToSeed(this.mnemonic, passphrase, false)).pkh;
+
+      if (this.importOption === 1) {
+        // seed word import screen
+
+        // from the mnemonic itself we cannot tell if the user prefers the HD or legacy wallet
+        // so we collect some data and run some checks
+        this.legacyCandidate = { pkh: legacyWalletAddress };
+        this.hdCandidate = { pkh: hd.keyPairFromAccountIndex(utils.mnemonicToSeed(this.mnemonic, passphrase, true), 0).pkh };
+        if (this.pkh && this.pkh !== '') {
+          // the user has provided a PKH and they expect the derivation from the seed words to match one
+          if (this.pkh === this.hdCandidate.pkh) {
+            this.hdImport = true;
+            this.hdCandidate.used = true;
+            this.legacyCandidate.used = false;
+            this.activePanel++;
+          } else if (this.pkh === this.legacyCandidate.pkh) {
+            this.hdImport = false;
+            this.legacyCandidate.used = true;
+            this.hdCandidate.used = false;
+            this.activePanel++;
+          } else {
+            this.messageService.addWarning(
+              'The provided address does not match the address derived from the seed words. Confirm that the address and passphrase are correct.',
+              5
+            );
+          }
         } else {
-          pkh = utils.seedToKeyPair(utils.mnemonicToSeed(this.mnemonic, this.passphrase, false)).pkh;
+          // these API requests are run in the background and inspected later
+          Promise.all([this.indexerService.isUsedAccount(this.legacyCandidate.pkh), this.indexerService.isUsedAccount(this.hdCandidate.pkh)]).then((isUsed) => {
+            this.legacyCandidate.used = isUsed[0];
+            this.hdCandidate.used = isUsed[1];
+            // prefetch balances if both accounts are used
+            if (isUsed.every(Boolean)) {
+              this.getCandidateBalances();
+            } else {
+              console.table({ legacy: this.legacyCandidate, hd: this.hdCandidate });
+            }
+          });
+          this.activePanel++;
         }
-      }
-      if (this.pkh && pkh !== this.pkh) {
-        if (this.importOption === 2) {
-          this.subscriptions.add(
-            this.translate.get('MNEMONICIMPORTCOMPONENT.INVALIDEMAILPASSWORD').subscribe((res: string) => this.messageService.addWarning(res, 5))
-          );
-        } else {
-          this.subscriptions.add(
-            this.translate.get('MNEMONICIMPORTCOMPONENT.INVALIDPASSPHRASE').subscribe((res: string) => this.messageService.addWarning(res, 5))
-          );
-        }
+      } else if (this.importOption === 2 && this.pkh && this.pkh !== legacyWalletAddress) {
+        // fundraiser screen if user provided pkh does not match the legacy wallet address
+        this.messageService.addWarning('Invalid email or password!', 5);
       } else {
         this.activePanel++;
       }
     }
   }
+
+  getChooseWalletState(): ChooseWalletState {
+    if (this.importOption === 2) {
+      return ChooseWalletState.UserDoesNotNeedToChooseWallet;
+    }
+    if (this.legacyCandidate.used === undefined || this.hdCandidate.used === undefined) {
+      // Promises haven't resolved successfully in time (before the user have entered the passwords), fallback on manual wallet type selection
+      return ChooseWalletState.TzktErrorEncountered;
+    } else if (this.legacyCandidate.used) {
+      if (this.hdCandidate.used) {
+        return ChooseWalletState.UserNeedsToChooseWallet;
+      } else {
+        this.hdImport = false;
+      }
+    }
+    return ChooseWalletState.UserDoesNotNeedToChooseWallet;
+  }
+
+  async getCandidateBalances() {
+    if (!this.hdCandidate.balance) {
+      this.subscriptions.add(
+        this.operationService.getBalance(this.hdCandidate.pkh).subscribe((ans) => {
+          if (ans.success) {
+            this.hdCandidate.balance = Big(ans.payload.balance)
+              .div(10 ** 6)
+              .toString();
+            if (this.legacyCandidate.balance) console.table({ legacy: this.legacyCandidate, hd: this.hdCandidate });
+          }
+        })
+      );
+    }
+    if (!this.legacyCandidate.balance) {
+      this.subscriptions.add(
+        this.operationService.getBalance(this.legacyCandidate.pkh).subscribe((ans) => {
+          if (ans.success) {
+            this.legacyCandidate.balance = Big(ans.payload.balance)
+              .div(10 ** 6)
+              .toString();
+            if (this.hdCandidate.balance) console.table({ legacy: this.legacyCandidate, hd: this.hdCandidate });
+          }
+        })
+      );
+    }
+  }
+
   async setPwd(): Promise<void> {
     if (this.validPwd()) {
       const password = this.pwd1;
@@ -164,20 +245,34 @@ export class MnemonicImportComponent implements OnInit, AfterViewInit, OnDestroy
     }
   }
 
+  async setPwdOrConfirmWalletType() {
+    // after the user enters a password and clicks the next button, Kukai
+    // decides if they need to choose the wallet or if they can
+
+    this.chooseWalletState = this.getChooseWalletState();
+
+    if (this.chooseWalletState === ChooseWalletState.UserDoesNotNeedToChooseWallet) {
+      await this.setPwd();
+    } else {
+      this.getCandidateBalances();
+    }
+  }
+
+  async setPwdAfterConfirmingWalletType(): Promise<void> {
+    await this.setPwd();
+
+    // clean up
+    this.hdImport = true;
+    this.legacyCandidate = null;
+    this.hdCandidate = null;
+  }
+
   validPwd(): boolean {
     if (!this.inputValidationService.password(this.pwd1)) {
-      this.subscriptions.add(
-        this.translate.get('MNEMONICIMPORTCOMPONENT.PASSWORDWEAK').subscribe(
-          (res: string) => this.messageService.addWarning(res, 10) // 'Password is too weak!'
-        )
-      );
+      this.messageService.addWarning('Password is too weak!', 10);
       return false;
     } else if (this.pwd1 !== this.pwd2) {
-      this.subscriptions.add(
-        this.translate.get('MNEMONICIMPORTCOMPONENT.NOMATCHPASSWORDS').subscribe(
-          (res: string) => this.messageService.addWarning(res, 10) // Passwords don't match!
-        )
-      );
+      this.messageService.addWarning("Passwords don't match!", 10);
       return false;
     } else {
       return true;
@@ -200,12 +295,15 @@ export class MnemonicImportComponent implements OnInit, AfterViewInit, OnDestroy
     await this.messageService.startSpinner('Loading wallet...');
     try {
       await this.importService.importWalletFromObject(this.wallet.data, this.wallet.seed);
+    } catch (e) {
+      this.messageService.addError('ImportError: ' + e?.message);
+      throw e;
     } finally {
       this.messageService.stopSpinner();
     }
     this.wallet = null;
     this.router.navigate([`/account/`]);
-    this.subscriptions.add(this.translate.get('MNEMONICIMPORTCOMPONENT.WALLETREADY').subscribe((res: string) => this.messageService.addSuccess(res)));
+    this.messageService.addSuccess('Your new wallet is now set up and ready!');
   }
   /* Keystore handling */
   importPreCheck(keyFile: string): void {
@@ -296,9 +394,7 @@ export class MnemonicImportComponent implements OnInit, AfterViewInit, OnDestroy
     if (!fileToUpload) {
       return false;
     } else if (!this.validateFile(fileToUpload.name)) {
-      let fileNotSupported = '';
-      this.subscriptions.add(this.translate.get('IMPORTCOMPONENT.FILENOTSUPPORTED').subscribe((res: string) => (fileNotSupported = res)));
-      this.messageService.add(fileNotSupported);
+      this.messageService.add('Selected file format is not supported');
 
       console.log('Selected file format is not supported');
       fileToUpload = null;

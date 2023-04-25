@@ -111,7 +111,7 @@ export class TzktService implements Indexer {
   }
   async isUsedAccount(address: string): Promise<boolean> {
     const accountInfo = await (await fetch(`${CONSTANTS.API_URL}/accounts/${address}`)).json();
-    return accountInfo && (accountInfo?.type === 'user' || accountInfo?.balance || accountInfo?.tokenBalancesCount);
+    return Boolean(accountInfo && (accountInfo?.type === 'user' || accountInfo?.balance || accountInfo?.tokenBalancesCount));
   }
   async getOperations(address: string, knownTokenIds: string[], wallet: WalletObject): Promise<any> {
     const ops = await fetch(`${CONSTANTS.API_URL}/accounts/${address}/operations?limit=20&type=delegation,origination,transaction`)
