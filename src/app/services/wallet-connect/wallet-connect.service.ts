@@ -162,30 +162,18 @@ export class WalletConnectService {
     this.client.on('session_delete', (data) => {
       console.log('delete', data);
       this.refresh();
-      setTimeout(() => {
-        this.refresh();
-      }, 100);
     });
     this.client.on('session_expire', (data) => {
       console.log('expire', data);
       this.refresh();
-      setTimeout(() => {
-        this.refresh();
-      }, 100);
     });
     this.client.core.pairing.events.on('pairing_delete', (data) => {
       console.log('delete', data);
       this.refresh();
-      setTimeout(() => {
-        this.refresh();
-      }, 100);
     });
     this.client.core.pairing.events.on('pairing_expire', (data) => {
       console.log('expire', data);
       this.refresh();
-      setTimeout(() => {
-        this.refresh();
-      }, 100);
     });
     // this.client.core.heartbeat.events.on('heartbeat_pulse', (data) => {
     //   console.log('heartbeat', data);
@@ -385,7 +373,7 @@ export class WalletConnectService {
     const paired = await this.client.pair({ uri: pairingString });
     console.log('paired', paired);
   }
-  refresh() {
+  refresh(n = 0) {
     const sessionsList: DSession[] = this.client.session
       .getAll()
       .map((session) => {
@@ -423,7 +411,12 @@ export class WalletConnectService {
       }
     }
     this.pairings = _pairings;
-    console.log('pairings/sessions', { pairings: this.pairings, sessions: this.sessions });
+    console.log('pairings/sessions', structuredClone({ pairings: this.pairings, sessions: this.sessions }));
+    if (++n < 3) {
+      setTimeout(() => {
+        this.refresh(n);
+      }, n ** 2 * 100);
+    }
   }
   public async updateSession(topic: string, newAddress: string) {
     const session = this.client.session.get(topic);
