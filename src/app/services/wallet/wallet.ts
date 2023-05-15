@@ -105,23 +105,77 @@ export class HdWallet extends FullWallet {
   }
 }
 
+const TORUS_WALLET_STORE_KEY = 'torus-sk-cache';
+const ONE_HOUR = 3600000;
+
 export class TorusWallet extends Wallet {
   verifier: string;
   id: string;
   name: string;
+
   constructor(verifier: string, id: string, name: string) {
     super();
     this.verifier = verifier;
     this.id = id;
     this.name = name;
   }
-  displayName() {
+
+  displayName(): string {
     if (['twitter', 'facebook'].includes(this.verifier)) {
       return this.name;
     }
     return this.id;
   }
+
+  removeSk(): void {
+    sessionStorage.removeItem(TORUS_WALLET_STORE_KEY);
+  }
+
+  private getStoredData(): null | { sk: string; expiration: number } {
+    const skData = sessionStorage.getItem(TORUS_WALLET_STORE_KEY);
+    if (skData) {
+      const parsed = JSON.parse(skData);
+      if (typeof parsed.sk === 'string' && typeof parsed.expiration === 'number') {
+        return parsed;
+      }
+    }
+
+    return null;
+  }
+
+  checkSkExpiration(): void {
+    const storedData = this.getStoredData();
+    if (storedData) {
+      const now = new Date().getTime();
+      if (storedData.expiration <= now) {
+        this.removeSk();
+      }
+    }
+  }
+
+  updateSkExpiration(): void {
+    const storedData = this.getStoredData();
+    if (storedData) {
+      const expiration = new Date().getTime() + ONE_HOUR;
+      sessionStorage.setItem(TORUS_WALLET_STORE_KEY, JSON.stringify({ ...storedData, expiration }));
+    }
+  }
+
+  storeSk(sk: string): void {
+    const expiration = new Date().getTime() + ONE_HOUR;
+    sessionStorage.setItem(TORUS_WALLET_STORE_KEY, JSON.stringify({ sk, expiration }));
+  }
+
+  getSk(): null | string {
+    const storedData = this.getStoredData();
+    if (storedData) {
+      return storedData.sk;
+    }
+
+    return null;
+  }
 }
+
 export class EmbeddedTorusWallet extends TorusWallet {
   origin: string;
   sk: string;

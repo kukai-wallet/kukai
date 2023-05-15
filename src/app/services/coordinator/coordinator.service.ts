@@ -5,7 +5,7 @@ import { BalanceService } from '../balance/balance.service';
 import { WalletService } from '../wallet/wallet.service';
 import { DelegateService } from '../delegate/delegate.service';
 import { OperationService } from '../operation/operation.service';
-import { Account, OpStatus } from '../wallet/wallet';
+import { Account, OpStatus, TorusWallet } from '../wallet/wallet';
 import Big from 'big.js';
 import { TokenService } from '../token/token.service';
 import { LookupService } from '../lookup/lookup.service';
@@ -184,6 +184,9 @@ export class CoordinatorService {
               this.walletService.storeWallet();
             }
           }
+        }
+        if (this.walletService.wallet instanceof TorusWallet) {
+          this.walletService.wallet.checkSkExpiration();
         }
       },
       (err) => {

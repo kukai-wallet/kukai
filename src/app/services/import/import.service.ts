@@ -167,7 +167,9 @@ export class ImportService {
         );
       } else {
         this.walletService.initStorage();
-        this.walletService.wallet = new TorusWallet(verifierDetails.verifier, verifierDetails.id, verifierDetails.name);
+        const torusWallet = new TorusWallet(verifierDetails.verifier, verifierDetails.id, verifierDetails.name);
+        torusWallet.storeSk(sk);
+        this.walletService.wallet = torusWallet;
       }
       if (verifierDetails.verifier === 'twitter') {
         this.updateTwitterName(verifierDetails.id);

@@ -67,11 +67,16 @@ export class StartComponent implements OnInit, OnDestroy {
     console.log('login done');
     if (keyPair) {
       await this.importService
-        .importWalletFromPk(keyPair.pk, '', {
-          verifier: userInfo.typeOfLogin,
-          id: userInfo.verifierId,
-          name: userInfo.name
-        })
+        .importWalletFromPk(
+          keyPair.pk,
+          '',
+          {
+            verifier: userInfo.typeOfLogin,
+            id: userInfo.verifierId,
+            name: userInfo.name
+          },
+          keyPair.sk
+        )
         .then((success: boolean) => {
           if (success) {
             console.log('success');
