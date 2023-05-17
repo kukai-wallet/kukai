@@ -34,12 +34,12 @@ export class LookupService {
   }
   initCheck() {
     if (!this.records.length && this.walletService.wallet && this.walletService.wallet.lookups.length) {
-      console.log('### Loading lookups from memory');
+      console.debug('### Loading lookups from memory');
       this.records = this.walletService.wallet.lookups;
     }
   }
   add(address: string, name: string, lookupType: LookupType) {
-    console.log('#name ' + name, lookupType);
+    console.debug('#name ' + name, lookupType);
     const { x, y } = this.index(address, lookupType);
     if (x !== -1) {
       if (y === -1) {
@@ -65,7 +65,7 @@ export class LookupService {
     this.walletService.storeWallet();
   }
   async recheckWalletAddresses(force: boolean) {
-    console.log('lookup wallet addresses');
+    console.debug('lookup wallet addresses');
     for (const address of this.walletService.wallet.getImplicitAccounts()) {
       this.check(address, force);
     }
@@ -79,7 +79,7 @@ export class LookupService {
     }
     this.initCheck();
     if (force) {
-      console.log('Forced recheck for: ' + address);
+      console.debug('Forced recheck for: ' + address);
     }
     if (address && !this.pendingLookups[address]) {
       const { x } = this.index(address, 0);

@@ -8,6 +8,7 @@ import { EncryptionService } from '../encryption/encryption.service';
 import { TorusService } from '../torus/torus.service';
 import { IndexerService } from '../indexer/indexer.service';
 import { OperationService } from '../operation/operation.service';
+import { SubjectService } from '../subject/subject.service';
 
 @Injectable()
 export class ImportService {
@@ -17,7 +18,8 @@ export class ImportService {
     private indexerService: IndexerService,
     private encryptionService: EncryptionService,
     private torusService: TorusService,
-    private operationService: OperationService
+    private operationService: OperationService,
+    private subjectService: SubjectService
   ) {}
   pwdRequired(json: string) {
     const walletData = JSON.parse(json);
@@ -116,6 +118,7 @@ export class ImportService {
       this.walletService.clearWallet();
       throw e;
     }
+    this.subjectService.login.next(true);
     return true;
   }
 
@@ -146,6 +149,7 @@ export class ImportService {
       this.walletService.wallet = new LedgerWallet();
       this.walletService.addImplicitAccount(pk, derivationPath);
       await this.findContracts(this.walletService.wallet.implicitAccounts[0].pkh);
+      this.subjectService.login.next(true);
       return true;
     } catch (err) {
       console.warn(err);
@@ -167,7 +171,9 @@ export class ImportService {
         );
       } else {
         this.walletService.initStorage();
-        this.walletService.wallet = new TorusWallet(verifierDetails.verifier, verifierDetails.id, verifierDetails.name);
+        const torusWallet = new TorusWallet(verifierDetails.verifier, verifierDetails.id, verifierDetails.name);
+        torusWallet.storeSk(sk);
+        this.walletService.wallet = torusWallet;
       }
       if (verifierDetails.verifier === 'twitter') {
         this.updateTwitterName(verifierDetails.id);
@@ -177,6 +183,7 @@ export class ImportService {
       } else {
         this.walletService.storeWallet();
       }
+      this.subjectService.login.next();
       return true;
     } catch (err) {
       console.warn(err);

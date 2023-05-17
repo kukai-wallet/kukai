@@ -78,16 +78,33 @@ export class WalletService {
         pkh: this.wallet.implicitAccounts[0].pkh
       };
       return keyPair;
-    } else if (this.wallet instanceof EmbeddedTorusWallet && this.wallet?.sk) {
-      return this.operationService.spPrivKeyToKeyPair(this.wallet.sk);
-    } else if (this.wallet instanceof TorusWallet || (this.wallet instanceof EmbeddedTorusWallet && !this.wallet?.sk)) {
-      const keyPair = await this.torusService.getTorusKeyPair(this.wallet.verifier, this.wallet.id);
-      if (this.wallet.getImplicitAccount(keyPair.pkh)) {
-        return keyPair;
+    } else if (this.wallet instanceof EmbeddedTorusWallet) {
+      if (this.wallet?.sk) {
+        return this.operationService.spPrivKeyToKeyPair(this.wallet.sk);
       } else {
-        throw new Error('Signed with wrong account');
+        const keyPair = await this.torusService.getTorusKeyPair(this.wallet.verifier, this.wallet.id);
+        if (this.wallet.getImplicitAccount(keyPair.pkh)) {
+          return keyPair;
+        } else {
+          throw new Error('Signed with wrong account');
+        }
       }
-      return null;
+    } else if (this.wallet instanceof TorusWallet) {
+      const sk = this.wallet.getSk();
+      if (sk) {
+        console.log('Retrieving social login sk from memory');
+        this.wallet.updateSkExpiration();
+        return this.operationService.spPrivKeyToKeyPair(sk);
+      } else {
+        console.log('Need to query social login sk from torus');
+        const keyPair = await this.torusService.getTorusKeyPair(this.wallet.verifier, this.wallet.id);
+        if (this.wallet.getImplicitAccount(keyPair.pkh)) {
+          this.wallet.storeSk(keyPair.sk);
+          return keyPair;
+        } else {
+          throw new Error('Signed with wrong account');
+        }
+      }
     } else {
       return null;
     }
@@ -177,6 +194,9 @@ export class WalletService {
     Clear wallet data from browser
   */
   clearWallet(instanceId: string = '') {
+    if (this.wallet instanceof TorusWallet) {
+      this.wallet.removeSk();
+    }
     this.wallet = null;
     this.storageId = 0;
     if (instanceId) {
@@ -286,7 +306,7 @@ export class WalletService {
     const walletData = instanceId ? sessionStorage.getItem(instanceId) : localStorage.getItem(this.storeKey);
     if (walletData && walletData !== 'undefined') {
       const parsedWalletData = JSON.parse(walletData);
-      console.log(parsedWalletData);
+      console.debug(parsedWalletData);
       if (parsedWalletData.type && parsedWalletData.data && parsedWalletData.localStorageId) {
         this.storageId = parsedWalletData.localStorageId;
         const wd = parsedWalletData.data;

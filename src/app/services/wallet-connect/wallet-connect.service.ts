@@ -10,7 +10,12 @@ import { OperationService } from '../operation/operation.service';
 import { BcService, MessageKind } from '../bc/bc.service';
 import { WalletService } from '../wallet/wallet.service';
 import { Subscription } from 'rxjs';
+import { UtilsService } from '../utils/utils.service';
+import { isEqual } from 'lodash';
 
+const SESSION_STORAGE_KEY = 'wc@2:client:0.3//session';
+const PAIRING_STORAGE_KEY = 'wc@2:core:0.3//pairing';
+const KEYCHAIN_STORAGE_KEY = 'wc@2:core:0.3//keychain';
 interface Pairings {
   expanded: boolean;
   size: number;
@@ -46,11 +51,9 @@ interface DSession {
 export class WalletConnectService {
   readonly supportedMethods = ['tezos_send', 'tezos_sign', 'tezos_getAccounts'];
   readonly supportedEvents = [];
-  weight = Date.now();
-  weights = [];
-  wc2activated = false;
+  private enableWc2: any;
   client: Client;
-  active = false;
+  initDoneAt: number;
   private subscriptions: Subscription;
   delayedPairing: any;
   sessions: Sessions = { expanded: false, size: 0, dapp: {} };
@@ -65,28 +68,86 @@ export class WalletConnectService {
     private subjectService: SubjectService,
     private operationService: OperationService,
     private bcService: BcService,
-    private walletService: WalletService
+    private walletService: WalletService,
+    private utilsService: UtilsService
   ) {
     (async () => {
-      this.wc2activated = !!localStorage.getItem('wc2-activated');
-      if (this.wc2activated) {
-        await this.startClient();
+      this.subjectService.login.subscribe(() => {
+        if (this.client) {
+          console.log('open transport');
+          this.client.core.relayer.transportOpen();
+        }
+      });
+      this.subjectService.logout.subscribe(() => {
+        if (this.client) {
+          console.log('close transport');
+          this.client.core.relayer.transportClose();
+        }
+      });
+      this.initBcSubscriptions();
+      this.refresh();
+      window.addEventListener('storage', this.storageEventHandler);
+      await this.bcService.elected;
+      if (!localStorage.getItem('wc2_activated')) {
+        await new Promise((resolve) => {
+          this.enableWc2 = resolve;
+        });
       }
+      this.startClient();
     })();
-    const self = this;
-    window.addEventListener('beforeunload', function (e) {
-      if (self.wc2activated) {
-        self.bcService.broadcast({ kind: MessageKind.Initialized, payload: self.active ? 0 : 2 });
-      }
-    });
+  }
+  storageEventHandler = (ev) => {
+    if ([SESSION_STORAGE_KEY, PAIRING_STORAGE_KEY].includes(ev?.key)) {
+      this.refresh();
+    }
+  };
+  ngOnDestroy(): void {
+    this.subscriptions?.unsubscribe();
+    window.removeEventListener('storage', this.storageEventHandler);
+  }
+  private async initBcSubscriptions() {
+    this.subscriptions = new Subscription();
+    this.subscriptions.add(
+      this.bcService.subject[MessageKind.PairingRequest].subscribe(async (pairingString) => {
+        if (this.client || (await this.bcService.initAsLeader()) || this.enableWc2) {
+          this.pair(pairingString);
+        }
+      })
+    );
+    this.subscriptions.add(
+      this.bcService.subject[MessageKind.DeleteRequest].subscribe((topic) => {
+        if (this.client) {
+          this.delete(topic);
+        }
+      })
+    );
+    this.subscriptions.add(
+      this.bcService.subject[MessageKind.PropagateRequest].subscribe((request) => {
+        console.log('propagated request:', request.type, request);
+        this.subjectService.wc2.next(request);
+      })
+    );
+    this.subscriptions.add(
+      this.bcService.subject[MessageKind.PropagateResponse].subscribe((response) => {
+        if (this.client) {
+          console.log('propagated response:', response);
+          if (response.pairingApproved !== undefined) {
+            if (response.pairingApproved) {
+              this.approvePairing(response.request, response.publicKey);
+            } else {
+              this.rejectPairing(response.request);
+            }
+          } else {
+            this.wcResponse(response.request, response.hash, response.success);
+          }
+        }
+      })
+    );
   }
   async startClient() {
-    this.weight = Date.now();
+    console.log('Starting wc2 client...');
     this.client = await this.createClient();
-    this.active = true;
-    this.bcService.broadcast({ kind: MessageKind.Initialized, payload: 1 });
-    this.subscriptions?.unsubscribe();
-    this.subscriptions = new Subscription();
+    this.initDoneAt = new Date().getTime();
     this.subscribeToEvents();
     if (this.delayedPairing) {
       await this.delayedPairing();
@@ -109,56 +170,21 @@ export class WalletConnectService {
   }
   subscribeToEvents() {
     this.client.on('session_proposal', (data) => this.proposalHandler(data));
-    this.subscriptions.add(
-      this.bcService.subject[MessageKind.Initialized].subscribe((payload) => {
-        switch (payload) {
-          case 0: // Tab with active wc2 connection closed => restart transport for client with highest weight
-            this.bcService.broadcast({ kind: MessageKind.ShareWeight, payload: this.weight });
-            setTimeout(() => {
-              if (this.weights.every((weight: number) => weight < this.weight)) {
-                this.restartClient();
-              }
-              this.weights = [];
-            }, 200);
-            break;
-          case 1: // Another tab flag itself as active => make sure this tab is flagged as inactive
-            this.active = false;
-            this.stopClient();
-            break;
-          case 2: // Tab with inactive wc2 connection closed => restart transport as hotfix for bug that can occur with 3 or more Kukai tabs open
-            if (this.active) this.restartClient();
-            break;
-        }
-      })
-    );
-    this.subscriptions.add(
-      this.bcService.subject[MessageKind.ShareWeight].subscribe((payload) => {
-        this.weights.push(payload);
-      })
-    );
-    this.subscriptions.add(
-      this.bcService.subject[MessageKind.PropagateRequest].subscribe((request) => {
-        console.log('propagated request:', request.type, request);
-        this.subjectService.wc2.next(request);
-      })
-    );
-    this.subscriptions.add(
-      this.bcService.subject[MessageKind.PropagateResponse].subscribe((response) => {
-        if (this.active) {
-          console.log('propagated response:', response);
-          if (response.pairingApproved !== undefined) {
-            if (response.pairingApproved) {
-              this.approvePairing(response.request, response.publicKey);
-            } else {
-              this.rejectPairing(response.request);
-            }
-          } else {
-            this.opResponse(response.request, response.hash, response.success);
+    this.client.on('session_request', async (data) => {
+      // If multiple pending messages after init, we drop all expect the most recent one
+      const diffMs = new Date().getTime() - this.initDoneAt;
+      if (diffMs < 1000) {
+        await this.utilsService.sleep(100);
+        const pending = this.client.getPendingSessionRequests();
+        if (pending?.length && pending[pending.length - 1].id !== data?.id) {
+          if (data?.params?.request?.method !== 'tezos_getAccounts') {
+            console.log('drop old wc2 message', data);
+            return;
           }
         }
-      })
-    );
-    this.client.on('session_request', (data) => this.requestHandler(data));
+      }
+      this.requestHandler(data);
+    });
     this.client.on('session_delete', (data) => {
       console.log('delete', data);
       this.refresh();
@@ -228,7 +254,7 @@ export class WalletConnectService {
     console.log('proposal', data);
   }
   async approvePairing(request: any, publicKey: string) {
-    if (this.active) {
+    if (this.client) {
       const data = request.wcData;
       const namespaces: SessionTypes.Namespaces = {};
       const address = this.operationService.pk2pkh(publicKey);
@@ -241,6 +267,11 @@ export class WalletConnectService {
         ?.filter((event) => this.supportedEvents.includes(event))
         .concat(data.params.optionalNamespaces?.tezos?.events?.filter((event) => this.supportedEvents.includes(event)))
         .filter((e) => e);
+      const sessionProperties = {
+        algo: address.startsWith('tz1') ? 'ed25519' : address.startsWith('tz2') ? 'secp256k1' : 'unknown',
+        address: address,
+        pubkey: publicKey
+      };
       namespaces.tezos = {
         accounts,
         methods,
@@ -249,7 +280,8 @@ export class WalletConnectService {
       const { topic, acknowledged } = await this.client.approve({
         id: data.id,
         relayProtocol: data.params.relays[0].protocol,
-        namespaces
+        namespaces,
+        sessionProperties
       });
       this.refresh();
       await acknowledged();
@@ -259,14 +291,24 @@ export class WalletConnectService {
       this.bcService.broadcast({ kind: MessageKind.PropagateResponse, payload: { request, publicKey, pairingApproved: true } });
     }
   }
-  async opResponse(request: any, hash: string, success: boolean) {
+  async wcResponse(request: any, hash: string, success: boolean) {
     if (hash === 'silent') {
       return;
     }
-    console.log('opResponse', hash);
-    if (this.active) {
+    console.log('wcResponse', hash);
+    if (this.client) {
       const data = request.wcData;
-      const result = formatJsonRpcResult(data.id, hash);
+      // hash, operation_hash, transaction_hash??
+      let msg = {};
+      if (request.type === 'operation_request') {
+        // this is not a transaction hash, but need this property name to get it working with Beacon
+        msg = { transactionHash: hash };
+      } else if (request.type === 'sign_payload_request') {
+        msg = { signature: hash };
+      } else {
+        throw new Error('Unknown request type');
+      }
+      const result = formatJsonRpcResult(data.id, msg);
       const error = formatJsonRpcError(data.id, getSdkError('USER_REJECTED').message);
       await this.client.respond({
         topic: data.topic,
@@ -279,7 +321,7 @@ export class WalletConnectService {
   }
   async rejectPairing(request: any) {
     const data = request.wcData;
-    if (this.active) {
+    if (this.client) {
       await this.client.reject({
         id: data.id,
         reason: getSdkError('USER_REJECTED')
@@ -289,6 +331,13 @@ export class WalletConnectService {
     }
   }
   private async requestHandler(data: any) {
+    if (!this.walletService.wallet) {
+      const error = formatJsonRpcError(data.id, getSdkError('USER_REJECTED').message);
+      await this.client.respond({
+        topic: data.topic,
+        response: error
+      });
+    }
     console.log('requestHandler', data);
     const session = this.client.session.get(data.topic);
     const allowedAccounts = session?.namespaces?.tezos?.accounts || [];
@@ -360,24 +409,43 @@ export class WalletConnectService {
   }
   async pair(pairingString: string) {
     if (!this.client) {
-      if (!this.wc2activated) {
-        localStorage.setItem('wc2-activated', JSON.stringify(true));
-        this.wc2activated = true;
-        console.log('Wallet Connect 2 activated');
-        this.startClient();
+      const initAsLeader = await this.bcService.initAsLeader();
+      if (!initAsLeader && !this.enableWc2) {
+        console.log('broadcast pairing string =>');
+        this.bcService.broadcast({ kind: MessageKind.PairingRequest, payload: pairingString });
+        return;
+      } else {
+        if (!localStorage.getItem('wc2_activated')) {
+          localStorage.setItem('wc2_activated', JSON.stringify(true));
+        }
+        if (this.enableWc2) {
+          this.enableWc2();
+        }
       }
       await new Promise((resolve, reject) => {
         this.delayedPairing = resolve;
       });
     }
+    console.log('Start pairing...');
     const paired = await this.client.pair({ uri: pairingString });
     console.log('paired', paired);
   }
   refresh(n = 0) {
-    const sessionsList: DSession[] = this.client.session
-      .getAll()
+    const lsS = localStorage.getItem(SESSION_STORAGE_KEY);
+    const lsP = localStorage.getItem(PAIRING_STORAGE_KEY);
+    const _session = this.client ? this.client?.session?.getAll() : lsS ? JSON.parse(lsS) : [];
+    const _pairing = this.client ? this.client?.core?.pairing?.getPairings() : lsP ? JSON.parse(lsP) : [];
+
+    const sessionsList: DSession[] = _session
       .map((session) => {
-        if (session?.acknowledged && this.client.core.crypto.keychain.has(session?.topic)) {
+        let inKeychain = false; // We should not need this check. But seem to be a bit buggy otherwise
+        if (this.client) {
+          inKeychain = this.client.core.crypto.keychain.has(session?.topic);
+        } else {
+          const kc = localStorage.getItem(KEYCHAIN_STORAGE_KEY);
+          inKeychain = !kc ? false : !!JSON.parse(kc)[session?.topic];
+        }
+        if (session?.acknowledged && inKeychain) {
           const accountAddress = session?.namespaces?.tezos?.accounts[0].split(':')[2];
           return { name: session?.peer?.metadata?.name, address: accountAddress, topic: session.topic, expiry: session.expiry };
         }
@@ -392,11 +460,16 @@ export class WalletConnectService {
         _sessions.dapp[dSession['name']] = { expanded, s: [dSession] };
       }
     }
-    this.sessions = _sessions;
-    const pairingsList: DPairing[] = this.client.core.pairing
-      .getPairings()
+    const pairingsList: DPairing[] = _pairing
       .map((pairing) => {
-        if (pairing.active && this.client.core.crypto.keychain.has(pairing?.topic)) {
+        let inKeychain;
+        if (this.client) {
+          inKeychain = this.client.core.crypto.keychain.has(pairing?.topic);
+        } else {
+          const kc = localStorage.getItem(KEYCHAIN_STORAGE_KEY);
+          inKeychain = !kc ? false : !!JSON.parse(kc)[pairing?.topic];
+        }
+        if (pairing.active && inKeychain) {
           return { name: pairing?.peerMetadata?.name, topic: pairing.topic, expiry: pairing.expiry };
         }
       })
@@ -410,9 +483,15 @@ export class WalletConnectService {
         _pairings.dapp[dPairing['name']] = { expanded, p: [dPairing] };
       }
     }
-    this.pairings = _pairings;
-    console.log('pairings/sessions', structuredClone({ pairings: this.pairings, sessions: this.sessions }));
-    if (++n < 3) {
+    if (!isEqual(this.pairings, _pairings)) {
+      this.pairings = _pairings;
+      console.log('pairings', _pairings);
+    }
+    if (!isEqual(this.sessions, _sessions)) {
+      this.sessions = _sessions;
+      console.log('sessions', _sessions);
+    }
+    if (++n < 5) {
       setTimeout(() => {
         this.refresh(n);
       }, n ** 2 * 100);
@@ -437,7 +516,11 @@ export class WalletConnectService {
   }
   public async delete(topic: string) {
     try {
-      await this.disconnect(topic);
+      if (this.client) {
+        await this.disconnect(topic);
+      } else {
+        this.bcService.broadcast({ kind: MessageKind.DeleteRequest, payload: topic });
+      }
     } catch (e) {
       console.error(e);
       this.refresh();
@@ -475,12 +558,6 @@ export class WalletConnectService {
       console.log(this.pairings, this.sessions);
     }
     this.refresh();
-  }
-  async restartClient() {
-    console.time('restart');
-    await this.stopClient();
-    await this.startClient();
-    console.timeEnd('restart');
   }
   private async stopClient() {
     //https://github.com/WalletConnect/walletconnect-monorepo/blob/v2.0/packages/sign-client/test/shared/helpers.ts#L4

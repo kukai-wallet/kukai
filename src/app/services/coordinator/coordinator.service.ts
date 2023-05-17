@@ -5,7 +5,7 @@ import { BalanceService } from '../balance/balance.service';
 import { WalletService } from '../wallet/wallet.service';
 import { DelegateService } from '../delegate/delegate.service';
 import { OperationService } from '../operation/operation.service';
-import { Account, OpStatus } from '../wallet/wallet';
+import { Account, OpStatus, TorusWallet } from '../wallet/wallet';
 import Big from 'big.js';
 import { TokenService } from '../token/token.service';
 import { LookupService } from '../lookup/lookup.service';
@@ -76,7 +76,7 @@ export class CoordinatorService {
   }
   startXTZ() {
     if (!this.tzrateInterval) {
-      console.log('Start scheduler XTZ');
+      console.debug('Start scheduler XTZ');
       this.signalService.init();
       const update = () => {
         this.tzrateService.getTzrate();
@@ -91,7 +91,7 @@ export class CoordinatorService {
     this.unlockableService.restoreFeatures();
     if (pkh && !this.scheduler.get(pkh)) {
       this.accounts = this.walletService.wallet.getAccounts();
-      console.log('Start scheduler ' + this.scheduler.size + ' ' + pkh);
+      console.debug('Start scheduler ' + this.scheduler.size + ' ' + pkh);
       const scheduleData: ScheduleData = {
         pkh: pkh,
         state: State.UpToDate,
@@ -185,6 +185,9 @@ export class CoordinatorService {
             }
           }
         }
+        if (this.walletService.wallet instanceof TorusWallet) {
+          this.walletService.wallet.checkSkExpiration();
+        }
       },
       (err) => {
         console.log('Error in update()');
@@ -244,7 +247,7 @@ export class CoordinatorService {
   }
   updateAccountData(pkh: string) {
     // Maybe also check for originations to account?
-    console.log('update account data for ' + pkh);
+    console.debug('update account data for ' + pkh);
     this.operationService.getAccount(pkh).subscribe((ans: any) => {
       if (ans.success) {
         this.balanceService.updateAccountBalance(this.walletService.wallet?.getAccount(pkh), Number(ans.payload.balance));

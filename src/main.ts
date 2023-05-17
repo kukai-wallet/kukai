@@ -8,6 +8,7 @@ if (environment.production) {
   enableProdMode();
   window.console.log = function () {};
   window.console.dir = function () {};
+  window.console.table = function () {};
 }
 
 platformBrowserDynamic()

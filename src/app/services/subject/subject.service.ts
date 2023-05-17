@@ -31,6 +31,7 @@ export class SubjectService {
   public nftsUpdated: BehaviorSubject<any>;
   public origin: BehaviorSubject<string>;
   public beaconResponse: Subject<boolean>;
+  public login: Subject<boolean>;
   public logout: Subject<boolean>;
   public buy: Subject<BuyProvider>;
   public wc2: Subject<any>;
@@ -51,6 +52,7 @@ export class SubjectService {
     this.nftsUpdated = new BehaviorSubject<any>(undefined);
     this.origin = new BehaviorSubject<string>(null);
     this.beaconResponse = new Subject<boolean>();
+    this.login = new Subject<boolean>();
     this.logout = new Subject<boolean>();
     this.buy = new Subject<BuyProvider>();
     this.wc2 = new Subject<any>();
