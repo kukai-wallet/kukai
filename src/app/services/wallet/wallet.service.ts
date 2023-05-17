@@ -306,7 +306,7 @@ export class WalletService {
     const walletData = instanceId ? sessionStorage.getItem(instanceId) : localStorage.getItem(this.storeKey);
     if (walletData && walletData !== 'undefined') {
       const parsedWalletData = JSON.parse(walletData);
-      console.log(parsedWalletData);
+      console.debug(parsedWalletData);
       if (parsedWalletData.type && parsedWalletData.data && parsedWalletData.localStorageId) {
         this.storageId = parsedWalletData.localStorageId;
         const wd = parsedWalletData.data;

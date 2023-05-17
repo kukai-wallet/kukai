@@ -76,7 +76,7 @@ export class CoordinatorService {
   }
   startXTZ() {
     if (!this.tzrateInterval) {
-      console.log('Start scheduler XTZ');
+      console.debug('Start scheduler XTZ');
       this.signalService.init();
       const update = () => {
         this.tzrateService.getTzrate();
@@ -91,7 +91,7 @@ export class CoordinatorService {
     this.unlockableService.restoreFeatures();
     if (pkh && !this.scheduler.get(pkh)) {
       this.accounts = this.walletService.wallet.getAccounts();
-      console.log('Start scheduler ' + this.scheduler.size + ' ' + pkh);
+      console.debug('Start scheduler ' + this.scheduler.size + ' ' + pkh);
       const scheduleData: ScheduleData = {
         pkh: pkh,
         state: State.UpToDate,
@@ -247,7 +247,7 @@ export class CoordinatorService {
   }
   updateAccountData(pkh: string) {
     // Maybe also check for originations to account?
-    console.log('update account data for ' + pkh);
+    console.debug('update account data for ' + pkh);
     this.operationService.getAccount(pkh).subscribe((ans: any) => {
       if (ans.success) {
         this.balanceService.updateAccountBalance(this.walletService.wallet?.getAccount(pkh), Number(ans.payload.balance));

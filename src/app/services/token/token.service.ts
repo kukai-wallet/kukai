@@ -267,7 +267,7 @@ export class TokenService {
             const exp = this.exploredIds[token.tokenId];
             const now = new Date().getTime();
             if (now - exp.lastCheck > tokenObject.ttl * 1000) {
-              console.log('recheck metadata for', token.tokenId);
+              console.debug('recheck metadata for', token.tokenId);
               this.exploredIds[token.tokenId].lastCheck = now;
               this.exploredIds[token.tokenId].counter = ++exp.counter || 0;
               this.saveMetadata();

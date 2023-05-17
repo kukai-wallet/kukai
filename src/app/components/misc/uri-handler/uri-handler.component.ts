@@ -103,7 +103,7 @@ export class UriHandlerComponent implements OnInit, OnDestroy {
     if (message.type !== BeaconMessageType.SignPayloadRequest && message.network.type !== CONSTANTS.NETWORK) {
       console.warn(`Rejecting Beacon message because of network. Expected ${CONSTANTS.NETWORK} instead of ${message.network.type}`);
       await this.beaconService.rejectOnNetwork(message);
-    } else if (!this.permissionRequest && !this.externalRequest && !this.signRequest) {
+    } else if (!this.isBlocked()) {
       switch (message.type) {
         case BeaconMessageType.PermissionRequest:
           await this.handlePermissionRequest(message);
@@ -129,6 +129,9 @@ export class UriHandlerComponent implements OnInit, OnDestroy {
     } else {
       console.warn('Blocked by other Beacon/Wc2 request');
     }
+  }
+  private isBlocked() {
+    return this.permissionRequest || this.externalRequest || this.signRequest;
   }
   async handlePermissionRequest(message: any): Promise<void> {
     console.log('## permission request');
@@ -213,7 +216,7 @@ export class UriHandlerComponent implements OnInit, OnDestroy {
     } catch (e) {
       if (e?.message === 'No matching request found!' && message.version === 0) {
         console.log('wc2');
-        this.walletConnectService.opResponse(message, '', false);
+        this.walletConnectService.wcResponse(message, '', false);
       } else {
         throw e;
       }
@@ -270,7 +273,7 @@ export class UriHandlerComponent implements OnInit, OnDestroy {
     } catch (e) {
       if (e?.message === 'No matching request found!' && message.version === 0) {
         console.log('wc2');
-        this.walletConnectService.opResponse(message, '', false);
+        this.walletConnectService.wcResponse(message, '', false);
       } else {
         throw e;
       }
@@ -321,9 +324,9 @@ export class UriHandlerComponent implements OnInit, OnDestroy {
       }
     } else if (this.externalRequest.operationRequest.version === 0) {
       if (opHash?.length > 50) {
-        this.walletConnectService.opResponse(this.externalRequest.operationRequest, opHash, true);
+        this.walletConnectService.wcResponse(this.externalRequest.operationRequest, opHash, true);
       } else if (opHash !== 'silent') {
-        this.walletConnectService.opResponse(this.externalRequest.operationRequest, opHash, false);
+        this.walletConnectService.wcResponse(this.externalRequest.operationRequest, opHash, false);
       }
     }
     if (opHash !== 'silent') {
@@ -363,9 +366,9 @@ export class UriHandlerComponent implements OnInit, OnDestroy {
       }
     } else if (this.signRequest.version === 0) {
       if (signature) {
-        this.walletConnectService.opResponse(this.signRequest, signature, true);
+        this.walletConnectService.wcResponse(this.signRequest, signature, true);
       } else {
-        this.walletConnectService.opResponse(this.signRequest, signature, false);
+        this.walletConnectService.wcResponse(this.signRequest, signature, false);
       }
     }
     this.beaconService.responseSync();

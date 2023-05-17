@@ -11,17 +11,11 @@
       <app-qr-scanner></app-qr-scanner>
     </div>
   </div>
-  <ng-container *ngIf="walletConnectService?.wc2activated">
-    <h3 style="height: 1.5rem">Wallet Connect&nbsp;<span *ngIf="walletConnectService.active; else inactive"
-        style="color: #57E964; font-size: 1.5rem">⬤</span>
-      <ng-template #inactive>
-        <span style="color: red; font-size: 1.5rem">⬤</span>
-        <button *ngIf="!recentlyRestartedWc2" class="restart" (click)="this.restart()">Connect</button>
-      </ng-template>
-    </h3>
+  <ng-container *ngIf="walletConnectService.pairings?.size || walletConnectService.sessions?.size">
+    <h3 style="height: 1.5rem">Wallet Connect</h3>
     <div class="seperator"></div>
     <div style="margin-left: 1rem">
-      <ng-container *ngIf="walletConnectService.client && walletConnectService.active">
+      <ng-container>
         <ng-container *ngIf="walletConnectService.pairings.size">
           <h4>Pairings <span class="blue-click"
               (click)="walletConnectService.pairings.expanded = !walletConnectService.pairings.expanded">&nbsp;{{

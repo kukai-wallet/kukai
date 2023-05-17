@@ -20,7 +20,6 @@ export class SettingsComponent implements OnInit, OnDestroy {
   implicitAccounts = [];
   wideAccounts = false;
   activeAccount = null;
-  recentlyRestartedWc2 = false;
   private subscriptions: Subscription = new Subscription();
   constructor(
     public beaconService: BeaconService,
@@ -87,11 +86,4 @@ export class SettingsComponent implements OnInit, OnDestroy {
     ModalComponent.currentModel.next({ name: 'session-select', data: { topic: session.topic, preSelectedAccountAddress: session.address } });
   }
   unsorted() {}
-  restart() {
-    this.recentlyRestartedWc2 = true;
-    this.walletConnectService.restartClient();
-    setTimeout(() => {
-      this.recentlyRestartedWc2 = false;
-    }, 3000);
-  }
 }
