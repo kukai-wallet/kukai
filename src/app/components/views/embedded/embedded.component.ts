@@ -255,6 +255,14 @@ export class EmbeddedComponent implements OnInit {
         operations: true,
         micheline: false
       }
+    },
+    hek: {
+      origins: ['https://nftshop.hek.ch'],
+      permissions: {
+        login: true,
+        operations: false,
+        micheline: false
+      }
     }
   };
   constructor(
