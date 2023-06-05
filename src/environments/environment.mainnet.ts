@@ -187,6 +187,12 @@ const _CONSTANTS: Constants = {
       category: ['games', 'collectibles'],
       description: 'Collect the Art. Play the Game.'
     },
+    admire: {
+      name: 'admire.art',
+      address: ['KT1BwT3wswFc9G9iTxwoorb9ox8MFs54BUck'],
+      thumbnailUrl: '../../../assets/img/alias/admire.png',
+      shouldDisplayLink: DisplayLinkOption.None
+    },
     ZIGGURATS: {
       name: 'ZIGGURATS',
       address: ['KT1PNcZQkJXMQ2Mg92HG1kyrcu3auFX5pfd8'],

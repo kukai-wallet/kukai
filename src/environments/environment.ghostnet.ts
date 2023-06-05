@@ -34,6 +34,12 @@ const _CONSTANTS: Constants = {
       category: ['games', 'collectibles'],
       zoomDiscoverImg: true,
       description: 'A next-gen superhero trading card game'
+    },
+    admire: {
+      name: 'admire.art',
+      address: ['KT1KTENwCZDnGqRhjQeUsECxozRvQeGtRCti'],
+      thumbnailUrl: '../../../assets/img/alias/admire.png',
+      shouldDisplayLink: DisplayLinkOption.None
     }
   },
   ASSETS: {},
