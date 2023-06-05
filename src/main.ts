@@ -9,6 +9,7 @@ if (environment.production) {
   window.console.log = function () {};
   window.console.dir = function () {};
   window.console.table = function () {};
+  window.console.debug = function () {};
 }
 
 platformBrowserDynamic()
