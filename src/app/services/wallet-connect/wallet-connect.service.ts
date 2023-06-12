@@ -162,7 +162,7 @@ export class WalletConnectService {
       metadata: {
         name: 'Kukai Wallet',
         description: 'Manage your digital assets and seamlessly connect with experiences and apps on Tezos.',
-        url: 'https://wallet.kukai.app',
+        url: `${location.origin}`,
         icons: []
       }
     };
