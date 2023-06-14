@@ -37,7 +37,7 @@ const _CONSTANTS: Constants = {
     },
     admire: {
       name: 'admire.art',
-      address: ['KT1KTENwCZDnGqRhjQeUsECxozRvQeGtRCti'],
+      address: ['KT1AWnk45HxqcAgTdtgwCUae8FosYkttLxA4', 'KT1KTENwCZDnGqRhjQeUsECxozRvQeGtRCti'],
       thumbnailUrl: '../../../assets/img/alias/admire.png',
       shouldDisplayLink: DisplayLinkOption.None
     }
