@@ -3,7 +3,7 @@ import { KeyPair, WalletType } from './../../interfaces';
 import { WalletService } from '../wallet/wallet.service';
 import { CoordinatorService } from '../coordinator/coordinator.service';
 import { LegacyWalletV1, LegacyWalletV2, LegacyWalletV3, HdWallet, LedgerWallet, TorusWallet, EmbeddedTorusWallet, WatchWallet } from '../wallet/wallet';
-import { hd, utils } from '@tezos-core-tools/crypto-utils';
+import { hd, utils } from '../../libraries/index';
 import { EncryptionService } from '../encryption/encryption.service';
 import { TorusService } from '../torus/torus.service';
 import { IndexerService } from '../indexer/indexer.service';

@@ -7,7 +7,7 @@ import { ExportService } from '../../../../../services/export/export.service';
 import { InputValidationService } from '../../../../../services/input-validation/input-validation.service';
 import { IndexerService } from '../../../../../services/indexer/indexer.service';
 import { OperationService } from '../../../../../services/operation/operation.service';
-import { utils, hd } from '@tezos-core-tools/crypto-utils';
+import { utils, hd } from '../../../../../libraries/index';
 import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import * as bip39 from 'bip39';

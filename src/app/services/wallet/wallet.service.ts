@@ -17,7 +17,7 @@ import {
 import { EncryptionService } from '../encryption/encryption.service';
 import { OperationService } from '../operation/operation.service';
 import { TorusService } from '../torus/torus.service';
-import { utils, hd } from '@tezos-core-tools/crypto-utils';
+import { utils, hd } from '../../libraries/index';
 import { BehaviorSubject } from 'rxjs';
 import { SubjectService } from '../subject/subject.service';
 

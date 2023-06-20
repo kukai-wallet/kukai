@@ -4,7 +4,7 @@ import { LedgerService } from '../../../../../services/ledger/ledger.service';
 import { ImportService } from '../../../../../services/import/import.service';
 import { MessageService } from '../../../../../services/message/message.service';
 import { InputValidationService } from '../../../../../services/input-validation/input-validation.service';
-import { utils } from '@tezos-core-tools/crypto-utils';
+import { utils } from '../../../../../libraries/index';
 
 @Component({
   selector: 'app-connect-ledger',

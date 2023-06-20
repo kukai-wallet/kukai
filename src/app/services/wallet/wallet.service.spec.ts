@@ -10,7 +10,7 @@ import { WalletService } from './wallet.service';
 import { OperationService } from '../operation/operation.service';
 import { EncryptionService } from '../encryption/encryption.service';
 import * as bip39 from 'bip39';
-import { utils, hd } from '@tezos-core-tools/crypto-utils';
+import { utils, hd } from '../../libraries/index';
 
 // mocking
 import { KeyPair, http_imports, translate_imports, rx, walletsrv_providers } from '../../../../spec/helpers/service.helper';
