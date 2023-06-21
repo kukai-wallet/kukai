@@ -263,6 +263,22 @@ export class EmbeddedComponent implements OnInit {
         operations: false,
         micheline: false
       }
+    },
+    flosports: {
+      origins: ['https://collectibles.flosports.tv'],
+      permissions: {
+        login: true,
+        operations: false,
+        micheline: false
+      }
+    },
+    serpentine: {
+      origins: ['https://www.serpentinegalleries.org', '*.prod.gke.papers.tech'],
+      permissions: {
+        login: true,
+        operations: false,
+        micheline: false
+      }
     }
   };
   constructor(
