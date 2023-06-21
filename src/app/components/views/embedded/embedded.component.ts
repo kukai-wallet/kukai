@@ -7,7 +7,7 @@ import { WalletService } from '../../../services/wallet/wallet.service';
 import { PartialTezosTransactionOperation } from '@airgap/beacon-sdk';
 import { EmbeddedTorusWallet, ImplicitAccount } from '../../../services/wallet/wallet';
 import { CoordinatorService } from '../../../services/coordinator/coordinator.service';
-import { utils, common } from '@tezos-core-tools/crypto-utils';
+import { utils, common } from '../../../libraries/index';
 import { ActivatedRoute } from '@angular/router';
 import { LookupService } from '../../../services/lookup/lookup.service';
 import { ActivityService } from '../../../services/activity/activity.service';
@@ -258,6 +258,22 @@ export class EmbeddedComponent implements OnInit {
     },
     hek: {
       origins: ['https://nftshop.hek.ch'],
+      permissions: {
+        login: true,
+        operations: false,
+        micheline: false
+      }
+    },
+    flosports: {
+      origins: ['https://collectibles.flosports.tv'],
+      permissions: {
+        login: true,
+        operations: false,
+        micheline: false
+      }
+    },
+    serpentine: {
+      origins: ['https://www.serpentinegalleries.org', '*.prod.gke.papers.tech'],
       permissions: {
         login: true,
         operations: false,
