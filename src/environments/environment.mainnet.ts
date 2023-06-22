@@ -1860,7 +1860,7 @@ const _TRUSTED_TOKEN_CONTRACTS = [
   'KT1QXngq1CCuWv5RtnuYCSvGdKGeBxsRCWvQ', //Decathlon
   'KT1D6er82V26zwV7RUxA9Wq7YyjziC52STjo' //Taqueria
 ];
-const _BLACKLISTED_TOKEN_CONTRACTS = [];
+const _BLACKLISTED_TOKEN_CONTRACTS = ['KT18j785rB3G4wXxEpqwwG2hJ2iZrjLAbeo7'];
 
 const _MODEL_3D_WHITELIST = [
   'KT1NVvPsNDChrLRH5K2cy6Sc9r1uuUwdiZQd' /* Dogami */,
