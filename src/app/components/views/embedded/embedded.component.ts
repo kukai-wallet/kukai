@@ -273,7 +273,7 @@ export class EmbeddedComponent implements OnInit {
       }
     },
     serpentine: {
-      origins: ['https://www.serpentinegalleries.org', '*.prod.gke.papers.tech'],
+      origins: ['https://digital.serpentinegalleries.org', '*.prod.gke.papers.tech'],
       permissions: {
         login: true,
         operations: false,
