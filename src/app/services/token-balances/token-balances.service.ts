@@ -4,7 +4,7 @@ import { ActivityService } from '../activity/activity.service';
 import { WalletService } from '../wallet/wallet.service';
 import { Account } from '../wallet/wallet';
 import Big from 'big.js';
-import { CONSTANTS } from '../../../environments/environment';
+import { CONSTANTS, BLACKLISTED_TOKEN_CONTRACTS } from '../../../environments/environment';
 import { decode } from 'blurhash';
 import { combineLatest } from 'rxjs';
 import { sampleTime } from 'rxjs/operators';
@@ -66,6 +66,9 @@ export class TokenBalancesService {
   }
   resolveAsset(token, balances, nfts) {
     const asset: TokenResponseType = this.tokenService.getAsset(token.tokenId);
+    if (BLACKLISTED_TOKEN_CONTRACTS.includes(asset?.contractAddress)) {
+      return;
+    }
     if (asset) {
       if (this.isNFT(asset)) {
         // token balance or NFT?
