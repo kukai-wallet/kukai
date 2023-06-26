@@ -268,7 +268,7 @@ export class EmbeddedComponent implements OnInit {
       origins: ['https://collectibles.flosports.tv'],
       permissions: {
         login: true,
-        operations: false,
+        operations: true,
         micheline: false
       }
     },
