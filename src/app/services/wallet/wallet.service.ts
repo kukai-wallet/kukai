@@ -20,6 +20,7 @@ import { TorusService } from '../torus/torus.service';
 import { utils, hd } from '../../libraries/index';
 import { BehaviorSubject } from 'rxjs';
 import { SubjectService } from '../subject/subject.service';
+import { BLACKLISTED_TOKEN_CONTRACTS } from '../../../environments/environment';
 
 @Injectable()
 export class WalletService {
@@ -364,7 +365,12 @@ export class WalletService {
       impAcc.balanceXTZ = implicit.balanceXTZ;
       impAcc.delegate = implicit.delegate;
       impAcc.state = implicit.state;
-      impAcc.activities = implicit.activities;
+      impAcc.activities = implicit.activities.filter((activity) => {
+        if (activity.tokenId && BLACKLISTED_TOKEN_CONTRACTS.includes(activity.tokenId.split(':')[0])) {
+          return false;
+        }
+        return true;
+      });
       if (implicit.tokens) {
         impAcc.tokens = implicit.tokens;
       }
@@ -374,7 +380,12 @@ export class WalletService {
         origAcc.balanceXTZ = originated.balanceXTZ;
         origAcc.delegate = originated.delegate;
         origAcc.state = originated.state;
-        origAcc.activities = originated.activities;
+        origAcc.activities = originated.activities.filter((activity) => {
+          if (activity.tokenId && BLACKLISTED_TOKEN_CONTRACTS.includes(activity.tokenId.split(':')[0])) {
+            return false;
+          }
+          return true;
+        });
         impAcc.originatedAccounts.push(origAcc);
       }
       this.wallet.implicitAccounts.push(impAcc);

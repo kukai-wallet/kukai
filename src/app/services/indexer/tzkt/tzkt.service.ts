@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CONSTANTS, MODEL_3D_WHITELIST } from '../../../../environments/environment';
+import { CONSTANTS, MODEL_3D_WHITELIST, BLACKLISTED_TOKEN_CONTRACTS } from '../../../../environments/environment';
 import { Indexer } from '../indexer.service';
 import * as cryptob from 'crypto-browserify';
 import { WalletObject, Activity, OpStatus, Token } from '../../wallet/wallet';
@@ -177,6 +177,9 @@ export class TzktService implements Indexer {
     const tokenArr = [];
     const opIds = [];
     for (let i = 0; i < tokenTxs.length; ++i) {
+      if (BLACKLISTED_TOKEN_CONTRACTS.includes(tokenTxs[i].token.contract.address)) {
+        continue;
+      }
       const tokenId = `${tokenTxs[i].token.contract.address}:${tokenTxs[i].token.tokenId}`;
       if (tokenTxs[i].token.contract && tokenId) {
         if (!knownTokenIds.includes(tokenId)) {

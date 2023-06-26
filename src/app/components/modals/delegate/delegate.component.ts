@@ -22,8 +22,8 @@ import Big from 'big.js';
 })
 export class DelegateComponent extends ModalComponent implements OnInit, OnChanges, OnDestroy {
   domainPendingLookup = false;
-  defaultFee = 0.0004;
-  readonly pkhFee = 0.0004;
+  defaultFee = 0.0003;
+  readonly pkhFee = 0.0003;
   readonly ktFee = 0.0008;
   @ViewChild('toPkhInput') toPkhView: ElementRef;
   @Input() beaconMode = false;
@@ -242,7 +242,7 @@ export class DelegateComponent extends ModalComponent implements OnInit, OnChang
   estimateDefaultFee(): void {
     this.subscriptions.add(
       this.operationService.isRevealed(this.activeAccount.pkh).subscribe((revealed: boolean) => {
-        const revealFee = revealed ? 0 : 0.0002;
+        const revealFee = revealed ? 0 : 0.0001;
         if (this.activeAccount instanceof ImplicitAccount) {
           this.defaultFee = Number(new Big(revealFee).plus(this.pkhFee));
         } else if (this.activeAccount instanceof OriginatedAccount) {
@@ -261,7 +261,7 @@ export class DelegateComponent extends ModalComponent implements OnInit, OnChang
     }
     this.toPkh = '';
     this.fee = '';
-    this.defaultFee = 0.0004;
+    this.defaultFee = this.pkhFee;
     this.password = '';
     this.pwdValid = '';
     this.formInvalid = '';
