@@ -109,7 +109,7 @@ export class EmbeddedComponent implements OnInit {
       permissions: {
         login: true,
         operations: true,
-        micheline: false
+        micheline: true
       }
     },
     lexus: {
@@ -253,7 +253,7 @@ export class EmbeddedComponent implements OnInit {
       permissions: {
         login: true,
         operations: true,
-        micheline: false
+        micheline: true
       }
     },
     hek: {
