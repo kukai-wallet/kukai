@@ -12,7 +12,8 @@ const httpOptions = { headers: { 'Content-Type': 'application/json' } };
 @Injectable()
 export class EstimateService {
   readonly costPerByte = '250';
-  readonly revealGasLimit = 1000;
+  readonly revealGasLimit = 200;
+  readonly extraGas = 25;
   readonly contractsOverride: Record<string, OpLimits>;
   queue = [];
   nodeURL = CONSTANTS.NODE_URL;
@@ -303,7 +304,7 @@ export class EstimateService {
           gasRecommendation = Math.round(gasUsage * (1 + percentage / 100));
         }
       }
-      const gasEstimation = Math.max(Math.ceil(gasUsage * 1.02), Math.round(gasUsage + 80));
+      const gasEstimation = Math.max(Math.ceil(gasUsage * 1.02), Math.round(gasUsage + this.extraGas));
       limit.gas = Math.max(gasRecommendation, gasEstimation); // make sure dapps don't underestimate (ithaca side effect)
     }
     // storage
