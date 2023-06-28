@@ -128,6 +128,13 @@ export class WalletConnectService {
       })
     );
     this.subscriptions.add(
+      this.bcService.subject[MessageKind.UpdateRequest].subscribe((request) => {
+        if (this.client) {
+          this.updateSession(request.topic, request.newAddress);
+        }
+      })
+    );
+    this.subscriptions.add(
       this.bcService.subject[MessageKind.PropagateResponse].subscribe((response) => {
         if (this.client) {
           console.log('propagated response:', response);
@@ -498,15 +505,19 @@ export class WalletConnectService {
     }
   }
   public async updateSession(topic: string, newAddress: string) {
-    const session = this.client.session.get(topic);
-    let namespaces = session.namespaces;
-    let acc = namespaces.tezos.accounts[0].split(':');
-    acc[2] = newAddress;
-    namespaces.tezos.accounts[0] = acc.join(':');
-    const { acknowledged } = await this.client.update({ topic, namespaces });
-    this.refresh();
-    await acknowledged();
-    console.log('session update acknowledged');
+    if (this.client) {
+      const session = this.client.session.get(topic);
+      let namespaces = session.namespaces;
+      let acc = namespaces.tezos.accounts[0].split(':');
+      acc[2] = newAddress;
+      namespaces.tezos.accounts[0] = acc.join(':');
+      const { acknowledged } = await this.client.update({ topic, namespaces });
+      this.refresh();
+      await acknowledged();
+      console.log('session update acknowledged');
+    } else {
+      this.bcService.broadcast({ kind: MessageKind.UpdateRequest, payload: { topic, newAddress } });
+    }
   }
   public async deleteSession(topic: string) {
     await this.delete(topic);

@@ -5,7 +5,8 @@ export enum MessageKind {
   PropagateRequest = 'wc_propagate_request',
   PropagateResponse = 'wc_propagate_response',
   DeleteRequest = 'wc_delete_request',
-  PairingRequest = 'wc_pairing_request'
+  PairingRequest = 'wc_pairing_request',
+  UpdateRequest = 'wc_session_update'
 }
 export type Message =
   | {
@@ -22,6 +23,10 @@ export type Message =
     }
   | {
       kind: MessageKind.PropagateResponse;
+      payload: any;
+    }
+  | {
+      kind: MessageKind.UpdateRequest;
       payload: any;
     };
 @Injectable({
@@ -44,6 +49,7 @@ export class BcService {
     wc_delete_request: new Subject<any>(),
     wc_propagate_request: new Subject<any>(),
     wc_propagate_response: new Subject<any>(),
+    wc_session_update: new Subject<any>(),
     test: new Subject<any>(),
     all: new Subject<Message>()
   };
