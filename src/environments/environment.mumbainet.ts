@@ -14,7 +14,7 @@ const _CONSTANTS: Constants = {
     TOP_DOMAINS: ['mum']
   },
   MAINNET: false,
-  NODE_URL: 'https://mumbainet.ecadinfra.com',
+  NODE_URL: ['https://mumbainet.ecadinfra.com'],
   API_URL: 'https://api.mumbainet.tzkt.io/v1',
   BLOCK_EXPLORER_URL: 'https://mumbainet.tzkt.io',
   HARD_LIMITS: {

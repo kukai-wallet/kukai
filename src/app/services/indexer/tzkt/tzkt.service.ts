@@ -42,7 +42,7 @@ export class TzktService implements Indexer {
   readonly TZKT_TOKEN_QUERY_SIZE: number = 10000;
   Tezos: TezosToolkit;
   constructor(private subjectService: SubjectService) {
-    this.Tezos = new TezosToolkit(CONSTANTS.NODE_URL);
+    this.Tezos = new TezosToolkit(CONSTANTS.NODE_URL[0]);
     const customHandlers = new Map<string, Handler>([
       ['ipfs', new IpfsHttpHandler('cloudflare-ipfs.com')],
       ['tezos-storage', new TezosStorageHandler()]
