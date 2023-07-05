@@ -15,7 +15,7 @@ const _CONSTANTS: Constants = {
     TOP_DOMAINS: ['nai']
   },
   MAINNET: false,
-  NODE_URL: 'https://nairobinet.ecadinfra.com',
+  NODE_URL: ['https://nairobinet.ecadinfra.com'],
   API_URL: 'https://api.nairobinet.tzkt.io/v1',
   BLOCK_EXPLORER_URL: 'https://nairobinet.tzkt.io',
   HARD_LIMITS: {

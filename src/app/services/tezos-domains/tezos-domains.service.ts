@@ -15,7 +15,7 @@ export class TezosDomainsService {
   private queue = [];
   pending = false;
   constructor() {
-    const tezosToolkit = new TezosToolkit(CONSTANTS.NODE_URL);
+    const tezosToolkit = new TezosToolkit(CONSTANTS.NODE_URL[0]);
     tezosToolkit.addExtension(new Tzip16Module());
     const options = { caching: { enabled: false } };
     try {

@@ -132,7 +132,7 @@ export interface Constants {
   };
   NETWORK: string;
   MAINNET: boolean;
-  NODE_URL: string;
+  NODE_URL: string[];
   API_URL: string;
   OBJKT_URL?: string;
   BLOCK_EXPLORER_URL: string;

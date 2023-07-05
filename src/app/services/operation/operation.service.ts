@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { of, Observable, MonoTypeOperatorFunction, from as fromPromise, iif, throwError } from 'rxjs';
-import { catchError, retryWhen, flatMap, timeout, delay as delayOperator, debounceTime, concatMap } from 'rxjs/operators';
+import { of, Observable, from as fromPromise, timer } from 'rxjs';
+import { catchError, flatMap, timeout, concatMap } from 'rxjs/operators';
 import { Buffer } from 'buffer';
 import { blake2b } from 'blakejs';
 import { sign as naclSign } from 'tweetnacl';
@@ -1546,21 +1546,30 @@ export class OperationService {
     }
     return null;
   }
-  postRpc(path: string, payload: any): Observable<any> {
-    return this.http.post(`${this.nodeURL}/${path}`, payload, httpOptions).pipe(this.retryPipeline(path));
+
+  postRpc(path: string, payload: any, c = 0): Observable<any> {
+    const node = this.nodeURL[c % this.nodeURL.length];
+    return this.http.post(`${node}/${path}`, payload, httpOptions).pipe(
+      catchError((error) => {
+        if (c > 1 || !(error?.name === 'HttpErrorResponse')) {
+          // give up after 3 attempts
+          throw error;
+        }
+        return timer(250).pipe(concatMap(() => this.postRpc(path, payload, ++c)));
+      })
+    );
   }
-  getRpc(path: string): Observable<any> {
-    return this.http.get(`${this.nodeURL}/${path}`).pipe(this.retryPipeline(path));
-  }
-  private retryPipeline(path: string, retries: number = 3): MonoTypeOperatorFunction<unknown> {
-    const retryWithWarning = (i, e) => {
-      if (i < retries) {
-        console.warn(`Retry ${i + 1}: ${path}`, e);
-      }
-      return of(e).pipe(delayOperator(250));
-    };
-    return retryWhen((errors) =>
-      errors.pipe(concatMap((e, i) => iif(() => i >= retries || !(e?.name === 'HttpErrorResponse'), throwError(e), retryWithWarning(i, e))))
+
+  getRpc(path: string, c = 0): Observable<any> {
+    const node = this.nodeURL[c % this.nodeURL.length];
+    return this.http.get(`${node}/${path}`).pipe(
+      catchError((error) => {
+        if (c > 1 || !(error?.name === 'HttpErrorResponse')) {
+          // give up after 3 attempts
+          throw error;
+        }
+        return timer(250).pipe(concatMap(() => this.getRpc(path, ++c)));
+      })
     );
   }
 }

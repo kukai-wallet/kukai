@@ -15,7 +15,7 @@ const _CONSTANTS: Constants = {
     TOP_DOMAINS: ['gho']
   },
   MAINNET: false,
-  NODE_URL: 'https://ghostnet.ecadinfra.com',
+  NODE_URL: ['https://ghostnet.ecadinfra.com', 'https://ghostnet.smartpy.io', 'https://ghostnet.tezos.marigold.dev'],
   API_URL: 'https://api.ghostnet.tzkt.io/v1',
   BLOCK_EXPLORER_URL: 'https://ghostnet.tzkt.io',
   HARD_LIMITS: {
