@@ -281,8 +281,8 @@ export class WalletConnectService {
       };
       namespaces.tezos = {
         accounts,
-        methods,
-        events
+        methods: [...new Set<string>(methods)], // deduplicate
+        events: [...new Set<string>(events)]
       };
       const { topic, acknowledged } = await this.client.approve({
         id: data.id,

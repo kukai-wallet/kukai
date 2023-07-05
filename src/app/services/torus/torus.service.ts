@@ -250,8 +250,8 @@ export class TorusService {
         loginDetails.userInfo = loginDetails.userInfo[0];
       }
       if (selectedVerifier === FACEBOOK) {
-        console.log('Invalidating access token...');
-        fetch(`https://graph.facebook.com/me/permissions?access_token=${loginDetails.userInfo.accessToken}`, { method: 'DELETE', mode: 'cors' });
+        // console.log('Invalidating access token...');
+        // fetch(`https://graph.facebook.com/me/permissions?access_token=${loginDetails.userInfo.accessToken}`, { method: 'DELETE', mode: 'cors' });
       }
       const keyPair = skipTorusKey && !loginDetails?.privateKey ? { pk: '', pkh: '' } : this.operationService.spPrivKeyToKeyPair(loginDetails.privateKey);
       console.log('DirectAuth KeyPair', keyPair);
