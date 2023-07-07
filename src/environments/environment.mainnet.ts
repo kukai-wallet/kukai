@@ -53,6 +53,17 @@ const _CONSTANTS: Constants = {
       category: ['sports', 'collectibles'],
       description: 'Officially licensed Digital Collectibles, powered by Tezos'
     },
+    FloSports: {
+      name: 'FloSports',
+      address: ['KT1SQFuskMGQB7arqvQyuCH9v2utbJNmGcR6', 'KT1QN8oJodP3uuFu5VbciZFhLQSReyAMpGtT'],
+      thumbnailUrl: 'assets/img/alias/flosports.png',
+      discoverUrl: 'assets/img/alias/flosports-discover.png',
+      link: 'https://collectibles.flosports.tv',
+      shouldDisplayLink: DisplayLinkOption.All,
+      category: ['sports', 'collectibles'],
+      description: 'FloSports Digital Collectibles',
+      backgroundColor: 'black'
+    },
     EmergentsTCG: {
       name: 'Emergents TCG',
       address: [
@@ -97,17 +108,6 @@ const _CONSTANTS: Constants = {
       zoomDiscoverImg: true,
       description: 'A next-gen superhero trading card game'
     },
-    dogami: {
-      name: 'Dogamí',
-      address: ['KT1NVvPsNDChrLRH5K2cy6Sc9r1uuUwdiZQd', 'KT1SnUZLQ4gVrQeapUvp6GY9UKKb4gAZJ8D9', 'KT1CAbPGHUWvkSA9bxMPkqSgabgsjtmRYEda'],
-      thumbnailUrl: 'assets/img/alias/dogami-thumbnail.png',
-      discoverUrl: 'assets/img/alias/dogami-discover.png',
-      link: 'https://dogami.com',
-      shouldDisplayLink: DisplayLinkOption.All,
-      category: ['games', 'collectibles'],
-      zoomDiscoverImg: true,
-      description: 'Raise unique virtual NFT avatars on mobile'
-    },
     gap: {
       name: 'Gap Threads',
       address: ['KT1GA6KaLWpURnjvmnxB4wToErzM2EXHqrMo'],
@@ -118,6 +118,17 @@ const _CONSTANTS: Constants = {
       category: ['collectibles'],
       backgroundColor: 'black',
       description: 'A fun and interactive digital collectible experience'
+    },
+    dogami: {
+      name: 'Dogamí',
+      address: ['KT1NVvPsNDChrLRH5K2cy6Sc9r1uuUwdiZQd', 'KT1SnUZLQ4gVrQeapUvp6GY9UKKb4gAZJ8D9', 'KT1CAbPGHUWvkSA9bxMPkqSgabgsjtmRYEda'],
+      thumbnailUrl: 'assets/img/alias/dogami-thumbnail.png',
+      discoverUrl: 'assets/img/alias/dogami-discover.png',
+      link: 'https://dogami.com',
+      shouldDisplayLink: DisplayLinkOption.All,
+      category: ['games', 'collectibles'],
+      zoomDiscoverImg: true,
+      description: 'Raise unique virtual NFT avatars on mobile'
     },
     fxhash: {
       name: 'fxhash',
@@ -498,12 +509,6 @@ const _CONSTANTS: Constants = {
       name: 'VERSA',
       address: ['KT1Afa8abYrcu9WW7Zbv1f4W6zAgrnYtVaFM'],
       thumbnailUrl: 'assets/img/alias/VERSA.png',
-      shouldDisplayLink: DisplayLinkOption.None
-    },
-    FloSports: {
-      name: 'FloSports',
-      address: ['KT1SQFuskMGQB7arqvQyuCH9v2utbJNmGcR6', 'KT1QN8oJodP3uuFu5VbciZFhLQSReyAMpGtT'],
-      thumbnailUrl: 'assets/img/alias/flosports.png',
       shouldDisplayLink: DisplayLinkOption.None
     },
     RichieHawtin: {
