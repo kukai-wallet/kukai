@@ -19,6 +19,7 @@ const AUTH_DOMAIN_MAINNET = 'https://kukai.eu.auth0.com';
   providedIn: 'root'
 })
 export class TorusService {
+  readonly web3AuthClientId = 'kukai';
   torus: any = undefined;
   nodeDetails: { torusNodeEndpoints: string[]; torusNodePub: any[] } = null;
   public readonly verifierMap: any;
@@ -139,7 +140,7 @@ export class TorusService {
       this.torus = null;
       try {
         const torusdirectsdk = new DirectWebSdk({
-          web3AuthClientId: 'kukai',
+          web3AuthClientId: this.web3AuthClientId,
           baseUrl: `${location.origin}/serviceworker`,
           redirectToOpener: true,
           enableLogging: !(this.proxy.network === 'mainnet'),
@@ -157,7 +158,7 @@ export class TorusService {
     const fetchNodeDetails = new NodeDetailManager({
       network: this.proxy.network
     });
-    const torus = new TorusUtils();
+    const torus = new TorusUtils({ clientId: this.web3AuthClientId, network: this.proxy.network });
     let sanitizedVerifierId = verifierId;
     if (!this.verifierMap[selectedVerifier].caseSensitiveVerifierID && selectedVerifier !== 'twitter') {
       sanitizedVerifierId = sanitizedVerifierId.toLocaleLowerCase();
@@ -178,12 +179,10 @@ export class TorusService {
       const { torusNodeEndpoints, torusNodePub, torusIndexes } = await fetchNodeDetails.getNodeDetails({ verifier, verifierId: sanitizedVerifierId });
       this.nodeDetails = { torusNodeEndpoints, torusNodePub }; // Cache node details
     }
-    const pk: any = await torus.getPublicAddress(
-      this.nodeDetails.torusNodeEndpoints,
-      this.nodeDetails.torusNodePub,
-      { verifier, verifierId: sanitizedVerifierId },
-      true
-    );
+    const pk: any = await torus.getPublicAddress(this.nodeDetails.torusNodeEndpoints, this.nodeDetails.torusNodePub, {
+      verifier,
+      verifierId: sanitizedVerifierId
+    });
     const pkh = this.operationService.spPointsToPkh(pk.X, pk.Y);
     return { pkh, twitterId };
   }
