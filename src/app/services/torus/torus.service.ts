@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import DirectWebSdk from 'customauth';
-import NodeDetailManager, { TORUS_NETWORK } from '@toruslabs/fetch-node-details';
+import NodeDetailManager from '@toruslabs/fetch-node-details';
+import { TORUS_LEGACY_NETWORK } from '@toruslabs/constants';
 import TorusUtils from '@toruslabs/torus.js';
 import { OperationService } from '../../services/operation/operation.service';
 import { InputValidationService } from '../../services/input-validation/input-validation.service';
@@ -123,14 +124,12 @@ export class TorusService {
     if (CONSTANTS.MAINNET) {
       this.verifierMap = this.verifierMaps.mainnet;
       this.proxy = {
-        address: NodeDetailManager.PROXY_ADDRESS_MAINNET,
-        network: TORUS_NETWORK.MAINNET
+        network: TORUS_LEGACY_NETWORK.MAINNET
       };
     } else {
       this.verifierMap = this.verifierMaps.testnet;
       this.proxy = {
-        address: NodeDetailManager.PROXY_ADDRESS_TESTNET,
-        network: TORUS_NETWORK.TESTNET
+        network: TORUS_LEGACY_NETWORK.TESTNET
       };
     }
     this.verifierMapKeys = Object.keys(this.verifierMap);
@@ -140,10 +139,10 @@ export class TorusService {
       this.torus = null;
       try {
         const torusdirectsdk = new DirectWebSdk({
+          web3AuthClientId: 'kukai',
           baseUrl: `${location.origin}/serviceworker`,
           redirectToOpener: true,
           enableLogging: !(this.proxy.network === 'mainnet'),
-          proxyContractAddress: this.proxy.address,
           network: this.proxy.network
         });
         await torusdirectsdk.init({ skipSw: false });
@@ -156,8 +155,7 @@ export class TorusService {
   }
   async lookupPkh(selectedVerifier: string, verifierId: string): Promise<any> {
     const fetchNodeDetails = new NodeDetailManager({
-      network: this.proxy.network,
-      proxyAddress: this.proxy.address
+      network: this.proxy.network
     });
     const torus = new TorusUtils();
     let sanitizedVerifierId = verifierId;
@@ -250,10 +248,13 @@ export class TorusService {
         loginDetails.userInfo = loginDetails.userInfo[0];
       }
       if (selectedVerifier === FACEBOOK) {
-        // console.log('Invalidating access token...');
-        // fetch(`https://graph.facebook.com/me/permissions?access_token=${loginDetails.userInfo.accessToken}`, { method: 'DELETE', mode: 'cors' });
+        console.log('Invalidating access token...');
+        fetch(`https://graph.facebook.com/me/permissions?access_token=${loginDetails.userInfo.accessToken}`, { method: 'DELETE', mode: 'cors' });
       }
-      const keyPair = skipTorusKey && !loginDetails?.privateKey ? { pk: '', pkh: '' } : this.operationService.spPrivKeyToKeyPair(loginDetails.privateKey);
+      const keyPair =
+        skipTorusKey && !loginDetails?.finalKeyData?.privKey
+          ? { pk: '', pkh: '' }
+          : this.operationService.spPrivKeyToKeyPair(loginDetails.finalKeyData.privKey);
       console.log('DirectAuth KeyPair', keyPair);
       if (loginDetails?.existingPk) {
         loginDetails.userInfo.preexistingPkh = this.operationService.spPointsToPkh(loginDetails.existingPk.X, loginDetails.existingPk.Y);
