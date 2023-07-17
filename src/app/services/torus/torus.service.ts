@@ -179,11 +179,11 @@ export class TorusService {
       const { torusNodeEndpoints, torusNodePub, torusIndexes } = await fetchNodeDetails.getNodeDetails({ verifier, verifierId: sanitizedVerifierId });
       this.nodeDetails = { torusNodeEndpoints, torusNodePub }; // Cache node details
     }
-    const pk: any = await torus.getPublicAddress(this.nodeDetails.torusNodeEndpoints, this.nodeDetails.torusNodePub, {
+    const { finalKeyData }: any = await torus.getPublicAddress(this.nodeDetails.torusNodeEndpoints, this.nodeDetails.torusNodePub, {
       verifier,
       verifierId: sanitizedVerifierId
     });
-    const pkh = this.operationService.spPointsToPkh(pk.X, pk.Y);
+    const pkh = this.operationService.spPointsToPkh(finalKeyData?.X, finalKeyData?.Y);
     return { pkh, twitterId };
   }
   async twitterLookup(username?: string, id?: string) {
