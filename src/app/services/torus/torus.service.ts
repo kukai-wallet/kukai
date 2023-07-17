@@ -19,7 +19,7 @@ const AUTH_DOMAIN_MAINNET = 'https://kukai.eu.auth0.com';
   providedIn: 'root'
 })
 export class TorusService {
-  readonly web3AuthClientId = 'kukai';
+  readonly web3AuthClientId = 'BBHmFdLXgGDzSiizRVMWtyL_7Dsoxu5B8zep2Pns8sGELslgXDbktJewVDVDDBlknEKkMCtzISLjJtxk60SK2-g';
   torus: any = undefined;
   nodeDetails: { torusNodeEndpoints: string[]; torusNodePub: any[] } = null;
   public readonly verifierMap: any;
@@ -179,11 +179,11 @@ export class TorusService {
       const { torusNodeEndpoints, torusNodePub, torusIndexes } = await fetchNodeDetails.getNodeDetails({ verifier, verifierId: sanitizedVerifierId });
       this.nodeDetails = { torusNodeEndpoints, torusNodePub }; // Cache node details
     }
-    const pk: any = await torus.getPublicAddress(this.nodeDetails.torusNodeEndpoints, this.nodeDetails.torusNodePub, {
+    const { finalKeyData }: any = await torus.getPublicAddress(this.nodeDetails.torusNodeEndpoints, this.nodeDetails.torusNodePub, {
       verifier,
       verifierId: sanitizedVerifierId
     });
-    const pkh = this.operationService.spPointsToPkh(pk.X, pk.Y);
+    const pkh = this.operationService.spPointsToPkh(finalKeyData?.X, finalKeyData?.Y);
     return { pkh, twitterId };
   }
   async twitterLookup(username?: string, id?: string) {
