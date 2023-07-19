@@ -985,6 +985,12 @@ const _CONSTANTS: Constants = {
       thumbnailUrl: 'ipfs://QmaSjSstwf5YTqQ7aMK2cNQBVLh4XdnZu4h1kaPJdusj8G',
       shouldDisplayLink: DisplayLinkOption.None
     },
+    sowvital: {
+      name: 'Sowvital’s Metavert: AI-Generated Flowers',
+      address: ['KT1CGo4LNtDyKUZe4NU1UrCTMxdqogS9tWwM'],
+      thumbnailUrl: '../../../assets/img/alias/sowvital.png',
+      shouldDisplayLink: DisplayLinkOption.None
+    },
     XQST: {
       name: 'XQST',
       address: ['KT1KDwxEjAvRuwg37M8jge2aEkvHBYFLjAMX', 'KT1RCJqeJx5T3motUSywFwpRyu78Z5RAcPDM'],
