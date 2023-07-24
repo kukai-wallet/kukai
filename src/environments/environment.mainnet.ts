@@ -24,7 +24,7 @@ const _CONSTANTS: Constants = {
   CONTRACT_ALIASES: {
     mclarenracing: {
       name: 'McLaren Racing Digital Collectibles',
-      address: ['KT1PEGqt5rMmHpyaMXc8RFTFkkAUDrzSFRWk', 'KT1BRADdqGk2eLmMqvyWzqVmPQ1RCBCbW5dY'],
+      address: ['KT1PEGqt5rMmHpyaMXc8RFTFkkAUDrzSFRWk', 'KT1BRADdqGk2eLmMqvyWzqVmPQ1RCBCbW5dY', 'KT1QgfSE4C1dX9UqrPAXjUaFQ36F9eB4nNkV'],
       thumbnailUrl: '../../../assets/img/alias/mclaren-thumbnail2.png',
       discoverUrl: '../../../assets/img/alias/mclaren-discover2.png',
       link: 'https://collectibles.mclaren.com',
