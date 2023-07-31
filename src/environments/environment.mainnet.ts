@@ -12,7 +12,7 @@ const _CONSTANTS: Constants = {
   },
   NETWORK: 'mainnet',
   MAINNET: true,
-  NODE_URL: ['https://mainnet.kukai.network', 'https://mainnet.api.tez.ie', 'https://mainnet.tcinfra.net'],
+  NODE_URL: ['https://mainnet.kukai.network', 'https://mainnet.api.tez.ie', 'https://prod.tcinfra.net/rpc/mainnet'],
   API_URL: 'https://kukai.api.tzkt.io/v1',
   OBJKT_URL: 'https://data.objkt.com/v3/graphql',
   BLOCK_EXPLORER_URL: 'https://tzkt.io',
