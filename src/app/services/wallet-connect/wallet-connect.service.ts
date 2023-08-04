@@ -50,7 +50,7 @@ interface DSession {
 })
 export class WalletConnectService {
   readonly supportedMethods = ['tezos_send', 'tezos_sign', 'tezos_getAccounts'];
-  readonly supportedEvents = [];
+  readonly supportedEvents = ['requestAcknowledged'];
   private enableWc2: any;
   client: Client;
   initDoneAt: number;
