@@ -12,12 +12,7 @@ import { InputValidationService } from '../input-validation/input-validation.ser
   providedIn: 'root'
 })
 export class Interceptor {
-  httpErrorReporingActive = false;
   constructor(private walletService: WalletService, private inputValidationService: InputValidationService) {
-    if (!!(Math.floor(Math.random() * 10) && environment.production)) {
-      return;
-    }
-    this.httpErrorReporingActive = true;
     Sentry.init({
       environment: environment.production ? 'production' : 'development',
       dsn: 'https://badd344e46aefc1531eee3a6bdc28a9d@o1056238.ingest.sentry.io/4505676358352896',
@@ -51,7 +46,7 @@ export class Interceptor {
     try {
       // Only do error reporting on HttpErrorResponse from our primary RPC node for now
       const type = this.getNodeBaseUrl(req?.url) ? 'rpc' : 'unknown';
-      if (!this.httpErrorReporingActive || type === 'unknown') {
+      if (type === 'unknown') {
         return throwError(errorResponse);
       }
       const scope = new Sentry.Scope();
@@ -72,7 +67,13 @@ export class Interceptor {
         const fingerprints = [this.generalizePath(req.url)];
         fingerprints.push(errorResponse?.status);
         fingerprints.push(errorResponse?.statusText);
-        //fingerprints.push(Date.now().toString());
+        try {
+          const id = errorResponse.slice(-1).pop().id;
+          if (id.startsWith('proto.')) {
+            fingerprints.push(id);
+            scope.setTag('proto.id', id);
+          }
+        } catch (e) {}
         scope.setFingerprint(fingerprints);
       }
       console.log('scope', scope);
