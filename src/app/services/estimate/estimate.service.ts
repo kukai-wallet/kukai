@@ -16,7 +16,6 @@ export class EstimateService {
   readonly extraGas = 25;
   readonly contractsOverride: Record<string, OpLimits>;
   queue = [];
-  nodeURL = CONSTANTS.NODE_URL;
   pkh: string;
   pk: string;
   hash: string;
