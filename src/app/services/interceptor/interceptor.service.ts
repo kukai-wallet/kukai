@@ -68,7 +68,7 @@ export class Interceptor {
         fingerprints.push(errorResponse?.status);
         fingerprints.push(errorResponse?.statusText);
         try {
-          const id = errorResponse.slice(-1).pop().id;
+          const id = errorResponse.error.slice(-1).pop().id;
           if (id.startsWith('proto.')) {
             fingerprints.push(id);
             scope.setTag('proto.id', id);
