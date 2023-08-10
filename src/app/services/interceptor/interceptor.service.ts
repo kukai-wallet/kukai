@@ -14,7 +14,7 @@ import { InputValidationService } from '../input-validation/input-validation.ser
 export class Interceptor {
   httpErrorReporingActive = false;
   constructor(private walletService: WalletService, private inputValidationService: InputValidationService) {
-    if (!!(Math.floor(Math.random() * 100) && environment.production)) {
+    if (!!(Math.floor(Math.random() * 10) && environment.production)) {
       return;
     }
     this.httpErrorReporingActive = true;
