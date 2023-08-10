@@ -44,7 +44,8 @@ const _CONSTANTS: Constants = {
         'KT1AxhmvtycdsMjDTEfSmgyduMartH32Nhp2',
         'KT1UidJGfFQBhyufakh5PNc13i5t67jA4cvx',
         'KT1GUnPCc3zQq6oshCh91nmnfTvhiWFj6Qci',
-        'KT1HwhxuoZqKgauNHi9vzShCbvYDESd2dfhv'
+        'KT1HwhxuoZqKgauNHi9vzShCbvYDESd2dfhv',
+        'KT1LBXXg9UFvyfdvPmRMc4JZQsYWdyPCS6ue'
       ],
       thumbnailUrl: 'assets/img/alias/mufc.png',
       discoverUrl: 'assets/img/alias/mufc-discover.jpg',
@@ -1873,7 +1874,7 @@ const _TRUSTED_TOKEN_CONTRACTS = [
   'KT1QXngq1CCuWv5RtnuYCSvGdKGeBxsRCWvQ', //Decathlon
   'KT1D6er82V26zwV7RUxA9Wq7YyjziC52STjo' //Taqueria
 ];
-const _BLACKLISTED_TOKEN_CONTRACTS = ['KT18j785rB3G4wXxEpqwwG2hJ2iZrjLAbeo7'];
+const _BLACKLISTED_TOKEN_CONTRACTS = ['KT18j785rB3G4wXxEpqwwG2hJ2iZrjLAbeo7', 'KT1R8w6v13wt3yTeYUMxfZAWi7yXdNHepKHd'];
 
 const _MODEL_3D_WHITELIST = [
   'KT1NVvPsNDChrLRH5K2cy6Sc9r1uuUwdiZQd' /* Dogami */,

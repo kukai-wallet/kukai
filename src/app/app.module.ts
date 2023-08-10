@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 
 // From Angular Material
@@ -34,6 +34,7 @@ import { SubjectService } from './services/subject/subject.service';
 import { UnlockableService } from './services/unlockable/unlockable.service';
 import { CoordinatorService } from './services/coordinator/coordinator.service';
 import { OperationService } from './services/operation/operation.service';
+import { Interceptor } from './services/interceptor/interceptor.service';
 
 // View components
 import { StartComponent } from './components/views/start/start.component';
@@ -145,6 +146,11 @@ export function HttpLoaderFactory(http: HttpClient) {
     }) // lazy loading will need TranslateModule.forChild() in the lazy loaded modules
   ],
   providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: Interceptor,
+      multi: true
+    },
     // Services
     MessageService,
     WalletService,
