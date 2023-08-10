@@ -44,6 +44,10 @@ export class DipDupService {
         const exchange = t.exchanges.reduce((p, c) =>
           (!!c?.sharesTotal && !!p?.sharesTotal && Number(c.sharesTotal) > Number(p.sharesTotal)) || (c?.sharesTotal && !p?.sharesTotal) ? c : p
         );
+        if (exchange?.token?.address === 'KT1TjnZYs5CGLbmV6yuW169P8Pnr9BiVwwjz' && exchange?.token?.tokenId === 0) {
+          // exception for oXTZ
+          exchange.midPrice = '1';
+        }
         this.tokens.set(`${exchange.token.address}:${exchange.token.tokenId}`, Boolean(Number(exchange?.midPrice)) ? exchange?.midPrice : '0');
       }
     }
