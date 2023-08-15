@@ -287,6 +287,14 @@ export class EmbeddedComponent implements OnInit {
         operations: true,
         micheline: true
       }
+    },
+    bargainer: {
+      origins: ['https://bargainer.ai', 'https://www.bargainer.ai'],
+      permissions: {
+        login: true,
+        operations: false,
+        micheline: false
+      }
     }
   };
   constructor(

@@ -43,6 +43,7 @@ export class Interceptor {
     console.log('%cInterceptor initialized', 'color: green;');
   }
   reportHttpError(req, errorResponse) {
+    let skipReport = false;
     try {
       // Only do error reporting on HttpErrorResponse from our primary RPC node for now
       const type = this.getNodeBaseUrl(req?.url) ? 'rpc' : 'unknown';
@@ -67,17 +68,21 @@ export class Interceptor {
         const fingerprints = [this.generalizePath(req.url)];
         fingerprints.push(errorResponse?.status);
         fingerprints.push(errorResponse?.statusText);
+
         try {
           const id = errorResponse.error.slice(-1).pop().id;
           if (id.startsWith('proto.')) {
             fingerprints.push(id);
             scope.setTag('proto.id', id);
+            skipReport = true;
           }
         } catch (e) {}
         scope.setFingerprint(fingerprints);
       }
       console.log('scope', scope);
-      Sentry.captureException(errorResponse, () => scope);
+      if (!skipReport) {
+        Sentry.captureException(errorResponse, () => scope);
+      }
     } catch (e) {
       console.error(e);
     } finally {
