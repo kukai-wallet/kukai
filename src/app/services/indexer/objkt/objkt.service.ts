@@ -63,7 +63,7 @@ export class ObjktService {
     }
   }
   async resolveCollection(address): Promise<any> {
-    if (!CONSTANTS.MAINNET) {
+    if (!CONSTANTS.OBJKT_URL) {
       return {};
     }
     while (this.queue.length >= 500) {
