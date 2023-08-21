@@ -17,6 +17,7 @@ const _CONSTANTS: Constants = {
   MAINNET: false,
   NODE_URL: ['https://ghostnet.ecadinfra.com', 'https://ghostnet.smartpy.io', 'https://ghostnet.tezos.marigold.dev'],
   API_URL: 'https://api.ghostnet.tzkt.io/v1',
+  OBJKT_URL: 'https://data.ghostnet.objkt.com/v3/graphql',
   BLOCK_EXPLORER_URL: 'https://ghostnet.tzkt.io',
   HARD_LIMITS: {
     hard_gas_limit_per_operation: 1040000,
@@ -24,6 +25,16 @@ const _CONSTANTS: Constants = {
     hard_storage_limit_per_operation: 60000
   },
   CONTRACT_ALIASES: {
+    Objkt: {
+      name: 'objkt.com',
+      address: [],
+      thumbnailUrl: '../../../assets/img/alias/objktcom.svg',
+      discoverUrl: '../../../assets/img/alias/objktcom.svg',
+      link: 'https://ghostnet.objkt.com',
+      shouldDisplayLink: DisplayLinkOption.All,
+      category: ['marketplace'],
+      description: 'The best Tezos NFTs all in one place'
+    },
     admire: {
       name: 'admire.art',
       address: ['KT1AWnk45HxqcAgTdtgwCUae8FosYkttLxA4', 'KT1KTENwCZDnGqRhjQeUsECxozRvQeGtRCti'],
