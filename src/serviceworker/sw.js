@@ -3,16 +3,16 @@ function getScope() {
   return self.registration.scope;
 }
 
-self.addEventListener("message", function (event) {
-  if (event.data && event.data.type === "SKIP_WAITING") {
+self.addEventListener('message', function (event) {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
     self.skipWaiting();
   }
 });
 
-self.addEventListener("fetch", function (event) {
+self.addEventListener('fetch', function (event) {
   try {
     const url = new URL(event.request.url);
-    if (url.pathname.includes("redirect") && url.href.includes(getScope())) {
+    if (url.pathname.includes('redirect') && url.href.includes(getScope())) {
       event.respondWith(
         new Response(
           new Blob(
@@ -135,8 +135,8 @@ self.addEventListener("fetch", function (event) {
       <h1 class="title content" id="closeText" style="display: none;">You can close this window now</h1>
     </div>
     <script
-      src="https://scripts.toruswallet.io/broadcastChannel_3_5_3.js"
-      integrity="sha384-skU9kn0NAhJbaUxr/WTkc56HLM8U6akUpv4H4WmR+ZYh9+ChxbuN7GnALGNFSPzq"
+      src="https://scripts.toruswallet.io/broadcastChannel_7_0_0.js"
+      integrity="sha384-pIIXzHLtGFQiHsKXsY97Qe0h3wGNiU7IyCLXX6waFb2br/zmGkH+ms1ijYIQD0Rl"
       crossorigin="anonymous"
     ></script>
     <script>
@@ -177,7 +177,6 @@ self.addEventListener("fetch", function (event) {
         }
       }
       var isLocalStorageAvailable = storageAvailable("localStorage");
-      var isSessionStorageAvailable = storageAvailable("sessionStorage");
       // set theme
       let theme = "light";
       if (isLocalStorageAvailable) {
@@ -244,19 +243,6 @@ self.addEventListener("fetch", function (event) {
           } else {
             // communicate via broadcast channel
             bc = new broadcastChannelLib.BroadcastChannel("redirect_channel_" + instanceParams.instanceId, broadcastChannelOptions);
-            bc.addEventListener("message", function (ev) {
-              if (ev.success) {
-                bc.close();
-                console.log("posted", {
-                  queryParams,
-                  instanceParams,
-                  hashParams,
-                });
-              } else {
-                window.close();
-                showCloseText();
-              }
-            });
             bc.postMessage({
               data: {
                 instanceParams: instanceParams,
@@ -265,8 +251,15 @@ self.addEventListener("fetch", function (event) {
               },
               error: error,
             }).then(function () {
+              bc.close();
+              console.log("posted", {
+                queryParams,
+                instanceParams,
+                hashParams,
+              });
               setTimeout(function () {
-                window.location.href = url.origin + location.search + location.hash;
+                window.close();
+                showCloseText();
               }, 5000);
             });
           }
@@ -308,10 +301,10 @@ self.addEventListener("fetch", function (event) {
   </body>
 </html>
                         
-${""}
-  `,
+${''}
+  `
             ],
-            { type: "text/html" }
+            { type: 'text/html' }
           )
         )
       );
