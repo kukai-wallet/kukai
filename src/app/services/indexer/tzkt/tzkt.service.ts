@@ -240,6 +240,10 @@ export class TzktService implements Indexer {
       this.normalizeMetadata(meta, contractAddress, id);
       this.filterMetadata(meta);
     }
+    // default to 0
+    if (meta?.decimals === undefined) {
+      meta.decimals = 0;
+    }
     if (!(meta && (meta.name || meta.symbol) && !isNaN(meta.decimals) && meta.decimals >= 0) || metadataSource === MetadataSource.TaquitoOnly) {
       meta = null;
     }
@@ -250,6 +254,9 @@ export class TzktService implements Indexer {
         this.normalizeMetadata(meta, contractAddress, id);
         this.filterMetadata(meta);
       }
+    }
+    if (meta?.decimals === undefined) {
+      meta.decimals = 0;
     }
     if (!(meta && (meta.name || meta.symbol) && !isNaN(meta.decimals) && meta.decimals >= 0)) {
       meta = null;
