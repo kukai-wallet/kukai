@@ -295,6 +295,14 @@ export class EmbeddedComponent implements OnInit {
         operations: false,
         micheline: false
       }
+    },
+    aigam: {
+      origins: ['https://aigam.es', 'https://www.aigam.es'],
+      permissions: {
+        login: true,
+        operations: false,
+        micheline: false
+      }
     }
   };
   constructor(
