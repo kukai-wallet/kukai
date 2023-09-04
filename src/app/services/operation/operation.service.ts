@@ -1551,8 +1551,8 @@ export class OperationService {
     const node = this.nodeURL[c % this.nodeURL.length];
     return this.http.post(`${node}/${path}`, payload, httpOptions).pipe(
       catchError((error) => {
-        if (c > 1 || !(error?.name === 'HttpErrorResponse')) {
-          // give up after 3 attempts
+        if (c > Math.max(3, this.nodeURL.length) - 2 || !(error?.name === 'HttpErrorResponse')) {
+          // give up after 3 or nodes.length attempts
           throw error;
         }
         return timer(250).pipe(concatMap(() => this.postRpc(path, payload, ++c)));
@@ -1564,8 +1564,8 @@ export class OperationService {
     const node = this.nodeURL[c % this.nodeURL.length];
     return this.http.get(`${node}/${path}`).pipe(
       catchError((error) => {
-        if (c > 1 || !(error?.name === 'HttpErrorResponse')) {
-          // give up after 3 attempts
+        if (c > Math.max(3, this.nodeURL.length) - 2 || !(error?.name === 'HttpErrorResponse')) {
+          // give up after 3 or nodes.length attempts
           throw error;
         }
         return timer(250).pipe(concatMap(() => this.getRpc(path, ++c)));
