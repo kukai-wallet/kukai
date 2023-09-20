@@ -365,7 +365,7 @@ export class WalletService {
       impAcc.balanceXTZ = implicit.balanceXTZ;
       impAcc.delegate = implicit.delegate;
       impAcc.state = implicit.state;
-      impAcc.activities = implicit.activities.filter((activity) => {
+      impAcc.activities = implicit.activities?.filter((activity) => {
         if (activity.tokenId && BLACKLISTED_TOKEN_CONTRACTS.includes(activity.tokenId.split(':')[0])) {
           return false;
         }
@@ -380,7 +380,7 @@ export class WalletService {
         origAcc.balanceXTZ = originated.balanceXTZ;
         origAcc.delegate = originated.delegate;
         origAcc.state = originated.state;
-        origAcc.activities = originated.activities.filter((activity) => {
+        origAcc.activities = originated.activities?.filter((activity) => {
           if (activity.tokenId && BLACKLISTED_TOKEN_CONTRACTS.includes(activity.tokenId.split(':')[0])) {
             return false;
           }
