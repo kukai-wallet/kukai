@@ -26,7 +26,7 @@ export class SignExprEmbedComponent implements OnInit, OnChanges {
   template = null;
   description = null;
   isMessage = false;
-  showMore = false;
+  showMore = true;
   constructor(
     public walletService: WalletService,
     private messageService: MessageService,
