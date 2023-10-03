@@ -1,5 +1,5 @@
 const fs = require('fs');
-const common = 'node_modules/@angular-devkit/build-angular/src/tools/webpack/configs/common.js';
+const common = 'node_modules/@angular-devkit/build-angular/src/webpack/configs/common.js';
 const tdcore = 'node_modules/@tezos-domains/core/dist/core.es2015.js';
 const uts46 = 'node_modules/idna-uts46-hx/uts46.js';
 
