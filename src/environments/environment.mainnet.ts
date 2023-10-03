@@ -57,7 +57,7 @@ const _CONSTANTS: Constants = {
     },
     FloSports: {
       name: 'FloSports',
-      address: ['KT1SQFuskMGQB7arqvQyuCH9v2utbJNmGcR6', 'KT1QN8oJodP3uuFu5VbciZFhLQSReyAMpGtT'],
+      address: ['KT1SQFuskMGQB7arqvQyuCH9v2utbJNmGcR6', 'KT1QN8oJodP3uuFu5VbciZFhLQSReyAMpGtT', 'KT1AEdwKNAzEA1g2jLjeJVVYCSZaj8qRCwpU'],
       thumbnailUrl: 'assets/img/alias/flosports.png',
       discoverUrl: 'assets/img/alias/flosports-discover.png',
       link: 'https://collectibles.flosports.tv',
