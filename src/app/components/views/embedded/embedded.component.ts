@@ -145,11 +145,11 @@ export class EmbeddedComponent implements OnInit {
       }
     },
     tzstaging: {
-      origins: ['*.tzstaging.com', 'https://tzstaging.com', 'https://tezos.com', 'https://freetez.tezos.com'],
+      origins: ['*.tzstaging.com', 'https://tzstaging.com', 'https://tezos.com', 'https://quests.tezos.com', 'https://freetez.tezos.com'],
       permissions: {
         login: true,
-        operations: false,
-        micheline: false
+        operations: true,
+        micheline: true
       }
     },
     studioexception: {
