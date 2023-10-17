@@ -1,0 +1,43 @@
+.buy-tez-parent {
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.buy-tez-card {
+  width: 360px;
+  height: 90vh;
+  padding: 12px;
+  border-radius: 24px;
+  box-sizing: border-box;
+  background: white;
+}
+
+.buy-tez-card img {
+  border: 2px solid #eee;
+  padding: 12px;
+  border-radius: 50%;
+  background: white;
+  cursor: pointer;
+}
+
+.buy-tez-card iframe {
+  max-height: 80vh;
+  border-radius: 16px;
+}
+
+.buy-tez-card img:hover {
+  filter: brightness(0.95);
+}
+
+.buy-tez-header {
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 6px;
+}

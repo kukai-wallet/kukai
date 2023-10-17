@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { TorusService } from '../../../services/torus/torus.service';
 import { CONSTANTS } from '../../../../environments/environment';
 import { ImportService } from '../../../services/import/import.service';
@@ -31,8 +31,10 @@ import {
   LoginPrio
 } from 'kukai-embed';
 import { Subscription } from 'rxjs';
-import { SubjectService } from '../../../services/subject/subject.service';
+import { BuyProvider, SubjectService } from '../../../services/subject/subject.service';
 import { InputValidationService } from '../../../services/input-validation/input-validation.service';
+import { BuyComponent } from '../logged-in/account-view/buy/buy.component';
+import { BuyTezComponent } from './buy-tez/buy-tez.component';
 enum Permission {
   LOGIN = 'login',
   OPERATIONS = 'operations',
@@ -54,6 +56,7 @@ interface Permissions {
   styleUrls: ['../../../../scss/components/views/embedded/embedded.component.scss']
 })
 export class EmbeddedComponent implements OnInit {
+  @ViewChild(BuyTezComponent, { static: true }) child?: BuyTezComponent;
   readonly permissionMatrix: Record<string, Permissions> = {
     brio: {
       origins: ['https://playwithbrio.com', 'https://www.playwithbrio.com', 'https://production.playwithbrio.com'],
@@ -394,6 +397,9 @@ export class EmbeddedComponent implements OnInit {
             case RequestTypes.authRequest:
               this.handleAuthRequest(data);
               break;
+            case 'buy_tez_request' as unknown as RequestTypes: // requires kukai-embed version upgrade
+              this.handleBuyTezRequest(data as unknown as any);
+              break;
             case RequestTypes.cardRequest:
               this.handleCardRequest(data);
               break;
@@ -520,6 +526,15 @@ export class EmbeddedComponent implements OnInit {
       }
       this.login = true;
     }
+  }
+  private handleBuyTezRequest({ address }: { address: string }) {
+    this.child?.open(address);
+  }
+  handleDismiss() {
+    this.sendResponse({
+      type: ResponseTypes.dismissResponse,
+      failed: false
+    });
   }
   private handleOperationRequest(req: OperationRequest) {
     if (!this.hasPermission(Permission.OPERATIONS)) {

@@ -1,3 +1,4 @@
+<app-buy-tez (onDismiss)="handleDismiss()"></app-buy-tez>
 <app-signin *ngIf="login" [dismiss]="dismiss" [loginConfig]="loginConfig" (loginResponse)="loginResponse($event)"></app-signin>
 <app-send [embedded]="true" *ngIf="externalRequest" (operationResponse)="operationResponse($event)" [headless]=true [externalRequest]=externalRequest
     [template]="template" [activeAccount]=activeAccount></app-send>

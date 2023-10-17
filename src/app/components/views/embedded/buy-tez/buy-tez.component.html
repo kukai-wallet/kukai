@@ -1,0 +1,11 @@
+<div *ngIf="isOpen" class="buy-tez-parent">
+  <div class="buy-tez-card">
+    <div class="buy-tez-header">
+      <img (click)="abort()" class="abort" src="../../../../../assets/img/x-alt.svg">
+    </div>
+
+    <iframe allow="accelerometer; autoplay; camera; gyroscope; payment" frameborder="0" height="100%" [src]="this.url"
+      width="100%">
+    </iframe>
+  </div>
+</div>

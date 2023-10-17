@@ -78,6 +78,7 @@ import { TruncatePipe } from './pipes/truncate.pipe';
 import { TimeAgoPipe } from './pipes/time-ago.pipe';
 import { DeeplinkService } from './services/deeplink/deeplink.service';
 import { RemoveCommaPipe } from './pipes/remove-comma.pipe';
+import { BuyTezComponent } from './components/views/embedded/buy-tez/buy-tez.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -128,7 +129,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     // Pipes
     ErrorHandlingPipe,
     TruncatePipe,
-    TimeAgoPipe
+    TimeAgoPipe,
+    BuyTezComponent
   ],
   imports: [
     BrowserModule,
