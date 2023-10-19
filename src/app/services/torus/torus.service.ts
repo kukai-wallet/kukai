@@ -266,6 +266,9 @@ export class TorusService {
       return { keyPair, userInfo: loginDetails.userInfo };
     } catch (e) {
       console.error(e, 'login caught');
+      if (typeof e?.message === 'string') {
+        this.messageService.addError(e.message, 0);
+      }
       return { keyPair: null, userInfo: null };
     }
   }
