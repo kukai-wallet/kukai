@@ -7,6 +7,7 @@ import { DefaultTransactionParams, OpLimits } from '../../interfaces';
 import Big from 'big.js';
 import { CONSTANTS } from '../../../environments/environment';
 import { InputValidationService } from '../input-validation/input-validation.service';
+import { UtilsService } from '../utils/utils.service';
 
 const httpOptions = { headers: { 'Content-Type': 'application/json' } };
 @Injectable()
@@ -15,6 +16,7 @@ export class EstimateService {
   readonly revealGasLimit = 200;
   readonly extraGas = 25;
   readonly contractsOverride: Record<string, OpLimits>;
+  readonly tooSlowPreloadError: string = 'Simulation error: Node timed out on preload';
   queue = [];
   pkh: string;
   pk: string;
@@ -22,7 +24,12 @@ export class EstimateService {
   chainId: string;
   manager: string;
   counter: number;
-  constructor(private http: HttpClient, private operationService: OperationService, private imputValidationService: InputValidationService) {
+  constructor(
+    private utilsService: UtilsService,
+    private http: HttpClient,
+    private operationService: OperationService,
+    private imputValidationService: InputValidationService
+  ) {
     this.contractsOverride = CONSTANTS.CONTRACT_OVERRIDES;
   }
   init(hash: string, chainId: string, counter: number, manager: string, pk: string, pkh: string) {
@@ -36,6 +43,7 @@ export class EstimateService {
   async preLoadData(pkh: string, pk: string) {
     this.pkh = pkh;
     this.pk = pk;
+    this.hash = this.chainId = this.counter = this.manager = undefined;
     const [head, counter, manager] = await Promise.all([this.operationService.getHeader().toPromise(), this.getCounter(pkh), this.getManager(pkh)]);
     if (head && counter && (manager || manager === null)) {
       this.init(head.hash, head.chain_id, counter, manager, pk, pkh);
@@ -57,6 +65,17 @@ export class EstimateService {
         }
         let retry = false;
         for (let i = 0; i < 1 || (retry && i < 2); i++) {
+          let c = 0;
+          while (!this.hash) {
+            if (c < 10) {
+              await this.utilsService.sleep(500);
+            } else {
+              this.queue[0].callback({ error: this.tooSlowPreloadError });
+              this.queue.shift();
+              return;
+            }
+            c++;
+          }
           await this._estimate(this.queue[0].transactions, this.queue[0].from, tokenTransfer, isOrigination)
             .then((res) => {
               this.queue[0].callback(res);
