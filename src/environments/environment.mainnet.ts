@@ -45,7 +45,8 @@ const _CONSTANTS: Constants = {
         'KT1UidJGfFQBhyufakh5PNc13i5t67jA4cvx',
         'KT1GUnPCc3zQq6oshCh91nmnfTvhiWFj6Qci',
         'KT1HwhxuoZqKgauNHi9vzShCbvYDESd2dfhv',
-        'KT1LBXXg9UFvyfdvPmRMc4JZQsYWdyPCS6ue'
+        'KT1LBXXg9UFvyfdvPmRMc4JZQsYWdyPCS6ue',
+        'KT1ASdLCaRrd6tHyssWYDkZKdMm2KrwwbQeN'
       ],
       thumbnailUrl: 'assets/img/alias/mufc.png',
       discoverUrl: 'assets/img/alias/mufc-discover.jpg',
