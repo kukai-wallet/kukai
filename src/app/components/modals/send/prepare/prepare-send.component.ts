@@ -282,6 +282,8 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
       if (this.isMultipleDestinations) {
         this.amount = this.getTotalAmount();
       }
+    } else {
+      this.verifierChange();
     }
   }
   toPkhChange(): void {
