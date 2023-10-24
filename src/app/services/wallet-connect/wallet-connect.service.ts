@@ -179,14 +179,17 @@ export class WalletConnectService {
     this.client.on('session_proposal', (data) => this.proposalHandler(data));
     this.client.on('session_request', async (data) => {
       // Beacon ACK
-      this.client.emit({
-        topic: data?.topic,
-        event: {
-          name: 'requestAcknowledged',
-          data: { id: data?.id }
-        },
-        chainId: data?.params?.chainId
-      });
+      const session = this.client.session.get(data?.topic);
+      if (session?.namespaces?.tezos?.events?.includes('requestAcknowledged')) {
+        this.client.emit({
+          topic: data?.topic,
+          event: {
+            name: 'requestAcknowledged',
+            data: { id: data?.id }
+          },
+          chainId: data?.params?.chainId
+        });
+      }
       // If multiple pending messages after init, we drop all expect the most recent one
       const diffMs = new Date().getTime() - this.initDoneAt;
       if (diffMs < 1000) {
