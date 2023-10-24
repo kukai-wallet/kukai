@@ -156,14 +156,12 @@ export class TorusWallet extends Wallet {
   updateSkExpiration(): void {
     const storedData = this.getStoredData();
     if (storedData) {
-      const expiration = new Date().getTime() + ONE_HOUR;
-      sessionStorage.setItem(TORUS_WALLET_STORE_KEY, JSON.stringify({ ...storedData, expiration }));
+      sessionStorage.setItem(TORUS_WALLET_STORE_KEY, JSON.stringify({ ...storedData, expiration: this.getExpiration() }));
     }
   }
 
   storeSk(sk: string): void {
-    const expiration = new Date().getTime() + ONE_HOUR;
-    sessionStorage.setItem(TORUS_WALLET_STORE_KEY, JSON.stringify({ sk, expiration }));
+    sessionStorage.setItem(TORUS_WALLET_STORE_KEY, JSON.stringify({ sk, expiration: this.getExpiration() }));
   }
 
   getSk(): null | string {
@@ -173,6 +171,9 @@ export class TorusWallet extends Wallet {
     }
 
     return null;
+  }
+  private getExpiration() {
+    return new Date().getTime() + ONE_HOUR * 3;
   }
 }
 
