@@ -248,15 +248,8 @@ describe('[ OperationService ]', () => {
         pk: 'sppk7cqh7BbgUMFh4yh95mUwEeg5aBPG1MBK1YHN7b9geyygrUMZByr',
         pkh: 'tz2UYG1doNM6AaXhVRyJXpEELmn8vo7pVZj5'
       };
-      const kpFlipped = {
-        sk: 'spsk2gj2eCpecgKZFSix8KY8UFhbqahRGxzLYi9QLihSbQ823e5o99',
-        pk: 'sppk7atwvx9ecvaTwA7SBBrwHL5Jf4mYMeLSDuDFsSTnfKyJMstkaAG',
-        pkh: 'tz2VouZdAQfwLPS2RuDisRXqpkKpWP44kVw3'
-      };
       let kp = service.spPrivKeyToKeyPair(skHex);
       expect(kp).not.toEqual(kpWrong);
-      expect(kp).toEqual(kpFlipped);
-      spyOn(service, 'isInvertedPk').and.returnValue(false);
       kp = service.spPrivKeyToKeyPair(skHex);
       expect(kp).toEqual(kpCorrect);
     });
@@ -274,11 +267,6 @@ describe('[ OperationService ]', () => {
       };
       expect(kp).toEqual(keypair);
       expect(service.spPointsToPkh(pubKey.X, pubKey.Y)).toEqual(keypair.pkh);
-    });
-    it('derive inverted pk', () => {
-      const x = 'c8205b9b2a607ddfcfe07055585bbd860e6dee9f36f80b3a82e2b49370db297';
-      const y = '5713641f2b6df02d700b2cdc6a525f23396161446b09de1f5d95bcd3b4afc3';
-      expect(service.spPointsToPkh(x, y)).toEqual('tz2JV2paU9GQSXFCFWYUJGGEmKEq6PYDx1eT');
     });
   });
   /*

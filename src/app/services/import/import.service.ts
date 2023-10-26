@@ -2,8 +2,18 @@ import { Injectable } from '@angular/core';
 import { KeyPair, WalletType } from './../../interfaces';
 import { WalletService } from '../wallet/wallet.service';
 import { CoordinatorService } from '../coordinator/coordinator.service';
-import { LegacyWalletV1, LegacyWalletV2, LegacyWalletV3, HdWallet, LedgerWallet, TorusWallet, EmbeddedTorusWallet, WatchWallet } from '../wallet/wallet';
-import { hd, utils } from '../../libraries/index';
+import {
+  LegacyWalletV1,
+  LegacyWalletV2,
+  LegacyWalletV3,
+  HdWallet,
+  LedgerWallet,
+  TorusWallet,
+  EmbeddedTorusWallet,
+  WatchWallet,
+  ExportedSocialWallet
+} from '../wallet/wallet';
+import { hd, secp256k1, utils } from '../../libraries/index';
 import { EncryptionService } from '../encryption/encryption.service';
 import { TorusService } from '../torus/torus.service';
 import { IndexerService } from '../indexer/indexer.service';
@@ -26,7 +36,11 @@ export class ImportService {
     if (walletData.provider !== 'Kukai') {
       throw new Error(`Unsupported wallet format`);
     }
-    if (walletData.walletType === WalletType.LegacyWallet || walletData.walletType === WalletType.HdWallet) {
+    if (
+      walletData.walletType === WalletType.LegacyWallet ||
+      walletData.walletType === WalletType.HdWallet ||
+      walletData.walletType === WalletType.ExportedSocialWallet
+    ) {
       return true;
     } else {
       return false;
@@ -34,30 +48,31 @@ export class ImportService {
   }
   async importWalletFromJson(json: any, pwd: string): Promise<boolean> {
     // From file
-    let seed;
+    let secretValue;
     let walletData;
     try {
       walletData = JSON.parse(json);
       if (walletData.walletType === WalletType.HdWallet && walletData.version === 3) {
-        //hd
-        seed = await this.encryptionService.decrypt(walletData.encryptedSeed, pwd, walletData.iv, 3);
+        secretValue = await this.encryptionService.decrypt(walletData.encryptedSeed, pwd, walletData.iv, 3);
       } else if (walletData.walletType === WalletType.LegacyWallet) {
         if (walletData.version === 1) {
           console.log('v1');
-          seed = await this.encryptionService.decrypt(walletData.encryptedSeed, pwd, walletData.pkh.slice(3, 19), 1);
-          if (utils.seedToKeyPair(seed).pkh !== walletData.pkh) {
-            seed = '';
+          secretValue = await this.encryptionService.decrypt(walletData.encryptedSeed, pwd, walletData.pkh.slice(3, 19), 1);
+          if (utils.seedToKeyPair(secretValue).pkh !== walletData.pkh) {
+            secretValue = '';
           }
         } else if (walletData.version === 2 || walletData.version === 3) {
-          seed = await this.encryptionService.decrypt(walletData.encryptedSeed, pwd, walletData.iv, walletData.version);
+          secretValue = await this.encryptionService.decrypt(walletData.encryptedSeed, pwd, walletData.iv, walletData.version);
         }
+      } else if (walletData.walletType === WalletType.ExportedSocialWallet && walletData.version === 3) {
+        secretValue = await this.encryptionService.decrypt(walletData.encryptedSk, pwd, walletData.iv, walletData.version);
       }
     } catch (e) {
       console.error(e);
       throw new Error('Failed to decrypt keystore file');
     }
-    if (seed) {
-      return this.importWalletFromObject(walletData, seed).then(
+    if (secretValue) {
+      return this.importWalletFromObject(walletData, secretValue).then(
         (ans) => {
           return ans;
         },
@@ -70,12 +85,13 @@ export class ImportService {
       throw new Error('Wrong password');
     }
   }
-  async importWalletFromObject(data: any, seed: any): Promise<boolean> {
+  async importWalletFromObject(data: any, secretValue: any): Promise<boolean> {
     try {
       this.coordinatorService.stopAll();
+      let keys: KeyPair;
       if (data.walletType === WalletType.HdWallet && data.version === 3) {
-        // HD
         this.walletService.wallet = new HdWallet(data.iv, data.encryptedSeed, data.encryptedEntropy);
+        keys = hd.keyPairFromAccountIndex(secretValue, 0);
       } else if (data.walletType === WalletType.LegacyWallet) {
         if (data.version === 3) {
           this.walletService.wallet = new LegacyWalletV3(data.iv, data.encryptedSeed, data.encryptedEntropy);
@@ -86,23 +102,20 @@ export class ImportService {
         } else {
           throw new Error('Unsupported wallet file');
         }
+        keys = utils.seedToKeyPair(secretValue);
+      } else if (data.walletType === WalletType.ExportedSocialWallet) {
+        this.walletService.wallet = new ExportedSocialWallet(data.iv, data.encryptedSk);
+        const spsk = secp256k1.mnemonicToSpsk(utils.entropyToMnemonic(secretValue));
+        keys = this.operationService.spPrivKeyToKeyPair(spsk);
       } else {
         throw new Error('Unsupported wallet file');
-      }
-      let keys: KeyPair;
-      if (seed.length === 32) {
-        keys = utils.seedToKeyPair(seed);
-      } else if (seed.length === 64) {
-        keys = hd.keyPairFromAccountIndex(seed, 0);
-      } else {
-        throw new Error('Invalid seed length');
       }
       this.walletService.initStorage();
       if (this.walletService.wallet instanceof HdWallet) {
         let index = 0;
         let isUsedAccount: boolean = true;
         while (isUsedAccount) {
-          keys = hd.keyPairFromAccountIndex(seed, index);
+          keys = hd.keyPairFromAccountIndex(secretValue, index);
           isUsedAccount = await this.indexerService.isUsedAccount(keys.pkh);
           if (isUsedAccount || index === 0) {
             this.walletService.addImplicitAccount(keys.pk, index++);

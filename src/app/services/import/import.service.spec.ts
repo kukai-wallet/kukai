@@ -22,7 +22,7 @@ import { CoordinatorService } from '../coordinator/coordinator.service';
 import { TzrateService } from '../tzrate/tzrate.service';
 import { ActivityService } from '../activity/activity.service';
 import { DelegateService } from '../delegate/delegate.service';
-import { FullWallet, LegacyWalletV2, HdWallet, LegacyWalletV3 } from '../wallet/wallet';
+import { LegacyWalletV2, HdWallet, LegacyWalletV3 } from '../wallet/wallet';
 import { IndexerService } from '../indexer/indexer.service';
 import { TorusService } from '../torus/torus.service';
 import { InputValidationService } from '../input-validation/input-validation.service';
@@ -36,8 +36,8 @@ describe('[ ImportService ]', () => {
 
   // class dependencies
   /*let httpMock: HttpTestingController;
-	let translate: TranslateService;
-	let errorHandlingPipe: ErrorHandlingPipe;*/
+  let translate: TranslateService;
+  let errorHandlingPipe: ErrorHandlingPipe;*/
 
   let wallet: WalletService;
   let operation: OperationService;

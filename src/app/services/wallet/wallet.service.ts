@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { KeyPair, WalletType, Activity } from './../../interfaces';
+import { KeyPair, StorableWalletType, WalletType } from './../../interfaces';
 import {
   WalletObject,
   HdWallet,
@@ -12,13 +12,13 @@ import {
   TorusWallet,
   EmbeddedTorusWallet,
   OriginatedAccount,
-  WatchWallet
+  WatchWallet,
+  ExportedSocialWallet
 } from './wallet';
 import { EncryptionService } from '../encryption/encryption.service';
 import { OperationService } from '../operation/operation.service';
 import { TorusService } from '../torus/torus.service';
-import { utils, hd } from '../../libraries/index';
-import { BehaviorSubject } from 'rxjs';
+import { utils, hd, secp256k1 } from '../../libraries/index';
 import { SubjectService } from '../subject/subject.service';
 import { BLACKLISTED_TOKEN_CONTRACTS } from '../../../environments/environment';
 
@@ -40,25 +40,41 @@ export class WalletService {
   createNewWallet(): string {
     return utils.generateMnemonic(24);
   }
-  async createEncryptedWallet(mnemonic: string, password: string, passphrase: string = '', hdSeed: boolean): Promise<any> {
-    const seed = utils.mnemonicToSeed(mnemonic, passphrase, hdSeed);
+  async createEncryptedWallet(mnemonic: string, password: string, passphrase: string = '', storableWalletType: StorableWalletType): Promise<any> {
     const entropy: Buffer = Buffer.from(utils.mnemonicToEntropy(mnemonic));
     let keyPair: KeyPair;
-    if (!hdSeed) {
-      keyPair = this.operationService.seed2keyPair(seed);
-    } else {
+    let secretToBeEncrypted: any;
+    let seed: any;
+    let walletType: WalletType;
+    if (storableWalletType === StorableWalletType.HdWallet) {
+      seed = utils.mnemonicToSeed(mnemonic, passphrase, true);
       keyPair = hd.keyPairFromAccountIndex(seed, 0);
+      secretToBeEncrypted = seed;
+      walletType = WalletType.HdWallet;
+    } else if (storableWalletType === StorableWalletType.LegacyWallet) {
+      seed = utils.mnemonicToSeed(mnemonic, passphrase, false);
+      keyPair = this.operationService.seed2keyPair(seed);
+      secretToBeEncrypted = seed;
+      walletType = WalletType.LegacyWallet;
+    } else if (storableWalletType === StorableWalletType.ExportedSocialWallet) {
+      const sk = secp256k1.mnemonicToSpsk(mnemonic);
+      keyPair = this.operationService.spPrivKeyToKeyPair(sk);
+      secretToBeEncrypted = entropy;
+      seed = entropy;
+      walletType = WalletType.ExportedSocialWallet;
     }
-    const encrypted = await this.encryptionService.encrypt(seed, password, 3);
-    const encryptedSeed: string = encrypted.chiphertext;
+    const encrypted = await this.encryptionService.encrypt(secretToBeEncrypted, password, 3);
+    const encryptedSecret: string = encrypted.chiphertext;
     const iv: string = encrypted.iv;
+
     /*
       Warning: Make sure to never reuse IV for AES-GCM
     */
     const iv2: string = this.encryptionService.shiftIV(iv, 1);
     const encryptedEntropy: string = (await this.encryptionService.encrypt(entropy, password, 3, iv2)).chiphertext;
+
     return {
-      data: this.exportKeyStoreInit(hdSeed ? WalletType.HdWallet : WalletType.LegacyWallet, encryptedSeed, encryptedEntropy, iv),
+      data: this.exportKeyStoreInit(walletType, encryptedSecret, encryptedEntropy, iv),
       pkh: keyPair.pkh,
       pk: keyPair.pk,
       seed: seed
@@ -106,6 +122,10 @@ export class WalletService {
           throw new Error('Signed with wrong account');
         }
       }
+    } else if (this.wallet instanceof ExportedSocialWallet) {
+      const sk = await this.encryptionService.decrypt(this.wallet.encryptedSk, pwd, this.wallet.IV, 3);
+      const spsk = secp256k1.mnemonicToSpsk(utils.entropyToMnemonic(sk));
+      return this.operationService.spPrivKeyToKeyPair(spsk);
     } else {
       return null;
     }
@@ -141,6 +161,26 @@ export class WalletService {
       } else {
         console.log('Invalid password');
       }
+    } else if (this.wallet && this.wallet instanceof ExportedSocialWallet) {
+      // re-export a social login
+
+      try {
+        const sk = await this.encryptionService.decrypt(this.wallet.encryptedSk, pwd, this.wallet.IV, 3);
+        const spsk = secp256k1.mnemonicToSpsk(utils.entropyToMnemonic(sk));
+        return secp256k1.spskToShiftedMnemonic(spsk);
+      } catch (e) {
+        console.log('Invalid password.');
+      }
+    }
+    return '';
+  }
+  async revealSocialMnemonicPhrase(): Promise<string> {
+    // export a social login
+    if (this.wallet && this.wallet instanceof TorusWallet) {
+      const keyPair = await this.torusService.getTorusKeyPair(this.wallet.verifier, this.wallet.id);
+      if (this.wallet.getImplicitAccount(keyPair.pkh)) {
+        return secp256k1.spskToShiftedMnemonic(keyPair.sk);
+      }
     }
     return '';
   }
@@ -169,11 +209,6 @@ export class WalletService {
       console.warn(`Manager address $(manager) not found`);
     }
   }
-  /*addUnusedAccount(account: any) {
-    if (this.wallet instanceof HdWallet) {
-      this.wallet.unusedAccounts.push(account);
-    }
-  }*/
   addressExists(address: string): boolean {
     return this.wallet?.getAccounts().findIndex((a) => a.address === address) !== -1;
   }
@@ -241,11 +276,9 @@ export class WalletService {
       provider: 'Kukai',
       version: 3.0,
       walletType,
-      encryptedSeed,
-      encryptedEntropy,
       iv
     };
-    return data;
+    return walletType === WalletType.ExportedSocialWallet ? { encryptedSk: encryptedSeed, ...data } : { encryptedSeed, encryptedEntropy, ...data };
   }
   /*
     Read and write to localStorage
@@ -278,6 +311,8 @@ export class WalletService {
         type = 'TorusWallet';
       } else if (this.wallet instanceof WatchWallet) {
         type = 'WatchWallet';
+      } else if (this.wallet instanceof ExportedSocialWallet) {
+        type = 'ExportedSocialWallet';
       }
       this.getStorage().setItem(
         this.wallet instanceof EmbeddedTorusWallet ? this.wallet.instanceId : this.storeKey,
@@ -340,6 +375,9 @@ export class WalletService {
         break;
       case 'LedgerWallet':
         this.wallet = new LedgerWallet();
+        break;
+      case 'ExportedSocialWallet':
+        this.wallet = new ExportedSocialWallet(wd.IV, wd.encryptedSk);
         break;
       case 'TorusWallet':
         this.wallet = new TorusWallet(wd.verifier, wd.id, wd.name);

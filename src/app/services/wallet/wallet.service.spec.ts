@@ -9,12 +9,11 @@ import { WalletService } from './wallet.service';
 // class dependencies
 import { OperationService } from '../operation/operation.service';
 import { EncryptionService } from '../encryption/encryption.service';
-import * as bip39 from 'bip39';
 import { utils, hd } from '../../libraries/index';
 
 // mocking
-import { KeyPair, http_imports, translate_imports, rx, walletsrv_providers } from '../../../../spec/helpers/service.helper';
-import { WalletObject, LegacyWalletV1, LegacyWalletV2 } from './wallet';
+import { http_imports, translate_imports, walletsrv_providers } from '../../../../spec/helpers/service.helper';
+import { WalletObject, LegacyWalletV1 } from './wallet';
 
 /**
  * Suite: WalletService
@@ -74,54 +73,54 @@ describe('[ WalletService ]', () => {
     });
 
     /** Broken in 1.3.0 update
-		it('should create an encrypted wallet', () => {
+    it('should create an encrypted wallet', () => {
 
-		})
-		*/
+    })
+    */
   });
 
   /** TODO
-	describe('{ @todo: should return keys }', () => {
-		beforeEach(() => {
+  describe('{ @todo: should return keys }', () => {
+    beforeEach(() => {
 
-		})
+    })
 
-		it('@todo: should return full wallet keys', () => {
+    it('@todo: should return full wallet keys', () => {
 
-		})
+    })
 
-		it('@todo: should return null full wallet if keys don\'t match', () => {
-			let keys = service.getKeys('');
-			expect(keys).toBe(null);
-		})
+    it('@todo: should return null full wallet if keys don\'t match', () => {
+      let keys = service.getKeys('');
+      expect(keys).toBe(null);
+    })
 
 
-		it('@todo: should return w/null sk if view-only wallet', () => {
-			service.wallet.type = 1;
-			console.log('pk: ' + service.wallet.seed)
+    it('@todo: should return w/null sk if view-only wallet', () => {
+      service.wallet.type = 1;
+      console.log('pk: ' + service.wallet.seed)
 
-		})
-	})
-	describe('{ @todo: should store wallet data }', () => {
-		beforeEach(() => {
+    })
+  })
+  describe('{ @todo: should store wallet data }', () => {
+    beforeEach(() => {
 
-		})
+    })
 
-		it('@todo: should store wallet', () => {
+    it('@todo: should store wallet', () => {
 
-		})
+    })
 
-		it('@todo: should load stored wallet', () => {
+    it('@todo: should load stored wallet', () => {
 
-		})
+    })
 
-		it('@todo: should export the keystore', () => {
+    it('@todo: should export the keystore', () => {
 
-		})
+    })
 
-		it('@todo: should clear wallet current wallet', () => {
+    it('@todo: should clear wallet current wallet', () => {
 
-		})
-	})
-	*/
+    })
+  })
+  */
 });

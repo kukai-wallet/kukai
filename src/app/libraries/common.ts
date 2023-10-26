@@ -11,7 +11,9 @@ const prefix = {
   o: new Uint8Array([5, 116]),
   B: new Uint8Array([1, 52]),
   TZ: new Uint8Array([3, 99, 29]),
-  KT1: new Uint8Array([2, 90, 121])
+  KT1: new Uint8Array([2, 90, 121]),
+  sppk: new Uint8Array([3, 254, 226, 86]),
+  spsk: new Uint8Array([17, 162, 224, 201])
 };
 
 const mergebuf = (b: Uint8Array, wm = Uint8Array.from([3])): Uint8Array => {

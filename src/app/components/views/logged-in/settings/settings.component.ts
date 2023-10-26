@@ -8,7 +8,7 @@ import { Subscription } from 'rxjs';
 import { CoordinatorService } from '../../../../services/coordinator/coordinator.service';
 import { SubjectService } from '../../../../services/subject/subject.service';
 import { ModalComponent } from '../../../../components/modals/modal.component';
-import { HdWallet, LegacyWalletV3 } from '../../../../services/wallet/wallet';
+import { HdWallet, LegacyWalletV3, TorusWallet, ExportedSocialWallet } from '../../../../services/wallet/wallet';
 import { WalletConnectService } from '../../../../services/wallet-connect/wallet-connect.service';
 
 @Component({
@@ -79,8 +79,14 @@ export class SettingsComponent implements OnInit, OnDestroy {
   revealMnemonic(): void {
     ModalComponent.currentModel.next({ name: 'export-mnemonic', data: null });
   }
-  canRevealMnomonic(): boolean {
-    return this.walletService.wallet && (this.walletService.wallet instanceof HdWallet || this.walletService.wallet instanceof LegacyWalletV3);
+  canRevealMnemonic(): boolean {
+    return (
+      this.walletService.wallet &&
+      (this.walletService.wallet instanceof HdWallet ||
+        this.walletService.wallet instanceof LegacyWalletV3 ||
+        this.walletService.wallet instanceof TorusWallet ||
+        this.walletService.wallet instanceof ExportedSocialWallet)
+    );
   }
   changeSession(session: any): void {
     ModalComponent.currentModel.next({ name: 'session-select', data: { topic: session.topic, preSelectedAccountAddress: session.address } });

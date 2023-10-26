@@ -2,12 +2,13 @@ import { Component, OnInit, HostBinding, Input, OnDestroy, AfterViewInit } from 
 import { NavigationEnd, Router } from '@angular/router';
 import { ImportService } from '../../../../../services/import/import.service';
 import { MessageService } from '../../../../../services/message/message.service';
+import { StorableWalletType } from '../../../../../interfaces';
 import { WalletService } from '../../../../../services/wallet/wallet.service';
 import { ExportService } from '../../../../../services/export/export.service';
 import { InputValidationService } from '../../../../../services/input-validation/input-validation.service';
 import { IndexerService } from '../../../../../services/indexer/indexer.service';
 import { OperationService } from '../../../../../services/operation/operation.service';
-import { utils, hd } from '../../../../../libraries/index';
+import { utils, hd, secp256k1 } from '../../../../../libraries/index';
 import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import * as bip39 from 'bip39';
@@ -55,11 +56,13 @@ export class MnemonicImportComponent implements OnInit, AfterViewInit, OnDestroy
   bip39Wordlist = bip39.wordlists.english;
 
   // data for seed word wallet import
-  hdImport = true;
+  storableWalletTypeEnum = StorableWalletType;
+  storableWalletType = StorableWalletType.HdWallet;
   chooseWalletStateEnum = ChooseWalletState;
   chooseWalletState = ChooseWalletState.UserDoesNotNeedToChooseWallet;
   legacyCandidate: null | WalletCandidate = null;
   hdCandidate: null | WalletCandidate = null;
+  exportedSocialWalletCandidate: null | WalletCandidate = null;
 
   private subscriptions: Subscription = new Subscription();
 
@@ -115,8 +118,56 @@ export class MnemonicImportComponent implements OnInit, AfterViewInit, OnDestroy
       this.passphrase = this.email + this.password;
     }
     const invalidMnemonic = this.inputValidationService.invalidMnemonic(this.mnemonic);
+
     if (invalidMnemonic) {
-      this.messageService.addWarning(invalidMnemonic, 10);
+      if (this.importOption === 1) {
+        // the mnemonic provided is invalid, but it could also be a shifted mnemonic from
+        // an exported social wallets. Convert the shifted mnemonic into a potentially valid
+        // mnemonic and see if we can derive the private keys.
+        let unshiftedMnemonic = null;
+        try {
+          unshiftedMnemonic = secp256k1.shiftedMnemonicToMnemonic(this.mnemonic);
+        } catch (e) {
+          console.log('Failed to convert unshift mnemonic', e);
+        }
+        if (unshiftedMnemonic) {
+          const invalidShiftedMnemonic = this.inputValidationService.invalidMnemonic(unshiftedMnemonic);
+          if (invalidShiftedMnemonic) {
+            this.messageService.addWarning(invalidMnemonic, 10);
+          } else {
+            try {
+              const spsk = secp256k1.mnemonicToSpsk(unshiftedMnemonic);
+              if (secp256k1.validSecretKey(spsk)) {
+                if (this.passphrase) {
+                  this.messageService.addWarning('Passphrase is not allowed for social wallets', 10);
+                } else {
+                  const keypair = this.operationService.spPrivKeyToKeyPair(spsk);
+                  this.exportedSocialWalletCandidate = { pkh: keypair.pkh };
+                  if (this.pkh && this.pkh !== '' && keypair.pkh !== this.pkh) {
+                    this.messageService.addWarning(
+                      'The provided address does not match the address derived from the seed words. Confirm that the address and passphrase are correct.',
+                      5
+                    );
+                  } else {
+                    this.storableWalletType = StorableWalletType.ExportedSocialWallet;
+                    this.mnemonic = unshiftedMnemonic;
+                    this.activePanel++;
+                  }
+                }
+              } else {
+                this.messageService.addWarning(invalidMnemonic, 10);
+              }
+            } catch (e) {
+              console.log('Failed to convert mnemonic to spsk', e);
+              this.messageService.addWarning(invalidMnemonic, 10);
+            }
+          }
+        } else {
+          this.messageService.addWarning(invalidMnemonic, 10);
+        }
+      } else {
+        this.messageService.addWarning(invalidMnemonic, 10);
+      }
     } else if (this.importOption === 2 && !this.inputValidationService.email(this.email)) {
       this.messageService.addWarning('Invalid email!', 10);
     } else if (this.importOption === 2 && !this.password) {
@@ -130,7 +181,6 @@ export class MnemonicImportComponent implements OnInit, AfterViewInit, OnDestroy
     } else {
       // at this point we have validated the majority of the input and we can
       // try to derive the PKH from mnemonic and the passphrase.
-
       const passphrase = this.passphrase ? this.passphrase : '';
       const legacyWalletAddress = utils.seedToKeyPair(utils.mnemonicToSeed(this.mnemonic, passphrase, false)).pkh;
 
@@ -144,12 +194,12 @@ export class MnemonicImportComponent implements OnInit, AfterViewInit, OnDestroy
         if (this.pkh && this.pkh !== '') {
           // the user has provided a PKH and they expect the derivation from the seed words to match one
           if (this.pkh === this.hdCandidate.pkh) {
-            this.hdImport = true;
+            this.storableWalletType = StorableWalletType.HdWallet;
             this.hdCandidate.used = true;
             this.legacyCandidate.used = false;
             this.activePanel++;
           } else if (this.pkh === this.legacyCandidate.pkh) {
-            this.hdImport = false;
+            this.storableWalletType = StorableWalletType.LegacyWallet;
             this.legacyCandidate.used = true;
             this.hdCandidate.used = false;
             this.activePanel++;
@@ -184,6 +234,9 @@ export class MnemonicImportComponent implements OnInit, AfterViewInit, OnDestroy
 
   getChooseWalletState(): ChooseWalletState {
     if (this.importOption === 2) {
+      this.storableWalletType = StorableWalletType.LegacyWallet;
+    }
+    if (this.importOption === 2 || this.exportedSocialWalletCandidate) {
       return ChooseWalletState.UserDoesNotNeedToChooseWallet;
     }
     if (this.legacyCandidate.used === undefined || this.hdCandidate.used === undefined) {
@@ -193,7 +246,7 @@ export class MnemonicImportComponent implements OnInit, AfterViewInit, OnDestroy
       if (this.hdCandidate.used) {
         return ChooseWalletState.UserNeedsToChooseWallet;
       } else {
-        this.hdImport = false;
+        this.storableWalletType = StorableWalletType.LegacyWallet;
       }
     }
     return ChooseWalletState.UserDoesNotNeedToChooseWallet;
@@ -233,7 +286,7 @@ export class MnemonicImportComponent implements OnInit, AfterViewInit, OnDestroy
       this.pwd2 = '';
       await this.messageService.startSpinner('Encrypting wallet...');
       try {
-        this.wallet = await this.walletService.createEncryptedWallet(this.mnemonic, password, this.passphrase, this.importOption === 1 && this.hdImport);
+        this.wallet = await this.walletService.createEncryptedWallet(this.mnemonic, password, this.passphrase, this.storableWalletType);
       } finally {
         this.messageService.stopSpinner();
       }
@@ -262,9 +315,10 @@ export class MnemonicImportComponent implements OnInit, AfterViewInit, OnDestroy
     await this.setPwd();
 
     // clean up
-    this.hdImport = true;
+    this.storableWalletType = StorableWalletType.HdWallet;
     this.legacyCandidate = null;
     this.hdCandidate = null;
+    this.exportedSocialWalletCandidate = null;
   }
 
   validPwd(): boolean {

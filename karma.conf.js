@@ -3,7 +3,7 @@
 
 module.exports = function (config) {
   config.set({
-    webpack: { node: { fs: 'empty', } },
+    webpack: { node: { fs: 'empty' } },
     basePath: '',
     frameworks: ['jasmine', '@angular-devkit/build-angular'],
     plugins: [
@@ -11,23 +11,30 @@ module.exports = function (config) {
       require('karma-chrome-launcher'),
       require('karma-jasmine-html-reporter'),
       require('karma-coverage-istanbul-reporter'),
-	  require('@angular-devkit/build-angular/plugins/karma'),
-	  require('karma-mocha-reporter')
+      require('@angular-devkit/build-angular/plugins/karma'),
+      require('karma-mocha-reporter')
     ],
-    client:{
+    client: {
       clearContext: false // leave Jasmine Spec Runner output visible in browser
     },
     coverageIstanbulReporter: {
-      dir: require('path').join(__dirname, 'coverage'), reports: [ 'html', 'lcovonly' ],
+      dir: require('path').join(__dirname, 'coverage'),
+      reports: ['html', 'lcovonly'],
       fixWebpackSourcePaths: true
     },
-    
+    customLaunchers: {
+      chrome_1: {
+        //give it whatever name you want
+        base: 'Chrome',
+        flags: ['--enable-gpu']
+      }
+    },
     reporters: ['mocha'],
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['ChromeHeadless'],
+    browsers: ['chrome_1'],
     singleRun: false
   });
 };

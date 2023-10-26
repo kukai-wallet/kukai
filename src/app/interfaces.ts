@@ -37,7 +37,13 @@ export enum WalletType {
   ViewOnlyWallet,
   ObserverWallet,
   LedgerWallet,
-  HdWallet
+  HdWallet,
+  ExportedSocialWallet
+}
+export enum StorableWalletType {
+  LegacyWallet,
+  HdWallet,
+  ExportedSocialWallet
 }
 export interface Baker {
   baker_name: string;

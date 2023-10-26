@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, HostBinding } from '@angular/core';
 import { WalletService } from '../../../../../services/wallet/wallet.service';
+import { StorableWalletType } from '../../../../../interfaces';
 import { MessageService } from '../../../../../services/message/message.service';
 import { ExportService } from '../../../../../services/export/export.service';
 import { ImportService } from '../../../../../services/import/import.service';
@@ -135,7 +136,7 @@ export class NewWalletComponent implements OnInit {
       const pwd = this.pwd1;
       this.pwd1 = '';
       this.pwd2 = '';
-      const ans = await this.walletService.createEncryptedWallet(this.MNEMONIC.string, pwd, '', true);
+      const ans = await this.walletService.createEncryptedWallet(this.MNEMONIC.string, pwd, '', StorableWalletType.HdWallet);
       this.seed = ans.seed;
       this.data = ans.data;
       this.pkh = ans.pkh;
