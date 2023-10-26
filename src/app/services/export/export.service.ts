@@ -17,6 +17,8 @@ export class ExportService {
       filename = 'ledger_wallet.tez';
     } else if (data.walletType === 4) {
       filename = 'hd-wallet.tez';
+    } else if (data.walletType === 5) {
+      filename = 'social-wallet.tez';
     }
     saveAs(blob, filename);
   }

@@ -51,19 +51,19 @@ export class DelegateService {
         .then((response) => response.json())
         .then((d) => this.delegates.next(d));
     } else {
-      fetch('https://api.ghostnet.tzkt.io/v1/accounts/tz1Kukaiq96AJyqaHWn69XxTBrjUEB4sXSBq')
+      fetch('https://api.ghostnet.tzkt.io/v1/accounts/tz1YgDUQV2eXm8pUWNz3S5aWP86iFzNp4jnD')
         .then((r) => r.json())
         .then((k) => {
           const freeSpace = Math.round((k.balance * 10 - k.stakingBalance) / 10 ** 6);
           this.delegates.next([
             {
-              address: 'tz1Kukaiq96AJyqaHWn69XxTBrjUEB4sXSBq',
+              address: 'tz1YgDUQV2eXm8pUWNz3S5aWP86iFzNp4jnD',
               estimatedRoi: 0,
-              fee: 0,
+              fee: 0.2,
               freeSpace,
-              logo: `${window.location.origin}/assets/img/header-logo.png`,
+              logo: 'https://services.tzkt.io/v1/avatars/tz1S5WxdZR5f9NzsPXhr7L9L1vrEb5spZFur',
               minDelegation: 0,
-              name: 'Kukai Baker',
+              name: 'Baking Benjamins',
               openForDelegation: true,
               payoutAccuracy: 'precise',
               serviceType: 'tezos_only'

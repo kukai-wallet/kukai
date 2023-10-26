@@ -282,6 +282,8 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
       if (this.isMultipleDestinations) {
         this.amount = this.getTotalAmount();
       }
+    } else {
+      this.verifierChange();
     }
   }
   toPkhChange(): void {
@@ -379,7 +381,10 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
     assert(this.inputValidationService.gas(this.customGasLimit), 'Invalid gas limit');
     assert(this.inputValidationService.gas(this.customStorageLimit), 'Invalid storage limit');
     assert(!this.checkBalance(), this.checkBalance());
-    assert(minimalTxs.length === this.defaultTransactionParams.customLimits?.length, 'Simulation error');
+    assert(
+      minimalTxs.length === this.defaultTransactionParams.customLimits?.length,
+      this.formInvalid === this.estimateService.tooSlowPreloadError ? this.estimateService.tooSlowPreloadError : 'Simulation error'
+    );
     return this.opsWithCustomLimits();
   }
   opsWithCustomLimits(): FullyPreparedTransaction[] {

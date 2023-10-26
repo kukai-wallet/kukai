@@ -1,4 +1,4 @@
-export type WalletObject = LegacyWalletV1 | LegacyWalletV2 | LegacyWalletV3 | LedgerWallet | HdWallet | TorusWallet | WatchWallet;
+export type WalletObject = LegacyWalletV1 | LegacyWalletV2 | LegacyWalletV3 | LedgerWallet | HdWallet | TorusWallet | WatchWallet | ExportedSocialWallet;
 
 export class Wallet {
   totalBalanceXTZ: number | null;
@@ -108,6 +108,16 @@ export class HdWallet extends FullWallet {
 const TORUS_WALLET_STORE_KEY = 'torus-sk-cache';
 const ONE_HOUR = 3600000;
 
+export class ExportedSocialWallet extends Wallet {
+  encryptedSk: string;
+  IV: string;
+  constructor(IV: string, encryptedSk: string) {
+    super();
+    this.encryptedSk = encryptedSk;
+    this.IV = IV;
+  }
+}
+
 export class TorusWallet extends Wallet {
   verifier: string;
   id: string;
@@ -156,14 +166,12 @@ export class TorusWallet extends Wallet {
   updateSkExpiration(): void {
     const storedData = this.getStoredData();
     if (storedData) {
-      const expiration = new Date().getTime() + ONE_HOUR;
-      sessionStorage.setItem(TORUS_WALLET_STORE_KEY, JSON.stringify({ ...storedData, expiration }));
+      sessionStorage.setItem(TORUS_WALLET_STORE_KEY, JSON.stringify({ ...storedData, expiration: this.getExpiration() }));
     }
   }
 
   storeSk(sk: string): void {
-    const expiration = new Date().getTime() + ONE_HOUR;
-    sessionStorage.setItem(TORUS_WALLET_STORE_KEY, JSON.stringify({ sk, expiration }));
+    sessionStorage.setItem(TORUS_WALLET_STORE_KEY, JSON.stringify({ sk, expiration: this.getExpiration() }));
   }
 
   getSk(): null | string {
@@ -173,6 +181,9 @@ export class TorusWallet extends Wallet {
     }
 
     return null;
+  }
+  private getExpiration() {
+    return new Date().getTime() + ONE_HOUR * 3;
   }
 }
 

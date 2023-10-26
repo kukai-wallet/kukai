@@ -40,7 +40,8 @@
       <form autocomplete="off">
         <p class="description faucet" *ngIf="importOption === 2"><span>Please make sure to first <a
               routerLink="/activate">activate</a> your fundraiser wallet.</span></p>
-        <span class="description label">RECOVERY (SEED) WORDS <span style="color: #98a0ab">12-24 WORDS</span></span>
+        <span class="description label">RECOVERY (SEED) WORDS <span style="color: #98a0ab">12-24
+            WORDS</span></span>
         <textarea name="none" class="text seed-word" [(ngModel)]="mnemonic" autocomplete="off" spellcheck="false"
           [placeholder]="'Seed Words (required)'" (keydown)="seedWordKeydown($event)"></textarea>
       </form>
@@ -50,8 +51,8 @@
         <br /><br />
         <form autocomplete="off" *ngIf="advancedForm" class="flex-row-wrap import-option-1">
           <div class="flex-column">
-            <span class="label"><b>If your seed words are protected by a passphrase, it needs to be entered
-                here</b></span>
+            <span class="label"><b>If your seed words are protected by a passphrase, it needs to be
+                entered here</b></span>
             <input name="none" class="text" type="password" name="passphrase" autocomplete="one-time-code"
               [(ngModel)]="passphrase" [placeholder]="'Passphrase (optional)'" readonly="true"
               (click)="clickPassword($event)" (blur)="blurPassword($event)">
@@ -109,7 +110,8 @@
     <div class="radios flex-row">
       <div class="flex-column">
         <div class="wallet-type-option">
-          <input name="none" (change)="hdImport = !hdImport" type="radio" name="walletType" value="hd" checked>
+          <input name="none" (change)="storableWalletType = storableWalletTypeEnum.HdWallet" type="radio"
+            name="walletType" value="hd" checked>
           <span>HD wallet</span>
         </div>
         <div>Address: {{hdCandidate.pkh}}</div>
@@ -117,7 +119,8 @@
       </div>
       <div class="flex-column">
         <div class="wallet-type-option">
-          <input name="none" (change)="hdImport = !hdImport" type="radio" name="walletType" value="legacy">
+          <input name="none" (change)="storableWalletType = storableWalletTypeEnum.LegacyWallet" type="radio"
+            name="walletType" value="legacy">
           <span>Legacy wallet</span>
         </div>
         <div>Address: {{legacyCandidate.pkh}}</div>

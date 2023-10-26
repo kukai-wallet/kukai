@@ -65,9 +65,13 @@ $base-filter-contrast-invert-11: v.$base-filter-contrast-invert-11;
     padding: 4rem 0 8rem 0;
     max-width: 100em;
     width: 85%;
-
+    & div.button-wrapper {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
     & .rescan, & .reveal-mnemonic {
-      margin: 2rem 0 0 0;
+      margin: 2rem 0 0 1rem;
       max-width: 65%;
       align-self: flex-end;
     }
@@ -86,7 +90,7 @@ $base-filter-contrast-invert-11: v.$base-filter-contrast-invert-11;
 
     & > h3 {
       @include m.multiply("font-size", 2.25);
-      margin: 2.5rem 0 1rem 1rem;
+      margin: 2.5rem 1rem 1rem 1rem;
       font-weight: bold;
       line-height: 1.5rem;
 

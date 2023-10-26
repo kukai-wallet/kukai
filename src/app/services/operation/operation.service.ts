@@ -763,43 +763,8 @@ export class OperationService {
     const pad = new Array(32).fill(0); // Zero-padding
     const publicKey = new Uint8Array([prefixVal].concat(pad.concat(keyPair.getPublic().getX().toArray()).slice(-32)));
     const pk = this.b58cencode(publicKey, this.prefix.sppk);
-    if (yArray.length < 32 && prefixVal === 3 && this.isInvertedPk(pk)) {
-      return this.spPrivKeyToKeyPair(this.invertSpsk(sk));
-    }
     const pkh = this.pk2pkh(pk);
     return { sk, pk, pkh };
-  }
-  isInvertedPk(pk: string): boolean {
-    /*
-      Detect keys with flipped sign and correct them.
-    */
-    const invertedPks = [
-      'sppk7cqh7BbgUMFh4yh95mUwEeg5aBPG1MBK1YHN7b9geyygrUMZByr', // test variable
-      'sppk7bMTva1MwF7cXjrcfoj6XVfcYgjrVaR9JKP3JxvPB121Ji5ftHT',
-      'sppk7bLtXf9CAVZh5jjDACezPnuwHf9CgVoAneNXQFgHknNtCyE5k8A'
-    ];
-    return invertedPks.includes(pk);
-  }
-  invertSpsk(sk: string) {
-    const x = new Uint8Array([...new Uint8Array(32).fill(0), ...this.b58cdecode(sk, this.prefix.spsk)]).slice(-32);
-    const p = this.hex2buf('FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141'.toLowerCase());
-    let inv = []; // p - x
-    let remainder = 0;
-    for (let i = 31; i >= 0; i--) {
-      let sub = p[i] - x[i] - remainder;
-      if (sub < 0) {
-        sub += 256;
-        remainder = 1;
-      } else {
-        remainder = 0;
-      }
-      inv.push(sub);
-    }
-    if (remainder) {
-      throw new Error('Invalid X');
-    }
-    inv = inv.reverse();
-    return this.buf2hex(inv);
   }
   spPointsToPkh(pubX: string, pubY: string): string {
     const key = new elliptic.ec('secp256k1').keyFromPublic({
@@ -811,10 +776,6 @@ export class OperationService {
     const pad = new Array(32).fill(0);
     let publicKey = new Uint8Array([prefixVal].concat(pad.concat(key.getPublic().getX().toArray()).slice(-32)));
     let pk = this.b58cencode(publicKey, this.prefix.sppk);
-    if (yArray.length < 32 && prefixVal === 3 && this.isInvertedPk(pk)) {
-      publicKey = new Uint8Array([2].concat(pad.concat(key.getPublic().getX().toArray()).slice(-32)));
-      pk = this.b58cencode(publicKey, this.prefix.sppk);
-    }
     const pkh = this.pk2pkh(pk);
     return pkh;
   }

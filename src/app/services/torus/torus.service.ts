@@ -19,7 +19,9 @@ const AUTH_DOMAIN_MAINNET = 'https://kukai.eu.auth0.com';
   providedIn: 'root'
 })
 export class TorusService {
-  readonly web3AuthClientId = 'BBHmFdLXgGDzSiizRVMWtyL_7Dsoxu5B8zep2Pns8sGELslgXDbktJewVDVDDBlknEKkMCtzISLjJtxk60SK2-g';
+  readonly web3AuthClientId = CONSTANTS.MAINNET
+    ? 'BBQoFIabI50S1-0QsGHGTM4qID_FDjja0ZxIxKPyFqc0El--M-EG0c2giaBYVTVVE6RC9WCUzCJyW24aJrR_Lzc'
+    : 'BBHmFdLXgGDzSiizRVMWtyL_7Dsoxu5B8zep2Pns8sGELslgXDbktJewVDVDDBlknEKkMCtzISLjJtxk60SK2-g';
   torus: any = undefined;
   nodeDetails: { torusNodeEndpoints: string[]; torusNodePub: any[] } = null;
   public readonly verifierMap: any;

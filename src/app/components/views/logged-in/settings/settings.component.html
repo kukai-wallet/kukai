@@ -69,12 +69,15 @@
                     </ng-container>
                   </td>
                   <td>
-                    <ng-container *ngIf="!dapp?.value?.expanded || dapp.value.s.length === 1">{{ dapp.value.s[dapp.value.s.length - 1].address }}
+                    <ng-container *ngIf="!dapp?.value?.expanded || dapp.value.s.length === 1">{{
+                      dapp.value.s[dapp.value.s.length - 1].address }}
                     </ng-container>
                   </td>
                   <td>
-                    <img class="modify" (click)="changeSession(dapp.value.s[dapp.value.s.length-1])" src="../../../assets/img/wc_modify.svg">
-                    <img (click)="walletConnectService.deleteSessions(dapp?.value?.s)" src="../../../assets/img/wc_delete.svg">
+                    <img class="modify" (click)="changeSession(dapp.value.s[dapp.value.s.length-1])"
+                      src="../../../assets/img/wc_modify.svg">
+                    <img (click)="walletConnectService.deleteSessions(dapp?.value?.s)"
+                      src="../../../assets/img/wc_delete.svg">
                   </td>
                 </tr>
                 <ng-container *ngIf="dapp?.value?.expanded && dapp?.value?.s?.length > 1">
@@ -131,9 +134,11 @@
       </tr>
     </tbody>
   </table>
-  <h3>Tokens</h3>
+  <h3>Tokens<span style="width: 100%"></span><ng-container *ngIf="canRevealMnemonic()">Backup</ng-container></h3>
   <div class="seperator"></div>
-  <button class="rescan" (click)="rescan()">Rescan unknown tokens</button>
-  <button id="all" class="rescan" (click)="rescanAll()">Clear all token metadata</button>
-  <button *ngIf="canRevealMnomonic()" class="reveal-mnemonic" (click)="revealMnemonic()">Reveal Seed Words</button>
+  <!--<button class="rescan" (click)="rescan()">Rescan unknown tokens</button>-->
+  <div class="button-wrapper">
+    <button id="all" class="rescan" (click)="rescanAll()">Clear all token metadata</button>
+    <button *ngIf="canRevealMnemonic()" class="reveal-mnemonic" (click)="revealMnemonic()">Reveal Seed Words</button>  
+  </div>
 </div>
