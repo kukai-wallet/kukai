@@ -39,7 +39,7 @@ export class LookupService {
     }
   }
   add(address: string, name: string, lookupType: LookupType) {
-    console.debug('#name ' + name, lookupType);
+    //console.debug('#name ' + name, lookupType);
     const { x, y } = this.index(address, lookupType);
     if (x !== -1) {
       if (y === -1) {
