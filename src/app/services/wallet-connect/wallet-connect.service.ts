@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import Client, { ENGINE_RPC_OPTS, SignClient } from '@walletconnect/sign-client';
-import { SignClientTypes, PairingTypes, SessionTypes, ISession } from '@walletconnect/types';
+import { SignClientTypes, PairingTypes, SessionTypes, ISession, EngineTypes } from '@walletconnect/types';
 // https://github.com/WalletConnect/walletconnect-monorepo/blob/bc6f6632b7c665d868bcd59669281c1ead2dd31a/packages/utils/src/errors.ts#L10
 import { ErrorResponse, formatJsonRpcResult, formatJsonRpcRequest, formatJsonRpcError, getErrorByCode, getError } from '@walletconnect/jsonrpc-utils';
 import { getSdkError } from '@walletconnect/utils';
@@ -52,6 +52,7 @@ export class WalletConnectService {
   readonly supportedMethods = ['tezos_send', 'tezos_sign', 'tezos_getAccounts'];
   readonly supportedEvents = ['requestAcknowledged'];
   private enableWc2: any;
+  deduplicate: any = {};
   client: Client;
   initDoneAt: number;
   private subscriptions: Subscription;
@@ -178,29 +179,30 @@ export class WalletConnectService {
   subscribeToEvents() {
     this.client.on('session_proposal', (data) => this.proposalHandler(data));
     this.client.on('session_request', async (data) => {
-      // Beacon ACK
-      const session = this.client.session.get(data?.topic);
-      if (session?.namespaces?.tezos?.events?.includes('requestAcknowledged')) {
-        this.client.emit({
-          topic: data?.topic,
-          event: {
-            name: 'requestAcknowledged',
-            data: { id: data?.id }
-          },
-          chainId: data?.params?.chainId
+      if (this.deduplicate[data?.id]) {
+        console.warn('deduplicate', data?.id);
+        await this.respond({
+          topic: data.topic,
+          response: this.deduplicate[data?.id]
         });
+        delete this.deduplicate[data?.id];
+        return;
       }
-      // If multiple pending messages after init, we drop all expect the most recent one
-      const diffMs = new Date().getTime() - this.initDoneAt;
-      if (diffMs < 1000) {
-        await this.utilsService.sleep(100);
-        const pending = this.client.getPendingSessionRequests();
-        if (pending?.length && pending[pending.length - 1].id !== data?.id) {
-          if (data?.params?.request?.method !== 'tezos_getAccounts') {
-            console.log('drop old wc2 message', data);
-            return;
-          }
+      // Beacon ACK
+      try {
+        const session = this.client.session.get(data?.topic);
+        if (session?.namespaces?.tezos?.events?.includes('requestAcknowledged')) {
+          this.client.emit({
+            topic: data?.topic,
+            event: {
+              name: 'requestAcknowledged',
+              data: { id: data?.id }
+            },
+            chainId: data?.params?.chainId
+          });
         }
+      } catch (e) {
+        console.error(e);
       }
       this.requestHandler(data);
     });
@@ -329,7 +331,7 @@ export class WalletConnectService {
       }
       const result = formatJsonRpcResult(data.id, msg);
       const error = formatJsonRpcError(data.id, getSdkError('USER_REJECTED').message);
-      await this.client.respond({
+      await this.respond({
         topic: data.topic,
         response: success ? result : error
       });
@@ -352,7 +354,7 @@ export class WalletConnectService {
   private async requestHandler(data: any) {
     if (!this.walletService.wallet) {
       const error = formatJsonRpcError(data.id, getSdkError('USER_REJECTED').message);
-      await this.client.respond({
+      await this.respond({
         topic: data.topic,
         response: error
       });
@@ -407,14 +409,14 @@ export class WalletConnectService {
             const pubkey = impAcc.pk;
             return { algo, address, pubkey };
           });
-          await this.client.respond({
+          await this.respond({
             topic: data.topic,
             response: formatJsonRpcResult(data.id, accounts)
           });
         } catch (e) {
           console.error(e.message);
           const error = formatJsonRpcError(data.id, getSdkError('USER_REJECTED').message);
-          await this.client.respond({
+          await this.respond({
             topic: data.topic,
             response: error
           });
@@ -605,5 +607,17 @@ export class WalletConnectService {
         }
       });
     }
+  }
+  private respond(params: EngineTypes.RespondParams): Promise<void> {
+    const pending = structuredClone(this.client.getPendingSessionRequests());
+    const current = pending[0];
+    for (let i = 1; i < pending.length; i++) {
+      if (isEqual(current.params, pending[i].params) && !this.deduplicate[pending[i]?.id]) {
+        const response = structuredClone(params.response);
+        response.id = pending[i]?.id;
+        this.deduplicate[response.id] = response;
+      }
+    }
+    return this.client.respond(params);
   }
 }
