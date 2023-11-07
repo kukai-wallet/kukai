@@ -49,7 +49,7 @@ interface DSession {
   providedIn: 'root'
 })
 export class WalletConnectService {
-  readonly supportedMethods = ['tezos_send', 'tezos_sign', 'tezos_getAccounts'];
+  readonly supportedMethods = ['tezos_send', 'tezos_sign', 'tezos_getAccounts', 'tezos_requestNewAccount'];
   readonly supportedEvents = ['requestAcknowledged'];
   private enableWc2: any;
   deduplicate: any = {};
@@ -200,6 +200,7 @@ export class WalletConnectService {
             },
             chainId: data?.params?.chainId
           });
+          console.log('ACK', data?.id);
         }
       } catch (e) {
         console.error(e);
@@ -352,52 +353,48 @@ export class WalletConnectService {
     }
   }
   private async requestHandler(data: any) {
-    if (!this.walletService.wallet) {
-      const error = formatJsonRpcError(data.id, getSdkError('USER_REJECTED').message);
-      await this.respond({
-        topic: data.topic,
-        response: error
-      });
-    }
-    console.log('requestHandler', data);
-    const session = this.client.session.get(data.topic);
-    const allowedAccounts = session?.namespaces?.tezos?.accounts || [];
-    const allowedMethods = session.namespaces.tezos.methods || [];
-    const account = `${data.params.chainId}:${data.params.request.params.account}`;
-    const method = data.params.request.method;
-    if (!allowedMethods.includes(method)) {
-      throw new Error(`Method not allowed: ${method}`);
-    }
-    if (!allowedAccounts.includes(account) && !['tezos_getAccounts'].includes(method)) {
-      throw new Error(`Account not allowed: ${account}`);
-    }
-    switch (method) {
-      case 'tezos_send':
-        const send_req = {
-          type: 'operation_request',
-          version: 0,
-          sourceAddress: data.params.request.params.account,
-          operationDetails: data.params.request.params.operations,
-          network: { type: data.params.chainId.split(':')[1] },
-          wcData: data
-        };
-        this.subjectService.wc2.next(send_req);
-        this.bcService.broadcast({ kind: MessageKind.PropagateRequest, payload: send_req });
-        break;
-      case 'tezos_sign':
-        const sign_req = {
-          type: 'sign_payload_request',
-          version: 0,
-          sourceAddress: data.params.request.params.account,
-          signingType: 'raw',
-          payload: data.params.request.params.payload,
-          wcData: data
-        };
-        this.subjectService.wc2.next(sign_req);
-        this.bcService.broadcast({ kind: MessageKind.PropagateRequest, payload: sign_req });
-        break;
-      case 'tezos_getAccounts':
-        try {
+    try {
+      if (!this.walletService.wallet) {
+        throw new Error('No wallet found');
+      }
+      console.log('requestHandler', data);
+      const session = this.client.session.get(data.topic);
+      const allowedAccounts = session?.namespaces?.tezos?.accounts || [];
+      const allowedMethods = session.namespaces.tezos.methods || [];
+      const account = `${data.params.chainId}:${data.params.request.params.account}`;
+      const method = data.params.request.method;
+      if (!allowedMethods.includes(method)) {
+        throw new Error(`Method not allowed: ${method}`);
+      }
+      if (!allowedAccounts.includes(account) && !['tezos_getAccounts', 'tezos_requestNewAccount'].includes(method)) {
+        throw new Error(`Account not allowed: ${account}`);
+      }
+      switch (method) {
+        case 'tezos_send':
+          const send_req = {
+            type: 'operation_request',
+            version: 0,
+            sourceAddress: data.params.request.params.account,
+            operationDetails: data.params.request.params.operations,
+            network: { type: data.params.chainId.split(':')[1] },
+            wcData: data
+          };
+          this.subjectService.wc2.next(send_req);
+          this.bcService.broadcast({ kind: MessageKind.PropagateRequest, payload: send_req });
+          break;
+        case 'tezos_sign':
+          const sign_req = {
+            type: 'sign_payload_request',
+            version: 0,
+            sourceAddress: data.params.request.params.account,
+            signingType: 'raw',
+            payload: data.params.request.params.payload,
+            wcData: data
+          };
+          this.subjectService.wc2.next(sign_req);
+          this.bcService.broadcast({ kind: MessageKind.PropagateRequest, payload: sign_req });
+          break;
+        case 'tezos_getAccounts':
           const session = this.client.session.get(data.topic);
           const accounts: { algo: string; address: string; pubkey: string }[] = session.namespaces.tezos.accounts.map((account) => {
             const address: string = account.split(':')[2];
@@ -413,17 +410,17 @@ export class WalletConnectService {
             topic: data.topic,
             response: formatJsonRpcResult(data.id, accounts)
           });
-        } catch (e) {
-          console.error(e.message);
-          const error = formatJsonRpcError(data.id, getSdkError('USER_REJECTED').message);
-          await this.respond({
-            topic: data.topic,
-            response: error
-          });
-        }
-        break;
-      default:
-        console.warn('Unhandled request');
+          break;
+        default:
+          throw new Error(`Unhandled method: ${method}`);
+      }
+    } catch (e) {
+      console.error(e.message);
+      const error = formatJsonRpcError(data.id, getSdkError('USER_REJECTED').message);
+      await this.respond({
+        topic: data.topic,
+        response: error
+      });
     }
     this.client.extend({ topic: data.topic });
     this.refresh();
@@ -618,6 +615,8 @@ export class WalletConnectService {
         this.deduplicate[response.id] = response;
       }
     }
-    return this.client.respond(params);
+    return this.client.respond(params).then(() => {
+      console.log('responded', params);
+    });
   }
 }
