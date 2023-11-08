@@ -12,6 +12,7 @@ import { SubjectService } from '../../../services/subject/subject.service';
 import { Subscription } from 'rxjs';
 import { ExternalRequest } from '../../../interfaces';
 import { WalletConnectService } from '../../../services/wallet-connect/wallet-connect.service';
+import { ModalComponent } from '../../../components/modals/modal.component';
 
 @Component({
   selector: 'app-uri-handler',
@@ -36,6 +37,11 @@ export class UriHandlerComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.subjectService.wc2.subscribe((m) => {
         this.handleBeaconMessage(m);
+      })
+    );
+    this.subscriptions.add(
+      this.walletConnectService.changeSessionAccount.subscribe((topic: string) => {
+        ModalComponent.currentModel.next({ name: 'session-select', data: { topic, preSelectedAccountAddress: this.activeAccount?.pkh } });
       })
     );
   }

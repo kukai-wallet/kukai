@@ -9,10 +9,9 @@ import { SubjectService } from '../subject/subject.service';
 import { OperationService } from '../operation/operation.service';
 import { BcService, MessageKind } from '../bc/bc.service';
 import { WalletService } from '../wallet/wallet.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { UtilsService } from '../utils/utils.service';
 import { isEqual } from 'lodash';
-
 const SESSION_STORAGE_KEY = 'wc@2:client:0.3//session';
 const PAIRING_STORAGE_KEY = 'wc@2:core:0.3//pairing';
 const KEYCHAIN_STORAGE_KEY = 'wc@2:core:0.3//keychain';
@@ -49,6 +48,7 @@ interface DSession {
   providedIn: 'root'
 })
 export class WalletConnectService {
+  public changeSessionAccount: Subject<string> = new Subject<string>();
   readonly supportedMethods = ['tezos_send', 'tezos_sign', 'tezos_getAccounts', 'tezos_requestNewAccount'];
   readonly supportedEvents = ['requestAcknowledged'];
   private enableWc2: any;
@@ -409,6 +409,13 @@ export class WalletConnectService {
           await this.respond({
             topic: data.topic,
             response: formatJsonRpcResult(data.id, accounts)
+          });
+          break;
+        case 'tezos_requestNewAccount':
+          this.changeSessionAccount.next(data.topic);
+          await this.respond({
+            topic: data.topic,
+            response: formatJsonRpcResult(data.id, {})
           });
           break;
         default:
