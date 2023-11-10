@@ -251,6 +251,12 @@ const _CONSTANTS: Constants = {
       category: ['marketplace'],
       description: 'Community owned, artist friendly Marketplace'
     },
+    battletabs: {
+      name: 'BattleTabs',
+      address: ['KT1J13kB3GQBuu9VJv5jsuCXJf6jSQoJjkPf', 'KT1FuNeqUjHHmFDtNA8V9hVgmV68E1JKh1sw'],
+      thumbnailUrl: '../../../assets/img/alias/battletabs.png',
+      shouldDisplayLink: DisplayLinkOption.None
+    },
     QuipuSwap: {
       name: 'QuipuSwap',
       address: [],
