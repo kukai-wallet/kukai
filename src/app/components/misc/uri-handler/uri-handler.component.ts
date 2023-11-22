@@ -134,6 +134,15 @@ export class UriHandlerComponent implements OnInit, OnDestroy {
       }
     } else {
       console.warn('Blocked by other Beacon/Wc2 request');
+      // need to reject instead of drop if WC2, in order to not block the new request queue
+      if (message.version === 0) {
+        console.log('reject wc2 req');
+        if (message.type === 'permission_request') {
+          this.walletConnectService.rejectPairing(message);
+        } else {
+          this.walletConnectService.wcResponse(message, '', false);
+        }
+      }
     }
   }
   private isBlocked() {
