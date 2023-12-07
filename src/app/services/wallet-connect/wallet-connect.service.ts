@@ -49,8 +49,8 @@ interface DSession {
 })
 export class WalletConnectService {
   public changeSessionAccount: Subject<string> = new Subject<string>();
-  readonly supportedMethods = ['tezos_send', 'tezos_sign', 'tezos_getAccounts', 'tezos_requestNewAccount'];
-  readonly supportedEvents = ['requestAcknowledged'];
+  readonly supportedMethods = ['tezos_send', 'tezos_sign', 'tezos_getAccounts'];
+  readonly supportedEvents = [];
   private enableWc2: any;
   deduplicate: any = {};
   client: Client;
@@ -69,8 +69,7 @@ export class WalletConnectService {
     private subjectService: SubjectService,
     private operationService: OperationService,
     private bcService: BcService,
-    private walletService: WalletService,
-    private utilsService: UtilsService
+    private walletService: WalletService
   ) {
     (async () => {
       this.subjectService.login.subscribe(() => {
@@ -188,23 +187,6 @@ export class WalletConnectService {
         delete this.deduplicate[data?.id];
         return;
       }
-      // Beacon ACK
-      try {
-        const session = this.client.session.get(data?.topic);
-        if (session?.namespaces?.tezos?.events?.includes('requestAcknowledged')) {
-          this.client.emit({
-            topic: data?.topic,
-            event: {
-              name: 'requestAcknowledged',
-              data: { id: data?.id }
-            },
-            chainId: data?.params?.chainId
-          });
-          console.log('ACK', data?.id);
-        }
-      } catch (e) {
-        console.error(e);
-      }
       this.requestHandler(data);
     });
     this.client.on('session_delete', (data) => {
@@ -320,7 +302,6 @@ export class WalletConnectService {
     console.log('wcResponse', hash);
     if (this.client) {
       const data = request.wcData;
-      // hash, operation_hash, transaction_hash??
       let msg = {};
       if (request.type === 'operation_request') {
         // this is not a transaction hash, but need this property name to get it working with Beacon
@@ -409,13 +390,6 @@ export class WalletConnectService {
           await this.respond({
             topic: data.topic,
             response: formatJsonRpcResult(data.id, accounts)
-          });
-          break;
-        case 'tezos_requestNewAccount':
-          this.changeSessionAccount.next(data.topic);
-          await this.respond({
-            topic: data.topic,
-            response: formatJsonRpcResult(data.id, {})
           });
           break;
         default:

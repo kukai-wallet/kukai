@@ -15,7 +15,7 @@ const _CONSTANTS: Constants = {
     TOP_DOMAINS: ['gho']
   },
   MAINNET: false,
-  NODE_URL: ['https://ghostnet.smartpy.io', 'https://tezos-ghostnet-node-1.diamond.papers'],
+  NODE_URL: ['https://ghostnet.smartpy.io', 'https://rpc.ghostnet.tzboot.net', 'https://tezos-ghostnet-node-1.diamond.papers'],
   API_URL: 'https://api.ghostnet.tzkt.io/v1',
   OBJKT_URL: 'https://data.ghostnet.objkt.com/v3/graphql',
   BLOCK_EXPLORER_URL: 'https://ghostnet.tzkt.io',
