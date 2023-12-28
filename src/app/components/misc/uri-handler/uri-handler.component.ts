@@ -194,8 +194,12 @@ export class UriHandlerComponent implements OnInit, OnDestroy {
             console.warn('Invocation of user controlled contract is disabled');
             await this.beaconService.rejectOnPermission(message);
             return false;
-          } else if (!message.operationDetails[i].destination || !message.operationDetails[i].amount) {
-            console.warn('Missing destination or amount');
+          } else if (!message.operationDetails[i]?.destination) {
+            console.warn('Missing destination');
+            await this.beaconService.rejectOnUnknown(message);
+            return false;
+          } else if (this.invalidAmount(message.operationDetails[i])) {
+            console.warn('Invalid amount');
             await this.beaconService.rejectOnUnknown(message);
             return false;
           } else if (this.invalidParameters(message.operationDetails[i].parameters)) {
@@ -237,6 +241,13 @@ export class UriHandlerComponent implements OnInit, OnDestroy {
       }
     }
     return false;
+  }
+  private invalidAmount(op: any): boolean {
+    if (typeof op?.amount === 'number') {
+      // normalize
+      op.amount = op.amount.toString();
+    }
+    return !op?.amount || typeof op.amount !== 'string' || !this.inputValidationService.amount(op.amount, 0);
   }
   private invalidOptionals(op: any): boolean {
     if (typeof op.gas_limit === 'number') {
