@@ -327,6 +327,14 @@ export class EmbeddedComponent implements OnInit {
         operations: true,
         micheline: true
       }
+    },
+    starsymphony: {
+      origins: ['*.starsymphony.io'],
+      permissions: {
+        login: true,
+        operations: true,
+        micheline: true
+      }
     }
   };
   constructor(
