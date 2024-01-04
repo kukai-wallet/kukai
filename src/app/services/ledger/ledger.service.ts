@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import 'babel-polyfill';
 import TransportU2F from '@ledgerhq/hw-transport-u2f';
 import TransportWebHID from '@ledgerhq/hw-transport-webhid';
+import TransportWebUSB from '@ledgerhq/hw-transport-webusb';
 import Tezos from '@obsidiansystems/hw-app-xtz';
 import { OperationService } from '../operation/operation.service';
 import { MessageService } from '../message/message.service';
@@ -24,6 +25,16 @@ export class LedgerService {
     }
     if (!this.transport) {
       try {
+        this.transport = await TransportWebUSB.create();
+        console.warn('Transport is now set to use WebUSB!');
+      } catch (e) {
+        this.transport = null;
+        console.warn("Couldn't set WebUSB as transport!");
+        console.error(e);
+      }
+    }
+    if (!this.transport) {
+      try {
         this.transport = await TransportU2F.create();
         console.warn('Transport is now set to use U2F!');
       } catch (e) {
@@ -38,7 +49,7 @@ export class LedgerService {
       await this.setTransport();
     }
     if (!this.transport) {
-      this.messageService.addError('Failed to set transport. Please make sure your browser supports WebHID or U2F');
+      this.messageService.addError('Failed to set transport. Please make sure your browser supports WebHID, U2F, or WebUSB');
       throw new Error('NO_TRANSPORT_FOUND');
     }
   }
