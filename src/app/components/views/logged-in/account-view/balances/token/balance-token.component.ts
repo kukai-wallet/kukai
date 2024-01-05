@@ -4,6 +4,7 @@ import { CONSTANTS } from '../../../../../../../environments/environment';
 import { Big } from 'big.js';
 import { RemoveCommaPipe } from '../../../../../../pipes/remove-comma.pipe';
 import { SubjectService } from '../../../../../../services/subject/subject.service';
+import { WalletService } from '../../../../../../services/wallet/wallet.service';
 
 @Component({
   selector: 'app-balance-token',
@@ -15,7 +16,7 @@ export class BalanceTokenComponent implements OnInit {
   @Input() account;
   contractAliases = CONSTANTS.CONTRACT_ALIASES;
 
-  constructor(public removeCommaPipe: RemoveCommaPipe, private subjectService: SubjectService) {}
+  constructor(public removeCommaPipe: RemoveCommaPipe, private subjectService: SubjectService, private walletService: WalletService) {}
   ngOnInit(): void {}
 
   getBalance(): number | string {
