@@ -48,6 +48,7 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
   parametersFormat = 0;
   parametersDisplay = '';
   transformedParameters = [];
+  executedSchema = [];
   extractedSchema = [];
   showAll = 10;
 
@@ -149,12 +150,14 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
     this.batchParamIndex = index;
     this.parameters = parameters;
     this.parametersToMicheline();
+    this.executedSchema = undefined;
     this.extractedSchema = undefined;
     try {
       const sc = await this.tzktService.getEntrypointMicheline(this.transactions[this.batchParamIndex]?.destination, this.parameters?.entrypoint);
       this.schema = new Schema(sc);
-      this.extractedSchema = this.schema.Execute(this.parameters.value);
-      this.transformedParameters = this.parametersToTabular(this.extractedSchema);
+      this.executedSchema = this.schema.Execute(this.parameters.value);
+      this.extractedSchema = this.schema.ExtractSchema(this.parameters.value);
+      this.transformedParameters = this.parametersToTabular(this.executedSchema, this.extractedSchema);
       this.parametersFormat = 1;
     } catch {
       this.transformedParameters = [{ children: [], key: 'Error', val: 'Failed to fetch annotations!' }];
@@ -190,8 +193,26 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
       }
     }
   }
-  parametersToTabular(parameters) {
-    const traverse = (key, val, level) => {
+
+  parametersToTabular(parameters, types) {
+    const hexToUTF8 = (str: string) => {
+      let b = [];
+      for (let i = 0; i < str.length / 2; i++) {
+        const c = parseInt(str.charAt(i * 2) + str.charAt(i * 2 + 1), 16);
+        b.push(c);
+      }
+      return Buffer.from(b).toString('utf-8');
+    };
+    const traverse = (key, val, level, types) => {
+      const isMap = (val, level) => {
+        let arr = [];
+        let valueMap = Object.fromEntries(val.valueMap);
+        for (const key of Object.keys(valueMap)) {
+          arr.push(traverse(key, valueMap[key], level + 1, types['map'].value));
+        }
+        return arr;
+      };
+
       const isObject = (key, val, level) => {
         let arr = [];
         const entries = Object.entries(val);
@@ -200,9 +221,9 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
             (typeof value === 'object' && (value as any)?.c == undefined && (value as any)?.e === undefined && (value as any)?.s === undefined) ||
             ((value as any)?.length > 0 && typeof value !== 'string')
           ) {
-            arr.push({ key, children: traverse(key, value, level + 1) });
+            arr.push({ key, children: traverse(key, value, level + 1, types[key]) });
           } else {
-            arr.push(traverse(key, value, level + 1));
+            arr.push(traverse(key, value, level + 1, types[key]));
           }
         }
         return arr;
@@ -210,7 +231,7 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
 
       const isArray = (key, val, level) => {
         if (val.length === 1) {
-          return traverse(key, val[0], level + 1);
+          return traverse(key, val[0], level + 1, types[key]);
         }
         const arr = [];
         for (let i = 0; i < val.length; ++i) {
@@ -219,20 +240,22 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
             ((val[i] as any)?.length > 0 && typeof val[i] !== 'string')
           ) {
             if (key) {
-              arr.push({ key, children: traverse(key, val[i], level + 1) });
+              arr.push({ key, children: traverse(key, val[i], level + 1, types[key]) });
             } else {
-              arr.push(...traverse(key, val[i], level + 1));
+              arr.push(...traverse(key, val[i], level + 1, types[key]));
             }
           } else {
-            arr.push(traverse(key, val[i], level + 1));
+            arr.push(traverse(key, val[i], level + 1, types[key]));
           }
         }
         return arr;
       };
       if (typeof val === 'string') {
-        return { key, val, children: [] };
+        return { key, val: types === 'bytes' ? hexToUTF8(val) : val, children: [] };
       } else if (val && typeof val === 'object' && val?.c !== undefined && val?.e !== undefined && val?.s !== undefined) {
         return { key, val: Big(val).toString(), children: [] };
+      } else if (val && val?.valueMap !== undefined && val?.keyMap !== undefined && val?.keySchema !== undefined) {
+        return isMap(val, level);
       } else if (!!val?.length && typeof val !== 'string') {
         return isArray(key, val, level);
       } else if (val && typeof val === 'object') {
@@ -245,7 +268,7 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
         return { key, val: null, children: [] };
       }
     };
-    let result = traverse(null, parameters, 0);
+    let result = traverse(null, parameters, 0, types);
     if (result?.length === undefined) {
       result = [result];
     }
@@ -603,7 +626,7 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
     this.batchParameters = [];
     this.parametersFormat = 0;
     this.transformedParameters = [];
-    this.extractedSchema = [];
+    this.executedSchema = [];
     this.schema = undefined;
 
     this.showFullBatch = false;
