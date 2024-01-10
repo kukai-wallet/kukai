@@ -12,9 +12,11 @@ import { WalletService } from '../wallet/wallet.service';
 import { Subject, Subscription } from 'rxjs';
 import { UtilsService } from '../utils/utils.service';
 import { isEqual } from 'lodash';
-const SESSION_STORAGE_KEY = 'wc@2:client:0.3//session';
-const PAIRING_STORAGE_KEY = 'wc@2:core:0.3//pairing';
-const KEYCHAIN_STORAGE_KEY = 'wc@2:core:0.3//keychain';
+import { indexedDB } from '../../libraries/index';
+
+const SESSION_STORAGE_KEY = 'wc@2:client:0.3:session';
+const PAIRING_STORAGE_KEY = 'wc@2:core:0.3:pairing';
+const KEYCHAIN_STORAGE_KEY = 'wc@2:core:0.3:keychain';
 interface Pairings {
   expanded: boolean;
   size: number;
@@ -97,6 +99,7 @@ export class WalletConnectService {
     })();
   }
   storageEventHandler = (ev) => {
+    /* Broken after storage migration */
     if ([SESSION_STORAGE_KEY, PAIRING_STORAGE_KEY].includes(ev?.key)) {
       this.refresh();
     }
@@ -429,19 +432,37 @@ export class WalletConnectService {
     const paired = await this.client.pair({ uri: pairingString });
     console.log('paired', paired);
   }
-  refresh(n = 0) {
-    const lsS = localStorage.getItem(SESSION_STORAGE_KEY);
-    const lsP = localStorage.getItem(PAIRING_STORAGE_KEY);
-    const _session = this.client ? this.client?.session?.getAll() : lsS ? JSON.parse(lsS) : [];
-    const _pairing = this.client ? this.client?.core?.pairing?.getPairings() : lsP ? JSON.parse(lsP) : [];
-
+  async refresh(n = 0) {
+    const _session: any = this.client
+      ? this.client?.session?.getAll()
+      : await indexedDB
+          .readWcDb(SESSION_STORAGE_KEY)
+          .then((res) => {
+            return res ? JSON.parse(res) : [];
+          })
+          .catch(() => {
+            return [];
+          });
+    const _pairing: any = this.client
+      ? this.client?.core?.pairing?.getPairings()
+      : await indexedDB
+          .readWcDb(PAIRING_STORAGE_KEY)
+          .then((res) => {
+            return res ? JSON.parse(res) : [];
+          })
+          .catch(() => {
+            return [];
+          });
+    let kc = null;
+    if (!this.client) {
+      kc = await indexedDB.readWcDb(KEYCHAIN_STORAGE_KEY);
+    }
     const sessionsList: DSession[] = _session
-      .map((session) => {
+      .map((session: any) => {
         let inKeychain = false; // We should not need this check. But seem to be a bit buggy otherwise
         if (this.client) {
           inKeychain = this.client.core.crypto.keychain.has(session?.topic);
         } else {
-          const kc = localStorage.getItem(KEYCHAIN_STORAGE_KEY);
           inKeychain = !kc ? false : !!JSON.parse(kc)[session?.topic];
         }
         if (session?.acknowledged && inKeychain) {
@@ -460,12 +481,11 @@ export class WalletConnectService {
       }
     }
     const pairingsList: DPairing[] = _pairing
-      .map((pairing) => {
+      .map((pairing: any) => {
         let inKeychain;
         if (this.client) {
           inKeychain = this.client.core.crypto.keychain.has(pairing?.topic);
         } else {
-          const kc = localStorage.getItem(KEYCHAIN_STORAGE_KEY);
           inKeychain = !kc ? false : !!JSON.parse(kc)[pairing?.topic];
         }
         if (pairing.active && inKeychain) {
