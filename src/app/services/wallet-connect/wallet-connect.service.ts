@@ -51,6 +51,7 @@ interface DSession {
 })
 export class WalletConnectService {
   public changeSessionAccount: Subject<string> = new Subject<string>();
+  public triggerReBroadcast: Subject<void> = new Subject<void>();
   readonly supportedMethods = ['tezos_send', 'tezos_sign', 'tezos_getAccounts'];
   readonly supportedEvents = [];
   private enableWc2: any;
@@ -149,6 +150,14 @@ export class WalletConnectService {
       this.bcService.subject[MessageKind.RefreshDappList].subscribe((request) => {
         if (!this.client) {
           this.refresh();
+        }
+      })
+    );
+    this.subscriptions.add(
+      this.bcService.subject[MessageKind.NewTabInitialized].subscribe((request) => {
+        if (this.client) {
+          console.log(`%c# New follower tab detected #`, 'color: darkblue');
+          this.triggerReBroadcast.next();
         }
       })
     );
@@ -570,6 +579,9 @@ export class WalletConnectService {
       }
     }
     this.refresh();
+  }
+  public reBroadcast(request) {
+    this.bcService.broadcast({ kind: MessageKind.PropagateRequest, payload: request });
   }
   private async disconnect(topic: string) {
     console.log('delete', topic);

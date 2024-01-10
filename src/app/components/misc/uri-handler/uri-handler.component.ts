@@ -40,6 +40,14 @@ export class UriHandlerComponent implements OnInit, OnDestroy {
       })
     );
     this.subscriptions.add(
+      this.walletConnectService.triggerReBroadcast.subscribe(() => {
+        const req: any = this.permissionRequest || this.externalRequest?.operationRequest || this.signRequest;
+        if (req) {
+          this.walletConnectService.reBroadcast(req);
+        }
+      })
+    );
+    this.subscriptions.add(
       this.walletConnectService.changeSessionAccount.subscribe((topic: string) => {
         ModalComponent.currentModel.next({ name: 'session-select', data: { topic, preSelectedAccountAddress: this.activeAccount?.pkh } });
       })
