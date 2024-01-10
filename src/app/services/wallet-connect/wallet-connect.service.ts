@@ -88,7 +88,6 @@ export class WalletConnectService {
       });
       this.initBcSubscriptions();
       this.refresh();
-      window.addEventListener('storage', this.storageEventHandler);
       await this.bcService.elected;
       if (!localStorage.getItem('wc2_activated')) {
         await new Promise((resolve) => {
@@ -98,15 +97,8 @@ export class WalletConnectService {
       this.startClient();
     })();
   }
-  storageEventHandler = (ev) => {
-    /* Broken after storage migration */
-    if ([SESSION_STORAGE_KEY, PAIRING_STORAGE_KEY].includes(ev?.key)) {
-      this.refresh();
-    }
-  };
   ngOnDestroy(): void {
     this.subscriptions?.unsubscribe();
-    window.removeEventListener('storage', this.storageEventHandler);
   }
   private async initBcSubscriptions() {
     this.subscriptions = new Subscription();
@@ -150,6 +142,13 @@ export class WalletConnectService {
           } else {
             this.wcResponse(response.request, response.hash, response.success);
           }
+        }
+      })
+    );
+    this.subscriptions.add(
+      this.bcService.subject[MessageKind.RefreshDappList].subscribe((request) => {
+        if (!this.client) {
+          this.refresh();
         }
       })
     );
@@ -509,6 +508,9 @@ export class WalletConnectService {
     if (!isEqual(this.sessions, _sessions)) {
       this.sessions = _sessions;
       console.log('sessions', _sessions);
+    }
+    if (this.client && n === 0) {
+      this.bcService.broadcast({ kind: MessageKind.RefreshDappList, payload: undefined });
     }
     if (++n < 5) {
       setTimeout(() => {
