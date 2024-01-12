@@ -59,10 +59,8 @@ export class SignExprComponent extends ModalComponent implements OnInit, OnChang
         this.payload = `0x${this.signRequest.payload}`;
       }
       this.syncSub = this.subjectService.beaconResponse.subscribe((response) => {
-        if (response) {
-          this.signResponse.emit('silent');
-          this.closeModal();
-        }
+        this.signResponse.emit(response ? 'silent' : '');
+        this.closeModal();
       });
     }
   }

@@ -92,10 +92,8 @@ export class OriginateComponent extends ModalComponent implements OnInit, OnChan
           this.estimateFees(recommendations);
           if (this.beaconMode) {
             this.syncSub = this.subjectService.beaconResponse.subscribe((response) => {
-              if (response) {
-                this.operationResponse.emit('silent');
-                this.closeModal();
-              }
+              this.operationResponse.emit(response ? 'silent' : '');
+              this.closeModal();
             });
           }
         } else {

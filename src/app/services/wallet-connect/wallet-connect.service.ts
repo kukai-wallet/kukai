@@ -51,7 +51,8 @@ interface DSession {
 })
 export class WalletConnectService {
   public changeSessionAccount: Subject<string> = new Subject<string>();
-  public triggerReBroadcast: Subject<void> = new Subject<void>();
+  public autoCloseRequest: Subject<number | string> = new Subject<number | string>();
+  public getCurrentRequest: Function = null;
   readonly supportedMethods = ['tezos_send', 'tezos_sign', 'tezos_getAccounts'];
   readonly supportedEvents = [];
   private enableWc2: any;
@@ -157,7 +158,10 @@ export class WalletConnectService {
       this.bcService.subject[MessageKind.NewTabInitialized].subscribe((request) => {
         if (this.client) {
           console.log(`%c# New follower tab detected #`, 'color: darkblue');
-          this.triggerReBroadcast.next();
+          const currentReq = this.getCurrentRequest ? this.getCurrentRequest() : null;
+          if (currentReq) {
+            this.bcService.broadcast({ kind: MessageKind.PropagateRequest, payload: currentReq });
+          }
         }
       })
     );
@@ -201,20 +205,28 @@ export class WalletConnectService {
       this.requestHandler(data);
     });
     this.client.on('session_delete', (data) => {
-      console.log('delete', data);
+      console.log('session_delete', data);
       this.refresh();
+      this.autoCloseRequest.next(data?.topic);
     });
     this.client.on('session_expire', (data) => {
-      console.log('expire', data);
+      console.log('session_expire', data);
       this.refresh();
+      this.autoCloseRequest.next(data?.topic);
+    });
+    this.client.on('proposal_expire', (data) => {
+      console.log('proposal_expire', data);
+      this.autoCloseRequest.next(data?.id);
     });
     this.client.core.pairing.events.on('pairing_delete', (data) => {
-      console.log('delete', data);
+      console.log('pairing_delete', data);
       this.refresh();
+      this.autoCloseRequest.next(data?.topic);
     });
     this.client.core.pairing.events.on('pairing_expire', (data) => {
-      console.log('expire', data);
+      console.log('pairing_expire', data);
       this.refresh();
+      this.autoCloseRequest.next(data?.topic);
     });
     // this.client.core.heartbeat.events.on('heartbeat_pulse', (data) => {
     //   console.log('heartbeat', data);
@@ -227,8 +239,8 @@ export class WalletConnectService {
       //'session_expire',
       //'pairing_delete',
       //'session_request',
-      'session_event',
-      'proposal_expire'
+      'session_event'
+      //'proposal_expire'
     ];
     const unhandledPairingEvents: string[] = ['pairing_ping'];
     for (const event of unhandledSignClientEvents) {
@@ -579,9 +591,6 @@ export class WalletConnectService {
       }
     }
     this.refresh();
-  }
-  public reBroadcast(request) {
-    this.bcService.broadcast({ kind: MessageKind.PropagateRequest, payload: request });
   }
   private async disconnect(topic: string) {
     console.log('delete', topic);

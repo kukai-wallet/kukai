@@ -40,20 +40,20 @@ export class UriHandlerComponent implements OnInit, OnDestroy {
       })
     );
     this.subscriptions.add(
-      this.walletConnectService.triggerReBroadcast.subscribe(() => {
-        const req: any = this.permissionRequest || this.externalRequest?.operationRequest || this.signRequest;
-        if (req) {
-          this.walletConnectService.reBroadcast(req);
-        }
-      })
-    );
-    this.subscriptions.add(
       this.walletConnectService.changeSessionAccount.subscribe((topic: string) => {
         ModalComponent.currentModel.next({ name: 'session-select', data: { topic, preSelectedAccountAddress: this.activeAccount?.pkh } });
       })
     );
+    this.walletConnectService.getCurrentRequest = (): any => {
+      return this.getReq();
+    };
+    this.subscriptions.add(
+      this.walletConnectService.autoCloseRequest.subscribe((x: any) => {
+        this.onAutoCloseRequest(x);
+      })
+    );
   }
-  permissionRequest: PermissionResponseInput = null;
+  permissionRequest: PermissionResponseInput | any = null;
   externalRequest: ExternalRequest = null;
   signRequest: any = null;
   activeAccount: Account;
@@ -434,6 +434,25 @@ export class UriHandlerComponent implements OnInit, OnDestroy {
           this.changeFavicon();
         }
         break;
+    }
+  }
+  private getReq() {
+    return this.permissionRequest || this.externalRequest?.operationRequest || this.signRequest || null;
+  }
+  private onAutoCloseRequest(x: any) {
+    if (this.permissionRequest) {
+      if (this.permissionRequest?.wcData?.id === x || this.permissionRequest?.wcData?.params?.pairingTopic === x) {
+        this.subjectService.beaconResponse.next(false);
+      }
+    } else if (this.externalRequest?.operationRequest) {
+      const opReq = this.externalRequest?.operationRequest;
+      if (opReq?.wcData?.id === x || opReq?.wcData?.topic === x) {
+        this.subjectService.beaconResponse.next(false);
+      }
+    } else if (this.signRequest) {
+      if (this.signRequest?.wcData?.id === x || this.signRequest?.wcData?.topic === x) {
+        this.subjectService.beaconResponse.next(false);
+      }
     }
   }
 }

@@ -105,9 +105,7 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
       this.init();
       if (this.externalReq) {
         this.syncSub = this.subjectService.beaconResponse.subscribe((response) => {
-          if (response) {
-            this.closeModalAction('silent');
-          }
+          this.closeModalAction(response ? 'silent' : '');
         });
       }
     }
