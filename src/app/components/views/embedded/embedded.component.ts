@@ -335,6 +335,14 @@ export class EmbeddedComponent implements OnInit {
         operations: true,
         micheline: true
       }
+    },
+    kanvaspoa: {
+      origins: ['https://kanvas-poa.vercel.app'],
+      permissions: {
+        login: true,
+        operations: false,
+        micheline: false
+      }
     }
   };
   constructor(
