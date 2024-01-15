@@ -53,10 +53,8 @@ export class PermissionRequestComponent implements OnInit, OnChanges, OnDestroy 
       document.body.style.overflow = 'hidden';
       this.messageService.removeBeaconMsg(true);
       this.syncSub = this.subjectService.beaconResponse.subscribe((response) => {
-        if (response) {
-          this.permissionResponse.emit('silent');
-          this.reset();
-        }
+        this.permissionResponse.emit(response ? 'silent' : '');
+        this.reset();
       });
     }
   }

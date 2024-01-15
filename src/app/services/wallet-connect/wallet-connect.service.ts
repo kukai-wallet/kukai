@@ -12,9 +12,11 @@ import { WalletService } from '../wallet/wallet.service';
 import { Subject, Subscription } from 'rxjs';
 import { UtilsService } from '../utils/utils.service';
 import { isEqual } from 'lodash';
-const SESSION_STORAGE_KEY = 'wc@2:client:0.3//session';
-const PAIRING_STORAGE_KEY = 'wc@2:core:0.3//pairing';
-const KEYCHAIN_STORAGE_KEY = 'wc@2:core:0.3//keychain';
+import { indexedDB } from '../../libraries/index';
+
+const SESSION_STORAGE_KEY = 'wc@2:client:0.3:session';
+const PAIRING_STORAGE_KEY = 'wc@2:core:0.3:pairing';
+const KEYCHAIN_STORAGE_KEY = 'wc@2:core:0.3:keychain';
 interface Pairings {
   expanded: boolean;
   size: number;
@@ -49,6 +51,8 @@ interface DSession {
 })
 export class WalletConnectService {
   public changeSessionAccount: Subject<string> = new Subject<string>();
+  public autoCloseRequest: Subject<number | string> = new Subject<number | string>();
+  public getCurrentRequest: Function = null;
   readonly supportedMethods = ['tezos_send', 'tezos_sign', 'tezos_getAccounts'];
   readonly supportedEvents = [];
   private enableWc2: any;
@@ -86,7 +90,6 @@ export class WalletConnectService {
       });
       this.initBcSubscriptions();
       this.refresh();
-      window.addEventListener('storage', this.storageEventHandler);
       await this.bcService.elected;
       if (!localStorage.getItem('wc2_activated')) {
         await new Promise((resolve) => {
@@ -96,14 +99,8 @@ export class WalletConnectService {
       this.startClient();
     })();
   }
-  storageEventHandler = (ev) => {
-    if ([SESSION_STORAGE_KEY, PAIRING_STORAGE_KEY].includes(ev?.key)) {
-      this.refresh();
-    }
-  };
   ngOnDestroy(): void {
     this.subscriptions?.unsubscribe();
-    window.removeEventListener('storage', this.storageEventHandler);
   }
   private async initBcSubscriptions() {
     this.subscriptions = new Subscription();
@@ -150,6 +147,24 @@ export class WalletConnectService {
         }
       })
     );
+    this.subscriptions.add(
+      this.bcService.subject[MessageKind.RefreshDappList].subscribe((request) => {
+        if (!this.client) {
+          this.refresh();
+        }
+      })
+    );
+    this.subscriptions.add(
+      this.bcService.subject[MessageKind.NewTabInitialized].subscribe((request) => {
+        if (this.client) {
+          console.log(`%c# New follower tab detected #`, 'color: darkblue');
+          const currentReq = this.getCurrentRequest ? this.getCurrentRequest() : null;
+          if (currentReq) {
+            this.bcService.broadcast({ kind: MessageKind.PropagateRequest, payload: currentReq });
+          }
+        }
+      })
+    );
   }
   async startClient() {
     console.log('Starting wc2 client...');
@@ -190,20 +205,28 @@ export class WalletConnectService {
       this.requestHandler(data);
     });
     this.client.on('session_delete', (data) => {
-      console.log('delete', data);
+      console.log('session_delete', data);
       this.refresh();
+      this.autoCloseRequest.next(data?.topic);
     });
     this.client.on('session_expire', (data) => {
-      console.log('expire', data);
+      console.log('session_expire', data);
       this.refresh();
+      this.autoCloseRequest.next(data?.topic);
+    });
+    this.client.on('proposal_expire', (data) => {
+      console.log('proposal_expire', data);
+      this.autoCloseRequest.next(data?.id);
     });
     this.client.core.pairing.events.on('pairing_delete', (data) => {
-      console.log('delete', data);
+      console.log('pairing_delete', data);
       this.refresh();
+      this.autoCloseRequest.next(data?.topic);
     });
     this.client.core.pairing.events.on('pairing_expire', (data) => {
-      console.log('expire', data);
+      console.log('pairing_expire', data);
       this.refresh();
+      this.autoCloseRequest.next(data?.topic);
     });
     // this.client.core.heartbeat.events.on('heartbeat_pulse', (data) => {
     //   console.log('heartbeat', data);
@@ -216,8 +239,8 @@ export class WalletConnectService {
       //'session_expire',
       //'pairing_delete',
       //'session_request',
-      'session_event',
-      'proposal_expire'
+      'session_event'
+      //'proposal_expire'
     ];
     const unhandledPairingEvents: string[] = ['pairing_ping'];
     for (const event of unhandledSignClientEvents) {
@@ -429,19 +452,37 @@ export class WalletConnectService {
     const paired = await this.client.pair({ uri: pairingString });
     console.log('paired', paired);
   }
-  refresh(n = 0) {
-    const lsS = localStorage.getItem(SESSION_STORAGE_KEY);
-    const lsP = localStorage.getItem(PAIRING_STORAGE_KEY);
-    const _session = this.client ? this.client?.session?.getAll() : lsS ? JSON.parse(lsS) : [];
-    const _pairing = this.client ? this.client?.core?.pairing?.getPairings() : lsP ? JSON.parse(lsP) : [];
-
+  async refresh(n = 0) {
+    const _session: any = this.client
+      ? this.client?.session?.getAll()
+      : await indexedDB
+          .readWcDb(SESSION_STORAGE_KEY)
+          .then((res) => {
+            return res ? JSON.parse(res) : [];
+          })
+          .catch(() => {
+            return [];
+          });
+    const _pairing: any = this.client
+      ? this.client?.core?.pairing?.getPairings()
+      : await indexedDB
+          .readWcDb(PAIRING_STORAGE_KEY)
+          .then((res) => {
+            return res ? JSON.parse(res) : [];
+          })
+          .catch(() => {
+            return [];
+          });
+    let kc = null;
+    if (!this.client) {
+      kc = await indexedDB.readWcDb(KEYCHAIN_STORAGE_KEY);
+    }
     const sessionsList: DSession[] = _session
-      .map((session) => {
+      .map((session: any) => {
         let inKeychain = false; // We should not need this check. But seem to be a bit buggy otherwise
         if (this.client) {
           inKeychain = this.client.core.crypto.keychain.has(session?.topic);
         } else {
-          const kc = localStorage.getItem(KEYCHAIN_STORAGE_KEY);
           inKeychain = !kc ? false : !!JSON.parse(kc)[session?.topic];
         }
         if (session?.acknowledged && inKeychain) {
@@ -460,12 +501,11 @@ export class WalletConnectService {
       }
     }
     const pairingsList: DPairing[] = _pairing
-      .map((pairing) => {
+      .map((pairing: any) => {
         let inKeychain;
         if (this.client) {
           inKeychain = this.client.core.crypto.keychain.has(pairing?.topic);
         } else {
-          const kc = localStorage.getItem(KEYCHAIN_STORAGE_KEY);
           inKeychain = !kc ? false : !!JSON.parse(kc)[pairing?.topic];
         }
         if (pairing.active && inKeychain) {
@@ -489,6 +529,9 @@ export class WalletConnectService {
     if (!isEqual(this.sessions, _sessions)) {
       this.sessions = _sessions;
       console.log('sessions', _sessions);
+    }
+    if (this.client && n === 0) {
+      this.bcService.broadcast({ kind: MessageKind.RefreshDappList, payload: undefined });
     }
     if (++n < 5) {
       setTimeout(() => {

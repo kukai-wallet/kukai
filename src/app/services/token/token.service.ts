@@ -7,7 +7,7 @@ import { filter } from 'rxjs/operators';
 import { NavigationEnd, Router } from '@angular/router';
 import { ObjktService } from '../indexer/objkt/objkt.service';
 import { DipDupService } from '../indexer/dipdup/dipdup.service';
-import { getFromKvDb, saveToKvDb } from './indexedDB';
+import { indexedDB } from '../../libraries/index';
 import { MetadataSource } from '../indexer/tzkt/tzkt.service';
 
 export interface TokenResponseType {
@@ -448,7 +448,7 @@ export class TokenService {
       localStorage.setItem(this.storeKey, JSON.stringify(data));
     } catch (e) {
       localStorage.setItem(this.storeKey, 'KV_DB');
-      await saveToKvDb('tokenMetadata', data);
+      await indexedDB.saveToKvDb('tokenMetadata', data);
     }
   }
   async loadMetadata() {
@@ -456,7 +456,7 @@ export class TokenService {
     if (metadataJson) {
       let metadata: any;
       if (metadataJson === 'KV_DB') {
-        metadata = await getFromKvDb('tokenMetadata');
+        metadata = await indexedDB.getFromKvDb('tokenMetadata');
       } else {
         metadata = JSON.parse(metadataJson);
       }

@@ -100,9 +100,7 @@ export class SwapLiquidityConfirmComponent extends ModalComponent implements OnI
       ModalComponent.currentModel.next({ name: this.name, data: null });
       if (this.externalReq) {
         this.syncSub = this.subjectService.beaconResponse.subscribe((response) => {
-          if (response) {
-            this.closeModalAction('silent');
-          }
+          this.closeModalAction(response ? 'silent' : '');
         });
       }
     }

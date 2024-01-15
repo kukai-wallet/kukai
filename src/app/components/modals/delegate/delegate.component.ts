@@ -113,9 +113,7 @@ export class DelegateComponent extends ModalComponent implements OnInit, OnChang
       }
       if (this.beaconMode) {
         this.syncSub = this.subjectService.beaconResponse.subscribe((response) => {
-          if (response) {
-            this.operationResponse.emit('silent');
-          }
+          this.operationResponse.emit(response ? 'silent' : '');
         });
       }
       super.open();

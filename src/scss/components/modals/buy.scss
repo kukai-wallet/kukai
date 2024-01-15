@@ -5,7 +5,7 @@
   background-color: v.$buy-background-color;
   padding: 1em;
   border-radius: 16px;
-  margin: 0 0 1em 0;
+  margin: 2em 0 1em 0;
   max-width: 31em;
   & .option {
     cursor: pointer;
@@ -43,6 +43,6 @@
 
 @media (max-width: v.$layout-break-6) {
   & .buy {
-    margin: 2em 0 1em 0;
+    margin: 1em 0 1em 0;
   }
 }

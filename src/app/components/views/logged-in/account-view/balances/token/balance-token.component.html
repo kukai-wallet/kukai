@@ -13,7 +13,7 @@
   </div>
   <div class="flex-row right">
     <ng-container *ngIf="token?.name === 'tezos'">
-      <button *ngIf="this.account?.balanceXTZ" class="flex-row button button-primary with-image buy" (click)="buy()">
+      <button *ngIf="this.account?.balanceXTZ && !(walletService.isWatchWallet())" class="flex-row button button-primary with-image buy" (click)="buy()">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M12 5.00024V19.0002" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
           <path d="M5 12H19" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>

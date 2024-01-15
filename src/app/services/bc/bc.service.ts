@@ -6,7 +6,9 @@ export enum MessageKind {
   PropagateResponse = 'wc_propagate_response',
   DeleteRequest = 'wc_delete_request',
   PairingRequest = 'wc_pairing_request',
-  UpdateRequest = 'wc_session_update'
+  UpdateRequest = 'wc_session_update',
+  RefreshDappList = 'wc_refresh_dapp_list',
+  NewTabInitialized = 'new_tab_initialized'
 }
 export type Message =
   | {
@@ -28,6 +30,14 @@ export type Message =
   | {
       kind: MessageKind.UpdateRequest;
       payload: any;
+    }
+  | {
+      kind: MessageKind.RefreshDappList;
+      payload: undefined;
+    }
+  | {
+      kind: MessageKind.NewTabInitialized;
+      payload: undefined;
     };
 @Injectable({
   providedIn: 'root'
@@ -50,6 +60,8 @@ export class BcService {
     wc_propagate_request: new Subject<any>(),
     wc_propagate_response: new Subject<any>(),
     wc_session_update: new Subject<any>(),
+    wc_refresh_dapp_list: new Subject<any>(),
+    new_tab_initialized: new Subject<any>(),
     test: new Subject<any>(),
     all: new Subject<Message>()
   };
@@ -64,6 +76,9 @@ export class BcService {
       console.warn('duplicate leaders!');
     };
     this.elector.hasLeader().then((hasLeader) => {
+      if (hasLeader) {
+        this.broadcast({ kind: MessageKind.NewTabInitialized, payload: undefined });
+      }
       console.log(`%c# ${hasLeader ? 'WC2 leader already exist' : 'No WC2 leader found'} #`, 'color: darkblue');
       this._initAsLeader = !hasLeader;
       this._initDone();
