@@ -172,8 +172,8 @@ export class EmbeddedComponent implements OnInit {
       origins: ['*.vitality.gg'],
       permissions: {
         login: true,
-        operations: false,
-        micheline: false
+        operations: true,
+        micheline: true
       }
     },
     kanvas: {
