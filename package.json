@@ -72,7 +72,7 @@
     "chart.js": "^3.8.0",
     "copy-to-clipboard": "^3.2.0",
     "core-js": "^3.2.1",
-    "customauth": "git://github.com/kukai-wallet/CustomAuth.git#370e0e7e9aa57f0246e2fbbbfec148bb36af5e94",
+    "customauth": "git://github.com/kukai-wallet/CustomAuth.git#92bb7eab1f1ff336129661f7b17a8d17b267f281",
     "dexCalcs": "git://github.com/kukai-wallet/kukai-dex-calculations.git#27e9f5a112f0bac5e3000a13fb7ba002e8761071",
     "dexie": "^3.2.3",
     "elliptic": "^6.5.4",
