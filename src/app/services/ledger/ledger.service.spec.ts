@@ -6,7 +6,7 @@ import { LedgerService } from '../ledger/ledger.service';
 import { TranslateModule, TranslateLoader, TranslateFakeLoader } from '@ngx-translate/core';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ErrorHandlingPipe } from '../../pipes/error-handling.pipe';
+import { ErrorHandlingService } from '../../services/error-handling/error-handling.service';
 
 describe('LedgerService', () => {
   beforeEach(() => {
@@ -22,7 +22,7 @@ describe('LedgerService', () => {
           }
         })
       ],
-      providers: [LedgerService, MessageService, OperationService, ErrorHandlingPipe]
+      providers: [LedgerService, MessageService, OperationService, ErrorHandlingService]
     });
   });
 

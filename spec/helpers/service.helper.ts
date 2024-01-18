@@ -19,7 +19,7 @@ import { TorusService } from '../../src/app/services/torus/torus.service';
 import { InputValidationService } from '../../src/app/services/input-validation/input-validation.service';
 
 //-----------Pipe Imports-------------
-import { ErrorHandlingPipe } from '../../src/app/pipes/error-handling.pipe';
+import { ErrorHandlingService } from '../../src/app/services/error-handling/error-handling.service';
 
 //-----------Mock Imports-------------
 import { WalletServiceStub } from '../mocks/wallet.mock';
@@ -32,10 +32,9 @@ export { WalletService } from '../../src/app/services/wallet/wallet.service';
 export { OperationService } from '../../src/app/services/operation/operation.service';
 export { BalanceService } from '../../src/app/services/balance/balance.service';
 export { TranslateService } from '@ngx-translate/core';
-export { ErrorHandlingPipe } from '../../src/app/pipes/error-handling.pipe';
+export { ErrorHandlingService } from '../../src/app/services/error-handling/error-handling.service';
 export { TorusService } from '../../src/app/services/torus/torus.service';
 export { InputValidationService } from '../../src/app/services/input-validation/input-validation.service';
-
 
 // tslint:disable-next-line:import-blacklist
 import * as Rx from 'rxjs/Rx';
@@ -45,44 +44,40 @@ import * as Rx from 'rxjs/Rx';
 export const rx = Rx;
 
 // imports
-export const default_imports = [ ];
-export const http_imports = [
-	HttpClientModule,
-	HttpClientTestingModule
-];
+export const default_imports = [];
+export const http_imports = [HttpClientModule, HttpClientTestingModule];
 
 export const translate_imports = [
-	HttpClientModule,
-	HttpClientTestingModule,
-	TranslateModule.forRoot({ loader: { provide: TranslateLoader, useClass: TranslateFakeLoader }})
+  HttpClientModule,
+  HttpClientTestingModule,
+  TranslateModule.forRoot({ loader: { provide: TranslateLoader, useClass: TranslateFakeLoader } })
 ];
 
 export const balancesrv_providers = [
-	BalanceService,
-	{provide: WalletService, useClass: WalletServiceStub},
-	TranslateService,
-	OperationService,
-	ErrorHandlingPipe,
-	MessageService,
+  BalanceService,
+  { provide: WalletService, useClass: WalletServiceStub },
+  TranslateService,
+  OperationService,
+  ErrorHandlingService,
+  MessageService,
   TzrateService,
   TorusService,
   InputValidationService
 ];
 
 export const walletsrv_providers = [
-	WalletService,
-	ActivityService,
-	BalanceService,
-	CoordinatorService,
-	EncryptionService,
-	DelegateService,
-	ErrorHandlingPipe,
-	ImportService,
-	MessageService,
-	OperationService,
-	TranslateService,
+  WalletService,
+  ActivityService,
+  BalanceService,
+  CoordinatorService,
+  EncryptionService,
+  DelegateService,
+  ErrorHandlingService,
+  ImportService,
+  MessageService,
+  OperationService,
+  TranslateService,
   TzrateService,
   TorusService,
   InputValidationService
 ];
-

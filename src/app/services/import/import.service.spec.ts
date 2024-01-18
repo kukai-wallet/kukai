@@ -14,7 +14,7 @@ import { TranslateService, TranslateLoader, TranslateFakeLoader, TranslateModule
 import { EncryptionService } from '../encryption/encryption.service';
 import { OperationService } from '../operation/operation.service';
 import { TestBed } from '@angular/core/testing';
-import { ErrorHandlingPipe } from '../../pipes/error-handling.pipe';
+import { ErrorHandlingService } from '../../services/error-handling/error-handling.service';
 import { KeyPair } from '../../interfaces';
 import { MessageService } from '../message/message.service';
 import { BalanceService } from '../balance/balance.service';
@@ -33,11 +33,6 @@ import { InputValidationService } from '../input-validation/input-validation.ser
 describe('[ ImportService ]', () => {
   // class under inspection
   let service: ImportService;
-
-  // class dependencies
-  /*let httpMock: HttpTestingController;
-  let translate: TranslateService;
-  let errorHandlingPipe: ErrorHandlingPipe;*/
 
   let wallet: WalletService;
   let operation: OperationService;
@@ -109,12 +104,12 @@ describe('[ ImportService ]', () => {
         CoordinatorService,
         OperationService,
         EncryptionService,
-        ErrorHandlingPipe,
         TzrateService,
         ActivityService,
         DelegateService,
         TorusService,
-        InputValidationService
+        InputValidationService,
+        ErrorHandlingService
       ]
     });
 

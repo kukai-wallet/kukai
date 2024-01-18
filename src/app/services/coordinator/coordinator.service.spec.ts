@@ -11,7 +11,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { WalletService } from '../wallet/wallet.service';
 import { OperationService } from '../operation/operation.service';
 import { TranslateLoader, TranslateFakeLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
-import { ErrorHandlingPipe } from '../../pipes/error-handling.pipe';
+import { ErrorHandlingService } from '../../services/error-handling/error-handling.service';
 
 // class mocks
 import { EncryptionService } from '../encryption/encryption.service';
@@ -63,7 +63,7 @@ describe('[ Coordinator ]', () => {
         ActivityService,
         WalletService,
         EncryptionService,
-        ErrorHandlingPipe,
+        ErrorHandlingService,
         BalanceService,
         DelegateService,
         TzrateService,

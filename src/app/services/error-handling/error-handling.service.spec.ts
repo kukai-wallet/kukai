@@ -2,19 +2,19 @@
 import { TestBed, getTestBed } from '@angular/core/testing';
 
 // class under inspection
-import { ErrorHandlingPipe } from './error-handling.pipe';
+import { ErrorHandlingService } from './error-handling.service';
 
 /**
- * Suite: ErrorHandlingPipe
+ * Suite: ErrorHandlingService
  */
-describe('[ ErrorHandlingPipe ]', () => {
+describe('[ ErrorHandlingService ]', () => {
   let injector: TestBed;
-  let pipe: ErrorHandlingPipe;
+  let pipe: ErrorHandlingService;
 
   beforeEach(() => {
     // store injectors to call during tests
     injector = getTestBed();
-    pipe = new ErrorHandlingPipe();
+    pipe = new ErrorHandlingService();
   });
 
   it('create an instance', () => {
