@@ -20,6 +20,11 @@ enum Size {
 
 const MIMETYPE_OVERLOADS = ['unknown', 'image/gif'];
 
+const URL_OVERRIDE_LIST = {
+  'https://static.tcinfra.net/media/medium/ipfs/QmeixniZcQoDBe9gyNFhk87xyzdFyrK7ngk9whi4nL7FH2':
+    'https://cloudflare-ipfs.com/ipfs/QmeixniZcQoDBe9gyNFhk87xyzdFyrK7ngk9whi4nL7FH2'
+};
+
 @Component({
   selector: 'app-asset',
   templateUrl: './asset.component.html',
@@ -263,6 +268,6 @@ export class AssetComponent implements OnInit, AfterViewInit {
     } else {
       console.error('failed to parse asset', asset);
     }
-    return url ?? '';
+    return URL_OVERRIDE_LIST[url] ?? url ?? '';
   }
 }
