@@ -548,10 +548,12 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
     // resimulate?
   }
   async torusLookup(): Promise<any> {
+    const lookupInput = `${this.torusVerifier}:${this.toPkh}`;
+    let formInvalid = '';
     if (!this.torusService.verifierMapKeys.includes(this.torusVerifier) && this.torusVerifier !== 'domain') {
-      this.formInvalid = 'Invalid verifier';
+      formInvalid = 'Invalid verifier';
     } else if (this.invalidTorusAccount()) {
-      this.formInvalid = this.invalidTorusAccount();
+      formInvalid = this.invalidTorusAccount();
     } else if (this.toPkh) {
       this.torusPendingLookup = true;
       this.torusLookupId = this.toPkh;
@@ -562,21 +564,25 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
               .getAddressFromDomain(this.toPkh)
               .then((ans) => {
                 if (ans?.pkh === '') {
-                  this.formInvalid = 'Could not find the domain';
+                  formInvalid = 'Could not find the domain';
                 }
                 return ans;
               })
               .catch((e) => {
                 console.error(e);
-                this.formInvalid = e;
+                formInvalid = e;
                 return '';
               })
           : await this.torusService.lookupPkh(this.torusVerifier, this.toPkh).catch((e) => {
               console.error(e);
-              this.formInvalid = e;
+              formInvalid = e;
               return '';
             });
-
+      if (lookupInput !== `${this.torusVerifier}:${this.toPkh}`) {
+        // Lookup input values have changed. So we can ignore this response from lookupPkh().
+        return;
+      }
+      this.formInvalid = formInvalid;
       this.torusPendingLookup = false;
       if (pkh) {
         this.torusLookupAddress = pkh;
