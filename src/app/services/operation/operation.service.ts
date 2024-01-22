@@ -10,7 +10,7 @@ import * as bip39 from 'bip39';
 import Big from 'big.js';
 import { localForger } from '@taquito/local-forging';
 import { CONSTANTS } from '../../../environments/environment';
-import { ErrorHandlingPipe } from '../../pipes/error-handling.pipe';
+import { ErrorHandlingService } from '../../services/error-handling/error-handling.service';
 import * as elliptic from 'elliptic';
 import { instantiateSecp256k1, hexToBin, binToHex } from '@bitauth/libauth';
 import { TokenService } from '../token/token.service';
@@ -45,7 +45,7 @@ export class OperationService {
   };
   microTez = new Big(1000000);
   feeHardCap = 100; //tez
-  constructor(private http: HttpClient, private errorHandlingPipe: ErrorHandlingPipe, private tokenService: TokenService) {}
+  constructor(private http: HttpClient, private errorHandlingPipe: ErrorHandlingService, private tokenService: TokenService) {}
   /*
     Returns an observable for the activation of an ICO identity
   */
@@ -1508,28 +1508,28 @@ export class OperationService {
     return null;
   }
 
-  postRpc(path: string, payload: any, c = 0): Observable<any> {
+  postRpc(path: string, payload: any, c = 0, initialError = null): Observable<any> {
     const node = this.nodeURL[c % this.nodeURL.length];
     return this.http.post(`${node}/${path}`, payload, httpOptions).pipe(
       catchError((error) => {
         if (c > Math.max(3, this.nodeURL.length) - 2 || !(error?.name === 'HttpErrorResponse')) {
           // give up after 3 or nodes.length attempts
-          throw error;
+          throw initialError;
         }
-        return timer(250).pipe(concatMap(() => this.postRpc(path, payload, ++c)));
+        return timer(250).pipe(concatMap(() => this.postRpc(path, payload, ++c, initialError ?? error)));
       })
     );
   }
 
-  getRpc(path: string, c = 0): Observable<any> {
+  getRpc(path: string, c = 0, initialError = null): Observable<any> {
     const node = this.nodeURL[c % this.nodeURL.length];
     return this.http.get(`${node}/${path}`).pipe(
       catchError((error) => {
         if (c > Math.max(3, this.nodeURL.length) - 2 || !(error?.name === 'HttpErrorResponse')) {
           // give up after 3 or nodes.length attempts
-          throw error;
+          throw initialError;
         }
-        return timer(250).pipe(concatMap(() => this.getRpc(path, ++c)));
+        return timer(250).pipe(concatMap(() => this.getRpc(path, ++c, initialError ?? error)));
       })
     );
   }

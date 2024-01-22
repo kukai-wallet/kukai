@@ -5,7 +5,7 @@ import { TranslateModule, TranslateLoader, TranslateFakeLoader } from '@ngx-tran
 import { OperationService } from '../operation/operation.service';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ErrorHandlingPipe } from '../../pipes/error-handling.pipe';
+import { ErrorHandlingService } from '../../services/error-handling/error-handling.service';
 
 describe('[ InputValidationService ]', () => {
   let service: InputValidationService;
@@ -22,7 +22,7 @@ describe('[ InputValidationService ]', () => {
           }
         })
       ],
-      providers: [InputValidationService, OperationService, ErrorHandlingPipe]
+      providers: [InputValidationService, OperationService, ErrorHandlingService]
     });
     service = TestBed.inject(InputValidationService);
   });

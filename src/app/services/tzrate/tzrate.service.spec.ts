@@ -14,7 +14,7 @@ import { TranslateService, TranslateLoader, TranslateFakeLoader, TranslateModule
 import { EncryptionService } from '../encryption/encryption.service';
 import { OperationService } from '../operation/operation.service';
 import { TestBed } from '@angular/core/testing';
-import { ErrorHandlingPipe } from '../../pipes/error-handling.pipe';
+import { ErrorHandlingService } from '../../services/error-handling/error-handling.service';
 import { Account, Wallet, Balance } from '../../interfaces';
 import { WalletObject } from '../wallet/wallet';
 import { CONSTANTS } from '../../../environments/environment';
@@ -60,7 +60,7 @@ describe('[ TzrateService ]', () => {
           }
         })
       ],
-      providers: [TzrateService, WalletService, TranslateService, OperationService, EncryptionService, ErrorHandlingPipe, InputValidationService]
+      providers: [TzrateService, WalletService, TranslateService, OperationService, EncryptionService, ErrorHandlingService, InputValidationService]
     });
 
     service = TestBed.inject(TzrateService);

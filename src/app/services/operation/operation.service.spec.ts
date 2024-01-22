@@ -7,7 +7,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { OperationService } from './operation.service';
 
 // provider sub-dependencies
-import { KeyPair, http_imports, translate_imports, TranslateService, ErrorHandlingPipe, rx } from '../../../../spec/helpers/service.helper';
+import { KeyPair, http_imports, translate_imports, TranslateService, ErrorHandlingService, rx } from '../../../../spec/helpers/service.helper';
 // import { Observable } from 'rxjs';
 import { timeout, catchError, flatMap, mergeMap } from 'rxjs/operators';
 import 'rxjs/add/operator/mergeMap';
@@ -26,7 +26,7 @@ describe('[ OperationService ]', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [http_imports, translate_imports, RouterTestingModule],
-      providers: [OperationService, TranslateService, ErrorHandlingPipe]
+      providers: [OperationService, TranslateService, ErrorHandlingService]
     });
 
     // service dependencies

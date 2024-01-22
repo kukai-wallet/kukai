@@ -10,7 +10,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { WalletService } from '../wallet/wallet.service';
 import { OperationService } from '../operation/operation.service';
 import { TranslateLoader, TranslateFakeLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
-import { ErrorHandlingPipe } from '../../pipes/error-handling.pipe';
+import { ErrorHandlingService } from '../../services/error-handling/error-handling.service';
 import { WalletServiceStub } from '../../../../spec/mocks/wallet.mock';
 
 // class mocks
@@ -54,7 +54,7 @@ describe('[ DelegateService ]', () => {
           }
         })
       ],
-      providers: [DelegateService, WalletService, TranslateService, OperationService, EncryptionService, ErrorHandlingPipe, InputValidationService]
+      providers: [DelegateService, WalletService, TranslateService, OperationService, EncryptionService, ErrorHandlingService, InputValidationService]
     });
 
     service = TestBed.inject(DelegateService);

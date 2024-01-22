@@ -12,7 +12,7 @@ import { MessageService } from '../message/message.service';
 import { TranslateService, TranslateModule, TranslateLoader, TranslateFakeLoader } from '@ngx-translate/core';
 import { OperationService } from '../operation/operation.service';
 import { EncryptionService } from '../encryption/encryption.service';
-import { ErrorHandlingPipe } from '../../pipes/error-handling.pipe';
+import { ErrorHandlingService } from '../../services/error-handling/error-handling.service';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { InputValidationService } from '../../services/input-validation/input-validation.service';
@@ -54,7 +54,7 @@ describe('[ ActivityService ]', () => {
         TranslateService,
         OperationService,
         EncryptionService,
-        ErrorHandlingPipe,
+        ErrorHandlingService,
         InputValidationService
       ]
     });

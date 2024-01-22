@@ -73,11 +73,11 @@ import { P500Component } from './components/views/error/500.component';
 import { LoggedInModule } from './components/views/logged-in/logged-in.module';
 
 // Pipes
-import { ErrorHandlingPipe } from './pipes/error-handling.pipe';
 import { TruncatePipe } from './pipes/truncate.pipe';
 import { TimeAgoPipe } from './pipes/time-ago.pipe';
 import { DeeplinkService } from './services/deeplink/deeplink.service';
 import { RemoveCommaPipe } from './pipes/remove-comma.pipe';
+import { ErrorHandlingService } from './services/error-handling/error-handling.service';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -126,9 +126,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     AlertComponent,
 
     // Pipes
-    ErrorHandlingPipe,
     TruncatePipe,
-    TimeAgoPipe
+    TimeAgoPipe,
+    ErrorHandlingService
   ],
   imports: [
     BrowserModule,
@@ -173,7 +173,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     DeeplinkService,
     UnlockableService,
     // Pipes
-    ErrorHandlingPipe,
+    ErrorHandlingService,
     TruncatePipe,
     TimeAgoPipe,
     RemoveCommaPipe

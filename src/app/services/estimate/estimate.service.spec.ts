@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { HttpTestingController } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { EstimateService } from './estimate.service';
-import { http_imports, rx, translate_imports, ErrorHandlingPipe } from '../../../../spec/helpers/service.helper';
+import { http_imports, rx, translate_imports, ErrorHandlingService } from '../../../../spec/helpers/service.helper';
 import { OperationService } from '../operation/operation.service';
 import { of, Observable } from 'rxjs';
 import { InputValidationService } from '../input-validation/input-validation.service';
@@ -16,7 +16,7 @@ describe('EstimateService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [http_imports, translate_imports, RouterTestingModule],
-      providers: [EstimateService, OperationService, TranslateService, ErrorHandlingPipe, InputValidationService]
+      providers: [EstimateService, OperationService, TranslateService, ErrorHandlingService, InputValidationService]
     });
 
     // service dependencies

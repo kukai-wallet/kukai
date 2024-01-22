@@ -7,7 +7,7 @@ import { EncryptionService } from '../encryption/encryption.service';
 import { OperationService } from '../operation/operation.service';
 import { TorusService } from '../torus/torus.service';
 import { InputValidationService } from '../input-validation/input-validation.service';
-import { ErrorHandlingPipe } from '../../pipes/error-handling.pipe';
+import { ErrorHandlingService } from '../../services/error-handling/error-handling.service';
 import { http_imports, translate_imports } from '../../../../spec/helpers/service.helper';
 import { WalletObject } from '../wallet/wallet';
 import { CONSTANTS } from '../../../environments/environment';
@@ -19,7 +19,7 @@ describe('EmbeddedAuthService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [http_imports, translate_imports, RouterTestingModule],
-      providers: [EmbeddedAuthService, WalletService, EncryptionService, OperationService, TorusService, InputValidationService, ErrorHandlingPipe]
+      providers: [EmbeddedAuthService, WalletService, EncryptionService, OperationService, TorusService, InputValidationService, ErrorHandlingService]
     });
     const walletgen: WalletTools = new WalletTools();
     const mockwallet: WalletObject = walletgen.generateWalletEmbedded();
