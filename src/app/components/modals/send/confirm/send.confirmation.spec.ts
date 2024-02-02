@@ -4,83 +4,81 @@ import { ConfirmSendComponent } from './send-confirmation.component';
 import { AppModule } from '../../../../app.module';
 import { LoggedInModule } from '../../../../components/views/logged-in/logged-in.module';
 
-let input1 = {
-  swaps: [
-    {
-      operation: {
-        b_to_a: Symbol()
-      },
-      pair_id: '7'
+const input1 = [
+  {
+    add_operator: {
+      owner: 'tz1WXDeZmSpaCCJqes9GknbeUtdKhJJ8QDA2',
+      operator: 'KT18iSHoRW1iogamADWwQSDoZa3QkN4izkqj',
+      token_id: '847564736475869586758675'
     }
-  ],
-  amount_in: '558057547761',
-  min_amount_out: '1354157',
-  receiver: 'tz1WXDeZmSpaCCJqes9GknbeUtdKhJJ8QDA2',
-  deadline: '2022-09-16T15:50:34.284Z'
-};
-
-let input2 = [
-  {
-    int: '100'
-  },
-  {
-    int: '100'
-  },
-  {
-    int: '100'
   }
 ];
 
-let input3 = '300';
+const input11 = {
+  __michelsonType: 'list',
+  schema: {
+    __michelsonType: 'or',
+    schema: {
+      add_operator: {
+        __michelsonType: 'pair',
+        schema: {
+          owner: {
+            __michelsonType: 'address',
+            schema: 'address'
+          },
+          operator: {
+            __michelsonType: 'address',
+            schema: 'address'
+          },
+          token_id: {
+            __michelsonType: 'bytes',
+            schema: 'bytes'
+          }
+        }
+      },
+      remove_operator: {
+        __michelsonType: 'pair',
+        schema: {
+          owner: {
+            __michelsonType: 'address',
+            schema: 'address'
+          },
+          operator: {
+            __michelsonType: 'address',
+            schema: 'address'
+          },
+          token_id: {
+            __michelsonType: 'bytes',
+            schema: 'bytes'
+          }
+        }
+      }
+    }
+  }
+};
 
-let output1 = [
+const output1 = [
   {
-    key: 'swaps',
+    key: 'add_operator',
     children: [
       {
-        key: 'operation',
-        children: [
-          {
-            key: 'b_to_a',
-            val: Symbol(),
-            children: []
-          }
-        ]
+        key: 'owner',
+        val: 'tz1WXDeZmSpaCCJqes9GknbeUtdKhJJ8QDA2',
+        children: []
       },
       {
-        key: 'pair_id',
-        val: '7',
+        key: 'operator',
+        val: 'KT18iSHoRW1iogamADWwQSDoZa3QkN4izkqj',
+        children: []
+      },
+      {
+        key: 'token_id',
+        val: '�udsdu���u�u',
         children: []
       }
     ]
-  },
-  {
-    key: 'amount_in',
-    val: '558057547761',
-    children: []
-  },
-  {
-    key: 'min_amount_out',
-    val: '1354157',
-    children: []
-  },
-  {
-    key: 'receiver',
-    val: 'tz1WXDeZmSpaCCJqes9GknbeUtdKhJJ8QDA2',
-    children: []
-  },
-  {
-    key: 'deadline',
-    val: '2022-09-16T15:50:34.284Z',
-    children: []
   }
 ];
-let output2 = [
-  { key: 'int', val: '100', children: [] },
-  { key: 'int', val: '100', children: [] },
-  { key: 'int', val: '100', children: [] }
-];
-let output3 = [{ key: null, val: '300', children: [] }];
 
 describe('ConfirmSendComponent', () => {
   let comp: ConfirmSendComponent;
@@ -94,11 +92,7 @@ describe('ConfirmSendComponent', () => {
 
   it('parametersToTabular', async () => {
     const comp = TestBed.createComponent(ConfirmSendComponent);
-    let result = comp.componentInstance.parametersToTabular(input1);
+    let result = comp.componentInstance.parametersToTabular(input1, input11);
     expect(JSON.stringify(result)).toEqual(JSON.stringify(output1));
-    result = comp.componentInstance.parametersToTabular(input2);
-    expect(JSON.stringify(result)).toEqual(JSON.stringify(output2));
-    result = comp.componentInstance.parametersToTabular(input3);
-    expect(JSON.stringify(result)).toEqual(JSON.stringify(output3));
   });
 });

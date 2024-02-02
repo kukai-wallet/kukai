@@ -49,6 +49,7 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
   torusLookupAddress = '';
   torusTwitterId = '';
   torusPendingLookup = false;
+  torusLastLookup = '';
 
   transactions = [];
   toMultipleDestinationsString = '';
@@ -238,7 +239,11 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
       data += transactions[0].to + transactions[0].amount.toString();
     } else {
       for (const tx of transactions) {
-        data += tx.to;
+        if (tx?.to) {
+          data += tx.to;
+        } else if (tx?.meta) {
+          data += `${tx.meta.verifier}:${tx.meta.alias}`;
+        }
       }
     }
     return data;
@@ -287,7 +292,7 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
     }
   }
   toPkhChange(): void {
-    if (this.torusVerifier) {
+    if (this.torusVerifier && (this.torusLastLookup !== `${this.torusVerifier}:${this.toPkh}` || this.torusPendingLookup)) {
       this.torusLookup();
     }
   }
@@ -458,6 +463,7 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
     this.torusLookupAddress = '';
     this.torusLookupId = '';
     this.torusTwitterId = '';
+    this.torusLastLookup = '';
   }
   checkMaxAmount(): void {
     if (this.sendMax) {
@@ -587,6 +593,7 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
       if (pkh) {
         this.torusLookupAddress = pkh;
         this.torusTwitterId = twitterId ? twitterId : '';
+        this.torusLastLookup = lookupInput;
         this.estimateFees();
       } else {
         this.torusLookupAddress = '';

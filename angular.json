@@ -16,7 +16,7 @@
             "main": "src/main.ts",
             "tsConfig": "src/tsconfig.app.json",
             "polyfills": "src/polyfills.ts",
-            "assets": ["src/assets", "src/favicon.ico", "src/favicon-attention.ico", "src/serviceworker", "src/_headers"],
+            "assets": ["src/assets", "src/favicon.ico", "src/favicon-attention.ico", "src/serviceworker", "src/fb", "src/_headers"],
             "styles": ["src/scss/styles.scss"],
             "stylePreprocessorOptions": {
               "includePaths": ["./node_modules"]
@@ -133,7 +133,7 @@
             "stylePreprocessorOptions": {
               "includePaths": ["./node_modules"]
             },
-            "assets": ["src/assets", "src/favicon.ico", "src/favicon-attention.ico", "src/serviceworker"]
+            "assets": ["src/assets", "src/favicon.ico", "src/favicon-attention.ico", "src/serviceworker", "src/fb"]
           }
         },
         "lint": {
