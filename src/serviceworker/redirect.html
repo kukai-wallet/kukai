@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -115,8 +115,8 @@
       <h1 class="title content" id="closeText" style="display: none">You can close this window now</h1>
     </div>
     <script
-      src="https://scripts.toruswallet.io/broadcastChannel_9_0_1.js"
-      integrity="sha384-taBzlN8/+K08+avbr6royzsuqJU0Qoi9tUUnvdiKwHTQ5SV6uef5erTEdV4ojYS9"
+      src="https://scripts.toruswallet.io/broadcastChannel_7_0_0.js"
+      integrity="sha384-pIIXzHLtGFQiHsKXsY97Qe0h3wGNiU7IyCLXX6waFb2br/zmGkH+ms1ijYIQD0Rl"
       crossorigin="anonymous"
     ></script>
     <script>
@@ -197,10 +197,10 @@
           var error = "";
           try {
             if (Object.keys(hashParams).length > 0 && hashParams.state) {
-              instanceParams = JSON.parse(base64urlLib.decode(decodeURIComponent(decodeURIComponent(hashParams.state)))) || {};
+              instanceParams = JSON.parse(window.atob(decodeURIComponent(decodeURIComponent(hashParams.state)))) || {};
               if (hashParams.error) error = hashParams.error;
             } else if (Object.keys(queryParams).length > 0 && queryParams.state) {
-              instanceParams = JSON.parse(base64urlLib.decode(decodeURIComponent(decodeURIComponent(queryParams.state)))) || {};
+              instanceParams = JSON.parse(window.atob(decodeURIComponent(decodeURIComponent(queryParams.state)))) || {};
               if (queryParams.error) error = queryParams.error;
             }
           } catch (e) {

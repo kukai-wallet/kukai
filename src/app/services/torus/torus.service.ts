@@ -248,10 +248,10 @@ export class TorusService {
       if (aggregated) {
         loginDetails.userInfo = loginDetails.userInfo[0];
       }
-      if (selectedVerifier === FACEBOOK) {
+      /*       if (selectedVerifier === FACEBOOK) {
         console.log('Invalidating access token...');
         fetch(`https://graph.facebook.com/me/permissions?access_token=${loginDetails.userInfo.accessToken}`, { method: 'DELETE', mode: 'cors' });
-      }
+      } */
       const keyPair =
         skipTorusKey && !loginDetails?.finalKeyData?.privKey
           ? { pk: '', pkh: '' }
