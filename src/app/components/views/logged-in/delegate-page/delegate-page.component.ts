@@ -60,8 +60,16 @@ export class DelegatePageComponent implements OnInit, OnDestroy {
       const balanceXTZ = this.activeAccount ? Math.ceil(this.activeAccount.balanceXTZ / 1000000) : 0;
       return delegates
         .map((d) => {
+          console.log(d);
           try {
-            if (d.freeSpace > balanceXTZ && d.estimatedRoi >= 0 && d.openForDelegation === true && d.minDelegation < balanceXTZ) {
+            if (
+              d.freeSpace > balanceXTZ &&
+              d.estimatedRoi >= 0 &&
+              d.openForDelegation === true &&
+              d.minDelegation < balanceXTZ &&
+              d.serviceType !== 'exchange' &&
+              d.serviceHealth !== 'closed'
+            ) {
               return d;
             }
           } catch {
