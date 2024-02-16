@@ -22,7 +22,7 @@
           <img class="logo" [src]="delegate.logo ? delegate.logo : ''" />
           <span class="name">{{ delegate.name }}</span>
           <span class="fee">SPLIT:&nbsp;<b class="value">{{ toPercent(delegate?.fee) }}</b></span>
-          <span class="freespace">SPACE:&nbsp;<b class="value">{{ round(delegate?.freeSpace) + ' tez' }}</b></span>
+          <span class="freespace" [class.insufficent]="delegate.freeSpace < balanceXTZ">SPACE:&nbsp;<b class="value">{{ round(delegate?.freeSpace) + ' tez' }}</b></span>
           <span class="estROI">EST REWARDS:&nbsp;<b class="value">{{ toPercent(delegate?.estimatedRoi) }}</b></span>
           <span class="accuracy">ACCURACY:&nbsp;<b class="value">{{ delegate?.payoutAccuracy }}</b></span>
           <button *ngIf="delegate?.address !== activeAccount?.delegate" class="button" (click)="stake(delegate)">STAKE</button>
@@ -33,7 +33,7 @@
             <img class="logo" [src]="delegate.logo ? delegate.logo : ''" />
             <span class="name">{{ delegate.name }}</span>
             <span class="fee">SPLIT:&nbsp;<b class="value">{{ toPercent(delegate?.fee) }}</b></span>
-            <span class="freespace">SPACE:&nbsp;<b class="value">{{ round(delegate?.freeSpace) + ' tez' }}</b></span>
+            <span class="freespace" [class.insufficent]="delegate.freeSpace < balanceXTZ">SPACE:&nbsp;<b class="value">{{ round(delegate?.freeSpace) + ' tez' }}</b></span>
             <span class="estROI">EST REWARDS:&nbsp;<b class="value">{{ toPercent(delegate?.estimatedRoi) }}</b></span>
           </div>
           <button *ngIf="delegate?.address !== activeAccount?.delegate" class="button" (click)="stake(delegate)">STAKE</button>
