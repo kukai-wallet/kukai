@@ -40,6 +40,7 @@ export class DelegateComponent extends ModalComponent implements OnInit, OnChang
   ledgerError = '';
   syncSub: Subscription;
   advanced = false;
+  balanceXTZ = 0;
 
   name = 'delegate-confirm';
 
@@ -108,6 +109,7 @@ export class DelegateComponent extends ModalComponent implements OnInit, OnChang
       this.estimateDefaultFee();
       this.toPkh = data.address;
       this.delegate = data;
+      this.balanceXTZ = this.activeAccount ? this.activeAccount.balanceXTZ / 1000000 : 0;
       if (this.walletService.isLedgerWallet()) {
         this.ledgerError = '?';
       }

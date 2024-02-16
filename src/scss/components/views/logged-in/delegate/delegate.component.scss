@@ -164,8 +164,14 @@
         width: 8rem;
       }
 
-      & .freespace {
+      & .props .freespace, .freespace {
         width: 12rem;
+        &.insufficent {
+          & .value {
+            color: v.$base-red-color;
+            font-weight: 900;
+          }
+        }
       }
 
       & .estROI {

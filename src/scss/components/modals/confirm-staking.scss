@@ -49,6 +49,11 @@
           color: v.$base-font-color;
           font-weight: 600;
 
+          &.insufficent {
+            color: v.$base-red-color;
+            font-weight: 800;
+          }
+
           & span {
             color: v.$base-font-color-secondary;
             font-weight: 600;
@@ -60,6 +65,7 @@
 
   & .bottom {
     margin: 1em 0 0 0;
+
     & .text.password {
       width: calc(100% - 2.5em);
       margin: 0;

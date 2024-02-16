@@ -19,6 +19,7 @@ export class DelegatePageComponent implements OnInit, OnDestroy {
   activeAccount = null;
   customAddress: string = '';
   isShowingCustom = false;
+  balanceXTZ = 0;
   private subscriptions: Subscription = new Subscription();
 
   constructor(
@@ -33,9 +34,10 @@ export class DelegatePageComponent implements OnInit, OnDestroy {
       this.subjectService.activeAccount.subscribe((activeAccount) => {
         if (this.activeAccount !== activeAccount) {
           this.activeAccount = activeAccount;
+          this.balanceXTZ = this.activeAccount ? this.activeAccount.balanceXTZ / 1000000 : 0;
           this.subscriptions.add(
             this.delegateService.delegates.pipe(take(1)).subscribe((d) => {
-              this.delegates = this.filter(d).sort((x, y) => (x.address === this.activeAccount?.delegate ? -1 : y === this.activeAccount?.delegate ? 1 : 0));
+              this.delegates = this.filter(d);
             })
           );
         }
@@ -44,7 +46,8 @@ export class DelegatePageComponent implements OnInit, OnDestroy {
 
     this.subscriptions.add(
       this.delegateService.delegates.subscribe((d) => {
-        this.delegates = this.filter(d).sort((x, y) => (x.address === this.activeAccount?.delegate ? -1 : y === this.activeAccount?.delegate ? 1 : 0));
+        this.balanceXTZ = this.activeAccount ? this.activeAccount.balanceXTZ / 1000000 : 0;
+        this.delegates = this.filter(d);
       })
     );
   }
@@ -57,27 +60,25 @@ export class DelegatePageComponent implements OnInit, OnDestroy {
 
   filter(delegates: any): any[] | null {
     if (delegates?.length) {
-      const balanceXTZ = this.activeAccount ? Math.ceil(this.activeAccount.balanceXTZ / 1000000) : 0;
-      return delegates
-        .map((d) => {
-          console.log(d);
-          try {
-            if (
-              d.freeSpace > balanceXTZ &&
-              d.estimatedRoi >= 0 &&
-              d.openForDelegation === true &&
-              d.minDelegation < balanceXTZ &&
-              d.serviceType !== 'exchange' &&
-              d.serviceHealth !== 'closed'
-            ) {
-              return d;
-            }
-          } catch {
-            return null;
+      const del = delegates.filter((d) => {
+        try {
+          if (
+            d.estimatedRoi >= 0 &&
+            d.openForDelegation === true &&
+            d.minDelegation < this.balanceXTZ &&
+            d.serviceType !== 'exchange' &&
+            d.serviceHealth !== 'closed' &&
+            d.serviceHealth !== 'dead'
+          ) {
+            return d;
           }
-          return null;
-        })
-        .filter((obj) => obj);
+        } catch {
+          return;
+        }
+      });
+      const d2 = del.filter((d) => d.freeSpace < this.balanceXTZ).sort((a, b) => b.freeSpace - a.freeSpace);
+      const d1 = del.filter((d) => d.freeSpace >= this.balanceXTZ).sort((a, b) => b.estimatedRoi - a.estimatedRoi);
+      return [...d1, ...d2].sort((x, y) => (x.address === this.activeAccount?.delegate ? -1 : y === this.activeAccount?.delegate ? 1 : 0));
     }
     return [];
   }

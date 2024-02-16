@@ -13,7 +13,7 @@
           <span class="name">{{ delegateDisplayName }}</span>
           <div class="flex-row fee-space"><span class="fee"><span>SPLIT:</span>&nbsp;{{ delegate?.fee ?
               toPercent(delegate.fee) : 'UNKNOWN' }}</span><span *ngIf="delegate?.freeSpace"
-              class="space"><span>SPACE:</span>&nbsp;{{ round(delegate.freeSpace) }}</span>
+              class="space" [class.insufficent]="delegate.freeSpace < balanceXTZ"><span>SPACE:</span>&nbsp;{{ round(delegate.freeSpace) }}</span>
           </div>
         </div>
         <ng-template #undelegate>
