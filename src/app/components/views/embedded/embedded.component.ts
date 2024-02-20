@@ -343,6 +343,14 @@ export class EmbeddedComponent implements OnInit {
         operations: false,
         micheline: false
       }
+    },
+    tesserart: {
+      origins: ['*.tesserart.xyz', 'https://tesserart.xyz'],
+      permissions: {
+        login: true,
+        operations: true,
+        micheline: true
+      }
     }
   };
   constructor(
