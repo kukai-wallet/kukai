@@ -137,14 +137,19 @@ export class TorusService {
     }
     this.verifierMapKeys = Object.keys(this.verifierMap);
   }
+  private async isBraveOrChrome(): Promise<boolean> {
+    return (await (<any>navigator)?.brave?.isBrave()) || navigator.userAgent.includes('Chrome') || false;
+  }
   async initTorus() {
     if (this.torus === undefined) {
       this.torus = null;
       try {
+        // set this value to false in every browser except for brave
+        const redirectToOpener = await this.isBraveOrChrome();
         const torusdirectsdk = new DirectWebSdk({
           web3AuthClientId: this.web3AuthClientId,
           baseUrl: `${location.origin}/serviceworker`,
-          redirectToOpener: true,
+          redirectToOpener,
           enableLogging: !(this.proxy.network === 'mainnet'),
           network: this.proxy.network
         });
@@ -248,10 +253,10 @@ export class TorusService {
       if (aggregated) {
         loginDetails.userInfo = loginDetails.userInfo[0];
       }
-      /*       if (selectedVerifier === FACEBOOK) {
+      if (selectedVerifier === FACEBOOK) {
         console.log('Invalidating access token...');
         fetch(`https://graph.facebook.com/me/permissions?access_token=${loginDetails.userInfo.accessToken}`, { method: 'DELETE', mode: 'cors' });
-      } */
+      }
       const keyPair =
         skipTorusKey && !loginDetails?.finalKeyData?.privKey
           ? { pk: '', pkh: '' }
