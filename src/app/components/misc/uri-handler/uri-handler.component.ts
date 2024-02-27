@@ -45,7 +45,11 @@ export class UriHandlerComponent implements OnInit, OnDestroy {
       })
     );
     this.walletConnectService.getCurrentRequest = (): any => {
-      return this.getReq();
+      const req = this.getReq();
+      if (req?.version === 0) {
+        return req;
+      }
+      return null;
     };
     this.subscriptions.add(
       this.walletConnectService.autoCloseRequest.subscribe((x: any) => {
