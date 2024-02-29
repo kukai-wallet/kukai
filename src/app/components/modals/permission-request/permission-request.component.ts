@@ -94,7 +94,7 @@ export class PermissionRequestComponent implements OnInit, OnChanges, OnDestroy 
       if (icon.startsWith('https://')) {
         icon = icon.slice(8);
       }
-      return `https://static.tcinfra.net/media/medium/web/${icon}`;
+      return `https://data.mantodev.com/media/medium/web/${icon}`;
     }
     return '';
   }

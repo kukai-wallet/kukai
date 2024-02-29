@@ -21,7 +21,7 @@ enum Size {
 const MIMETYPE_OVERLOADS = ['unknown', 'image/gif'];
 
 const URL_OVERRIDE_LIST = {
-  'https://static.tcinfra.net/media/medium/ipfs/QmeixniZcQoDBe9gyNFhk87xyzdFyrK7ngk9whi4nL7FH2':
+  'https://data.mantodev.com/media/medium/ipfs/QmeixniZcQoDBe9gyNFhk87xyzdFyrK7ngk9whi4nL7FH2':
     'https://cloudflare-ipfs.com/ipfs/QmeixniZcQoDBe9gyNFhk87xyzdFyrK7ngk9whi4nL7FH2'
 };
 
@@ -258,9 +258,9 @@ export class AssetComponent implements OnInit, AfterViewInit {
     const uri = typeof asset === 'string' ? asset : asset?.uri;
     if (uri.startsWith('ipfs://')) {
       const mediaAndSize = this.size === Size.raw ? '' : `media/${this.size}/`;
-      url = `https://static.tcinfra.net/${mediaAndSize}ipfs/${uri.slice(7)}`;
+      url = `https://data.mantodev.com/${mediaAndSize}ipfs/${uri.slice(7)}`;
     } else if (uri.startsWith('https://')) {
-      url = `https://static.tcinfra.net/media/${this.size}/web/${uri.slice(8)}`;
+      url = `https://data.mantodev.com/media/${this.size}/web/${uri.slice(8)}`;
     } else if (!CONSTANTS.MAINNET && (uri.startsWith('http://localhost') || uri.startsWith('http://127.0.0.1'))) {
       url = uri.slice(16);
     } else if (typeof asset === 'string') {
