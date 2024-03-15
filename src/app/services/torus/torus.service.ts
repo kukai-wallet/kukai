@@ -137,15 +137,15 @@ export class TorusService {
     }
     this.verifierMapKeys = Object.keys(this.verifierMap);
   }
-  private async isBraveOrChromeDesktop(): Promise<boolean> {
-    return (await (<any>navigator)?.brave?.isBrave()) || (navigator.userAgent.includes('Chrome') && !navigator.userAgent.includes('Android'));
+  private async isBraveOrChrome(): Promise<boolean> {
+    return (await (<any>navigator)?.brave?.isBrave()) || navigator.userAgent.includes('Chrome') || false;
   }
   async initTorus() {
     if (this.torus === undefined) {
       this.torus = null;
       try {
-        // set this value to false in every browser except for brave and Chrome
-        const redirectToOpener = await this.isBraveOrChromeDesktop();
+        // set this value to false in every browser except for brave
+        const redirectToOpener = await this.isBraveOrChrome();
         const torusdirectsdk = new DirectWebSdk({
           web3AuthClientId: this.web3AuthClientId,
           baseUrl: `${location.origin}/serviceworker`,
