@@ -22,17 +22,6 @@ const _CONSTANTS: Constants = {
     hard_storage_limit_per_operation: 60000
   },
   CONTRACT_ALIASES: {
-    mclarenracing: {
-      name: 'McLaren Racing Digital Collectibles',
-      address: ['KT1PEGqt5rMmHpyaMXc8RFTFkkAUDrzSFRWk', 'KT1BRADdqGk2eLmMqvyWzqVmPQ1RCBCbW5dY', 'KT1QgfSE4C1dX9UqrPAXjUaFQ36F9eB4nNkV'],
-      thumbnailUrl: '../../../assets/img/alias/mclaren-thumbnail2.png',
-      discoverUrl: '../../../assets/img/alias/mclaren-discover2.png',
-      link: 'https://collectibles.mclaren.com',
-      shouldDisplayLink: DisplayLinkOption.All,
-      category: ['sports', 'collectibles'],
-      description: "McLaren Racing's officially licensed Digital Collectibles",
-      zoomDiscoverImg: true
-    },
     manutd: {
       name: 'Manchester United',
       address: [
@@ -56,13 +45,24 @@ const _CONSTANTS: Constants = {
       category: ['sports', 'collectibles'],
       description: 'Officially licensed Digital Collectibles, powered by Tezos'
     },
+    mclarenracing: {
+      name: 'McLaren Racing Digital Collectibles',
+      address: ['KT1PEGqt5rMmHpyaMXc8RFTFkkAUDrzSFRWk', 'KT1BRADdqGk2eLmMqvyWzqVmPQ1RCBCbW5dY', 'KT1QgfSE4C1dX9UqrPAXjUaFQ36F9eB4nNkV'],
+      thumbnailUrl: '../../../assets/img/alias/mclaren-thumbnail2.png',
+      discoverUrl: '../../../assets/img/alias/mclaren-discover2.png',
+      link: 'https://collectibles.mclaren.com',
+      shouldDisplayLink: DisplayLinkOption.All,
+      category: ['sports', 'collectibles'],
+      description: "McLaren Racing's officially licensed Digital Collectibles",
+      zoomDiscoverImg: true
+    },
     FloSports: {
       name: 'FloSports',
       address: ['KT1SQFuskMGQB7arqvQyuCH9v2utbJNmGcR6', 'KT1QN8oJodP3uuFu5VbciZFhLQSReyAMpGtT', 'KT1AEdwKNAzEA1g2jLjeJVVYCSZaj8qRCwpU'],
       thumbnailUrl: 'assets/img/alias/flosports.png',
       discoverUrl: 'assets/img/alias/flosports-discover.png',
       link: 'https://collectibles.flosports.tv',
-      shouldDisplayLink: DisplayLinkOption.All,
+      shouldDisplayLink: DisplayLinkOption.None,
       category: ['sports', 'collectibles'],
       description: 'FloSports Digital Collectibles',
       backgroundColor: 'black'
@@ -116,7 +116,7 @@ const _CONSTANTS: Constants = {
       address: ['KT1GA6KaLWpURnjvmnxB4wToErzM2EXHqrMo'],
       thumbnailUrl: 'assets/img/alias/gap_600x600.png',
       discoverUrl: 'assets/img/alias/gap-discover.svg',
-      link: 'https://www.gap.com/nft',
+      link: 'https://objkt.com/collections/gapthreads',
       shouldDisplayLink: DisplayLinkOption.All,
       category: ['collectibles'],
       backgroundColor: 'black',
