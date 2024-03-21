@@ -351,6 +351,14 @@ export class EmbeddedComponent implements OnInit {
         operations: true,
         micheline: true
       }
+    },
+    metapals: {
+      origins: ['https://sanctuary.metapals.pet', 'https://sanctuary.metapals.ai'],
+      permissions: {
+        login: true,
+        operations: true,
+        micheline: true
+      }
     }
   };
   constructor(
