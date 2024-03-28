@@ -359,6 +359,14 @@ export class EmbeddedComponent implements OnInit {
         operations: true,
         micheline: true
       }
+    },
+    zywoo: {
+      origins: ['https://zywoo.chat'],
+      permissions: {
+        login: true,
+        operations: true,
+        micheline: true
+      }
     }
   };
   constructor(
