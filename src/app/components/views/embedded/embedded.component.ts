@@ -169,7 +169,7 @@ export class EmbeddedComponent implements OnInit {
       }
     },
     vitality: {
-      origins: ['*.vitality.gg'],
+      origins: ['*.vitality.gg', '*.avatarz.com', '*.avatarz.dev'],
       permissions: {
         login: true,
         operations: true,
