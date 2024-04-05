@@ -70,6 +70,8 @@ export class QrScannerComponent extends ModalComponent {
         this.beaconService.addPeer(pairingInfo);
       } else if (qrString && this.override) {
         this.scanResponse.emit({ pkh: qrString });
+      } else if (qrString.startsWith('wc')) {
+        this.walletConnectService.pair(qrString);
       }
       this.closeModal();
     } catch (e) {
