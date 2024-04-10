@@ -1,0 +1,143 @@
+[
+  {
+    "kind": "origination",
+    "source": "tz2FE5URBs3yrCkc71AMptsrqKdoSPVDR5ek",
+    "balance": "0",
+    "script": {
+      "code": [
+        {
+          "prim": "parameter",
+          "args": [
+            {
+              "prim": "unit"
+            }
+          ]
+        },
+        {
+          "prim": "storage",
+          "args": [
+            {
+              "prim": "unit"
+            }
+          ]
+        },
+        {
+          "prim": "code",
+          "args": [
+            [
+              {
+                "prim": "DROP"
+              },
+              {
+                "prim": "LEVEL"
+              },
+              {
+                "prim": "PUSH",
+                "args": [
+                  {
+                    "prim": "int"
+                  },
+                  {
+                    "int": "2"
+                  }
+                ]
+              },
+              {
+                "prim": "SWAP"
+              },
+              {
+                "prim": "EDIV"
+              },
+              {
+                "prim": "IF_NONE",
+                "args": [
+                  [
+                    {
+                      "prim": "PUSH",
+                      "args": [
+                        {
+                          "prim": "string"
+                        },
+                        {
+                          "string": "Unexpected block number"
+                        }
+                      ]
+                    },
+                    {
+                      "prim": "FAILWITH"
+                    }
+                  ],
+                  [
+                    {
+                      "prim": "CDR"
+                    },
+                    {
+                      "prim": "PUSH",
+                      "args": [
+                        {
+                          "prim": "nat"
+                        },
+                        {
+                          "int": "0"
+                        }
+                      ]
+                    },
+                    {
+                      "prim": "SWAP"
+                    },
+                    {
+                      "prim": "COMPARE"
+                    },
+                    {
+                      "prim": "GT"
+                    },
+                    {
+                      "prim": "IF",
+                      "args": [
+                        [
+                          {
+                            "prim": "PUSH",
+                            "args": [
+                              {
+                                "prim": "string"
+                              },
+                              {
+                                "string": "The block level is odd"
+                              }
+                            ]
+                          },
+                          {
+                            "prim": "FAILWITH"
+                          }
+                        ],
+                        [
+                          {
+                            "prim": "UNIT"
+                          },
+                          {
+                            "prim": "NIL",
+                            "args": [
+                              {
+                                "prim": "operation"
+                              }
+                            ]
+                          },
+                          {
+                            "prim": "PAIR"
+                          }
+                        ]
+                      ]
+                    }
+                  ]
+                ]
+              }
+            ]
+          ]
+        }
+      ],
+      "storage": {
+        "prim": "Unit"
+      }
+    }
+  }
+]

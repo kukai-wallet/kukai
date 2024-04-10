@@ -1,0 +1,54 @@
+[
+  {
+    "kind": "origination",
+    "source": "tz2FE5URBs3yrCkc71AMptsrqKdoSPVDR5ek",
+    "balance": "0",
+    "script": {
+      "code": [
+        {
+          "prim": "parameter",
+          "args": [
+            {
+              "prim": "unit"
+            }
+          ]
+        },
+        {
+          "prim": "storage",
+          "args": [
+            {
+              "prim": "unit"
+            }
+          ]
+        },
+        {
+          "prim": "code",
+          "args": [
+            [
+              {
+                "prim": "DROP"
+              },
+              {
+                "prim": "UNIT"
+              },
+              {
+                "prim": "NIL",
+                "args": [
+                  {
+                    "prim": "operation"
+                  }
+                ]
+              },
+              {
+                "prim": "PAIR"
+              }
+            ]
+          ]
+        }
+      ],
+      "storage": {
+        "prim": "Unit"
+      }
+    }
+  }
+]

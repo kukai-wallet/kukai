@@ -22,6 +22,7 @@ export class EstimateService {
   pk: string;
   hash: string;
   chainId: string;
+  protocol: string;
   manager: string;
   counter: number;
   constructor(
@@ -32,30 +33,28 @@ export class EstimateService {
   ) {
     this.contractsOverride = CONSTANTS.CONTRACT_OVERRIDES;
   }
-  init(hash: string, chainId: string, counter: number, manager: string, pk: string, pkh: string) {
+  init(hash: string, chainId: string, protocol: string, counter: number, manager: string, pk: string, pkh: string) {
     this.hash = hash;
     this.chainId = chainId;
+    this.protocol = protocol;
     this.counter = counter;
     this.manager = manager;
     this.pk = pk;
     this.pkh = pkh;
   }
-  async preLoadData(pkh: string, pk: string) {
+  async preLoadData(pkh: string, pk: string): Promise<void> {
     this.pkh = pkh;
     this.pk = pk;
     this.hash = this.chainId = this.counter = this.manager = undefined;
     const [head, counter, manager] = await Promise.all([this.operationService.getHeader().toPromise(), this.getCounter(pkh), this.getManager(pkh)]);
     if (head && counter && (manager || manager === null)) {
-      this.init(head.hash, head.chain_id, counter, manager, pk, pkh);
+      this.init(head.hash, head.chain_id, head.protocol, counter, manager, pk, pkh);
     }
   }
   public async estimateTransactions(transactions: any, from: string, tokenTransfer: string = '', callback) {
-    this.estimate(transactions, from, tokenTransfer, callback, false);
+    this.estimate(transactions, from, tokenTransfer, callback);
   }
-  public async estimateOrigination(origination: any, from: string, callback) {
-    this.estimate([origination], from, '', callback, true);
-  }
-  private async estimate(transactions: any, from: string, tokenTransfer: string = '', callback, isOrigination: boolean) {
+  private async estimate(transactions: any, from: string, tokenTransfer: string = '', callback) {
     this.queue.push({ transactions, from, callback });
     if (this.queue.length === 1) {
       while (this.queue.length > 0) {
@@ -76,7 +75,7 @@ export class EstimateService {
             }
             c++;
           }
-          await this._estimate(this.queue[0].transactions, this.queue[0].from, tokenTransfer, isOrigination)
+          await this._estimate(this.queue[0].transactions, this.queue[0].from, tokenTransfer)
             .then((res) => {
               this.queue[0].callback(res);
             })
@@ -94,7 +93,7 @@ export class EstimateService {
       }
     }
   }
-  private async _estimate(operations: any, from: string, tokenTransfer: string, isOrigination: boolean = false): Promise<any> {
+  private async _estimate(operations: any, from: string, tokenTransfer: string): Promise<any> {
     if (!this.hash) {
       return null;
     }
@@ -107,32 +106,27 @@ export class EstimateService {
       storageLimit: CONSTANTS.HARD_LIMITS.hard_storage_limit_per_operation
     };
     for (const tx of operations) {
-      console.log(tx);
-      if (!isOrigination) {
-        if (!tx.amount) {
-          tx.amount = 0;
-        }
-        if (tx.destination.slice(0, 3) !== 'KT1' && !tokenTransfer) {
-          tx.amount = 0.000001;
-        }
+      if (!tx.amount) {
+        tx.amount = 0;
+      }
+      if (tx.destination.slice(0, 3) !== 'KT1' && !tokenTransfer) {
+        tx.amount = 0.000001;
       }
       tx.gasLimit = simulation.gasLimit;
       tx.storageLimit = simulation.storageLimit;
     }
     if (this.hash && this.counter && (this.manager || this.manager === null)) {
-      const op = isOrigination
-        ? this.operationService.createOriginationObject(this.hash, this.counter, this.manager, operations[0], simulation.fee, this.pk, this.pkh)
-        : this.operationService.createTransactionObject(
-            this.hash,
-            this.counter,
-            this.manager,
-            operations,
-            this.pkh,
-            this.pk,
-            from,
-            simulation.fee,
-            tokenTransfer
-          );
+      const op = this.operationService.createTransactionObject(
+        this.hash,
+        this.counter,
+        this.manager,
+        operations,
+        this.pkh,
+        this.pk,
+        from,
+        simulation.fee,
+        tokenTransfer
+      );
       const result = await this.simulate(op)
         .toPromise()
         .catch((e) => {
@@ -145,7 +139,7 @@ export class EstimateService {
         for (const i in result.contents) {
           if (result.contents[i].kind === 'reveal') {
             reveal = true;
-          } else if (['transaction', 'origination'].includes(result.contents[i].kind) && result.contents[i].metadata.operation_result.status === 'applied') {
+          } else if (['transaction'].includes(result.contents[i].kind) && result.contents[i].metadata.operation_result.status === 'applied') {
             const index: number = Number(i) + (result.contents[0]?.kind === 'reveal' ? -1 : 0);
             const opObj = index > -1 ? operations[index] : null;
             const { gas, storage } = this.getOpUsage(result.contents[i], opObj);
@@ -346,5 +340,94 @@ export class EstimateService {
   }
   private async getManager(pkh: string): Promise<string> {
     return this.operationService.getRpc(`chains/main/blocks/head/context/contracts/${pkh}/manager_key`).toPromise();
+  }
+  private async _estimateOperations(operations: any, from: string): Promise<any> {
+    console.log('_estimateOperations', structuredClone(operations));
+    if (!this.hash || !this.counter) {
+      return null;
+    }
+    const simulation = {
+      fee: 0,
+      gasLimit: Math.min(
+        CONSTANTS.HARD_LIMITS.hard_gas_limit_per_operation,
+        Math.floor(CONSTANTS.HARD_LIMITS.hard_gas_limit_per_block / (operations.length + 1))
+      ),
+      storageLimit: CONSTANTS.HARD_LIMITS.hard_storage_limit_per_operation
+    };
+    for (const tx of operations) {
+      tx.gasRecommendation = tx.gas_limit;
+      tx.storageRecommendation = tx.storage_limit;
+      tx.gas_limit = simulation.gasLimit;
+      tx.storage_limit = simulation.storageLimit;
+    }
+    if (this.hash && this.counter && (this.manager || this.manager === null)) {
+      const operationObject = this.operationService.createOperationObject(
+        this.hash,
+        this.counter,
+        this.manager,
+        structuredClone(operations),
+        this.pkh,
+        this.pk,
+        simulation.fee
+      );
+      const result = await this.simulate(operationObject)
+        .toPromise()
+        .catch((e) => {
+          console.warn(e);
+          return null;
+        });
+      if (result && result.contents) {
+        let reveal = false;
+        const limits = [];
+        for (const i in result.contents) {
+          if (result.contents[i].kind === 'reveal') {
+            reveal = true;
+          } else {
+            const index: number = Number(i) + (result.contents[0]?.kind === 'reveal' ? -1 : 0);
+            const opObj = index > -1 ? operations[index] : null;
+            const { gas, storage } = this.getOpUsage(result.contents[i], opObj);
+            limits.push({ gasLimit: gas, storageLimit: storage });
+          }
+        }
+        return await this.operationService
+          .localForge(operationObject)
+          .pipe(
+            flatMap((fop) => {
+              const bytes = fop.length / 2 + 64;
+              const gas = this.totalGasLimit(limits);
+              const storage = this.totalStorageLimit(limits);
+              const dtp: DefaultTransactionParams = {
+                customLimits: limits,
+                fee: this.recommendFee(limits, reveal, bytes),
+                burn: this.burnFee(limits),
+                gas,
+                storage,
+                reveal
+              };
+              console.log(JSON.stringify(dtp));
+              return of(dtp);
+            })
+          )
+          .toPromise();
+      } else if (typeof result?.success === 'boolean' && result.success === false) {
+        console.log(result);
+        throw new Error(result.payload.msg);
+      }
+    }
+    return null;
+  }
+  async estimateOperations(operations: any, from: string): Promise<any> {
+    let retry = false;
+    for (let i = 0; i < 1 || (retry && i < 2); i++) {
+      return await this._estimateOperations(operations, from).catch(async (error) => {
+        if (error.message && error.message === 'An operation assumed a contract counter in the past' && !retry) {
+          console.log('Update counter');
+          await this.preLoadData(this.pkh, this.pk);
+          retry = true;
+        } else {
+          throw error;
+        }
+      });
+    }
   }
 }

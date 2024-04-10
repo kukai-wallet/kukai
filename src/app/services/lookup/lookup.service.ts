@@ -79,7 +79,7 @@ export class LookupService {
     }
     this.initCheck();
     if (force) {
-      console.debug('Forced recheck for: ' + address);
+      //console.debug('Forced recheck for: ' + address);
     }
     if (address && !this.pendingLookups[address]) {
       const { x } = this.index(address, 0);

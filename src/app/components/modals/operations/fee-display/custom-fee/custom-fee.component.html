@@ -1,0 +1,48 @@
+<div class="fee-display">
+  <form autocomplete="off">
+    <div class="flex-row">
+      <div class="flex-column">
+        <label class="label">Gas limit</label>
+        <input
+          numericinput="decimal"
+          name="none"
+          type="text"
+          class="text"
+          (input)="keyPressNumbersDecimal($event, 'customFee.gas')"
+          (paste)="keyPressNumbersDecimal($event, 'customFee.gas')"          
+          placeholder={{defaultFee.gas.toString()}}
+                        [(ngModel)]="customFee.gas">
+      </div>
+      <div class="flex-column">
+        <label class="label">Fee</label>
+        <input
+          inputmode="decimal"
+          name="none"
+          type="text"
+          class="text"
+          (input)="keyPressNumbersDecimal($event, 'customFee.fee')"
+          (paste)="keyPressNumbersDecimal($event, 'customFee.fee')"
+          placeholder={{defaultFee.fee.toString()}}
+                     [(ngModel)]="customFee.fee">
+      </div>
+    </div>
+    <div class="flex-row">
+      <div class="flex-column">
+        <label class="label">Storage limit</label>
+        <input
+          numericinput="decimal"
+          name="none"
+          type="text"
+          class="text"
+          (input)="keyPressNumbersDecimal($event, 'customFee.storage')"
+          (paste)="keyPressNumbersDecimal($event, 'customFee.storage')"          
+          placeholder={{defaultFee.storage.toString()}}
+                        [(ngModel)]="customFee.storage">
+      </div>
+      <div class="flex-column">
+        <label class="label">Max Storage Cost</label>
+        <input numericinput="decimal" name="none" type="text" class="text read-only" [value]="burnAmount() ? (burnAmount() + ' tez') : '0 tez'" tabindex=-1 readonly>
+      </div>
+    </div>
+  </form>
+</div>

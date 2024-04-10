@@ -76,7 +76,7 @@ export class CoordinatorService {
   }
   startXTZ() {
     if (!this.tzrateInterval) {
-      console.debug('Start scheduler XTZ');
+      // console.debug('Start scheduler XTZ');
       this.signalService.init();
       const update = () => {
         this.tzrateService.getTzrate();
@@ -91,7 +91,7 @@ export class CoordinatorService {
     this.unlockableService.restoreFeatures();
     if (pkh && !this.scheduler.get(pkh)) {
       this.accounts = this.walletService.wallet.getAccounts();
-      console.debug('Start scheduler ' + this.scheduler.size + ' ' + pkh);
+      // console.debug('Start scheduler ' + this.scheduler.size + ' ' + pkh);
       const scheduleData: ScheduleData = {
         pkh: pkh,
         state: State.UpToDate,
@@ -192,13 +192,6 @@ export class CoordinatorService {
       (err) => {
         console.log('Error in update()');
         console.error(err);
-      },
-      () => {
-        console.debug(
-          `account[${this.accounts.findIndex((a) => a.address === pkh)}][${
-            typeof this.scheduler.get(pkh)?.state !== 'undefined' ? this.scheduler.get(pkh).state : '*'
-          }]: <<`
-        );
       }
     );
   }
@@ -247,7 +240,7 @@ export class CoordinatorService {
   }
   updateAccountData(pkh: string) {
     // Maybe also check for originations to account?
-    console.debug('update account data for ' + pkh);
+    // console.debug('update account data for ' + pkh);
     this.operationService.getAccount(pkh).subscribe((ans: any) => {
       if (ans.success) {
         this.balanceService.updateAccountBalance(this.walletService.wallet?.getAccount(pkh), Number(ans.payload.balance));
@@ -263,7 +256,57 @@ export class CoordinatorService {
     if (!account.activities) {
       return;
     }
-    if (metadata.transactions) {
+    if (metadata.operations) {
+      let ktCounter = 0;
+      for (const op of metadata.operations) {
+        switch (op?.kind) {
+          case 'transaction':
+            const transaction = {
+              type: 'transaction',
+              status: OpStatus.UNCONFIRMED,
+              amount: op.amount,
+              fee: null,
+              source: { address: from },
+              destination: { address: op.destination },
+              hash: metadata.opHash,
+              block: null,
+              timestamp: new Date().getTime(),
+              entrypoint: op.parameters?.entrypoint ? op.parameters.entrypoint : ''
+            };
+            account.activities.unshift(transaction);
+            break;
+          case 'delegation':
+            const delegation = {
+              type: 'delegation',
+              status: OpStatus.UNCONFIRMED,
+              amount: null,
+              fee: null,
+              source: { address: from },
+              destination: { address: metadata.delegate },
+              hash: metadata.opHash,
+              block: null,
+              timestamp: new Date().getTime()
+            };
+            account?.activities.unshift(delegation);
+            break;
+          case 'origination':
+            const origination = {
+              type: 'origination',
+              status: OpStatus.UNCONFIRMED,
+              amount: op.balance,
+              fee: null,
+              source: { address: from },
+              destination: { address: metadata?.kt1[ktCounter++] },
+              hash: metadata.opHash,
+              block: null,
+              timestamp: new Date().getTime()
+            };
+            account?.activities.unshift(origination);
+            break;
+          default:
+        }
+      }
+    } else if (metadata.transactions) {
       console.log('Unconfirmed transactions:');
       console.log(metadata.transactions);
       const decimals =
