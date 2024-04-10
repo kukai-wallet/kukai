@@ -95,7 +95,6 @@ function isPartialTezosTransactionOperation(obj: any): obj is PartialTezosTransa
 function shouldHandleOperations(operations: any, modalName: string): boolean {
   if (operations?.length && operations.every(isPartialTezosOperation)) {
     const modalHandler = ((ops): string => {
-      return 'operation';
       if (ops?.length === 1 && ops[0].kind === 'delegation') {
         return 'delegate-confirm';
       } else if (ops.every((op) => op.kind === 'transaction')) {
