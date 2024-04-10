@@ -112,7 +112,7 @@ export class EventComponent implements OnInit, OnChanges, OnDestroy {
       case 'undelegated':
         return 'Unstaked';
       case 'origination':
-        return this.tokenService.formatAmount(this.activity.tokenId, this.activity.amount.toString());
+        return 'Originated';
       default:
         return '';
     }

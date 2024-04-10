@@ -115,6 +115,12 @@ export interface DefaultTransactionParams {
   }[];
 }
 
+export interface CustomFee {
+  gas: string;
+  fee: string;
+  storage: string;
+}
+
 export enum DisplayLinkOption {
   All,
   DirectAuth,

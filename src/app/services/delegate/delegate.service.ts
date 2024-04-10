@@ -36,7 +36,7 @@ export class DelegateService {
         account.delegate = data;
         this.walletService.storeWallet();
       } else {
-        console.debug('delegate for ' + account.address + ' up to date');
+        //console.debug('delegate for ' + account.address + ' up to date');
       }
     } else {
       if (account.delegate !== '') {

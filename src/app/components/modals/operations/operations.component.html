@@ -1,0 +1,40 @@
+<div *ngIf="isOpen" class="flex-column kukai-modal">
+  <div class="content">
+    <div class="flex-row top">
+      <div class="flex-row button close" (click)="closeModalAction()">
+        <img class="x" src="../../../../assets/img/close-btn-x.png" />
+      </div>
+      <h1 class="title">Confirmation</h1>
+    </div>
+    <div class="flex-column confirm-send">
+      <form autocomplete="off">
+        <div class="flex-column">
+          <div class="flex-row to">
+            <div class="flex-column left">
+              <span class="key">ACCOUNT: </span>
+            </div>
+            <div class="flex-column right">
+              {{ account?.address }}
+            </div>
+          </div>
+          <br />
+          <div class="flex-row from">
+            <div class="flex-column left">
+              <span class="key">Balance change: </span>
+            </div>
+            <div class="flex-column right">
+              <B>{{balanceChange}}</B>
+            </div>
+          </div>
+        </div>        
+        <br />
+        <app-operations-display [operations]="operations"></app-operations-display>
+        <br />
+      </form>
+      <app-fee-display [defaultFee]="defaultFee" (customFeeChange)="onCustomFeeChange($event)">
+      </app-fee-display>
+      <app-sign [bytes]="opbytes" [account]="account" (signedBytes)="onSignedBytes($event)">
+      </app-sign>
+    </div>
+  </div>
+</div>

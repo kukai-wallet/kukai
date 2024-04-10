@@ -1,0 +1,14 @@
+<div class="flex-column sign-operations kukai-modals">
+  <span [style.visibility]="!errorMessage ? 'hidden' : ''" [style.margin]="!errorMessage ? '0' : ''"
+        class="label danger">{{ this.errorMessage }}</span>
+  <ng-container *ngIf="walletService.isPwdWallet()">
+    <span class="label">ENTER YOUR
+      PASSWORD TO CONFIRM:</span>
+    <input name="none" [(ngModel)]="password" autocomplete="current-password" placeholder="Password"
+           class="text password" type="password" (input)="pwdTyping()" (change)="pwdTyping()"
+           (keydown.enter)='!messageService.spinnerOn ? sign() : null'>
+  </ng-container>
+  <button class="confirm" (click)="!messageService.spinnerOn ? sign() : null"
+          [disabled]="messageService.spinnerOn">
+    {{ 'Sign'}}</button>
+</div>

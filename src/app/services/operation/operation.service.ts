@@ -68,29 +68,20 @@ export class OperationService {
               const sopbytes: string = opbytes + Array(129).join('0');
               fop.protocol = header.protocol;
               fop.signature = 'edsigtXomBKi5CTRf5cjATJWSyaRvhfYNHqSUGrn4SdbYRcGwQrUGjzEfQDTuqHhuA8b2d8NarZjz8TRf65WkpQmo423BtomS8Q';
-              return this.postRpc('chains/main/blocks/head/helpers/preapply/operations', [fop]).pipe(
-                flatMap((preApplyResult: any) => {
-                  console.log(JSON.stringify(preApplyResult));
-                  return this.postRpc('injection/operation', JSON.stringify(sopbytes)).pipe(
-                    flatMap((final: any) => {
-                      return this.opCheck(final);
-                    })
-                  );
-                })
-              );
+              return this._preapplyAndInject(fop, sopbytes);
             })
           );
         })
       )
       .pipe(catchError((err) => this.errHandler(err)));
   }
-  opCheck(final: any, newPkh: string = null): Observable<any> {
+  opCheck(final: any, newKT1s: string[] = null): Observable<any> {
     if (typeof final === 'string' && final.length === 51) {
       return of({
         success: true,
         payload: {
           opHash: final,
-          newPkh: newPkh
+          newKT1s: newKT1s
         }
       });
     } else {
@@ -102,63 +93,6 @@ export class OperationService {
         }
       });
     }
-  }
-  /*
-    Returns an observable for the origination of new accounts.
-  */
-  originate(origination: any, fee: number = 0, keys: KeyPair): Observable<any> {
-    console.log(fee, origination);
-    return this.getHeader()
-      .pipe(
-        flatMap((header: any) => {
-          return this.getRpc(`chains/main/blocks/head/context/contracts/${keys.pkh}/counter`).pipe(
-            flatMap((actions: number) => {
-              return this.getRpc(`chains/main/blocks/head/context/contracts/${keys.pkh}/manager_key`).pipe(
-                flatMap((manager: any) => {
-                  if (fee > this.feeHardCap) {
-                    throw new Error('TooHighFee');
-                  }
-                  const counter: number = Number(actions);
-                  const fop = this.createOriginationObject(header.hash, counter, manager, origination, fee, keys.pk, keys.pkh);
-                  return this.operation(fop, header, keys, true);
-                })
-              );
-            })
-          );
-        })
-      )
-      .pipe(catchError((err) => this.errHandler(err)));
-  }
-  createOriginationObject(hash: string, counter: number, manager: string, origination: any, fee: number, pk: string, pkh: string): any {
-    const fop: any = {
-      branch: hash,
-      contents: []
-    };
-    const gas_limit = origination.gasLimit.toString();
-    const storage_limit = origination.storageLimit.toString();
-    if (manager === null) {
-      // Reveal
-      fop.contents.push({
-        kind: 'reveal',
-        source: pkh,
-        fee: '0',
-        counter: (++counter).toString(),
-        gas_limit: '200',
-        storage_limit: '0',
-        public_key: pk
-      });
-    }
-    fop.contents.push({
-      kind: 'origination',
-      source: pkh,
-      fee: this.microTez.times(fee).toString(),
-      counter: (++counter).toString(),
-      gas_limit,
-      storage_limit,
-      balance: this.microTez.times(origination.balance).toString(),
-      script: origination.script
-    });
-    return fop;
   }
   /*
     Returns an observable for the transaction of tez.
@@ -292,6 +226,33 @@ export class OperationService {
     }
     return fop;
   }
+  createOperationObject(hash: string, counter: number, manager: string, operations: any, pkh: string, pk: string, fee: number): any {
+    const fop: any = {
+      branch: hash,
+      contents: []
+    };
+    if (manager === null) {
+      // Reveal
+      fop.contents.push({
+        kind: 'reveal',
+        source: pkh,
+        fee: '0',
+        counter: (++counter).toString(),
+        gas_limit: '200',
+        storage_limit: '0',
+        public_key: pk
+      });
+    }
+    for (let i = 0; i < operations.length; i++) {
+      const currentFee = i === operations.length - 1 ? this.microTez.times(fee).toString() : '0';
+      const gas_limit = operations[i].gas_limit.toString();
+      const storage_limit = operations[i].storage_limit.toString();
+      delete operations[i].gasRecommendation;
+      delete operations[i].storageRecommendation;
+      fop.contents.push({ ...operations[i], counter: (++counter).toString(), source: pkh, gas_limit, storage_limit, fee: currentFee });
+    }
+    return fop;
+  }
   /*
     Returns an observable for the delegation of baking rights.
   */
@@ -362,7 +323,7 @@ export class OperationService {
   /*
   Help function for operations
   */
-  operation(fop: any, header: any, keys: KeyPair, origination: boolean = false): Observable<any> {
+  private operation(fop: any, header: any, keys: KeyPair): Observable<any> {
     console.log('fop to send: ' + JSON.stringify(fop));
     return this.postRpc('chains/main/blocks/head/helpers/forge/operations', fop).pipe(
       flatMap((opbytes: any) => {
@@ -390,24 +351,7 @@ export class OperationService {
               const signed = this.sign('03' + opbytes, keys.sk);
               const sopbytes = signed.sbytes;
               fop.signature = signed.edsig;
-              return this.postRpc('chains/main/blocks/head/helpers/preapply/operations', [fop]).pipe(
-                flatMap((applied: any) => {
-                  console.log('applied: ' + JSON.stringify(applied));
-                  this.checkApplied(applied);
-                  console.log('sop: ' + sopbytes);
-                  return this.postRpc('injection/operation', JSON.stringify(sopbytes))
-                    .pipe(timeout(30000))
-                    .pipe(
-                      flatMap((final: any) => {
-                        let newPkh = null;
-                        if (origination) {
-                          newPkh = applied[0].contents[fop.contents.length - 1].metadata.operation_result.originated_contracts[0];
-                        }
-                        return this.opCheck(final, newPkh);
-                      })
-                    );
-                })
-              );
+              return this._preapplyAndInject(fop, sopbytes);
             }
           })
         );
@@ -417,37 +361,50 @@ export class OperationService {
   /*
     Broadcast a signed operation to the network
   */
-  broadcast(sopbytes: string): Observable<any> {
-    console.log('Broadcast...');
+  broadcast(sopbytes: string, protocol?: string, isEdsig = true): Observable<any> {
     const opbytes = sopbytes.slice(0, sopbytes.length - 128);
-    const edsig = this.sig2edsig(sopbytes.slice(sopbytes.length - 128));
+    const prefixedSig = this.sig2prefixedSig(sopbytes.slice(sopbytes.length - 128), isEdsig);
     return fromPromise(localForger.parse(opbytes))
       .pipe(
         flatMap((fop: any) => {
-          fop.signature = edsig;
-          return this.getHeader().pipe(
-            flatMap((header: any) => {
-              fop.protocol = header.protocol;
-              return this.postRpc('chains/main/blocks/head/helpers/preapply/operations', [fop]).pipe(
-                flatMap((parsed: any) => {
-                  let newPkh = null;
-                  for (let i = 0; i < parsed[0].contents.length; i++) {
-                    if (parsed[0].contents[i].kind === 'origination') {
-                      newPkh = parsed[0].contents[i].metadata.operation_result.originated_contracts[0];
-                    }
-                  }
-                  return this.postRpc('injection/operation', JSON.stringify(sopbytes)).pipe(
-                    flatMap((final: any) => {
-                      return this.opCheck(final, newPkh);
-                    })
-                  );
-                })
-              );
-            })
-          );
+          fop.signature = prefixedSig;
+          if (protocol) {
+            fop.protocol = protocol;
+            return this._preapplyAndInject(fop, sopbytes);
+          } else {
+            return this.getHeader().pipe(
+              flatMap((header) => {
+                fop.protocol = header.protocol;
+                return this._preapplyAndInject(fop, sopbytes);
+              })
+            );
+          }
         })
       )
       .pipe(catchError((err) => this.errHandler(err)));
+  }
+  private _preapplyAndInject(fop, sopbytes) {
+    return this.postRpc('chains/main/blocks/head/helpers/preapply/operations', [fop]).pipe(
+      flatMap((applied: any) => {
+        console.log('preapply result', applied);
+        this.checkApplied(applied);
+        let newKT1s = [];
+        try {
+          for (let i = 0; i < applied[0].contents.length; i++) {
+            if (applied[0].contents[i].kind === 'origination') {
+              newKT1s = newKT1s.concat(applied[0].contents[i].metadata.operation_result.originated_contracts);
+            }
+          }
+        } catch (e) {}
+        return this.postRpc('injection/operation', JSON.stringify(sopbytes))
+          .pipe(timeout(30000))
+          .pipe(
+            flatMap((final: any) => {
+              return this.opCheck(final, newKT1s);
+            })
+          );
+      })
+    );
   }
   torusKeyLookup(tz2address: string): Observable<any> {
     // Make it into Promise
@@ -867,8 +824,8 @@ export class OperationService {
     const publicKey = this.b58cdecode(pk, this.prefix.edpk);
     return naclSign.detached.verify(signature, hash, publicKey);
   }
-  sig2edsig(sig: string): any {
-    return this.b58cencode(this.hex2buf(sig), this.prefix.edsig);
+  sig2prefixedSig(sig: string, isEdsig = true): any {
+    return this.b58cencode(this.hex2buf(sig), isEdsig ? this.prefix.edsig : this.prefix.spsig);
   }
   decodeString(bytes: string): string {
     return Buffer.from(this.hex2buf(bytes)).toString('utf-8');
@@ -1532,5 +1489,27 @@ export class OperationService {
         return timer(250).pipe(concatMap(() => this.getRpc(path, ++c, initialError ?? error)));
       })
     );
+  }
+
+  operations(ops: any, fee: number = 0, keys: KeyPair): Observable<any> {
+    return this.getHeader()
+      .pipe(
+        flatMap((header: any) => {
+          return this.getRpc(`chains/main/blocks/head/context/contracts/${keys.pkh}/counter`).pipe(
+            flatMap((counter: any) => {
+              return this.getRpc(`chains/main/blocks/head/context/contracts/${keys.pkh}/manager_key`).pipe(
+                flatMap((manager: any) => {
+                  if (fee > this.feeHardCap) {
+                    throw new Error('TooHighFee');
+                  }
+                  const fop = this.createOperationObject(header.hash, Number(counter), manager, ops, keys.pkh, keys.pk, fee);
+                  return this.operation(fop, header, keys);
+                })
+              );
+            })
+          );
+        })
+      )
+      .pipe(catchError((err) => this.errHandler(err)));
   }
 }

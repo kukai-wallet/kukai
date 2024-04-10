@@ -269,11 +269,12 @@ export class WalletConnectService {
       },
       wcData: data
     };
-    if (data.params.requiredNamespaces.tezos.chains.includes(`tezos:${CONSTANTS.NETWORK}`)) {
+    if (data?.params?.requiredNamespaces?.tezos?.chains?.includes(`tezos:${CONSTANTS.NETWORK}`)) {
       message.network = { type: CONSTANTS.NETWORK };
     } else {
-      console.log(data.params.requiredNamespaces.tezos.chains);
-      throw new Error('wrong network');
+      console.warn(`Unsupported chain: ${data?.params?.requiredNamespaces?.tezos?.chains}`);
+      this.rejectPairing(message);
+      return;
     }
     message.scopes = { methods: data.params.requiredNamespaces.tezos.methods, events: data.params.requiredNamespaces.tezos.events };
     this.subjectService.wc2.next(message);

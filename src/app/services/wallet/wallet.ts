@@ -183,7 +183,7 @@ export class TorusWallet extends Wallet {
     return null;
   }
   private getExpiration() {
-    return new Date().getTime() + ONE_HOUR * 3;
+    return new Date().getTime() + ONE_HOUR * 4;
   }
 }
 

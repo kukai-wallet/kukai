@@ -23,6 +23,7 @@ import { CONSTANTS } from '../../../../environments/environment';
 import { SubjectService } from '../../../services/subject/subject.service';
 import { Subscription } from 'rxjs';
 import { ExternalRequest } from '../../../interfaces';
+import { shouldHandleOperations } from '../../../libraries/beacon-type-check';
 
 @Component({
   selector: 'app-send',
@@ -92,7 +93,7 @@ export class SendComponent implements OnInit, OnChanges, OnDestroy {
       this.operationResponse.emit('invalid_parameters');
       return;
     }
-    if (opReq[0].kind === 'transaction') {
+    if (shouldHandleOperations(opReq, 'send')) {
       const txs: PartiallyPreparedTransaction[] = opReq.map((tx) => {
         if (tx.kind !== 'transaction') {
           throw new Error('Invalid op kind');

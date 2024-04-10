@@ -13,6 +13,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ModalComponent } from '../modal.component';
 import { Subscription } from 'rxjs';
 import { SubjectService } from '../../../services/subject/subject.service';
+import { shouldHandleOperations } from '../../../libraries/beacon-type-check';
 import Big from 'big.js';
 
 @Component({
@@ -81,7 +82,7 @@ export class DelegateComponent extends ModalComponent implements OnInit, OnChang
         const opReq = this.externalRequest.operationRequest.operationDetails
           ? this.externalRequest.operationRequest.operationDetails
           : this.externalRequest.operationRequest;
-        if (opReq[0]?.kind === 'delegation') {
+        if (shouldHandleOperations(opReq, this.name)) {
           if (opReq[0].delegate) {
             this.activeAccount = this.externalRequest.selectedAccount;
             ModalComponent.currentModel.next({

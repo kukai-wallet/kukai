@@ -6,12 +6,12 @@ import { CONSTANTS } from '../../../../environments/environment';
 import { Account } from '../../../services/wallet/wallet';
 import { BeaconService } from '../../../services/beacon/beacon.service';
 import { DeeplinkService } from '../../../services/deeplink/deeplink.service';
-import { assertMichelsonData } from '@taquito/michel-codec';
 import { InputValidationService } from '../../../services/input-validation/input-validation.service';
 import { SubjectService } from '../../../services/subject/subject.service';
 import { Subscription } from 'rxjs';
 import { ExternalRequest } from '../../../interfaces';
 import { WalletConnectService } from '../../../services/wallet-connect/wallet-connect.service';
+import { isPartialTezosOperation, sanitizeOperations, normalizeOperations } from '../../../libraries/beacon-type-check';
 import { ModalComponent } from '../../../components/modals/modal.component';
 
 @Component({
@@ -116,7 +116,7 @@ export class UriHandlerComponent implements OnInit, OnDestroy {
       .catch((error) => console.error('connect error', error));
   };
   async handleBeaconMessage(message: any) {
-    console.log('### beacon message', message);
+    console.log('### beacon message', structuredClone(message));
     console.log(JSON.stringify(message));
     if (message.type !== BeaconMessageType.SignPayloadRequest && message.network.type !== CONSTANTS.NETWORK) {
       console.warn(`Rejecting Beacon message because of network. Expected ${CONSTANTS.NETWORK} instead of ${message.network.type}`);
@@ -131,7 +131,7 @@ export class UriHandlerComponent implements OnInit, OnDestroy {
             this.externalRequest = { operationRequest: message, selectedAccount: this.selectedAccount };
             this.changeFavicon(true);
           } else if (message?.version === 0) {
-            console.error('Invalid request');
+            console.error('Invalid request', message);
           }
           break;
         case BeaconMessageType.SignPayloadRequest:
@@ -187,92 +187,32 @@ export class UriHandlerComponent implements OnInit, OnDestroy {
         console.warn('Source address not recogized');
         await this.beaconService.rejectOnSourceAddress(message);
         return false;
-      } else if (message.operationDetails.length > 1) {
-        for (const op of message.operationDetails) {
-          if (op.kind !== 'transaction') {
-            console.warn('Only transaction batches supported');
-            await this.beaconService.rejectOnTooManyOps(message);
-            return false;
-          }
-        }
       }
-      if (message.operationDetails[0].kind === 'transaction') {
-        for (let i = 0; i < message.operationDetails.length; i++) {
-          if (
-            message.operationDetails[i].destination &&
-            message.operationDetails[i].parameters &&
-            this.walletService.wallet.getAccount(message.operationDetails[i].destination)
-          ) {
-            console.warn('Invocation of user controlled contract is disabled');
-            await this.beaconService.rejectOnPermission(message);
-            return false;
-          } else if (!message.operationDetails[i]?.destination) {
-            console.warn('Missing destination');
-            await this.beaconService.rejectOnUnknown(message);
-            return false;
-          } else if (this.invalidAmount(message.operationDetails[i])) {
-            console.warn('Invalid amount');
-            await this.beaconService.rejectOnUnknown(message);
-            return false;
-          } else if (this.invalidParameters(message.operationDetails[i].parameters)) {
-            await this.beaconService.rejectOnParameters(message);
-            return false;
-          } else if (this.invalidOptionals(message.operationDetails[i])) {
-            await this.beaconService.rejectOnParameters(message);
-            return false;
-          }
-        }
-      } else if (message.operationDetails[0].kind === 'delegation') {
-        if (!message.operationDetails[0].delegate) {
-          console.warn('Invalid delegate');
+      message.operationDetails = sanitizeOperations(message.operationDetails);
+      message.operationDetails = normalizeOperations(message.operationDetails);
+      for (let i = 0; i < message.operationDetails.length; i++) {
+        if (
+          message.operationDetails[i].destination &&
+          message.operationDetails[i].parameters &&
+          this.walletService.wallet.getAccount(message.operationDetails[i].destination)
+        ) {
+          console.warn('Invocation of user controlled contract is disabled');
+          await this.beaconService.rejectOnPermission(message);
+          return false;
+        } else if (!isPartialTezosOperation(message.operationDetails[i])) {
+          console.warn('Unsupported operation kind', message.operationDetails[i]);
           await this.beaconService.rejectOnUnknown(message);
           return false;
         }
-      } else if (message.operationDetails[0].kind === 'origination') {
-        if (!message.operationDetails[0].script) {
-          console.warn('No script found');
-          await this.beaconService.rejectOnParameters(message);
-          return false;
-        } else if (this.invalidOptionals(message.operationDetails[0])) {
-          await this.beaconService.rejectOnParameters(message);
-          return false;
-        }
-      } else {
-        console.warn('Unsupported operation kind');
-        await this.beaconService.rejectOnUnknown(message);
-        return false;
       }
       this.selectedAccount = this.walletService.wallet.getImplicitAccount(message.sourceAddress);
       return true;
     } catch (e) {
       if (e?.message === 'No matching request found!' && message.version === 0) {
-        console.log('wc2');
         this.walletConnectService.wcResponse(message, '', false);
       } else {
         throw e;
       }
-    }
-    return false;
-  }
-  private invalidAmount(op: any): boolean {
-    if (typeof op?.amount === 'number') {
-      // normalize
-      op.amount = op.amount.toString();
-    }
-    return !op?.amount || typeof op.amount !== 'string' || !this.inputValidationService.amount(op.amount, 0);
-  }
-  private invalidOptionals(op: any): boolean {
-    if (typeof op.gas_limit === 'number') {
-      // normalize
-      op.gas_limit = op.gas_limit.toString();
-    }
-    if (typeof op.storage_limit === 'number') {
-      op.storage_limit = op.storage_limit.toString();
-    }
-    if (op.gas_limit && (typeof op.gas_limit !== 'string' || !this.inputValidationService.amount(op.gas_limit, 0))) {
-      return true;
-    } else if (op.storage_limit && (typeof op.storage_limit !== 'string' || !this.inputValidationService.amount(op.storage_limit, 0))) {
-      return true;
     }
     return false;
   }
@@ -317,19 +257,6 @@ export class UriHandlerComponent implements OnInit, OnDestroy {
       }
     }
     return false;
-  }
-  invalidParameters(parameters: any): boolean {
-    try {
-      if (parameters) {
-        if (!parameters.value || !parameters.entrypoint) {
-          throw new Error('entrypoint and value expected');
-        }
-        assertMichelsonData(parameters.value);
-      }
-      return false;
-    } catch (e) {
-      return true;
-    }
   }
   /* operation request handling */
   async operationResponse(opHash: any): Promise<void> {

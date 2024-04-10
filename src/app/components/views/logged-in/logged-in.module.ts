@@ -6,6 +6,11 @@ import { EstimateService } from '../../../services/estimate/estimate.service';
 import { SendComponent } from '../../misc/send/send.component';
 import { ReceiveComponent } from '../../modals/receive/receive.component';
 import { DelegateComponent } from '../../modals/delegate/delegate.component';
+import { OperationsComponent } from '../../modals/operations/operations.component';
+import { OperationsDisplayComponent } from '../../modals/operations/operations-display/operations-display.component';
+import { FeeDisplayComponent } from '../../modals/operations/fee-display/fee-display.component';
+import { CustomFeeComponent } from '../../modals/operations/fee-display/custom-fee/custom-fee.component';
+import { SignComponent } from '../../modals/operations/sign/sign.component';
 import { DelegatePageComponent } from './delegate-page/delegate-page.component';
 import { ActivateComponent } from '../start/activate/activate.component';
 import { NewImplicitComponent } from '../../modals/new-implicit/new-implicit.component';
@@ -17,7 +22,6 @@ import { QrScannerComponent } from '../../modals/qr-scanner/qr-scanner.component
 import { SignExprComponent } from '../../modals/sign-expr/sign-expr.component';
 import { ConfirmSendComponent } from '../../modals/send/confirm/send-confirmation.component';
 import { PrepareSendComponent } from '../../modals/send/prepare/prepare-send.component';
-import { OriginateComponent } from '../../modals/originate/originate.component';
 import { LoggedInComponent } from './logged-in.component';
 import { LoggedInRoutingModule } from './logged-in-routing.module';
 import { ConfirmSendEmbedComponent } from '../embedded/confirm-send/confirm-send.component';
@@ -61,10 +65,14 @@ import { SessionSelectDropdownComponent } from '../../ui/dropdown/session-select
     SettingsComponent,
     QrScannerComponent,
     SignExprComponent,
-    OriginateComponent,
     ConfirmSendComponent,
     PrepareSendComponent,
     DelegateComponent,
+    OperationsComponent,
+    OperationsDisplayComponent,
+    FeeDisplayComponent,
+    CustomFeeComponent,
+    SignComponent,
     AdvancedToggleComponent,
     ConfirmSendEmbedComponent,
     SignExprEmbedComponent,

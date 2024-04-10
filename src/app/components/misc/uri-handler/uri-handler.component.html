@@ -2,7 +2,7 @@
   [externalRequest]="externalRequest"></app-send>
 <app-delegate (operationResponse)="operationResponse($event)" [beaconMode]=true [externalRequest]=externalRequest>
 </app-delegate>
-<app-originate (operationResponse)="operationResponse($event)" [externalRequest]=externalRequest></app-originate>
+<app-operations (operationResponse)="operationResponse($event)" [externalRequest]=externalRequest></app-operations>
 <app-permission-request (permissionResponse)="permissionResponse($event)" [permissionRequest]="permissionRequest"
   [activeAccount]=activeAccount>
 </app-permission-request>

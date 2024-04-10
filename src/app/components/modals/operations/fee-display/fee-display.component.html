@@ -1,0 +1,4 @@
+<div style="width: calc(100% - 1rem); margin-bottom: 1.375rem;"><app-ui-toggle-advanced [default]="false"
+  (stateChange)="advancedForm = $event">
+</app-ui-toggle-advanced></div>
+<app-custom-fee [hidden]="!advancedForm" [defaultFee]="defaultFee" (customFeeChange)="onCustomFeeChange($event)"></app-custom-fee>

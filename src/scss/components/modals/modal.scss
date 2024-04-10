@@ -201,6 +201,10 @@ $base-filter-contrast-invert-01: v.$base-filter-contrast-invert-01;
       & input::placeholder {
         text-transform: uppercase;
       }
+      &.value {
+        @include m.multiply("font-size", 1.125, "em !important");
+        color: #6c7a8d !important;
+      }      
     }
 
     @import "./token-detail.scss";
@@ -287,6 +291,92 @@ $base-filter-contrast-invert-01: v.$base-filter-contrast-invert-01;
     font-size: 1.125em;
     margin: 2em 0;
     color: $base-end-color-static;
+  }
+}
+
+.fee-display {
+    margin: 1em 0 0 0;
+    width: 100%;
+    font-size: 100%;
+    & .label {
+        @include m.multiply("font-size", 1, "em");
+        margin: 1em;
+        letter-spacing: 0.02em;
+        font-weight: 500;
+        color: $base-font-color-secondary-half;
+        text-transform: uppercase;
+        font-size: 1.125em;
+        margin: 0 0 0.5em 0;      
+    }
+    & > div {
+        width: 100%;
+        & > div {
+            width: calc(50% - 0.5em);
+        }
+    }
+    & .label {
+        font-size: 1.125em;
+        margin: 0 0 0.5em 0;
+    }
+    & input {
+        margin: 0 0 1em 0;
+        width: 100%;
+        padding: 0 0 0 1em;
+        height: 3.5em;
+        border-radius: 1em;
+        align-self: flex-start;
+
+        @include m.multiply("font-size", 1.25, "em");
+        height: 4em;
+        width: 100%;
+        background-color: $base-end-color;
+        border: v.$border-width solid $border-color;
+    }
+    & input::placeholder {
+        color: v.$base-font-color-secondary;
+    }
+    & input:read-only {
+        color: v.$base-font-color-secondary;
+        text-transform: uppercase;
+    }
+}
+
+.sign-operations {
+  border-top: 2px solid $border-color;
+  align-items: center;
+  background-color: $base-end-color;
+  width: 100%;
+
+  & .label {
+    @include m.multiply("font-size", 1, "em");
+    margin: 1em;
+    letter-spacing: 0.02em;
+    font-weight: 500;
+    color: $base-font-color-secondary-half;
+    text-transform: uppercase;
+  }
+  
+  & .danger {
+    color: v.$base-red-color;
+  }
+
+  & button.confirm {
+    width: 50%;
+    height: 4.5em;
+    border-radius: v.$border-radius-hardest;
+    padding: 0 2em;
+    font-size: 1.125em;
+    margin: 2em 0;
+    color: $base-end-color-static;
+  }
+  & input {
+    @include m.multiply("font-size", 1.25, "em");
+    height: 4em;
+    width: 100%;
+    background-color: $base-end-color;
+    border: v.$border-width solid $border-color;
+    border-radius: v.$border-radius-hardest;
+    padding: 0 0 0 2em;
   }
 }
 
