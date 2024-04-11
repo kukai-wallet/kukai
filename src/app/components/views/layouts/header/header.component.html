@@ -14,9 +14,9 @@
       <div class="delegation">
         <div class="flex-row outside-container" *ngIf="!beaconMode">
           <div class="flex-row button" routerLink="/account/{{activeAccount?.address}}/stakers">
-            <span *ngIf="!activeAccount?.delegate">STAKING: <span class="choose">NOT
-                STAKED</span></span>
-            <span *ngIf="activeAccount?.delegate" class="address">STAKING: <span>{{ delegateName }}</span></span>
+            <span *ngIf="!activeAccount?.delegate">DELEGATING: <span class="choose">NOT
+                DELEGATED</span></span>
+            <span *ngIf="activeAccount?.delegate" class="address">DELEGATING: <span>{{ delegateName }}</span></span>
           </div>
         </div>
       </div>

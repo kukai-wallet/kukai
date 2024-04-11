@@ -2,11 +2,11 @@
   [externalRequest]="externalRequest"></app-send>
 <app-delegate (operationResponse)="operationResponse($event)" [beaconMode]=true [externalRequest]=externalRequest>
 </app-delegate>
-<app-operations (operationResponse)="operationResponse($event)" [externalRequest]=externalRequest></app-operations>
-<app-permission-request (permissionResponse)="permissionResponse($event)" [permissionRequest]="permissionRequest"
+<app-operations *ngIf="externalRequest" (operationResponse)="operationResponse($event)" [externalRequest]=externalRequest></app-operations>
+<app-permission-request *ngIf="permissionRequest" (permissionResponse)="permissionResponse($event)" [permissionRequest]="permissionRequest"
   [activeAccount]=activeAccount>
 </app-permission-request>
-<app-sign-expr (signResponse)="signResponse($event)" [signRequest]="signRequest" [activeAccount]=selectedAccount>
+<app-sign-expr *ngIf="signRequest" (signResponse)="signResponse($event)" [signRequest]="signRequest" [activeAccount]=selectedAccount>
 </app-sign-expr>
 <app-account-list [title]="'Accounts'" [activeAccount]="activeAccount"></app-account-list>
 <app-new-implicit></app-new-implicit>
