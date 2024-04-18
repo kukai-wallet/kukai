@@ -394,7 +394,8 @@ button {
     }
 
     & .login-options {
-      width: calc(100% - 2.5em);
+      --optionWidth: calc(100% - 2.5em); 
+      width: var(--optionWidth);
 
       & .option {
         & span {
@@ -407,6 +408,10 @@ button {
           & img {
             margin: 0 0 0 1em;
           }
+        }
+        &.narrow {
+          width: calc(var(--optionWidth) / 3);
+          box-sizing: border-box;
         }
       }
     }
