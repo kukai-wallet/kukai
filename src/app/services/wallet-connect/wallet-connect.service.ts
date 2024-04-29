@@ -214,13 +214,16 @@ export class WalletConnectService {
       this.refresh();
       this.autoCloseRequest.next(data?.topic);
     });
+    this.client.on('session_request_expire', (data) => {
+      console.log('session_request_expire', data);
+      this.autoCloseRequest.next(data?.id);
+    });
     this.client.on('proposal_expire', (data) => {
       console.log('proposal_expire', data);
       this.autoCloseRequest.next(data?.id);
     });
     this.client.core.pairing.events.on('pairing_delete', (data) => {
       console.log('pairing_delete', data);
-      this.refresh();
       this.autoCloseRequest.next(data?.topic);
     });
     this.client.core.pairing.events.on('pairing_expire', (data) => {
@@ -239,7 +242,8 @@ export class WalletConnectService {
       //'session_expire',
       //'pairing_delete',
       //'session_request',
-      'session_event'
+      'session_event',
+      'session_authenticate'
       //'proposal_expire'
     ];
     const unhandledPairingEvents: string[] = ['pairing_ping'];
@@ -318,6 +322,7 @@ export class WalletConnectService {
     } else {
       this.bcService.broadcast({ kind: MessageKind.PropagateResponse, payload: { request, publicKey, pairingApproved: true } });
     }
+    console.log('proposal approved', request?.data?.id);
   }
   async wcResponse(request: any, hash: string, success: boolean) {
     if (hash === 'silent') {
@@ -356,6 +361,7 @@ export class WalletConnectService {
     } else {
       this.bcService.broadcast({ kind: MessageKind.PropagateResponse, payload: { request, pairingApproved: false } });
     }
+    console.log('proposal rejected', data?.id);
   }
   private async requestHandler(data: any) {
     try {

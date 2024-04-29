@@ -34,15 +34,15 @@ describe('[ TzrateService ]', () => {
   const walletTols = new WalletTools();
   const isMainnet = CONSTANTS.NETWORK === 'mainnet';
   // mock network data
-  const apiUrl = 'https://api.coingecko.com/api/v3/simple/price?ids=tezos&vs_currencies=usd';
+  const apiUrl = 'https://api.coinbase.com/v2/prices/xtz-usd/spot';
   const ticker = {
-    tezos: {
-      usd: 2.07
+    data: {
+      amount: 2.07
     }
   };
   const mockhttpresponse = {
-    tezos: {
-      usd: 2.07
+    data: {
+      amount: 2.07
     }
   };
 
@@ -98,7 +98,7 @@ describe('[ TzrateService ]', () => {
 
     it('should update wallet xtzrate from 0 to 2.07', () => {
       console.log(walletservice.wallet.XTZrate.toString());
-      expect(walletservice.wallet.XTZrate.toString()).toEqual(isMainnet ? ticker.tezos.usd.toString() : '0');
+      expect(walletservice.wallet.XTZrate.toString()).toEqual(isMainnet ? ticker.data.amount.toString() : '0');
     });
 
     describe('> Update Account Balance', () => {

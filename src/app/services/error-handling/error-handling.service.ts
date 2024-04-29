@@ -14,6 +14,9 @@ const customErrors: Record<string, CustomError> = {
   },
   'Only one manager operation per manager per block allowed': {
     msg: 'Error while applying operation: Please try again.'
+  },
+  'proto.alpha.contract.balance_too_low': {
+    msg: 'Not enoght tez (XTZ) to perform this operation'
   }
 };
 

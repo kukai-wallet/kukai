@@ -5,14 +5,14 @@ import { CONSTANTS } from '../../../environments/environment';
 
 @Injectable()
 export class TzrateService {
-  public apiUrl = 'https://api.coingecko.com/api/v3/simple/price?ids=tezos&vs_currencies=usd';
+  public apiUrl = 'https://api.coinbase.com/v2/prices/xtz-usd/spot';
   constructor(private http: HttpClient, private walletService: WalletService) {}
 
   getTzrate() {
     if (CONSTANTS.MAINNET) {
       this.http.get(this.apiUrl).subscribe(
         (price: any) => {
-          this.walletService.wallet.XTZrate = price.tezos.usd;
+          this.walletService.wallet.XTZrate = Number(price.data.amount) || null;
           this.updateFiatBalances();
         },
         (err) => console.log('Failed to get xtz price: ' + JSON.stringify(err))
