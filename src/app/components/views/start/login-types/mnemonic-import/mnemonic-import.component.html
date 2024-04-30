@@ -73,7 +73,7 @@
             [(ngModel)]="password" [placeholder]="'Password (required)'" readonly="true" (click)="clickPassword($event)"
             (blur)="blurPassword($event)">
           <span class="label">Provide the public key hash to verify your email and password are correct</span>
-          <input name="none" type="text" class="text" [(ngModel)]="pkh" [placeholder]="'tz1... (recomended)'">
+          <input name="none" type="text" class="text" [(ngModel)]="pkh" [placeholder]="'tz1... (recommended)'">
         </form>
       </ng-container>
       <button class="button next" (click)="retrieve()">Import</button>
