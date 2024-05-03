@@ -175,7 +175,8 @@ const _CONSTANTS: Constants = {
         'KT1MxZTs3QrWffkGCLrkw8hVXxBiSbqo3JZn',
         'KT1NpS5Kfn4foSj2rKDwYraFHADq8eNuxpQS',
         'KT1G5ph5ybHBbAy2hEd5RbPTuGEQuWXMWsBB',
-        'KT1HVzCL4e4F4f4pRwxG9ye9oo85YB6t7cmd'
+        'KT1HVzCL4e4F4f4pRwxG9ye9oo85YB6t7cmd',
+        'KT1F4T1hAHjrpu6HtKNRLwUvAfefRE4kWu8w'
       ],
       thumbnailUrl: '../../../assets/img/alias/vitality.png',
       link: '',
