@@ -375,6 +375,14 @@ export class EmbeddedComponent implements OnInit {
         operations: true,
         micheline: true
       }
+    },
+    dns: {
+      origins: ['https://dns.xyz', '*.dns.xyz'],
+      permissions: {
+        login: true,
+        operations: true,
+        micheline: true
+      }
     }
   };
   constructor(
