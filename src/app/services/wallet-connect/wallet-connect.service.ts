@@ -127,7 +127,7 @@ export class WalletConnectService {
     this.subscriptions.add(
       this.bcService.subject[MessageKind.UpdateRequest].subscribe((request) => {
         if (this.client) {
-          this.updateSession(request.topic, request.newAddress);
+          this.updateSession(request.topic, request.newPk);
         }
       })
     );
@@ -290,7 +290,7 @@ export class WalletConnectService {
       const data = request.wcData;
       const namespaces: SessionTypes.Namespaces = {};
       const address = this.operationService.pk2pkh(publicKey);
-      const accounts: string[] = [`tezos:${CONSTANTS.NETWORK}:${address}`];
+      const accounts: string[] = [`tezos:${CONSTANTS.NETWORK}:${publicKey}`];
       const methods = data.params.requiredNamespaces?.tezos?.methods
         ?.filter((method) => this.supportedMethods.includes(method))
         .concat(data.params.optionalNamespaces?.tezos?.methods?.filter((method) => this.supportedMethods.includes(method)))
@@ -493,7 +493,7 @@ export class WalletConnectService {
           inKeychain = !kc ? false : !!JSON.parse(kc)[session?.topic];
         }
         if (session?.acknowledged && inKeychain) {
-          const accountAddress = session?.namespaces?.tezos?.accounts[0].split(':')[2];
+          const accountAddress = this.operationService.pk2pkh(session?.namespaces?.tezos?.accounts[0].split(':')[2]);
           return { name: session?.peer?.metadata?.name, address: accountAddress, topic: session.topic, expiry: session.expiry };
         }
       })
@@ -546,19 +546,20 @@ export class WalletConnectService {
       }, n ** 2 * 100);
     }
   }
-  public async updateSession(topic: string, newAddress: string) {
+  public async updateSession(topic: string, newPk: string) {
+    console.log('newPk', newPk);
     if (this.client) {
       const session = this.client.session.get(topic);
       let namespaces = session.namespaces;
       let acc = namespaces.tezos.accounts[0].split(':');
-      acc[2] = newAddress;
+      acc[2] = newPk;
       namespaces.tezos.accounts[0] = acc.join(':');
       const { acknowledged } = await this.client.update({ topic, namespaces });
       this.refresh();
       await acknowledged();
       console.log('session update acknowledged');
     } else {
-      this.bcService.broadcast({ kind: MessageKind.UpdateRequest, payload: { topic, newAddress } });
+      this.bcService.broadcast({ kind: MessageKind.UpdateRequest, payload: { topic, newPk } });
     }
   }
   public async deleteSession(topic: string) {

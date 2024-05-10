@@ -39,7 +39,7 @@ export class SessionSelectComponent extends ModalComponent implements OnInit, On
     this.subscriptions.unsubscribe();
   }
   changeAddress(): void {
-    this.walletConnectService.updateSession(this.topic, this.selectedAccount.pkh);
+    this.walletConnectService.updateSession(this.topic, this.selectedAccount.pk);
     this.close();
   }
 }
