@@ -85,7 +85,7 @@ export class ImportService {
       throw new Error('Wrong password');
     }
   }
-  async importWalletFromObject(data: any, secretValue: any): Promise<boolean> {
+  async importWalletFromObject(data: any, secretValue: any, isNewWallet: boolean = false): Promise<boolean> {
     try {
       this.coordinatorService.stopAll();
       let keys: KeyPair;
@@ -116,9 +116,12 @@ export class ImportService {
         let isUsedAccount: boolean = true;
         while (isUsedAccount) {
           keys = hd.keyPairFromAccountIndex(secretValue, index);
-          isUsedAccount = await this.indexerService.isUsedAccount(keys.pkh);
-          if (isUsedAccount || index === 0) {
+          isUsedAccount = index === 0 || (await this.indexerService.isUsedAccount(keys.pkh));
+          if (isUsedAccount) {
             this.walletService.addImplicitAccount(keys.pk, index++);
+            if (isNewWallet) {
+              break;
+            }
             await this.findContracts(keys.pkh);
           }
         }

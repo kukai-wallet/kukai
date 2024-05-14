@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CONSTANTS, MODEL_3D_WHITELIST, BLACKLISTED_TOKEN_CONTRACTS } from '../../../../environments/environment';
+import { CONSTANTS } from '../../../../environments/environment';
 import { Indexer } from '../indexer.service';
 import * as cryptob from 'crypto-browserify';
 import { WalletObject, Activity, OpStatus, Token } from '../../wallet/wallet';
@@ -41,6 +41,7 @@ export class TzktService implements Indexer {
   tokenBalanceCache = {};
   readonly TZKT_TOKEN_QUERY_SIZE: number = 10000;
   Tezos: TezosToolkit;
+
   constructor(private subjectService: SubjectService) {
     this.Tezos = new TezosToolkit(CONSTANTS.NODE_URL[0]);
     const customHandlers = new Map<string, Handler>([
@@ -177,7 +178,7 @@ export class TzktService implements Indexer {
     const tokenArr = [];
     const opIds = [];
     for (let i = 0; i < tokenTxs.length; ++i) {
-      if (BLACKLISTED_TOKEN_CONTRACTS.includes(tokenTxs[i].token.contract.address)) {
+      if (this.subjectService.blocklist.value.includes(tokenTxs[i].token.contract.address)) {
         continue;
       }
       const tokenId = `${tokenTxs[i].token.contract.address}:${tokenTxs[i].token.tokenId}`;

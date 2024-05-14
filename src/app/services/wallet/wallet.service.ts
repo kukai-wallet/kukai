@@ -20,7 +20,6 @@ import { OperationService } from '../operation/operation.service';
 import { TorusService } from '../torus/torus.service';
 import { utils, hd, secp256k1 } from '../../libraries/index';
 import { SubjectService } from '../subject/subject.service';
-import { BLACKLISTED_TOKEN_CONTRACTS } from '../../../environments/environment';
 
 @Injectable()
 export class WalletService {
@@ -404,7 +403,7 @@ export class WalletService {
       impAcc.delegate = implicit.delegate;
       impAcc.state = implicit.state;
       impAcc.activities = implicit.activities?.filter((activity) => {
-        if (activity.tokenId && BLACKLISTED_TOKEN_CONTRACTS.includes(activity.tokenId.split(':')[0])) {
+        if (activity.tokenId && this.subjectService.blocklist.value.includes(activity.tokenId.split(':')[0])) {
           return false;
         }
         return true;
@@ -419,7 +418,7 @@ export class WalletService {
         origAcc.delegate = originated.delegate;
         origAcc.state = originated.state;
         origAcc.activities = originated.activities?.filter((activity) => {
-          if (activity.tokenId && BLACKLISTED_TOKEN_CONTRACTS.includes(activity.tokenId.split(':')[0])) {
+          if (activity.tokenId && this.subjectService.blocklist.value.includes(activity.tokenId.split(':')[0])) {
             return false;
           }
           return true;

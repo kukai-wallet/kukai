@@ -4,12 +4,14 @@ import { ActivityService } from '../activity/activity.service';
 import { WalletService } from '../wallet/wallet.service';
 import { Account } from '../wallet/wallet';
 import Big from 'big.js';
-import { CONSTANTS, BLACKLISTED_TOKEN_CONTRACTS } from '../../../environments/environment';
+import { CONSTANTS } from '../../../environments/environment';
 import { decode } from 'blurhash';
 import { combineLatest } from 'rxjs';
 import { sampleTime } from 'rxjs/operators';
 import { SubjectService } from '../subject/subject.service';
 import { DipDupService } from '../indexer/dipdup/dipdup.service';
+import { KukaiService, ContractAlias } from '../kukai/kukai.service';
+import { Subscription } from 'rxjs';
 
 interface TokenWithBalance extends TokenResponseType {
   balance: string;
@@ -33,18 +35,23 @@ export class TokenBalancesService {
   nfts: ContractsWithBalance = null;
   activeAccount: Account = null;
   _thumbnailsToCreate = [];
+  addressToContractAlias: Record<string, ContractAlias> = {};
+  private subscriptions: Subscription = new Subscription();
+
   constructor(
     private tokenService: TokenService,
     private activityService: ActivityService,
     private walletService: WalletService,
     private subjectService: SubjectService,
-    private dipdupService: DipDupService
+    private dipdupService: DipDupService,
+    private kukaiService: KukaiService
   ) {
     combineLatest([
       this.subjectService.activeAccount,
       this.subjectService.metadataUpdated,
       this.activityService.tokenBalanceUpdated,
-      this.subjectService.refreshTokens
+      this.subjectService.refreshTokens,
+      this.subjectService.blocklist
     ])
       .pipe(sampleTime(10))
       .subscribe(([a, b, c]) => {
@@ -59,6 +66,18 @@ export class TokenBalancesService {
         this.destroy();
       }
     });
+    this.subscriptions.add(
+      this.subjectService.contractAliases.subscribe((n) => {
+        this.addressToContractAlias = {};
+        for (let i = 0; i < n.length; i++) {
+          for (const address of n[i].contractAddresses) {
+            this.addressToContractAlias[address] = n[i];
+            this.addressToContractAlias[address]['aliasOrder'] = i;
+          }
+        }
+        this.reload();
+      })
+    );
   }
   destroy() {
     this.balances = [];
@@ -66,7 +85,7 @@ export class TokenBalancesService {
   }
   resolveAsset(token, balances, nfts) {
     const asset: TokenResponseType = this.tokenService.getAsset(token.tokenId);
-    if (BLACKLISTED_TOKEN_CONTRACTS.includes(asset?.contractAddress)) {
+    if (this.subjectService.blocklist.value.includes(asset?.contractAddress)) {
       return;
     }
     if (asset) {
@@ -76,10 +95,19 @@ export class TokenBalancesService {
         if (asset?.contractAddress === 'KT1RJ6PbjHpwc3M5rw5s2Nbmefwbuwbdxton' && asset?.mintingTool === 'https://teia.art/mint') {
           contractAddress = contractAddress + '@teia';
         }
-        const contractAlias = this.getContractAlias(contractAddress) ?? contractAddress;
+        let contractAlias;
+        let contractExplore = undefined;
+        let aliasOrder: null | number = null;
+        if (this.addressToContractAlias[contractAddress]) {
+          contractExplore = this.addressToContractAlias[contractAddress];
+          contractAlias = contractExplore.name;
+          aliasOrder = contractExplore.aliasOrder;
+        } else {
+          contractAlias = contractAddress;
+        }
+
         if (nfts[contractAlias] === undefined) {
-          const CONTRACT_ALIASES = CONSTANTS.CONTRACT_ALIASES[contractAlias as string];
-          if (!CONTRACT_ALIASES?.thumbnailUrl) {
+          if (!contractExplore?.thumbnailImageUrl) {
             if (this._thumbnailsToCreate.filter((obj) => obj.contractAlias === contractAlias).length === 0) {
               this._thumbnailsToCreate.push({
                 contractAlias,
@@ -87,14 +115,15 @@ export class TokenBalancesService {
               });
             }
           }
-          const name = CONTRACT_ALIASES?.name ? CONTRACT_ALIASES.name : this.tokenService.getContractName(contractAddress) ?? contractAlias;
+          const name = contractExplore?.name ? contractExplore.name : this.tokenService.getContractName(contractAddress) ?? contractAlias;
           nfts[contractAlias] = {
             name,
-            thumbnailUrl: CONTRACT_ALIASES?.thumbnailUrl ?? this.tokenService.getContractLogo(contractAddress),
-            tokens: []
+            thumbnailUrl: contractExplore?.thumbnailImageUrl ?? this.tokenService.getContractLogo(contractAddress),
+            tokens: [],
+            aliasOrder
           };
-          if (CONTRACT_ALIASES?.link) {
-            nfts[contractAlias].visitUrl = CONTRACT_ALIASES.link;
+          if (contractExplore?.discover?.dappUrl) {
+            nfts[contractAlias].visitUrl = contractExplore.discover.dappUrl;
           }
         }
         nfts[contractAlias].tokens.push({ ...asset, balance: token.balance });
@@ -127,10 +156,11 @@ export class TokenBalancesService {
       nfts['unknown'].tokens.push(placeholder);
     }
   }
-  reload() {
+  async reload() {
     if (!this.activeAccount?.tokens || !this.tokenService.initialized) {
       return;
     }
+    // this.addressToContractAlias = this.kukaiService.getAddressToContractAlias();
     const balances: TokenWithBalance[] = [];
     const nfts: ContractsWithBalance = {};
     for (let token of this.walletService.wallet.getAccount(this.activeAccount.address).tokens) {
@@ -154,7 +184,7 @@ export class TokenBalancesService {
   }
   orderedNfts(nfts: ContractsWithBalance): ContractsWithBalance {
     const _nfts: ContractsWithBalance = {};
-    const aliases = Object.keys(CONSTANTS.CONTRACT_ALIASES);
+    const aliases = Object.keys(this.addressToContractAlias);
     for (let alias of aliases) {
       if (nfts[alias]) {
         _nfts[alias] = nfts[alias];
@@ -174,15 +204,6 @@ export class TokenBalancesService {
       delete nfts['unknown'];
     }
     return _nfts;
-  }
-  getContractAlias(address: string) {
-    const keys = Object.keys(CONSTANTS.CONTRACT_ALIASES);
-    for (const key of keys) {
-      if (CONSTANTS.CONTRACT_ALIASES[key].address.includes(address)) {
-        return key;
-      }
-    }
-    return undefined;
   }
   getThumbnailUrl(address: string): string {
     const pixels = decode(address.slice(0, 22), 5, 5);

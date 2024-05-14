@@ -24,34 +24,12 @@ const _CONSTANTS: Constants = {
     hard_gas_limit_per_block: 2600000,
     hard_storage_limit_per_operation: 60000
   },
-  CONTRACT_ALIASES: {
-    Objkt: {
-      name: 'objkt.com',
-      address: [],
-      thumbnailUrl: '../../../assets/img/alias/objktcom.svg',
-      discoverUrl: '../../../assets/img/alias/objktcom.svg',
-      link: 'https://ghostnet.objkt.com',
-      shouldDisplayLink: DisplayLinkOption.All,
-      category: ['marketplace'],
-      description: 'The best Tezos NFTs all in one place'
-    },
-    admire: {
-      name: 'admire.art',
-      address: ['KT1AWnk45HxqcAgTdtgwCUae8FosYkttLxA4', 'KT1KTENwCZDnGqRhjQeUsECxozRvQeGtRCti'],
-      thumbnailUrl: '../../../assets/img/alias/admire.png',
-      shouldDisplayLink: DisplayLinkOption.None
-    }
-  },
   ASSETS: {},
   NFT_CONTRACT_OVERRIDES: [],
   CONTRACT_OVERRIDES: {},
   FEATURE_CONTRACTS: {}
 };
 const _TRUSTED_TOKEN_CONTRACTS = [];
-const _BLACKLISTED_TOKEN_CONTRACTS = [];
-const _MODEL_3D_WHITELIST = [];
 
 export const CONSTANTS = JSON.parse(JSON.stringify(_CONSTANTS));
 export const TRUSTED_TOKEN_CONTRACTS = JSON.parse(JSON.stringify(_TRUSTED_TOKEN_CONTRACTS));
-export const BLACKLISTED_TOKEN_CONTRACTS = JSON.parse(JSON.stringify(_BLACKLISTED_TOKEN_CONTRACTS));
-export const MODEL_3D_WHITELIST = JSON.parse(JSON.stringify(_MODEL_3D_WHITELIST));

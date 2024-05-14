@@ -4,10 +4,9 @@ import { WalletService } from '../../../../../services/wallet/wallet.service';
 import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from '../../../../../services/message/message.service';
 import { TokenService } from '../../../../../services/token/token.service';
-import { CONSTANTS } from '../../../../../../environments/environment';
 import { TokenBalancesService } from '../../../../../services/token-balances/token-balances.service';
 import { SubjectService } from '../../../../../services/subject/subject.service';
-import { DisplayLinkOption } from '../../../../../interfaces';
+import { KukaiService, DiscoverItem } from '../../../../../services/kukai/kukai.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -16,7 +15,6 @@ import { Subscription } from 'rxjs';
   styleUrls: ['../../../../../../scss/components/views/logged-in/account-view/cards/nfts/nfts.component.scss']
 })
 export class NftsComponent implements OnInit, OnDestroy {
-  DisplayLinkOption = DisplayLinkOption;
   Object = Object;
   nfts = undefined;
   nftsArray = [];
@@ -25,7 +23,7 @@ export class NftsComponent implements OnInit, OnDestroy {
   isDiscover: boolean = false;
   isInitLoad: boolean = true;
   filter: string = 'APP';
-  contractAliases = Object.keys(CONSTANTS.CONTRACT_ALIASES).map((key: any) => ({ key, ...CONSTANTS.CONTRACT_ALIASES[key] }));
+  discoverItems: DiscoverItem[] = [];
   activeAddress: string = '';
   sliceEnd = 20;
   sliceIncrement = 10;
@@ -34,8 +32,8 @@ export class NftsComponent implements OnInit, OnDestroy {
     public translate: TranslateService,
     public messageService: MessageService,
     public tokenService: TokenService,
-    public tokenBalancesService: TokenBalancesService,
     private subjectService: SubjectService,
+    private kukaiService: KukaiService,
     private walletService: WalletService
   ) {
     this.subscriptions.add(
@@ -58,6 +56,11 @@ export class NftsComponent implements OnInit, OnDestroy {
           this.activeAddress = activeAddress;
           this.reset();
         }
+      })
+    );
+    this.subscriptions.add(
+      this.subjectService.discoverItems.subscribe((discoverItems) => {
+        this.discoverItems = discoverItems;
       })
     );
   }
@@ -95,7 +98,30 @@ export class NftsComponent implements OnInit, OnDestroy {
       }
     }
     this.nfts = n?.nfts;
-    this.nftsArray = n?.nfts ? Object.keys(n.nfts).map((key: any) => ({ key, ...n.nfts[key] })) : [];
+    const nftsArray = n?.nfts ? Object.keys(n.nfts).map((key: any) => ({ key, ...n.nfts[key] })) : [];
+    const nftsWithCollectionAlias = [];
+    const nftsWithoutCollectionAlias = [];
+    let unknownNftCollection = null;
+
+    // this will do the following:
+    // 1. order collections with alias from kukai service according to the order there
+    // 2. maintain the received order of collections without an alias
+    // 3. put unknown tokens at the bottom
+    for (const collection of nftsArray) {
+      if (collection.aliasOrder == null) {
+        if (collection.key === 'unknown') {
+          unknownNftCollection = collection;
+        } else {
+          nftsWithoutCollectionAlias.push(collection);
+        }
+      } else {
+        nftsWithCollectionAlias.push(collection);
+      }
+    }
+    nftsWithCollectionAlias.sort((a, b) => (a.aliasOrder < b.aliasOrder ? -1 : 1));
+
+    this.nftsArray = nftsWithCollectionAlias.concat(nftsWithoutCollectionAlias, unknownNftCollection ? unknownNftCollection : []);
+
     this.refreshDisplayedNfts();
     this.tokens = n?.nfts
       ? Object.keys(n.nfts)
@@ -132,12 +158,6 @@ export class NftsComponent implements OnInit, OnDestroy {
       }
     }
   }
-  shouldDisplayLink(option: DisplayLinkOption): boolean {
-    if (option === 0 || (option === 1 && this.walletService.wallet instanceof TorusWallet)) {
-      return true;
-    }
-    return false;
-  }
   sanitizeKey(key: string): string {
     return 'ku' + key?.replace(/ /g, '');
   }
@@ -146,8 +166,8 @@ export class NftsComponent implements OnInit, OnDestroy {
     return contract?.key ? contract.key : index;
   }
 
-  getContractAlias(category): string {
-    return category?.join(' · ');
+  getContractCategories(categories: string[]): string {
+    return categories.join(' · ');
   }
   reset(): void {
     this.nfts = undefined;

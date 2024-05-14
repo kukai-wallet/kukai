@@ -2,7 +2,6 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/cor
 import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from '../../../../../../services/message/message.service';
 import { TokenService } from '../../../../../../services/token/token.service';
-import { CONSTANTS } from '../../../../../../../environments/environment';
 import { ModalComponent } from '../../../../../modals/modal.component';
 import { TokenBalancesService } from '../../../../../../services/token-balances/token-balances.service';
 import { DisplayLinkOption } from '../../../../../../interfaces';
@@ -18,7 +17,6 @@ export class NftsTokenComponent implements OnInit, OnChanges {
   Number = Number;
   @Input() token;
   isNew = false;
-  contractAliases = CONSTANTS.CONTRACT_ALIASES;
   constructor(
     public translate: TranslateService,
     public messageService: MessageService,

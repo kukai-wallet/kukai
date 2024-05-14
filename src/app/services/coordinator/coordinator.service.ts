@@ -15,6 +15,7 @@ import { interval } from 'rxjs';
 import { SignalService } from '../indexer/signal/signal.service';
 import { UnlockableService } from '../unlockable/unlockable.service';
 import { DipDupService } from '../indexer/dipdup/dipdup.service';
+import { KukaiService } from '../kukai/kukai.service';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 
@@ -52,6 +53,7 @@ export class CoordinatorService {
     private subjectService: SubjectService,
     private signalService: SignalService,
     private unlockableService: UnlockableService,
+    private kukaiService: KukaiService,
     public router: Router,
     private location: Location
   ) {
@@ -82,6 +84,8 @@ export class CoordinatorService {
         this.tzrateService.getTzrate();
         this.dipdupService.fetchTokensMidPrice();
         this.lookupService.recheckWalletAddresses(true);
+        this.kukaiService.fetchExploreData();
+        this.kukaiService.fetchDiscoverItems();
       };
       this.tzrateInterval = interval(this.defaultDelayPrice).subscribe(() => update());
       update();

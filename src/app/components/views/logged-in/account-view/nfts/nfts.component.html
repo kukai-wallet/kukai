@@ -44,21 +44,19 @@
       </app-nfts-body>
     </div>
     <ng-container *ngIf="isDiscover">
-      <ng-container *ngFor="let contractAlias of contractAliases">
-        <ng-container *ngIf="shouldDisplayLink(contractAlias?.shouldDisplayLink)">
-          <a class="flex-column discover" rel="noreferrer" [href]="contractAlias?.link || '/'" target="_blank"
-            [style.display]="isDiscover ? '' : 'none'">
-            <div class="flex-row top">{{ getContractAlias(contractAlias?.category) || '' }}</div>
-            <div class="flex-column middle" [class.zoom]="contractAlias?.zoomDiscoverImg"
-              [style.backgroundColor]="contractAlias?.backgroundColor">
-              <app-asset class="discover" [class.zoom]="contractAlias?.zoomDiscoverImg" [size]="'raw'"
-                [assets]="{displayAsset: contractAlias.discoverUrl, thumbnailAsset: contractAlias.thumbnailUrl}">
+        <ng-container *ngFor="let discoverItem of discoverItems">
+          
+          <a class="flex-column discover" rel="noreferrer" [href]="discoverItem.projectURL" target="_blank">
+            <div class="flex-row top">{{ getContractCategories(discoverItem.categories) }}</div>
+            <div class="flex-column middle" [class.zoom]="discoverItem.zoomDiscoverImg" [style.backgroundColor]="discoverItem?.backgroundColor">
+              <app-asset class="discover" [class.zoom]="discoverItem.zoomDiscoverImg" [size]="'raw'"
+                         [assets]="{displayAsset: discoverItem.squareLogoUri}">
               </app-asset>
             </div>
             <div class="flex-row bottom">
               <div class="flex-column left">
-                <div class="title">{{ contractAlias?.name || key }}</div>
-                <div class="description">{{ contractAlias?.description }}</div>
+                <div class="title">{{ discoverItem.title || key }}</div>
+                <div class="description">{{ discoverItem.description }}</div>
               </div>
               <div class="flex-column right">
                 <a class="link-to-app">
@@ -68,7 +66,6 @@
             </div>
           </a>
         </ng-container>
-      </ng-container>
     </ng-container>
   </div>
 </div>

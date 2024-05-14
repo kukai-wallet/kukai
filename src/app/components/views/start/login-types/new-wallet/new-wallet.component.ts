@@ -169,7 +169,7 @@ export class NewWalletComponent implements OnInit {
   async done(): Promise<void> {
     const seed = this.seed;
     this.seed = null;
-    await this.importService.importWalletFromObject(this.data, seed);
+    await this.importService.importWalletFromObject(this.data, seed, true);
     this.walletService.storeWallet();
     this.data = null;
     this.messageService.addSuccess('Your new wallet is now set up and ready to use!');
