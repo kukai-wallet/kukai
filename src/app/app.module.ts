@@ -35,6 +35,7 @@ import { UnlockableService } from './services/unlockable/unlockable.service';
 import { CoordinatorService } from './services/coordinator/coordinator.service';
 import { OperationService } from './services/operation/operation.service';
 import { Interceptor } from './services/interceptor/interceptor.service';
+import { KukaiService } from './services/kukai/kukai.service';
 
 // View components
 import { StartComponent } from './components/views/start/start.component';
@@ -172,6 +173,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     TokenBalancesService,
     DeeplinkService,
     UnlockableService,
+    KukaiService,
     // Pipes
     ErrorHandlingService,
     TruncatePipe,

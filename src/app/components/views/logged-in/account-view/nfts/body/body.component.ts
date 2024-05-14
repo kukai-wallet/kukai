@@ -2,7 +2,6 @@ import { AfterViewInit, Component, Input, OnChanges, OnInit, ViewChild } from '@
 import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from '../../../../../../services/message/message.service';
 import { TokenService } from '../../../../../../services/token/token.service';
-import { CONSTANTS } from '../../../../../../../environments/environment';
 import { TokenBalancesService } from '../../../../../../services/token-balances/token-balances.service';
 import { DisplayLinkOption } from '../../../../../../interfaces';
 import { Subject } from 'rxjs';
@@ -20,7 +19,6 @@ export class NftsBodyComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() tokens;
   @Input() searchable = false;
   tokensToDisplay = { loaded: [], filtered: [], raw: [] };
-  contractAliases = CONSTANTS.CONTRACT_ALIASES;
   readonly chunkSize = 24;
   sliceEnd = this.chunkSize;
   inputUpdated = new Subject<any>();

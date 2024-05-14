@@ -1,6 +1,5 @@
 import { AfterViewChecked, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Account } from '../../../../../services/wallet/wallet';
-import { CONSTANTS } from '../../../../../../environments/environment';
 import { TokenBalancesService } from '../../../../../services/token-balances/token-balances.service';
 import { SubjectService } from '../../../../../services/subject/subject.service';
 import { WalletService } from '../../../../../services/wallet/wallet.service';
@@ -19,7 +18,6 @@ import { MessageService } from '../../../../../services/message/message.service'
 export class BalancesComponent implements OnInit, AfterViewChecked, OnDestroy {
   Object = Object;
   @Input() account: Account;
-  contractAliases = CONSTANTS.CONTRACT_ALIASES;
   totalBalances: string | number = 0;
   balances: any[];
   isFiat = false;

@@ -1,6 +1,9 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, Sanitizer, SimpleChanges, ViewChild } from '@angular/core';
 import { Asset, CachedAsset, TokenService } from '../../../services/token/token.service';
-import { CONSTANTS, MODEL_3D_WHITELIST } from '../../../../environments/environment';
+import { KukaiService } from '../../../services/kukai/kukai.service';
+import { SubjectService } from '../../../services/subject/subject.service';
+import { CONSTANTS } from '../../../../environments/environment';
+import { Subscription } from 'rxjs';
 
 enum Display {
   'none',
@@ -60,8 +63,9 @@ export class AssetComponent implements OnInit, AfterViewInit {
   mimeType = 'image/*';
   errors = 0;
   obs: IntersectionObserver;
+  private subscriptions: Subscription = new Subscription();
 
-  constructor(private elRef: ElementRef, private tokenService: TokenService) {}
+  constructor(private elRef: ElementRef, private tokenService: TokenService, private kukaiService: KukaiService, private subjectService: SubjectService) {}
 
   ngOnInit(): void {
     if (this.hideSpinner) {
@@ -214,7 +218,7 @@ export class AssetComponent implements OnInit, AfterViewInit {
     // Ignore MIME type provided in metadata for now. Way too unreliable. Exception for nfts in 3d wl. (media proxy don't return the correct mime type)
     if (
       typeof asset !== 'string' &&
-      !(asset?.mimeType?.startsWith('model/') && (MODEL_3D_WHITELIST as Array<any>).includes(this.tokenService.getContractAddressFromAsset(asset?.uri)))
+      !(asset?.mimeType?.startsWith('model/') && this.kukaiService.model3dAllowList.includes(this.tokenService.getContractAddressFromAsset(asset?.uri)))
     ) {
       let response;
       for (let i = 0; i < 3 && !response?.ok; i++) {
@@ -237,7 +241,7 @@ export class AssetComponent implements OnInit, AfterViewInit {
       this.isAudio() ? this.load.emit() : undefined;
       if (this.is3D()) {
         const contractAddress = this.tokenService.getContractAddressFromAsset(asset?.uri);
-        if (!(MODEL_3D_WHITELIST as Array<any>).includes(contractAddress)) {
+        if (!this.kukaiService.model3dAllowList.includes(contractAddress)) {
           console.warn('Content blocked');
           this.evaluateInvalid();
           return;
@@ -259,6 +263,8 @@ export class AssetComponent implements OnInit, AfterViewInit {
     if (uri.startsWith('ipfs://')) {
       const mediaAndSize = this.size === Size.raw ? '' : `media/${this.size}/`;
       url = `https://data.mantodev.com/${mediaAndSize}ipfs/${uri.slice(7)}`;
+    } else if (uri.startsWith('https://imagedelivery.net/X6w5bi3ztwg4T4f6LG8s0Q')) {
+      url = uri;
     } else if (uri.startsWith('https://')) {
       url = `https://data.mantodev.com/media/${this.size}/web/${uri.slice(8)}`;
     } else if (!CONSTANTS.MAINNET && (uri.startsWith('http://localhost') || uri.startsWith('http://127.0.0.1'))) {

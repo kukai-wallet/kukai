@@ -1,6 +1,5 @@
 import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { ModalComponent } from '../../../../../modals/modal.component';
-import { CONSTANTS } from '../../../../../../../environments/environment';
 import { Big } from 'big.js';
 import { RemoveCommaPipe } from '../../../../../../pipes/remove-comma.pipe';
 import { SubjectService } from '../../../../../../services/subject/subject.service';
@@ -14,7 +13,6 @@ import { WalletService } from '../../../../../../services/wallet/wallet.service'
 export class BalanceTokenComponent implements OnInit {
   @Input() token = null;
   @Input() account;
-  contractAliases = CONSTANTS.CONTRACT_ALIASES;
 
   constructor(public removeCommaPipe: RemoveCommaPipe, private subjectService: SubjectService, private walletService: WalletService) {}
   ngOnInit(): void {}

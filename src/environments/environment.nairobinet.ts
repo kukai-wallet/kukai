@@ -23,17 +23,12 @@ const _CONSTANTS: Constants = {
     hard_gas_limit_per_block: 2600000,
     hard_storage_limit_per_operation: 60000
   },
-  CONTRACT_ALIASES: {},
   ASSETS: {},
   NFT_CONTRACT_OVERRIDES: [],
   CONTRACT_OVERRIDES: {},
   FEATURE_CONTRACTS: {}
 };
 const _TRUSTED_TOKEN_CONTRACTS = [];
-const _BLACKLISTED_TOKEN_CONTRACTS = [];
-const _MODEL_3D_WHITELIST = [];
 
 export const CONSTANTS = JSON.parse(JSON.stringify(_CONSTANTS));
 export const TRUSTED_TOKEN_CONTRACTS = JSON.parse(JSON.stringify(_TRUSTED_TOKEN_CONTRACTS));
-export const BLACKLISTED_TOKEN_CONTRACTS = JSON.parse(JSON.stringify(_BLACKLISTED_TOKEN_CONTRACTS));
-export const MODEL_3D_WHITELIST = JSON.parse(JSON.stringify(_MODEL_3D_WHITELIST));

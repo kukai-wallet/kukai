@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CONSTANTS, TRUSTED_TOKEN_CONTRACTS, BLACKLISTED_TOKEN_CONTRACTS, environment } from '../../../environments/environment';
+import { CONSTANTS, TRUSTED_TOKEN_CONTRACTS } from '../../../environments/environment';
 import { IndexerService } from '../indexer/indexer.service';
 import Big from 'big.js';
 import { SubjectService } from '../subject/subject.service';
@@ -9,6 +9,8 @@ import { ObjktService } from '../indexer/objkt/objkt.service';
 import { DipDupService } from '../indexer/dipdup/dipdup.service';
 import { indexedDB } from '../../libraries/index';
 import { MetadataSource } from '../indexer/tzkt/tzkt.service';
+import { KukaiService } from '../kukai/kukai.service';
+import { Subscription } from 'rxjs';
 
 export interface TokenResponseType {
   contractAddress: string;
@@ -92,12 +94,14 @@ export class TokenService {
   readonly unlockablesKey = 'unlockables';
   queue = [];
   workers = 0;
+
   constructor(
     public indexerService: IndexerService,
     private subjectService: SubjectService,
     private dipdupService: DipDupService,
     private router: Router,
-    private objktService: ObjktService
+    private objktService: ObjktService,
+    private kukaiService: KukaiService
   ) {
     this.router.events.pipe(filter((evt) => evt instanceof NavigationEnd)).subscribe(async (r: NavigationEnd) => {
       if (r.url.indexOf('/account') === -1) {
@@ -473,7 +477,7 @@ export class TokenService {
                 ) {
                   metadata.contracts[address].tokens[id].status = 1; // flip status if it have been marked as trusted
                 }
-                if (BLACKLISTED_TOKEN_CONTRACTS.includes(address)) {
+                if (this.subjectService.blocklist.value.includes(address)) {
                   metadata.contracts[address].tokens[id].status = -1;
                 }
               }

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { TokenData } from '../token/token.service';
+import { ContractAlias, DiscoverItem } from '../kukai/kukai.service';
 import { Account } from '../wallet/wallet';
 
 interface PrepareTokenTransfer {
@@ -35,6 +36,9 @@ export class SubjectService {
   public logout: Subject<boolean>;
   public buy: Subject<BuyProvider>;
   public wc2: Subject<any>;
+  public blocklist: BehaviorSubject<string[]>;
+  public contractAliases: BehaviorSubject<ContractAlias[]>;
+  public discoverItems: BehaviorSubject<DiscoverItem[]>;
   constructor() {
     this.init();
     this.logout.subscribe((o) => {
