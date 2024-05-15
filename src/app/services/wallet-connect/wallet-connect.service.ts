@@ -13,6 +13,8 @@ import { Subject, Subscription } from 'rxjs';
 import { UtilsService } from '../utils/utils.service';
 import { isEqual } from 'lodash';
 import { indexedDB } from '../../libraries/index';
+import { InputValidationService } from '../input-validation/input-validation.service';
+import { utils } from '../../libraries/index';
 
 const SESSION_STORAGE_KEY = 'wc@2:client:0.3:session';
 const PAIRING_STORAGE_KEY = 'wc@2:core:0.3:pairing';
@@ -73,7 +75,8 @@ export class WalletConnectService {
     private subjectService: SubjectService,
     private operationService: OperationService,
     private bcService: BcService,
-    private walletService: WalletService
+    private walletService: WalletService,
+    private inputValidationService: InputValidationService
   ) {
     (async () => {
       this.subjectService.login.subscribe(() => {
@@ -369,8 +372,19 @@ export class WalletConnectService {
         throw new Error('No wallet found');
       }
       console.log('requestHandler', data);
+      if (utils.validPublicKey(data.params.request.params.account)) {
+        console.warn('Normalize sourceAddress');
+        data.params.request.params.account = this.operationService.pk2pkh(data.params.request.params.account);
+      }
       const session = this.client.session.get(data.topic);
       const allowedAccounts = session?.namespaces?.tezos?.accounts || [];
+      allowedAccounts.forEach((acc) => {
+        // expand to allow pkh as well as pk
+        const p = acc.split(':');
+        if (utils.validPublicKey(p[2])) {
+          allowedAccounts.push(`${p[0]}:${p[1]}:${this.operationService.pk2pkh(p[2])}`);
+        }
+      });
       const allowedMethods = session.namespaces.tezos.methods || [];
       const account = `${data.params.chainId}:${data.params.request.params.account}`;
       const method = data.params.request.method;
