@@ -46,7 +46,7 @@
     <ng-container *ngIf="isDiscover">
         <ng-container *ngFor="let discoverItem of discoverItems">
           
-          <a class="flex-column discover" rel="noreferrer" [href]="discoverItem.projectURL" target="_blank">
+          <a class="flex-column discover" rel="noreferrer" [href]="discoverItem.projectUrl" target="_blank">
             <div class="flex-row top">{{ getContractCategories(discoverItem.categories) }}</div>
             <div class="flex-column middle" [class.zoom]="discoverItem.zoomDiscoverImg" [style.backgroundColor]="discoverItem?.backgroundColor">
               <app-asset class="discover" [class.zoom]="discoverItem.zoomDiscoverImg" [size]="'raw'"
