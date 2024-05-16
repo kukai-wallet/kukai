@@ -104,13 +104,13 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "development": {
-              "browserTarget": "wallet:build:development"
+              "buildTarget": "wallet:build:development"
             },
             "mainnet": {
-              "browserTarget": "wallet:build:mainnet"
+              "buildTarget": "wallet:build:mainnet"
             },
             "m": {
-              "browserTarget": "wallet:build:mainnet"
+              "buildTarget": "wallet:build:mainnet"
             }
           },
           "defaultConfiguration": "development"
@@ -118,7 +118,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "wallet:build"
+            "buildTarget": "wallet:build"
           }
         },
         "test": {

@@ -126,6 +126,7 @@ export class BeaconService {
       await this.client.respond(response);
     }
   }
+
   async approvePermissionRequest(message: any, publicKey: string) {
     const response: PermissionResponseInput = {
       walletType: 'implicit',

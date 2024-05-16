@@ -18,6 +18,7 @@ import { EncryptionService } from '../encryption/encryption.service';
 import 'rxjs/add/operator/mergeMap';
 import { ImplicitAccount } from '../wallet/wallet';
 import { InputValidationService } from '../input-validation/input-validation.service';
+import { AppModule } from '../../app.module';
 
 /**
  * Suite: DelegateService
@@ -44,6 +45,7 @@ describe('[ DelegateService ]', () => {
     // WalletService mock
     TestBed.configureTestingModule({
       imports: [
+        AppModule,
         HttpClientModule,
         HttpClientTestingModule,
         RouterTestingModule,

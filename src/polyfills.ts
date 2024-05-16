@@ -32,9 +32,23 @@ import 'web-animations-js'; // Run `npm install --save web-animations-js`.
  * user can disable parts of macroTask/DomEvents patch by setting following flags
  */
 
-(window as any).__Zone_disable_requestAnimationFrame = true; // disable patch requestAnimationFrame
-(window as any).__Zone_disable_on_property = true; // disable patch onProperty such as onclick
-(window as any).__zone_symbol__BLACK_LISTED_EVENTS = ['scroll', 'mousemove']; // disable patch specified eventNames
+(window as any).__Zone_disable_requestAnimationFrame = true;
+(window as any).__Zone_disable_canvas = true;
+(window as any).__Zone_disable_Error = true;
+(window as any).__Zone_disable_geolocation = true;
+(window as any).__Zone_disable_toString = true;
+(window as any).__Zone_disable_blocking = true;
+(window as any).__Zone_disable_PromiseRejectionEvent = true;
+(window as any).__Zone_disable_MutationObserver = true;
+(window as any).__Zone_disable_Intersection = true;
+(window as any).__Zone_disable_FileReader = true;
+(window as any).__Zone_disable_IE_check = true;
+(window as any).__Zone_disable_geolocation = true;
+(window as any).__Zone_disable_mediaQuery = true;
+(window as any).__Zone_disable_notification = true;
+(window as any).__Zone_disable_MessagePort = true;
+(window as any).__zone_symbol__UNPATCHED_EVENTS = ['scroll', 'mousemove'];
+(window as any).__Zone_enable_cross_context_check = false;
 
 /*
  * in IE/Edge developer tools, the addEventListener will also be wrapped by zone.js
@@ -45,7 +59,7 @@ import 'web-animations-js'; // Run `npm install --save web-animations-js`.
 /***************************************************************************************************
  * Zone JS is required by default for Angular itself.
  */
-import 'zone.js/dist/zone'; // Included with Angular CLI.
+import 'zone.js'; // Included with Angular CLI.
 
 /***************************************************************************************************
  * APPLICATION IMPORTS

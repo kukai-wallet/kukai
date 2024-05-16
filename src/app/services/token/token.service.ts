@@ -9,8 +9,6 @@ import { ObjktService } from '../indexer/objkt/objkt.service';
 import { DipDupService } from '../indexer/dipdup/dipdup.service';
 import { indexedDB } from '../../libraries/index';
 import { MetadataSource } from '../indexer/tzkt/tzkt.service';
-import { KukaiService } from '../kukai/kukai.service';
-import { Subscription } from 'rxjs';
 
 export interface TokenResponseType {
   contractAddress: string;
@@ -100,8 +98,7 @@ export class TokenService {
     private subjectService: SubjectService,
     private dipdupService: DipDupService,
     private router: Router,
-    private objktService: ObjktService,
-    private kukaiService: KukaiService
+    private objktService: ObjktService
   ) {
     this.router.events.pipe(filter((evt) => evt instanceof NavigationEnd)).subscribe(async (r: NavigationEnd) => {
       if (r.url.indexOf('/account') === -1) {
