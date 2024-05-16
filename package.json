@@ -13,10 +13,6 @@
     "test": "ng test",
     "lint": "npx eslint -c ./.eslintrc --ext .ts src/app/",
     "e2e": "ng e2e",
-    "deploy-kathmandunet-version": "npm run build-testnet && angular-cli-ghpages --repo \"git@github.com:kukai-wallet/kathmandunet.git\" --branch main --cname=kathmandunet.kukai.app",
-    "deploy-limanet-version": "npm run build-testnet && angular-cli-ghpages --repo \"git@github.com:kukai-wallet/limanet.git\" --branch main --cname=limanet.kukai.app",
-    "deploy-ghostnet-version": "npm run build-testnet && angular-cli-ghpages --repo \"git@github.com:kukai-wallet/ghostnet.git\" --branch main --cname=ghostnet.kukai.app",
-    "deploy-ichabod-version": "npm run build-testnet && angular-cli-ghpages --repo \"git@github.com:kukai-wallet/ichabod-dev.git\" --branch main --cname=ichabod-dev.kukai.app",
     "generate-rpc-errors-file": "tsx scripts/generate-rpc-errors-file.ts",
     "prepare": "husky install",
     "postinstall": "node patch.js"
@@ -113,7 +109,6 @@
     "@types/node": "^18.8.1",
     "@typescript-eslint/eslint-plugin": "^5.39.0",
     "@typescript-eslint/parser": "^5.39.0",
-    "angular-cli-ghpages": "^0.6.2",
     "assert": "^2.0.0",
     "babel-polyfill": "^6.26.0",
     "cloc": "^2.5.0",
