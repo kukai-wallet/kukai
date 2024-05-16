@@ -1,10 +1,8 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, Sanitizer, SimpleChanges, ViewChild } from '@angular/core';
 import { Asset, CachedAsset, TokenService } from '../../../services/token/token.service';
-import { CONSTANTS, MODEL_3D_WHITELIST } from '../../../../environments/environment';
+import { CONSTANTS } from '../../../../environments/environment';
 import { AppComponent } from '../../../app.component';
 import { KukaiService } from '../../../services/kukai/kukai.service';
-import { SubjectService } from '../../../services/subject/subject.service';
-import { Subscription } from 'rxjs';
 
 enum Display {
   'none',
@@ -65,9 +63,8 @@ export class AssetComponent implements OnInit, AfterViewInit {
   mimeType = 'image/*';
   errors = 0;
   obs: IntersectionObserver;
-  private subscriptions: Subscription = new Subscription();
 
-  constructor(private elRef: ElementRef, private tokenService: TokenService, private kukaiService: KukaiService, private subjectService: SubjectService) {}
+  constructor(private elRef: ElementRef, private tokenService: TokenService, private kukaiService: KukaiService) {}
 
   ngOnInit(): void {
     if (this.hideSpinner) {
