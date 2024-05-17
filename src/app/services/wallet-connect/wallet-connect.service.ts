@@ -1,19 +1,17 @@
 import { Injectable } from '@angular/core';
-import Client, { ENGINE_RPC_OPTS, SignClient } from '@walletconnect/sign-client';
-import { SignClientTypes, PairingTypes, SessionTypes, ISession, EngineTypes } from '@walletconnect/types';
+import Client from '@walletconnect/sign-client';
+import { SignClientTypes, SessionTypes, EngineTypes } from '@walletconnect/types';
 // https://github.com/WalletConnect/walletconnect-monorepo/blob/bc6f6632b7c665d868bcd59669281c1ead2dd31a/packages/utils/src/errors.ts#L10
-import { ErrorResponse, formatJsonRpcResult, formatJsonRpcRequest, formatJsonRpcError, getErrorByCode, getError } from '@walletconnect/jsonrpc-utils';
+import { formatJsonRpcResult, formatJsonRpcError } from '@walletconnect/jsonrpc-utils';
 import { getSdkError } from '@walletconnect/utils';
-import { CONSTANTS, environment } from '../../../environments/environment';
+import { CONSTANTS } from '../../../environments/environment';
 import { SubjectService } from '../subject/subject.service';
 import { OperationService } from '../operation/operation.service';
 import { BcService, MessageKind } from '../bc/bc.service';
 import { WalletService } from '../wallet/wallet.service';
 import { Subject, Subscription } from 'rxjs';
-import { UtilsService } from '../utils/utils.service';
 import { isEqual } from 'lodash';
 import { indexedDB } from '../../libraries/index';
-import { InputValidationService } from '../input-validation/input-validation.service';
 import { utils } from '../../libraries/index';
 
 const SESSION_STORAGE_KEY = 'wc@2:client:0.3:session';
@@ -75,8 +73,7 @@ export class WalletConnectService {
     private subjectService: SubjectService,
     private operationService: OperationService,
     private bcService: BcService,
-    private walletService: WalletService,
-    private inputValidationService: InputValidationService
+    private walletService: WalletService
   ) {
     (async () => {
       this.subjectService.login.subscribe(() => {

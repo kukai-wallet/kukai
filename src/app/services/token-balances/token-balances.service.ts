@@ -10,7 +10,7 @@ import { combineLatest } from 'rxjs';
 import { sampleTime } from 'rxjs/operators';
 import { SubjectService } from '../subject/subject.service';
 import { DipDupService } from '../indexer/dipdup/dipdup.service';
-import { KukaiService, ContractAlias } from '../kukai/kukai.service';
+import { ContractAlias } from '../kukai/kukai.service';
 import { Subscription } from 'rxjs';
 
 interface TokenWithBalance extends TokenResponseType {
@@ -44,7 +44,6 @@ export class TokenBalancesService {
     private walletService: WalletService,
     private subjectService: SubjectService,
     private dipdupService: DipDupService,
-    private kukaiService: KukaiService
   ) {
     combineLatest([
       this.subjectService.activeAccount,
