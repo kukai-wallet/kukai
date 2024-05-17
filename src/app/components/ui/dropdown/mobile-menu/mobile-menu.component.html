@@ -30,11 +30,11 @@
     <div class="flex-row button delegation" routerLink="/account/{{activeAccount?.address}}/stakers"
       (click)="toggleDropdown()">
       <div *ngIf="!activeAccount?.delegate" class="flex-row">
-        <span class="flex-row">STAKING:</span><span class="choose">NOT
-          STAKING</span>
+        <span class="flex-row">DELEGATING:</span><span class="choose">NOT
+          DELEGATING</span>
       </div>
       <div *ngIf="activeAccount?.delegate" class="flex-row">
-        <span>STAKING</span>
+        <span>DELEGATING:</span>
         <span class="flex-row address">{{ delegateName
           }}</span>
       </div>
