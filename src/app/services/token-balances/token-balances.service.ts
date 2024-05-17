@@ -43,7 +43,7 @@ export class TokenBalancesService {
     private activityService: ActivityService,
     private walletService: WalletService,
     private subjectService: SubjectService,
-    private dipdupService: DipDupService,
+    private dipdupService: DipDupService
   ) {
     combineLatest([
       this.subjectService.activeAccount,

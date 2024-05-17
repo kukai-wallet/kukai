@@ -95,8 +95,8 @@ describe('[ TzrateService ]', () => {
   //   });
 
   //   /*it('should perform a get request to apiUrl', () => {
-	// 		expect(req.request.method).toBe('GET');
-	// 	});*/
+  // 		expect(req.request.method).toBe('GET');
+  // 	});*/
 
   //   it('should update wallet xtzrate from 0 to 2.07', () => {
   //     console.log(walletservice.wallet.XTZrate.toString());

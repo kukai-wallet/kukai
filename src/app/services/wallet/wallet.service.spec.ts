@@ -34,7 +34,7 @@ describe('[ WalletService ]', () => {
       providers: [walletsrv_providers]
     });
 
-    let store = {'kukai-service-explorer': {}, 'kukai-service-discover': {}};
+    let store = { 'kukai-service-explorer': {}, 'kukai-service-discover': {} };
     const mockLocalStorage = {
       getItem: (key: string): string => {
         return key in store ? store[key] : null;
@@ -45,18 +45,12 @@ describe('[ WalletService ]', () => {
       removeItem: (key: string) => {
         delete store[key];
       },
-      clear: () => {
-
-      }
+      clear: () => {}
     };
-    spyOn(localStorage, 'getItem')
-      .and.callFake(mockLocalStorage.getItem);
-    spyOn(localStorage, 'setItem')
-      .and.callFake(mockLocalStorage.setItem);
-    spyOn(localStorage, 'removeItem')
-      .and.callFake(mockLocalStorage.removeItem);
-    spyOn(localStorage, 'clear')
-      .and.callFake(mockLocalStorage.clear);
+    spyOn(localStorage, 'getItem').and.callFake(mockLocalStorage.getItem);
+    spyOn(localStorage, 'setItem').and.callFake(mockLocalStorage.setItem);
+    spyOn(localStorage, 'removeItem').and.callFake(mockLocalStorage.removeItem);
+    spyOn(localStorage, 'clear').and.callFake(mockLocalStorage.clear);
 
     // inject services
     service = TestBed.inject(WalletService);
@@ -84,7 +78,7 @@ describe('[ WalletService ]', () => {
     expect(salt).toEqual('U2R9zKaKW6EjngeL');
   });
 
-    /** TODO
+  /** TODO
   describe('> Create Wallet(s)', () => {
     let mnemonic;
 

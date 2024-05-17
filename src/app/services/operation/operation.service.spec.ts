@@ -44,9 +44,9 @@ describe('[ OperationService ]', () => {
    */
   // describe('> Originate Operation ', () => {
   //   /*let pkh: string;
-	// 	let amount: number;
-	// 	let fee: number;
-	// 	let keys: KeyPair;*/
+  // 	let amount: number;
+  // 	let fee: number;
+  // 	let keys: KeyPair;*/
   //   const microtez = new Big(1000000);
 
   //   beforeEach(() => {

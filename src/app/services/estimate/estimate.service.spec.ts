@@ -54,7 +54,7 @@ describe('EstimateService', () => {
         reveal: false
       };
       const callback = (res) => {
-        console.log(res)
+        console.log(res);
         if (res) {
           expect(res).toEqual(ref);
           //done();
