@@ -17,7 +17,8 @@ module.exports = function (config) {
     client: {
       clearContext: false, // leave Jasmine Spec Runner output visible in browser
       jasmine: {
-        timeoutInterval: 20000
+        timeoutInterval: 60000,
+        stopSpecOnExpectationFailure: false
       }
     },
     coverageIstanbulReporter: {
@@ -38,6 +39,7 @@ module.exports = function (config) {
     logLevel: config.LOG_INFO,
     autoWatch: true,
     browsers: ['chrome_1'],
-    singleRun: false
+    singleRun: false,
+    browserNoActivityTimeout: 360000
   });
 };

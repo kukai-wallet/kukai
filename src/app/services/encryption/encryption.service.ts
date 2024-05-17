@@ -86,7 +86,7 @@ export class EncryptionService {
     cipher.start({
       iv: salty
     });
-    const byteStringBuffer = forge.util.createBuffer(plaintext.toString('binary'), 'utf-8');
+    const byteStringBuffer = forge.util.createBuffer(plaintext.toString('binary'), 'raw');
     cipher.update(byteStringBuffer);
     cipher.finish();
     const chiphertext = cipher.output.toHex() + '==' + cipher.mode.tag.toHex();
@@ -104,9 +104,9 @@ export class EncryptionService {
       const decipher: any = forge.cipher.createDecipher('AES-GCM', key.toString('binary'));
       decipher.start({
         iv: new Buffer(salt, 'hex'),
-        tag: forge.util.createBuffer(new Buffer(tag, 'hex').toString('binary'), 'utf-8') // authentication tag from encryption
+        tag: forge.util.createBuffer(new Buffer(tag, 'hex').toString('binary'), 'raw') // authentication tag from encryption
       });
-      decipher.update(forge.util.createBuffer(new Buffer(chiphertext, 'hex').toString('binary'), 'utf-8'));
+      decipher.update(forge.util.createBuffer(new Buffer(chiphertext, 'hex').toString('binary'), 'raw'));
       const pass = decipher.finish();
       if (pass) {
         return new Buffer(decipher.output.toHex(), 'hex');

@@ -49,6 +49,7 @@ export class EstimateService {
     const [head, counter, manager] = await Promise.all([this.operationService.getHeader().toPromise(), this.getCounter(pkh), this.getManager(pkh)]);
     if (head && counter && (manager || manager === null)) {
       this.init(head.hash, head.chain_id, head.protocol, counter, manager, pk, pkh);
+      console.log(head);
     }
   }
   public async estimateTransactions(transactions: any, from: string, tokenTransfer: string = '', callback) {
