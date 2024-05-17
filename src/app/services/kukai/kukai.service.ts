@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { CONSTANTS } from '../../../environments/environment';
-import { SubjectService } from '../subject/subject.service';
+import { SubjectService, KUKAI_SERVICE_EXPLORE_KEY, KUKAI_SERVICE_DISCOVER_KEY } from '../subject/subject.service';
 
 export interface ContractAlias {
   name: string;
@@ -54,9 +54,6 @@ interface DiscoverCategory {
   items: DiscoverItem[];
 }
 
-const KUKAI_SERVICE_EXPLORE_KEY = 'kukai-service-explore';
-const KUKAI_SERVICE_DISCOVER_KEY = 'kukai-service-discover';
-
 @Injectable({
   providedIn: 'root'
 })
@@ -64,21 +61,16 @@ export class KukaiService {
   model3dAllowList: string[];
   explore: ExploreResponse = undefined;
   discover: Discover = undefined;
-  //discover: BehaviorSubject<DiscoverItem[]> = new BehaviorSubject<DiscoverItem[]>([]);
   constructor(public subjectService: SubjectService) {
     try {
       const explore = JSON.parse(localStorage.getItem(KUKAI_SERVICE_EXPLORE_KEY));
       const env = CONSTANTS.MAINNET ? explore.data.environment.mainnet : explore.data.environment.ghostnet;
       env.blockList && env.contractAliases;
       this.explore = explore;
-      this.subjectService.blocklist = new BehaviorSubject<string[]>(env.blockList);
-      this.subjectService.contractAliases = new BehaviorSubject<ContractAlias[]>(env.contractAliases);
       this.model3dAllowList = env.model3DAllowList;
     } catch (e) {
       console.error(e);
       this.explore = undefined;
-      this.subjectService.blocklist = new BehaviorSubject<string[]>([]);
-      this.subjectService.contractAliases = new BehaviorSubject<ContractAlias[]>([]);
       this.model3dAllowList = [];
     }
     try {
@@ -87,11 +79,9 @@ export class KukaiService {
       const all = discover.data.find((e) => e?.title === 'All').items;
       all.length;
       this.discover = discover;
-      this.subjectService.discoverItems = new BehaviorSubject<DiscoverItem[]>(all);
     } catch (e) {
       console.error(e);
       this.discover = undefined;
-      this.subjectService.discoverItems = new BehaviorSubject<DiscoverItem[]>([]);
     }
   }
   async fetchExploreData(): Promise<void> {

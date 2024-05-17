@@ -3,6 +3,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { TokenData } from '../token/token.service';
 import { ContractAlias, DiscoverItem } from '../kukai/kukai.service';
 import { Account } from '../wallet/wallet';
+import { CONSTANTS } from '../../../environments/environment';
 
 interface PrepareTokenTransfer {
   account: Account;
@@ -19,6 +20,8 @@ interface MetadataUpdated {
   id: string;
   token: TokenData;
 }
+export const KUKAI_SERVICE_EXPLORE_KEY = 'kukai-service-explore';
+export const KUKAI_SERVICE_DISCOVER_KEY = 'kukai-service-discover';
 @Injectable({
   providedIn: 'root'
 })
@@ -60,6 +63,28 @@ export class SubjectService {
     this.logout = new Subject<boolean>();
     this.buy = new Subject<BuyProvider>();
     this.wc2 = new Subject<any>();
+    this.initKukaiService();
+  }
+  private initKukaiService() {
+    try {
+      const explore = JSON.parse(localStorage.getItem(KUKAI_SERVICE_EXPLORE_KEY));
+      const env = CONSTANTS.MAINNET ? explore.data.environment.mainnet : explore.data.environment.ghostnet;
+      env.blockList && env.contractAliases;
+      this.blocklist = new BehaviorSubject<string[]>(env.blockList);
+      this.contractAliases = new BehaviorSubject<ContractAlias[]>(env.contractAliases);
+    } catch (e) {
+      this.blocklist = new BehaviorSubject<string[]>([]);
+      this.contractAliases = new BehaviorSubject<ContractAlias[]>([]);
+    }
+    try {
+      const discover = JSON.parse(localStorage.getItem(KUKAI_SERVICE_DISCOVER_KEY));
+      discover.data.length;
+      const all = discover.data.find((e) => e?.title === 'All').items;
+      all.length;
+      this.discoverItems = new BehaviorSubject<DiscoverItem[]>(all);
+    } catch (e) {
+      this.discoverItems = new BehaviorSubject<DiscoverItem[]>([]);
+    }
   }
   reset() {
     this.metadataUpdated.next(null);
