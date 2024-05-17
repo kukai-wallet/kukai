@@ -25,7 +25,6 @@ import { ActivityService } from '../activity/activity.service';
 import { BalanceService } from '../balance/balance.service';
 import { DelegateService } from '../delegate/delegate.service';
 import { InputValidationService } from '../input-validation/input-validation.service';
-import { KukaiService } from '../kukai/kukai.service';
 
 /**
  * Suite: CoordinatorService
@@ -73,8 +72,7 @@ describe('[ Coordinator ]', () => {
         CoordinatorService,
         AppModule,
         AppComponent,
-        InputValidationService,
-        KukaiService
+        InputValidationService
       ]
     });
 
