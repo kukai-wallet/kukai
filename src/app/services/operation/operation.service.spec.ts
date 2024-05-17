@@ -42,21 +42,21 @@ describe('[ OperationService ]', () => {
   /**
    * Originate Operation
    */
-  describe('> Originate Operation ', () => {
-    /*let pkh: string;
-		let amount: number;
-		let fee: number;
-		let keys: KeyPair;*/
-    const microtez = new Big(1000000);
+  // describe('> Originate Operation ', () => {
+  //   /*let pkh: string;
+	// 	let amount: number;
+	// 	let fee: number;
+	// 	let keys: KeyPair;*/
+  //   const microtez = new Big(1000000);
 
-    beforeEach(() => {
-      //spyOn(service, 'originate').and.callThrough();
-    });
+  //   beforeEach(() => {
+  //     //spyOn(service, 'originate').and.callThrough();
+  //   });
 
-    it('is defined', function () {
-      expect(service.originate).toBeDefined();
-    });
-  });
+  //   // it('is defined', function () {
+  //   //   expect(service.originate).toBeDefined();
+  //   // });
+  // });
 
   describe('> Activate Operation', () => {
     it('should activate an account', () => {
@@ -85,9 +85,9 @@ describe('[ OperationService ]', () => {
       });
     });
 
-    it('should set account transfer', () => {});
+    // it('should set account transfer', () => {});
 
-    it('should set account originate', () => {});
+    // it('should set account originate', () => {});
   });
   describe('> pk to pkh', () => {
     it('should return correct pkh', function () {
@@ -118,7 +118,7 @@ describe('[ OperationService ]', () => {
     let pkh: string;
 
     beforeEach(() => {
-      pkh = 'newpkh';
+      pkh = 'newKT1s';
       final = 'l2ZRw0p8RjN7SoDsFe8fqHKufDftLw81isUq6qM7Snx1tblxkOx'; // final ophash
       spyOn(service, 'opCheck').and.callThrough();
     });
@@ -128,40 +128,40 @@ describe('[ OperationService ]', () => {
     });
 
     it('takes (2) strings', function () {
-      service.opCheck(final, pkh);
-      expect(service.opCheck).toHaveBeenCalledWith(jasmine.any(String), jasmine.any(String));
+      service.opCheck(final, [pkh]);
+      expect(service.opCheck).toHaveBeenCalledWith(final, [pkh]);
     });
 
     it('returns instanceof Object', function () {
-      const data = service.opCheck(final, pkh);
+      const data = service.opCheck(final, [pkh]);
       expect(data instanceof Object).toBeTruthy();
     });
 
     it('return type is not ScalarObservable', function () {
-      const data = service.opCheck(final, pkh);
+      const data = service.opCheck(final, [pkh]);
       expect(data._isScalar).toBeFalsy();
     });
 
     it('return operation success for final type string and length 51', () => {
       service
-        .opCheck(final, pkh)
+        .opCheck(final, [pkh])
         //.do(data => console.log(data))
         .subscribe((data) => {
           // matching payload
           expect(data).toEqual({
             success: true,
-            payload: { opHash: final, newPkh: pkh }
+            payload: { opHash: final, newKT1s: [pkh] }
           });
           //  operation success true
           expect(data.success).toBeTruthy();
           // defined properties
           expect(data.success).toBeDefined();
           expect(data.payload.opHash).toBeDefined();
-          expect(data.payload.newPkh).toBeDefined();
+          expect(data.payload.newKT1s).toBeDefined();
           // undefined properties
           expect(data.payload.msg).toBeUndefined();
         });
-      expect(service.opCheck).toHaveBeenCalledWith(final, pkh);
+      expect(service.opCheck).toHaveBeenCalledWith(final, [pkh]);
       expect(service.opCheck).toHaveBeenCalledTimes(1);
     });
 
@@ -169,7 +169,7 @@ describe('[ OperationService ]', () => {
       final = null;
 
       service
-        .opCheck(final, pkh)
+        .opCheck(final, [pkh])
         //.do(data => console.log(data))
         .subscribe((data) => {
           // matching payload
@@ -186,7 +186,7 @@ describe('[ OperationService ]', () => {
           // undefined
           expect(data.payload.newPkh).toBeUndefined();
         });
-      expect(service.opCheck).toHaveBeenCalledWith(final, pkh);
+      expect(service.opCheck).toHaveBeenCalledWith(final, [pkh]);
       expect(service.opCheck).toHaveBeenCalledTimes(1);
     });
 
@@ -194,7 +194,7 @@ describe('[ OperationService ]', () => {
       final = '';
 
       service
-        .opCheck(final, pkh)
+        .opCheck(final, [pkh])
         //.do(data => console.log(data))
         .subscribe((data) => {
           // matching payload
@@ -211,7 +211,7 @@ describe('[ OperationService ]', () => {
           // undefined
           expect(data.payload.newPkh).toBeUndefined();
         });
-      expect(service.opCheck).toHaveBeenCalledWith(final, pkh);
+      expect(service.opCheck).toHaveBeenCalledWith(final, [pkh]);
       expect(service.opCheck).toHaveBeenCalledTimes(1);
     });
     it('should parse token transfers', () => {

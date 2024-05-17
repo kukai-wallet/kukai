@@ -33,8 +33,6 @@ export class NftsComponent implements OnInit, OnDestroy {
     public messageService: MessageService,
     public tokenService: TokenService,
     private subjectService: SubjectService,
-    private kukaiService: KukaiService,
-    private walletService: WalletService
   ) {
     this.subscriptions.add(
       this.subjectService.nftsUpdated.subscribe((n) => {
