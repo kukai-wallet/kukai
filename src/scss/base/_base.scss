@@ -1,6 +1,9 @@
 @use "../abstracts/variables" as v;
 @use "../abstracts/mixins" as m;
 @use "../themes/abstracts/variables" as t;
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap");
 @import "../assets/fonts/Roboto/Flex.css";
 
 %noselection {

@@ -9,12 +9,11 @@ import { WalletService } from './wallet.service';
 // class dependencies
 import { OperationService } from '../operation/operation.service';
 import { EncryptionService } from '../encryption/encryption.service';
-import * as utils from '../../libraries/utils';
+import { utils, hd } from '../../libraries/index';
 
 // mocking
 import { http_imports, translate_imports, walletsrv_providers } from '../../../../spec/helpers/service.helper';
 import { WalletObject, LegacyWalletV1 } from './wallet';
-import { AppModule } from '../../app.module';
 
 /**
  * Suite: WalletService
@@ -30,33 +29,9 @@ describe('[ WalletService ]', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [http_imports, translate_imports, RouterTestingModule, AppModule],
+      imports: [http_imports, translate_imports, RouterTestingModule],
       providers: [walletsrv_providers]
     });
-
-    let store = {'kukai-service-explorer': {}, 'kukai-service-discover': {}};
-    const mockLocalStorage = {
-      getItem: (key: string): string => {
-        return key in store ? store[key] : null;
-      },
-      setItem: (key: string, value: string) => {
-        store[key] = `${value}`;
-      },
-      removeItem: (key: string) => {
-        delete store[key];
-      },
-      clear: () => {
-
-      }
-    };
-    spyOn(localStorage, 'getItem')
-      .and.callFake(mockLocalStorage.getItem);
-    spyOn(localStorage, 'setItem')
-      .and.callFake(mockLocalStorage.setItem);
-    spyOn(localStorage, 'removeItem')
-      .and.callFake(mockLocalStorage.removeItem);
-    spyOn(localStorage, 'clear')
-      .and.callFake(mockLocalStorage.clear);
 
     // inject services
     service = TestBed.inject(WalletService);
@@ -84,7 +59,6 @@ describe('[ WalletService ]', () => {
     expect(salt).toEqual('U2R9zKaKW6EjngeL');
   });
 
-    /** TODO
   describe('> Create Wallet(s)', () => {
     let mnemonic;
 
@@ -98,7 +72,14 @@ describe('[ WalletService ]', () => {
       expect(x).toBe(mnemonic);
     });
 
+    /** Broken in 1.3.0 update
+    it('should create an encrypted wallet', () => {
+
+    })
+    */
   });
+
+  /** TODO
   describe('{ @todo: should return keys }', () => {
     beforeEach(() => {
 

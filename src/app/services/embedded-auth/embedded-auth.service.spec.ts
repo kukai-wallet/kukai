@@ -11,7 +11,6 @@ import { ErrorHandlingService } from '../../services/error-handling/error-handli
 import { http_imports, translate_imports } from '../../../../spec/helpers/service.helper';
 import { WalletObject } from '../wallet/wallet';
 import { CONSTANTS } from '../../../environments/environment';
-import { AppModule } from '../../app.module';
 
 describe('EmbeddedAuthService', () => {
   let service: EmbeddedAuthService;
@@ -19,7 +18,7 @@ describe('EmbeddedAuthService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [http_imports, translate_imports, RouterTestingModule, AppModule],
+      imports: [http_imports, translate_imports, RouterTestingModule],
       providers: [EmbeddedAuthService, WalletService, EncryptionService, OperationService, TorusService, InputValidationService, ErrorHandlingService]
     });
     const walletgen: WalletTools = new WalletTools();

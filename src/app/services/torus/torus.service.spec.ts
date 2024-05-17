@@ -4,12 +4,11 @@ import { OperationService } from '../operation/operation.service';
 import { TorusService } from './torus.service';
 import { InputValidationService } from '../input-validation/input-validation.service';
 import { http_imports, translate_imports, ErrorHandlingService } from '../../../../spec/helpers/service.helper';
-import { AppModule } from '../../app.module';
 
 describe('TorusService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [http_imports, translate_imports, RouterTestingModule, AppModule],
+      imports: [http_imports, translate_imports, RouterTestingModule],
       providers: [TorusService, OperationService, ErrorHandlingService, InputValidationService]
     });
   });

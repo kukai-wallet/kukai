@@ -31,7 +31,7 @@ describe('EstimateService', () => {
     expect(service).toBeDefined();
   });
   describe('> Estimate limits/cost for transactions ', () => {
-    it('Should estimate batch transaction', async function () {
+    it('Should estimate batch transaction', async function (done) {
       const ref = {
         customLimits: [
           {
@@ -44,20 +44,19 @@ describe('EstimateService', () => {
           },
           {
             gasLimit: 10412,
-            storageLimit: 0
+            storageLimit: 257
           }
         ],
         fee: 0.004039,
-        burn: 0,
+        burn: 0.06425,
         gas: 36415,
-        storage: 0,
+        storage: 257,
         reveal: false
       };
       const callback = (res) => {
-        console.log(res)
         if (res) {
           expect(res).toEqual(ref);
-          //done();
+          done();
         }
       };
       spyOn(service, 'simulate').and.returnValue(
@@ -70,11 +69,10 @@ describe('EstimateService', () => {
       await service.init(
         'BLU5JYNPCDVhm6pgJsrDp1qQ8abxu9MgFnWWHVyrhRHD3UeKLhp',
         'NetXUdfLh6Gm88t',
-        'ProxfordYmVfjWnRcgjWH36fW6PArwqykTFzotUxRs6gmTcZDuH',
         468257,
         'edpkuHo1zj3e9fVky1iq94LQY6tKfMNwkaoBEe3JFiPXxT3i4XkUxU',
-        'tz1aUxrUek1tSCP4pTPLrSNhYGSMdwyzuYTb',
-        'edpkuHo1zj3e9fVky1iq94LQY6tKfMNwkaoBEe3JFiPXxT3i4XkUxU'
+        'edpkuHo1zj3e9fVky1iq94LQY6tKfMNwkaoBEe3JFiPXxT3i4XkUxU',
+        'tz1aUxrUek1tSCP4pTPLrSNhYGSMdwyzuYTb'
       );
       await service.estimateTransactions(
         JSON.parse(

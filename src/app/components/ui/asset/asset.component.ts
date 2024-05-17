@@ -1,8 +1,9 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, Sanitizer, SimpleChanges, ViewChild } from '@angular/core';
 import { Asset, CachedAsset, TokenService } from '../../../services/token/token.service';
-import { CONSTANTS } from '../../../../environments/environment';
-import { AppComponent } from '../../../app.component';
 import { KukaiService } from '../../../services/kukai/kukai.service';
+import { SubjectService } from '../../../services/subject/subject.service';
+import { CONSTANTS } from '../../../../environments/environment';
+import { Subscription } from 'rxjs';
 
 enum Display {
   'none',
@@ -33,7 +34,6 @@ const URL_OVERRIDE_LIST = {
   styleUrls: ['../../../../scss/components/ui/asset/asset.component.scss']
 })
 export class AssetComponent implements OnInit, AfterViewInit {
-  AppComponent = AppComponent;
   Display = Display;
   display = Display.image;
   @ViewChild('preImage') preImage;
@@ -63,8 +63,9 @@ export class AssetComponent implements OnInit, AfterViewInit {
   mimeType = 'image/*';
   errors = 0;
   obs: IntersectionObserver;
+  private subscriptions: Subscription = new Subscription();
 
-  constructor(private elRef: ElementRef, private tokenService: TokenService, private kukaiService: KukaiService) {}
+  constructor(private elRef: ElementRef, private tokenService: TokenService, private kukaiService: KukaiService, private subjectService: SubjectService) {}
 
   ngOnInit(): void {
     if (this.hideSpinner) {
@@ -107,10 +108,6 @@ export class AssetComponent implements OnInit, AfterViewInit {
     } else if (this.isVideo() && (this.requires.includes('video') || this.requires.includes('all'))) {
       this.display = Display.video;
     } else if (this.is3D() && (this.requires.includes('model') || this.requires.includes('all'))) {
-      if (!AppComponent.hasWebGL) {
-        this.evaluateInvalid();
-        return;
-      }
       this.display = Display.threeD;
     } else {
       this.display = Display.none;

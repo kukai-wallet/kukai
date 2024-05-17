@@ -20,7 +20,6 @@ export class AppComponent implements OnInit, OnDestroy {
   diff = 0;
   container = null;
   post = false;
-  static hasWebGL = false;
   private subscriptions: Subscription = new Subscription();
   constructor(private walletService: WalletService, public router: Router, public translate: TranslateService, private location: Location) {
     // this language will be used as a fallback when a translation isn't found in the current language
@@ -50,9 +49,6 @@ export class AppComponent implements OnInit, OnDestroy {
         this.handleStorageEvent(e);
       });
     }
-
-    const canvas = document.createElement('canvas');
-    AppComponent.hasWebGL = !!canvas.getContext('webgl');
 
     const e = () => {
       const brk = getComputedStyle(document.documentElement).getPropertyValue('--layout-break-5');

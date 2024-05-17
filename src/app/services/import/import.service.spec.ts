@@ -291,7 +291,7 @@ describe('[ ImportService ]', () => {
         expect(wallet.wallet.implicitAccounts[1].address).toBe('tz1dXCZTs4pRTVvoXJXNRUmrYqtCde4fdP8N');
         expect(wallet.wallet.implicitAccounts[1].pk).toBe('edpkvaNoKcTrQ8jBVHkVUzwZnLAaZT98ALxucqcfmkPAWGXuRVM9Db');
         expect(wallet.wallet.implicitAccounts[1].derivationPath).toBe("44'/1729'/1'/0'");
-        expect(wallet.wallet.implicitAccounts[2]).toBeDefined();
+        expect(wallet.wallet.implicitAccounts[2]).not.toBeDefined();
       });
     });
   });

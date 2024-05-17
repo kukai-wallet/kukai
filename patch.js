@@ -1,5 +1,5 @@
 const fs = require('fs');
-const common = 'node_modules/@angular-devkit/build-angular/src/tools/webpack/configs/common.js';
+const common = 'node_modules/@angular-devkit/build-angular/src/webpack/configs/common.js';
 const tdcore = 'node_modules/@tezos-domains/core/dist/core.es2015.js';
 const uts46 = 'node_modules/idna-uts46-hx/uts46.js';
 
@@ -44,17 +44,13 @@ new TerserPlugin({
   },
   extractComments: false,
   parallel: true,
-}),
-new webpack_2.DefinePlugin({
-  ngDevMode: false,
-  ngI18nClosureMode: false
 }),`;
 
 const pluginImports = `const TerserPlugin = require('terser-webpack-plugin');`;
 
-// let data = fs.readFileSync(tdcore, 'utf8');
-// data = data.replace("import { randomInt } from 'crypto';", "import { randomInt } from 'crypto-js';");
-// fs.writeFileSync(tdcore, data, 'utf8');
+let data = fs.readFileSync(tdcore, 'utf8');
+data = data.replace("import { randomInt } from 'crypto';", "import { randomInt } from 'crypto-js';");
+fs.writeFileSync(tdcore, data, 'utf8');
 
 data = fs.readFileSync(uts46, 'utf8');
 data = data.replace(/punycode\.ucs2\.decode/g, 'punycode.ucs2decode');
