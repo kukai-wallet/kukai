@@ -445,12 +445,8 @@ export class TokenService {
       exploredIds: this.exploredIds,
       version: this.version
     };
-    try {
-      localStorage.setItem(this.storeKey, JSON.stringify(data));
-    } catch (e) {
-      localStorage.setItem(this.storeKey, 'KV_DB');
-      await indexedDB.saveToKvDb('tokenMetadata', data);
-    }
+    await indexedDB.saveToKvDb('tokenMetadata', data);
+    localStorage.setItem(this.storeKey, 'KV_DB');
   }
   async loadMetadata() {
     let metadataJson = localStorage.getItem(this.storeKey);
