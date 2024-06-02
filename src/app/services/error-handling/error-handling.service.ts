@@ -16,7 +16,7 @@ const customErrors: Record<string, CustomError> = {
     msg: 'Error while applying operation: Please try again.'
   },
   'proto.alpha.contract.balance_too_low': {
-    msg: 'Not enoght tez (XTZ) to perform this operation'
+    msg: 'Not enough tez (XTZ) to perform this operation'
   }
 };
 

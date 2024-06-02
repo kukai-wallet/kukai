@@ -48,11 +48,11 @@ export const rpcErrors: Record<string, RPCError> =
     "category": "temporary"
   },
   "proto.alpha.Dal_slot_repr.invalid_proof_deserialization": {
-    "msg": "Error occured during dal proof deserialization",
+    "msg": "Error occurred during dal proof deserialization",
     "category": "temporary"
   },
   "proto.alpha.Dal_slot_repr.invalid_proof_serialization": {
-    "msg": "Error occured during dal proof serialization",
+    "msg": "Error occurred during dal proof serialization",
     "category": "temporary"
   },
   "proto.alpha.Dissecting_during_final_move": {

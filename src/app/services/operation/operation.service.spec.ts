@@ -290,7 +290,7 @@ describe('[ OperationService ]', () => {
  *			 State(s):
  * 						1: Parameter 'to' is empty. It doesn't set the fop.contents[0].delegate property? Does this nullify delegate?
  *						2: Parameter to is valid & manager.key is undefined. Appends a reveal operation which changes fop object expected.
- *						3: Parameter to is valie & manager.key is defined. "Passes" returns operation(fop,keys)
+ *						3: Parameter to is valid & manager.key is defined. "Passes" returns operation(fop,keys)
  *			 Testing:
  *						- Perform for each state(3)
  *						- CALLTHROUGH EXPECT return of Observable<any> object if we are not mocking/stubbing operation.
