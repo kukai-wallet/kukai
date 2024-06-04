@@ -193,6 +193,7 @@ export class UriHandlerComponent implements OnInit, OnDestroy {
       for (let i = 0; i < message.operationDetails.length; i++) {
         if (
           message.operationDetails[i].destination &&
+          message.operationDetails[i].destination.startsWith('KT1') &&
           message.operationDetails[i].parameters &&
           this.walletService.wallet.getAccount(message.operationDetails[i].destination)
         ) {
