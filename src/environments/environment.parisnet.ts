@@ -8,17 +8,17 @@ export const environment = {
   production: false
 };
 const _CONSTANTS: Constants = {
-  NETWORK: 'ghostnet',
-  NAME: 'Testnet / Ghostnet',
+  NETWORK: 'parisnet',
+  NAME: 'Testnet / Parisnet',
   TEZOS_DOMAIN: {
     CONTRACT: 'KT1WffvKqRGaPtVWYR1ZkG2GQY42B7a8x3kk',
     TOP_DOMAINS: ['gho']
   },
   MAINNET: false,
-  NODE_URL: ['https://ghostnet.smartpy.io', 'https://rpc.ghostnet.tzboot.net'],
-  API_URL: 'https://api.ghostnet.tzkt.io/v1',
-  OBJKT_URL: 'https://data.ghostnet.objkt.com/v3/graphql',
-  BLOCK_EXPLORER_URL: 'https://ghostnet.tzkt.io',
+  NODE_URL: ['https://rpc.paris2net.teztnets.com', 'https://rpc.paris2net.tzboot.net'],
+  API_URL: 'https://api.parisnet.tzkt.io/v1',
+  OBJKT_URL: 'https://data.parisnet.objkt.com/v3/graphql',
+  BLOCK_EXPLORER_URL: 'https://parisnet.tzkt.io',
   HARD_LIMITS: {
     hard_gas_limit_per_operation: 1040000,
     hard_gas_limit_per_block: 1733333,

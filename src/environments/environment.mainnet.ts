@@ -18,7 +18,7 @@ const _CONSTANTS: Constants = {
   BLOCK_EXPLORER_URL: 'https://tzkt.io',
   HARD_LIMITS: {
     hard_gas_limit_per_operation: 1040000,
-    hard_gas_limit_per_block: 2600000,
+    hard_gas_limit_per_block: 1733333,
     hard_storage_limit_per_operation: 60000
   },
   ASSETS: {

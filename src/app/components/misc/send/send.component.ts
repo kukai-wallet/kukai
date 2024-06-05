@@ -375,7 +375,7 @@ export class SendComponent implements OnInit, OnChanges, OnDestroy {
             };
             await this.coordinatorService.boost(this.activeAccount.address, metadata);
             for (const transaction of ops) {
-              if (this.walletService.addressExists(transaction.destination)) {
+              if (this.walletService.addressExists(transaction.destination) && this.activeAccount.address !== transaction.destination) {
                 await this.coordinatorService.boost(transaction.destination);
               }
             }
