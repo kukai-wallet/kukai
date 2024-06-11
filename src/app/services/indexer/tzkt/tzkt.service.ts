@@ -45,7 +45,7 @@ export class TzktService implements Indexer {
   constructor(private subjectService: SubjectService) {
     this.Tezos = new TezosToolkit(CONSTANTS.NODE_URL[0]);
     const customHandlers = new Map<string, Handler>([
-      ['ipfs', new IpfsHttpHandler('cloudflare-ipfs.com')],
+      ['ipfs', new IpfsHttpHandler('ipfs.io')],
       ['tezos-storage', new TezosStorageHandler()]
     ]);
     const customMetadataProvider = new MetadataProvider(customHandlers);
@@ -242,7 +242,7 @@ export class TzktService implements Indexer {
       this.filterMetadata(meta);
     }
     // default to 0
-    if (meta?.decimals === undefined) {
+    if (meta && meta?.decimals === undefined) {
       meta.decimals = 0;
     }
     if (!(meta && (meta.name || meta.symbol) && !isNaN(meta.decimals) && meta.decimals >= 0) || metadataSource === MetadataSource.TaquitoOnly) {
