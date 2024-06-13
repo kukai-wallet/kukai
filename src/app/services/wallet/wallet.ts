@@ -214,6 +214,9 @@ export class WatchWallet extends Wallet {
 
 export abstract class Account {
   balanceXTZ: number | null;
+  stakedBalance: number | null;
+  unstakedBalance: number | null;
+  availableBalance: number | null;
   balanceUSD: number | null;
   delegate: string;
   state: string;
@@ -225,6 +228,9 @@ export abstract class Account {
   constructor(pkh: string, pk: string, address: string) {
     this.balanceXTZ = null;
     this.balanceUSD = null;
+    this.stakedBalance = null;
+    this.unstakedBalance = null;
+    this.availableBalance = null;
     this.activities = null;
     this.tokens = null;
     this.delegate = '';

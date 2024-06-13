@@ -8,6 +8,7 @@ import { MessageService } from '../../../../services/message/message.service';
 import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { SubjectService } from '../../../../services/subject/subject.service';
+import { CONSTANTS as _CONSTANTS } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-delegate-page',
@@ -21,7 +22,7 @@ export class DelegatePageComponent implements OnInit, OnDestroy {
   isShowingCustom = false;
   balanceXTZ = 0;
   private subscriptions: Subscription = new Subscription();
-
+  CONSTANTS = _CONSTANTS;
   constructor(
     public delegateService: DelegateService,
     public router: Router,

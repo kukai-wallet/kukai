@@ -7,8 +7,7 @@ import { ActivityService } from '../../activity/activity.service';
 import { OperationService } from '../../operation/operation.service';
 import { BalanceService } from '../../balance/balance.service';
 import { DelegateService } from '../../delegate/delegate.service';
-import { Router } from '@angular/router';
-import { Location } from '@angular/common';
+import { CoordinatorService } from '../../coordinator/coordinator.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -19,11 +18,13 @@ export class SignalService {
     private activityService: ActivityService,
     private operationService: OperationService,
     private balanceService: BalanceService,
-    private delegateService: DelegateService
+    private delegateService: DelegateService,
+    private coordinatorServcie: CoordinatorService
   ) {}
   async init() {
     this.connection = new HubConnectionBuilder().withUrl(`${CONSTANTS.API_URL}/events`).build();
     this.connection.on('operations', (msg) => {
+      console.log('msg');
       for (const op of msg.data) {
         if (op?.status === 'applied') {
           console.log('%csignalR msg', 'color: green;', op);
@@ -63,14 +64,7 @@ export class SignalService {
     }
   }
   updateAccountData(pkh: string) {
-    this.operationService.getAccount(pkh).subscribe((ans: any) => {
-      if (ans.success) {
-        this.balanceService.updateAccountBalance(this.walletService.wallet?.getAccount(pkh), Number(ans.payload.balance));
-        const acc = this.walletService.wallet?.getAccount(pkh);
-        this.delegateService.handleDelegateResponse(acc, ans.payload.delegate);
-      } else {
-      }
-    });
+    this.coordinatorServcie.update(pkh);
   }
 
   async start() {
@@ -96,9 +90,11 @@ export class SignalService {
     try {
       await this.connection.invoke('SubscribeToOperations', {
         address,
-        types: 'transaction,delegation,origination'
+        types: 'transaction,delegation,origination,staking'
       });
-    } catch (e) {}
+    } catch (e) {
+      console.error(e);
+    }
   }
   ngOnDestroy(): void {
     try {

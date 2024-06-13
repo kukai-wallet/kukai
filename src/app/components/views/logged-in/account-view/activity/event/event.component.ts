@@ -113,8 +113,13 @@ export class EventComponent implements OnInit, OnChanges, OnDestroy {
         return 'Undelegated';
       case 'origination':
         return 'Originated';
+      case 'staking':
+        return `${(this.activity.entrypoint[0].toUpperCase() + this.activity.entrypoint.slice(1)).replace('_', ' ')}: ${this.tokenService.formatAmount(
+          this.activity.tokenId,
+          this.activity.amount.toString()
+        )}`;
       default:
-        return '';
+        return '?';
     }
   }
   sentKind(activity): string {
@@ -144,6 +149,8 @@ export class EventComponent implements OnInit, OnChanges, OnDestroy {
         return 'To:';
       case 'origination':
         return 'Originated contract:';
+      case 'staking':
+        return 'Baker:';
     }
   }
   copy(address: string): void {
