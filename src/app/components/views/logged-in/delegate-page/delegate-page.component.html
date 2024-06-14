@@ -5,7 +5,7 @@
         <a [routerLink]="'/account/' + activeAccount?.address"><button class="flex-row back"><img
               src="../../../../../assets/img/left-arrow.svg">BACK</button></a>
         <!-- Remove ngIf on the two rows below when pseudo staking have been enabled, and replace the placeholder url for mainnet (~2024-06-19) -->
-        <h1>Delegating / Staking</h1>
+        <h1>Delegating<ng-container *ngIf="!this.isMobile"> & Staking</ng-container></h1>
         <a class="stake" href="{{this.CONSTANTS.MAINNET ? 'about:blank#disabled' : 'https://stake-tezos.vercel.app'}}" target="_blank"><button [disabled]="this.CONSTANTS.MAINNET" class="flex-row">Stake <img src="../../../../../assets/img/external-link.svg"></button></a>
         <div class="flex-row toolbar"><span class="button blue" (click)="toggleCustom()">Enter Custom Baker</span><span
             *ngIf="!delegates?.length" class="button blue" (click)="this.delegateService.getDelegates()">Reload</span>
