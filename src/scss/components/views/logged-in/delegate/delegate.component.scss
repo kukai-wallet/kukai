@@ -88,6 +88,10 @@
                 height: 1.5rem;
               }
             }
+            & button:disabled {
+              opacity: 0.4;
+              cursor: not-allowed;
+            }
           }
           & button {
             width: auto;
