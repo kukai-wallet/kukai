@@ -14,8 +14,8 @@ describe('TzktService', () => {
   it('should return token metadata', async () => {
     const contractAddress = 'KT1RhzBigSQWQkEZQpNSyi4abTFm5fpMyihH';
     const bigMapId = { contract: 26006, token: 26009 };
-    const tokenCloudUrl = 'https://cloudflare-ipfs.com/ipfs/QmZDycNwSy12vueaPnxuCMFUCHeQieT5wA5yNwqswwFn3V';
-    const contractCloudUrl = 'https://cloudflare-ipfs.com/ipfs/QmVBdYhUXmF3QSRSYgoZfvUhLKgW4oCWC6xMzvHzV5TFVA';
+    const tokenCloudUrl = 'https://ipfs.io/ipfs/QmZDycNwSy12vueaPnxuCMFUCHeQieT5wA5yNwqswwFn3V';
+    const contractCloudUrl = 'https://ipfs.io/ipfs/QmVBdYhUXmF3QSRSYgoZfvUhLKgW4oCWC6xMzvHzV5TFVA';
     // spyOn(service, 'fetchApi')
     //   .withArgs(`${service.bcd}/contract/${CONSTANTS.NETWORK}/${contractAddress}/storage`)
     //   .and.callFake(async () => JSON.parse(storageMock))

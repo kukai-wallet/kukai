@@ -49,7 +49,7 @@ export class ActivityService {
           } else {
             this.updateTokenBalances(account, []);
           }
-          return this.getAllTransactions(account, counter);
+          return this.getAllTransactions(account, counter, data);
         } else {
           if (!account.state) {
             if (!account.activities || !account.tokens) {
@@ -65,7 +65,11 @@ export class ActivityService {
           }
           return of({
             upToDate: true,
-            balance: data?.balance ? data.balance : 0
+            balance: data?.balance ?? 0,
+            delegate: data?.delegate ?? '',
+            stakedBalance: data?.stakedBalance ?? 0,
+            unstakedBalance: data?.unstakedBalance ?? 0,
+            availableBalance: data?.availableBalance ?? 0
           });
         }
       })
@@ -94,7 +98,7 @@ export class ActivityService {
       this.walletService.storeWallet();
     }
   }
-  getAllTransactions(account: Account, counter: string): Observable<any> {
+  getAllTransactions(account: Account, counter: string, data: any): Observable<any> {
     const knownTokenIds: string[] = this.tokenService.knownTokenIds();
     return fromPromise(this.indexerService.getOperations(account.address, knownTokenIds, this.walletService.wallet)).pipe(
       flatMap((resp) => {
@@ -133,7 +137,12 @@ export class ActivityService {
           }
         }
         return of({
-          upToDate: false
+          upToDate: false,
+          balance: data?.balance ?? 0,
+          delegate: data?.delegate ?? 0,
+          stakedBalance: data?.stakedBalance ?? 0,
+          unstakedBalance: data?.unstakedBalance ?? 0,
+          availableBalance: data?.availableBalance ?? 0
         });
       })
     );
@@ -187,6 +196,8 @@ export class ActivityService {
             this.messageService.addSuccess(account.shortAddress() + ': Contract originated');
           } else if (activity.type === 'activation') {
             this.messageService.addSuccess(account.shortAddress() + ': Account activated');
+          } else if (activity.type === 'staking') {
+            this.messageService.addSuccess(account.shortAddress() + ': Stake updated');
           }
           const counter = this.getCounterparty(activity, account, false);
           if (counter?.address) {
@@ -216,6 +227,8 @@ export class ActivityService {
       } else {
         counterParty = transaction.source;
       }
+    } else if (transaction.type === 'staking') {
+      counterParty = transaction.destination;
     } else {
       counterParty = { address: '' };
     }

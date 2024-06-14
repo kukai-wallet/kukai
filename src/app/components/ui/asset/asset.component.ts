@@ -24,7 +24,7 @@ const MIMETYPE_OVERLOADS = ['unknown', 'image/gif'];
 
 const URL_OVERRIDE_LIST = {
   'https://data.mantodev.com/media/medium/ipfs/QmeixniZcQoDBe9gyNFhk87xyzdFyrK7ngk9whi4nL7FH2':
-    'https://cloudflare-ipfs.com/ipfs/QmeixniZcQoDBe9gyNFhk87xyzdFyrK7ngk9whi4nL7FH2'
+    'https://ipfs.io/ipfs/QmeixniZcQoDBe9gyNFhk87xyzdFyrK7ngk9whi4nL7FH2'
 };
 
 @Component({

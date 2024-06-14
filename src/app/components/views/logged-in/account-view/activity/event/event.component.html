@@ -4,7 +4,7 @@
   [class.failed]="activity.status === OpStatus.FAILED">
   <div class="flex-row top">
     <div class="flex-row title">
-      <ng-container *ngIf="!activity.entrypoint; else callEntrypoint">
+      <ng-container *ngIf="!activity.entrypoint || activity.type === 'staking'; else callEntrypoint">
         <ng-container [ngSwitch]="getType()?.replace('undelegated', 'delegated')">
           <img *ngSwitchCase="'sent'" [src]="activity.status === OpStatus.FAILED ? '../../../../assets/img/up-arrow-red.svg' : '../../../../assets/img/up-arrow-black.svg'"
             style="transform: rotate(45deg)" />

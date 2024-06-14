@@ -129,7 +129,7 @@ export class SwapLiquidityComponent extends ModalComponent {
   ) {
     super();
     const setTokenBalances = () => {
-      this.xtzBalance = Big(this.activeAccount?.balanceXTZ ?? 0)
+      this.xtzBalance = Big(this.activeAccount?.availableBalance ?? 0)
         .div(10 ** 6)
         .toString();
       this.lqdBalance = this.balances.find((b) => b.contractAddress === this.lqdTokenContract && b.id == 0)?.balance ?? '0';
@@ -471,7 +471,7 @@ export class SwapLiquidityComponent extends ModalComponent {
   }
 
   async update(type: string = 'qtyRaw'): Promise<void> {
-    this.xtzBalance = Big(this.activeAccount?.balanceXTZ ?? 0)
+    this.xtzBalance = Big(this.activeAccount?.availableBalance ?? 0)
       .div(10 ** 6)
       .toString();
     this.lqdBalance = this.balances.find((b) => b.contractAddress === this.lqdTokenContract && b.id == 0)?.balance ?? '0';

@@ -400,6 +400,9 @@ export class WalletService {
       const impAcc: ImplicitAccount = new ImplicitAccount(implicit.pkh, implicit.pk, implicit.derivationPath ? implicit.derivationPath : null);
       impAcc.balanceUSD = implicit.balanceUSD;
       impAcc.balanceXTZ = implicit.balanceXTZ;
+      impAcc.stakedBalance = implicit.stakedBalance ?? null;
+      impAcc.unstakedBalance = implicit.unstakedBalance ?? null;
+      impAcc.availableBalance = implicit.availableBalance ?? null;
       impAcc.delegate = implicit.delegate;
       impAcc.state = implicit.state;
       impAcc.activities = implicit.activities?.filter((activity) => {

@@ -104,7 +104,6 @@ export class CoordinatorService {
       };
       this.scheduler.set(pkh, scheduleData);
       this.update(pkh);
-      this.updateAccountData(pkh);
     } else if (pkh && this.scheduler.get(pkh)) {
       this.setDelay(pkh, delay);
     }
@@ -135,7 +134,7 @@ export class CoordinatorService {
             console.log('Timeout from wait state');
             this.changeState(pkh, State.UpToDate);
           }
-        }, 75000);
+        }, 60000);
       }
     }
   }
@@ -147,12 +146,6 @@ export class CoordinatorService {
           case State.UpToDate: {
             if (!ans.upToDate) {
               this.changeState(pkh, State.Updating);
-            } else if (ans?.balance) {
-              const balance = this.walletService.wallet?.getAccount(pkh).balanceXTZ;
-              if (balance !== ans.balance) {
-                console.log('recheck balance');
-                this.updateAccountData(pkh);
-              }
             }
             break;
           }
@@ -178,6 +171,9 @@ export class CoordinatorService {
           }
         }
         const acc = this.walletService.wallet?.getAccount(pkh);
+        if (ans?.balance) {
+          this.updateAccountState(acc, ans);
+        }
         if (acc?.activities?.length) {
           const latestActivity = acc.activities[0];
           if (latestActivity.status === OpStatus.UNCONFIRMED) {
@@ -199,12 +195,13 @@ export class CoordinatorService {
       }
     );
   }
+  updateAccountState(acc: Account, payload: any) {
+    this.balanceService.updateAccountBalance(acc, payload);
+    this.delegateService.handleDelegateResponse(acc, payload.delegate);
+  }
   changeState(pkh: string, newState: State) {
     const scheduleData: ScheduleData = this.scheduler.get(pkh);
     scheduleData.state = newState;
-    if (newState === State.UpToDate || newState === State.Updating) {
-      this.updateAccountData(pkh);
-    }
     if (newState === State.Wait || newState === State.Updating) {
       scheduleData.interval.unsubscribe();
       scheduleData.interval = interval(this.shortDelayActivity).subscribe(() => this.update(pkh));
@@ -241,19 +238,6 @@ export class CoordinatorService {
       this.scheduler.get(pkh).interval = null;
       this.scheduler.delete(pkh);
     }
-  }
-  updateAccountData(pkh: string) {
-    // Maybe also check for originations to account?
-    // console.debug('update account data for ' + pkh);
-    this.operationService.getAccount(pkh).subscribe((ans: any) => {
-      if (ans.success) {
-        this.balanceService.updateAccountBalance(this.walletService.wallet?.getAccount(pkh), Number(ans.payload.balance));
-        const acc = this.walletService.wallet?.getAccount(pkh);
-        this.delegateService.handleDelegateResponse(acc, ans.payload.delegate);
-      } else {
-        console.log('updateAccountData -> getAccount failed ', ans.payload.msg);
-      }
-    });
   }
   addUnconfirmedOperations(from: string, metadata: any) {
     const account = this.walletService.wallet?.getAccount(from);
@@ -331,9 +315,13 @@ export class CoordinatorService {
           tokenId: metadata.tokenTransfer ? metadata.tokenTransfer : undefined,
           entrypoint: op.parameters?.entrypoint ? op.parameters.entrypoint : ''
         };
+        if (['stake', 'unstake', 'finalize_unstake'].includes(transaction.entrypoint) && op.destination === from) {
+          transaction.type = 'staking';
+          transaction.destination = { address: account.delegate };
+        }
         account.activities.unshift(transaction);
         const destinationAccount = this.walletService.wallet?.getAccount(op.destination);
-        if (destinationAccount) {
+        if (destinationAccount && transaction.type === 'transaction') {
           destinationAccount.activities.unshift({ ...transaction });
         }
       }

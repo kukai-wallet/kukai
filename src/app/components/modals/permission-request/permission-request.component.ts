@@ -91,10 +91,7 @@ export class PermissionRequestComponent implements OnInit, OnChanges, OnDestroy 
   cachedIcon(permissionRequest): string {
     if (permissionRequest?.appMetadata?.icon) {
       let icon = permissionRequest?.appMetadata?.icon;
-      if (icon.startsWith('https://')) {
-        icon = icon.slice(8);
-      }
-      return `https://data.mantodev.com/media/medium/web/${icon}`;
+      return icon;
     }
     return '';
   }
