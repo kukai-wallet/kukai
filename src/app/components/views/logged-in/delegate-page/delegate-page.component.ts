@@ -23,6 +23,7 @@ export class DelegatePageComponent implements OnInit, OnDestroy {
   balanceXTZ = 0;
   private subscriptions: Subscription = new Subscription();
   CONSTANTS = _CONSTANTS;
+  isMobile = false;
   constructor(
     public delegateService: DelegateService,
     public router: Router,
@@ -53,7 +54,13 @@ export class DelegatePageComponent implements OnInit, OnDestroy {
     );
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    const mobileCheck = () => {
+      this.isMobile = !!parseInt(document.documentElement.style.getPropertyValue('--is-mobile'));
+    };
+    window.addEventListener('resize', mobileCheck);
+    mobileCheck();
+  }
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();

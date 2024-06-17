@@ -198,7 +198,7 @@
 
       & button,
       & .current {
-        width: 10rem;
+         max-width: 11rem;
       }
 
       & .current {
@@ -335,7 +335,7 @@
       width: 6rem;
     }
     button {
-      width: 8rem;
+      //width: 8rem;
       padding: 1rem;
       color: v.$base-blue-color-lightened;
       background-color: v.$base-background-color;
