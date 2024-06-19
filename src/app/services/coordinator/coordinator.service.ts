@@ -171,7 +171,7 @@ export class CoordinatorService {
           }
         }
         const acc = this.walletService.wallet?.getAccount(pkh);
-        if (ans?.balance) {
+        if (!isNaN(ans?.balance)) {
           this.updateAccountState(acc, ans);
         }
         if (acc?.activities?.length) {

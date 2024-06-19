@@ -113,7 +113,12 @@ export class TzktService implements Indexer {
         let availableBalance: number = 0;
         if (data?.balance) {
           try {
-            availableBalance = Number(Big(data.balance).minus(data.stakedBalance).minus(data.unstakedBalance).toFixed(0));
+            availableBalance = Number(
+              Big(data.balance ?? 0)
+                .minus(data.stakedBalance ?? 0)
+                .minus(data.unstakedBalance ?? 0)
+                .toFixed(0)
+            );
           } catch (e) {
             console.error(e);
           }

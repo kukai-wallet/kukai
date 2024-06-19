@@ -83,18 +83,16 @@ export class DelegateComponent extends ModalComponent implements OnInit, OnChang
           ? this.externalRequest.operationRequest.operationDetails
           : this.externalRequest.operationRequest;
         if (shouldHandleOperations(opReq, this.name)) {
-          if (opReq[0].delegate) {
-            this.activeAccount = this.externalRequest.selectedAccount;
-            ModalComponent.currentModel.next({
-              name: '',
-              data: null
-            });
-            this.clearForm();
-            ModalComponent.currentModel.next({
-              name: 'delegate-confirm',
-              data: { address: opReq[0].delegate }
-            });
-          }
+          this.activeAccount = this.externalRequest.selectedAccount;
+          ModalComponent.currentModel.next({
+            name: '',
+            data: null
+          });
+          this.clearForm();
+          ModalComponent.currentModel.next({
+            name: 'delegate-confirm',
+            data: { address: opReq[0].delegate }
+          });
         }
       }
     }
