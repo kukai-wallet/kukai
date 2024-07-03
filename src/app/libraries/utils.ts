@@ -2,7 +2,7 @@ import * as bip39 from 'bip39';
 import { blake2b } from 'blakejs';
 import { sign as naclSign } from 'tweetnacl';
 import { KeyPair, SignedOps } from './interfaces';
-import { base58encode, base58decode, mergebuf, hexToBuf, bufToHex, prefix as _prefix } from './common';
+import { base58encode, base58decode, mergebuf, hexToBuf, bufToHex, prefix as _prefix, tzPrefix as _tzPrefix } from './common';
 
 const validBase58string = (base58string: string, prefix: string): boolean => {
   try {
@@ -36,7 +36,7 @@ const validOperationHash = (opHash: string): boolean => {
 };
 
 const validPublicKey = (pk: string): boolean => {
-  return pk && pk.length === 54 && validBase58string(pk, 'edpk');
+  return pk && ((pk.length === 54 && validBase58string(pk, 'edpk')) || (pk.length === 55 && validBase58string(pk, 'sppk')));
 };
 
 const validSecretKey = (sk: string): boolean => {
@@ -137,8 +137,10 @@ const pkToPkh = (pk: string): string => {
   if (!validPublicKey(pk)) {
     throw new Error('Invalid public key');
   }
-  const pkDecoded = base58decode(pk, _prefix.edpk);
-  return base58encode(blake2b(pkDecoded, null, 20), _prefix.tz1);
+  const prefix = pk.substring(0, 4);
+  const pkDecoded = base58decode(pk, _prefix[prefix]);
+  const tzPrefix = _tzPrefix[prefix];
+  return base58encode(blake2b(pkDecoded, null, 20), tzPrefix);
 };
 
 export {

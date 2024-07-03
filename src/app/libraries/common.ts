@@ -16,6 +16,11 @@ const prefix = {
   spsk: new Uint8Array([17, 162, 224, 201])
 };
 
+const tzPrefix = {
+  edpk: prefix.tz1,
+  sppk: prefix.tz2
+};
+
 const mergebuf = (b: Uint8Array, wm = Uint8Array.from([3])): Uint8Array => {
   const r = new Uint8Array(wm.length + b.length);
   r.set(wm);
@@ -59,4 +64,4 @@ const hexToPk = (hex: string): string => {
   return base58encode(hexToBuf(hex.slice(2, 66)), prefix.edpk);
 };
 
-export { base58encode, base58decode, mergebuf, hexToBuf, hexToPk, bufToHex, prefix };
+export { base58encode, base58decode, mergebuf, hexToBuf, hexToPk, bufToHex, prefix, tzPrefix };

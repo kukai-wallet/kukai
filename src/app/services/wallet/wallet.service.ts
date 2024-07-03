@@ -186,11 +186,7 @@ export class WalletService {
   addImplicitAccount(pk: string, derivationPath?: string | number) {
     let pkh;
     console.log(pk);
-    if (pk && pk.slice(0, 4) === 'sppk') {
-      pkh = this.operationService.pk2pkh(pk);
-    } else {
-      pkh = utils.pkToPkh(pk);
-    }
+    pkh = utils.pkToPkh(pk);
     if (pkh) {
       this.wallet.implicitAccounts.push(new ImplicitAccount(pkh, pk, typeof derivationPath === 'number' ? `44'/1729'/${derivationPath}'/0'` : derivationPath));
       console.log('Adding new implicit account...');
