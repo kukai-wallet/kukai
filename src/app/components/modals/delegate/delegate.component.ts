@@ -14,6 +14,7 @@ import { ModalComponent } from '../modal.component';
 import { Subscription } from 'rxjs';
 import { SubjectService } from '../../../services/subject/subject.service';
 import { shouldHandleOperations } from '../../../libraries/beacon-type-check';
+import { EstimateService } from '../../../services/estimate/estimate.service';
 import Big from 'big.js';
 
 @Component({
@@ -23,9 +24,7 @@ import Big from 'big.js';
 })
 export class DelegateComponent extends ModalComponent implements OnInit, OnChanges, OnDestroy {
   domainPendingLookup = false;
-  defaultFee = 0.0003;
-  readonly pkhFee = 0.0003;
-  readonly ktFee = 0.0008;
+  estimationResult: any;
   @ViewChild('toPkhInput') toPkhView: ElementRef;
   @Input() beaconMode = false;
   @Input() externalRequest: ExternalRequest;
@@ -58,7 +57,8 @@ export class DelegateComponent extends ModalComponent implements OnInit, OnChang
     private messageService: MessageService,
     private tezosDomains: TezosDomainsService,
     private subjectService: SubjectService,
-    private router: Router
+    private router: Router,
+    private estimateService: EstimateService
   ) {
     super();
   }
@@ -105,7 +105,7 @@ export class DelegateComponent extends ModalComponent implements OnInit, OnChang
   open(data): void {
     if (this.walletService.wallet) {
       this.clearForm(true);
-      this.estimateDefaultFee();
+      this.estimate();
       this.toPkh = data.address;
       this.delegate = data;
       this.balanceXTZ = this.activeAccount ? this.activeAccount.balanceXTZ / 1000000 : 0;
@@ -160,35 +160,43 @@ export class DelegateComponent extends ModalComponent implements OnInit, OnChang
   async sendDelegation(keys: KeyPair): Promise<void> {
     let fee = this.getFee();
     this.subscriptions.add(
-      this.operationService.delegate(this.activeAccount.address, this.toPkh, Number(fee), keys).subscribe(
-        async (ans: any) => {
-          this.sendResponse = ans;
-          console.log(JSON.stringify(ans));
-          if (ans.success === true) {
-            if (ans.payload.opHash) {
-              this.operationResponse.emit(ans.payload.opHash);
-              const metadata = {
-                delegate: this.toPkh,
-                opHash: ans.payload.opHash
-              };
-              this.coordinatorService.boost(this.activeAccount.address, metadata);
+      this.operationService
+        .delegate(
+          this.activeAccount.address,
+          this.toPkh,
+          Number(fee),
+          this.estimationResult.customLimits[0].gasLimit,
+          this.estimationResult.customLimits[0].storageLimit,
+          keys
+        )
+        .subscribe(
+          async (ans: any) => {
+            this.sendResponse = ans;
+            if (ans.success === true) {
+              if (ans.payload.opHash) {
+                this.operationResponse.emit(ans.payload.opHash);
+                const metadata = {
+                  delegate: this.toPkh,
+                  opHash: ans.payload.opHash
+                };
+                this.coordinatorService.boost(this.activeAccount.address, metadata);
+                this.closeModal();
+                this.router.navigate([`/account/${this.activeAccount.address}`]);
+              } else if (this.walletService.isLedgerWallet()) {
+                this.requestLedgerSignature();
+              }
+            } else {
+              console.log('Delegation error id ', ans.payload.msg);
+              this.messageService.addError(ans.payload.msg, 0);
+              this.operationResponse.emit('broadcast_error');
               this.closeModal();
-              this.router.navigate([`/account/${this.activeAccount.address}`]);
-            } else if (this.walletService.isLedgerWallet()) {
-              this.requestLedgerSignature();
             }
-          } else {
-            console.log('Delegation error id ', ans.payload.msg);
-            this.messageService.addError(ans.payload.msg, 0);
-            this.operationResponse.emit('broadcast_error');
-            this.closeModal();
+          },
+          (err) => {
+            console.log('Error Message ', JSON.stringify(err));
+            this.ledgerError = 'Failed to create operation';
           }
-        },
-        (err) => {
-          console.log('Error Message ', JSON.stringify(err));
-          this.ledgerError = 'Failed to create operation';
-        }
-      )
+        )
     );
   }
   async requestLedgerSignature(): Promise<void> {
@@ -238,20 +246,37 @@ export class DelegateComponent extends ModalComponent implements OnInit, OnChang
       }
     );
   }
-  estimateDefaultFee(): void {
-    this.subscriptions.add(
-      this.operationService.isRevealed(this.activeAccount.pkh).subscribe((revealed: boolean) => {
-        const revealFee = revealed ? 0 : 0.0001;
-        if (this.activeAccount instanceof ImplicitAccount) {
-          this.defaultFee = Number(new Big(revealFee).plus(this.pkhFee));
-        } else if (this.activeAccount instanceof OriginatedAccount) {
-          this.defaultFee = Number(new Big(revealFee).plus(this.ktFee));
+  async estimate() {
+    await this.estimateService.preLoadData(this.activeAccount.pkh, this.activeAccount.pk);
+    const op: any = [
+      {
+        kind: 'delegation',
+        source: this.activeAccount.address
+      }
+    ];
+    if (this.toPkh) {
+      op[0].delegate = this.toPkh;
+    }
+    this.estimationResult = await this.estimateService
+      .estimateOperations(op, this.activeAccount.address)
+      .then((res) => {
+        if (this.activeAccount.address.startsWith('KT')) {
+          throw new Error('Delegation from KT1 accounts no longer supported');
         }
+        return res;
       })
-    );
+      .catch((e) => {
+        console.error(e);
+        this.messageService.addError(e?.message);
+        return undefined;
+      });
+    if (!this.estimationResult) {
+      this.operationResponse.emit('invalid_parameters');
+      this.closeModal();
+    }
   }
   getFee(): string {
-    return this.fee !== '' ? this.fee : this.defaultFee.toString();
+    return this.fee !== '' ? this.fee : this.estimationResult?.fee?.toString();
   }
   clearForm(init: boolean = false): void {
     if (!init && this.syncSub) {
@@ -260,7 +285,7 @@ export class DelegateComponent extends ModalComponent implements OnInit, OnChang
     }
     this.toPkh = '';
     this.fee = '';
-    this.defaultFee = this.pkhFee;
+    this.estimationResult = undefined;
     this.password = '';
     this.pwdValid = '';
     this.formInvalid = '';

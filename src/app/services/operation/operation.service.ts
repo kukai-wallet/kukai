@@ -257,7 +257,7 @@ export class OperationService {
   /*
     Returns an observable for the delegation of baking rights.
   */
-  delegate(from: string, to: string, fee: number = 0, keys: KeyPair): Observable<any> {
+  delegate(from: string, to: string, fee: number = 0, gasLimit: number, storageLimit: number, keys: KeyPair): Observable<any> {
     return this.getHeader()
       .pipe(
         flatMap((header: any) => {
@@ -276,24 +276,12 @@ export class OperationService {
                       source: from,
                       fee: this.microTez.times(fee).toString(),
                       counter: (++counter).toString(),
-                      gas_limit: '200',
-                      storage_limit: '0'
+                      gas_limit: gasLimit.toString(),
+                      storage_limit: storageLimit.toString()
                     };
                     if (to !== '') {
                       delegationOp.delegate = to;
                     }
-                  } else if (from.slice(0, 2) === 'KT') {
-                    delegationOp = {
-                      kind: 'transaction',
-                      source: keys.pkh,
-                      fee: this.microTez.times(fee).toString(),
-                      counter: (++counter).toString(),
-                      gas_limit: '4380',
-                      storage_limit: '0',
-                      amount: '0',
-                      destination: from,
-                      parameters: to !== '' ? this.getContractDelegation(to) : this.getContractUnDelegation()
-                    };
                   }
                   const fop: any = {
                     branch: header.hash,
