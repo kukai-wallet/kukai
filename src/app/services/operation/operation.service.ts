@@ -15,6 +15,7 @@ import * as elliptic from 'elliptic';
 import { instantiateSecp256k1, hexToBin, binToHex } from '@bitauth/libauth';
 import { TokenService } from '../token/token.service';
 import { isEqual } from 'lodash';
+import { pkToPkh } from '../../libraries/utils';
 
 const httpOptions = { headers: { 'Content-Type': 'application/json' } };
 
@@ -256,7 +257,7 @@ export class OperationService {
   /*
     Returns an observable for the delegation of baking rights.
   */
-  delegate(from: string, to: string, fee: number = 0, keys: KeyPair): Observable<any> {
+  delegate(from: string, to: string, fee: number = 0, gasLimit: number, storageLimit: number, keys: KeyPair): Observable<any> {
     return this.getHeader()
       .pipe(
         flatMap((header: any) => {
@@ -275,24 +276,12 @@ export class OperationService {
                       source: from,
                       fee: this.microTez.times(fee).toString(),
                       counter: (++counter).toString(),
-                      gas_limit: '200',
-                      storage_limit: '0'
+                      gas_limit: gasLimit.toString(),
+                      storage_limit: storageLimit.toString()
                     };
                     if (to !== '') {
                       delegationOp.delegate = to;
                     }
-                  } else if (from.slice(0, 2) === 'KT') {
-                    delegationOp = {
-                      kind: 'transaction',
-                      source: keys.pkh,
-                      fee: this.microTez.times(fee).toString(),
-                      counter: (++counter).toString(),
-                      gas_limit: '4380',
-                      storage_limit: '0',
-                      amount: '0',
-                      destination: from,
-                      parameters: to !== '' ? this.getContractDelegation(to) : this.getContractUnDelegation()
-                    };
                   }
                   const fop: any = {
                     branch: header.hash,
@@ -641,7 +630,7 @@ export class OperationService {
             }
             return this.postRpc('chains/main/blocks/head/helpers/forge/operations', op).pipe(
               flatMap((opBytes: any) => {
-                if (this.pk2pkh(pk) === pkh) {
+                if (pkToPkh(pk) === pkh) {
                   if (this.verify(opBytes, sig, pk)) {
                     ans = opBytes + this.buf2hex(this.b58cdecode(sig, this.prefix.sig));
                   } else {
@@ -695,16 +684,6 @@ export class OperationService {
       return false;
     }
   }
-  pk2pkh(pk: string): string {
-    if (pk.length === 54 && pk.slice(0, 4) === 'edpk') {
-      const pkDecoded = this.b58cdecode(pk, this.prefix.edpk);
-      return this.b58cencode(blake2b(pkDecoded, null, 20), this.prefix.tz1);
-    } else if (pk.length === 55 && pk.slice(0, 4) === 'sppk') {
-      const pkDecoded = this.b58cdecode(pk, this.prefix.edpk);
-      return this.b58cencode(blake2b(pkDecoded, null, 20), this.prefix.tz2);
-    }
-    throw new Error('Invalid public key');
-  }
   spPrivKeyToKeyPair(secretKey: string) {
     let sk;
     if (secretKey.match(/^[0-9a-f]{64}$/g)) {
@@ -720,7 +699,7 @@ export class OperationService {
     const pad = new Array(32).fill(0); // Zero-padding
     const publicKey = new Uint8Array([prefixVal].concat(pad.concat(keyPair.getPublic().getX().toArray()).slice(-32)));
     const pk = this.b58cencode(publicKey, this.prefix.sppk);
-    const pkh = this.pk2pkh(pk);
+    const pkh = pkToPkh(pk);
     return { sk, pk, pkh };
   }
   spPointsToPkh(pubX: string, pubY: string): string {
@@ -733,7 +712,7 @@ export class OperationService {
     const pad = new Array(32).fill(0);
     let publicKey = new Uint8Array([prefixVal].concat(pad.concat(key.getPublic().getX().toArray()).slice(-32)));
     let pk = this.b58cencode(publicKey, this.prefix.sppk);
-    const pkh = this.pk2pkh(pk);
+    const pkh = pkToPkh(pk);
     return pkh;
   }
   async decompress(pk: string): Promise<any> {

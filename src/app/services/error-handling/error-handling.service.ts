@@ -17,6 +17,9 @@ const customErrors: Record<string, CustomError> = {
   },
   'proto.alpha.contract.balance_too_low': {
     msg: 'Not enoght tez (XTZ) to perform this operation'
+  },
+  'proto.alpha.delegate.no_deletion': {
+    msg: "Can't delegate from an account registered as baker"
   }
 };
 

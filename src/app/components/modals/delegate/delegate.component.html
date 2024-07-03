@@ -30,7 +30,7 @@
       <ng-container *ngIf="advanced">
         <form autocomplete="off">
           <div class="label">Fee <span class="label" style="margin: 0; text-transform: lowercase;">(tez)</span></div>
-          <input inputmode="decimal" name="none" [(ngModel)]="fee" class="text fee" type="text" placeholder="{{defaultFee}}"
+          <input inputmode="decimal" name="none" [(ngModel)]="fee" class="text fee" type="text" placeholder="{{this.estimationResult?.fee}}"
             [disabled]="walletService.isLedgerWallet() && sendResponse?.payload?.signedOperation" />
         </form>
       </ng-container>
@@ -49,7 +49,7 @@
           (click)="ledgerSign()">Sign with Ledger</button>
         <ng-template #elseBlock>
           <button class="confirm" (click)="!messageService.spinnerOn ? inject() : null"
-            [disabled]="(walletService.isLedgerWallet() && (!sendResponse || !sendResponse.payload || !sendResponse.payload.signedOperation)) || walletService.isWatchWallet()">
+            [disabled]="(walletService.isLedgerWallet() && (!sendResponse || !sendResponse.payload || !sendResponse.payload.signedOperation)) || walletService.isWatchWallet() || !this.estimationResult">
             {{ walletService.isLedgerWallet() ? 'Broadcast' : 'Confirm'}}</button>
         </ng-template>
       </div>

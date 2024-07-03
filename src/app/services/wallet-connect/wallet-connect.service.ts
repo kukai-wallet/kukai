@@ -289,7 +289,7 @@ export class WalletConnectService {
     if (this.client) {
       const data = request.wcData;
       const namespaces: SessionTypes.Namespaces = {};
-      const address = this.operationService.pk2pkh(publicKey);
+      const address = utils.pkToPkh(publicKey);
       const accounts: string[] = [`tezos:${CONSTANTS.NETWORK}:${publicKey}`];
       const methods = data.params.requiredNamespaces?.tezos?.methods
         ?.filter((method) => this.supportedMethods.includes(method))
@@ -371,7 +371,7 @@ export class WalletConnectService {
       console.log('requestHandler', data);
       if (utils.validPublicKey(data.params.request.params.account)) {
         console.warn('Normalize sourceAddress');
-        data.params.request.params.account = this.operationService.pk2pkh(data.params.request.params.account);
+        data.params.request.params.account = utils.pkToPkh(data.params.request.params.account);
       }
       const session = this.client.session.get(data.topic);
       const allowedAccounts = session?.namespaces?.tezos?.accounts || [];
@@ -379,7 +379,7 @@ export class WalletConnectService {
         // expand to allow pkh as well as pk
         const p = acc.split(':');
         if (utils.validPublicKey(p[2])) {
-          allowedAccounts.push(`${p[0]}:${p[1]}:${this.operationService.pk2pkh(p[2])}`);
+          allowedAccounts.push(`${p[0]}:${p[1]}:${utils.pkToPkh(p[2])}`);
         }
       });
       const allowedMethods = session.namespaces.tezos.methods || [];
@@ -504,7 +504,7 @@ export class WalletConnectService {
           inKeychain = !kc ? false : !!JSON.parse(kc)[session?.topic];
         }
         if (session?.acknowledged && inKeychain) {
-          const accountAddress = this.operationService.pk2pkh(session?.namespaces?.tezos?.accounts[0].split(':')[2]);
+          const accountAddress = utils.pkToPkh(session?.namespaces?.tezos?.accounts[0].split(':')[2]);
           return { name: session?.peer?.metadata?.name, address: accountAddress, topic: session.topic, expiry: session.expiry };
         }
       })
