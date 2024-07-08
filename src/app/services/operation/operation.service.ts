@@ -462,6 +462,7 @@ export class OperationService {
   }
   errHandler(error: any): Observable<any> {
     console.log(error);
+    let errorId;
     if (error.error && typeof error.error === 'string') {
       // parsing errors
       error = error.error;
@@ -482,6 +483,7 @@ export class OperationService {
     if (error.error && error.error[0]) {
       error = error.error[0];
     }
+    errorId = error?.id;
     if (error.message) {
       error = this.errorHandlingPipe.transform(error.message);
     } else if (error.id) {
@@ -503,6 +505,7 @@ export class OperationService {
     return of({
       success: false,
       payload: {
+        errorId,
         msg: error
       }
     });

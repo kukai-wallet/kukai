@@ -188,6 +188,7 @@ export class SendComponent implements OnInit, OnChanges, OnDestroy {
             this.messageService.addError(`Simulation error: ${res.error.message}`, 0);
             this.operationResponse.emit({
               error: 'invalid_parameters',
+              errorId: res.error.errorId,
               errorMessage: res.error.message
             });
           } else {

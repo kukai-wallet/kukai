@@ -171,7 +171,8 @@ export class EstimateService {
           .toPromise();
       } else if (typeof result?.success === 'boolean' && result.success === false) {
         console.log(result);
-        throw new Error(result.payload.msg);
+        const { msg, errorId } = result.payload;
+        throw { message: msg, errorId };
       }
     }
     return null;
@@ -414,7 +415,8 @@ export class EstimateService {
           .toPromise();
       } else if (typeof result?.success === 'boolean' && result.success === false) {
         console.log(result);
-        throw new Error(result.payload.msg);
+        const { msg, errorId } = result.payload;
+        throw { message: msg, errorId };
       }
     }
     return null;

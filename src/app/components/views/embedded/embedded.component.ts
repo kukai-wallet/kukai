@@ -755,8 +755,10 @@ export class EmbeddedComponent implements OnInit {
   operationResponse(opHash: any) {
     let response: OperationResponse;
     let errorMessage = '';
+    let errorId = '';
     if (opHash?.error && opHash.errorMessage) {
       errorMessage = opHash.errorMessage;
+      errorId = opHash.errorId;
       opHash = opHash.error;
     }
     if (!opHash) {
@@ -783,8 +785,9 @@ export class EmbeddedComponent implements OnInit {
         type: ResponseTypes.operationResponse,
         failed: true,
         error: 'INVALID_PARAMETERS',
+        errorId,
         errorMessage
-      };
+      } as OperationResponse;
     } else if (utils.validOperationHash(opHash)) {
       response = {
         type: ResponseTypes.operationResponse,
