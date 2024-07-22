@@ -218,7 +218,7 @@ export class SwapLiquidityConfirmComponent extends ModalComponent implements OnI
       return;
     }
     this.messageService.startSpinner('Preparing transaction...');
-    const keys = await this.walletService.getKeys('');
+    const keys = await this.walletService.getKeys('', this.activeAccount.pkh);
     if (keys) {
       await this.sendTransaction(keys);
     } else {
@@ -349,15 +349,7 @@ export class SwapLiquidityConfirmComponent extends ModalComponent implements OnI
       await this.messageService.startSpinner('Waiting for Ledger signature...');
       try {
         const op = this.sendResponse.payload.unsignedOperation;
-        let signature = '';
-        if (op.length <= 2290) {
-          signature = await this.ledgerService.signOperation('03' + op, this.walletService.wallet.implicitAccounts[0].derivationPath);
-        } else {
-          signature = await this.ledgerService.signHash(
-            this.operationService.ledgerPreHash('03' + op),
-            this.walletService.wallet.implicitAccounts[0].derivationPath
-          );
-        }
+        const signature = await this.ledgerService.signOperation('03' + op, this.activeAccount.derivationPath);
         if (signature) {
           const signedOp = op + signature;
           this.sendResponse.payload.signedOperation = signedOp;

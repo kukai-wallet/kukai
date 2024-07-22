@@ -20,7 +20,7 @@
         </div>
         <span>QR</span>
       </div>
-      <div *ngIf="walletService.isHdWallet()" class="flex-column button" (click)="newAccount();toggleDropdown()">
+      <div *ngIf="walletService.isHdWallet() || walletService.isLedgerWallet()" class="flex-column button" (click)="newAccount();toggleDropdown()">
         <div class="wrapper">
           <img class="icon" src="../../../../assets/img/add-blue.svg" />
         </div>

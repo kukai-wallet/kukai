@@ -4,7 +4,9 @@ import { LedgerService } from '../../../../../services/ledger/ledger.service';
 import { ImportService } from '../../../../../services/import/import.service';
 import { MessageService } from '../../../../../services/message/message.service';
 import { InputValidationService } from '../../../../../services/input-validation/input-validation.service';
+import { WalletService } from '../../../../../services/wallet/wallet.service';
 import { utils } from '../../../../../libraries/index';
+import { LedgerWallet } from '../../../../../services/wallet/wallet';
 
 @Component({
   selector: 'app-connect-ledger',
@@ -14,9 +16,8 @@ import { utils } from '../../../../../libraries/index';
 export class ConnectLedgerComponent implements OnInit {
   activePanel = 0;
   defaultPath = "44'/1729'/0'/0'";
-  defaultText = 'Default derivation path';
+  defaultText = 'Account Discovery (recommended)';
   path: string;
-  pendingLedgerConfirmation = false;
   isHDDerivationPathCustom = false;
   browser = 'unknown';
 
@@ -25,7 +26,8 @@ export class ConnectLedgerComponent implements OnInit {
     private ledgerService: LedgerService,
     private importService: ImportService,
     private messageService: MessageService,
-    private inputValidationService: InputValidationService
+    private inputValidationService: InputValidationService,
+    private walletService: WalletService
   ) {}
 
   ngOnInit(): void {
@@ -48,32 +50,42 @@ export class ConnectLedgerComponent implements OnInit {
   async getPk(): Promise<void> {
     const path: string = this.path.replace(this.defaultText, this.defaultPath);
     if (this.inputValidationService.derivationPath(path)) {
-      this.pendingLedgerConfirmation = true;
       try {
         this.messageService.startSpinner('Waiting for Ledger confirmation...');
-        const pk = await this.ledgerService.getPublicAddress(path);
-        console.log('getPK => ' + pk);
-        await this.importFromPk(pk, path);
+        if (!this.isHDDerivationPathCustom) {
+          // account scanning
+          const accounts = await this.ledgerService.scan();
+          await this.importFromPk(accounts[0].pk, accounts[0].path);
+          accounts.shift();
+          while (accounts.length) {
+            const account = accounts.shift();
+            this.walletService.addImplicitAccount(account.pk, account.path);
+          }
+        } else {
+          const pk = await this.ledgerService.getPublicAddress(path);
+          await this.importFromPk(pk, path);
+        }
       } catch (e) {
         throw e;
       } finally {
-        this.pendingLedgerConfirmation = false;
         this.messageService.stopSpinner();
       }
     } else {
       this.messageService.addWarning('Invalid derivation path');
     }
   }
-  async importFromPk(pk: string, path: string): Promise<void> {
+  async importFromPk(pk: string, path: string): Promise<Boolean> {
     if (utils.validPublicKey(pk)) {
       if (await this.importService.importWalletFromPk(pk, path)) {
         this.router.navigate([`/account/`]);
+        return true;
       } else {
         this.messageService.addError('Failed to import Ledger wallet');
       }
     } else {
       this.messageService.addError('Not a valid public key');
     }
+    return false;
   }
   setDefaultPath(v): void {
     if (this.isHDDerivationPathCustom) {

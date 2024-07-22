@@ -86,11 +86,7 @@ export class SignComponent implements OnInit, OnDestroy {
   async getLedgerSignature(bytes: string): Promise<string> {
     if (this.account instanceof ImplicitAccount && this.account.derivationPath) {
       let signature = '';
-      if (bytes.length <= 2290 && bytes.startsWith('03')) {
-        signature = await this.ledgerService.signOperation(bytes, this.account.derivationPath);
-      } else {
-        signature = await this.ledgerService.signHash(this.operationService.ledgerPreHash(bytes), this.account.derivationPath);
-      }
+      signature = await this.ledgerService.signOperation(bytes, this.account.derivationPath);
       if (signature) {
         return signature;
       }

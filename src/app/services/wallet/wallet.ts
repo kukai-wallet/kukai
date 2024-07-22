@@ -199,8 +199,17 @@ export class EmbeddedTorusWallet extends TorusWallet {
   }
 }
 export class LedgerWallet extends Wallet {
+  index?: number;
   constructor() {
     super();
+  }
+  reindex(): void {
+    const path = `44'/1729'/*'/0'`;
+    let index = 0;
+    while (this.implicitAccounts.find((a) => a?.derivationPath === path.replace('*', index.toString()))) {
+      index++;
+    }
+    this.index = index;
   }
 }
 

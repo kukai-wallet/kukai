@@ -758,9 +758,6 @@ export class OperationService {
     n = n.slice(prefixx.length);
     return n;
   }
-  ledgerPreHash(opbytes: string): string {
-    return this.buf2hex(blake2b(this.hex2buf(opbytes), null, 32));
-  }
   sign(bytes: string, sk: string): any {
     if (!['03', '05', '80'].includes(bytes.slice(0, 2))) {
       throw new Error('Invalid prefix');

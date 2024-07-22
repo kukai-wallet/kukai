@@ -34,7 +34,7 @@
           <div class="description">ADDRESS QR</div>
         </div>
       </div>
-      <div *ngIf="walletService.isHdWallet()" class="button icon" (click)="newAccount()">
+      <div *ngIf="walletService.isHdWallet() || walletService.isLedgerWallet()" class="button icon" (click)="newAccount()">
         <img src="../../../assets/img/add.svg" />
         <div class="tooltip">
           <div class="description">ADD ACCOUNT</div>

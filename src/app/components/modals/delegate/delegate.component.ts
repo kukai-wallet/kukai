@@ -150,7 +150,7 @@ export class DelegateComponent extends ModalComponent implements OnInit, OnChang
     }
   }
   async ledgerSign(): Promise<void> {
-    const keys = await this.walletService.getKeys('');
+    const keys = await this.walletService.getKeys('', this.activeAccount.pkh);
     if (keys) {
       this.messageService.startSpinner('');
       this.sendDelegation(keys);
@@ -200,12 +200,12 @@ export class DelegateComponent extends ModalComponent implements OnInit, OnChang
     );
   }
   async requestLedgerSignature(): Promise<void> {
-    if (this.walletService.wallet instanceof LedgerWallet) {
+    if (this.walletService.wallet instanceof LedgerWallet && this.activeAccount instanceof ImplicitAccount && this.activeAccount.derivationPath) {
       const op = this.sendResponse.payload.unsignedOperation;
       this.messageService.startSpinner('Waiting for Ledger signature');
       let signature;
       try {
-        signature = await this.ledgerService.signOperation('03' + op, this.walletService.wallet.implicitAccounts[0].derivationPath);
+        signature = await this.ledgerService.signOperation('03' + op, this.activeAccount.derivationPath);
       } finally {
         this.messageService.stopSpinner();
       }

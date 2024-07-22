@@ -13,7 +13,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { KeyPair } from '../../../../interfaces';
 import { emitMicheline, assertMichelsonData } from '@taquito/michel-codec';
 import Big from 'big.js';
-import { LedgerWallet, TorusWallet } from '../../../../services/wallet/wallet';
+import { ImplicitAccount, LedgerWallet, TorusWallet } from '../../../../services/wallet/wallet';
 import { InputValidationService } from '../../../../services/input-validation/input-validation.service';
 import { ModalComponent } from '../../modal.component';
 import { Subscription } from 'rxjs';
@@ -349,7 +349,7 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
       return;
     }
     this.messageService.startSpinner('Preparing transaction...');
-    const keys = await this.walletService.getKeys('');
+    const keys = await this.walletService.getKeys('', this.activeAccount.pkh);
     if (keys) {
       await this.sendTransaction(keys);
     } else {
@@ -469,19 +469,11 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
     return txs;
   }
   async requestLedgerSignature(): Promise<void> {
-    if (this.walletService.wallet instanceof LedgerWallet) {
+    if (this.walletService.wallet instanceof LedgerWallet && this.activeAccount instanceof ImplicitAccount && this.activeAccount.derivationPath) {
       await this.messageService.startSpinner('Waiting for Ledger signature...');
       try {
         const op = this.sendResponse.payload.unsignedOperation;
-        let signature = '';
-        if (op.length <= 2290) {
-          signature = await this.ledgerService.signOperation('03' + op, this.walletService.wallet.implicitAccounts[0].derivationPath);
-        } else {
-          signature = await this.ledgerService.signHash(
-            this.operationService.ledgerPreHash('03' + op),
-            this.walletService.wallet.implicitAccounts[0].derivationPath
-          );
-        }
+        const signature = await this.ledgerService.signOperation('03' + op, this.activeAccount.derivationPath);
         if (signature) {
           const signedOp = op + signature;
           this.sendResponse.payload.signedOperation = signedOp;
@@ -514,6 +506,7 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
           this.operationResponse.emit(ans.payload.opHash);
         } else {
           console.log('sendResponse', JSON.stringify(this.sendResponse));
+          this.messageService.addError(ans.payload.msg, 0);
           this.operationResponse.emit('broadcast_error');
         }
         console.log('ans: ' + JSON.stringify(ans));
