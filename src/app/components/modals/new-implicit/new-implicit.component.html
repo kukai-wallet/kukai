@@ -4,12 +4,12 @@
       <div class="flex-row button close" (click)="closeModal()"><img class="x" src="../../../assets/img/close-btn-x.png" /></div>
       <h1 class="title">Add New Account</h1>
     </div>
-    <div class="seperator"></div>
+    <div *ngIf="walletService.isHdWallet()" class="seperator"></div>
     <div class="flex-column new-account">
-      <div class="label">
+      <div *ngIf="walletService.isHdWallet()" class="label">
         ENTER YOUR PASSWORD TO CONFIRM
       </div>
-      <input #pwdInput [(ngModel)]="password" class="text password" autocomplete="current-password"
+      <input #pwdInput *ngIf="walletService.isHdWallet()" [(ngModel)]="password" class="text password" autocomplete="current-password"
         placeholder="Password" type="password" (input)="this.errorMsg = ''" (change)="this.errorMsg = ''" (keydown.enter)="!messageService.spinnerOn ? addPkh() : null">
       <span *ngIf="this.errorMsg" class="danger margin">{{ this.errorMsg }}</span>
       <div class="flex-column bottom">

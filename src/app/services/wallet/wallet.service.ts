@@ -88,10 +88,11 @@ export class WalletService {
     } else if (this.wallet instanceof LegacyWalletV3 || this.wallet instanceof HdWallet) {
       seed = await this.encryptionService.decrypt(this.wallet.encryptedSeed, pwd, this.wallet.IV, 3);
     } else if (this.wallet instanceof LedgerWallet) {
+      const ledgerAcc = this.wallet.getAccount(pkh);
       const keyPair: KeyPair = {
         sk: null,
-        pk: this.wallet.implicitAccounts[0].pk,
-        pkh: this.wallet.implicitAccounts[0].pkh
+        pk: ledgerAcc.pk,
+        pkh: ledgerAcc.pkh
       };
       return keyPair;
     } else if (this.wallet instanceof EmbeddedTorusWallet) {
@@ -183,7 +184,17 @@ export class WalletService {
     }
     return '';
   }
-  addImplicitAccount(pk: string, derivationPath?: string | number) {
+  private array_move(arr: any[], old_index: number, new_index: number) {
+    if (new_index >= arr.length) {
+      var k = new_index - arr.length + 1;
+      while (k--) {
+        arr.push(undefined);
+      }
+    }
+    arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
+    return arr; // for testing
+  }
+  addImplicitAccount(pk: string, derivationPath?: string | number, moveToIndexPos: boolean = false) {
     let pkh;
     console.log(pk);
     pkh = utils.pkToPkh(pk);
@@ -191,6 +202,12 @@ export class WalletService {
       this.wallet.implicitAccounts.push(new ImplicitAccount(pkh, pk, typeof derivationPath === 'number' ? `44'/1729'/${derivationPath}'/0'` : derivationPath));
       console.log('Adding new implicit account...');
       console.log(this.wallet.implicitAccounts[this.wallet.implicitAccounts.length - 1]);
+      if (this.wallet instanceof LedgerWallet) {
+        if (this.wallet.implicitAccounts.length - this.wallet.index && moveToIndexPos) {
+          this.array_move(this.wallet.implicitAccounts, this.wallet.implicitAccounts.length - 1, this.wallet.index);
+        }
+        this.wallet.reindex();
+      }
       this.storeWallet();
     }
   }
@@ -370,6 +387,9 @@ export class WalletService {
         break;
       case 'LedgerWallet':
         this.wallet = new LedgerWallet();
+        if (this.wallet instanceof LedgerWallet && wd.index !== undefined) {
+          this.wallet.index = wd.index;
+        }
         break;
       case 'ExportedSocialWallet':
         this.wallet = new ExportedSocialWallet(wd.IV, wd.encryptedSk);

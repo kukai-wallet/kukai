@@ -2,7 +2,7 @@ import { Component, OnInit, SimpleChanges, Input, Output, EventEmitter, OnChange
 import { WalletService } from '../../../services/wallet/wallet.service';
 import { MessageService } from '../../../services/message/message.service';
 import { TranslateService } from '@ngx-translate/core';
-import { Account } from '../../../services/wallet/wallet';
+import { Account, ImplicitAccount, LedgerWallet } from '../../../services/wallet/wallet';
 import { OperationService } from '../../../services/operation/operation.service';
 import { emitMicheline } from '@taquito/michel-codec';
 import { valueDecoder } from '@taquito/local-forging/dist/lib/michelson/codec';
@@ -96,14 +96,9 @@ export class SignExprComponent extends ModalComponent implements OnInit, OnChang
     await this.messageService.startSpinner('Waiting for Ledger signature...');
     try {
       const payload = this.signRequest.payload;
-      let signature = '';
-      if (payload.length <= 2290) {
-        signature = await this.ledgerService.signOperation(payload, this.walletService.wallet.implicitAccounts[0].derivationPath);
-      } else {
-        signature = await this.ledgerService.signHash(
-          this.operationService.ledgerPreHash(payload),
-          this.walletService.wallet.implicitAccounts[0].derivationPath
-        );
+      let signature;
+      if (this.walletService.wallet instanceof LedgerWallet && this.activeAccount instanceof ImplicitAccount && this.activeAccount.derivationPath) {
+        signature = await this.ledgerService.signOperation(payload, this.activeAccount.derivationPath);
       }
       if (signature) {
         this.acceptSigning(this.operationService.hexsigToEdsig(signature));

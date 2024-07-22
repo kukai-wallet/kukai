@@ -6,11 +6,11 @@
       <h1>Connect your Ledger</h1>
       <p class="description">Keep the private keys safely on your Ledger device and use Kukai to access the Tezos
         blockchain.</p>
-      <p class="description">You need to open the Tezos Wallet app on your Ledger device and set the derivation path.
+      <p class="description">You need to open the Tezos Wallet app on your Ledger device.
       </p>
-      <input name="none" type="text" class="text" [disabled]="!isHDDerivationPathCustom" [(ngModel)]="path"
+      <input name="none" type="text" class="text path-input" [disabled]="!isHDDerivationPathCustom" [(ngModel)]="path"
         value="'44\'/1729\'/0\'/0\''">
-      <app-ui-toggle-advanced style="width: 24rem;" [default]="false" [text]="'Use custom HD derivation path:'"
+      <app-ui-toggle-advanced style="width: 24rem;" [default]="false" [text]="'Custom derivation path:'"
         (stateChange)="setDefaultPath($event)"></app-ui-toggle-advanced>
       <br /><br /><br />
       <button class="button next" (click)="getPk()" [disabled]="browser === 'safari'">{{ browser !== 'safari' ?

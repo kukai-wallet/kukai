@@ -54,13 +54,13 @@ export class TzktService implements Indexer {
   async getContractAddresses(pkh: string): Promise<any> {
     return fetch(`${CONSTANTS.API_URL}/operations/originations?contractManager=${pkh}`)
       .then((response) => response.json())
-      .then((data) =>
-        data
+      .then((data) => {
+        return data
           .map((op: any) => {
             return op?.status === 'applied' && op?.originatedContract?.kind === 'delegator_contract' ? op.originatedContract.address : '';
           })
-          .filter((address: string) => address.length)
-      );
+          .filter((address: string) => address.length);
+      });
   }
 
   async getHashAndBlockByIds(transactionIds: number[]): Promise<any> {
