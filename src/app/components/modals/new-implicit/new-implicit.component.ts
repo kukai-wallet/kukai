@@ -77,8 +77,12 @@ export class NewImplicitComponent extends ModalComponent implements OnInit {
   }
   openPkhSpot(): boolean {
     if (this.walletService.wallet instanceof HdWallet || this.walletService.wallet instanceof LedgerWallet) {
-      if (this.walletService.wallet instanceof LedgerWallet && this.walletService.wallet.index === 0) {
-        return true;
+      if (this.walletService.wallet instanceof LedgerWallet) {
+        if (this.walletService.wallet.index === 0) {
+          return true;
+        } else if (!this.walletService.wallet.index) {
+          return false;
+        }
       }
       const balance: number = this.walletService.wallet.implicitAccounts[this.walletService.wallet.index - 1].balanceXTZ;
       const tokens = this.walletService.wallet.implicitAccounts[this.walletService.wallet.index - 1].tokens?.length;
