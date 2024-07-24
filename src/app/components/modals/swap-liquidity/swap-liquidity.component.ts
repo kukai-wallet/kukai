@@ -662,7 +662,7 @@ export class SwapLiquidityComponent extends ModalComponent {
         if (res) {
           this.formInvalid = this.checkBalances();
           if (res.error) {
-            this.latestSimError = res.error;
+            this.latestSimError = res.error.message;
           } else {
             this.defaultTransactionParams = res;
             this.latestSimError = '';
