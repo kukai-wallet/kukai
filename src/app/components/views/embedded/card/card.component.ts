@@ -24,7 +24,8 @@ export class CardComponent implements OnInit {
 
   verifier(): string {
     if (this.walletService.wallet instanceof TorusWallet) {
-      return this.walletService.wallet.verifier;
+      const { verifier } = this.walletService.wallet;
+      return verifier === 'twitter' ? 'x' : verifier;
     } else {
       return '';
     }

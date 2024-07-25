@@ -273,6 +273,14 @@ export class SigninComponent implements OnInit, OnChanges, AfterViewInit {
       this.queueTime = this.queueTimeVisible = res.EstimatedTimeSeconds;
     }
   }
+  getDisplayKey(key: string) {
+    return key === 'twitter' ? 'x' : key;
+  }
+  getImgSrc(key: string) {
+    const displayKey = this.getDisplayKey(key);
+    const extension = displayKey === 'facebook' || (displayKey === 'x' && this.template === 'manutd') ? '-white.svg' : '-color.svg';
+    return '../../../../assets/img/torus-login/' + displayKey + extension;
+  }
   async getQueueLen(): Promise<number> {
     const res = await this.post(this.queueEndpoint, {
       action: 'len'

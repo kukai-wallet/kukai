@@ -206,8 +206,8 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
         const callback = (res) => {
           if (res) {
             if (res.error) {
-              this.formInvalid = res.error;
-              this.latestSimError = res.error;
+              this.formInvalid = res.error.message;
+              this.latestSimError = res.error.message;
             } else {
               this.defaultTransactionParams = res;
               this.formInvalid = '';

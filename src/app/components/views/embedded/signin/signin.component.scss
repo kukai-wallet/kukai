@@ -233,9 +233,6 @@ button {
           }
           &.twitter {
             background-color: #1da1f2;
-            & img {
-              filter: invert(1) brightness(100);
-            }
           }
           &.reddit {
             background-color: #ff4500;

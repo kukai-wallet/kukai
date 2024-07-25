@@ -469,11 +469,15 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
     return txs;
   }
   async requestLedgerSignature(): Promise<void> {
-    if (this.walletService.wallet instanceof LedgerWallet && this.activeAccount instanceof ImplicitAccount && this.activeAccount.derivationPath) {
+    const path =
+      this.activeAccount instanceof ImplicitAccount
+        ? this.activeAccount.derivationPath
+        : this.walletService.wallet.getImplicitAccount(this.activeAccount.pkh).derivationPath;
+    if (this.walletService.wallet instanceof LedgerWallet && path) {
       await this.messageService.startSpinner('Waiting for Ledger signature...');
       try {
         const op = this.sendResponse.payload.unsignedOperation;
-        const signature = await this.ledgerService.signOperation('03' + op, this.activeAccount.derivationPath);
+        const signature = await this.ledgerService.signOperation('03' + op, path);
         if (signature) {
           const signedOp = op + signature;
           this.sendResponse.payload.signedOperation = signedOp;
