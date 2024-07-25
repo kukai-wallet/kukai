@@ -10,13 +10,13 @@
     <ng-container *ngFor="let key of loginOptions; let idx = index">
       <div *ngIf="loginConfig.buttonsVertically === true || (loginConfig.wideButtons && loginConfig.wideButtons[idx] === true); else narrow" class="flex-row option wide" [class.facebook]="key === 'facebook'" [class.twitter]="key === 'twitter'" [class.reddit]="key === 'reddit'"
         (click)="login(key)">
-        <img [src]="key === 'facebook' ? '../../../../assets/img/torus-login/' + key + '-white.svg' : '../../../../assets/img/torus-login/' + key + '-color.svg'" width="24" /><span>Sign in with {{ key |
+        <img [src]="getImgSrc(key)" width="24" /><span>Sign in with {{ getDisplayKey(key) |
           titlecase }}</span>
       </div>
       <ng-template #narrow>
         <div class="flex-row option narrow"
         (click)="login(key)">
-        <img [src]="'../../../../assets/img/torus-login/' + key + '-color.svg'" width="24" />
+        <img [src]="'../../../../assets/img/torus-login/' + getDisplayKey(key) + '-color.svg'" width="24" />
       </div>
       </ng-template>
     </ng-container>
