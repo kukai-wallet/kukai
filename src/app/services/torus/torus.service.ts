@@ -23,6 +23,9 @@ export class TorusService {
     ? 'BBQoFIabI50S1-0QsGHGTM4qID_FDjja0ZxIxKPyFqc0El--M-EG0c2giaBYVTVVE6RC9WCUzCJyW24aJrR_Lzc'
     : 'BBHmFdLXgGDzSiizRVMWtyL_7Dsoxu5B8zep2Pns8sGELslgXDbktJewVDVDDBlknEKkMCtzISLjJtxk60SK2-g';
   torus: any = undefined;
+  torusForFacebook: any = undefined;
+  isBraveOrChrome: boolean = false;
+  isAndroid: boolean = false;
   nodeDetails: { torusNodeEndpoints: string[]; torusNodePub: any[] } = null;
   public readonly verifierMap: any;
   private readonly proxy: any;
@@ -137,24 +140,35 @@ export class TorusService {
     }
     this.verifierMapKeys = Object.keys(this.verifierMap);
   }
-  private async isBraveOrChrome(): Promise<boolean> {
+  private async getIsBraveOrChrome(): Promise<boolean> {
     return (await (<any>navigator)?.brave?.isBrave()) || navigator.userAgent.includes('Chrome') || false;
+  }
+  private getIsAndroid(): boolean {
+    return /android/i.test(navigator?.userAgent);
   }
   async initTorus() {
     if (this.torus === undefined) {
       this.torus = null;
+      const config = {
+        web3AuthClientId: this.web3AuthClientId,
+        baseUrl: `${location.origin}/serviceworker`,
+        enableLogging: !(this.proxy.network === 'mainnet'),
+        network: this.proxy.network
+      };
       try {
         // set this value to false in every browser except for brave
-        const redirectToOpener = await this.isBraveOrChrome();
-        const torusdirectsdk = new DirectWebSdk({
-          web3AuthClientId: this.web3AuthClientId,
-          baseUrl: `${location.origin}/serviceworker`,
-          redirectToOpener,
-          enableLogging: !(this.proxy.network === 'mainnet'),
-          network: this.proxy.network
-        });
-        await torusdirectsdk.init({ skipSw: false });
-        this.torus = torusdirectsdk;
+        this.isBraveOrChrome = await this.getIsBraveOrChrome();
+        this.isAndroid = this.getIsAndroid();
+        const initConfig = { skipSw: false };
+        this.torus = new DirectWebSdk({ ...config, redirectToOpener: this.isBraveOrChrome });
+        const promises = [this.torus.init(initConfig)];
+        if (this.isBraveOrChrome && this.isAndroid) {
+          this.torusForFacebook = new DirectWebSdk(config);
+          promises.push(this.torusForFacebook.init(initConfig));
+        } else {
+          this.torusForFacebook = this.torus;
+        }
+        await Promise.all(promises);
       } catch (error) {
         this.torus = undefined;
         console.error(error, 'oninit caught');
@@ -216,6 +230,7 @@ export class TorusService {
     if (!CONSTANTS.MAINNET && document?.location?.host === 'localhost:4200' && !['google', 'twitter', 'email'].includes(selectedVerifier)) {
       return this.mockLogin(selectedVerifier); // mock locally
     }
+    const torus = selectedVerifier === FACEBOOK && this.isBraveOrChrome && this.isAndroid ? this.torusForFacebook : this.torus;
     try {
       const jwtParams: any = this._loginToConnectionMap()[selectedVerifier] || {};
       if (verifierId && selectedVerifier === GOOGLE) {
@@ -227,7 +242,7 @@ export class TorusService {
       }
       const { typeOfLogin, clientId, verifier, aggregated } = this.verifierMap[selectedVerifier];
       const loginDetails = aggregated
-        ? await this.torus.triggerAggregateLogin({
+        ? await torus.triggerAggregateLogin({
             login_hint: verifierId,
             aggregateVerifierType: 'single_id_verifier',
             verifierIdentifier: verifier,
@@ -242,7 +257,7 @@ export class TorusService {
             skipTorusKey,
             checkIfNewKey
           })
-        : await this.torus.triggerLogin({
+        : await torus.triggerLogin({
             verifier,
             typeOfLogin,
             clientId,
