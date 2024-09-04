@@ -30,7 +30,7 @@
     "@angular/router": "~17.3.8",
     "@bitauth/libauth": "^1.17.2",
     "@coinbase/cbpay-js": "^1.1.0",
-    "@google/model-viewer": "^1.10.1",
+    "@google/model-viewer": "^3.5.0",
     "@ledgerhq/hw-transport-webhid": "^6.29.0",
     "@ledgerhq/hw-transport-webusb": "^6.29.0",
     "@ledgerhq/hw-app-tezos": "^6.29.0",

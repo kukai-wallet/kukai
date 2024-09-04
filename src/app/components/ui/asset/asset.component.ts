@@ -219,10 +219,7 @@ export class AssetComponent implements OnInit, AfterViewInit {
       return (this.preSrc = url);
     }
     // Ignore MIME type provided in metadata for now. Way too unreliable. Exception for nfts in 3d wl. (media proxy don't return the correct mime type)
-    if (
-      typeof asset !== 'string' &&
-      !(asset?.mimeType?.startsWith('model/') && this.kukaiService.model3dAllowList.includes(this.tokenService.getContractAddressFromAsset(asset?.uri)))
-    ) {
+    if (typeof asset !== 'string' && !asset?.mimeType?.startsWith('model/')) {
       let response;
       for (let i = 0; i < 3 && !response?.ok; i++) {
         response = await fetch(url, { method: 'GET' });
@@ -242,14 +239,6 @@ export class AssetComponent implements OnInit, AfterViewInit {
     this.updateDisplay();
     if (this.isAudio() || this.isVideo() || this.is3D()) {
       this.isAudio() ? this.load.emit() : undefined;
-      if (this.is3D()) {
-        const contractAddress = this.tokenService.getContractAddressFromAsset(asset?.uri);
-        if (!this.kukaiService.model3dAllowList.includes(contractAddress)) {
-          console.warn('Content blocked');
-          this.evaluateInvalid();
-          return;
-        }
-      }
       this.dataSrc = this.assetToUrl(asset);
     } else if (this.isImage()) {
       this.preSrc = this.assetToUrl(asset);
