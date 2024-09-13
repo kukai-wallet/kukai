@@ -345,7 +345,7 @@ export class EmbeddedComponent implements OnInit {
       }
     },
     tesserart: {
-      origins: ['*.tesserart.xyz', 'https://tesserart.xyz'],
+      origins: ['*.tesserart.xyz', 'https://tesserart.xyz', 'https://positions2024.ratata.gallery'],
       permissions: {
         login: true,
         operations: true,
