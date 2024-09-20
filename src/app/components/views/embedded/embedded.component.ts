@@ -383,6 +383,14 @@ export class EmbeddedComponent implements OnInit {
         operations: true,
         micheline: true
       }
+    },
+    trilli: {
+      origins: ['http://ec2-3-252-30-22.eu-west-1.compute.amazonaws.com:3000'],
+      permissions: {
+        login: true,
+        operations: true,
+        micheline: true
+      }
     }
   };
   constructor(
