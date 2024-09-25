@@ -353,7 +353,7 @@ export class EmbeddedComponent implements OnInit {
       }
     },
     metapals: {
-      origins: ['https://sanctuary.metapals.pet', 'https://sanctuary.metapals.ai', 'https://sanctuary.metapals.dev'],
+      origins: ['https://sanctuary.metapals.pet', 'https://sanctuary.metapals.ai', 'https://sanctuary.metapals.dev', '*.kindredlabs.ai'],
       permissions: {
         login: true,
         operations: true,
