@@ -50,6 +50,7 @@ export class AppComponent implements OnInit, OnDestroy {
       this.router.events.subscribe((event: Event) => {
         if (event instanceof NavigationEnd) {
           this.checkEmbedded();
+          this.checkStake();
           window.scrollTo(0, 0);
         }
       })
@@ -87,7 +88,7 @@ export class AppComponent implements OnInit, OnDestroy {
     const onMainnet: boolean = this.CONSTANTS.MAINNET && !this.embedded;
     const noStake: boolean =
       this.walletService?.wallet?.implicitAccounts?.every((account) => {
-        return !account.stakedBalance && account.balanceXTZ;
+        return account.stakedBalance === 0 && !isNaN(account?.balanceXTZ);
       }) ?? false;
     const aPairOfTez: boolean = this.walletService?.wallet?.totalBalanceXTZ >= 2000000;
     this.promoteStake = onMainnet && noStake && aPairOfTez;
