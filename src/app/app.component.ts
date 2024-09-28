@@ -5,6 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Location } from '@angular/common';
 import { CONSTANTS as _CONSTANTS } from '../environments/environment';
 import { Subscription } from 'rxjs';
+import { SubjectService } from './services/subject/subject.service';
 
 @Component({
   selector: 'app-root',
@@ -13,6 +14,7 @@ import { Subscription } from 'rxjs';
 })
 export class AppComponent implements OnInit, OnDestroy {
   readonly CONSTANTS = _CONSTANTS;
+  promoteStake = false;
   embedded = false;
   isMobile = false;
   previous = 0;
@@ -22,7 +24,13 @@ export class AppComponent implements OnInit, OnDestroy {
   post = false;
   static hasWebGL = false;
   private subscriptions: Subscription = new Subscription();
-  constructor(private walletService: WalletService, public router: Router, public translate: TranslateService, private location: Location) {
+  constructor(
+    private walletService: WalletService,
+    public router: Router,
+    public translate: TranslateService,
+    private location: Location,
+    private subjectService: SubjectService
+  ) {
     // this language will be used as a fallback when a translation isn't found in the current language
     translate.setDefaultLang('en');
 
@@ -37,12 +45,18 @@ export class AppComponent implements OnInit, OnDestroy {
     if (!this.embedded) {
       this.walletService.loadStoredWallet();
     }
+    this.checkStake();
     this.subscriptions.add(
       this.router.events.subscribe((event: Event) => {
         if (event instanceof NavigationEnd) {
-          this.checkEmbedded();
+          this.checkStake();
           window.scrollTo(0, 0);
         }
+      })
+    );
+    this.subscriptions.add(
+      this.subjectService.walletUpdated.subscribe(() => {
+        this.checkStake();
       })
     );
     if (!this.embedded) {
@@ -68,6 +82,15 @@ export class AppComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
+  }
+  private checkStake() {
+    const onMainnet: boolean = this.CONSTANTS.MAINNET && !this.embedded;
+    const noStake: boolean =
+      this.walletService?.wallet?.implicitAccounts?.every((account) => {
+        return !account.stakedBalance && account.balanceXTZ;
+      }) ?? false;
+    const aPairOfTez: boolean = this.walletService?.wallet?.totalBalanceXTZ >= 2000000;
+    this.promoteStake = onMainnet && noStake && aPairOfTez;
   }
   private handleStorageEvent(e: StorageEvent) {
     if (e.key === 'kukai-wallet' && !this.embedded) {

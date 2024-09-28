@@ -16,4 +16,30 @@
     background-color: v.$base-red-color;
     transition: 0.25s box-shadow;
   }
+  & .stake {
+    display: flex;
+    padding: 0.9375rem;
+    justify-content: center;
+    align-items: center;
+    gap: 0.625rem;
+    align-self: stretch;
+    background: #7278DC;
+    & p {
+      color: #FFF;
+      font-family: Roboto;
+      font-size: 1.125rem;
+      font-style: normal;
+      font-weight: 700;
+      line-height: normal;
+      text-align: center;
+      & a {
+        color: #FFF945;
+        font-family: Roboto;
+        font-size: 1.125rem;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+      }
+    }
+  }
 }
