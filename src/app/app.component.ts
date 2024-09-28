@@ -49,7 +49,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.router.events.subscribe((event: Event) => {
         if (event instanceof NavigationEnd) {
-          this.checkStake();
+          this.checkEmbedded();
           window.scrollTo(0, 0);
         }
       })
