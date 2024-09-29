@@ -73,8 +73,10 @@ export class AppComponent implements OnInit, OnDestroy {
       const brk = getComputedStyle(document.documentElement).getPropertyValue('--layout-break-5');
       if (parseFloat(brk.replace(/[a-zA-Z]/g, '')) * 16 > document.documentElement.clientWidth) {
         document.documentElement.style.setProperty('--is-mobile', '1');
+        this.isMobile = true;
       } else {
         document.documentElement.style.setProperty('--is-mobile', '0');
+        this.isMobile = false;
       }
     };
     window.addEventListener('resize', e);
@@ -92,6 +94,9 @@ export class AppComponent implements OnInit, OnDestroy {
       }) ?? false;
     const aPairOfTez: boolean = this.walletService?.wallet?.totalBalanceXTZ >= 2000000;
     this.promoteStake = onMainnet && noStake && aPairOfTez;
+  }
+  stakeClick() {
+    fetch('https://services.kukai.app/v1/events/?eventId=app-stake-a');
   }
   private handleStorageEvent(e: StorageEvent) {
     if (e.key === 'kukai-wallet' && !this.embedded) {

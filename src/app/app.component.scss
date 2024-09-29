@@ -18,22 +18,39 @@
   }
   & .stake {
     display: flex;
-    padding: 0.9375rem;
+    padding: 10px 15px;
     justify-content: center;
+    box-sizing: border-box;
     align-items: center;
-    gap: 0.625rem;
+    gap: 8px;
     align-self: stretch;
     background: #7278DC;
+    position: relative;
+    top: 0;
+    z-index: 10000;
+    width: 100vw;
     & p {
       color: #FFF;
       font-family: Roboto;
-      font-size: 1.125rem;
+      font-size: 16px;
       font-style: normal;
       font-weight: 700;
       line-height: normal;
       text-align: center;
       & a {
         color: #FFF945;
+      }
+    }
+  }
+}
+
+@media (max-width: v.$layout-break-5) {
+  :host {
+    & .stake {
+      padding: 15px;
+      justify-content: space-between;
+      & p {
+        white-space: pre;
       }
     }
   }

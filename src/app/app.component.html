@@ -2,11 +2,11 @@
   [style.boxShadow]="document?.body.scrollTop !== 0 ? '0 2px 10px #3333' : ''">
   WARNING: TEST ONLY {{ CONSTANTS.NETWORK.toUpperCase() }}
 </div>
-<div *ngIf="promoteStake" class="stake">
+<a *ngIf="promoteStake" (click)="stakeClick()" class="stake" href="https://stake.tezos.com" target="_blank">
   <img src="../assets/img/stake-icon.svg">
-  <p><a href="https://stake.tezos.com" target="_blank">Stake your (XTZ)</a> to receive more rewards than delegation</p>
+  <p><a>Stake your (XTZ)</a>{{' to receive' + (isMobile ? '\n' : ' ') + 'more rewards than delegation' }}</p>
   <img src="../assets/img/stake-icon.svg">
-</div>
+</a>
 <app-header *ngIf="!embedded"></app-header>
 <router-outlet></router-outlet>
 <app-messages *ngIf="!embedded"></app-messages>
