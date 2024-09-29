@@ -73,8 +73,10 @@ export class AppComponent implements OnInit, OnDestroy {
       const brk = getComputedStyle(document.documentElement).getPropertyValue('--layout-break-5');
       if (parseFloat(brk.replace(/[a-zA-Z]/g, '')) * 16 > document.documentElement.clientWidth) {
         document.documentElement.style.setProperty('--is-mobile', '1');
+        this.isMobile = true;
       } else {
         document.documentElement.style.setProperty('--is-mobile', '0');
+        this.isMobile = false;
       }
     };
     window.addEventListener('resize', e);
