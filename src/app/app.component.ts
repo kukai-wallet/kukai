@@ -95,6 +95,9 @@ export class AppComponent implements OnInit, OnDestroy {
     const aPairOfTez: boolean = this.walletService?.wallet?.totalBalanceXTZ >= 2000000;
     this.promoteStake = onMainnet && noStake && aPairOfTez;
   }
+  stakeClick() {
+    fetch('https://services.kukai.app/v1/events/?eventId=app-stake-a');
+  }
   private handleStorageEvent(e: StorageEvent) {
     if (e.key === 'kukai-wallet' && !this.embedded) {
       if (e.oldValue && !e.newValue) {
