@@ -385,7 +385,7 @@ export class EmbeddedComponent implements OnInit {
       }
     },
     trilli: {
-      origins: ['http://ec2-3-252-30-22.eu-west-1.compute.amazonaws.com:3000'],
+      origins: ['http://ec2-3-252-30-22.eu-west-1.compute.amazonaws.com:3000', 'https://login.pikesarena.com:3000', '*.pikesarena.com'],
       permissions: {
         login: true,
         operations: true,
