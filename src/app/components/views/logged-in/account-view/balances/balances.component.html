@@ -1,3 +1,21 @@
+<div *ngIf="!displayIOSBanner" class="flex-row ios" [class.dark]="unlockableService?.unlockables?.theme === 'dark'" (click)="downloadIOS();">
+  <div class="flex-row left">
+    <div class="flex-column left">
+      <span>Get Kukai App:</span>
+      <span>AVAILABLE NOW</span>
+    </div>
+    <div class="flex-row right">
+      <button class="flex-row"><img
+          [src]="unlockableService?.unlockables?.theme === 'dark' ? 'assets/img/download-app-store-dark.svg' : 'assets/img/download-app-store-light.svg'"></button>
+    </div>
+  </div>
+  <div class="flex-row right">
+    <div class="flex-row button close" (click)="dismiss($event)"><img class="x"
+        src="../../../../../assets/img/close-btn-x.png" />
+    </div>
+  </div>
+</div>
+
 <div class="main-container">
   <div class="flex-row top-container-balances">
     <h1>Balances</h1>
@@ -6,7 +24,8 @@
     </div>
   </div>
   <div class="scroll-wrapper">
-    <app-balance-token [account]="account" [token]="{name: 'tezos', fallback: 'assets/img/tezos-xtz-logo.svg'}" class="tez no-box"></app-balance-token>
+    <app-balance-token [account]="account" [token]="{name: 'tezos', fallback: 'assets/img/tezos-xtz-logo.svg'}"
+      class="tez no-box"></app-balance-token>
     <div *ngIf="!!this.tokenBalancesService?.balances?.length" class="flex-column balances">
       <ng-container *ngFor="let balance of balances; let i = index; trackBy: trackToken">
         <app-balance-token [account]="account" [token]="balance" [class.first]="i === 0"></app-balance-token>
@@ -15,7 +34,9 @@
     <div class="flex-row total-balances no-box">
       <div class="flex-row left">
         <h3>TOTAL VALUE:</h3>
-        <h1>{{ !!totalBalances && isFiat ? '$' + (totalBalances | number: '1.2-2' | removeComma) : '' }}{{ !!totalBalances && !isFiat ? (totalBalances | number: '1.0-6' | removeComma) + ' tez' : '' }}{{ !totalBalances ? '—' : '' }}</h1>
+        <h1>{{ !!totalBalances && isFiat ? '$' + (totalBalances | number: '1.2-2' | removeComma) : '' }}{{
+          !!totalBalances && !isFiat ? (totalBalances | number: '1.0-6' | removeComma) + ' tez' : '' }}{{ !totalBalances
+          ? '—' : '' }}</h1>
       </div>
       <div class="flex-row" (click)="toggleTotalBalances()">
         <span class="fiat" [class.selected]="isFiat">
