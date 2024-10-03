@@ -28,11 +28,9 @@ $base-background-color: v.$base-background-color;
   border-top: 1.5rem solid #d6dbe3;
   background-color: $color-lightened-6;
   z-index: -100;
-  background: linear-gradient(
-    180deg,
-    $color-lightened-5,
-    $base-background-color
-  );
+  background: linear-gradient(180deg,
+      $color-lightened-5,
+      $base-background-color );
 }
 
 :host {
@@ -89,7 +87,7 @@ $base-background-color: v.$base-background-color;
       color: #6c7a8d;
     }
 
-    & > div {
+    &>div {
       width: 100%;
       height: 50%;
       justify-content: center;
@@ -111,7 +109,7 @@ $base-background-color: v.$base-background-color;
       position: relative;
       top: 1rem;
 
-      & > * {
+      &>* {
         margin: 2rem 0;
       }
     }
@@ -128,12 +126,12 @@ $base-background-color: v.$base-background-color;
       height: calc(50% - 8rem);
       justify-content: flex-start;
 
-      & > * {
+      &>* {
         margin: 1rem 0;
       }
 
-      & > span {
-        @include m.multiply("font-size", 3, "rem", 0.5);
+      &>span {
+        @include m.multiply("font-size", 2, "rem", 0.5);
         color: $base-font-color;
 
         &:last-of-type {
@@ -153,11 +151,12 @@ $base-background-color: v.$base-background-color;
         .twitter,
         .email,
         .reddit,
-        & > .google img {
+        &>.google img {
           border-radius: v.$border-radius-hardest;
           background-color: $base-end-color;
           box-shadow: v.$box-shadow;
           cursor: pointer;
+
           &:hover {
             filter: invert(0.05);
           }
@@ -173,7 +172,7 @@ $base-background-color: v.$base-background-color;
           margin: 0 0 0 1rem;
         }
 
-        & > .google {
+        &>.google {
           border: $border-width solid $base-end-color;
           border-radius: v.$border-radius-hardest;
           min-width: 27rem;
@@ -183,7 +182,7 @@ $base-background-color: v.$base-background-color;
           background-color: $base-end-color;
           box-shadow: v.$box-shadow;
 
-          & > span {
+          &>span {
             @include m.multiply("font-size", 1.375);
             padding: 1rem 0;
             font-weight: 600;
@@ -193,6 +192,23 @@ $base-background-color: v.$base-background-color;
           & img {
             width: 2rem;
             height: 2rem;
+          }
+        }
+      }
+
+      & .ios {
+        & button {
+          background: #fff;
+          padding: unset;
+          border-radius: 14px;
+          box-shadow: 0px 22.336px 17.869px 0px rgba(0, 0, 0, 0.04), 0px 6.65px 5.32px 0px rgba(0, 0, 0, 0.03);
+          min-width: 27rem;
+          height: 6rem;
+          padding: 10px 49px;
+
+          & img {
+            width: 100%;
+            height: 100%;
           }
         }
       }
@@ -248,6 +264,7 @@ $base-background-color: v.$base-background-color;
 
 @media (min-width: v.$layout-break-3) {
   .qrapper {
+
     & .left,
     & .right {
       height: 100%;
@@ -267,7 +284,7 @@ $base-background-color: v.$base-background-color;
 }
 
 @media (max-width: v.$layout-break-3) and (max-aspect-ratio: 1/1),
-  (max-width: v.$layout-break-5) {
+(max-width: v.$layout-break-5) {
   :host {
 
     .canvas-wrapper {
@@ -296,7 +313,6 @@ $base-background-color: v.$base-background-color;
       height: auto;
       flex-direction: column;
       align-items: center;
-      padding: 2rem 0 0 0;
 
       #bg {
         display: none;
@@ -334,6 +350,7 @@ $base-background-color: v.$base-background-color;
           font-size: 5.6rem;
           font-weight: 500;
           line-height: 7.2rem;
+          margin:  0 2rem 2rem 2rem;
         }
 
         & .top h3 {
@@ -345,7 +362,7 @@ $base-background-color: v.$base-background-color;
           max-width: 80rem;
         }
 
-        & > div {
+        &>div {
           width: 100%;
           height: 100%;
           justify-content: center;
@@ -361,6 +378,10 @@ $base-background-color: v.$base-background-color;
           & .email {
             justify-content: center;
           }
+
+          & .ios {
+            justify-content: center;
+          }
         }
 
         & .top {
@@ -368,7 +389,7 @@ $base-background-color: v.$base-background-color;
           width: 100%;
           padding: 0;
 
-          & > * {
+          &>* {
             margin: 2rem 0;
           }
         }
@@ -377,7 +398,7 @@ $base-background-color: v.$base-background-color;
           position: unset;
           top: unset;
 
-          & > span {
+          &>span {
             @include m.multiply("font-size", 2);
             text-align: center;
             font-weight: 500;
@@ -394,7 +415,7 @@ $base-background-color: v.$base-background-color;
               min-width: 29rem;
               height: 6rem;
 
-              & > img {
+              &>img {
                 width: 2.5rem;
                 height: 2.5rem;
               }
@@ -413,6 +434,9 @@ $base-background-color: v.$base-background-color;
             & .facebook {
               margin: 0;
             }
+          }
+          & .ios button {
+            height: 9rem;
           }
         }
       }

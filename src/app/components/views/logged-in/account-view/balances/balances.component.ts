@@ -9,6 +9,7 @@ import { Big } from 'big.js';
 import { RemoveCommaPipe } from '../../../../../pipes/remove-comma.pipe';
 import { ModalComponent } from '../../../../../components/modals/modal.component';
 import { MessageService } from '../../../../../services/message/message.service';
+import { UnlockableService } from '../../../../../services/unlockable/unlockable.service';
 
 @Component({
   selector: 'app-balances',
@@ -21,6 +22,7 @@ export class BalancesComponent implements OnInit, AfterViewChecked, OnDestroy {
   totalBalances: string | number = 0;
   balances: any[];
   isFiat = false;
+  displayIOSBanner: string | undefined = undefined;
 
   private subscriptions: Subscription = new Subscription();
 
@@ -29,7 +31,8 @@ export class BalancesComponent implements OnInit, AfterViewChecked, OnDestroy {
     private subjectService: SubjectService,
     private walletService: WalletService,
     public removeCommaPipe: RemoveCommaPipe,
-    private messageService: MessageService
+    private messageService: MessageService,
+    public unlockableService: UnlockableService
   ) {
     this.subscriptions.add(
       this.subjectService.activeAccount.pipe(filter((account: Account) => account?.address !== this.account?.address)).subscribe((account) => {
@@ -75,6 +78,7 @@ export class BalancesComponent implements OnInit, AfterViewChecked, OnDestroy {
   ngOnInit(): void {
     this.balances = this.tokenBalancesService?.balances;
     this.calcTotalBalances();
+    this.displayIOSBanner = localStorage.getItem('iOS-banner');
   }
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
@@ -104,5 +108,13 @@ export class BalancesComponent implements OnInit, AfterViewChecked, OnDestroy {
   openSwap() {
     this.messageService.startSpinner();
     ModalComponent.currentModel.next({ name: 'swap-liquidity', data: null });
+  }
+  downloadIOS(): void {
+    window.open('https://apps.apple.com/app/kukai-wallet/id1576499860', '_blank').focus();
+  }
+  dismiss(e): void {
+    e.stopPropagation();
+    localStorage.setItem('iOS-banner', '1');
+    this.displayIOSBanner = '1';
   }
 }

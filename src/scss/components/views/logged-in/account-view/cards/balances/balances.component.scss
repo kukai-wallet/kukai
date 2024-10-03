@@ -14,6 +14,7 @@ $border-width-dark-only: v.$border-width-dark-only;
 $border-width: v.$border-width;
 $border-color: v.$border-color;
 $layout-break-5: v.$layout-break-5;
+$base-filter-brightness-5: v.$base-filter-brightness-5;
 
 @include base;
 
@@ -22,6 +23,7 @@ $layout-break-5: v.$layout-break-5;
 
   &-balances {
     @include top-container;
+    margin-top: 2px;
 
     & .right {
       @include top-container-right;
@@ -32,6 +34,108 @@ $layout-break-5: v.$layout-break-5;
 }
 
 :host {
+  & .ios {
+    margin: 8px 0 17px 0;
+    cursor: pointer;
+    display: flex;
+    padding: 10px 13px;
+    box-sizing: border-box;
+    align-items: center;
+    gap: 10px;
+    border-radius: 16px;
+    border: 1px solid #E3E9F1;
+    background: linear-gradient(180deg, $base-end-color 0%, $base-end-color 101.69%);
+    box-shadow: 0px 16px 32px 0px rgba(0, 0, 0, 0.04), 0px 4px 20px 0px rgba(0, 0, 0, 0.03);
+
+    &.dark {
+      background: linear-gradient(0deg, #333337 0%, #333337 100%), #26262B;
+      border-color: #6A6A6A;
+
+      &>.left .left span:first-child {
+        color: $base-blue-color-lightened;
+      }
+      &>.left .right button {
+        background: $base-end-color;
+        border: 1px solid #6A6A6A;
+      }
+
+      &>.right .close {
+        border: 1px solid #6A6A6A;
+      }
+    }
+
+    &>.left {
+      display: flex;
+      flex-flow: row nowrap;
+      width: 100%;
+      justify-content: space-evenly;
+      & .left {
+        padding: 0 15px 0 0;
+        box-sizing: border-box;
+        min-width: 170px;
+
+        & span:first-child {
+          color: $base-blue-color;
+          text-align: center;
+          font-size: 16px;
+          font-weight: 500;
+          line-height: 20px;
+          letter-spacing: 0.4px;
+          white-space: nowrap;
+        }
+
+        & span:last-child {
+          color: $base-font-color;
+          text-align: center;
+          font-size: 18px;
+          font-weight: 500;
+          line-height: 24px;
+        }
+      }
+
+      & .right {
+        display: flex;
+
+        & button {
+          padding: unset;
+          border-radius: 14px;
+          min-width: 12rem;
+          width: 100%;
+          height: 6rem;
+          padding: 15px;
+          border: none;
+          background-color: unset;
+          border: 1px solid #E3E9F1;
+
+          & img {
+            width: 100%;
+            height: 100%;
+          }
+        }
+      }
+    }
+
+    & .right {
+      display: flex;
+
+      & .close {
+        display: flex;
+        justify-content: center;
+        min-width: 3em;
+        height: 3em;
+        border: v.$border-width solid $border-color;
+        border-radius: v.$border-radius-hardest;
+
+        & .x {
+          object-fit: scale-down;
+          width: 1.25em;
+          height: 1.25em;
+          filter: $base-filter-brightness-5;
+        }
+      }
+    }
+  }
+
   grid-area: balance;
 
   & button.swap-liquidity {
@@ -46,12 +150,16 @@ $layout-break-5: v.$layout-break-5;
     }
   }
 
-  & .main-container .scroll-wrapper {
-    padding: 0;
-    position: relative;
-    z-index: 0;
-    background-color: v.$balances-background-color;
-    box-shadow: v.$box-shadow-darkest;
+  & .main-container {
+    width: 100%;
+
+    & .scroll-wrapper {
+      padding: 0;
+      position: relative;
+      z-index: 0;
+      background-color: v.$balances-background-color;
+      box-shadow: v.$box-shadow-darkest;
+    }
   }
 }
 
@@ -124,6 +232,64 @@ $layout-break-5: v.$layout-break-5;
 
     &.selected {
       color: $base-blue-color-lightened;
+    }
+  }
+}
+
+@media (min-width: v.$layout-break-6) and (max-width: v.$layout-break-5) {
+  :host {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+
+    & .ios {
+      max-width: 555px;
+      width: calc(100% - 3rem);
+      margin: 0;
+
+      &>.left {
+        justify-content: space-evenly;
+
+        & .right {
+          & button {
+            min-width: 20rem;
+            height: 8rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: v.$layout-break-6) {
+  :host {
+    & .ios {
+      margin: 0 1.5rem 15px 1.5rem;
+      gap: unset;
+
+      &>.left {
+        justify-content: space-evenly;
+        margin: 0 15px 0 0;
+
+        & .left {
+          min-width: 113px;
+
+          & span:first-child {
+            font-size: 11.5px;
+          }
+
+          & span:last-child {
+            font-size: 12.5px;
+            line-height: unset;
+          }
+        }
+
+        & .right {
+          & button {
+            height: 7rem;
+          }
+        }
+      }
     }
   }
 }

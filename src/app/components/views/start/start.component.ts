@@ -109,4 +109,8 @@ export class StartComponent implements OnInit, OnDestroy {
       }, 2000);
     });
   }
+
+  downloadIOS(): void {
+    window.open('https://apps.apple.com/app/kukai-wallet/id1576499860', '_blank').focus();
+  }
 }
