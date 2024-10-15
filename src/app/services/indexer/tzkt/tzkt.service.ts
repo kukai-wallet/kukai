@@ -280,7 +280,7 @@ export class TzktService implements Indexer {
     if (!(meta && (meta.name || meta.symbol) && !isNaN(meta.decimals) && meta.decimals >= 0) || metadataSource === MetadataSource.TaquitoOnly) {
       meta = null;
     }
-    if (!meta && metadataSource !== MetadataSource.TzktOnly) {
+    if (!meta && metadataSource !== MetadataSource.TzktOnly && CONSTANTS.MAINNET) {
       console.debug('fallback on taquito', { contractAddress, id });
       meta = await this.getTokenMetadataWithTaquito(contractAddress, id);
       if (meta) {

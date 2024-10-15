@@ -161,7 +161,8 @@ export class UriHandlerComponent implements OnInit, OnDestroy {
     return this.permissionRequest || this.externalRequest || this.signRequest;
   }
   async handlePermissionRequest(message: any): Promise<void> {
-    console.log('## permission request');
+    this.beaconService.pairingLogEnd(message?.senderId);
+    console.log('## permission request', message);
     if (message.version) {
       message.scopes = message.scopes.filter((scope: PermissionScope) => [PermissionScope.OPERATION_REQUEST, PermissionScope.SIGN].includes(scope));
     }
