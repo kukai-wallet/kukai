@@ -47,7 +47,7 @@ export class BeaconService {
   }
   async addPeer(pairInfoJson: string, force = true) {
     const pairInfo = JSON.parse(pairInfoJson);
-    console.log('PairInfo', pairInfo);
+    this.pairingLogStart(pairInfo);
     await this.client.addPeer(pairInfo, force);
     this.syncBeaconState();
     this.messageService.removeBeaconMsg();
@@ -150,5 +150,48 @@ export class BeaconService {
   async responseSync() {
     localStorage.setItem('beacon:request-response', 'true');
     localStorage.removeItem('beacon:request-response');
+  }
+  async pairingLogStart(pairInfo: any) {
+    try {
+      const id = await getSenderId(pairInfo.publicKey);
+      const dapp = pairInfo.appUrl;
+      let dict: any = this.getDict();
+      const ts = Date.now();
+      if (!dict[id]) {
+        dict[id] = { ts, dapp };
+      }
+      this.setDict(dict);
+      setTimeout(() => {
+        this.pairingLogEnd(id);
+      }, 30100);
+    } catch (e) {
+      console.error(e);
+    }
+  }
+  async pairingLogEnd(id: string) {
+    try {
+      const dict = this.getDict();
+      if (dict[id]) {
+        const ts = Date.now();
+        const diff = Math.min(ts - dict[id].ts, 30000);
+        this.reportDiff(dict[id].dapp, diff);
+        delete dict[id];
+        this.setDict(dict);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+  getDict(): any {
+    let dict: any = localStorage.getItem('pairing-dict');
+    dict = dict ? JSON.parse(dict) : {};
+    return dict;
+  }
+  setDict(dict) {
+    localStorage.setItem('pairing-dict', JSON.stringify(dict));
+  }
+  reportDiff(url: string, ms: number) {
+    console.log('reportDiff', url, ms);
+    fetch(`https://services.kukai.app/v1/events/?eventId=pair-time&url=${encodeURIComponent(url)}&ms=${ms}`);
   }
 }
