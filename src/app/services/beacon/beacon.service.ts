@@ -14,14 +14,19 @@ import {
 } from '@airgap/beacon-sdk';
 import { Asset } from '../token/token.service';
 import { TzktService } from '../indexer/tzkt/tzkt.service';
+import { BcService } from '../bc/bc.service';
+import { CONSTANTS, environment } from '../../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
 export class BeaconService {
+  pairingTimeoutSignal = 10000;
   client: WalletClient = null;
   peers = [];
   permissions = [];
-  constructor(private messageService: MessageService, private tzktService: TzktService) {}
+  constructor(private messageService: MessageService, private tzktService: TzktService, private bcService: BcService) {
+    this.gcDict();
+  }
   preNotifyPairing(pairInfoJson: string) {
     const pairInfo: P2PPairingRequest = JSON.parse(pairInfoJson);
     if (this.isNewPairingRequest(pairInfo)) {
@@ -155,28 +160,33 @@ export class BeaconService {
     try {
       const id = await getSenderId(pairInfo.publicKey);
       const dapp = pairInfo.appUrl;
+      const relay = pairInfo.relayServer;
       let dict: any = this.getDict();
       const ts = Date.now();
       if (!dict[id]) {
-        dict[id] = { ts, dapp };
+        dict[id] = { ts, dapp, relay };
       }
       this.setDict(dict);
       setTimeout(() => {
-        this.pairingLogEnd(id);
-      }, 30100);
+        this.pairingLogEnd(id, true);
+      }, this.pairingTimeoutSignal);
     } catch (e) {
       console.error(e);
     }
   }
-  async pairingLogEnd(id: string) {
+  async pairingLogEnd(id: string, timeout = false) {
     try {
+      const ts = Date.now();
+      await this.bcService.elected;
       const dict = this.getDict();
       if (dict[id]) {
-        const ts = Date.now();
-        const diff = Math.min(ts - dict[id].ts, 30000);
-        this.reportDiff(dict[id].dapp, diff);
-        delete dict[id];
-        this.setDict(dict);
+        const diff = ts - dict[id].ts;
+        const event: { ts: number; dapp: string; relay: string } = dict[id];
+        if (!timeout) {
+          delete dict[id];
+          this.setDict(dict);
+        }
+        this.reportDiff(event.dapp, event.ts, event.relay, timeout ? this.pairingTimeoutSignal : diff, timeout, id);
       }
     } catch (e) {
       console.error(e);
@@ -187,11 +197,39 @@ export class BeaconService {
     dict = dict ? JSON.parse(dict) : {};
     return dict;
   }
-  setDict(dict) {
+  setDict(dict: any) {
     localStorage.setItem('pairing-dict', JSON.stringify(dict));
   }
-  reportDiff(url: string, ms: number) {
-    console.log('reportDiff', url, ms);
-    fetch(`https://services.kukai.app/v1/events/?eventId=pair-time&url=${encodeURIComponent(url)}&ms=${ms}`);
+  gcDict() {
+    try {
+      const dict = this.getDict();
+      if (dict) {
+        const keys = Object.keys(dict);
+        if (keys?.length) {
+          let deleted = false;
+          for (const key of keys) {
+            if (Date.now() - dict[key].ts > 3600000) {
+              // 1 hour
+              delete dict[key];
+              deleted = true;
+            }
+          }
+          deleted ? this.setDict(dict) : null;
+        }
+      }
+    } catch (e) {
+      console.error();
+    }
+  }
+  async reportDiff(url: string, t0: number, relay: string, rtt: number, timeout: boolean, senderId: string) {
+    console.log('reportDiff', senderId, t0, timeout, url, rtt);
+    const sn = localStorage.getItem('beacon:matrix-selected-node');
+    console.log(sn, '=>', relay);
+    const eventUrl = `https://services.kukai.app/v1/events/?eventId=pair-time-v2&id=${senderId}-${t0}&timeout=${timeout}&url=${encodeURIComponent(
+      url
+    )}&walletRelay=${encodeURIComponent(sn)}&dappRelay=${encodeURIComponent(relay)}&rtt=${rtt}`;
+    if (environment?.production) {
+      fetch(eventUrl);
+    }
   }
 }
