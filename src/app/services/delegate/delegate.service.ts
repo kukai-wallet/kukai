@@ -10,7 +10,7 @@ import { Location } from '@angular/common';
 
 @Injectable()
 export class DelegateService {
-  public readonly bb = 'https://api.baking-bad.org/v2';
+  public readonly bb = 'https://api.baking-bad.org/v3';
   public delegates = new BehaviorSubject<any>([]);
 
   constructor(private walletService: WalletService, private operationService: OperationService, public router: Router, private location: Location) {
@@ -54,19 +54,44 @@ export class DelegateService {
       fetch('https://api.ghostnet.tzkt.io/v1/accounts/tz1YgDUQV2eXm8pUWNz3S5aWP86iFzNp4jnD')
         .then((r) => r.json())
         .then((k) => {
-          const freeSpace = Math.round((k.balance * 10 - k.stakingBalance) / 10 ** 6);
           this.delegates.next([
             {
               address: 'tz1YgDUQV2eXm8pUWNz3S5aWP86iFzNp4jnD',
-              estimatedRoi: 0,
-              fee: 0.2,
-              freeSpace,
-              logo: 'https://services.tzkt.io/v1/avatars/tz1S5WxdZR5f9NzsPXhr7L9L1vrEb5spZFur',
-              minDelegation: 0,
               name: 'Baking Benjamins',
-              openForDelegation: true,
-              payoutAccuracy: 'precise',
-              serviceType: 'tezos_only'
+              status: 'active',
+              balance: 89436.69124,
+              features: [
+                {
+                  title: 'Contribution',
+                  content: {
+                    project: 'BakeBuddy',
+                    link: 'https://www.bakebuddy.xyz/'
+                  }
+                }
+              ],
+              delegation: {
+                enabled: true,
+                minBalance: 0.01,
+                fee: 0.2,
+                capacity: 1157745.699414,
+                freeSpace: 728580.131167,
+                estimatedApy: 0.0448,
+                features: [
+                  {
+                    title: 'Distributed rewards',
+                    content: "Baker doesn't pay denunciation and revelation rewards"
+                  }
+                ]
+              },
+              staking: {
+                enabled: true,
+                minBalance: 0,
+                fee: 0.1,
+                capacity: 1157745.699414,
+                freeSpace: 529358.630955,
+                estimatedApy: 0.1512,
+                features: []
+              }
             }
           ]);
         });
@@ -77,5 +102,9 @@ export class DelegateService {
     return new Promise((resolve) => {
       this.delegates.pipe(take(1)).subscribe((d) => resolve(d?.find((d) => d?.address === address)));
     });
+  }
+
+  getLogoURL(address: string): string {
+    return `https://services.tzkt.io/v1/logos/${address}.png`;
   }
 }

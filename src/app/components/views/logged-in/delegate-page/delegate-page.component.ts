@@ -29,7 +29,7 @@ export class DelegatePageComponent implements OnInit, OnDestroy {
     public router: Router,
     public walletService: WalletService,
     public inputValidationService: InputValidationService,
-    private messageServcie: MessageService,
+    private messageService: MessageService,
     private subjectService: SubjectService
   ) {
     this.subscriptions.add(
@@ -71,12 +71,10 @@ export class DelegatePageComponent implements OnInit, OnDestroy {
       const del = delegates.filter((d) => {
         try {
           if (
-            d.estimatedRoi >= 0 &&
-            d.openForDelegation === true &&
-            d.minDelegation < this.balanceXTZ &&
-            d.serviceType !== 'exchange' &&
-            d.serviceHealth !== 'closed' &&
-            d.serviceHealth !== 'dead'
+            d.delegation.estimatedApy >= 0 &&
+            d.delegation.enabled &&
+            d.delegation.freeSpace >= this.balanceXTZ &&
+            d.status == 'active' // other options: closed, not_responding
           ) {
             return d;
           }
@@ -84,8 +82,8 @@ export class DelegatePageComponent implements OnInit, OnDestroy {
           return;
         }
       });
-      const d2 = del.filter((d) => d.freeSpace < this.balanceXTZ).sort((a, b) => b.freeSpace - a.freeSpace);
-      const d1 = del.filter((d) => d.freeSpace >= this.balanceXTZ).sort((a, b) => b.estimatedRoi - a.estimatedRoi);
+      const d2 = del.filter((d) => d.delegation.freeSpace < this.balanceXTZ).sort((a, b) => b.delegation.freeSpace - a.delegation.freeSpace);
+      const d1 = del.filter((d) => d.delegation.freeSpace >= this.balanceXTZ).sort((a, b) => b.delegation.estimatedApy - a.delegation.estimatedApy);
       return [...d1, ...d2].sort((x, y) => (x.address === this.activeAccount?.delegate ? -1 : y === this.activeAccount?.delegate ? 1 : 0));
     }
     return [];
@@ -97,7 +95,7 @@ export class DelegatePageComponent implements OnInit, OnDestroy {
         data: delegate
       });
     } else {
-      this.messageServcie.addError(`Invalid baker address: ${delegate?.address}`);
+      this.messageService.addError(`Invalid baker address: ${delegate?.address}`);
     }
   }
 

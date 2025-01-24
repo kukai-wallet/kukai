@@ -8,6 +8,7 @@ import { InputValidationService } from '../../../services/input-validation/input
 import { LedgerService } from '../../../services/ledger/ledger.service';
 import { LedgerWallet, Account, ImplicitAccount, OriginatedAccount, TorusWallet } from '../../../services/wallet/wallet';
 import { MessageService } from '../../../services/message/message.service';
+import { DelegateService } from '../../../services/delegate/delegate.service';
 import { TezosDomainsService } from '../../../services/tezos-domains/tezos-domains.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalComponent } from '../modal.component';
@@ -58,7 +59,8 @@ export class DelegateComponent extends ModalComponent implements OnInit, OnChang
     private tezosDomains: TezosDomainsService,
     private subjectService: SubjectService,
     private router: Router,
-    private estimateService: EstimateService
+    private estimateService: EstimateService,
+    private delegateService: DelegateService
   ) {
     super();
   }
