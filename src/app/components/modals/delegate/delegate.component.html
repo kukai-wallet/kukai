@@ -7,12 +7,12 @@
     </div>
     <div class="flex-column confirm-staking">
       <div class="flex-row head">
-        <img [src]="delegateService.getLogoURL(delegate.address)" />
+        <img [src]="delegateService.getLogoURL(delegate.address)" onerror="this.style.display='none'" />
         <div class="flex-column data"
           *ngIf="delegate?.name ? delegate.name : toPkh; let delegateDisplayName; else undelegate">
           <span class="name">{{ delegateDisplayName }}</span>
-          <div class="flex-row fee-space"><span class="fee"><span>SPLIT:</span>&nbsp;{{ delegate?.delegation.fee ?
-              toPercent(delegate.delegation.fee) : 'UNKNOWN' }}</span><span *ngIf="delegate?.delegation.freeSpace"
+          <div class="flex-row fee-space"><span class="fee"><span>SPLIT:</span>&nbsp;{{ delegate?.delegation?.fee ?
+              toPercent(delegate.delegation.fee) : 'UNKNOWN' }}</span><span *ngIf="delegate?.delegation?.freeSpace"
               class="space" [class.insufficent]="delegate.delegation.freeSpace < balanceXTZ"><span>SPACE:</span>&nbsp;{{ round(delegate.delegation.freeSpace) }}</span>
           </div>
         </div>

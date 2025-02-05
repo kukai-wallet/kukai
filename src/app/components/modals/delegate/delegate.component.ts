@@ -33,6 +33,7 @@ export class DelegateComponent extends ModalComponent implements OnInit, OnChang
   activeAccount: Account;
   toPkh: string;
   delegate = null;
+  delegates = [];
   fee: string = '';
   password: string;
   pwdValid: string;
@@ -76,6 +77,11 @@ export class DelegateComponent extends ModalComponent implements OnInit, OnChang
           this.activeAccount = activeAccount;
         })
       );
+      this.subscriptions.add(
+        this.delegateService.delegates.subscribe((d) => {
+          this.delegates = d;
+        })
+      );
     }
   }
   ngOnChanges(changes: SimpleChanges): void {
@@ -85,6 +91,16 @@ export class DelegateComponent extends ModalComponent implements OnInit, OnChang
           ? this.externalRequest.operationRequest.operationDetails
           : this.externalRequest.operationRequest;
         if (shouldHandleOperations(opReq, this.name)) {
+          const delegates = [];
+          for (const x of this.delegates) {
+            delegates[x.address] = x;
+          }
+          let theDelegate;
+          if (delegates.hasOwnProperty(opReq[0].delegate)) {
+            theDelegate = delegates[opReq[0].delegate];
+          } else {
+            theDelegate = { address: opReq[0].delegate };
+          }
           this.activeAccount = this.externalRequest.selectedAccount;
           ModalComponent.currentModel.next({
             name: '',
@@ -93,7 +109,7 @@ export class DelegateComponent extends ModalComponent implements OnInit, OnChang
           this.clearForm();
           ModalComponent.currentModel.next({
             name: 'delegate-confirm',
-            data: { address: opReq[0].delegate }
+            data: theDelegate
           });
         }
       }
