@@ -80,9 +80,13 @@ export class QrScannerComponent extends ModalComponent {
       }
     }
   }
-  async handlePaste(ev: ClipboardEvent) {
+  handleInput(ev: InputEvent) {
+    this.handlePaste(ev as unknown as ClipboardEvent);
+  }
+  handlePaste(ev: ClipboardEvent) {
+    let shouldCloseModal = true;
     try {
-      const clipboardString = ev?.clipboardData?.getData('text');
+      const clipboardString = ev?.clipboardData?.getData('text') || this.manualInput;
       const pairingInfo = clipboardString ? this.deeplinkService.QRtoPairingJson(clipboardString) : '';
       if (!this.override && pairingInfo) {
         this.beaconService.preNotifyPairing(pairingInfo);
@@ -91,11 +95,14 @@ export class QrScannerComponent extends ModalComponent {
         this.scanResponse.emit({ pkh: clipboardString });
       } else if (clipboardString.startsWith('wc')) {
         this.walletConnectService.pair(clipboardString);
+      } else {
+        shouldCloseModal = false;
       }
-      this.closeModal();
     } catch (e) {
-      if (!this.override) {
-        this.messageService.addError('Invalid Base58 checksum!');
+      this.messageService.addError('Invalid Base58 checksum!');
+    } finally {
+      if (shouldCloseModal) {
+        this.closeModal();
       }
     }
   }
