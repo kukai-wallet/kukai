@@ -248,7 +248,11 @@ export class EmbeddedComponent implements OnInit {
         '*.agoria.dev',
         'https://agoria.dev',
         'https://pepoles.xyz',
-        '*.pepoles.xyz'
+        '*.pepoles.xyz',
+        'https://darktales.xyz',
+        '*.darktales.xyz',
+        'https://infiniteink.art',
+        '*.infiniteink.art'
       ],
       permissions: {
         login: true,
