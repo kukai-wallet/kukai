@@ -52,12 +52,12 @@ export class TzktService implements Indexer {
     this.Tezos.addExtension(new Tzip12Module(customMetadataProvider));
   }
   async getContractAddresses(pkh: string): Promise<any> {
-    return fetch(`${CONSTANTS.API_URL}/operations/originations?contractManager=${pkh}`)
+    return fetch(`${CONSTANTS.API_URL}/accounts/${pkh}/contracts`)
       .then((response) => response.json())
       .then((data) => {
         return data
-          .map((op: any) => {
-            return op?.status === 'applied' && op?.originatedContract?.kind === 'delegator_contract' ? op.originatedContract.address : '';
+          .map((contract: any) => {
+            return contract?.kind === 'delegator_contract' && contract?.balance ? contract.address : '';
           })
           .filter((address: string) => address.length);
       });
