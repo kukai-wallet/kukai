@@ -22,7 +22,7 @@ export class SignalService {
     private coordinatorServcie: CoordinatorService
   ) {}
   async init() {
-    this.connection = new HubConnectionBuilder().withUrl(`${CONSTANTS.API_URL}/events`).build();
+    this.connection = new HubConnectionBuilder().withUrl(`${CONSTANTS.API_URL}/ws`).build();
     this.connection.on('operations', (msg) => {
       console.log('msg');
       for (const op of msg.data) {
