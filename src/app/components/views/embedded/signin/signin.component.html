@@ -1,5 +1,8 @@
 <app-queue-embed *ngIf="this.queueTimeVisible > 0" [queueTime]="this.queueTimeVisible"></app-queue-embed>
-<div *ngIf="this.queueTime === 0 && this.queueTimeVisible === 0" class="flex-column direct-auth-login-alt" [class.manutd]="template === 'manutd'">
+<div *ngIf="this.queueTime === 0 && this.queueTimeVisible === 0 && template === templates.Objkt" class="flex-column direct-auth-login-alt objkt">
+  <app-objkt-signin (abort)="abort()" (login)="login($event)"></app-objkt-signin>
+</div>
+<div *ngIf="this.queueTime === 0 && this.queueTimeVisible === 0 && template !== templates.Objkt" class="flex-column direct-auth-login-alt" [class.manutd]="template === 'manutd'">
   <div class="flex-row header">
     <img (click)="abort()" class="abort" src="../../../assets/img/x-alt.svg">
     <img *ngIf="loginConfig.showBackButton" (click)="back()" class="back" src="../../../assets/img/back-arrow.svg">

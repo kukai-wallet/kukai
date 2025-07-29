@@ -79,6 +79,7 @@ import { TimeAgoPipe } from './pipes/time-ago.pipe';
 import { DeeplinkService } from './services/deeplink/deeplink.service';
 import { RemoveCommaPipe } from './pipes/remove-comma.pipe';
 import { ErrorHandlingService } from './services/error-handling/error-handling.service';
+import { ObjktSigninComponent } from './components/views/embedded/templates/objkt/signin/objkt-signin.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -114,6 +115,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     PrivacyPolicyComponent,
     EmbeddedComponent,
     SigninComponent,
+    ObjktSigninComponent,
     CardComponent,
     TokenDetail,
     SpinnerLegacyComponent,

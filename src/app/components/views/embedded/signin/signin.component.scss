@@ -210,6 +210,14 @@ button {
       color: #a3a8b9;
       font-family: "Roboto Condensed";
     }
+    &.objkt {
+      width: 362px;
+      padding: 24px;
+      box-sizing: border-box;
+      background: #FFFFFF;
+      border-radius: 4px;
+      box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.10), 0px 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
     &.manutd {
       width: 500px;
       box-sizing: border-box;
@@ -417,6 +425,9 @@ button {
     & .footer {
       flex-grow: 1;
     }
+  }
+  & .direct-auth-login-alt.objkt {
+    width: 100%;
   }
   & .direct-auth-login-alt.manutd {
     width: 100% !important;

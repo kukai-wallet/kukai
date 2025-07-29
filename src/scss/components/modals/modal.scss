@@ -45,7 +45,7 @@ $base-filter-contrast-invert-01: v.$base-filter-contrast-invert-01;
   width: 100vw;
   min-height: 100vh;
   background-color: #0006;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
   z-index: 1000;
   font-size: 100%;
@@ -62,7 +62,6 @@ $base-filter-contrast-invert-01: v.$base-filter-contrast-invert-01;
     min-width: 32em;
     overflow-x: hidden;
     border: v.$border-width-dark-only solid $border-color-dark-only;
-    margin: 10em 0 0em 0;
     border-radius: v.$border-radius;
 
     & .close {
@@ -383,6 +382,7 @@ $base-filter-contrast-invert-01: v.$base-filter-contrast-invert-01;
 @media (max-width: v.$layout-break-6) {
   .kukai-modal {
     font-size: 2.95vw;
+    justify-content: flex-start;
     background-color: $base-end-color;
     & .content {
       margin: 0;

@@ -1,0 +1,94 @@
+@import url("https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Instrument+Serif&display=swap");
+
+:host {
+  .objkt-exit {
+    display: flex;
+    justify-content: flex-end;
+    margin: 0 0 14px 0;
+    cursor: pointer;
+  }
+
+  .objkt-parent {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+
+    .objkt-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+
+      h1 {
+        color: #6f798c;
+        font-family: "Instrument Serif", serif;
+        font-size: 32px;
+        font-weight: 400;
+        line-height: 100%;
+        letter-spacing: -0.64px;
+        user-select: none;
+      }
+
+      img {
+        cursor: pointer;
+      }
+
+      img:hover {
+        filter: brightness(0.8);
+      }
+    }
+
+    .objkt-body {
+      .login-options {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin: 0 0 8px 0;
+      }
+
+      .login-option {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-sizing: border-box;
+        height: 54px;
+        padding: 8px 16px;
+        border-radius: 4px;
+        border: 2px solid #edf0f5;
+        cursor: pointer;
+
+        h4 {
+          color: #000;
+          text-align: center;
+          font-family: "Schibsted Grotesk", sans-serif;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+          text-rendering: optimizeLegibility;
+          font-optical-sizing: auto;
+          font-style: normal;
+          font-size: 14px;
+          line-height: 130%;
+          letter-spacing: -0.28px;
+          flex: 1;
+        }
+
+        img {
+          width: 16px;
+        }
+
+        img.login-icon {
+          visibility: hidden;
+        }
+
+        &:hover {
+          background: #edf0f5;
+        }
+
+        &:active {
+          outline: 1px solid #a5b0c7;
+          background: #edf0f5;
+        }
+      }
+    }
+  }
+}

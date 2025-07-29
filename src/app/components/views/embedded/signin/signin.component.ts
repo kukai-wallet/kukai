@@ -7,6 +7,13 @@ import { EmbeddedTorusWallet } from '../../../../services/wallet/wallet';
 import { CONSTANTS } from '../../../../../environments/environment';
 import { SubjectService } from '../../../../services/subject/subject.service';
 import { UtilsService } from '../../../../services/utils/utils.service';
+import { EmbedLoginChoices } from '../../../../libraries/enums';
+
+enum Templates {
+  Default = 'default',
+  Manutd = 'manutd', // @TODO: replace all magic strings with this value
+  Objkt = 'objkt'
+}
 
 @Component({
   selector: 'app-signin',
@@ -26,6 +33,7 @@ export class SigninComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() loginConfig: LoginConfig;
   @Output() loginResponse = new EventEmitter();
   template = 'default';
+  templates = Templates;
   loginOptions = [];
   queueTime: number = 0;
   queueTimeVisible: number = 0;
@@ -43,6 +51,8 @@ export class SigninComponent implements OnInit, OnChanges, AfterViewInit {
         this.template = 'minterpop';
       } else if (origin && (origin.indexOf('manutd') !== -1 || origin.indexOf('concordia') !== -1)) {
         this.template = 'manutd';
+      } else if (origin && origin.indexOf('objkt') !== -1) {
+        this.template = Templates.Objkt;
       } else {
         this.template = 'default';
       }
@@ -160,6 +170,10 @@ export class SigninComponent implements OnInit, OnChanges, AfterViewInit {
     this.stopQueue();
   }
   async login(typeOfLogin: string) {
+    if (typeOfLogin === EmbedLoginChoices.Other) {
+      this.loginResponse.emit({ choice: EmbedLoginChoices.Other });
+      return;
+    }
     try {
       this.messageService.startSpinner('Loading wallet...');
       let loginData;
