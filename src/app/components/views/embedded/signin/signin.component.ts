@@ -15,6 +15,8 @@ enum Templates {
   Objkt = 'objkt'
 }
 
+const ALLOWED_TEMPLATES: Set<string> = new Set([Templates.Objkt]);
+
 @Component({
   selector: 'app-signin',
   templateUrl: './signin.component.html',
@@ -54,7 +56,11 @@ export class SigninComponent implements OnInit, OnChanges, AfterViewInit {
       } else if (origin && origin.indexOf('objkt') !== -1) {
         this.template = Templates.Objkt;
       } else {
-        this.template = 'default';
+        if (origin.indexOf('localhost:') !== -1 && ALLOWED_TEMPLATES.has(this.loginConfig.template)) {
+          this.template = this.loginConfig.template;
+        } else {
+          this.template = 'default';
+        }
       }
     });
   }

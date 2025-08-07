@@ -162,6 +162,14 @@ export class EmbeddedComponent implements OnInit {
         micheline: true
       }
     },
+    objkt: {
+      origins: ['https://objkt.com', '*.objkt.com'],
+      permissions: {
+        login: true,
+        operations: true,
+        micheline: true
+      }
+    },
     truename: {
       origins: ['https://truename.me'],
       permissions: {

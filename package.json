@@ -126,7 +126,7 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "^1.5.0",
     "karma-mocha-reporter": "^2.2.5",
-    "kukai-embed": "0.9.3",
+    "kukai-embed": "0.9.4",
     "lint-staged": "^12.1.7",
     "mini-css-extract-plugin": "^1.6.2",
     "os-browserify": "^0.3.0",
