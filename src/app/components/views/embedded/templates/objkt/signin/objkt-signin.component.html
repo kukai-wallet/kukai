@@ -1,0 +1,15 @@
+<div class="objkt-parent">
+  <div class="objkt-header">
+    <h1>Log in.</h1>
+    <img src="../../../../../../../assets/img/objkt-close-btn.svg" width="20" (click)="abort.emit()"/>
+  </div>
+  <div class="objkt-body">
+    <div class="login-options">
+      <div *ngFor="let loginOption of loginOptions" class="login-option" (click)="login.emit(loginOption.torusKey)">
+        <img [src]="'../../../../../../../assets/img/' + loginOption.imgPath" width="16" />
+        <h4>{{ loginOption.title }}</h4>
+        <img class="login-icon" src="../../../../../../../assets/img/objkt-enter-icon.svg" width="16" />
+      </div>
+    </div>
+  </div>
+</div>

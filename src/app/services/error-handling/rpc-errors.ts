@@ -388,7 +388,7 @@ export const rpcErrors: Record<string, RPCError> =
     "category": "temporary"
   },
   "proto.alpha.implicit.empty_implicit_contract": {
-    "msg": "No manager operations are allowed on an empty implicit contract.",
+    "msg": "Not enough tez (XTZ) to perform this operation.",
     "category": "temporary"
   },
   "proto.alpha.implicit.empty_implicit_delegated_contract": {

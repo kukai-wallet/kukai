@@ -101,6 +101,11 @@ export class WalletService {
       } else {
         const keyPair = await this.torusService.getTorusKeyPair(this.wallet.verifier, this.wallet.id);
         if (this.wallet.getImplicitAccount(keyPair.pkh)) {
+          if (this.wallet?.sk === null) {
+            // synced embed wallet
+            this.wallet.sk = keyPair.sk;
+            this.storeWallet();
+          }
           return keyPair;
         } else {
           throw new Error('Signed with wrong account');

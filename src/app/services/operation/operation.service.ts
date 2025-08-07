@@ -442,7 +442,7 @@ export class OperationService {
     try {
       for (let i = 0; i < applied[0].contents.length; i++) {
         const metadata = applied[0].contents[i].metadata;
-        if (metadata.operation_result.status !== 'applied') {
+        if (metadata.operation_result && metadata.operation_result.status !== 'applied') {
           failed = true;
           if (metadata.operation_result.errors) {
             console.log('Error in operation_result', metadata.operation_result.errors);

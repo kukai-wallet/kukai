@@ -28,11 +28,13 @@ import {
   SignExprRequest,
   SignExprResponse,
   LoginConfig,
-  LoginPrio
+  LoginPrio,
+  LoginInfo
 } from 'kukai-embed';
 import { Subscription } from 'rxjs';
 import { SubjectService } from '../../../services/subject/subject.service';
 import { InputValidationService } from '../../../services/input-validation/input-validation.service';
+import { EmbedLoginChoices } from '../../../libraries/enums';
 enum Permission {
   LOGIN = 'login',
   OPERATIONS = 'operations',
@@ -154,6 +156,14 @@ export class EmbeddedComponent implements OnInit {
     },
     mooncakes: {
       origins: ['https://mooncakes.fun', '*.mooncakes.fun', 'https://df97ay9gblnsi.cloudfront.net'],
+      permissions: {
+        login: true,
+        operations: true,
+        micheline: true
+      }
+    },
+    objkt: {
+      origins: ['https://objkt.com', '*.objkt.com'],
       permissions: {
         login: true,
         operations: true,
@@ -391,6 +401,9 @@ export class EmbeddedComponent implements OnInit {
             case RequestTypes.loginRequest:
               this.handleLoginRequest(data);
               break;
+            case RequestTypes.syncRequest:
+              this.handleSyncRequest(data);
+              break;
             case RequestTypes.operationRequest:
               this.handleOperationRequest(data);
               break;
@@ -533,6 +546,43 @@ export class EmbeddedComponent implements OnInit {
       this.login = true;
     }
   }
+  private async handleSyncRequest(req: any) {
+    if (!this.hasPermission(Permission.LOGIN)) {
+      const response: ResponseMessage = {
+        type: ResponseTypes.syncResponse,
+        failed: true,
+        error: 'NO_PERMISSION'
+      };
+      this.sendResponse(response);
+      return;
+    }
+    if (this.activeAccount) {
+      const response: ResponseMessage = {
+        type: ResponseTypes.syncResponse,
+        failed: true,
+        error: 'ALREADY_LOGGED_IN'
+      };
+      this.sendResponse(response);
+    }
+    const { pkh = '', pk = '', userData = {} } = req;
+    if (!pk) {
+      return;
+    }
+    // will work as loginConfig?.strictAuth, with the difference
+    // that we store sk in session, as soon as we get access to it
+    const keyPair: KeyPair = { pkh, pk, sk: null };
+    const instanceId = this.generateInstanceId();
+    const response: ResponseMessage = {
+      type: ResponseTypes.syncResponse,
+      instanceId,
+      pk: keyPair.pk,
+      pkh: keyPair.pkh,
+      userData,
+      failed: false
+    };
+    this.sendResponse(response);
+    this.importAccount(keyPair, userData, instanceId);
+  }
   private handleOperationRequest(req: OperationRequest) {
     if (!this.hasPermission(Permission.OPERATIONS)) {
       const response: ResponseMessage = {
@@ -589,6 +639,17 @@ export class EmbeddedComponent implements OnInit {
         failed: false
       };
     } else if (loginData) {
+      if (loginData.choice === EmbedLoginChoices.Other) {
+        this.dismiss = null;
+        queueMicrotask(() =>
+          this.sendResponse({
+            type: ResponseTypes.loginResponse,
+            failed: true,
+            error: 'OTHER_WALLETS'
+          })
+        );
+        return;
+      }
       const { keyPair, userInfo } = loginData;
       const { idToken = '', accessToken = '', long_lived_token = '', ...filteredUserInfo } = { ...userInfo };
       let instanceId;
