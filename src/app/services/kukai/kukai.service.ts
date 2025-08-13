@@ -69,7 +69,6 @@ export class KukaiService {
       this.explore = explore;
       this.model3dAllowList = env.model3DAllowList;
     } catch (e) {
-      console.error(e);
       this.explore = undefined;
       this.model3dAllowList = [];
     }
@@ -80,7 +79,6 @@ export class KukaiService {
       all.length;
       this.discover = discover;
     } catch (e) {
-      console.error(e);
       this.discover = undefined;
     }
   }
