@@ -8,7 +8,7 @@ import { sign as naclSign } from 'tweetnacl';
 import * as Bs58check from 'bs58check';
 import * as bip39 from 'bip39';
 import Big from 'big.js';
-import { localForger } from '@taquito/local-forging';
+import { ForgeParams, LocalForger, ProtocolsHash } from '@taquito/local-forging';
 import { CONSTANTS } from '../../../environments/environment';
 import { ErrorHandlingService } from '../../services/error-handling/error-handling.service';
 import * as elliptic from 'elliptic';
@@ -27,6 +27,7 @@ export interface KeyPair {
 @Injectable()
 export class OperationService {
   nodeURL = CONSTANTS.NODE_URL;
+  onRioProto = true;
   prefix = {
     tz1: new Uint8Array([6, 161, 159]),
     tz2: new Uint8Array([6, 161, 161]),
@@ -353,7 +354,7 @@ export class OperationService {
   broadcast(sopbytes: string, protocol?: string, isEdsig = true): Observable<any> {
     const opbytes = sopbytes.slice(0, sopbytes.length - 128);
     const prefixedSig = this.sig2prefixedSig(sopbytes.slice(sopbytes.length - 128), isEdsig);
-    return fromPromise(localForger.parse(opbytes))
+    return fromPromise(this.getLocalForger().parse(opbytes))
       .pipe(
         flatMap((fop: any) => {
           fop.signature = prefixedSig;
@@ -525,15 +526,28 @@ export class OperationService {
     });
   }
   // Local forge with Taquito
-  localForge(operation: any): Observable<string> {
-    return fromPromise(localForger.forge(operation)).pipe(
+  getLocalForger() {
+    const proto: ProtocolsHash = this.onRioProto ? ProtocolsHash.PsRiotuma : ProtocolsHash.PtSeouLou;
+    const localForger = new LocalForger(proto);
+    return localForger;
+  }
+  localForge(operation: ForgeParams): Observable<string> {
+    return fromPromise(this.getLocalForger().forge(operation)).pipe(
       flatMap((localForgedBytes: string) => {
         return of(localForgedBytes);
       })
     );
   }
   getHeader(): Observable<any> {
-    return this.getRpc(`chains/main/blocks/head~3/header`);
+    return this.getRpc(`chains/main/blocks/head~3/header`).pipe(
+      flatMap((header: any) => {
+        console.log('getHeader result:', header);
+        if (header?.protocol !== 'PsRiotumaAMotcRoDWW1bysEhQy2n1M5fy8JgRp8jjRfHGmfeA7') {
+          this.onRioProto = false;
+        }
+        return of(header);
+      })
+    );
   }
   getBalance(pkh: string): Observable<any> {
     return this.getRpc(`chains/main/blocks/head/context/contracts/${pkh}/balance`)
