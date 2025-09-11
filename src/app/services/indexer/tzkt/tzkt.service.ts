@@ -83,7 +83,11 @@ export class TzktService implements Indexer {
   }
   async accountInfo(address: string, knownTokenIds: string[]): Promise<any> {
     const unknownTokenIds = [];
-    const data = await (await fetch(`${CONSTANTS.API_URL}/accounts/${address}`)).json();
+    const response = await fetch(`${CONSTANTS.API_URL}/accounts/${address}`);
+    if (response.status === 204) {
+      return { counter: '', tokens: [] };
+    }
+    const data = await response.json();
     const tokenBalances = address.startsWith('tz') ? await this.getAllTokenBalances(address) : [];
     if (data) {
       if (tokenBalances?.length) {
