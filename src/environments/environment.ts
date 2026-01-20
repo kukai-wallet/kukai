@@ -1,5 +1,5 @@
 import { Constants } from './../app/interfaces';
-import { CONSTANTS as _CONSTANTS, TRUSTED_TOKEN_CONTRACTS as _TTC } from './environment.ghostnet';
+import { CONSTANTS as _CONSTANTS, TRUSTED_TOKEN_CONTRACTS as _TTC } from './environment.tallinnnet';
 
 export const environment = {
   production: false

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { OperationService } from '../operation/operation.service';
+import { OperationService, REVEAL_GAS_LIMIT } from '../operation/operation.service';
 import { flatMap, catchError } from 'rxjs/operators';
 import { of, Observable } from 'rxjs';
 import { DefaultTransactionParams, OpLimits } from '../../interfaces';
@@ -102,7 +102,7 @@ export class EstimateService {
       fee: 0,
       gasLimit: Math.min(
         CONSTANTS.HARD_LIMITS.hard_gas_limit_per_operation,
-        Math.floor(CONSTANTS.HARD_LIMITS.hard_gas_limit_per_block / (operations.length + 1))
+        Math.floor(CONSTANTS.HARD_LIMITS.hard_gas_limit_per_block / operations.length) - REVEAL_GAS_LIMIT
       ),
       storageLimit: CONSTANTS.HARD_LIMITS.hard_storage_limit_per_operation
     };
