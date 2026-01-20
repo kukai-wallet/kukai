@@ -19,6 +19,8 @@ import { pkToPkh } from '../../libraries/utils';
 
 const httpOptions = { headers: { 'Content-Type': 'application/json' } };
 
+export const REVEAL_GAS_LIMIT: number = 200;
+
 export interface KeyPair {
   sk: string | null;
   pk: string | null;
@@ -143,7 +145,7 @@ export class OperationService {
         source: pkh,
         fee: '0',
         counter: (++counter).toString(),
-        gas_limit: '200',
+        gas_limit: REVEAL_GAS_LIMIT.toString(),
         storage_limit: '0',
         public_key: pk
       });
@@ -240,7 +242,7 @@ export class OperationService {
         source: pkh,
         fee: '0',
         counter: (++counter).toString(),
-        gas_limit: '200',
+        gas_limit: REVEAL_GAS_LIMIT.toString(),
         storage_limit: '0',
         public_key: pk
       });
@@ -295,7 +297,7 @@ export class OperationService {
                       source: keys.pkh,
                       fee: '0',
                       counter: counter.toString(),
-                      gas_limit: '200',
+                      gas_limit: REVEAL_GAS_LIMIT.toString(),
                       storage_limit: '0',
                       public_key: keys.pk
                     };
