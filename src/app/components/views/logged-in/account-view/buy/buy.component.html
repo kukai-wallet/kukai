@@ -8,7 +8,7 @@
   </div>
   <div class="main">
     <ng-container *ngIf="url">
-      <iframe allow="accelerometer; autoplay; camera; gyroscope; payment" frameborder="0" height="100%" [src]="this.url"
+      <iframe allow="accelerometer; autoplay; camera; gyroscope; payment; clipboard-write" referrerpolicy="strict-origin-when-cross-origin" frameborder="0" height="100%" [src]="this.url"
         width="100%" (load)="iframeLoaded()" (error)="iframeError()">
         <p>Your browser does not support iframes.</p>
       </iframe>
