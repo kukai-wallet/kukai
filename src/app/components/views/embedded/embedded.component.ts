@@ -163,7 +163,16 @@ export class EmbeddedComponent implements OnInit {
       }
     },
     objkt: {
-      origins: ['https://objkt.com', '*.objkt.com', 'https://objkt-com-web.pages.dev', '*.objkt-com-web.pages.dev', 'https://drop.art', '*.drop.art'],
+      origins: [
+        'https://objkt.com',
+        '*.objkt.com',
+        'https://objkt-com-web.pages.dev',
+        '*.objkt-com-web.pages.dev',
+        'https://drop.art',
+        '*.drop.art',
+        'https://drobbit.club',
+        '*.drobbit.club'
+      ],
       permissions: {
         login: true,
         operations: true,
