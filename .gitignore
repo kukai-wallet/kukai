@@ -46,3 +46,6 @@ Thumbs.db
 # Release builds
 /pre-build/*
 /release-builds/*
+
+# LLMs and AI Agents
+.claude/
