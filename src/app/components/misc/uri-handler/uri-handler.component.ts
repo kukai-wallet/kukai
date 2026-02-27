@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, HostListener } from '@angular/core';
 import { MessageService } from '../../../services/message/message.service';
-import { WalletClient, BeaconMessageType, PermissionScope, PermissionResponseInput, OperationResponseInput } from '@airgap/beacon-sdk';
+import { WalletClient, BeaconMessageType, PermissionScope, PermissionResponseInput, OperationResponseInput, Regions } from '@airgap/beacon-sdk';
 import { WalletService } from '../../../services/wallet/wallet.service';
 import { CONSTANTS } from '../../../../environments/environment';
 import { Account } from '../../../services/wallet/wallet';
@@ -104,8 +104,24 @@ export class UriHandlerComponent implements OnInit, OnDestroy {
   /* https://github.com/airgap-it/beacon-sdk/blob/master/src/clients/wallet-client/WalletClient.ts */
   connectApp = async (): Promise<void> => {
     if (!this.beaconService.client) {
+      const selectedNode = localStorage.getItem('beacon:matrix-selected-node');
+      if (selectedNode && !selectedNode.endsWith('.octez.io')) {
+        localStorage.removeItem('beacon:matrix-selected-node');
+      }
       this.beaconService.client = new WalletClient({
-        name: 'Kukai Wallet'
+        name: 'Kukai Wallet',
+        matrixNodes: {
+          [Regions.EUROPE_WEST]: [
+            'beacon-node-1.octez.io',
+            'beacon-node-2.octez.io',
+            'beacon-node-3.octez.io',
+            'beacon-node-4.octez.io',
+            'beacon-node-5.octez.io',
+            'beacon-node-6.octez.io',
+            'beacon-node-7.octez.io',
+            'beacon-node-8.octez.io'
+          ]
+        }
       });
     }
     await this.beaconService.client.init(); // Establish P2P connection
