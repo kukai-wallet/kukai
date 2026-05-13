@@ -263,10 +263,6 @@ export class WalletConnectService {
     */
   }
   async proposalHandler(data) {
-    const required = data?.params?.requiredNamespaces?.tezos;
-    const optional = data?.params?.optionalNamespaces?.tezos;
-    const allChains = [...(required?.chains || []), ...(optional?.chains || [])];
-    const expectedChain = `tezos:${CONSTANTS.NETWORK}`;
     const message: any = {
       id: data.id,
       version: 0,
@@ -277,17 +273,14 @@ export class WalletConnectService {
       },
       wcData: data
     };
-    if (allChains.includes(expectedChain)) {
+    if (data?.params?.requiredNamespaces?.tezos?.chains?.includes(`tezos:${CONSTANTS.NETWORK}`)) {
       message.network = { type: CONSTANTS.NETWORK };
     } else {
-      console.warn(`Unsupported chain: ${JSON.stringify(allChains)}`);
+      console.warn(`Unsupported chain: ${data?.params?.requiredNamespaces?.tezos?.chains}`);
       this.rejectPairing(message);
       return;
     }
-    message.scopes = {
-      methods: [...(required?.methods || []), ...(optional?.methods || [])],
-      events: [...(required?.events || []), ...(optional?.events || [])]
-    };
+    message.scopes = { methods: data.params.requiredNamespaces.tezos.methods, events: data.params.requiredNamespaces.tezos.events };
     this.subjectService.wc2.next(message);
     this.bcService.broadcast({ kind: MessageKind.PropagateRequest, payload: message });
     console.log('proposal', data);
@@ -305,12 +298,14 @@ export class WalletConnectService {
         [`tezos:${CONSTANTS.NETWORK}:${address}`, `tezos:${CONSTANTS.NETWORK}:${publicKey}`];
       }
       console.log('@ accounts', accounts);
-      const methods = [...(data.params.requiredNamespaces?.tezos?.methods || []), ...(data.params.optionalNamespaces?.tezos?.methods || [])].filter((method) =>
-        this.supportedMethods.includes(method)
-      );
-      const events = [...(data.params.requiredNamespaces?.tezos?.events || []), ...(data.params.optionalNamespaces?.tezos?.events || [])].filter((event) =>
-        this.supportedEvents.includes(event)
-      );
+      const methods = data.params.requiredNamespaces?.tezos?.methods
+        ?.filter((method) => this.supportedMethods.includes(method))
+        .concat(data.params.optionalNamespaces?.tezos?.methods?.filter((method) => this.supportedMethods.includes(method)))
+        .filter((m) => m);
+      const events = data.params.requiredNamespaces?.tezos?.events
+        ?.filter((event) => this.supportedEvents.includes(event))
+        .concat(data.params.optionalNamespaces?.tezos?.events?.filter((event) => this.supportedEvents.includes(event)))
+        .filter((e) => e);
       let sessionProperties: any = {
         algo: address.startsWith('tz1') ? 'ed25519' : address.startsWith('tz2') ? 'secp256k1' : 'unknown',
         address: address,
