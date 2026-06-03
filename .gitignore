@@ -49,3 +49,6 @@ Thumbs.db
 
 # LLMs and AI Agents
 .claude/
+
+# Local dev secrets
+/src/dev-config.js
