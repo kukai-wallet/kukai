@@ -9,7 +9,10 @@ import { utils } from '../../libraries/index';
 import * as bip39 from 'bip39';
 @Injectable()
 export class InputValidationService {
-  constructor(private operationService: OperationService, private translate: TranslateService) {}
+  constructor(
+    private operationService: OperationService,
+    private translate: TranslateService
+  ) {}
   /*
     Input validations
   */
@@ -48,7 +51,7 @@ export class InputValidationService {
     return this.operationService.validAddress(address);
   }
   validDelegationAddress(address: string): Boolean {
-    return this.operationService.validAddress(address) && address.slice(0, 3) !== 'tz4';
+    return this.operationService.validAddress(address);
   }
   torusAccount(verifierId: string, loginType: string): Boolean {
     switch (loginType) {
