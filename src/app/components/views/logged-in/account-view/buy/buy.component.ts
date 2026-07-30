@@ -1,6 +1,5 @@
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { SubjectService, BuyProvider } from '../../../../../services/subject/subject.service';
-import { generateOnRampURL } from '@coinbase/cbpay-js';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Account } from '../../../../../services/wallet/wallet';
 import { Subscription } from 'rxjs';
@@ -55,21 +54,38 @@ export class BuyComponent implements OnInit, OnDestroy {
     if (!address?.startsWith('tz')) {
       return;
     }
+    const servicesBase = CONSTANTS.MAINNET ? 'https://services.kukai.app' : 'https://staging.services.kukai.app';
     switch (this.provider) {
       case BuyProvider.Coinbase:
-        this.isLoading = false;
-        const newWindow = window.open(
-          generateOnRampURL({
-            appId: 'aa41d510-15f9-4426-87bd-3a506b6e22c0',
-            destinationWallets: [{ address, blockchains: ['tezos'] }]
-          }),
-          'Coinbase Pay',
-          'height=600,width=400'
-        );
+        // Coinbase requires secure initialization: the widget URL must carry a
+        // server-minted single-use session token. The popup opens empty within
+        // the click's user gesture (awaiting first would trip popup blockers)
+        // and navigates once the token arrives.
+        const newWindow = window.open('', 'Coinbase Pay', 'height=600,width=400');
+        if (!newWindow) {
+          this.isLoading = false;
+          return;
+        }
         newWindow.opener = null;
+        try {
+          const response = await fetch(`${servicesBase}/v1/onramp/coinbase`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ address, blockchains: ['tezos'] })
+          });
+          const data = await response.json();
+          if (data?.token) {
+            newWindow.location.href = `https://pay.coinbase.com/buy/select-asset?sessionToken=${encodeURIComponent(data.token)}`;
+          } else {
+            newWindow.close();
+          }
+        } catch (error) {
+          console.error(error);
+          newWindow.close();
+        }
+        this.isLoading = false;
         break;
       case BuyProvider.Transak:
-        const servicesBase = CONSTANTS.MAINNET ? 'https://services.kukai.app' : 'https://staging.services.kukai.app';
         try {
           const response = await fetch(`${servicesBase}/v1/onramp/transak`, {
             method: 'POST',
