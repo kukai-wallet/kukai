@@ -16,6 +16,11 @@
           <h3>Coinbase</h3>
           <h4>Transfer from Coinbase</h4>
         </div>
+        <svg class="verified" [class.active]="coinbaseVerified" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
+          [attr.aria-label]="coinbaseVerified ? 'Wallet ownership verified' : 'Wallet ownership verification required'">
+          <path fill-rule="evenodd" clip-rule="evenodd"
+            d="M12 1.5 3.75 4.6v6.15c0 5.36 3.52 10.02 8.25 11.75 4.73-1.73 8.25-6.39 8.25-11.75V4.6L12 1.5zm4.83 7.36-5.66 5.66a1 1 0 0 1-1.41 0l-2.59-2.59 1.41-1.41 1.88 1.88 4.96-4.95 1.41 1.41z" />
+        </svg>
       </div>
       <div class="flex-row option" (click)="buyTez(BuyProviderType.Transak)">
         <img src="assets/img/transak.png" />

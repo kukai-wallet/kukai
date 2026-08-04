@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalComponent } from '../modal.component';
-import { SubjectService, BuyProvider } from '../../../services/subject/subject.service';
+import { SubjectService, BuyProvider, isCoinbaseOnrampAuthValid } from '../../../services/subject/subject.service';
 
 @Component({
   selector: 'app-buy-modal',
@@ -28,5 +28,8 @@ export class BuyModalComponent extends ModalComponent implements OnInit {
   buyTez(provider: BuyProvider) {
     this.subjectService.buy.next(provider);
     this.closeModal();
+  }
+  get coinbaseVerified(): boolean {
+    return isCoinbaseOnrampAuthValid(this.subjectService.coinbaseOnrampAuth.value, this.subjectService.activeAccount.value?.address);
   }
 }

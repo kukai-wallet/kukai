@@ -15,6 +15,17 @@ export enum BuyProvider {
   Transak,
   MoonPay
 }
+export interface CoinbaseOnrampAuth {
+  address: string;
+  timestamp: number;
+  publicKey: string;
+  signature: string;
+}
+// Kept under the service backend's 5 minute signature window so a signature
+// considered valid here is still accepted when the session token is requested
+export function isCoinbaseOnrampAuthValid(auth: CoinbaseOnrampAuth | null, address: string): auth is CoinbaseOnrampAuth {
+  return !!auth && !!address && auth.address === address && Math.floor(Date.now() / 1000) - auth.timestamp < 240;
+}
 interface MetadataUpdated {
   contractAddress: string;
   id: string;
@@ -38,6 +49,7 @@ export class SubjectService {
   public login: Subject<boolean>;
   public logout: Subject<boolean>;
   public buy: Subject<BuyProvider>;
+  public coinbaseOnrampAuth: BehaviorSubject<CoinbaseOnrampAuth | null>;
   public wc2: Subject<any>;
   public blocklist: BehaviorSubject<string[]>;
   public contractAliases: BehaviorSubject<ContractAlias[]>;
@@ -62,6 +74,7 @@ export class SubjectService {
     this.login = new Subject<boolean>();
     this.logout = new Subject<boolean>();
     this.buy = new Subject<BuyProvider>();
+    this.coinbaseOnrampAuth = new BehaviorSubject<CoinbaseOnrampAuth | null>(null);
     this.wc2 = new Subject<any>();
     this.initKukaiService();
   }
@@ -90,5 +103,6 @@ export class SubjectService {
     this.metadataUpdated.next(null);
     this.refreshTokens.next(null);
     this.nftsUpdated.next(undefined);
+    this.coinbaseOnrampAuth.next(null);
   }
 }

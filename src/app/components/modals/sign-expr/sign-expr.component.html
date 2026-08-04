@@ -8,7 +8,8 @@
       </h1>
     </div>
     <div class="flex-column sign-expr">
-      <p class="previewAttention">An application has requested you sign a<ng-container *ngIf="isMessage"> message</ng-container><ng-container *ngIf="!isMessage">n expression</ng-container></p>
+      <p *ngIf="internal" class="previewAttention">User authentication requested</p>
+      <p *ngIf="!internal" class="previewAttention">An application has requested you sign a<ng-container *ngIf="isMessage"> message</ng-container><ng-container *ngIf="!isMessage">n expression</ng-container></p>
       <p *ngIf="!isMessage" class="previewAttention warning">Warning! Only sign if you understand the expression or trust the source.</p>
       <app-ui-toggle-advanced *ngIf="!isMessage" style="width: 13rem; margin-bottom: 2rem;" [default]="false" (stateChange)="advancedForm = $event"></app-ui-toggle-advanced>
       <textarea *ngIf="advancedForm || isMessage" rows="10" readonly>{{ payload }}</textarea>

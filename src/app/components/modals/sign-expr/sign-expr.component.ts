@@ -21,6 +21,9 @@ import { SubjectService } from '../../../services/subject/subject.service';
 export class SignExprComponent extends ModalComponent implements OnInit, OnChanges {
   @Input() signRequest: any;
   @Input() activeAccount: Account;
+  // Only set by internal (first-party) callers, never derived from the request
+  // object itself, which dapps control on beacon/wc flows
+  @Input() internal = false;
   @Output() signResponse = new EventEmitter();
   syncSub: Subscription;
   password = '';
@@ -44,7 +47,7 @@ export class SignExprComponent extends ModalComponent implements OnInit, OnChang
   ngOnChanges(changes: SimpleChanges): void {
     if (this.signRequest) {
       ModalComponent.currentModel.next({ name: this.name, data: null });
-      this.isMessage = this.inputValidationService.isMessageSigning(this.signRequest.payload);
+      this.isMessage = this.inputValidationService.isMessageSigning(this.signRequest.payload) || (this.internal && this.signRequest.payload.startsWith('0501'));
       const value = valueDecoder(Uint8ArrayConsumer.fromHexString(this.signRequest.payload.slice(2)));
       const payload = emitMicheline(value, {
         indent: '  ',
