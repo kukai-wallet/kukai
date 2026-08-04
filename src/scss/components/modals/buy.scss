@@ -35,6 +35,16 @@
         color: v.$base-font-color-secondary;
       }
     }
+    & svg.verified {
+      width: 2.25em;
+      height: 2.25em;
+      flex-shrink: 0;
+      margin: 0 0 0 auto;
+      color: v.$base-font-color-secondary;
+      &.active {
+        color: v.$base-green-color;
+      }
+    }
     &:last-child {
       margin: 0 0 0 0;
     }

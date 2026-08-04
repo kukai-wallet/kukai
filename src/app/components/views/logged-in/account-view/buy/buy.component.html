@@ -16,3 +16,4 @@
   </div>
 </div>
 <img *ngIf="isLoading" class="loading" src="../../../../../../assets/img/loader.svg">
+<app-sign-expr *ngIf="signRequest" [signRequest]="signRequest" [activeAccount]="signAccount" [internal]="true" (signResponse)="coinbaseSignResponse($event)"></app-sign-expr>
