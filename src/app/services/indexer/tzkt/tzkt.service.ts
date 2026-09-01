@@ -8,6 +8,7 @@ import { Tzip12Module, tzip12 } from '@taquito/tzip12';
 import { TezosStorageHandler } from '@taquito/tzip16';
 import { Handler, IpfsHttpHandler, MetadataProvider } from '@taquito/tzip16';
 import { SubjectService } from '../../subject/subject.service';
+import { IPFS_GATEWAY } from '../../../libraries/ipfs';
 import Big from 'big.js';
 
 interface TokenMetadata {
@@ -45,7 +46,7 @@ export class TzktService implements Indexer {
   constructor(private subjectService: SubjectService) {
     this.Tezos = new TezosToolkit(CONSTANTS.NODE_URL[0]);
     const customHandlers = new Map<string, Handler>([
-      ['ipfs', new IpfsHttpHandler('ipfs.io')],
+      ['ipfs', new IpfsHttpHandler(IPFS_GATEWAY)],
       ['tezos-storage', new TezosStorageHandler()]
     ]);
     const customMetadataProvider = new MetadataProvider(customHandlers);
