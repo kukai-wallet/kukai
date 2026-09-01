@@ -1,10 +1,11 @@
 // https://gitlab.com/tezos-domains/client
 import { TezosToolkit } from '@taquito/taquito';
 import { TaquitoTezosDomainsClient } from '@tezos-domains/taquito-client';
-import { Tzip16Module } from '@taquito/tzip16';
+import { Tzip16Module, DEFAULT_HANDLERS, MetadataProvider, IpfsHttpHandler } from '@taquito/tzip16';
 import { Injectable } from '@angular/core';
 import { CONSTANTS } from '../../../environments/environment';
 import { SupportedNetworkType } from '@tezos-domains/core';
+import { IPFS_GATEWAY } from '../../libraries/ipfs';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,9 @@ export class TezosDomainsService {
   pending = false;
   constructor() {
     const tezosToolkit = new TezosToolkit(CONSTANTS.NODE_URL[0]);
-    tezosToolkit.addExtension(new Tzip16Module());
+    const handlers = new Map(DEFAULT_HANDLERS);
+    handlers.set('ipfs', new IpfsHttpHandler(IPFS_GATEWAY));
+    tezosToolkit.addExtension(new Tzip16Module(new MetadataProvider(handlers)));
     const options = { caching: { enabled: false } };
     try {
       this.client = new TaquitoTezosDomainsClient({
