@@ -87,7 +87,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
   private checkStake() {
-    const onMainnet: boolean = this.CONSTANTS.MAINNET && !this.embedded;
+    const onMainnet: boolean = this.CONSTANTS.MAINNET && !this.CONSTANTS.TEZOS_X && !this.embedded;
     const noStake: boolean =
       this.walletService?.wallet?.implicitAccounts?.every((account) => {
         return account.stakedBalance === 0 && !isNaN(account?.balanceXTZ);

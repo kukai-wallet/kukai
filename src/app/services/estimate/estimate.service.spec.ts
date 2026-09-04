@@ -1,7 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpTestingController } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { EstimateService } from './estimate.service';
+import { EstimateService, DEFAULT_FEE_PARAMS, parseFeeParams } from './estimate.service';
+import { CONSTANTS } from '../../../environments/environment';
 import { http_imports, rx, translate_imports, ErrorHandlingService } from '../../../../spec/helpers/service.helper';
 import { OperationService } from '../operation/operation.service';
 import { of, Observable } from 'rxjs';
@@ -53,13 +54,7 @@ describe('EstimateService', () => {
         storage: 0,
         reveal: false
       };
-      const callback = (res) => {
-        console.log(res);
-        if (res) {
-          expect(res).toEqual(ref);
-          //done();
-        }
-      };
+      spyOn(service, 'refreshDynamicFeeParams').and.resolveTo();
       spyOn(service, 'simulate').and.returnValue(
         of(
           JSON.parse(
@@ -76,14 +71,23 @@ describe('EstimateService', () => {
         'tz1aUxrUek1tSCP4pTPLrSNhYGSMdwyzuYTb',
         'edpkuHo1zj3e9fVky1iq94LQY6tKfMNwkaoBEe3JFiPXxT3i4XkUxU'
       );
-      await service.estimateTransactions(
-        JSON.parse(
-          '[{"destination":"tz1LcuQHNVQEWP2fZjk1QYZGNrfLDwrT3SyZ","amount":3,"gasLimit":0,"storageLimit":0},{"destination":"KT1NXwhVgf7Ge7iS9bCUzMNVJeeB1Eni5kVS","amount":5,"gasLimit":0,"storageLimit":0},{"destination":"tz1TwVimQy3BywXoSszdFXjT9bSTQrsZYo2u","amount":7,"gasLimit":0,"storageLimit":0}]'
-        ),
-        'tz1aUxrUek1tSCP4pTPLrSNhYGSMdwyzuYTb',
-        '',
-        callback
-      );
+      const result = new Promise((resolve, reject) => {
+        service.estimateTransactions(
+          JSON.parse(
+            '[{"destination":"tz1LcuQHNVQEWP2fZjk1QYZGNrfLDwrT3SyZ","amount":3,"gasLimit":0,"storageLimit":0},{"destination":"KT1NXwhVgf7Ge7iS9bCUzMNVJeeB1Eni5kVS","amount":5,"gasLimit":0,"storageLimit":0},{"destination":"tz1TwVimQy3BywXoSszdFXjT9bSTQrsZYo2u","amount":7,"gasLimit":0,"storageLimit":0}]'
+          ),
+          'tz1aUxrUek1tSCP4pTPLrSNhYGSMdwyzuYTb',
+          '',
+          (res) => {
+            if (res?.error) {
+              reject(res.error);
+            } else if (res) {
+              resolve(res);
+            }
+          }
+        );
+      });
+      expect(await result).toEqual(ref);
     });
     /*
     it('Should estimate contract invocation', async function () {
@@ -105,5 +109,84 @@ describe('EstimateService', () => {
       };
       expect(ans).toEqual(ref);
     });*/
+  });
+  describe('> Fee parameters (mempool filter)', () => {
+    const previewnetParams = { minimalFees: 100, nanotezPerGas: 45, nanotezPerByte: 4000 };
+    it('Should default to L1 values', () => {
+      expect(service.feeParams).toEqual(DEFAULT_FEE_PARAMS);
+      expect(DEFAULT_FEE_PARAMS).toEqual({ minimalFees: 100, nanotezPerGas: 100, nanotezPerByte: 1000 });
+    });
+    it('Should parse a Tezos X mempool filter response', () => {
+      expect(
+        parseFeeParams({
+          minimal_fees: '100',
+          minimal_nanotez_per_gas_unit: ['45', '1'],
+          minimal_nanotez_per_byte: ['4000', '1'],
+          replace_by_fee_factor: ['21', '20']
+        })
+      ).toEqual(previewnetParams);
+    });
+    it('Should fall back to defaults for missing or invalid fields', () => {
+      expect(parseFeeParams(null)).toEqual(DEFAULT_FEE_PARAMS);
+      expect(parseFeeParams({})).toEqual(DEFAULT_FEE_PARAMS);
+      expect(
+        parseFeeParams({
+          minimal_fees: 'abc',
+          minimal_nanotez_per_gas_unit: ['45', '0'],
+          minimal_nanotez_per_byte: ['4000']
+        })
+      ).toEqual(DEFAULT_FEE_PARAMS);
+      // ratios are rounded up to whole nanotez: 45/2 -> 23
+      expect(parseFeeParams({ minimal_fees: '0', minimal_nanotez_per_gas_unit: ['45', '2'] })).toEqual({
+        minimalFees: 0,
+        nanotezPerGas: 23,
+        nanotezPerByte: DEFAULT_FEE_PARAMS.nanotezPerByte
+      });
+    });
+    it('Should keep current parameters for fields missing from a partial response', () => {
+      expect(parseFeeParams({}, previewnetParams)).toEqual(previewnetParams);
+      expect(parseFeeParams({ minimal_nanotez_per_gas_unit: ['60', '1'] }, previewnetParams)).toEqual({ ...previewnetParams, nanotezPerGas: 60 });
+    });
+    it('Should use fetched parameters after refresh', async () => {
+      const operationService = TestBed.inject(OperationService);
+      spyOn(operationService, 'getMempoolFilter').and.returnValue(
+        of({ minimal_fees: '100', minimal_nanotez_per_gas_unit: ['45', '1'], minimal_nanotez_per_byte: ['4000', '1'] })
+      );
+      await service.refreshDynamicFeeParams();
+      expect(service.feeParams).toEqual(previewnetParams);
+    });
+    it('Should keep previous parameters when the fetch fails', async () => {
+      const operationService = TestBed.inject(OperationService);
+      spyOn(operationService, 'getMempoolFilter').and.returnValue(
+        new Observable((subscriber) => {
+          subscriber.error(new Error('network'));
+        })
+      );
+      service.feeParams = previewnetParams;
+      await service.refreshDynamicFeeParams();
+      expect(service.feeParams).toEqual(previewnetParams);
+    });
+    it('Should recommend fee with L1 defaults', () => {
+      // 100 + 1 * (200 + 10) + 0.1 * 10412 = 1351.2 -> 1352 mutez
+      expect(service.recommendFee([{ gasLimit: 10412, storageLimit: 0 }], false, 200, DEFAULT_FEE_PARAMS)).toEqual(0.001352);
+      // reveal adds 200 gas and 10 bytes: 100 + 220 + 0.1 * 10612 = 1381.2 -> 1382 mutez
+      expect(service.recommendFee([{ gasLimit: 10412, storageLimit: 0 }], true, 200, DEFAULT_FEE_PARAMS)).toEqual(0.001382);
+    });
+    it('Should recommend fee with Tezos X parameters', () => {
+      // 100 + 4 * (200 + 10) + 0.045 * 10412 = 1408.54 -> 1409 mutez
+      expect(service.recommendFee([{ gasLimit: 10412, storageLimit: 0 }], false, 200, previewnetParams)).toEqual(0.001409);
+      // higher gas price: 53 nanotez per gas -> 100 + 840 + 0.053 * 10412 = 1491.84 -> 1492 mutez
+      expect(service.recommendFee([{ gasLimit: 10412, storageLimit: 0 }], false, 200, { ...previewnetParams, nanotezPerGas: 53 })).toEqual(0.001492);
+    });
+    it('Should skip minimal_fees on Tezos X', () => {
+      const tezosX = CONSTANTS.TEZOS_X;
+      CONSTANTS.TEZOS_X = true;
+      try {
+        // 4 * (200 + 10) + 0.045 * 10412 = 1308.54 -> 1309 mutez, no 100 mutez base term
+        expect(service.recommendFee([{ gasLimit: 10412, storageLimit: 0 }], false, 200, previewnetParams)).toEqual(0.001309);
+      } finally {
+        CONSTANTS.TEZOS_X = tezosX;
+      }
+    });
   });
 });

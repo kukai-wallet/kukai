@@ -11,6 +11,9 @@ export class ObjktService {
   constructor(private utilsService: UtilsService) {}
 
   async resolveToken(contractAddress, id) {
+    if (!CONSTANTS.OBJKT_URL) {
+      return undefined;
+    }
     const req = {
       query: `{
         token(where: {fa_contract: {_eq: "${contractAddress}"}, token_id: {_eq: "${id}"}}) {

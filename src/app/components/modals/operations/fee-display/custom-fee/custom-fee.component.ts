@@ -54,7 +54,7 @@ export class CustomFeeComponent implements OnInit, OnDestroy {
   burnAmount(): number | null {
     const burn =
       this.customFee?.storage && this.inputValidationService.storage(this.customFee.storage.toString())
-        ? Big(this.customFee.storage).times(this.estimateService.costPerByte).div(1000000)
+        ? Big(this.customFee.storage).times(this.estimateService.storageCostPerByte).div(1000000)
         : this.defaultFee.burn;
     if (burn) {
       return burn;

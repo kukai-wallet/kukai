@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, HostListener } from '@angular/core';
 import { MessageService } from '../../../services/message/message.service';
-import { WalletClient, BeaconMessageType, PermissionScope, PermissionResponseInput, OperationResponseInput, Regions } from '@airgap/beacon-sdk';
+import { WalletClient, BeaconMessageType, PermissionScope, PermissionResponseInput, OperationResponseInput, Regions, NetworkType } from '@airgap/beacon-sdk';
 import { WalletService } from '../../../services/wallet/wallet.service';
 import { CONSTANTS } from '../../../../environments/environment';
 import { Account } from '../../../services/wallet/wallet';
@@ -133,9 +133,9 @@ export class UriHandlerComponent implements OnInit, OnDestroy {
   };
   async handleBeaconMessage(message: any) {
     console.log('### beacon message', structuredClone(message));
-    console.log(JSON.stringify(message));
-    if (message.type !== BeaconMessageType.SignPayloadRequest && message.network.type !== CONSTANTS.NETWORK) {
-      console.warn(`Rejecting Beacon message because of network. Expected ${CONSTANTS.NETWORK} instead of ${message.network.type}`);
+    const network = message?.network?.type === NetworkType.CUSTOM && message.network.name ? message.network.name : message?.network?.type;
+    if (message.type !== BeaconMessageType.SignPayloadRequest && network !== CONSTANTS.NETWORK) {
+      console.warn(`Rejecting Beacon message because of network. Expected ${CONSTANTS.NETWORK}, but received ${network}`);
       await this.beaconService.rejectOnNetwork(message);
     } else if (!this.isBlocked()) {
       switch (message.type) {
@@ -207,6 +207,17 @@ export class UriHandlerComponent implements OnInit, OnDestroy {
       }
       message.operationDetails = sanitizeOperations(message.operationDetails);
       message.operationDetails = normalizeOperations(message.operationDetails);
+      if (CONSTANTS.TEZOS_X && message.operationDetails.some((op: any) => op?.kind === 'delegation')) {
+        const reason = 'Delegation is not supported on Tezos X';
+        console.warn(reason);
+        this.messageService.addWarning(`${reason}. The request was rejected.`);
+        if (message.version === 0) {
+          await this.walletConnectService.wcResponse(message, '', false, reason);
+        } else {
+          await this.beaconService.rejectOnParameters(message);
+        }
+        return false;
+      }
       for (let i = 0; i < message.operationDetails.length; i++) {
         if (
           message.operationDetails[i].destination &&

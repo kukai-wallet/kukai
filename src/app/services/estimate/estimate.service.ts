@@ -1,18 +1,57 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { OperationService, REVEAL_GAS_LIMIT } from '../operation/operation.service';
-import { flatMap, catchError } from 'rxjs/operators';
+import { flatMap, catchError, timeout } from 'rxjs/operators';
 import { of, Observable } from 'rxjs';
-import { DefaultTransactionParams, OpLimits } from '../../interfaces';
+import { DefaultTransactionParams, OpLimits, FeeParams } from '../../interfaces';
 import Big from 'big.js';
 import { CONSTANTS } from '../../../environments/environment';
 import { InputValidationService } from '../input-validation/input-validation.service';
 import { UtilsService } from '../utils/utils.service';
 
 const httpOptions = { headers: { 'Content-Type': 'application/json' } };
+
+/*
+  Fallback fee parameters, used until `chains/main/mempool/filter` has been fetched successfully.
+  Taken from the environment when set (Tezos X), otherwise the L1 defaults (octez): 100 mutez + 0.1 mutez per gas unit + 1 mutez per byte.
+*/
+export const DEFAULT_FEE_PARAMS: FeeParams = CONSTANTS.FEE_PARAMS ?? { minimalFees: 100, nanotezPerGas: 100, nanotezPerByte: 1000 };
+
+/*
+  Parse a mempool filter response. The node serves the two rates as [numerator, denominator] ratios in nanotez; they are rounded up to whole nanotez.
+  Any missing or invalid field keeps its value from `current`, so a partial response never regresses a rate that was fetched successfully.
+*/
+export function parseFeeParams(raw: any, current: FeeParams = DEFAULT_FEE_PARAMS): FeeParams {
+  const parseUnsignedInteger = (value: any): number | null => {
+    if (typeof value === 'number' && Number.isInteger(value) && value >= 0) {
+      return value;
+    }
+    if (typeof value === 'string' && /^[0-9]+$/.test(value)) {
+      return Number(value);
+    }
+    return null;
+  };
+  const parseRatio = (value: any): number | null => {
+    if (Array.isArray(value) && value.length === 2) {
+      const num = parseUnsignedInteger(value[0]);
+      const den = parseUnsignedInteger(value[1]);
+      if (num !== null && den !== null && den > 0) {
+        return Math.ceil(num / den);
+      }
+    }
+    return null;
+  };
+  return {
+    minimalFees: parseUnsignedInteger(raw?.minimal_fees) ?? current.minimalFees,
+    nanotezPerGas: parseRatio(raw?.minimal_nanotez_per_gas_unit) ?? current.nanotezPerGas,
+    nanotezPerByte: parseRatio(raw?.minimal_nanotez_per_byte) ?? current.nanotezPerByte
+  };
+}
+
 @Injectable()
 export class EstimateService {
-  readonly costPerByte = '250';
+  readonly storageCostPerByte: string = String(CONSTANTS.COST_PER_BYTE ?? 250);
+  feeParams: FeeParams = DEFAULT_FEE_PARAMS;
   readonly revealGasLimit = 200;
   readonly extraGas = 25;
   readonly contractsOverride: Record<string, OpLimits>;
@@ -51,6 +90,35 @@ export class EstimateService {
       this.init(head.hash, head.chain_id, head.protocol, counter, manager, pk, pkh);
       console.log(head);
     }
+  }
+  /*
+    Refresh the dynamic fee parameters from the node's mempool filter. On Tezos X the gas price moves with load, so this is called for every estimate (see simulateAndRefreshDynamicFeeParams).
+    Never throws: on failure the previous values (initially DEFAULT_FEE_PARAMS) are kept.
+  */
+  async refreshDynamicFeeParams(): Promise<void> {
+    try {
+      const raw = await this.operationService.getMempoolFilter().pipe(timeout(10000)).toPromise();
+      this.feeParams = parseFeeParams(raw, this.feeParams);
+    } catch (e) {
+      console.warn('Failed to fetch fee parameters from mempool filter, using previous values', e);
+    }
+  }
+  /*
+    Run the simulation and, on Tezos X where the gas price is dynamic, refresh the fee parameters concurrently.
+    On L1 the mempool filter values are static, so the fallback parameters are used without an extra round trip.
+    Resolves to null when the simulation fails.
+  */
+  private async simulateAndRefreshDynamicFeeParams(op: any): Promise<any> {
+    const [result] = await Promise.all([
+      this.simulate(op)
+        .toPromise()
+        .catch((e) => {
+          console.warn(e);
+          return null;
+        }),
+      CONSTANTS.TEZOS_X ? this.refreshDynamicFeeParams() : Promise.resolve()
+    ]);
+    return result;
   }
   public async estimateTransactions(transactions: any, from: string, tokenTransfer: string = '', callback) {
     this.estimate(transactions, from, tokenTransfer, callback);
@@ -128,12 +196,7 @@ export class EstimateService {
         simulation.fee,
         tokenTransfer
       );
-      const result = await this.simulate(op)
-        .toPromise()
-        .catch((e) => {
-          console.warn(e);
-          return null;
-        });
+      const result = await this.simulateAndRefreshDynamicFeeParams(op);
       if (result && result.contents) {
         let reveal = false;
         const limits = [];
@@ -220,7 +283,7 @@ export class EstimateService {
         }
       }
     }
-    const storageUsage = Math.round(burn / Number(this.costPerByte));
+    const storageUsage = Math.round(burn / Number(this.storageCostPerByte));
     if (
       gasUsage < 0 ||
       gasUsage > CONSTANTS.HARD_LIMITS.hard_gas_limit_per_operation ||
@@ -234,12 +297,12 @@ export class EstimateService {
     return this.getOpLimits(content, op, gasUsage, storageUsage);
   }
   /*
-    Need to be updated when fee market appear or default behavior for bakers changes
+    fee (mutez) = minimal_fees + nanotez_per_byte * bytes / 1000 + nanotez_per_gas * gas / 1000
+    Parameters come from the node's mempool filter (see refreshDynamicFeeParams), with DEFAULT_FEE_PARAMS as fallback.
+    Tezos X reports minimal_fees but does not enforce it, so the term is skipped there.
+    Returns tez.
   */
-  recommendFee(limits: any, reveal: boolean, bytes: number): number {
-    const minimalFee = 100;
-    const feePerByte = 1;
-    const feePerGasUnit = 0.1;
+  recommendFee(limits: any, reveal: boolean, bytes: number, params: FeeParams = this.feeParams): number {
     let gasUnits = 0;
     let numberOfOperations = 0;
     if (reveal) {
@@ -251,11 +314,11 @@ export class EstimateService {
       numberOfOperations++;
     }
     bytes += 10 * numberOfOperations; // add 10 extra bytes for variation in amount & fee
-    return Number(
-      Big(Math.ceil(minimalFee + feePerByte * bytes + feePerGasUnit * gasUnits))
-        .div(1000000)
-        .toString()
-    );
+    const byteFee = Big(params.nanotezPerByte).times(bytes).div(1000);
+    const gasFee = Big(params.nanotezPerGas).times(gasUnits).div(1000);
+    const minimalFees = CONSTANTS.TEZOS_X ? 0 : params.minimalFees;
+    const mutez = Big(minimalFees).plus(byteFee).plus(gasFee).round(0, 3); // 3 = ROUND_UP (big.js 5)
+    return Number(mutez.div(1000000).toString());
   }
   totalGasLimit(limits: any): number {
     let totalGasLimit = 0;
@@ -276,7 +339,7 @@ export class EstimateService {
     for (const data of limits) {
       totalStorageLimit = totalStorageLimit.plus(data.storageLimit);
     }
-    return Number(Big(totalStorageLimit).times(this.costPerByte).div('1000000').toString());
+    return Number(Big(totalStorageLimit).times(this.storageCostPerByte).div('1000000').toString());
   }
   simulate(op: any): Observable<any> {
     op.signature = 'edsigtXomBKi5CTRf5cjATJWSyaRvhfYNHqSUGrn4SdbYRcGwQrUGjzEfQDTuqHhuA8b2d8NarZjz8TRf65WkpQmo423BtomS8Q';
@@ -374,12 +437,7 @@ export class EstimateService {
         this.pk,
         simulation.fee
       );
-      const result = await this.simulate(operationObject)
-        .toPromise()
-        .catch((e) => {
-          console.warn(e);
-          return null;
-        });
+      const result = await this.simulateAndRefreshDynamicFeeParams(operationObject);
       if (result && result.contents) {
         let reveal = false;
         const limits = [];

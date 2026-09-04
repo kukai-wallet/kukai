@@ -32,7 +32,7 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
   activeAccount: Account = null;
   tokenTransfer: string = null;
   token = null;
-  costPerByte: string = this.estimateService.costPerByte;
+  storageCostPerByte: string = this.estimateService.storageCostPerByte;
 
   defaultTransactionParams: DefaultTransactionParams = zeroTxParams;
   active = false;
@@ -172,12 +172,14 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
   }
   getTotalBurn(): number {
     if (this.customStorageLimit !== '' && Number(this.customStorageLimit)) {
-      return Number(Big(this.customStorageLimit).mul(this.transactions.length).times(this.costPerByte).div(1000000).toString());
+      return Number(Big(this.customStorageLimit).mul(this.transactions.length).times(this.storageCostPerByte).div(1000000).toString());
     }
     return this.defaultTransactionParams.burn;
   }
   burnAmount(): string {
-    const burn = this.customStorageLimit ? Number(Big(this.customStorageLimit).times(this.costPerByte).div(1000000)) : this.defaultTransactionParams.burn;
+    const burn = this.customStorageLimit
+      ? Number(Big(this.customStorageLimit).times(this.storageCostPerByte).div(1000000))
+      : this.defaultTransactionParams.burn;
     if (burn) {
       return burn + ' tez';
     }
@@ -275,7 +277,7 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
       if (this.inputValidationService.twitterAccount(val)) {
         this.torusVerifier = 'twitter';
         this.torusVerifierName = 'Twitter';
-      } else if (this.inputValidationService.tezosDomain(val)) {
+      } else if (!this.tezosDomains.unsupportedNetwork && this.inputValidationService.tezosDomain(val)) {
         this.torusVerifier = 'domain';
         this.torusVerifierName = 'Tezos Domains';
       }
@@ -521,7 +523,7 @@ export class PrepareSendComponent extends ModalComponent implements OnInit, OnCh
       if (!this.isMultipleDestinations) {
         accountBalance = accountBalance.minus(
           this.customStorageLimit && Number(this.customStorageLimit)
-            ? Number(Big(this.customStorageLimit).times(this.costPerByte).div('1000000'))
+            ? Number(Big(this.customStorageLimit).times(this.storageCostPerByte).div('1000000'))
             : this.defaultTransactionParams.burn
         );
       } else {

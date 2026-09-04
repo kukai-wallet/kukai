@@ -96,6 +96,12 @@ $base-filter-brightness-5: v.$base-filter-brightness-5;
       top: -0.25rem;
       left: 0;
 
+      // Tezos X: no delegation row, keep the account dropdown vertically centered
+      &.no-delegation {
+        justify-content: center;
+        top: 0;
+      }
+
       & > .delegation {
         text-align: center;
         padding: calc(0.275rem + #{$border-width} * 2) 1rem 1rem 2rem;

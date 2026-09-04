@@ -30,5 +30,13 @@ describe('[ ErrorHandlingService ]', () => {
     it('match success, timeout errorID returns string', () => {
       expect(pipe.transform('utils.Timeout')).toEqual('Timeout');
     });
+
+    it('maps Tezos X node errors to readable messages', () => {
+      expect(pipe.transform('evm_node.dev.insufficient_fees')).toEqual('Fee too low for this network. Please re-estimate and try again.');
+      expect(pipe.transform('evm_node.dev.tezlink.outdated_operation')).toEqual(
+        'Operation expired: it references a block that is too old (older than about 4 minutes). Please try again.'
+      );
+      expect(pipe.transform('evm_node.dev.tezlink.unsupported_manager_operation')).toEqual('This operation kind is not supported on Tezos X.');
+    });
   });
 });

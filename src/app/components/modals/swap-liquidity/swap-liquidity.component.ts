@@ -58,7 +58,7 @@ export class SwapLiquidityComponent extends ModalComponent {
   readonly lqdContract = 'KT1TxqZ8QtKvLu3V3JH7Gx58n7Co8pgtpQU5';
   readonly tzBTCContract = 'KT1PWx2mnDueood7fEmfbBDKx1D9BAnnXitn';
 
-  readonly costPerByte: string = this.estimateService.costPerByte;
+  readonly storageCostPerByte: string = this.estimateService.storageCostPerByte;
 
   moreInfo = false;
 
@@ -594,12 +594,14 @@ export class SwapLiquidityComponent extends ModalComponent {
   }
   getTotalBurn(): number {
     if (this.customStorageLimit !== '' && Number(this.customStorageLimit)) {
-      return Number(Big(this.customStorageLimit).mul(this.transactions.length).times(this.costPerByte).div(1000000).toString());
+      return Number(Big(this.customStorageLimit).mul(this.transactions.length).times(this.storageCostPerByte).div(1000000).toString());
     }
     return this.defaultTransactionParams.burn;
   }
   burnAmount(): string {
-    const burn = this.customStorageLimit ? Number(Big(this.customStorageLimit).times(this.costPerByte).div(1000000)) : this.defaultTransactionParams.burn;
+    const burn = this.customStorageLimit
+      ? Number(Big(this.customStorageLimit).times(this.storageCostPerByte).div(1000000))
+      : this.defaultTransactionParams.burn;
     if (burn) {
       return burn + ' tez';
     }
@@ -633,7 +635,7 @@ export class SwapLiquidityComponent extends ModalComponent {
       accountBalance = accountBalance.minus(this.customFee && Number(this.customFee) ? Number(this.customFee) : this.defaultTransactionParams.fee);
       accountBalance = accountBalance.minus(
         this.customStorageLimit && Number(this.customStorageLimit)
-          ? Number(Big(this.customStorageLimit).times(this.costPerByte).div('1000000'))
+          ? Number(Big(this.customStorageLimit).times(this.storageCostPerByte).div('1000000'))
           : this.defaultTransactionParams.burn
       );
       accountBalance = accountBalance.minus(0.000001); // dust
