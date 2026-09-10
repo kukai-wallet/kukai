@@ -169,8 +169,8 @@ describe('EstimateService', () => {
     it('Should recommend fee with L1 defaults', () => {
       // 100 + 1 * (200 + 10) + 0.1 * 10412 = 1351.2 -> 1352 mutez
       expect(service.recommendFee([{ gasLimit: 10412, storageLimit: 0 }], false, 200, DEFAULT_FEE_PARAMS)).toEqual(0.001352);
-      // reveal adds 200 gas and 10 bytes: 100 + 220 + 0.1 * 10612 = 1381.2 -> 1382 mutez
-      expect(service.recommendFee([{ gasLimit: 10412, storageLimit: 0 }], true, 200, DEFAULT_FEE_PARAMS)).toEqual(0.001382);
+      // reveal adds 300 gas and 10 bytes: 100 + 220 + 0.1 * 10712 = 1391.2 -> 1392 mutez
+      expect(service.recommendFee([{ gasLimit: 10412, storageLimit: 0 }], true, 200, DEFAULT_FEE_PARAMS)).toEqual(0.001392);
     });
     it('Should recommend fee with Tezos X parameters', () => {
       // 100 + 4 * (200 + 10) + 0.045 * 10412 = 1408.54 -> 1409 mutez

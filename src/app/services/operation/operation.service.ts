@@ -19,7 +19,7 @@ import { pkToPkh } from '../../libraries/utils';
 
 const httpOptions = { headers: { 'Content-Type': 'application/json' } };
 
-export const REVEAL_GAS_LIMIT: number = 200;
+export const REVEAL_GAS_LIMIT: number = 300;
 
 export interface KeyPair {
   sk: string | null;

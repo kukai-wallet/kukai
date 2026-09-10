@@ -52,7 +52,7 @@ export function parseFeeParams(raw: any, current: FeeParams = DEFAULT_FEE_PARAMS
 export class EstimateService {
   readonly storageCostPerByte: string = String(CONSTANTS.COST_PER_BYTE ?? 250);
   feeParams: FeeParams = DEFAULT_FEE_PARAMS;
-  readonly revealGasLimit = 200;
+  readonly revealGasLimit = REVEAL_GAS_LIMIT;
   readonly extraGas = 25;
   readonly contractsOverride: Record<string, OpLimits>;
   readonly tooSlowPreloadError: string = 'Simulation error: Node timed out on preload';
