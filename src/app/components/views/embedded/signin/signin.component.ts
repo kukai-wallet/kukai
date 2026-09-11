@@ -15,7 +15,9 @@ enum Templates {
   Objkt = 'objkt'
 }
 
-const ALLOWED_TEMPLATES: Set<string> = new Set([Templates.Objkt]);
+// Templates an integrator can opt into via loginConfig.template.
+// Everything else is assigned from the origin in ngOnInit.
+const OPT_IN_TEMPLATES: Set<string> = new Set([Templates.Objkt]);
 
 @Component({
   selector: 'app-signin',
@@ -55,12 +57,10 @@ export class SigninComponent implements OnInit, OnChanges, AfterViewInit {
         this.template = 'manutd';
       } else if (origin && origin.indexOf('objkt') !== -1) {
         this.template = Templates.Objkt;
+      } else if (OPT_IN_TEMPLATES.has(this.loginConfig?.template)) {
+        this.template = this.loginConfig.template;
       } else {
-        if (origin.indexOf('localhost:') !== -1 && ALLOWED_TEMPLATES.has(this.loginConfig.template)) {
-          this.template = this.loginConfig.template;
-        } else {
-          this.template = 'default';
-        }
+        this.template = 'default';
       }
     });
   }
