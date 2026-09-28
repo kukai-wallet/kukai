@@ -135,8 +135,8 @@ self.addEventListener('fetch', function (event) {
       <h1 class="title content" id="closeText" style="display: none;">You can close this window now</h1>
     </div>
     <script
-      src="https://scripts.toruswallet.io/broadcastChannel_7_0_0.js"
-      integrity="sha384-pIIXzHLtGFQiHsKXsY97Qe0h3wGNiU7IyCLXX6waFb2br/zmGkH+ms1ijYIQD0Rl"
+      src="https://cdn.jsdelivr.net/npm/@toruslabs/broadcast-channel@13.3.0/dist/lib/browser.min.js"
+      integrity="sha384-QSjZsqpkm0O8AyNLtF1Ip2MeoXuAynoUNTWeevbZQGbdXtYh8gPgQCf2XV9bIG0i"
       crossorigin="anonymous"
     ></script>
     <script>
@@ -217,10 +217,10 @@ self.addEventListener('fetch', function (event) {
           var error = "";
           try {
             if (Object.keys(hashParams).length > 0 && hashParams.state) {
-              instanceParams = JSON.parse(window.atob(decodeURIComponent(decodeURIComponent(hashParams.state)))) || {};
+              instanceParams = JSON.parse(BroadcastChannel.decodeBase64Url(decodeURIComponent(decodeURIComponent(hashParams.state)))) || {};
               if (hashParams.error) error = hashParams.error;
             } else if (Object.keys(queryParams).length > 0 && queryParams.state) {
-              instanceParams = JSON.parse(window.atob(decodeURIComponent(decodeURIComponent(queryParams.state)))) || {};
+              instanceParams = JSON.parse(BroadcastChannel.decodeBase64Url(decodeURIComponent(decodeURIComponent(queryParams.state)))) || {};
               if (queryParams.error) error = queryParams.error;
             }
           } catch (e) {
@@ -242,7 +242,7 @@ self.addEventListener('fetch', function (event) {
             );
           } else {
             // communicate via broadcast channel
-            bc = new broadcastChannelLib.BroadcastChannel("redirect_channel_" + instanceParams.instanceId, broadcastChannelOptions);
+            bc = new BroadcastChannel.RedundantAdaptiveBroadcastChannel("redirect_channel_" + instanceParams.instanceId, broadcastChannelOptions);
             bc.postMessage({
               data: {
                 instanceParams: instanceParams,
@@ -272,7 +272,7 @@ self.addEventListener('fetch', function (event) {
       } else {
         // in preopen, awaiting redirect
         try {
-          bc = new broadcastChannelLib.BroadcastChannel("preopen_channel_" + preopenInstanceId, broadcastChannelOptions);
+          bc = new BroadcastChannel.RedundantAdaptiveBroadcastChannel("preopen_channel_" + preopenInstanceId, broadcastChannelOptions);
           bc.onmessage = function (ev) {
             var { preopenInstanceId: oldId, payload, message } = ev.data;
             if (oldId === preopenInstanceId && payload && payload.url) {
@@ -299,10 +299,7 @@ self.addEventListener('fetch', function (event) {
       }
     </script>
   </body>
-</html>
-                        
-${''}
-  `
+</html>`
             ],
             { type: 'text/html' }
           )

@@ -28,7 +28,6 @@ import {
   SignExprRequest,
   SignExprResponse,
   LoginConfig,
-  LoginPrio,
   LoginInfo
 } from 'kukai-embed';
 import { Subscription } from 'rxjs';
@@ -384,7 +383,6 @@ export class EmbeddedComponent implements OnInit {
   externalRequest: ExternalRequest = null;
   signRequest = null;
   loginConfig: LoginConfig = null;
-  queueMode: LoginPrio = null;
   currentInstanceId = '';
 
   ngOnInit(): void {
@@ -546,19 +544,11 @@ export class EmbeddedComponent implements OnInit {
       this.sendResponse(response);
       return;
     }
-    this.queueMode = req?.config.customPrio ? req?.config.customPrio : null;
-    if (this.activeAccount || ([LoginPrio.Low, LoginPrio.LowFast].includes(this.queueMode) && this.walletService.wallet)) {
+    if (this.activeAccount) {
       const response: ResponseMessage = {
         type: ResponseTypes.loginResponse,
         failed: true,
         error: 'ALREADY_LOGGED_IN'
-      };
-      this.sendResponse(response);
-    } else if (this.queueMode === 'high' && !this.walletService.wallet) {
-      const response: ResponseMessage = {
-        type: ResponseTypes.loginResponse,
-        failed: true,
-        error: 'NO_WALLET_FOUND'
       };
       this.sendResponse(response);
     } else {
