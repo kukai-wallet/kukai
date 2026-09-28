@@ -8,7 +8,7 @@
       (click)="torusVerifier = ''; torusVerifierName = 'Tezos Address';">
       Tezos Address
     </a>
-    <a [class.selected]="torusVerifierName === 'Tezos Domains'"
+    <a *ngIf="!tezosDomains.unsupportedNetwork" [class.selected]="torusVerifierName === 'Tezos Domains'"
       (click)="torusVerifier = 'domain'; torusVerifierName = 'Tezos Domains'">
       Tezos Domains
     </a>

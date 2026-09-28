@@ -185,7 +185,7 @@ export class OperationsComponent extends ModalComponent implements OnInit, OnCha
           mutez = mutez.minus(op.balance);
         }
         mutez = mutez.minus(op.fee);
-        mutez = mutez.minus(Big(op.storage_limit).times(this.estimateService.costPerByte));
+        mutez = mutez.minus(Big(op.storage_limit).times(this.estimateService.storageCostPerByte));
       }
       this.balanceChange = `${mutez.div(10 ** 6).toFixed()} tez`;
     } catch (e) {

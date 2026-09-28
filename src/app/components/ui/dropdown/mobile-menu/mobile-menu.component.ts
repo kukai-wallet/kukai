@@ -11,6 +11,7 @@ import { SubjectService } from '../../../../services/subject/subject.service';
 import { ModalComponent } from '../../../../components/modals/modal.component';
 import { take } from 'rxjs/operators';
 import { UnlockableService } from '../../../../services/unlockable/unlockable.service';
+import { CONSTANTS as _CONSTANTS } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-ui-mobile-menu',
@@ -22,6 +23,7 @@ export class MobileMenuDropdownComponent extends DropdownComponent implements On
   @Input() delegateName;
   @Input() newAccount;
   @Input() receive;
+  readonly CONSTANTS = _CONSTANTS;
 
   constructor(
     public router: Router,

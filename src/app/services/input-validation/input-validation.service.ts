@@ -9,10 +9,7 @@ import { utils } from '../../libraries/index';
 import * as bip39 from 'bip39';
 @Injectable()
 export class InputValidationService {
-  constructor(
-    private operationService: OperationService,
-    private translate: TranslateService
-  ) {}
+  constructor(private operationService: OperationService, private translate: TranslateService) {}
   /*
     Input validations
   */

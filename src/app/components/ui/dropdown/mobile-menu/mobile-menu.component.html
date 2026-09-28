@@ -27,7 +27,7 @@
         <span>ADD</span>
       </div>
     </div>
-    <div class="flex-row button delegation" routerLink="/account/{{activeAccount?.address}}/stakers"
+    <div *ngIf="!CONSTANTS.TEZOS_X" class="flex-row button delegation" routerLink="/account/{{activeAccount?.address}}/stakers"
       (click)="toggleDropdown()">
       <div *ngIf="!activeAccount?.delegate" class="flex-row">
         <span class="flex-row">DELEGATING:</span><span class="choose">NOT

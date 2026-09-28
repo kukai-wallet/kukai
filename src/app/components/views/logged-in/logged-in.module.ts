@@ -37,7 +37,6 @@ import { ListComponent } from '../../ui/generic/list.component';
 import { SearchBarComponent } from '../../ui/search/search.component';
 import { RemoveCommaPipe } from '../../../pipes/remove-comma.pipe';
 import { ExprTemplateComponent } from '../embedded/sign-expr/template/template.component';
-import { QueueEmbedComponent } from '../embedded/queue/queue.component';
 import { SwapLiquidityComponent } from '../../modals/swap-liquidity/swap-liquidity.component';
 import { SwapLiquidityService } from '../../../services/swap-liquidity/swap-liquidity.service';
 import { InfoComponent } from '../../modals/info/info.component';
@@ -76,7 +75,6 @@ import { SessionSelectDropdownComponent } from '../../ui/dropdown/session-select
     AdvancedToggleComponent,
     ConfirmSendEmbedComponent,
     SignExprEmbedComponent,
-    QueueEmbedComponent,
     PrepareSendDropdownComponent,
     AssetComponent,
     NftsBodyComponent,
@@ -105,7 +103,6 @@ import { SessionSelectDropdownComponent } from '../../ui/dropdown/session-select
     SendComponent,
     ConfirmSendEmbedComponent,
     SignExprEmbedComponent,
-    QueueEmbedComponent,
     AssetComponent,
     NftsBodyComponent,
     NftsTokenComponent,

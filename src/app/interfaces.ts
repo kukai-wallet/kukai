@@ -136,6 +136,14 @@ export interface ExternalRequest {
   operationRequest: any;
   selectedAccount: WalletAccount;
 }
+/*
+  Fee parameters as exposed by the node's `chains/main/mempool/filter` RPC, in whole nanotez.
+*/
+export interface FeeParams {
+  minimalFees: number; // mutez
+  nanotezPerGas: number;
+  nanotezPerByte: number;
+}
 export interface Constants {
   NAME: string;
   TEZOS_DOMAIN: {
@@ -144,6 +152,9 @@ export interface Constants {
   };
   NETWORK: string;
   MAINNET: boolean;
+  TEZOS_X?: boolean; // Tezos X (L2 Michelson interface): no delegation/staking, tz4 keys rejected
+  COST_PER_BYTE?: number; // mutez per byte of storage, defaults to 250 (L1)
+  FEE_PARAMS?: FeeParams; // fallback fee rates when the mempool filter cannot be fetched, defaults to L1 values
   NODE_URL: string[];
   API_URL: string;
   OBJKT_URL?: string;

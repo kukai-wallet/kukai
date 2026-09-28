@@ -20,6 +20,19 @@ const customErrors: Record<string, CustomError> = {
   },
   'proto.alpha.delegate.no_deletion': {
     msg: "Can't delegate from an account registered as baker"
+  },
+  ValidationError: {
+    msg: 'Local forge mismatch: the forged operation did not match the node. Please report this issue.'
+  },
+  // Tezos X node errors
+  'evm_node.dev.insufficient_fees': {
+    msg: 'Fee too low for this network. Please re-estimate and try again.'
+  },
+  'evm_node.dev.tezlink.outdated_operation': {
+    msg: 'Operation expired: it references a block that is too old (older than about 4 minutes). Please try again.'
+  },
+  'evm_node.dev.tezlink.unsupported_manager_operation': {
+    msg: 'This operation kind is not supported on Tezos X.'
   }
 };
 

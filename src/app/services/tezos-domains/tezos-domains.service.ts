@@ -29,14 +29,8 @@ export class TezosDomainsService {
       });
     } catch (e) {
       if (e?.message && e.message.includes('Supported built-in networks are:') && !CONSTANTS.MAINNET) {
-        console.error(e);
-        console.warn('Falling back on Ghostnet as network for Tezos Domains initialization');
+        console.warn(`Tezos Domains disabled: no built-in configuration for network ${CONSTANTS.NETWORK}`);
         this.unsupportedNetwork = true;
-        this.client = new TaquitoTezosDomainsClient({
-          tezos: tezosToolkit,
-          network: <SupportedNetworkType>'ghostnet',
-          ...options
-        });
       } else {
         throw e;
       }

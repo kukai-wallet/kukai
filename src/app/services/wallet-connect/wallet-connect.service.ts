@@ -340,7 +340,7 @@ export class WalletConnectService {
     }
     console.log('proposal approved', request?.data?.id);
   }
-  async wcResponse(request: any, hash: string, success: boolean) {
+  async wcResponse(request: any, hash: string, success: boolean, errorMessage?: string) {
     if (hash === 'silent') {
       return;
     }
@@ -356,14 +356,14 @@ export class WalletConnectService {
         throw new Error('Unknown request type');
       }
       const result = formatJsonRpcResult(data.id, msg);
-      const error = formatJsonRpcError(data.id, getSdkError('USER_REJECTED').message);
+      const error = formatJsonRpcError(data.id, errorMessage ?? getSdkError('USER_REJECTED').message);
       await this.respond({
         topic: data.topic,
         response: success ? result : error
       });
     } else {
       // if not silent
-      this.bcService.broadcast({ kind: MessageKind.PropagateResponse, payload: { request, hash, success } });
+      this.bcService.broadcast({ kind: MessageKind.PropagateResponse, payload: { request, hash, success, errorMessage } });
     }
   }
   async rejectPairing(request: any) {

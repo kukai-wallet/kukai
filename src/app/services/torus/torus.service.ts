@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import DirectWebSdk from 'customauth';
-import NodeDetailManager from '@toruslabs/fetch-node-details';
+import { AUTH_CONNECTION, CustomAuth, CustomAuthLoginParams } from '@toruslabs/customauth';
+import { NodeDetailManager } from '@toruslabs/fetch-node-details';
 import { TORUS_LEGACY_NETWORK } from '@toruslabs/constants';
-import TorusUtils from '@toruslabs/torus.js';
+import { Torus as TorusUtils } from '@toruslabs/torus.js';
 import { OperationService } from '../../services/operation/operation.service';
 import { InputValidationService } from '../../services/input-validation/input-validation.service';
 import { CONSTANTS } from '../../../environments/environment';
@@ -149,6 +149,7 @@ export class TorusService {
   async initTorus() {
     if (this.torus === undefined) {
       this.torus = null;
+      import('@toruslabs/broadcast-channel').catch(() => {});
       const config = {
         web3AuthClientId: this.web3AuthClientId,
         baseUrl: `${location.origin}/serviceworker`,
@@ -160,10 +161,10 @@ export class TorusService {
         this.isBraveOrChrome = await this.getIsBraveOrChrome();
         this.isAndroid = this.getIsAndroid();
         const initConfig = { skipSw: false };
-        this.torus = new DirectWebSdk({ ...config, redirectToOpener: this.isBraveOrChrome });
+        this.torus = new CustomAuth({ ...config, redirectToOpener: this.isBraveOrChrome });
         const promises = [this.torus.init(initConfig)];
         if (this.isBraveOrChrome && this.isAndroid) {
-          this.torusForFacebook = new DirectWebSdk(config);
+          this.torusForFacebook = new CustomAuth(config);
           promises.push(this.torusForFacebook.init(initConfig));
         } else {
           this.torusForFacebook = this.torus;
@@ -226,7 +227,7 @@ export class TorusService {
       return ans.json();
     });
   }
-  async loginTorus(selectedVerifier: string, verifierId = '', skipTorusKey = 0, checkIfNewKey = false): Promise<any> {
+  async loginTorus(selectedVerifier: string, verifierId = ''): Promise<any> {
     if (!CONSTANTS.MAINNET && document?.location?.host === 'localhost:4200' && !['google', 'twitter', 'email'].includes(selectedVerifier)) {
       return this.mockLogin(selectedVerifier); // mock locally
     }
@@ -240,50 +241,14 @@ export class TorusService {
       if (verifierId && selectedVerifier === EMAIL) {
         jwtParams.login_hint = verifierId;
       }
-      const { typeOfLogin, clientId, verifier, aggregated } = this.verifierMap[selectedVerifier];
-      const loginDetails = aggregated
-        ? await torus.triggerAggregateLogin({
-            login_hint: verifierId,
-            aggregateVerifierType: 'single_id_verifier',
-            verifierIdentifier: verifier,
-            subVerifierDetailsArray: [
-              {
-                clientId,
-                typeOfLogin: typeOfLogin,
-                verifier: this.verifierMap[selectedVerifier].subVerifier,
-                jwtParams
-              }
-            ],
-            skipTorusKey,
-            checkIfNewKey
-          })
-        : await torus.triggerLogin({
-            verifier,
-            typeOfLogin,
-            clientId,
-            jwtParams,
-            skipTorusKey,
-            checkIfNewKey
-          });
-      if (aggregated) {
-        loginDetails.userInfo = loginDetails.userInfo[0];
-      }
+      const loginDetails = await torus.triggerLogin(this.toLoginParams(selectedVerifier, jwtParams));
+      this.normalizeUserInfo(loginDetails.userInfo, selectedVerifier);
       if (selectedVerifier === FACEBOOK) {
         console.log('Invalidating access token...');
         fetch(`https://graph.facebook.com/me/permissions?access_token=${loginDetails.userInfo.accessToken}`, { method: 'DELETE', mode: 'cors' });
       }
-      const keyPair =
-        skipTorusKey && !loginDetails?.finalKeyData?.privKey
-          ? { pk: '', pkh: '' }
-          : this.operationService.spPrivKeyToKeyPair(loginDetails.finalKeyData.privKey);
+      const keyPair = this.operationService.spPrivKeyToKeyPair(loginDetails.finalKeyData.privKey);
       console.log('DirectAuth KeyPair', keyPair);
-      if (loginDetails?.existingPk) {
-        loginDetails.userInfo.preexistingPkh = this.operationService.spPointsToPkh(loginDetails.existingPk.X, loginDetails.existingPk.Y);
-        loginDetails.userInfo.isNewKey = !loginDetails?.existingPk;
-      }
-      if (loginDetails?.userInfo?.typeOfLogin === 'jwt') {
-        loginDetails.userInfo.typeOfLogin = selectedVerifier;
-      }
       console.log('DirectAuth UserInfo', loginDetails.userInfo);
       return { keyPair, userInfo: loginDetails.userInfo };
     } catch (e) {
@@ -297,6 +262,21 @@ export class TorusService {
   async getTorusKeyPair(selectedVerifier: string, verifierId: string): Promise<any> {
     const { keyPair } = await this.loginTorus(selectedVerifier, verifierId);
     return keyPair;
+  }
+  protected toLoginParams(selectedVerifier: string, jwtParams: any): CustomAuthLoginParams {
+    const { typeOfLogin, clientId, verifier, subVerifier, aggregated } = this.verifierMap[selectedVerifier];
+    const authConnection = typeOfLogin === 'jwt' ? AUTH_CONNECTION.CUSTOM : typeOfLogin;
+    return aggregated
+      ? { authConnection, clientId, authConnectionId: subVerifier, groupedAuthConnectionId: verifier, jwtParams }
+      : { authConnection, clientId, authConnectionId: verifier, jwtParams };
+  }
+  protected normalizeUserInfo(userInfo: any, selectedVerifier: string): void {
+    if (!userInfo) {
+      return;
+    }
+    userInfo.verifierId = userInfo.verifierId ?? userInfo.userId;
+    const typeOfLogin = userInfo.typeOfLogin ?? userInfo.authConnection;
+    userInfo.typeOfLogin = typeOfLogin === 'jwt' || typeOfLogin === AUTH_CONNECTION.CUSTOM ? selectedVerifier : typeOfLogin;
   }
   _loginToConnectionMap = () => {
     return {

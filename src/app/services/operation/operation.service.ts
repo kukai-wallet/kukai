@@ -19,7 +19,7 @@ import { pkToPkh } from '../../libraries/utils';
 
 const httpOptions = { headers: { 'Content-Type': 'application/json' } };
 
-export const REVEAL_GAS_LIMIT: number = 200;
+export const REVEAL_GAS_LIMIT: number = 300;
 
 export interface KeyPair {
   sk: string | null;
@@ -501,7 +501,10 @@ export class OperationService {
       error = error.error[0];
     }
     errorId = error?.id;
-    if (error.message) {
+    if (typeof error?.id === 'string' && error.id.endsWith('insufficient_fees') && error.required !== undefined) {
+      // Tezos X node: fee below what the network currently requires (values are tez strings)
+      error = `Fee too low for this operation: required ${error.required} tez, provided ${error.current ?? '0'} tez.`;
+    } else if (error.message) {
       error = this.errorHandlingPipe.transform(error.message);
     } else if (error.id) {
       if (error.with) {
@@ -682,6 +685,10 @@ export class OperationService {
   }
   getConstants(): Observable<any> {
     return this.getRpc(`chains/main/blocks/head/context/constants`);
+  }
+  /* Fee parameters (minimal_fees, minimal_nanotez_per_gas_unit, minimal_nanotez_per_byte) used by the node to accept operations */
+  getMempoolFilter(): Observable<any> {
+    return this.getRpc(`chains/main/mempool/filter`);
   }
   seed2keyPair(seed: Buffer): KeyPair {
     if (!seed) {

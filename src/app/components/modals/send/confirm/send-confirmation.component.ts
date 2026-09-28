@@ -35,7 +35,7 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
   activeAccount = null;
   externalReq: boolean = false;
   transactions: FullyPreparedTransaction[] = [];
-  costPerByte: string = this.estimateService.costPerByte;
+  storageCostPerByte: string = this.estimateService.storageCostPerByte;
 
   customGasLimit = '';
   customStorageLimit = '';
@@ -296,7 +296,7 @@ export class ConfirmSendComponent extends ModalComponent implements OnInit, OnCh
   getTotalBurn(): number {
     const totalActiveStorageLimit: number =
       this.customStorageLimit !== '' && Number(this.customStorageLimit) ? Number(this.customStorageLimit) : this.getTotalDefaultStorage();
-    return Number(Big(totalActiveStorageLimit).times(this.costPerByte).div(1000000).toString());
+    return Number(Big(totalActiveStorageLimit).times(this.storageCostPerByte).div(1000000).toString());
   }
   getTotalDefaultGas(): number {
     let totalGas = Big(0);

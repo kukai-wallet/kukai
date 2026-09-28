@@ -46,6 +46,10 @@ export class DelegateService {
     }
   }
   getDelegates(): void {
+    if (CONSTANTS.TEZOS_X) {
+      // Delegation and staking are not supported on Tezos X
+      return;
+    }
     if (CONSTANTS.NETWORK !== 'ghostnet') {
       fetch(`${this.bb}/bakers`)
         .then((response) => response.json())

@@ -189,7 +189,7 @@ export class SwapLiquidityConfirmComponent extends ModalComponent implements OnI
   getTotalBurn(): number {
     const totalActiveStorageLimit: number =
       this.customStorageLimit !== '' && Number(this.customStorageLimit) ? Number(this.customStorageLimit) : this.getTotalDefaultStorage();
-    return Number(Big(totalActiveStorageLimit).times(this.estimateService.costPerByte).div(1000000).toString());
+    return Number(Big(totalActiveStorageLimit).times(this.estimateService.storageCostPerByte).div(1000000).toString());
   }
   getTotalDefaultGas(): number {
     let totalGas = Big(0);

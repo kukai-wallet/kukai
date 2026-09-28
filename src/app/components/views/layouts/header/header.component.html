@@ -9,9 +9,9 @@
         <div class="description">THEME</div>
       </div>
     </div>
-    <div class="flex-column left">
+    <div class="flex-column left" [class.no-delegation]="CONSTANTS.TEZOS_X">
       <app-ui-dropdown-account [options]="accounts" [current]="activeAccount"></app-ui-dropdown-account>
-      <div class="delegation">
+      <div class="delegation" *ngIf="!CONSTANTS.TEZOS_X">
         <div class="flex-row outside-container" *ngIf="!beaconMode">
           <div class="flex-row button" routerLink="/account/{{activeAccount?.address}}/stakers">
             <span *ngIf="!activeAccount?.delegate">DELEGATING: <span class="choose">NOT
