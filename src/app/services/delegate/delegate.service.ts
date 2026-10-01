@@ -50,55 +50,51 @@ export class DelegateService {
       // Delegation and staking are not supported on Tezos X
       return;
     }
-    if (CONSTANTS.NETWORK !== 'ghostnet') {
+    if (CONSTANTS.MAINNET) {
       fetch(`${this.bb}/bakers`)
         .then((response) => response.json())
         .then((d) => this.delegates.next(d));
-    } else {
-      fetch('https://api.ghostnet.tzkt.io/v1/accounts/tz1YgDUQV2eXm8pUWNz3S5aWP86iFzNp4jnD')
-        .then((r) => r.json())
-        .then((k) => {
-          this.delegates.next([
+    } else if (CONSTANTS.NETWORK === 'shadownet') {
+      this.delegates.next([
+        {
+          address: 'tz1LHvQWc46rtzVvpKq5QdTcLdzAH1o6YCmU',
+          name: 'Baking Benjamins',
+          status: 'active',
+          balance: 2656351,
+          features: [
             {
-              address: 'tz1YgDUQV2eXm8pUWNz3S5aWP86iFzNp4jnD',
-              name: 'Baking Benjamins',
-              status: 'active',
-              balance: 89436.69124,
-              features: [
-                {
-                  title: 'Contribution',
-                  content: {
-                    project: 'BakeBuddy',
-                    link: 'https://www.bakebuddy.xyz/'
-                  }
-                }
-              ],
-              delegation: {
-                enabled: true,
-                minBalance: 0.01,
-                fee: 0.2,
-                capacity: 1157745.699414,
-                freeSpace: 728580.131167,
-                estimatedApy: 0.0448,
-                features: [
-                  {
-                    title: 'Distributed rewards',
-                    content: "Baker doesn't pay denunciation and revelation rewards"
-                  }
-                ]
-              },
-              staking: {
-                enabled: true,
-                minBalance: 0,
-                fee: 0.1,
-                capacity: 1157745.699414,
-                freeSpace: 529358.630955,
-                estimatedApy: 0.1512,
-                features: []
+              title: 'Contribution',
+              content: {
+                project: 'BakeBuddy',
+                link: 'https://www.bakebuddy.xyz/'
               }
             }
-          ]);
-        });
+          ],
+          delegation: {
+            enabled: true,
+            minBalance: 0.01,
+            fee: 0.2,
+            capacity: 22460967,
+            freeSpace: 21871634,
+            estimatedApy: 0.0448,
+            features: [
+              {
+                title: 'Distributed rewards',
+                content: "Baker doesn't pay denunciation and revelation rewards"
+              }
+            ]
+          },
+          staking: {
+            enabled: true,
+            minBalance: 0,
+            fee: 0.1,
+            capacity: 22460967,
+            freeSpace: 21834186,
+            estimatedApy: 0.1512,
+            features: []
+          }
+        }
+      ]);
     }
   }
 
