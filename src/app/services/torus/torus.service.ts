@@ -289,14 +289,13 @@ export class TorusService {
       [REDDIT]: {
         domain: CONSTANTS.MAINNET ? AUTH_DOMAIN_MAINNET : AUTH_DOMAIN,
         connection: 'Reddit',
-        verifierIdField: 'name',
-        isVerifierIdCaseSensitive: false
+        userIdField: 'name',
+        isUserIdCaseSensitive: false
       },
       [EMAIL]: {
         domain: CONSTANTS.MAINNET ? AUTH_DOMAIN_MAINNET : AUTH_DOMAIN,
         connection: '',
-        verifierIdField: 'name',
-        isVerifierCaseSensitive: false
+        userIdField: 'name'
       }
     };
   };
