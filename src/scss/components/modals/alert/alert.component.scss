@@ -14,6 +14,7 @@ $base-filter-invert-1: v.$base-filter-invert-1;
     font-weight: 400;
     color: inherit;
     width: calc(100% - 1rem);
+    white-space: pre-line;
   }
 
   button {

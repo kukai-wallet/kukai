@@ -15,6 +15,11 @@ const FACEBOOK = 'facebook';
 const EMAIL = 'email';
 const AUTH_DOMAIN = 'https://dev-0li4gssz.eu.auth0.com';
 const AUTH_DOMAIN_MAINNET = 'https://kukai.eu.auth0.com';
+const TORUS_OUTAGE_NOTICE_UNTIL = Date.parse('2026-12-01T00:00:00Z');
+const TORUS_OUTAGE_NOTICE =
+  'Social login in Kukai is temporarily disabled while Web3Auth, the provider of the service, investigates a security incident affecting other chains.\n\n' +
+  'We have not received any reports from users of security issues on Tezos. Seed phrase & Ledger accounts are not affected.\n\n' +
+  'We will update when social login has been restored by Web3Auth.';
 @Injectable({
   providedIn: 'root'
 })
@@ -253,8 +258,9 @@ export class TorusService {
       return { keyPair, userInfo: loginDetails.userInfo };
     } catch (e) {
       console.error(e, 'login caught');
-      if (typeof e?.message === 'string') {
-        this.messageService.addError(e.message, 0);
+      const message = this.loginErrorMessage(e);
+      if (message) {
+        this.messageService.addError(message, 0);
       }
       return { keyPair: null, userInfo: null };
     }
@@ -262,6 +268,15 @@ export class TorusService {
   async getTorusKeyPair(selectedVerifier: string, verifierId: string): Promise<any> {
     const { keyPair } = await this.loginTorus(selectedVerifier, verifierId);
     return keyPair;
+  }
+  protected loginErrorMessage(e: any): string | undefined {
+    if (Array.isArray(e?.errors) && Array.isArray(e?.responses)) {
+      if (e.responses.some((r: unknown) => r != null)) {
+        return 'Not enough Torus nodes responded. Please try again.';
+      }
+      return Date.now() < TORUS_OUTAGE_NOTICE_UNTIL ? TORUS_OUTAGE_NOTICE : 'Could not reach the Torus network. Check your connection and try again.';
+    }
+    return typeof e?.message === 'string' ? e.message : undefined;
   }
   protected toLoginParams(selectedVerifier: string, jwtParams: any): CustomAuthLoginParams {
     const { typeOfLogin, clientId, verifier, subVerifier, aggregated } = this.verifierMap[selectedVerifier];
