@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, HostListener } from '@angular/core';
 import { MessageService } from '../../../services/message/message.service';
-import { WalletClient, BeaconMessageType, PermissionScope, PermissionResponseInput, OperationResponseInput, Regions, NetworkType } from '@airgap/beacon-sdk';
+import { WalletClient, BeaconMessageType, PermissionScope, PermissionResponseInput, OperationResponseInput, Regions, NetworkType } from '@ecadlabs/beacon-sdk';
 import { WalletService } from '../../../services/wallet/wallet.service';
 import { CONSTANTS } from '../../../../environments/environment';
 import { Account } from '../../../services/wallet/wallet';

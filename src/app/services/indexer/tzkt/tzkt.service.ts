@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { Injectable } from '@angular/core';
 import { CONSTANTS } from '../../../../environments/environment';
 import { Indexer } from '../indexer.service';
@@ -320,7 +321,7 @@ export class TzktService implements Indexer {
           metadata = response;
         }
       } else {
-        metadata = await contract.tzip12().getTokenMetadata(Number(id));
+        metadata = await contract.tzip12().getTokenMetadata(new BigNumber(id));
       }
       return metadata;
     } catch (e) {

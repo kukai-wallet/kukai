@@ -1,4 +1,4 @@
-import { Optional, TezosDelegationOperation, TezosOriginationOperation, TezosTransactionOperation } from '@airgap/beacon-types'
+import { Optional, TezosDelegationOperation, TezosOriginationOperation, TezosTransactionOperation } from '@ecadlabs/beacon-types'
 
 /**
  * @publicapi
