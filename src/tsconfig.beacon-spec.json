@@ -1,0 +1,4 @@
+{
+  "extends": "./tsconfig.spec.json",
+  "include": ["app/services/beacon/beacon.service.spec.ts", "app/components/views/logged-in/settings/settings.component.spec.ts", "**/*.d.ts"]
+}

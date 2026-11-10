@@ -103,14 +103,14 @@
       <tr>
         <th>Name</th>
         <th>Relay server</th>
-        <th><span (click)="beaconService.removePeers()">Remove&nbsp;all</span></th>
+        <th><span (click)="removeBeaconPeers()">Remove&nbsp;all</span></th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let peer of beaconService.peers; index as i">
+      <tr *ngFor="let peer of beaconService.peers">
         <td>{{ peer.name }}</td>
         <td>{{ peer.relayServer }}</td>
-        <td (click)="beaconService.removePeer(i)"><img (click)="beaconService.removePeer(i)"
+        <td (click)="removeBeaconPeer(peer)"><img
             src="../../../assets/img/cross.svg"></td>
       </tr>
     </tbody>
