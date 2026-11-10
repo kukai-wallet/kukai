@@ -11,7 +11,7 @@ import {
   ErrorResponse,
   getSenderId,
   ExtendedP2PPairingResponse
-} from '@airgap/beacon-sdk';
+} from '@ecadlabs/beacon-sdk';
 import { Asset } from '../token/token.service';
 import { TzktService } from '../indexer/tzkt/tzkt.service';
 import { BcService } from '../bc/bc.service';

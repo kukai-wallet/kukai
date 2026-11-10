@@ -4,7 +4,7 @@ import { CONSTANTS } from '../../../../environments/environment';
 import { ImportService } from '../../../services/import/import.service';
 import { KeyPair, ExternalRequest } from '../../../interfaces';
 import { WalletService } from '../../../services/wallet/wallet.service';
-import { PartialTezosTransactionOperation } from '@airgap/beacon-sdk';
+import { PartialTezosTransactionOperation } from '@ecadlabs/beacon-sdk';
 import { EmbeddedTorusWallet, ImplicitAccount } from '../../../services/wallet/wallet';
 import { CoordinatorService } from '../../../services/coordinator/coordinator.service';
 import { utils, common } from '../../../libraries/index';
