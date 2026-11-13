@@ -22,7 +22,9 @@ import { CONSTANTS, environment } from '../../../environments/environment';
 export class BeaconService {
   pairingTimeoutSignal = 10000;
   client: WalletClient = null;
-  peers = [];
+  peers: P2PPairingRequest[] = [];
+  private readonly pendingPeerRemovals = new Map<string, Promise<void>>();
+  private peerRemovalQueue: Promise<void> = Promise.resolve();
   permissions = [];
   constructor(private messageService: MessageService, private tzktService: TzktService, private bcService: BcService) {
     this.gcDict();
@@ -61,22 +63,68 @@ export class BeaconService {
     this.peers = await this.getPeers();
     this.permissions = await this.getPermissions();
   }
-  async removePeers() {
-    while (this.peers.length > 0) {
-      await this.removePeer(0);
+  async removePeers(): Promise<void> {
+    // A newly paired peer must not be swept into an already running removal.
+    for (const peer of [...this.peers]) {
+      await this.removeSelectedPeer(peer);
     }
   }
-  async removePeer(index: number) {
-    const pairInfo: P2PPairingRequest = this.peers[index];
+  removePeer(index: number): Promise<void> {
+    const peer = this.peers[index];
+    return peer ? this.removeSelectedPeer(peer) : Promise.resolve();
+  }
+  private removeSelectedPeer(peer: P2PPairingRequest): Promise<void> {
+    const pairingKey = `${peer.publicKey}:${peer.id}`;
+    const pending = this.pendingPeerRemovals.get(pairingKey);
+    if (pending) {
+      return pending;
+    }
+    // Serialize mutations and refreshes; repeated clicks share the same result.
+    const removal = this.peerRemovalQueue.then(() => this.removePeerAndRefresh(peer));
+    this.pendingPeerRemovals.set(pairingKey, removal);
+    this.peerRemovalQueue = removal.then(
+      () => {
+        this.pendingPeerRemovals.delete(pairingKey);
+      },
+      () => {
+        this.pendingPeerRemovals.delete(pairingKey);
+      }
+    );
+    return removal;
+  }
+  private async removePeerAndRefresh(pairInfo: P2PPairingRequest): Promise<void> {
+    // Pairing can update SDK storage before the displayed list refreshes.
+    // Check stored identity so a stale click cannot target that replacement.
+    const storedPeers = await this.client.getPeers();
+    if (!storedPeers.some((peer) => peer.publicKey === pairInfo.publicKey && peer.id === pairInfo.id)) {
+      await this.syncBeaconState();
+      return;
+    }
     const senderId = await getSenderId(pairInfo.publicKey);
     const peerResponse: ExtendedP2PPairingResponse = {
       ...pairInfo,
       type: 'p2p-pairing-response',
       senderId
     };
-    await this.client.removePeer(peerResponse);
-    await this.client.removeAppMetadata(senderId);
-    this.syncBeaconState();
+    let failure: { error: unknown } | undefined;
+    try {
+      await this.client.removePeer(peerResponse, true);
+    } catch (error) {
+      failure = { error };
+    }
+    try {
+      // The SDK can remove locally before disconnect delivery fails. Reconcile
+      // against stored peers rather than treating rejection as a rollback.
+      await this.syncBeaconState();
+      if (!this.peers.some((peer) => peer.publicKey === pairInfo.publicKey)) {
+        await this.client.removeAppMetadata(senderId);
+      }
+    } catch (error) {
+      throw failure ? failure.error : error;
+    }
+    if (failure) {
+      throw failure.error;
+    }
   }
   async removePermissions() {
     await this.client.removeAllPermissions();
