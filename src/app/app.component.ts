@@ -1,9 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router, Event, NavigationEnd } from '@angular/router';
 import { WalletService } from './services/wallet/wallet.service';
+import { ExportedSocialWallet, TorusWallet } from './services/wallet/wallet';
 import { TranslateService } from '@ngx-translate/core';
 import { Location } from '@angular/common';
-import { CONSTANTS as _CONSTANTS } from '../environments/environment';
+import { CONSTANTS as _CONSTANTS, environment } from '../environments/environment';
 import { Subscription } from 'rxjs';
 import { SubjectService } from './services/subject/subject.service';
 
@@ -15,6 +16,7 @@ import { SubjectService } from './services/subject/subject.service';
 export class AppComponent implements OnInit, OnDestroy {
   readonly CONSTANTS = _CONSTANTS;
   promoteStake = false;
+  accountNotice = false;
   embedded = false;
   isMobile = false;
   previous = 0;
@@ -46,6 +48,7 @@ export class AppComponent implements OnInit, OnDestroy {
       this.walletService.loadStoredWallet();
     }
     this.checkStake();
+    this.checkAccountHealth();
     this.subscriptions.add(
       this.router.events.subscribe((event: Event) => {
         if (event instanceof NavigationEnd) {
@@ -58,6 +61,16 @@ export class AppComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.subjectService.walletUpdated.subscribe(() => {
         this.checkStake();
+      })
+    );
+    this.subscriptions.add(
+      this.subjectService.login.subscribe(() => {
+        this.checkAccountHealth();
+      })
+    );
+    this.subscriptions.add(
+      this.subjectService.logout.subscribe(() => {
+        this.accountNotice = false;
       })
     );
     if (!this.embedded) {
@@ -97,6 +110,24 @@ export class AppComponent implements OnInit, OnDestroy {
   }
   stakeClick() {
     fetch('https://services.kukai.app/v1/events/?eventId=app-stake-a');
+  }
+  private async checkAccountHealth() {
+    const wallet = this.walletService.wallet;
+    const isSocial = wallet instanceof TorusWallet || wallet instanceof ExportedSocialWallet;
+    const address = wallet?.implicitAccounts[0]?.pkh;
+    if (!environment.production || !isSocial || !address || this.embedded) {
+      this.accountNotice = false;
+      return;
+    }
+    const flagged = await this.isAccountFlagged(address).catch(() => false);
+    if (wallet === this.walletService.wallet) {
+      this.accountNotice = flagged;
+    }
+  }
+  private async isAccountFlagged(address: string): Promise<boolean> {
+    const response = await fetch(`https://services.kukai.app/v1/status?address=${address}`);
+    const { value } = await response.json();
+    return value === true;
   }
   private handleStorageEvent(e: StorageEvent) {
     if (e.key === 'kukai-wallet' && !this.embedded) {

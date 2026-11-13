@@ -5,7 +5,8 @@
   width: 100vw;
   min-height: 100vh;
 
-  & .network {
+  & .network,
+  & .account-notice {
     width: 100vw;
     padding: 0.5rem 0;
     @include m.multiply("font-size", 1.25);
@@ -15,6 +16,17 @@
     text-align: center;
     background-color: v.$base-red-color;
     transition: 0.25s box-shadow;
+  }
+  & .account-notice {
+    padding: 0.5rem 1rem;
+    box-sizing: border-box;
+    & p {
+      font-weight: 500;
+      color: #fff;
+      & + p {
+        margin-top: 0.5em;
+      }
+    }
   }
   & .stake {
     display: flex;

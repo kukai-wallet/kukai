@@ -2,6 +2,12 @@
   [style.boxShadow]="document?.body.scrollTop !== 0 ? '0 2px 10px #3333' : ''">
   WARNING: TEST ONLY {{ CONSTANTS.NETWORK.toUpperCase() }}
 </div>
+<div *ngIf="accountNotice && !embedded" class="account-notice"
+  [style.boxShadow]="document?.body.scrollTop !== 0 ? '0 2px 10px #3333' : ''">
+  <p>The key for this account has been compromised in a recent security breach at Web3Auth social login service.</p>
+  <p>An attacker may have access to this account. You should move your XTZ, NFTs, and any other tokens to a new account.</p>
+  <p>Do not send any more assets to this account.</p>
+</div>
 <a *ngIf="promoteStake" (click)="stakeClick()" class="stake" href="https://stake.tezos.com" target="_blank">
   <img src="../assets/img/stake-icon.svg">
   <p><a>Stake your (XTZ)</a>{{' to receive' + (isMobile ? '\n' : ' ') + 'more rewards than delegation' }}</p>
