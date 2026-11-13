@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, HostListener } from '@angular/core';
 import { MessageService } from '../../../services/message/message.service';
-import { WalletClient, BeaconMessageType, PermissionScope, PermissionResponseInput, OperationResponseInput, Regions, NetworkType } from '@ecadlabs/beacon-sdk';
+import { BeaconMessageType, PermissionScope, PermissionResponseInput, NetworkType, WalletRequestOutputMessage, isV3Envelope } from '@ecadlabs/beacon-sdk';
 import { WalletService } from '../../../services/wallet/wallet.service';
 import { CONSTANTS } from '../../../../environments/environment';
 import { Account } from '../../../services/wallet/wallet';
@@ -103,36 +103,21 @@ export class UriHandlerComponent implements OnInit, OnDestroy {
   }
   /* https://github.com/airgap-it/beacon-sdk/blob/master/src/clients/wallet-client/WalletClient.ts */
   connectApp = async (): Promise<void> => {
-    if (!this.beaconService.client) {
-      const selectedNode = localStorage.getItem('beacon:matrix-selected-node');
-      if (selectedNode && !selectedNode.endsWith('.octez.io')) {
-        localStorage.removeItem('beacon:matrix-selected-node');
-      }
-      this.beaconService.client = new WalletClient({
-        name: 'Kukai Wallet',
-        matrixNodes: {
-          [Regions.EUROPE_WEST]: [
-            'beacon-node-1.octez.io',
-            'beacon-node-2.octez.io',
-            'beacon-node-3.octez.io',
-            'beacon-node-4.octez.io',
-            'beacon-node-5.octez.io',
-            'beacon-node-6.octez.io',
-            'beacon-node-7.octez.io',
-            'beacon-node-8.octez.io'
-          ]
-        }
-      });
-    }
-    await this.beaconService.client.init(); // Establish P2P connection
-    this.beaconService.client
-      .connect(async (message: any) => {
+    const client = this.beaconService.ensureClient();
+    await client.init(); // Establish P2P connection
+    client
+      .connect(async (message: WalletRequestOutputMessage) => {
         this.handleBeaconMessage(message);
       })
       .catch((error) => console.error('connect error', error));
   };
   async handleBeaconMessage(message: any) {
     console.log('### beacon message', structuredClone(message));
+    if (isV3Envelope(message)) {
+      console.warn('Unsupported Beacon V3 envelope', message);
+      await this.beaconService.rejectOnUnknown(message);
+      return;
+    }
     const network = message?.network?.type === NetworkType.CUSTOM && message.network.name ? message.network.name : message?.network?.type;
     if (message.type !== BeaconMessageType.SignPayloadRequest && network !== CONSTANTS.NETWORK) {
       console.warn(`Rejecting Beacon message because of network. Expected ${CONSTANTS.NETWORK}, but received ${network}`);
@@ -170,6 +155,8 @@ export class UriHandlerComponent implements OnInit, OnDestroy {
         } else {
           this.walletConnectService.wcResponse(message, '', false);
         }
+      } else if (message?.id) {
+        this.beaconService.client?.dismissPendingRequest(message.id);
       }
     }
   }
@@ -309,12 +296,7 @@ export class UriHandlerComponent implements OnInit, OnDestroy {
       } else if (opHash === 'unknown_error') {
         await this.beaconService.rejectOnUnknown(this.externalRequest.operationRequest);
       } else if (opHash !== 'silent') {
-        const response: OperationResponseInput = {
-          type: BeaconMessageType.OperationResponse,
-          transactionHash: opHash,
-          id: this.externalRequest.operationRequest.id
-        };
-        await this.beaconService.client.respond(response);
+        await this.beaconService.approveOperationRequest(this.externalRequest.operationRequest, opHash);
       }
     } else if (this.externalRequest.operationRequest.version === 0) {
       if (opHash?.length > 50) {
@@ -370,30 +352,10 @@ export class UriHandlerComponent implements OnInit, OnDestroy {
     this.signRequest = null;
   }
   private async handleStorageEvent(ev: StorageEvent): Promise<void> {
-    switch (ev.key) {
-      case 'beacon:communication-peers-wallet':
-        const peers = JSON.parse(ev.newValue);
-        const senderIds = (await this.beaconService.client.getAppMetadataList()).map((app) => {
-          return app.senderId;
-        });
-        const newPeers = peers.length - senderIds.length;
-        if (newPeers > 0) {
-          const newPeer = peers ? peers.pop() : null;
-          if (newPeer && !senderIds.includes(newPeer.senderId)) {
-            const { senderId, ...peer } = newPeer;
-            await this.beaconService.addPeer(JSON.stringify(peer), false);
-          }
-        } else {
-          this.beaconService.syncBeaconState();
-        }
-        break;
-      case 'beacon:request-response':
-        if (ev.newValue) {
-          this.subjectService.beaconResponse.next(true);
-          this.beaconService.syncBeaconState();
-          this.changeFavicon();
-        }
-        break;
+    if (ev.key === 'beacon:request-response' && ev.newValue) {
+      this.subjectService.beaconResponse.next(true);
+      this.beaconService.syncBeaconState();
+      this.changeFavicon();
     }
   }
   private getReq() {

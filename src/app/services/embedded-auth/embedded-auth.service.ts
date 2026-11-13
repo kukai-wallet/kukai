@@ -3,7 +3,7 @@ import { KeyPair } from '../../interfaces';
 import { WalletService } from '../wallet/wallet.service';
 import { CONSTANTS } from '../../../environments/environment';
 import { Parser } from '@taquito/michel-codec';
-import { valueEncoder } from '@taquito/local-forging/dist/lib/michelson/codec';
+import { valueEncoder } from '@taquito/local-forging';
 import { OperationService } from '../operation/operation.service';
 
 @Injectable({
@@ -62,7 +62,7 @@ export class EmbeddedAuthService {
   }
   private signMessage(message: string, sk: string): string {
     const parser = new Parser();
-    const expr = parser.parseMichelineExpression(`"${message.replace(/"/g, '\\"')}"`);
+    const expr: any = parser.parseMichelineExpression(`"${message.replace(/"/g, '\\"')}"`);
     const hexMessage = `05${valueEncoder(expr)}`;
     const signature: string = this.operationService.sign(hexMessage, sk).edsig;
     return signature;

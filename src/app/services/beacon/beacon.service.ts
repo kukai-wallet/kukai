@@ -2,15 +2,15 @@ import { Injectable } from '@angular/core';
 import { MessageService } from '../../services/message/message.service';
 import {
   WalletClient,
-  BeaconMessageType,
-  PermissionResponseInput,
-  SignPayloadResponseInput,
-  P2PPairingRequest,
   BeaconErrorType,
-  BEACON_VERSION,
-  ErrorResponse,
+  P2PPairingRequest,
   getSenderId,
-  ExtendedP2PPairingResponse
+  ExtendedPeerInfo,
+  PermissionInfo,
+  AppMetadata,
+  PermissionRequestOutput,
+  OperationRequestOutput,
+  SignPayloadRequestOutput
 } from '@ecadlabs/beacon-sdk';
 import { Asset } from '../token/token.service';
 import { TzktService } from '../indexer/tzkt/tzkt.service';
@@ -22,33 +22,65 @@ import { CONSTANTS, environment } from '../../../environments/environment';
 export class BeaconService {
   pairingTimeoutSignal = 10000;
   client: WalletClient = null;
-  peers = [];
-  permissions = [];
+  peers: ExtendedPeerInfo[] = [];
+  permissions: PermissionInfo[] = [];
+  private clientUnsubscribers: Array<() => void> = [];
   constructor(private messageService: MessageService, private tzktService: TzktService, private bcService: BcService) {
     this.gcDict();
   }
-  preNotifyPairing(pairInfoJson: string) {
+  ensureClient(): WalletClient {
+    if (!this.client) {
+      this.client = new WalletClient({
+        name: 'Kukai Wallet'
+      });
+      this.subscribeToClientEvents();
+    }
+    return this.client;
+  }
+  subscribeToClientEvents(): void {
+    this.clearClientSubscriptions();
+    if (!this.client) {
+      return;
+    }
+    this.clientUnsubscribers.push(
+      this.client.subscribeToPeers((event) => {
+        if (event.type === 'peer_added' && event.source === 'storage') {
+          if (event.peer) {
+            this.pairingLogStart(event.peer);
+          }
+          this.messageService.removeBeaconMsg();
+        }
+        this.syncBeaconState();
+      }),
+      this.client.subscribeToPermissions((permissions: PermissionInfo[]) => {
+        this.permissions = permissions;
+      }),
+      this.client.subscribeToDisconnect(() => {
+        this.syncBeaconState();
+      })
+    );
+  }
+  clearClientSubscriptions(): void {
+    for (const unsub of this.clientUnsubscribers) {
+      unsub();
+    }
+    this.clientUnsubscribers = [];
+  }
+  async preNotifyPairing(pairInfoJson: string) {
     const pairInfo: P2PPairingRequest = JSON.parse(pairInfoJson);
-    if (this.isNewPairingRequest(pairInfo)) {
+    if (await this.isNewPairingRequest(pairInfo)) {
       this.messageService.addBeaconWait(`Pairing with ${pairInfo.name}. Please wait!`);
     }
   }
-  isNewPairingRequest(pairInfo: P2PPairingRequest): boolean {
-    const peersJson = localStorage.getItem('beacon:communication-peers-wallet');
-    let newPublicKey = true;
-    if (peersJson) {
-      const peers = JSON.parse(peersJson);
-      if (peers && peers.length > 0 && pairInfo.publicKey) {
-        for (const peer of peers) {
-          if (peer.publicKey && peer.publicKey === pairInfo.publicKey) {
-            newPublicKey = false;
-            console.log('Existing public key found!');
-            break;
-          }
-        }
-      }
+  async isNewPairingRequest(pairInfo: P2PPairingRequest): Promise<boolean> {
+    if (!pairInfo?.publicKey) {
+      return true;
     }
-    return newPublicKey;
+    const exists = await this.ensureClient().hasPeer(pairInfo.publicKey);
+    if (exists) {
+      console.log('Existing public key found!');
+    }
+    return !exists;
   }
   async addPeer(pairInfoJson: string, force = true) {
     const pairInfo = JSON.parse(pairInfoJson);
@@ -62,37 +94,32 @@ export class BeaconService {
     this.permissions = await this.getPermissions();
   }
   async removePeers() {
-    while (this.peers.length > 0) {
-      await this.removePeer(0);
-    }
+    await this.client.removeAllPeers();
+    await this.syncBeaconState();
   }
   async removePeer(index: number) {
-    const pairInfo: P2PPairingRequest = this.peers[index];
-    const senderId = await getSenderId(pairInfo.publicKey);
-    const peerResponse: ExtendedP2PPairingResponse = {
-      ...pairInfo,
-      type: 'p2p-pairing-response',
-      senderId
-    };
-    await this.client.removePeer(peerResponse);
-    await this.client.removeAppMetadata(senderId);
-    this.syncBeaconState();
+    const pairInfo = this.peers[index];
+    if (!pairInfo) {
+      return;
+    }
+    await this.client.removePeer(pairInfo);
+    await this.syncBeaconState();
   }
   async removePermissions() {
     await this.client.removeAllPermissions();
-    this.syncBeaconState();
+    await this.syncBeaconState();
   }
   async removePermission(index: number) {
     await this.client.removePermission(this.permissions[index].accountIdentifier, this.permissions[index].senderId);
-    this.syncBeaconState();
+    await this.syncBeaconState();
   }
-  async getPeers(): Promise<any> {
+  async getPeers(): Promise<ExtendedPeerInfo[]> {
     return await this.client.getPeers();
   }
-  async getPermissions(): Promise<any> {
+  async getPermissions(): Promise<PermissionInfo[]> {
     return await this.client.getPermissions();
   }
-  async getAppMetadataList(): Promise<any> {
+  async getAppMetadataList(): Promise<AppMetadata[]> {
     return await this.client.getAppMetadataList();
   }
   async rejectOnPermission(message: any) {
@@ -119,38 +146,20 @@ export class BeaconService {
   async rejectOnBroadcastError(message: any) {
     await this.respondWithError(BeaconErrorType.BROADCAST_ERROR, message);
   }
-  async respondWithError(errorType: BeaconErrorType, requestMessage: any) {
+  async respondWithError(errorType: BeaconErrorType, requestMessage: { id: string } | string) {
     if (requestMessage) {
-      const response: ErrorResponse = {
-        type: BeaconMessageType.Error,
-        errorType,
-        version: BEACON_VERSION,
-        id: requestMessage.id,
-        senderId: await this.client.beaconId
-      };
-      await this.client.respond(response);
+      await this.client.respondError(requestMessage, errorType);
     }
   }
 
-  async approvePermissionRequest(message: any, publicKey: string) {
-    const response: PermissionResponseInput = {
-      walletType: 'implicit',
-      type: BeaconMessageType.PermissionResponse,
-      network: message.network,
-      scopes: message.scopes,
-      id: message.id,
-      publicKey: publicKey
-    };
-    await this.client.respond(response);
+  async approvePermissionRequest(message: PermissionRequestOutput, publicKey: string) {
+    await this.client.respondPermission(message, { publicKey });
   }
-  async approveSignPayloadRequest(message: any, signature: string) {
-    const response: SignPayloadResponseInput = {
-      type: BeaconMessageType.SignPayloadResponse,
-      id: message.id,
-      signingType: message.signingType,
-      signature
-    };
-    await this.client.respond(response);
+  async approveOperationRequest(message: OperationRequestOutput, transactionHash: string) {
+    await this.client.respondOperation(message, transactionHash);
+  }
+  async approveSignPayloadRequest(message: SignPayloadRequestOutput, signature: string) {
+    await this.client.respondSignPayload(message, signature);
   }
   async responseSync() {
     localStorage.setItem('beacon:request-response', 'true');
@@ -223,7 +232,7 @@ export class BeaconService {
   }
   async reportDiff(url: string, t0: number, relay: string, rtt: number, timeout: boolean, senderId: string) {
     console.log('reportDiff', senderId, t0, timeout, url, rtt);
-    const sn = localStorage.getItem('beacon:matrix-selected-node');
+    const sn = await this.client?.getSelectedMatrixNode();
     console.log(sn, '=>', relay);
     const eventUrl = `https://services.kukai.app/v1/events/?eventId=pair-time-v2&id=${senderId}-${t0}&timeout=${timeout}&url=${encodeURIComponent(
       url

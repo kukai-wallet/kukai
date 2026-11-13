@@ -5,8 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Account, ImplicitAccount, LedgerWallet } from '../../../services/wallet/wallet';
 import { OperationService } from '../../../services/operation/operation.service';
 import { emitMicheline } from '@taquito/michel-codec';
-import { valueDecoder } from '@taquito/local-forging/dist/lib/michelson/codec';
-import { Uint8ArrayConsumer } from '@taquito/local-forging/dist/lib/uint8array-consumer';
+import { valueDecoder, Uint8ArrayConsumer } from '@taquito/local-forging';
 import { LedgerService } from '../../../services/ledger/ledger.service';
 import { InputValidationService } from '../../../services/input-validation/input-validation.service';
 import { ModalComponent } from '../modal.component';
@@ -48,7 +47,7 @@ export class SignExprComponent extends ModalComponent implements OnInit, OnChang
     if (this.signRequest) {
       ModalComponent.currentModel.next({ name: this.name, data: null });
       this.isMessage = this.inputValidationService.isMessageSigning(this.signRequest.payload) || (this.internal && this.signRequest.payload.startsWith('0501'));
-      const value = valueDecoder(Uint8ArrayConsumer.fromHexString(this.signRequest.payload.slice(2)));
+      const value: any = valueDecoder(Uint8ArrayConsumer.fromHexString(this.signRequest.payload.slice(2)));
       const payload = emitMicheline(value, {
         indent: '  ',
         newline: '\n'
