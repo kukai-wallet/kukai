@@ -15,7 +15,8 @@
     "e2e": "ng e2e",
     "generate-rpc-errors-file": "tsx scripts/generate-rpc-errors-file.ts",
     "prepare": "husky install",
-    "postinstall": "node patch.js"
+    "postinstall": "node patch.js",
+    "test:beacon": "ng test --watch=false --browsers=ChromeHeadless --ts-config=src/tsconfig.beacon-spec.json --include=src/app/services/beacon/beacon.service.spec.ts --include=src/app/components/views/logged-in/settings/settings.component.spec.ts"
   },
   "private": true,
   "dependencies": {
