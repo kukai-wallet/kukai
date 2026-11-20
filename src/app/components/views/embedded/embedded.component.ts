@@ -97,14 +97,6 @@ export class EmbeddedComponent implements OnInit {
         micheline: false
       }
     },
-    souvie: {
-      origins: ['https://souvie.dev'],
-      permissions: {
-        login: true,
-        operations: false,
-        micheline: false
-      }
-    },
     tzstaging: {
       origins: ['*.tzstaging.com', 'https://tzstaging.com', 'https://tezos.com', 'https://quests.tezos.com', 'https://freetez.tezos.com'],
       permissions: {
@@ -176,14 +168,6 @@ export class EmbeddedComponent implements OnInit {
         login: true,
         operations: true,
         micheline: true
-      }
-    },
-    truename: {
-      origins: ['https://truename.me'],
-      permissions: {
-        login: true,
-        operations: false,
-        micheline: false
       }
     },
     verticalcrypto: {
@@ -265,8 +249,6 @@ export class EmbeddedComponent implements OnInit {
         'https://positions2024.ratata.gallery',
         '*.agoria.dev',
         'https://agoria.dev',
-        'https://pepoles.xyz',
-        '*.pepoles.xyz',
         'https://darktales.xyz',
         '*.darktales.xyz',
         'https://infiniteink.art',
@@ -279,15 +261,7 @@ export class EmbeddedComponent implements OnInit {
       }
     },
     metapals: {
-      origins: ['https://sanctuary.metapals.pet', 'https://sanctuary.metapals.ai', 'https://sanctuary.metapals.dev', '*.kindredlabs.ai'],
-      permissions: {
-        login: true,
-        operations: true,
-        micheline: true
-      }
-    },
-    zywoo: {
-      origins: ['https://zywoo.chat'],
+      origins: ['*.kindredlabs.ai'],
       permissions: {
         login: true,
         operations: true,
@@ -302,16 +276,8 @@ export class EmbeddedComponent implements OnInit {
         micheline: true
       }
     },
-    dns: {
-      origins: ['https://dns.xyz', '*.dns.xyz'],
-      permissions: {
-        login: true,
-        operations: true,
-        micheline: true
-      }
-    },
     trilli: {
-      origins: ['http://ec2-3-252-30-22.eu-west-1.compute.amazonaws.com:3000', 'https://login.pikesarena.com:3000', '*.pikesarena.com'],
+      origins: ['https://login.pikesarena.com:3000', '*.pikesarena.com'],
       permissions: {
         login: true,
         operations: true,
