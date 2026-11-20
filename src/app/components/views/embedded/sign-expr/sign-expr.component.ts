@@ -41,12 +41,12 @@ export class SignExprEmbedComponent implements OnInit, OnChanges {
       document.body.style.overflow = 'hidden';
       this.template = this.signRequest.ui;
       this.isMessage = this.inputValidationService.isMessageSigning(this.signRequest.payload);
-      const value: any = valueDecoder(Uint8ArrayConsumer.fromHexString(this.signRequest.payload.slice(2)));
+      const value = valueDecoder(Uint8ArrayConsumer.fromHexString(this.signRequest.payload.slice(2)));
       const payload = emitMicheline(value, {
         indent: '  ',
         newline: '\n'
       });
-      this.payload = this.isMessage ? value.string : payload;
+      this.payload = this.isMessage && 'string' in value ? value.string : payload;
     }
   }
   async sign() {

@@ -47,12 +47,12 @@ export class SignExprComponent extends ModalComponent implements OnInit, OnChang
     if (this.signRequest) {
       ModalComponent.currentModel.next({ name: this.name, data: null });
       this.isMessage = this.inputValidationService.isMessageSigning(this.signRequest.payload) || (this.internal && this.signRequest.payload.startsWith('0501'));
-      const value: any = valueDecoder(Uint8ArrayConsumer.fromHexString(this.signRequest.payload.slice(2)));
+      const value = valueDecoder(Uint8ArrayConsumer.fromHexString(this.signRequest.payload.slice(2)));
       const payload = emitMicheline(value, {
         indent: '  ',
         newline: '\n'
       });
-      this.payload = this.isMessage ? value.string : payload;
+      this.payload = this.isMessage && 'string' in value ? value.string : payload;
       this.syncSub = this.subjectService.beaconResponse.subscribe((response) => {
         this.signResponse.emit(response ? 'silent' : '');
         this.closeModal();
