@@ -5,8 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Account, ImplicitAccount, LedgerWallet } from '../../../services/wallet/wallet';
 import { OperationService } from '../../../services/operation/operation.service';
 import { emitMicheline } from '@taquito/michel-codec';
-import { valueDecoder } from '@taquito/local-forging/dist/lib/michelson/codec';
-import { Uint8ArrayConsumer } from '@taquito/local-forging/dist/lib/uint8array-consumer';
+import { valueDecoder, Uint8ArrayConsumer } from '@taquito/local-forging';
 import { LedgerService } from '../../../services/ledger/ledger.service';
 import { InputValidationService } from '../../../services/input-validation/input-validation.service';
 import { ModalComponent } from '../modal.component';
@@ -53,7 +52,7 @@ export class SignExprComponent extends ModalComponent implements OnInit, OnChang
         indent: '  ',
         newline: '\n'
       });
-      this.payload = this.isMessage ? value.string : payload;
+      this.payload = this.isMessage && 'string' in value ? value.string : payload;
       this.syncSub = this.subjectService.beaconResponse.subscribe((response) => {
         this.signResponse.emit(response ? 'silent' : '');
         this.closeModal();

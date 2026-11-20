@@ -3,7 +3,7 @@ import { KeyPair } from '../../interfaces';
 import { WalletService } from '../wallet/wallet.service';
 import { CONSTANTS } from '../../../environments/environment';
 import { Parser } from '@taquito/michel-codec';
-import { valueEncoder } from '@taquito/local-forging/dist/lib/michelson/codec';
+import { valueEncoder } from '@taquito/local-forging';
 import { OperationService } from '../operation/operation.service';
 
 @Injectable({

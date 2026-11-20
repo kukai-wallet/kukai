@@ -3,8 +3,7 @@ import { OperationService } from '../operation/operation.service';
 import * as zxcvbn from 'zxcvbn';
 import { CONSTANTS } from '../../../environments/environment';
 import { TranslateService } from '@ngx-translate/core';
-import { valueDecoder } from '@taquito/local-forging/dist/lib/michelson/codec';
-import { Uint8ArrayConsumer } from '@taquito/local-forging/dist/lib/uint8array-consumer';
+import { valueDecoder, Uint8ArrayConsumer } from '@taquito/local-forging';
 import { utils } from '../../libraries/index';
 import * as bip39 from 'bip39';
 @Injectable()
