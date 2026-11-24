@@ -70,7 +70,7 @@ export class EmbeddedComponent implements OnInit {
         login: true,
         operations: true,
         micheline: true,
-        micheline_silent: true
+        micheline_silent: false
       }
     },
     manutd: {
@@ -454,7 +454,7 @@ export class EmbeddedComponent implements OnInit {
         } else {
           this.signRequest = {
             payload: req.expr,
-            ui: this.normalizeTemplate(req?.ui)
+            ui: null
           };
         }
       } else {
@@ -576,7 +576,7 @@ export class EmbeddedComponent implements OnInit {
     }
     if (this.walletService.wallet instanceof EmbeddedTorusWallet && this.walletService.wallet.implicitAccounts[0] && req.operations) {
       if (this.isValidOperation(req.operations)) {
-        this.template = req.ui ? this.normalizeTemplate(req.ui) : null;
+        this.template = null;
         this.externalRequest = { operationRequest: req.operations, selectedAccount: this.activeAccount };
       } else {
         this.externalRequest = null;
