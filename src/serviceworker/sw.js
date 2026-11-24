@@ -4,6 +4,7 @@ function getScope() {
 }
 
 self.addEventListener('message', function (event) {
+  if (event.origin !== self.location.origin) return;
   if (event.data && event.data.type === 'SKIP_WAITING') {
     self.skipWaiting();
   }
@@ -135,8 +136,8 @@ self.addEventListener('fetch', function (event) {
       <h1 class="title content" id="closeText" style="display: none;">You can close this window now</h1>
     </div>
     <script
-      src="https://cdn.jsdelivr.net/npm/@toruslabs/broadcast-channel@13.3.0/dist/lib/browser.min.js"
-      integrity="sha384-QSjZsqpkm0O8AyNLtF1Ip2MeoXuAynoUNTWeevbZQGbdXtYh8gPgQCf2XV9bIG0i"
+      src="https://cdn.jsdelivr.net/npm/@toruslabs/broadcast-channel@14.0.0/dist/lib/browser.min.js"
+      integrity="sha384-xh8PrJAGS48/V1BWz6C/Qu3YzhsrAHdeMsmSwCIZGMitChgtlTq3qJTlr0mJ4SNU"
       crossorigin="anonymous"
     ></script>
     <script>
@@ -208,12 +209,13 @@ self.addEventListener('fetch', function (event) {
               var parts = item.split("=");
               result[parts[0]] = parts[1];
               return result;
-            }, {});
+            }, Object.create(null));
           }
-          var queryParams = {};
+          var queryParams = Object.create(null);
           for (var key of url.searchParams.keys()) {
             queryParams[key] = url.searchParams.get(key);
           }
+          window.history.replaceState(window.history.state, "", url.pathname);
           var error = "";
           try {
             if (Object.keys(hashParams).length > 0 && hashParams.state) {
@@ -252,11 +254,6 @@ self.addEventListener('fetch', function (event) {
               error: error,
             }).then(function () {
               bc.close();
-              console.log("posted", {
-                queryParams,
-                instanceParams,
-                hashParams,
-              });
               setTimeout(function () {
                 window.close();
                 showCloseText();

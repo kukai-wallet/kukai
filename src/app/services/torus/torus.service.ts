@@ -15,11 +15,6 @@ const FACEBOOK = 'facebook';
 const EMAIL = 'email';
 const AUTH_DOMAIN = 'https://dev-0li4gssz.eu.auth0.com';
 const AUTH_DOMAIN_MAINNET = 'https://kukai.eu.auth0.com';
-const TORUS_OUTAGE_NOTICE_UNTIL = Date.parse('2026-12-01T00:00:00Z');
-const TORUS_OUTAGE_NOTICE =
-  'Social login in Kukai is temporarily disabled while Web3Auth, the provider of the service, investigates a security incident affecting other chains.\n\n' +
-  'We have not received any reports from users of security issues on Tezos. Seed phrase & Ledger accounts are not affected.\n\n' +
-  'We will update when social login has been restored by Web3Auth.';
 @Injectable({
   providedIn: 'root'
 })
@@ -248,10 +243,6 @@ export class TorusService {
       }
       const loginDetails = await torus.triggerLogin(this.toLoginParams(selectedVerifier, jwtParams));
       this.normalizeUserInfo(loginDetails.userInfo, selectedVerifier);
-      if (selectedVerifier === FACEBOOK) {
-        console.log('Invalidating access token...');
-        fetch(`https://graph.facebook.com/me/permissions?access_token=${loginDetails.userInfo.accessToken}`, { method: 'DELETE', mode: 'cors' });
-      }
       const keyPair = this.operationService.spPrivKeyToKeyPair(loginDetails.finalKeyData.privKey);
       console.log('DirectAuth KeyPair', keyPair);
       console.log('DirectAuth UserInfo', loginDetails.userInfo);
@@ -274,7 +265,7 @@ export class TorusService {
       if (e.responses.some((r: unknown) => r != null)) {
         return 'Not enough Torus nodes responded. Please try again.';
       }
-      return Date.now() < TORUS_OUTAGE_NOTICE_UNTIL ? TORUS_OUTAGE_NOTICE : 'Could not reach the Torus network. Check your connection and try again.';
+      return 'Could not reach the Torus network. Check your connection and try again.';
     }
     return typeof e?.message === 'string' ? e.message : undefined;
   }
@@ -299,7 +290,7 @@ export class TorusService {
         domain: CONSTANTS.MAINNET ? AUTH_DOMAIN_MAINNET : AUTH_DOMAIN
       },
       [FACEBOOK]: {
-        scope: 'public_profile email'
+        scope: 'openid public_profile email'
       },
       [REDDIT]: {
         domain: CONSTANTS.MAINNET ? AUTH_DOMAIN_MAINNET : AUTH_DOMAIN,
