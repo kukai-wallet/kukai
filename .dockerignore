@@ -1,0 +1,24 @@
+# Ignore Node.js modules
+node_modules/
+
+# Ignore compiled output
+dist/
+
+# Ignore logs
+*.log
+
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore environment-specific files
+.env
+.env.*
+
+# Ignore code editors and IDEs
+.idea/
+.vscode/
+
+# Ignore Git files
+.git/
+.gitignore
