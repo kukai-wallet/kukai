@@ -1,3 +1,4 @@
+import { P2PPairingRequest } from '@ecadlabs/beacon-sdk';
 import { Component, OnInit, HostListener, OnDestroy } from '@angular/core';
 import { BeaconService } from '../../../../services/beacon/beacon.service';
 import { WalletService } from '../../../../services/wallet/wallet.service';
@@ -44,6 +45,24 @@ export class SettingsComponent implements OnInit, OnDestroy {
         this.activeAccount = activeAccount;
       })
     );
+  }
+  async removeBeaconPeer(peer: P2PPairingRequest): Promise<void> {
+    const index = this.beaconService.peers.findIndex((candidate) => candidate.publicKey === peer.publicKey && candidate.id === peer.id);
+    if (index < 0) {
+      return;
+    }
+    try {
+      await this.beaconService.removePeer(index);
+    } catch {
+      this.messageService.addError('Could not fully remove the dApp connection. Please check the peer list and try again.');
+    }
+  }
+  async removeBeaconPeers(): Promise<void> {
+    try {
+      await this.beaconService.removePeers();
+    } catch {
+      this.messageService.addError('Could not remove all dApp connections. Please check the peer list and try again.');
+    }
   }
   ngOnDestroy(): void {}
   accountAvailable(pkh: string): boolean {
